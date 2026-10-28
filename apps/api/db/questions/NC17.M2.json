@@ -12939,6 +12939,476 @@
       }
     },
     {
+      "id": "ee0ac943-255f-4a3f-805d-1aa12bc3d4a0",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A ball's height in feet after $t$ seconds is $h(t) = -16t^2 + 80t + 4$. The term $-16t^2$ shows the effect of gravity. What is the value of this term when $t = 2$?",
+      "choices": [],
+      "answer": "-64",
+      "compute": "-16*2^2",
+      "solution": "Put $t = 2$ into the term: $-16 \\times 2^2 = -16 \\times 4 = -64$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-16(2)^2 = -64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.775Z"
+        }
+      }
+    },
+    {
+      "id": "eddb69c8-65a7-499c-8bdf-0c6d7a8d2a11",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "A square patio has sides of length $s + 2$ feet, so its area is $(s + 2)^2$ square feet. The area is 49 square feet. What is $s$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "7-2",
+      "solution": "The side is $s + 2 = \\sqrt{49} = 7$, so $s = 7 - 2 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(s+2)^2 = 49, s+2 = 7 (length positive), s = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.860Z"
+        }
+      }
+    },
+    {
+      "id": "68de248d-0a5a-48e9-b5e1-800f6e4ebb9a",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "A pool is filled by $n$ identical pumps working together, and the time in hours is $t = \\frac{36}{n}$. How many hours does it take with 4 pumps?",
+      "choices": [],
+      "answer": "9",
+      "compute": "36/4",
+      "solution": "$t = \\frac{36}{4} = 9$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t = 36/4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.898Z"
+        }
+      }
+    },
+    {
+      "id": "f26498c9-20d7-42bf-8792-19f947aef686",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "Which equation shows that $y$ varies inversely with $x$?",
+      "choices": [
+        "$y = 12x$",
+        "$y = x + 12$",
+        "$y = \\frac{12}{x}$",
+        "$y = \\frac{x}{12}$"
+      ],
+      "answer": "$y = \\frac{12}{x}$",
+      "compute": null,
+      "solution": "Inverse variation has the form $y = \\frac{k}{x}$, where $k$ is a constant. Here $k = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\frac{12}{x}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Inverse variation y=k/x with k=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.903Z"
+        }
+      }
+    },
+    {
+      "id": "06e282d0-fdfa-4391-85fa-83e90f944c5b",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "square root expression in context",
+      "stem": "A cart rolls down a ramp that is $h$ meters tall. Its speed at the bottom, in meters per second, is about $v = \\sqrt{20h}$. What is the speed for a ramp that is 5 meters tall?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "$v = \\sqrt{20 \\times 5} = \\sqrt{100} = 10$ meters per second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "v=sqrt(20x5)=sqrt(100)=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.911Z"
+        }
+      }
+    },
+    {
+      "id": "29838cfe-24ee-4db5-a4e1-d7b9cdf70b14",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A 15-foot ladder leans against a wall and makes an angle $\\theta$ with the ground, where $\\sin \\theta = 0.8$. How many feet up the wall does the ladder reach?",
+      "choices": [],
+      "answer": "12",
+      "compute": "15*0.8",
+      "solution": "The height up the wall is opposite $\\theta$, so height $= 15 \\sin \\theta = 15 \\times 0.8 = 12$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height = 15 sin(theta) = 15x0.8 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.920Z"
+        }
+      }
+    },
+    {
+      "id": "2f9458fa-b3d9-4161-aaa5-fc69c45f9ecb",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "A rectangle has an area of 24 square centimeters, so its length is $L = \\frac{24}{w}$ centimeters when its width is $w$ centimeters. What happens to $L$ when $w$ gets larger?",
+      "choices": [
+        "$L$ gets larger",
+        "$L$ gets smaller",
+        "$L$ stays the same",
+        "$L$ gets larger and then smaller"
+      ],
+      "answer": "$L$ gets smaller",
+      "compute": null,
+      "solution": "With the area fixed at 24, a wider rectangle must be shorter. In $L = \\frac{24}{w}$, dividing 24 by a larger number gives a smaller result.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$L$ gets smaller",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "L=24/w decreases as w increases (inverse variation, w>0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.933Z"
+        }
+      }
+    },
+    {
+      "id": "6e271020-b737-48e0-9ce4-03e8a94ec192",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "A taxi ride costs 2 dollars plus 3 dollars for each of $m$ miles. Adding a 10 percent tip makes the total $1.1(2 + 3m)$ dollars. What does $2 + 3m$ represent?",
+      "choices": [
+        "The cost of the ride before the tip",
+        "The amount of the tip added to the ride",
+        "The cost of the miles driven only",
+        "The total cost of the ride after the tip"
+      ],
+      "answer": "The cost of the ride before the tip",
+      "compute": null,
+      "solution": "$2 + 3m$ is the fare: 2 dollars plus 3 dollars per mile. Multiplying it by 1.1 adds 10 percent, so $2 + 3m$ is the cost before the tip.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cost of the ride before the tip",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+3m = base fare plus mileage, before the 10% tip.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.947Z"
+        }
+      }
+    },
+    {
+      "id": "9b7d215b-3c4b-4598-a38e-849c3a60b5a4",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "factored form: zeros and factors",
+      "stem": "A rectangular pen is $x$ meters wide, and its area in square meters is $A(x) = x(12 - x)$. The factor $12 - x$ is the length of the pen in meters. How long is the pen when it is 5 meters wide?",
+      "choices": [],
+      "answer": "7",
+      "compute": "12-5",
+      "solution": "Put $x = 5$ into the factor $12 - x$: $12 - 5 = 7$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length 12-x = 12-5 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.956Z"
+        }
+      }
+    },
+    {
+      "id": "be3ac038-9868-4c30-bcf1-77808b3a0fca",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "Ana buys 3 shirts that cost $p$ dollars each and 3 hats that cost $h$ dollars each. She pays $3(p + h)$ dollars in all. What does $p + h$ represent?",
+      "choices": [
+        "The cost of three shirts and three hats",
+        "The difference between the price of a shirt and a hat",
+        "The cost of three shirts",
+        "The cost of one shirt and one hat together"
+      ],
+      "answer": "The cost of one shirt and one hat together",
+      "compute": null,
+      "solution": "Each of the 3 groups is one shirt and one hat, costing $p + h$ dollars. Three such groups cost $3(p + h)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cost of one shirt and one hat together",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(p+h) is 3 sets of one shirt and one hat, so p+h is the cost of one shirt and one hat together.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.989Z"
+        }
+      }
+    },
+    {
+      "id": "ae2a406d-9594-4f3c-a123-ae985e4bc362",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A ramp 8 meters long makes an angle $\\theta$ with the level ground. What does the expression $8\\cos \\theta$ represent?",
+      "choices": [
+        "The horizontal distance the ramp covers, in meters",
+        "The height the ramp reaches above the ground, in meters",
+        "The length of the ramp along its surface, in meters",
+        "The angle the ramp makes with the ground, in degrees"
+      ],
+      "answer": "The horizontal distance the ramp covers, in meters",
+      "compute": null,
+      "solution": "The ramp is the hypotenuse, and $\\cos \\theta = \\frac{\\text{adjacent}}{\\text{hypotenuse}}$. So hypotenuse $\\times \\cos \\theta$ is the side next to the angle, the horizontal distance.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The horizontal distance the ramp covers, in meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adjacent side to theta in right triangle with hypotenuse 8: 8cos theta is the horizontal distance.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.991Z"
+        }
+      }
+    },
+    {
+      "id": "4508dd6b-b2d5-4e88-864f-043d7d93376c",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A room is $x$ feet wide and $x + 5$ feet long, so its area is $x(x + 5) = x^2 + 5x$ square feet. Split the room into a square that is $x$ feet on each side and a leftover strip. Which term is the area of the square?",
+      "choices": [
+        "$5x$",
+        "$x^2$",
+        "$x$",
+        "$x + 5$"
+      ],
+      "answer": "$x^2$",
+      "compute": null,
+      "solution": "A square with side $x$ has area $x \\times x = x^2$. The strip is 5 feet by $x$ feet, so its area is the term $5x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x by x square has area x^2; leftover strip 5 by x has 5x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.997Z"
+        }
+      }
+    },
+    {
+      "id": "378e9182-df03-4d2a-ac18-fc950e0b8814",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "The height of a stone in feet is $h(t) = -16(t - 2)^2 + 70$, where $t$ is in seconds. At what time, in seconds, is the stone highest?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The vertex form $-16(t - 2)^2 + 70$ has its greatest value when $t - 2 = 0$, so at $t = 2$ seconds (the greatest height is 70 feet).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex form: maximum at t = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.005Z"
+        }
+      }
+    },
+    {
+      "id": "9a77f68a-61c3-45af-ba5c-3a3dbb2971bb",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "square root expression in context",
+      "stem": "The time in seconds for an object to fall $h$ feet is $t = \\frac{\\sqrt{h}}{4}$. How many seconds does it take to fall 64 feet?",
+      "choices": [],
+      "answer": "2",
+      "compute": "8/4",
+      "solution": "$t = \\frac{\\sqrt{64}}{4} = \\frac{8}{4} = 2$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(64)/4 = 8/4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.010Z"
+        }
+      }
+    },
+    {
+      "id": "8bfd68e8-f03c-4472-9fc9-aff978d642c2",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "factored form: zeros and factors",
+      "stem": "A company's profit, in thousands of dollars, from selling $x$ thousand items is $P(x) = -(x - 2)(x - 8)$. Which statement is true?",
+      "choices": [
+        "The company breaks even at -2 thousand items and at -8 thousand items",
+        "The profit is greatest at 2 thousand items and at 8 thousand items",
+        "The company breaks even at 2 thousand items and at 8 thousand items",
+        "The company breaks even only at 16 thousand items"
+      ],
+      "answer": "The company breaks even at 2 thousand items and at 8 thousand items",
+      "compute": null,
+      "solution": "The profit is 0 when a factor is 0: $x - 2 = 0$ or $x - 8 = 0$, so at $x = 2$ and $x = 8$. Those are the break-even points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The company breaks even at 2 thousand items and at 8 thousand items",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P = 0 at x = 2 and x = 8 (thousand items).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.029Z"
+        }
+      }
+    },
+    {
       "id": "3c894212-d5ed-4f5e-86f1-67f72bb9ad21",
       "topic_id": "NC17.M2.A-SSE.1",
       "difficulty": 2,
@@ -13390,6 +13860,602 @@
       }
     },
     {
+      "id": "98a649b2-2797-4e45-ab06-da42351ffa25",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "Which function has a greatest value of 7, reached at $x = -2$?",
+      "choices": [
+        "$f(x) = -(x - 2)^2 + 7$",
+        "$f(x) = (x + 2)^2 + 7$",
+        "$f(x) = -(x + 2)^2 - 7$",
+        "$f(x) = -(x + 2)^2 + 7$"
+      ],
+      "answer": "$f(x) = -(x + 2)^2 + 7$",
+      "compute": null,
+      "solution": "In $f(x) = a(x - h)^2 + k$ the vertex is $(h, k)$, and there is a greatest value when $a < 0$. We need $h = -2$, so the factor is $(x + 2)$, and $k = 7$, with a negative $a$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = -(x + 2)^2 + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max 7 at x=-2 needs a negative leading coefficient and vertex (-2,7): -(x+2)^2+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.576Z"
+        }
+      }
+    },
+    {
+      "id": "0a7ad2c8-a3fb-49d8-8243-249128bf9473",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "A rocket's height in meters at $t$ seconds is $h(t) = -5(t - 4)^2 + 100$. The rocket is launched from the top of a platform at $t = 0$. How many meters high is the platform?",
+      "choices": [],
+      "answer": "20",
+      "compute": "-5*(0-4)^2+100",
+      "solution": "The platform's height is the rocket's height at $t = 0$: $h(0) = -5(-4)^2 + 100 = -80 + 100 = 20$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h(0)=-5(16)+100=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.602Z"
+        }
+      }
+    },
+    {
+      "id": "0dc09415-3529-4d54-a3fb-5e021ed4e9db",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "Pizzas cost 12 dollars each and delivery costs 5 dollars. An order of $x$ pizzas is charged a 10 percent tax on the cost of the pizzas plus delivery, $12x + 5$. How many dollars of tax are charged on an order of 5 pizzas?",
+      "choices": [],
+      "answer": "6.5",
+      "compute": "0.1*(12*5+5)",
+      "solution": "The cost before tax is $12 \\times 5 + 5 = 65$ dollars. The tax is 10 percent of that: $0.1 \\times 65 = 6.5$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tax = 0.10(12*5+5)=0.10(65)=6.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.603Z"
+        }
+      }
+    },
+    {
+      "id": "984ae367-8ec3-4c18-be81-b2c6e01cf57d",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "A circular pool has radius $r$ feet. A walkway 3 feet wide goes all the way around it. What does the expression $\\pi(r + 3)^2$ represent?",
+      "choices": [
+        "The area of the walkway alone, not counting the pool, in square feet",
+        "The area of the pool and the walkway together, in square feet",
+        "The area of the pool alone, not counting the walkway, in square feet",
+        "The distance around the outside of the walkway, in feet"
+      ],
+      "answer": "The area of the pool and the walkway together, in square feet",
+      "compute": null,
+      "solution": "The outer edge of the walkway is a circle of radius $r + 3$. The area of a circle is $\\pi \\times (\\text{radius})^2$, so $\\pi(r + 3)^2$ is the area of the pool and walkway together.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The area of the pool and the walkway together, in square feet",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Outer radius r+3, so pi(r+3)^2 is the area of pool plus walkway.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.605Z"
+        }
+      }
+    },
+    {
+      "id": "a0311ca6-24a9-4441-a9e4-c488e2db06e4",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "Two balls are kicked. Their heights in feet at a horizontal distance of $x$ feet are $f(x) = -(x - 3)^2 + 10$ and $g(x) = -(x - 5)^2 + 8$. Which statement is true?",
+      "choices": [
+        "Ball g is higher at its peak, and ball g peaks farther away",
+        "Ball f is higher at its peak, and ball g peaks farther away",
+        "Ball f is higher at its peak, and ball f peaks farther away",
+        "Ball g is higher at its peak, and ball f peaks farther away"
+      ],
+      "answer": "Ball f is higher at its peak, and ball g peaks farther away",
+      "compute": null,
+      "solution": "The vertex of $f$ is $(3, 10)$ and the vertex of $g$ is $(5, 8)$. Ball f's peak height, 10, is greater than 8, and ball g peaks at $x = 5$, which is farther than $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ball f is higher at its peak, and ball g peaks farther away",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f peaks at 10 (x=3), g at 8 (x=5): f higher, g farther.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.606Z"
+        }
+      }
+    },
+    {
+      "id": "dc158c65-b439-4ed2-8fc5-e4fa85c12f0b",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "square root expression in context",
+      "stem": "The top speed of a sailboat in knots is about $s = 1.3\\sqrt{L}$, where $L$ is the length of its hull in feet. How many knots faster is the top speed of a boat with a 100-foot hull than that of a boat with a 36-foot hull?",
+      "choices": [],
+      "answer": "5.2",
+      "compute": "1.3*10-1.3*6",
+      "solution": "The 100-foot hull: $1.3 \\times 10 = 13$ knots. The 36-foot hull: $1.3 \\times 6 = 7.8$ knots. The difference is $13 - 7.8 = 5.2$ knots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.3(sqrt100 - sqrt36)=1.3(10-6)=5.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.607Z"
+        }
+      }
+    },
+    {
+      "id": "65932a15-9e8f-4ad8-b7e8-e0116cf21a96",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factored form: zeros and factors",
+      "stem": "A concert's revenue in dollars is $R(p) = p(120 - 4p)$, where $p$ is the ticket price in dollars. The factor $120 - 4p$ is the number of tickets sold. At what ticket price, in dollars, do ticket sales drop to zero?",
+      "choices": [],
+      "answer": "30",
+      "compute": "120/4",
+      "solution": "Ticket sales are zero when $120 - 4p = 0$, so $p = \\frac{120}{4} = 30$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120-4p=0 gives p=30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.608Z"
+        }
+      }
+    },
+    {
+      "id": "96e5c182-dae0-46e7-b9fe-a0e850efefe1",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A ramp 24 feet long rises to a platform 6 feet above the ground. The ramp makes an angle $\\theta$ with the ground. What is $\\sin \\theta$?",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "6/24",
+      "solution": "$\\sin \\theta = \\frac{\\text{opposite}}{\\text{hypotenuse}} = \\frac{6}{24} = \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin = opposite/hypotenuse = 6/24 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.649Z"
+        }
+      }
+    },
+    {
+      "id": "bd1f96cc-8231-4d59-8581-bdd0cf5ee336",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "Friends share the cost of a gift, so the cost per person is $c = \\frac{600}{n}$ dollars when $n$ people share it. If the number of people triples, what happens to the cost per person?",
+      "choices": [
+        "It is divided by 3",
+        "It is multiplied by 3",
+        "It is decreased by 3 dollars",
+        "It stays the same"
+      ],
+      "answer": "It is divided by 3",
+      "compute": null,
+      "solution": "With $3n$ people, $c = \\frac{600}{3n} = \\frac{1}{3} \\times \\frac{600}{n}$, so the cost per person is divided by 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is divided by 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "600/(3n) = (600/n)/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.705Z"
+        }
+      }
+    },
+    {
+      "id": "43fed902-74e6-45a1-ba6e-3ca0c8ddaa2c",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "In a right triangle with acute angle $\\theta$, $\\tan \\theta = \\frac{5}{12}$ and the leg next to $\\theta$ is 24 units long. How long is the hypotenuse?",
+      "choices": [],
+      "answer": "26",
+      "compute": "24*13/12",
+      "solution": "The opposite leg is $24 \\times \\frac{5}{12} = 10$. The hypotenuse is $\\sqrt{24^2 + 10^2} = \\sqrt{676} = 26$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "opp/adj=5/12, adj 24 so opp 10; hyp = sqrt(100+576)=26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.711Z"
+        }
+      }
+    },
+    {
+      "id": "1193d3dd-f457-462c-99aa-8b1b98e42389",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "A rectangle keeps an area of 72 square centimeters, so its width is $w = \\frac{72}{L}$ centimeters when its length is $L$ centimeters. The length is changed from 8 centimeters to 18 centimeters. What is the new width, in centimeters?",
+      "choices": [],
+      "answer": "4",
+      "compute": "72/18",
+      "solution": "$w = \\frac{72}{18} = 4$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w = 72/18 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.731Z"
+        }
+      }
+    },
+    {
+      "id": "eaf422de-39e8-4189-9927-7b9987010b4f",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "factored form: zeros and factors",
+      "stem": "A company breaks even when it sells 3 thousand items and when it sells 9 thousand items. It makes a profit for any number of items in between and loses money outside that range. Which function gives its profit $P(x)$ from selling $x$ thousand items?",
+      "choices": [
+        "$P(x) = (x - 3)(x - 9)$",
+        "$P(x) = -(x + 3)(x + 9)$",
+        "$P(x) = -(x - 3)(x - 9)$",
+        "$P(x) = -(x - 3)(x + 9)$"
+      ],
+      "answer": "$P(x) = -(x - 3)(x - 9)$",
+      "compute": null,
+      "solution": "Zeros at 3 and 9 need the factors $(x - 3)$ and $(x - 9)$. Positive profit in between means the graph opens downward, so the leading factor is negative. Check: $P(6) = -(3)(-3) = 9 > 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$P(x) = -(x - 3)(x - 9)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros at 3 and 9, positive between, negative outside: downward parabola -(x - 3)(x - 9). Check x = 6: -(3)(-3) = 9 > 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.759Z"
+        }
+      }
+    },
+    {
+      "id": "87ec177a-2150-46ae-8dfb-dff15731b65b",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "In a table, $y$ varies inversely with $x$, so $y = \\frac{k}{x}$. The pairs $(x, y)$ in the table are $(2, 18)$, $(3, 12)$ and $(4, 9)$. What is $y$ when $x = 6$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "36/6",
+      "solution": "$k = xy = 2 \\times 18 = 36$ (also $3 \\times 12 = 36$). Then $y = \\frac{36}{6} = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k = 2 x 18 = 36 (also 3 x 12, 4 x 9). y = 36/6 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.764Z"
+        }
+      }
+    },
+    {
+      "id": "4a17d8c2-3746-4699-80b1-9bee91595620",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "factored form: zeros and factors",
+      "stem": "A ball's height in feet is $h(t) = -16(t - 1)(t - 4)$, where $t$ is in seconds. The ball is above ground level when $h(t) > 0$, which is between its two zeros. For how many seconds is the ball above ground level?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4-1",
+      "solution": "The zeros are $t = 1$ and $t = 4$. The ball is above ground from 1 to 4 seconds, which is $4 - 1 = 3$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros t = 1 and t = 4; leading coefficient -16 so h > 0 between them: 4 - 1 = 3 seconds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.806Z"
+        }
+      }
+    },
+    {
+      "id": "5e392aea-f61a-4791-b407-bc96129d98ce",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "square root expression in context",
+      "stem": "The time in seconds for an object to fall $h$ meters is about $t = \\sqrt{\\frac{h}{5}}$. For the fall to take twice as long, how must the height $h$ change?",
+      "choices": [
+        "It must be multiplied by 4",
+        "It must be multiplied by 2",
+        "It must be multiplied by 8",
+        "It must be increased by 2"
+      ],
+      "answer": "It must be multiplied by 4",
+      "compute": null,
+      "solution": "If $h$ becomes $4h$, then $t = \\sqrt{\\frac{4h}{5}} = 2\\sqrt{\\frac{h}{5}}$, which is twice the old time. Multiplying $h$ by 2 only multiplies $t$ by $\\sqrt{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It must be multiplied by 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t = sqrt(h/5); t doubles when h/5 is multiplied by 4, so h x 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.840Z"
+        }
+      }
+    },
+    {
+      "id": "7dbe06e6-d44b-4014-94f4-8512cde7a16f",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A kite string 90 meters long is held at ground level and makes an angle $\\theta$ with the ground. Treating the string as straight, which expression gives the kite's height above the ground, in meters?",
+      "choices": [
+        "$90 \\cos \\theta$",
+        "$90 \\tan \\theta$",
+        "$\\frac{90}{\\sin \\theta}$",
+        "$90 \\sin \\theta$"
+      ],
+      "answer": "$90 \\sin \\theta$",
+      "compute": null,
+      "solution": "The string is the hypotenuse and the height is the side opposite $\\theta$. Since $\\sin \\theta = \\frac{\\text{opposite}}{\\text{hypotenuse}}$, the height is $90 \\sin \\theta$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$90 \\sin \\theta$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height is opposite side, hypotenuse 90: 90 sin theta.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.873Z"
+        }
+      }
+    },
+    {
+      "id": "012ba529-ce74-4c4f-a321-b17da413dab3",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A theater's revenue in dollars at a ticket price of $p$ dollars is $R(p) = 80p - 2p^2$. The term $2p^2$ is the revenue lost because higher prices drive customers away. How many dollars of revenue are lost to this effect when $p = 15$?",
+      "choices": [],
+      "answer": "450",
+      "compute": "2*15^2",
+      "solution": "The lost revenue is the value of $2p^2$ at $p = 15$: $2 \\times 15^2 = 2 \\times 225 = 450$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "450",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2p^2 = 2 x 225 = 450.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.888Z"
+        }
+      }
+    },
+    {
+      "id": "88ba0ea8-7230-44b5-9962-9dc6c1427407",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A square garden has side $x + 3$ feet, so its area is $(x + 3)^2 = x^2 + 6x + 9$ square feet. The garden is split into an $x$ by $x$ square, two $x$ by 3 strips, and a 3 by 3 square. Which term gives the total area of the two strips?",
+      "choices": [
+        "$x^2$",
+        "$3x$",
+        "$6x$",
+        "$9$"
+      ],
+      "answer": "$6x$",
+      "compute": null,
+      "solution": "Each strip has area $3 \\times x = 3x$, so the two strips together have area $2 \\times 3x = 6x$. The term $3x$ is only one strip.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each strip is 3x; two strips 6x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.014Z"
+        }
+      }
+    },
+    {
+      "id": "48aa253c-0474-4f41-abb8-44276c79c819",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "A square patio has side $a$ feet and a square garden has side $b$ feet. Which expression gives the area of a single square whose side is the sum of the two sides?",
+      "choices": [
+        "$a^2 + b^2$",
+        "$a + b^2$",
+        "$2(a + b)$",
+        "$(a + b)^2$"
+      ],
+      "answer": "$(a + b)^2$",
+      "compute": null,
+      "solution": "A square with side $a + b$ has area $(a + b)^2$. The expression $a^2 + b^2$ is the two separate areas added, which is different.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(a + b)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side a + b; area (a + b)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.031Z"
+        }
+      }
+    },
+    {
       "id": "0adaec59-26cf-4523-8992-378b3f47a7a2",
       "topic_id": "NC17.M2.A-SSE.1",
       "difficulty": 3,
@@ -13749,6 +14815,660 @@
           "work": "g(6) = 4a + 6 = -2, a = -2 (negative, consistent with a maximum of 6).",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.456Z"
+        }
+      }
+    },
+    {
+      "id": "5111dfa9-d7f9-4dea-ae00-727bb7d09271",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "A ball's height in meters is $h(t) = -5(t - 2)^2 + 25$, where $t$ is the time in seconds. The ball is thrown at $t = 0$ from a height of 5 meters. At what time, in seconds, is it again at a height of 5 meters?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2*2-0",
+      "solution": "The vertex is at $t = 2$, and the path is symmetric about the line $t = 2$. The time $t = 0$ is 2 seconds before the peak, so the height is 5 meters again 2 seconds after it, at $t = 4$. Check: $h(4) = -20 + 25 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Symmetric about t=2; h(0)=5, so the other time is t=4. Check: -5(4)+25=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.604Z"
+        }
+      }
+    },
+    {
+      "id": "a30d1d8f-dc97-4972-85e5-7f64414b8dcd",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "square root expression in context",
+      "stem": "A square has side $\\sqrt{A}$ meters, where $A$ is a number of square meters. A second square has sides that are 3 meters longer. Which expression gives the area of the second square, in square meters?",
+      "choices": [
+        "$(\\sqrt{A})^2 + 3^2$",
+        "$\\sqrt{A} + 3^2$",
+        "$(\\sqrt{A} + 3)^2$",
+        "$(A + 3)^2$"
+      ],
+      "answer": "$(\\sqrt{A} + 3)^2$",
+      "compute": null,
+      "solution": "The second side is $\\sqrt{A} + 3$ meters, and the area of a square is its side squared: $(\\sqrt{A} + 3)^2$. Squaring the bracket does not simply give $A + 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(\\sqrt{A} + 3)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "New side sqrt(A)+3, area (sqrt(A)+3)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.630Z"
+        }
+      }
+    },
+    {
+      "id": "7a09f0a8-e36a-4568-ab97-b9019f1ea68b",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "vertex form: vertex and greatest or least value",
+      "stem": "Which function has its vertex at $(3, -4)$, opens upward, and passes through the point $(4, -3)$?",
+      "choices": [
+        "$f(x) = (x + 3)^2 - 4$",
+        "$f(x) = -(x - 3)^2 - 4$",
+        "$f(x) = (x - 3)^2 - 4$",
+        "$f(x) = (x - 3)^2 + 4$"
+      ],
+      "answer": "$f(x) = (x - 3)^2 - 4$",
+      "compute": null,
+      "solution": "Vertex $(3, -4)$ gives $(x - 3)^2 - 4$ with a positive coefficient for opening upward. Check the point: $f(4) = 1 - 4 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x - 3)^2 - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Upward, vertex (3,-4): (x-3)^2-4; at x=4: 1-4=-3. Correct.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.634Z"
+        }
+      }
+    },
+    {
+      "id": "9a81f20c-0264-40f0-8355-d27a15224f8d",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "The variable $y$ varies inversely with $x$, and the point $(4, 15)$ is on the graph. Which point is also on the graph?",
+      "choices": [
+        "$(10, 9)$",
+        "$(10, 37.5)$",
+        "$(10, 1.5)$",
+        "$(10, 6)$"
+      ],
+      "answer": "$(10, 6)$",
+      "compute": null,
+      "solution": "The constant is $k = xy = 4 \\times 15 = 60$. When $x = 10$, $y = \\frac{60}{10} = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(10, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k=4*15=60; 10*6=60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.693Z"
+        }
+      }
+    },
+    {
+      "id": "46efe2db-6436-40f0-af63-29c7c8a4c287",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "The height in meters of a rocket after $t$ seconds is $h(t) = -5t^2 + vt + 20$, where $v$ is its launch speed in meters per second. Rocket 1 has $v = 30$ and rocket 2 has $v = 40$. Which statement is true?",
+      "choices": [
+        "Both start at 20 meters, and rocket 1 is higher after 1 second",
+        "Both start at 20 meters, and rocket 2 is higher after 1 second",
+        "Rocket 2 starts at 40 meters, and it is higher after 1 second",
+        "Rocket 1 starts at 30 meters, and rocket 2 is higher after 1 second"
+      ],
+      "answer": "Both start at 20 meters, and rocket 2 is higher after 1 second",
+      "compute": null,
+      "solution": "At $t = 0$ both heights are the constant term, 20. After 1 second, rocket 1 is at $-5 + 30 + 20 = 45$ meters and rocket 2 is at $-5 + 40 + 20 = 55$ meters. The coefficient $v$ is a speed, not a starting height.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both start at 20 meters, and rocket 2 is higher after 1 second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Both have h(0)=20. h(1): 45 vs 55; rocket 2 higher.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.703Z"
+        }
+      }
+    },
+    {
+      "id": "25355f63-abbf-457f-aad5-5d730c5e0abc",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A 20-foot ladder leans against a wall and makes an angle $\\theta$ with the ground, where $\\cos \\theta = 0.6$. The ladder is then moved so that $\\cos \\theta = 0.8$. How many feet lower on the wall is the top of the ladder?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20*0.8-20*0.6",
+      "solution": "The height on the wall is $20 \\sin \\theta$. If $\\cos \\theta = 0.6$ then $\\sin \\theta = 0.8$ and the height is 16 feet. If $\\cos \\theta = 0.8$ then $\\sin \\theta = 0.6$ and the height is 12 feet. The difference is 4 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height = 20 sin. cos .6 -> sin .8 -> 16 ft; cos .8 -> sin .6 -> 12 ft. 16-12=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.714Z"
+        }
+      }
+    },
+    {
+      "id": "798c0b50-15bd-48f5-bde1-93fa3ba5acb0",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "A store sells $200 - 5p$ items per week when the price is $p$ dollars, and each item costs the store 8 dollars to make. The weekly profit in dollars is $(p - 8)(200 - 5p)$, the profit per item times the number sold. What is the weekly profit when the price is 20 dollars?",
+      "choices": [],
+      "answer": "1200",
+      "compute": "(20-8)*(200-5*20)",
+      "solution": "Profit per item: $20 - 8 = 12$ dollars. Items sold: $200 - 5 \\times 20 = 100$. Weekly profit: $12 \\times 100 = 1200$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p = 20: (20 - 8)(200 - 100) = 12 x 100 = 1200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.730Z"
+        }
+      }
+    },
+    {
+      "id": "7dc9bf21-dd7f-4184-acdb-81a4c965d9bd",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "Two ramps start at the same point on level ground. Each is 10 meters long. Ramp A makes an angle of $30^\\circ$ with the ground and ramp B makes an angle of $40^\\circ$. Using $\\sin 30^\\circ < \\sin 40^\\circ$ and $\\cos 30^\\circ > \\cos 40^\\circ$, which statement is true?",
+      "choices": [
+        "Ramp B reaches a greater height and covers a longer horizontal distance",
+        "Ramp B reaches a greater height and covers a shorter horizontal distance",
+        "Ramp A reaches a greater height and covers a shorter horizontal distance",
+        "Ramp A reaches a greater height and covers a longer horizontal distance"
+      ],
+      "answer": "Ramp B reaches a greater height and covers a shorter horizontal distance",
+      "compute": null,
+      "solution": "The height is $10 \\sin \\theta$ and the horizontal distance is $10 \\cos \\theta$. Ramp B has the larger sine, so it is higher, and the smaller cosine, so it covers less horizontal distance.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ramp B reaches a greater height and covers a shorter horizontal distance",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height = 10 sin(angle), horizontal = 10 cos(angle). sin40 > sin30 so B is higher; cos40 < cos30 so B covers a shorter horizontal distance.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.737Z"
+        }
+      }
+    },
+    {
+      "id": "ddd2b8ba-cc76-4e86-975b-6b5c01cdb6f1",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "The area of a square patio is $x^2 + 8x + 16$ square feet, where $x$ is a number of feet. The area is 100 square feet. Reading the expression as the area of a square, find $x$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "10-4",
+      "solution": "$x^2 + 8x + 16 = (x + 4)^2$, so the side is $x + 4$. The area is 100, so the side is 10 and $x = 10 - 4 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + 8x + 16 = (x + 4)^2 = 100, side x + 4 = 10 (a side is positive), x = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.738Z"
+        }
+      }
+    },
+    {
+      "id": "61f7a8eb-55d2-46bb-b9b4-d6ede39adba3",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "square root expression in context",
+      "stem": "The distance to the horizon from a lookout that is $h$ feet high is about $d = \\sqrt{1.5h}$ miles. From the top of a tower the horizon is 7.5 miles away. How high is the tower, in feet?",
+      "choices": [],
+      "answer": "37.5",
+      "compute": "7.5^2/1.5",
+      "solution": "$7.5 = \\sqrt{1.5h}$, so $56.25 = 1.5h$ and $h = \\frac{56.25}{1.5} = 37.5$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.5^2 = 56.25 = 1.5h, h = 37.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.743Z"
+        }
+      }
+    },
+    {
+      "id": "49b874ad-dbe1-4bb2-b3b4-1bffb563aa2d",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "The time of a trip is $t = \\frac{k}{r}$ hours when the driver travels at $r$ miles per hour, where $k$ is the length of the trip in miles. Speeding up from 40 miles per hour to 100 miles per hour cuts the time by 3 hours. How long is the trip, in miles?",
+      "choices": [],
+      "answer": "200",
+      "compute": "3/(1/40-1/100)",
+      "solution": "The times differ by $\\frac{k}{40} - \\frac{k}{100} = 3$. Since $\\frac{1}{40} - \\frac{1}{100} = \\frac{3}{200}$, we get $\\frac{3k}{200} = 3$ and $k = 200$ miles. Check: 5 hours versus 2 hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k/40 - k/100 = 3 -> (5k - 2k)/200 = 3 -> k = 200. Check 5 h - 2 h = 3 h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.751Z"
+        }
+      }
+    },
+    {
+      "id": "8d24e437-882a-472f-9d61-01d1ef1b7d3c",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "The number of days a job takes varies inversely with the number of workers. Six workers could finish the whole job in 12 days. After the six have worked for 4 days, 2 of them leave. How many more days do the remaining 4 workers need to finish the job?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(6*12-6*4)/4",
+      "solution": "The whole job is $6 \\times 12 = 72$ worker-days. After 4 days, $6 \\times 4 = 24$ worker-days are done, so 48 remain. Four workers need $\\frac{48}{4} = 12$ more days.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Job = 6 x 12 = 72 worker-days. 4 days by 6 = 24 done, 48 left. 4 workers: 48/4 = 12 days.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.752Z"
+        }
+      }
+    },
+    {
+      "id": "a658d825-6672-44b4-b759-5a0e83ecf36c",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factored form: zeros and factors",
+      "stem": "The graph of $y = 2(x - 3)(x + 5)$ opens upward and crosses the $x$-axis at 3 and $-5$. Its lowest point is halfway between those two crossings. What is the least value of $y$?",
+      "choices": [],
+      "answer": "-32",
+      "compute": "2*(-1-3)*(-1+5)",
+      "solution": "Halfway between 3 and $-5$ is $x = -1$. Then $y = 2(-1 - 3)(-1 + 5) = 2(-4)(4) = -32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex at x = (3 + -5)/2 = -1. y = 2(-4)(4) = -32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.754Z"
+        }
+      }
+    },
+    {
+      "id": "b948abf5-4633-480b-a697-2ef9d81af84d",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "factored form: zeros and factors",
+      "stem": "A quadratic function is $f(x) = a(x + 1)(x - 5)$ and $f(0) = 10$. What is $a$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "10/(1*(-5))",
+      "solution": "$f(0) = a(1)(-5) = -5a = 10$, so $a = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(0) = a(1)(-5) = -5a = 10, a = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.760Z"
+        }
+      }
+    },
+    {
+      "id": "d4aa4a7e-9467-4be7-aabc-78d83f183fc4",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "An account starts with $P$ dollars and earns interest at a rate $r$ each year, so after 2 years the balance is $P(1 + r)^2$ dollars. What does the expression $P(1 + r)^2 - P$ represent?",
+      "choices": [
+        "The balance at the end of the two years",
+        "The interest earned in the second year alone",
+        "The interest earned in the first year alone",
+        "The total interest earned over the two years"
+      ],
+      "answer": "The total interest earned over the two years",
+      "compute": null,
+      "solution": "$P(1 + r)^2$ is the balance after 2 years and $P$ is the starting amount, so their difference is everything earned in the two years. The first year alone is $Pr$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The total interest earned over the two years",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Balance after two years minus starting principal = total interest over both years.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.774Z"
+        }
+      }
+    },
+    {
+      "id": "6af41ca5-74a2-40c4-8c48-182f7d4a5359",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "terms and coefficients of a quadratic in context",
+      "stem": "A bakery's daily cost in dollars for baking $x$ dozen rolls is $C(x) = 2x^2 + 10x + 150$. The term $2x^2$ is the overtime cost, $10x$ is the cost of ingredients, and 150 is the fixed cost. On one day the overtime cost is 98 dollars. What is the bakery's total cost that day, in dollars?",
+      "choices": [],
+      "answer": "318",
+      "compute": "2*7^2+10*7+150",
+      "solution": "Overtime: $2x^2 = 98$, so $x^2 = 49$ and $x = 7$ dozen. Ingredients: $10 \\times 7 = 70$. Total: $98 + 70 + 150 = 318$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "318",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2 = 98 so x^2 = 49, x = 7 (dozens, positive). Ingredients 10(7) = 70. Total 98 + 70 + 150 = 318.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.819Z"
+        }
+      }
+    },
+    {
+      "id": "5d10f397-050b-4c77-911f-2ad3f27cc457",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "factored form: zeros and factors",
+      "stem": "Which statement about $f(x) = -2(x - 1)(x + 3)$ is true?",
+      "choices": [
+        "Its graph crosses the $x$-axis at $1$ and $-3$ and opens downward",
+        "Its graph crosses the $x$-axis at $-1$ and $3$ and opens downward",
+        "Its graph crosses the $x$-axis at $1$ and $-3$ and opens upward",
+        "Its graph crosses the $x$-axis at $-1$ and $3$ and opens upward"
+      ],
+      "answer": "Its graph crosses the $x$-axis at $1$ and $-3$ and opens downward",
+      "compute": null,
+      "solution": "The zeros come from $x - 1 = 0$ and $x + 3 = 0$, so $x = 1$ and $x = -3$. The leading coefficient is $-2$, which is negative, so the graph opens downward.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Its graph crosses the $x$-axis at $1$ and $-3$ and opens downward",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros at x = 1 and x = -3; leading coefficient -2 < 0 so opens downward.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.824Z"
+        }
+      }
+    },
+    {
+      "id": "5022fb74-e905-4f5e-b6fb-74142df75d27",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "square root expression in context",
+      "stem": "A cart is rolled down a ramp with a starting speed of 8 meters per second. Its speed after dropping $d$ meters is $v = \\sqrt{64 + 20d}$ meters per second. After dropping how many meters is its speed 12 meters per second?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(144-64)/20",
+      "solution": "$12 = \\sqrt{64 + 20d}$, so $144 = 64 + 20d$ and $20d = 80$, giving $d = 4$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 = sqrt(64+20d): 144 = 64 + 20d, d = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.854Z"
+        }
+      }
+    },
+    {
+      "id": "e4f597c5-8942-46b7-8f48-50417a27f0eb",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "right-triangle trigonometric expression in context",
+      "stem": "A tower is 30 meters tall. From point P on level ground, the tangent of the angle of elevation to the top is $\\frac{3}{4}$. From point Q, farther from the tower along the same line, it is $\\frac{3}{5}$. How many meters farther from the base of the tower is Q than P?",
+      "choices": [],
+      "answer": "10",
+      "compute": "30/(3/5)-30/(3/4)",
+      "solution": "Distance from the base $= \\frac{30}{\\tan \\theta}$. For P: $30 \\div \\frac{3}{4} = 40$ meters. For Q: $30 \\div \\frac{3}{5} = 50$ meters. Q is $50 - 40 = 10$ meters farther.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P: 30/(3/4) = 40 m. Q: 30/(3/5) = 50 m. Difference 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.883Z"
+        }
+      }
+    },
+    {
+      "id": "cff6711a-2dae-4a5d-b023-ad556f82089d",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "reading a multi-part expression as a single entity",
+      "stem": "Square A has side $s$ and square B has side $s - 2$. Which expression gives how much greater the area of square A is than the area of square B?",
+      "choices": [
+        "$s^2 - (s - 2)^2$",
+        "$(s - (s - 2))^2$",
+        "$s^2 - 2^2$",
+        "$s^2 - (s - 2)$"
+      ],
+      "answer": "$s^2 - (s - 2)^2$",
+      "compute": null,
+      "solution": "The areas are $s^2$ and $(s - 2)^2$, and \"how much greater\" is their difference, $s^2 - (s - 2)^2$. The other options subtract the sides first or square the 2 alone.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$s^2 - (s - 2)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A area s^2, B area (s-2)^2; difference s^2-(s-2)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.953Z"
+        }
+      }
+    },
+    {
+      "id": "169c6459-4890-4dbc-a6c0-ea26565d8978",
+      "topic_id": "NC17.M2.A-SSE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "inverse variation: the constant and the effect of changing x",
+      "stem": "Which pair of quantities varies inversely?",
+      "choices": [
+        "The number of buses needed for 240 students and the students on each bus",
+        "The cost of some apples and the number of pounds of apples bought",
+        "The perimeter of a square and the length of one side of the square",
+        "The distance driven at 50 miles per hour and the hours spent driving"
+      ],
+      "answer": "The number of buses needed for 240 students and the students on each bus",
+      "compute": null,
+      "solution": "Buses needed $= \\frac{240}{\\text{students per bus}}$, which has the form $y = \\frac{k}{x}$. In the other three, doubling one quantity doubles the other, which is direct variation.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of buses needed for 240 students and the students on each bus",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Buses x students per bus = 240 (product constant) -> inverse. Others are direct variation.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.958Z"
         }
       }
     },

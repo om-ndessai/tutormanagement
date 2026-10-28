@@ -19195,6 +19195,583 @@
       }
     },
     {
+      "id": "74d9c31e-a7a5-4fab-a5b0-10c6ade861c3",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a digit that makes a comparison true",
+      "stem": "Which digit can replace the ? so that $4{,}?00 < 4{,}200$ is true?",
+      "choices": [
+        "2",
+        "1",
+        "3",
+        "4"
+      ],
+      "answer": "1",
+      "compute": null,
+      "solution": "The thousands match, so the hundreds decide. They must be less than 2, so the digit is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,?00 < 4,200 needs ? < 2: 0 or 1; only 1 is offered.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.673Z"
+        }
+      }
+    },
+    {
+      "id": "caa7f991-921f-449b-a03f-74bdc1fb0f34",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare numbers in a story",
+      "stem": "The Red Team scored $1{,}245$ points. The Blue Team scored $1{,}254$ points. Which team scored more points?",
+      "choices": [
+        "The Blue Team",
+        "The Red Team",
+        "They scored the same",
+        "You cannot tell"
+      ],
+      "answer": "The Blue Team",
+      "compute": null,
+      "solution": "Both have 1 thousand and 2 hundreds. Tens: 5 is more than 4, so $1{,}254$ is greater and the Blue Team scored more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The Blue Team",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,254 > 1,245 (tens 5>4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.694Z"
+        }
+      }
+    },
+    {
+      "id": "e523a79e-e44e-4fa7-867e-fcfd17a2bb5b",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the whole numbers between two numbers",
+      "stem": "Which number is between $12{,}340$ and $12{,}360$?",
+      "choices": [
+        "$12{,}330$",
+        "$12{,}350$",
+        "$12{,}365$",
+        "$12{,}430$"
+      ],
+      "answer": "$12{,}350$",
+      "compute": null,
+      "solution": "$12{,}350$ is greater than $12{,}340$ and less than $12{,}360$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12{,}350$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12,340 < 12,350 < 12,360.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.698Z"
+        }
+      }
+    },
+    {
+      "id": "4da94d64-a7b8-4948-aabc-a7d5dc259fe2",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Use the digits 5, 1, 8 and 3, each one time. Which is the least number you can make?",
+      "choices": [
+        "$1{,}538$",
+        "$8{,}531$",
+        "$1{,}358$",
+        "$1{,}385$"
+      ],
+      "answer": "$1{,}358$",
+      "compute": null,
+      "solution": "Put the least digit in the greatest place: 1, then 3, then 5, then 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1{,}358$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest digits first: 1,3,5,8 -> 1,358.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.713Z"
+        }
+      }
+    },
+    {
+      "id": "3efcd062-710d-42e7-b1ea-d8369d72292e",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose or check a comparison with >, = or <",
+      "stem": "Which number sentence is true?",
+      "choices": [
+        "$20{,}000 < 2{,}000$",
+        "$20{,}000 = 2{,}000$",
+        "$2{,}000 > 20{,}000$",
+        "$20{,}000 > 2{,}000$"
+      ],
+      "answer": "$20{,}000 > 2{,}000$",
+      "compute": null,
+      "solution": "$20{,}000$ has 5 digits and $2{,}000$ has 4 digits, so $20{,}000 > 2{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20{,}000 > 2{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20,000 has more digits than 2,000, so 20,000 > 2,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.742Z"
+        }
+      }
+    },
+    {
+      "id": "2d634880-ee0a-4565-89bc-641ce1c4f7ed",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare numbers in a story",
+      "stem": "A zoo had $12{,}305$ visitors in May and $12{,}350$ visitors in June. Which comparison shows this?",
+      "choices": [
+        "$12{,}305 > 12{,}350$",
+        "$12{,}305 = 12{,}350$",
+        "$12{,}350 < 12{,}305$",
+        "$12{,}305 < 12{,}350$"
+      ],
+      "answer": "$12{,}305 < 12{,}350$",
+      "compute": null,
+      "solution": "Tens: 0 is less than 5, so $12{,}305$ is less than $12{,}350$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12{,}305 < 12{,}350$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12,305 < 12,350 (tens: 0 < 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.753Z"
+        }
+      }
+    },
+    {
+      "id": "f99a0898-6cb0-4adb-84c5-8c79e9a3c002",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Which is the greatest of $5{,}005$, $5{,}500$, $5{,}050$, $5{,}055$?",
+      "choices": [],
+      "answer": "5500",
+      "compute": "5500",
+      "solution": "All have 5 thousands. The hundreds are 0, 5, 0 and 0, so $5{,}500$ is greatest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5,500 > 5,055 > 5,050 > 5,005. Greatest 5500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.756Z"
+        }
+      }
+    },
+    {
+      "id": "2b559ad0-e8cf-4a96-bd57-28b7177bc704",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Explain a comparison by place value",
+      "stem": "Which place do you look at first when you compare $48{,}250$ and $38{,}250$?",
+      "choices": [
+        "Ten thousands",
+        "Thousands",
+        "Hundreds",
+        "Ones"
+      ],
+      "answer": "Ten thousands",
+      "compute": null,
+      "solution": "Start at the left. The ten thousands digits are 4 and 3, and they are different, so that place decides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ten thousands",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Compare from the greatest place, ten thousands: 4 vs 3, which decides it.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.767Z"
+        }
+      }
+    },
+    {
+      "id": "0df193de-af17-4547-8931-1501ef5416d9",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare numbers with different numbers of digits",
+      "stem": "Which number is less, $62{,}000$ or $6{,}200$? Write it.",
+      "choices": [],
+      "answer": "6200",
+      "compute": "6200",
+      "solution": "$6{,}200$ has 4 digits and $62{,}000$ has 5 digits, so $6{,}200$ is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6,200 has fewer digits than 62,000, so 6,200 is less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.771Z"
+        }
+      }
+    },
+    {
+      "id": "5e6f8d6e-8a3b-49fe-88bb-c43fb703f0c5",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare numbers with different numbers of digits",
+      "stem": "Which number is greater than $9{,}999$?",
+      "choices": [
+        "$9{,}909$",
+        "$9{,}990$",
+        "$10{,}000$",
+        "$999$"
+      ],
+      "answer": "$10{,}000$",
+      "compute": null,
+      "solution": "A number with 5 digits is greater than a number with 4 digits. $10{,}000$ has 5 digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,000 > 9,999; others are less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.811Z"
+        }
+      }
+    },
+    {
+      "id": "6db44d1a-b0af-4ae3-b522-719c668103a3",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Which is greater: $30{,}000 + 2{,}000 + 5$ or $30{,}000 + 200 + 50$? Write the greater number.",
+      "choices": [],
+      "answer": "32005",
+      "compute": "32005",
+      "solution": "The first number is $32{,}005$. The second is $30{,}250$. $32{,}005$ is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32005",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32,005 vs 30,250: thousands 2 vs 0, so 32,005 greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.819Z"
+        }
+      }
+    },
+    {
+      "id": "2fb85035-f6d1-43c4-9996-5fbe9f7733a4",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Put $2{,}145$, $2{,}415$, $2{,}154$ in order from greatest to least. Which number is last?",
+      "choices": [],
+      "answer": "2145",
+      "compute": "2145",
+      "solution": "Greatest to least: $2{,}415$, $2{,}154$, $2{,}145$. The last number is $2{,}145$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2145",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest to least: 2,415; 2,154; 2,145. Last 2,145.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.832Z"
+        }
+      }
+    },
+    {
+      "id": "6f705b58-9d2b-4734-bd56-bfadd676b4f8",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose or check a comparison with >, = or <",
+      "stem": "Which comparison of $14{,}260$ and $14{,}620$ is true?",
+      "choices": [
+        "$14{,}260 > 14{,}620$",
+        "$14{,}260 < 14{,}620$",
+        "$14{,}260 = 14{,}620$",
+        "$14{,}620 < 14{,}260$"
+      ],
+      "answer": "$14{,}260 < 14{,}620$",
+      "compute": null,
+      "solution": "Compare hundreds: 2 is less than 6. So $14{,}260 < 14{,}620$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14{,}260 < 14{,}620$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14,260 < 14,620 (hundreds 2 < 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.869Z"
+        }
+      }
+    },
+    {
+      "id": "5acd8ee5-3009-4538-b467-67b99990a727",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Which number is less than seven thousand, five hundred?",
+      "choices": [
+        "$7{,}505$",
+        "$7{,}500$",
+        "$7{,}050$",
+        "$7{,}550$"
+      ],
+      "answer": "$7{,}050$",
+      "compute": null,
+      "solution": "Seven thousand, five hundred is $7{,}500$. Only $7{,}050$ is less: it has 0 hundreds, not 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7{,}050$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,550>7,500; 7,505>7,500; 7,500 equal; 7,050<7,500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.900Z"
+        }
+      }
+    },
+    {
+      "id": "0610cc61-6369-4542-baec-f577ad1e4618",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Both numbers have 3 ten thousands and 2 thousands: $32{,}640$ and $32{,}460$. Which number is greater? Write it.",
+      "choices": [],
+      "answer": "32640",
+      "compute": "32640",
+      "solution": "The ten thousands and thousands match. Hundreds: 6 is more than 4, so $32{,}640$ is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32640",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Compare hundreds: 6>4, so 32,640.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.932Z"
+        }
+      }
+    },
+    {
+      "id": "6b3c2a4e-c26a-4508-a768-2b592f4b6d57",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Use the digits 4, 7, 2 and 9, each one time. What is the greatest 4-digit number you can make?",
+      "choices": [],
+      "answer": "9742",
+      "compute": "9742",
+      "solution": "Put the greatest digit in the greatest place: 9, then 7, then 4, then 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9742",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Descending 9,7,4,2 -> 9742.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.952Z"
+        }
+      }
+    },
+    {
+      "id": "8d4b533d-d7ab-4c72-8167-e1767112f9e9",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Choose or check a comparison with >, = or <",
+      "stem": "How many of these comparisons are true? $2{,}500 = 2{,}500$; $800 < 80$; $31{,}200 > 31{,}020$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$2{,}500 = 2{,}500$ is true. $800 < 80$ is false. $31{,}200 > 31{,}020$ is true. That makes 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,500 = 2,500 true; 800 < 80 false; 31,200 > 31,020 true. Two true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.983Z"
+        }
+      }
+    },
+    {
+      "id": "f4f794b4-849a-439a-b444-41ca9145af9b",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Which of these numbers is less than $26{,}500$?",
+      "choices": [
+        "$26{,}505$",
+        "$26{,}050$",
+        "$26{,}550$",
+        "$26{,}500$"
+      ],
+      "answer": "$26{,}050$",
+      "compute": null,
+      "solution": "Compare each with $26{,}500$. Only $26{,}050$ has fewer hundreds (0 is less than 5), so it is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$26{,}050$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "26,050 has 0 hundreds vs 5 hundreds, so less than 26,500. The others are equal or greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.985Z"
+        }
+      }
+    },
+    {
       "id": "6e4ce146-b36f-4c1a-81ff-aa7e1f0af688",
       "topic_id": "NC17.4.NBT.7",
       "difficulty": 2,
@@ -19593,6 +20170,607 @@
           "work": "48,930 > 48,903 (tens 3 vs 0). Tens digit of 48,930 is 3.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.438Z"
+        }
+      }
+    },
+    {
+      "id": "dca9db50-6773-4132-b0dd-ec3aa841a0c0",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "In which pair of numbers do the digits first differ in the hundreds place?",
+      "choices": [
+        "$52{,}418$ and $53{,}418$",
+        "$52{,}418$ and $52{,}458$",
+        "$52{,}418$ and $52{,}718$",
+        "$52{,}418$ and $52{,}419$"
+      ],
+      "answer": "$52{,}418$ and $52{,}718$",
+      "compute": null,
+      "solution": "Check each pair from the left. $52{,}418$ and $52{,}718$ match in the ten thousands and thousands and first differ in the hundreds (4 and 7).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$52{,}418$ and $52{,}718$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52,418 vs 52,718: ten thousands, thousands same; hundreds 4 vs 7 differ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.696Z"
+        }
+      }
+    },
+    {
+      "id": "1acc009e-9ce4-47b1-8e85-d6f48144be8f",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Which is greater: 4 ten thousands, 6 thousands, 2 tens or 4 ten thousands, 6 hundreds, 2 tens? Write the greater number.",
+      "choices": [],
+      "answer": "46020",
+      "compute": "46020",
+      "solution": "The first number is $46{,}020$. The second is $40{,}620$. The thousands digit 6 is more than 0, so $46{,}020$ is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46020",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46,020 vs 40,620: 46,020 greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.720Z"
+        }
+      }
+    },
+    {
+      "id": "b2250a93-5727-4e9f-b776-17e0dbdc4f75",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare numbers in a story",
+      "stem": "A store sold $24{,}500$ pencils in March and $24{,}050$ pencils in April. Which comparison shows this?",
+      "choices": [
+        "$24{,}500 < 24{,}050$",
+        "$24{,}050 > 24{,}500$",
+        "$24{,}500 > 24{,}050$",
+        "$24{,}500 = 24{,}050$"
+      ],
+      "answer": "$24{,}500 > 24{,}050$",
+      "compute": null,
+      "solution": "Hundreds: 5 is more than 0. So $24{,}500 > 24{,}050$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24{,}500 > 24{,}050$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24,500 > 24,050 (hundreds 5 > 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.759Z"
+        }
+      }
+    },
+    {
+      "id": "87372ed5-d26f-463d-9e13-2ecc2e6b3d01",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Each choice is a number written in its own way. Which choice is the least number?",
+      "choices": [
+        "$40{,}000 + 900 + 7$",
+        "$40{,}097$",
+        "forty thousand, nine hundred seventy",
+        "4 ten thousands, 9 thousands"
+      ],
+      "answer": "$40{,}097$",
+      "compute": null,
+      "solution": "The choices equal $40{,}097$, $40{,}907$, $40{,}970$ and $49{,}000$. The least is $40{,}097$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40{,}097$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A = 49,000; B = 40,097; C = 40,907; D = 40,970. Least 40,097.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.766Z"
+        }
+      }
+    },
+    {
+      "id": "75fabde6-ecfe-492c-8b46-b42222fbfcf6",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Choose or check a comparison with >, = or <",
+      "stem": "How many of these comparisons are false? $25{,}400 > 25{,}040$; $3{,}999 < 4{,}000$; $61{,}010 = 61{,}100$; $12{,}345 < 12{,}354$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Only $61{,}010 = 61{,}100$ is false, since the hundreds are different. The other three are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25,400 > 25,040 true; 3,999 < 4,000 true; 61,010 = 61,100 false; 12,345 < 12,354 true. 1 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.767Z"
+        }
+      }
+    },
+    {
+      "id": "63b9de13-db37-490b-a786-fae73bee8831",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Put $36{,}412$, $36{,}142$, $36{,}421$, $36{,}214$ in order from greatest to least. What is the second number?",
+      "choices": [],
+      "answer": "36412",
+      "compute": "36412",
+      "solution": "Greatest to least: $36{,}421$, $36{,}412$, $36{,}214$, $36{,}142$. The second is $36{,}412$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36412",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest to least: 36,421; 36,412; 36,214; 36,142. Second 36,412.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.814Z"
+        }
+      }
+    },
+    {
+      "id": "e04ee29e-d249-47fb-bdb5-15e9ec0b276e",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare numbers with different numbers of digits",
+      "stem": "How many of these numbers are greater than $9{,}999$? $10{,}001$, $9{,}909$, $99{,}000$, $998$, $19{,}090$",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The 5-digit numbers $10{,}001$, $99{,}000$ and $19{,}090$ are greater than $9{,}999$. The other two have fewer digits. That is 3 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,001 yes, 9,909 no, 99,000 yes, 998 no, 19,090 yes: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.840Z"
+        }
+      }
+    },
+    {
+      "id": "7af443ad-689d-4f21-bc35-ad29aa9ecb6e",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the whole numbers between two numbers",
+      "stem": "Raffle tickets have whole-number labels. Every ticket with a number greater than $8{,}997$ and less than $9{,}003$ wins a prize. How many tickets win?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9003-8997-1",
+      "solution": "The winning numbers are 8,998, 8,999, 9,000, 9,001 and 9,002. That is 5 tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,998, 8,999, 9,000, 9,001, 9,002: 5 tickets.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.841Z"
+        }
+      }
+    },
+    {
+      "id": "499a4be1-f3da-41ab-84c9-8a7d2633b8ab",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Which number is greater than $67{,}890$ and less than $67{,}900$?",
+      "choices": [
+        "$67{,}809$",
+        "$67{,}895$",
+        "$67{,}980$",
+        "$67{,}089$"
+      ],
+      "answer": "$67{,}895$",
+      "compute": null,
+      "solution": "The number must start $678$ or $679$ and sit just above $67{,}890$. Only $67{,}895$ fits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$67{,}895$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 67,890 and 67,900: 67,895.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.858Z"
+        }
+      }
+    },
+    {
+      "id": "02f0e410-99e8-4317-8925-7be63f277c0f",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Five towns have these populations: $23{,}540$, $23{,}045$, $23{,}504$, $22{,}990$, $23{,}450$. Put them in order from least to greatest. What is the middle population?",
+      "choices": [],
+      "answer": "23450",
+      "compute": "23450",
+      "solution": "Least to greatest: $22{,}990$, $23{,}045$, $23{,}450$, $23{,}504$, $23{,}540$. The middle one is $23{,}450$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23450",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 22,990; 23,045; 23,450; 23,504; 23,540. Middle 23,450.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.858Z"
+        }
+      }
+    },
+    {
+      "id": "1361b29c-ce85-4515-861c-1571b31f6d70",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Use the digits 3, 7, 0 and 7, each one time. What is the greatest 4-digit number you can make?",
+      "choices": [],
+      "answer": "7730",
+      "compute": "7730",
+      "solution": "Put the greatest digits first: 7, 7, 3, 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7730",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits descending: 7,7,3,0 -> 7730.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.918Z"
+        }
+      }
+    },
+    {
+      "id": "2ecbc773-507a-4752-9b12-e552b1f5aae7",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Write the greatest of these numbers: $90{,}000 + 8{,}000 + 70$, $90{,}000 + 800 + 70$, $90{,}000 + 8{,}000 + 7$.",
+      "choices": [],
+      "answer": "98070",
+      "compute": "98070",
+      "solution": "They are $98{,}070$, $90{,}870$ and $98{,}007$. The greatest is $98{,}070$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "98070",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "98,070; 90,870; 98,007. Greatest 98,070.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.925Z"
+        }
+      }
+    },
+    {
+      "id": "244e6a55-c154-49ea-ba86-fbab1b64fc78",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare numbers with different numbers of digits",
+      "stem": "Which of these comparisons is true?",
+      "choices": [
+        "$8{,}999 < 11{,}000$",
+        "$8{,}999 > 11{,}000$",
+        "$70{,}500 < 7{,}050$",
+        "$9{,}100 = 91{,}000$"
+      ],
+      "answer": "$8{,}999 < 11{,}000$",
+      "compute": null,
+      "solution": "$8{,}999$ has 4 digits and $11{,}000$ has 5 digits, so $8{,}999$ is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8{,}999 < 11{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,999<11,000 true (4 digits vs 5); others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.939Z"
+        }
+      }
+    },
+    {
+      "id": "da2e63cb-dfda-4bdb-a8c7-e843a9f3ede5",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a digit that makes a comparison true",
+      "stem": "Which digit can replace the ? so that $38{,}40? < 38{,}403$ is true?",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": "2",
+      "compute": null,
+      "solution": "The first four digits match, so the ones decide. The ones digit must be less than 3. Only 2 is offered.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need ?<3: 0,1,2. Only 2 is offered.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.966Z"
+        }
+      }
+    },
+    {
+      "id": "83cbf043-2ae4-453b-a8c8-c3b053377a86",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare numbers in a story",
+      "stem": "Room 1 sold $3{,}120$ tickets, Room 2 sold $3{,}102$, Room 3 sold $3{,}210$ and Room 4 sold $3{,}201$. Which room sold the most tickets?",
+      "choices": [
+        "Room 1",
+        "Room 2",
+        "Room 4",
+        "Room 3"
+      ],
+      "answer": "Room 3",
+      "compute": null,
+      "solution": "All have 3 thousands. Room 3 and Room 4 have 2 hundreds, more than the others. Then $3{,}210$ has more tens than $3{,}201$, so Room 3 sold the most.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Room 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,210 > 3,201 > 3,120 > 3,102. Room 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.007Z"
+        }
+      }
+    },
+    {
+      "id": "bcf2b7a2-83f6-4375-80c6-13b328f1682a",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Which is the greatest 5-digit number that uses each of the digits 2, 9, 4, 0 and 6 one time?",
+      "choices": [
+        "$96{,}402$",
+        "$96{,}420$",
+        "$69{,}420$",
+        "$96{,}240$"
+      ],
+      "answer": "$96{,}420$",
+      "compute": null,
+      "solution": "Write the digits from greatest to least: 9, 6, 4, 2, 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$96{,}420$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits in decreasing order: 9,6,4,2,0 -> 96,420.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.015Z"
+        }
+      }
+    },
+    {
+      "id": "86059c2b-28d9-4e38-a443-6a31f4781e76",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose or check a comparison with >, = or <",
+      "stem": "Which comparison says that seventy-one thousand, two hundred is greater than seventy-one thousand, twenty?",
+      "choices": [
+        "$71{,}020 > 71{,}200$",
+        "$71{,}200 < 71{,}020$",
+        "$71{,}200 = 71{,}020$",
+        "$71{,}200 > 71{,}020$"
+      ],
+      "answer": "$71{,}200 > 71{,}020$",
+      "compute": null,
+      "solution": "Seventy-one thousand, two hundred is $71{,}200$. Seventy-one thousand, twenty is $71{,}020$. So $71{,}200 > 71{,}020$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$71{,}200 > 71{,}020$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "71,200 > 71,020.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.024Z"
+        }
+      }
+    },
+    {
+      "id": "4b205cab-d102-467c-ab94-791090492233",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "A list is in order from greatest to least: $80{,}500$, $80{,}050$, ?, $79{,}990$. Which number can go in the ?",
+      "choices": [
+        "$80{,}505$",
+        "$79{,}900$",
+        "$80{,}005$",
+        "$80{,}550$"
+      ],
+      "answer": "$80{,}005$",
+      "compute": null,
+      "solution": "The ? must be less than $80{,}050$ and greater than $79{,}990$. Only $80{,}005$ is.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$80{,}005$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Needs a number below 80,050 and above 79,990: 80,005.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.026Z"
+        }
+      }
+    },
+    {
+      "id": "0b42c158-e555-4c51-b36d-d25399501cb7",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare numbers in a story",
+      "stem": "A stadium had $45{,}080$ fans on Friday, $45{,}800$ fans on Saturday and $45{,}008$ fans on Sunday. How many fans were there on the day with the fewest fans?",
+      "choices": [],
+      "answer": "45008",
+      "compute": "45008",
+      "solution": "All three have 45 thousands. Hundreds: 0, 8, 0. Tens: 8 and 0 for the two with 0 hundreds. $45{,}008$ is least.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45008",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45,008 < 45,080 < 45,800. Fewest 45,008.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.034Z"
         }
       }
     },
@@ -20005,6 +21183,631 @@
           "work": "B=73,408 (hundreds 4) largest; C=73,084 > A=73,048 (tens 8 vs 4). B > C > A.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.451Z"
+        }
+      }
+    },
+    {
+      "id": "89556b6b-d297-4b94-b38d-6af1976f243a",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the whole numbers between two numbers",
+      "stem": "Which list shows all the whole numbers greater than $29{,}997$ and less than $30{,}001$?",
+      "choices": [
+        "$29{,}997$, $29{,}998$, $29{,}999$, $30{,}000$",
+        "$29{,}998$, $29{,}999$",
+        "$29{,}998$, $29{,}999$, $30{,}000$",
+        "$29{,}998$, $29{,}999$, $30{,}000$, $30{,}001$"
+      ],
+      "answer": "$29{,}998$, $29{,}999$, $30{,}000$",
+      "compute": null,
+      "solution": "Start just above $29{,}997$ and stop just below $30{,}001$: $29{,}998$, $29{,}999$, $30{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$29{,}998$, $29{,}999$, $30{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 29,997 and 30,001 exclusive: 29,998, 29,999, 30,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.683Z"
+        }
+      }
+    },
+    {
+      "id": "32f32c4e-9344-466d-909d-c57c00c15935",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Explain a comparison by place value",
+      "stem": "Which statement is always true about whole numbers with no leading zeros?",
+      "choices": [
+        "A number with a greater first digit is always the greater number",
+        "A number with 5 digits is greater than any number with 4 digits",
+        "A number with a greater last digit is always the greater number",
+        "A number with more zeros is always the greater number"
+      ],
+      "answer": "A number with 5 digits is greater than any number with 4 digits",
+      "compute": null,
+      "solution": "A 5-digit number has at least 10 thousands, but a 4-digit number has fewer. The other statements fail: $9{,}000 < 10{,}000$ and $1{,}009 < 2{,}000$ are counterexamples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A number with 5 digits is greater than any number with 4 digits",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Any 5-digit number >= 10,000 > any 4-digit number <= 9,999.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.716Z"
+        }
+      }
+    },
+    {
+      "id": "e54dbab1-21db-439e-b6fc-5939f40f6981",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "Four towns are listed by their number of people. Which list has the towns with the most people first and the fewest people last?",
+      "choices": [
+        "$9{,}999$, $12{,}000$, $9{,}099$, $999$",
+        "$12{,}000$, $9{,}999$, $9{,}099$, $999$",
+        "$999$, $9{,}099$, $12{,}000$, $9{,}999$",
+        "$12{,}000$, $9{,}099$, $9{,}999$, $999$"
+      ],
+      "answer": "$12{,}000$, $9{,}999$, $9{,}099$, $999$",
+      "compute": null,
+      "solution": "The 5-digit number comes first. Then compare the 4-digit numbers: $9{,}999$ is more than $9{,}099$. The 3-digit number is last.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12{,}000$, $9{,}999$, $9{,}099$, $999$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order greatest to least: 12,000 > 9,999 > 9,099 > 999.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.742Z"
+        }
+      }
+    },
+    {
+      "id": "b073ccf4-5270-4981-84cb-d2cddbfa32f2",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare numbers in a story",
+      "stem": "Oak City has $53{,}210$ people, Pine City has $53{,}120$ and Elm City has $51{,}320$. Which comparison is true?",
+      "choices": [
+        "$51{,}320 > 53{,}120$",
+        "$51{,}320 < 53{,}120$",
+        "$53{,}210 < 53{,}120$",
+        "$53{,}120 = 53{,}210$"
+      ],
+      "answer": "$51{,}320 < 53{,}120$",
+      "compute": null,
+      "solution": "Elm has 1 thousand in the thousands place, and Pine has 3. So $51{,}320 < 53{,}120$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$51{,}320 < 53{,}120$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "51,320 < 53,120 is true (thousands 1 < 3). Others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.769Z"
+        }
+      }
+    },
+    {
+      "id": "3353184d-3181-4291-b037-5319ad96b3be",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare numbers with different numbers of digits",
+      "stem": "Which is the least: $100{,}000$, $99{,}999$, $9{,}999$, $99{,}099$? Write it.",
+      "choices": [],
+      "answer": "9999",
+      "compute": "9999",
+      "solution": "$9{,}999$ has only 4 digits. The others have 5 or 6 digits, so $9{,}999$ is least.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9999",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Compare: 9,999 has 4 digits; the others have 5 or 6. So 9,999 is least.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.779Z"
+        }
+      }
+    },
+    {
+      "id": "4e402aa9-a08a-46b5-a967-a09d5971d93a",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Write the greatest of these numbers: $99{,}099$, $99{,}909$, $99{,}990$, $99{,}900$.",
+      "choices": [],
+      "answer": "99990",
+      "compute": "99990",
+      "solution": "All start with 99. Compare the hundreds: 0, 9, 9, 9. Of the three with 9 hundreds, the tens are 0, 9 and 0, so $99{,}990$ is greatest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "99990",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All are 99,xxx. Hundreds: 0, 9, 9, 9. Among 99,909, 99,990, 99,900 tens: 0, 9, 0. Greatest 99,990.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.781Z"
+        }
+      }
+    },
+    {
+      "id": "6948ea61-2f01-4345-9cc6-d8df627bedcd",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Which is greater: 5 ten thousands and 12 hundreds, or 4 ten thousands and 19 hundreds? Write the greater number.",
+      "choices": [],
+      "answer": "51200",
+      "compute": "51200",
+      "solution": "5 ten thousands and 12 hundreds is $50{,}000 + 1{,}200 = 51{,}200$. 4 ten thousands and 19 hundreds is $40{,}000 + 1{,}900 = 41{,}900$. So $51{,}200$ is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "51200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50,000 + 1,200 = 51,200; 40,000 + 1,900 = 41,900. Greater 51,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.796Z"
+        }
+      }
+    },
+    {
+      "id": "db490eb3-da29-47d2-a503-971fa84e3fa0",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Use the digits 5, 0, 9, 0 and 2, each one time. What is the least 5-digit number you can make? A number cannot start with 0.",
+      "choices": [],
+      "answer": "20059",
+      "compute": "20059",
+      "solution": "The first digit cannot be 0, so use 2. Then the least digits in order: 0, 0, 5, 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20059",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest nonzero first digit 2, then 0, 0, 5, 9: 20,059.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.798Z"
+        }
+      }
+    },
+    {
+      "id": "c01b9130-247d-4c8f-8148-baf1c4f656d7",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Use the digits 4, 7, 1 and 9, each one time. Which is the greatest number you can make that is less than $5{,}000$?",
+      "choices": [
+        "$4{,}971$",
+        "$9{,}741$",
+        "$1{,}479$",
+        "$4{,}179$"
+      ],
+      "answer": "$4{,}971$",
+      "compute": null,
+      "solution": "The thousands digit must be 4 or 1 to stay under 5,000. The greatest is 4. Then 9, 7, 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4{,}971$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Less than 5,000 needs first digit 4 (or 1); greatest is 4 then 9, 7, 1: 4,971.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.822Z"
+        }
+      }
+    },
+    {
+      "id": "28c0fe89-8a25-4b16-9086-0046b734b346",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a digit that makes a comparison true",
+      "stem": "The ? is a digit. For how many different digits is $3{,}?70$ greater than $3{,}470$ and less than $3{,}870$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The hundreds digit must be more than 4 and less than 8. The digits are 5, 6 and 7. That is 3 digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,?70 between 3,470 and 3,870 strictly: ? = 5, 6, 7. Three digits.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.823Z"
+        }
+      }
+    },
+    {
+      "id": "6cc404a1-cc1c-4e53-a615-2fe3687e5be7",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the whole numbers between two numbers",
+      "stem": "How many whole numbers are greater than $12{,}398$ and less than $12{,}405$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "12405-12398-1",
+      "solution": "They are 12,399; 12,400; 12,401; 12,402; 12,403 and 12,404. That is 6 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12,399 to 12,404: 12,404 - 12,399 + 1 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.839Z"
+        }
+      }
+    },
+    {
+      "id": "504f382b-51ce-4c8e-b16f-1fb2b8af202f",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Make the greatest or least number from digits",
+      "stem": "Use the digits 6, 3, 8, 0 and 5, each one time. Which is the greatest even 5-digit number you can make?",
+      "choices": [
+        "$86{,}503$",
+        "$86{,}350$",
+        "$68{,}530$",
+        "$86{,}530$"
+      ],
+      "answer": "$86{,}530$",
+      "compute": null,
+      "solution": "An even number ends in 0, 6 or 8. Ending in 0 lets the other digits be as great as possible: 8, 6, 5, 3, then 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$86{,}530$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits 8,6,5,3,0; greatest even must end in 0, 6 or 8. Ending 0: 86,530, the largest possible.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.847Z"
+        }
+      }
+    },
+    {
+      "id": "57ac28fe-1acf-4bb0-bb5c-854d85a4aac3",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Which is greater: 38 hundreds or 3 thousands, 9 hundreds? Write the greater number.",
+      "choices": [],
+      "answer": "3900",
+      "compute": "3900",
+      "solution": "38 hundreds is $3{,}800$. 3 thousands, 9 hundreds is $3{,}900$. So $3{,}900$ is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "38 hundreds = 3,800; 3 thousands 9 hundreds = 3,900; greater is 3,900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.853Z"
+        }
+      }
+    },
+    {
+      "id": "a4f2db91-b27d-448e-9d17-0f49b58537c3",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Which statement is true?",
+      "choices": [
+        "3 thousands and 20 hundreds is greater than 4 thousands and 9 hundreds",
+        "3 thousands and 20 hundreds is less than 4 thousands and 9 hundreds",
+        "3 thousands and 20 hundreds is equal to 4 thousands and 9 hundreds",
+        "3 thousands and 20 tens is greater than 4 thousands and 9 hundreds"
+      ],
+      "answer": "3 thousands and 20 hundreds is greater than 4 thousands and 9 hundreds",
+      "compute": null,
+      "solution": "3 thousands and 20 hundreds is $3{,}000 + 2{,}000 = 5{,}000$. 4 thousands and 9 hundreds is $4{,}900$. So $5{,}000$ is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 thousands and 20 hundreds is greater than 4 thousands and 9 hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 thousands + 20 hundreds = 5,000 > 4,900 (true). 3 thousands + 20 tens = 3,200 < 4,900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.856Z"
+        }
+      }
+    },
+    {
+      "id": "f0e51f8e-d2f7-45d8-9828-7e2ac1303bf5",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the whole numbers between two numbers",
+      "stem": "Three numbers are in order from least to greatest: $61{,}200$, ?, $61{,}260$. How many whole numbers could the ? be?",
+      "choices": [],
+      "answer": "59",
+      "compute": "61260-61200-1",
+      "solution": "The ? can be any whole number from $61{,}201$ up to $61{,}259$. That is $61{,}260 - 61{,}200 - 1 = 59$ numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "59",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Strictly between: 61,201 to 61,259 = 59 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.862Z"
+        }
+      }
+    },
+    {
+      "id": "6cb5284c-a4fc-4055-a163-e67c17020748",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare numbers in a story",
+      "stem": "Ann, Bob, Cat and Dee collected $6{,}180$, $6{,}018$, $6{,}801$ and $6{,}108$ bottle caps, in that order. Who collected the second most?",
+      "choices": [
+        "Bob",
+        "Cat",
+        "Ann",
+        "Dee"
+      ],
+      "answer": "Ann",
+      "compute": null,
+      "solution": "Greatest to least: Cat $6{,}801$, Ann $6{,}180$, Dee $6{,}108$, Bob $6{,}018$. Ann is second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ann",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ann 6,180, Bob 6,018, Cat 6,801, Dee 6,108. Most Cat, second Ann.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.874Z"
+        }
+      }
+    },
+    {
+      "id": "7159f567-434c-42aa-b622-aa04949c9773",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a digit that makes a comparison true",
+      "stem": "The ? is a digit. For how many different digits is $5?{,}210 < 57{,}210$ true?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The thousands digit must be less than 7: 0, 1, 2, 3, 4, 5 and 6. That is 7 digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5?,210 < 57,210 needs ? < 7: digits 0-6, 7 digits.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.893Z"
+        }
+      }
+    },
+    {
+      "id": "35b37e78-1e87-49a0-9563-b0a01b53f57e",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Order numbers from least to greatest or greatest to least",
+      "stem": "A scale weighed six crates. The weights in pounds were $45{,}310$, $45{,}031$, $45{,}103$, $45{,}013$, $45{,}301$, $45{,}130$. Which weight is the second lightest?",
+      "choices": [],
+      "answer": "45031",
+      "compute": "45031",
+      "solution": "Least to greatest: $45{,}013$, $45{,}031$, $45{,}103$, $45{,}130$, $45{,}301$, $45{,}310$. The second is $45{,}031$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45031",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ordered: 45,013 < 45,031 < 45,103 < 45,130 < 45,301 < 45,310. Second lightest 45,031.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.976Z"
+        }
+      }
+    },
+    {
+      "id": "64246958-8e4a-4756-8049-3ff27146db92",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare by the first place where the digits differ",
+      "stem": "Which statement correctly compares $83{,}096$ and $83{,}960$?",
+      "choices": [
+        "The tens digits differ first, and 9 is more than 6, so the first number is greater",
+        "The ones digits differ first, and 6 is more than 0, so the first number is greater",
+        "The numbers have the same digits, so they are equal",
+        "The hundreds digits differ first, and 0 is less than 9, so the first number is less"
+      ],
+      "answer": "The hundreds digits differ first, and 0 is less than 9, so the first number is less",
+      "compute": null,
+      "solution": "The ten thousands and thousands match. The hundreds are 0 and 9, so $83{,}096 < 83{,}960$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The hundreds digits differ first, and 0 is less than 9, so the first number is less",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ten thousands and thousands equal; hundreds 0 vs 9, so 83,096 < 83,960.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.037Z"
+        }
+      }
+    },
+    {
+      "id": "1a0e60cb-7301-4bbd-8caa-ff8e37a419bb",
+      "topic_id": "NC17.4.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare numbers in expanded form or in words",
+      "stem": "Write the least of these numbers: forty-one thousand, eight; $41{,}080$; 4 ten thousands, 1 thousand, 8 hundreds; $40{,}999$.",
+      "choices": [],
+      "answer": "40999",
+      "compute": "40999",
+      "solution": "They are $41{,}008$, $41{,}080$, $41{,}800$ and $40{,}999$. The least is $40{,}999$, which has only 0 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40999",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "41,008; 41,080; 41,800; 40,999. Least 40,999.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.037Z"
         }
       }
     },

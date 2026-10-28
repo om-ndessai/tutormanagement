@@ -15852,6 +15852,689 @@
       }
     },
     {
+      "id": "cf13e350-75c9-43cb-9053-02f06a46c186",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the unknown by working backward",
+      "stem": "Kim had some stickers. Her mom gave her 4 more, and then she gave 6 to Lou. Now she has 10 stickers. How many stickers did Kim have at first?",
+      "choices": [
+        "8",
+        "20",
+        "4",
+        "12"
+      ],
+      "answer": "12",
+      "compute": "10-4+6",
+      "solution": "Work backward. Before giving 6 away she had $10 + 6 = 16$. Before getting 4 more she had $16 - 4 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+4-6=10, x=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.706Z"
+        }
+      }
+    },
+    {
+      "id": "1126eb1d-bb8f-4db1-bc8b-e3981d9ec8ac",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract in two steps",
+      "stem": "A parking lot has 30 cars. 8 cars leave and 5 cars come in. How many cars are in the lot now?",
+      "choices": [
+        "33",
+        "27",
+        "17",
+        "43"
+      ],
+      "answer": "27",
+      "compute": "30-8+5",
+      "solution": "$30 - 8 = 22$. Then $22 + 5 = 27$ cars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30-8+5=27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.710Z"
+        }
+      }
+    },
+    {
+      "id": "d4e0cafa-1700-4d29-8a17-525faf386925",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add, then multiply",
+      "stem": "There are 4 girls and 3 boys at a table. Each child gets 2 cookies. How many cookies are there in all?",
+      "choices": [],
+      "answer": "14",
+      "compute": "(4+3)*2",
+      "solution": "There are $4 + 3 = 7$ children. Then $7 \\times 2 = 14$ cookies.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 3 = 7 children, 7 x 2 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.760Z"
+        }
+      }
+    },
+    {
+      "id": "0ab5865b-578c-41f5-8be6-821d5eca1dec",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "A store has 6 shelves with 4 toys on each shelf. It sells 5 toys. There are $t$ toys left. Which equation matches the story?",
+      "choices": [
+        "$6 + 4 - 5 = t$",
+        "$6 \\times 4 + 5 = t$",
+        "$6 \\times 4 - 5 = t$",
+        "$(6 - 5) \\times 4 = t$"
+      ],
+      "answer": "$6 \\times 4 - 5 = t$",
+      "compute": null,
+      "solution": "First find all the toys, $6 \\times 4$. Then take away the 5 sold: $6 \\times 4 - 5 = t$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 4 - 5 = t$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 4 toys, sell 5: 6 x 4 - 5 = t.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.763Z"
+        }
+      }
+    },
+    {
+      "id": "5b878d1a-35c7-408b-a27a-3f070779c5a4",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract in two steps",
+      "stem": "Pia has 35 stickers. She buys 20 more stickers and gives away 15 stickers. How many stickers does Pia have now?",
+      "choices": [],
+      "answer": "40",
+      "compute": "35+20-15",
+      "solution": "$35 + 20 = 55$. Then $55 - 15 = 40$ stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 + 20 = 55; 55 - 15 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.783Z"
+        }
+      }
+    },
+    {
+      "id": "10742526-32fd-41ed-865c-bce642f01a82",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract, then multiply",
+      "stem": "Each pack has 10 pencils, but 2 pencils in each pack are broken. Mia has 3 packs. How many pencils are not broken?",
+      "choices": [],
+      "answer": "24",
+      "compute": "(10-2)*3",
+      "solution": "Each pack has $10 - 2 = 8$ good pencils. 3 packs have $3 \\times 8 = 24$ good pencils.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each pack 10 - 2 = 8 good; 3 x 8 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.788Z"
+        }
+      }
+    },
+    {
+      "id": "9d82475a-898f-4cbf-9e7c-398bcd7a1b81",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story and an equation",
+      "stem": "Which story matches $5 \\times 3 - 2 = n$?",
+      "choices": [
+        "Eva has 5 bags with 3 beads in each bag. She loses 2 beads.",
+        "Eva has 5 bags with 3 beads in each bag. She gets 2 more beads.",
+        "Eva has 5 beads and 3 beads. She loses 2 beads.",
+        "Eva has 5 bags with 2 beads in each bag. She loses 3 beads."
+      ],
+      "answer": "Eva has 5 bags with 3 beads in each bag. She loses 2 beads.",
+      "compute": null,
+      "solution": "$5 \\times 3$ is 5 bags of 3 beads. The $- 2$ means 2 beads are lost.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Eva has 5 bags with 3 beads in each bag. She loses 2 beads.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 3 = 5 bags of 3 beads, then - 2 = loses 2 beads. Option 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.807Z"
+        }
+      }
+    },
+    {
+      "id": "2f7b4ec6-8185-4448-b357-1048fd4146e4",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add, then multiply",
+      "stem": "Each child in a class gets 3 pencils. There are 6 girls and 5 boys. How many pencils are needed?",
+      "choices": [],
+      "answer": "33",
+      "compute": "(6+5)*3",
+      "solution": "There are $6 + 5 = 11$ children. Then $11 \\times 3 = 33$ pencils.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 5 = 11 children; 11 x 3 = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.824Z"
+        }
+      }
+    },
+    {
+      "id": "99ccd0c6-b785-4b07-90fe-30dd64bba288",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply, then add",
+      "stem": "Each bag has 5 apples. Ben has 3 bags and 2 loose apples. How many apples does he have?",
+      "choices": [],
+      "answer": "17",
+      "compute": "3*5+2",
+      "solution": "3 bags of 5 apples is $3 \\times 5 = 15$. Then $15 + 2 = 17$ apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 5 = 15; 15 + 2 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.825Z"
+        }
+      }
+    },
+    {
+      "id": "8dbc90d0-90f6-4d64-ab53-72e589ba7ffc",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply, then subtract",
+      "stem": "Ana saves 2 dollars each day for 6 days. She spends 5 dollars on a game. How many dollars does she have left?",
+      "choices": [],
+      "answer": "7",
+      "compute": "2*6-5",
+      "solution": "She saves $2 \\times 6 = 12$ dollars. Then $12 - 5 = 7$ dollars are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 6 = 12; 12 - 5 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.852Z"
+        }
+      }
+    },
+    {
+      "id": "b49c7f4f-99a6-4fc8-b2f0-fe49ab5fa17a",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare, then combine",
+      "stem": "Rob has 15 cards. Sue has 6 fewer cards than Rob. How many cards do they have together?",
+      "choices": [
+        "21",
+        "9",
+        "24",
+        "30"
+      ],
+      "answer": "24",
+      "compute": "15+(15-6)",
+      "solution": "Sue has $15 - 6 = 9$ cards. Together they have $15 + 9 = 24$ cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sue 15 - 6 = 9; together 15 + 9 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.881Z"
+        }
+      }
+    },
+    {
+      "id": "4fc7d0be-75b4-4552-8986-7a471e059d59",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two products, then combine",
+      "stem": "Leo buys 2 packs of pencils with 4 pencils in each pack and 3 packs of erasers with 2 erasers in each pack. How many items does he buy in all?",
+      "choices": [
+        "14",
+        "11",
+        "13",
+        "30"
+      ],
+      "answer": "14",
+      "compute": "2*4+3*2",
+      "solution": "Pencils: $2 \\times 4 = 8$. Erasers: $3 \\times 2 = 6$. Together $8 + 6 = 14$ items.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x4=8 pencils, 3x2=6 erasers, 8+6=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.909Z"
+        }
+      }
+    },
+    {
+      "id": "d88e9a67-a4af-4ebd-a209-c544f181b2f4",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the unknown by working backward",
+      "stem": "Sue bought 3 boxes with 5 pens in each box. After she gave some pens to her friends, she had 9 pens left. How many pens did she give away?",
+      "choices": [
+        "24",
+        "9",
+        "6",
+        "14"
+      ],
+      "answer": "6",
+      "compute": "3*5-9",
+      "solution": "She bought $3 \\times 5 = 15$ pens. She gave away $15 - 9 = 6$ pens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x5=15; 15-9=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.934Z"
+        }
+      }
+    },
+    {
+      "id": "dce2954f-1560-4ca5-958f-0fa34fe294c7",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Jo had 20 marbles. He lost 6 marbles and then won 4 marbles. He now has $m$ marbles. Which equation matches the story?",
+      "choices": [
+        "$20 - 6 - 4 = m$",
+        "$20 + 6 - 4 = m$",
+        "$20 + 6 + 4 = m$",
+        "$20 - 6 + 4 = m$"
+      ],
+      "answer": "$20 - 6 + 4 = m$",
+      "compute": null,
+      "solution": "Losing marbles takes away and winning adds: $20 - 6 + 4 = m$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20 - 6 + 4 = m$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lost 6: -6; won 4: +4. 20-6+4=m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.937Z"
+        }
+      }
+    },
+    {
+      "id": "d3d3c87a-8f04-4a78-bbe5-403baabdbdf6",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply, then add",
+      "stem": "A room has 4 tables with 4 chairs at each table. 2 more chairs are by the door. How many chairs are in the room?",
+      "choices": [
+        "10",
+        "18",
+        "16",
+        "24"
+      ],
+      "answer": "18",
+      "compute": "4*4+2",
+      "solution": "$4 \\times 4 = 16$ chairs at the tables. Then $16 + 2 = 18$ chairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x4=16; 16+2=18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.940Z"
+        }
+      }
+    },
+    {
+      "id": "d1b1f1dc-2795-4091-a6f8-3fcd01468c63",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare, then combine",
+      "stem": "Sam has 9 stickers. Jill has 4 more stickers than Sam. How many stickers do they have together?",
+      "choices": [],
+      "answer": "22",
+      "compute": "9+(9+4)",
+      "solution": "Jill has $9 + 4 = 13$ stickers. Together they have $9 + 13 = 22$ stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Jill 9+4=13; 9+13=22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.957Z"
+        }
+      }
+    },
+    {
+      "id": "c6ec7ae3-26d1-45d6-9887-75bd3c07479a",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add, then multiply",
+      "stem": "Eli has 2 red balloons and 3 blue balloons. Each balloon costs 4 dollars. How many dollars do the balloons cost in all?",
+      "choices": [],
+      "answer": "20",
+      "compute": "(2+3)*4",
+      "solution": "He has $2 + 3 = 5$ balloons. Then $5 \\times 4 = 20$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+3=5 balloons; 5x4=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.967Z"
+        }
+      }
+    },
+    {
+      "id": "91c07dd1-4a78-46ce-9ba6-e48a44c01ba8",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply, then add",
+      "stem": "Mr. Ortiz plants 4 rows of tulips with 4 tulips in each row. He plants 3 more tulips by the gate. How many tulips does he plant in all?",
+      "choices": [],
+      "answer": "19",
+      "compute": "4*4+3",
+      "solution": "4 rows of 4 tulips is $4 \\times 4 = 16$ tulips. Then $16 + 3 = 19$ tulips.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 4 = 16; 16 + 3 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.987Z"
+        }
+      }
+    },
+    {
+      "id": "97a76eec-c74f-4c69-a280-fcf6f6e322cb",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply, then compare",
+      "stem": "Nell has 4 pages of stickers with 5 stickers on each page. Her brother has 3 more stickers than Nell. How many stickers does her brother have?",
+      "choices": [],
+      "answer": "23",
+      "compute": "4*5+3",
+      "solution": "Nell has $4 \\times 5 = 20$ stickers. Her brother has $20 + 3 = 23$ stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Nell 4 x 5 = 20; brother 20 + 3 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.006Z"
+        }
+      }
+    },
+    {
+      "id": "a8c50318-3fef-42f1-85cd-bb7c4160a754",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "A farmer has 4 pens with 3 hens in each pen and $n$ hens in the barn. There are 20 hens in all. What is $n$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "20-4*3",
+      "solution": "The pens hold $4 \\times 3 = 12$ hens. So $n = 20 - 12 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3 = 12; 12 + n = 20; n = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.011Z"
+        }
+      }
+    },
+    {
+      "id": "2d427c0f-5baa-47f4-a488-02d1adf2ee4c",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract in two steps",
+      "stem": "Nora has 12 beads. She finds 7 more beads and then gives 5 beads to her sister. How many beads does Nora have now?",
+      "choices": [],
+      "answer": "14",
+      "compute": "12+7-5",
+      "solution": "$12 + 7 = 19$. Then $19 - 5 = 14$ beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + 7 = 19; 19 - 5 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.017Z"
+        }
+      }
+    },
+    {
+      "id": "55de9c82-bf17-4d85-898b-bc9ceab46db5",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "Tia read 4 pages each day for 3 days. Then she read some more pages. She read 17 pages in all. How many more pages did she read?",
+      "choices": [],
+      "answer": "5",
+      "compute": "17-4*3",
+      "solution": "In 3 days she read $4 \\times 3 = 12$ pages. The rest is $17 - 12 = 5$ pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 3 = 12; 17 - 12 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.032Z"
+        }
+      }
+    },
+    {
       "id": "8d146ee4-674a-4c8f-bedd-7b9b266d0d89",
       "topic_id": "NC17.3.OA.8",
       "difficulty": 2,
@@ -16197,6 +16880,699 @@
           "work": "6 x 3 = 18, + 9 = 27.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.428Z"
+        }
+      }
+    },
+    {
+      "id": "e7a1913e-0828-4a4a-898b-7447b3a75afc",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract in two steps",
+      "stem": "Lena has 205 stamps. She gives 80 stamps to Jo and 45 stamps to Kay. How many stamps does Lena have left?",
+      "choices": [],
+      "answer": "80",
+      "compute": "205-80-45",
+      "solution": "She gives away $80 + 45 = 125$ stamps. Then $205 - 125 = 80$ stamps are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "205-80-45=80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.665Z"
+        }
+      }
+    },
+    {
+      "id": "36b68277-2186-4fd3-8669-462a8462c6a7",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story and an equation",
+      "stem": "Which story matches $24 - 3 \\times 5 = n$?",
+      "choices": [
+        "A bag has 24 apples. 3 children each put in 5 apples.",
+        "A bag has 24 apples. 3 children take 5 apples in all.",
+        "A bag has 24 apples. 3 children each take 5 apples.",
+        "A bag has 24 apples. 3 children each take 5 apples, and then 2 more apples are put in."
+      ],
+      "answer": "A bag has 24 apples. 3 children each take 5 apples.",
+      "compute": null,
+      "solution": "$3 \\times 5$ is the apples 3 children each take. Taking them from 24 gives $24 - 3 \\times 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A bag has 24 apples. 3 children each take 5 apples.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 minus 3 groups of 5 taken: 3 children each take 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.673Z"
+        }
+      }
+    },
+    {
+      "id": "514591c5-a82b-44a4-a349-c505b70a95f1",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply, then subtract",
+      "stem": "A farm has 9 pens with 6 sheep in each pen. 15 sheep are sold at the market. How many sheep are left?",
+      "choices": [],
+      "answer": "39",
+      "compute": "9*6-15",
+      "solution": "$9 \\times 6 = 54$ sheep. Then $54 - 15 = 39$ sheep are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "39",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9*6=54; 54-15=39.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.709Z"
+        }
+      }
+    },
+    {
+      "id": "27ea6d52-1135-425f-913f-96adba3745bb",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two products, then combine",
+      "stem": "One box has 4 rows of 7 cookies. Another box has 3 rows of 6 cookies. How many more cookies are in the first box?",
+      "choices": [],
+      "answer": "10",
+      "compute": "4*7-3*6",
+      "solution": "First box: $4 \\times 7 = 28$. Second box: $3 \\times 6 = 18$. The difference is $28 - 18 = 10$ cookies.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4*7=28, 3*6=18, 28-18=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.714Z"
+        }
+      }
+    },
+    {
+      "id": "3691d08e-003a-469e-98c2-2e406810ff02",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "Pat had some stickers. She bought 4 packs of 6 stickers each, and now she has 51 stickers. How many stickers did Pat have at first?",
+      "choices": [],
+      "answer": "27",
+      "compute": "51-4*6",
+      "solution": "The packs held $4 \\times 6 = 24$ stickers. She had $51 - 24 = 27$ stickers at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bought 4 x 6 = 24. At first: 51 - 24 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.734Z"
+        }
+      }
+    },
+    {
+      "id": "03af0617-6bc8-437f-a93f-39ad54d0d0b4",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply, then subtract",
+      "stem": "A sticker sheet has 60 stickers. Ty puts 5 stickers on each of 8 cards. How many stickers are left on the sheet?",
+      "choices": [],
+      "answer": "20",
+      "compute": "60-5*8",
+      "solution": "He uses $8 \\times 5 = 40$ stickers. Then $60 - 40 = 20$ stickers are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Used 5 x 8 = 40. Left 60 - 40 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.736Z"
+        }
+      }
+    },
+    {
+      "id": "4760d7da-b171-4560-b05f-4dc8dd5dd5e5",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the unknown by working backward",
+      "stem": "Mr. Hall had some money. He spent 25 dollars on lunch and then earned 40 dollars. Now he has 90 dollars. How many dollars did he have at first?",
+      "choices": [
+        "105",
+        "155",
+        "75",
+        "25"
+      ],
+      "answer": "75",
+      "compute": "90-40+25",
+      "solution": "Work backward. Before earning 40 he had $90 - 40 = 50$. Before spending 25 he had $50 + 25 = 75$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x - 25 + 40 = 90 -> x = 75. Check 75 - 25 = 50, + 40 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.756Z"
+        }
+      }
+    },
+    {
+      "id": "f0e102df-c4c1-4168-90a4-90158d8aa896",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract in two steps",
+      "stem": "A school library has 148 books. It buys 76 new books and gives away 30 old books. How many books does the library have now?",
+      "choices": [],
+      "answer": "194",
+      "compute": "148+76-30",
+      "solution": "$148 + 76 = 224$. Then $224 - 30 = 194$ books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "194",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "148 + 76 = 224, 224 - 30 = 194.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.765Z"
+        }
+      }
+    },
+    {
+      "id": "241e8fe4-68f7-4190-b2c3-a3d6c77490a3",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply, then add",
+      "stem": "Mr. Ruiz packs 8 boxes with 7 toys in each box. He then adds 9 more toys to the truck. How many toys are on the truck?",
+      "choices": [
+        "56",
+        "24",
+        "128",
+        "65"
+      ],
+      "answer": "65",
+      "compute": "8*7+9",
+      "solution": "$8 \\times 7 = 56$ toys in the boxes. Then $56 + 9 = 65$ toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 7 = 56, + 9 = 65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.768Z"
+        }
+      }
+    },
+    {
+      "id": "6f9bbaa3-8f61-41c8-97e6-947cd01fe26f",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Pia has 6 red crayons and 5 blue crayons in a bag. She has 3 bags like that. She has $c$ crayons in all. Which equation matches the story?",
+      "choices": [
+        "$6 + 5 \\times 3 = c$",
+        "$6 + 5 + 3 = c$",
+        "$6 \\times 3 + 5 = c$",
+        "$(6 + 5) \\times 3 = c$"
+      ],
+      "answer": "$(6 + 5) \\times 3 = c$",
+      "compute": null,
+      "solution": "Each bag has $6 + 5$ crayons, and there are 3 bags: $(6 + 5) \\times 3 = c$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6 + 5) \\times 3 = c$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each bag 6 + 5 crayons, 3 bags: (6 + 5) x 3 = c = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.777Z"
+        }
+      }
+    },
+    {
+      "id": "6c353cb5-156c-4937-a814-1f2ad90501ac",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply, then add",
+      "stem": "Rhea swims 8 laps each day for 5 days. Then she swims 6 more laps on Saturday. How many laps does she swim in all?",
+      "choices": [],
+      "answer": "46",
+      "compute": "8*5+6",
+      "solution": "In 5 days she swims $8 \\times 5 = 40$ laps. Then $40 + 6 = 46$ laps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 5 = 40; 40 + 6 = 46.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.787Z"
+        }
+      }
+    },
+    {
+      "id": "5081c0ec-33a4-44ec-87f3-920f3cbe0d78",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add, then multiply",
+      "stem": "A teacher buys 8 notebooks on Monday and 7 notebooks on Friday. Each notebook costs 4 dollars. How many dollars does she spend in all?",
+      "choices": [],
+      "answer": "60",
+      "compute": "(8+7)*4",
+      "solution": "She buys $8 + 7 = 15$ notebooks. Then $15 \\times 4 = 60$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 7 = 15 notebooks; 15 x 4 = 60 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.814Z"
+        }
+      }
+    },
+    {
+      "id": "652f6f29-c473-4da9-9caa-0f255a3ba218",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Ravi had some stickers. He gave away 3 packs of 5 stickers and has 12 stickers left. Which equation can find $s$, the number of stickers Ravi had at first?",
+      "choices": [
+        "$s - 3 \\times 5 = 12$",
+        "$s + 3 \\times 5 = 12$",
+        "$s - 3 + 5 = 12$",
+        "$3 \\times 5 - s = 12$"
+      ],
+      "answer": "$s - 3 \\times 5 = 12$",
+      "compute": null,
+      "solution": "He started with $s$ and gave away $3 \\times 5$ stickers, leaving 12: $s - 3 \\times 5 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$s - 3 \\times 5 = 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start s, remove 3 packs of 5 = 15, left 12: s - 3x5 = 12 (s = 27).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.836Z"
+        }
+      }
+    },
+    {
+      "id": "708127b0-4e3c-41a1-9f52-80df9e05fc3b",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the unknown by working backward",
+      "stem": "Neil had some dollars. He spent 6 dollars a day for 4 days. Now he has 17 dollars. How many dollars did Neil have at first?",
+      "choices": [
+        "7",
+        "41",
+        "21",
+        "23"
+      ],
+      "answer": "41",
+      "compute": "17+4*6",
+      "solution": "He spent $4 \\times 6 = 24$ dollars. He had $17 + 24 = 41$ dollars at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Spent 6 x 4 = 24; at first 17 + 24 = 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.865Z"
+        }
+      }
+    },
+    {
+      "id": "96d17071-df74-49fd-bc38-b4a4d1058442",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract in two steps",
+      "stem": "A store had 85 hats. It sold 37 hats on Monday. Then 20 new hats arrived. How many hats does the store have now?",
+      "choices": [
+        "68",
+        "28",
+        "102",
+        "142"
+      ],
+      "answer": "68",
+      "compute": "85-37+20",
+      "solution": "$85 - 37 = 48$. Then $48 + 20 = 68$ hats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85 - 37 = 48; 48 + 20 = 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.887Z"
+        }
+      }
+    },
+    {
+      "id": "4451b028-82f4-40b2-9158-0850efb564ce",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract in two steps",
+      "stem": "A bus has 46 riders. 18 riders get off at the mall. Then 25 riders get on. How many riders are on the bus now?",
+      "choices": [
+        "53",
+        "28",
+        "89",
+        "3"
+      ],
+      "answer": "53",
+      "compute": "46-18+25",
+      "solution": "$46 - 18 = 28$. Then $28 + 25 = 53$ riders.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46-18=28; 28+25=53.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.908Z"
+        }
+      }
+    },
+    {
+      "id": "863cc93a-b4d6-42b3-a508-eaeca2f5a9c0",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract, then multiply",
+      "stem": "A garden has 5 beds. Each bed has 9 plants, and 4 plants in each bed are tomatoes. The rest are peppers. How many pepper plants are in the garden?",
+      "choices": [],
+      "answer": "25",
+      "compute": "(9-4)*5",
+      "solution": "Each bed has $9 - 4 = 5$ pepper plants. 5 beds have $5 \\times 5 = 25$ pepper plants.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each bed 9-4=5 peppers; 5 beds x 5=25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.914Z"
+        }
+      }
+    },
+    {
+      "id": "fb5d4ff8-2fcf-4ca6-998e-450bb4004c0d",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two products, then combine",
+      "stem": "Amir made 6 cups with 5 beads in each cup. Bo made 4 cups with 8 beads in each cup. Which sentence is true?",
+      "choices": [
+        "Amir has 2 more beads than Bo.",
+        "Bo has 2 more beads than Amir.",
+        "They have the same number of beads.",
+        "Bo has 6 more beads than Amir."
+      ],
+      "answer": "Bo has 2 more beads than Amir.",
+      "compute": null,
+      "solution": "Amir has $6 \\times 5 = 30$ beads. Bo has $4 \\times 8 = 32$ beads. $32 - 30 = 2$, so Bo has 2 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Bo has 2 more beads than Amir.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Amir 6x5=30, Bo 4x8=32. Bo has 2 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.941Z"
+        }
+      }
+    },
+    {
+      "id": "c49b9e99-c5d1-4d5e-9c6f-73e146832b40",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract, then multiply",
+      "stem": "Each box holds 12 pens. 4 pens in each box are red. There are 5 boxes. How many pens are not red?",
+      "choices": [
+        "56",
+        "40",
+        "20",
+        "8"
+      ],
+      "answer": "40",
+      "compute": "(12-4)*5",
+      "solution": "Each box has $12 - 4 = 8$ pens that are not red. 5 boxes have $5 \\times 8 = 40$ pens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12-4=8 not red per box; 8x5=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.944Z"
+        }
+      }
+    },
+    {
+      "id": "fa543347-6e7f-4d66-ac3d-06de7da7f21c",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare, then combine",
+      "stem": "Sal has 28 marbles. Ted has 9 more marbles than Sal. Uma has 5 fewer marbles than Ted. How many marbles does Uma have?",
+      "choices": [
+        "42",
+        "23",
+        "37",
+        "32"
+      ],
+      "answer": "32",
+      "compute": "28+9-5",
+      "solution": "Ted has $28 + 9 = 37$ marbles. Uma has $37 - 5 = 32$ marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ted 28 + 9 = 37; Uma 37 - 5 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.993Z"
+        }
+      }
+    },
+    {
+      "id": "8d19e644-8be6-480e-bc6a-17abaa93e505",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two products, then combine",
+      "stem": "At the fair, Ella buys 6 tickets for rides at 4 dollars each and 3 tickets for games at 5 dollars each. How many dollars does she spend in all?",
+      "choices": [],
+      "answer": "39",
+      "compute": "6*4+3*5",
+      "solution": "Rides: $6 \\times 4 = 24$ dollars. Games: $3 \\times 5 = 15$ dollars. Together $24 + 15 = 39$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "39",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 4 = 24; 3 x 5 = 15; 24 + 15 = 39.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.018Z"
+        }
+      }
+    },
+    {
+      "id": "b27e5668-0596-425e-8e87-15666cc78f2a",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare, then combine",
+      "stem": "Lena collected 34 shells. Max collected 12 fewer shells than Lena. How many shells did they collect together?",
+      "choices": [],
+      "answer": "56",
+      "compute": "34+(34-12)",
+      "solution": "Max collected $34 - 12 = 22$ shells. Together $34 + 22 = 56$ shells.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max 34 - 12 = 22; together 34 + 22 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.021Z"
         }
       }
     },
@@ -16638,6 +18014,602 @@
           "work": "7x9=63, 6x8=48, total 111.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.445Z"
+        }
+      }
+    },
+    {
+      "id": "4f3b503c-ba3f-4d18-9a9a-9d821ede24a5",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "Omar has 8 boxes with 6 stickers in each box. He gives some stickers to friends and has 31 stickers left. How many stickers did he give away?",
+      "choices": [],
+      "answer": "17",
+      "compute": "8*6-31",
+      "solution": "He had $8 \\times 6 = 48$ stickers. He gave away $48 - 31 = 17$ stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8*6=48; 48-31=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.697Z"
+        }
+      }
+    },
+    {
+      "id": "8871c6aa-1be3-40de-adc7-36bab1cf6bb4",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Cal has 5 boxes with 7 toy cars in each box and some loose toy cars. He has 41 toy cars in all. Which equation can find $l$, the number of loose toy cars?",
+      "choices": [
+        "$5 + 7 + l = 41$",
+        "$5 \\times 7 - l = 41$",
+        "$5 \\times (7 + l) = 41$",
+        "$5 \\times 7 + l = 41$"
+      ],
+      "answer": "$5 \\times 7 + l = 41$",
+      "compute": null,
+      "solution": "The boxes hold $5 \\times 7$ cars. Adding the $l$ loose cars gives all 41: $5 \\times 7 + l = 41$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 \\times 7 + l = 41$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 boxes of 7 plus l loose = 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.699Z"
+        }
+      }
+    },
+    {
+      "id": "04c8b584-de7f-4f50-a32c-2f9ace179f6c",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract, then multiply",
+      "stem": "A tray holds 15 muffins. 6 muffins on each tray are burnt. A baker has 4 trays. How many muffins are not burnt?",
+      "choices": [],
+      "answer": "36",
+      "compute": "(15-6)*4",
+      "solution": "Each tray has $15 - 6 = 9$ muffins that are not burnt. 4 trays have $4 \\times 9 = 36$ muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Not burnt per tray: 15 - 6 = 9. Four trays: 9 x 4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.728Z"
+        }
+      }
+    },
+    {
+      "id": "f94e818b-ee40-4065-818c-e3ee9a9077a6",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "Kim saves 7 dollars each week for 6 weeks. Then she spends some dollars and has 15 dollars left. How many dollars did she spend?",
+      "choices": [],
+      "answer": "27",
+      "compute": "7*6-15",
+      "solution": "She saves $7 \\times 6 = 42$ dollars. She spends $42 - 15 = 27$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Saved 7 x 6 = 42. Spent 42 - 15 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.738Z"
+        }
+      }
+    },
+    {
+      "id": "ddb03e21-78ca-49b4-946c-fa2226b267cc",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply, then subtract",
+      "stem": "A school has 8 vans. Each van has 9 seats. There are 65 students going on the trip. How many seats are empty?",
+      "choices": [
+        "7",
+        "137",
+        "17",
+        "57"
+      ],
+      "answer": "7",
+      "compute": "8*9-65",
+      "solution": "There are $8 \\times 9 = 72$ seats. Then $72 - 65 = 7$ seats are empty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Seats 8 x 9 = 72. Empty 72 - 65 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.747Z"
+        }
+      }
+    },
+    {
+      "id": "f71fc6da-f4ec-450a-bfe8-5589377a535b",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply, then compare",
+      "stem": "Sam has 3 packs with 9 cards in each pack. Tia has 8 fewer cards than Sam. How many cards does Tia have?",
+      "choices": [
+        "35",
+        "3",
+        "1",
+        "19"
+      ],
+      "answer": "19",
+      "compute": "3*9-8",
+      "solution": "Sam has $3 \\times 9 = 27$ cards. Tia has $27 - 8 = 19$ cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sam 3 x 9 = 27. Tia 27 - 8 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.755Z"
+        }
+      }
+    },
+    {
+      "id": "7e4eb2d5-4944-4c9b-b8a8-c19e0373c838",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply, then add",
+      "stem": "A theater has 9 rows with 8 seats in each row. It adds 24 folding chairs. How many seats does the theater have now?",
+      "choices": [],
+      "answer": "96",
+      "compute": "9*8+24",
+      "solution": "$9 \\times 8 = 72$ seats. Then $72 + 24 = 96$ seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 8 = 72, 72 + 24 = 96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.761Z"
+        }
+      }
+    },
+    {
+      "id": "2e41f117-0ea8-49ed-95d6-a56ae47a0ca9",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two products, then combine",
+      "stem": "A school buys 9 boxes with 4 pens in each box and 6 boxes with 3 pens in each box. How many more pens are in the first group of boxes than in the second?",
+      "choices": [],
+      "answer": "18",
+      "compute": "9*4-6*3",
+      "solution": "First group: $9 \\times 4 = 36$. Second group: $6 \\times 3 = 18$. The difference is $36 - 18 = 18$ pens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 4 = 36, 6 x 3 = 18, 36 - 18 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.763Z"
+        }
+      }
+    },
+    {
+      "id": "7041cdf4-81c5-425e-b767-4983f752da0d",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two products, then combine",
+      "stem": "Rin buys 3 packs with 9 pencils in each pack and 2 packs with 8 erasers in each pack. How many pencils and erasers does she buy in all?",
+      "choices": [
+        "22",
+        "35",
+        "85",
+        "43"
+      ],
+      "answer": "43",
+      "compute": "3*9+2*8",
+      "solution": "Pencils: $3 \\times 9 = 27$. Erasers: $2 \\times 8 = 16$. Together $27 + 16 = 43$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pencils 3 x 9 = 27, erasers 2 x 8 = 16, total 43.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.778Z"
+        }
+      }
+    },
+    {
+      "id": "d5a5874b-61e9-47c6-9a33-62a2d340e5b2",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Hana had some beads. She gave away 14 beads and then found 9 beads. Now she has 36 beads. Which equation can find $b$, the number of beads Hana had at first?",
+      "choices": [
+        "$b - 14 + 9 = 36$",
+        "$b + 14 + 9 = 36$",
+        "$b - 14 - 9 = 36$",
+        "$b + 14 - 9 = 36$"
+      ],
+      "answer": "$b - 14 + 9 = 36$",
+      "compute": null,
+      "solution": "She started with $b$, lost 14 and gained 9: $b - 14 + 9 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$b - 14 + 9 = 36$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start b, give away 14 (subtract), find 9 (add): b - 14 + 9 = 36, b = 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.793Z"
+        }
+      }
+    },
+    {
+      "id": "74088d45-4c22-4c2f-9cb3-c5274bb87042",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the unknown by working backward",
+      "stem": "Mr. Webb had some dollars. He bought 3 hats for 12 dollars each, and then he had 29 dollars left. How many dollars did Mr. Webb have at first?",
+      "choices": [],
+      "answer": "65",
+      "compute": "3*12+29",
+      "solution": "The hats cost $3 \\times 12 = 36$ dollars. He had $36 + 29 = 65$ dollars at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 12 = 36 spent; 36 + 29 = 65 at first.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.794Z"
+        }
+      }
+    },
+    {
+      "id": "3d6550d0-a063-4103-b946-168a983f4997",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract in two steps",
+      "stem": "A pool has 120 swimmers in the morning. 45 swimmers leave at noon and 70 more swimmers come in the afternoon. How many swimmers are in the pool then?",
+      "choices": [],
+      "answer": "145",
+      "compute": "120-45+70",
+      "solution": "$120 - 45 = 75$. Then $75 + 70 = 145$ swimmers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "145",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 - 45 = 75; 75 + 70 = 145.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.822Z"
+        }
+      }
+    },
+    {
+      "id": "0cb1f71c-3aac-49ad-a577-278bf01e9178",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract in two steps",
+      "stem": "A school collected 342 cans in May and 275 cans in June. It then gave 150 cans to a recycling center. How many cans does the school have left?",
+      "choices": [],
+      "answer": "467",
+      "compute": "342+275-150",
+      "solution": "$342 + 275 = 617$. Then $617 - 150 = 467$ cans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "467",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "342 + 275 = 617; 617 - 150 = 467.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.829Z"
+        }
+      }
+    },
+    {
+      "id": "df62a160-1d8d-4335-9601-1ee4d5f4d273",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the unknown by working backward",
+      "stem": "Zed had some dollars. He bought 3 games for 8 dollars each. Now he has 25 dollars. How many dollars did Zed have at first?",
+      "choices": [
+        "1",
+        "36",
+        "49",
+        "33"
+      ],
+      "answer": "49",
+      "compute": "3*8+25",
+      "solution": "The games cost $3 \\times 8 = 24$ dollars. He had $24 + 25 = 49$ dollars at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 8 = 24; 25 + 24 = 49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.895Z"
+        }
+      }
+    },
+    {
+      "id": "46004ebf-5577-4a9d-b0b6-e13beabcc84d",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add, then multiply",
+      "stem": "At a party, 12 children and 8 adults each get 3 balloons. How many balloons are needed?",
+      "choices": [
+        "60",
+        "36",
+        "44",
+        "23"
+      ],
+      "answer": "60",
+      "compute": "(12+8)*3",
+      "solution": "There are $12 + 8 = 20$ people. Then $20 \\times 3 = 60$ balloons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12+8=20 people, 20x3=60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.902Z"
+        }
+      }
+    },
+    {
+      "id": "a2d80e2b-d42e-41b1-9657-29820b1d202f",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story and an equation",
+      "stem": "Which story matches $(5 + 4) \\times 3 = n$?",
+      "choices": [
+        "There are 5 baskets with 4 pears in each basket, and 3 more apples.",
+        "There are 5 apples and 4 pears in each of 3 baskets.",
+        "There are 5 apples, 4 pears and 3 plums.",
+        "There are 3 baskets with 5 apples in each basket, and 4 are eaten."
+      ],
+      "answer": "There are 5 apples and 4 pears in each of 3 baskets.",
+      "compute": null,
+      "solution": "$5 + 4$ is the fruit in one basket and $\\times 3$ is for 3 baskets. So each of 3 baskets holds 5 apples and 4 pears.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 5 apples and 4 pears in each of 3 baskets.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5+4)x3: 9 fruits in each of 3 baskets = 5 apples and 4 pears in each of 3 baskets.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.919Z"
+        }
+      }
+    },
+    {
+      "id": "a0c21516-487b-455e-8704-b6b472a83c71",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply, then subtract",
+      "stem": "A farmer plants 7 rows with 8 seeds in each row. A bird eats 13 of the seeds. How many seeds are left?",
+      "choices": [],
+      "answer": "43",
+      "compute": "7*8-13",
+      "solution": "$7 \\times 8 = 56$ seeds. Then $56 - 13 = 43$ seeds are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x8=56; 56-13=43.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.927Z"
+        }
+      }
+    },
+    {
+      "id": "9d95c96b-0f7b-40a7-8d5c-6d365635c0c0",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare, then combine",
+      "stem": "Tara has 25 stickers. Ned has 8 fewer stickers than Tara. How many stickers do the two of them have together?",
+      "choices": [],
+      "answer": "42",
+      "compute": "25+(25-8)",
+      "solution": "Ned has $25 - 8 = 17$ stickers. Together $25 + 17 = 42$ stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ned 25 - 8 = 17; together 25 + 17 = 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.979Z"
+        }
+      }
+    },
+    {
+      "id": "95efdecc-12ca-4402-be9e-8df6163db15b",
+      "topic_id": "NC17.3.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation with an unknown",
+      "stem": "Lia has 14 shells. Max has 6 more shells than Lia. Together they have $s$ shells. Which equation matches the story?",
+      "choices": [
+        "$14 + 6 = s$",
+        "$14 + 14 + 6 = s$",
+        "$14 + 14 - 6 = s$",
+        "$14 + 6 + 6 = s$"
+      ],
+      "answer": "$14 + 14 + 6 = s$",
+      "compute": null,
+      "solution": "Max has $14 + 6$ shells. Together: $14 + (14 + 6) = s$, which is $14 + 14 + 6 = s$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14 + 14 + 6 = s$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max 14 + 6; together 14 + (14 + 6) = s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.020Z"
         }
       }
     },

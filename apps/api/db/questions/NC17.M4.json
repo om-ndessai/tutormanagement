@@ -12732,6 +12732,728 @@
       }
     },
     {
+      "id": "98a3fe18-f9a4-4b3c-b62e-ec94ec17724b",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "A quantity is modeled by $Q = 50 \\cdot 4^t$ after $t$ hours. After how many hours is $Q = 3200$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$50 \\cdot 4^t = 3200$ gives $4^t = 64$. Since $4^3 = 64$, $t = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^t = 3200/50 = 64, t=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.712Z"
+        }
+      }
+    },
+    {
+      "id": "9e861d5b-974f-4a9f-9977-010514c0e7b1",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log_3 243$.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Since $3^5 = 243$, $\\log_3 243 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "243 = 3^5, so log_3 243 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.740Z"
+        }
+      }
+    },
+    {
+      "id": "d63dd822-b7c0-407d-aff0-1ee8c220397d",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "Where does the graph of $f(x) = \\log_2 x$ cross the $x$-axis?",
+      "choices": [
+        "At $(0, 1)$",
+        "At $(1, 0)$",
+        "At $(2, 0)$",
+        "At $(0, 0)$"
+      ],
+      "answer": "At $(1, 0)$",
+      "compute": null,
+      "solution": "The graph crosses the $x$-axis where $f(x) = 0$. Since $\\log_2 1 = 0$, that is the point $(1, 0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "At $(1, 0)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 x = 0 when x = 1: point (1, 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.745Z"
+        }
+      }
+    },
+    {
+      "id": "9a75153b-326c-4005-930e-6f6ed0968267",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "domain and vertical asymptote",
+      "stem": "Which value of $x$ is NOT in the domain of $f(x) = \\log (x - 5)$?",
+      "choices": [
+        "$x = 6$",
+        "$x = 5$",
+        "$x = 5.5$",
+        "$x = 12$"
+      ],
+      "answer": "$x = 5$",
+      "compute": null,
+      "solution": "The domain requires $x - 5 > 0$, so $x > 5$. At $x = 5$ the input is 0, which is not allowed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Domain: x-5 > 0, so x > 5. x = 5 gives log 0, undefined. 12, 6, 5.5 are in domain.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.782Z"
+        }
+      }
+    },
+    {
+      "id": "29b5dd73-d290-40ba-b60c-ef3ff8d8d318",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "The pH of a solution is $-\\log h$ (base 10), where $h$ is the concentration of hydrogen ions in moles per liter. A solution has pH 5. What is $h$? Give a decimal.",
+      "choices": [],
+      "answer": "0.00001",
+      "compute": "1/100000",
+      "solution": "$-\\log h = 5$ means $\\log h = -5$, so $h = 10^{-5} = 0.00001$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.00001",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-log h = 5, so log h = -5, h = 10^-5 = 0.00001.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.782Z"
+        }
+      }
+    },
+    {
+      "id": "2769da05-d02b-4091-819f-979742137edd",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "domain and vertical asymptote",
+      "stem": "Which line is the vertical asymptote of the graph of $f(x) = \\log_2 x$?",
+      "choices": [
+        "$y = 0$",
+        "$x = 1$",
+        "$x = 2$",
+        "$x = 0$"
+      ],
+      "answer": "$x = 0$",
+      "compute": null,
+      "solution": "The inputs of a logarithm must be positive, and the graph gets closer and closer to the vertical line $x = 0$ without touching it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 x is defined for x > 0 and goes to -infinity as x -> 0+, so vertical asymptote x = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.788Z"
+        }
+      }
+    },
+    {
+      "id": "bf8de6c6-5baa-4b67-b830-35e69fc31c03",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "Evaluate $\\log_5 100 - \\log_5 4$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$\\log_5 \\frac{100}{4} = \\log_5 25 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_5 (100/4) = log_5 25 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.795Z"
+        }
+      }
+    },
+    {
+      "id": "5a845543-6ee9-4fec-8672-01b64ad650e7",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "domain and vertical asymptote",
+      "stem": "What is the smallest integer $x$ in the domain of $f(x) = \\log_3 (x + 2)$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "We need $x + 2 > 0$, so $x > -2$. The smallest integer greater than $-2$ is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + 2 > 0, x > -2. Smallest integer -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.799Z"
+        }
+      }
+    },
+    {
+      "id": "c830007b-e415-439b-bb50-ef43dbbcef39",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "The loudness of a sound in decibels is $L = 10\\log \\frac{I}{I_0}$ (base 10), where $I_0$ is a fixed reference intensity. A sound has intensity $I = 1000 I_0$. What is its loudness in decibels?",
+      "choices": [],
+      "answer": "30",
+      "compute": "10*3",
+      "solution": "$\\frac{I}{I_0} = 1000$ and $\\log 1000 = 3$, so $L = 10 \\cdot 3 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "L = 10 log 1000 = 10 x 3 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.810Z"
+        }
+      }
+    },
+    {
+      "id": "4ee4d640-f2d2-4d72-989f-05189943869a",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "solving logarithmic equations",
+      "stem": "To solve $\\log_2 (3x) = 5$, which is the correct first step?",
+      "choices": [
+        "Rewrite it as $3x = 2^5$",
+        "Rewrite it as $3x = 5^2$",
+        "Rewrite it as $3x = 2 \\cdot 5$",
+        "Rewrite it as $x = 2^5$"
+      ],
+      "answer": "Rewrite it as $3x = 2^5$",
+      "compute": null,
+      "solution": "A logarithm is an exponent, so $\\log_2 (3x) = 5$ means $3x = 2^5 = 32$. The whole input $3x$ is the power.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rewrite it as $3x = 2^5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 (3x) = 5 means 3x = 2^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.831Z"
+        }
+      }
+    },
+    {
+      "id": "c147ae9d-e3a7-4add-a683-210208c71791",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log 1{,}000{,}000$, where the base is 10.",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$10^6 = 1{,}000{,}000$, so the logarithm is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^6 = 1,000,000, so 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.860Z"
+        }
+      }
+    },
+    {
+      "id": "1aa49d15-33f5-43a7-9b15-52512b254cc5",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "evaluating a logarithm",
+      "stem": "Which value is equal to $\\log_5 \\frac{1}{5}$?",
+      "choices": [
+        "$1$",
+        "$-1$",
+        "$5$",
+        "$\\frac{1}{5}$"
+      ],
+      "answer": "$-1$",
+      "compute": "-1",
+      "solution": "Since $5^{-1} = \\frac{1}{5}$, the logarithm is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5^-1 = 1/5, so -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.862Z"
+        }
+      }
+    },
+    {
+      "id": "314647c2-4fb9-40b2-bf8b-ad0a7a7e57df",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "A function $f(x) = \\log_b x$ has these values: $f(1) = 0$, $f(3) = 1$, $f(9) = 2$, $f(27) = 3$. What is the base $b$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$f(3) = 1$ means $\\log_b 3 = 1$, so $b^1 = 3$ and $b = 3$. The other values agree: $3^2 = 9$ and $3^3 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(3) = 1 means b^1 = 3; b = 3 (9 = 3^2, 27 = 3^3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.867Z"
+        }
+      }
+    },
+    {
+      "id": "eb82555d-a303-4b4c-bb4c-cbae311debbc",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "logarithms and exponentials as inverses",
+      "stem": "What is the inverse of the function $g(x) = 10^x$?",
+      "choices": [
+        "$g^{-1}(x) = \\log x$",
+        "$g^{-1}(x) = x^{10}$",
+        "$g^{-1}(x) = \\frac{1}{10^x}$",
+        "$g^{-1}(x) = \\log_x 10$"
+      ],
+      "answer": "$g^{-1}(x) = \\log x$",
+      "compute": null,
+      "solution": "The base-10 logarithm undoes the base-10 exponential, so $g^{-1}(x) = \\log_{10} x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g^{-1}(x) = \\log x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Inverse of 10^x is log base 10: log x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.870Z"
+        }
+      }
+    },
+    {
+      "id": "fe3a1d21-1e56-4492-bce6-8de8abe3c304",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "evaluating a logarithm",
+      "stem": "Which exponential equation is equivalent to $\\log_2 8 = 3$?",
+      "choices": [
+        "$3^2 = 8$",
+        "$8^2 = 3$",
+        "$2^8 = 3$",
+        "$2^3 = 8$"
+      ],
+      "answer": "$2^3 = 8$",
+      "compute": null,
+      "solution": "A logarithm is an exponent: $\\log_2 8 = 3$ means that 2 raised to the power 3 is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2^3 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 8 = 3 means 2^3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.875Z"
+        }
+      }
+    },
+    {
+      "id": "b14308f5-d245-496d-af1f-705f13deacb2",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "How does the graph of $h(x) = \\log_2 (x + 4)$ compare with the graph of $f(x) = \\log_2 x$?",
+      "choices": [
+        "It is shifted right 4 units",
+        "It is shifted up 4 units",
+        "It is shifted down 4 units",
+        "It is shifted left 4 units"
+      ],
+      "answer": "It is shifted left 4 units",
+      "compute": null,
+      "solution": "Adding 4 inside the logarithm moves the graph horizontally the opposite way: 4 units to the left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is shifted left 4 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + 4 inside: shift left 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.889Z"
+        }
+      }
+    },
+    {
+      "id": "3e6917a0-9216-4f95-b0f5-9df0bbb05e1c",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "change of base",
+      "stem": "A calculator gives $\\log 2 \\approx 0.30$ and $\\log 8 \\approx 0.90$. Use the change of base formula with these values to find $\\log_2 8$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "9/3",
+      "solution": "$\\log_2 8 = \\frac{\\log 8}{\\log 2} \\approx \\frac{0.90}{0.30} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.90 / 0.30 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.893Z"
+        }
+      }
+    },
+    {
+      "id": "cdc53ed1-ea16-4110-9173-171f61c43047",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solving logarithmic equations",
+      "stem": "If $\\log_6 (x + 2) = \\log_6 11$, what is $x$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "11-2",
+      "solution": "Equal logarithms with the same base have equal inputs, so $x + 2 = 11$ and $x = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log is one-to-one: x+2=11, x=9 (domain ok).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.901Z"
+        }
+      }
+    },
+    {
+      "id": "d07450b6-9012-4769-90da-8cd662e377f3",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "Which expression is equal to $\\log_3 20 - \\log_3 4$?",
+      "choices": [
+        "$\\log_3 5$",
+        "$\\log_3 16$",
+        "$\\log_3 80$",
+        "$\\frac{\\log_3 20}{\\log_3 4}$"
+      ],
+      "answer": "$\\log_3 5$",
+      "compute": null,
+      "solution": "A difference of logarithms with the same base is the logarithm of the quotient: $\\log_3 \\frac{20}{4} = \\log_3 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\log_3 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log3 20 - log3 4 = log3(20/4)=log3 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.916Z"
+        }
+      }
+    },
+    {
+      "id": "95542dcf-c4cd-4958-afae-cd8b3b08ea41",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "Evaluate $\\log_2 3 + \\log_2 \\frac{8}{3}$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "A sum of logarithms is the logarithm of the product: $\\log_2 \\left(3 \\cdot \\frac{8}{3}\\right) = \\log_2 8 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2(3 x 8/3) = log2 8 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.003Z"
+        }
+      }
+    },
+    {
+      "id": "982fc603-ffce-4c6f-8404-0a8ab640ec4b",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "solving logarithmic equations",
+      "stem": "Solve $\\log x = -2$, where the base is 10. Give $x$ as a decimal.",
+      "choices": [],
+      "answer": "0.01",
+      "compute": "1/100",
+      "solution": "Rewrite as $x = 10^{-2} = \\frac{1}{100} = 0.01$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.01",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 10^{-2} = 0.01.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.006Z"
+        }
+      }
+    },
+    {
+      "id": "552d480f-5e8a-4980-9b0c-f077d9449861",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "For $x > 0$, which expression is equal to $4\\log_2 x$?",
+      "choices": [
+        "$\\log_2 (4x)$",
+        "$(\\log_2 x)^4$",
+        "$\\log_2 x^4$",
+        "$\\log_2 (x + 4)$"
+      ],
+      "answer": "$\\log_2 x^4$",
+      "compute": null,
+      "solution": "The power property moves a coefficient into an exponent: $4\\log_2 x = \\log_2 x^4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\log_2 x^4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Power rule: 4 log2 x = log2 x^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.030Z"
+        }
+      }
+    },
+    {
+      "id": "d2f4a30d-40ee-4b2b-a7ab-40840cac44fb",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "change of base",
+      "stem": "Which expression writes $\\log_2 9$ using natural logarithms?",
+      "choices": [
+        "$\\frac{\\ln 2}{\\ln 9}$",
+        "$\\ln 9 - \\ln 2$",
+        "$\\frac{\\ln 9}{\\ln 2}$",
+        "$(\\ln 9)(\\ln 2)$"
+      ],
+      "answer": "$\\frac{\\ln 9}{\\ln 2}$",
+      "compute": null,
+      "solution": "Change of base: $\\log_b a = \\frac{\\ln a}{\\ln b}$, so $\\log_2 9 = \\frac{\\ln 9}{\\ln 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\ln 9}{\\ln 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Change of base: ln 9 / ln 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.039Z"
+        }
+      }
+    },
+    {
       "id": "ee3b9238-1933-4754-a28e-41b4a7cc2973",
       "topic_id": "NC17.M4.AF.3",
       "difficulty": 2,
@@ -13111,6 +13833,641 @@
           "work": "sqrt27 = 3^{3/2}, log = 3/2.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.461Z"
+        }
+      }
+    },
+    {
+      "id": "d13fbb97-591c-4a9f-9eac-54c1c404f4c1",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "For positive $x$ and $y$, which single logarithm equals $2\\log_3 x + \\log_3 5 - \\log_3 y$?",
+      "choices": [
+        "$\\log_3 \\frac{5x^2}{y}$",
+        "$\\log_3 \\frac{(5x)^2}{y}$",
+        "$\\log_3 \\frac{10x}{y}$",
+        "$\\log_3 (5x^2 y)$"
+      ],
+      "answer": "$\\log_3 \\frac{5x^2}{y}$",
+      "compute": null,
+      "solution": "Move the coefficient: $2\\log_3 x = \\log_3 x^2$. Sums become products and differences become quotients, giving $\\log_3 \\frac{5x^2}{y}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\log_3 \\frac{5x^2}{y}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_3 x^2 + log_3 5 - log_3 y = log_3 (5x^2/y).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.692Z"
+        }
+      }
+    },
+    {
+      "id": "032a5e70-7be6-490e-a5b9-d4f31c82deea",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "solving logarithmic equations",
+      "stem": "Condensing $\\log_2 (x + 2) + \\log_2 (x - 1) = 2$ gives $x^2 + x - 2 = 4$, whose roots are $x = 2$ and $x = -3$. Which values are solutions of the original equation?",
+      "choices": [
+        "Only $x = -3$",
+        "Only $x = 2$",
+        "Both of them",
+        "Neither of them"
+      ],
+      "answer": "Only $x = 2$",
+      "compute": null,
+      "solution": "For $x = -3$, $\\log_2 (x + 2) = \\log_2 (-1)$ is undefined, so it is extraneous. For $x = 2$: $\\log_2 4 + \\log_2 1 = 2 + 0 = 2$, which works.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only $x = 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=2: log2 4 + log2 1 = 2. x=-3: log of negative undefined. Only x=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.697Z"
+        }
+      }
+    },
+    {
+      "id": "01e8a537-a089-49e9-a328-a213ad4bab72",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "domain and vertical asymptote",
+      "stem": "What is the $x$-value of the vertical asymptote of $f(x) = \\log_2 (3x + 6)$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2",
+      "solution": "The asymptote is where the input is 0: $3x + 6 = 0$, so $x = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x+6=0, x=-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.698Z"
+        }
+      }
+    },
+    {
+      "id": "1969a33a-4e6e-4bb2-b865-a12082f31a45",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "change of base",
+      "stem": "Rewrite $\\log_{16} 8$ using base-2 logarithms and evaluate it.",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "3/4",
+      "solution": "$\\log_{16} 8 = \\frac{\\log_2 8}{\\log_2 16} = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2 8/log2 16 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.699Z"
+        }
+      }
+    },
+    {
+      "id": "f8469f6c-08c9-4a09-a8a9-3005a3268cf1",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "domain and vertical asymptote",
+      "stem": "Which function has the line $x = 3$ as its vertical asymptote?",
+      "choices": [
+        "$f(x) = \\log (x + 3)$",
+        "$f(x) = \\log x - 3$",
+        "$f(x) = \\log (x - 3)$",
+        "$f(x) = \\log x + 3$"
+      ],
+      "answer": "$f(x) = \\log (x - 3)$",
+      "compute": null,
+      "solution": "The asymptote is where the input is 0. Only $\\log (x - 3)$ has input 0 at $x = 3$. Adding or subtracting outside the logarithm moves the graph up or down but not the asymptote.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = \\log (x - 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log(x-3) undefined at x=3: asymptote x=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.719Z"
+        }
+      }
+    },
+    {
+      "id": "746ed6a2-bfe0-47ae-8c6e-c23e53a0a9ca",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "The loudness of a sound in decibels is $L = 10\\log \\frac{I}{I_0}$ (base 10). How many times as intense is a sound of 80 decibels as a sound of 50 decibels?",
+      "choices": [],
+      "answer": "1000",
+      "compute": "10^3",
+      "solution": "The difference is 30 decibels, so $10\\log \\frac{I_2}{I_1} = 30$. Then $\\log \\frac{I_2}{I_1} = 3$ and $\\frac{I_2}{I_1} = 10^3 = 1000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 dB difference = 10^3 = 1000 times.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.723Z"
+        }
+      }
+    },
+    {
+      "id": "36d6304f-9b12-49fb-a9a0-0af148e9be43",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "The graph of $f(x) = \\log_3 x$ is stretched vertically by a factor of 2. What is the equation of the new graph?",
+      "choices": [
+        "$g(x) = \\log_3 (2x)$",
+        "$g(x) = \\log_3 x + 2$",
+        "$g(x) = 2\\log_3 x$",
+        "$g(x) = \\log_6 x$"
+      ],
+      "answer": "$g(x) = 2\\log_3 x$",
+      "compute": null,
+      "solution": "A vertical stretch multiplies every output by 2, so $g(x) = 2\\log_3 x$. The other equations shift the graph instead.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g(x) = 2\\log_3 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertical stretch by 2 multiplies output: g(x) = 2 log_3 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.735Z"
+        }
+      }
+    },
+    {
+      "id": "d135af37-9a14-4574-8f71-b22c9973baa9",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "Which statement is true for all positive $x$ and $y$?",
+      "choices": [
+        "$\\log (x + y) = \\log x + \\log y$",
+        "$\\log \\frac{x}{y} = \\frac{\\log x}{\\log y}$",
+        "$\\log x^2 = (\\log x)^2$",
+        "$\\log (xy) = \\log x + \\log y$"
+      ],
+      "answer": "$\\log (xy) = \\log x + \\log y$",
+      "compute": null,
+      "solution": "Only the product property is correct: the log of a product is the sum of the logs. The other three are not true in general; for example, $\\log 100 = 2$ but $(\\log 10)^2 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\log (xy) = \\log x + \\log y$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Product rule: log(xy) = log x + log y. The others are common errors.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.741Z"
+        }
+      }
+    },
+    {
+      "id": "92677231-8346-4ff2-9d07-51caef7732cf",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "logarithms and exponentials as inverses",
+      "stem": "What is the inverse of $f(x) = \\log_3 x - 4$?",
+      "choices": [
+        "$f^{-1}(x) = 3^x - 4$",
+        "$f^{-1}(x) = 3^{x - 4}$",
+        "$f^{-1}(x) = \\log_3 x + 4$",
+        "$f^{-1}(x) = 3^{x + 4}$"
+      ],
+      "answer": "$f^{-1}(x) = 3^{x + 4}$",
+      "compute": null,
+      "solution": "Write $y = \\log_3 x - 4$. Swap and solve: $x = \\log_3 y - 4$, so $\\log_3 y = x + 4$ and $y = 3^{x + 4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f^{-1}(x) = 3^{x + 4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = log_3 x - 4 -> swap: x + 4 = log_3 y -> y = 3^(x + 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.748Z"
+        }
+      }
+    },
+    {
+      "id": "8e739b8f-4dfc-4ed6-8f1c-50aee9e53662",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solving logarithmic equations",
+      "stem": "Solve $2\\log_5 x = \\log_5 49$ for $x > 0$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "$2\\log_5 x = \\log_5 x^2$, so $x^2 = 49$. Since $x > 0$, $x = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_5 x^2 = log_5 49, x^2 = 49, x > 0 so x = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.754Z"
+        }
+      }
+    },
+    {
+      "id": "0edf2609-e146-493c-9646-03cf75410406",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "domain and vertical asymptote",
+      "stem": "Which describes the domain of $f(x) = \\log_5 (4 - x)$?",
+      "choices": [
+        "All $x$ with $x < 4$",
+        "All $x$ with $x > 4$",
+        "All $x$ with $x \\le 4$",
+        "All $x$ with $x > -4$"
+      ],
+      "answer": "All $x$ with $x < 4$",
+      "compute": null,
+      "solution": "We need $4 - x > 0$, which gives $x < 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "All $x$ with $x < 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - x > 0, x < 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.813Z"
+        }
+      }
+    },
+    {
+      "id": "f00f20ec-6c87-4e9a-83ea-6dfcad74d504",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "For $x > 0$, which expression is equal to $\\log_2 (8x^2)$?",
+      "choices": [
+        "$8 + 2\\log_2 x$",
+        "$3 + (\\log_2 x)^2$",
+        "$3 + 2\\log_2 x$",
+        "$6\\log_2 x$"
+      ],
+      "answer": "$3 + 2\\log_2 x$",
+      "compute": null,
+      "solution": "$\\log_2 (8x^2) = \\log_2 8 + \\log_2 x^2 = 3 + 2\\log_2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 2\\log_2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 8 + log_2 x^2 = 3 + 2 log_2 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.845Z"
+        }
+      }
+    },
+    {
+      "id": "a1df023d-36aa-4cbf-9ab4-740d4d6b6f08",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "The value of an investment is $V = 100 \\cdot 3^t$ after $t$ years. After how many years is $V = 8100$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$100 \\cdot 3^t = 8100$ gives $3^t = 81 = 3^4$, so $t = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^t = 81 = 3^4, t = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.849Z"
+        }
+      }
+    },
+    {
+      "id": "1432191d-367d-4e7d-a0a7-fc424f7fa302",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "A sample decays as $A = A_0 \\left(\\frac{1}{2}\\right)^{t/5}$, where $t$ is in days. Which expression gives the exact time for $\\frac{1}{10}$ of the sample to remain?",
+      "choices": [
+        "$t = \\frac{\\log_2 10}{5}$",
+        "$t = 5\\log_{10} 2$",
+        "$t = 10\\log_2 5$",
+        "$t = 5\\log_2 10$"
+      ],
+      "answer": "$t = 5\\log_2 10$",
+      "compute": null,
+      "solution": "Set $\\left(\\frac{1}{2}\\right)^{t/5} = \\frac{1}{10}$, which is $2^{-t/5} = 10^{-1}$. Taking $\\log_2$ gives $-\\frac{t}{5} = -\\log_2 10$, so $t = 5\\log_2 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$t = 5\\log_2 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)^(t/5) = 1/10, 2^(t/5) = 10, t/5 = log_2 10, t = 5 log_2 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.863Z"
+        }
+      }
+    },
+    {
+      "id": "2649aaf6-ef8d-42eb-aed2-58c5339d9382",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "What is $f(7)$ for $f(x) = \\log_2 (x + 1) + 3$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "3+3",
+      "solution": "$f(7) = \\log_2 8 + 3 = 3 + 3 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 8 + 3 = 3 + 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.867Z"
+        }
+      }
+    },
+    {
+      "id": "cd6f51e9-2ea5-4b29-b0ba-a9f2bf738646",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solving logarithmic equations",
+      "stem": "Solve $\\log_3 (x + 8) - \\log_3 x = 2$ for $x$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$\\log_3 \\frac{x + 8}{x} = 2$ means $\\frac{x + 8}{x} = 9$. Then $x + 8 = 9x$, so $8x = 8$ and $x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_3((x+8)/x) = 2, x + 8 = 9x, x = 1; valid.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.871Z"
+        }
+      }
+    },
+    {
+      "id": "99dcf054-b3d9-4ac6-9bc1-38f442771c7a",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log_4 \\frac{1}{8}$.",
+      "choices": [],
+      "answer": "-3/2",
+      "compute": "-3/2",
+      "solution": "Let $\\log_4 \\frac{1}{8} = x$, so $4^x = \\frac{1}{8}$. Then $2^{2x} = 2^{-3}$, so $2x = -3$ and $x = -\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^x = 1/8: 2^(2x) = 2^-3, x = -3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.879Z"
+        }
+      }
+    },
+    {
+      "id": "716ec8c7-05e8-48a6-9a90-7d7edecdc74e",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log_8 4$.",
+      "choices": [],
+      "answer": "2/3",
+      "compute": "2/3",
+      "solution": "Let $\\log_8 4 = x$, so $8^x = 4$. Writing both sides as powers of 2, $2^{3x} = 2^2$, so $3x = 2$ and $x = \\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8^x = 4: 2^(3x) = 2^2, x = 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.891Z"
+        }
+      }
+    },
+    {
+      "id": "12486e9f-171d-461d-b96e-074bd6d0a097",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "change of base",
+      "stem": "Use $\\log 7 \\approx 0.845$ and $\\log 3 \\approx 0.477$ to approximate $\\log_3 7$ to the nearest hundredth.",
+      "choices": [
+        "$0.56$",
+        "$1.77$",
+        "$0.37$",
+        "$0.40$"
+      ],
+      "answer": "$1.77$",
+      "compute": null,
+      "solution": "$\\log_3 7 = \\frac{\\log 7}{\\log 3} \\approx \\frac{0.845}{0.477} \\approx 1.77$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1.77$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.845 / 0.477 = 1.7715..., rounds to 1.77.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.892Z"
+        }
+      }
+    },
+    {
+      "id": "432b8330-3de1-4053-a6b7-7b70f2fcfd33",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "A logarithmic function has $f(2) = 3$, $f(4) = 6$ and $f(8) = 9$. Which equation could define it?",
+      "choices": [
+        "$f(x) = 3\\log_2 x$",
+        "$f(x) = \\log_2 x + 2$",
+        "$f(x) = 2\\log_2 x + 1$",
+        "$f(x) = \\log_8 x$"
+      ],
+      "answer": "$f(x) = 3\\log_2 x$",
+      "compute": null,
+      "solution": "Test $3\\log_2 x$: $3 \\cdot 1 = 3$, $3 \\cdot 2 = 6$, $3 \\cdot 3 = 9$. The others fail: for example $\\log_2 4 + 2 = 4$, not 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = 3\\log_2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3log2 x: f(2)=3,f(4)=6,f(8)=9. log2x+2 gives 4 at x=4; 2log2x+1 gives 5; log8 2=1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.935Z"
         }
       }
     },
@@ -13537,6 +14894,587 @@
           "work": "Domain x>0. log2(x(x+2)) = 3, x^2+2x-8=0, (x+4)(x-2)=0; x=-4 rejected. x = 2.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.439Z"
+        }
+      }
+    },
+    {
+      "id": "1c628d54-b952-432e-acbb-35a6b579f889",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "domain and vertical asymptote",
+      "stem": "Which describes the domain of $f(x) = \\log (x^2)$?",
+      "choices": [
+        "All $x$ with $x > 0$",
+        "All real numbers",
+        "All real numbers except 0",
+        "All $x$ with $x \\ge 0$"
+      ],
+      "answer": "All real numbers except 0",
+      "compute": null,
+      "solution": "We need $x^2 > 0$. This is true for every real number except $x = 0$, where $x^2 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "All real numbers except 0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2>0 for all x except 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.635Z"
+        }
+      }
+    },
+    {
+      "id": "e5b34035-6127-402d-a52e-11dfc6bc0b95",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "domain and vertical asymptote",
+      "stem": "What is the vertical asymptote of $f(x) = 2\\log_3 (4x - 8) + 5$?",
+      "choices": [
+        "$x = 8$",
+        "$x = -2$",
+        "$x = 2$",
+        "$x = 5$"
+      ],
+      "answer": "$x = 2$",
+      "compute": null,
+      "solution": "The asymptote is where the input is 0: $4x - 8 = 0$, so $x = 2$. The 2 in front and the $+5$ do not move it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x-8=0 at x=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.647Z"
+        }
+      }
+    },
+    {
+      "id": "ebfc52f0-3042-495e-a767-96ccbe73f0e2",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "The loudness of a sound in decibels is $L = 10\\log \\frac{I}{I_0}$ (base 10). One sound measures 40 decibels. A second sound has 100 times the intensity of the first. How loud is the second sound, in decibels?",
+      "choices": [],
+      "answer": "60",
+      "compute": "40+10*2",
+      "solution": "Multiplying the intensity by 100 adds $10\\log 100 = 20$ decibels, so $40 + 20 = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100 times intensity adds 10 log 100 = 20 dB: 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.648Z"
+        }
+      }
+    },
+    {
+      "id": "7bf58055-735e-4949-a4b5-d22096ad7eae",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log_{1/4} 32$.",
+      "choices": [],
+      "answer": "-5/2",
+      "compute": "-5/2",
+      "solution": "Let $\\log_{1/4} 32 = x$, so $\\left(\\frac{1}{4}\\right)^x = 32$. Then $2^{-2x} = 2^5$, so $-2x = 5$ and $x = -\\frac{5}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/4)^x = 32: 2^(-2x)=2^5, x=-5/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.681Z"
+        }
+      }
+    },
+    {
+      "id": "0495cb2e-4bf2-41c9-b57b-33f112080a9b",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "What is $g(26)$ for $g(x) = -2\\log_3 (x + 1) + 4$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2*3+4",
+      "solution": "$g(26) = -2\\log_3 27 + 4 = -2(3) + 4 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log3 27=3; -2(3)+4=-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.707Z"
+        }
+      }
+    },
+    {
+      "id": "41caea9e-3626-4874-af49-1d2dff6f9714",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solving logarithmic equations",
+      "stem": "If $\\log_2 (\\log_3 x) = 2$, what is the value of $x$?",
+      "choices": [],
+      "answer": "81",
+      "compute": "3^4",
+      "solution": "$\\log_3 x = 2^2 = 4$, so $x = 3^4 = 81$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_3 x = 2^2 = 4, so x = 3^4 = 81.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.731Z"
+        }
+      }
+    },
+    {
+      "id": "946e1c4f-fbaf-4ffa-be2f-7130378bbae8",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solving logarithmic equations",
+      "stem": "The equation $\\log_2 (x^2 - 2x) = 3$ has two solutions. What is their sum?",
+      "choices": [],
+      "answer": "2",
+      "compute": "4-2",
+      "solution": "$x^2 - 2x = 8$, so $(x - 4)(x + 2) = 0$ and $x = 4$ or $x = -2$. Both give input 8, which is positive. The sum is $4 + (-2) = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 2x = 8, x^2 - 2x - 8 = 0, (x - 4)(x + 2) = 0, x = 4 or -2; both give x^2 - 2x = 8 > 0, valid. Sum = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.733Z"
+        }
+      }
+    },
+    {
+      "id": "aeffcfd2-40a1-4991-97a2-add47cc69743",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "solving logarithmic equations",
+      "stem": "Which equation has no real solution?",
+      "choices": [
+        "$\\log_2 x = -3$",
+        "$\\log_2 (-x) = 3$",
+        "$\\log_2 (x^2) = -2$",
+        "$\\log_2 (-x^2) = 1$"
+      ],
+      "answer": "$\\log_2 (-x^2) = 1$",
+      "compute": null,
+      "solution": "The input $-x^2$ is never positive, so $\\log_2 (-x^2)$ is never defined. The others have the solutions $x = \\frac{1}{8}$, $x = -8$ and $x = \\pm\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\log_2 (-x^2) = 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2(-x^2) = 1 needs -x^2 = 2, impossible (and -x^2 <= 0 outside the domain). Others: x^2 = 1/4 gives x = +-1/2; x = 1/8; -x = 8 gives x = -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.741Z"
+        }
+      }
+    },
+    {
+      "id": "6447f672-0efe-460c-b8fb-5f620cb334b5",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "Evaluate $\\frac{\\log 8 + \\log 125}{\\log 100}$, where all logarithms have base 10.",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "3/2",
+      "solution": "The numerator is $\\log (8 \\cdot 125) = \\log 1000 = 3$. The denominator is $\\log 100 = 2$. So the value is $\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log 8 + log 125 = log 1000 = 3; log 100 = 2; 3/2 = 1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.747Z"
+        }
+      }
+    },
+    {
+      "id": "a5d8d5d1-e00e-49bd-b7eb-1b2c06903b58",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "change of base",
+      "stem": "Evaluate $(\\log_2 5)(\\log_5 8)$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Change both to the same base: $\\frac{\\log 5}{\\log 2} \\cdot \\frac{\\log 8}{\\log 5} = \\frac{\\log 8}{\\log 2} = \\log_2 8 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Change of base: (ln5/ln2)(ln8/ln5) = ln8/ln2 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.755Z"
+        }
+      }
+    },
+    {
+      "id": "5a20f697-add4-437e-be99-5e02c1bc0c4f",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "transformations and key features of a logarithmic graph",
+      "stem": "Which statement is true about $f(x) = \\log_{1/2} x$?",
+      "choices": [
+        "It decreases on its entire domain",
+        "It increases on its entire domain",
+        "It decreases for $0 < x < 1$ and increases for $x > 1$",
+        "It increases for $x > 1$ and is undefined for $0 < x < 1$"
+      ],
+      "answer": "It decreases on its entire domain",
+      "compute": null,
+      "solution": "A base between 0 and 1 gives a decreasing logarithm. For example $f(\\frac{1}{2}) = 1$, $f(1) = 0$ and $f(2) = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It decreases on its entire domain",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base 1/2 between 0 and 1: decreasing on its whole domain x > 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.773Z"
+        }
+      }
+    },
+    {
+      "id": "74f80686-acdc-4e07-ab7f-44d8988eb9af",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "change of base",
+      "stem": "For positive numbers $a$ and $b$ (neither equal to 1), $\\log_a b = 3$. What is $\\log_b a$?",
+      "choices": [
+        "$3$",
+        "$\\frac{1}{3}$",
+        "$-\\frac{1}{3}$",
+        "$-3$"
+      ],
+      "answer": "$\\frac{1}{3}$",
+      "compute": null,
+      "solution": "By change of base, $\\log_b a = \\frac{\\log a}{\\log b} = \\frac{1}{\\log_a b} = \\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_b a = 1/log_a b = 1/3 (change of base).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.780Z"
+        }
+      }
+    },
+    {
+      "id": "e2d4d2f4-f330-4c69-aa42-e8dc11b2858e",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "If $\\log_3 x = 2 + \\log_3 5$, what is $x$?",
+      "choices": [],
+      "answer": "45",
+      "compute": "9*5",
+      "solution": "Since $2 = \\log_3 9$, we get $\\log_3 x = \\log_3 9 + \\log_3 5 = \\log_3 45$, so $x = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_3 x = log_3 9 + log_3 5 = log_3 45, so x = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.784Z"
+        }
+      }
+    },
+    {
+      "id": "7cae226c-c7f1-434c-9c56-aed93b1f904b",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "properties of logarithms: expand, condense, simplify",
+      "stem": "A student simplifies $\\log_2 (8x)$ as $3\\log_2 x$. What is the correct simplification, for $x > 0$?",
+      "choices": [
+        "$8 + \\log_2 x$",
+        "$3 + \\log_2 x$",
+        "$3\\log_2 x$",
+        "$\\log_2 x - 3$"
+      ],
+      "answer": "$3 + \\log_2 x$",
+      "compute": null,
+      "solution": "The log of a product is a sum, not a product: $\\log_2 (8x) = \\log_2 8 + \\log_2 x = 3 + \\log_2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + \\log_2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 (8x) = log_2 8 + log_2 x = 3 + log_2 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.799Z"
+        }
+      }
+    },
+    {
+      "id": "4dc74207-b7c4-4aa7-87e8-d3bc1a3e9142",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "domain and vertical asymptote",
+      "stem": "What is the smallest positive integer in the domain of $f(x) = \\log (x^2 - 9)$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "We need $x^2 - 9 > 0$, so $x > 3$ or $x < -3$. The positive integers 1, 2 and 3 fail (at 3 the input is 0), so the smallest is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 9 > 0: |x| > 3. Smallest positive integer 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.816Z"
+        }
+      }
+    },
+    {
+      "id": "0cec3668-8f8b-4d9b-9f60-8ea14e70d114",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log_5 \\left(25^{1/3}\\right)$.",
+      "choices": [],
+      "answer": "2/3",
+      "compute": "2/3",
+      "solution": "$25^{1/3} = (5^2)^{1/3} = 5^{2/3}$, so $\\log_5 25^{1/3} = \\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25^(1/3) = 5^(2/3), so log_5 = 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.837Z"
+        }
+      }
+    },
+    {
+      "id": "5b786cbb-bd46-45f6-b9d6-7c0968491626",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "logarithms and exponentials as inverses",
+      "stem": "If $f(x) = \\log_2 x + 3$, what is $f^{-1}(5)$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2^(5-3)",
+      "solution": "We need $x$ with $f(x) = 5$: $\\log_2 x + 3 = 5$, so $\\log_2 x = 2$ and $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2 x+3=5 -> log2 x=2 -> x=4, so f^{-1}(5)=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.907Z"
+        }
+      }
+    },
+    {
+      "id": "351a6d7a-be35-424c-b785-c219e8dfd4b9",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solving exponential and logarithmic equations in context",
+      "stem": "The pH of a solution is $-\\log h$ (base 10), where $h$ is the concentration of hydrogen ions. Solution X has pH 4. Solution Y has 1000 times the hydrogen ion concentration of X. What is the pH of Y?",
+      "choices": [],
+      "answer": "1",
+      "compute": "4-3",
+      "solution": "$h_Y = 1000 h_X$, so $\\text{pH}_Y = -\\log (1000 h_X) = -3 - \\log h_X = -3 + 4 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h_X=10^-4; h_Y=1000x10^-4=10^-1; pH=-log(10^-1)=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.951Z"
+        }
+      }
+    },
+    {
+      "id": "ace156be-024d-476e-bb56-630ca72624cc",
+      "topic_id": "NC17.M4.AF.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "evaluating a logarithm",
+      "stem": "Evaluate $\\log_2 (\\log_3 81)$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "First $\\log_3 81 = 4$, because $3^4 = 81$. Then $\\log_2 4 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log3 81=4; log2 4=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.961Z"
         }
       }
     },

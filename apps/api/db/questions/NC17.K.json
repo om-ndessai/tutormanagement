@@ -22120,6 +22120,699 @@
       }
     },
     {
+      "id": "eb7e011f-66e3-44f9-975a-323c1e57cb7d",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Act out or count on",
+      "stem": "Start at 3 and count on 1 more. What number do you say?",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "3+1",
+      "solution": "Counting on 1 from 3 gives 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3, then 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.609Z"
+        }
+      }
+    },
+    {
+      "id": "6bcc7866-efa3-4cc7-aefa-ec9e48b6f2d4",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show subtraction with a story",
+      "stem": "Jin has 5 grapes on a plate. He eats 2 grapes. How many grapes are on the plate now?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5-2",
+      "solution": "5 grapes take away 2 grapes: $5 - 2 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-2=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.625Z"
+        }
+      }
+    },
+    {
+      "id": "4d557678-7dbd-4067-a488-e3c81c3ada37",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "3 cats are asleep. 1 more cat falls asleep. Which expression matches the story?",
+      "choices": [
+        "$3 + 1$",
+        "$3 - 1$",
+        "$2 + 1$",
+        "$4 + 1$"
+      ],
+      "answer": "$3 + 1$",
+      "compute": null,
+      "solution": "More cats join the 3 cats, so we add: $3 + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 asleep, 1 more joins: 3+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.626Z"
+        }
+      }
+    },
+    {
+      "id": "178c663d-2d01-4205-aacf-715cc66e882b",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell adding from taking away",
+      "stem": "Which story is about taking away?",
+      "choices": [
+        "4 kites are in the sky. 1 more kite flies up.",
+        "4 kites are in the sky. 1 kite is red.",
+        "4 kites are in the sky. 1 kite lands.",
+        "4 kites are in the sky. Then 4 more fly up."
+      ],
+      "answer": "4 kites are in the sky. 1 kite lands.",
+      "compute": null,
+      "solution": "A kite leaves the sky, so we take away.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 kites are in the sky. 1 kite lands.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A kite landing leaves the sky: taking away.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.627Z"
+        }
+      }
+    },
+    {
+      "id": "bab96bbd-6092-4f63-a01b-ea0164cf68cc",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show with fingers",
+      "stem": "Nell shows 5 fingers on one hand. She puts 4 fingers down. How many fingers are still up?",
+      "choices": [],
+      "answer": "1",
+      "compute": "5-4",
+      "solution": "Take away the 4 fingers put down: $5 - 4 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-4=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.630Z"
+        }
+      }
+    },
+    {
+      "id": "15f4b220-597b-4fdf-a0d8-c17bf154bf3f",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Show with fingers",
+      "stem": "Zed shows 5 fingers. He puts down 1 finger. How many fingers are still up?",
+      "choices": [
+        "6",
+        "5",
+        "1",
+        "4"
+      ],
+      "answer": "4",
+      "compute": "5-1",
+      "solution": "$5 - 1 = 4$ fingers are still up.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.739Z"
+        }
+      }
+    },
+    {
+      "id": "82ff39de-48c3-495d-b866-1280d3e86a79",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Lee shows 2 fingers on one hand and 3 fingers on the other hand. Which expression matches what Lee shows?",
+      "choices": [
+        "$2 + 3$",
+        "$3 - 2$",
+        "$2 + 2$",
+        "$3 + 3$"
+      ],
+      "answer": "$2 + 3$",
+      "compute": null,
+      "solution": "The fingers on both hands are put together: $2 + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 fingers and 3 fingers: 2 + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.745Z"
+        }
+      }
+    },
+    {
+      "id": "3e7b01d2-7322-4323-8535-56e849b258bb",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Sam says \"4 and 1 more.\" Which expression is the same?",
+      "choices": [
+        "$4 - 1$",
+        "$4 + 1$",
+        "$4 + 4$",
+        "$1 + 1$"
+      ],
+      "answer": "$4 + 1$",
+      "compute": null,
+      "solution": "\"4 and 1 more\" means adding 1 to 4: $4 + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 and 1 more is 4 + 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.747Z"
+        }
+      }
+    },
+    {
+      "id": "1d7838ed-a9c8-456e-a080-4a647aae48eb",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "Max claps 3 times. Then he claps 2 more times. How many times did Max clap in all?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "3 claps and 2 more claps: $3 + 2 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.768Z"
+        }
+      }
+    },
+    {
+      "id": "9f45bd25-b8a4-4765-8adb-5f7c4f7c405b",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Which story matches $5 - 2$?",
+      "choices": [
+        "5 apples are in a bag. 2 more apples are put in.",
+        "2 apples are in a bag. 5 more apples are put in.",
+        "5 apples are in a bag. 3 apples are taken out.",
+        "5 apples are in a bag. 2 apples are taken out."
+      ],
+      "answer": "5 apples are in a bag. 2 apples are taken out.",
+      "compute": null,
+      "solution": "We start with 5 apples and take 2 away: $5 - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 apples are in a bag. 2 apples are taken out.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 2 means start with 5 and take away 2. Only the third option.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.781Z"
+        }
+      }
+    },
+    {
+      "id": "228f5439-ea23-4410-8c67-39cdfbf81e53",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Look at $3 + 2 = ?$. What is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "$3 + 2 = 5$, so the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.791Z"
+        }
+      }
+    },
+    {
+      "id": "a317a672-49ef-4963-b847-2b5f7e7ee31c",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show subtraction with a story",
+      "stem": "There are 4 puppies in a basket. 2 puppies jump out. How many puppies are in the basket now?",
+      "choices": [],
+      "answer": "2",
+      "compute": "4-2",
+      "solution": "2 puppies leave, so $4 - 2 = 2$ puppies are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - 2 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.793Z"
+        }
+      }
+    },
+    {
+      "id": "cb53470f-6d7e-4f84-8542-bc3934d55577",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "Kira puts 2 blocks in a tower. Then she puts 1 more block on top. How many blocks are in the tower now?",
+      "choices": [],
+      "answer": "3",
+      "compute": "2+1",
+      "solution": "2 blocks and 1 more block is $2 + 1 = 3$ blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.815Z"
+        }
+      }
+    },
+    {
+      "id": "4ff9608d-7c6d-4332-b07c-cd0da5aa960b",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Which words match $4 - 1$?",
+      "choices": [
+        "4 and 1 more",
+        "4 take away 1",
+        "1 and 4 more",
+        "1 take away 4"
+      ],
+      "answer": "4 take away 1",
+      "compute": null,
+      "solution": "$4 - 1$ is subtraction. We start with 4 and take away 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 take away 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - 1 is 4 take away 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.817Z"
+        }
+      }
+    },
+    {
+      "id": "a4b5d439-5c68-43f7-a24c-5b6a71271e64",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell adding from taking away",
+      "stem": "Which story is about putting together?",
+      "choices": [
+        "2 frogs sit on a log. 1 frog hops off.",
+        "5 frogs sit on a log. 3 frogs hop off.",
+        "4 frogs sit on a log. 2 frogs are green.",
+        "2 frogs sit on a log. 3 more frogs hop on."
+      ],
+      "answer": "2 frogs sit on a log. 3 more frogs hop on.",
+      "compute": null,
+      "solution": "More frogs join the 2 frogs, so we put them together.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 frogs sit on a log. 3 more frogs hop on.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Putting together = joining: 2 frogs and 3 more hop on. Others are taking away or describing.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.820Z"
+        }
+      }
+    },
+    {
+      "id": "1332911a-c11c-4faa-9ef6-716f9c5da5df",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Ana has 3 shells. She finds 1 more shell. Which number sentence is true and matches the story?",
+      "choices": [
+        "$3 + 1 = 4$",
+        "$3 - 1 = 2$",
+        "$3 + 1 = 5$",
+        "$3 + 2 = 5$"
+      ],
+      "answer": "$3 + 1 = 4$",
+      "compute": null,
+      "solution": "Finding more is adding, and $3 + 1 = 4$ is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 1 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 shells and 1 more: 3 + 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.843Z"
+        }
+      }
+    },
+    {
+      "id": "1f719baf-0baa-4a78-abcc-1d5837583290",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Act out or count on",
+      "stem": "Lucy acts out a story with 5 toy hens. She moves 3 hens into a barn. How many toy hens are not in the barn?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "Start with 5 hens and take away the 3 in the barn: $5 - 3 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-3=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.906Z"
+        }
+      }
+    },
+    {
+      "id": "957fc38f-c342-46aa-a7d8-63db4dfccce0",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "Pia draws 1 happy face. Then she draws 3 more happy faces. How many happy faces did she draw?",
+      "choices": [],
+      "answer": "4",
+      "compute": "1+3",
+      "solution": "1 face and 3 more faces: $1 + 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1+3=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.924Z"
+        }
+      }
+    },
+    {
+      "id": "afbd79b9-8118-475d-8f2d-a83d7bc36a7c",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show with fingers",
+      "stem": "Hold up 3 fingers. Then hold up 2 more fingers. How many fingers are up in all?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "3 fingers and 2 more fingers: $3 + 2 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+2=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.930Z"
+        }
+      }
+    },
+    {
+      "id": "531d5235-3fcd-4667-8913-68428e6be033",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Rosa has 4 balloons. 1 balloon pops. Which expression matches the story?",
+      "choices": [
+        "$4 + 1$",
+        "$4 - 1$",
+        "$3 - 1$",
+        "$5 - 1$"
+      ],
+      "answer": "$4 - 1$",
+      "compute": null,
+      "solution": "One balloon is gone, so we take away: $4 - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 balloons, 1 pops: 4 - 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.024Z"
+        }
+      }
+    },
+    {
+      "id": "ef9affb6-5932-43e6-be62-3eb7ba1dc092",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Show with a drawing",
+      "stem": "Sam draws 4 stars. He crosses out 1 star. How many stars are not crossed out?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4-1",
+      "solution": "Take away the 1 star that is crossed out: $4 - 1 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.028Z"
+        }
+      }
+    },
+    {
+      "id": "591379dd-aa76-4cb9-8536-ca6e5c07d12c",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Connect words and expressions",
+      "stem": "Read the words: 2 and 3 more. How many is that in all?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "\"2 and 3 more\" is the same as $2 + 3$, which is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.029Z"
+        }
+      }
+    },
+    {
       "id": "6ad53275-5a9e-47c0-8a23-1fd84aaf5faf",
       "topic_id": "NC17.K.OA.1",
       "difficulty": 2,
@@ -22561,6 +23254,602 @@
       }
     },
     {
+      "id": "fd4e5665-74ac-4632-8739-3616b04b4725",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "A bookshelf has 6 books. Rob puts 3 more books on it. How many books are on the shelf now?",
+      "choices": [],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "6 books and 3 more books: $6 + 3 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+3=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.635Z"
+        }
+      }
+    },
+    {
+      "id": "75ad7d00-5618-4cbc-aebf-4cfcc6307f7a",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Show with fingers",
+      "stem": "Fran holds up 8 fingers. She puts 5 fingers down. How many fingers are still up?",
+      "choices": [
+        "3",
+        "5",
+        "8",
+        "4"
+      ],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "$8 - 5 = 3$ fingers are still up.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8-5=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.646Z"
+        }
+      }
+    },
+    {
+      "id": "fe88e327-10fc-4ef2-be27-563621e4f8c7",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "There are 9 birds in a tree. 6 birds fly away. Which number sentence is true and matches the story?",
+      "choices": [
+        "$9 - 6 = 3$",
+        "$9 - 6 = 4$",
+        "$9 - 3 = 6$",
+        "$6 - 3 = 3$"
+      ],
+      "answer": "$9 - 6 = 3$",
+      "compute": null,
+      "solution": "Birds leave, so we subtract: $9 - 6 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 6 = 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 take away 6 is 3: 9-6=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.682Z"
+        }
+      }
+    },
+    {
+      "id": "41d26c31-8bb2-468a-8417-eaa0fb0420ae",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show subtraction with a story",
+      "stem": "Gwen has 8 beads on a string. 5 beads slide off. How many beads are still on the string?",
+      "choices": [],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "5 beads leave, so $8 - 5 = 3$ beads are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8-5=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.682Z"
+        }
+      }
+    },
+    {
+      "id": "ff11f720-3478-41df-915b-44553c0506cd",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show with fingers",
+      "stem": "Hold up all 10 fingers. Then put 6 fingers down. How many fingers are still up?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "Take away the 6 fingers put down: $10 - 6 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4 fingers still up.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.729Z"
+        }
+      }
+    },
+    {
+      "id": "27f2fb13-a4a7-4947-82c7-c2c1a2fa9abc",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "Dad packs 4 red apples and 5 green apples in a bag. How many apples are in the bag?",
+      "choices": [],
+      "answer": "9",
+      "compute": "4+5",
+      "solution": "Put the apples together: $4 + 5 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.739Z"
+        }
+      }
+    },
+    {
+      "id": "3a35944d-cf4c-4c77-ad4c-20ec06a5ecac",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Act out or count on",
+      "stem": "Ty adds $6 + 3$ by counting on. He starts at 6 and says the next 3 numbers after 6. What is the last number he says?",
+      "choices": [
+        "8",
+        "9",
+        "10",
+        "7"
+      ],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "After 6 he says 7, 8, 9. The last number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 6: 7, 8, 9. Last number 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.744Z"
+        }
+      }
+    },
+    {
+      "id": "91070ebf-69b8-42ed-9606-805a8a0aea83",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Act out or count on",
+      "stem": "Sue acts out a story with 7 counters. She slides 2 counters away. How many counters are left?",
+      "choices": [],
+      "answer": "5",
+      "compute": "7-2",
+      "solution": "$7 - 2 = 5$ counters are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.744Z"
+        }
+      }
+    },
+    {
+      "id": "a62ffff1-2dfe-479d-bfac-1b0cdcc26e30",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Look at $8 - 3 = ?$. What is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "$8 - 3 = 5$, so the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.761Z"
+        }
+      }
+    },
+    {
+      "id": "3c75ab2c-bcad-4887-a843-77ca7238c67a",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Pat has 6 crayons. She gets 3 more crayons. Which number sentence is true and matches the story?",
+      "choices": [
+        "$6 - 3 = 3$",
+        "$6 + 3 = 9$",
+        "$6 + 3 = 8$",
+        "$6 + 4 = 10$"
+      ],
+      "answer": "$6 + 3 = 9$",
+      "compute": null,
+      "solution": "Getting more is adding, and $6 + 3 = 9$ is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 3 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 crayons plus 3 more: 6 + 3 = 9. Only 6 + 3 = 9 is true and matches.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.784Z"
+        }
+      }
+    },
+    {
+      "id": "e8a72d9a-2a91-4c53-b99a-2747182ebfea",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Which expression matches the words \"6 take away 2\"?",
+      "choices": [
+        "$6 + 2$",
+        "$8 - 2$",
+        "$6 - 2$",
+        "$6 - 4$"
+      ],
+      "answer": "$6 - 2$",
+      "compute": null,
+      "solution": "\"Take away\" means subtract: $6 - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 take away 2 is 6 - 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.800Z"
+        }
+      }
+    },
+    {
+      "id": "4436c02d-1332-49b7-9741-5f22658abc2b",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Dev says, \"I had 9 stickers. I gave 4 away.\" Which expression matches?",
+      "choices": [
+        "$9 + 4$",
+        "$5 - 4$",
+        "$9 - 4$",
+        "$9 - 5$"
+      ],
+      "answer": "$9 - 4$",
+      "compute": null,
+      "solution": "Giving away is taking away: $9 - 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Had 9, gave 4 away: 9 - 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.806Z"
+        }
+      }
+    },
+    {
+      "id": "c68fa0e4-5a8c-4760-9314-c3bde2287121",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Which story could go with $6 + 4$?",
+      "choices": [
+        "6 pens are in a cup. 4 pens are taken out.",
+        "6 pens are in a cup. 4 more pens are put in.",
+        "10 pens are in a cup. 4 pens are taken out.",
+        "6 pens are in a cup. 2 pens are taken out."
+      ],
+      "answer": "6 pens are in a cup. 4 more pens are put in.",
+      "compute": null,
+      "solution": "We start with 6 pens and add 4 more: $6 + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 pens are in a cup. 4 more pens are put in.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4: start with 6, put in 4 more. Option 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.809Z"
+        }
+      }
+    },
+    {
+      "id": "5f3daa6f-a383-47e6-89fd-e2ccae33d063",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show with a drawing",
+      "stem": "Ivy draws 6 circles in a row. Then she draws 4 more circles in a second row. How many circles did she draw?",
+      "choices": [],
+      "answer": "10",
+      "compute": "6+4",
+      "solution": "Put the two rows together: $6 + 4 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.812Z"
+        }
+      }
+    },
+    {
+      "id": "04838d12-d50b-4824-957c-d83d5f5a681e",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Which story matches $8 - 3$?",
+      "choices": [
+        "8 bees are on a flower. 3 bees fly off.",
+        "8 bees are on a flower. 3 more bees land.",
+        "3 bees are on a flower. 8 more bees land.",
+        "5 bees are on a flower. 3 bees fly off."
+      ],
+      "answer": "8 bees are on a flower. 3 bees fly off.",
+      "compute": null,
+      "solution": "We start with 8 bees and 3 leave: $8 - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 bees are on a flower. 3 bees fly off.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3: 8 bees, 3 fly off.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.827Z"
+        }
+      }
+    },
+    {
+      "id": "39760d2f-e4c8-4dcb-a3dc-481faaac8e9e",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Mina draws 3 triangles and then 6 squares. Which number sentence is true and shows how many shapes she drew?",
+      "choices": [
+        "$6 - 3 = 3$",
+        "$3 + 6 = 8$",
+        "$3 + 3 = 6$",
+        "$3 + 6 = 9$"
+      ],
+      "answer": "$3 + 6 = 9$",
+      "compute": null,
+      "solution": "Put the shapes together: $3 + 6 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 6 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 triangles + 6 squares = 9 shapes: 3 + 6 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.829Z"
+        }
+      }
+    },
+    {
+      "id": "0328aff8-4b74-4f5a-ae8d-c09618341480",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show with a drawing",
+      "stem": "Leo draws 9 leaves on a tree. He colors 4 of the leaves red. The rest are green. How many leaves are green?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "Take the 4 red leaves away from 9: $9 - 4 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.852Z"
+        }
+      }
+    },
+    {
+      "id": "5b99d309-15a0-4c87-82c8-9f49de28b7c2",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Act out or count on",
+      "stem": "Count on from 7 by saying the next 2 numbers after 7. What is the last number you say?",
+      "choices": [],
+      "answer": "9",
+      "compute": "7+2",
+      "solution": "After 7 you say 8, then 9. The last number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 7: 8, 9. Last is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.857Z"
+        }
+      }
+    },
+    {
+      "id": "aae7648f-554d-40ce-b1d7-e21b4a360686",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Show subtraction with a story",
+      "stem": "A bus has 9 riders. 3 riders get off at the stop. How many riders are on the bus now?",
+      "choices": [],
+      "answer": "6",
+      "compute": "9-3",
+      "solution": "$9 - 3 = 6$ riders are still on the bus.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.899Z"
+        }
+      }
+    },
+    {
       "id": "a053bb56-e702-4229-b1c0-10aeb5ba71b7",
       "topic_id": "NC17.K.OA.1",
       "difficulty": 3,
@@ -22935,6 +24224,670 @@
           "work": "6 red and 3 blue together: 6 + 3.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.459Z"
+        }
+      }
+    },
+    {
+      "id": "ea930442-8d9b-42f3-b3de-669258fa996f",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Which story matches $10 - 5 = 5$?",
+      "choices": [
+        "5 cookies are on a plate. 5 more are added. 10 are there.",
+        "10 cookies are on a plate. 5 are eaten. 10 are left.",
+        "10 cookies are on a plate. 5 are eaten. 4 are left.",
+        "10 cookies are on a plate. 5 are eaten. 5 are left."
+      ],
+      "answer": "10 cookies are on a plate. 5 are eaten. 5 are left.",
+      "compute": null,
+      "solution": "10 take away 5 leaves 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 cookies are on a plate. 5 are eaten. 5 are left.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 take away 5 leaves 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.617Z"
+        }
+      }
+    },
+    {
+      "id": "52f966bd-5d79-4604-bbe0-381950a1fb19",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "Sid has 7 toy trucks. His friend gives him 3 more toy trucks. How many toy trucks does Sid have in all?",
+      "choices": [],
+      "answer": "10",
+      "compute": "7+3",
+      "solution": "$7 + 3 = 10$ toy trucks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+3=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.632Z"
+        }
+      }
+    },
+    {
+      "id": "ce2dd17d-3f42-47c3-9c98-cb4e903f8290",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell adding from taking away",
+      "stem": "Which story does NOT match $5 + 3$?",
+      "choices": [
+        "5 frogs are on a rock. 3 frogs jump off.",
+        "5 frogs are on a rock. 3 more frogs jump on.",
+        "A rock has 5 green frogs and 3 brown frogs.",
+        "5 frogs are in a pond. 3 more frogs jump in."
+      ],
+      "answer": "5 frogs are on a rock. 3 frogs jump off.",
+      "compute": null,
+      "solution": "Frogs jump off, so this story takes away. It matches $5 - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 frogs are on a rock. 3 frogs jump off.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 frogs jumping off is 5-3, not 5+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.683Z"
+        }
+      }
+    },
+    {
+      "id": "5113b9fb-48b0-4270-96b9-df6de6b5a89a",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show with a drawing",
+      "stem": "Pam draws 5 stars and 5 moons. How many shapes did she draw in all?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+5",
+      "solution": "Put the shapes together: $5 + 5 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.699Z"
+        }
+      }
+    },
+    {
+      "id": "6791ea47-e702-4c21-92b4-a3c11ec10e04",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Which words match $10 - 2$?",
+      "choices": [
+        "10 take away 2",
+        "10 and 2 more",
+        "2 take away 10",
+        "2 and 10 more"
+      ],
+      "answer": "10 take away 2",
+      "compute": null,
+      "solution": "$10 - 2$ means start with 10 and take away 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 take away 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 take away 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.711Z"
+        }
+      }
+    },
+    {
+      "id": "8cf452e9-8b4b-4bf9-bd2d-2e24062f52d9",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Which expression matches the words \"7 and 3 more\"?",
+      "choices": [
+        "$7 - 3$",
+        "$3 + 3$",
+        "$10 + 3$",
+        "$7 + 3$"
+      ],
+      "answer": "$7 + 3$",
+      "compute": null,
+      "solution": "\"And 3 more\" means adding 3: $7 + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 and 3 more = 7+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.717Z"
+        }
+      }
+    },
+    {
+      "id": "6cbc5143-3f08-424b-871f-1bc1143dac73",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Connect words and expressions",
+      "stem": "Read the words: 9 and 1 more. How many is that in all?",
+      "choices": [],
+      "answer": "10",
+      "compute": "9+1",
+      "solution": "\"9 and 1 more\" is $9 + 1 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+1=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.718Z"
+        }
+      }
+    },
+    {
+      "id": "4e7d1059-0085-4d68-8ea6-4a050439ff57",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show subtraction with a story",
+      "stem": "Tara has 6 counters in a cup. She pours all 6 counters out. How many counters are left in the cup?",
+      "choices": [],
+      "answer": "0",
+      "compute": "6-6",
+      "solution": "Taking all 6 away leaves none: $6 - 6 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All 6 poured out: 6 - 6 = 0 left in the cup.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.729Z"
+        }
+      }
+    },
+    {
+      "id": "aa1ba067-f5dd-43d7-a1ac-2b47c4660a57",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show with fingers",
+      "stem": "Mom shows 10 fingers. Then she puts 7 fingers down. How many fingers are still up?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-7",
+      "solution": "$10 - 7 = 3$ fingers are still up.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.746Z"
+        }
+      }
+    },
+    {
+      "id": "3b53e0dd-7784-4f8b-bf70-81afe66b2a3e",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show subtraction with a story",
+      "stem": "There are 10 children at a table. 6 are eating lunch and the rest are drawing. How many children are drawing?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "Take the 6 who are eating away from 10: $10 - 6 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4 drawing.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.775Z"
+        }
+      }
+    },
+    {
+      "id": "3508b03f-0e56-4f06-aa24-61a959f1ebf0",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show with fingers",
+      "stem": "Kip holds up 8 fingers. Then he holds up 2 more fingers. How many fingers is Kip holding up?",
+      "choices": [],
+      "answer": "10",
+      "compute": "8+2",
+      "solution": "$8 + 2 = 10$ fingers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.792Z"
+        }
+      }
+    },
+    {
+      "id": "1fc745ad-d140-46e4-9bf3-4c71c910cf78",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Which number sentence is true?",
+      "choices": [
+        "$5 - 2 = 7$",
+        "$5 + 2 = 3$",
+        "$5 - 2 = 3$",
+        "$5 + 2 = 8$"
+      ],
+      "answer": "$5 - 2 = 3$",
+      "compute": null,
+      "solution": "$5 - 2 = 3$ is true. In the others the answer is wrong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 - 2 = 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-2=3 true; 5-2=7, 5+2=8, 5+2=3 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.802Z"
+        }
+      }
+    },
+    {
+      "id": "4fb8b622-0fad-4435-8df0-25fec1e5c70a",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Look at $10 - 7 = ?$. What is the ?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-7",
+      "solution": "$10 - 7 = 3$, so the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.836Z"
+        }
+      }
+    },
+    {
+      "id": "6e97241a-0dc8-492f-b719-2731adc750bf",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Lena has 8 pencils and gets 2 more. Kai has 8 pencils and gives 2 away. Who can write $8 + 2$ for their story?",
+      "choices": [
+        "Kai",
+        "Both of them",
+        "Lena",
+        "Neither of them"
+      ],
+      "answer": "Lena",
+      "compute": null,
+      "solution": "Getting 2 more is adding, so Lena's story matches $8 + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Lena",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lena gets 2 more: 8 + 2. Kai gives away: 8 - 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.870Z"
+        }
+      }
+    },
+    {
+      "id": "40c87e30-8f23-4407-90a1-4643771abb3c",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show with a drawing",
+      "stem": "A drawing has 9 triangles. Kim colors 5 triangles blue. The rest are not colored. How many triangles are not colored?",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "Take the 5 blue triangles away from 9: $9 - 5 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.883Z"
+        }
+      }
+    },
+    {
+      "id": "1015270c-40ea-4324-8656-c662d50670d7",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Show addition with a story",
+      "stem": "Gus has 2 red balls and 6 green balls. How many balls does Gus have?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2+6",
+      "solution": "Put the balls together: $2 + 6 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+6=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.901Z"
+        }
+      }
+    },
+    {
+      "id": "c681e68f-f370-413a-a393-92e3c0696d11",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect a story to an expression",
+      "stem": "Zane holds up 10 fingers and puts 5 fingers down. Which expression matches what he does?",
+      "choices": [
+        "$10 + 5$",
+        "$10 - 5$",
+        "$5 - 5$",
+        "$10 - 10$"
+      ],
+      "answer": "$10 - 5$",
+      "compute": null,
+      "solution": "Putting fingers down takes away: $10 - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10 - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 up, 5 put down: 10-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.918Z"
+        }
+      }
+    },
+    {
+      "id": "0f8c5950-183d-42a7-867b-0446154f5f10",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect words and expressions",
+      "stem": "Which expression does NOT have the answer 4?",
+      "choices": [
+        "$2 + 2$",
+        "$6 - 3$",
+        "$5 - 1$",
+        "$1 + 3$"
+      ],
+      "answer": "$6 - 3$",
+      "compute": null,
+      "solution": "$6 - 3 = 3$. The others are $2 + 2 = 4$, $5 - 1 = 4$ and $1 + 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1+3=4, 5-1=4, 2+2=4, 6-3=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.968Z"
+        }
+      }
+    },
+    {
+      "id": "12f9b84f-7471-478a-bedd-2fa5a07b402e",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Show with a drawing",
+      "stem": "Cara draws 4 dots on top of a card and 5 dots on the bottom. Which number sentence shows all her dots?",
+      "choices": [
+        "$5 - 4 = 1$",
+        "$4 + 5 = 9$",
+        "$4 + 5 = 10$",
+        "$4 + 4 = 8$"
+      ],
+      "answer": "$4 + 5 = 9$",
+      "compute": null,
+      "solution": "The dots are put together: $4 + 5 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 5 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 dots and 5 dots: 4 + 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.971Z"
+        }
+      }
+    },
+    {
+      "id": "55de64e3-8ec5-4cb4-b651-8e2f10380431",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect a number sentence to a story",
+      "stem": "Nadia has 10 stickers. She gives 6 stickers to friends. Which number sentence is true and matches the story?",
+      "choices": [
+        "$10 - 4 = 6$",
+        "$10 - 6 = 5$",
+        "$10 - 6 = 4$",
+        "$6 - 4 = 2$"
+      ],
+      "answer": "$10 - 6 = 4$",
+      "compute": null,
+      "solution": "Giving away is subtracting, and $10 - 6 = 4$ is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10 - 6 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.975Z"
+        }
+      }
+    },
+    {
+      "id": "c416d3e3-bb40-47a1-8cc9-52c9d7579514",
+      "topic_id": "NC17.K.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Act out or count on",
+      "stem": "Mo adds $7 + 3$ by counting on. He starts at 7. Which numbers does he say next?",
+      "choices": [
+        "8, 9, 10",
+        "7, 8, 9",
+        "9, 10, 11",
+        "6, 5, 4"
+      ],
+      "answer": "8, 9, 10",
+      "compute": null,
+      "solution": "Counting on 3 from 7: 8, 9, 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8, 9, 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starting at 7, count on 3: 8, 9, 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.995Z"
         }
       }
     },

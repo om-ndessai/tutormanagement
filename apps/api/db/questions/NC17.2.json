@@ -15917,6 +15917,641 @@
       }
     },
     {
+      "id": "03352c29-4b1d-4b26-aa22-b3fadbb17773",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count back by ones",
+      "stem": "Jade counts back by ones: 83, 82, 81. What number does she say next?",
+      "choices": [],
+      "answer": "80",
+      "compute": "81-1",
+      "solution": "Counting back takes away 1 each time. 81 - 1 = 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "83, 82, 81, 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.649Z"
+        }
+      }
+    },
+    {
+      "id": "e8cd5f61-be2d-434c-8895-4969bab6ffaa",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip-count by 100s",
+      "stem": "A pattern adds 100 each time. It starts at 150: 150, 250, 350. What number comes next?",
+      "choices": [],
+      "answer": "450",
+      "compute": "350+100",
+      "solution": "350 + 100 = 450.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "450",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "350+100=450.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.718Z"
+        }
+      }
+    },
+    {
+      "id": "ee262219-cc63-4ede-b3f7-c04b280f5d8c",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on by ones",
+      "stem": "Count on by ones. What number is 1 more than 28?",
+      "choices": [
+        "27",
+        "29",
+        "38",
+        "30"
+      ],
+      "answer": "29",
+      "compute": "28+1",
+      "solution": "28 + 1 = 29.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 + 1 = 29.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.771Z"
+        }
+      }
+    },
+    {
+      "id": "8bb5a990-7519-4497-916d-3207079c9226",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Skip-count by 5s",
+      "stem": "Which of these numbers do you say when you count by 5s from 10?",
+      "choices": [
+        "13",
+        "16",
+        "18",
+        "15"
+      ],
+      "answer": "15",
+      "compute": "10+5",
+      "solution": "Counting by 5s from 10 goes 10, 15, 20. Only 15 is in the list.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 5s from 10: 10, 15, 20, 25... Only 15 is said; 18, 16, 13 are not multiples of 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.779Z"
+        }
+      }
+    },
+    {
+      "id": "3b3fbed1-1f40-4348-b151-06eaa81d32f4",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on by ones",
+      "stem": "Liam counts his steps by ones. He says 64, 65, 66. What number does he say next?",
+      "choices": [],
+      "answer": "67",
+      "compute": "66+1",
+      "solution": "Counting by ones adds 1 each time. 66 + 1 = 67.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64, 65, 66, 67.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.801Z"
+        }
+      }
+    },
+    {
+      "id": "7e8aea58-3eda-4116-bc3a-f00df6d533c7",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Which of these numbers do you say when you count by 10s from 50?",
+      "choices": [
+        "80",
+        "55",
+        "65",
+        "84"
+      ],
+      "answer": "80",
+      "compute": "50+30",
+      "solution": "Counting by 10s from 50 goes 50, 60, 70, 80. Only 80 is in the list.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50, 60, 70, 80, ... 80 is said.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.830Z"
+        }
+      }
+    },
+    {
+      "id": "f7fa3e0a-365d-437d-8b79-12ca565a3fe2",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Skip-count by 5s",
+      "stem": "Ty counts by 5s starting at 5. He says 5, 10, 15, 20, and keeps going. Which two digits show up in the ones place of the numbers he says?",
+      "choices": [
+        "0 and 1",
+        "5 and 6",
+        "0 and 5",
+        "2 and 5"
+      ],
+      "answer": "0 and 5",
+      "compute": null,
+      "solution": "The numbers 5, 10, 15, 20, 25, 30 end in 5, 0, 5, 0, 5, 0. So the ones digits are 0 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 5 end in 0 or 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.830Z"
+        }
+      }
+    },
+    {
+      "id": "8797e682-3f40-4803-8130-067ba1745936",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on by ones",
+      "stem": "Kai counts by ones. He says 97, 98, 99. Which number does he say next?",
+      "choices": [
+        "90",
+        "101",
+        "100",
+        "110"
+      ],
+      "answer": "100",
+      "compute": "99+1",
+      "solution": "After 99 comes 100. 99 + 1 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "97, 98, 99, 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.833Z"
+        }
+      }
+    },
+    {
+      "id": "29bc3099-ed2d-47f7-8a24-6c6f13709b45",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "Skip-count by 5s: 70, 75, ?, 85. What number is the ?",
+      "choices": [
+        "79",
+        "81",
+        "90",
+        "80"
+      ],
+      "answer": "80",
+      "compute": "75+5",
+      "solution": "Counting by 5s adds 5. 75 + 5 = 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75 + 5 = 80; 80 + 5 = 85.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.864Z"
+        }
+      }
+    },
+    {
+      "id": "c7b88291-79d8-483a-8500-f41360fad092",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip-count by 100s",
+      "stem": "A bag holds 100 beads. Ana counts the beads in the bags: 100, 200, 300. How many beads are in 4 bags?",
+      "choices": [],
+      "answer": "400",
+      "compute": "300+100",
+      "solution": "Each bag adds 100. After 300 comes 300 + 100 = 400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 100s: 100,200,300,400 for 4 bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.904Z"
+        }
+      }
+    },
+    {
+      "id": "390784f9-04fa-4968-9038-84a7d0a69f61",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip-count by 10s",
+      "stem": "Eli counts by 10s: 12, 22, 32. What number does he say next?",
+      "choices": [],
+      "answer": "42",
+      "compute": "32+10",
+      "solution": "Add 10 to 32 to get 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12,22,32,42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.923Z"
+        }
+      }
+    },
+    {
+      "id": "9b74bec7-9e49-4adf-895f-63077035a69f",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "Fill in the gap. Counting by 100s: 200, ?, 400, 500. What number goes in place of the ?",
+      "choices": [],
+      "answer": "300",
+      "compute": "200+100",
+      "solution": "Counting by 100s adds 100. 200 + 100 = 300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200,300,400,500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.924Z"
+        }
+      }
+    },
+    {
+      "id": "1e4045b6-93a4-4af8-9a99-dc8e362e6fc1",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Which list shows counting by 10s?",
+      "choices": [
+        "30, 35, 40, 45",
+        "30, 40, 50, 60",
+        "30, 31, 32, 33",
+        "30, 130, 230, 330"
+      ],
+      "answer": "30, 40, 50, 60",
+      "compute": null,
+      "solution": "Counting by 10s adds 10 each time: 30, 40, 50, 60. The other lists add 5, 1 or 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30, 40, 50, 60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30,40,50,60 increases by 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.935Z"
+        }
+      }
+    },
+    {
+      "id": "bb1fb703-a362-4875-8485-cd3a5cd7bc9a",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the rule of a counting pattern",
+      "stem": "A pattern goes 405, 505, 605, 705. How much is added each time?",
+      "choices": [
+        "100",
+        "1",
+        "5",
+        "10"
+      ],
+      "answer": "100",
+      "compute": "505-405",
+      "solution": "Each number is 100 more than the one before. 505 - 405 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "505-405=100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.946Z"
+        }
+      }
+    },
+    {
+      "id": "bae391e7-e22d-49a7-b17b-f75bdd1d27c7",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Skip-count by 100s",
+      "stem": "Cleo counts the crayons in 3 boxes of 100. Which numbers does she say?",
+      "choices": [
+        "10, 20, 30",
+        "100, 200, 300",
+        "1, 2, 3",
+        "100, 110, 120"
+      ],
+      "answer": "100, 200, 300",
+      "compute": null,
+      "solution": "Each box adds 100, so she says 100, 200, 300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100, 200, 300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 100s: 100,200,300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.950Z"
+        }
+      }
+    },
+    {
+      "id": "d51ff1b0-5807-496a-8e95-0e92b14471e3",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count back by ones",
+      "stem": "Count back by ones. Which number comes right before 275?",
+      "choices": [
+        "274",
+        "276",
+        "265",
+        "175"
+      ],
+      "answer": "274",
+      "compute": "275-1",
+      "solution": "Right before means 1 less. 275 - 1 = 274.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "274",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "274 comes right before 275.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.961Z"
+        }
+      }
+    },
+    {
+      "id": "c102f6b3-a116-44b1-a62d-74642e17f90a",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on by ones",
+      "stem": "Which list counts by ones?",
+      "choices": [
+        "46, 48, 50, 52",
+        "46, 51, 56, 61",
+        "46, 47, 48, 49",
+        "46, 56, 66, 76"
+      ],
+      "answer": "46, 47, 48, 49",
+      "compute": null,
+      "solution": "Counting by ones adds 1 each time: 46, 47, 48, 49.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46, 47, 48, 49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46, 47, 48, 49 goes up by 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.979Z"
+        }
+      }
+    },
+    {
+      "id": "154526de-9089-482e-9e5f-b9dbed6baebd",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip-count by 10s",
+      "stem": "Each pack has 10 pencils. Sam counts 3 packs by 10s: 10, 20, 30. Then he counts one more pack. What number does he say?",
+      "choices": [],
+      "answer": "40",
+      "compute": "30+10",
+      "solution": "One more pack adds 10. 30 + 10 = 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10, 20, 30, then 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.004Z"
+        }
+      }
+    },
+    {
+      "id": "f0ef0f7d-24c9-4558-9376-af534bf13a04",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the rule of a counting pattern",
+      "stem": "A pattern goes 310, 320, 330, 340. How much is added each time?",
+      "choices": [],
+      "answer": "10",
+      "compute": "320-310",
+      "solution": "Each number is 10 more than the one before: 320 - 310 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each step adds 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.016Z"
+        }
+      }
+    },
+    {
+      "id": "c98be89d-9841-4113-beaa-bd9bc096ac4a",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on by ones",
+      "stem": "Jo is counting by ones and says 349. What number does she say next?",
+      "choices": [],
+      "answer": "350",
+      "compute": "349+1",
+      "solution": "349 + 1 = 350.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "350",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 349 comes 350.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.035Z"
+        }
+      }
+    },
+    {
       "id": "9978b274-e622-4fa5-b319-acc857a447aa",
       "topic_id": "NC17.2.NBT.2",
       "difficulty": 2,
@@ -16479,6 +17114,486 @@
       }
     },
     {
+      "id": "7f27b432-2c11-48c3-aaed-4113b5e44684",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Pat counts by 10s: 23, 33, 43, 53. Which place changes by 1 each time?",
+      "choices": [
+        "Ones place",
+        "Hundreds place",
+        "Tens place",
+        "No place changes"
+      ],
+      "answer": "Tens place",
+      "compute": null,
+      "solution": "Adding 10 adds 1 ten. The ones digit stays 3 and the tens digit goes 2, 3, 4, 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Tens place",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23 -> 33 -> 43 -> 53: tens digit goes 2, 3, 4, 5; ones stays 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.748Z"
+        }
+      }
+    },
+    {
+      "id": "0bb99573-9b40-422b-a752-625692a78d25",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count back by ones",
+      "stem": "Zed counts back by ones. He says 800, then the next two numbers. What is the last number he says?",
+      "choices": [],
+      "answer": "798",
+      "compute": "800-2",
+      "solution": "Counting back from 800 gives 799, then 798.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "798",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting back by ones: 800, 799, 798. Last is 798.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.785Z"
+        }
+      }
+    },
+    {
+      "id": "976dc7c2-d2b9-4ad0-b68c-7352f0a2df66",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Ty counts by 10s: 270, 280, 290. Which number does he say next?",
+      "choices": [
+        "291",
+        "295",
+        "390",
+        "300"
+      ],
+      "answer": "300",
+      "compute": "290+10",
+      "solution": "290 + 10 = 300. The hundreds digit goes up by 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "270, 280, 290, 300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.791Z"
+        }
+      }
+    },
+    {
+      "id": "aecdb2fb-129a-4ba4-94f8-923b2647e1ff",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "A pattern counts by 10s: 185, 195, ?, 215. What number is the ?",
+      "choices": [],
+      "answer": "205",
+      "compute": "195+10",
+      "solution": "195 + 10 = 205. Check: 205 + 10 = 215.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "205",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "195 + 10 = 205; 205 + 10 = 215.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.849Z"
+        }
+      }
+    },
+    {
+      "id": "d60ef329-9f81-43d8-97c7-c0cf25d48a3d",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on by ones",
+      "stem": "Which number comes between 749 and 751 when you count by ones?",
+      "choices": [
+        "740",
+        "750",
+        "759",
+        "650"
+      ],
+      "answer": "750",
+      "compute": "749+1",
+      "solution": "749, 750, 751. The number between is 750.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "750",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 749 and 751 is 750.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.866Z"
+        }
+      }
+    },
+    {
+      "id": "31fb005a-e988-4261-8729-151bfd6c04c2",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip-count by 10s",
+      "stem": "Hana counts by 10s: 95, 105, 115. What number does she say next?",
+      "choices": [],
+      "answer": "125",
+      "compute": "115+10",
+      "solution": "115 + 10 = 125.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "115 + 10 = 125.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.884Z"
+        }
+      }
+    },
+    {
+      "id": "10dfc7b9-4ec8-49e0-924d-97f2ec658013",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Cara counts by 10s starting at 46. Which list shows the numbers she says?",
+      "choices": [
+        "46, 47, 48, 49",
+        "46, 56, 66, 76",
+        "46, 51, 56, 61",
+        "46, 146, 246, 346"
+      ],
+      "answer": "46, 56, 66, 76",
+      "compute": null,
+      "solution": "Each number is 10 more than the one before: 46, 56, 66, 76. The tens digit goes up by 1 each time.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46, 56, 66, 76",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46, 56, 66, 76.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.885Z"
+        }
+      }
+    },
+    {
+      "id": "45e2c3d4-5fc8-4bbe-8d88-81b8a840d296",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Skip-count by 100s",
+      "stem": "Boxes hold 100 crayons each. Ola counts the boxes by 100s: 300, 400, 500. What number does she say for the next box?",
+      "choices": [
+        "501",
+        "550",
+        "510",
+        "600"
+      ],
+      "answer": "600",
+      "compute": "500+100",
+      "solution": "500 + 100 = 600.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 + 100 = 600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.896Z"
+        }
+      }
+    },
+    {
+      "id": "84d31483-3546-4bf2-8007-315ba49aeff9",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Start at 620 and count by 5s. What is the third number you say? (620 is the 1st.)",
+      "choices": [],
+      "answer": "630",
+      "compute": "620+10",
+      "solution": "The 1st is 620, the 2nd is 625 and the 3rd is 630.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "630",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "620 (1st), 625 (2nd), 630 (3rd).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.906Z"
+        }
+      }
+    },
+    {
+      "id": "43ceb884-eb8a-457c-bf9d-31f659ffd97c",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count back by ones",
+      "stem": "Ned counts back by ones: 902, 901, 900. Which number does he say next?",
+      "choices": [
+        "899",
+        "800",
+        "890",
+        "999"
+      ],
+      "answer": "899",
+      "compute": "900-1",
+      "solution": "One less than 900 is 899.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "899",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "902, 901, 900, then 899.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.913Z"
+        }
+      }
+    },
+    {
+      "id": "4e5ba8f9-566e-48c5-822c-1e27d208d9da",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "A pattern counts by 10s: ?, 355, 365, 375. What number is the ?",
+      "choices": [],
+      "answer": "345",
+      "compute": "355-10",
+      "solution": "The number before 355 is 10 less: 355 - 10 = 345.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "345",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "355-10=345.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.923Z"
+        }
+      }
+    },
+    {
+      "id": "a8b38f27-c7e0-41e7-b954-1a3390647782",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Skip-count by 5s",
+      "stem": "Dina skip-counts by 5s from 35. She stops at 70. What number does she say just before 70?",
+      "choices": [
+        "60",
+        "65",
+        "69",
+        "75"
+      ],
+      "answer": "65",
+      "compute": "70-5",
+      "solution": "Counting by 5s, the number before 70 is 70 - 5 = 65.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35,40,...,65,70; just before 70 is 65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.938Z"
+        }
+      }
+    },
+    {
+      "id": "a833c9c4-3cc3-47d2-a8ae-4744f5465469",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on by ones",
+      "stem": "Mo counts by ones: 898, 899, 900. Which number does he say next?",
+      "choices": [
+        "910",
+        "1000",
+        "801",
+        "901"
+      ],
+      "answer": "901",
+      "compute": "900+1",
+      "solution": "900 + 1 = 901.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "901",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "900 then 901.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.943Z"
+        }
+      }
+    },
+    {
+      "id": "168b7eef-5c64-419f-b091-d55b840ea0af",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip-count by 100s",
+      "stem": "Start at 372 and count by 100s. Say the next 3 numbers after 372. What is the last number you say?",
+      "choices": [],
+      "answer": "672",
+      "compute": "372+300",
+      "solution": "The next 3 numbers are 472, 572 and 672.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "672",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "472, 572, 672. Last is 672.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.977Z"
+        }
+      }
+    },
+    {
+      "id": "93638519-568d-46ac-bbf4-5a742e4535dc",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the rule of a counting pattern",
+      "stem": "A pattern goes 142, 147, 152, 157. How is the pattern counting?",
+      "choices": [
+        "By 10s",
+        "By 100s",
+        "By 5s",
+        "By ones"
+      ],
+      "answer": "By 5s",
+      "compute": null,
+      "solution": "Each number is 5 more than the one before: 147 - 142 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "By 5s",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each step adds 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.016Z"
+        }
+      }
+    },
+    {
       "id": "9856ebc9-b6ee-4d27-bdce-f6ba5df1453d",
       "topic_id": "NC17.2.NBT.2",
       "difficulty": 3,
@@ -16882,6 +17997,621 @@
           "work": "601, 600, 599, 598.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.447Z"
+        }
+      }
+    },
+    {
+      "id": "5a3804e2-03d4-48c6-9d04-12f0fdd9d26d",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "Sam counts by 100s. The 3rd number he says is 520. What is the 1st number he says?",
+      "choices": [],
+      "answer": "320",
+      "compute": "520-200",
+      "solution": "Going back 2 steps of 100 from 520 gives 420, then 320.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "320",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 100s: 1st, 2nd = 1st + 100, 3rd = 1st + 200 = 520, so 1st = 320.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.732Z"
+        }
+      }
+    },
+    {
+      "id": "d631b68e-875c-495b-aa32-49dc39ce447b",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Hal counts by 10s starting at 25. Which of these numbers does he NOT say?",
+      "choices": [
+        "65",
+        "90",
+        "75",
+        "85"
+      ],
+      "answer": "90",
+      "compute": null,
+      "solution": "Starting at 25 and adding 10 gives 25, 35, 45, 55, 65, 75, 85, 95. He never says 90.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25, 35, 45, 55, 65, 75, 85, 95: all end in 5, so 90 is not said.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.766Z"
+        }
+      }
+    },
+    {
+      "id": "c42b74e3-53ed-428b-b14a-f01d6bb9e1e2",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count how many numbers are said",
+      "stem": "Sia counts by 100s from 250 up to 850 and says both 250 and 850. How many numbers does she say?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "She says 250, 350, 450, 550, 650, 750, 850. That is 7 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250, 350, 450, 550, 650, 750, 850: 7 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.783Z"
+        }
+      }
+    },
+    {
+      "id": "7e3c56bb-3449-45c6-8236-714f0280d08a",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "The pattern counts by 10s: 970, 980, ?, 1000. What number is the ?",
+      "choices": [],
+      "answer": "990",
+      "compute": "980+10",
+      "solution": "980 + 10 = 990. Check: 990 + 10 = 1000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "990",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "970, 980, 990, 1000. Missing 990.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.790Z"
+        }
+      }
+    },
+    {
+      "id": "489dab56-3c46-4e5a-91cf-252902691a0d",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count how many numbers are said",
+      "stem": "Ben counts by 5s from 5 up to 50 and says both 5 and 50. How many numbers does he say?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "He says 5, 10, 15, 20, 25, 30, 35, 40, 45, 50. That is 10 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5, 10, ..., 50: 50/5 = 10 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.800Z"
+        }
+      }
+    },
+    {
+      "id": "6897193b-0ed4-4ac2-a092-a1e5945f12b1",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Start at 85 and count by 10s. Say the next 5 numbers after 85. What is the last number you say?",
+      "choices": [],
+      "answer": "135",
+      "compute": "85+50",
+      "solution": "The next 5 numbers are 95, 105, 115, 125 and 135.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "135",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85, then 95, 105, 115, 125, 135. Fifth after 85 is 135.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.815Z"
+        }
+      }
+    },
+    {
+      "id": "5d591382-e08c-4bed-9a9a-1ace7f8df052",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on by ones",
+      "stem": "Start at 993 and count on by ones. What is the 8th number you say? (993 is the 1st.)",
+      "choices": [],
+      "answer": "1000",
+      "compute": "993+7",
+      "solution": "The 8th number is 7 steps after the 1st. 993 + 7 = 1000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "993(1),994,995,996,997,998,999,1000(8th).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.849Z"
+        }
+      }
+    },
+    {
+      "id": "a5e8223c-b9c8-4be3-b617-3ee07668dd7c",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Skip-count by 5s",
+      "stem": "Which count says the number 400?",
+      "choices": [
+        "Count by 10s from 35",
+        "Count by 5s from 205",
+        "Count by 100s from 150",
+        "Count by 10s from 255"
+      ],
+      "answer": "Count by 5s from 205",
+      "compute": null,
+      "solution": "From 205, counting by 5s reaches 400 (205 + 195 = 400). Counting by 10s from 35 or 255 says 395 and then 405. Counting by 100s from 150 says 350 and then 450.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Count by 5s from 205",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10s from 35 end in 5; 5s from 205: ...,395,400 yes; 100s from 150 end in 50; 10s from 255 end in 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.859Z"
+        }
+      }
+    },
+    {
+      "id": "87e41007-03d2-448c-94ed-6faf5dc39c80",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Pia counts by 10s from 4. Which of these numbers will she say?",
+      "choices": [
+        "90",
+        "95",
+        "94",
+        "100"
+      ],
+      "answer": "94",
+      "compute": "4+90",
+      "solution": "Counting by 10s from 4 gives 4, 14, 24, ..., 94. The ones digit stays 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "94",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 14, ..., 84, 94: 94.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.875Z"
+        }
+      }
+    },
+    {
+      "id": "ec18e08e-329d-4572-94b7-0c1aec9f36ff",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Skip-count by 10s",
+      "stem": "Dee counts by 10s from 280. Which list shows the numbers she says?",
+      "choices": [
+        "280, 290, 200, 210",
+        "280, 285, 290, 295",
+        "280, 290, 300, 310",
+        "280, 380, 480, 580"
+      ],
+      "answer": "280, 290, 300, 310",
+      "compute": null,
+      "solution": "After 290 comes 300, and the hundreds digit goes up by 1. 280, 290, 300, 310.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "280, 290, 300, 310",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "280, 290, 300, 310.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.881Z"
+        }
+      }
+    },
+    {
+      "id": "6429fdbe-05ca-4d08-80a8-91cceee8a76b",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count how many numbers are said",
+      "stem": "Jo counts by 5s from 100 up to 125 and says both 100 and 125. How many numbers does she say?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "She says 100, 105, 110, 115, 120, 125. That is 6 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100, 105, 110, 115, 120, 125: 6 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.885Z"
+        }
+      }
+    },
+    {
+      "id": "2303337a-b7bf-4fc9-a04d-936ad1225b1b",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Start at 1000 and count back by ones. Say the next 4 numbers after 1000. What is the last number you say?",
+      "choices": [],
+      "answer": "996",
+      "compute": "1000-4",
+      "solution": "The next 4 numbers are 999, 998, 997 and 996.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "996",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "999, 998, 997, 996; last is 996.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.910Z"
+        }
+      }
+    },
+    {
+      "id": "3d31957f-0a88-4d2e-8e57-cbc1c813e141",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "A pattern counts by 10s: 636, 646, ?, 666. Which number is the ?",
+      "choices": [
+        "656",
+        "650",
+        "657",
+        "676"
+      ],
+      "answer": "656",
+      "compute": "646+10",
+      "solution": "646 + 10 = 656. Check: 656 + 10 = 666.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "656",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "646+10=656; 656+10=666.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.923Z"
+        }
+      }
+    },
+    {
+      "id": "567f0bf8-ca59-4c13-995f-2be358e64eca",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Ola counts by 100s and says 260, 360, 460. Then she says the next 2 numbers. What is the last number she says?",
+      "choices": [],
+      "answer": "660",
+      "compute": "460+200",
+      "solution": "The next 2 numbers are 560 and 660.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "660",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "260,360,460,560,660; last 660.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.939Z"
+        }
+      }
+    },
+    {
+      "id": "19d02ed3-4bf4-4334-9c99-aa889fb54669",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "Dee counts by 5s. The 4th number she says is 40. What is the 1st number she says?",
+      "choices": [],
+      "answer": "25",
+      "compute": "40-15",
+      "solution": "Going back 3 steps of 5 from 40 gives 35, 30, 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting up by 5s: 25,30,35,40; 1st is 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.954Z"
+        }
+      }
+    },
+    {
+      "id": "616c080d-9855-49e8-81c1-45d7837a5d30",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing number in a skip-count pattern",
+      "stem": "A pattern counts by 5s: 785, ?, ?, 800. Which two numbers go in place of the ?s?",
+      "choices": [
+        "786, 787",
+        "790, 800",
+        "790, 795",
+        "791, 796"
+      ],
+      "answer": "790, 795",
+      "compute": null,
+      "solution": "785, 790, 795, 800. Each step adds 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "790, 795",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "785,790,795,800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.959Z"
+        }
+      }
+    },
+    {
+      "id": "d9052087-a089-4cbf-a20e-a46484eec035",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Count on by ones from 698. Say the next 3 numbers after 698. What is the last number you say?",
+      "choices": [],
+      "answer": "701",
+      "compute": "698+3",
+      "solution": "The next 3 numbers are 699, 700 and 701.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "701",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "699, 700, 701. Last 701.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.984Z"
+        }
+      }
+    },
+    {
+      "id": "7d4ef080-b75a-4def-8e62-d05770858f16",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Skip-count by 5s",
+      "stem": "Leo counted by 5s. The last number he said was 750. What number did he say right before it?",
+      "choices": [],
+      "answer": "745",
+      "compute": "750-5",
+      "solution": "Right before is 5 less. 750 - 5 = 745.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "745",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 5s, before 750 is 745.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.995Z"
+        }
+      }
+    },
+    {
+      "id": "9a866ba5-b3bc-4b2b-a430-6b4a1fc852bc",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Say the next numbers in a count",
+      "stem": "Start at 365 and count by 10s. Say the next 7 numbers after 365. What is the last number you say?",
+      "choices": [],
+      "answer": "435",
+      "compute": "365+70",
+      "solution": "7 tens is 70. 365 + 70 = 435.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "435",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "375, 385, 395, 405, 415, 425, 435. Seventh is 435.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.008Z"
+        }
+      }
+    },
+    {
+      "id": "04426f44-d4f5-4ae2-b969-b1bb5b87a787",
+      "topic_id": "NC17.2.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Skip-count by 5s",
+      "stem": "Anna counts by 5s from 15. Bo counts by 10s from 20. Which number do both of them say?",
+      "choices": [
+        "60",
+        "25",
+        "35",
+        "45"
+      ],
+      "answer": "60",
+      "compute": null,
+      "solution": "Anna says 25, 35 and 45, but Bo says 20, 30, 40, 50, 60. Both say 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Anna: 15, 20, 25, ...(multiples of 5 from 15). Bo: 20, 30, 40, ... 60 is in both; 25, 35, 45 are not said by Bo.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.034Z"
         }
       }
     },

@@ -22114,6 +22114,636 @@
       }
     },
     {
+      "id": "027a1fe3-175b-448c-bf0c-57cba1e42f0f",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "Find the number that makes this equation true: $2 + ? = 6$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "Count up from 2 to 6: that is 4 more. So $2 + 4 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6-2=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.657Z"
+        }
+      }
+    },
+    {
+      "id": "34686455-b915-4da4-af59-fbd33867cc22",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story with a missing change or part",
+      "stem": "Tess has 9 cherries. She eats some. Now she has 4 cherries. How many cherries did Tess eat?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "$9 - ? = 4$, so Tess ate 5 cherries.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-?=4, ?=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.706Z"
+        }
+      }
+    },
+    {
+      "id": "8589d5a3-d0f1-485e-855f-19175b22f495",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story with a missing start",
+      "stem": "Jen has some coins. Her dad gives her 2 more coins. Now Jen has 6 coins. How many coins did Jen have at first?",
+      "choices": [
+        "8",
+        "2",
+        "6",
+        "4"
+      ],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "$? + 2 = 6$, so Jen had 4 coins at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?+2=6, ?=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.708Z"
+        }
+      }
+    },
+    {
+      "id": "935d43ce-c5f2-40d0-b86c-f0f4887a08c6",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story with a missing change or part",
+      "stem": "Ava has 6 crayons. She wants to have 10 crayons. How many more crayons does she need?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "Think $6 + ? = 10$. The ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+?=10, ?=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.715Z"
+        }
+      }
+    },
+    {
+      "id": "d30dee94-7432-43e5-844c-7e548036173c",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story with a missing start",
+      "stem": "Lia had some beads. She lost 3 beads. Now she has 5 beads. How many beads did Lia have at first?",
+      "choices": [
+        "2",
+        "3",
+        "8",
+        "5"
+      ],
+      "answer": "8",
+      "compute": "5+3",
+      "solution": "$? - 3 = 5$. Add the 3 back: $5 + 3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?-3=5, ?=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.720Z"
+        }
+      }
+    },
+    {
+      "id": "ef98fa71-8ef1-494d-b8df-a55bee44e165",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing first addend (? + a = c)",
+      "stem": "What number goes in the ? to make $? + 3 = 8$ true?",
+      "choices": [],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "$8 - 3 = 5$, and $5 + 3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.732Z"
+        }
+      }
+    },
+    {
+      "id": "23498762-539a-4169-b325-514ccccdbeac",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a related addition or subtraction fact",
+      "stem": "You know that $4 + 5 = 9$. Use it to solve $9 - 4 = ?$.",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "Since $4 + 5 = 9$, taking 4 away from 9 leaves 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 4 = 5 since 4 + 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.733Z"
+        }
+      }
+    },
+    {
+      "id": "e5def1a0-a915-4d79-8f91-202c32da91f2",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story with a missing start",
+      "stem": "Some ducks are in a pond. 3 more ducks swim in. Now there are 8 ducks in the pond. How many ducks were in the pond at first?",
+      "choices": [],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "$? + 3 = 8$, so there were 5 ducks at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 3 = 8, ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.736Z"
+        }
+      }
+    },
+    {
+      "id": "20737eb5-1928-4582-9ec1-7f8f793cfc90",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing first addend (? + a = c)",
+      "stem": "Which number goes in the ? in $? + 4 = 9$?",
+      "choices": [
+        "13",
+        "5",
+        "4",
+        "6"
+      ],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "$5 + 4 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.773Z"
+        }
+      }
+    },
+    {
+      "id": "8083cdec-176e-478e-a048-faff99e7af42",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "Which equation has 5 as the missing number?",
+      "choices": [
+        "$4 + ? = 9$",
+        "$4 + ? = 8$",
+        "$6 + ? = 9$",
+        "$9 - ? = 5$"
+      ],
+      "answer": "$4 + ? = 9$",
+      "compute": null,
+      "solution": "$4 + 5 = 9$. In the others the missing number is 4, 3 and 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + ? = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - ? = 5 -> 4; 4 + ? = 8 -> 4; 4 + ? = 9 -> 5; 6 + ? = 9 -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.773Z"
+        }
+      }
+    },
+    {
+      "id": "5301e632-58ee-46d5-8170-ac3e7f24cf61",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Story with a missing change or part",
+      "stem": "A plate has 11 cookies. Kids eat some of them. Then 6 cookies are left. How many cookies did the kids eat?",
+      "choices": [
+        "17",
+        "6",
+        "5",
+        "4"
+      ],
+      "answer": "5",
+      "compute": "11-6",
+      "solution": "$11 - ? = 6$, so the kids ate 5 cookies.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 - ? = 6, ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.801Z"
+        }
+      }
+    },
+    {
+      "id": "c63c7702-312f-4861-b9eb-5a3addbbdb9a",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Story with a missing change or part",
+      "stem": "There are 7 kids on a bus. Some more kids get on. Now there are 10 kids on the bus. How many kids got on?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-7",
+      "solution": "$7 + ? = 10$, so 3 kids got on.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + ? = 10, so 3 kids got on.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.835Z"
+        }
+      }
+    },
+    {
+      "id": "b38f408a-ca23-462c-9211-49d85560dfdb",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use a related addition or subtraction fact",
+      "stem": "Which equation uses the same three numbers as $3 + 4 = 7$ and starts with 7?",
+      "choices": [
+        "$7 + 4 = 11$",
+        "$7 - 4 = 3$",
+        "$7 - 3 = 3$",
+        "$7 - 7 = 0$"
+      ],
+      "answer": "$7 - 4 = 3$",
+      "compute": null,
+      "solution": "Take 4 away from 7 to get the other part: $7 - 4 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 - 4 = 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fact family of 3, 4, 7 starting with 7: 7 - 4 = 3 (true). 7 - 3 = 3 is false; others use other numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.838Z"
+        }
+      }
+    },
+    {
+      "id": "29fff215-39fc-4b9a-980b-5d5674ae8eb5",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "Which number makes $5 + ? = 7$ true?",
+      "choices": [
+        "2",
+        "12",
+        "3",
+        "1"
+      ],
+      "answer": "2",
+      "compute": "7-5",
+      "solution": "$5 + 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 5 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.854Z"
+        }
+      }
+    },
+    {
+      "id": "86c5ff31-a95c-4386-a664-9963d4201946",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing number being taken away (c - ? = a)",
+      "stem": "$7 - ? = 2$. What is the ?",
+      "choices": [
+        "9",
+        "2",
+        "5",
+        "4"
+      ],
+      "answer": "5",
+      "compute": "7-2",
+      "solution": "$7 - 5 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 5 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.886Z"
+        }
+      }
+    },
+    {
+      "id": "efd2f45a-5a83-4d91-a3a7-8a19247ad89a",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing starting number (? - a = b)",
+      "stem": "Which number is the ? in $? - 3 = 4$?",
+      "choices": [
+        "1",
+        "4",
+        "3",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "4+3",
+      "solution": "Add 3 back to 4: $4 + 3 = 7$, and $7 - 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?=4+3=7; 7-3=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.916Z"
+        }
+      }
+    },
+    {
+      "id": "5beb99ac-f04b-4640-8126-8fe7483b3d6a",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number being taken away (c - ? = a)",
+      "stem": "What number does the ? stand for in $8 - ? = 5$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "Going from 8 down to 5 takes away 3. So $8 - 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8-3=5, ?=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.941Z"
+        }
+      }
+    },
+    {
+      "id": "ae218a65-223f-4982-8d07-cd8e13ad3d1e",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing starting number (? - a = b)",
+      "stem": "Solve for the ?: $? - 4 = 2$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "2+4",
+      "solution": "Some number take away 4 leaves 2. Add 4 back to 2: $2 + 4 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?=2+4=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.959Z"
+        }
+      }
+    },
+    {
+      "id": "d3502084-c774-4d58-a687-aad2c4040cba",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use a related addition or subtraction fact",
+      "stem": "Which equation can help you solve $? + 6 = 9$?",
+      "choices": [
+        "$9 + 6 = ?$",
+        "$6 + 6 = ?$",
+        "$9 - 9 = ?$",
+        "$9 - 6 = ?$"
+      ],
+      "answer": "$9 - 6 = ?$",
+      "compute": null,
+      "solution": "The total is 9 and one part is 6. Take 6 away from 9 to find the other part.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 6 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?+6=9 means ?=9-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.968Z"
+        }
+      }
+    },
+    {
+      "id": "f47c40c7-ac6d-4d00-b7d8-f3c59f2c9120",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "Kim writes $5 + ? = 9$. What number should she write for the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "$5 + 4 = 9$, so she writes 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 4 = 9, so 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.972Z"
+        }
+      }
+    },
+    {
       "id": "12b80ef5-9eff-43a3-a2b2-d83cd5c59870",
       "topic_id": "NC17.1.OA.8",
       "difficulty": 2,
@@ -22579,6 +23209,578 @@
       }
     },
     {
+      "id": "9c79aa5a-c060-4fc8-a30d-a1534f2e6e1c",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number when the total is written first (c = a + ?)",
+      "stem": "What is the ? in $11 = ? + 4$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "11-4",
+      "solution": "$11 - 4 = 7$, and $7 + 4 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11-4=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.711Z"
+        }
+      }
+    },
+    {
+      "id": "16efb36f-974f-41dc-b2d7-5ff4190611ad",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story with a missing change or part",
+      "stem": "Ivy needs 17 stickers for her book. She has 9 stickers. How many more stickers does she need?",
+      "choices": [],
+      "answer": "8",
+      "compute": "17-9",
+      "solution": "$9 + ? = 17$, so she needs 8 more stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + ? = 17, ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.732Z"
+        }
+      }
+    },
+    {
+      "id": "a7dbc31e-b6b7-4883-8585-5bf44a7683c6",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "Which equation is true when the ? is 6?",
+      "choices": [
+        "$? + 8 = 16$",
+        "$9 + ? = 14$",
+        "$15 - ? = 8$",
+        "$12 - ? = 6$"
+      ],
+      "answer": "$12 - ? = 6$",
+      "compute": null,
+      "solution": "$12 - 6 = 6$. In the others the ? would be 8, 5 and 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 - ? = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 6 = 9 (no), 9 + 6 = 15 (no), 12 - 6 = 6 (yes), 6 + 8 = 14 (no).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.770Z"
+        }
+      }
+    },
+    {
+      "id": "c89f7bf8-ed5c-4206-a765-69bb725ea196",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "One number makes both $? + 4 = 11$ and $11 - 4 = ?$ true. What is that number?",
+      "choices": [
+        "15",
+        "4",
+        "7",
+        "11"
+      ],
+      "answer": "7",
+      "compute": "11-4",
+      "solution": "$11 - 4 = 7$, and $7 + 4 = 11$. So 7 works in both.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?+4=11 gives 7; 11-4=7. The number is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.785Z"
+        }
+      }
+    },
+    {
+      "id": "05e4ea90-6600-4d40-bdd0-620dbe911d2a",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "Which number makes $9 + ? = 17$ true?",
+      "choices": [
+        "8",
+        "26",
+        "7",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "17-9",
+      "solution": "$9 + 8 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 - 9 = 8; 9 + 8 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.787Z"
+        }
+      }
+    },
+    {
+      "id": "e3a3afd1-681a-4870-9d3e-adf563622168",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a related addition or subtraction fact",
+      "stem": "Which equation can help you find the ? in $? - 7 = 6$?",
+      "choices": [
+        "$6 - 7 = ?$",
+        "$6 + 7 = ?$",
+        "$7 - 6 = ?$",
+        "$6 + 6 = ?$"
+      ],
+      "answer": "$6 + 7 = ?$",
+      "compute": null,
+      "solution": "The ? is the number you start with. Put back the 7 that was taken away: $6 + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 7 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? - 7 = 6 means ? = 6 + 7 = 13. Option 6 + 7 = ?.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.795Z"
+        }
+      }
+    },
+    {
+      "id": "c7a93e95-2af4-425d-ab45-e98399f8c84e",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number being taken away (c - ? = a)",
+      "stem": "Find the missing number: $14 - ? = 6$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "14-6",
+      "solution": "From 14 down to 6 is 8. So $14 - 8 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 - 8 = 6. ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.797Z"
+        }
+      }
+    },
+    {
+      "id": "bf0e8395-12b4-40a6-9e2c-f2913db66753",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing starting number (? - a = b)",
+      "stem": "What number makes $? - 8 = 7$ true?",
+      "choices": [],
+      "answer": "15",
+      "compute": "7+8",
+      "solution": "Add 8 back to 7: $7 + 8 = 15$, and $15 - 8 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 7 + 8 = 15. Check 15 - 8 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.800Z"
+        }
+      }
+    },
+    {
+      "id": "043233a8-0d14-4127-a549-c471b488f8d6",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "A number sentence says $7 + ? = 15$. Find the missing number.",
+      "choices": [],
+      "answer": "8",
+      "compute": "15-7",
+      "solution": "$15 - 7 = 8$, and $7 + 8 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 - 7 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.838Z"
+        }
+      }
+    },
+    {
+      "id": "6447c4f2-685f-4c5e-808f-f1375d8a15e9",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Story with a missing change or part",
+      "stem": "A shelf has 18 books. Some of the books are about animals. 11 books are not about animals. How many books are about animals?",
+      "choices": [
+        "7",
+        "29",
+        "11",
+        "8"
+      ],
+      "answer": "7",
+      "compute": "18-11",
+      "solution": "$? + 11 = 18$, so 7 books are about animals.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 - 11 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.863Z"
+        }
+      }
+    },
+    {
+      "id": "65371f02-662a-4267-b6be-1be07202d5d2",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number when the total is written first (c = a + ?)",
+      "stem": "Find the ? in $8 = ? - 6$.",
+      "choices": [],
+      "answer": "14",
+      "compute": "8+6",
+      "solution": "Add 6 back to 8: $8 + 6 = 14$, and $14 - 6 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 8 + 6 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.891Z"
+        }
+      }
+    },
+    {
+      "id": "a6b4c91f-86fb-4c70-9ed4-b6fea0bfe6ec",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number being taken away (c - ? = a)",
+      "stem": "In $12 - ? = 4$, what is the ?",
+      "choices": [
+        "16",
+        "9",
+        "8",
+        "6"
+      ],
+      "answer": "8",
+      "compute": "12-4",
+      "solution": "$12 - 8 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 8 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.897Z"
+        }
+      }
+    },
+    {
+      "id": "7de59a11-f4f8-4704-9a53-199f95720ba2",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number when the total is written first (c = a + ?)",
+      "stem": "Which number is the ? in $17 = ? + 8$?",
+      "choices": [
+        "9",
+        "25",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "17-8",
+      "solution": "$9 + 8 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17-8=9; 9+8=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.905Z"
+        }
+      }
+    },
+    {
+      "id": "837c84bc-a6dc-48bb-8402-959f77500493",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "Which equation uses the numbers 6, 9 and 15 and is true?",
+      "choices": [
+        "$15 + 6 = 9$",
+        "$9 - 15 = 6$",
+        "$6 + 9 = 15$",
+        "$6 + 15 = 9$"
+      ],
+      "answer": "$6 + 9 = 15$",
+      "compute": null,
+      "solution": "The two parts 6 and 9 make the total 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 9 = 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+9=15 true; others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.916Z"
+        }
+      }
+    },
+    {
+      "id": "d8aba152-d305-4140-94c6-92215111f85b",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing first addend (? + a = c)",
+      "stem": "What number goes in the ? to make $? + 6 = 14$ true?",
+      "choices": [
+        "20",
+        "8",
+        "7",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "14-6",
+      "solution": "$8 + 6 = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14-6=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.929Z"
+        }
+      }
+    },
+    {
+      "id": "9c0c2b6c-6062-4109-966b-335fb598e9a3",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Story with a missing start",
+      "stem": "Mark had some stickers. He gave 7 stickers to his sister. Now he has 8 stickers. How many stickers did Mark have at first?",
+      "choices": [],
+      "answer": "15",
+      "compute": "8+7",
+      "solution": "$? - 7 = 8$. Add the 7 back: $8 + 7 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?-7=8, ?=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.946Z"
+        }
+      }
+    },
+    {
+      "id": "364ed9a4-cd85-4726-aeef-a75fae34b41d",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Story with a missing change or part",
+      "stem": "Pablo reads 7 pages on Monday. He wants to read 16 pages in all. How many more pages must he read?",
+      "choices": [
+        "23",
+        "7",
+        "8",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "16-7",
+      "solution": "$7 + ? = 16$, so he must read 9 more pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16-7=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.951Z"
+        }
+      }
+    },
+    {
+      "id": "71734522-1a31-4a69-ac48-afbdd0cae46d",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a related addition or subtraction fact",
+      "stem": "You know that $8 + 7 = 15$. Use it to find the ? in $15 - 7 = ?$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "15-7",
+      "solution": "Since $8 + 7 = 15$, taking 7 away from 15 leaves 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15-7=8 (from 8+7=15).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.964Z"
+        }
+      }
+    },
+    {
       "id": "00eac8db-ed9b-47dd-b4fb-22ea828c3d30",
       "topic_id": "NC17.1.OA.8",
       "difficulty": 3,
@@ -22992,6 +24194,631 @@
           "work": "? = 15 - 8.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.455Z"
+        }
+      }
+    },
+    {
+      "id": "98abfbb1-f59c-4cfb-a365-9552e6b6ee7a",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "Solve $6 + ? = 19$.",
+      "choices": [],
+      "answer": "13",
+      "compute": "19-6",
+      "solution": "$19 - 6 = 13$, and $6 + 13 = 19$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 19 - 6 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.745Z"
+        }
+      }
+    },
+    {
+      "id": "0f04a43f-a82f-4303-9ebe-888e7c18d28a",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "Put 8 in place of the ?. Which equation is then true?",
+      "choices": [
+        "$? + 9 = 16$",
+        "$13 - ? = 6$",
+        "$? + 9 = 17$",
+        "$? - 8 = 8$"
+      ],
+      "answer": "$? + 9 = 17$",
+      "compute": null,
+      "solution": "$8 + 9 = 17$. The others are not true with 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$? + 9 = 17$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "With ?=8: 8-8=0 (not 8); 8+9=17 (not 16); 13-8=5 (not 6); 8+9=17 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.781Z"
+        }
+      }
+    },
+    {
+      "id": "a0240d21-0d77-45cf-9119-541f474fe844",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "Which equation does NOT have 9 as the missing number?",
+      "choices": [
+        "$9 + ? = 18$",
+        "$14 - ? = 6$",
+        "$? + 6 = 15$",
+        "$17 - ? = 8$"
+      ],
+      "answer": "$14 - ? = 6$",
+      "compute": null,
+      "solution": "$14 - 8 = 6$, so the missing number is 8. In the others it is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14 - ? = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+?=18 -> 9; 14-?=6 -> 8; ?+6=15 -> 9; 17-?=8 -> 9. Only 14-?=6 does not have 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.785Z"
+        }
+      }
+    },
+    {
+      "id": "0bc5f2d8-4cbb-472f-8a8d-1f309519920c",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number being taken away (c - ? = a)",
+      "stem": "Find the number that makes $19 - ? = 7$ true.",
+      "choices": [],
+      "answer": "12",
+      "compute": "19-7",
+      "solution": "From 19 down to 7 is 12. So $19 - 12 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 - 7 = 12; 19 - 12 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.787Z"
+        }
+      }
+    },
+    {
+      "id": "e3aca9c9-2107-448a-ba67-02f379de74de",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story with a missing change or part",
+      "stem": "Ken had 19 stickers. After he gave some to his friends, he had 11 stickers left. How many stickers did Ken give away?",
+      "choices": [],
+      "answer": "8",
+      "compute": "19-11",
+      "solution": "$19 - ? = 11$, so Ken gave away 8 stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 - ? = 11; ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.808Z"
+        }
+      }
+    },
+    {
+      "id": "3b636695-c12d-4c1b-8441-06a8e262de82",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story with a missing start",
+      "stem": "Some birds sat on a roof. 8 more birds landed on the roof. Now there are 17 birds on the roof. How many birds sat on the roof at first?",
+      "choices": [],
+      "answer": "9",
+      "compute": "17-8",
+      "solution": "$? + 8 = 17$, so 9 birds sat on the roof at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 8 = 17, ? = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.820Z"
+        }
+      }
+    },
+    {
+      "id": "974316ae-a1da-485f-aee1-5032762d4ac9",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a related addition or subtraction fact",
+      "stem": "Mia knows that $7 + 9 = 16$. Use this fact to find the ? in $16 - ? = 9$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "16-9",
+      "solution": "Since $7 + 9 = 16$, taking 9 away from 16 leaves 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 9 = 16 so 16 - 9 = 7; ? = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.825Z"
+        }
+      }
+    },
+    {
+      "id": "2052dbc3-68a6-49e0-afc2-aca890614caf",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing first addend (? + a = c)",
+      "stem": "Find the ? in $? + 8 = 20$.",
+      "choices": [],
+      "answer": "12",
+      "compute": "20-8",
+      "solution": "$20 - 8 = 12$, and $12 + 8 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 8 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.832Z"
+        }
+      }
+    },
+    {
+      "id": "ba0d4add-b169-441e-a808-9053808df388",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing number when the total is written first (c = a + ?)",
+      "stem": "What is the ? in $12 = ? - 5$?",
+      "choices": [
+        "17",
+        "7",
+        "16",
+        "18"
+      ],
+      "answer": "17",
+      "compute": "12+5",
+      "solution": "Add 5 back to 12: $12 + 5 = 17$, and $17 - 5 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 12 + 5 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.848Z"
+        }
+      }
+    },
+    {
+      "id": "1e366635-ea40-40bd-b3e5-19e59c541ee7",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Story with a missing change or part",
+      "stem": "Sasha and Leo have 17 stickers in all. Sasha has 8 of the stickers. How many stickers does Leo have?",
+      "choices": [
+        "25",
+        "9",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "17-8",
+      "solution": "$8 + ? = 17$, so Leo has 9 stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17 - 8 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.851Z"
+        }
+      }
+    },
+    {
+      "id": "47167406-cdd5-4b37-8a86-0b1ddccbf252",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing starting number (? - a = b)",
+      "stem": "Solve $? - 12 = 6$.",
+      "choices": [],
+      "answer": "18",
+      "compute": "6+12",
+      "solution": "Add 12 back to 6: $6 + 12 = 18$, and $18 - 12 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 12 + 6 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.856Z"
+        }
+      }
+    },
+    {
+      "id": "ef51e93d-faff-4e84-b807-242a61d3764f",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number when the total is written first (c = a + ?)",
+      "stem": "What number makes $20 = ? + 11$ true?",
+      "choices": [],
+      "answer": "9",
+      "compute": "20-11",
+      "solution": "$20 - 11 = 9$, and $9 + 11 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 11 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.874Z"
+        }
+      }
+    },
+    {
+      "id": "523b2849-f985-468b-9d6c-23fccf4833bc",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing addend (a + ? = c)",
+      "stem": "Which number makes $5 + ? = 18$ true?",
+      "choices": [
+        "13",
+        "23",
+        "12",
+        "14"
+      ],
+      "answer": "13",
+      "compute": "18-5",
+      "solution": "$5 + 13 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18-5=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.926Z"
+        }
+      }
+    },
+    {
+      "id": "f652642a-91c1-4f87-a651-b8a54dc8e3b4",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Story with a missing start",
+      "stem": "A box had some pens in it. Meg put 9 more pens in the box. Now there are 16 pens in the box. How many pens were in the box at first?",
+      "choices": [
+        "25",
+        "9",
+        "7",
+        "8"
+      ],
+      "answer": "7",
+      "compute": "16-9",
+      "solution": "$? + 9 = 16$, so there were 7 pens at first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?+9=16, ?=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.943Z"
+        }
+      }
+    },
+    {
+      "id": "77e6b77a-6f1f-40f4-80f8-b71fafc528e6",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story with a missing start",
+      "stem": "Rita had some coins in a jar. She took out 9 coins to spend. Now there are 8 coins in the jar. How many coins were in the jar at first?",
+      "choices": [],
+      "answer": "17",
+      "compute": "8+9",
+      "solution": "$? - 9 = 8$. Add the 9 back: $8 + 9 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?-9=8, ?=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.962Z"
+        }
+      }
+    },
+    {
+      "id": "3e0f9793-0069-48ca-ac49-523593907545",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing starting number (? - a = b)",
+      "stem": "In $? - 7 = 12$, which number is the ?",
+      "choices": [
+        "5",
+        "19",
+        "18",
+        "20"
+      ],
+      "answer": "19",
+      "compute": "12+7",
+      "solution": "Add 7 back to 12: $12 + 7 = 19$, and $19 - 7 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?=12+7=19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.964Z"
+        }
+      }
+    },
+    {
+      "id": "82418b77-1327-41fc-a9f6-92abf788fd29",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Test or check a missing number",
+      "stem": "Dee solved $13 - ? = 6$ and got 7. Which equation checks her answer?",
+      "choices": [
+        "$6 + 7 = 13$",
+        "$13 + 7 = 20$",
+        "$13 - 6 = 6$",
+        "$7 + 7 = 14$"
+      ],
+      "answer": "$6 + 7 = 13$",
+      "compute": null,
+      "solution": "7 taken from 13 leaves 6, and 6 and 7 make 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 7 = 13$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "If 13 - 7 = 6 then the check is 6 + 7 = 13. Other options are false or unrelated.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.969Z"
+        }
+      }
+    },
+    {
+      "id": "ce411a91-67c0-4666-945f-c0db905979d0",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number when the total is written first (c = a + ?)",
+      "stem": "Find the ? in $9 = ? - 9$.",
+      "choices": [],
+      "answer": "18",
+      "compute": "9+9",
+      "solution": "Add 9 back to 9: $9 + 9 = 18$, and $18 - 9 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? - 9 = 9, so ? = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.977Z"
+        }
+      }
+    },
+    {
+      "id": "1f694d3c-0af2-419f-ba37-948611742120",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Story with a missing change or part",
+      "stem": "Nora has 6 red beads and some blue beads. She has 15 beads in all. How many blue beads does she have?",
+      "choices": [],
+      "answer": "9",
+      "compute": "15-6",
+      "solution": "$6 + ? = 15$, so Nora has 9 blue beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + ? = 15, ? = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.002Z"
+        }
+      }
+    },
+    {
+      "id": "df43e3b9-fce9-44ae-9fa6-ef23438da0dc",
+      "topic_id": "NC17.1.OA.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Story with a missing change or part",
+      "stem": "A jar holds 20 marbles when it is full. It has 13 marbles in it now. How many more marbles will fill the jar?",
+      "choices": [
+        "33",
+        "13",
+        "8",
+        "7"
+      ],
+      "answer": "7",
+      "compute": "20-13",
+      "solution": "$13 + ? = 20$, so 7 more marbles fill the jar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 + ? = 20, ? = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.027Z"
         }
       }
     },

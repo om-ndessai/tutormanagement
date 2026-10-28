@@ -19196,6 +19196,534 @@
       }
     },
     {
+      "id": "68b52132-89ff-4cb3-a8b7-fc74d684e16c",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a mistake in decimal work",
+      "stem": "Ben says $0.4 + 0.3 = 0.07$. Which statement explains his mistake?",
+      "choices": [
+        "4 tenths plus 3 tenths is 1 tenth, so the sum is 0.1, not 0.07",
+        "4 tenths plus 3 tenths is 7 tenths, so the sum is 0.7, not 0.07",
+        "4 tenths plus 3 tenths is 7 ones, so the sum is 7, not 0.07",
+        "4 tenths plus 3 tenths is 43 tenths, so the sum is 4.3, not 0.07"
+      ],
+      "answer": "4 tenths plus 3 tenths is 7 tenths, so the sum is 0.7, not 0.07",
+      "compute": null,
+      "solution": "Both numbers are tenths, so the sum is tenths too. 4 tenths + 3 tenths = 7 tenths = 0.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 tenths plus 3 tenths is 7 tenths, so the sum is 0.7, not 0.07",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 tenths + 3 tenths = 7 tenths = 0.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.705Z"
+        }
+      }
+    },
+    {
+      "id": "1cd545f2-6b52-4016-b3b5-681495f99fb7",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "What is $0.9 + 0.6$?",
+      "choices": [
+        "1.5",
+        "0.15",
+        "15",
+        "0.3"
+      ],
+      "answer": "1.5",
+      "compute": "0.9+0.6",
+      "solution": "9 tenths + 6 tenths = 15 tenths, which is 1.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 tenths + 6 tenths = 15 tenths = 1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.715Z"
+        }
+      }
+    },
+    {
+      "id": "0c48feed-0741-4232-8979-dbf521aab6ec",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing decimal",
+      "stem": "What number is the ? in $? + 2.5 = 6.1$?",
+      "choices": [],
+      "answer": "3.6",
+      "compute": "6.1-2.5",
+      "solution": "Subtract: 6.1 - 2.5 = 3.6. Check: 3.6 + 2.5 = 6.1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 6.1 - 2.5 = 3.6. Check 3.6 + 2.5 = 6.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.727Z"
+        }
+      }
+    },
+    {
+      "id": "f32316c0-d32d-4556-8ce8-37cccc3e8bab",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "A 6.3-meter board is cut into 3 pieces of equal length. How many meters long is each piece?",
+      "choices": [],
+      "answer": "2.1",
+      "compute": "6.3/3",
+      "solution": "63 tenths divided by 3 is 21 tenths, which is 2.1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.3 / 3 = 2.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.751Z"
+        }
+      }
+    },
+    {
+      "id": "b2bd7164-054f-44af-9d7e-424cf7f729e6",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "A jar holds 1.2 liters of juice. Each glass takes 0.2 liter. How many glasses can be filled from the jar?",
+      "choices": [],
+      "answer": "6",
+      "compute": "1.2/0.2",
+      "solution": "1.2 is 12 tenths and 0.2 is 2 tenths. 12 tenths / 2 tenths = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.2 / 0.2 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.762Z"
+        }
+      }
+    },
+    {
+      "id": "cab7f2da-fc23-4143-b1b0-153eb9067cec",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Decimal problems with two steps",
+      "stem": "Jo buys 2 apples at 0.50 dollars each and a pear for 0.75 dollars. How many dollars does she spend in all?",
+      "choices": [],
+      "answer": "1.75",
+      "compute": "2*0.5+0.75",
+      "solution": "2 apples cost 2 x 0.50 = 1.00 dollar. Then 1.00 + 0.75 = 1.75 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 0.50 = 1.00, + 0.75 = 1.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.769Z"
+        }
+      }
+    },
+    {
+      "id": "09f91538-352e-41ff-9885-d64233776acb",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use place value or a model to explain a decimal operation",
+      "stem": "Think of tenths: 0.6 + 0.5 is 6 tenths + 5 tenths, which is 11 tenths. What is 0.6 + 0.5 written as a decimal?",
+      "choices": [],
+      "answer": "1.1",
+      "compute": "0.6+0.5",
+      "solution": "11 tenths is 10 tenths + 1 tenth. 10 tenths make 1 whole, so the sum is 1.1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 tenths = 1.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.796Z"
+        }
+      }
+    },
+    {
+      "id": "2f727e8f-d941-437b-97d2-5dfff599a20f",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a decimal",
+      "stem": "What is $0.2 \\times 0.3$?",
+      "choices": [
+        "0.6",
+        "0.5",
+        "0.06",
+        "0.006"
+      ],
+      "answer": "0.06",
+      "compute": "0.2*0.3",
+      "solution": "2 tenths of 3 tenths: 2 x 3 = 6, and tenths times tenths gives hundredths. So the product is 6 hundredths, or 0.06.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.06",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 3 = 6 hundredths: 0.06.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.811Z"
+        }
+      }
+    },
+    {
+      "id": "fe993838-ec7c-4f84-9a43-dd6afa15b7f0",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Estimate $8.8 + 3.1$ by rounding each number to the nearest whole number. What is the estimate?",
+      "choices": [],
+      "answer": "12",
+      "compute": "9+3",
+      "solution": "8.8 rounds to 9 and 3.1 rounds to 3. 9 + 3 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.8 -> 9, 3.1 -> 3; 9 + 3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.817Z"
+        }
+      }
+    },
+    {
+      "id": "c81848cd-bfde-4b32-b404-5973a3f65d61",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "What is $0.3 \\times 6$?",
+      "choices": [
+        "18",
+        "0.18",
+        "6.3",
+        "1.8"
+      ],
+      "answer": "1.8",
+      "compute": "0.3*6",
+      "solution": "6 groups of 3 tenths is 18 tenths, which is 1.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 6 = 18 tenths = 1.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.828Z"
+        }
+      }
+    },
+    {
+      "id": "f46621ef-ec80-439d-8fd0-49b7d44d5b9c",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "A pencil costs 0.35 dollar. How many dollars do 3 pencils cost?",
+      "choices": [],
+      "answer": "1.05",
+      "compute": "3*0.35",
+      "solution": "3 x 35 cents = 105 cents, which is 1.05 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.05",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.35 x 3 = 1.05.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.847Z"
+        }
+      }
+    },
+    {
+      "id": "2d621d4a-e0c9-48c2-ae93-d3f7bbe0c8b7",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Ravi walks 1.8 kilometers to school and then 0.6 kilometer to the park. How many kilometers does he walk in all?",
+      "choices": [],
+      "answer": "2.4",
+      "compute": "1.8+0.6",
+      "solution": "1.8 + 0.6: 8 tenths + 6 tenths = 14 tenths, which is 1 whole and 4 tenths. So 1 + 1 + 0.4 = 2.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.8 + 0.6 = 2.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.861Z"
+        }
+      }
+    },
+    {
+      "id": "be564eee-f160-416c-96ef-c07795e15cd1",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "A snack costs 3.75 dollars. Dee pays with a 5-dollar bill. How many dollars of change does she get?",
+      "choices": [],
+      "answer": "1.25",
+      "compute": "5-3.75",
+      "solution": "5.00 - 3.75 = 1.25. Check: 3.75 + 1.25 = 5.00.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 3.75 = 1.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.865Z"
+        }
+      }
+    },
+    {
+      "id": "13ef3e0a-ea8e-4166-8e7f-371e77d57e45",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use place value or a model to explain a decimal operation",
+      "stem": "In a set of base-ten blocks, a flat is 1 whole and a rod is 0.1. Maya shows 0.3 with 3 rods and 0.4 with 4 rods. She puts all the rods together. What decimal do they show?",
+      "choices": [
+        "7",
+        "0.07",
+        "0.34",
+        "0.7"
+      ],
+      "answer": "0.7",
+      "compute": "0.3+0.4",
+      "solution": "3 rods + 4 rods = 7 rods. Each rod is 0.1, so 7 rods show 0.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 rods = 7 tenths = 0.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.876Z"
+        }
+      }
+    },
+    {
+      "id": "a0dc9787-b1ec-429e-b1b5-c24c25948370",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "A ribbon is 9.4 meters long. Lia uses 3.6 meters of it. How many meters of ribbon are left?",
+      "choices": [],
+      "answer": "5.8",
+      "compute": "9.4-3.6",
+      "solution": "9.4 - 3.6 = 5.8. Check: 5.8 + 3.6 = 9.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.4 - 3.6 = 5.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.890Z"
+        }
+      }
+    },
+    {
+      "id": "bce21a3f-9cb9-4e29-a654-0fce889780c8",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Mia says $4.9 \\times 2 = 98$. Which estimate shows that her answer is too big?",
+      "choices": [
+        "4.9 is about 5, and 5 times 2 is 10, so 98 is close to the estimate",
+        "4.9 is about 5, and 5 times 2 is 10, so 98 is far less than the estimate",
+        "4.9 is about 5, and 5 times 20 is 100, so 98 is close to the estimate",
+        "4.9 is about 5, and 5 times 2 is 10, so 98 is far more than the estimate"
+      ],
+      "answer": "4.9 is about 5, and 5 times 2 is 10, so 98 is far more than the estimate",
+      "compute": null,
+      "solution": "The product should be close to 5 x 2 = 10. 98 is much more than 10, so it is wrong. The real product is 9.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.9 is about 5, and 5 times 2 is 10, so 98 is far more than the estimate",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Estimate 5 x 2 = 10; 98 is far more than 10, so too big.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.897Z"
+        }
+      }
+    },
+    {
+      "id": "915e0683-195d-4c72-8050-afcbfe526485",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "Sam has 5.50 dollars. He earns 2.25 dollars more. How many dollars does he have now?",
+      "choices": [
+        "7.25",
+        "3.25",
+        "7.75",
+        "77.5"
+      ],
+      "answer": "7.75",
+      "compute": "5.5+2.25",
+      "solution": "5.50 + 2.25: 5 + 2 = 7 dollars and 50 + 25 = 75 cents. So he has 7.75 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.50 + 2.25 = 7.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.038Z"
+        }
+      }
+    },
+    {
       "id": "becdeb11-a674-4f0e-949f-254c5ebf9fe4",
       "topic_id": "NC17.5.NBT.7",
       "difficulty": 2,
@@ -19666,6 +20194,578 @@
       }
     },
     {
+      "id": "8e32ae1c-3631-4655-ab49-7c0158d4bfb2",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use place value or a model to explain a decimal operation",
+      "stem": "Kai adds $0.34 + 0.5$ using place value. Which is correct?",
+      "choices": [
+        "3 tenths and 4 hundredths plus 5 tenths is 3 tenths and 9 hundredths, which is 0.39",
+        "3 tenths and 4 hundredths plus 5 tenths is 8 tenths and 4 hundredths, which is 0.84",
+        "3 tenths and 4 hundredths plus 5 tenths is 8 tenths and 9 hundredths, which is 0.89",
+        "3 tenths and 4 hundredths plus 5 tenths is 8 tenths and 4 hundredths, which is 0.084"
+      ],
+      "answer": "3 tenths and 4 hundredths plus 5 tenths is 8 tenths and 4 hundredths, which is 0.84",
+      "compute": null,
+      "solution": "Add like places. Tenths: 3 + 5 = 8. Hundredths: 4. So the sum is 8 tenths and 4 hundredths, which is 0.84.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 tenths and 4 hundredths plus 5 tenths is 8 tenths and 4 hundredths, which is 0.84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.34+0.5: 3 tenths+5 tenths=8 tenths, 4 hundredths: 0.84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.683Z"
+        }
+      }
+    },
+    {
+      "id": "d873cea1-c467-478a-b83b-2526f5932978",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide by a decimal",
+      "stem": "What is $3.2 \\div 0.4$?",
+      "choices": [
+        "0.8",
+        "8",
+        "80",
+        "3.6"
+      ],
+      "answer": "8",
+      "compute": "3.2/0.4",
+      "solution": "Multiply both numbers by 10: 3.2 / 0.4 = 32 / 4 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.2/0.4=32/4=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.715Z"
+        }
+      }
+    },
+    {
+      "id": "512fa18a-8d02-4c2c-b770-0f46bdfb3ccd",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "A tank holds 15.5 liters of water. A gardener uses 6.75 liters. How many liters are left?",
+      "choices": [],
+      "answer": "8.75",
+      "compute": "15.5-6.75",
+      "solution": "15.50 - 6.75 = 8.75. Check: 8.75 + 6.75 = 15.50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15.50 - 6.75 = 8.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.733Z"
+        }
+      }
+    },
+    {
+      "id": "fd2ae39a-98fe-4816-8afd-af6f66a1ec60",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Estimate $6.8 \\times 3.1$ by rounding each number to the nearest whole number. What is the estimate?",
+      "choices": [],
+      "answer": "21",
+      "compute": "7*3",
+      "solution": "6.8 rounds to 7 and 3.1 rounds to 3. 7 x 3 = 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.8 -> 7, 3.1 -> 3, 7 x 3 = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.743Z"
+        }
+      }
+    },
+    {
+      "id": "88d4bad1-32d6-4127-90a5-f0f416b70e75",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "A 4.5-meter ribbon is cut into pieces that are each 0.9 meter long. How many pieces are there?",
+      "choices": [],
+      "answer": "5",
+      "compute": "4.5/0.9",
+      "solution": "4.5 / 0.9 = 45 / 9 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.5 / 0.9 = 45 / 9 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.777Z"
+        }
+      }
+    },
+    {
+      "id": "e2a8fe8b-6138-461f-a00c-9f10402adab4",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "What is $7.2 \\div 8$?",
+      "choices": [
+        "9",
+        "0.09",
+        "0.9",
+        "0.8"
+      ],
+      "answer": "0.9",
+      "compute": "7.2/8",
+      "solution": "72 tenths divided by 8 is 9 tenths, which is 0.9. Check: 8 x 0.9 = 7.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 / 8 = 9, so 7.2 / 8 = 0.9. Check: 8 x 0.9 = 7.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.780Z"
+        }
+      }
+    },
+    {
+      "id": "cf31f186-b544-4fdc-b395-ddcfb3101025",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "What is $20 - 7.45$?",
+      "choices": [
+        "13.55",
+        "12.55",
+        "12.45",
+        "27.45"
+      ],
+      "answer": "12.55",
+      "compute": "20-7.45",
+      "solution": "Write 20 as 20.00. Then 20.00 - 7.45 = 12.55. Check: 12.55 + 7.45 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12.55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20.00 - 7.45 = 12.55. Check 12.55 + 7.45 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.789Z"
+        }
+      }
+    },
+    {
+      "id": "86528720-6dfd-422b-a04c-555493c50681",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a mistake in decimal work",
+      "stem": "Dana says $3.6 \\div 0.4 = 0.9$. Which estimate shows that her answer is wrong?",
+      "choices": [
+        "3.6 is about 4, and 4 divided by 0.4 is 10, so the answer should be about 10",
+        "3.6 is about 4, and 4 divided by 0.4 is 1, so the answer should be about 1",
+        "3.6 is about 4, and 4 times 0.4 is 1.6, so the answer should be about 1.6",
+        "3.6 is about 4, and 4 divided by 4 is 1, so the answer should be about 1"
+      ],
+      "answer": "3.6 is about 4, and 4 divided by 0.4 is 10, so the answer should be about 10",
+      "compute": null,
+      "solution": "Dividing by 0.4 gives more than the number you start with, because 0.4 fits into 4 ten times. So the answer is about 10. The exact answer is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.6 is about 4, and 4 divided by 0.4 is 10, so the answer should be about 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.6 / 0.4 = 9. Estimate 4 / 0.4 = 10, so about 10, showing 0.9 is wrong. Option 1 states 4/0.4=1 (false); option 3 multiplies; option 4 divides by 4 not 0.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.790Z"
+        }
+      }
+    },
+    {
+      "id": "e0270ccc-8926-4d5a-b2a4-1024a9495bbe",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "A packet of seeds costs 2.35 dollars. How many dollars do 6 packets cost?",
+      "choices": [
+        "14.1",
+        "1.41",
+        "141",
+        "13.1"
+      ],
+      "answer": "14.1",
+      "compute": "6*2.35",
+      "solution": "6 x 2.35 = 6 x 2 + 6 x 0.35 = 12 + 2.10 = 14.10, or 14.1 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.35 x 6 = 14.10. Estimate 2 x 6 = 12 to 2.5 x 6 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.835Z"
+        }
+      }
+    },
+    {
+      "id": "edbcc55e-de74-4486-86e7-5a337c44829c",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a decimal",
+      "stem": "Rosa paints a strip of wall that is 3.5 meters long and 0.4 meter tall. How many square meters of wall does she paint?",
+      "choices": [],
+      "answer": "1.4",
+      "compute": "3.5*0.4",
+      "solution": "35 x 4 = 140. Tenths times tenths gives hundredths, so 140 hundredths = 1.40, or 1.4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.5 x 0.4 = 1.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.850Z"
+        }
+      }
+    },
+    {
+      "id": "52d5caa1-3407-4016-821c-fed1742d2013",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use place value or a model to explain a decimal operation",
+      "stem": "A hundred grid stands for 1 whole, so each small square is 0.01. Mia shades 0.24 of the grid and Ben shades 0.37 of the same size grid. How much of a grid do they shade in all, as a decimal?",
+      "choices": [],
+      "answer": "0.61",
+      "compute": "0.24+0.37",
+      "solution": "24 squares + 37 squares = 61 squares. Each square is 0.01, so 61 squares is 0.61.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.61",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.24+0.37=0.61.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.909Z"
+        }
+      }
+    },
+    {
+      "id": "ce31eeea-fcc0-40a2-9d77-3ae323b7ccdb",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decimal problems with two steps",
+      "stem": "Tia buys 3 notebooks at 2.75 dollars each. She pays with a 10-dollar bill. How many dollars of change does she get?",
+      "choices": [],
+      "answer": "1.75",
+      "compute": "10-3*2.75",
+      "solution": "3 x 2.75 = 8.25 dollars. Then 10 - 8.25 = 1.75 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x2.75=8.25; 10-8.25=1.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.919Z"
+        }
+      }
+    },
+    {
+      "id": "bd0b4cbb-8b2d-4828-9cc4-312fa5d42ba6",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing decimal",
+      "stem": "What number is the ? in $? - 3.4 = 2.85$?",
+      "choices": [],
+      "answer": "6.25",
+      "compute": "2.85+3.4",
+      "solution": "Add: 2.85 + 3.4 = 6.25. Check: 6.25 - 3.4 = 2.85.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?=2.85+3.4=6.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.925Z"
+        }
+      }
+    },
+    {
+      "id": "c3d24505-125d-466a-99bc-7294fcb41f13",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a decimal",
+      "stem": "Nia multiplies two numbers of tenths: $0.9 \\times 0.6$. What product should she get?",
+      "choices": [
+        "5.4",
+        "0.054",
+        "1.5",
+        "0.54"
+      ],
+      "answer": "0.54",
+      "compute": "0.9*0.6",
+      "solution": "9 x 6 = 54. Tenths times tenths gives hundredths, so the product is 54 hundredths, or 0.54.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x6=54 hundredths -> 0.54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.931Z"
+        }
+      }
+    },
+    {
+      "id": "1836d809-7bf2-46f4-83ae-32c8ccfbc769",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Which is the best estimate of $19.8 - 7.2$?",
+      "choices": [
+        "13",
+        "27",
+        "17",
+        "3"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "19.8 is about 20 and 7.2 is about 7. 20 - 7 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19.8~20, 7.2~7; 20-7=13 (exact 12.6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.945Z"
+        }
+      }
+    },
+    {
+      "id": "e841f31b-f4ac-4eb6-a646-88fec2f409c9",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Five friends share a 13.5-dollar bill equally. How many dollars does each friend pay?",
+      "choices": [],
+      "answer": "2.7",
+      "compute": "13.5/5",
+      "solution": "13.5 / 5: 135 tenths divided by 5 is 27 tenths, which is 2.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13.5/5=2.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.954Z"
+        }
+      }
+    },
+    {
+      "id": "09595d7f-c4de-4d76-a104-43023aaa2c8a",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decimal problems with two steps",
+      "stem": "A runner runs 2.4 kilometers on each of 3 days and 1.5 kilometers on a fourth day. How many kilometers does the runner run in all?",
+      "choices": [
+        "3.9",
+        "7.2",
+        "8.7",
+        "10.8"
+      ],
+      "answer": "8.7",
+      "compute": "3*2.4+1.5",
+      "solution": "3 x 2.4 = 7.2. Then 7.2 + 1.5 = 8.7 kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 2.4 = 7.2; 7.2 + 1.5 = 8.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.973Z"
+        }
+      }
+    },
+    {
+      "id": "49a2fd1f-733c-4306-9ceb-88ed40893eff",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Which is a reasonable answer for $4.12 \\times 5.9$?",
+      "choices": [
+        "2.43",
+        "243.08",
+        "0.243",
+        "24.308"
+      ],
+      "answer": "24.308",
+      "compute": "4.12*5.9",
+      "solution": "4.12 is about 4 and 5.9 is about 6, so the product is about 24. Only 24.308 is close to 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24.308",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Estimate 4 x 6 = 24. Exact 4.12 x 5.9 = 24.308.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.976Z"
+        }
+      }
+    },
+    {
       "id": "07833f51-e6d4-4115-9ef5-9562add476f6",
       "topic_id": "NC17.5.NBT.7",
       "difficulty": 3,
@@ -19977,6 +21077,723 @@
           "work": "3.6 / 0.9 = 4. 0.36/9 = 0.04; 36/0.9 = 40; 36/9 = 4; 3.6/9 = 0.4.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:24.317Z"
+        }
+      }
+    },
+    {
+      "id": "8792a0c1-27b3-4087-bdc9-c956217f42a4",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "What is $100 - 36.58$?",
+      "choices": [
+        "64.42",
+        "63.58",
+        "136.58",
+        "63.42"
+      ],
+      "answer": "63.42",
+      "compute": "100-36.58",
+      "solution": "Write 100 as 100.00. Then 100.00 - 36.58 = 63.42. Check: 63.42 + 36.58 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63.42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100-36.58=63.42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.695Z"
+        }
+      }
+    },
+    {
+      "id": "9b6fe6cc-6fcf-4a00-b1b0-ffc990897981",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "A pump fills a tank at 0.75 liter each second. How many seconds does it take to put 9 liters into the tank?",
+      "choices": [],
+      "answer": "12",
+      "compute": "9/0.75",
+      "solution": "9 / 0.75 = 900 / 75 = 12. Check: 12 x 0.75 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/0.75=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.696Z"
+        }
+      }
+    },
+    {
+      "id": "fde423f2-2469-4d08-bd41-5393d2820490",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a decimal",
+      "stem": "A wall is 4.5 meters long and 2.4 meters high. What is its area in square meters?",
+      "choices": [],
+      "answer": "10.8",
+      "compute": "4.5*2.4",
+      "solution": "45 x 24 = 1,080. The factors have 2 decimal places in all, so the product is 10.80, or 10.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.5*2.4=10.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.704Z"
+        }
+      }
+    },
+    {
+      "id": "ee66790a-8871-4c19-ac0c-8d0c6c30c493",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decimal problems with two steps",
+      "stem": "A pack of 6 juice boxes costs 4.50 dollars, and every box costs the same. How many dollars do 10 of these boxes cost?",
+      "choices": [
+        "7.5",
+        "0.75",
+        "75",
+        "2.7"
+      ],
+      "answer": "7.5",
+      "compute": "4.5/6*10",
+      "solution": "One box costs 4.50 / 6 = 0.75 dollar. Ten boxes cost 10 x 0.75 = 7.50, or 7.5 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.50/6=0.75 each; 10*0.75=7.50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.716Z"
+        }
+      }
+    },
+    {
+      "id": "c270a05b-83b5-4413-a6a2-572e5a9b0182",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "A baker has 7.2 kilograms of flour. Each bag holds 0.45 kilogram. How many bags can she fill?",
+      "choices": [],
+      "answer": "16",
+      "compute": "7.2/0.45",
+      "solution": "7.2 / 0.45 = 720 / 45 = 16. Check: 16 x 0.45 = 7.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.2 / 0.45 = 720 / 45 = 16. Check 16 x 0.45 = 7.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.735Z"
+        }
+      }
+    },
+    {
+      "id": "0b22eed4-1872-4924-ae67-11b6e894d7a4",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a decimal",
+      "stem": "What is $3.2 \\times 0.15$?",
+      "choices": [
+        "4.8",
+        "0.48",
+        "0.048",
+        "0.5"
+      ],
+      "answer": "0.48",
+      "compute": "3.2*0.15",
+      "solution": "32 x 15 = 480. The factors have 3 decimal places in all, so the product is 0.480, or 0.48.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32 x 15 = 480; three decimal places -> 0.480 = 0.48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.740Z"
+        }
+      }
+    },
+    {
+      "id": "a0241b0b-746f-49e2-84bc-272f44c3de99",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "A rope is 2.65 meters long. How many meters of rope are in 12 of these ropes laid end to end?",
+      "choices": [],
+      "answer": "31.8",
+      "compute": "12*2.65",
+      "solution": "12 x 2.65 = 12 x 2 + 12 x 0.65 = 24 + 7.8 = 31.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.65 x 12 = 26.5 + 5.3 = 31.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.746Z"
+        }
+      }
+    },
+    {
+      "id": "5262d17f-5b12-4c82-b6da-472285acb754",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "A rope 14.4 meters long is cut into 8 equal pieces. How many meters long is each piece?",
+      "choices": [],
+      "answer": "1.8",
+      "compute": "14.4/8",
+      "solution": "14.4 / 8: 144 tenths divided by 8 is 18 tenths, which is 1.8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14.4 / 8 = 1.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.758Z"
+        }
+      }
+    },
+    {
+      "id": "9e1a2577-09ce-40cd-a1d8-bdc943cdbc09",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Which is the best estimate of $48.7 \\div 5.1$?",
+      "choices": [
+        "100",
+        "1",
+        "10",
+        "25"
+      ],
+      "answer": "10",
+      "compute": "10",
+      "solution": "48.7 is about 50 and 5.1 is about 5. 50 / 5 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48.7 ~ 50, 5.1 ~ 5, 50 / 5 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.770Z"
+        }
+      }
+    },
+    {
+      "id": "8dc3e98d-0701-4d82-848d-7bac646a5021",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing decimal",
+      "stem": "The sum of two decimals is 10.4. One of them is 4.75. What is the other decimal?",
+      "choices": [],
+      "answer": "5.65",
+      "compute": "10.4-4.75",
+      "solution": "10.4 - 4.75 = 5.65. Check: 4.75 + 5.65 = 10.40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10.40 - 4.75 = 5.65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.772Z"
+        }
+      }
+    },
+    {
+      "id": "bffb3b27-e673-474f-a3a0-28fa9ca8c230",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Ivy divides 18.5 by 0.5 and gets 9.25. Which estimate shows that her answer cannot be right?",
+      "choices": [
+        "Dividing by 0.5 gives half as much, so the answer should be about 9",
+        "Dividing by 0.5 gives twice as much, so the answer should be about 37",
+        "Dividing by 0.5 gives the same amount, so the answer should be about 18",
+        "Dividing by 0.5 gives five times as much, so the answer should be about 92"
+      ],
+      "answer": "Dividing by 0.5 gives twice as much, so the answer should be about 37",
+      "compute": null,
+      "solution": "There are 2 halves in each whole, so dividing by 0.5 doubles the number. 18.5 doubled is 37, not 9.25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Dividing by 0.5 gives twice as much, so the answer should be about 37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18.5 / 0.5 = 37 (dividing by one half doubles). 9.25 is too small. Option 4 correct; others misstate dividing by 0.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.792Z"
+        }
+      }
+    },
+    {
+      "id": "19032791-a5fd-4db8-826a-3d29adbd3104",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimal problems with two steps",
+      "stem": "Ted walks his dog 0.35 kilometer each day for 6 days. He wants to walk 3 kilometers in all. How many more kilometers must he walk?",
+      "choices": [],
+      "answer": "0.9",
+      "compute": "3-6*0.35",
+      "solution": "6 x 0.35 = 2.1 kilometers so far. Then 3 - 2.1 = 0.9 kilometer more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.35 x 6 = 2.1 km walked; 3 - 2.1 = 0.9 km more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.808Z"
+        }
+      }
+    },
+    {
+      "id": "ef9838df-1f8e-4df7-96be-08c55b5f6fad",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "A pole is 12 meters long. A worker cuts off 2.75 meters and then 3.4 meters. How many meters of pole are left?",
+      "choices": [],
+      "answer": "5.85",
+      "compute": "12-2.75-3.4",
+      "solution": "2.75 + 3.40 = 6.15 meters are cut off. Then 12 - 6.15 = 5.85 meters are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.85",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 - 2.75 = 9.25; 9.25 - 3.4 = 5.85.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.841Z"
+        }
+      }
+    },
+    {
+      "id": "81e21efa-8be3-4070-8b9c-0fff3d889929",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a mistake in decimal work",
+      "stem": "Tara multiplies $0.4 \\times 0.3$. Step 1: $4 \\times 3 = 12$. Step 2: tenths times tenths gives tenths. Step 3: so the product is 1.2. In which step does she first make a mistake?",
+      "choices": [
+        "Step 1",
+        "Step 3",
+        "Step 2",
+        "She makes no mistake"
+      ],
+      "answer": "Step 2",
+      "compute": null,
+      "solution": "Tenths times tenths gives hundredths, not tenths. So the product is 12 hundredths, or 0.12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Step 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Step 1 right (12). Step 2 wrong: tenths x tenths = hundredths. So 0.12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.842Z"
+        }
+      }
+    },
+    {
+      "id": "1b523c72-c1c0-451b-aac5-5fbd42027f96",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use place value or a model to explain a decimal operation",
+      "stem": "Which statement about $0.04 \\times 0.3$ is correct?",
+      "choices": [
+        "4 hundredths times 3 tenths is 12 hundredths, which is 0.12",
+        "4 hundredths times 3 tenths is 12 tenths, which is 1.2",
+        "4 hundredths times 3 tenths is 12 ten-thousandths, which is 0.0012",
+        "4 hundredths times 3 tenths is 12 thousandths, which is 0.012"
+      ],
+      "answer": "4 hundredths times 3 tenths is 12 thousandths, which is 0.012",
+      "compute": null,
+      "solution": "4 x 3 = 12. Hundredths times tenths gives thousandths, so the product is 12 thousandths, or 0.012.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 hundredths times 3 tenths is 12 thousandths, which is 0.012",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 hundredths x 3 tenths = 12 thousandths = 0.012.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.845Z"
+        }
+      }
+    },
+    {
+      "id": "19180626-8427-4290-9a46-24577efb29b4",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "A hiker walks 4.6 kilometers in the morning, 3.85 kilometers after lunch and 2.9 kilometers in the evening. How many kilometers does the hiker walk in all?",
+      "choices": [],
+      "answer": "11.35",
+      "compute": "4.6+3.85+2.9",
+      "solution": "4.60 + 3.85 + 2.90 = 11.35 kilometers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11.35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.6 + 3.85 = 8.45; + 2.9 = 11.35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.846Z"
+        }
+      }
+    },
+    {
+      "id": "23e58c9a-c766-4833-b551-b616ed631864",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide by a decimal",
+      "stem": "What is $6.3 \\div 0.07$?",
+      "choices": [
+        "9",
+        "900",
+        "0.9",
+        "90"
+      ],
+      "answer": "90",
+      "compute": "6.3/0.07",
+      "solution": "Multiply both numbers by 100: 6.3 / 0.07 = 630 / 7 = 90.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.3 / 0.07 = 630 / 7 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.860Z"
+        }
+      }
+    },
+    {
+      "id": "c8f5630e-7210-486e-89f7-8bf86b82d39d",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimal problems with two steps",
+      "stem": "Ms. Park buys 3 kilograms of apples at 2.40 dollars per kilogram and 2 kilograms of grapes at 3.15 dollars per kilogram. How many dollars does she spend in all?",
+      "choices": [],
+      "answer": "13.5",
+      "compute": "3*2.4+2*3.15",
+      "solution": "Apples: 3 x 2.40 = 7.20. Grapes: 2 x 3.15 = 6.30. In all: 7.20 + 6.30 = 13.50 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x2.40=7.20; 2x3.15=6.30; total 13.50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.957Z"
+        }
+      }
+    },
+    {
+      "id": "94031830-16a9-4e95-99fa-b27aa522eeef",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a decimal",
+      "stem": "One bag of rice has a mass of 1.2 kilograms. A shop sells 0.35 of a bag. How many kilograms of rice is that?",
+      "choices": [],
+      "answer": "0.42",
+      "compute": "1.2*0.35",
+      "solution": "12 x 35 = 420. The factors have 3 decimal places in all, so the product is 0.420, or 0.42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.2 x 0.35 = 0.42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.978Z"
+        }
+      }
+    },
+    {
+      "id": "3a9fbb82-405a-424d-8548-ef27b525b944",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "What is $0.85 \\times 14$?",
+      "choices": [
+        "119",
+        "1.19",
+        "11.9",
+        "10.9"
+      ],
+      "answer": "11.9",
+      "compute": "0.85*14",
+      "solution": "14 x 85 = 1,190. 0.85 has two decimal places, so the product is 11.90, or 11.9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.85 x 14 = 11.9 (85 x 14 = 1190).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.985Z"
+        }
+      }
+    },
+    {
+      "id": "1f75d84b-47bf-4dd4-9c6d-143841969f9e",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "What is $5.04 \\div 6$?",
+      "choices": [
+        "0.84",
+        "8.4",
+        "0.084",
+        "0.804"
+      ],
+      "answer": "0.84",
+      "compute": "5.04/6",
+      "solution": "504 hundredths divided by 6 is 84 hundredths, which is 0.84. Check: 6 x 0.84 = 5.04.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 0.84 = 5.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.023Z"
+        }
+      }
+    },
+    {
+      "id": "132bb86d-aa16-4be1-8def-1f2a655c57de",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Find the sum: $12.75 + 9.8 + 0.45$.",
+      "choices": [],
+      "answer": "23",
+      "compute": "12.75+9.8+0.45",
+      "solution": "12.75 + 9.80 = 22.55, and 22.55 + 0.45 = 23.00. The sum is 23.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.75 + 9.8 = 22.55; + 0.45 = 23.00.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.033Z"
+        }
+      }
+    },
+    {
+      "id": "bcbd0550-ee58-44fe-8f36-647f91262e28",
+      "topic_id": "NC17.5.NBT.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate to check a decimal answer",
+      "stem": "Sam estimates the cost of 4 books at 5.95 dollars each. He rounds the price to the nearest dollar first. How many dollars is his estimate?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4*6",
+      "solution": "5.95 rounds to 6. 4 x 6 = 24 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.95 rounds to 6; 4 x 6 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.036Z"
         }
       }
     },

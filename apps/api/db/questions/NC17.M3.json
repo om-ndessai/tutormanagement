@@ -12853,6 +12853,602 @@
       }
     },
     {
+      "id": "25096f29-071c-4306-ac16-0b016205f2d4",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "What is the remainder when $x^2 - 3x + 4$ is divided by $x - 5$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "(1)*(5)^2+(-3)*(5)+(4)",
+      "solution": "By the Remainder Theorem the remainder is $p(5) = 25 - 15 + 4 = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(5)=25-15+4=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.618Z"
+        }
+      }
+    },
+    {
+      "id": "fbe43e9d-81b3-44e1-90c3-e9a6e42688dc",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "The statement $x^2 + 5x + 7 = (x + 2)(x + 3) + r$ is true for every $x$. What is $r$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "7-6",
+      "solution": "$(x + 2)(x + 3) = x^2 + 5x + 6$. To make $x^2 + 5x + 7$ we need $r = 7 - 6 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(x+3)=x^2+5x+6, so r=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.628Z"
+        }
+      }
+    },
+    {
+      "id": "0de1d1df-9a47-42db-90cf-193ed314f09c",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "Find the remainder when $x^3 + 2x - 1$ is divided by $x - 2$.",
+      "choices": [],
+      "answer": "11",
+      "compute": "(1)*(2)^3+(2)*(2)+(-1)",
+      "solution": "The remainder is $p(2) = 2^3 + 2(2) - 1 = 8 + 4 - 1 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(2)=8+4-1=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.631Z"
+        }
+      }
+    },
+    {
+      "id": "0e95c1f0-b48d-4e2c-b9b2-0cefaa7baeb0",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "Since $x - 4$ is a factor of $x^2 - 3x - 4$, the polynomial has a second zero. What is it?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "3-4",
+      "solution": "$x^2 - 3x - 4 = (x - 4)(x + 1)$, so the second zero is $-1$. (The zeros add to 3: $4 + (-1) = 3$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-3x-4=(x-4)(x+1): second zero -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.706Z"
+        }
+      }
+    },
+    {
+      "id": "62dd20fe-6535-4bbf-ad7c-042833445308",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Which value should you find to get the remainder when $p(x)$ is divided by $2x - 6$?",
+      "choices": [
+        "$p(-3)$",
+        "$p(3)$",
+        "$p(6)$",
+        "$p(-6)$"
+      ],
+      "answer": "$p(3)$",
+      "compute": null,
+      "solution": "The divisor is zero when $2x - 6 = 0$, that is $x = 3$. The remainder is $p(3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$p(3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x-6=0 at x=3; remainder is p(3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.709Z"
+        }
+      }
+    },
+    {
+      "id": "e5f9e696-7a53-4fa8-9357-495cf990cb8b",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "Zoe divides $p(x) = x^2 - 4x + 9$ by $x - 3$. What is the remainder?",
+      "choices": [
+        "6",
+        "30",
+        "9",
+        "3"
+      ],
+      "answer": "6",
+      "compute": "(1)*(3)^2+(-4)*(3)+(9)",
+      "solution": "The remainder is $p(3) = 9 - 12 + 9 = 6$. The value 30 is $p(-3)$, 9 is just the constant term, and 3 is the number in the divisor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(3) = 9 - 12 + 9 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.749Z"
+        }
+      }
+    },
+    {
+      "id": "8bf9dd1b-1f29-4d4f-9e5a-5861ae90f9dc",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "The Remainder Theorem shows that $x + 2$ is a factor of $x^2 + x - 2$. Which is the other factor?",
+      "choices": [
+        "$x + 1$",
+        "$x - 2$",
+        "$x - 1$",
+        "$x + 2$"
+      ],
+      "answer": "$x - 1$",
+      "compute": null,
+      "solution": "$(x + 2)(x - 1) = x^2 + x - 2$. The constant terms multiply to $2 \\times (-1) = -2$ and the $x$ terms add to $2 - 1 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + x - 2 = (x + 2)(x - 1). Other factor x - 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.770Z"
+        }
+      }
+    },
+    {
+      "id": "44eca2d9-81d7-4114-af81-5d7d76424665",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "When $x^2 - 4x + k$ is divided by $x - 1$, the remainder is 5. What is $k$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "5-1+4",
+      "solution": "The remainder is $p(1) = 1 - 4 + k = k - 3$. Setting $k - 3 = 5$ gives $k = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder = p(1) = 1 - 4 + k = 5, so k = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.833Z"
+        }
+      }
+    },
+    {
+      "id": "4fcddf1d-9afd-43c0-9735-9148b5502109",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "When $p(x)$ is divided by $x - 5$, the quotient is $q(x)$ and the remainder is $r$. Which equation is true?",
+      "choices": [
+        "$p(x) = (x + 5)q(x) + r$",
+        "$p(x) = (x - 5)q(x) - r$",
+        "$p(x) = (x - 5)r + q(x)$",
+        "$p(x) = (x - 5)q(x) + r$"
+      ],
+      "answer": "$p(x) = (x - 5)q(x) + r$",
+      "compute": null,
+      "solution": "Dividend $=$ divisor $\\times$ quotient $+$ remainder, so $p(x) = (x - 5)q(x) + r$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$p(x) = (x - 5)q(x) + r$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Division algorithm: p(x) = (x - 5)q(x) + r.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.851Z"
+        }
+      }
+    },
+    {
+      "id": "71a95c4a-0f31-44a4-92c0-8757fa3b2923",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Find the remainder when $x^2 + 3x - 2$ is divided by $x + 4$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "(1)*(-4)^2+(3)*(-4)+(-2)",
+      "solution": "$x + 4 = x - (-4)$, so the remainder is $p(-4) = 16 - 12 - 2 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-4) = 16 - 12 - 2 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.872Z"
+        }
+      }
+    },
+    {
+      "id": "e7aa2538-483b-497d-b470-1e506648584e",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "What is the remainder in the true statement $x^2 + x - 5 = (x - 1)(x + 2) - 3$?",
+      "choices": [
+        "$3$",
+        "$-3$",
+        "$-2$",
+        "$2$"
+      ],
+      "answer": "$-3$",
+      "compute": null,
+      "solution": "The remainder is the part added after the product of the divisor $x - 1$ and the quotient $x + 2$, which is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-1)(x+2)=x^2+x-2; minus 3 gives x^2+x-5, true. Remainder on division by x-1 is -3 (also p(1)=-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.905Z"
+        }
+      }
+    },
+    {
+      "id": "d464b42a-dbe6-4048-a223-e7b360c299bf",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "The polynomial $x^2 + x - 12$ has $x - a$ as a factor for a positive number $a$. What is $a$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$x - a$ is a factor when $p(a) = 0$. Try $a = 3$: $9 + 3 - 12 = 0$. So $a = 3$ (the other zero, $-4$, is not positive).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+x-12=(x+4)(x-3); positive a=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.921Z"
+        }
+      }
+    },
+    {
+      "id": "d49ee1f1-b117-4016-bfcc-3475fc6fdbbe",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "The Remainder Theorem shows that $x - 1$ is a factor of $p(x) = x^3 - 2x^2 - 5x + 6$, because $p(1) = 0$. The other factor is $x^2 - x - 6$. What is the smallest zero of $p$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2",
+      "solution": "$x^2 - x - 6 = (x - 3)(x + 2)$, so the zeros of $p$ are $1$, $3$ and $-2$. The smallest is $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p=(x-1)(x-3)(x+2); zeros 1,3,-2; smallest -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.949Z"
+        }
+      }
+    },
+    {
+      "id": "8a82d45b-c007-4396-a1fa-9cc524595124",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "Is $x + 2$ a factor of $p(x) = x^3 + 3x^2 - 4$?",
+      "choices": [
+        "No, because $p(-2) \\ne 0$",
+        "Yes, because $p(-2) = 0$",
+        "Yes, because $p(2) = 0$",
+        "No, because $p(2) \\ne 0$"
+      ],
+      "answer": "Yes, because $p(-2) = 0$",
+      "compute": null,
+      "solution": "$x + 2$ is a factor when $p(-2) = 0$. Here $p(-2) = -8 + 12 - 4 = 0$, so it is a factor. (Note $p(2) = 16$, which is not the test.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, because $p(-2) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-2) = -8 + 12 - 4 = 0, so yes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.990Z"
+        }
+      }
+    },
+    {
+      "id": "9caa62e0-da91-4d6c-980a-0473bcc0f64a",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "interpreting a remainder",
+      "stem": "A polynomial $p(x)$ has $p(-1) = 0$ and $p(4) = 0$. Which two expressions must be factors of $p(x)$?",
+      "choices": [
+        "$x + 1$ and $x - 4$",
+        "$x - 1$ and $x + 4$",
+        "$x + 1$ and $x + 4$",
+        "$x - 1$ and $x - 4$"
+      ],
+      "answer": "$x + 1$ and $x - 4$",
+      "compute": null,
+      "solution": "$p(a) = 0$ means $x - a$ is a factor. For $a = -1$ the factor is $x - (-1) = x + 1$, and for $a = 4$ it is $x - 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 1$ and $x - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor Theorem: zeros -1 and 4 give factors x+1 and x-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.998Z"
+        }
+      }
+    },
+    {
+      "id": "6f9330d3-aa6e-4e0b-8828-02105fa4382e",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "interpreting a remainder",
+      "stem": "The remainder when $p(x)$ is divided by $x - 7$ is 12. Which statement is true?",
+      "choices": [
+        "$p(-7) = 12$, and $x - 7$ is not a factor",
+        "$p(12) = 7$, and $x - 7$ is not a factor",
+        "$p(7) = 12$, and $x - 7$ is a factor",
+        "$p(7) = 12$, and $x - 7$ is not a factor"
+      ],
+      "answer": "$p(7) = 12$, and $x - 7$ is not a factor",
+      "compute": null,
+      "solution": "The Remainder Theorem says the remainder is $p(7)$, so $p(7) = 12$. A factor leaves remainder 0, so $x - 7$ is not a factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$p(7) = 12$, and $x - 7$ is not a factor",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder Theorem: p(7) = 12, nonzero, so not a factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.002Z"
+        }
+      }
+    },
+    {
+      "id": "2f2486a6-db09-4fd4-b33b-5dc18c603b4b",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "The polynomial $x^2 + kx + 6$ has $x + 2$ as a factor. What is $k$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(4+6)/2",
+      "solution": "$p(-2) = 4 - 2k + 6 = 0$, so $2k = 10$ and $k = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-2)=4-2k+6=0, k=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.011Z"
+        }
+      }
+    },
+    {
+      "id": "50a3ee4d-fde3-42e8-8a9f-6ce1b1d76a75",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "Which polynomial has $x - 1$ as a factor?",
+      "choices": [
+        "$x^2 + 2x - 3$",
+        "$x^2 + 2x + 3$",
+        "$x^2 - 2x - 3$",
+        "$x^2 + 3x - 5$"
+      ],
+      "answer": "$x^2 + 2x - 3$",
+      "compute": null,
+      "solution": "Put $x = 1$ into each. $1 + 2 - 3 = 0$ for the first. The others give 6, $-4$ and $-1$, which are not 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 2x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x=1: 1+3-5=-1; 1-2-3=-4; 1+2+3=6; 1+2-3=0. Only x^2+2x-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.022Z"
+        }
+      }
+    },
+    {
+      "id": "1a404398-3ce4-46c9-ac65-69e66317b5a8",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "The polynomial $p(x)$ is equal to $(x - 2)(x + 4) + 5$. What is $p(0)$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "(0-2)*(0+4)+5",
+      "solution": "$p(0) = (0 - 2)(0 + 4) + 5 = -8 + 5 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(0) = (-2)(4) + 5 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.027Z"
+        }
+      }
+    },
+    {
       "id": "9a17808c-b1aa-43ea-8603-3c90baa2945a",
       "topic_id": "NC17.M3.A-APR.2",
       "difficulty": 2,
@@ -13232,6 +13828,660 @@
           "work": "At x=2: (a) 1, (b) 4, (c) 8-4-2-2=0, (d) 4. Only (c).",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.454Z"
+        }
+      }
+    },
+    {
+      "id": "37cafc53-968a-47a4-97d1-c504cb5475b9",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "What is the remainder when $2x^3 - x^2 + 4x - 9$ is divided by $x - 2$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "(2)*(2)^3+(-1)*(2)^2+(4)*(2)+(-9)",
+      "solution": "The remainder is $p(2) = 2(8) - 4 + 8 - 9 = 16 - 4 + 8 - 9 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(2)=2(8)-4+8-9=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.562Z"
+        }
+      }
+    },
+    {
+      "id": "8854a96c-41f9-4a74-9718-fc2d610f6eea",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "Find the remainder when $-2x^3 + 5x - 1$ is divided by $x - 3$.",
+      "choices": [],
+      "answer": "-40",
+      "compute": "(-2)*(3)^3+(5)*(3)+(-1)",
+      "solution": "$p(3) = -2(27) + 5(3) - 1 = -54 + 15 - 1 = -40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(3)=-2(27)+15-1=-54+14=-40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.575Z"
+        }
+      }
+    },
+    {
+      "id": "f765705e-bb62-476d-97eb-9d24c6ee68a2",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "The statement $x^3 - 5x + 3 = (x - 2)(x^2 + 2x - 1) + r$ is true for every $x$. What is $r$?",
+      "choices": [
+        "1",
+        "-1",
+        "5",
+        "3"
+      ],
+      "answer": "1",
+      "compute": "3-2",
+      "solution": "$(x - 2)(x^2 + 2x - 1) = x^3 - 5x + 2$. So $r = 3 - 2 = 1$. This agrees with $p(2) = 8 - 10 + 3 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)(x^2+2x-1)=x^3+2x^2-x-2x^2-4x+2=x^3-5x+2, so r=3-2=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.626Z"
+        }
+      }
+    },
+    {
+      "id": "cf4c2ff1-a894-4e94-971c-47f732a4475e",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "Since $p(1) = 0$, dividing $p(x) = 2x^3 + 3x^2 - 3x - 2$ by $x - 1$ leaves no remainder, and the quotient is $2x^2 + 5x + 2$. What is the sum of all three zeros of $p$?",
+      "choices": [],
+      "answer": "-3/2",
+      "compute": "1+(-1/2)+(-2)",
+      "solution": "$2x^2 + 5x + 2 = (2x + 1)(x + 2)$, with zeros $-\\frac{1}{2}$ and $-2$. With the zero $1$ the sum is $1 - \\frac{1}{2} - 2 = -\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2+5x+2=(2x+1)(x+2): zeros -1/2, -2, and 1. Sum = 1-1/2-2 = -3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.633Z"
+        }
+      }
+    },
+    {
+      "id": "1569acb1-f56c-4ae5-a603-82c383b22349",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "interpreting a remainder",
+      "stem": "A polynomial $p(x)$ has $p(3) = 0$, $p(-1) = 0$ and $p(0) = -6$. Which statement is true?",
+      "choices": [
+        "$x + 3$ and $x - 1$ are factors, but $x$ is not a factor",
+        "$x - 3$ and $x + 1$ are factors, and $x$ is a factor too",
+        "$x - 3$ is a factor, but $x + 1$ is not and $x$ is not either",
+        "$x - 3$ and $x + 1$ are factors, but $x$ is not a factor"
+      ],
+      "answer": "$x - 3$ and $x + 1$ are factors, but $x$ is not a factor",
+      "compute": null,
+      "solution": "$p(3) = 0$ makes $x - 3$ a factor, and $p(-1) = 0$ makes $x + 1$ a factor. Since $p(0) = -6 \\ne 0$, $x$ is not a factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 3$ and $x + 1$ are factors, but $x$ is not a factor",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 3 and -1 give factors x-3, x+1; p(0)=-6 not 0, so x is not a factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.647Z"
+        }
+      }
+    },
+    {
+      "id": "9ff40383-b9ed-4866-9bc5-b7291bd03cc7",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "When $2x^2 + kx - 3$ is divided by $x - 3$, the remainder is 30. What is $k$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(30-15)/3",
+      "solution": "The remainder is $p(3) = 18 + 3k - 3 = 3k + 15$. Setting $3k + 15 = 30$ gives $k = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(3)=18+3k-3=30, 3k=15, k=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.707Z"
+        }
+      }
+    },
+    {
+      "id": "93626211-3a18-4559-9d0c-90296b0bb5a3",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "Which of these is a factor of $p(x) = x^3 - 2x^2 - 11x + 12$?",
+      "choices": [
+        "$x + 1$",
+        "$x - 2$",
+        "$x + 4$",
+        "$x - 1$"
+      ],
+      "answer": "$x - 1$",
+      "compute": null,
+      "solution": "$p(1) = 1 - 2 - 11 + 12 = 0$, so $x - 1$ is a factor. For the others, $p(-1) = 20$, $p(2) = -10$ and $p(-4) = -40$, none of which is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(1) = 1 - 2 - 11 + 12 = 0, so x - 1 is a factor. p(-1) = 20, p(2) = -10, p(-4) = -64 - 32 + 44 + 12 = -40, so the others are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.734Z"
+        }
+      }
+    },
+    {
+      "id": "a2ed31de-67c1-4b6a-9fbe-701d975fd0d7",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "interpreting a remainder",
+      "stem": "A polynomial $p(x)$ leaves a remainder of 9 when divided by $x - 2$ and a remainder of 0 when divided by $x - 5$. Which statement is true?",
+      "choices": [
+        "$p(-2) = 9$ and $p(-5) = 0$",
+        "$p(2) = 9$ and $p(5) = 0$",
+        "$p(9) = 2$ and $p(0) = 5$",
+        "$p(2) = 0$ and $p(5) = 9$"
+      ],
+      "answer": "$p(2) = 9$ and $p(5) = 0$",
+      "compute": null,
+      "solution": "By the Remainder Theorem the remainder on division by $x - a$ is $p(a)$. So $p(2) = 9$ and $p(5) = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$p(2) = 9$ and $p(5) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder Theorem: remainder on division by x - a is p(a). p(2) = 9, p(5) = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.757Z"
+        }
+      }
+    },
+    {
+      "id": "a5559d24-f5a2-4bde-9e01-788b8862b034",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "Since $p(2) = 0$, $x - 2$ is a factor of $p(x) = x^3 - 4x^2 + x + 6$. Which is the complete factorization of $p(x)$?",
+      "choices": [
+        "$(x - 2)(x - 3)(x + 1)$",
+        "$(x + 2)(x - 3)(x + 1)$",
+        "$(x - 2)(x + 3)(x + 1)$",
+        "$(x - 2)(x - 3)(x - 1)$"
+      ],
+      "answer": "$(x - 2)(x - 3)(x + 1)$",
+      "compute": null,
+      "solution": "Dividing by $x - 2$ gives $x^2 - 2x - 3 = (x - 3)(x + 1)$. So $p(x) = (x - 2)(x - 3)(x + 1)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 2)(x - 3)(x + 1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide p(x) by x-2: x^2 - 2x - 3 = (x-3)(x+1). So p = (x-2)(x-3)(x+1). Check expands to x^3-4x^2+x+6. Other options have different roots.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.786Z"
+        }
+      }
+    },
+    {
+      "id": "82b88cbc-1bfb-4aa2-be2b-942e24c1b681",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "The polynomial $p(x) = x^3 - 4x^2 + x + 6$ has $x - a$ as a factor for a positive integer $a$ less than 3. What is $a$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Test $a = 1$: $p(1) = 1 - 4 + 1 + 6 = 4$, not 0. Test $a = 2$: $p(2) = 8 - 16 + 2 + 6 = 0$. So $a = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Positive integers less than 3: 1 or 2. p(1) = 1-4+1+6 = 4 (not 0). p(2) = 8-16+2+6 = 0. a = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.797Z"
+        }
+      }
+    },
+    {
+      "id": "c22f38d1-1230-4490-8a18-b76aae6e8f64",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "interpreting a remainder",
+      "stem": "A polynomial $p(x)$ leaves a remainder of 4 when divided by $x - 1$. What is the remainder when $p(x) + 3$ is divided by $x - 1$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "4+3",
+      "solution": "The remainder is the value at $x = 1$. We know $p(1) = 4$, so $p(1) + 3 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "By the Remainder Theorem p(1) = 4, so p(1) + 3 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.798Z"
+        }
+      }
+    },
+    {
+      "id": "a8f52f68-9472-4f34-a56a-86f69ed0a2b6",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "finding an unknown coefficient",
+      "stem": "The polynomial $x^3 + ax^2 - x - 6$ has $x + 2$ as a factor. What is $a$?",
+      "choices": [
+        "0",
+        "4",
+        "-3",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$p(-2) = -8 + 4a + 2 - 6 = 4a - 12 = 0$, so $a = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-2) = -8 + 4a + 2 - 6 = 4a - 12 = 0, a = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.844Z"
+        }
+      }
+    },
+    {
+      "id": "40dd118f-8ce8-46fc-a4e3-4d84d0cd0f6c",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "The polynomial $x^3 - 2x^2 + kx - 6$ has $x - 3$ as a factor. What is $k$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-(27-18-6)/3",
+      "solution": "$p(3) = 27 - 18 + 3k - 6 = 3 + 3k = 0$, so $k = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(3) = 27 - 18 + 3k - 6 = 3 + 3k = 0, k = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.872Z"
+        }
+      }
+    },
+    {
+      "id": "8f3a47e6-6208-4095-9cb1-e6991fcca735",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "Dividing $x^3 + 2x^2 - 5x + 1$ by $x - 1$ gives the quotient $x^2 + 3x - 2$. Which expression is equal to $x^3 + 2x^2 - 5x + 1$?",
+      "choices": [
+        "$(x - 1)(x^2 + 3x - 2) + 1$",
+        "$(x + 1)(x^2 + 3x - 2) - 1$",
+        "$(x - 1)(x^2 + 3x - 2) - 1$",
+        "$(x - 1)(x^2 + 3x - 2) + 3$"
+      ],
+      "answer": "$(x - 1)(x^2 + 3x - 2) - 1$",
+      "compute": null,
+      "solution": "$(x - 1)(x^2 + 3x - 2) = x^3 + 2x^2 - 5x + 2$. To get $x^3 + 2x^2 - 5x + 1$ we must subtract 1, so the remainder is $-1$. This agrees with $p(1) = 1 + 2 - 5 + 1 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 1)(x^2 + 3x - 2) - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder p(1)=1+2-5+1=-1. Check (x-1)(x^2+3x-2)=x^3+2x^2-5x+2, minus 1 gives the polynomial.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.963Z"
+        }
+      }
+    },
+    {
+      "id": "cb07f918-8df5-495a-8f9c-81ee70663f49",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "The Remainder Theorem shows that $x + 3$ is a factor of $p(x) = x^3 + 4x^2 - 3x - 18$. The polynomial has exactly one positive zero. What is it?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Dividing by $x + 3$ gives $x^2 + x - 6 = (x + 3)(x - 2)$. So $p(x) = (x + 3)^2(x - 2)$, with zeros $-3$ and $2$. The positive zero is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic division by -3: 1,4,-3,-18 -> 1,1,-6, remainder 0. x^2+x-6=(x+3)(x-2). Zeros -3 (double) and 2. Positive zero 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.974Z"
+        }
+      }
+    },
+    {
+      "id": "a50320ee-8cc5-4bbf-adf2-cfa030e8839d",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Which expression gives the remainder when $p(x)$ is divided by $2x + 5$?",
+      "choices": [
+        "$p\\left(-\\frac{5}{2}\\right)$",
+        "$p\\left(\\frac{5}{2}\\right)$",
+        "$p(-5)$",
+        "$p(5)$"
+      ],
+      "answer": "$p\\left(-\\frac{5}{2}\\right)$",
+      "compute": null,
+      "solution": "The divisor is 0 when $2x + 5 = 0$, so $x = -\\frac{5}{2}$. The remainder is $p\\left(-\\frac{5}{2}\\right)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$p\\left(-\\frac{5}{2}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x+5=0 at x=-5/2; remainder is p(-5/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.981Z"
+        }
+      }
+    },
+    {
+      "id": "1c0171d3-0c75-48be-9126-a8940c445d59",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Lena divides $p(x) = x^3 - 3x + 4$ by $x + 2$. She finds $p(2) = 6$ and says the remainder is 6. What is the correct remainder?",
+      "choices": [
+        "6",
+        "-2",
+        "2",
+        "-6"
+      ],
+      "answer": "2",
+      "compute": "(-2)^3-3*(-2)+4",
+      "solution": "For the divisor $x + 2$ the remainder is $p(-2) = -8 + 6 + 4 = 2$. Lena used $p(2)$, which is the test for the divisor $x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder is p(-2) = -8 + 6 + 4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.982Z"
+        }
+      }
+    },
+    {
+      "id": "320a4dc1-df2e-49ef-a4e0-05b21bbfa51f",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Find the remainder when $3x^2 + 5x - 1$ is divided by $3x - 1$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "(3)*((1/3))^2+(5)*((1/3))+(-1)",
+      "solution": "The divisor is 0 when $x = \\frac{1}{3}$, so the remainder is $p\\left(\\frac{1}{3}\\right) = 3 \\cdot \\frac{1}{9} + \\frac{5}{3} - 1 = \\frac{1}{3} + \\frac{5}{3} - 1 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder p(1/3)=3(1/9)+5/3-1=1/3+5/3-1=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.983Z"
+        }
+      }
+    },
+    {
+      "id": "bc5ed47d-f733-4c36-9510-9495c9726396",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "The polynomial $p(x)$ equals $(x + 1)(x^2 - 3x + 2) + 6$. What is $p(3)$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "(3+1)*(9-9+2)+6",
+      "solution": "$p(3) = (3 + 1)(9 - 9 + 2) + 6 = 4 \\times 2 + 6 = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(3) = 4 x (9 - 9 + 2) + 6 = 8 + 6 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.994Z"
+        }
+      }
+    },
+    {
+      "id": "854b6afa-1ae5-484c-9104-389920ce8213",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "When $kx^3 - 5x + 2$ is divided by $x - 2$, the remainder is 24. What is $k$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(24+10-2)/8",
+      "solution": "The remainder is $p(2) = 8k - 10 + 2 = 8k - 8$. Setting $8k - 8 = 24$ gives $k = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(2)=8k-10+2=24, 8k=32, k=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.009Z"
+        }
+      }
+    },
+    {
+      "id": "da9896fd-f241-4ff1-9bda-5cd30445d547",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Find the remainder when $x^3 - 2x^2 + 5$ is divided by $x + 2$.",
+      "choices": [],
+      "answer": "-11",
+      "compute": "(1)*(-2)^3+(-2)*(-2)^2+(5)",
+      "solution": "$x + 2 = x - (-2)$, so the remainder is $p(-2) = -8 - 8 + 0 + 5 = -11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-2) = -8 - 8 + 5 = -11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.023Z"
         }
       }
     },
@@ -13668,6 +14918,607 @@
           "work": "p(3) = 2; p(3) + 3^2 = 2 + 9 = 11.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.448Z"
+        }
+      }
+    },
+    {
+      "id": "0f3736af-18d5-47cf-b165-32b5711174a5",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "Find the remainder when $x^5 - 4x^3 + 2x - 7$ is divided by $x - 2$.",
+      "choices": [],
+      "answer": "-3",
+      "compute": "(1)*(2)^5+(-4)*(2)^3+(2)*(2)+(-7)",
+      "solution": "The remainder is $p(2) = 32 - 4(8) + 2(2) - 7 = 32 - 32 + 4 - 7 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(2)=32-32+4-7=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.692Z"
+        }
+      }
+    },
+    {
+      "id": "3eb88027-41ed-4113-88dc-18d66bf785d4",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "The polynomial $p(x) = x^3 + ax^2 + bx - 6$ has $x - 3$ and $x + 2$ as factors. What is its third zero?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-6/(3*2)",
+      "solution": "Write $p(x) = (x - 3)(x + 2)(x - c)$. The constant term is $(-3)(2)(-c) = 6c$, and it equals $-6$, so $c = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Monic cubic, constant -6: product of zeros = 6. 3*(-2)*r=6, r=-1. Check (x-3)(x+2)(x+1)=x^3-7x-6, constant -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.693Z"
+        }
+      }
+    },
+    {
+      "id": "b53c2ee1-f573-4ab1-8b6b-88318f96a473",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "interpreting a remainder",
+      "stem": "A polynomial $p(x)$ has $p(-2) = 0$, $p(1) = 0$ and $p(3) = -20$. Which statement is true?",
+      "choices": [
+        "$x - 2$ and $x + 1$ are factors, and the remainder on division by $x - 3$ is $-20$",
+        "$x + 2$ and $x - 1$ are factors, and the remainder on division by $x - 3$ is $-20$",
+        "$x + 2$ and $x - 1$ are factors, and the remainder on division by $x - 3$ is $0$",
+        "$x + 2$ and $x - 1$ are factors, and the remainder on division by $x + 3$ is $-20$"
+      ],
+      "answer": "$x + 2$ and $x - 1$ are factors, and the remainder on division by $x - 3$ is $-20$",
+      "compute": null,
+      "solution": "$p(-2) = 0$ makes $x + 2$ a factor and $p(1) = 0$ makes $x - 1$ a factor. The remainder on division by $x - 3$ is $p(3) = -20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 2$ and $x - 1$ are factors, and the remainder on division by $x - 3$ is $-20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros -2,1 give factors x+2,x-1; remainder on x-3 is p(3)=-20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.694Z"
+        }
+      }
+    },
+    {
+      "id": "41cd2069-20c4-4331-9de6-d2beb02a1096",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "divisor x + a or ax - b",
+      "stem": "Which of these is a factor of $2x^3 - x^2 + x - 6$?",
+      "choices": [
+        "$2x - 3$",
+        "$2x + 3$",
+        "$x - 3$",
+        "$3x - 2$"
+      ],
+      "answer": "$2x - 3$",
+      "compute": null,
+      "solution": "The divisor $2x - 3$ is zero at $x = \\frac{3}{2}$, and $p\\left(\\frac{3}{2}\\right) = \\frac{27}{4} - \\frac{9}{4} + \\frac{3}{2} - 6 = 0$. The other three give non-zero values.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rational root test: p(3/2) = 2(27/8) - 9/4 + 3/2 - 6 = 6.75 - 2.25 + 1.5 - 6 = 0, so 2x - 3 is a factor. p(2/3), p(-3/2) = -16.5, p(3) = 42 are nonzero.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.776Z"
+        }
+      }
+    },
+    {
+      "id": "56229ef7-cf7a-4a89-acb3-0dc18e71d0cd",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "divisor x + a or ax - b",
+      "stem": "What is the remainder when $3x^3 - 2x^2 + x - 4$ is divided by $3x - 2$?",
+      "choices": [
+        "$-\\frac{58}{9}$",
+        "$-\\frac{10}{3}$",
+        "$14$",
+        "$\\frac{25}{8}$"
+      ],
+      "answer": "$-\\frac{10}{3}$",
+      "compute": null,
+      "solution": "The divisor is 0 when $x = \\frac{2}{3}$. Then $p\\left(\\frac{2}{3}\\right) = \\frac{8}{9} - \\frac{8}{9} + \\frac{2}{3} - 4 = -\\frac{10}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{10}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p = (3x-2)q + r with r constant; r = p(2/3) = 3(8/27) - 2(4/9) + 2/3 - 4 = 8/9 - 8/9 + 2/3 - 4 = -10/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.818Z"
+        }
+      }
+    },
+    {
+      "id": "0150133a-6c63-43ff-a1a0-3d885e8de182",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "The volume of a box in cubic inches is $V(x) = x^3 + 7x^2 + 14x + 8$. Its length is $x + 4$ inches, and $V(-4) = 0$. The width and height are the other two factors of $V(x)$. When $x = 2$, what is the area, in square inches, of the face formed by the width and height?",
+      "choices": [],
+      "answer": "12",
+      "compute": "2^2+3*2+2",
+      "solution": "Dividing $V(x)$ by $x + 4$ gives $x^2 + 3x + 2 = (x + 1)(x + 2)$. These are the width and height, so the face has area $x^2 + 3x + 2$. At $x = 2$ this is $4 + 6 + 2 = 12$ square inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "V/(x+4) = x^2 + 3x + 2 = (x+1)(x+2). At x = 2: 3 x 4 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.827Z"
+        }
+      }
+    },
+    {
+      "id": "d8db6787-2da3-4729-be51-4f7b87be1685",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "Which polynomial is equal to $(x - 2)(x^2 + x + 3) + 4$?",
+      "choices": [
+        "$x^3 + x^2 + 3x + 4$",
+        "$x^3 - x^2 + x - 2$",
+        "$x^3 - x^2 + x - 10$",
+        "$x^3 - x^2 + x + 10$"
+      ],
+      "answer": "$x^3 - x^2 + x - 2$",
+      "compute": null,
+      "solution": "$(x - 2)(x^2 + x + 3) = x^3 + x^2 + 3x - 2x^2 - 2x - 6 = x^3 - x^2 + x - 6$. Adding 4 gives $x^3 - x^2 + x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 - x^2 + x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)(x^2+x+3)=x^3+x^2+3x-2x^2-2x-6=x^3-x^2+x-6; plus 4 gives x^3-x^2+x-2. Check p(2)=8-4+2-2=4, the remainder.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.834Z"
+        }
+      }
+    },
+    {
+      "id": "6368b8e6-3163-4220-bcee-ea950737ade9",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "What is the remainder when $x^{40} + 5x^3 - 2$ is divided by $x + 1$?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "(-1)^40+5*(-1)^3-2",
+      "solution": "The remainder is $p(-1) = (-1)^{40} + 5(-1)^3 - 2 = 1 - 5 - 2 = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-1) = 1 - 5 - 2 = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.877Z"
+        }
+      }
+    },
+    {
+      "id": "1427c1b1-93ce-4c6a-9664-fd361785092f",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "When $x^3 - 3x^2 + kx + 8$ is divided by $x - 4$, the remainder equals the polynomial's constant term. What is $k$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "(8-24)/4",
+      "solution": "The remainder is $p(4) = 64 - 48 + 4k + 8 = 24 + 4k$. Setting $24 + 4k = 8$ gives $k = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(4) = 64 - 48 + 4k + 8 = 24 + 4k = 8, k = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.894Z"
+        }
+      }
+    },
+    {
+      "id": "e7694983-4462-462b-bb4f-a2c31461542e",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "the division statement p(x) = (x - a)q(x) + r",
+      "stem": "When $p(x)$ is divided by $x - 3$, the quotient is $x^2 - 2x + 4$ and the remainder is 5. What is $p(0)$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "(0-3)*4+5",
+      "solution": "$p(x) = (x - 3)(x^2 - 2x + 4) + 5$, so $p(0) = (-3)(4) + 5 = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(x)=(x-3)(x^2-2x+4)+5; p(0)=(-3)(4)+5=-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.900Z"
+        }
+      }
+    },
+    {
+      "id": "236ec970-46e9-4e05-a0b2-6b03d1dcbe26",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "remainder by evaluating p(a)",
+      "stem": "Omar divides $p(x) = -x^3 + 6x^2 - 4x + 10$ by $x - 4$. What is the remainder?",
+      "choices": [
+        "186",
+        "-26",
+        "26",
+        "6"
+      ],
+      "answer": "26",
+      "compute": "(-1)*(4)^3+(6)*(4)^2+(-4)*(4)+(10)",
+      "solution": "$p(4) = -64 + 96 - 16 + 10 = 26$. The value 186 is $p(-4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(4)=-64+96-16+10=26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.922Z"
+        }
+      }
+    },
+    {
+      "id": "db9deeab-2e4e-483f-92a8-18f2cfd5cbed",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "Which polynomial has both $x - 1$ and $x + 2$ as factors?",
+      "choices": [
+        "$x^3 - 4x^2 + x + 2$",
+        "$x^3 + 3x^2 + 2x$",
+        "$x^3 - 2x^2 - 5x + 6$",
+        "$x^3 + 2x^2 - 5x + 6$"
+      ],
+      "answer": "$x^3 - 2x^2 - 5x + 6$",
+      "compute": null,
+      "solution": "A polynomial has both factors when $p(1) = 0$ and $p(-2) = 0$. For $x^3 - 2x^2 - 5x + 6$: $p(1) = 1 - 2 - 5 + 6 = 0$ and $p(-2) = -8 - 8 + 10 + 6 = 0$. The others fail at least one of the two tests.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 - 2x^2 - 5x + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need p(1)=0 and p(-2)=0. A: p(1)=4. B: p(1)=1-2-5+6=0, p(-2)=-8-8+10+6=0. C: p(1)=6. D: p(-2)=-24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.948Z"
+        }
+      }
+    },
+    {
+      "id": "1647fcb4-2133-46e9-b95a-c422c0b43f23",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "divisor x + a or ax - b",
+      "stem": "What is the remainder when $8x^3 + 4x^2 - 2x + 7$ is divided by $2x + 1$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(8)*((-1/2))^3+(4)*((-1/2))^2+(-2)*((-1/2))+(7)",
+      "solution": "The divisor is 0 when $x = -\\frac{1}{2}$. Then $p\\left(-\\frac{1}{2}\\right) = 8\\left(-\\frac{1}{8}\\right) + 4\\left(\\frac{1}{4}\\right) - 2\\left(-\\frac{1}{2}\\right) + 7 = -1 + 1 + 1 + 7 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder = p(-1/2) = 8(-1/8)+4(1/4)-2(-1/2)+7 = -1+1+1+7 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.955Z"
+        }
+      }
+    },
+    {
+      "id": "5179e525-dedc-4c7c-9ba0-8713def3375a",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "interpreting a remainder",
+      "stem": "A polynomial $p(x)$ leaves a remainder of 6 when divided by $x - 2$ and a remainder of $-4$ when divided by $x + 3$. Which statement is true?",
+      "choices": [
+        "$p(-2) = 6$ and $p(3) = -4$, so neither $x - 2$ nor $x + 3$ is a factor",
+        "$p(2) = 6$ and $p(-3) = -4$, so both $x - 2$ and $x + 3$ are factors",
+        "$p(6) = 2$ and $p(-4) = -3$, so neither $x - 2$ nor $x + 3$ is a factor",
+        "$p(2) = 6$ and $p(-3) = -4$, so neither $x - 2$ nor $x + 3$ is a factor"
+      ],
+      "answer": "$p(2) = 6$ and $p(-3) = -4$, so neither $x - 2$ nor $x + 3$ is a factor",
+      "compute": null,
+      "solution": "The remainder on division by $x - 2$ is $p(2)$, and by $x + 3$ is $p(-3)$. Neither is 0, so neither divisor is a factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$p(2) = 6$ and $p(-3) = -4$, so neither $x - 2$ nor $x + 3$ is a factor",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder theorem: p(2)=6, p(-3)=-4; nonzero so neither is a factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.965Z"
+        }
+      }
+    },
+    {
+      "id": "bdc29049-0d07-4772-bedd-b7b3f9b5bbc1",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "Which of these is not a factor of $x^4 - 5x^2 + 4$?",
+      "choices": [
+        "$x - 4$",
+        "$x - 1$",
+        "$x + 2$",
+        "$x - 2$"
+      ],
+      "answer": "$x - 4$",
+      "compute": null,
+      "solution": "Test each: $p(1) = 1 - 5 + 4 = 0$, $p(-2) = 16 - 20 + 4 = 0$ and $p(2) = 0$, so those three are factors. But $p(4) = 256 - 80 + 4 = 180 \\ne 0$, so $x - 4$ is not a factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2-1)(x^2-4)=(x-1)(x+1)(x-2)(x+2). x-4 is not: p(4)=256-80+4=180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.966Z"
+        }
+      }
+    },
+    {
+      "id": "18b3c9db-8f05-4ea3-9c6e-57a9c7e184f6",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "finding an unknown coefficient",
+      "stem": "The polynomial $x^3 + ax^2 - 5x + b$ has $x - 2$ as a factor and leaves a remainder of 3 when divided by $x + 1$. What is $b$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-1-(2+1)/3",
+      "solution": "$p(2) = 8 + 4a - 10 + b = 0$ gives $4a + b = 2$. $p(-1) = -1 + a + 5 + b = 3$ gives $a + b = -1$. Subtracting: $3a = 3$, so $a = 1$ and $b = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(2)=8+4a-10+b=0 gives 4a+b=2. p(-1)=-1+a+5+b=3 gives a+b=-1. Subtract: 3a=3, a=1, b=-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.970Z"
+        }
+      }
+    },
+    {
+      "id": "0594accb-fb65-40ba-80fd-25bef73190f6",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "Since $p(3) = 0$, $x - 3$ is a factor of $p(x) = 2x^3 - 3x^2 - 11x + 6$, and the other factor is $2x^2 + 3x - 2$. Which of these is a zero of $p$ that is not an integer?",
+      "choices": [
+        "$-\\frac{1}{2}$",
+        "$\\frac{3}{2}$",
+        "$-\\frac{3}{2}$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": "$\\frac{1}{2}$",
+      "compute": null,
+      "solution": "$2x^2 + 3x - 2 = (2x - 1)(x + 2)$, so the zeros of $p$ are $3$, $\\frac{1}{2}$ and $-2$. The only one that is not an integer is $\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2+3x-2=(2x-1)(x+2), zeros 1/2 and -2. Zeros of p: 3, -2, 1/2. Non-integer zero 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.971Z"
+        }
+      }
+    },
+    {
+      "id": "d6f7e7d3-8b12-446f-82f1-80ee6f45531d",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "using a known factor to find the other zeros",
+      "stem": "Since $p(-1) = 0$, $x + 1$ is a factor of $p(x) = x^3 - 3x - 2$. Which is the complete factorization of $p(x)$?",
+      "choices": [
+        "$(x + 1)^2(x - 2)$",
+        "$(x + 1)(x - 1)(x - 2)$",
+        "$(x - 1)^2(x + 2)$",
+        "$(x + 1)(x + 2)(x - 1)$"
+      ],
+      "answer": "$(x + 1)^2(x - 2)$",
+      "compute": null,
+      "solution": "Dividing by $x + 1$ gives $x^2 - x - 2 = (x - 2)(x + 1)$. So $p(x) = (x + 1)(x + 1)(x - 2) = (x + 1)^2(x - 2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x + 1)^2(x - 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide by x+1: x^2 - x - 2 = (x-2)(x+1). So (x+1)^2(x-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.986Z"
+        }
+      }
+    },
+    {
+      "id": "b9bb20c3-5882-4ccb-8d33-fbb2ac6bb0b5",
+      "topic_id": "NC17.M3.A-APR.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "deciding whether x - a is a factor",
+      "stem": "The polynomial $p(x) = x^3 - 7x^2 + 14x - 8$ has three different integer values of $a$ for which $x - a$ is a factor. What is the sum of these three values?",
+      "choices": [],
+      "answer": "7",
+      "compute": "1+2+4",
+      "solution": "$p(x) = (x - 1)(x - 2)(x - 4)$, since $p(1) = p(2) = p(4) = 0$. The sum of the values is $1 + 2 + 4 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(1)=1-7+14-8=0; p(2)=8-28+28-8=0; p(4)=64-112+56-8=0. Zeros 1,2,4; sum 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.992Z"
         }
       }
     },

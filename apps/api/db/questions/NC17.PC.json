@@ -12856,6 +12856,631 @@
       }
     },
     {
+      "id": "388e2494-090f-4e6b-b54c-9f538934dab4",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "In degrees, what is $\\cos^{-1}(0)$? Give the value between $0^\\circ$ and $180^\\circ$.",
+      "choices": [],
+      "answer": "90",
+      "compute": "90",
+      "solution": "$\\cos 90^\\circ = 0$, and $90^\\circ$ is in the range $0^\\circ$ to $180^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 90 deg = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.633Z"
+        }
+      }
+    },
+    {
+      "id": "dbf3fbaf-9a92-44da-95ca-210eb48f057e",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "How many solutions does $\\cos x = 0$ have for $0 \\le x < 2\\pi$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Cosine is 0 at $x = \\frac{\\pi}{2}$ and $x = \\frac{3\\pi}{2}$, so there are 2 solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x=0 at pi/2 and 3pi/2: 2 solutions.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.646Z"
+        }
+      }
+    },
+    {
+      "id": "12a39cc6-3d1c-4326-8772-fb80dd13cc2d",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "A calculator in degree mode finds $\\sin^{-1}\\left(-\\frac{\\sqrt{2}}{2}\\right)$. Which angle, between $-90^\\circ$ and $90^\\circ$, does it show? Give the number of degrees.",
+      "choices": [],
+      "answer": "-45",
+      "compute": "-45",
+      "solution": "$\\sin 45^\\circ = \\frac{\\sqrt{2}}{2}$, and sine is odd, so the angle in the allowed range is $-45^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin(-45 deg) = -sqrt2/2, so -45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.648Z"
+        }
+      }
+    },
+    {
+      "id": "c08991c4-fd77-4e58-b81e-0474e4dab35a",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_2 x + \\log_2 4 = 5$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "$\\log_2 4 = 2$, so $\\log_2 x = 3$ and $x = 2^3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2(4x)=5, 4x=32, x=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.719Z"
+        }
+      }
+    },
+    {
+      "id": "62bf2301-8cc6-41c8-9317-c7620e12a8c1",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = 4t$ and $y = t - 2$. Eliminating $t$ gives which equation?",
+      "choices": [
+        "$y = 4x - 2$",
+        "$y = \\frac{x}{4} - 2$",
+        "$y = \\frac{x - 2}{4}$",
+        "$y = 4x - 8$"
+      ],
+      "answer": "$y = \\frac{x}{4} - 2$",
+      "compute": null,
+      "solution": "From $x = 4t$, $t = \\frac{x}{4}$. Substitute: $y = \\frac{x}{4} - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\frac{x}{4} - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t=x/4, y=x/4-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.727Z"
+        }
+      }
+    },
+    {
+      "id": "bee25c6f-63e1-4e71-bccf-bff04f2b8133",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "What is $\\tan^{-1}(1)$ in radians, using the principal value?",
+      "choices": [
+        "$\\frac{\\pi}{2}$",
+        "$\\frac{\\pi}{4}$",
+        "$\\frac{\\pi}{3}$",
+        "$\\frac{3\\pi}{4}$"
+      ],
+      "answer": "$\\frac{\\pi}{4}$",
+      "compute": null,
+      "solution": "$\\tan \\frac{\\pi}{4} = 1$, and $\\frac{\\pi}{4}$ lies between $-\\frac{\\pi}{2}$ and $\\frac{\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan(pi/4) = 1 and pi/4 lies in the principal range (-pi/2, pi/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.728Z"
+        }
+      }
+    },
+    {
+      "id": "46ef0a73-bcee-413b-986e-4288205d8d71",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "Which expression is equal to $1 - \\cos^2 x$?",
+      "choices": [
+        "$\\sin x$",
+        "$-\\sin^2 x$",
+        "$\\tan^2 x$",
+        "$\\sin^2 x$"
+      ],
+      "answer": "$\\sin^2 x$",
+      "compute": null,
+      "solution": "The Pythagorean identity $\\sin^2 x + \\cos^2 x = 1$ gives $1 - \\cos^2 x = \\sin^2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin^2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pythagorean identity: sin^2 x + cos^2 x = 1, so 1 - cos^2 x = sin^2 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.740Z"
+        }
+      }
+    },
+    {
+      "id": "71bfbdb9-0f80-4756-a1d8-6a1bafb8fa19",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = \\sqrt{t}$ and $y = t + 1$ for $t \\ge 0$. Eliminating $t$ gives which equation?",
+      "choices": [
+        "$y = \\sqrt{x} + 1$",
+        "$y = x + 1$",
+        "$y = x^2 - 1$",
+        "$y = x^2 + 1$"
+      ],
+      "answer": "$y = x^2 + 1$",
+      "compute": null,
+      "solution": "Squaring $x = \\sqrt{t}$ gives $t = x^2$. Then $y = x^2 + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = x^2 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t = x^2 (x >= 0), y = x^2 + 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.757Z"
+        }
+      }
+    },
+    {
+      "id": "f6ff1e3a-3e4b-4f4b-a038-e363d022d4a6",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Eliminate the parameter",
+      "stem": "The points $(x, y)$ of a curve satisfy $x = t - 1$ and $y = t^2$. What is $y$ when $x = -4$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "$x = -4$ gives $t = -3$, so $y = (-3)^2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = -4 -> t = -3, y = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.762Z"
+        }
+      }
+    },
+    {
+      "id": "1acb476f-9d25-461b-87e6-0076017da322",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Solve $\\tan x = 1$ for $0 \\le x \\le \\frac{\\pi}{2}$.",
+      "choices": [
+        "$x = \\frac{\\pi}{6}$",
+        "$x = \\frac{\\pi}{3}$",
+        "$x = \\frac{\\pi}{4}$",
+        "$x = \\frac{\\pi}{2}$"
+      ],
+      "answer": "$x = \\frac{\\pi}{4}$",
+      "compute": null,
+      "solution": "$\\tan x = \\frac{\\sin x}{\\cos x} = 1$ when the sine and cosine are equal, at $x = \\frac{\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan(pi/4) = 1, only solution in [0, pi/2] (tan undefined at pi/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.765Z"
+        }
+      }
+    },
+    {
+      "id": "5c06e894-10ff-454e-81a6-5e3eff23b0cb",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use logarithm properties",
+      "stem": "Which expression is equal to $\\ln 5 - \\ln 2$?",
+      "choices": [
+        "$\\ln 3$",
+        "$\\ln \\frac{5}{2}$",
+        "$\\ln 10$",
+        "$\\frac{\\ln 5}{\\ln 2}$"
+      ],
+      "answer": "$\\ln \\frac{5}{2}$",
+      "compute": null,
+      "solution": "The quotient property gives $\\ln 5 - \\ln 2 = \\ln \\frac{5}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\ln \\frac{5}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quotient rule: ln5 - ln2 = ln(5/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.776Z"
+        }
+      }
+    },
+    {
+      "id": "d44e0b75-f1fd-4fde-8c1c-ccfe8b663aab",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_5 x = 3$.",
+      "choices": [],
+      "answer": "125",
+      "compute": "5^3",
+      "solution": "Rewrite in exponential form: $x = 5^3 = 125$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 5^3 = 125.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.789Z"
+        }
+      }
+    },
+    {
+      "id": "ab9d742a-5622-4209-a43b-bc2c70551406",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "Solve $4^{x - 1} = 16$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$16 = 4^2$, so $x - 1 = 2$ and $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 = 4^2, so x - 1 = 2, x = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.828Z"
+        }
+      }
+    },
+    {
+      "id": "ea2be6f7-1af0-4b2b-a57d-0e9b1077a070",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Solve $\\sin \\theta = -1$ for $0^\\circ \\le \\theta < 360^\\circ$. Give $\\theta$ in degrees.",
+      "choices": [],
+      "answer": "270",
+      "compute": "270",
+      "solution": "Sine equals $-1$ at the bottom of the unit circle, $\\theta = 270^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "270",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin theta = -1 at 270 degrees only in [0,360).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.848Z"
+        }
+      }
+    },
+    {
+      "id": "c1287977-ab2b-4613-9f94-c9dda60f4e0e",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use logarithm properties",
+      "stem": "Evaluate $\\log_2 6 + \\log_2 \\frac{4}{3}$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "A sum of logarithms is the logarithm of the product: $\\log_2 \\left(6 \\cdot \\frac{4}{3}\\right) = \\log_2 8 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2(6 x 4/3) = log_2 8 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.877Z"
+        }
+      }
+    },
+    {
+      "id": "f73d82ce-79fe-40b0-ae01-ac276d41cbf1",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve an exponential equation",
+      "stem": "Which equation is equivalent to $e^x = 12$?",
+      "choices": [
+        "$x = \\ln 12$",
+        "$x = \\frac{12}{e}$",
+        "$x = e^{12}$",
+        "$x = \\log_{12} e$"
+      ],
+      "answer": "$x = \\ln 12$",
+      "compute": null,
+      "solution": "The natural logarithm undoes $e^x$: take $\\ln$ of both sides to get $x = \\ln 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\ln 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "e^x=12 <=> x=ln 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.913Z"
+        }
+      }
+    },
+    {
+      "id": "25110cc6-c212-4651-814d-22943455b65c",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve an exponential equation",
+      "stem": "What is the solution of $\\left(\\frac{1}{2}\\right)^x = 8$?",
+      "choices": [
+        "$x = 3$",
+        "$x = -\\frac{1}{3}$",
+        "$x = \\frac{1}{3}$",
+        "$x = -3$"
+      ],
+      "answer": "$x = -3$",
+      "compute": null,
+      "solution": "$\\left(\\frac{1}{2}\\right)^x = 2^{-x}$ and $8 = 2^3$, so $-x = 3$ and $x = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)^x=2^{-x}=2^3, so x=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.922Z"
+        }
+      }
+    },
+    {
+      "id": "37d5ec42-adc7-4ecb-b88d-aaaed980669e",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Which value of $x$ solves $\\log_4 (x - 2) = 1$?",
+      "choices": [
+        "$x = 3$",
+        "$x = 4$",
+        "$x = 6$",
+        "$x = 2$"
+      ],
+      "answer": "$x = 6$",
+      "compute": null,
+      "solution": "Rewrite as $x - 2 = 4^1 = 4$, so $x = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-2=4^1=4, x=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.948Z"
+        }
+      }
+    },
+    {
+      "id": "9e583bf7-f867-4b33-99ed-571aafd58db0",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = t + 1$ and $y = 2t - 3$. What is $y$ when $x = 5$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2*4-3",
+      "solution": "$x = 5$ gives $t = 4$, so $y = 2(4) - 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=5 gives t=4; y = 8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.000Z"
+        }
+      }
+    },
+    {
+      "id": "451b0806-4f93-4143-a084-8b1cc83edce1",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use logarithm properties",
+      "stem": "Evaluate $\\log_2 48 - \\log_2 3$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "A difference of logarithms is the logarithm of the quotient: $\\log_2 \\frac{48}{3} = \\log_2 16 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2(48/3) = log2 16 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.019Z"
+        }
+      }
+    },
+    {
       "id": "c8340f13-35b1-437e-bee3-7d94f83a40c7",
       "topic_id": "NC17.PC.A.2",
       "difficulty": 2,
@@ -13307,6 +13932,602 @@
       }
     },
     {
+      "id": "ccd0072a-4fd2-47ff-a493-a225ab5b9beb",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use logarithm properties",
+      "stem": "Evaluate $\\frac{\\log_3 64}{\\log_3 4}$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "By the change of base formula, the quotient is $\\log_4 64$. Since $4^3 = 64$, the value is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Change of base: log_3 64/log_3 4 = log_4 64 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.595Z"
+        }
+      }
+    },
+    {
+      "id": "71a0b2c4-dbf4-488b-b4ac-bca0e7496540",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_3 x + \\log_3 (x + 6) = 3$ for $x$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Combine: $x(x + 6) = 3^3 = 27$, so $x^2 + 6x - 27 = 0$ and $(x + 9)(x - 3) = 0$. A logarithm cannot take $-9$, so $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x+6)=27, x^2+6x-27=0, (x+9)(x-3)=0; x=-9 rejected (domain), x=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.691Z"
+        }
+      }
+    },
+    {
+      "id": "01fff675-d7a9-4287-8262-91d7cff07d27",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "How many solutions does $2\\sin x = 3$ have?",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "$\\sin x = \\frac{3}{2}$, which is greater than 1. Sine never exceeds 1, so there are no solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x = 3/2 > 1, impossible. 0 solutions.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.764Z"
+        }
+      }
+    },
+    {
+      "id": "8428b505-1eed-4ac1-843d-d75de7fcb985",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Which value of $x$ solves $\\ln (3x - 4) = \\ln (x + 6)$?",
+      "choices": [
+        "$x = 5$",
+        "$x = 1$",
+        "$x = 10$",
+        "$x = -5$"
+      ],
+      "answer": "$x = 5$",
+      "compute": null,
+      "solution": "Equal logarithms have equal inputs: $3x - 4 = x + 6$, so $2x = 10$ and $x = 5$. Check: both inputs are 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal logs: 3x-4 = x+6, so 2x = 10, x = 5. Check: 3(5)-4 = 11 > 0, 5+6 = 11 > 0. Valid.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.779Z"
+        }
+      }
+    },
+    {
+      "id": "912a21a5-975a-43ee-9062-5c0ea517d30a",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_5 (x + 1) = 1 + \\log_5 (x - 3)$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$\\log_5 (x + 1) - \\log_5 (x - 3) = 1$ gives $\\frac{x + 1}{x - 3} = 5$. Then $x + 1 = 5x - 15$, so $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_5(x+1) = log_5 5(x-3): x + 1 = 5x - 15, 4x = 16, x = 4. Check x - 3 = 1 > 0, x + 1 = 5 > 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.809Z"
+        }
+      }
+    },
+    {
+      "id": "d9361fe0-9363-48fa-a611-8b15284734cd",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Where $n$ is any integer, which gives all real solutions of $\\sin x = 0$?",
+      "choices": [
+        "$x = 2n\\pi$",
+        "$x = n\\pi$",
+        "$x = \\frac{\\pi}{2} + n\\pi$",
+        "$x = \\frac{n\\pi}{2}$"
+      ],
+      "answer": "$x = n\\pi$",
+      "compute": null,
+      "solution": "Sine is 0 at $0, \\pi, 2\\pi, \\dots$ and at $-\\pi, -2\\pi, \\dots$, which is every integer multiple of $\\pi$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = n\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x = 0 at 0, pi, 2pi, ... and negatives: x = n pi. pi/2+n pi gives cos=0; n pi/2 includes pi/2; 2n pi misses pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.811Z"
+        }
+      }
+    },
+    {
+      "id": "83daff84-cc78-4e04-b530-d5bb10d8c33b",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "Solve $8^x = 2^{x + 6}$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Write $8 = 2^3$, so $2^{3x} = 2^{x + 6}$. Then $3x = x + 6$ and $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8^x = 2^(3x) = 2^(x+6): 3x = x + 6, x = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.813Z"
+        }
+      }
+    },
+    {
+      "id": "c94e5eaa-5797-4bc8-a950-409c290dfad7",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Solving $2\\cos^2 x - \\cos x = 0$ over one full turn, $0 \\le x < 2\\pi$, gives which solutions?",
+      "choices": [
+        "$\\frac{\\pi}{6}$, $\\frac{\\pi}{2}$, $\\frac{3\\pi}{2}$ and $\\frac{11\\pi}{6}$",
+        "$\\frac{\\pi}{3}$, $\\frac{\\pi}{2}$, $\\frac{3\\pi}{2}$ and $\\frac{5\\pi}{3}$",
+        "$\\frac{\\pi}{3}$, $\\frac{2\\pi}{3}$, $\\frac{4\\pi}{3}$ and $\\frac{5\\pi}{3}$",
+        "$\\frac{\\pi}{3}$ and $\\frac{5\\pi}{3}$ only"
+      ],
+      "answer": "$\\frac{\\pi}{3}$, $\\frac{\\pi}{2}$, $\\frac{3\\pi}{2}$ and $\\frac{5\\pi}{3}$",
+      "compute": null,
+      "solution": "Factor: $\\cos x (2\\cos x - 1) = 0$. Then $\\cos x = 0$ gives $\\frac{\\pi}{2}$ and $\\frac{3\\pi}{2}$, and $\\cos x = \\frac{1}{2}$ gives $\\frac{\\pi}{3}$ and $\\frac{5\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{3}$, $\\frac{\\pi}{2}$, $\\frac{3\\pi}{2}$ and $\\frac{5\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x (2 cos x - 1) = 0: cos x = 0 gives pi/2, 3pi/2; cos x = 1/2 gives pi/3, 5pi/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.832Z"
+        }
+      }
+    },
+    {
+      "id": "628a2f03-7a3c-4d5b-8872-18624b274646",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use logarithm properties",
+      "stem": "For positive $x$ and $y$, which expression is equal to $\\ln \\frac{x^3}{\\sqrt{y}}$?",
+      "choices": [
+        "$3\\ln x - \\frac{1}{2}\\ln y$",
+        "$3\\ln x + \\frac{1}{2}\\ln y$",
+        "$3\\ln x - 2\\ln y$",
+        "$\\frac{1}{3}\\ln x - \\frac{1}{2}\\ln y$"
+      ],
+      "answer": "$3\\ln x - \\frac{1}{2}\\ln y$",
+      "compute": null,
+      "solution": "Use the quotient and power properties: $\\ln x^3 - \\ln y^{1/2} = 3\\ln x - \\frac{1}{2}\\ln y$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3\\ln x - \\frac{1}{2}\\ln y$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ln x^3 - ln y^(1/2) = 3 ln x - (1/2) ln y.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.837Z"
+        }
+      }
+    },
+    {
+      "id": "dd704799-1a04-4122-ad9c-b27a08c13465",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Solve $\\cos 2x = \\frac{1}{2}$ for $0 \\le x \\le \\frac{\\pi}{2}$.",
+      "choices": [
+        "$x = \\frac{\\pi}{12}$",
+        "$x = \\frac{\\pi}{3}$",
+        "$x = \\frac{\\pi}{4}$",
+        "$x = \\frac{\\pi}{6}$"
+      ],
+      "answer": "$x = \\frac{\\pi}{6}$",
+      "compute": null,
+      "solution": "For $0 \\le x \\le \\frac{\\pi}{2}$, $2x$ runs from 0 to $\\pi$, where cosine equals $\\frac{1}{2}$ only at $2x = \\frac{\\pi}{3}$. So $x = \\frac{\\pi}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x in [0, pi]; cos 2x = 1/2 gives 2x = pi/3 only, x = pi/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.843Z"
+        }
+      }
+    },
+    {
+      "id": "ea0590a2-f73e-4684-abe2-c8563dc82842",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "Solve $4^x = \\frac{1}{2}$.",
+      "choices": [],
+      "answer": "-1/2",
+      "compute": "-1/2",
+      "solution": "$4^x = 2^{2x}$ and $\\frac{1}{2} = 2^{-1}$, so $2x = -1$ and $x = -\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^x = 2^(2x) = 2^-1, x = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.869Z"
+        }
+      }
+    },
+    {
+      "id": "2943cff7-8f98-4444-945e-4b7560e3e443",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = 4\\cos t$ and $y = 4\\sin t$ for $0 \\le t \\le \\pi$. Which describes it?",
+      "choices": [
+        "The whole circle $x^2 + y^2 = 16$",
+        "The lower half of the circle $x^2 + y^2 = 16$",
+        "The upper half of the circle $x^2 + y^2 = 16$",
+        "The upper half of the circle $x^2 + y^2 = 4$"
+      ],
+      "answer": "The upper half of the circle $x^2 + y^2 = 16$",
+      "compute": null,
+      "solution": "$x^2 + y^2 = 16\\cos^2 t + 16\\sin^2 t = 16$. For $0 \\le t \\le \\pi$, $y = 4\\sin t \\ge 0$, so only the upper half is drawn.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The upper half of the circle $x^2 + y^2 = 16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + y^2 = 16, t in [0, pi] gives y >= 0: upper half, radius 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.884Z"
+        }
+      }
+    },
+    {
+      "id": "c90f7090-7bf0-407e-b9f5-3f905e035ebb",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Find all $\\theta$ with $0^\\circ \\le \\theta < 360^\\circ$ and $\\sin \\theta = \\frac{\\sqrt{3}}{2}$. What is the sum of the solutions, in degrees?",
+      "choices": [],
+      "answer": "180",
+      "compute": "60+120",
+      "solution": "The solutions are $60^\\circ$ and $120^\\circ$, and $60 + 120 = 180$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin = sqrt3/2 at 60 and 120; sum 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.890Z"
+        }
+      }
+    },
+    {
+      "id": "42b74451-3ebe-46a0-b869-997acf28ae71",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve an exponential equation",
+      "stem": "Which expression gives the exact solution of $1000(1.05)^t = 2500$?",
+      "choices": [
+        "$t = \\frac{\\ln 1.05}{\\ln 2.5}$",
+        "$t = \\ln 2.5 \\cdot \\ln 1.05$",
+        "$t = \\frac{\\ln 2.5}{\\ln 1.05}$",
+        "$t = \\frac{2500}{1000 \\cdot 1.05}$"
+      ],
+      "answer": "$t = \\frac{\\ln 2.5}{\\ln 1.05}$",
+      "compute": null,
+      "solution": "Divide by 1000: $1.05^t = 2.5$. Take logarithms: $t \\ln 1.05 = \\ln 2.5$, so $t = \\frac{\\ln 2.5}{\\ln 1.05}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$t = \\frac{\\ln 2.5}{\\ln 1.05}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.05^t=2.5, t=ln2.5/ln1.05.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.912Z"
+        }
+      }
+    },
+    {
+      "id": "763ec5c9-64f9-4c9c-8908-418234b0b2a5",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "Solve $3^{2x + 1} = 27$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$27 = 3^3$, so $2x + 1 = 3$ and $x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27=3^3, so 2x+1=3, x=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.915Z"
+        }
+      }
+    },
+    {
+      "id": "f3cbd7ac-b1a9-467e-8ecb-8f84a423dc5e",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log x + \\log (x - 21) = 2$, where the base is 10.",
+      "choices": [],
+      "answer": "25",
+      "compute": "25",
+      "solution": "$x(x - 21) = 100$, so $x^2 - 21x - 100 = 0$ and $(x - 25)(x + 4) = 0$. The root $x = -4$ is not allowed in a logarithm, so $x = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x-21)=100 -> x^2-21x-100=0 -> (x-25)(x+4)=0; x=-4 invalid (log of negative), x=25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.963Z"
+        }
+      }
+    },
+    {
+      "id": "581f1552-5c60-4c88-9130-5e24eb248a2c",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "Which gives the solution of $\\tan x = 3$ with $\\pi \\le x \\le \\frac{3\\pi}{2}$?",
+      "choices": [
+        "$x = \\pi + \\tan^{-1} 3$",
+        "$x = \\tan^{-1} 3$",
+        "$x = \\pi - \\tan^{-1} 3$",
+        "$x = 2\\pi - \\tan^{-1} 3$"
+      ],
+      "answer": "$x = \\pi + \\tan^{-1} 3$",
+      "compute": null,
+      "solution": "$\\tan^{-1} 3$ is a quadrant I angle. Tangent repeats every $\\pi$, so the quadrant III angle with the same tangent is $\\pi + \\tan^{-1} 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\pi + \\tan^{-1} 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan^{-1}3 is about 1.249 in the first quadrant; adding pi gives about 4.39, in [pi, 3pi/2] (4.71), with tan = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.982Z"
+        }
+      }
+    },
+    {
+      "id": "1b0f6122-89be-434d-8a59-2c47240143f3",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = t + 1$ and $y = t^2 - 2t$. Eliminating $t$ gives which equation?",
+      "choices": [
+        "$y = x^2 - 4x + 1$",
+        "$y = x^2 - 1$",
+        "$y = x^2 - 4x + 3$",
+        "$y = x^2 - 2x$"
+      ],
+      "answer": "$y = x^2 - 4x + 3$",
+      "compute": null,
+      "solution": "From $x = t + 1$, $t = x - 1$. Then $y = (x - 1)^2 - 2(x - 1) = x^2 - 2x + 1 - 2x + 2 = x^2 - 4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = x^2 - 4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t = x - 1; y = (x-1)^2 - 2(x-1) = x^2 - 2x + 1 - 2x + 2 = x^2 - 4x + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.001Z"
+        }
+      }
+    },
+    {
+      "id": "8e2fdd1b-8f1f-4bd3-8f22-444ccb722dd9",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use logarithm properties",
+      "stem": "Use $\\log 2 \\approx 0.30$ and $\\log 7 \\approx 0.85$ to approximate $\\log 56$.",
+      "choices": [],
+      "answer": "1.75",
+      "compute": "3*0.3+0.85",
+      "solution": "$56 = 2^3 \\cdot 7$, so $\\log 56 = 3\\log 2 + \\log 7 \\approx 3(0.30) + 0.85 = 1.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56 = 2^3 x 7; log 56 = 3(0.30) + 0.85 = 1.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.021Z"
+        }
+      }
+    },
+    {
       "id": "1bdb6eb3-829d-4c6b-9224-6bb189b8c41f",
       "topic_id": "NC17.PC.A.2",
       "difficulty": 3,
@@ -13739,6 +14960,597 @@
           "work": "45 = 3^2 x 5, log = 2p + q.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:28:58.461Z"
+        }
+      }
+    },
+    {
+      "id": "a2338941-b1fd-47a0-99d0-d8ebc7232d0d",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve an exponential equation",
+      "stem": "Which is the exact solution of $3^{x + 1} = 2^x$?",
+      "choices": [
+        "$x = \\frac{\\ln 3}{\\ln 3 - \\ln 2}$",
+        "$x = \\frac{\\ln 3}{\\ln 2 - \\ln 3}$",
+        "$x = \\frac{\\ln 3}{\\ln 2 + \\ln 3}$",
+        "$x = \\ln 3 - \\ln 2$"
+      ],
+      "answer": "$x = \\frac{\\ln 3}{\\ln 2 - \\ln 3}$",
+      "compute": null,
+      "solution": "Take $\\ln$: $(x + 1)\\ln 3 = x \\ln 2$. Then $x \\ln 3 - x \\ln 2 = -\\ln 3$, so $x = \\frac{-\\ln 3}{\\ln 3 - \\ln 2} = \\frac{\\ln 3}{\\ln 2 - \\ln 3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\ln 3}{\\ln 2 - \\ln 3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)ln3 = x ln2, x(ln2-ln3)=ln3, x=ln3/(ln2-ln3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.632Z"
+        }
+      }
+    },
+    {
+      "id": "e587f612-6360-46a2-9f0e-2bef52a7a696",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = \\sin t$ and $y = \\cos 2t$. Which equation describes it with no parameter?",
+      "choices": [
+        "$y = 2x^2 - 1$",
+        "$y = 1 - 2x^2$",
+        "$y = 1 - x^2$",
+        "$y = 2x^2$"
+      ],
+      "answer": "$y = 1 - 2x^2$",
+      "compute": null,
+      "solution": "The double-angle identity $\\cos 2t = 1 - 2\\sin^2 t$ gives $y = 1 - 2x^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 1 - 2x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 2t = 1 - 2 sin^2 t = 1 - 2x^2. So y = 1 - 2x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.790Z"
+        }
+      }
+    },
+    {
+      "id": "ae2a5001-a2d5-49da-b3c0-b9253281abc3",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Find the smallest positive angle $\\theta$, in degrees, that satisfies $\\sin 2\\theta = \\frac{\\sqrt{3}}{2}$.",
+      "choices": [],
+      "answer": "30",
+      "compute": "60/2",
+      "solution": "The smallest positive angle with sine $\\frac{\\sqrt{3}}{2}$ is $60^\\circ$. So $2\\theta = 60^\\circ$ and $\\theta = 30^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 theta = 60 deg gives theta = 30 (smallest positive; next 2 theta = 120 gives 60).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.826Z"
+        }
+      }
+    },
+    {
+      "id": "187712f4-0cd6-45c7-b628-57bc72576b36",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Solve $\\log_x 64 = 3$, where the base $x$ is positive.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Rewrite in exponential form: $x^3 = 64$, so $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3 = 64, x = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.831Z"
+        }
+      }
+    },
+    {
+      "id": "ceaeccda-47e2-4b47-8442-f4e32e3681e6",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a logarithmic equation",
+      "stem": "How many real solutions does $\\log_3 (x^2) = 4$ have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$x^2 = 81$, so $x = 9$ or $x = -9$. Both make $x^2$ positive, so both work: 2 solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 81, x = 9 or -9, both valid (x^2 > 0). 2 solutions.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.871Z"
+        }
+      }
+    },
+    {
+      "id": "c10e9ad4-ade7-4791-8906-7151f5b12881",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use logarithm properties",
+      "stem": "Evaluate $\\log_4 9 \\cdot \\log_3 16$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Change both to natural logarithms: $\\frac{\\ln 9}{\\ln 4} \\cdot \\frac{\\ln 16}{\\ln 3} = \\frac{2\\ln 3}{2\\ln 2} \\cdot \\frac{4\\ln 2}{\\ln 3} = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_4 9 = log_2 3; log_3 16 = 4 log_3 2; product = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.888Z"
+        }
+      }
+    },
+    {
+      "id": "23b12f41-45c9-4139-a9f0-dd6659f18869",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "What is the exact value of $\\tan\\left(\\sin^{-1}\\left(\\frac{1}{3}\\right)\\right)$?",
+      "choices": [
+        "$\\frac{\\sqrt{2}}{4}$",
+        "$\\frac{1}{8}$",
+        "$2\\sqrt{2}$",
+        "$\\frac{2\\sqrt{2}}{3}$"
+      ],
+      "answer": "$\\frac{\\sqrt{2}}{4}$",
+      "compute": null,
+      "solution": "Let $\\theta = \\sin^{-1}\\frac{1}{3}$. Then $\\cos\\theta = \\sqrt{1 - \\frac{1}{9}} = \\frac{2\\sqrt{2}}{3}$, so $\\tan\\theta = \\frac{1/3}{2\\sqrt{2}/3} = \\frac{1}{2\\sqrt{2}} = \\frac{\\sqrt{2}}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\sqrt{2}}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin t=1/3, cos t=sqrt(1-1/9)=2sqrt2/3 (t in first quadrant), tan=1/(2sqrt2)=sqrt2/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.903Z"
+        }
+      }
+    },
+    {
+      "id": "85d18c56-c9fa-4d8d-9d5a-cbed5361ca91",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = 2^t$ and $y = 4^t + 1$. What is $y$ when $x = 5$?",
+      "choices": [],
+      "answer": "26",
+      "compute": "5^2+1",
+      "solution": "$4^t = (2^t)^2 = x^2$, so $y = x^2 + 1$. When $x = 5$, $y = 26$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y=4^t+1=(2^t)^2+1=x^2+1=25+1=26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.912Z"
+        }
+      }
+    },
+    {
+      "id": "dca5452a-8239-4490-bce9-9a5f888a59d7",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "A student factors $2\\sin^2 x + 3\\sin x - 2$ and sets each factor equal to 0. Which are all the solutions of $2\\sin^2 x + 3\\sin x - 2 = 0$ with $0 \\le x < 2\\pi$?",
+      "choices": [
+        "$x = \\frac{\\pi}{6}$ and $x = \\frac{5\\pi}{6}$",
+        "$x = \\frac{\\pi}{6}$, $x = \\frac{5\\pi}{6}$ and $x = \\frac{3\\pi}{2}$",
+        "$x = \\frac{\\pi}{3}$ and $x = \\frac{2\\pi}{3}$",
+        "$x = \\frac{\\pi}{6}$ and $x = \\frac{7\\pi}{6}$"
+      ],
+      "answer": "$x = \\frac{\\pi}{6}$ and $x = \\frac{5\\pi}{6}$",
+      "compute": null,
+      "solution": "Factor: $(2\\sin x - 1)(\\sin x + 2) = 0$. Since $\\sin x = -2$ is impossible, $\\sin x = \\frac{1}{2}$, giving $\\frac{\\pi}{6}$ and $\\frac{5\\pi}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{6}$ and $x = \\frac{5\\pi}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2sinx-1)(sinx+2)=0; sinx=1/2 -> pi/6, 5pi/6; sinx=-2 impossible.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.915Z"
+        }
+      }
+    },
+    {
+      "id": "3193cdf9-c262-4c82-9086-f1c683a1b728",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Use a double-angle identity to find how many angles $x$, from 0 up to but not including $2\\pi$, make $\\cos 2x$ equal to $\\cos x$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Use $\\cos 2x = 2\\cos^2 x - 1$: $2\\cos^2 x - \\cos x - 1 = 0$, so $(2\\cos x + 1)(\\cos x - 1) = 0$. Then $\\cos x = -\\frac{1}{2}$ gives $\\frac{2\\pi}{3}$ and $\\frac{4\\pi}{3}$, and $\\cos x = 1$ gives $0$. Total 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos2x=2cos^2x-1=cosx -> (2cosx+1)(cosx-1)=0. cosx=1: x=0; cosx=-1/2: 2pi/3, 4pi/3. Three angles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.931Z"
+        }
+      }
+    },
+    {
+      "id": "2334155d-f7bc-4d0a-b24d-30dd058aee0f",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use inverse trig functions and identities",
+      "stem": "What is $\\sin\\left(2\\cos^{-1}\\left(\\frac{3}{5}\\right)\\right)$?",
+      "choices": [],
+      "answer": "24/25",
+      "compute": "2*4/5*3/5",
+      "solution": "Let $\\theta = \\cos^{-1}\\frac{3}{5}$, so $\\sin \\theta = \\frac{4}{5}$. Then $\\sin 2\\theta = 2\\sin\\theta\\cos\\theta = 2 \\cdot \\frac{4}{5} \\cdot \\frac{3}{5} = \\frac{24}{25}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24/25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t=arccos(3/5), sin t=4/5; sin2t=2(4/5)(3/5)=24/25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.936Z"
+        }
+      }
+    },
+    {
+      "id": "e414b98e-c8c1-4ced-9e01-a25705050040",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Eliminate the parameter",
+      "stem": "A curve has $x = 3 + 2\\cos t$ and $y = -1 + 2\\sin t$. Which equation describes it with no parameter?",
+      "choices": [
+        "$(x + 3)^2 + (y - 1)^2 = 4$",
+        "$(x - 3)^2 + (y + 1)^2 = 2$",
+        "$(x - 3)^2 - (y + 1)^2 = 4$",
+        "$(x - 3)^2 + (y + 1)^2 = 4$"
+      ],
+      "answer": "$(x - 3)^2 + (y + 1)^2 = 4$",
+      "compute": null,
+      "solution": "$\\cos t = \\frac{x - 3}{2}$ and $\\sin t = \\frac{y + 1}{2}$. Using $\\cos^2 t + \\sin^2 t = 1$: $\\frac{(x - 3)^2}{4} + \\frac{(y + 1)^2}{4} = 1$, which is $(x - 3)^2 + (y + 1)^2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 3)^2 + (y + 1)^2 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos t=(x-3)/2, sin t=(y+1)/2; sum of squares 1 -> (x-3)^2+(y+1)^2=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.960Z"
+        }
+      }
+    },
+    {
+      "id": "e427bc3c-a356-4ed8-aef4-a1e8492bac3f",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "Solve $3^{x + 2} - 3^x = 72$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Factor: $3^x(3^2 - 1) = 8 \\cdot 3^x = 72$, so $3^x = 9$ and $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^x(9-1)=72, 3^x=9, x=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.972Z"
+        }
+      }
+    },
+    {
+      "id": "5246990e-1d21-42e7-9cdd-76eaaf219d3f",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "A medicine in the body follows $A = 50\\left(\\frac{1}{2}\\right)^{t/12}$ milligrams after $t$ hours. After how many hours are 6.25 milligrams left?",
+      "choices": [],
+      "answer": "36",
+      "compute": "36",
+      "solution": "$\\left(\\frac{1}{2}\\right)^{t/12} = \\frac{6.25}{50} = \\frac{1}{8} = \\left(\\frac{1}{2}\\right)^3$, so $\\frac{t}{12} = 3$ and $t = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)^(t/12)=6.25/50=0.125=(1/2)^3, so t/12=3, t=36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.975Z"
+        }
+      }
+    },
+    {
+      "id": "edce785c-cd4a-438d-93ce-5456eb74d4dc",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trigonometric equation",
+      "stem": "Which lists all solutions of $\\sin 2x = \\sin x$ for $0 \\le x < 2\\pi$?",
+      "choices": [
+        "$\\frac{\\pi}{3}$ and $\\frac{5\\pi}{3}$",
+        "$0$, $\\frac{\\pi}{6}$, $\\pi$ and $\\frac{11\\pi}{6}$",
+        "$0$, $\\frac{\\pi}{3}$, $\\pi$ and $\\frac{5\\pi}{3}$",
+        "$\\frac{\\pi}{3}$, $\\pi$ and $\\frac{5\\pi}{3}$"
+      ],
+      "answer": "$0$, $\\frac{\\pi}{3}$, $\\pi$ and $\\frac{5\\pi}{3}$",
+      "compute": null,
+      "solution": "Use $\\sin 2x = 2\\sin x \\cos x$: $\\sin x (2\\cos x - 1) = 0$. Then $\\sin x = 0$ gives $0$ and $\\pi$, and $\\cos x = \\frac{1}{2}$ gives $\\frac{\\pi}{3}$ and $\\frac{5\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0$, $\\frac{\\pi}{3}$, $\\pi$ and $\\frac{5\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 sin x cos x - sin x = 0, sin x(2cos x - 1)=0. sin x=0: 0, pi. cos x = 1/2: pi/3, 5pi/3. All four.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.980Z"
+        }
+      }
+    },
+    {
+      "id": "29d13147-6fdc-4c3b-bd9c-15c5ce03e0f4",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a logarithmic equation",
+      "stem": "Which is the solution of $\\ln (\\ln x) = 0$?",
+      "choices": [
+        "$x = 1$",
+        "$x = e^e$",
+        "$x = 0$",
+        "$x = e$"
+      ],
+      "answer": "$x = e$",
+      "compute": null,
+      "solution": "$\\ln (\\ln x) = 0$ means $\\ln x = e^0 = 1$. Then $x = e^1 = e$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = e$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ln x = e^0 = 1, so x = e.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.989Z"
+        }
+      }
+    },
+    {
+      "id": "8ce4ff3f-18dd-4c1f-85a3-5e6963a487b6",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve an exponential equation",
+      "stem": "Which gives $t$ when the formula $A = Pe^{rt}$ is solved for $t$?",
+      "choices": [
+        "$t = \\frac{\\ln A}{rP}$",
+        "$t = \\frac{1}{r}\\ln \\frac{A}{P}$",
+        "$t = r\\ln \\frac{A}{P}$",
+        "$t = \\frac{r}{\\ln (A/P)}$"
+      ],
+      "answer": "$t = \\frac{1}{r}\\ln \\frac{A}{P}$",
+      "compute": null,
+      "solution": "Divide by $P$: $e^{rt} = \\frac{A}{P}$. Take $\\ln$: $rt = \\ln \\frac{A}{P}$. Divide by $r$: $t = \\frac{1}{r}\\ln \\frac{A}{P}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$t = \\frac{1}{r}\\ln \\frac{A}{P}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A/P = e^{rt}, ln(A/P) = rt, t = (1/r) ln(A/P).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:58.993Z"
+        }
+      }
+    },
+    {
+      "id": "84491576-a144-4198-8177-343fab3d219d",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a trigonometric equation",
+      "stem": "In one full turn, $0 \\le x < 2\\pi$, how many angles $x$ satisfy $\\tan^2 x = 3$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$\\tan x = \\sqrt{3}$ or $\\tan x = -\\sqrt{3}$. Each has two solutions in $[0, 2\\pi)$: $\\frac{\\pi}{3}$, $\\frac{4\\pi}{3}$ and $\\frac{2\\pi}{3}$, $\\frac{5\\pi}{3}$. Total 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan x = sqrt3 or -sqrt3: pi/3, 4pi/3, 2pi/3, 5pi/3. Four angles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.012Z"
+        }
+      }
+    },
+    {
+      "id": "ce93bed8-0aa9-477c-98f5-778dd33e7d5e",
+      "topic_id": "NC17.PC.A.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation",
+      "stem": "The equation $5^{2x} - 6 \\cdot 5^x + 5 = 0$ has two solutions. What is their sum?",
+      "choices": [],
+      "answer": "1",
+      "compute": "0+1",
+      "solution": "Let $u = 5^x$: $u^2 - 6u + 5 = 0$, so $u = 1$ or $u = 5$. Then $x = 0$ or $x = 1$, and the sum is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u = 5^x: u^2 - 6u + 5 = 0, u = 1 or 5, x = 0 or 1. Sum 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:29:59.025Z"
         }
       }
     },
