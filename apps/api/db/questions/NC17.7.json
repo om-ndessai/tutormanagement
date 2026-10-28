@@ -19020,6 +19020,636 @@
       }
     },
     {
+      "id": "76b37396-7d45-4749-a115-9e55b27d9e96",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write and simplify an expression",
+      "stem": "Sam has $x$ marbles. Lin has 3 more than twice as many as Sam. Together they have $ax + b$ marbles. What is $a + b$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "3+3",
+      "solution": "Lin has $2x + 3$. Together: $x + (2x + 3) = 3x + 3$. So $a = 3$, $b = 3$ and $a + b = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lin = 2x + 3; total 3x + 3; a + b = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.118Z"
+        }
+      }
+    },
+    {
+      "id": "58c0ed23-acd2-4f6c-9090-67dc79bf1d8e",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Combine like terms",
+      "stem": "What is the constant term of $9 + 4x - 5 + x$ when it is fully simplified?",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "The numbers without $x$ are $9$ and $-5$, and $9 - 5 = 4$. (The simplified expression is $5x + 4$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Constants 9 - 5 = 4; x terms 4x + x = 5x. Simplified 5x + 4, constant 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.197Z"
+        }
+      }
+    },
+    {
+      "id": "e3a562aa-d3db-455a-b280-c23dc86b4055",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Operations with rational coefficients",
+      "stem": "When $\\frac{1}{4}x + \\frac{1}{2}x$ is simplified, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "1/4+1/2",
+      "solution": "$\\frac{1}{4} + \\frac{1}{2} = \\frac{1}{4} + \\frac{2}{4} = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/4 + 1/2 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.236Z"
+        }
+      }
+    },
+    {
+      "id": "1bd61df7-d01d-452b-bf88-5d79e5116f51",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Expand linear expressions",
+      "stem": "Which expression is equal to $-(x + 7)$?",
+      "choices": [
+        "$-x + 7$",
+        "$-x - 7$",
+        "$x - 7$",
+        "$x + 7$"
+      ],
+      "answer": "$-x - 7$",
+      "compute": null,
+      "solution": "The negative sign multiplies both terms: $-x$ and $-7$. The result is $-x - 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-x - 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(x+7) = -x-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.323Z"
+        }
+      }
+    },
+    {
+      "id": "54820487-936f-4c63-a861-8d68bcd9fe44",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add linear expressions",
+      "stem": "A garden has $2x + 3$ red flowers and $x + 9$ yellow flowers. The total number of flowers is $ax + b$. What is $b$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3+9",
+      "solution": "Add: $(2x + 3) + (x + 9) = 3x + 12$. So $b = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+3)+(x+9)=3x+12; b=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.356Z"
+        }
+      }
+    },
+    {
+      "id": "cea1e217-8fe9-4491-a68c-7abf0cb6020d",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract linear expressions",
+      "stem": "Subtract $(3x + 1)$ from $(8x + 6)$.",
+      "choices": [
+        "$5x + 5$",
+        "$11x + 7$",
+        "$5x + 7$",
+        "$-5x - 5$"
+      ],
+      "answer": "$5x + 5$",
+      "compute": null,
+      "solution": "$(8x + 6) - (3x + 1) = 8x - 3x + 6 - 1 = 5x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(8x + 6) - (3x + 1) = 5x + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.440Z"
+        }
+      }
+    },
+    {
+      "id": "1f8b461e-d743-496d-b370-c36d4cf284c6",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expand with rational coefficients",
+      "stem": "After expanding $\\frac{1}{2}(8x + 6)$, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "8/2",
+      "solution": "$\\frac{1}{2}(8x + 6) = 4x + 3$. The coefficient of $x$ is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)(8x + 6) = 4x + 3; coefficient 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.474Z"
+        }
+      }
+    },
+    {
+      "id": "6b7a8670-561b-4d98-9cff-1ba304dc78ce",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Expand linear expressions",
+      "stem": "Which expression do you get by distributing the 2 in $2(5x + 3)$?",
+      "choices": [
+        "$10x + 3$",
+        "$10x + 6$",
+        "$7x + 5$",
+        "$5x + 6$"
+      ],
+      "answer": "$10x + 6$",
+      "compute": null,
+      "solution": "Multiply both terms by 2: $2 \\cdot 5x = 10x$ and $2 \\cdot 3 = 6$. The result is $10x + 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10x + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(5x + 3) = 10x + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.485Z"
+        }
+      }
+    },
+    {
+      "id": "82ce0f9c-3caa-4086-a36b-34b5000dc07d",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equivalent expressions and properties of operations",
+      "stem": "Which property shows that $3(x + 2) = 3x + 6$?",
+      "choices": [
+        "commutative property",
+        "distributive property",
+        "associative property",
+        "multiplicative identity property"
+      ],
+      "answer": "distributive property",
+      "compute": null,
+      "solution": "Multiplying 3 by each term inside the parentheses is the distributive property.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "distributive property",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x+2) = 3x + 3*2 is the distributive property.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.534Z"
+        }
+      }
+    },
+    {
+      "id": "ed6016d0-f1d2-4e92-81c9-66a0a24e69dd",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add linear expressions",
+      "stem": "Find the value of $(2x + 1) + (3x + 4)$ when $x = 2$.",
+      "choices": [],
+      "answer": "15",
+      "compute": "(2*2+1)+(3*2+4)",
+      "solution": "The sum is $5x + 5$. When $x = 2$ it is $5 \\cdot 2 + 5 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=2: (5) + (10) = 15; or 5x+5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.564Z"
+        }
+      }
+    },
+    {
+      "id": "42a6f41d-dd35-4ef2-8fb4-4951004ee084",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add linear expressions",
+      "stem": "Add $(x + 8)$ and $(6x - 3)$. What is the sum?",
+      "choices": [
+        "$7x + 11$",
+        "$6x + 5$",
+        "$7x - 5$",
+        "$7x + 5$"
+      ],
+      "answer": "$7x + 5$",
+      "compute": null,
+      "solution": "Add the $x$ terms: $x + 6x = 7x$. Add the numbers: $8 + (-3) = 5$. The sum is $7x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + 6x = 7x; 8 - 3 = 5: 7x + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.609Z"
+        }
+      }
+    },
+    {
+      "id": "59f8dee1-08bb-4439-b3c6-87c10cb381aa",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract linear expressions",
+      "stem": "Which expression is equal to $(5x + 2) - (x - 6)$?",
+      "choices": [
+        "$4x - 4$",
+        "$4x - 8$",
+        "$6x - 4$",
+        "$4x + 8$"
+      ],
+      "answer": "$4x + 8$",
+      "compute": null,
+      "solution": "Subtracting $x - 6$ means subtracting $x$ and adding 6: $5x - x + 2 + 6 = 4x + 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x+2-x+6 = 4x+8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.645Z"
+        }
+      }
+    },
+    {
+      "id": "3bdbd50d-4392-4657-ab1c-70386ce4e8bc",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Factor linear expressions",
+      "stem": "Maya factors $12x + 8$ as $4(ax + 2)$. What is $a$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "12/4",
+      "solution": "Divide each term by 4: $12x \\div 4 = 3x$ and $8 \\div 4 = 2$. So $a = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(ax+2) = 4ax+8 = 12x+8 -> a = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.665Z"
+        }
+      }
+    },
+    {
+      "id": "749332c8-bece-4bc1-b5e8-1feb6146eeff",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor linear expressions",
+      "stem": "Which expression is equal to $9x - 6$?",
+      "choices": [
+        "$3(3x - 2)$",
+        "$3(3x + 2)$",
+        "$3(3x - 6)$",
+        "$9(x - 6)$"
+      ],
+      "answer": "$3(3x - 2)$",
+      "compute": null,
+      "solution": "Factor out 3: $9x \\div 3 = 3x$ and $-6 \\div 3 = -2$. So $9x - 6 = 3(3x - 2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3(3x - 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(3x-2) = 9x-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.696Z"
+        }
+      }
+    },
+    {
+      "id": "8e4d2e3f-351c-4d18-9bff-00997c3408bc",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract linear expressions",
+      "stem": "When $(6x + 10) - (x + 3)$ is simplified, it equals $ax + b$. What is $a$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "6-1",
+      "solution": "Subtract the $x$ terms: $6x - x = 5x$. Subtract the numbers: $10 - 3 = 7$. The result is $5x + 7$, so $a = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x+10-x-3 = 5x+7; a = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.697Z"
+        }
+      }
+    },
+    {
+      "id": "2e2c7649-6df7-4c44-b664-7b77c5ed5ec2",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write and simplify an expression",
+      "stem": "A box holds $n$ pencils. Ria has 3 full boxes and 5 extra pencils. Which expression gives the number of pencils Ria has?",
+      "choices": [
+        "$3 + 5n$",
+        "$8n$",
+        "$3n + 5$",
+        "$n + 8$"
+      ],
+      "answer": "$3n + 5$",
+      "compute": null,
+      "solution": "The full boxes hold $3 \\cdot n = 3n$ pencils. Add the 5 extra pencils: $3n + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3n + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3n + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.698Z"
+        }
+      }
+    },
+    {
+      "id": "8e8ea740-993b-4da6-ae84-fdbabb69e183",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract linear expressions",
+      "stem": "A plank is $4x + 9$ centimeters long. A piece $x + 2$ centimeters long is cut off. The plank that is left is $ax + b$ centimeters long. What is $a + b$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "3+7",
+      "solution": "$(4x + 9) - (x + 2) = 3x + 7$. So $a = 3$, $b = 7$ and $a + b = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4x+9)-(x+2) = 3x+7; a+b = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.705Z"
+        }
+      }
+    },
+    {
+      "id": "64a36f4c-abc0-49d7-9f7c-18f75ed41bb1",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor linear expressions",
+      "stem": "Which shows $8x + 12$ with 4 factored out?",
+      "choices": [
+        "$4(2x + 12)$",
+        "$4(x + 3)$",
+        "$4(2x + 3)$",
+        "$4(8x + 3)$"
+      ],
+      "answer": "$4(2x + 3)$",
+      "compute": null,
+      "solution": "Divide each term by 4: $8x \\div 4 = 2x$ and $12 \\div 4 = 3$. So $8x + 12 = 4(2x + 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4(2x + 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x + 12 = 4·2x + 4·3 = 4(2x + 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.713Z"
+        }
+      }
+    },
+    {
+      "id": "ff9143c8-f409-46a6-8e7e-5bab4f5378c4",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Combine like terms",
+      "stem": "What is the value of $2x + 7 + 5x - 3$ when $x = 3$?",
+      "choices": [],
+      "answer": "25",
+      "compute": "2*3+7+5*3-3",
+      "solution": "Simplify first: $7x + 4$. When $x = 3$ it is $7 \\cdot 3 + 4 = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x + 4 at x = 3: 21 + 4 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.740Z"
+        }
+      }
+    },
+    {
+      "id": "1e4c2be7-441e-486a-8a78-98cc2e26c777",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Combine like terms",
+      "stem": "Simplify $6x + 4 + 2x - 1$.",
+      "choices": [
+        "$8x + 5$",
+        "$8x^2 + 3$",
+        "$8x + 3$",
+        "$11x$"
+      ],
+      "answer": "$8x + 3$",
+      "compute": null,
+      "solution": "Combine the $x$ terms: $6x + 2x = 8x$. Combine the numbers: $4 - 1 = 3$. The result is $8x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x + 2x = 8x, 4 - 1 = 3 → 8x + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.777Z"
+        }
+      }
+    },
+    {
       "id": "ec43b904-5083-42bc-8dd6-019fa2d59373",
       "topic_id": "NC17.7.EE.1",
       "difficulty": 2,
@@ -19370,6 +20000,704 @@
           "work": "6x+3-2x=4x+3.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.640Z"
+        }
+      }
+    },
+    {
+      "id": "42f4fb67-fb8b-48a7-80c6-0c85294e905f",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract linear expressions",
+      "stem": "Subtract $(2x - 9)$ from $(6x + 1)$. What is the result?",
+      "choices": [
+        "$4x - 8$",
+        "$4x + 8$",
+        "$8x - 8$",
+        "$4x + 10$"
+      ],
+      "answer": "$4x + 10$",
+      "compute": null,
+      "solution": "$(6x + 1) - (2x - 9) = 6x - 2x + 1 + 9 = 4x + 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(6x + 1) − (2x − 9) = 6x + 1 − 2x + 9 = 4x + 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.090Z"
+        }
+      }
+    },
+    {
+      "id": "35593993-74c0-471e-a3ed-15c3a946493e",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor linear expressions",
+      "stem": "Mia factors the greatest common factor out of $27x + 45$ and writes it in the form $n(3x + 5)$. What is $n$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "27/3",
+      "solution": "The greatest common factor of 27 and 45 is 9, and $27x + 45 = 9(3x + 5)$. So $n = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(27,45)=9; 9(3x+5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.147Z"
+        }
+      }
+    },
+    {
+      "id": "c7bde470-be38-4a49-a89b-594d67815a0e",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Simplify $\\left(\\frac{3}{5}x - 2\\right) - \\left(\\frac{1}{5}x + 3\\right)$.",
+      "choices": [
+        "$\\frac{2}{5}x + 1$",
+        "$\\frac{2}{5}x - 5$",
+        "$\\frac{4}{5}x - 5$",
+        "$\\frac{2}{5}x - 1$"
+      ],
+      "answer": "$\\frac{2}{5}x - 5$",
+      "compute": null,
+      "solution": "$\\frac{3}{5}x - \\frac{1}{5}x = \\frac{2}{5}x$ and $-2 - 3 = -5$. The result is $\\frac{2}{5}x - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{5}x - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/5x-1/5x=2/5x; -2-3=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.181Z"
+        }
+      }
+    },
+    {
+      "id": "f7ecdc80-880c-4bcf-9a40-b77842a12c51",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine like terms",
+      "stem": "Write $7 - 2x + 5x - 10$ in simplest form.",
+      "choices": [
+        "$3x - 3$",
+        "$3x + 3$",
+        "$7x - 3$",
+        "$-3x - 3$"
+      ],
+      "answer": "$3x - 3$",
+      "compute": null,
+      "solution": "Combine the $x$ terms: $-2x + 5x = 3x$. Combine the numbers: $7 - 10 = -3$. The result is $3x - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 10 = -3; -2x + 5x = 3x -> 3x - 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.200Z"
+        }
+      }
+    },
+    {
+      "id": "aa21cd27-94cc-4c5c-861a-0a18a28eec45",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor with rational coefficients",
+      "stem": "Dev factors $\\frac{2}{3}$ out of $\\frac{2}{3}x + 4$ and gets $\\frac{2}{3}(x + k)$. What number is $k$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "4/(2/3)",
+      "solution": "Divide the constant by $\\frac{2}{3}$: $4 \\div \\frac{2}{3} = 4 \\cdot \\frac{3}{2} = 6$. So $k = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/3)k = 4 -> k = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.287Z"
+        }
+      }
+    },
+    {
+      "id": "de589672-7ee1-4945-8c18-4d78100940cc",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write and simplify an expression",
+      "stem": "Jess is $a$ years old. Her brother is 4 years younger than Jess. Her mother is 2 years more than 3 times Jess's age. The sum of all three ages is $ka + c$. What is $k + c$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5-2",
+      "solution": "Ages: $a$, $a - 4$ and $3a + 2$. Sum: $5a - 2$. So $k = 5$, $c = -2$ and $k + c = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a + (a-4) + (3a+2) = 5a - 2; k=5, c=-2; k+c=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.291Z"
+        }
+      }
+    },
+    {
+      "id": "50acc3a9-37d8-4876-818d-851e97709910",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Operations with rational coefficients",
+      "stem": "When $\\left(\\frac{5}{6}x + 1\\right) - \\left(\\frac{1}{6}x - 2\\right)$ is simplified, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "2/3",
+      "compute": "5/6-1/6",
+      "solution": "$\\frac{5}{6} - \\frac{1}{6} = \\frac{4}{6} = \\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 x - 1/6 x = 4/6 x = 2/3 x; constant 1+2=3. Coefficient 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.347Z"
+        }
+      }
+    },
+    {
+      "id": "167e7d8c-f4de-4386-9c11-753a159d7a87",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Which expression is equal to $(0.6x - 1.5) + (0.4x + 3)$?",
+      "choices": [
+        "$x - 1.5$",
+        "$x + 4.5$",
+        "$x + 1.5$",
+        "$0.24x + 1.5$"
+      ],
+      "answer": "$x + 1.5$",
+      "compute": null,
+      "solution": "Add the $x$ terms: $0.6x + 0.4x = x$. Add the numbers: $-1.5 + 3 = 1.5$. The result is $x + 1.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 1.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.6x+0.4x = x; -1.5+3 = 1.5. x+1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.357Z"
+        }
+      }
+    },
+    {
+      "id": "950b2eed-68f1-4fab-b635-66725d58f00a",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expand linear expressions",
+      "stem": "Ava wrote $-(2x - 5) = -2x - 5$. What is the correct expansion of $-(2x - 5)$?",
+      "choices": [
+        "$2x + 5$",
+        "$-2x + 5$",
+        "$2x - 5$",
+        "$-2x - 10$"
+      ],
+      "answer": "$-2x + 5$",
+      "compute": null,
+      "solution": "The negative sign multiplies both terms: $-(2x) = -2x$ and $-(-5) = +5$. The result is $-2x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(2x-5) = -2x+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.419Z"
+        }
+      }
+    },
+    {
+      "id": "60883b0a-bb9c-47b4-9ed4-f2aa95ceb1a8",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factor linear expressions",
+      "stem": "Which shows $18x + 24$ with its greatest common factor factored out?",
+      "choices": [
+        "$3(6x + 8)$",
+        "$2(9x + 12)$",
+        "$6(3x + 4)$",
+        "$6(3x + 24)$"
+      ],
+      "answer": "$6(3x + 4)$",
+      "compute": null,
+      "solution": "The greatest common factor of 18 and 24 is 6. Dividing each term by 6 gives $3x + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6(3x + 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(18, 24) = 6; 18x + 24 = 6(3x + 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.433Z"
+        }
+      }
+    },
+    {
+      "id": "84401483-d1cb-4c96-837c-274265757e58",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expand and combine",
+      "stem": "Which expression is equal to $2(3x + 1) - 5x$?",
+      "choices": [
+        "$x + 1$",
+        "$x + 2$",
+        "$11x + 2$",
+        "$x - 2$"
+      ],
+      "answer": "$x + 2$",
+      "compute": null,
+      "solution": "$2(3x + 1) = 6x + 2$. Then $6x + 2 - 5x = x + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x + 2 - 5x = x + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.452Z"
+        }
+      }
+    },
+    {
+      "id": "5a306302-737d-40ee-9ec5-5070f9391ba3",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add linear expressions",
+      "stem": "Find the value of $(3x - 5) + (4x + 12)$ when $x = 3$.",
+      "choices": [],
+      "answer": "28",
+      "compute": "7*3+7",
+      "solution": "The sum is $7x + 7$. When $x = 3$ it is $21 + 7 = 28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x + 7 at x = 3 → 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.456Z"
+        }
+      }
+    },
+    {
+      "id": "5e606487-8ea9-43da-aac2-2b09fb941216",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write and simplify an expression",
+      "stem": "A rectangle has width $w$ and length $3w + 2$. Which expression gives its perimeter?",
+      "choices": [
+        "$4w + 2$",
+        "$8w + 2$",
+        "$8w + 4$",
+        "$6w + 4$"
+      ],
+      "answer": "$8w + 4$",
+      "compute": null,
+      "solution": "Perimeter $= 2w + 2(3w + 2) = 2w + 6w + 4 = 8w + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8w + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P = 2(w + 3w + 2) = 8w + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.464Z"
+        }
+      }
+    },
+    {
+      "id": "fde701bf-7052-40cb-afae-fc61e562b18c",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factor with rational coefficients",
+      "stem": "Take $0.5$ out of $1.5x - 4$ as a common factor. What is the result?",
+      "choices": [
+        "$0.5(3x - 4)$",
+        "$0.5(x - 8)$",
+        "$0.5(3x - 2)$",
+        "$0.5(3x - 8)$"
+      ],
+      "answer": "$0.5(3x - 8)$",
+      "compute": null,
+      "solution": "Divide each term by 0.5: $1.5x \\div 0.5 = 3x$ and $-4 \\div 0.5 = -8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.5(3x - 8)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5x ÷ 0.5 = 3x; 4 ÷ 0.5 = 8 → 0.5(3x - 8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.492Z"
+        }
+      }
+    },
+    {
+      "id": "b49cfe7d-8629-48b0-84f0-a4c3d624d11d",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expand and combine",
+      "stem": "Which expression is equal to $4(x + 3) - 2(x + 3)$?",
+      "choices": [
+        "$2x + 18$",
+        "$2x + 3$",
+        "$2x + 6$",
+        "$6x + 18$"
+      ],
+      "answer": "$2x + 6$",
+      "compute": null,
+      "solution": "$4(x + 3) = 4x + 12$ and $2(x + 3) = 2x + 6$. Subtract: $4x + 12 - 2x - 6 = 2x + 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4 - 2)(x + 3) = 2x + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.625Z"
+        }
+      }
+    },
+    {
+      "id": "21f8e55c-19d4-4be7-acaf-694488aded4d",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expand and combine",
+      "stem": "When $4(x - 2) + 3(x + 5)$ is fully simplified, what is the constant term?",
+      "choices": [],
+      "answer": "7",
+      "compute": "4*(-2)+3*5",
+      "solution": "$4(x - 2) = 4x - 8$ and $3(x + 5) = 3x + 15$. Together: $7x + 7$. The constant term is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x-8+3x+15 = 7x+7; constant 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.666Z"
+        }
+      }
+    },
+    {
+      "id": "ea23323f-f26b-4209-83b8-aafff78fcf19",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor linear expressions",
+      "stem": "The area of a rectangle is $24x + 40$ square meters and its width is 8 meters. Its length is $ax + b$ meters. What is $a + b$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "24/8+40/8",
+      "solution": "Length = area $\\div$ width, so divide each term by 8: $(24x + 40) \\div 8 = 3x + 5$. Then $a + b = 3 + 5 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length = (24x+40)/8 = 3x+5; a+b = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.670Z"
+        }
+      }
+    },
+    {
+      "id": "aaeae32c-3533-4f40-80ac-48908a715e9f",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expand with rational coefficients",
+      "stem": "Which expression is equal to $-\\frac{1}{2}(8x - 6)$?",
+      "choices": [
+        "$-4x + 3$",
+        "$-4x - 3$",
+        "$4x + 3$",
+        "$-16x + 12$"
+      ],
+      "answer": "$-4x + 3$",
+      "compute": null,
+      "solution": "$-\\frac{1}{2} \\cdot 8x = -4x$ and $-\\frac{1}{2} \\cdot (-6) = 3$. The result is $-4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1/2 x 8x = -4x; -1/2 x -6 = +3: -4x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.676Z"
+        }
+      }
+    },
+    {
+      "id": "cbf8807d-9d97-4496-89ac-53c814d4f435",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Operations with rational coefficients",
+      "stem": "What is the value of $(0.2x + 1.4) + (0.8x - 0.4)$ when $x = 5$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(0.2*5+1.4)+(0.8*5-0.4)",
+      "solution": "The sum is $x + 1$. When $x = 5$ it is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Simplifies to x + 1; at x=5: 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.689Z"
+        }
+      }
+    },
+    {
+      "id": "20da31ed-f443-4719-afc4-8f01dd92c943",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent expressions and properties of operations",
+      "stem": "Which expression is NOT equivalent to $6x - 9$?",
+      "choices": [
+        "$3(2x + 3)$",
+        "$3(2x - 3)$",
+        "$-9 + 6x$",
+        "$6x + (-9)$"
+      ],
+      "answer": "$3(2x + 3)$",
+      "compute": null,
+      "solution": "$3(2x + 3) = 6x + 9$, which is not $6x - 9$. The other three all equal $6x - 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3(2x + 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(2x - 3) = 6x - 9; -9 + 6x and 6x + (-9) also equal. 3(2x + 3) = 6x + 9, not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.716Z"
+        }
+      }
+    },
+    {
+      "id": "504b91ee-6a9b-4238-86d9-32f4a9f424ab",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expand and combine",
+      "stem": "When $3(x + 4) - (x - 6)$ is simplified, it equals $ax + b$. What is $b$?",
+      "choices": [],
+      "answer": "18",
+      "compute": "3*4+6",
+      "solution": "$3(x + 4) = 3x + 12$ and $-(x - 6) = -x + 6$. Together: $2x + 18$. So $b = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x + 12 - x + 6 = 2x + 18, b = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.734Z"
+        }
+      }
+    },
+    {
+      "id": "8de0db30-a292-4bf2-b363-09ca11a1ac88",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expand and combine",
+      "stem": "Find the value of $5(2x - 1) - 4(x - 3)$ when $x = 2$.",
+      "choices": [],
+      "answer": "19",
+      "compute": "5*(2*2-1)-4*(2-3)",
+      "solution": "Simplify: $10x - 5 - 4x + 12 = 6x + 7$. When $x = 2$ it is $12 + 7 = 19$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5(3) - 4(-1) = 15 + 4 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.775Z"
         }
       }
     },
@@ -19758,6 +21086,670 @@
           "work": "x=2: (1/2)(4)+(1/3)(24)=2+8=10.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.639Z"
+        }
+      }
+    },
+    {
+      "id": "c9e2e717-8dce-4def-9aa1-bfa70fcd1900",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add linear expressions",
+      "stem": "Two sides of a triangle have lengths $2x + 3$ and $3x - 1$. The perimeter is $9x + 5$. The third side has length $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "(9-5)+(5-2)",
+      "solution": "The two known sides add to $5x + 2$. Subtract from the perimeter: $(9x + 5) - (5x + 2) = 4x + 3$. So $a + b = 4 + 3 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(9x+5) − (2x+3) − (3x−1) = 4x + 3; a + b = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.080Z"
+        }
+      }
+    },
+    {
+      "id": "538e99db-e5d7-495d-a0a6-7b758193056c",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expand and combine",
+      "stem": "The expression $2(x + 3) - 2(x - 3)$ is equal to a single number. What is that number?",
+      "choices": [],
+      "answer": "12",
+      "compute": "2*3+2*3",
+      "solution": "$2(x + 3) = 2x + 6$ and $2(x - 3) = 2x - 6$. Subtract: $2x + 6 - 2x + 6 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x + 6 − 2x + 6 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.103Z"
+        }
+      }
+    },
+    {
+      "id": "aa2ca51f-464a-4f29-8ae6-09a874a6be77",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write and simplify an expression",
+      "stem": "The sides of a triangle have lengths $x + 4$, $2x - 1$ and $3x + 2$. The perimeter is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "6+5",
+      "solution": "Add the sides: $(x + 4) + (2x - 1) + (3x + 2) = 6x + 5$. So $a + b = 6 + 5 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1+2+3)x + (4 − 1 + 2) = 6x + 5; a + b = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.114Z"
+        }
+      }
+    },
+    {
+      "id": "a9ba8d45-f4e3-4d13-8e16-b5c807201b75",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor with rational coefficients",
+      "stem": "A rectangle has area $\\frac{3}{2}x + 6$ square units and width $\\frac{3}{2}$ units. Its length is $x + k$ units. What is $k$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "6/(3/2)",
+      "solution": "Divide each term of the area by the width: $\\frac{3}{2}x \\div \\frac{3}{2} = x$ and $6 \\div \\frac{3}{2} = 4$. So $k = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/2 x + 6)/(3/2) = x + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.148Z"
+        }
+      }
+    },
+    {
+      "id": "fb88ceab-36de-42ed-8a75-b268d0d74016",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write and simplify an expression",
+      "stem": "Lena buys $n$ notebooks that cost 1.25 dollars each, and twice as many pens that cost 0.75 dollars each. The total cost in dollars is $an$. What is $a$?",
+      "choices": [],
+      "answer": "2.75",
+      "compute": "1.25+2*0.75",
+      "solution": "Notebooks: $1.25n$. Pens: $2n$ of them, so $2n \\cdot 0.75 = 1.5n$. Total: $1.25n + 1.5n = 2.75n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.25n + 0.75(2n) = 1.25n + 1.5n = 2.75n.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.306Z"
+        }
+      }
+    },
+    {
+      "id": "f4a98a49-d7a8-4cfa-8197-914ad9674ce2",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expand and combine",
+      "stem": "Find the value of $-3(2x - 5) + 4(x - 2) - (x + 7)$ when $x = -2$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "-3*(2*(-2)-5)+4*(-2-2)-(-2+7)",
+      "solution": "Simplify: $-6x + 15 + 4x - 8 - x - 7 = -3x$. When $x = -2$ it is $-3 \\cdot (-2) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Simplify: -6x+15+4x-8-x-7 = -3x. At x=-2: 6. Check directly: 27-16-5=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.346Z"
+        }
+      }
+    },
+    {
+      "id": "3271ef89-8bd7-45a8-b110-5d38f3031bfa",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract linear expressions",
+      "stem": "The sum of $3x + 7$ and another expression is $8x - 2$. The other expression is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "(8-3)+(-2-7)",
+      "solution": "Subtract: $(8x - 2) - (3x + 7) = 5x - 9$. So $a = 5$, $b = -9$ and $a + b = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Other = (8x-2)-(3x+7) = 5x-9; a+b = 5-9 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.355Z"
+        }
+      }
+    },
+    {
+      "id": "2f65461b-7845-4afe-80d9-14538bb8911a",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor with rational coefficients",
+      "stem": "The expression $\\frac{5}{6}x + \\frac{5}{2}$ equals $\\frac{5}{6}(x + k)$. What is $k$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(5/2)/(5/6)",
+      "solution": "Divide the constant by $\\frac{5}{6}$: $\\frac{5}{2} \\cdot \\frac{6}{5} = 3$. So $k = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/6)k = 5/2 → k = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.443Z"
+        }
+      }
+    },
+    {
+      "id": "f41031a5-3fa0-4d90-957e-ba48bb5773c1",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expand with rational coefficients",
+      "stem": "Which expression is equivalent to $-\\frac{2}{3}(9x - 6)$?",
+      "choices": [
+        "$-6x - 4$",
+        "$6x - 4$",
+        "$-6x + 4$",
+        "$-18x + 12$"
+      ],
+      "answer": "$-6x + 4$",
+      "compute": null,
+      "solution": "$-\\frac{2}{3} \\cdot 9x = -6x$ and $-\\frac{2}{3} \\cdot (-6) = 4$. The result is $-6x + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2/3·9x = -6x; -2/3·(-6) = +4 → -6x + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.481Z"
+        }
+      }
+    },
+    {
+      "id": "a1eecf00-1854-410a-bd14-9456534e235d",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write and simplify an expression",
+      "stem": "A pen costs $p$ dollars and a pencil costs $p - 0.5$ dollars. Which expression gives the cost in dollars of 3 pens and 4 pencils?",
+      "choices": [
+        "$7p - 2$",
+        "$7p - 0.5$",
+        "$7p + 2$",
+        "$12p - 2$"
+      ],
+      "answer": "$7p - 2$",
+      "compute": null,
+      "solution": "Pens: $3p$. Pencils: $4(p - 0.5) = 4p - 2$. Total: $3p + 4p - 2 = 7p - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7p - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3p + 4(p - 0.5) = 7p - 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.524Z"
+        }
+      }
+    },
+    {
+      "id": "4e4573f9-bb43-4c3c-ad98-c291f4ac7fc7",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Operations with rational coefficients",
+      "stem": "Find the value of $\\frac{2}{3}(6x - 9) - \\frac{1}{4}(8x - 12)$ when $x = 3$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "2/3*(6*3-9)-1/4*(8*3-12)",
+      "solution": "$\\frac{2}{3}(6x - 9) = 4x - 6$ and $\\frac{1}{4}(8x - 12) = 2x - 3$. Subtract: $2x - 3$. When $x = 3$ it is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=3: (2/3)(18-9) = 6; (1/4)(24-12) = 3; 6 - 3 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.583Z"
+        }
+      }
+    },
+    {
+      "id": "00cb3aba-3623-425d-b37c-0cfefbf21669",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Which expression is equivalent to $\\frac{1}{2}(4x - 6) + 2(x + 1)$?",
+      "choices": [
+        "$4x - 5$",
+        "$4x + 5$",
+        "$2x - 1$",
+        "$4x - 1$"
+      ],
+      "answer": "$4x - 1$",
+      "compute": null,
+      "solution": "$\\frac{1}{2}(4x - 6) = 2x - 3$ and $2(x + 1) = 2x + 2$. Together: $4x - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)(4x-6) = 2x - 3; 2(x+1) = 2x + 2; sum 4x - 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.585Z"
+        }
+      }
+    },
+    {
+      "id": "281560a0-93f4-4da8-9caa-6d8c3ffc2389",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Factor linear expressions",
+      "stem": "Which shows $-6x - 15$ with $-3$ factored out?",
+      "choices": [
+        "$-3(2x - 5)$",
+        "$-3(2x + 5)$",
+        "$-3(2x + 15)$",
+        "$3(-2x + 5)$"
+      ],
+      "answer": "$-3(2x + 5)$",
+      "compute": null,
+      "solution": "Divide each term by $-3$: $-6x \\div (-3) = 2x$ and $-15 \\div (-3) = 5$. So $-6x - 15 = -3(2x + 5)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3(2x + 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3(2x+5) = -6x - 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.614Z"
+        }
+      }
+    },
+    {
+      "id": "8a4fdd63-13f6-4aff-a11c-5b130972122f",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent expressions and properties of operations",
+      "stem": "For which value of $k$ is $5(x + k) - 2x$ equivalent to $3x + 20$?",
+      "choices": [
+        "4",
+        "20",
+        "5",
+        "15"
+      ],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "$5(x + k) - 2x = 3x + 5k$. For this to equal $3x + 20$, $5k = 20$, so $k = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x+5k-2x = 3x+5k = 3x+20 -> k = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.635Z"
+        }
+      }
+    },
+    {
+      "id": "a69ceaa6-09c6-4759-ba4c-b5e4f0e58d62",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expand and combine",
+      "stem": "Which expression is equal to $3(4x + 2) - 12x + 8$?",
+      "choices": [
+        "$-2$",
+        "$14x$",
+        "$24x + 14$",
+        "$14$"
+      ],
+      "answer": "$14$",
+      "compute": "14",
+      "solution": "$3(4x + 2) = 12x + 6$. Then $12x + 6 - 12x + 8 = 14$. The $x$ terms cancel.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12x+6-12x+8 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.638Z"
+        }
+      }
+    },
+    {
+      "id": "8bf1ecec-5adf-4c06-a47d-d768e4085b06",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expand and combine",
+      "stem": "The equation $a(x + 2) - 3(x - 1) = 2x + 13$ is true for every value of $x$. What is $a$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "The left side is $ax + 2a - 3x + 3 = (a - 3)x + 2a + 3$. Matching the $x$ terms: $a - 3 = 2$, so $a = 5$. Check the numbers: $2 \\cdot 5 + 3 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ax+2a-3x+3 = (a-3)x + (2a+3). Match 2x+13: a-3=2 -> a=5; 2a+3=13 -> a=5. Consistent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.639Z"
+        }
+      }
+    },
+    {
+      "id": "6e7c5aef-6148-44a4-8736-34553d0e5076",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Simplify $\\frac{1}{2}x + \\frac{1}{3}x - \\frac{1}{6}x$.",
+      "choices": [
+        "$\\frac{5}{6}x$",
+        "$\\frac{1}{3}x$",
+        "$\\frac{2}{3}x$",
+        "$\\frac{1}{2}x$"
+      ],
+      "answer": "$\\frac{2}{3}x$",
+      "compute": null,
+      "solution": "Use sixths: $\\frac{3}{6} + \\frac{2}{6} - \\frac{1}{6} = \\frac{4}{6} = \\frac{2}{3}$. The result is $\\frac{2}{3}x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/6+2/6-1/6 = 4/6 = 2/3 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.663Z"
+        }
+      }
+    },
+    {
+      "id": "39bc218c-0ba2-4c45-8e51-10935980021f",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Which expression is equal to $0.25(8x - 12) + 0.5(6x + 4)$?",
+      "choices": [
+        "$5x - 1$",
+        "$5x + 1$",
+        "$5x - 5$",
+        "$2x - 1$"
+      ],
+      "answer": "$5x - 1$",
+      "compute": null,
+      "solution": "$0.25(8x - 12) = 2x - 3$ and $0.5(6x + 4) = 3x + 2$. Together: $5x - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x-3+3x+2 = 5x-1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.673Z"
+        }
+      }
+    },
+    {
+      "id": "e42e28fa-6fe1-4bac-87d6-9ce0f34bc917",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Factor with rational coefficients",
+      "stem": "Factor $0.6x - 1.8$ so that $0.6$ is outside the parentheses.",
+      "choices": [
+        "$0.6(x - 1.2)$",
+        "$0.6(x + 3)$",
+        "$0.6(x - 3)$",
+        "$0.6(x - 30)$"
+      ],
+      "answer": "$0.6(x - 3)$",
+      "compute": null,
+      "solution": "Divide each term by 0.6: $0.6x \\div 0.6 = x$ and $-1.8 \\div 0.6 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.6(x - 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.8/0.6 = 3: 0.6(x-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.677Z"
+        }
+      }
+    },
+    {
+      "id": "d4f639ba-3f29-4c5c-9417-d86de86fd1d0",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent expressions and properties of operations",
+      "stem": "Which equation is true for every value of $x$?",
+      "choices": [
+        "$3(x + 2) = 3x + 2$",
+        "$-2(x - 4) = -2x + 8$",
+        "$\\frac{1}{2}(6x - 4) = 3x - 4$",
+        "$-(2x + 5) = -2x + 5$"
+      ],
+      "answer": "$-2(x - 4) = -2x + 8$",
+      "compute": null,
+      "solution": "$-2(x - 4) = -2x + 8$ is true. The others fail: $3(x + 2) = 3x + 6$, $\\frac{1}{2}(6x - 4) = 3x - 2$, and $-(2x + 5) = -2x - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2(x - 4) = -2x + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 3x-2 no. B: -2x-5 no. C: 3x+6 no. D: -2x+8 yes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.693Z"
+        }
+      }
+    },
+    {
+      "id": "94b7360a-5dba-48bf-a44e-c224387a203c",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract linear expressions",
+      "stem": "Which expression must be added to $2x + 5$ to get $7x - 1$?",
+      "choices": [
+        "$5x + 6$",
+        "$5x - 6$",
+        "$9x + 4$",
+        "$5x - 4$"
+      ],
+      "answer": "$5x - 6$",
+      "compute": null,
+      "solution": "Subtract: $(7x - 1) - (2x + 5) = 5x - 6$. Check: $(2x + 5) + (5x - 6) = 7x - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x - 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(7x - 1) - (2x + 5) = 5x - 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.767Z"
         }
       }
     },
@@ -20300,6 +22292,515 @@
       }
     },
     {
+      "id": "4208dd1f-42bf-478b-b2e2-e5fa0c56f168",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "A rope is $r$ meters long. It is cut into 4 equal pieces. Which expression gives the total length, in meters, of 3 of the pieces?",
+      "choices": [
+        "$\\frac{4}{3}r$",
+        "$3r - 4$",
+        "$\\frac{3}{4}r$",
+        "$\\frac{1}{4}r + 3$"
+      ],
+      "answer": "$\\frac{3}{4}r$",
+      "compute": null,
+      "solution": "Each piece is $\\frac{r}{4}$ meters long, so 3 pieces are $3 \\cdot \\frac{r}{4} = \\frac{3}{4}r$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4}r$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each piece r/4; 3 pieces = 3r/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.079Z"
+        }
+      }
+    },
+    {
+      "id": "4376f794-0fea-49df-9fab-245de317e839",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "Which statement means the same as multiplying a number $n$ by 1.4?",
+      "choices": [
+        "Taking 40% of $n$",
+        "Adding 14% of $n$ to $n$",
+        "Taking 40% off $n$",
+        "Adding 40% of $n$ to $n$"
+      ],
+      "answer": "Adding 40% of $n$ to $n$",
+      "compute": null,
+      "solution": "$1.4n = 1n + 0.4n$, which is $n$ plus 40% of $n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Adding 40% of $n$ to $n$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.4n = n + 0.4n: add 40% of n to n.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.088Z"
+        }
+      }
+    },
+    {
+      "id": "ba0d6182-beb7-4139-aa8a-a5217114cf0b",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "Two friends split a bill of $8x + 6$ dollars equally. Each pays $\\frac{1}{2}(8x + 6)$ dollars, which equals $4x + k$. What is $k$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6/2",
+      "solution": "Half of $8x$ is $4x$ and half of 6 is 3. So $\\frac{1}{2}(8x + 6) = 4x + 3$ and $k = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(8x + 6)/2 = 4x + 3, k = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.089Z"
+        }
+      }
+    },
+    {
+      "id": "bc576dc2-1d72-4b7f-9a43-4344613d0c68",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "A baker makes $x$ plain muffins and $y$ blueberry muffins in each of 6 batches. The total is $6x + 6y$. Which expression also gives the total?",
+      "choices": [
+        "$6(x + y)$",
+        "$6xy$",
+        "$x + y + 6$",
+        "$6x + y$"
+      ],
+      "answer": "$6(x + y)$",
+      "compute": null,
+      "solution": "Each of the 6 batches has $x + y$ muffins, so the total is $6(x + y)$. Factoring out the 6 from $6x + 6y$ gives the same thing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6(x + y)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive: 6x+6y=6(x+y).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.156Z"
+        }
+      }
+    },
+    {
+      "id": "8fad3962-a09f-4469-b7a8-2226b6b5be18",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "Kai had 50 dollars. He spent 12 dollars on lunch and then spent $s$ dollars on a gift. Which expression gives the dollars he has left?",
+      "choices": [
+        "$50 - 12 + s$",
+        "$50 - 12 - s$",
+        "$50 + 12 - s$",
+        "$50 - 12s$"
+      ],
+      "answer": "$50 - 12 - s$",
+      "compute": null,
+      "solution": "He starts with 50, loses 12 and then loses $s$ more: $50 - 12 - s$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50 - 12 - s$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50-12-s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.179Z"
+        }
+      }
+    },
+    {
+      "id": "8ab97c93-f36e-42aa-9169-085c05d3511c",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "Multiplying a price by 0.9 matches which change?",
+      "choices": [
+        "An increase of 10%",
+        "A decrease of 10%",
+        "A decrease of 90%",
+        "An increase of 90%"
+      ],
+      "answer": "A decrease of 10%",
+      "compute": null,
+      "solution": "$0.9 = 1 - 0.1$, so the new price is the old price minus 10% of it. That is a decrease of 10%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A decrease of 10%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplying by 0.9 = 90% of the price, i.e. the price minus 10%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.263Z"
+        }
+      }
+    },
+    {
+      "id": "2e177b32-ae11-44e0-abc0-ffca673b173e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Expand and combine like terms in context",
+      "stem": "A coach buys 4 boxes with $x$ balls in each, then 2 more boxes with $x$ balls in each, and 7 loose balls. The number of balls is $4x + 2x + 7$. Which expression is equivalent?",
+      "choices": [
+        "$13x$",
+        "$6x^2 + 7$",
+        "$6x + 7$",
+        "$8x + 7$"
+      ],
+      "answer": "$6x + 7$",
+      "compute": null,
+      "solution": "Combine the like terms: $4x + 2x = 6x$. The 7 stays, so the total is $6x + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x+2x+7 = 6x+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.332Z"
+        }
+      }
+    },
+    {
+      "id": "b05e0a38-5772-4622-96bc-06e047cce94b",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Lena writes the cost of 4 tickets at $t$ dollars each as $t + t + t + t$. Mark writes it as $4t$. What is the cost, in dollars, when $t = 6$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4*6",
+      "solution": "Four tickets at 6 dollars each cost $4 \\times 6 = 24$ dollars. Lena's $6 + 6 + 6 + 6$ is also 24, so the two expressions agree.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4t at t=6: 24 (also 6+6+6+6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.382Z"
+        }
+      }
+    },
+    {
+      "id": "c687c36c-f475-49f2-b7fa-597579cec84f",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "A pool holds $w$ liters of water. After 20% of the water is used, the water left is $kw$ liters. What is $k$?",
+      "choices": [],
+      "answer": "0.8",
+      "compute": "1-0.2",
+      "solution": "The water left is $w - 0.20w = 0.8w$, so $k = 0.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left: w-0.2w = 0.8w; k=0.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.399Z"
+        }
+      }
+    },
+    {
+      "id": "881ee9bf-cfb1-4296-b399-481e93aa7718",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "Each of 7 students is given $x$ stickers and then loses $y$ stickers. The total number of stickers the students have is $7x - 7y$. Which expression also gives the total?",
+      "choices": [
+        "$7x - y$",
+        "$7(x + y)$",
+        "$x - 7y$",
+        "$7(x - y)$"
+      ],
+      "answer": "$7(x - y)$",
+      "compute": null,
+      "solution": "Each student ends with $x - y$ stickers, so 7 students have $7(x - y)$. Factoring the 7 out of $7x - 7y$ gives the same thing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7(x - y)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x - 7y = 7(x - y) by the distributive property.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.561Z"
+        }
+      }
+    },
+    {
+      "id": "500a09a8-c61e-4724-98b0-10e0bef13842",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write an expression for a situation",
+      "stem": "A scooter rental costs 6 dollars to start plus 3 dollars for each hour. What is the cost, in dollars, of renting it for 4 hours?",
+      "choices": [],
+      "answer": "18",
+      "compute": "6+3*4",
+      "solution": "For $h$ hours the cost is $6 + 3h$. With $h = 4$: $6 + 12 = 18$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 3*4 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.594Z"
+        }
+      }
+    },
+    {
+      "id": "620b7525-787f-45dc-91d5-49defa54f620",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "A restaurant adds a 20% tip to a bill, so the total is $1.2b$ dollars, where $b$ is the bill in dollars. What is the total, in dollars, for a bill of 30 dollars?",
+      "choices": [],
+      "answer": "36",
+      "compute": "1.2*30",
+      "solution": "Put 30 in for $b$: $1.2 \\times 30 = 36$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.2 * 30 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.619Z"
+        }
+      }
+    },
+    {
+      "id": "7204d679-c9d3-47a8-bc80-411d4442ea74",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expand and combine like terms in context",
+      "stem": "Pia had $9y$ marbles and gave away $4y$ marbles. The marbles she has left can be written $ky$. What is $k$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "$9y - 4y = (9 - 4)y = 5y$, so $k = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9y-4y = 5y, k = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.655Z"
+        }
+      }
+    },
+    {
+      "id": "8bd36d46-b1b7-4748-bb80-fa3f214c433f",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "A plant is $h$ centimeters tall. It grows by 30%. Which expression gives its new height in centimeters?",
+      "choices": [
+        "$0.3h$",
+        "$1.3h$",
+        "$h + 30$",
+        "$1.03h$"
+      ],
+      "answer": "$1.3h$",
+      "compute": null,
+      "solution": "The new height is the old height plus 30% of it: $h + 0.30h = 1.3h$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1.3h$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Growth of 30%: h + 0.3h = 1.3h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.739Z"
+        }
+      }
+    },
+    {
+      "id": "fe9139f6-9534-462c-a4f1-13f3e12a1a26",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expand and combine like terms in context",
+      "stem": "A triangle has sides of $x$, $x + 2$ and $x + 3$ centimeters. Its perimeter, in centimeters, is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5",
+      "solution": "The perimeter is $x + (x + 2) + (x + 3) = 3x + 5$. So $a = 3$, $b = 5$ and $a + b = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + x + 2 + x + 3 = 3x + 5; a + b = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.761Z"
+        }
+      }
+    },
+    {
+      "id": "7acff57c-0b71-4ce0-b377-c1346599450e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "A pizza shop charges 12 dollars for a large pizza plus 1.50 dollars for each topping. The cost of a large pizza with $t$ toppings is $12 + 1.5t$ dollars. What does the 1.5 stand for?",
+      "choices": [
+        "The cost of each topping, in dollars",
+        "The number of toppings on the pizza",
+        "The cost of the pizza with no toppings, in dollars",
+        "The total cost of all the toppings, in dollars"
+      ],
+      "answer": "The cost of each topping, in dollars",
+      "compute": null,
+      "solution": "The number 1.5 is multiplied by $t$, the number of toppings, so it is the cost of one topping. The term $1.5t$ is the total for all toppings, and 12 is the cost with no toppings.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The cost of each topping, in dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5 multiplies the number of toppings t, so it is the cost per topping.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.770Z"
+        }
+      }
+    },
+    {
       "id": "621003e4-6522-490f-b232-f9b8dbe9a98d",
       "topic_id": "NC17.7.EE.2",
       "difficulty": 2,
@@ -20804,6 +23305,549 @@
       }
     },
     {
+      "id": "10b477cc-47f3-4e5a-ba37-ba0d15428490",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expand and combine like terms in context",
+      "stem": "Dev buys 4 meals that cost $x + 3$ dollars each and 2 drinks that cost $x$ dollars each, and then uses a coupon for 5 dollars off. His total, in dollars, is $4(x + 3) + 2x - 5$. Which expression is equivalent?",
+      "choices": [
+        "$6x + 17$",
+        "$6x - 2$",
+        "$6x + 12$",
+        "$6x + 7$"
+      ],
+      "answer": "$6x + 7$",
+      "compute": null,
+      "solution": "$4(x + 3) = 4x + 12$. Then $4x + 12 + 2x - 5 = 6x + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x + 12 + 2x − 5 = 6x + 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.134Z"
+        }
+      }
+    },
+    {
+      "id": "47451748-39ed-45ba-91f5-571e63bf9ad6",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "Which expression is NOT equivalent to $p - 0.2p$?",
+      "choices": [
+        "$1.2p$",
+        "$0.8p$",
+        "$p(1 - 0.2)$",
+        "$0.8 \\cdot p$"
+      ],
+      "answer": "$1.2p$",
+      "compute": null,
+      "solution": "$p - 0.2p = 1p - 0.2p = 0.8p$, and $p(1 - 0.2) = 0.8p$ as well. $1.2p$ would be $p + 0.2p$, so it is not equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1.2p$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p-0.2p=0.8p=p(1-0.2). 1.2p differs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.140Z"
+        }
+      }
+    },
+    {
+      "id": "31699697-74dd-445a-ab1c-39ac219727aa",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "A tank holds $w$ liters. Then 35% of the water is removed. Which expression gives the liters of water left?",
+      "choices": [
+        "$0.35w$",
+        "$w - 35$",
+        "$1.35w$",
+        "$0.65w$"
+      ],
+      "answer": "$0.65w$",
+      "compute": null,
+      "solution": "The water left is $w - 0.35w = (1 - 0.35)w = 0.65w$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.65w$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100%-35%=65% left: 0.65w.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.150Z"
+        }
+      }
+    },
+    {
+      "id": "5f72b66d-3d0b-44bf-a833-4ee4b2aafd86",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "A savings balance grew from $b$ dollars to $1.045b$ dollars in one year. By what percent did the balance increase?",
+      "choices": [],
+      "answer": "4.5",
+      "compute": "(1.045-1)*100",
+      "solution": "$1.045b = b + 0.045b$, so the increase is 0.045 of the balance, which is 4.5%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.045b = b + 0.045b, a 4.5% increase.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.243Z"
+        }
+      }
+    },
+    {
+      "id": "36a926b7-65c8-4922-985c-0b1559d9e210",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret a term or factor in context",
+      "stem": "A club charges 15 dollars to join plus 4 dollars for each of $n$ events, a total of $15 + 4n$ dollars. The part of Dara's bill for events, $4n$, is 36 dollars. How many events did she go to?",
+      "choices": [],
+      "answer": "9",
+      "compute": "36/4",
+      "solution": "The events cost 4 dollars each, so the number of events is $36 \\div 4 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4n=36 -> n=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.265Z"
+        }
+      }
+    },
+    {
+      "id": "6cb9e15a-d135-4926-8190-79a2b72f722f",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "Pencils cost 0.25 dollars each. The cost of $n$ pencils is $0.25n$ dollars, which is equivalent to $\\frac{n}{4}$ dollars. What does the 4 in $\\frac{n}{4}$ tell you?",
+      "choices": [
+        "4 pencils cost 1 dollar",
+        "Each pencil costs 4 dollars",
+        "There are 4 pencils in all",
+        "$n$ pencils cost 4 dollars"
+      ],
+      "answer": "4 pencils cost 1 dollar",
+      "compute": null,
+      "solution": "$\\frac{n}{4}$ is $n$ divided by 4, so the cost is 1 dollar for every 4 pencils. That matches 0.25 dollars each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 pencils cost 1 dollar",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n/4 means 4 pencils for each dollar: 4 pencils cost 1 dollar.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.308Z"
+        }
+      }
+    },
+    {
+      "id": "cfba2b41-8ec5-480e-8856-fc479cd1809e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Which pair of expressions is equivalent for every value of $x$?",
+      "choices": [
+        "$\\frac{1}{2}(4x - 6)$ and $2x - 6$",
+        "$\\frac{1}{2}(4x - 6)$ and $2x + 3$",
+        "$\\frac{1}{2}(4x - 6)$ and $4x - 3$",
+        "$\\frac{1}{2}(4x - 6)$ and $2x - 3$"
+      ],
+      "answer": "$\\frac{1}{2}(4x - 6)$ and $2x - 3$",
+      "compute": null,
+      "solution": "Half of $4x$ is $2x$ and half of 6 is 3, so $\\frac{1}{2}(4x - 6) = 2x - 3$. The other second expressions do not match.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}(4x - 6)$ and $2x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2(4x-6)=2x-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.318Z"
+        }
+      }
+    },
+    {
+      "id": "6254df7d-eb45-48cd-b175-038af84dc7a3",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Which expression is equivalent to $4 - 3(x - 2)$?",
+      "choices": [
+        "$-3x - 2$",
+        "$10 - 3x$",
+        "$x - 2$",
+        "$2 - 3x$"
+      ],
+      "answer": "$10 - 3x$",
+      "compute": null,
+      "solution": "Distribute the $-3$: $-3 \\cdot x = -3x$ and $-3 \\cdot (-2) = +6$. Then $4 - 3x + 6 = 10 - 3x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10 - 3x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4-3x+6 = 10-3x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.371Z"
+        }
+      }
+    },
+    {
+      "id": "23574f44-f465-4b86-9819-0c4dbde59091",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "The liters of water in a tank after $t$ minutes is $120 - 4t$. Which statement is true?",
+      "choices": [
+        "The tank started with 4 liters and loses 120 liters each minute",
+        "The tank started with 120 liters and gains 4 liters each minute",
+        "The tank started with 120 liters and loses 4 liters each minute",
+        "The tank lost 120 liters in the first 4 minutes"
+      ],
+      "answer": "The tank started with 120 liters and loses 4 liters each minute",
+      "compute": null,
+      "solution": "When $t = 0$ there are 120 liters. Each minute adds $-4$ liters, so the tank loses 4 liters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The tank started with 120 liters and loses 4 liters each minute",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starts at 120 (t=0), decreases 4 per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.391Z"
+        }
+      }
+    },
+    {
+      "id": "1fea0769-6515-409a-b9f0-94caa8a84db9",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "Anna buys $n$ notebooks that cost 3 dollars each and 2 pens that cost 1.50 dollars each. She uses a coupon for 4 dollars off. Which expression gives her total cost in dollars?",
+      "choices": [
+        "$3n + 7$",
+        "$3n + 1$",
+        "$3n - 1$",
+        "$3n - 2.5$"
+      ],
+      "answer": "$3n - 1$",
+      "compute": null,
+      "solution": "Notebooks cost $3n$. Two pens cost $2 \\times 1.5 = 3$. With the coupon: $3n + 3 - 4 = 3n - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3n - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3n + 2(1.50) - 4 = 3n + 3 - 4 = 3n - 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.412Z"
+        }
+      }
+    },
+    {
+      "id": "f22b87a2-f1fb-4850-a0fc-8daad17e1de9",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "Rosa starts with 20 dollars and saves 5 dollars each week. After $w$ weeks she has $20 + 5w$ dollars, which equals $5(w + k)$ dollars. What is $k$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "$5(w + k) = 5w + 5k$. For this to equal $20 + 5w$ we need $5k = 20$, so $k = 4$. (Her starting 20 dollars is worth 4 weeks of saving.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 + 5w = 5(w + 4), so k = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.443Z"
+        }
+      }
+    },
+    {
+      "id": "59f32444-e146-4425-b7ca-2d24908bb55e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "A shop takes 3 dollars off each of 4 hats that cost $h$ dollars each. Ann writes the total as $4(h - 3)$ and Ben writes it as $4h - 3$. Which statement is true?",
+      "choices": [
+        "Ben is correct; the total is $4h - 3$",
+        "Both are correct because the expressions are equivalent",
+        "Ann is correct; the total is $4h - 7$",
+        "Ann is correct; the total is $4h - 12$"
+      ],
+      "answer": "Ann is correct; the total is $4h - 12$",
+      "compute": null,
+      "solution": "Each hat costs $h - 3$, so 4 hats cost $4(h - 3) = 4h - 12$. Ben takes off only 3 dollars in all, so his expression is not equivalent to Ann's.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ann is correct; the total is $4h - 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each hat costs h - 3; 4 hats: 4(h - 3) = 4h - 12. Ann is correct.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.462Z"
+        }
+      }
+    },
+    {
+      "id": "3c0563ce-e571-4624-8a02-b877995abfb5",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expand and combine like terms in context",
+      "stem": "A bakery uses $\\frac{1}{2}x$ pounds of flour and $\\frac{3}{4}x$ pounds of sugar for a recipe scaled by $x$. The total weight of the flour and sugar is $kx$ pounds. What is $k$?",
+      "choices": [],
+      "answer": "5/4",
+      "compute": "1/2+3/4",
+      "solution": "$\\frac{1}{2}x + \\frac{3}{4}x = \\frac{2}{4}x + \\frac{3}{4}x = \\frac{5}{4}x$, so $k = \\frac{5}{4}$ (or 1.25).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)x + (3/4)x = (5/4)x; k = 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.509Z"
+        }
+      }
+    },
+    {
+      "id": "1589666c-e2e2-4a9a-8d3e-615fc093e165",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "A club has $m$ members now. Next year it will have $1.5m$ members. By what percent will the membership grow?",
+      "choices": [],
+      "answer": "50",
+      "compute": "(1.5-1)*100",
+      "solution": "$1.5m = m + 0.5m$, so the membership grows by 0.5 of itself, which is 50%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5m = m + 0.5m: growth 50%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.513Z"
+        }
+      }
+    },
+    {
+      "id": "cdbc953a-43b6-4bfa-ba63-1d543864f954",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "A store buys a jacket for 60 dollars and marks the price up by 35%. What is the selling price, in dollars?",
+      "choices": [],
+      "answer": "81",
+      "compute": "1.35*60",
+      "solution": "The selling price is $60 + 0.35 \\cdot 60 = 1.35 \\cdot 60 = 81$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 * 1.35 = 81.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.555Z"
+        }
+      }
+    },
+    {
+      "id": "70615537-2d82-4c85-b926-689cbd39a2cb",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "The perimeter of a rectangle with length $l$ and width $w$ can be written $2(l + w)$. What does $l + w$ represent?",
+      "choices": [
+        "The distance around the rectangle",
+        "The area of the rectangle",
+        "Half of the distance around the rectangle",
+        "The length of the longer side"
+      ],
+      "answer": "Half of the distance around the rectangle",
+      "compute": null,
+      "solution": "The perimeter is 2 times $(l + w)$, so $l + w$ is half of the perimeter, one length plus one width.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Half of the distance around the rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter is 2(l+w), so l+w is half the perimeter.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.614Z"
+        }
+      }
+    },
+    {
+      "id": "92449e12-3bef-48a0-8c29-d028835cbf22",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Lila writes the cost of an order as $3(2x + 4)$ dollars and Eli writes it as $6x + 4$ dollars. By how many dollars do the two values differ when $x = 2$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3*(2*2+4)-(6*2+4)",
+      "solution": "Lila: $3(2 \\cdot 2 + 4) = 24$. Eli: $6 \\cdot 2 + 4 = 16$. The difference is 8. (The expressions are not equivalent: $3(2x + 4) = 6x + 12$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(2x+4) at x=2 = 24; 6x+4 at 2 = 16; difference 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.626Z"
+        }
+      }
+    },
+    {
       "id": "1d374355-48a0-4519-9373-e2065f78830a",
       "topic_id": "NC17.7.EE.2",
       "difficulty": 3,
@@ -21207,6 +24251,583 @@
           "work": "3 miles=12 quarter miles; 4+12x0.75=13.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.642Z"
+        }
+      }
+    },
+    {
+      "id": "1c52238c-9ac2-4422-b8b5-f13147656516",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expand and combine like terms in context",
+      "stem": "An adult ticket costs $a$ dollars and a child ticket costs 3 dollars less. A family buys 2 adult tickets and 3 child tickets. The total cost, in dollars, is $ka - m$. What is $k + m$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "5+9",
+      "solution": "The cost is $2a + 3(a - 3) = 2a + 3a - 9 = 5a - 9$. So $k = 5$, $m = 9$ and $k + m = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2a + 3(a − 3) = 5a − 9, so k = 5, m = 9, k + m = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.069Z"
+        }
+      }
+    },
+    {
+      "id": "675ea79c-26a9-415a-bec0-19582d53c413",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "The count of bacteria in a dish is $n$. In the first hour the count increases by 50%. In the second hour the new count decreases by 20%. Which expression gives the count after two hours?",
+      "choices": [
+        "$1.2n$",
+        "$1.3n$",
+        "$1.1n$",
+        "$0.3n$"
+      ],
+      "answer": "$1.2n$",
+      "compute": null,
+      "solution": "After the first hour: $1.5n$. A 20% decrease multiplies by 0.8: $0.8 \\times 1.5n = 1.2n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1.2n$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n × 1.5 × 0.8 = 1.2n.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.079Z"
+        }
+      }
+    },
+    {
+      "id": "9f84dfa7-eba4-4aba-8e4b-9eda01e3355a",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "A stadium sells $x$ tickets for 12 dollars each and $y$ tickets for 8 dollars each. The revenue, $12x + 8y$ dollars, is equal to $4(3x + 2y)$ dollars. If $3x + 2y = 50$, what is the revenue in dollars?",
+      "choices": [],
+      "answer": "200",
+      "compute": "4*50",
+      "solution": "The revenue is 4 times $(3x + 2y)$, which is $4 \\times 50 = 200$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12x + 8y = 4(3x+2y) = 4 × 50 = 200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.087Z"
+        }
+      }
+    },
+    {
+      "id": "2bedf47a-aff3-4cd3-9db7-f8efcd2f554e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "How many of these four expressions are equivalent to $4x - 12$? They are $4(x - 3)$, $2(2x - 6)$, $4x - 3$ and $-4(3 - x)$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$4(x - 3) = 4x - 12$; $2(2x - 6) = 4x - 12$; $-4(3 - x) = -12 + 4x = 4x - 12$. But $4x - 3$ is different. So 3 are equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(x−3)=4x−12 ✓; 2(2x−6)=4x−12 ✓; 4x−3 ✗; −4(3−x)=−12+4x ✓. Three.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.092Z"
+        }
+      }
+    },
+    {
+      "id": "f7f0b7f5-8251-457c-87fb-4d52063c4ff7",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "A store sells hats for $h$ dollars and scarves for $s$ dollars. Maria writes the cost of 3 hats and 2 scarves as $3h + 2s$. Her friend writes it as $2(h + s) + h$. Which statement is true?",
+      "choices": [
+        "They are not equivalent because $2(h + s) + h = 2h + s + h$",
+        "They are equivalent because $2(h + s) + h = 3h + 2s$",
+        "They are not equivalent because $2(h + s) + h = 3hs$",
+        "They are not equivalent because $2(h + s) + h = 2h + 2s$"
+      ],
+      "answer": "They are equivalent because $2(h + s) + h = 3h + 2s$",
+      "compute": null,
+      "solution": "$2(h + s) = 2h + 2s$. Adding $h$ gives $3h + 2s$, the same as Maria's expression.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are equivalent because $2(h + s) + h = 3h + 2s$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(h+s)+h=2h+2s+h=3h+2s. Equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.161Z"
+        }
+      }
+    },
+    {
+      "id": "928cae04-2b32-4c16-bf7d-4c816926dac2",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expand and combine like terms in context",
+      "stem": "A path is made of 3 sections that are each $2x - 1$ meters long and 2 sections that are each $4 - x$ meters long. Which expression gives the length of the path in meters?",
+      "choices": [
+        "$4x + 5$",
+        "$8x + 5$",
+        "$4x + 11$",
+        "$4x - 5$"
+      ],
+      "answer": "$4x + 5$",
+      "compute": null,
+      "solution": "$3(2x - 1) = 6x - 3$ and $2(4 - x) = 8 - 2x$. Adding: $6x - 2x = 4x$ and $-3 + 8 = 5$, so the length is $4x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(2x-1)+2(4-x)=6x-3+8-2x=4x+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.172Z"
+        }
+      }
+    },
+    {
+      "id": "bd8a3458-e270-45f5-b5bf-4f7cafa16a18",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "A store takes 40% off every item and then takes an extra 10% off the sale price. The total discount is what percent of the original price?",
+      "choices": [],
+      "answer": "46",
+      "compute": "100-60*0.9",
+      "solution": "The first sale leaves 60% of the price. Taking 10% off that leaves $0.9 \\times 60\\% = 54\\%$. The total discount is $100\\% - 54\\% = 46\\%$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Final price = 0.6 x 0.9 p = 0.54p, so total discount = 46%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.219Z"
+        }
+      }
+    },
+    {
+      "id": "e03af91c-0be2-4219-9293-ff0b3c6a284e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "The width of a rectangle is $w$ centimeters and its length is 5 centimeters more than the width. Its perimeter is $2w + 2(w + 5)$, which equals $4w + 10$. What does the 10 represent?",
+      "choices": [
+        "The extra length of just one longer side",
+        "The length of the rectangle",
+        "The total extra length of the two longer sides",
+        "The width of the rectangle"
+      ],
+      "answer": "The total extra length of the two longer sides",
+      "compute": null,
+      "solution": "Each length is $w + 5$, so each of the two longer sides is 5 more than $w$. The extra is $2 \\times 5 = 10$ centimeters in all.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The total extra length of the two longer sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(w+5)=2w+10; the 10 is 5 extra on each of the two long sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.289Z"
+        }
+      }
+    },
+    {
+      "id": "ee0d220f-f2c4-47fc-b2cd-c4232d6043af",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "Ana has 50 dollars and saves 4 dollars each week. Ben has 20 dollars and saves 7 dollars each week. Which expression gives how many more dollars Ana has than Ben after $w$ weeks?",
+      "choices": [
+        "$30 + 3w$",
+        "$30 - 3w$",
+        "$70 + 11w$",
+        "$30 - 11w$"
+      ],
+      "answer": "$30 - 3w$",
+      "compute": null,
+      "solution": "Ana has $50 + 4w$ and Ben has $20 + 7w$. The difference is $(50 + 4w) - (20 + 7w) = 30 - 3w$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$30 - 3w$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(50+4w)-(20+7w) = 30-3w.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.295Z"
+        }
+      }
+    },
+    {
+      "id": "91a0caec-6806-4143-b43e-b5d958538cc3",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "Five friends share a bill of $5x - 10$ dollars equally. Which expression gives how many dollars each friend pays?",
+      "choices": [
+        "$x - 10$",
+        "$5x - 2$",
+        "$x - 50$",
+        "$x - 2$"
+      ],
+      "answer": "$x - 2$",
+      "compute": null,
+      "solution": "Divide each term by 5: $\\frac{5x}{5} = x$ and $\\frac{10}{5} = 2$. Each friend pays $x - 2$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5x-10)/5 = x-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.320Z"
+        }
+      }
+    },
+    {
+      "id": "d2660a12-62e8-415c-afe6-09d7ed902c7f",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "A bank charges a fee equal to half of $(8x - 6)$ dollars, so the account changes by $-\\frac{1}{2}(8x - 6)$ dollars. Which expression is equivalent?",
+      "choices": [
+        "$-4x - 3$",
+        "$-4x + 3$",
+        "$4x - 3$",
+        "$-4x - 6$"
+      ],
+      "answer": "$-4x + 3$",
+      "compute": null,
+      "solution": "Distribute $-\\frac{1}{2}$: $-\\frac{1}{2} \\cdot 8x = -4x$ and $-\\frac{1}{2} \\cdot (-6) = +3$. The result is $-4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1/2(8x-6) = -4x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.363Z"
+        }
+      }
+    },
+    {
+      "id": "0830f756-c1df-440b-ad6a-0f0de240149e",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "A worker earns 15 dollars an hour plus a bonus of 10% of her earnings. Her pay for $h$ hours is $15h + 0.1(15h)$ dollars, which equals $16.5h$ dollars. What does 16.5 represent?",
+      "choices": [
+        "Her pay for each hour, before the bonus, in dollars",
+        "Her bonus for each hour, in dollars",
+        "Her pay for each hour, including the bonus, in dollars",
+        "The number of hours she worked"
+      ],
+      "answer": "Her pay for each hour, including the bonus, in dollars",
+      "compute": null,
+      "solution": "$15h + 1.5h = 16.5h$. So 16.5 is the 15 dollars an hour plus the 1.50 dollars of bonus an hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Her pay for each hour, including the bonus, in dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16.5h means 16.5 dollars per hour including the 10% bonus (15+1.5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.364Z"
+        }
+      }
+    },
+    {
+      "id": "3ffd8dad-9849-4322-afe4-3445e35d367a",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Which expression is equivalent to $0.5(4x - 10) + 2(x + 3)$?",
+      "choices": [
+        "$4x - 11$",
+        "$4x + 11$",
+        "$4x - 1$",
+        "$4x + 1$"
+      ],
+      "answer": "$4x + 1$",
+      "compute": null,
+      "solution": "$0.5(4x - 10) = 2x - 5$ and $2(x + 3) = 2x + 6$. Adding: $4x + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x-5+2x+6 = 4x+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.372Z"
+        }
+      }
+    },
+    {
+      "id": "cbe023fd-6997-499c-85c1-c38255486229",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "The expression $2(x + k) + 3(x - 1)$ is equivalent to $5x + 7$ for every value of $x$. What is $k$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(7+3)/2",
+      "solution": "$2(x + k) + 3(x - 1) = 2x + 2k + 3x - 3 = 5x + 2k - 3$. This equals $5x + 7$ when $2k - 3 = 7$, so $k = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x + 2k + 3x - 3 = 5x + (2k - 3) = 5x + 7 → 2k = 10 → k = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.460Z"
+        }
+      }
+    },
+    {
+      "id": "10574d2d-2257-4091-a927-83742ddd2979",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "A recipe needs $\\frac{2}{3}$ cup of sugar for each batch, and $\\frac{1}{4}$ cup of sugar for the topping, no matter how many batches. Which expression gives the cups of sugar for $b$ batches?",
+      "choices": [
+        "$\\frac{2}{3} + \\frac{1}{4}b$",
+        "$\\frac{2}{3}b + \\frac{1}{4}b$",
+        "$\\frac{2}{3}b + \\frac{1}{4}$",
+        "$\\frac{2}{3}b - \\frac{1}{4}$"
+      ],
+      "answer": "$\\frac{2}{3}b + \\frac{1}{4}$",
+      "compute": null,
+      "solution": "The batches use $\\frac{2}{3}b$ cups, and the topping adds a fixed $\\frac{1}{4}$ cup, so the total is $\\frac{2}{3}b + \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}b + \\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/3)b for the batches plus a fixed 1/4: (2/3)b + 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.495Z"
+        }
+      }
+    },
+    {
+      "id": "66e5eba2-0e94-47fb-94ff-00756380e424",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "Attendance at a fair this year was 270, which is 8% more than last year's attendance. What was last year's attendance?",
+      "choices": [
+        "250",
+        "248.4",
+        "291.6",
+        "262"
+      ],
+      "answer": "250",
+      "compute": "270/1.08",
+      "solution": "This year is 1.08 times last year, so last year is $270 \\div 1.08 = 250$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "250",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last year L: 1.08L = 270, L = 250.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.546Z"
+        }
+      }
+    },
+    {
+      "id": "94bb42cb-a7d9-44bc-9e89-cec5218a002c",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "A store pays 80 dollars for a coat and marks the price up by 25%. During a sale it takes 10% off that price. How many dollars of profit does the store make on the coat?",
+      "choices": [],
+      "answer": "10",
+      "compute": "80*1.25*0.9-80",
+      "solution": "The marked-up price is $1.25 \\times 80 = 100$. After 10% off it is $0.9 \\times 100 = 90$. The profit is $90 - 80 = 10$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Marked price 80*1.25 = 100; sale 100*0.9 = 90; profit 90 - 80 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.556Z"
+        }
+      }
+    },
+    {
+      "id": "251d2d21-9a1e-44a6-af01-711d5ffc2751",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "A jacket costs 80 dollars. It is marked 25% off, and then 8% sales tax is added to the sale price. What is the final cost, in dollars?",
+      "choices": [],
+      "answer": "64.8",
+      "compute": "0.75*1.08*80",
+      "solution": "The sale price is $0.75 \\times 80 = 60$. Tax multiplies by 1.08: $1.08 \\times 60 = 64.8$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 * 0.75 = 60; 60 * 1.08 = 64.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.597Z"
         }
       }
     },

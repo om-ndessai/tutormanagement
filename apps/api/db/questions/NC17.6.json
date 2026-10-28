@@ -18984,6 +18984,704 @@
       }
     },
     {
+      "id": "fcb69a8c-535d-4727-95a1-65b4b3f08965",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply two decimals",
+      "stem": "$0.4 \\times 0.5 = ?$",
+      "choices": [],
+      "answer": "0.2",
+      "compute": "0.4*0.5",
+      "solution": "$4 \\times 5 = 20$. Each factor has one decimal place, so the product has two: $0.20 = 0.2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.4 × 0.5 = 0.20 = 0.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.093Z"
+        }
+      }
+    },
+    {
+      "id": "46be1b07-3525-4b16-b47a-673d62d3ebe4",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place the decimal point and estimate",
+      "stem": "Which is the best estimate of $7.9 \\times 3.1$?",
+      "choices": [
+        "24",
+        "2.4",
+        "240",
+        "32"
+      ],
+      "answer": "24",
+      "compute": null,
+      "solution": "Round to $8 \\times 3 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 × 3 = 24 (exact 24.49).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.106Z"
+        }
+      }
+    },
+    {
+      "id": "445bbc3a-840a-45b4-a9ac-e1eb911d5ab2",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "Find $7.02 - 3.5$.",
+      "choices": [
+        "4.52",
+        "3.52",
+        "3.48",
+        "6.52"
+      ],
+      "answer": "3.52",
+      "compute": "7.02-3.5",
+      "solution": "Write 3.5 as 3.50: $7.02 - 3.50 = 3.52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.02 − 3.50 = 3.52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.111Z"
+        }
+      }
+    },
+    {
+      "id": "0c4ec611-0c5b-450f-99f3-84a314ba2dc2",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "Which is the sum of $4.6$ and $0.58$?",
+      "choices": [
+        "10.4",
+        "4.18",
+        "5.08",
+        "5.18"
+      ],
+      "answer": "5.18",
+      "compute": "4.6+0.58",
+      "solution": "Write 4.6 as 4.60: $4.60 + 0.58 = 5.18$. Do not forget to carry from the hundredths to the tenths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.60 + 0.58 = 5.18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.114Z"
+        }
+      }
+    },
+    {
+      "id": "1b921f19-3e63-4140-a4d3-a59488774e83",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "Subtract $2.4$ from $6$.",
+      "choices": [
+        "3.6",
+        "5.76",
+        "3.4",
+        "8.4"
+      ],
+      "answer": "3.6",
+      "compute": "6-2.4",
+      "solution": "Write 6 as 6.0 and subtract: $6.0 - 2.4 = 3.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.0 − 2.4 = 3.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.128Z"
+        }
+      }
+    },
+    {
+      "id": "389c6758-ef70-4220-aa20-0ac11d7d4957",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "What is the sum of $0.7$ and $0.25$?",
+      "choices": [
+        "0.32",
+        "0.95",
+        "0.095",
+        "0.77"
+      ],
+      "answer": "0.95",
+      "compute": "0.7+0.25",
+      "solution": "Write 0.7 as 0.70 so the decimal points line up: $0.70 + 0.25 = 0.95$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.95",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.70 + 0.25 = 0.95.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.136Z"
+        }
+      }
+    },
+    {
+      "id": "0556b96a-3bb3-480a-b4c7-ecb2cfbebfae",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "A recipe uses 0.25 kilograms of flour for each loaf of bread. How many kilograms of flour are needed for 8 loaves?",
+      "choices": [],
+      "answer": "2",
+      "compute": "0.25*8",
+      "solution": "$0.25 \\times 8 = 2.00 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.25 x 8 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.213Z"
+        }
+      }
+    },
+    {
+      "id": "eaae68f3-ed7a-4e5f-8e52-ccd042ad9f04",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "How many cups that hold 0.2 liters each can be filled from 3 liters of juice?",
+      "choices": [],
+      "answer": "15",
+      "compute": "3/0.2",
+      "solution": "Multiply both numbers by 10: $30 \\div 2 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/0.2 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.326Z"
+        }
+      }
+    },
+    {
+      "id": "b1752033-a4bb-4f8f-a18c-bcfafd759c3f",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two decimals",
+      "stem": "A square tile has sides that are each 0.3 meters long. What is the area of the tile, in square meters?",
+      "choices": [
+        "0.9",
+        "0.6",
+        "0.009",
+        "0.09"
+      ],
+      "answer": "0.09",
+      "compute": "0.3*0.3",
+      "solution": "Area is side times side: $0.3 \\times 0.3$. $3 \\times 3 = 9$, and two decimal places in all gives $0.09$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.09",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.3*0.3=0.09.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.365Z"
+        }
+      }
+    },
+    {
+      "id": "985e91e6-1d90-4444-89c5-016af616d382",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Add: $8.05 + 1.9$",
+      "choices": [],
+      "answer": "9.95",
+      "compute": "8.05+1.9",
+      "solution": "Line up the decimal points: $8.05 + 1.90 = 9.95$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9.95",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8.05+1.90 = 9.95.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.401Z"
+        }
+      }
+    },
+    {
+      "id": "09f6b458-bd33-4cc0-9ef5-93f2a7c833dc",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "A rope is 5 meters long. Mr. Lee cuts off 1.35 meters. How long is the rope that is left, in meters?",
+      "choices": [],
+      "answer": "3.65",
+      "compute": "5-1.35",
+      "solution": "Write 5 as 5.00 and subtract: $5.00 - 1.35 = 3.65$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.00-1.35 = 3.65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.401Z"
+        }
+      }
+    },
+    {
+      "id": "3c7a9c69-f04b-4e4b-8f15-2175e6b92e0b",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "One notebook costs 2.4 dollars. How many dollars do 5 notebooks cost?",
+      "choices": [],
+      "answer": "12",
+      "compute": "2.4*5",
+      "solution": "$2.4 \\times 5 = 12$ (24 tenths times 5 is 120 tenths).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4 × 5 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.446Z"
+        }
+      }
+    },
+    {
+      "id": "bcb6037a-6957-4f68-9c0c-480b076030fe",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Divide $0.84$ by $4$.",
+      "choices": [
+        "2.1",
+        "0.21",
+        "0.021",
+        "0.201"
+      ],
+      "answer": "0.21",
+      "compute": "0.84/4",
+      "solution": "$84 \\div 4 = 21$. Dividing 0.84 by 4 keeps the decimal point in place: $0.21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.84 ÷ 4 = 0.21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.510Z"
+        }
+      }
+    },
+    {
+      "id": "91b12e0a-b684-45ea-a0e9-c2d62bbf2255",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "A ribbon 9.6 meters long is cut into 4 equal pieces. How long is each piece, in meters?",
+      "choices": [],
+      "answer": "2.4",
+      "compute": "9.6/4",
+      "solution": "$9.6 \\div 4 = 2.4$, because $4 \\times 2.4 = 9.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.6 / 4 = 2.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.539Z"
+        }
+      }
+    },
+    {
+      "id": "0dae1203-4372-42cb-9ba9-dca2eb756863",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "A pitcher has 2.5 liters of water. Sam pours out 0.75 liters. How many liters are left in the pitcher?",
+      "choices": [],
+      "answer": "1.75",
+      "compute": "2.5-0.75",
+      "solution": "Write 2.5 as 2.50: $2.50 - 0.75 = 1.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.5 - 0.75 = 1.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.565Z"
+        }
+      }
+    },
+    {
+      "id": "c1e550e4-8e1c-4480-af61-471d7225ca6a",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Multiply $0.7$ by $6$.",
+      "choices": [
+        "42",
+        "0.42",
+        "4.2",
+        "13"
+      ],
+      "answer": "4.2",
+      "compute": "0.7*6",
+      "solution": "7 tenths times 6 is 42 tenths, which is 4.2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.7 * 6 = 4.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.580Z"
+        }
+      }
+    },
+    {
+      "id": "8d7610d7-a939-48ff-a4e2-7b2695d5426e",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "A juice costs 1.25 dollars and a muffin costs 2.5 dollars. What is the total cost of both, in dollars?",
+      "choices": [
+        "3.30",
+        "1.50",
+        "3.75",
+        "4.75"
+      ],
+      "answer": "3.75",
+      "compute": "1.25+2.5",
+      "solution": "$1.25 + 2.50 = 3.75$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.25+2.50 = 3.75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.639Z"
+        }
+      }
+    },
+    {
+      "id": "694930b9-0efc-421c-92b0-de10e4cd484c",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide by a decimal",
+      "stem": "Find the quotient: $2.4 \\div 0.06$.",
+      "choices": [
+        "4",
+        "400",
+        "40",
+        "0.4"
+      ],
+      "answer": "40",
+      "compute": "2.4/0.06",
+      "solution": "Multiply both numbers by 100: $240 \\div 6 = 40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4/0.06 = 240/6 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.647Z"
+        }
+      }
+    },
+    {
+      "id": "c415fb4d-0f7b-462c-9421-476247555abc",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Place the decimal point and estimate",
+      "stem": "Eva multiplies $2.9 \\times 4.1$ and gets the digits 1189, but forgets the decimal point. Which is the product?",
+      "choices": [
+        "1.189",
+        "118.9",
+        "0.1189",
+        "11.89"
+      ],
+      "answer": "11.89",
+      "compute": "2.9*4.1",
+      "solution": "Estimate: $3 \\times 4 = 12$, so the product is close to 12. The digits 1189 with a decimal point placed to be near 12 gives $11.89$. (Two decimal places in all.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11.89",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.9x4.1 about 3x4=12; 11.89.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.692Z"
+        }
+      }
+    },
+    {
+      "id": "ab26a91c-5ee5-4256-ae88-3d47700ae791",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Jin's tomato plant was 3.4 centimeters tall. It grew 2.75 centimeters more this week. How tall is it now, in centimeters?",
+      "choices": [],
+      "answer": "6.15",
+      "compute": "3.4+2.75",
+      "solution": "Line up the decimal points and add: $3.40 + 2.75 = 6.15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.40+2.75 = 6.15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.703Z"
+        }
+      }
+    },
+    {
+      "id": "0b4d0ed1-2ee0-41d2-88c2-17bbed3d32ee",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "A bottle holds 2.5 liters. How many liters do 6 bottles hold?",
+      "choices": [
+        "15",
+        "12",
+        "150",
+        "1.5"
+      ],
+      "answer": "15",
+      "compute": "2.5*6",
+      "solution": "25 tenths times 6 is 150 tenths, which is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.5 · 6 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.720Z"
+        }
+      }
+    },
+    {
+      "id": "e8a9b83c-756b-4233-acf6-3d757c690e3c",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide whole numbers to get a decimal quotient",
+      "stem": "Four friends share 5 dollars equally. How many dollars does each friend get?",
+      "choices": [],
+      "answer": "1.25",
+      "compute": "5/4",
+      "solution": "$5 \\div 4 = 1.25$. Add a decimal point and zeros: 5.00 divided by 4 is 1.25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 ÷ 4 = 1.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.729Z"
+        }
+      }
+    },
+    {
       "id": "bd108f76-1bcf-4d6c-a177-e966dbe119f8",
       "topic_id": "NC17.6.NS.3",
       "difficulty": 2,
@@ -19382,6 +20080,631 @@
           "work": "1.58; 0.56; 7; 7.10-2.46=4.64 true.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.643Z"
+        }
+      }
+    },
+    {
+      "id": "89fc9d1b-4a7f-4800-b461-bcfa3142a820",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two decimals",
+      "stem": "Ribbon costs 0.85 dollars for each meter. Kai buys 2.4 meters of ribbon. How many dollars does it cost?",
+      "choices": [],
+      "answer": "2.04",
+      "compute": "0.85*2.4",
+      "solution": "$85 \\times 24 = 2040$. Three decimal places in all gives $2.040 = 2.04$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.04",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.85 × 2.4 = 2.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.035Z"
+        }
+      }
+    },
+    {
+      "id": "198310cc-7eaa-4285-9c60-9a12d40ed8d9",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide by a decimal",
+      "stem": "Find $3.6 \\div 0.04$.",
+      "choices": [
+        "9",
+        "900",
+        "0.9",
+        "90"
+      ],
+      "answer": "90",
+      "compute": "3.6/0.04",
+      "solution": "Multiply both numbers by 100: $360 \\div 4 = 90$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.6 ÷ 0.04 = 360 ÷ 4 = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.080Z"
+        }
+      }
+    },
+    {
+      "id": "545ccc4b-afed-4dd1-a94a-0bfd9f2c5837",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place the decimal point and estimate",
+      "stem": "Which expression gives the best estimate of $38.7 \\div 5.9$?",
+      "choices": [
+        "$40 \\div 6$",
+        "$30 \\div 6$",
+        "$40 \\div 10$",
+        "$400 \\div 6$"
+      ],
+      "answer": "$40 \\div 6$",
+      "compute": null,
+      "solution": "Round each number to one that is easy to divide: $38.7 \\approx 40$ and $5.9 \\approx 6$, so $40 \\div 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40 \\div 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "38.7 ≈ 40 and 5.9 ≈ 6: 40 ÷ 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.090Z"
+        }
+      }
+    },
+    {
+      "id": "7332d2d3-6379-407c-81c3-fb86aa0a519a",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two decimals",
+      "stem": "$2.4 \\times 0.35 = ?$",
+      "choices": [],
+      "answer": "0.84",
+      "compute": "2.4*0.35",
+      "solution": "$24 \\times 35 = 840$. There are three decimal places in all, so the product is $0.840 = 0.84$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 x 35 = 840; three decimal places -> 0.840 = 0.84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.206Z"
+        }
+      }
+    },
+    {
+      "id": "fd45f24c-8c0e-44f1-9ee1-88c602709211",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "Evaluate $8.05 \\div 0.35$.",
+      "choices": [],
+      "answer": "23",
+      "compute": "8.05/0.35",
+      "solution": "Multiply both numbers by 100: $805 \\div 35 = 23$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "805/35 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.315Z"
+        }
+      }
+    },
+    {
+      "id": "e5360d56-9355-4391-9dc4-2034d717e3ef",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "What is $0.5 - 0.138$?",
+      "choices": [],
+      "answer": "0.362",
+      "compute": "0.5-0.138",
+      "solution": "Write 0.5 as 0.500: $0.500 - 0.138 = 0.362$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.362",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.500-0.138=0.362.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.343Z"
+        }
+      }
+    },
+    {
+      "id": "5d1d7ccf-1458-46ec-a078-480cf30d5bc5",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Decimal word problems",
+      "stem": "Ben buys 3 notebooks that cost 2.35 dollars each and a pen that costs 1.85 dollars. How many dollars does he spend in all?",
+      "choices": [],
+      "answer": "8.9",
+      "compute": "3*2.35+1.85",
+      "solution": "Notebooks: $3 \\times 2.35 = 7.05$. Add the pen: $7.05 + 1.85 = 8.90 = 8.9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x2.35=7.05; +1.85 = 8.90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.400Z"
+        }
+      }
+    },
+    {
+      "id": "3e783ee8-4149-4b72-934f-0bbb9b40928f",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "Leo adds $5.67 + 3.8$ by lining up the digits on the right instead of the decimal points, and gets 6.05. What is the correct sum?",
+      "choices": [
+        "9.37",
+        "9.47",
+        "10.47",
+        "8.47"
+      ],
+      "answer": "9.47",
+      "compute": "5.67+3.8",
+      "solution": "Line up the decimal points: $5.67 + 3.80 = 9.47$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9.47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.67+3.80 = 9.47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.416Z"
+        }
+      }
+    },
+    {
+      "id": "a347a19b-fe96-4a55-84c5-f27ccdcf44a9",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decimal word problems",
+      "stem": "Eight identical oranges weigh 2.4 kilograms in all. How many kilograms do 5 of these oranges weigh?",
+      "choices": [
+        "0.3",
+        "1.5",
+        "15",
+        "1.9"
+      ],
+      "answer": "1.5",
+      "compute": "2.4/8*5",
+      "solution": "One orange weighs $2.4 \\div 8 = 0.3$ kilograms. Five oranges weigh $5 \\times 0.3 = 1.5$ kilograms.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4 ÷ 8 = 0.3 kg each; 5 × 0.3 = 1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.482Z"
+        }
+      }
+    },
+    {
+      "id": "44d6a9f2-2ab3-4585-bc28-fa84e7868f79",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Find the product of $15$ and $0.46$.",
+      "choices": [
+        "6.9",
+        "69",
+        "0.69",
+        "6.09"
+      ],
+      "answer": "6.9",
+      "compute": "15*0.46",
+      "solution": "$15 \\times 46 = 690$. With two decimal places the product is $6.90 = 6.9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 × 0.46 = 6.9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.512Z"
+        }
+      }
+    },
+    {
+      "id": "00c5e91e-d0fa-4e13-b0fe-92645fd17780",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Mixed decimal operations",
+      "stem": "Evaluate $12.3 - 4.75 + 0.9$.",
+      "choices": [],
+      "answer": "8.45",
+      "compute": "12.3-4.75+0.9",
+      "solution": "Work left to right: $12.30 - 4.75 = 7.55$, then $7.55 + 0.90 = 8.45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.3 - 4.75 = 7.55; + 0.9 = 8.45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.622Z"
+        }
+      }
+    },
+    {
+      "id": "87cc7b76-e9ac-45b4-be16-4137920d1181",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two decimals",
+      "stem": "A rectangle is 3.2 meters long and 1.5 meters wide. What is its area in square meters?",
+      "choices": [
+        "48",
+        "4.8",
+        "0.48",
+        "4.7"
+      ],
+      "answer": "4.8",
+      "compute": "3.2*1.5",
+      "solution": "$32 \\times 15 = 480$. Two decimal places in all gives $4.80 = 4.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.2 x 1.5 = 4.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.653Z"
+        }
+      }
+    },
+    {
+      "id": "998edf5e-1d9c-4442-a644-61c05cb28bba",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "The three sides of a triangle are 4.75 centimeters, 6.2 centimeters and 3.85 centimeters long. What is the perimeter in centimeters?",
+      "choices": [],
+      "answer": "14.8",
+      "compute": "4.75+6.2+3.85",
+      "solution": "$4.75 + 6.20 + 3.85 = 14.80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.75 + 6.2 + 3.85 = 14.80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.726Z"
+        }
+      }
+    },
+    {
+      "id": "051df385-a316-4b6b-b194-c78317dd9dd2",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add decimals",
+      "stem": "A runner's two laps took 1.08 minutes and 1.95 minutes. How many minutes did the two laps take in all?",
+      "choices": [
+        "2.03",
+        "3.13",
+        "3.03",
+        "2.93"
+      ],
+      "answer": "3.03",
+      "compute": "1.08+1.95",
+      "solution": "$1.08 + 1.95 = 3.03$ (8 + 5 = 13 hundredths, carry 1 tenth, and so on).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.03",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.08 + 1.95 = 3.03.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.743Z"
+        }
+      }
+    },
+    {
+      "id": "06fc5cda-a399-4e47-85bd-456ffc761910",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Divide $18.54$ by $6$.",
+      "choices": [],
+      "answer": "3.09",
+      "compute": "18.54/6",
+      "solution": "$18.54 \\div 6 = 3.09$. Check: $6 \\times 3.09 = 18.54$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.09",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18.54 ÷ 6 = 3.09.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.746Z"
+        }
+      }
+    },
+    {
+      "id": "f322c300-b32d-424a-b2f1-bb1300b84fbf",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "A hose is 12.5 meters long. A piece 4.85 meters long is cut off. How long is the rest of the hose, in meters?",
+      "choices": [
+        "8.65",
+        "7.75",
+        "8.35",
+        "7.65"
+      ],
+      "answer": "7.65",
+      "compute": "12.5-4.85",
+      "solution": "Write 12.5 as 12.50: $12.50 - 4.85 = 7.65$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12.50 - 4.85 = 7.65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.747Z"
+        }
+      }
+    },
+    {
+      "id": "eddd955c-f346-4c4b-9837-78d43d350a82",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "A scoop holds 0.25 kilograms of rice. How many full scoops can be taken from 6.5 kilograms of rice?",
+      "choices": [],
+      "answer": "26",
+      "compute": "6.5/0.25",
+      "solution": "Multiply both numbers by 100: $650 \\div 25 = 26$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.5 ÷ 0.25 = 26 full scoops.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.753Z"
+        }
+      }
+    },
+    {
+      "id": "31b372b5-3254-4533-874b-65b0d11073df",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "Subtract $18.76$ from $40$.",
+      "choices": [],
+      "answer": "21.24",
+      "compute": "40-18.76",
+      "solution": "Write 40 as 40.00: $40.00 - 18.76 = 21.24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21.24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40.00 - 18.76 = 21.24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.759Z"
+        }
+      }
+    },
+    {
+      "id": "4459cee8-779b-44ac-b62f-bc54c86fcdf2",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Four friends equally share a bill of 25.80 dollars. How many dollars does each friend pay?",
+      "choices": [
+        "6.15",
+        "6.54",
+        "6.45",
+        "64.5"
+      ],
+      "answer": "6.45",
+      "compute": "25.8/4",
+      "solution": "$25.80 \\div 4 = 6.45$. Check: $4 \\times 6.45 = 25.80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25.80 ÷ 4 = 6.45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.767Z"
+        }
+      }
+    },
+    {
+      "id": "c14b6605-d349-4300-bc25-2e8f2055c4e4",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Seven boxes each weigh 3.65 kilograms. What is the total weight of the boxes, in kilograms?",
+      "choices": [],
+      "answer": "25.55",
+      "compute": "3.65*7",
+      "solution": "$365 \\times 7 = 2555$. With two decimal places, $3.65 \\times 7 = 25.55$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25.55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 · 3.65 = 25.55.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.788Z"
         }
       }
     },
@@ -19803,6 +21126,621 @@
       }
     },
     {
+      "id": "ae91069c-1839-4246-a6b4-12ac3d583c3d",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimal word problems",
+      "stem": "After spending 14.85 dollars, Lin has 27.40 dollars left. How many dollars did she have at the start?",
+      "choices": [],
+      "answer": "42.25",
+      "compute": "27.4+14.85",
+      "solution": "Add back what she spent: $27.40 + 14.85 = 42.25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14.85+27.40=42.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.181Z"
+        }
+      }
+    },
+    {
+      "id": "9e8292db-2eb6-4a74-a45a-6b854dfaa471",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Find the product of $0.075$ and $24$.",
+      "choices": [
+        "1.8",
+        "18",
+        "0.18",
+        "1.08"
+      ],
+      "answer": "1.8",
+      "compute": "0.075*24",
+      "solution": "$75 \\times 24 = 1800$. Three decimal places gives $1.800 = 1.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.075 x 24 = 75 x 24 / 1000 = 1800/1000 = 1.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.197Z"
+        }
+      }
+    },
+    {
+      "id": "f6c5c8f4-3177-4138-8382-41113997ad01",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide by a decimal",
+      "stem": "Mo says that $3.6 \\div 0.12 = 0.3$. What is the correct quotient?",
+      "choices": [
+        "3",
+        "300",
+        "33",
+        "30"
+      ],
+      "answer": "30",
+      "compute": "3.6/0.12",
+      "solution": "Multiply both numbers by 100: $360 \\div 12 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.6 / 0.12 = 360 / 12 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.199Z"
+        }
+      }
+    },
+    {
+      "id": "f57cda9f-e72b-4f8f-94da-c2993b0537a7",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Place the decimal point and estimate",
+      "stem": "Mai knows that $625 \\times 48 = 30{,}000$. Use this to find $0.625 \\times 4.8$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "0.625*4.8",
+      "solution": "0.625 has three decimal places and 4.8 has one, so the product has four: $30{,}000$ becomes $3.0000 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.625 = 625/1000, 4.8 = 48/10; product = 30000/10000 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.207Z"
+        }
+      }
+    },
+    {
+      "id": "1f16c4dd-12ed-4069-8c88-7bbc971754e0",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a decimal by a whole number",
+      "stem": "Gasoline costs 3.6 dollars per gallon. Rosa buys 12.5 gallons. How many dollars does she pay?",
+      "choices": [],
+      "answer": "45",
+      "compute": "3.6*12.5",
+      "solution": "$36 \\times 125 = 4500$. Two decimal places in all gives $45.00 = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.6 x 12.5 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.211Z"
+        }
+      }
+    },
+    {
+      "id": "fc20c100-62fd-475d-9901-1ef1ceb67adf",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Mixed decimal operations",
+      "stem": "Evaluate $50 - 12.375 - 8.5 + 0.99$.",
+      "choices": [],
+      "answer": "30.115",
+      "compute": "50-12.375-8.5+0.99",
+      "solution": "Left to right: $50 - 12.375 = 37.625$; $37.625 - 8.5 = 29.125$; $29.125 + 0.99 = 30.115$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30.115",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 - 12.375 = 37.625; - 8.5 = 29.125; + 0.99 = 30.115.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.214Z"
+        }
+      }
+    },
+    {
+      "id": "374a011a-69de-421f-8f56-5a9a49b0fd9e",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimal word problems",
+      "stem": "Twelve identical books weigh 9.48 kilograms in all. An empty box weighs 0.6 kilograms. How many kilograms does the box weigh when it holds 20 of these books?",
+      "choices": [],
+      "answer": "16.4",
+      "compute": "9.48/12*20+0.6",
+      "solution": "One book: $9.48 \\div 12 = 0.79$. Twenty books: $20 \\times 0.79 = 15.8$. Add the box: $15.8 + 0.6 = 16.4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.48/12=0.79 kg each; 20*0.79=15.8; +0.6 = 16.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.300Z"
+        }
+      }
+    },
+    {
+      "id": "3a872b0f-2b61-405f-b26a-3ae001e4794f",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Four packages weigh 2.375, 0.8, 4.06 and 1.5 kilograms. What is the total weight of the packages, in kilograms?",
+      "choices": [],
+      "answer": "8.735",
+      "compute": "2.375+0.8+4.06+1.5",
+      "solution": "Write each with three decimal places and add: $2.375 + 0.800 + 4.060 + 1.500 = 8.735$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.735",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.375+0.8=3.175; +4.06=7.235; +1.5=8.735.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.317Z"
+        }
+      }
+    },
+    {
+      "id": "8251ef3e-8581-4a13-b2e4-f59f93bac16a",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Decimal word problems",
+      "stem": "A gym charges a joining fee of 15 dollars plus 12.75 dollars each month. Ivan has paid 117 dollars in all. For how many months has he been a member?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(117-15)/12.75",
+      "solution": "Take off the joining fee: $117 - 15 = 102$. Then $102 \\div 12.75 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(117-15)/12.75 = 102/12.75 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.320Z"
+        }
+      }
+    },
+    {
+      "id": "47167896-2732-4173-b266-8997644ec0a1",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide by a decimal",
+      "stem": "What is $0.0156 \\div 0.012$?",
+      "choices": [
+        "13",
+        "0.13",
+        "1.03",
+        "1.3"
+      ],
+      "answer": "1.3",
+      "compute": "0.0156/0.012",
+      "solution": "Multiply both numbers by 10,000: $156 \\div 120 = 1.3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.0156/0.012 = 15.6/12 = 1.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.331Z"
+        }
+      }
+    },
+    {
+      "id": "d4c3817e-3ad8-4837-9f4d-fc78b1a442fe",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two decimals",
+      "stem": "What is $0.36 \\times 0.25$?",
+      "choices": [
+        "0.9",
+        "0.09",
+        "0.009",
+        "0.61"
+      ],
+      "answer": "0.09",
+      "compute": "0.36*0.25",
+      "solution": "$36 \\times 25 = 900$. Four decimal places in all gives $0.0900 = 0.09$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.09",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36*25=900; four decimal places: 0.0900 = 0.09.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.380Z"
+        }
+      }
+    },
+    {
+      "id": "cead7ae2-806b-4427-904b-bc7be5e4925f",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decimal word problems",
+      "stem": "Kim buys 2.5 kilograms of apples at 1.80 dollars per kilogram and 0.75 kilograms of grapes at 4.00 dollars per kilogram. How many dollars does she pay in all?",
+      "choices": [
+        "9.25",
+        "7.5",
+        "4.8",
+        "10.5"
+      ],
+      "answer": "7.5",
+      "compute": "2.5*1.8+0.75*4",
+      "solution": "Apples: $2.5 \\times 1.80 = 4.50$. Grapes: $0.75 \\times 4.00 = 3.00$. Total: $4.50 + 3.00 = 7.50 = 7.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.5x1.80=4.50; 0.75x4.00=3.00; total 7.50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.395Z"
+        }
+      }
+    },
+    {
+      "id": "eaf2d444-d1df-4d84-ada7-b90d4fa36c67",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "Evaluate $9.12 \\div 0.38$.",
+      "choices": [],
+      "answer": "24",
+      "compute": "9.12/0.38",
+      "solution": "Multiply both numbers by 100: $912 \\div 38 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9.12 ÷ 0.38 = 912 ÷ 38 = 24 (38×24 = 912).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.431Z"
+        }
+      }
+    },
+    {
+      "id": "eefa5b28-b9a0-4d22-b9e2-f5014ec7f462",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Mixed decimal operations",
+      "stem": "What is $(4.5 - 1.25) \\times 0.8$?",
+      "choices": [
+        "2.6",
+        "3.5",
+        "26",
+        "0.26"
+      ],
+      "answer": "2.6",
+      "compute": "(4.5-1.25)*0.8",
+      "solution": "Parentheses first: $4.5 - 1.25 = 3.25$. Then $3.25 \\times 0.8 = 2.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4.5 - 1.25 = 3.25; 3.25 × 0.8 = 2.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.478Z"
+        }
+      }
+    },
+    {
+      "id": "430e166c-2031-444a-a839-e890a518e9df",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two decimals",
+      "stem": "$6.25 \\times 0.48 = ?$",
+      "choices": [],
+      "answer": "3",
+      "compute": "6.25*0.48",
+      "solution": "$625 \\times 48 = 30{,}000$. Four decimal places in all gives $3.0000 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.25 × 0.48 = 625 × 48 / 10^4 = 30000/10000 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.479Z"
+        }
+      }
+    },
+    {
+      "id": "da31c160-b67b-4f37-a33b-c645e1bba10d",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Find $5.04 \\div 8$.",
+      "choices": [
+        "6.3",
+        "0.063",
+        "0.63",
+        "0.603"
+      ],
+      "answer": "0.63",
+      "compute": "5.04/8",
+      "solution": "$504 \\div 8 = 63$. Since 5.04 is less than 8, the quotient is less than 1: $0.63$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.04/8 = 0.63 (8 x 0.63 = 5.04).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.641Z"
+        }
+      }
+    },
+    {
+      "id": "fc625580-f616-43d2-9ac1-49c60539642a",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two decimals",
+      "stem": "A rectangular garden is 7.4 meters long and 3.25 meters wide. What is its area in square meters?",
+      "choices": [],
+      "answer": "24.05",
+      "compute": "7.4*3.25",
+      "solution": "$74 \\times 325 = 24{,}050$. Three decimal places in all gives $24.050 = 24.05$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24.05",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7.4 x 3.25 = 22.2 + 1.85 = 24.05.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.655Z"
+        }
+      }
+    },
+    {
+      "id": "74d1e1d0-5d4f-4ebe-9225-30d97d1fdd5c",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a decimal",
+      "stem": "A path 15.12 meters long is paved with stones that are each 0.28 meters long, laid end to end with no gaps. How many stones are needed?",
+      "choices": [],
+      "answer": "54",
+      "compute": "15.12/0.28",
+      "solution": "Multiply both numbers by 100: $1512 \\div 28 = 54$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15.12 ÷ 0.28 = 1512 ÷ 28 = 54. Check 0.28·54 = 15.12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.709Z"
+        }
+      }
+    },
+    {
+      "id": "1941a37f-2ebd-4313-90fc-5a11e784e009",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide whole numbers to get a decimal quotient",
+      "stem": "A bag holds 13 pounds of sand. It is split into 8 equal parts. How many pounds are in each part?",
+      "choices": [],
+      "answer": "1.625",
+      "compute": "13/8",
+      "solution": "$13 \\div 8 = 1.625$. Check: $8 \\times 1.625 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.625",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 ÷ 8 = 1.625.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.729Z"
+        }
+      }
+    },
+    {
+      "id": "f10b6107-fafe-4473-b597-171594482c89",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide a decimal by a whole number",
+      "stem": "Divide $47.6$ by $14$.",
+      "choices": [],
+      "answer": "3.4",
+      "compute": "47.6/14",
+      "solution": "$476 \\div 14 = 34$, so $47.6 \\div 14 = 3.4$. Check: $14 \\times 3.4 = 47.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47.6 ÷ 14 = 3.4 (14·3.4 = 47.6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.743Z"
+        }
+      }
+    },
+    {
       "id": "46e7cf45-b9e4-4d92-9e76-22bd2d256530",
       "topic_id": "NC17.6.NS.4",
       "difficulty": 1,
@@ -20176,6 +22114,636 @@
       }
     },
     {
+      "id": "4d2f3d0f-5f8b-48d0-8f29-cb9e4043b580",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a greatest common factor",
+      "stem": "Sara lists the factors of 10: 1, 2, 5, 10, and the factors of 15: 1, 3, 5, 15. What is the greatest common factor of 10 and 15?",
+      "choices": [
+        "1",
+        "15",
+        "5",
+        "30"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The common factors are 1 and 5. The greatest of them is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Common factors 1, 5; greatest 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.110Z"
+        }
+      }
+    },
+    {
+      "id": "c4105640-99b7-479a-9eef-2571d8b2379f",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Which expression is equal to $3 \\times 7 + 3 \\times 4$?",
+      "choices": [
+        "$3 \\times 7 + 4$",
+        "$(3 + 3) \\times (7 + 4)$",
+        "$3 \\times (7 + 4)$",
+        "$3 + 7 \\times 4$"
+      ],
+      "answer": "$3 \\times (7 + 4)$",
+      "compute": null,
+      "solution": "The 3 is a common factor, so $3 \\times 7 + 3 \\times 4 = 3 \\times (7 + 4)$. Both give 33.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times (7 + 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive: 3(7+4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.172Z"
+        }
+      }
+    },
+    {
+      "id": "23d1418a-dba1-4175-9c9f-de64e77f23cd",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "What number is the ? in $5 \\times 12 + 5 \\times 8 = 5 \\times ?$",
+      "choices": [],
+      "answer": "20",
+      "compute": "12+8",
+      "solution": "The distributive property says $5 \\times 12 + 5 \\times 8 = 5 \\times (12 + 8) = 5 \\times 20$. So the ? is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive property: 5x12 + 5x8 = 5x(12+8) = 5x20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.198Z"
+        }
+      }
+    },
+    {
+      "id": "5ee3f548-837f-415e-80b9-ee8935d5e0b2",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a greatest common factor",
+      "stem": "Find the greatest number that divides evenly into both 14 and 21.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The factors of 14 are 1, 2, 7, 14. The factors of 21 are 1, 3, 7, 21. The greatest factor they share is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(14,21)=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.302Z"
+        }
+      }
+    },
+    {
+      "id": "65372194-0f8d-4b9f-802b-b006a236f5e4",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "Mia simplifies $\\frac{12}{16}$ by dividing the top and the bottom by their greatest common factor. What is the new bottom number?",
+      "choices": [],
+      "answer": "4",
+      "compute": "16/4",
+      "solution": "The GCF of 12 and 16 is 4. Dividing gives $\\frac{3}{4}$, so the new bottom number is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(12,16)=4; 12/16 = 3/4; bottom 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.309Z"
+        }
+      }
+    },
+    {
+      "id": "54bfdcdd-d921-496a-b429-c2b8aa0a9e61",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "Which of these numbers is a multiple of both 3 and 4?",
+      "choices": [
+        "6",
+        "8",
+        "14",
+        "12"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "12 is 3 times 4, so it is a multiple of 3 and of 4. 6 and 8 are not both, and 14 is a multiple of neither.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 3 and 4 -> multiples of 12: 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.312Z"
+        }
+      }
+    },
+    {
+      "id": "7c5896d8-066c-4607-9379-38a2aee4f6f1",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Prime factorization",
+      "stem": "The prime factorization of 20 is $2 \\times 2 \\times ?$. What number is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "20/2/2",
+      "solution": "$20 = 2 \\times 2 \\times 5$, and 2 and 5 are both prime. So the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20=2*2*5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.319Z"
+        }
+      }
+    },
+    {
+      "id": "01c63b51-9669-4a86-9e3b-e9aaeda42e7d",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "What is the least common denominator of $\\frac{1}{3}$ and $\\frac{1}{4}$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The least common denominator is the least common multiple of 3 and 4, which is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(3,4)=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.341Z"
+        }
+      }
+    },
+    {
+      "id": "b37f65b8-388f-4234-b166-2734a6e69fd4",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "What is the greatest common factor of the top and bottom numbers of $\\frac{9}{12}$?",
+      "choices": [
+        "1",
+        "3",
+        "9",
+        "36"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The factors of 9 are 1, 3, 9 and of 12 are 1, 2, 3, 4, 6, 12. The greatest one in both lists is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factors of 9: 1,3,9; of 12: 1,2,3,4,6,12. GCF=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.359Z"
+        }
+      }
+    },
+    {
+      "id": "efb18b82-d374-488d-a338-6e2f9ca8e947",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "Every 3rd person in line gets a hat and every 5th person gets a cap. Which person in line is the first to get both?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "The person's place must be a multiple of 3 and of 5. The least such number is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(3,5)=15: person 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.407Z"
+        }
+      }
+    },
+    {
+      "id": "c66342a9-2f00-496c-8c8d-619fd5bbbdfd",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "Pens come in packs of 4 and erasers come in packs of 6. Only whole packs are sold. What is the fewest pens that can be bought so that there are exactly as many pens as erasers?",
+      "choices": [
+        "12",
+        "24",
+        "10",
+        "2"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The number of pens must be a multiple of 4 and of 6. The least common multiple is 12, which is 3 packs of pens and 2 packs of erasers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(4,6)=12 pens (3 packs of pens, 2 packs of erasers).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.418Z"
+        }
+      }
+    },
+    {
+      "id": "c0514372-eb2d-405b-915d-d1b53e692d3b",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify prime and composite numbers",
+      "stem": "Which of these numbers is composite?",
+      "choices": [
+        "11",
+        "21",
+        "13",
+        "17"
+      ],
+      "answer": "21",
+      "compute": "21",
+      "solution": "21 has factors 1, 3, 7 and 21, so it is composite. 11, 13 and 17 each have only two factors, 1 and itself.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21 = 3*7 is composite; 11, 13, 17 are prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.541Z"
+        }
+      }
+    },
+    {
+      "id": "6ff51dbc-80e0-4a26-a25b-cf8138c6ed2b",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a least common multiple",
+      "stem": "The first few multiples of 6 are 6, 12, 18, 24, 30 and the first few multiples of 8 are 8, 16, 24, 32. What is the least common multiple of 6 and 8?",
+      "choices": [],
+      "answer": "24",
+      "compute": "24",
+      "solution": "The first number that appears in both lists is 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Common multiples listed: 24 first. LCM = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.566Z"
+        }
+      }
+    },
+    {
+      "id": "4dfa38ef-2398-4cbb-a89b-6ec9e06f92c1",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "Which is the smallest positive number that is a multiple of both 4 and 10?",
+      "choices": [
+        "20",
+        "40",
+        "2",
+        "14"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "Multiples of 10: 10, 20, ... and 20 is also a multiple of 4 (4 times 5). Nothing smaller works, since 10 is not a multiple of 4. The answer is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(4,10) = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.573Z"
+        }
+      }
+    },
+    {
+      "id": "24ea8ddd-2705-4ccb-be4e-bb93032d666b",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a least common multiple",
+      "stem": "What is the smallest number, greater than 0, that is a multiple of both 3 and 5?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Multiples of 3: 3, 6, 9, 12, 15. Multiples of 5: 5, 10, 15. The first one in both lists is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(3,5) = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.592Z"
+        }
+      }
+    },
+    {
+      "id": "8d8b1fdf-5e8c-4e1b-8c31-c47aa4a3830d",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "Which fraction is equal to $\\frac{10}{15}$ in simplest form?",
+      "choices": [
+        "$\\frac{5}{10}$",
+        "$\\frac{3}{2}$",
+        "$\\frac{5}{7}$",
+        "$\\frac{2}{3}$"
+      ],
+      "answer": "$\\frac{2}{3}$",
+      "compute": null,
+      "solution": "The GCF of 10 and 15 is 5. Dividing the top and bottom by 5 gives $\\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/15 divide by GCF 5: 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.687Z"
+        }
+      }
+    },
+    {
+      "id": "8205c5dd-dc92-48cd-857f-a85e4ebdc14f",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "A baker has 8 muffins and 12 cookies. She puts the same number of muffins and the same number of cookies on each plate and uses all of them. What is the greatest number of plates she can fill?",
+      "choices": [
+        "2",
+        "24",
+        "20",
+        "4"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The number of plates must divide both 8 and 12. The common factors are 1, 2 and 4, so the greatest number of plates is 4 (2 muffins and 3 cookies on each).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(8,12) = 4 plates (2 muffins, 3 cookies each).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.690Z"
+        }
+      }
+    },
+    {
+      "id": "e562a8ef-0f5d-45a7-b2bb-085933a8ab03",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Prime factorization",
+      "stem": "What is the smallest prime factor of 35?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Try the smallest primes: 2 and 3 do not divide 35, but 5 does ($35 = 5 \\times 7$). So the smallest prime factor is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 = 5 x 7; smallest prime factor 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.691Z"
+        }
+      }
+    },
+    {
+      "id": "10bd077c-14f3-48f8-ac9d-813e5452d55a",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "The sum $18 + 27$ can be written as $? \\times (2 + 3)$. What number is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "18/2",
+      "solution": "$18 = 9 \\times 2$ and $27 = 9 \\times 3$. So $18 + 27 = 9 \\times (2 + 3)$, and the ? is 9, the greatest common factor of 18 and 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18+27 = 9(2+3) = 45. ? = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.693Z"
+        }
+      }
+    },
+    {
+      "id": "be8b88f8-68a3-4395-8ba0-d75a033c3a00",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Prime factorization",
+      "stem": "Which product of prime numbers is equal to 12?",
+      "choices": [
+        "$2 \\times 6$",
+        "$2 \\times 2 \\times 3$",
+        "$3 \\times 4$",
+        "$2 \\times 3 \\times 3$"
+      ],
+      "answer": "$2 \\times 2 \\times 3$",
+      "compute": null,
+      "solution": "$2 \\times 2 \\times 3 = 12$ and 2 and 3 are prime. In $2 \\times 6$ and $3 \\times 4$ the 6 and the 4 are not prime, and $2 \\times 3 \\times 3 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 \\times 2 \\times 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 = 2x2x3, all primes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.703Z"
+        }
+      }
+    },
+    {
       "id": "a184f793-7ce5-4d4e-98ea-b139d991af42",
       "topic_id": "NC17.6.NS.4",
       "difficulty": 2,
@@ -20525,6 +23093,689 @@
       }
     },
     {
+      "id": "806f3068-88dc-44a8-aef5-41faeacf1366",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "A school sends 60 fifth graders and 84 sixth graders on a trip. Each van carries the same number of fifth graders and the same number of sixth graders, and everyone goes. What is the greatest number of vans that can be used?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The number of vans must divide both 60 and 84. The greatest such number is the GCF, 12 (5 fifth graders and 7 sixth graders in each van).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(60, 84): 60 = 2²·3·5, 84 = 2²·3·7, GCF 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.117Z"
+        }
+      }
+    },
+    {
+      "id": "65c11ad8-8caa-4599-83d4-3b38fec551ad",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a greatest common factor",
+      "stem": "Which is the greatest whole number that divides both 45 and 60 with no remainder?",
+      "choices": [
+        "5",
+        "3",
+        "15",
+        "180"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "$45 = 3 \\times 3 \\times 5$ and $60 = 2 \\times 2 \\times 3 \\times 5$. They share 3 and 5, so the GCF is $3 \\times 5 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(45, 60) = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.129Z"
+        }
+      }
+    },
+    {
+      "id": "45106ab3-234a-4f70-926b-a63c340f3b9c",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Use the distributive property to find the value of $7 \\times 38 + 7 \\times 62$.",
+      "choices": [],
+      "answer": "700",
+      "compute": "7*(38+62)",
+      "solution": "$7 \\times 38 + 7 \\times 62 = 7 \\times (38 + 62) = 7 \\times 100 = 700$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7(38+62)=7*100=700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.140Z"
+        }
+      }
+    },
+    {
+      "id": "b46d627b-866a-4f99-b6ff-edc17ece759c",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "Which pair of fractions has 12 as its least common denominator?",
+      "choices": [
+        "$\\frac{1}{3}$ and $\\frac{1}{5}$",
+        "$\\frac{1}{8}$ and $\\frac{1}{6}$",
+        "$\\frac{1}{4}$ and $\\frac{1}{6}$",
+        "$\\frac{1}{12}$ and $\\frac{1}{5}$"
+      ],
+      "answer": "$\\frac{1}{4}$ and $\\frac{1}{6}$",
+      "compute": null,
+      "solution": "The LCM of 4 and 6 is 12. The other pairs have least common denominators 15, 24 and 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{4}$ and $\\frac{1}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(4,6)=12. Others: LCM(3,5)=15, LCM(12,5)=60, LCM(8,6)=24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.339Z"
+        }
+      }
+    },
+    {
+      "id": "19564127-f299-46e8-ace7-6962522ae848",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Fill in the ?: $48 + 72 = 24 \\times ?$",
+      "choices": [],
+      "answer": "5",
+      "compute": "(48+72)/24",
+      "solution": "$48 = 24 \\times 2$ and $72 = 24 \\times 3$, so $48 + 72 = 24 \\times (2 + 3) = 24 \\times 5$. The ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48+72=120=24*5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.367Z"
+        }
+      }
+    },
+    {
+      "id": "ccce6451-6861-4ae9-891b-3de7023e7e28",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Prime factorization",
+      "stem": "Which number is equal to $3^2 \\times 5$?",
+      "choices": [
+        "30",
+        "45",
+        "15",
+        "75"
+      ],
+      "answer": "45",
+      "compute": "3^2*5",
+      "solution": "$3^2 = 9$, and $9 \\times 5 = 45$. (30 would be $2 \\times 3 \\times 5$, and 15 is $3 \\times 5$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^2 × 5 = 9 × 5 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.432Z"
+        }
+      }
+    },
+    {
+      "id": "0cbcf912-4bc3-44ee-8f73-7032e074dc73",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "To add $\\frac{1}{6} + \\frac{1}{9}$, Kai rewrites both fractions with the least common denominator, 18. The sum is $\\frac{n}{18}$. What is $n$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "$\\frac{1}{6} = \\frac{3}{18}$ and $\\frac{1}{9} = \\frac{2}{18}$. The sum is $\\frac{3+2}{18} = \\frac{5}{18}$, so $n = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/6 = 3/18, 1/9 = 2/18; sum 5/18, n = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.435Z"
+        }
+      }
+    },
+    {
+      "id": "46b3971e-a88d-487f-b6f3-b912d5680a7f",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "Which number is a common multiple of 6 and 9 but is not their least common multiple?",
+      "choices": [
+        "18",
+        "27",
+        "36",
+        "12"
+      ],
+      "answer": "36",
+      "compute": "36",
+      "solution": "The least common multiple of 6 and 9 is 18. 36 is also a multiple of both (6 times 6 and 9 times 4). 27 is not a multiple of 6 and 12 is not a multiple of 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(6,9) = 18; 36 is a common multiple; 12 and 27 are not common multiples.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.510Z"
+        }
+      }
+    },
+    {
+      "id": "dffcfc00-810e-43e5-a4f6-56f72d566fb1",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "What is the least common denominator of $\\frac{7}{10}$ and $\\frac{1}{4}$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "The least common denominator is the least common multiple of 10 and 4. Multiples of 10 are 10, 20; 20 is also a multiple of 4. So it is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(10,4) = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.611Z"
+        }
+      }
+    },
+    {
+      "id": "d452bac2-12a4-41ec-935d-d832a27d3990",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a greatest common factor",
+      "stem": "Find the GCF of 36 and 90.",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "$36 = 2 \\times 2 \\times 3 \\times 3$ and $90 = 2 \\times 3 \\times 3 \\times 5$. They share $2 \\times 3 \\times 3 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36=2^2*3^2, 90=2*3^2*5; GCF = 2*9 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.669Z"
+        }
+      }
+    },
+    {
+      "id": "5d35446b-500c-438c-9d4d-6e86c0c479c5",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Which expression equals $40 - 16$ and has the form $8 \\times (\\ldots)$?",
+      "choices": [
+        "$8 \\times (5 + 2)$",
+        "$8 \\times (40 - 16)$",
+        "$8 \\times (10 - 6)$",
+        "$8 \\times (5 - 2)$"
+      ],
+      "answer": "$8 \\times (5 - 2)$",
+      "compute": null,
+      "solution": "$40 = 8 \\times 5$ and $16 = 8 \\times 2$, so $40 - 16 = 8 \\times (5 - 2) = 24$. The other options equal 56, 192 and 32.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 \\times (5 - 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40-16 = 24 = 8 x 3 = 8 x (5-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.689Z"
+        }
+      }
+    },
+    {
+      "id": "a3ecde2f-78d6-4a38-ba31-31b707cfd57b",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Prime factorization",
+      "stem": "A factor tree for 84 starts with $84 = 4 \\times 21$. Which is the complete prime factorization of 84?",
+      "choices": [
+        "$4 \\times 3 \\times 7$",
+        "$2 \\times 3 \\times 14$",
+        "$2 \\times 2 \\times 21$",
+        "$2 \\times 2 \\times 3 \\times 7$"
+      ],
+      "answer": "$2 \\times 2 \\times 3 \\times 7$",
+      "compute": null,
+      "solution": "Split each factor into primes: $4 = 2 \\times 2$ and $21 = 3 \\times 7$. So $84 = 2 \\times 2 \\times 3 \\times 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 \\times 2 \\times 3 \\times 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "84 = 4·21 = 2·2·3·7, all prime. Other options contain composites (21, 14, 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.712Z"
+        }
+      }
+    },
+    {
+      "id": "3684e696-4497-4c39-81cd-0aee4b237b59",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "The least common multiple of 7 and 12 is which number?",
+      "choices": [
+        "84",
+        "19",
+        "12",
+        "168"
+      ],
+      "answer": "84",
+      "compute": "7*12",
+      "solution": "7 and 12 share no factor except 1, so the least common multiple is their product, $7 \\times 12 = 84$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 and 12 share no factors, so LCM = 84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.724Z"
+        }
+      }
+    },
+    {
+      "id": "8c6a991b-9abc-404f-88f2-a4a5bf4c98f5",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Prime factorization",
+      "stem": "Counting repeats, how many prime factors are in the prime factorization of 48?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$48 = 2 \\times 2 \\times 2 \\times 2 \\times 3$. That is five prime factors.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 = 2·2·2·2·3: 5 prime factors counting repeats.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.733Z"
+        }
+      }
+    },
+    {
+      "id": "9fa387f1-7c7b-4a7d-a7eb-209359074f12",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify prime and composite numbers",
+      "stem": "One of these numbers has no factors other than 1 and itself. Which one?",
+      "choices": [
+        "51",
+        "59",
+        "57",
+        "63"
+      ],
+      "answer": "59",
+      "compute": "59",
+      "solution": "$51 = 3 \\times 17$, $57 = 3 \\times 19$ and $63 = 7 \\times 9$, so they are composite. 59 has no factors other than 1 and 59.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "59",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "51 = 3·17, 63 = 7·9, 57 = 3·19; 59 is prime.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.735Z"
+        }
+      }
+    },
+    {
+      "id": "d785c085-2429-4930-bf82-30d3f06889ec",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Prime factorization",
+      "stem": "What is the largest prime factor of 91?",
+      "choices": [],
+      "answer": "13",
+      "compute": "91/7",
+      "solution": "$91 = 7 \\times 13$, and both 7 and 13 are prime. The largest is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "91 = 7 · 13; largest prime factor 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.756Z"
+        }
+      }
+    },
+    {
+      "id": "d0debb95-9e97-41c1-876d-e9f7d024d219",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "A floor is 24 feet long and 36 feet wide. It is covered with square tiles of the same size, with no cutting and no gaps. The tiles are as large as possible, with whole-foot sides. How many feet long is one side of a tile?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The side must divide both 24 and 36. The greatest such number is the GCF, 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest tile side = GCF(24, 36) = 12 feet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.758Z"
+        }
+      }
+    },
+    {
+      "id": "d4e5f7e5-c8ba-40a7-a693-c49ebe7bd1ed",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "Which fraction is $\\frac{18}{30}$ in simplest form?",
+      "choices": [
+        "$\\frac{3}{5}$",
+        "$\\frac{9}{15}$",
+        "$\\frac{6}{10}$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": "$\\frac{3}{5}$",
+      "compute": null,
+      "solution": "The GCF of 18 and 30 is 6. Dividing the top and bottom by 6 gives $\\frac{3}{5}$. The fractions $\\frac{9}{15}$ and $\\frac{6}{10}$ can still be simplified.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(18, 30) = 6: 18/30 = 3/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.770Z"
+        }
+      }
+    },
+    {
+      "id": "be656417-a63e-4a5a-a31b-9b83e1c9e756",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "Pencils come in packs of 12 and erasers in packs of 9. Ella buys only whole packs and wants exactly as many pencils as erasers. What is the fewest packs of pencils she can buy?",
+      "choices": [],
+      "answer": "3",
+      "compute": "36/12",
+      "solution": "The number of each must be a multiple of 12 and of 9. The least common multiple is 36. That is $36 \\div 12 = 3$ packs of pencils (and 4 packs of erasers).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(12, 9) = 36 → 36/12 = 3 packs of pencils.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.775Z"
+        }
+      }
+    },
+    {
+      "id": "b9ba1b3d-9085-4eb8-b5ce-8d7e7d815413",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "Ana runs a lap every 8 minutes and Ben runs a lap every 10 minutes. They both cross the starting line at the same moment at noon. After how many minutes will they next cross it together?",
+      "choices": [],
+      "answer": "40",
+      "compute": "40",
+      "solution": "The time must be a multiple of 8 and of 10. The least common multiple is 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(8, 10) = 40 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.778Z"
+        }
+      }
+    },
+    {
+      "id": "cf799e45-9eaa-47ec-a7cc-6aa9254ba653",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a least common multiple",
+      "stem": "What is the smallest number that both 9 and 6 divide into evenly?",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Multiples of 9: 9, 18, ... and 18 is also a multiple of 6 (6 times 3). The answer is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(9, 6) = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.787Z"
+        }
+      }
+    },
+    {
+      "id": "15b752a8-a0cd-44c8-aadc-37f06359a497",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "A store gives a free hat to every 6th customer and a free cup to every 8th customer. Which customer is the first to get both?",
+      "choices": [],
+      "answer": "24",
+      "compute": "24",
+      "solution": "The customer number must be a multiple of 6 and of 8. The least common multiple is 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(6, 8) = 24: the 24th customer.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.790Z"
+        }
+      }
+    },
+    {
       "id": "968f6002-ef58-47a1-b649-78fe2c0abb3b",
       "topic_id": "NC17.6.NS.4",
       "difficulty": 3,
@@ -20836,6 +24087,743 @@
           "work": "6x(7+9)=42+54=96. Others: 69, 51, 67.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:13.259Z"
+        }
+      }
+    },
+    {
+      "id": "739f8b79-6161-4a5f-910a-ce351522c006",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a greatest common factor",
+      "stem": "What is the greatest common factor of 72 and 96?",
+      "choices": [
+        "12",
+        "48",
+        "8",
+        "24"
+      ],
+      "answer": "24",
+      "compute": "24",
+      "solution": "$72 = 2^3 \\times 3^2$ and $96 = 2^5 \\times 3$. Take the smaller power of each shared prime: $2^3 \\times 3 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 = 2³·3², 96 = 2⁵·3; GCF 2³·3 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.125Z"
+        }
+      }
+    },
+    {
+      "id": "a68c07cd-e520-4b57-8caf-99e97c6403c4",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a least common multiple",
+      "stem": "Find the smallest number that 4, 6 and 10 all divide into evenly.",
+      "choices": [],
+      "answer": "60",
+      "compute": "60",
+      "solution": "$4 = 2^2$, $6 = 2 \\times 3$ and $10 = 2 \\times 5$. Use the most of each prime: $2^2 \\times 3 \\times 5 = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(4,6,10): 2^2*3*5=60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.148Z"
+        }
+      }
+    },
+    {
+      "id": "d170006c-9f4f-4a13-a9b3-b004b18cbd81",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "What is the least common denominator of $\\frac{7}{15}$ and $\\frac{3}{20}$?",
+      "choices": [
+        "300",
+        "5",
+        "35",
+        "60"
+      ],
+      "answer": "60",
+      "compute": "60",
+      "solution": "The LCM of 15 and 20: $15 = 3 \\times 5$ and $20 = 2^2 \\times 5$, so it is $2^2 \\times 3 \\times 5 = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 = 3x5, 20 = 2^2x5, LCM = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.206Z"
+        }
+      }
+    },
+    {
+      "id": "35546fe5-34db-45b8-9594-c51b3d0d89b2",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "Simplify $\\frac{36}{84}$ by dividing the top and the bottom by their greatest common factor.",
+      "choices": [],
+      "answer": "3/7",
+      "compute": "3/7",
+      "solution": "The GCF of 36 and 84 is 12. $36 \\div 12 = 3$ and $84 \\div 12 = 7$, so the fraction is $\\frac{3}{7}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(36,84) = 12; 36/12 = 3, 84/12 = 7 -> 3/7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.214Z"
+        }
+      }
+    },
+    {
+      "id": "cb1b462e-c9ee-4015-b8cb-12f4d0301851",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Factor out the greatest common factor: $54 + 90 = g \\times (a + b)$, where g is the GCF of 54 and 90. What is the value of $a \\times b$?",
+      "choices": [
+        "8",
+        "18",
+        "15",
+        "90"
+      ],
+      "answer": "15",
+      "compute": "3*5",
+      "solution": "The GCF of 54 and 90 is 18. $54 = 18 \\times 3$ and $90 = 18 \\times 5$, so $a = 3$, $b = 5$ and $a \\times b = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(54,90)=18; 54=18*3, 90=18*5; a*b=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.297Z"
+        }
+      }
+    },
+    {
+      "id": "0c801f1f-0545-4dae-8cac-71ebee0c845d",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "What is the least common multiple of 11 and 12?",
+      "choices": [
+        "23",
+        "132",
+        "66",
+        "12"
+      ],
+      "answer": "132",
+      "compute": "11*12",
+      "solution": "11 and 12 share no factor except 1, so the least common multiple is $11 \\times 12 = 132$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "132",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 and 12 coprime: LCM 132.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.332Z"
+        }
+      }
+    },
+    {
+      "id": "83b97a71-107a-42e1-b3d3-80ca82d8618b",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Prime factorization",
+      "stem": "Which number has only 2 and 3 as prime factors?",
+      "choices": [
+        "60",
+        "63",
+        "54",
+        "70"
+      ],
+      "answer": "54",
+      "compute": "54",
+      "solution": "$54 = 2 \\times 3 \\times 3 \\times 3$. But $60 = 2^2 \\times 3 \\times 5$, $63 = 3^2 \\times 7$ and $70 = 2 \\times 5 \\times 7$ each have another prime.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "54=2*3^3 (only 2 and 3). 70=2*5*7, 63=3^2*7, 60=2^2*3*5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.353Z"
+        }
+      }
+    },
+    {
+      "id": "af836ac3-50e6-4b8b-b2cf-114bf202a906",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "A rectangular garden is 45 feet by 60 feet. It is split into square plots that are all the same size, with none left over. The plots are as large as possible, with whole-foot sides. How many plots are there?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(45/15)*(60/15)",
+      "solution": "The side is the GCF of 45 and 60, which is 15 feet. Along the garden there are $45 \\div 15 = 3$ and $60 \\div 15 = 4$ plots, so there are $3 \\times 4 = 12$ plots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest square side = GCF(45,60)=15. 45/15=3, 60/15=4; 12 plots.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.400Z"
+        }
+      }
+    },
+    {
+      "id": "c3e267ec-05ff-4a68-a809-9afa370c1c7d",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "Among the first 100 customers in a store, every 4th customer gets a coupon and every 6th customer gets a gift. How many of the first 100 customers get both?",
+      "choices": [
+        "4",
+        "16",
+        "12",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "A customer gets both when the number is a multiple of 4 and 6, so a multiple of 12. The multiples of 12 up to 100 are 12, 24, 36, 48, 60, 72, 84, 96. That is 8 customers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Both: multiples of LCM(4,6)=12 up to 100: 12,...,96 -> 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.419Z"
+        }
+      }
+    },
+    {
+      "id": "1430fd24-28ef-429e-92d5-9a9d1c214f69",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Which expression is NOT equal to $36 + 60$?",
+      "choices": [
+        "$4 \\times (9 + 14)$",
+        "$12 \\times (3 + 5)$",
+        "$6 \\times (6 + 10)$",
+        "$3 \\times (12 + 20)$"
+      ],
+      "answer": "$4 \\times (9 + 14)$",
+      "compute": null,
+      "solution": "$36 + 60 = 96$. Check each: $12 \\times 8 = 96$, $6 \\times 16 = 96$, $3 \\times 32 = 96$, but $4 \\times 23 = 92$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times (9 + 14)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 + 60 = 96. 3×32 = 96; 6×16 = 96; 12×8 = 96; 4×23 = 92 ≠ 96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.447Z"
+        }
+      }
+    },
+    {
+      "id": "97e5c755-0976-4ff8-ad21-ffcd1fa19533",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "Three lights flash every 6, 8 and 12 seconds. They all flash together now. After how many seconds will all three next flash together?",
+      "choices": [
+        "48",
+        "24",
+        "12",
+        "26"
+      ],
+      "answer": "24",
+      "compute": "24",
+      "solution": "The time must be a multiple of 6, 8 and 12. The least common multiple is 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(6,8,12): 6=2*3, 8=2^3, 12=2^2*3; LCM = 2^3*3 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.563Z"
+        }
+      }
+    },
+    {
+      "id": "043812b9-fe2f-4834-bf2e-1bbea89b8ed2",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve word problems with the least common multiple",
+      "stem": "A gear with 12 teeth turns against a gear with 8 teeth. One tooth on each gear is marked, and the two marked teeth are touching now. After how many turns of the 8-tooth gear will the two marked teeth next touch?",
+      "choices": [
+        "2",
+        "3",
+        "24",
+        "6"
+      ],
+      "answer": "3",
+      "compute": "24/8",
+      "solution": "The marked teeth touch again when both gears have turned a whole number of times, which takes 24 teeth (the LCM of 12 and 8). The 8-tooth gear turns $24 \\div 8 = 3$ times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Marked teeth meet again after LCM(12,8) = 24 teeth pass; 8-tooth gear turns 24/8 = 3 times.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.572Z"
+        }
+      }
+    },
+    {
+      "id": "7fe64f56-faa0-4348-9e6e-c75fc0d691cf",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "Dana has 90 red beads, 60 blue beads and 45 white beads. She makes as many identical necklaces as she can, using every bead. How many necklaces does she make?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "The number of necklaces divides 90, 60 and 45. The greatest such number is 15 (6 red, 4 blue and 3 white beads on each).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(90,60,45) = 15 (90=2*3^2*5, 60=2^2*3*5, 45=3^2*5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.574Z"
+        }
+      }
+    },
+    {
+      "id": "66c3cc68-edd4-411b-98f6-8ef77f397d94",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Prime factorization",
+      "stem": "Which statement about the prime factorization of 72 is true?",
+      "choices": [
+        "It has three factors of 2 and two factors of 3",
+        "It has two factors of 2 and three factors of 3",
+        "It has three factors of 2 and three factors of 3",
+        "It has two factors of 2 and two factors of 3"
+      ],
+      "answer": "It has three factors of 2 and two factors of 3",
+      "compute": null,
+      "solution": "$72 = 8 \\times 9 = 2 \\times 2 \\times 2 \\times 3 \\times 3$. That is three 2s and two 3s.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has three factors of 2 and two factors of 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 = 8*9 = 2^3 * 3^2: three 2s and two 3s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.582Z"
+        }
+      }
+    },
+    {
+      "id": "59f88e04-4a99-40a5-bc31-ffaa667a5da1",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a greatest common factor",
+      "stem": "The prime factorization of 120 is $2^3 \\times 3 \\times 5$ and the prime factorization of 84 is $2^2 \\times 3 \\times 7$. Use them to find the greatest common factor of 120 and 84.",
+      "choices": [],
+      "answer": "12",
+      "compute": "2^2*3",
+      "solution": "Take each shared prime the fewest times it appears: two 2s and one 3. $2^2 \\times 3 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF = 2^2 * 3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.606Z"
+        }
+      }
+    },
+    {
+      "id": "f84cc33c-6fc9-49b1-b48f-bba462718c30",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "The prime factorization of 24 is $2^3 \\times 3$ and the prime factorization of 18 is $2 \\times 3^2$. Use them to find the least common multiple of 24 and 18.",
+      "choices": [
+        "72",
+        "36",
+        "144",
+        "432"
+      ],
+      "answer": "72",
+      "compute": "2^3*3^2",
+      "solution": "Take each prime the most times it appears: three 2s and two 3s. $2^3 \\times 3^2 = 72$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM = 2^3 * 3^2 = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.618Z"
+        }
+      }
+    },
+    {
+      "id": "5a3632a5-9b2e-4473-86af-40d075bdf252",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "What is $\\frac{3}{10} + \\frac{1}{6}$ in simplest form?",
+      "choices": [
+        "$\\frac{14}{30}$",
+        "$\\frac{7}{15}$",
+        "$\\frac{4}{16}$",
+        "$\\frac{2}{5}$"
+      ],
+      "answer": "$\\frac{7}{15}$",
+      "compute": null,
+      "solution": "The least common denominator is 30. $\\frac{3}{10} = \\frac{9}{30}$ and $\\frac{1}{6} = \\frac{5}{30}$. The sum is $\\frac{14}{30}$, and dividing by the GCF 2 gives $\\frac{7}{15}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{7}{15}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCD 30: 9/30+5/30 = 14/30 = 7/15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.683Z"
+        }
+      }
+    },
+    {
+      "id": "287d33bf-0537-419c-8b80-109a765b4024",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Prime factorization",
+      "stem": "A number's prime factors are 2, 3 and 7, where 3 is used twice and 2 and 7 are used once each. What is the number?",
+      "choices": [],
+      "answer": "126",
+      "compute": "2*3*3*7",
+      "solution": "The number is $2 \\times 3 \\times 3 \\times 7 = 126$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "126",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 · 3 · 3 · 7 = 126.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.716Z"
+        }
+      }
+    },
+    {
+      "id": "79840f76-c78e-4c2d-86d0-91b63740d67f",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a greatest common factor",
+      "stem": "The greatest common factor of 24 and a second number is 6. The second number is greater than 24 and less than 40. What is the second number?",
+      "choices": [],
+      "answer": "30",
+      "compute": "30",
+      "solution": "The second number is a multiple of 6 between 24 and 40: 30 or 36. $\\text{GCF}(24, 30) = 6$, but $\\text{GCF}(24, 36) = 12$. So the number is 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF 6 → multiple of 6 between 24 and 40: 30, 36. GCF(24,30) = 6; GCF(24,36) = 12. Answer 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.738Z"
+        }
+      }
+    },
+    {
+      "id": "ba0db1da-8e25-4d05-8263-ac033f99abf1",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "A 48-inch board and an 80-inch board are cut into pieces that are all the same whole-inch length, as long as possible, with no wood left over. How many pieces are there in all?",
+      "choices": [
+        "16",
+        "4",
+        "240",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "48/16+80/16",
+      "solution": "The piece length is the GCF of 48 and 80, which is 16 inches. That gives $48 \\div 16 = 3$ and $80 \\div 16 = 5$ pieces, so 8 pieces in all.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Longest common length = GCF(48, 80) = 16. Pieces: 48/16 + 80/16 = 3 + 5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.748Z"
+        }
+      }
+    },
+    {
+      "id": "e57e9504-525c-43c6-ba99-891590938141",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the distributive property with a common factor",
+      "stem": "Tom finds $17 \\times 6 + 17 \\times 4 + 17 \\times 10$ by factoring out the 17. What is the value?",
+      "choices": [],
+      "answer": "340",
+      "compute": "17*(6+4+10)",
+      "solution": "$17 \\times 6 + 17 \\times 4 + 17 \\times 10 = 17 \\times (6 + 4 + 10) = 17 \\times 20 = 340$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "340",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17(6 + 4 + 10) = 17·20 = 340.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.762Z"
+        }
+      }
+    },
+    {
+      "id": "70a3683b-73a1-4dce-8dcc-46a9d0533ad6",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a least common multiple",
+      "stem": "What is the smallest number greater than 100 that is a multiple of both 6 and 8?",
+      "choices": [
+        "144",
+        "96",
+        "120",
+        "108"
+      ],
+      "answer": "120",
+      "compute": "24*5",
+      "solution": "The least common multiple of 6 and 8 is 24, so the common multiples are 24, 48, 72, 96, 120. The first one above 100 is 120.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCM(6, 8) = 24. Multiples: 96, 120. Smallest > 100: 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.773Z"
+        }
+      }
+    },
+    {
+      "id": "f6c8225b-4a6a-47d7-b9f9-cda27bdcc735",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the GCF and LCM with fractions",
+      "stem": "Find $\\frac{1}{6} + \\frac{1}{4}$. Write the answer as a fraction.",
+      "choices": [],
+      "answer": "5/12",
+      "compute": "5/12",
+      "solution": "The least common denominator of 6 and 4 is 12. $\\frac{1}{6} = \\frac{2}{12}$ and $\\frac{1}{4} = \\frac{3}{12}$, so the sum is $\\frac{5}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "LCD 12: 2/12 + 3/12 = 5/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.776Z"
         }
       }
     },

@@ -22208,6 +22208,539 @@
       }
     },
     {
+      "id": "ec087cd0-9368-4a60-aa4e-2ff8571ddb7e",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "compare numbers in a story",
+      "stem": "Dev scored 478 points and Kay scored 487 points. How many points did the player with fewer points score?",
+      "choices": [],
+      "answer": "478",
+      "compute": "478",
+      "solution": "Both have 4 hundreds. 7 tens is less than 8 tens, so 478 < 487. The player with fewer points scored 478.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "478",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "487 > 478; fewer is 478.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.078Z"
+        }
+      }
+    },
+    {
+      "id": "95f8f00f-860a-433e-8b19-7e642a647c86",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "Which comparison of 812 and 799 is true?",
+      "choices": [
+        "$812 < 799$",
+        "$812 = 799$",
+        "$812 > 799$",
+        "$799 > 812$"
+      ],
+      "answer": "$812 > 799$",
+      "compute": null,
+      "solution": "812 has 8 hundreds and 799 has 7 hundreds. 8 hundreds is more than 7 hundreds, so 812 is greater: $812 > 799$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$812 > 799$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "812 > 799 (8 hundreds > 7 hundreds).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.080Z"
+        }
+      }
+    },
+    {
+      "id": "da0f36a9-e74f-416c-9772-483c4be66d00",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "order three or more numbers",
+      "stem": "Which of these numbers is the least: 612, 621 or 261? Type that number.",
+      "choices": [],
+      "answer": "261",
+      "compute": "261",
+      "solution": "261 has 2 hundreds. The other two have 6 hundreds. So 261 is the least.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "261",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "261 has 2 hundreds; least.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.164Z"
+        }
+      }
+    },
+    {
+      "id": "e6561e1e-8fab-45cd-a0af-891acc801c58",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "find a number between two given numbers",
+      "stem": "A whole number is greater than 800 and less than 802. What is the number?",
+      "choices": [],
+      "answer": "801",
+      "compute": "801",
+      "solution": "The only whole number between 800 and 802 is 801.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "801",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "801.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.188Z"
+        }
+      }
+    },
+    {
+      "id": "2fd2283e-73cd-4df9-8071-ffece70bc023",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "How many of these numbers are less than 500: 450, 505, 499, 540? Type the number of them.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "450 and 499 have 4 hundreds, so they are less than 500. 505 and 540 are greater. That is 2 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "450 and 499 -> 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.189Z"
+        }
+      }
+    },
+    {
+      "id": "bd3bd70e-cae7-4e38-a5d2-22fad448fd4c",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "Which number can replace the ? so that $640 < ?$ is true?",
+      "choices": [
+        "604",
+        "641",
+        "640",
+        "460"
+      ],
+      "answer": "641",
+      "compute": null,
+      "solution": "The ? must be greater than 640. 641 is greater. 604 and 460 are less, and 640 is equal to 640.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "641",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "640 < 641 true; 604, 640, 460 are not greater than 640.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.236Z"
+        }
+      }
+    },
+    {
+      "id": "742a92ba-08ee-471a-bb1e-0e91aee7b85d",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "Which number is greater than 6 hundreds 2 tens 8 ones?",
+      "choices": [
+        "630",
+        "618",
+        "628",
+        "268"
+      ],
+      "answer": "630",
+      "compute": null,
+      "solution": "6 hundreds 2 tens 8 ones is 628. 630 has 3 tens, more than 2 tens, so 630 is greater. 618 is less, 628 is equal, and 268 has only 2 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "630",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "628; greater: 630 only (268, 618 less; 628 equal).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.242Z"
+        }
+      }
+    },
+    {
+      "id": "29c1a3c2-ede0-4117-858c-c4b3ff1495b1",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "compare numbers in a story",
+      "stem": "Ben has 275 marbles. Eva has 257 marbles. Which statement is true?",
+      "choices": [
+        "$275 < 257$",
+        "$275 = 257$",
+        "$257 > 275$",
+        "$275 > 257$"
+      ],
+      "answer": "$275 > 257$",
+      "compute": null,
+      "solution": "Both have 2 hundreds. 7 tens is more than 5 tens, so Ben has more: $275 > 257$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$275 > 257$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "275 > 257 (tens 7 > 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.262Z"
+        }
+      }
+    },
+    {
+      "id": "8b7492b3-0d8c-4724-98d7-3853ccafd7df",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Mia makes a number from the digits 1, 4 and 9, using each digit once. What is the least number she can make?",
+      "choices": [],
+      "answer": "149",
+      "compute": "149",
+      "solution": "Put the smallest digit in the hundreds place, then the next smallest in the tens place: 1, 4, 9. The number is 149.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "149",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest digit in hundreds, then tens: 149.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.273Z"
+        }
+      }
+    },
+    {
+      "id": "487b571d-39e6-41ef-a9ee-3028a953e591",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "Compare 640 and 604. Type the lesser number.",
+      "choices": [],
+      "answer": "604",
+      "compute": "604",
+      "solution": "Both numbers have 6 hundreds. Compare the tens: 4 tens is more than 0 tens, so 640 is greater and 604 is the lesser number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "604",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "604 has 0 tens, 640 has 4 tens; lesser is 604.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.417Z"
+        }
+      }
+    },
+    {
+      "id": "02efc1ba-9fcb-455f-9a0e-70205fa43813",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "Which number sentence about 450 and 540 is false?",
+      "choices": [
+        "$450 < 540$",
+        "$540 > 450$",
+        "$450 > 540$",
+        "$450 = 450$"
+      ],
+      "answer": "$450 > 540$",
+      "compute": null,
+      "solution": "450 has 4 hundreds and 540 has 5 hundreds, so 450 is less than 540. That makes $450 > 540$ false.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$450 > 540$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "450 > 540 is false; the others are true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.418Z"
+        }
+      }
+    },
+    {
+      "id": "31fefdaf-a8d6-4c25-8a6c-876b44be755a",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "One number has 5 hundreds, 3 tens and 6 ones. Another number has 5 hundreds, 3 tens and 9 ones. Type the greater number.",
+      "choices": [],
+      "answer": "539",
+      "compute": "539",
+      "solution": "The hundreds and tens are the same. 9 ones is more than 6 ones, so the number with 9 ones, 539, is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "539",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "536 vs 539: same hundreds and tens, 9 > 6 ones, so 539.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.533Z"
+        }
+      }
+    },
+    {
+      "id": "ab9e21f6-fc39-4d6b-b847-ef78514da012",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "which place decides a comparison",
+      "stem": "Compare 913 and 931. What digit is in the tens place of the greater number? Type that digit.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Both have 9 hundreds. 3 tens is more than 1 ten, so 931 is greater. Its tens digit is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "931 > 913; tens digit of 931 is 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.553Z"
+        }
+      }
+    },
+    {
+      "id": "c666b892-5ac2-48b7-abb0-121a0edb046d",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "order three or more numbers",
+      "stem": "Three library cards show 738, 783 and 387. Which number is in the middle when they are put in order of size? Type it.",
+      "choices": [],
+      "answer": "738",
+      "compute": "738",
+      "solution": "387 has 3 hundreds, so it is the least. 738 and 783 both have 7 hundreds, and 3 tens is less than 8 tens, so 738 < 783. The order is 387, 738, 783, and the middle number is 738.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "738",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 387 < 738 < 783; middle 738.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.608Z"
+        }
+      }
+    },
+    {
+      "id": "04b48bc0-b723-4a6a-9193-ab87b9f6f8b1",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "find a mistake in a comparison",
+      "stem": "Lia says $190 > 210$ because 9 is greater than 2. What should Lia compare first?",
+      "choices": [
+        "The ones digits",
+        "The hundreds digits",
+        "The tens digits",
+        "The sum of the digits"
+      ],
+      "answer": "The hundreds digits",
+      "compute": null,
+      "solution": "Always start with the hundreds. 1 hundred is less than 2 hundreds, so 190 < 210.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The hundreds digits",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Compare the greatest place first: hundreds (1 < 2, so 190 < 210).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.616Z"
+        }
+      }
+    },
+    {
+      "id": "20038ade-8a2e-4cd3-9e90-9b43dc0a4286",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "order three or more numbers",
+      "stem": "Which list shows 259, 592 and 925 from greatest to least?",
+      "choices": [
+        "925, 592, 259",
+        "259, 592, 925",
+        "592, 925, 259",
+        "925, 259, 592"
+      ],
+      "answer": "925, 592, 259",
+      "compute": null,
+      "solution": "Compare the hundreds: 9 > 5 > 2. So the order from greatest to least is 925, 592, 259.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "925, 592, 259",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "925 > 592 > 259.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.624Z"
+        }
+      }
+    },
+    {
+      "id": "0044da13-0dd2-4be7-b65f-f4c6096f7c9c",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Using the digits 4, 7 and 1 once each, which is the greatest number you can make?",
+      "choices": [
+        "147",
+        "714",
+        "417",
+        "741"
+      ],
+      "answer": "741",
+      "compute": null,
+      "solution": "Put the greatest digit in the hundreds place, then the next greatest in the tens place: 7, 4, 1. The number is 741.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "741",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest: digits in decreasing order 7,4,1 -> 741.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.632Z"
+        }
+      }
+    },
+    {
       "id": "55fc2ebc-7215-4de7-9f96-3532e2aea93e",
       "topic_id": "NC17.2.NBT.4",
       "difficulty": 2,
@@ -22654,6 +23187,602 @@
       }
     },
     {
+      "id": "c06795aa-a44b-422d-91e6-415059226d23",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "which place decides a comparison",
+      "stem": "Type the hundreds digit of the least of these numbers: 548, 485, 854.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Compare hundreds: 5, 4 and 8. 485 has the fewest hundreds, so it is the least. Its hundreds digit is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Least is 485; hundreds digit 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.057Z"
+        }
+      }
+    },
+    {
+      "id": "9bc8130c-e7c7-4c73-b646-a167c9fc98ea",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "Which number sentence about 908 and 809 is false?",
+      "choices": [
+        "$908 > 809$",
+        "$809 < 908$",
+        "$809 = 809$",
+        "$908 < 809$"
+      ],
+      "answer": "$908 < 809$",
+      "compute": null,
+      "solution": "908 has 9 hundreds and 809 has 8 hundreds, so 908 is greater. That makes $908 < 809$ false.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$908 < 809$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "908 < 809 is false; the others are true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.067Z"
+        }
+      }
+    },
+    {
+      "id": "0661b567-f64f-48c5-a593-357f32c9a77f",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "order three or more numbers",
+      "stem": "How many of these numbers are less than 300: 321, 312, 231, 213, 132? Type the number of them.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Numbers with 1 or 2 hundreds are less than 300. 231, 213 and 132 are less than 300. That is 3 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Less than 300: 231, 213, 132 → 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.088Z"
+        }
+      }
+    },
+    {
+      "id": "240fe040-f849-4131-b49e-88f060f9894d",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find a number between two given numbers",
+      "stem": "What is the greatest 3-digit number that is less than 500?",
+      "choices": [],
+      "answer": "499",
+      "compute": "499",
+      "solution": "The 3-digit numbers just below 500 have 4 hundreds. The greatest has the greatest tens and ones digits: 499.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "499",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "499.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.095Z"
+        }
+      }
+    },
+    {
+      "id": "8622e618-a348-4f06-b679-ec6fbbc50a0b",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "Which digit makes $5?2 > 562$ true if it replaces the ?",
+      "choices": [
+        "3",
+        "8",
+        "5",
+        "6"
+      ],
+      "answer": "8",
+      "compute": null,
+      "solution": "The tens digit must be greater than 6. Of the choices only 8 works: 582 > 562. With 6 the numbers are equal, and 3 and 5 make smaller numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5?2 > 562 needs tens digit > 6: 8 gives 582 > 562. 6 gives equality; 3, 5 smaller.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.115Z"
+        }
+      }
+    },
+    {
+      "id": "ae07581e-3568-4968-a766-573bc6528e38",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find a mistake in a comparison",
+      "stem": "Sam writes $462 < 426$. Which sentence explains why this is wrong?",
+      "choices": [
+        "462 has fewer hundreds than 426, so 462 is less",
+        "426 has more ones than 462, so 426 is greater",
+        "The numbers have the same digits, so they are equal",
+        "462 has more tens than 426, so 462 is greater"
+      ],
+      "answer": "462 has more tens than 426, so 462 is greater",
+      "compute": null,
+      "solution": "Both numbers have 4 hundreds. 462 has 6 tens and 426 has 2 tens, so 462 is greater. The correct statement is $462 > 426$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "462 has more tens than 426, so 462 is greater",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same hundreds; 462 has 6 tens vs 2 tens, so 462>426.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.180Z"
+        }
+      }
+    },
+    {
+      "id": "cb82158f-32d4-4b1a-b6a4-1586f6b24522",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "The ? is one digit. What is the smallest digit that makes $?45 > 745$ true?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The hundreds digit must be greater than 7. The smallest such digit is 8, and 845 > 745.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 gives 745 not >745; 8 gives 845.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.196Z"
+        }
+      }
+    },
+    {
+      "id": "e34368ce-28b8-4870-9b6a-c29de31881af",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "find a number between two given numbers",
+      "stem": "Which number is greater than 489 and less than 501?",
+      "choices": [
+        "488",
+        "502",
+        "509",
+        "495"
+      ],
+      "answer": "495",
+      "compute": null,
+      "solution": "495 is between 489 and 501. 488 is below 489, and 502 and 509 are above 501.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "495",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 489 and 501: 495 only (488 < 489, 502 and 509 > 501).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.210Z"
+        }
+      }
+    },
+    {
+      "id": "253a3613-d779-48ff-bbc1-87b0ed6a79aa",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "compare numbers in a story",
+      "stem": "Lena has 642 stamps, Omar has 624 stamps and Zed has 664 stamps. How many stamps does the child with the fewest stamps have?",
+      "choices": [],
+      "answer": "624",
+      "compute": "624",
+      "solution": "All three have 6 hundreds. Compare tens: 4, 2 and 6. 2 tens is the least, so Omar has the fewest: 624.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "624",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "624 < 642 < 664; fewest is 624.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.217Z"
+        }
+      }
+    },
+    {
+      "id": "8a9a2398-9f74-4e12-acb4-d5f312a4b656",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "Which statement compares the sums 500 + 40 + 3 and 500 + 30 + 4 correctly?",
+      "choices": [
+        "$500 + 40 + 3 < 500 + 30 + 4$",
+        "$500 + 40 + 3 = 500 + 30 + 4$",
+        "$500 + 40 + 3 > 500 + 30 + 4$",
+        "$500 + 4 + 3 > 500 + 30 + 4$"
+      ],
+      "answer": "$500 + 40 + 3 > 500 + 30 + 4$",
+      "compute": null,
+      "solution": "The left side is 543 and the right side is 534. 4 tens is more than 3 tens, so the left side is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$500 + 40 + 3 > 500 + 30 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500+40+3 = 543, 500+30+4 = 534; 543 > 534.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.428Z"
+        }
+      }
+    },
+    {
+      "id": "3e052e41-759f-4df2-9080-2369eadc4fdc",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "which place decides a comparison",
+      "stem": "Compare 827 and 872. Type the digit in the ones place of the number that is greater.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Both have 8 hundreds. 7 tens is more than 2 tens, so 872 is greater. Its ones digit is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "872 > 827 (7 tens > 2 tens); ones digit of 872 is 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.441Z"
+        }
+      }
+    },
+    {
+      "id": "1d223c5f-58f2-45d2-94d7-59861d409cee",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "Which statement compares 600 + 7 with 670 correctly?",
+      "choices": [
+        "$600 + 7 > 670$",
+        "$600 + 7 < 670$",
+        "$600 + 7 = 670$",
+        "$600 + 70 < 670$"
+      ],
+      "answer": "$600 + 7 < 670$",
+      "compute": null,
+      "solution": "$600 + 7$ is 607, and 607 has 0 tens while 670 has 7 tens, so $607 < 670$. $600 + 70$ is 670, which is not less than 670.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$600 + 7 < 670$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "600 + 7 = 607 < 670.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.484Z"
+        }
+      }
+    },
+    {
+      "id": "3e81e174-0f08-447a-8c73-74dc677523e6",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "order three or more numbers",
+      "stem": "Put 351, 315, 531 and 513 in order from greatest to least. Which number is third? Type it.",
+      "choices": [],
+      "answer": "351",
+      "compute": "351",
+      "solution": "From greatest to least: 531, 513, 351, 315. The third number is 351.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "351",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "531 > 513 > 351 > 315; third is 351.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.490Z"
+        }
+      }
+    },
+    {
+      "id": "efc3ac81-9ac4-4edb-a2e9-f0d4d9909a3e",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "The ? is one digit. What is the greatest digit that makes $3?0 < 350$ true?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The tens digit must be less than 5. The greatest is 4, since 340 < 350.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3?0 < 350 means 3?0 is at most 340; greatest digit 4 (350 is not less).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.536Z"
+        }
+      }
+    },
+    {
+      "id": "bf00a95c-6df5-4231-a74e-dda057299127",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare numbers in a story",
+      "stem": "Four boxes hold beads. Box A holds 252, Box B holds 225, Box C holds 522 and Box D holds 255. Which box holds the fewest beads?",
+      "choices": [
+        "Box A",
+        "Box C",
+        "Box B",
+        "Box D"
+      ],
+      "answer": "Box B",
+      "compute": null,
+      "solution": "Box C has 5 hundreds. Boxes A, B and D have 2 hundreds. Comparing tens: 2 tens, in Box B, is less than 5 tens, in Boxes A and D. So Box B has the fewest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Box B",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "225 < 252 < 255 < 522; fewest is Box B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.562Z"
+        }
+      }
+    },
+    {
+      "id": "157c038a-8024-4bc0-82aa-8fc500e7383b",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "Compare 2 hundreds 5 tens 0 ones and 2 hundreds 4 tens 9 ones. Which statement is true?",
+      "choices": [
+        "$250 > 249$",
+        "$250 < 249$",
+        "$250 = 249$",
+        "$205 > 249$"
+      ],
+      "answer": "$250 > 249$",
+      "compute": null,
+      "solution": "The numbers are 250 and 249. The hundreds are the same and 5 tens is more than 4 tens, so $250 > 249$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$250 > 249$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250 vs 249: same hundreds, 5 tens > 4 tens, so 250 > 249.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.621Z"
+        }
+      }
+    },
+    {
+      "id": "12f2d0da-6eae-4faa-9eb8-67704bf1f9ae",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "order three or more numbers",
+      "stem": "Which list shows 618, 681, 168 and 186 from least to greatest?",
+      "choices": [
+        "168, 186, 618, 681",
+        "186, 168, 618, 681",
+        "618, 681, 168, 186",
+        "168, 186, 681, 618"
+      ],
+      "answer": "168, 186, 618, 681",
+      "compute": null,
+      "solution": "The 1-hundred numbers come first: 168 < 186. Then the 6-hundred numbers: 618 < 681. The order is 168, 186, 618, 681.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "168, 186, 618, 681",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "168 < 186 < 618 < 681.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.628Z"
+        }
+      }
+    },
+    {
+      "id": "d74cc926-0572-4357-9ff6-6df813a9f37b",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "which place decides a comparison",
+      "stem": "Number A has 5 hundreds, 9 tens and 9 ones. Number B has 6 hundreds, 0 tens and 0 ones. Type the greater number.",
+      "choices": [],
+      "answer": "600",
+      "compute": "600",
+      "solution": "A is 599 and B is 600. 6 hundreds is more than 5 hundreds, so 600 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A = 599, B = 600. Greater is 600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.651Z"
+        }
+      }
+    },
+    {
+      "id": "42609597-81b6-45b9-b862-3160b58c489d",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "order three or more numbers",
+      "stem": "Three hikes are 365 meters, 356 meters and 536 meters long. How many meters long is the middle one, the second longest?",
+      "choices": [],
+      "answer": "365",
+      "compute": "365",
+      "solution": "536 is the longest (5 hundreds). 365 and 356 both have 3 hundreds; 6 tens is more than 5 tens, so 365 is greater. The order from longest is 536, 365, 356. The second longest is 365.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "365",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 356 < 365 < 536. Middle (second longest) 365.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.660Z"
+        }
+      }
+    },
+    {
       "id": "0557587b-e4c6-4eca-8ea6-e0e139dd1ae0",
       "topic_id": "NC17.2.NBT.4",
       "difficulty": 3,
@@ -23057,6 +24186,641 @@
           "work": "Smallest nonzero hundreds digit 3, then 0, then 5: 305.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.605Z"
+        }
+      }
+    },
+    {
+      "id": "f7378352-e511-4b71-b700-e602fdc73712",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a mistake in a comparison",
+      "stem": "Ben puts 276, 267, 726 and 762 in the order 267, 276, 762, 726 from least to greatest. Which statement about his list is true?",
+      "choices": [
+        "He put 276 before 267, but it is less",
+        "He started with the greatest number",
+        "He put 267 first, but it is not the least",
+        "He put 762 before 726, but it is greater"
+      ],
+      "answer": "He put 762 before 726, but it is greater",
+      "compute": null,
+      "solution": "The correct order is 267, 276, 726, 762. Ben has 762 before 726, but 762 is greater than 726. His first three places are right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He put 762 before 726, but it is greater",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct order: 267, 276, 726, 762. Ben has 762 before 726, though 762 is greater. Other statements false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.066Z"
+        }
+      }
+    },
+    {
+      "id": "c57e0829-1bac-429e-8c43-c35b5b50c361",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Use the digits 2, 7 and 5 once each. How many different 3-digit numbers greater than 600 can you make? Type the number.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "A number greater than 600 must start with 7. The other two digits, 2 and 5, can go two ways: 725 and 752. That is 2 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Must start with 7: 725, 752. Two numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.086Z"
+        }
+      }
+    },
+    {
+      "id": "bb3bb69d-6ac4-49a4-b0aa-ed34b7268713",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find a number between two given numbers",
+      "stem": "How many whole numbers are greater than 497 and less than 503? Type the number of them.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The numbers are 498, 499, 500, 501 and 502. That is 5 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "498, 499, 500, 501, 502 → 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.091Z"
+        }
+      }
+    },
+    {
+      "id": "b6ae8a00-52c7-4941-ad7f-9ff54097599c",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "Which expanded form shows a number greater than 760?",
+      "choices": [
+        "$700 + 50 + 9$",
+        "$700 + 60 + 1$",
+        "$600 + 90 + 9$",
+        "$700 + 6 + 9$"
+      ],
+      "answer": "$700 + 60 + 1$",
+      "compute": null,
+      "solution": "$700 + 60 + 1$ is 761, which is greater than 760. The others are 759, 699 and 715, all less than 760.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$700 + 60 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "699, 715, 761, 759: only 700 + 60 + 1 = 761 > 760.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.096Z"
+        }
+      }
+    },
+    {
+      "id": "7284becb-0876-4ee2-a5e3-6a713a828b91",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "which place decides a comparison",
+      "stem": "Which number is greater than 645 and has a smaller tens digit than 645?",
+      "choices": [
+        "639",
+        "650",
+        "649",
+        "703"
+      ],
+      "answer": "703",
+      "compute": null,
+      "solution": "645 has 4 tens. A number greater than 645 with fewer than 4 tens must have more hundreds. 703 has 7 hundreds and 0 tens. 639 is less than 645, 650 has 5 tens, and 649 has 4 tens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "703",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "703 > 645, tens 0 < 4. 649 tens equal, 650 tens larger, 639 smaller.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.191Z"
+        }
+      }
+    },
+    {
+      "id": "6b21cf6a-a539-4156-bcc8-7dfb0ad2600d",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "What is the least number greater than 689 that has the digit 9 in the tens place?",
+      "choices": [],
+      "answer": "690",
+      "compute": "690",
+      "solution": "The numbers just above 689 are 690, 691, and so on. 690 has 9 tens as its tens digit, so the answer is 690.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "690",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "690 has tens digit 9 and is the next number after 689.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.203Z"
+        }
+      }
+    },
+    {
+      "id": "ee22fd33-fd74-4d49-8bc0-0078a4b8e49e",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a number between two given numbers",
+      "stem": "A book has more than 459 pages and fewer than 470 pages, and the ones digit of its page count is 5. How many pages does it have?",
+      "choices": [
+        "465",
+        "455",
+        "475",
+        "495"
+      ],
+      "answer": "465",
+      "compute": null,
+      "solution": "The number is between 459 and 470 and ends in 5. 465 is the only one. 455 is too small, and 475 and 495 are too big.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "465",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 459 and 470 with ones digit 5: 465.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.228Z"
+        }
+      }
+    },
+    {
+      "id": "7aac7bea-3fb9-4024-ad58-e7639707c5f0",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "order three or more numbers",
+      "stem": "Which list is in order from least to greatest?",
+      "choices": [
+        "399, 409, 490, 499",
+        "399, 490, 409, 499",
+        "409, 399, 490, 499",
+        "499, 490, 409, 399"
+      ],
+      "answer": "399, 409, 490, 499",
+      "compute": null,
+      "solution": "399 has 3 hundreds so it is least. The others have 4 hundreds: 409 (0 tens), 490 and 499 (9 tens, then 9 ones is greater than 0 ones). The order is 399, 409, 490, 499.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "399, 409, 490, 499",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "399 < 409 < 490 < 499.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.233Z"
+        }
+      }
+    },
+    {
+      "id": "391ae540-4716-43a8-98a5-7ed9166abe18",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "order three or more numbers",
+      "stem": "What is the second greatest of these numbers: 482, 428, 842, 248, 824? Type it.",
+      "choices": [],
+      "answer": "824",
+      "compute": "824",
+      "solution": "From greatest to least: 842, 824, 482, 428, 248. The second greatest is 824.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "824",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 842, 824, 482, 428, 248; second greatest 824.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.242Z"
+        }
+      }
+    },
+    {
+      "id": "166ee3c8-8058-45f9-8a11-65191a6a65a4",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a mistake in a comparison",
+      "stem": "Pia compares 405 and 450 and writes $405 > 450$ because 5 ones is more than 0 ones. What should she do instead?",
+      "choices": [
+        "Compare the ones, since the tens are different",
+        "Compare the digits that are largest",
+        "Compare the tens, since the hundreds are the same",
+        "Add the digits of each number"
+      ],
+      "answer": "Compare the tens, since the hundreds are the same",
+      "compute": null,
+      "solution": "The hundreds are the same (4 and 4), so compare the tens: 0 tens is less than 5 tens. So 405 < 450. Looking at the ones first was Pia's mistake.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Compare the tens, since the hundreds are the same",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hundreds equal (4 = 4); compare tens: 0 < 5, so 405 < 450.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.251Z"
+        }
+      }
+    },
+    {
+      "id": "0235943c-d7b3-4520-8e5b-dfd94f413dc2",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "compare numbers in a story",
+      "stem": "Eli has more than 350 stickers but fewer than 360 stickers. Which could be the number of stickers Eli has?",
+      "choices": [
+        "356",
+        "349",
+        "361",
+        "536"
+      ],
+      "answer": "356",
+      "compute": null,
+      "solution": "The number must be between 350 and 360. 356 is. 349 is less than 350, 361 is greater than 360, and 536 has 5 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "356",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Between 350 and 360: 356.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.296Z"
+        }
+      }
+    },
+    {
+      "id": "6eb5cdb6-e604-4916-b051-c435aa9190cc",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Use the digits 1, 2 and 3 once each. How many of the 3-digit numbers you can make are less than 230? Type the number.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The six numbers are 123, 132, 213, 231, 312 and 321. Those less than 230 are 123, 132 and 213. That is 3 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Numbers: 123,132,213,231,312,321; less than 230: 123,132,213 -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.321Z"
+        }
+      }
+    },
+    {
+      "id": "1c21c51e-9827-4728-b699-cfdf66f71a9f",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "order three or more numbers",
+      "stem": "Which list shows 9 hundreds 1 ten, 9 hundreds 1 one, 1 hundred 9 tens and 1 hundred 9 ones from greatest to least?",
+      "choices": [
+        "910, 901, 109, 190",
+        "910, 901, 190, 109",
+        "901, 910, 190, 109",
+        "109, 190, 901, 910"
+      ],
+      "answer": "910, 901, 190, 109",
+      "compute": null,
+      "solution": "The numbers are 910, 901, 190 and 109. The 9-hundred numbers are greater, and 910 > 901. Of the 1-hundred numbers 190 > 109. The order is 910, 901, 190, 109.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "910, 901, 190, 109",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "910, 901, 190, 109 in order greatest to least.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.338Z"
+        }
+      }
+    },
+    {
+      "id": "c81e1234-2ba0-4568-99a7-863a2a9e189b",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "The ? is one digit. Which digit makes both $4?3 > 453$ and $4?3 < 473$ true?",
+      "choices": [
+        "5",
+        "7",
+        "6",
+        "8"
+      ],
+      "answer": "6",
+      "compute": null,
+      "solution": "The first statement needs a tens digit greater than 5. The second needs a tens digit less than 7. Only 6 fits both: 463.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4?3 must be between 453 and 473 exclusive: 463, digit 6. 5 gives 453, not > 453; 7 gives 473, not < 473.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.422Z"
+        }
+      }
+    },
+    {
+      "id": "4f99f80f-a4a2-414c-9e63-1841436964a8",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "What is the greatest 3-digit number that has 5 in the tens place and 2 in the ones place?",
+      "choices": [],
+      "answer": "952",
+      "compute": "952",
+      "solution": "Put the greatest digit, 9, in the hundreds place: 952.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "952",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greatest hundreds digit 9: 952.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.453Z"
+        }
+      }
+    },
+    {
+      "id": "c11a6562-7d0a-4414-be03-5ee8cdf562e2",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a number between two given numbers",
+      "stem": "Which number is greater than 3 hundreds 9 tens 8 ones and less than 4 hundreds?",
+      "choices": [
+        "389",
+        "400",
+        "410",
+        "399"
+      ],
+      "answer": "399",
+      "compute": null,
+      "solution": "The number 3 hundreds 9 tens 8 ones is 398. The only whole number greater than 398 and less than 400 is 399.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "399",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "398 < n < 400 → 399.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.473Z"
+        }
+      }
+    },
+    {
+      "id": "f6c70784-99d5-49e6-a2a3-ba6ed166ac27",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "compare numbers in a story",
+      "stem": "Rae has four boxes of clips. They hold 150, 105, 510 and 501 clips. How many clips are in the box that holds the second fewest?",
+      "choices": [],
+      "answer": "150",
+      "compute": "150",
+      "solution": "From fewest to most: 105, 150, 501, 510. The second fewest is 150.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "150",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 105, 150, 501, 510; second fewest is 150.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.503Z"
+        }
+      }
+    },
+    {
+      "id": "4792eec5-afe1-46d0-aa00-a3a2b65515c9",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "Which statement about 640, 604 and 460 is true?",
+      "choices": [
+        "$604 > 640 > 460$",
+        "$640 > 604 > 460$",
+        "$460 > 604 > 640$",
+        "$640 > 460 > 604$"
+      ],
+      "answer": "$640 > 604 > 460$",
+      "compute": null,
+      "solution": "640 and 604 have 6 hundreds, and 4 tens is more than 0 tens, so 640 > 604. 460 has only 4 hundreds, so it is least. The order is 640 > 604 > 460.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$640 > 604 > 460$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "640 > 604 > 460.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.505Z"
+        }
+      }
+    },
+    {
+      "id": "1c53b2ff-9ae6-4ad9-add4-209b4e866b44",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "The ? is one digit. How many different digits make $4?7 < 457$ true? Type the number of digits.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The tens digit must be less than 5: 0, 1, 2, 3 or 4. That is 5 digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4?7 < 457 needs tens digit < 5: 0,1,2,3,4 (5 gives equality). 5 digits.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.506Z"
+        }
+      }
+    },
+    {
+      "id": "cdc50d79-e411-4851-b2c1-04102654560c",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "which place decides a comparison",
+      "stem": "Two numbers have the same hundreds digit and the same tens digit. One ends in 3 and the other ends in 8. The greater number is 468. What is the other number?",
+      "choices": [],
+      "answer": "463",
+      "compute": "463",
+      "solution": "The greater number ends in the greater ones digit, 8, so it is 468. The other number has the same hundreds and tens and ends in 3: 463.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "463",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same hundreds and tens as 468, ends in 3: 463.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.548Z"
         }
       }
     },

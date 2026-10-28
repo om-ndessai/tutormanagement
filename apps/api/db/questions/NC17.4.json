@@ -22162,6 +22162,699 @@
       }
     },
     {
+      "id": "685b133d-1f82-42b8-9600-4cdc4d9a44ca",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A museum had $21{,}400$ visitors in May and $15{,}800$ visitors in June. How many visitors did it have in the two months together?",
+      "choices": [
+        "36200",
+        "37200",
+        "5600",
+        "38200"
+      ],
+      "answer": "37200",
+      "compute": "21400+15800",
+      "solution": "Add: 21,400 + 15,800. Hundreds: 4 + 8 = 12, so write 2 and regroup 1 thousand. Thousands: 1 + 5 + 1 = 7. Ten thousands: 2 + 1 = 3. The total is 37,200.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21,400 + 15,800 = 37,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.025Z"
+        }
+      }
+    },
+    {
+      "id": "0dc99687-9c57-4bcf-89d3-3542ead8ea73",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "After Ravi spent $2{,}000$ points in a game, he had $7{,}500$ points left. How many points did he have before he spent them?",
+      "choices": [],
+      "answer": "9500",
+      "compute": "7500+2000",
+      "solution": "Undo the spending by adding: 7,500 + 2,000 = 9,500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Before = 7,500 + 2,000 = 9,500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.025Z"
+        }
+      }
+    },
+    {
+      "id": "d2a6d6ce-5151-47bd-88b6-a3521d7482cf",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A farm has $9{,}640$ apple trees and $4{,}200$ pear trees. How many more apple trees than pear trees does it have?",
+      "choices": [],
+      "answer": "5440",
+      "compute": "9640-4200",
+      "solution": "\"How many more\" compares two amounts, so subtract: 9,640 - 4,200 = 5,440.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5440",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,640 − 4,200 = 5,440.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.026Z"
+        }
+      }
+    },
+    {
+      "id": "ca2b5e27-7c39-4b65-bea9-312d3b7433ea",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Tia says that $8{,}000 - 3{,}000$ is $11{,}000$. What did Tia do?",
+      "choices": [
+        "She subtracted 8,000 from 3,000",
+        "She added 3,000 to 8,000 instead of subtracting",
+        "She forgot to regroup",
+        "She rounded 3,000 to 5,000 first"
+      ],
+      "answer": "She added 3,000 to 8,000 instead of subtracting",
+      "compute": null,
+      "solution": "The difference is 8,000 - 3,000 = 5,000. Tia added: 8,000 + 3,000 = 11,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She added 3,000 to 8,000 instead of subtracting",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,000 + 3,000 = 11,000, so she added instead of subtracting.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.065Z"
+        }
+      }
+    },
+    {
+      "id": "12cf194a-695f-4675-ace9-e8595c953e46",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "Subtract: $56{,}890 - 4{,}320$",
+      "choices": [],
+      "answer": "52570",
+      "compute": "56890-4320",
+      "solution": "Subtract place by place: 56,890 - 4,320 = 52,570.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52570",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56,890 − 4,320 = 52,570.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.068Z"
+        }
+      }
+    },
+    {
+      "id": "7ccfe6ff-ad0c-4f5d-bff3-41deddd3626f",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "Jan found $1{,}200$ more marbles, and now she has $5{,}700$ marbles. How many marbles did she have before she found them?",
+      "choices": [],
+      "answer": "4500",
+      "compute": "5700-1200",
+      "solution": "Undo the adding by subtracting: 5,700 - 1,200 = 4,500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5,700 − 1,200 = 4,500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.085Z"
+        }
+      }
+    },
+    {
+      "id": "7beafa41-6709-4148-9d10-3847e60bf48d",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "Mia knows that $6{,}400 + 2{,}100 = 8{,}500$. Which subtraction sentence checks it?",
+      "choices": [
+        "$8{,}500 - 6{,}400 = 6{,}400$",
+        "$6{,}400 - 2{,}100 = 8{,}500$",
+        "$8{,}500 - 2{,}100 = 6{,}400$",
+        "$8{,}500 + 2{,}100 = 6{,}400$"
+      ],
+      "answer": "$8{,}500 - 2{,}100 = 6{,}400$",
+      "compute": null,
+      "solution": "Subtraction undoes addition. Take one part away from the total to get the other part: 8,500 - 2,100 = 6,400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8{,}500 - 2{,}100 = 6{,}400$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8500-2100=6400 checks the sum.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.160Z"
+        }
+      }
+    },
+    {
+      "id": "5cea310e-65b8-4e9e-a86a-6a38b6cc344d",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use place value to regroup",
+      "stem": "When you add the thousands, you get 13 thousands. 13 thousands is the same as 1 ten thousand and how many thousands?",
+      "choices": [],
+      "answer": "3",
+      "compute": "13-10",
+      "solution": "10 thousands make 1 ten thousand. 13 thousands is 1 ten thousand and 3 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 thousands = 10 thousands + 3 thousands.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.175Z"
+        }
+      }
+    },
+    {
+      "id": "fc3dca9f-d9e5-4c69-90fd-bed8dd24b3d5",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A truck carries $12{,}500$ pounds of sand. It unloads $4{,}500$ pounds. How many pounds of sand are still on the truck?",
+      "choices": [
+        "17000",
+        "8000",
+        "7000",
+        "8500"
+      ],
+      "answer": "8000",
+      "compute": "12500-4500",
+      "solution": "Sand was taken off, so subtract: 12,500 - 4,500 = 8,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12500-4500=8000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.194Z"
+        }
+      }
+    },
+    {
+      "id": "8624627f-95ce-4741-b5d9-9c820d3465e7",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "Add: $41{,}230 + 5{,}468$",
+      "choices": [],
+      "answer": "46698",
+      "compute": "41230+5468",
+      "solution": "Line up the places and add from the ones: 41,230 + 5,468 = 46,698.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46698",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "41,230 + 5,468 = 46,698.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.226Z"
+        }
+      }
+    },
+    {
+      "id": "b383b047-6d3f-4160-ba8f-11acb38f2cfe",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Ben subtracts $6{,}000 - 2{,}500$ and gets $4{,}500$. What mistake did he make?",
+      "choices": [
+        "He regrouped 1 thousand into hundreds but did not take 1 from the thousands place",
+        "He added the two numbers instead of subtracting",
+        "He did not line up the places before he subtracted",
+        "He subtracted the 2 thousands but forgot the 500"
+      ],
+      "answer": "He regrouped 1 thousand into hundreds but did not take 1 from the thousands place",
+      "compute": null,
+      "solution": "6,000 - 2,500 = 3,500. After regrouping, the thousands place is 5, and 5 - 2 = 3. Ben kept 6 and got 6 - 2 = 4 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He regrouped 1 thousand into hundreds but did not take 1 from the thousands place",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct 3,500. Regrouping 1 thousand into 10 hundreds, 10-5 = 5 hundreds, but leaving 6 thousands: 6-2 = 4 thousands -> 4,500. Other options give 8,500 or 4,000 or a misaligned result.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.231Z"
+        }
+      }
+    },
+    {
+      "id": "a2992ebc-cb3c-4674-a8c8-6e02bdacd93d",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use place value to regroup",
+      "stem": "Which number is 100 more than $9{,}950$?",
+      "choices": [
+        "9960",
+        "10950",
+        "9951",
+        "10050"
+      ],
+      "answer": "10050",
+      "compute": "9950+100",
+      "solution": "9,950 + 100: the hundreds place goes from 9 to 10, so regroup 10 hundreds as 1 thousand. The result is 10,050.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10050",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,950 + 100 = 10,050.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.235Z"
+        }
+      }
+    },
+    {
+      "id": "1f49dbce-621f-4cf0-9071-217456148a17",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use place value to regroup",
+      "stem": "Start at $28{,}350$ and count back by $1{,}000$ three times. What number do you reach?",
+      "choices": [],
+      "answer": "25350",
+      "compute": "28350-3000",
+      "solution": "Each count back takes 1 thousand away: 28,350 - 3,000 = 25,350.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25350",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28,350 - 3,000 = 25,350.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.238Z"
+        }
+      }
+    },
+    {
+      "id": "cefb5614-d05c-48b4-8146-eaefe914dbe3",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "Take away $3{,}150$ from $7{,}480$. What is left?",
+      "choices": [],
+      "answer": "4330",
+      "compute": "7480-3150",
+      "solution": "Subtract place by place: 7,480 - 3,150 = 4,330.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4330",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,480 - 3,150 = 4,330.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.259Z"
+        }
+      }
+    },
+    {
+      "id": "32f996f9-7a8e-4f3e-bf76-d7cb97d6ec67",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A bakery sold $3{,}420$ rolls on Saturday and $2{,}305$ rolls on Sunday. How many rolls did it sell on the two days?",
+      "choices": [],
+      "answer": "5725",
+      "compute": "3420+2305",
+      "solution": "Add the two days: 3,420 + 2,305 = 5,725.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5725",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3420+2305=5725.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.290Z"
+        }
+      }
+    },
+    {
+      "id": "49cd3ea3-9699-4437-a1e9-9be1d6dc0a70",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use place value to regroup",
+      "stem": "To subtract $5{,}000 - 1{,}200$, Kim regroups 1 thousand from $5{,}000$. Into how many hundreds does she regroup that 1 thousand?",
+      "choices": [
+        "10",
+        "100",
+        "1",
+        "12"
+      ],
+      "answer": "10",
+      "compute": "10",
+      "solution": "1 thousand is the same as 10 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 thousand = 10 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.293Z"
+        }
+      }
+    },
+    {
+      "id": "75eb9a45-e8e9-4995-90a6-0a69d32de8e7",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Rosa adds $24{,}500 + 3{,}700$ and gets $27{,}200$. What mistake did she make?",
+      "choices": [
+        "She subtracted instead of adding",
+        "She added the 3,700 to the ten thousands place",
+        "She regrouped the 12 hundreds as 12 thousands",
+        "She did not regroup the 12 hundreds as 1 thousand and 2 hundreds"
+      ],
+      "answer": "She did not regroup the 12 hundreds as 1 thousand and 2 hundreds",
+      "compute": null,
+      "solution": "Hundreds: 5 + 7 = 12, so write 2 and regroup 1 thousand. Thousands: 4 + 3 + 1 = 8. The sum is 28,200. Rosa left out the regrouped thousand.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She did not regroup the 12 hundreds as 1 thousand and 2 hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct sum 28,200; 5 hundreds+7 hundreds=12 hundreds; she wrote 2 hundreds but did not carry the thousand, getting 27,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.311Z"
+        }
+      }
+    },
+    {
+      "id": "8525a761-764e-4644-aba8-5454ee080c53",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "What is $48{,}600 - 2{,}300$?",
+      "choices": [
+        "46900",
+        "50900",
+        "25600",
+        "46300"
+      ],
+      "answer": "46300",
+      "compute": "48600-2300",
+      "solution": "Line up the places: 48,600 - 2,300. Thousands: 8 - 2 = 6. The hundreds, tens and ones stay the same. The difference is 46,300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48,600-2,300=46,300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.379Z"
+        }
+      }
+    },
+    {
+      "id": "df3043f8-9f51-487e-af13-bf3cf45e6a0f",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate sums and differences to check reasonableness",
+      "stem": "Round each number to the nearest thousand to estimate $9{,}870 - 4{,}120$.",
+      "choices": [],
+      "answer": "6000",
+      "compute": "10000-4000",
+      "solution": "9,870 rounds to 10,000 and 4,120 rounds to 4,000. The estimate is 10,000 - 4,000 = 6,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,870 -> 10,000; 4,120 -> 4,000; 10,000-4,000=6,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.384Z"
+        }
+      }
+    },
+    {
+      "id": "03d2736b-9078-4274-a80d-a8263dfe6331",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "What is $60{,}300 + 7{,}050$?",
+      "choices": [
+        "61005",
+        "67300",
+        "67350",
+        "130800"
+      ],
+      "answer": "67350",
+      "compute": "60300+7050",
+      "solution": "Line up the places: 60,300 + 7,050. Hundreds: 3 + 0 = 3. Thousands: 0 + 7 = 7. Ten thousands: 6. The sum is 67,350.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67350",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,300+7,050 = 67,350.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.387Z"
+        }
+      }
+    },
+    {
+      "id": "d1ef9fe3-50b4-4a53-a187-96d5619783e6",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "Which sum is correct?",
+      "choices": [
+        "$18{,}400 + 5{,}300 = 23{,}700$",
+        "$18{,}400 + 5{,}300 = 13{,}100$",
+        "$18{,}400 + 5{,}300 = 22{,}700$",
+        "$18{,}400 + 5{,}300 = 24{,}700$"
+      ],
+      "answer": "$18{,}400 + 5{,}300 = 23{,}700$",
+      "compute": null,
+      "solution": "Hundreds: 4 + 3 = 7. Thousands: 8 + 5 = 13, so write 3 and regroup 1 to the ten thousands: 1 + 1 = 2. The sum is 23,700.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$18{,}400 + 5{,}300 = 23{,}700$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18400 + 5300 = 23700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.605Z"
+        }
+      }
+    },
+    {
+      "id": "6056dbe6-6477-41b2-8748-66c67885de3c",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "Find the total of $16{,}250$ and $3{,}725$.",
+      "choices": [],
+      "answer": "19975",
+      "compute": "16250+3725",
+      "solution": "Add the ones, tens, hundreds and so on, regrouping when a place makes 10 or more: 16,250 + 3,725 = 19,975.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19975",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16250 + 3725 = 19975.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.615Z"
+        }
+      }
+    },
+    {
       "id": "be7a0f7f-c585-40c6-8936-215d0ad69339",
       "topic_id": "NC17.4.NBT.4",
       "difficulty": 2,
@@ -22473,6 +23166,718 @@
           "work": "Correct difference 22480. Taking smaller from larger digit in each place: |6-3|=3, |1-8|=7, |2-7|=5, |4-6|=2, 0 -> 37520, matching Dana. Sum would be 100000.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:13.185Z"
+        }
+      }
+    },
+    {
+      "id": "b9383a13-7782-48e6-827a-8adcbe7715f0",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate sums and differences to check reasonableness",
+      "stem": "Mrs. Cruz rounds each number to the nearest thousand to estimate $71{,}400 - 28{,}900$. Which number sentence shows her estimate?",
+      "choices": [
+        "$71{,}000 - 29{,}000 = 42{,}000$",
+        "$70{,}000 - 20{,}000 = 50{,}000$",
+        "$72{,}000 - 29{,}000 = 43{,}000$",
+        "$71{,}000 - 28{,}000 = 43{,}000$"
+      ],
+      "answer": "$71{,}000 - 29{,}000 = 42{,}000$",
+      "compute": null,
+      "solution": "71,400 rounds to 71,000 and 28,900 rounds to 29,000. The estimate is 71,000 - 29,000 = 42,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$71{,}000 - 29{,}000 = 42{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "71,400 rounds to 71,000; 28,900 rounds to 29,000; 71,000 − 29,000 = 42,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.025Z"
+        }
+      }
+    },
+    {
+      "id": "bba9040d-e4f2-4a18-9816-5ae1715e5414",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Luis adds $48{,}260 + 3{,}975$ and gets $52{,}135$. What mistake did he make?",
+      "choices": [
+        "He wrote 13 in the tens place without regrouping",
+        "He did not regroup 1 hundred when the tens added to 13",
+        "He regrouped the ones twice",
+        "He added the 3,975 to the thousands only"
+      ],
+      "answer": "He did not regroup 1 hundred when the tens added to 13",
+      "compute": null,
+      "solution": "Tens: 6 + 7 = 13, so write 3 and regroup 1 hundred. Hundreds: 2 + 9 + 1 = 12. Luis left out that regrouped hundred, so his hundreds place is 1 too small. The sum is 52,235.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He did not regroup 1 hundred when the tens added to 13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct sum 52,235: ones 5; tens 6+7=13, write 3 carry 1 hundred; hundreds 2+9+1=12; thousands 8+3+1=12. Luis got 52,135 — hundreds digit 1, so he left out the regrouped hundred from the tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.026Z"
+        }
+      }
+    },
+    {
+      "id": "f39fa5e1-ad8c-44c2-93c6-40e17d4844ef",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "Find $60{,}400 - 8{,}275$.",
+      "choices": [],
+      "answer": "52125",
+      "compute": "60400-8275",
+      "solution": "Regroup across the zeros: 60,400 is 59 thousands and 14 hundreds. Then 60,400 - 8,275 = 52,125.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,400 − 8,275 = 52,125.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.057Z"
+        }
+      }
+    },
+    {
+      "id": "9506930e-77b7-4705-af0f-dcc139d16613",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A town has $82{,}300$ people. Of them, $47{,}865$ are adults and the rest are children. How many children live in the town?",
+      "choices": [
+        "34435",
+        "130165",
+        "45565",
+        "44435"
+      ],
+      "answer": "34435",
+      "compute": "82300-47865",
+      "solution": "The children are what is left after the adults: 82,300 - 47,865 = 34,435.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34435",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "82,300 − 47,865 = 34,435.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.067Z"
+        }
+      }
+    },
+    {
+      "id": "4e93d0d8-2b9c-4125-8ccc-0367ed65bfbb",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "What is $4{,}908 + 53{,}096$?",
+      "choices": [],
+      "answer": "58004",
+      "compute": "4908+53096",
+      "solution": "Line up the places: 53,096 + 4,908. Ones: 6 + 8 = 14. Tens: 9 + 0 + 1 = 10. Hundreds: 0 + 9 + 1 = 10. Thousands: 3 + 4 + 1 = 8. Ten thousands: 5. The sum is 58,004.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "58004",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4908+53096=58004.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.153Z"
+        }
+      }
+    },
+    {
+      "id": "9d34711c-cf41-4884-ba73-8714b4826056",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "Lake A covers $41{,}360$ square feet and Lake B covers $28{,}775$ square feet. How many more square feet does Lake A cover than Lake B?",
+      "choices": [],
+      "answer": "12585",
+      "compute": "41360-28775",
+      "solution": "Compare by subtracting: 41,360 - 28,775 = 12,585.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12585",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "41360-28775=12585.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.188Z"
+        }
+      }
+    },
+    {
+      "id": "d72acf06-0836-4ad2-99dc-65760cfffe72",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use place value to regroup",
+      "stem": "To find $74{,}200 - 38{,}500$, there are not enough hundreds to take away 5 hundreds from 2 hundreds. Which regrouping of $74{,}200$ helps?",
+      "choices": [
+        "3 thousands and 20 hundreds, taking 1 thousand from the 4 thousands",
+        "5 thousands and 12 hundreds, adding 1 thousand to the 4 thousands",
+        "3 thousands and 12 hundreds, taking 1 thousand from the 4 thousands",
+        "3 thousands and 102 hundreds, taking 1 thousand from the 4 thousands"
+      ],
+      "answer": "3 thousands and 12 hundreds, taking 1 thousand from the 4 thousands",
+      "compute": null,
+      "solution": "1 thousand is 10 hundreds. Taking 1 thousand from 4 thousands leaves 3 thousands, and 10 hundreds added to 2 hundreds make 12 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 thousands and 12 hundreds, taking 1 thousand from the 4 thousands",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "74,200: 4 thousands 2 hundreds -> 3 thousands 12 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.190Z"
+        }
+      }
+    },
+    {
+      "id": "343d086d-de54-4eb5-af81-8cbc4bfafc22",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "An elementary school district has $24{,}785$ students in its elementary schools and $18{,}960$ students in its middle schools. How many students are in these two kinds of schools together?",
+      "choices": [],
+      "answer": "43745",
+      "compute": "24785+18960",
+      "solution": "Put the two groups together: 24,785 + 18,960 = 43,745.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43745",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24785+18960=43745.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.197Z"
+        }
+      }
+    },
+    {
+      "id": "e207747d-0ca8-45be-a5cb-8c45a81aa311",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve multi-step word problems",
+      "stem": "A school collected $18{,}640$ cans in the fall and $23{,}775$ cans in the spring. It needs $50{,}000$ cans to win a prize. How many more cans does it need?",
+      "choices": [],
+      "answer": "7585",
+      "compute": "50000-(18640+23775)",
+      "solution": "First find the cans collected: 18,640 + 23,775 = 42,415. Then 50,000 - 42,415 = 7,585 more cans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7585",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18,640 + 23,775 = 42,415; 50,000 - 42,415 = 7,585.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.212Z"
+        }
+      }
+    },
+    {
+      "id": "a9cbbd09-145e-4a71-97a2-24bc76ea05b9",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "What is $52{,}031 - 17{,}486$?",
+      "choices": [
+        "45455",
+        "35545",
+        "34445",
+        "34545"
+      ],
+      "answer": "34545",
+      "compute": "52031-17486",
+      "solution": "Regroup as needed and subtract place by place: 52,031 - 17,486 = 34,545.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34545",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52,031 - 17,486 = 34,545.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.225Z"
+        }
+      }
+    },
+    {
+      "id": "279477f1-326d-4e50-8248-52d2a56ae599",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve multi-step word problems",
+      "stem": "A concert hall has $40{,}000$ seats. The floor has $12{,}450$ seats and the balcony has $9{,}875$ seats. All the other seats are in the upper level. How many seats are in the upper level?",
+      "choices": [],
+      "answer": "17675",
+      "compute": "40000-12450-9875",
+      "solution": "Floor and balcony together: 12,450 + 9,875 = 22,325. Upper level: 40,000 - 22,325 = 17,675 seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17675",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12,450+9,875=22,325; 40,000-22,325=17,675.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.322Z"
+        }
+      }
+    },
+    {
+      "id": "667a5957-64d6-4056-8235-3b727b7737c2",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use place value to regroup",
+      "stem": "A digit is missing: $36{,}4?7 + 2{,}358 = 38{,}805$. What digit is the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Subtract to undo the adding: 38,805 - 2,358 = 36,447. So the missing digit is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "38,805 - 2,358 = 36,447, so the missing digit is 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.426Z"
+        }
+      }
+    },
+    {
+      "id": "bf55bf09-9017-47e8-9d36-0cec41f10cdc",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate sums and differences to check reasonableness",
+      "stem": "Round each number to the nearest thousand to estimate $82{,}460 - 37{,}590$.",
+      "choices": [],
+      "answer": "44000",
+      "compute": "82000-38000",
+      "solution": "82,460 rounds to 82,000 and 37,590 rounds to 38,000. The estimate is 82,000 - 38,000 = 44,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "44000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "82,460 → 82,000; 37,590 → 38,000; 82,000 - 38,000 = 44,000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.459Z"
+        }
+      }
+    },
+    {
+      "id": "1b6606a8-51c5-441c-9f04-7c177553fef4",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "Add: $37{,}486 + 45{,}729$",
+      "choices": [],
+      "answer": "83215",
+      "compute": "37486+45729",
+      "solution": "Add from the ones, regrouping each time a place reaches 10: 37,486 + 45,729 = 83,215.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "83215",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "37,486 + 45,729 = 83,215.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.499Z"
+        }
+      }
+    },
+    {
+      "id": "6ae1dd9e-5280-42f1-847c-6f04fb76b3e9",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "What is $40{,}000$ take away $9{,}999$?",
+      "choices": [],
+      "answer": "30001",
+      "compute": "40000-9999",
+      "solution": "Subtract 10,000 and then add 1 back: 40,000 - 9,999 = 30,001. The standard algorithm gives the same result.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30001",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,000 - 9,999 = 30,001.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.499Z"
+        }
+      }
+    },
+    {
+      "id": "0bedbd8a-cd91-499c-850c-a23d0d7d7a15",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Which subtraction sentence is NOT correct?",
+      "choices": [
+        "$70{,}000 - 12{,}345 = 57{,}655$",
+        "$60{,}001 - 5{,}432 = 55{,}569$",
+        "$45{,}200 - 9{,}800 = 35{,}400$",
+        "$83{,}614 - 26{,}729 = 56{,}885$"
+      ],
+      "answer": "$60{,}001 - 5{,}432 = 55{,}569$",
+      "compute": null,
+      "solution": "Check each: 70,000 - 12,345 = 57,655; 45,200 - 9,800 = 35,400; 83,614 - 26,729 = 56,885. But 60,001 - 5,432 = 54,569, not 55,569.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60{,}001 - 5{,}432 = 55{,}569$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,000-12,345 = 57,655 ✓; 45,200-9,800 = 35,400 ✓; 83,614-26,729 = 56,885 ✓; 60,001-5,432 = 54,569 ≠ 55,569.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.515Z"
+        }
+      }
+    },
+    {
+      "id": "880e3cbd-2eb8-4317-8775-f1df4e265118",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve multi-step word problems",
+      "stem": "Town A has $28{,}450$ people. Town B has $6{,}300$ more people than Town A. How many people live in the two towns together?",
+      "choices": [],
+      "answer": "63200",
+      "compute": "28450+(28450+6300)",
+      "solution": "Town B has 28,450 + 6,300 = 34,750 people. Together: 28,450 + 34,750 = 63,200 people.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Town B = 28,450 + 6,300 = 34,750; total 63,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.517Z"
+        }
+      }
+    },
+    {
+      "id": "b7f4762f-6177-49ae-af48-ad0e0808af71",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "Which expression gives the number that makes this true? $91{,}000 - ? = 34{,}250$",
+      "choices": [
+        "$91{,}000 + 34{,}250$",
+        "$34{,}250 - 91{,}000$",
+        "$91{,}000 - (34{,}250 + 34{,}250)$",
+        "$91{,}000 - 34{,}250$"
+      ],
+      "answer": "$91{,}000 - 34{,}250$",
+      "compute": null,
+      "solution": "The ? is the part taken away, so it equals the whole minus what is left: 91,000 - 34,250 = 56,750.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$91{,}000 - 34{,}250$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Missing subtrahend = 91000 - 34250 (=56750).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.547Z"
+        }
+      }
+    },
+    {
+      "id": "a5e9ee99-5653-4bed-af7f-d368190981a3",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve multi-step word problems",
+      "stem": "Jo had $9{,}500$ stickers. She gave away $2{,}750$ stickers and then bought $4{,}100$ more. How many stickers does Jo have now?",
+      "choices": [
+        "2650",
+        "16350",
+        "10850",
+        "8150"
+      ],
+      "answer": "10850",
+      "compute": "9500-2750+4100",
+      "solution": "Giving away takes 2,750 off: 9,500 - 2,750 = 6,750. Buying adds 4,100: 6,750 + 4,100 = 10,850.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10850",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9500 - 2750 = 6750; + 4100 = 10850.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.627Z"
+        }
+      }
+    },
+    {
+      "id": "029c03c0-a869-4922-a1f5-17f5647d0198",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "What is $29{,}875 + 6{,}548$?",
+      "choices": [
+        "26423",
+        "36423",
+        "36413",
+        "36323"
+      ],
+      "answer": "36423",
+      "compute": "29875+6548",
+      "solution": "Ones: 5 + 8 = 13 (write 3, regroup 1). Tens: 7 + 4 + 1 = 12 (write 2, regroup 1). Hundreds: 8 + 5 + 1 = 14 (write 4, regroup 1). Thousands: 9 + 6 + 1 = 16 (write 6, regroup 1). Ten thousands: 2 + 1 = 3. The sum is 36,423.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36423",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "29875+6548 = 36423.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.636Z"
+        }
+      }
+    },
+    {
+      "id": "9ebf7e13-6e61-4928-8c80-181757281cdd",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use place value to regroup",
+      "stem": "Regroup: 83 thousands is the same as 82 thousands and how many hundreds?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "1 thousand is the same as 10 hundreds, so 83 thousands = 82 thousands + 10 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 thousand = 10 hundreds, so 83 thousands = 82 thousands + 10 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.656Z"
+        }
+      }
+    },
+    {
+      "id": "b3bd911e-bc2f-4cd9-baa8-e915a503991b",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "A library gave away $8{,}450$ old books and now has $36{,}775$ books. How many books did it have before it gave any away?",
+      "choices": [],
+      "answer": "45225",
+      "compute": "36775+8450",
+      "solution": "Undo the giving away by adding: 36,775 + 8,450 = 45,225.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45225",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Before = 36775+8450 = 45225.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.674Z"
+        }
+      }
+    },
+    {
+      "id": "9a4cc915-27ee-4357-8cbb-4acc4088dc18",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "How much greater is $74{,}360$ than $38{,}925$?",
+      "choices": [],
+      "answer": "35435",
+      "compute": "74360-38925",
+      "solution": "\"How much greater\" asks for the difference: 74,360 - 38,925 = 35,435.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35435",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "74360-38925 = 35435.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.700Z"
         }
       }
     },
@@ -22846,6 +24251,626 @@
           "work": "90000-24850=65150; -31275=33875; +12500=46375.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.602Z"
+        }
+      }
+    },
+    {
+      "id": "652691f0-ee83-479d-b8b1-cbbff95fb89c",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "Find the difference between $90{,}070$ and $63{,}589$.",
+      "choices": [],
+      "answer": "26481",
+      "compute": "90070-63589",
+      "solution": "Subtract the smaller number from the larger: 90,070 - 63,589 = 26,481.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26481",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90,070 − 63,589 = 26,481. Check 63,589 + 26,481 = 90,070.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.026Z"
+        }
+      }
+    },
+    {
+      "id": "cef1c0f9-7389-4062-898e-8e78606bc83a",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate sums and differences to check reasonableness",
+      "stem": "Round each number to the nearest hundred to estimate $68{,}490 - 29{,}610$.",
+      "choices": [],
+      "answer": "38900",
+      "compute": "68500-29600",
+      "solution": "68,490 rounds to 68,500 and 29,610 rounds to 29,600. The estimate is 68,500 - 29,600 = 38,900.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "38900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "68,490 → 68,500; 29,610 → 29,600; 68,500 − 29,600 = 38,900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.055Z"
+        }
+      }
+    },
+    {
+      "id": "4c44e667-31e3-4411-afb5-8e992740a90e",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Pia finds that $50{,}204 - 27{,}865 = 23{,}339$. She checks by adding $23{,}339 + 27{,}865$. What does her check show?",
+      "choices": [
+        "She gets 50,204, so her answer is correct",
+        "She gets 51,204, which is greater than 50,204, so her answer is correct",
+        "She gets 4,526, so her answer is wrong",
+        "She gets 51,204, which is not 50,204, so her answer is wrong"
+      ],
+      "answer": "She gets 51,204, which is not 50,204, so her answer is wrong",
+      "compute": null,
+      "solution": "Subtraction and addition undo each other: the check should return 50,204. But 23,339 + 27,865 = 51,204, so the answer is wrong. The correct difference is 22,339.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She gets 51,204, which is not 50,204, so her answer is wrong",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23,339 + 27,865 = 51,204 ≠ 50,204, so the subtraction is wrong (correct difference is 22,339).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.056Z"
+        }
+      }
+    },
+    {
+      "id": "d061be6f-a228-4639-801b-6af006aba212",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use place value to regroup",
+      "stem": "$62{,}000$ is 5 ten thousands and how many thousands?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "6 ten thousands = 5 ten thousands + 10 thousands, so 62,000 is 5 ten thousands + 12 thousands.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "62,000 = 50,000 + 12,000 = 5 ten thousands and 12 thousands.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.090Z"
+        }
+      }
+    },
+    {
+      "id": "50afe354-ca17-424e-931c-962e8b52f390",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve multi-step word problems",
+      "stem": "A stadium holds $68{,}000$ people. On Saturday $43{,}725$ people came. On Sunday $5{,}860$ more people came than on Saturday. How many seats were empty on Sunday?",
+      "choices": [],
+      "answer": "18415",
+      "compute": "68000-(43725+5860)",
+      "solution": "Sunday: 43,725 + 5,860 = 49,585 people. Empty seats: 68,000 - 49,585 = 18,415.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18415",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sunday: 43,725 + 5,860 = 49,585. Empty: 68,000 − 49,585 = 18,415.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.135Z"
+        }
+      }
+    },
+    {
+      "id": "3751325f-c55c-4e2f-9561-96d61bfdbc74",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "A number is $26{,}574$ more than $49{,}858$. What is the number?",
+      "choices": [],
+      "answer": "76432",
+      "compute": "49858+26574",
+      "solution": "\"More than\" means add: 49,858 + 26,574 = 76,432.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "76432",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "49858+26574=76432.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.155Z"
+        }
+      }
+    },
+    {
+      "id": "cb24ec46-8406-451c-814c-fed4de2e30ee",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use place value to regroup",
+      "stem": "Mia says that $50{,}000 - 21{,}345$ has the same answer as $49{,}999 - 21{,}344$. Which statement is true?",
+      "choices": [
+        "She is right, because 49,999 is the same as 50,000",
+        "She is wrong, because the second answer is 1 less than the first",
+        "She is wrong, because the second subtraction cannot be done without regrouping",
+        "She is right, because both numbers were made 1 smaller, so the difference stays the same"
+      ],
+      "answer": "She is right, because both numbers were made 1 smaller, so the difference stays the same",
+      "compute": null,
+      "solution": "Taking 1 away from both numbers keeps the gap between them the same, so the differences are equal: both are 28,655.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She is right, because both numbers were made 1 smaller, so the difference stays the same",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50000-21345=28655; 49999-21344=28655. Same; both reduced by 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.164Z"
+        }
+      }
+    },
+    {
+      "id": "5572844a-1d1d-4a17-98b9-4a4c4d6cef93",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "What is $40{,}006 - 28{,}719$?",
+      "choices": [
+        "11287",
+        "12287",
+        "11387",
+        "28713"
+      ],
+      "answer": "11287",
+      "compute": "40006-28719",
+      "solution": "Regroup across the zeros: 40,006 is 3 ten thousands, 9 thousands, 9 hundreds, 9 tens and 16 ones. Subtracting 28,719 gives 11,287.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11287",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40006-28719=11287 (check 28719+11287=40006).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.171Z"
+        }
+      }
+    },
+    {
+      "id": "2c0d7737-cb5f-49b9-ad2a-66c1bf4157d7",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve multi-step word problems",
+      "stem": "Which story can be solved with $85{,}000 - 27{,}400 - 18{,}650$?",
+      "choices": [
+        "A bin holds 85,000 beads. Ana takes 27,400 and Ben takes 18,650. How many beads are left?",
+        "A bin holds 85,000 beads. Ana adds 27,400 and Ben adds 18,650. How many beads are there?",
+        "Ana has 85,000 beads. Ben has 27,400 fewer. Cy has 18,650 more than Ben. How many does Cy have?",
+        "Ana has 85,000 beads, Ben has 27,400 and Cy has 18,650. How many beads do they have in all?"
+      ],
+      "answer": "A bin holds 85,000 beads. Ana takes 27,400 and Ben takes 18,650. How many beads are left?",
+      "compute": null,
+      "solution": "Starting from 85,000 and taking away 27,400 and then 18,650 is a bin that loses beads twice.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A bin holds 85,000 beads. Ana takes 27,400 and Ben takes 18,650. How many beads are left?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85,000 minus 27,400 minus 18,650 = taking two amounts away from a bin, how many are left. Option A gives 85000-27400+18650; B and C are sums.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.206Z"
+        }
+      }
+    },
+    {
+      "id": "ebcd4779-6ee8-4ce4-be26-e3e986480420",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "What is $47{,}529$ less than $80{,}000$?",
+      "choices": [],
+      "answer": "32471",
+      "compute": "80000-47529",
+      "solution": "Subtract 80,000 - 47,529 by regrouping across the zeros: the answer is 32,471.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32471",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80,000 - 47,529 = 32,471.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.212Z"
+        }
+      }
+    },
+    {
+      "id": "0dae43ed-e849-4d66-82e1-a211d54e3db5",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract whole numbers with the standard algorithm",
+      "stem": "Find $100{,}000 - 3{,}458$.",
+      "choices": [],
+      "answer": "96542",
+      "compute": "100000-3458",
+      "solution": "Regroup 100,000 as 99,999 + 1 and subtract: 100,000 - 3,458 = 96,542.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96542",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100,000 - 3,458 = 96,542.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.213Z"
+        }
+      }
+    },
+    {
+      "id": "4e4e001f-e468-448d-99b1-1e4e91599cee",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "The difference of two numbers is $29{,}860$. The smaller number is $18{,}475$. What is the greater number?",
+      "choices": [],
+      "answer": "48335",
+      "compute": "29860+18475",
+      "solution": "Greater - smaller = difference, so greater = difference + smaller: 29,860 + 18,475 = 48,335.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48335",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greater = smaller + difference = 18,475 + 29,860 = 48,335.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.218Z"
+        }
+      }
+    },
+    {
+      "id": "b73fde18-3753-462f-8bd1-8e676ed36df6",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use place value to regroup",
+      "stem": "The difference $80{,}000 - 4{,}500$ can be written as ? thousands and 5 hundreds. What number is the ?",
+      "choices": [],
+      "answer": "75",
+      "compute": "75",
+      "solution": "80,000 - 4,500 = 75,500. 75,500 is 75 thousands and 5 hundreds, so the ? is 75.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80,000 - 4,500 = 75,500 = 75 thousands 5 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.259Z"
+        }
+      }
+    },
+    {
+      "id": "93305cb8-61d4-43e6-8a85-80c55ee2965f",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing number with the inverse operation",
+      "stem": "Three gifts add up to $90{,}000$ dollars. Two of them are $35{,}420$ dollars and $28{,}975$ dollars. How many dollars is the third gift?",
+      "choices": [],
+      "answer": "25605",
+      "compute": "90000-35420-28975",
+      "solution": "The two known gifts: 35,420 + 28,975 = 64,395. The third gift: 90,000 - 64,395 = 25,605 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25605",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35,420+28,975=64,395; 90,000-64,395=25,605.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.375Z"
+        }
+      }
+    },
+    {
+      "id": "e50737a2-40ca-4930-9913-f64b2fda6dc3",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find and explain a mistake in a calculation",
+      "stem": "Evan adds $39{,}845 + 47{,}198$ and gets $77{,}043$. What mistake did he make?",
+      "choices": [
+        "He regrouped the ones place twice",
+        "He did not add the regrouped 1 from the thousands place into the ten thousands place",
+        "He subtracted the ten thousands instead of adding them",
+        "He wrote the hundreds digit in the tens place"
+      ],
+      "answer": "He did not add the regrouped 1 from the thousands place into the ten thousands place",
+      "compute": null,
+      "solution": "Thousands: 9 + 7 + 1 = 17, so write 7 and regroup 1 ten thousand. Ten thousands: 3 + 4 + 1 = 8. The sum is 87,043. Evan left out the regrouped 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He did not add the regrouped 1 from the thousands place into the ten thousands place",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct sum 87,043. Thousands 9+7+1 = 17 carries 1 to ten thousands: 3+4+1 = 8. He wrote 7, dropping that carry.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.483Z"
+        }
+      }
+    },
+    {
+      "id": "8bbfd473-56f4-4349-b93a-bf58c1ff32a2",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A fundraiser has a goal of $75{,}000$ dollars. So far it has raised $48{,}350$ dollars. How many more dollars does it need to reach the goal?",
+      "choices": [
+        "123350",
+        "33350",
+        "26650",
+        "27650"
+      ],
+      "answer": "26650",
+      "compute": "75000-48350",
+      "solution": "The goal is the whole and the amount raised is one part, so subtract: 75,000 - 48,350 = 26,650.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26650",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75,000 - 48,350 = 26,650.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.507Z"
+        }
+      }
+    },
+    {
+      "id": "2259d0db-45bd-4873-bbdc-c170286955ec",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve multi-step word problems",
+      "stem": "Pat read $12{,}480$ words on Monday and $15{,}730$ words on Tuesday. Sam read $31{,}000$ words in the same two days. How many more words did Sam read than Pat?",
+      "choices": [
+        "28210",
+        "18520",
+        "2790",
+        "59210"
+      ],
+      "answer": "2790",
+      "compute": "31000-(12480+15730)",
+      "solution": "Pat read 12,480 + 15,730 = 28,210 words. Sam read 31,000 - 28,210 = 2,790 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2790",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pat: 12480 + 15730 = 28210. 31000 - 28210 = 2790.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.552Z"
+        }
+      }
+    },
+    {
+      "id": "7e11af08-675a-4c89-b24d-2eb970513086",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve multi-step word problems",
+      "stem": "School A has $14{,}860$ students. School B has $3{,}475$ fewer students than School A. School C has $2{,}190$ more students than School B. How many students are in the three schools altogether?",
+      "choices": [],
+      "answer": "39820",
+      "compute": "14860+(14860-3475)+(14860-3475+2190)",
+      "solution": "School B: 14,860 - 3,475 = 11,385. School C: 11,385 + 2,190 = 13,575. Altogether: 14,860 + 11,385 + 13,575 = 39,820.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "39820",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B = 14860-3475 = 11385. C = 11385+2190 = 13575. Total = 14860+11385+13575 = 39820.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.634Z"
+        }
+      }
+    },
+    {
+      "id": "f8a8d7c1-dd92-4daf-98bc-f33c2fdb8c4c",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "A charity raised $18{,}296$ dollars in week 1, $27{,}845$ dollars in week 2 and $36{,}479$ dollars in week 3. How many dollars did it raise in the three weeks?",
+      "choices": [],
+      "answer": "82620",
+      "compute": "18296+27845+36479",
+      "solution": "Add the first two weeks: 18,296 + 27,845 = 46,141. Then add week 3: 46,141 + 36,479 = 82,620.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "82620",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18296+27845 = 46141; +36479 = 82620.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.694Z"
+        }
+      }
+    },
+    {
+      "id": "a38d4758-2d7c-4a67-ae6e-63f971c0d9d6",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add whole numbers with the standard algorithm",
+      "stem": "Which pair of numbers has a sum of $100{,}000$?",
+      "choices": [
+        "$68{,}275$ and $31{,}825$",
+        "$67{,}275$ and $31{,}725$",
+        "$68{,}275$ and $32{,}725$",
+        "$68{,}275$ and $31{,}725$"
+      ],
+      "answer": "$68{,}275$ and $31{,}725$",
+      "compute": null,
+      "solution": "68,275 + 31,725: ones 5 + 5 = 10, tens 7 + 2 + 1 = 10, hundreds 2 + 7 + 1 = 10, thousands 8 + 1 + 1 = 10, ten thousands 6 + 3 + 1 = 10. The sum is 100,000. The other pairs total 100,100, 99,000 and 101,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$68{,}275$ and $31{,}725$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "68275+31725 = 100000. Others: 100100, 101000, 99000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.695Z"
         }
       }
     },
@@ -23257,6 +25282,631 @@
       }
     },
     {
+      "id": "7066df9d-8954-472b-a836-97e80243292f",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "A game board has 12 rows of squares. Each row has 11 squares. How many squares are on the board?",
+      "choices": [],
+      "answer": "132",
+      "compute": "12*11",
+      "solution": "12 × 11 = 12 × 10 + 12 × 1 = 120 + 12 = 132 squares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "132",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 × 11 = 120 + 12 = 132.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.015Z"
+        }
+      }
+    },
+    {
+      "id": "acb4fa48-7b21-4aac-8b95-13bad9141c64",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A movie is 85 minutes long. Pat watches it 2 times. How many minutes does Pat watch in all?",
+      "choices": [],
+      "answer": "170",
+      "compute": "85*2",
+      "solution": "80 × 2 = 160 and 5 × 2 = 10. 160 + 10 = 170 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "170",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85 × 2 = 170.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.089Z"
+        }
+      }
+    },
+    {
+      "id": "35bb1d32-5a6f-41e0-9c83-ddae8d7b6083",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "A school orders 3 boxes of pencils. Each box holds 210 pencils. How many pencils does the school order?",
+      "choices": [
+        "63",
+        "6300",
+        "213",
+        "630"
+      ],
+      "answer": "630",
+      "compute": "3*210",
+      "solution": "3 × 200 = 600 and 3 × 10 = 30. 600 + 30 = 630 pencils.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "630",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 × 210 = 630.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.104Z"
+        }
+      }
+    },
+    {
+      "id": "8b7fbb0f-81fc-40cf-9a84-10f0da4bf3c8",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Partial products",
+      "stem": "Kai finds $6 \\times 32$ in two parts. The first part is $6 \\times 30 = 180$. What is the second part?",
+      "choices": [],
+      "answer": "12",
+      "compute": "6*2",
+      "solution": "Split 32 into 30 and 2. The second part is 6 × 2 = 12. (Check: 180 + 12 = 192.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 × 2 = 12 (180 + 12 = 192).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.112Z"
+        }
+      }
+    },
+    {
+      "id": "d75c5735-a5d4-4438-aa6a-680e95f5e769",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "Find the product of 4 and 102.",
+      "choices": [],
+      "answer": "408",
+      "compute": "4*102",
+      "solution": "4 × 100 = 400, 4 × 0 = 0 and 4 × 2 = 8. 400 + 8 = 408.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "408",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4*102=408.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.158Z"
+        }
+      }
+    },
+    {
+      "id": "52bf0d56-a895-44c2-8391-00e5408f7e49",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a two-digit number by a one-digit number",
+      "stem": "What is the value of $5 \\times 18$?",
+      "choices": [
+        "90",
+        "40",
+        "58",
+        "23"
+      ],
+      "answer": "90",
+      "compute": "5*18",
+      "solution": "Break 18 into 10 and 8. 5 × 10 = 50 and 5 × 8 = 40. 50 + 40 = 90.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5*18=90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.174Z"
+        }
+      }
+    },
+    {
+      "id": "98931ab1-9a0d-483c-abff-8f4f5f0bf646",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by multiples of ten",
+      "stem": "What is $6 \\times 70$?",
+      "choices": [],
+      "answer": "420",
+      "compute": "6*70",
+      "solution": "6 × 7 = 42, so 6 × 7 tens = 42 tens. 42 tens is 420.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "420",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6*70=420.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.174Z"
+        }
+      }
+    },
+    {
+      "id": "5892632d-fdf1-43d8-be57-0a6046881164",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Area model of a product",
+      "stem": "An area model splits $3 \\times 52$ into a $3 \\times 50$ part and a $3 \\times 2$ part. What is the total area of the model?",
+      "choices": [],
+      "answer": "156",
+      "compute": "3*50+3*2",
+      "solution": "3 × 50 = 150 and 3 × 2 = 6. 150 + 6 = 156.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "156",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 50 = 150, 3 x 2 = 6, total 156.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.222Z"
+        }
+      }
+    },
+    {
+      "id": "7732bb0a-5c37-436b-a148-251fce45470e",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expand a product with the distributive property",
+      "stem": "$7 \\times 45 = 7 \\times 40 + 7 \\times ?$. What number is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "45 is 40 + 5, so the missing number is 5. (7 × 40 = 280 and 7 × 5 = 35, which makes 315.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 = 40 + 5, so ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.246Z"
+        }
+      }
+    },
+    {
+      "id": "7a4b250c-f1d7-4034-92a1-b04e17562a25",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare and match products",
+      "stem": "Which product is the least?",
+      "choices": [
+        "$3 \\times 40$",
+        "$4 \\times 25$",
+        "$2 \\times 70$",
+        "$5 \\times 30$"
+      ],
+      "answer": "$4 \\times 25$",
+      "compute": null,
+      "solution": "4 × 25 = 100, 3 × 40 = 120, 2 × 70 = 140 and 5 × 30 = 150. The least is 4 × 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times 25$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120, 100, 150, 140; least is 4x25=100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.285Z"
+        }
+      }
+    },
+    {
+      "id": "df561f42-a1fc-4a50-9762-bd9e442aa244",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find and fix an error in a product",
+      "stem": "Sam says $3 \\times 40 = 12$. What is the correct product, and why?",
+      "choices": [
+        "12, because the zero does not change the product",
+        "120, because 3 times 4 tens is 12 tens",
+        "43, because the numbers are added",
+        "1200, because 3 times 4 hundreds is 12 hundreds"
+      ],
+      "answer": "120, because 3 times 4 tens is 12 tens",
+      "compute": null,
+      "solution": "40 is 4 tens. 3 × 4 tens = 12 tens, and 12 tens is 120.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120, because 3 times 4 tens is 12 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 4 tens = 12 tens = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.306Z"
+        }
+      }
+    },
+    {
+      "id": "16c42507-3956-4848-b866-a6f9254e18c1",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Area model of a product",
+      "stem": "A model has one part that is 30 by 4 and another part that is 2 by 4. Which multiplication has the same total area?",
+      "choices": [
+        "$34 \\times 2$",
+        "$30 \\times 24$",
+        "$32 + 4$",
+        "$32 \\times 4$"
+      ],
+      "answer": "$32 \\times 4$",
+      "compute": null,
+      "solution": "The two parts together are 30 + 2 = 32 long and 4 wide, so the area is 32 × 4 = 128.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$32 \\times 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30x4 + 2x4 = 32x4 = 128.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.311Z"
+        }
+      }
+    },
+    {
+      "id": "64da18da-6a78-43fd-964c-0b81df027278",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "A theater has 3 sections. Each section has 120 seats. How many seats does the theater have?",
+      "choices": [],
+      "answer": "360",
+      "compute": "3*120",
+      "solution": "3 × 100 = 300 and 3 × 20 = 60. 300 + 60 = 360 seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "360",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3*120=360.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.316Z"
+        }
+      }
+    },
+    {
+      "id": "9fdfcc57-fb12-447d-a876-e1e684ed1492",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Area model of a product",
+      "stem": "A rectangle is 4 units wide and 25 units long. Its length is split into 20 units and 5 units. Which two areas add up to the area of the whole rectangle?",
+      "choices": [
+        "$4 + 20$ and $4 + 5$",
+        "$4 \\times 20$ and $4 \\times 5$",
+        "$4 \\times 2$ and $4 \\times 5$",
+        "$20 \\times 5$ and $4 \\times 4$"
+      ],
+      "answer": "$4 \\times 20$ and $4 \\times 5$",
+      "compute": null,
+      "solution": "Each part is 4 units wide. One part is 20 units long, so its area is 4 × 20. The other is 5 units long, so its area is 4 × 5. The total is 80 + 20 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times 20$ and $4 \\times 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Partial products: 4x20=80 and 4x5=20; 80+20=100=4x25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.370Z"
+        }
+      }
+    },
+    {
+      "id": "7913813e-8053-483c-8f65-b26006ee3d17",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Expand a product with the distributive property",
+      "stem": "Rita splits 63 into 60 and 3 to find $5 \\times 63$. Which expression shows her plan?",
+      "choices": [
+        "$(5 \\times 60) + (5 \\times 3)$",
+        "$(5 \\times 60) + 3$",
+        "$5 + (60 \\times 3)$",
+        "$(5 + 60) \\times (5 + 3)$"
+      ],
+      "answer": "$(5 \\times 60) + (5 \\times 3)$",
+      "compute": null,
+      "solution": "Each part of 63 is multiplied by 5: 5 × 60 and 5 × 3. Then add: 300 + 15 = 315.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5 \\times 60) + (5 \\times 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive: 5x63 = (5x60)+(5x3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.397Z"
+        }
+      }
+    },
+    {
+      "id": "c2a3c735-53cc-4c64-87fb-27f53923ed9e",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a two-digit number by a one-digit number",
+      "stem": "Find the product of 7 and 12.",
+      "choices": [],
+      "answer": "84",
+      "compute": "7*12",
+      "solution": "7 × 10 = 70 and 7 × 2 = 14. 70 + 14 = 84.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 × 12 = 84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.432Z"
+        }
+      }
+    },
+    {
+      "id": "c11d7da4-4b2e-4c26-b826-007897638edb",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "What is the value of $40 \\times 12$?",
+      "choices": [
+        "48",
+        "4800",
+        "480",
+        "52"
+      ],
+      "answer": "480",
+      "compute": "40*12",
+      "solution": "12 × 4 = 48, so 12 × 4 tens = 48 tens, which is 480.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "480",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 × 12 = 480.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.448Z"
+        }
+      }
+    },
+    {
+      "id": "b01f0a62-9fc6-42bd-86c3-f443b98aeebc",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply by multiples of ten",
+      "stem": "A box holds 300 paper clips. How many paper clips are in 4 boxes?",
+      "choices": [],
+      "answer": "1200",
+      "compute": "300*4",
+      "solution": "3 hundreds × 4 = 12 hundreds, which is 1200 paper clips.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 * 4 = 1200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.597Z"
+        }
+      }
+    },
+    {
+      "id": "c7457ff0-1a1d-4050-a16a-0f0ac7d63526",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Partial products",
+      "stem": "Nia finds $8 \\times 23$ with partial products. Which shows both partial products and their sum?",
+      "choices": [
+        "$160 + 24 = 184$",
+        "$16 + 24 = 40$",
+        "$160 + 3 = 163$",
+        "$80 + 24 = 104$"
+      ],
+      "answer": "$160 + 24 = 184$",
+      "compute": null,
+      "solution": "Split 23 into 20 and 3. 8 × 20 = 160 and 8 × 3 = 24. 160 + 24 = 184.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$160 + 24 = 184$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x20=160, 8x3=24, sum 184.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.684Z"
+        }
+      }
+    },
+    {
+      "id": "0a1c6ca4-6f77-4ecf-adff-63d386f935ed",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A baker puts 16 rolls on each tray. How many rolls are on 3 trays?",
+      "choices": [],
+      "answer": "48",
+      "compute": "16*3",
+      "solution": "Break 16 into 10 and 6. 3 × 10 = 30 and 3 × 6 = 18. 30 + 18 = 48 rolls.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 x 3 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.685Z"
+        }
+      }
+    },
+    {
       "id": "e72d2e8b-9fb4-4bb2-aabe-b51777b0d6a1",
       "topic_id": "NC17.4.NBT.5",
       "difficulty": 2,
@@ -23602,6 +26252,684 @@
           "work": "6x45=270, 5x54=270, equal; 4x70=280.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.634Z"
+        }
+      }
+    },
+    {
+      "id": "562176ae-0a65-42c3-86df-51d07953f19d",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Expand a product with the distributive property",
+      "stem": "Ravi writes 37 as 30 + 7 to find $6 \\times 37$. Which expression does he use?",
+      "choices": [
+        "$(6 \\times 30) + 7$",
+        "$(6 + 30) \\times (6 + 7)$",
+        "$6 \\times 30 \\times 7$",
+        "$(6 \\times 30) + (6 \\times 7)$"
+      ],
+      "answer": "$(6 \\times 30) + (6 \\times 7)$",
+      "compute": null,
+      "solution": "Each part of 37 must be multiplied by 6. The expression is (6 × 30) + (6 × 7) = 180 + 42 = 222.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6 \\times 30) + (6 \\times 7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distributive: 6 × (30 + 7) = (6 × 30) + (6 × 7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.123Z"
+        }
+      }
+    },
+    {
+      "id": "d00620fe-b049-400c-b82a-c1fd9a648bff",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Area model of a product",
+      "stem": "An area model for $26 \\times 34$ splits each number into tens and ones. Three of the four parts are 600, 80 and 180. What is the fourth part?",
+      "choices": [],
+      "answer": "24",
+      "compute": "6*4",
+      "solution": "The parts are 20 × 30 = 600, 20 × 4 = 80, 6 × 30 = 180 and 6 × 4 = 24. The missing part is 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "26 × 34: 20×30 = 600, 20×4 = 80, 6×30 = 180, 6×4 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.137Z"
+        }
+      }
+    },
+    {
+      "id": "0cef8fa1-abd1-44e1-9c09-52614ee41b38",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "What is the value of $18 \\times 22$?",
+      "choices": [
+        "396",
+        "360",
+        "36",
+        "386"
+      ],
+      "answer": "396",
+      "compute": "18*22",
+      "solution": "18 × 20 = 360 and 18 × 2 = 36. 360 + 36 = 396.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "396",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18*22=18*20+18*2=360+36=396.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.152Z"
+        }
+      }
+    },
+    {
+      "id": "aa2adf98-e485-46b8-b3cb-8032cab4c6b4",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "Each ticket costs 12 dollars. A club buys 45 tickets. How many dollars does the club pay?",
+      "choices": [],
+      "answer": "540",
+      "compute": "12*45",
+      "solution": "45 × 10 = 450 and 45 × 2 = 90. 450 + 90 = 540 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "540",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12*45=540.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.159Z"
+        }
+      }
+    },
+    {
+      "id": "45708623-23ba-441e-b55b-ab27074773b0",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "Each lap around a track is 508 meters. Jo runs 3 laps. How many meters does Jo run?",
+      "choices": [],
+      "answer": "1524",
+      "compute": "508*3",
+      "solution": "3 × 500 = 1500, 3 × 0 = 0 and 3 × 8 = 24. 1500 + 24 = 1524 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1524",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "508*3=1524.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.169Z"
+        }
+      }
+    },
+    {
+      "id": "f122456a-2636-45aa-a56d-c9861392a2e1",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "A factory makes 624 toys each day. How many toys does it make in 5 days?",
+      "choices": [
+        "3020",
+        "2920",
+        "629",
+        "3120"
+      ],
+      "answer": "3120",
+      "compute": "624*5",
+      "solution": "5 × 600 = 3000, 5 × 20 = 100 and 5 × 4 = 20. 3000 + 100 + 20 = 3120 toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "624*5=3120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.192Z"
+        }
+      }
+    },
+    {
+      "id": "b737d81f-b5b3-4d1c-a826-48f953521ede",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "A box has 36 crayons. A teacher has 14 boxes like it. How many crayons does the teacher have?",
+      "choices": [
+        "144",
+        "360",
+        "504",
+        "540"
+      ],
+      "answer": "504",
+      "compute": "36*14",
+      "solution": "36 × 10 = 360 and 36 × 4 = 144. 360 + 144 = 504 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "504",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 x 14 = 360 + 144 = 504.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.216Z"
+        }
+      }
+    },
+    {
+      "id": "5cd11dfe-65f5-48c0-97f8-b953fd90bf3f",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expand a product with the distributive property",
+      "stem": "$9 \\times 128 = 9 \\times 100 + 9 \\times 20 + 9 \\times 8$, which is $? + 180 + 72$. What number is the ?",
+      "choices": [],
+      "answer": "900",
+      "compute": "9*100",
+      "solution": "The first part is 9 × 100 = 900. (900 + 180 + 72 = 1152.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 100 = 900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.291Z"
+        }
+      }
+    },
+    {
+      "id": "f68bd880-6cd3-4f92-bbf6-825731472760",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a two-digit number by a one-digit number",
+      "stem": "Each of 8 shelves holds 47 books. How many books are on the shelves in all?",
+      "choices": [],
+      "answer": "376",
+      "compute": "47*8",
+      "solution": "40 × 8 = 320 and 7 × 8 = 56. 320 + 56 = 376 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "376",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8*47=376.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.294Z"
+        }
+      }
+    },
+    {
+      "id": "4b8e69df-da0d-4c58-9dbb-0ac2ea78b8af",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Partial products",
+      "stem": "To find $14 \\times 23$, Tia adds the partial products $14 \\times 20$ and $14 \\times 3$. What is the sum of the two partial products?",
+      "choices": [],
+      "answer": "322",
+      "compute": "14*20+14*3",
+      "solution": "14 × 20 = 280 and 14 × 3 = 42. 280 + 42 = 322.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "322",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "280+42=322.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.314Z"
+        }
+      }
+    },
+    {
+      "id": "44471dd2-00ee-43f5-858d-900a1d83c396",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Area model of a product",
+      "stem": "A garden is 6 meters wide and 47 meters long. Which two areas, in square meters, add up to the area of the garden if the length is split into 40 and 7?",
+      "choices": [
+        "24 and 42",
+        "240 and 42",
+        "240 and 13",
+        "280 and 6"
+      ],
+      "answer": "240 and 42",
+      "compute": null,
+      "solution": "The two parts are 6 × 40 = 240 and 6 × 7 = 42. Together that is 282 square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "240 and 42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x40=240, 6x7=42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.317Z"
+        }
+      }
+    },
+    {
+      "id": "c5c2a4fc-cb22-4344-a5ba-1c01be95dcc5",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find and fix an error in a product",
+      "stem": "Lena finds the partial products 300 and 20 for $5 \\times 64$. She writes 3020 as her answer. What is the correct product?",
+      "choices": [],
+      "answer": "320",
+      "compute": "5*64",
+      "solution": "The partial products must be added, not written side by side. 300 + 20 = 320.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "320",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x64 = 300+20 = 320.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.413Z"
+        }
+      }
+    },
+    {
+      "id": "c86dd2ee-6d6b-415a-bc38-3885d0850554",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A bakery packs 24 muffins in each box. It fills 15 boxes. How many muffins does it pack?",
+      "choices": [],
+      "answer": "360",
+      "compute": "24*15",
+      "solution": "24 × 10 = 240 and 24 × 5 = 120. 240 + 120 = 360 muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "360",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 × 15 = 360.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.455Z"
+        }
+      }
+    },
+    {
+      "id": "adfd1f83-4a24-4e73-a79c-ab2078b77aef",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a two-digit number by a one-digit number",
+      "stem": "What is the value of $9 \\times 38$?",
+      "choices": [
+        "272",
+        "332",
+        "342",
+        "47"
+      ],
+      "answer": "342",
+      "compute": "9*38",
+      "solution": "9 × 30 = 270 and 9 × 8 = 72. 270 + 72 = 342.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "342",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 × 38 = 270 + 72 = 342.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.492Z"
+        }
+      }
+    },
+    {
+      "id": "a18a0a70-2104-44ca-b9ae-8b7603af2a04",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "A stadium has 6 sections. Each section has 275 seats. How many seats does the stadium have?",
+      "choices": [],
+      "answer": "1650",
+      "compute": "275*6",
+      "solution": "6 × 200 = 1200, 6 × 70 = 420 and 6 × 5 = 30. 1200 + 420 + 30 = 1650 seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1650",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 × 275 = 1,650.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.500Z"
+        }
+      }
+    },
+    {
+      "id": "6d9929b9-04e5-462f-8de1-5f5ee9ea2b1a",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Area model of a product",
+      "stem": "A gym floor is 28 meters long and 15 meters wide. What is its area in square meters?",
+      "choices": [],
+      "answer": "420",
+      "compute": "28*15",
+      "solution": "28 × 10 = 280 and 28 × 5 = 140. 280 + 140 = 420 square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "420",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 * 15 = 280 + 140 = 420.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.557Z"
+        }
+      }
+    },
+    {
+      "id": "9c87bbdb-da42-42fe-b8f9-b8efb85d6f01",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a two-digit number by a one-digit number",
+      "stem": "Find the product of 7 and 86.",
+      "choices": [],
+      "answer": "602",
+      "compute": "7*86",
+      "solution": "7 × 80 = 560 and 7 × 6 = 42. 560 + 42 = 602.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "602",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 * 86 = 560 + 42 = 602.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.584Z"
+        }
+      }
+    },
+    {
+      "id": "3f5ae6e5-a2a1-434d-80c5-5f8af2e6badf",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply by multiples of ten",
+      "stem": "What is $50 \\times 40$?",
+      "choices": [],
+      "answer": "2000",
+      "compute": "50*40",
+      "solution": "5 × 4 = 20, so 5 tens × 4 tens = 20 hundreds, which is 2000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 * 40 = 2000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.610Z"
+        }
+      }
+    },
+    {
+      "id": "37e8dcc7-4c4d-4359-9888-7c4fc50d827b",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A library shelf holds 132 books. The library has 7 shelves like it. How many books can these shelves hold?",
+      "choices": [
+        "924",
+        "714",
+        "934",
+        "139"
+      ],
+      "answer": "924",
+      "compute": "132*7",
+      "solution": "7 × 100 = 700, 7 × 30 = 210 and 7 × 2 = 14. 700 + 210 + 14 = 924 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "924",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "132 x 7 = 700+210+14 = 924.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.631Z"
+        }
+      }
+    },
+    {
+      "id": "05a78cc0-be02-45f9-9300-934565db275b",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "Find the product of 41 and 27.",
+      "choices": [],
+      "answer": "1107",
+      "compute": "41*27",
+      "solution": "27 × 40 = 1080 and 27 × 1 = 27. 1080 + 27 = 1107.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1107",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "41 x 27 = 1080+27 = 1107.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.656Z"
+        }
+      }
+    },
+    {
+      "id": "6a9c4574-c91b-4e4e-bb35-a5df8e6dbabb",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Partial products",
+      "stem": "To find $4 \\times 237$, a student adds the partial products 800, 120 and 28. What is the product?",
+      "choices": [],
+      "answer": "948",
+      "compute": "800+120+28",
+      "solution": "800 + 120 = 920, and 920 + 28 = 948.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "948",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "800+120+28 = 948 (= 4 x 237).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.661Z"
+        }
+      }
+    },
+    {
+      "id": "710d46a0-c0bf-407d-b08e-d17939e2a8de",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Partial products",
+      "stem": "The numbers in $47 \\times 36$ are split into tens and ones to make four partial products. Which of these is NOT one of the four?",
+      "choices": [
+        "$40 \\times 30$",
+        "$7 \\times 6$",
+        "$4 \\times 36$",
+        "$7 \\times 30$"
+      ],
+      "answer": "$4 \\times 36$",
+      "compute": null,
+      "solution": "The four partial products are 40 × 30, 40 × 6, 7 × 30 and 7 × 6. The product 4 × 36 is not one of them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times 36$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Partials: 40x30, 40x6, 7x30, 7x6. 4x36 is not one.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.679Z"
         }
       }
     },
@@ -23980,6 +27308,660 @@
           "work": "52x34=1768; patio 120; 1768-120=1648.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.623Z"
+        }
+      }
+    },
+    {
+      "id": "2f1be03c-7016-4982-9852-e4a23b0de420",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Area model of a product",
+      "stem": "Mei makes an area model for $47 \\times 63$. Her parts are 2400 (for $40 \\times 60$), 120 (for $40 \\times 3$), 240 (for $7 \\times 60$) and 21 (for $7 \\times 3$). Which part is wrong?",
+      "choices": [
+        "$40 \\times 60$",
+        "$7 \\times 60$",
+        "$40 \\times 3$",
+        "$7 \\times 3$"
+      ],
+      "answer": "$7 \\times 60$",
+      "compute": null,
+      "solution": "40 × 60 = 2400, 40 × 3 = 120 and 7 × 3 = 21 are right. But 7 × 60 = 420, not 240.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 60$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7*60=420 not 240; others correct.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.195Z"
+        }
+      }
+    },
+    {
+      "id": "5302b500-8f14-4332-88be-185e1f8930c0",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare and match products",
+      "stem": "What number makes $12 \\times 35 = 6 \\times ?$ true?",
+      "choices": [],
+      "answer": "70",
+      "compute": "12*35/6",
+      "solution": "6 is half of 12, so the missing factor must be double 35, which is 70. Check: 12 × 35 = 420 and 6 × 70 = 420.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "420/6=70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.195Z"
+        }
+      }
+    },
+    {
+      "id": "2b1003a1-1d67-4662-b34d-34c26675ce1a",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "What is $95 \\times 38$?",
+      "choices": [],
+      "answer": "3610",
+      "compute": "95*38",
+      "solution": "95 × 30 = 2850 and 95 × 8 = 760. 2850 + 760 = 3610.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3610",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "95 x 38 = 95x40 - 95x2 = 3800 - 190 = 3610.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.217Z"
+        }
+      }
+    },
+    {
+      "id": "047d4e1d-423b-4c6f-906e-f40e670e02ba",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expand a product with the distributive property",
+      "stem": "$(8 \\times 200) + (8 \\times 70) + (8 \\times 6) = 8 \\times ?$. What number is the ?",
+      "choices": [],
+      "answer": "276",
+      "compute": "200+70+6",
+      "solution": "Multiplying each part of a number by 8 and adding is the same as multiplying the whole number by 8. 200 + 70 + 6 = 276.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "276",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x (200 + 70 + 6) = 8 x 276.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.245Z"
+        }
+      }
+    },
+    {
+      "id": "83c959da-3e39-4471-b9dc-ae9cb59696bf",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expand a product with the distributive property",
+      "stem": "Which expression is NOT equal to $6 \\times 148$?",
+      "choices": [
+        "$(6 \\times 140) + (6 \\times 8)$",
+        "$600 + 240 + 48$",
+        "$(6 \\times 100) + (6 \\times 48)$",
+        "$(6 \\times 100) + (6 \\times 4) + (6 \\times 8)$"
+      ],
+      "answer": "$(6 \\times 100) + (6 \\times 4) + (6 \\times 8)$",
+      "compute": null,
+      "solution": "6 × 148 = 888. The expression 600 + 24 + 48 = 672 is wrong because 148 is 100 + 40 + 8, so the middle part is 6 × 40, not 6 × 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6 \\times 100) + (6 \\times 4) + (6 \\times 8)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x148 = 888. A: 840+48=888. B: 600+24+48=672 (wrong, 4 should be 40). C: 888. D: 600+288=888. NOT equal: B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.253Z"
+        }
+      }
+    },
+    {
+      "id": "4b32422a-bba8-4734-afe0-1f76d0a878f6",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A school has 23 classrooms with 28 students in each. On Monday, 17 students are absent. How many students are at school on Monday?",
+      "choices": [],
+      "answer": "627",
+      "compute": "23*28-17",
+      "solution": "23 × 28 = 460 + 184 = 644 students in all. 644 - 17 = 627 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "627",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23*28=644; 644-17=627.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.274Z"
+        }
+      }
+    },
+    {
+      "id": "1f18cdbb-2569-4462-b1e9-2889c2f376b5",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "Find the product of 68 and 47.",
+      "choices": [],
+      "answer": "3196",
+      "compute": "68*47",
+      "solution": "68 × 40 = 2720 and 68 × 7 = 476. 2720 + 476 = 3196.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3196",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "68*47 = 68*50 - 68*3 = 3400-204 = 3196.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.297Z"
+        }
+      }
+    },
+    {
+      "id": "5d9378e1-dbd4-4564-9ea0-d510d3b20449",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "Tickets for a show cost 8 dollars for an adult and 5 dollars for a child. The show sells 126 adult tickets and 85 child tickets. How many dollars do the ticket sales come to?",
+      "choices": [],
+      "answer": "1433",
+      "compute": "126*8+85*5",
+      "solution": "126 × 8 = 1008 and 85 × 5 = 425. 1008 + 425 = 1433 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1433",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "126*8=1008; 85*5=425; total 1433.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.303Z"
+        }
+      }
+    },
+    {
+      "id": "6cb1e83f-e920-4ddf-914a-1b3df14a8388",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find and fix an error in a product",
+      "stem": "A one-digit number times 63 equals 504. What is the one-digit number?",
+      "choices": [],
+      "answer": "8",
+      "compute": "504/63",
+      "solution": "Try 63 × 8 = 480 + 24 = 504. The number is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "504/63 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.308Z"
+        }
+      }
+    },
+    {
+      "id": "fb37260f-081c-4aac-b783-07bbe4f795c5",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "A parking garage has 6 floors. Each floor has 785 spaces. How many spaces does the garage have?",
+      "choices": [
+        "4710",
+        "4510",
+        "4230",
+        "791"
+      ],
+      "answer": "4710",
+      "compute": "785*6",
+      "solution": "6 × 700 = 4200, 6 × 80 = 480 and 6 × 5 = 30. 4200 + 480 + 30 = 4710 spaces.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4710",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "785*6=4710.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.323Z"
+        }
+      }
+    },
+    {
+      "id": "f0189aae-24b2-4322-9406-d3e9b95ff023",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "Maya needs 500 stickers. A pack has 36 stickers, and she buys 14 packs. Which statement is true?",
+      "choices": [
+        "She has 504 stickers, which is enough",
+        "She has 360 stickers, which is not enough",
+        "She has 144 stickers, which is not enough",
+        "She has 450 stickers, which is not enough"
+      ],
+      "answer": "She has 504 stickers, which is enough",
+      "compute": null,
+      "solution": "36 × 10 = 360 and 36 × 4 = 144. 360 + 144 = 504, which is more than 500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She has 504 stickers, which is enough",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36x14 = 360+144 = 504 >= 500, enough.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.385Z"
+        }
+      }
+    },
+    {
+      "id": "4b604025-d1fa-4ed8-ac4e-d8adf397985d",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "A hall has 39 tables. Each table has 26 chairs. How many chairs are in the hall?",
+      "choices": [],
+      "answer": "1014",
+      "compute": "39*26",
+      "solution": "39 × 20 = 780 and 39 × 6 = 234. 780 + 234 = 1014 chairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1014",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "39x26 = 780+234 = 1014.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.386Z"
+        }
+      }
+    },
+    {
+      "id": "85fdac9e-e87a-4a79-99f4-d0c198471241",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "A warehouse ships 8 pallets. Each pallet holds 479 cans. How many cans does the warehouse ship?",
+      "choices": [],
+      "answer": "3832",
+      "compute": "479*8",
+      "solution": "8 × 400 = 3200, 8 × 70 = 560 and 8 × 9 = 72. 3200 + 560 + 72 = 3832 cans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3832",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "479x8 = 3200+560+72 = 3832.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.399Z"
+        }
+      }
+    },
+    {
+      "id": "c3462f8c-1202-4382-b11d-783efd5fc98b",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply by multiples of ten",
+      "stem": "A pallet holds 40 cartons. Each carton holds 90 cans. How many cans are on the pallet?",
+      "choices": [],
+      "answer": "3600",
+      "compute": "40*90",
+      "solution": "4 × 9 = 36, so 4 tens × 9 tens = 36 hundreds, which is 3600 cans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40x90 = 3600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.404Z"
+        }
+      }
+    },
+    {
+      "id": "a7c31cf3-5c17-482b-a84e-373d6d895d76",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find and fix an error in a product",
+      "stem": "Omar finds $47 \\times 36$ by adding 282 and 141, and gets 423. What was his mistake?",
+      "choices": [
+        "He used $47 \\times 6$ instead of $47 \\times 60$",
+        "He used $47 \\times 3$ instead of $47 \\times 30$",
+        "He added 282 and 141 instead of multiplying them",
+        "He worked out $47 \\times 6$ wrongly"
+      ],
+      "answer": "He used $47 \\times 3$ instead of $47 \\times 30$",
+      "compute": null,
+      "solution": "36 is 30 + 6. 47 × 6 = 282 is right, but the other partial product must be 47 × 30 = 1410, not 141. The product is 282 + 1410 = 1692.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He used $47 \\times 3$ instead of $47 \\times 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47×36 = 47×30 + 47×6 = 1,410 + 282. 141 = 47×3, so he used 47×3 instead of 47×30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.518Z"
+        }
+      }
+    },
+    {
+      "id": "f6d4d707-6c80-406e-9a8e-4a28695114ee",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A florist makes 18 bouquets with 12 flowers each. She also makes 24 bouquets with 15 flowers each. How many flowers does she use in all?",
+      "choices": [],
+      "answer": "576",
+      "compute": "18*12+24*15",
+      "solution": "18 × 12 = 216 and 24 × 15 = 360. 216 + 360 = 576 flowers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "576",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18×12 = 216; 24×15 = 360; 216 + 360 = 576.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.527Z"
+        }
+      }
+    },
+    {
+      "id": "b3282e68-feb9-4567-aa5f-21e7839fbea4",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare and match products",
+      "stem": "Four pairs of numbers are multiplied. Which pair has the least product?",
+      "choices": [
+        "$38 \\times 52$",
+        "$41 \\times 47$",
+        "$34 \\times 58$",
+        "$29 \\times 66$"
+      ],
+      "answer": "$29 \\times 66$",
+      "compute": null,
+      "solution": "38 × 52 = 1976, 41 × 47 = 1927, 34 × 58 = 1972 and 29 × 66 = 1914. The least is 29 × 66.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$29 \\times 66$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "29*66=1914, 34*58=1972, 41*47=1927, 38*52=1976. Least 1914.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.622Z"
+        }
+      }
+    },
+    {
+      "id": "31c09e96-d145-46e9-bd9d-043f55ecae71",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "What is the value of $73 \\times 28$?",
+      "choices": [
+        "2044",
+        "1944",
+        "2134",
+        "2036"
+      ],
+      "answer": "2044",
+      "compute": "73*28",
+      "solution": "73 × 20 = 1460 and 73 × 8 = 584. 1460 + 584 = 2044.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2044",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "73x28 = 73x30 - 73x2 = 2190-146 = 2044.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.638Z"
+        }
+      }
+    },
+    {
+      "id": "c1471e41-3541-4ee0-90cb-bf2b6778b7d6",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Partial products",
+      "stem": "Which list shows the partial products used to find $5 \\times 482$?",
+      "choices": [
+        "200, 40, 10",
+        "2000, 40, 10",
+        "2000, 400, 10",
+        "2000, 400, 2"
+      ],
+      "answer": "2000, 400, 10",
+      "compute": null,
+      "solution": "482 is 400 + 80 + 2. 5 × 400 = 2000, 5 × 80 = 400 and 5 × 2 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2000, 400, 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x400=2000, 5x80=400, 5x2=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.674Z"
+        }
+      }
+    },
+    {
+      "id": "4f3a2e5e-4d93-4b6b-a5ba-9cd825e6030c",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two two-digit numbers",
+      "stem": "What is the value of $84 \\times 59$?",
+      "choices": [
+        "4256",
+        "4846",
+        "5046",
+        "4956"
+      ],
+      "answer": "4956",
+      "compute": "84*59",
+      "solution": "84 × 50 = 4200 and 84 × 9 = 756. 4200 + 756 = 4956.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4956",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "84x59 = 84x60 - 84 = 5040-84 = 4956.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.676Z"
+        }
+      }
+    },
+    {
+      "id": "1ea939c6-3e73-4604-bff8-a9d43fe4a1e3",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Partial products",
+      "stem": "Two of the four partial products of $62 \\times 45$ are 2400 and 300. The other two come from $2 \\times 40$ and $2 \\times 5$. What is the sum of all four partial products?",
+      "choices": [],
+      "answer": "2790",
+      "compute": "2400+300+2*40+2*5",
+      "solution": "2 × 40 = 80 and 2 × 5 = 10. 2400 + 300 + 80 + 10 = 2790.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2790",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2400 + 300 + 80 + 10 = 2790 (= 62 · 45).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.789Z"
         }
       }
     },

@@ -16046,6 +16046,602 @@
       }
     },
     {
+      "id": "9be89dc6-4680-4836-b0f8-615e4ca3ff96",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "Tom has 36 dollars. He pays 12 dollars for a game and then buys snacks for 3 dollars each. Which inequality shows the number of snacks, $s$, he can buy?",
+      "choices": [
+        "$12 + 3s \\ge 36$",
+        "$12s + 3 \\le 36$",
+        "$12 + 3s \\le 36$",
+        "$15s \\le 36$"
+      ],
+      "answer": "$12 + 3s \\le 36$",
+      "compute": null,
+      "solution": "He spends $12 + 3s$ dollars in all, and this cannot be more than the 36 dollars he has. So $12 + 3s \\le 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 + 3s \\le 36$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Game 12 plus 3 per snack, at most 36: 12 + 3s ≤ 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.096Z"
+        }
+      }
+    },
+    {
+      "id": "4d8303ec-eb2e-4f36-a1f7-4ead99bdc51e",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "Twice a number, decreased by 9, equals 25. What is the number?",
+      "choices": [],
+      "answer": "17",
+      "compute": "(25+9)/2",
+      "solution": "Write $2n - 9 = 25$. Add 9: $2n = 34$. Divide by 2: $n = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2n − 9 = 25 → 2n = 34 → n = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.097Z"
+        }
+      }
+    },
+    {
+      "id": "f913019e-fec3-4956-a2e9-2ac9442be8dd",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A pizza shop charges 4 dollars for delivery plus 9 dollars for each pizza. Ali's order cost 40 dollars. Which equation can be used to find the number of pizzas, $p$?",
+      "choices": [
+        "$4p + 9 = 40$",
+        "$9p + 4 = 40$",
+        "$13p = 40$",
+        "$9p - 4 = 40$"
+      ],
+      "answer": "$9p + 4 = 40$",
+      "compute": null,
+      "solution": "The cost is 9 dollars for each of $p$ pizzas, which is $9p$, plus 4 dollars for delivery. Setting the total equal to 40 gives $9p + 4 = 40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9p + 4 = 40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 9p = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.154Z"
+        }
+      }
+    },
+    {
+      "id": "4340c377-8631-42e0-97b0-348720c20449",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A patient has 80 milligrams of a medicine in the body. Each hour 25 percent of it is removed. Which equation can be used to find the number of hours, $h$, until 45 milligrams remain?",
+      "choices": [
+        "$80(0.25)^{h} = 45$",
+        "$80(1.25)^{h} = 45$",
+        "$80(0.75)^{h} = 45$",
+        "$80 - 0.25h = 45$"
+      ],
+      "answer": "$80(0.75)^{h} = 45$",
+      "compute": null,
+      "solution": "Losing 25 percent each hour leaves 75 percent, so the amount is multiplied by 0.75 each hour. After $h$ hours it is $80(0.75)^{h}$, which equals 45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$80(0.75)^{h} = 45$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75% remains each hour: 80(0.75)^h=45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.186Z"
+        }
+      }
+    },
+    {
+      "id": "1289b12b-f028-4212-afb1-0a74c7b6a2b5",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A patch of mold covers 4 square centimeters and triples in area every day. After $d$ days it covers 324 square centimeters. Which equation matches this?",
+      "choices": [
+        "$3 \\cdot 4^{d} = 324$",
+        "$4 \\cdot 3^{d} = 324$",
+        "$4 + 3d = 324$",
+        "$4 \\cdot d^{3} = 324$"
+      ],
+      "answer": "$4 \\cdot 3^{d} = 324$",
+      "compute": null,
+      "solution": "The area starts at 4 and is multiplied by 3 each day, so after $d$ days it is $4 \\cdot 3^{d}$. That equals 324.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\cdot 3^{d} = 324$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area after d days = 4 x 3^d = 324 (d = 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.234Z"
+        }
+      }
+    },
+    {
+      "id": "0043e0d2-bb7e-47a9-80c4-a2b018d4217f",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "The square of a number plus 3 times the number is 28. Which equation can be used to find the number, $n$?",
+      "choices": [
+        "$2n + 3n = 28$",
+        "$n^{2} + 3n = 28$",
+        "$(n + 3)^{2} = 28$",
+        "$n^{2} + 3 = 28$"
+      ],
+      "answer": "$n^{2} + 3n = 28$",
+      "compute": null,
+      "solution": "The square of the number is $n^{2}$ and 3 times the number is $3n$. Their sum is 28, so $n^{2} + 3n = 28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$n^{2} + 3n = 28$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n^2 + 3n = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.254Z"
+        }
+      }
+    },
+    {
+      "id": "735498e8-a025-4a92-968e-720321af8ee4",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "An elevator can safely carry at most 900 pounds. Each box weighs 45 pounds. Which inequality shows the number of boxes, $b$, the elevator can carry?",
+      "choices": [
+        "$45b \\ge 900$",
+        "$b + 45 \\le 900$",
+        "$45b \\le 900$",
+        "$900b \\le 45$"
+      ],
+      "answer": "$45b \\le 900$",
+      "compute": null,
+      "solution": "The weight of $b$ boxes is $45b$ pounds. It must be at most 900, so $45b \\le 900$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$45b \\le 900$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total weight 45b at most 900: 45b <= 900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.337Z"
+        }
+      }
+    },
+    {
+      "id": "7806b013-67cd-428b-b793-c70ffc4f0794",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "To go on a ride, a child must be at least 48 inches tall. Pia is 42 inches tall and grows 2 inches each year. Which inequality shows the number of years, $y$, until she can go on the ride?",
+      "choices": [
+        "$42 + 2y \\ge 48$",
+        "$42 + 2y \\le 48$",
+        "$42y + 2 \\ge 48$",
+        "$2y \\ge 42$"
+      ],
+      "answer": "$42 + 2y \\ge 48$",
+      "compute": null,
+      "solution": "After $y$ years Pia is $42 + 2y$ inches tall. It must be at least 48, so $42 + 2y \\ge 48$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$42 + 2y \\ge 48$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height after y years 42+2y must be at least 48: 42+2y >= 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.368Z"
+        }
+      }
+    },
+    {
+      "id": "9b814e5b-3230-44a0-99eb-58ff6151c54a",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "Kai has 30 dollars and spends 4 dollars each day. He wants more than 10 dollars left after $d$ days. Which is the solution of the inequality $30 - 4d > 10$?",
+      "choices": [
+        "$d > 5$",
+        "$d \\le 5$",
+        "$d < 20$",
+        "$d < 5$"
+      ],
+      "answer": "$d < 5$",
+      "compute": null,
+      "solution": "Subtract 30: $-4d > -20$. Dividing by $-4$ reverses the inequality: $d < 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$d < 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 - 4d > 10 gives -4d > -20, so d < 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.542Z"
+        }
+      }
+    },
+    {
+      "id": "111f1d43-7844-4bef-96e9-04b8b6e49e53",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A tree farm has 1,000 trees, and the number of trees grows 10 percent each year. After how many years will the farm have $1{,}210$ trees?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Write $1000(1.1)^{t} = 1210$. Divide by 1000: $1.1^{t} = 1.21$. Since $1.1 \\times 1.1 = 1.21$, $t = 2$ years.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000(1.1)^t = 1210; 1.1^2 = 1.21, so t = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.570Z"
+        }
+      }
+    },
+    {
+      "id": "68bb5677-09dd-46d1-8451-94dcf6ac2a56",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "A kayak rental costs a flat fee of 12 dollars plus 7 dollars for each hour. Rosa paid 54 dollars. For how many hours did she rent the kayak?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(54-12)/7",
+      "solution": "Write $12 + 7h = 54$. Subtract 12: $7h = 42$. Divide by 7: $h = 6$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 + 7h = 54 → 7h = 42 → h = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.713Z"
+        }
+      }
+    },
+    {
+      "id": "f9e37650-7202-4073-8689-48e6b45ac446",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "A box can hold at most 24 kilograms. Each book weighs 1.5 kilograms. What is the greatest number of books the box can hold?",
+      "choices": [],
+      "answer": "16",
+      "compute": "24/1.5",
+      "solution": "Write $1.5b \\le 24$. Divide by 1.5: $b \\le 16$. The greatest number is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5b ≤ 24 → b ≤ 16. Greatest is 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.718Z"
+        }
+      }
+    },
+    {
+      "id": "426b313c-38c1-46c7-82c8-94791b7c8a59",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "Squaring a positive number gives the same result as multiplying the number by 7. What is the number?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Write $x^{2} = 7x$. Subtract $7x$: $x^{2} - 7x = 0$, so $x(x - 7) = 0$. The solutions are 0 and 7, and the number is positive, so it is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x² = 7x, x > 0 → x = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.722Z"
+        }
+      }
+    },
+    {
+      "id": "8492ff66-d542-4d80-9905-4a878bf6163c",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A rumor spreads so that the number of people who know it doubles every hour. If 3 people know it at noon, after how many hours do 48 people know it?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Write $3 \\cdot 2^{h} = 48$. Divide by 3: $2^{h} = 16$. Since $2^{4} = 16$, $h = 4$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3·2^t = 48 → 2^t = 16 → t = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.737Z"
+        }
+      }
+    },
+    {
+      "id": "b95e1f18-f329-4987-8897-c47b01a5e016",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "Leo has 18 dollars and earns 5 dollars for each lawn he mows. He wants to have at least 63 dollars. What is the least number of lawns he must mow?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(63-18)/5",
+      "solution": "Write $18 + 5n \\ge 63$. Subtract 18: $5n \\ge 45$. Divide by 5: $n \\ge 9$. The least number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 + 5n ≥ 63 → n ≥ 9. Least 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.741Z"
+        }
+      }
+    },
+    {
+      "id": "d3ef138f-0c8e-43ed-b5b0-2567f0eb6fe0",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A town of 8,000 people grows 5 percent each year. Which equation can be used to find the number of years, $t$, until the town has $9{,}261$ people?",
+      "choices": [
+        "$8{,}000(1.05)^{t} = 9{,}261$",
+        "$8{,}000(0.05)^{t} = 9{,}261$",
+        "$8{,}000(5)^{t} = 9{,}261$",
+        "$8{,}000 + 1.05t = 9{,}261$"
+      ],
+      "answer": "$8{,}000(1.05)^{t} = 9{,}261$",
+      "compute": null,
+      "solution": "Growing 5 percent means multiplying by 1.05 each year. After $t$ years the population is $8{,}000(1.05)^{t}$, which equals $9{,}261$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8{,}000(1.05)^{t} = 9{,}261$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5% growth: factor 1.05 per year: 8000(1.05)^t = 9261.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.750Z"
+        }
+      }
+    },
+    {
+      "id": "b033f091-9dcd-47fc-9373-59fe357e9730",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "A square mat has an area of 196 square centimeters. How long is one side, in centimeters?",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "Write $s^{2} = 196$. Since $14 \\times 14 = 196$ and a length is positive, $s = 14$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "s² = 196 → s = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.751Z"
+        }
+      }
+    },
+    {
+      "id": "03cde930-3137-4dac-909f-2b466febe9a6",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "The number of views of a video triples each day. It had 7 views at the start. After how many days will it have 189 views?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Write $7 \\cdot 3^{d} = 189$. Divide by 7: $3^{d} = 27$. Since $3^{3} = 27$, $d = 3$ days.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7·3^d = 189 → 3^d = 27 → d = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.757Z"
+        }
+      }
+    },
+    {
+      "id": "70be3782-c123-461d-8c9c-a30f86f14819",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "A candle is 30 centimeters tall and burns down 2.5 centimeters every hour. After how many hours is it 10 centimeters tall?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(30-10)/2.5",
+      "solution": "Write $30 - 2.5h = 10$. Subtract 30: $-2.5h = -20$. Divide by $-2.5$: $h = 8$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 - 2.5h = 10 → 2.5h = 20 → h = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.788Z"
+        }
+      }
+    },
+    {
       "id": "45df5379-a5cb-4ee0-bf8d-cd68b8887ac5",
       "topic_id": "NC17.M1.A-CED.1",
       "difficulty": 2,
@@ -16391,6 +16987,704 @@
           "work": "Growth factor 1.04 per year: 2500(1.04)^n=3000.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.628Z"
+        }
+      }
+    },
+    {
+      "id": "c6921ac7-4573-4879-abc8-f684c5b31799",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "Sasha is 4 years older than twice her brother's age. The sum of their ages is 31. Which equation finds her brother's age, $b$?",
+      "choices": [
+        "$2b + 4 = 31$",
+        "$b + (2b + 4) = 31$",
+        "$b + 2(b + 4) = 31$",
+        "$b + (4b + 2) = 31$"
+      ],
+      "answer": "$b + (2b + 4) = 31$",
+      "compute": null,
+      "solution": "Sasha's age is $2b + 4$. The sum of the two ages is $b + (2b + 4)$, which equals 31.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$b + (2b + 4) = 31$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sasha = 2b + 4; b + (2b + 4) = 31.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.092Z"
+        }
+      }
+    },
+    {
+      "id": "36b8554b-a0b1-4579-9610-b8d1423dbd9f",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "In the equation $450(1.06)^{t} = 600$, $t$ is the number of years. What does the number 1.06 tell you?",
+      "choices": [
+        "The amount grows by 6 percent each year",
+        "The amount shrinks by 6 percent each year",
+        "The amount grows by 106 percent each year",
+        "The amount grows by 1.06 units each year"
+      ],
+      "answer": "The amount grows by 6 percent each year",
+      "compute": null,
+      "solution": "A factor of 1.06 means each year the amount is 106 percent of the year before, which is a growth of 6 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The amount grows by 6 percent each year",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Growth factor 1.06 = 1 + 0.06: grows 6% each year.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.114Z"
+        }
+      }
+    },
+    {
+      "id": "2585bfd0-ef3b-4edf-8966-83014c53f602",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A triangle's base is 4 centimeters longer than its height, $h$. The area of the triangle is 30 square centimeters. Which equation can be used to find $h$?",
+      "choices": [
+        "$h(h + 4) = 30$",
+        "$\\frac{1}{2}h + (h + 4) = 30$",
+        "$\\frac{1}{2}h^{2} + 4 = 30$",
+        "$\\frac{1}{2}h(h + 4) = 30$"
+      ],
+      "answer": "$\\frac{1}{2}h(h + 4) = 30$",
+      "compute": null,
+      "solution": "The base is $h + 4$. The area of a triangle is one half of the base times the height, so $\\frac{1}{2}h(h + 4) = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}h(h + 4) = 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base h+4, area (1/2)h(h+4)=30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.149Z"
+        }
+      }
+    },
+    {
+      "id": "553dd9a4-1b7e-4085-ad46-0ef313de219c",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "A parking garage charges 3 dollars plus 1.50 dollars for each hour. Ana has 20 dollars. What is the greatest whole number of hours she can park?",
+      "choices": [],
+      "answer": "11",
+      "compute": null,
+      "solution": "Write $3 + 1.5h \\le 20$. Subtract 3: $1.5h \\le 17$. Divide by 1.5: $h \\le 11.33$. The greatest whole number of hours is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 1.5h <= 20 -> 1.5h <= 17 -> h <= 11.33. Greatest whole number 11 (11 h costs 19.50, 12 h costs 21).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.198Z"
+        }
+      }
+    },
+    {
+      "id": "6bfee789-ccb8-4464-b4ec-f23845253977",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "One company rents a van for 60 dollars plus 0.40 dollars per mile. Another rents a van for 45 dollars plus 0.55 dollars per mile. Which equation finds the number of miles, $m$, for which the two rentals cost the same?",
+      "choices": [
+        "$60 + 0.55m = 45 + 0.40m$",
+        "$60 + 45 = 0.40m + 0.55m$",
+        "$60m + 0.40 = 45m + 0.55$",
+        "$60 + 0.40m = 45 + 0.55m$"
+      ],
+      "answer": "$60 + 0.40m = 45 + 0.55m$",
+      "compute": null,
+      "solution": "The first rental costs $60 + 0.40m$ and the second costs $45 + 0.55m$. The costs are the same when $60 + 0.40m = 45 + 0.55m$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60 + 0.40m = 45 + 0.55m$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cost1 = 60 + 0.40m, Cost2 = 45 + 0.55m; set equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.228Z"
+        }
+      }
+    },
+    {
+      "id": "095f6c30-6a1f-4d3c-97c3-c2a1fd69bb03",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "Lily pads cover 5 square meters of a pond, and the area they cover doubles every week. After how many weeks will they cover 320 square meters?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Write $5 \\cdot 2^{w} = 320$. Divide by 5: $2^{w} = 64$. Since $2^{6} = 64$, $w = 6$ weeks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5*2^w=320 -> 2^w=64 -> w=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.299Z"
+        }
+      }
+    },
+    {
+      "id": "6fd8666d-f344-43a2-9e20-126c24cd9de2",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "Rita walks at 4 kilometers per hour. Sam starts 6 kilometers ahead of her and walks the same way at 2 kilometers per hour. After how many hours does Rita catch up to Sam?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6/(4-2)",
+      "solution": "Rita catches up when she has walked 6 kilometers farther than Sam: $4t = 6 + 2t$. Subtract $2t$: $2t = 6$, so $t = 3$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rita gains 4-2=2 km/h on a 6 km gap: 4t = 6+2t -> t=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.305Z"
+        }
+      }
+    },
+    {
+      "id": "d370ea0f-5847-443a-81b8-7b1e1aae17c2",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A rocket's height, in feet, $t$ seconds after launch is $h = -16t^{2} + 96t + 5$. Which equation can be used to find when the rocket is 133 feet high?",
+      "choices": [
+        "$-16t^{2} + 96t + 5 = 133$",
+        "$-16t^{2} + 96t + 5 = 0$",
+        "$-16t^{2} + 96t = 133$",
+        "$16t^{2} + 96t + 5 = 133$"
+      ],
+      "answer": "$-16t^{2} + 96t + 5 = 133$",
+      "compute": null,
+      "solution": "Set the height formula equal to 133: $-16t^{2} + 96t + 5 = 133$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-16t^{2} + 96t + 5 = 133$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Set h=133: -16t^2+96t+5=133.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.342Z"
+        }
+      }
+    },
+    {
+      "id": "39be82cc-8507-458f-a1d3-20f113f7b186",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A cup of hot tea is 80 degrees warmer than the room at first. The difference in temperature halves every 10 minutes. After how many minutes is the tea 5 degrees warmer than the room?",
+      "choices": [],
+      "answer": "40",
+      "compute": "40",
+      "solution": "Write $80\\left(\\frac{1}{2}\\right)^{n} = 5$, where $n$ is the number of 10-minute periods. Then $\\left(\\frac{1}{2}\\right)^{n} = \\frac{1}{16}$, so $n = 4$. That is $4 \\times 10 = 40$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80(1/2)^(t/10)=5 -> (1/2)^(t/10)=1/16 -> t/10=4 -> t=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.411Z"
+        }
+      }
+    },
+    {
+      "id": "fa50cd4c-c9d6-4a3b-b70d-6cc14624d6a8",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "The sum of a positive number and its square is 56. What is the number?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Write $x^{2} + x = 56$, so $x^{2} + x - 56 = 0$, which factors as $(x + 8)(x - 7) = 0$. The number is positive, so $x = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n^2 + n = 56 → (n + 8)(n - 7) = 0 → n = 7 (positive).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.465Z"
+        }
+      }
+    },
+    {
+      "id": "e0ff602c-bbfb-4bd7-8e4c-cb36371d8a8c",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "The sum of the squares of two consecutive positive integers is 61. Which equation finds the smaller integer, $n$?",
+      "choices": [
+        "$(n + n + 1)^{2} = 61$",
+        "$n^{2} + (n + 1)^{2} = 61$",
+        "$n^{2} + n^{2} + 1 = 61$",
+        "$n^{2}(n + 1)^{2} = 61$"
+      ],
+      "answer": "$n^{2} + (n + 1)^{2} = 61$",
+      "compute": null,
+      "solution": "The integers are $n$ and $n + 1$. The sum of their squares is $n^{2} + (n + 1)^{2}$, which equals 61.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$n^{2} + (n + 1)^{2} = 61$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Integers n and n+1: n^2 + (n + 1)^2 = 61 (n = 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.511Z"
+        }
+      }
+    },
+    {
+      "id": "93700b22-8376-4e97-96cc-120493bebec0",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "A school club sells tickets for 5 dollars each. It has 120 dollars of costs and wants a profit of more than 200 dollars. Which inequality shows the number of tickets, $t$, it must sell?",
+      "choices": [
+        "$5t - 120 > 200$",
+        "$5t - 120 < 200$",
+        "$5t + 120 > 200$",
+        "$5t > 200$"
+      ],
+      "answer": "$5t - 120 > 200$",
+      "compute": null,
+      "solution": "Profit is the money from tickets minus the costs: $5t - 120$. It must be more than 200, so $5t - 120 > 200$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5t - 120 > 200$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Profit = revenue - costs = 5t - 120 > 200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.559Z"
+        }
+      }
+    },
+    {
+      "id": "18e0f3b7-4efb-4831-a260-ac02814ee774",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "Jake rents a bike for a flat fee of 8 dollars plus 3.50 dollars per hour. He paid 29 dollars. For how many hours did he rent the bike?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(29-8)/3.5",
+      "solution": "Write $8 + 3.5h = 29$. Subtract 8: $3.5h = 21$. Divide by 3.5: $h = 6$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 3.5h = 29; 3.5h = 21; h = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.630Z"
+        }
+      }
+    },
+    {
+      "id": "f7d8bbad-e2ac-4d70-8df1-2d8f650117d7",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "A club needs to raise at least 2,000 dollars. A donor gives 350 dollars, and the club sells tickets for 12 dollars each. What is the least number of tickets the club must sell?",
+      "choices": [],
+      "answer": "138",
+      "compute": null,
+      "solution": "Write $350 + 12t \\ge 2000$. Subtract 350: $12t \\ge 1650$. Divide by 12: $t \\ge 137.5$. Tickets are whole, so the least number is 138.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "138",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "350+12t >= 2000 -> 12t >= 1650 -> t >= 137.5 -> 138 tickets.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.644Z"
+        }
+      }
+    },
+    {
+      "id": "f5dbd858-24f4-4175-bcd7-2256e8387f31",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "The sum of three consecutive whole numbers is 87. What is the largest of the three?",
+      "choices": [],
+      "answer": "30",
+      "compute": "(87-3)/3+2",
+      "solution": "Let the numbers be $n$, $n + 1$ and $n + 2$. Then $3n + 3 = 87$, so $n = 28$. The numbers are 28, 29 and 30, and the largest is 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n-1+n+n+1 = 3n = 87, n = 29; numbers 28,29,30; largest 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.678Z"
+        }
+      }
+    },
+    {
+      "id": "2e50ebb5-3720-4b05-957c-2541970162de",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A phone is worth 800 dollars and loses 15 percent of its value each year. Which inequality finds the number of years, $t$, until the phone is worth less than 400 dollars?",
+      "choices": [
+        "$800(0.85)^{t} > 400$",
+        "$800(0.15)^{t} < 400$",
+        "$800(0.85)^{t} < 400$",
+        "$800(1.15)^{t} < 400$"
+      ],
+      "answer": "$800(0.85)^{t} < 400$",
+      "compute": null,
+      "solution": "Losing 15 percent leaves 85 percent, so the value is multiplied by 0.85 each year: $800(0.85)^{t}$. It must be less than 400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$800(0.85)^{t} < 400$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Value 800(0.85)^t; less than 400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.696Z"
+        }
+      }
+    },
+    {
+      "id": "44036549-8755-476b-b12c-19173ca2e1b5",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "Lena has 85 dollars in her account and takes out 6 dollars each week. She wants to keep at least 25 dollars in the account. Which describes the number of weeks, $w$, she can keep taking money out?",
+      "choices": [
+        "$w \\le 10$",
+        "$w \\ge 10$",
+        "$w < 10$",
+        "$w \\le 14$"
+      ],
+      "answer": "$w \\le 10$",
+      "compute": null,
+      "solution": "Write $85 - 6w \\ge 25$. Subtract 85: $-6w \\ge -60$. Dividing by $-6$ reverses the inequality: $w \\le 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$w \\le 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85-6w >= 25 -> 6w <= 60 -> w <= 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.701Z"
+        }
+      }
+    },
+    {
+      "id": "549afed4-3253-4f41-a71c-58d649eb376b",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "A phone plan costs 25 dollars a month plus 8 dollars for each extra gigabyte. Mia wants to pay at most 49 dollars in a month. Which inequality shows the number of extra gigabytes, $g$, she can use?",
+      "choices": [
+        "$25 + 8g \\ge 49$",
+        "$25 + 8g \\le 49$",
+        "$25g + 8 \\le 49$",
+        "$33g \\le 49$"
+      ],
+      "answer": "$25 + 8g \\le 49$",
+      "compute": null,
+      "solution": "The monthly cost is $25 + 8g$ dollars. It must be at most 49, so $25 + 8g \\le 49$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$25 + 8g \\le 49$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cost 25 + 8g, at most 49: 25 + 8g ≤ 49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.759Z"
+        }
+      }
+    },
+    {
+      "id": "4e9f99ee-66c9-4839-8ae1-6277ca04f7c0",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A pool holds 900 gallons and is being drained at 30 gallons per minute. A second pool holds 300 gallons and is being filled at 20 gallons per minute. Which equation finds the number of minutes, $m$, when the two pools hold the same amount?",
+      "choices": [
+        "$900 - 30m = 300 - 20m$",
+        "$900 + 30m = 300 + 20m$",
+        "$900 - 30m = 300 + 20m$",
+        "$900 - 20m = 300 + 30m$"
+      ],
+      "answer": "$900 - 30m = 300 + 20m$",
+      "compute": null,
+      "solution": "After $m$ minutes the first pool holds $900 - 30m$ gallons and the second holds $300 + 20m$ gallons. Set them equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$900 - 30m = 300 + 20m$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First pool 900 - 30m, second 300 + 20m: 900 - 30m = 300 + 20m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.772Z"
+        }
+      }
+    },
+    {
+      "id": "81153337-ed70-4dfd-b09f-6acdce2b8ed6",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "A stone is dropped from a bridge. Its height above the water, in feet, after $t$ seconds is $h = 144 - 16t^{2}$. After how many seconds does the stone hit the water?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The stone hits the water when $h = 0$: $144 - 16t^{2} = 0$, so $t^{2} = 9$. Time is positive, so $t = 3$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "144 - 16t² = 0 → t² = 9 → t = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.779Z"
+        }
+      }
+    },
+    {
+      "id": "2b0438d1-a034-4bb3-8026-b2286ab3b3c3",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A savings account earns 20 percent interest each year, added to the balance once a year, and starts with 1,000 dollars. After how many years does the balance first reach at least $1{,}728$ dollars?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Write $1000(1.2)^{t} \\ge 1728$, so $1.2^{t} \\ge 1.728$. Since $1.2^{3} = 1.728$, the balance first reaches $1{,}728$ dollars after $t = 3$ years.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000(1.2)^n ≥ 1728: 1.2² = 1.44, 1.2³ = 1.728. n = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.780Z"
+        }
+      }
+    },
+    {
+      "id": "f44d68f9-ab09-4ebc-8f77-bcd408ed4d2a",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "Dan scored 78, 84 and 90 on three quizzes. He wants a mean of at least 85 after a fourth quiz on which he scores $q$. Which inequality shows this?",
+      "choices": [
+        "$\\frac{78 + 84 + 90 + q}{3} \\ge 85$",
+        "$78 + 84 + 90 + q \\ge 85$",
+        "$\\frac{78 + 84 + 90 + q}{4} \\le 85$",
+        "$\\frac{78 + 84 + 90 + q}{4} \\ge 85$"
+      ],
+      "answer": "$\\frac{78 + 84 + 90 + q}{4} \\ge 85$",
+      "compute": null,
+      "solution": "The mean of four scores is their sum divided by 4. It must be at least 85, so $\\frac{78 + 84 + 90 + q}{4} \\ge 85$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{78 + 84 + 90 + q}{4} \\ge 85$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mean of four scores: (78 + 84 + 90 + q)/4 ≥ 85.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.781Z"
         }
       }
     },
@@ -16797,6 +18091,641 @@
       }
     },
     {
+      "id": "882444a9-55ff-4e9d-9f61-6db0cbb91123",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "Which situation is modeled by the equation $12(1.5)^{t} = 40.5$, where $t$ is the number of weeks?",
+      "choices": [
+        "A plant covering 12 square meters grows 1.5 square meters each week and covers 40.5 square meters after $t$ weeks",
+        "A plant covering 12 square meters shrinks 50 percent each week and covers 40.5 square meters after $t$ weeks",
+        "A plant covering 12 square meters grows 150 percent each week and covers 40.5 square meters after $t$ weeks",
+        "A plant covering 12 square meters grows 50 percent each week and covers 40.5 square meters after $t$ weeks"
+      ],
+      "answer": "A plant covering 12 square meters grows 50 percent each week and covers 40.5 square meters after $t$ weeks",
+      "compute": null,
+      "solution": "The factor 1.5 means the area is 150 percent of the week before, a growth of 50 percent. Growing 150 percent would use the factor 2.5, and a shrinking plant would use a factor below 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A plant covering 12 square meters grows 50 percent each week and covers 40.5 square meters after $t$ weeks",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor 1.5 = 1 + 0.5: 50% growth per week from 12. 12·1.5^3 = 40.5 (t = 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.078Z"
+        }
+      }
+    },
+    {
+      "id": "c2ffbf87-ee1d-47d8-bf48-6c49adb3c047",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A tank holds 1,200 liters. It already contains 300 liters. A pipe fills it at 40 liters per minute while a leak loses 10 liters per minute. Which equation finds the number of minutes, $m$, until the tank is full?",
+      "choices": [
+        "$300 + 40m + 10m = 1{,}200$",
+        "$300 + 40m = 1{,}200$",
+        "$300 + 40m - 10m = 1{,}200$",
+        "$300 - 40m + 10m = 1{,}200$"
+      ],
+      "answer": "$300 + 40m - 10m = 1{,}200$",
+      "compute": null,
+      "solution": "Each minute the tank gains $40 - 10 = 30$ liters, so after $m$ minutes it holds $300 + 40m - 10m$ liters. That equals 1,200.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$300 + 40m - 10m = 1{,}200$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Net fill 40 − 10 = 30 per minute: 300 + 40m − 10m = 1,200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.115Z"
+        }
+      }
+    },
+    {
+      "id": "dd2526fe-2d1e-4ad0-b444-e1617f4aced3",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "A hiker starts with 4 liters of water and drinks 0.5 liters each hour. She wants at least 1 liter left after hiking for $h$ hours. Which inequality shows this?",
+      "choices": [
+        "$4 - 0.5h \\le 1$",
+        "$4 - 0.5h \\ge 1$",
+        "$4 - 0.5h > 1$",
+        "$4 + 0.5h \\ge 1$"
+      ],
+      "answer": "$4 - 0.5h \\ge 1$",
+      "compute": null,
+      "solution": "After $h$ hours she has $4 - 0.5h$ liters left. \"At least 1\" includes 1, so $4 - 0.5h \\ge 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 - 0.5h \\ge 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left after h hours: 4 − 0.5h, at least 1: 4 − 0.5h ≥ 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.137Z"
+        }
+      }
+    },
+    {
+      "id": "364e25b7-7096-4634-9061-22e9f491f41a",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "Two friends start 30 kilometers apart and bike toward each other. Ana bikes 12 kilometers per hour and Ben bikes 8 kilometers per hour. Which equation finds the number of hours, $h$, until they meet?",
+      "choices": [
+        "$12h - 8h = 30$",
+        "$12h + 8h = 30$",
+        "$12h = 8h + 30$",
+        "$\\frac{30}{12} + \\frac{30}{8} = h$"
+      ],
+      "answer": "$12h + 8h = 30$",
+      "compute": null,
+      "solution": "In $h$ hours Ana covers $12h$ kilometers and Ben covers $8h$ kilometers. They meet when together they have covered the 30 kilometers: $12h + 8h = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12h + 8h = 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Closing speed 20: 12h+8h=30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.176Z"
+        }
+      }
+    },
+    {
+      "id": "b38fc545-f1ce-492e-8d22-fabad87f1056",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "A gym offers two plans. Plan 1 costs 20 dollars a month plus 5 dollars per visit. Plan 2 costs 45 dollars a month with unlimited visits. Which inequality shows the numbers of visits, $v$, for which Plan 1 costs less than Plan 2?",
+      "choices": [
+        "$20 + 5v > 45$",
+        "$20v + 5 < 45$",
+        "$25v < 45$",
+        "$20 + 5v < 45$"
+      ],
+      "answer": "$20 + 5v < 45$",
+      "compute": null,
+      "solution": "Plan 1 costs $20 + 5v$ dollars and Plan 2 costs 45 dollars. Plan 1 costs less when $20 + 5v < 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20 + 5v < 45$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Plan 1 cost 20+5v < 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.191Z"
+        }
+      }
+    },
+    {
+      "id": "e118d25e-88a4-4365-b472-bed2a07a4edb",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "A ball's height, in feet, $t$ seconds after it is thrown is $h = -16t^{2} + 64t + 80$. After how many seconds does the ball hit the ground?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Set $h = 0$: $-16t^{2} + 64t + 80 = 0$. Divide by $-16$: $t^{2} - 4t - 5 = 0$, which factors as $(t - 5)(t + 1) = 0$. Time cannot be negative, so $t = 5$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-16t^2+64t+80=0 -> t^2-4t-5=0 -> (t-5)(t+1)=0 -> t=5 (t=-1 rejected).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.264Z"
+        }
+      }
+    },
+    {
+      "id": "6dd950c8-8488-48cf-975e-49aa16c1e099",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "A shop sells notebooks for 4.50 dollars each. Each one costs the shop 3 dollars to make, and the shop also has fixed costs of 240 dollars. What is the least number of notebooks it must sell to make a profit of at least 600 dollars?",
+      "choices": [],
+      "answer": "560",
+      "compute": "(600+240)/(4.5-3)",
+      "solution": "Each notebook earns $4.50 - 3 = 1.50$ dollars. Write $1.5n - 240 \\ge 600$. Add 240: $1.5n \\ge 840$. Divide by 1.5: $n \\ge 560$. The least number is 560.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "560",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Profit 1.5n - 240 >= 600 -> 1.5n >= 840 -> n >= 560.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.301Z"
+        }
+      }
+    },
+    {
+      "id": "53aeac89-43bb-4025-8b10-55a0c99cded2",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "A car rental costs 35 dollars plus 0.25 dollars per mile. Jordan's budget is 80 dollars. What is the greatest whole number of miles he can drive?",
+      "choices": [],
+      "answer": "180",
+      "compute": "(80-35)/0.25",
+      "solution": "Write $35 + 0.25m \\le 80$. Subtract 35: $0.25m \\le 45$. Divide by 0.25: $m \\le 180$. The greatest number is 180 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35+0.25m<=80 -> 0.25m<=45 -> m<=180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.328Z"
+        }
+      }
+    },
+    {
+      "id": "d4d94de5-572a-4df7-84dc-73ee48ab8856",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A colony starts with 40 cells, and every hour each cell splits into 2 cells. Which inequality finds the number of hours, $h$, until there are more than 1,000 cells?",
+      "choices": [
+        "$40 \\cdot 2^{h} > 1{,}000$",
+        "$40 \\cdot 2^{h} < 1{,}000$",
+        "$40 + 2h > 1{,}000$",
+        "$2 \\cdot 40^{h} > 1{,}000$"
+      ],
+      "answer": "$40 \\cdot 2^{h} > 1{,}000$",
+      "compute": null,
+      "solution": "The number of cells doubles each hour, so after $h$ hours there are $40 \\cdot 2^{h}$ cells. This must be more than 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40 \\cdot 2^{h} > 1{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cells after h hours: 40*2^h; more than 1000 means 40*2^h > 1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.343Z"
+        }
+      }
+    },
+    {
+      "id": "ba863138-b075-48b9-8360-21ef5017fa4a",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "Maria drove for 2 hours at one speed and then for 3 hours at a speed 10 miles per hour faster. She drove 400 miles in all. What was her slower speed, in miles per hour?",
+      "choices": [],
+      "answer": "74",
+      "compute": "(400-30)/5",
+      "solution": "Let the slower speed be $s$. Then $2s + 3(s + 10) = 400$, so $5s + 30 = 400$ and $5s = 370$. So $s = 74$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "74",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2s+3(s+10)=400 -> 5s+30=400 -> s=74.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.358Z"
+        }
+      }
+    },
+    {
+      "id": "3ced27d4-aecd-47fe-b985-8d595313a4de",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear inequality from a situation",
+      "stem": "A theater needs ticket sales of more than 3,000 dollars. Adult tickets cost 12 dollars each, and 100 child tickets at 7 dollars each have already been sold. Which inequality shows the number of adult tickets, $a$, that must still be sold?",
+      "choices": [
+        "$12a + 7(100) < 3{,}000$",
+        "$12a + 7a > 3{,}000$",
+        "$12(a + 100) + 7 > 3{,}000$",
+        "$12a + 7(100) > 3{,}000$"
+      ],
+      "answer": "$12a + 7(100) > 3{,}000$",
+      "compute": null,
+      "solution": "Adult tickets bring in $12a$ dollars and the child tickets bring in $7 \\times 100$ dollars. The total must be more than 3,000: $12a + 7(100) > 3{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12a + 7(100) > 3{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adult sales 12a plus child 7(100) must exceed 3000: 12a+7(100) > 3000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.388Z"
+        }
+      }
+    },
+    {
+      "id": "c78d3646-2464-4954-94df-53e28085d6ae",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A ball's height, in feet, $t$ seconds after it is thrown is $h = -16t^{2} + 48t + 64$. Which equation can be used to find when the ball hits the ground?",
+      "choices": [
+        "$-16t^{2} + 48t = 64$",
+        "$-16t^{2} + 48t + 64 = 64$",
+        "$-16t^{2} + 48t + 64 = 0$",
+        "$16t^{2} + 48t + 64 = 0$"
+      ],
+      "answer": "$-16t^{2} + 48t + 64 = 0$",
+      "compute": null,
+      "solution": "The ball is on the ground when its height is 0, so $-16t^{2} + 48t + 64 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-16t^{2} + 48t + 64 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The ball hits the ground when h = 0: -16t^2 + 48t + 64 = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.429Z"
+        }
+      }
+    },
+    {
+      "id": "4d3cfad5-a83f-4df3-b74c-49f3310a6eca",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A collector's item was worth 12 dollars when bought, and its value triples every 4 years. After how many years is it worth 972 dollars?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "Write $12 \\cdot 3^{n} = 972$, where $n$ is the number of 4-year periods. Then $3^{n} = 81$, so $n = 4$. That is $4 \\times 4 = 16$ years.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12·3^(t/4) = 972 → 3^(t/4) = 81 = 3^4 → t = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.437Z"
+        }
+      }
+    },
+    {
+      "id": "24f1ac6f-a7bb-43d9-87b2-039a0ed9f012",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A photo is $x$ inches wide and 3 inches taller than it is wide. A border 1 inch wide is added on every side. The photo and border together have an area of 130 square inches. Which equation can be used to find $x$?",
+      "choices": [
+        "$(x + 2)(x + 5) = 130$",
+        "$x(x + 3) = 130$",
+        "$(x + 1)(x + 4) = 130$",
+        "$(x + 2)(x + 3) = 130$"
+      ],
+      "answer": "$(x + 2)(x + 5) = 130$",
+      "compute": null,
+      "solution": "The photo is $x$ by $x + 3$. A border of 1 inch on each side adds 2 inches to each measurement, so the outside is $x + 2$ by $x + 5$. Its area is 130.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x + 2)(x + 5) = 130$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Photo x by x+3; a 1-inch border adds 2 to each side length: (x+2)(x+5) = 130.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.445Z"
+        }
+      }
+    },
+    {
+      "id": "e877bf34-0395-4018-95aa-543a0a36ffb8",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "A plumber charges 55 dollars to visit plus 38 dollars per hour. A second plumber charges 40 dollars to visit plus 43 dollars per hour. For how many hours of work do the two plumbers charge the same?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(55-40)/(43-38)",
+      "solution": "Write $55 + 38h = 40 + 43h$. Subtract $38h$ and 40: $15 = 5h$. So $h = 3$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "55 + 38h = 40 + 43h → 15 = 5h → h = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.454Z"
+        }
+      }
+    },
+    {
+      "id": "24adb0ca-2b35-4339-a032-bc68181e5e7e",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a linear equation from a situation",
+      "stem": "The perimeter of a triangle is 49 centimeters. One side is 5 centimeters longer than the shortest side, and the third side is twice as long as the shortest side. What is the length of the shortest side, in centimeters?",
+      "choices": [],
+      "answer": "11",
+      "compute": "(49-5)/4",
+      "solution": "Let the shortest side be $s$. The sides are $s$, $s + 5$ and $2s$, so $s + (s + 5) + 2s = 49$. Then $4s + 5 = 49$, $4s = 44$ and $s = 11$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "s+(s+5)+2s = 49 -> 4s = 44 -> s = 11. Sides 11,16,22; 11 is shortest; triangle valid.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.680Z"
+        }
+      }
+    },
+    {
+      "id": "1608085b-f094-4a4b-8e7d-9801d40c3740",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "A rectangular field is 5 meters longer than it is wide. Its area is 150 square meters. What is the width of the field, in meters?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Write $w(w + 5) = 150$, so $w^{2} + 5w - 150 = 0$, which factors as $(w + 15)(w - 10) = 0$. A width is positive, so $w = 10$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w(w + 5) = 150 → w² + 5w - 150 = 0 → (w + 15)(w - 10) = 0 → w = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.723Z"
+        }
+      }
+    },
+    {
+      "id": "0c19deb2-672c-4809-bce0-a2cfda78918f",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "The sum of the squares of two consecutive odd positive integers is 130. What is the larger integer?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Let the integers be $n$ and $n + 2$. Then $n^{2} + (n + 2)^{2} = 130$, so $2n^{2} + 4n - 126 = 0$ and $n^{2} + 2n - 63 = 0$. This factors as $(n + 9)(n - 7) = 0$, so $n = 7$. The larger integer is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n² + (n + 2)² = 130 → 2n² + 4n - 126 = 0 → n² + 2n - 63 = 0 → (n + 9)(n - 7) = 0 → n = 7. 49 + 81 = 130. Larger 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.764Z"
+        }
+      }
+    },
+    {
+      "id": "f1c1dfe0-6254-4316-83c8-0bc7d9928700",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a linear inequality from a situation",
+      "stem": "A tank holds 500 liters and is drained at 20 liters per minute. The tank must be drained until it holds fewer than 140 liters. Which describes the number of minutes, $m$, the tank is drained?",
+      "choices": [
+        "$m < 18$",
+        "$m > 32$",
+        "$m > 18$",
+        "$m \\ge 18$"
+      ],
+      "answer": "$m > 18$",
+      "compute": null,
+      "solution": "Write $500 - 20m < 140$. Subtract 500: $-20m < -360$. Dividing by $-20$ reverses the inequality: $m > 18$. At exactly 18 minutes the tank holds 140 liters, which is not fewer than 140.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$m > 18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 - 20m < 140 → 20m > 360 → m > 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.785Z"
+        }
+      }
+    },
+    {
+      "id": "4ba0c4f7-7e07-4a02-9551-b4bac91827f2",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "The legs of a right triangle are $x$ centimeters and $x + 7$ centimeters long, and the hypotenuse is 17 centimeters long. Which equation can be used to find $x$?",
+      "choices": [
+        "$x + (x + 7) = 17$",
+        "$x^{2} + (x + 7)^{2} = 17$",
+        "$x^{2} + (x + 7)^{2} = 17^{2}$",
+        "$x(x + 7) = 17^{2}$"
+      ],
+      "answer": "$x^{2} + (x + 7)^{2} = 17^{2}$",
+      "compute": null,
+      "solution": "By the Pythagorean theorem, the sum of the squares of the legs equals the square of the hypotenuse: $x^{2} + (x + 7)^{2} = 17^{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^{2} + (x + 7)^{2} = 17^{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pythagoras: x² + (x + 7)² = 17².",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.786Z"
+        }
+      }
+    },
+    {
       "id": "8f35eef6-686f-441c-a540-89593b21fe54",
       "topic_id": "NC17.M1.A-CED.2",
       "difficulty": 1,
@@ -17122,6 +19051,733 @@
       }
     },
     {
+      "id": "48fc7b6b-17da-40fe-8cdb-ba60b666dc8d",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A square has side length $s$. Each side is then made 2 units longer. Which equation gives the new area $A$?",
+      "choices": [
+        "$A = s^2 + 2$",
+        "$A = s^2 + 4$",
+        "$A = 2s^2$",
+        "$A = (s + 2)^2$"
+      ],
+      "answer": "$A = (s + 2)^2$",
+      "compute": null,
+      "solution": "The new side is $s + 2$, and the area of a square is its side squared, so $A = (s + 2)^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A = (s + 2)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "New side s+2, area (s+2)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.789Z"
+        }
+      }
+    },
+    {
+      "id": "0a1e1efc-5f4d-480f-8aae-9089e4ae1800",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A babysitter earns 12 dollars for each hour plus a 5 dollar tip each night. The earnings $E$ in dollars for a night of $h$ hours are $E = ah + c$. What is $a + c$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "12+5",
+      "solution": "The equation is $E = 12h + 5$, so $a = 12$ and $c = 5$. Then $a + c = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "E=12h+5, a=12, c=5, a+c=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.792Z"
+        }
+      }
+    },
+    {
+      "id": "e9faa567-ed55-46fe-80d4-18c0160e1258",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use an equation to find points on its graph",
+      "stem": "A phone plan costs $C = 5g + 25$ dollars in a month with $g$ gigabytes of data. What is the cost, in dollars, for 6 gigabytes?",
+      "choices": [],
+      "answer": "55",
+      "compute": "5*6+25",
+      "solution": "Put $g = 6$: $C = 5 \\cdot 6 + 25 = 55$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C=5(6)+25=55.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.794Z"
+        }
+      }
+    },
+    {
+      "id": "6636dc29-f50e-4e41-ac09-7a12f421f9c1",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write an equation from features of its graph",
+      "stem": "A line has slope 4 and crosses the $y$-axis at the point $(0, -2)$. Its equation is $y = mx + b$. What is $m + b$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "4-2",
+      "solution": "The slope is $m = 4$ and the $y$-intercept is $b = -2$. So $m + b = 4 + (-2) = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m=4, b=-2, m+b=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.844Z"
+        }
+      }
+    },
+    {
+      "id": "0e5a6958-e956-4ed5-b434-c3424c8bd45a",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A car rental costs 45 dollars for the day plus 0.20 dollars for each mile driven. Let $C$ be the cost in dollars for one day when the car is driven $m$ miles. Which equation models this?",
+      "choices": [
+        "$C = 0.20m + 45$",
+        "$C = 45m + 0.20$",
+        "$C = 45.20m$",
+        "$C = 0.20m - 45$"
+      ],
+      "answer": "$C = 0.20m + 45$",
+      "compute": null,
+      "solution": "The 0.20 dollars is charged for every mile, so it multiplies $m$. The 45 dollars is charged once. So $C = 0.20m + 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$C = 0.20m + 45$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C = 0.20m + 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.849Z"
+        }
+      }
+    },
+    {
+      "id": "abc05d46-dabd-409e-963b-4d8ac7a09410",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an equation from features of its graph",
+      "stem": "A line crosses the $y$-axis at $(0, 3)$ and passes through $(2, 7)$. Which equation is an equation of the line?",
+      "choices": [
+        "$y = 3x + 2$",
+        "$y = 4x + 3$",
+        "$y = 2x + 7$",
+        "$y = 2x + 3$"
+      ],
+      "answer": "$y = 2x + 3$",
+      "compute": null,
+      "solution": "The $y$-intercept is 3. From $(0, 3)$ to $(2, 7)$, $y$ rises 4 while $x$ rises 2, so the slope is 2. The equation is $y = 2x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope (7-3)/2=2, intercept 3: y=2x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.855Z"
+        }
+      }
+    },
+    {
+      "id": "e8324e41-6810-4cf2-9d91-2cd53b3a7fa1",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A pond has 400 frogs, and the number doubles every year. The number of frogs after $t$ years is $P = 400 \\cdot b^t$. What is $b$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The number is multiplied by 2 each year, so $b = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Doubles each year: b=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.863Z"
+        }
+      }
+    },
+    {
+      "id": "8683fc2f-317a-476c-acdb-450d026e208d",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use an equation to find points on its graph",
+      "stem": "The graph of $y = 3 \\cdot 2^x$ includes the point $(4, k)$. What is $k$?",
+      "choices": [],
+      "answer": "48",
+      "compute": "3*2^4",
+      "solution": "Put $x = 4$: $y = 3 \\cdot 2^4 = 3 \\cdot 16 = 48$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k=3*2^4=48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.866Z"
+        }
+      }
+    },
+    {
+      "id": "cbde9698-b63c-4f27-9b80-69f7159c32ec",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is $-1$, 0, 1 and 2, $y$ is 2, 1, 2 and 5. The table follows $y = x^2 + c$. What is $y$ when $x = 3$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "3^2+1",
+      "solution": "When $x = 0$, $y = 1$, so $c = 1$ and $y = x^2 + 1$. When $x = 3$, $y = 9 + 1 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=0 gives y=1 so c=1; check x=2: 5. y(3)=9+1=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.873Z"
+        }
+      }
+    },
+    {
+      "id": "edfc5aa7-cbd7-4d03-a9cb-dedc6579174c",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret a part of an equation in its context",
+      "stem": "Maya's savings in dollars after $w$ weeks are $S = 25w + 40$. How many dollars does she save each week?",
+      "choices": [],
+      "answer": "25",
+      "compute": "25",
+      "solution": "In $S = 25w + 40$ the number multiplying $w$ is the amount added each week, which is 25 dollars. The 40 is what she had at the start.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope 25 dollars per week.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.887Z"
+        }
+      }
+    },
+    {
+      "id": "0152f59d-1991-4340-a972-5e1dc7719289",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read features of a graph from its equation",
+      "stem": "The graph of $y = 4x - 12$ crosses the $x$-axis at the point $(k, 0)$. What is $k$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "12/4",
+      "solution": "On the $x$-axis $y = 0$, so $4x - 12 = 0$ and $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4k-12=0, k=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.891Z"
+        }
+      }
+    },
+    {
+      "id": "08607986-db3f-43af-a536-197bb8287401",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A triangle has a base of $b$ centimeters and a height of $3b$ centimeters. Its area in square centimeters is $A = kb^2$. What is $k$?",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "3/2",
+      "solution": "Area $= \\frac{1}{2} \\cdot b \\cdot 3b = \\frac{3}{2}b^2$, so $k = \\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A=(1/2)b(3b)=(3/2)b^2, k=3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.894Z"
+        }
+      }
+    },
+    {
+      "id": "0b066f5a-64aa-4c8c-b6d0-ab1587218112",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A tank holds 200 gallons of water and drains at 8 gallons each minute. Let $g$ be the gallons left after $m$ minutes. Which equation models this?",
+      "choices": [
+        "$g = 200 + 8m$",
+        "$g = 8m - 200$",
+        "$g = 200 - 8m$",
+        "$g = 8 - 200m$"
+      ],
+      "answer": "$g = 200 - 8m$",
+      "compute": null,
+      "solution": "The tank starts with 200 gallons and loses 8 gallons for each minute, so $g = 200 - 8m$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g = 200 - 8m$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 200, minus 8 per minute: g=200-8m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.900Z"
+        }
+      }
+    },
+    {
+      "id": "520b2c55-ad45-4cbc-9fd8-4c8a54999806",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 0, 1, 2 and 3, $y$ is 7, 5, 3 and 1. Which equation matches the table?",
+      "choices": [
+        "$y = -2x + 7$",
+        "$y = 2x + 7$",
+        "$y = 7x - 2$",
+        "$y = -2x + 5$"
+      ],
+      "answer": "$y = -2x + 7$",
+      "compute": null,
+      "solution": "When $x = 0$, $y = 7$, so the $y$-intercept is 7. Each step of 1 in $x$ lowers $y$ by 2, so the slope is $-2$. The equation is $y = -2x + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -2x + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 7, drops 2 each step: y=-2x+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.909Z"
+        }
+      }
+    },
+    {
+      "id": "4d4e9d6c-711f-41ad-83eb-9aaa2320cd2c",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell which kind of relationship a situation or table shows",
+      "stem": "A table gives $y$ when $x$ is 0, 1, 2 and 3. Which list of $y$-values shows a linear relationship?",
+      "choices": [
+        "10, 20, 40, 80",
+        "10, 13, 16, 19",
+        "10, 11, 14, 19",
+        "10, 11, 13, 17"
+      ],
+      "answer": "10, 13, 16, 19",
+      "compute": null,
+      "solution": "A linear relationship goes up by the same amount each time. 10, 13, 16, 19 goes up by 3 each time. The first list doubles, and the other two have differences that keep changing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10, 13, 16, 19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Constant differences 3: 10,13,16,19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.911Z"
+        }
+      }
+    },
+    {
+      "id": "91dc6a0d-d7e2-4056-84df-5f83865022dd",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a part of an equation in its context",
+      "stem": "A plant's height in centimeters after $w$ weeks is $h = 2w + 8$. What does the 8 tell us?",
+      "choices": [
+        "The plant's height when $w = 0$, at the start",
+        "The number of weeks the plant has been growing",
+        "How much the plant grows in each week",
+        "The height of the plant after 8 full weeks"
+      ],
+      "answer": "The plant's height when $w = 0$, at the start",
+      "compute": null,
+      "solution": "When $w = 0$, $h = 8$, so 8 is the starting height. The 2 is the growth each week.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The plant's height when $w = 0$, at the start",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 is the intercept: height at w=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.911Z"
+        }
+      }
+    },
+    {
+      "id": "8b5fe8a7-c262-4bff-9542-c5b2e231b2d4",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "At the start, 2 people know a rumor. The number of people who know it triples every day. Let $N$ be the number of people who know the rumor after $d$ days. Which equation models this?",
+      "choices": [
+        "$N = 3 \\cdot 2^d$",
+        "$N = 2 + 3d$",
+        "$N = 6d$",
+        "$N = 2 \\cdot 3^d$"
+      ],
+      "answer": "$N = 2 \\cdot 3^d$",
+      "compute": null,
+      "solution": "The starting amount is 2 and it is multiplied by 3 each day, so $N = 2 \\cdot 3^d$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$N = 2 \\cdot 3^d$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starts 2, triples daily: N=2*3^d.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.919Z"
+        }
+      }
+    },
+    {
+      "id": "8f627ccb-9412-416a-99cc-7e24896bad2d",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell which kind of relationship a situation or table shows",
+      "stem": "Which situation is best modeled by a quadratic equation?",
+      "choices": [
+        "A taxi fare with a starting fee and a charge per mile",
+        "A bank balance that grows 3 percent each year",
+        "The area of a square as the length of its side changes",
+        "The distance walked at a steady speed of 3 miles per hour"
+      ],
+      "answer": "The area of a square as the length of its side changes",
+      "compute": null,
+      "solution": "The area of a square is $s^2$, a quadratic. The taxi fare and the walking distance are linear, and the bank balance is exponential.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The area of a square as the length of its side changes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area of a square = s^2, quadratic. Others linear, exponential, linear.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.939Z"
+        }
+      }
+    },
+    {
+      "id": "25fa179b-66f0-4cf2-8de7-893f7d7be3a8",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read features of a graph from its equation",
+      "stem": "What is the lowest point on the graph of $y = x^2 - 4$?",
+      "choices": [
+        "$(0, 4)$",
+        "$(-4, 0)$",
+        "$(0, -4)$",
+        "$(2, 0)$"
+      ],
+      "answer": "$(0, -4)$",
+      "compute": null,
+      "solution": "The square $x^2$ is smallest (0) when $x = 0$, so the lowest $y$ is $-4$, at $(0, -4)$. The points where the graph crosses the $x$-axis are $(2, 0)$ and $(-2, 0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(0, -4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 >= 0, minimum at x=0, y=-4: (0,-4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.946Z"
+        }
+      }
+    },
+    {
+      "id": "9e6e4110-0c2f-4383-9be5-d352231ede01",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A tree farm has 1000 trees, and the number of trees grows by 10 percent each year. Let $T$ be the number of trees after $t$ years. Which equation models this?",
+      "choices": [
+        "$T = 1000(0.1)^t$",
+        "$T = 1000(1.1)^t$",
+        "$T = 1000 + 0.1t$",
+        "$T = 1000(10)^t$"
+      ],
+      "answer": "$T = 1000(1.1)^t$",
+      "compute": null,
+      "solution": "Growing by 10 percent multiplies by $1 + 0.10 = 1.1$ each year, so $T = 1000(1.1)^t$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$T = 1000(1.1)^t$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Growth 10% means multiply by 1.1 each year: T=1000(1.1)^t.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.948Z"
+        }
+      }
+    },
+    {
+      "id": "3fe850d0-cfde-4312-9985-c4d946705db3",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use an equation to find points on its graph",
+      "stem": "A ball is dropped from a platform. Its height in feet after $t$ seconds is $h = -16t^2 + 100$. What is its height after 2 seconds, in feet?",
+      "choices": [],
+      "answer": "36",
+      "compute": "100-16*2^2",
+      "solution": "Put $t = 2$: $h = -16 \\cdot 4 + 100 = -64 + 100 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-16(4) + 100 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.972Z"
+        }
+      }
+    },
+    {
+      "id": "ea4d1419-db27-4183-b7d4-73657ea0fa02",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 0, 1, 2 and 3, $y$ is 3, 6, 12 and 24. The table follows $y = a \\cdot b^x$. What is $y$ when $x = 5$?",
+      "choices": [],
+      "answer": "96",
+      "compute": "3*2^5",
+      "solution": "Starting at 3, each $y$ is 2 times the one before, so $y = 3 \\cdot 2^x$. When $x = 5$, $y = 3 \\cdot 32 = 96$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=0 gives a=3; ratio 2, b=2. y(5) = 3*32 = 96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.975Z"
+        }
+      }
+    },
+    {
+      "id": "bd330c7a-c42e-435d-987f-6785f56fe56b",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A poster is twice as long as it is wide. Let $w$ be its width in inches and $A$ its area in square inches. Which equation gives $A$ in terms of $w$?",
+      "choices": [
+        "$A = 4w^2$",
+        "$A = 2w^2$",
+        "$A = 3w$",
+        "$A = 2w$"
+      ],
+      "answer": "$A = 2w^2$",
+      "compute": null,
+      "solution": "The length is $2w$, so the area is $w \\cdot 2w = 2w^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A = 2w^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length 2w, A = w(2w) = 2w^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.997Z"
+        }
+      }
+    },
+    {
       "id": "4244d1a4-bbb9-42c5-ad21-dbf8f19a3352",
       "topic_id": "NC17.M1.A-CED.2",
       "difficulty": 2,
@@ -17442,6 +20098,743 @@
       }
     },
     {
+      "id": "45ff7c6a-7cf3-46b8-b36e-570dd6ce820f",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A school sells muffins for 2 dollars each and juices for 1.50 dollars each. It wants to raise exactly 90 dollars. Let $m$ be the number of muffins sold and $j$ the number of juices sold. Which equation fits this?",
+      "choices": [
+        "$1.5m + 2j = 90$",
+        "$3.5(m + j) = 90$",
+        "$2m + 1.5j = 90$",
+        "$2m - 1.5j = 90$"
+      ],
+      "answer": "$2m + 1.5j = 90$",
+      "compute": null,
+      "solution": "Muffins bring in $2m$ dollars and juices bring in $1.5j$ dollars. Together they must be 90, so $2m + 1.5j = 90$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2m + 1.5j = 90$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Muffin income 2m, juice income 1.5j, total 90: 2m+1.5j=90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.793Z"
+        }
+      }
+    },
+    {
+      "id": "9fa5efff-35d4-44f9-8464-c5b63bdd821a",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read features of a graph from its equation",
+      "stem": "Which statement is true about the graph of $y = 800(0.9)^x$?",
+      "choices": [
+        "It crosses the $y$-axis at 0.9 and falls, getting closer to the $x$-axis",
+        "It crosses the $y$-axis at 800 and rises, getting steeper to the right",
+        "It crosses the $y$-axis at 800 and falls, getting closer to the $x$-axis",
+        "It crosses the $y$-axis at 720 and falls by the same amount each time $x$ goes up by 1"
+      ],
+      "answer": "It crosses the $y$-axis at 800 and falls, getting closer to the $x$-axis",
+      "compute": null,
+      "solution": "At $x = 0$, $y = 800$. Each increase of 1 in $x$ multiplies $y$ by 0.9, so $y$ falls (by smaller and smaller amounts) toward the $x$-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It crosses the $y$-axis at 800 and falls, getting closer to the $x$-axis",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x=0, y=800. Base 0.9<1 so decay toward the x-axis (asymptote y=0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.836Z"
+        }
+      }
+    },
+    {
+      "id": "fb011fe9-bab1-4dd0-af17-35f64e3e0624",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 0, 1 and 2, $y$ is 3, 6 and 11. The table follows $y = x^2 + bx + c$. What is $b + c$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "At $x = 0$, $y = c = 3$. At $x = 1$, $1 + b + 3 = 6$, so $b = 2$. (Check at $x = 2$: $4 + 4 + 3 = 11$.) Then $b + c = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=0: c=3. x=1: 1+b+3=6 -> b=2. Check x=2: 4+4+3=11. b+c=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.839Z"
+        }
+      }
+    },
+    {
+      "id": "27f9996c-a9fc-4b42-954c-805c4c82fe6d",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read features of a graph from its equation",
+      "stem": "The graph of $2x + 3y = 12$ crosses both axes. Which lists the point where it crosses the $x$-axis, then the point where it crosses the $y$-axis?",
+      "choices": [
+        "$(4, 0)$ and $(0, 6)$",
+        "$(2, 0)$ and $(0, 3)$",
+        "$(12, 0)$ and $(0, 12)$",
+        "$(6, 0)$ and $(0, 4)$"
+      ],
+      "answer": "$(6, 0)$ and $(0, 4)$",
+      "compute": null,
+      "solution": "When $y = 0$: $2x = 12$, so $x = 6$. When $x = 0$: $3y = 12$, so $y = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6, 0)$ and $(0, 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y=0: x=6; x=0: y=4. (6,0) and (0,4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.853Z"
+        }
+      }
+    },
+    {
+      "id": "5f1bb3f9-fa8c-4f49-a081-a73c71ab6abc",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A sample has 50 grams of a substance, and 20 percent of what remains decays each day. Let $M$ be the mass in grams after $d$ days. Which equation models this?",
+      "choices": [
+        "$M = 50(0.2)^d$",
+        "$M = 50 - 0.2d$",
+        "$M = 50(1.2)^d$",
+        "$M = 50(0.8)^d$"
+      ],
+      "answer": "$M = 50(0.8)^d$",
+      "compute": null,
+      "solution": "Each day 80 percent remains, so the mass is multiplied by 0.8 each day: $M = 50(0.8)^d$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$M = 50(0.8)^d$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80% remains each day: M=50(0.8)^d.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.864Z"
+        }
+      }
+    },
+    {
+      "id": "0a3dc66b-f7e9-4f60-8397-3534c1b408c2",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 0, 1, 2 and 3, $y$ is 100, 50, 25 and 12.5. Which equation matches the table?",
+      "choices": [
+        "$y = 100\\left(\\frac{1}{2}\\right)^{x+1}$",
+        "$y = 50\\left(\\frac{1}{2}\\right)^x$",
+        "$y = 100\\left(\\frac{1}{4}\\right)^x$",
+        "$y = 100\\left(\\frac{1}{2}\\right)^x$"
+      ],
+      "answer": "$y = 100\\left(\\frac{1}{2}\\right)^x$",
+      "compute": null,
+      "solution": "The starting value (at $x = 0$) is 100 and each $y$ is half the one before. So $y = 100\\left(\\frac{1}{2}\\right)^x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 100\\left(\\frac{1}{2}\\right)^x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 100, halves each step: y=100(1/2)^x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.869Z"
+        }
+      }
+    },
+    {
+      "id": "e135839d-2d7c-465a-9f28-5b1283108bf1",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A candle burns at a steady rate. It is 26 centimeters tall after 1 hour and 14 centimeters tall after 4 hours. Let $h$ be its height in centimeters after $t$ hours. Which equation models this?",
+      "choices": [
+        "$h = -4t + 30$",
+        "$h = -4t + 26$",
+        "$h = 4t + 22$",
+        "$h = -4t + 14$"
+      ],
+      "answer": "$h = -4t + 30$",
+      "compute": null,
+      "solution": "The height falls 12 centimeters in 3 hours, so the slope is $-4$. At $t = 1$: $26 = -4 + b$, so $b = 30$. The equation is $h = -4t + 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$h = -4t + 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope (14-26)/(4-1)=-4; 26=-4(1)+b, b=30. h=-4t+30 (t=4: 14).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.877Z"
+        }
+      }
+    },
+    {
+      "id": "a73171e1-5404-4805-b2f1-4038af8949f0",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read features of a graph from its equation",
+      "stem": "The graph of $y = x^2 - 6x + 5$ crosses the $x$-axis at two points. What is the larger $x$-coordinate?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Set $y = 0$: $x^2 - 6x + 5 = (x - 1)(x - 5) = 0$. So $x = 1$ or $x = 5$, and the larger is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-1)(x-5)=0, x=1 or 5; larger 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.889Z"
+        }
+      }
+    },
+    {
+      "id": "295530d1-916e-4217-8100-861f52a225cd",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A website has 500 visitors in its first week, and the number of visitors grows by 25 percent each week. The visitors after $w$ weeks are $V = 500 \\cdot r^w$. What is $r$?",
+      "choices": [],
+      "answer": "1.25",
+      "compute": "1+25/100",
+      "solution": "Growing by 25 percent multiplies by $1 + 0.25 = 1.25$ each week, so $r = 1.25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Growth 25% per week: r=1.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.891Z"
+        }
+      }
+    },
+    {
+      "id": "bd603975-584c-4453-aa25-08d97c84a9bb",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write an equation from features of its graph",
+      "stem": "An exponential equation $y = a \\cdot b^x$ with $b > 0$ has a graph through $(0, 5)$ and $(2, 45)$. What is $b$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "At $x = 0$, $a = 5$. At $x = 2$, $5b^2 = 45$, so $b^2 = 9$ and $b = 3$ (since $b > 0$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a=5; 5b^2=45, b^2=9, b=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.895Z"
+        }
+      }
+    },
+    {
+      "id": "8c7b48de-02f7-4732-aa0f-3e6cea4b39e6",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write an equation from features of its graph",
+      "stem": "A line crosses the $x$-axis at $(4, 0)$ and the $y$-axis at $(0, -2)$. Its equation is $y = mx + b$. What is $m$?",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "2/4",
+      "solution": "From $(0, -2)$ to $(4, 0)$, $y$ rises 2 while $x$ rises 4, so $m = \\frac{2}{4} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m=(0-(-2))/(4-0)=1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.896Z"
+        }
+      }
+    },
+    {
+      "id": "cff73a64-7034-44b4-9257-f672d652e5c0",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "An exponential equation $y = a \\cdot b^x$ has a graph through $(0, 3)$ and $(1, 12)$. Which equation is it?",
+      "choices": [
+        "$y = 4 \\cdot 3^x$",
+        "$y = 3 \\cdot 4^x$",
+        "$y = 3 \\cdot 12^x$",
+        "$y = 3x + 9$"
+      ],
+      "answer": "$y = 3 \\cdot 4^x$",
+      "compute": null,
+      "solution": "At $x = 0$, $y = a = 3$. At $x = 1$, $3b = 12$, so $b = 4$. The equation is $y = 3 \\cdot 4^x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 3 \\cdot 4^x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a=3, 3b=12, b=4: y=3*4^x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.902Z"
+        }
+      }
+    },
+    {
+      "id": "561050b8-a627-4059-987e-ede612180cae",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a part of an equation in its context",
+      "stem": "In the model $g = 70 - 10t$, $g$ is the gallons of water left in a tank after $t$ minutes. The point $(4, 30)$ is on its graph. What does that point tell us?",
+      "choices": [
+        "After 4 minutes, 30 gallons are left in the tank",
+        "After 30 minutes, 4 gallons are left in the tank",
+        "After 4 minutes, 30 gallons have drained from the tank",
+        "The tank started with 30 gallons and loses 4 gallons each minute"
+      ],
+      "answer": "After 4 minutes, 30 gallons are left in the tank",
+      "compute": null,
+      "solution": "The first coordinate is $t$ and the second is $g$, so at $t = 4$ minutes there are $g = 30$ gallons left. Check: $70 - 40 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "After 4 minutes, 30 gallons are left in the tank",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t=4 minutes, g=30 gallons left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.906Z"
+        }
+      }
+    },
+    {
+      "id": "1c605af2-f2cc-4dbc-a23f-a6fa6bc41a96",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 0, 1, 2 and 3, $y$ is 4, 5, 7 and 11. Which equation matches the table?",
+      "choices": [
+        "$y = 2^x + 3$",
+        "$y = x^2 + 4$",
+        "$y = 3 \\cdot 2^x$",
+        "$y = 3x + 4$"
+      ],
+      "answer": "$y = 2^x + 3$",
+      "compute": null,
+      "solution": "The differences are 1, 2, 4, doubling each time, which points to a power of 2. Since $2^x + 3$ gives 4, 5, 7, 11, it matches. The others fail: for example $x^2 + 4$ gives 8 at $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2^x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^x+3: 4,5,7,11 matches; x^2+4 gives 8 at x=2; 3*2^x gives 3 at 0; 3x+4 gives 7 at 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.925Z"
+        }
+      }
+    },
+    {
+      "id": "d7861278-04fd-48de-adbe-6fcffa1dbcf8",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a part of an equation in its context",
+      "stem": "The model $N = 200 \\cdot 1.5^t$ gives the number of bacteria in a dish after $t$ hours. What does the 1.5 tell us?",
+      "choices": [
+        "Each hour, 1.5 new bacteria are added to the number already there",
+        "At the start, there are 1.5 hundred bacteria in the dish",
+        "Each hour, the number of bacteria is multiplied by 1.5",
+        "After 1.5 hours, the number of bacteria has doubled"
+      ],
+      "answer": "Each hour, the number of bacteria is multiplied by 1.5",
+      "compute": null,
+      "solution": "The base of an exponential model is the factor applied for each step of 1 in $t$. Here the number is multiplied by 1.5 each hour. The starting number is 200.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each hour, the number of bacteria is multiplied by 1.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5 is the growth factor: multiplied by 1.5 each hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.956Z"
+        }
+      }
+    },
+    {
+      "id": "96dd6318-2a3a-43f7-83ef-02f9dee6c351",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A tank drains at a steady rate. It holds 60 gallons after 2 minutes and 45 gallons after 5 minutes. The gallons $g$ after $t$ minutes are $g = mt + b$. What is $b$?",
+      "choices": [],
+      "answer": "70",
+      "compute": "60+5*2",
+      "solution": "The tank loses 15 gallons in 3 minutes, so $m = -5$. At $t = 2$: $60 = -5(2) + b$, so $b = 70$. (The tank started with 70 gallons.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m = (45-60)/(5-2) = -5; 60 = -10 + b, b = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.958Z"
+        }
+      }
+    },
+    {
+      "id": "c08b3fec-d1aa-494e-8224-23c25524462c",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell which kind of relationship a situation or table shows",
+      "stem": "A video game character has 100, 80, 64 and 51.2 health points after 0, 1, 2 and 3 hits. What kind of relationship does this show?",
+      "choices": [
+        "Exponential, because each value is 80 percent of the one before",
+        "Linear, because the health goes down by the same amount each hit",
+        "Quadratic, because the health goes down by less each hit",
+        "Quadratic, because the differences between the values stay the same"
+      ],
+      "answer": "Exponential, because each value is 80 percent of the one before",
+      "compute": null,
+      "solution": "$80 \\div 100 = 0.8$, $64 \\div 80 = 0.8$ and $51.2 \\div 64 = 0.8$, so each value is 0.8 times the one before. That is an exponential relationship. The amounts lost (20, 16, 12.8) are not equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Exponential, because each value is 80 percent of the one before",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100*0.8=80, 80*0.8=64, 64*0.8=51.2: constant ratio 0.8, exponential.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.963Z"
+        }
+      }
+    },
+    {
+      "id": "23931fd2-bd06-479b-8221-9f05f24e0afd",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A photo is $x$ inches wide and $x + 4$ inches long. A frame adds 1 inch on every side, so the outer area of the framed photo is $A = (x + 2)(x + 6)$. Written as $A = x^2 + bx + c$, what is $b + c$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "8+12",
+      "solution": "$(x + 2)(x + 6) = x^2 + 6x + 2x + 12 = x^2 + 8x + 12$. So $b = 8$, $c = 12$ and $b + c = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(x+6) = x^2 + 8x + 12; b+c = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.984Z"
+        }
+      }
+    },
+    {
+      "id": "c9bbf93c-6598-47d7-9901-c99b7b6d6d49",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use an equation to find points on its graph",
+      "stem": "A savings account balance is $B = 500 \\cdot 1.05^t$ dollars after $t$ years. What is the balance after 2 years, in dollars?",
+      "choices": [],
+      "answer": "551.25",
+      "compute": "500*1.05^2",
+      "solution": "Put $t = 2$: $B = 500 \\cdot 1.05^2 = 500 \\cdot 1.1025 = 551.25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "551.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 * 1.05^2 = 500 * 1.1025 = 551.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.985Z"
+        }
+      }
+    },
+    {
+      "id": "908d245b-913b-4f06-8305-759926e98ce5",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an equation from features of its graph",
+      "stem": "A parabola opens downward, has its highest point at $(0, 5)$, and passes through $(2, 1)$. Which equation has this graph?",
+      "choices": [
+        "$y = -2x^2 + 5$",
+        "$y = -x^2 + 5$",
+        "$y = x^2 + 5$",
+        "$y = -x^2 + 1$"
+      ],
+      "answer": "$y = -x^2 + 5$",
+      "compute": null,
+      "solution": "The highest point is on the $y$-axis at 5, so $y = ax^2 + 5$ with $a < 0$. At $(2, 1)$: $1 = 4a + 5$, so $a = -1$ and $y = -x^2 + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -x^2 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex (0,5): y = ax^2+5; through (2,1): 4a+5=1, a=-1. y = -x^2+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.986Z"
+        }
+      }
+    },
+    {
+      "id": "431edaac-392a-4ade-8ee1-b28691bdc17a",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A stone is dropped from a cliff 64 feet high. After $t$ seconds its height in feet is $h = 64 - 16t^2$. After how many seconds does it reach the ground?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "It reaches the ground when $h = 0$: $64 - 16t^2 = 0$, so $t^2 = 4$ and $t = 2$ (a time cannot be negative).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 - 16t^2 = 0, t^2=4, t=2 (t>=0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.988Z"
+        }
+      }
+    },
+    {
+      "id": "9f6d424a-ad60-4083-9cdc-4f4449ab9b38",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A rectangle has a perimeter of 30 meters. Its width is $w$ meters, so its length is $15 - w$ meters. Which equation gives its area $A$ in square meters?",
+      "choices": [
+        "$A = 15 - w^2$",
+        "$A = 15w - w^2$",
+        "$A = 30w - w^2$",
+        "$A = 15w + w^2$"
+      ],
+      "answer": "$A = 15w - w^2$",
+      "compute": null,
+      "solution": "Area $= w(15 - w) = 15w - w^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A = 15w - w^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A = w(15-w) = 15w - w^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.995Z"
+        }
+      }
+    },
+    {
+      "id": "0eda46ad-5317-446e-aa8f-7d740157d4fd",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell which kind of relationship a situation or table shows",
+      "stem": "A table gives $y$ when $x$ is 0, 1, 2, 3 and 4: 2, 5, 10, 17 and 26. What kind of relationship does the table show?",
+      "choices": [
+        "Linear, because the $y$-values keep going up each time $x$ goes up by 1",
+        "Exponential, because each $y$-value is the same multiple of the one before it",
+        "Quadratic, because the differences between the $y$-values go up by the same amount",
+        "Exponential, because the $y$-values get larger by more and more each time"
+      ],
+      "answer": "Quadratic, because the differences between the $y$-values go up by the same amount",
+      "compute": null,
+      "solution": "The differences are 3, 5, 7, 9, which go up by 2 each time, so the relationship is quadratic. The differences are not equal (not linear) and the ratios 2.5, 2, 1.7, ... are not equal (not exponential).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Quadratic, because the differences between the $y$-values go up by the same amount",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Differences 3,5,7,9; second differences constant 2: quadratic. Ratios 2.5,2,1.7 not constant.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.999Z"
+        }
+      }
+    },
+    {
       "id": "c5066421-7bf4-4879-ade2-0f188d2a4942",
       "topic_id": "NC17.M1.A-CED.2",
       "difficulty": 3,
@@ -17748,6 +21141,738 @@
           "work": "h(2) = -16*4 + 48*2 + 6 = -64 + 96 + 6 = 38.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:46.298Z"
+        }
+      }
+    },
+    {
+      "id": "98a11a1a-d17c-4f61-a07a-b765f9a6d91c",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read features of a graph from its equation",
+      "stem": "The graph of $y = x^2 + 2x - 15$ crosses the $x$-axis at two points. How far apart are the two points, in units?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3-(-5)",
+      "solution": "Set $y = 0$: $(x + 5)(x - 3) = 0$, so $x = -5$ or $x = 3$. The distance between them is $3 - (-5) = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+2x-15=(x+5)(x-3); x-intercepts -5 and 3; distance 3-(-5)=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.753Z"
+        }
+      }
+    },
+    {
+      "id": "9f77825a-ff11-4a38-969e-2fd76bd9e702",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use an equation to find points on its graph",
+      "stem": "Which point is on the graph of $y = 2x^2 - 3x$?",
+      "choices": [
+        "$(2, 2)$",
+        "$(1, 1)$",
+        "$(-1, -5)$",
+        "$(3, 6)$"
+      ],
+      "answer": "$(2, 2)$",
+      "compute": null,
+      "solution": "At $x = 2$: $2 \\cdot 4 - 6 = 2$, so $(2, 2)$ is on the graph. At $x = 1$, $y = -1$. At $x = -1$, $y = 5$. At $x = 3$, $y = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y=2x^2-3x: x=3 gives 9; x=-1 gives 5; x=1 gives -1; x=2 gives 8-6=2. Only (2,2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.805Z"
+        }
+      }
+    },
+    {
+      "id": "e15d6493-89ff-4447-9c1a-ad48018eb664",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A line passes through $(-2, 5)$ and $(4, -7)$. Which equation is an equation of this line?",
+      "choices": [
+        "$y = -2x + 9$",
+        "$y = 2x + 9$",
+        "$y = -2x - 1$",
+        "$y = -2x + 1$"
+      ],
+      "answer": "$y = -2x + 1$",
+      "compute": null,
+      "solution": "The slope is $\\frac{-7 - 5}{4 - (-2)} = \\frac{-12}{6} = -2$. Using $(-2, 5)$: $5 = -2(-2) + b$, so $b = 1$. The equation is $y = -2x + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -2x + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope (-7-5)/(4+2)=-2. y-5=-2(x+2) -> y=-2x+1. Check (4,-7): -8+1=-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.807Z"
+        }
+      }
+    },
+    {
+      "id": "12936d28-6261-475c-b6e7-1a94147943f9",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write an equation from features of its graph",
+      "stem": "A line rises 3 units for every 2 units to the right and passes through $(4, 5)$. Its equation is $y = mx + b$. What is $b$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "5-3/2*4",
+      "solution": "The slope is $m = \\frac{3}{2}$. Using $(4, 5)$: $5 = \\frac{3}{2}(4) + b = 6 + b$, so $b = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m=3/2. 5=(3/2)(4)+b=6+b -> b=-1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.835Z"
+        }
+      }
+    },
+    {
+      "id": "c3dae704-0a2a-41ca-8430-00e7d543dbc8",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A deer population of 300 triples every 4 years. Let $P$ be the population after $t$ years. Which equation models this?",
+      "choices": [
+        "$P = 300 \\cdot 3^{4t}$",
+        "$P = 300 \\cdot 3^{\\frac{t}{4}}$",
+        "$P = 300 \\cdot 4^{\\frac{t}{3}}$",
+        "$P = 300 \\cdot 3^{t}$"
+      ],
+      "answer": "$P = 300 \\cdot 3^{\\frac{t}{4}}$",
+      "compute": null,
+      "solution": "The population is multiplied by 3 once for every 4 years, that is $\\frac{t}{4}$ times. So $P = 300 \\cdot 3^{t/4}$. Check: at $t = 4$, $P = 900$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$P = 300 \\cdot 3^{\\frac{t}{4}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Triples every 4 years: number of triplings t/4, P=300*3^(t/4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.837Z"
+        }
+      }
+    },
+    {
+      "id": "cde95009-5773-49fc-96ac-edd7dcb912fc",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell which kind of relationship a situation or table shows",
+      "stem": "A table gives $y$ when $x$ is 0, 1, 2, 3 and 4. Which list of $y$-values shows a quadratic relationship?",
+      "choices": [
+        "2, 3, 6, 11, 18",
+        "2, 4, 8, 16, 32",
+        "2, 5, 8, 11, 14",
+        "2, 3, 5, 8, 13"
+      ],
+      "answer": "2, 3, 6, 11, 18",
+      "compute": null,
+      "solution": "The differences in 2, 3, 6, 11, 18 are 1, 3, 5, 7, which go up by the same amount (2) each time, so it is quadratic. The first list doubles (exponential), the second has equal differences (linear), and the last has differences 1, 2, 3, 5 that do not go up evenly.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2, 3, 6, 11, 18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,3,6,11,18: first differences 1,3,5,7; second differences constant 2 -> quadratic. Others: exponential, Fibonacci-like, linear.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.841Z"
+        }
+      }
+    },
+    {
+      "id": "801a55a7-ff96-42a4-9587-3a833dc59bfa",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A plumber charges a 50 dollar fee that covers the first hour of work, and then 40 dollars for each additional hour. Let $C$ be the total charge in dollars for $h$ hours of work, where $h$ is a whole number and at least 1. Which equation models this?",
+      "choices": [
+        "$C = 40h + 50$",
+        "$C = 40h + 10$",
+        "$C = 40(h - 1)$",
+        "$C = 50h - 40$"
+      ],
+      "answer": "$C = 40h + 10$",
+      "compute": null,
+      "solution": "The charge is $50 + 40(h - 1) = 50 + 40h - 40 = 40h + 10$. Check: $h = 1$ gives 50 and $h = 2$ gives 90.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$C = 40h + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C=50+40(h-1)=40h+10. Check h=1: 50; h=2: 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.843Z"
+        }
+      }
+    },
+    {
+      "id": "bb53c674-31f3-4636-b86f-d0f26ed0b44b",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "An exponential function has a graph through $(1, 6)$ and $(2, 18)$. Which equation has this graph?",
+      "choices": [
+        "$y = 6 \\cdot 3^x$",
+        "$y = 3 \\cdot 2^x$",
+        "$y = 6x$",
+        "$y = 2 \\cdot 3^x$"
+      ],
+      "answer": "$y = 2 \\cdot 3^x$",
+      "compute": null,
+      "solution": "From $x = 1$ to $x = 2$, $y$ is multiplied by $18 \\div 6 = 3$, so $b = 3$. Then $6 = a \\cdot 3$ gives $a = 2$. The equation is $y = 2 \\cdot 3^x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2 \\cdot 3^x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ratio 18/6=3, a=6/3=2: y=2*3^x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.859Z"
+        }
+      }
+    },
+    {
+      "id": "e4dbd28d-2fb7-4309-8264-dc1b2955eddb",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A tank holds 500 liters. A pump removes 12 liters each minute while a hose adds 5 liters each minute. The volume $V$ in liters after $t$ minutes is $V = 500 - kt$. What is $k$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "12-5",
+      "solution": "Each minute the tank loses 12 liters and gains 5 liters, a net loss of $12 - 5 = 7$ liters. So $k = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Net change -12+5=-7 per minute; V=500-7t, k=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.861Z"
+        }
+      }
+    },
+    {
+      "id": "037ea78c-6954-4a58-8af2-f44fff4cfdc6",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write an equation from features of its graph",
+      "stem": "An exponential equation $y = a \\cdot b^x$ with $b > 0$ has a graph through $(0, 4)$ and $(3, 32)$. What is $y$ when $x = 5$?",
+      "choices": [],
+      "answer": "128",
+      "compute": "4*2^5",
+      "solution": "At $x = 0$, $a = 4$. At $x = 3$, $4b^3 = 32$, so $b^3 = 8$ and $b = 2$. At $x = 5$: $y = 4 \\cdot 32 = 128$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "128",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a=4; 4b^3=32 -> b=2; y(5)=4*32=128.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.862Z"
+        }
+      }
+    },
+    {
+      "id": "92a70ab4-8051-4ffa-a52f-9bd752d2e54b",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A farmer uses 100 meters of fence for three sides of a rectangular pen and a wall for the fourth side. If the two sides next to the wall are each $x$ meters, the side opposite the wall is $100 - 2x$ meters and the area is $A = x(100 - 2x)$. What value of $x$ gives the greatest area?",
+      "choices": [],
+      "answer": "25",
+      "compute": "100/4",
+      "solution": "$A = x(100 - 2x)$ is zero at $x = 0$ and at $x = 50$. The graph is a parabola opening downward, so its highest point is halfway between: $x = 25$. (Then the area is $25 \\cdot 50 = 1250$ square meters.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A=100x-2x^2, vertex at x=-100/(2*-2)=25 (roots 0 and 50, midpoint 25). Area 1250.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.870Z"
+        }
+      }
+    },
+    {
+      "id": "7a639cfe-3153-43d2-ab71-a47c65bf594b",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 1, 2 and 3, $y$ is 12, 36 and 108. The table follows $y = a \\cdot b^x$. What is $y$ when $x = 5$?",
+      "choices": [],
+      "answer": "972",
+      "compute": "4*3^5",
+      "solution": "Each $y$ is 3 times the one before, so $b = 3$. Then $12 = a \\cdot 3$ gives $a = 4$. At $x = 5$: $y = 4 \\cdot 3^5 = 4 \\cdot 243 = 972$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "972",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "b=36/12=3, a=12/3=4. y(5)=4*3^5=972.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.885Z"
+        }
+      }
+    },
+    {
+      "id": "64179e9d-2d63-4aa8-95d4-30062c566ef7",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A garden is 10 meters long and 6 meters wide. A path of width $x$ meters goes all the way around it. Which equation gives the total area $A$ of the garden and path?",
+      "choices": [
+        "$A = (10 + x)(6 + x)$",
+        "$A = (10 + 2x)(6 + x)$",
+        "$A = (10 + 2x)(6 + 2x)$",
+        "$A = (10 + 2x)(6 - 2x)$"
+      ],
+      "answer": "$A = (10 + 2x)(6 + 2x)$",
+      "compute": null,
+      "solution": "The path adds $x$ on each side, so both the length and the width grow by $2x$. The total area is $(10 + 2x)(6 + 2x)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A = (10 + 2x)(6 + 2x)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Path adds x on each side: (10+2x)(6+2x).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.886Z"
+        }
+      }
+    },
+    {
+      "id": "77c27f8a-b96c-4167-b579-204850ed6b44",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use an equation to find points on its graph",
+      "stem": "The graph of $y = 3 \\cdot 2^x$ includes the point $(k, 96)$. What is $k$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Set $3 \\cdot 2^k = 96$, so $2^k = 32$ and $k = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3*2^k=96, 2^k=32, k=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.890Z"
+        }
+      }
+    },
+    {
+      "id": "570551fb-67e8-460d-84e8-d7d9f377bcc1",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read features of a graph from its equation",
+      "stem": "Which equation has a graph that crosses the $y$-axis at $(0, 5)$ and, as $x$ increases, falls toward the $x$-axis without ever touching it?",
+      "choices": [
+        "$y = 5\\left(\\frac{3}{2}\\right)^x$",
+        "$y = 5\\left(\\frac{1}{2}\\right)^x$",
+        "$y = -\\frac{1}{2}x^2 + 5$",
+        "$y = 5 - \\frac{1}{2}x$"
+      ],
+      "answer": "$y = 5\\left(\\frac{1}{2}\\right)^x$",
+      "compute": null,
+      "solution": "Only an exponential with a base between 0 and 1 gets closer and closer to the $x$-axis without touching it. $5\\left(\\frac{1}{2}\\right)^x$ equals 5 at $x = 0$. $5 \\cdot 2^x$ rises, and the other two cross the $x$-axis.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 5\\left(\\frac{1}{2}\\right)^x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Exponential decay with a=5, 0<b<1: 5(1/2)^x. Linear and quadratic cross the x-axis; (3/2)^x grows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.892Z"
+        }
+      }
+    },
+    {
+      "id": "c7329db9-033e-4784-9252-d5777b039f09",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A rectangle's length is 3 more than twice its width $w$. Which equation gives its area $A$?",
+      "choices": [
+        "$A = 2w^2 + 3w$",
+        "$A = 2w^2 + 3$",
+        "$A = 3w^2 + 2w$",
+        "$A = 4w + 6$"
+      ],
+      "answer": "$A = 2w^2 + 3w$",
+      "compute": null,
+      "solution": "The length is $2w + 3$, so the area is $w(2w + 3) = 2w^2 + 3w$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A = 2w^2 + 3w$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length 2w+3; A=w(2w+3)=2w^2+3w.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.903Z"
+        }
+      }
+    },
+    {
+      "id": "e3156298-010d-4982-8fec-a19bed318c7d",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A savings balance grows by the same percent each year. After 2 years it has grown by exactly 21 percent in total. The balance after $t$ years is $B = B_0 \\cdot b^t$ with $b > 0$. What is $b$?",
+      "choices": [],
+      "answer": "1.1",
+      "compute": "11/10",
+      "solution": "After 2 years the balance is 1.21 times the start, so $b^2 = 1.21$. Since $b > 0$, $b = 1.1$ (a 10 percent increase each year).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "b^2=1.21, b=1.1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.904Z"
+        }
+      }
+    },
+    {
+      "id": "b53f107d-f8c2-4b10-ba26-f1a893f4db52",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is $-1$, 0, 1 and 2, $y$ is 6, 1, 0 and 3. The table follows $y = ax^2 + bx + c$. What is $y$ when $x = 3$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2*9-3*3+1",
+      "solution": "At $x = 0$, $c = 1$. At $x = 1$: $a + b + 1 = 0$. At $x = -1$: $a - b + 1 = 6$. Adding these two gives $2a + 2 = 6$, so $a = 2$ and $b = -3$. At $x = 3$: $18 - 9 + 1 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c=1; a+b=-1, a-b=5, a=2, b=-3; check x=2: 8-6+1=3. y(3)=18-9+1=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.913Z"
+        }
+      }
+    },
+    {
+      "id": "6e884247-3445-4483-a316-205a61cc3b9e",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a part of an equation in its context",
+      "stem": "The height of a ball in feet after $t$ seconds is $h = -16t^2 + 40t + 6$. What does the 6 represent?",
+      "choices": [
+        "The greatest height that the ball reaches in the air",
+        "The total time the ball spends in the air",
+        "The speed at which the ball is first thrown upward",
+        "The height of the ball at the moment it is thrown"
+      ],
+      "answer": "The height of the ball at the moment it is thrown",
+      "compute": null,
+      "solution": "When $t = 0$, $h = 6$, so 6 feet is the height at the moment of the throw.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The height of the ball at the moment it is thrown",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At t=0, h=6: the height when thrown.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.921Z"
+        }
+      }
+    },
+    {
+      "id": "19ac159f-0597-4321-aba9-238335cd8e56",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an equation from features of its graph",
+      "stem": "A parabola that opens upward has $x$-intercepts $(1, 0)$ and $(5, 0)$ and $y$-intercept $(0, 5)$. Which equation has this graph?",
+      "choices": [
+        "$y = x^2 + 6x + 5$",
+        "$y = x^2 - 4x + 5$",
+        "$y = x^2 - 6x + 5$",
+        "$y = -x^2 + 6x - 5$"
+      ],
+      "answer": "$y = x^2 - 6x + 5$",
+      "compute": null,
+      "solution": "The equation is $y = a(x - 1)(x - 5)$. At $x = 0$, $5a = 5$, so $a = 1$. Then $y = x^2 - 6x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = x^2 - 6x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Roots 1 and 5, opens upward: y=a(x-1)(x-5), y-int 5a=5, a=1: y=x^2-6x+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.933Z"
+        }
+      }
+    },
+    {
+      "id": "f2b5620f-725d-4fa4-9609-e704491b8d13",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match an equation to a table of values",
+      "stem": "A table gives $y$ for each $x$. When $x$ is 2, 4, 6 and 8, $y$ is 11, 7, 3 and $-1$. Which equation matches the table?",
+      "choices": [
+        "$y = -4x + 19$",
+        "$y = -2x + 11$",
+        "$y = 2x + 7$",
+        "$y = -2x + 15$"
+      ],
+      "answer": "$y = -2x + 15$",
+      "compute": null,
+      "solution": "When $x$ goes up by 2, $y$ goes down by 4, so the slope is $-2$. At $x = 2$: $11 = -4 + b$, so $b = 15$. Check at $x = 8$: $-16 + 15 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -2x + 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope (7-11)/(4-2) = -2; 11 = -4 + b, b=15. Check x=8: -16+15=-1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.937Z"
+        }
+      }
+    },
+    {
+      "id": "7757179c-da9c-49d2-8a8a-545561092599",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell which kind of relationship a situation or table shows",
+      "stem": "Which of these situations gives a relationship that is quadratic, not linear or exponential?",
+      "choices": [
+        "The perimeter of a rectangle with a fixed length, as its width changes",
+        "The balance of an account that earns 2 percent interest each year",
+        "The area of a rectangle with a perimeter of 40 meters, as its width changes",
+        "The cost of renting a bike with a flat fee plus a charge per hour"
+      ],
+      "answer": "The area of a rectangle with a perimeter of 40 meters, as its width changes",
+      "compute": null,
+      "solution": "With a perimeter of 40, a width $w$ gives a length $20 - w$ and an area $w(20 - w)$, a quadratic. The perimeter in the second option is linear in the width, the account is exponential, and the bike cost is linear.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The area of a rectangle with a perimeter of 40 meters, as its width changes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter 40: length 20-w, area w(20-w) = 20w - w^2, quadratic. Others linear, exponential, linear.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.950Z"
+        }
+      }
+    },
+    {
+      "id": "56b76b98-62b8-4214-9bc8-81feb295e729",
+      "topic_id": "NC17.M1.A-CED.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read features of a graph from its equation",
+      "stem": "The graph of $y = -x^2 + 6x$ has a highest point. What is its $y$-coordinate?",
+      "choices": [],
+      "answer": "9",
+      "compute": "-9+18",
+      "solution": "The graph crosses the $x$-axis where $-x(x - 6) = 0$, at $x = 0$ and $x = 6$. The highest point is halfway between, at $x = 3$, where $y = -9 + 18 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex at x = -6/(2(-1)) = 3; y = -9+18 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.979Z"
         }
       }
     },

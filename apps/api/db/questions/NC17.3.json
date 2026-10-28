@@ -22234,6 +22234,505 @@
       }
     },
     {
+      "id": "3d690fb0-5eb8-46ad-be0f-fe12f73c2e3b",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "subtract in a story",
+      "stem": "A pool holds 650 liters of water. Then 420 liters leak out. How many liters are left in the pool?",
+      "choices": [],
+      "answer": "230",
+      "compute": "650-420",
+      "solution": "Subtract: 650 - 420. Tens: 5 - 2 = 3. Hundreds: 6 - 4 = 2. Ones: 0. That is 230 liters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "230",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "650 − 420 = 230.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.047Z"
+        }
+      }
+    },
+    {
+      "id": "2b71eb2b-694a-4fe2-a3de-da45ae5acaee",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add in a story",
+      "stem": "A bakery makes 312 muffins on Monday and 275 muffins on Tuesday. How many muffins does it make on the two days?",
+      "choices": [],
+      "answer": "587",
+      "compute": "312+275",
+      "solution": "Add: 312 + 275. Ones: 2 + 5 = 7. Tens: 1 + 7 = 8. Hundreds: 3 + 2 = 5. The total is 587 muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "587",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "312 + 275 = 587.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.091Z"
+        }
+      }
+    },
+    {
+      "id": "fe7f087b-e4d2-412d-b277-b1aef8dd2a6f",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Round each number to the nearest ten. Which is the best estimate for $238 + 354$?",
+      "choices": [
+        "600",
+        "580",
+        "650",
+        "590"
+      ],
+      "answer": "590",
+      "compute": "590",
+      "solution": "238 rounds to 240 and 354 rounds to 350. 240 + 350 = 590. Rounding to the nearest hundred would give 600, which is not as close.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "590",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "238 → 240, 354 → 350; 240 + 350 = 590.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.095Z"
+        }
+      }
+    },
+    {
+      "id": "0640cecd-4e69-4cd6-9fa3-597b42a66f4a",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Leo subtracts $758 - 235$ by place value: $(700 - 200) + (50 - 30) + (8 - 5)$. What is the answer?",
+      "choices": [
+        "513",
+        "553",
+        "523",
+        "983"
+      ],
+      "answer": "523",
+      "compute": "523",
+      "solution": "500 + 20 + 3 = 523. The wrong answers come from slips in one place, or from adding instead of subtracting.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "523",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 + 20 + 3 = 523.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.117Z"
+        }
+      }
+    },
+    {
+      "id": "a7a014c1-baf3-4e8f-ab05-a474ac58c8c5",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Nora had some stickers. She gave away 240 and has 320 left. How many stickers did Nora have at the start?",
+      "choices": [],
+      "answer": "560",
+      "compute": "240+320",
+      "solution": "To undo giving away, add: 320 + 240 = 560.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "560",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "240 + 320 = 560.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.138Z"
+        }
+      }
+    },
+    {
+      "id": "131b72f3-6ed5-4c1f-905b-f278302ca8c4",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add in a story",
+      "stem": "Max read 128 pages on Monday and 164 pages on Tuesday. How many pages did he read in all?",
+      "choices": [
+        "282",
+        "292",
+        "392",
+        "36"
+      ],
+      "answer": "292",
+      "compute": "128+164",
+      "solution": "Ones: 8 + 4 = 12, write 2 and carry 1. Tens: 2 + 6 + 1 = 9. Hundreds: 1 + 1 = 2. The total is 292 pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "292",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "128+164=292.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.287Z"
+        }
+      }
+    },
+    {
+      "id": "035b0337-893c-4faa-ae92-28c8e130c08e",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "subtract within 1,000",
+      "stem": "What is $500 - 230$?",
+      "choices": [
+        "270",
+        "330",
+        "370",
+        "730"
+      ],
+      "answer": "270",
+      "compute": "270",
+      "solution": "Think 500 - 200 = 300, then 300 - 30 = 270. Check: 270 + 230 = 500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "270",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500-230=270.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.307Z"
+        }
+      }
+    },
+    {
+      "id": "32551c56-70de-49c5-b650-0c92c45df66e",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Round each number to the nearest ten. Which is the best estimate for $573 - 188$?",
+      "choices": [
+        "400",
+        "360",
+        "380",
+        "390"
+      ],
+      "answer": "380",
+      "compute": "380",
+      "solution": "573 rounds to 570 and 188 rounds to 190. 570 - 190 = 380. Rounding to the nearest hundred would give 400, which is not as close.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "380",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "570-190=380.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.338Z"
+        }
+      }
+    },
+    {
+      "id": "688de46a-a2a6-485e-9586-75f625d074f2",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Lia thinks of a number. She adds 275 to it and gets 600. What number did she think of?",
+      "choices": [],
+      "answer": "325",
+      "compute": "600-275",
+      "solution": "To undo adding 275, subtract: 600 - 275 = 325.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "325",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "600-275=325.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.367Z"
+        }
+      }
+    },
+    {
+      "id": "351b54cc-7730-4ebf-a78a-5ccdb850ca32",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Dan subtracts: $480 - 150 = 330$. To check, he writes $330 + ? = 480$. What is the ?",
+      "choices": [],
+      "answer": "150",
+      "compute": "480-330",
+      "solution": "Adding the answer back to the number taken away gives the start. 330 + 150 = 480, so the ? is 150.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "150",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "330+150=480, so ? = 150.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.376Z"
+        }
+      }
+    },
+    {
+      "id": "3cc9c407-8777-4894-ab76-879f38fee01e",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "find a missing digit",
+      "stem": "The ? is one digit. In $2?5 + 143 = 388$, what is the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "388 - 143 = 245, so the number 2?5 is 245. The ? is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "388-143 = 245, so ? = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.421Z"
+        }
+      }
+    },
+    {
+      "id": "213b37b2-eb7f-4b46-a641-a6b964210923",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add within 1,000",
+      "stem": "What is $403 + 276$?",
+      "choices": [],
+      "answer": "679",
+      "compute": "403+276",
+      "solution": "Ones: 3 + 6 = 9. Tens: 0 + 7 = 7. Hundreds: 4 + 2 = 6. The sum is 679.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "679",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "403 + 276 = 679.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.450Z"
+        }
+      }
+    },
+    {
+      "id": "d51a813e-bddc-4d59-b8f9-0ea12252a592",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Find $(300 + 40 + 6) + (200 + 50 + 1)$.",
+      "choices": [],
+      "answer": "597",
+      "compute": "346+251",
+      "solution": "Add the hundreds, tens and ones: 500 + 90 + 7 = 597.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "597",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "346 + 251 = 597.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.464Z"
+        }
+      }
+    },
+    {
+      "id": "a0e177ee-5cf3-4943-a56d-7fb9f80d8eb3",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Tia estimates $401 + 297$ as about 700. Which estimate did she use?",
+      "choices": [
+        "$400 + 200$",
+        "$500 + 300$",
+        "$400 + 300$",
+        "$300 + 300$"
+      ],
+      "answer": "$400 + 300$",
+      "compute": null,
+      "solution": "401 is close to 400 and 297 is close to 300. 400 + 300 = 700.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$400 + 300$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "401 ≈ 400, 297 ≈ 300; 400 + 300 = 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.477Z"
+        }
+      }
+    },
+    {
+      "id": "cd79339d-ba71-4d84-a23e-ca8d269839ce",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "subtract in a story",
+      "stem": "One school has 548 students and another school has 320 students. How many more students does the first school have?",
+      "choices": [
+        "868",
+        "228",
+        "232",
+        "328"
+      ],
+      "answer": "228",
+      "compute": "548-320",
+      "solution": "Subtract: 548 - 320. Ones: 8 - 0 = 8. Tens: 4 - 2 = 2. Hundreds: 5 - 3 = 2. The first school has 228 more students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "228",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "548 - 320 = 228.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.487Z"
+        }
+      }
+    },
+    {
+      "id": "21aecbfa-8ce9-47f0-87b9-af282bd65212",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "subtract within 1,000",
+      "stem": "A shop has 700 pencils and sells 245 of them. How many pencils does the shop have left?",
+      "choices": [],
+      "answer": "455",
+      "compute": "700-245",
+      "solution": "Subtract: 700 - 245. Regroup 7 hundreds as 6 hundreds, 9 tens and 10 ones: 600 + 90 + 10 - 245 = 455.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "455",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700-245 = 455.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.669Z"
+        }
+      }
+    },
+    {
       "id": "94965488-75ee-4694-af8c-c6555b10f347",
       "topic_id": "NC17.3.NBT.2",
       "difficulty": 2,
@@ -22675,6 +23174,607 @@
       }
     },
     {
+      "id": "31691180-8e58-49e1-bd9a-fb21f46e53d0",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add within 1,000",
+      "stem": "What is $604 + 296$?",
+      "choices": [],
+      "answer": "900",
+      "compute": "604+296",
+      "solution": "Ones: 4 + 6 = 10, write 0 and carry 1. Tens: 0 + 9 + 1 = 10, write 0 and carry 1. Hundreds: 6 + 2 + 1 = 9. The sum is 900.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "604 + 296 = 900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.096Z"
+        }
+      }
+    },
+    {
+      "id": "1a6d6073-00c6-488e-99ac-751967190a1e",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add in a story",
+      "stem": "A school collects 387 cans in October and 456 cans in November. How many cans does it collect in the two months?",
+      "choices": [],
+      "answer": "843",
+      "compute": "387+456",
+      "solution": "Ones: 7 + 6 = 13, write 3 and carry 1. Tens: 8 + 5 + 1 = 14, write 4 and carry 1. Hundreds: 3 + 4 + 1 = 8. The total is 843 cans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "843",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "387 + 456 = 843.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.121Z"
+        }
+      }
+    },
+    {
+      "id": "2b5e518b-38a3-491f-b50f-37fc12272653",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Mia says $812 - 365 = 457$. To check, she adds $457 + 365$. What is that sum?",
+      "choices": [],
+      "answer": "822",
+      "compute": "457+365",
+      "solution": "457 + 365 = 822. This is not 812, so Mia's answer is wrong. The correct difference is 447.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "822",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "457 + 365 = 822 (so Mia's subtraction was wrong, 812 − 365 = 447).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.135Z"
+        }
+      }
+    },
+    {
+      "id": "fb847bba-68a5-49f0-b35d-75309b4b970b",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "subtract within 1,000",
+      "stem": "What is $600 - 274$?",
+      "choices": [
+        "326",
+        "436",
+        "426",
+        "374"
+      ],
+      "answer": "326",
+      "compute": "600-274",
+      "solution": "600 - 274: 600 - 300 = 300, and then add back 26: 326. Check: 326 + 274 = 600.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "326",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "600-274=326.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.142Z"
+        }
+      }
+    },
+    {
+      "id": "99588cc3-ae19-4f0d-ac26-f0d192867fe3",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Which is the value of $(600 - 200) + (40 - 10) + (9 - 3)$?",
+      "choices": [
+        "466",
+        "436",
+        "430",
+        "346"
+      ],
+      "answer": "436",
+      "compute": "436",
+      "solution": "400 + 30 + 6 = 436.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "436",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400+30+6=436.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.162Z"
+        }
+      }
+    },
+    {
+      "id": "ab053710-5d24-4f5d-bf3d-5e51f103c778",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "subtract within 1,000",
+      "stem": "What is $702 - 358$?",
+      "choices": [
+        "354",
+        "444",
+        "1,060",
+        "344"
+      ],
+      "answer": "344",
+      "compute": "344",
+      "solution": "Regroup 702 as 6 hundreds, 9 tens and 12 ones. Ones: 12 - 8 = 4. Tens: 9 - 5 = 4. Hundreds: 6 - 3 = 3. The difference is 344. Check: 344 + 358 = 702.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "344",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "702-358=344.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.174Z"
+        }
+      }
+    },
+    {
+      "id": "e5a1f77b-3c5d-457a-b5ce-06320a0bffb4",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Lena adds $368 + 427$ and gets 595. She rounds each number to the nearest ten to check. What does she find?",
+      "choices": [
+        "The estimate is 800, so 595 is reasonable",
+        "The estimate is 700, so 595 is reasonable",
+        "The estimate is 790, so 595 is too small",
+        "The estimate is 800, so 595 is too small"
+      ],
+      "answer": "The estimate is 800, so 595 is too small",
+      "compute": null,
+      "solution": "368 rounds to 370 and 427 rounds to 430. 370 + 430 = 800. Her answer, 595, is far from 800, so it is too small. The exact sum is 795.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The estimate is 800, so 595 is too small",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "370+430=800; 595 is far below, too small.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.177Z"
+        }
+      }
+    },
+    {
+      "id": "744d3ce2-a8f6-415d-b11c-0d7b64577ef4",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solve a two-step story",
+      "stem": "Dev has 450 stamps. Ana has 175 fewer stamps than Dev. How many stamps do Dev and Ana have together?",
+      "choices": [],
+      "answer": "725",
+      "compute": "450+(450-175)",
+      "solution": "Ana has 450 - 175 = 275 stamps. Together they have 450 + 275 = 725 stamps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "725",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ana = 450 - 175 = 275; together 450 + 275 = 725.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.229Z"
+        }
+      }
+    },
+    {
+      "id": "24944ba9-4d4d-457a-981c-397890baba14",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "subtract within 1,000",
+      "stem": "What is $903 - 467$?",
+      "choices": [],
+      "answer": "436",
+      "compute": "903-467",
+      "solution": "Regroup 903 as 8 hundreds, 9 tens and 13 ones. Ones: 13 - 7 = 6. Tens: 9 - 6 = 3. Hundreds: 8 - 4 = 4. The difference is 436.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "436",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "903 - 467 = 436.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.235Z"
+        }
+      }
+    },
+    {
+      "id": "360aca89-a696-4d8b-8322-fbcaa0918e27",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "subtract in a story",
+      "stem": "A box holds 1,000 pencils. A class uses 586 of them. How many pencils are left in the box?",
+      "choices": [],
+      "answer": "414",
+      "compute": "1000-586",
+      "solution": "Subtract: 1,000 - 586 = 414. Check: 414 + 586 = 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "414",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000-586=414.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.278Z"
+        }
+      }
+    },
+    {
+      "id": "13e48e60-bdae-4e9a-8f5a-007e7e7f55aa",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Which equation can be used to find the ? in $? + 346 = 700$?",
+      "choices": [
+        "$700 - 346 = ?$",
+        "$700 + 346 = ?$",
+        "$346 - 700 = ?$",
+        "$? - 700 = 346$"
+      ],
+      "answer": "$700 - 346 = ?$",
+      "compute": null,
+      "solution": "If a number plus 346 is 700, the number is 700 minus 346.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$700 - 346 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Inverse operation: ? = 700-346.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.286Z"
+        }
+      }
+    },
+    {
+      "id": "20767c74-5bb7-45dc-8500-7f6aff55068c",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Round each number to the nearest ten. Which is the best estimate for $647 + 238$?",
+      "choices": [
+        "800",
+        "890",
+        "900",
+        "880"
+      ],
+      "answer": "890",
+      "compute": "890",
+      "solution": "647 rounds to 650 and 238 rounds to 240. 650 + 240 = 890.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "890",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "650+240=890.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.307Z"
+        }
+      }
+    },
+    {
+      "id": "ebda1ae5-e54b-4b44-9d10-8c6a88683b5a",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "A number minus 139 is 468. What is the number?",
+      "choices": [],
+      "answer": "607",
+      "compute": "468+139",
+      "solution": "To undo the subtraction, add: 468 + 139 = 607.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "607",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "468+139=607.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.336Z"
+        }
+      }
+    },
+    {
+      "id": "03f442b9-8ca5-4bac-9ff7-da7cfe53620c",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "estimate to check an answer",
+      "stem": "Round each number to the nearest ten, then subtract to estimate $763 - 428$. What is the estimate?",
+      "choices": [],
+      "answer": "330",
+      "compute": "760-430",
+      "solution": "763 rounds to 760 and 428 rounds to 430. 760 - 430 = 330.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "330",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "763 -> 760, 428 -> 430; 760-430=330.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.375Z"
+        }
+      }
+    },
+    {
+      "id": "64b4426d-9083-4d38-b5f4-768b2973a062",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "solve a two-step story",
+      "stem": "A library has 640 books. It gives away 275 books and then buys 190 new books. How many books does it have now?",
+      "choices": [
+        "175",
+        "725",
+        "1,105",
+        "555"
+      ],
+      "answer": "555",
+      "compute": "640-275+190",
+      "solution": "First 640 - 275 = 365. Then 365 + 190 = 555 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "555",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "640-275=365; 365+190=555.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.413Z"
+        }
+      }
+    },
+    {
+      "id": "6da50250-bad4-41ac-9c0f-ecf33fde5da8",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Round each number to the nearest hundred. Which is the best estimate for $812 - 298$?",
+      "choices": [
+        "500",
+        "600",
+        "400",
+        "510"
+      ],
+      "answer": "500",
+      "compute": "500",
+      "solution": "812 rounds to 800 and 298 rounds to 300. 800 - 300 = 500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "500",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "812 -> 800, 298 -> 300; 800-300 = 500.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.417Z"
+        }
+      }
+    },
+    {
+      "id": "982d5726-9901-42ba-a3fd-d1b50cde9ce3",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "add within 1,000",
+      "stem": "What is $557 + 289$?",
+      "choices": [
+        "836",
+        "746",
+        "846",
+        "856"
+      ],
+      "answer": "846",
+      "compute": "846",
+      "solution": "Ones: 7 + 9 = 16, write 6 and carry 1. Tens: 5 + 8 + 1 = 14, write 4 and carry 1. Hundreds: 5 + 2 + 1 = 8. The sum is 846.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "846",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "557 + 289 = 846.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.489Z"
+        }
+      }
+    },
+    {
+      "id": "f806f1c2-8a3e-411b-ba77-dc2b67a4c8cc",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "find a missing digit",
+      "stem": "The ? is one digit. In $5?6 - 238 = 288$, what is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "(288+238-506)/10",
+      "solution": "Add back: 288 + 238 = 526. So 5?6 is 526, and the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "288 + 238 = 526, so ? = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.496Z"
+        }
+      }
+    },
+    {
+      "id": "59a3d7f5-fd36-4d01-bf8e-4810e1091bb2",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "subtract in a story",
+      "stem": "A farm has 475 sheep and 389 goats. How many more sheep than goats are there?",
+      "choices": [
+        "96",
+        "864",
+        "86",
+        "114"
+      ],
+      "answer": "86",
+      "compute": "475-389",
+      "solution": "Subtract: 475 - 389 = 86. Check: 389 + 86 = 475.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "86",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "475 - 389 = 86.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.539Z"
+        }
+      }
+    },
+    {
       "id": "e1935248-6bd4-4d1c-b999-12501d8af17f",
       "topic_id": "NC17.3.NBT.2",
       "difficulty": 3,
@@ -22991,6 +24091,728 @@
           "work": "1000-637=363.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:01.878Z"
+        }
+      }
+    },
+    {
+      "id": "76d267d7-0869-4b6b-b6f0-07debf064290",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "solve a two-step story",
+      "stem": "A concert hall has 1,000 seats. 345 seats are sold on Monday and 298 seats on Tuesday. How many seats are still not sold?",
+      "choices": [
+        "643",
+        "457",
+        "367",
+        "357"
+      ],
+      "answer": "357",
+      "compute": "1000-345-298",
+      "solution": "345 + 298 = 643 seats are sold. Then 1,000 - 643 = 357 seats are not sold. (643 is the number sold.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "357",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "345 + 298 = 643 sold; 1,000 − 643 = 357.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.094Z"
+        }
+      }
+    },
+    {
+      "id": "85a57b54-a8a3-48ef-9fec-654fd4aa941a",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Mia subtracts $823 - 457$ by regrouping 823 as 700 + 110 + 13. What is the difference?",
+      "choices": [],
+      "answer": "366",
+      "compute": "823-457",
+      "solution": "700 + 110 + 13 = 823. Ones: 13 - 7 = 6. Tens: 110 - 50 = 60. Hundreds: 700 - 400 = 300. The difference is 366.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "366",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "823-457=366 (13-7=6, 110-50=60, 700-400=300).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.193Z"
+        }
+      }
+    },
+    {
+      "id": "68181e5b-aa63-4e82-9677-c1ae776ef94f",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add within 1,000",
+      "stem": "What is $668 + 287$?",
+      "choices": [],
+      "answer": "955",
+      "compute": "668+287",
+      "solution": "Ones: 8 + 7 = 15, write 5 and carry 1. Tens: 6 + 8 + 1 = 15, write 5 and carry 1. Hundreds: 6 + 2 + 1 = 9. The sum is 955.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "955",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "668 + 287 = 955.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.199Z"
+        }
+      }
+    },
+    {
+      "id": "c2dda9a5-34da-43cf-8f10-396b0ea21123",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "The sum of two numbers is 905. One of the numbers is 468. What is the other number?",
+      "choices": [],
+      "answer": "437",
+      "compute": "905-468",
+      "solution": "The other number is the sum minus the known number: 905 - 468 = 437.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "437",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "905 - 468 = 437.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.215Z"
+        }
+      }
+    },
+    {
+      "id": "f4b9c811-930c-4325-9a50-cc70bd60a74b",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Kai starts with a number, adds 287, and then subtracts 139. He gets 600. What number did Kai start with?",
+      "choices": [],
+      "answer": "452",
+      "compute": "600-287+139",
+      "solution": "Undo each step in the opposite order. Before subtracting 139 the number was 600 + 139 = 739. Before adding 287 it was 739 - 287 = 452.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "452",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n + 287 - 139 = 600 -> n + 148 = 600 -> n = 452. Check 452+287=739, 739-139=600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.233Z"
+        }
+      }
+    },
+    {
+      "id": "7771b82d-df61-4fc1-948c-4b620f260933",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find a missing digit",
+      "stem": "The ? is one digit. In $8?4 - 536 = 358$, what is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(358+536-804)/10",
+      "solution": "Add back: 358 + 536 = 894. So 8?4 is 894, and the ? is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8?4 = 358+536 = 894, so ? = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.268Z"
+        }
+      }
+    },
+    {
+      "id": "b5208dd2-fa0d-4290-a331-41ea89bd04d3",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Which equation does NOT check that $543 + 289 = 832$?",
+      "choices": [
+        "$832 - 289 = 543$",
+        "$832 - 543 = 289$",
+        "$289 + 543 = 832$",
+        "$832 + 289 = 543$"
+      ],
+      "answer": "$832 + 289 = 543$",
+      "compute": null,
+      "solution": "Subtracting one addend from 832 gives the other addend, and adding in a different order gives the same sum. Adding 289 to 832 does not return to 543.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$832 + 289 = 543$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Checks use inverse operations or commuting: 832-289=543, 832-543=289, 289+543=832 all check. 832+289=543 is false and does not check.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.269Z"
+        }
+      }
+    },
+    {
+      "id": "0b9d10ee-4c47-49b1-92ec-a46e6302c183",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Which is another way to find $648 - 275$?",
+      "choices": [
+        "Subtract 300, then subtract 25",
+        "Subtract 300, then add 25",
+        "Subtract 200, then add 75",
+        "Subtract 250, then add 25"
+      ],
+      "answer": "Subtract 300, then add 25",
+      "compute": null,
+      "solution": "275 is 25 less than 300, so subtracting 300 takes away 25 too many. Add 25 back: 648 - 300 + 25 = 373.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Subtract 300, then add 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Subtracting 275 = subtract 300 then add back 25: 648-300+25=373 = 648-275.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.300Z"
+        }
+      }
+    },
+    {
+      "id": "26a52939-3532-4757-bbf1-038461ade686",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add within 1,000",
+      "stem": "What is $476 + 458$?",
+      "choices": [
+        "924",
+        "834",
+        "1,034",
+        "934"
+      ],
+      "answer": "934",
+      "compute": "934",
+      "solution": "Ones: 6 + 8 = 14, write 4 and carry 1. Tens: 7 + 5 + 1 = 13, write 3 and carry 1. Hundreds: 4 + 4 + 1 = 9. The sum is 934.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "934",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "476+458=934.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.313Z"
+        }
+      }
+    },
+    {
+      "id": "d00e17bb-b7ec-4bb4-abf8-2cf57205dc8f",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Mia writes $735 + 168 = 800 + 90 + 13$. What is the sum?",
+      "choices": [
+        "893",
+        "813",
+        "903",
+        "1,003"
+      ],
+      "answer": "903",
+      "compute": "903",
+      "solution": "800 + 90 + 13 = 903. Check: 735 + 168 = 903.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "903",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "735+168: 700+100=800, 30+60=90, 5+8=13; 800+90+13=903.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.339Z"
+        }
+      }
+    },
+    {
+      "id": "897b56c5-cd17-4ed7-9b1b-a7a13a094d8b",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "A school has 618 students, and 192 of them are in the band. Rounding each number to the nearest ten, which is the best estimate of the number of students NOT in the band?",
+      "choices": [
+        "430",
+        "400",
+        "810",
+        "440"
+      ],
+      "answer": "430",
+      "compute": "620-190",
+      "solution": "618 rounds to 620 and 192 rounds to 190. 620 - 190 = 430.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "430",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "618 -> 620, 192 -> 190; 620-190=430.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.388Z"
+        }
+      }
+    },
+    {
+      "id": "29642e2e-a2a7-4281-8e0b-2dbcf7952680",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Kim estimates $746 - 389$ as 300 by rounding each number to the nearest hundred (700 - 400). The exact answer is 357. Why is her estimate less than the exact answer?",
+      "choices": [
+        "She rounded 746 up and 389 down, so the difference got smaller",
+        "She rounded 746 down and 389 up, so the difference got smaller",
+        "She rounded both numbers up",
+        "Estimates are always less than the exact answer"
+      ],
+      "answer": "She rounded 746 down and 389 up, so the difference got smaller",
+      "compute": null,
+      "solution": "Rounding 746 down to 700 lowers the difference by 46, and rounding 389 up to 400 lowers it by another 11. Both changes make the difference smaller.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She rounded 746 down and 389 up, so the difference got smaller",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "746 rounded down to 700 and 389 rounded up to 400, which shrinks the difference.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.402Z"
+        }
+      }
+    },
+    {
+      "id": "e7d004b7-d413-40f6-b5f4-da11f4865fb6",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solve a two-step story",
+      "stem": "Jo has 700 points. She loses 285 points in one game and wins 140 points in the next game. How many points does Jo have now?",
+      "choices": [],
+      "answer": "555",
+      "compute": "700-285+140",
+      "solution": "700 - 285 = 415. Then 415 + 140 = 555 points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "555",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700 - 285 = 415; 415 + 140 = 555.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.461Z"
+        }
+      }
+    },
+    {
+      "id": "20e881ce-4117-49b3-92f1-e956e2fdfa3c",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add in a story",
+      "stem": "A shop has 428 red balloons, 365 blue balloons and 117 green balloons. How many balloons does it have in all?",
+      "choices": [],
+      "answer": "910",
+      "compute": "428+365+117",
+      "solution": "428 + 365 = 793. Then 793 + 117 = 910 balloons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "910",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "428 + 365 = 793; + 117 = 910.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.522Z"
+        }
+      }
+    },
+    {
+      "id": "6984015c-95cd-4a01-8767-453e9f154916",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "subtract in a story",
+      "stem": "A trail is 900 meters long. Rae has walked 468 meters. How many more meters does she have to walk?",
+      "choices": [],
+      "answer": "432",
+      "compute": "900-468",
+      "solution": "Subtract: 900 - 468 = 432. Check: 432 + 468 = 900.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "432",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "900 - 468 = 432.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.528Z"
+        }
+      }
+    },
+    {
+      "id": "c706e1fc-e8eb-49f9-aebe-3ddd3eb1826f",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a missing digit",
+      "stem": "The ? is one digit. Which digit makes $4?8 + 275 = 733$ true?",
+      "choices": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "733 - 275 = 458, so 4?8 is 458 and the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "733 - 275 = 458, so ? = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.531Z"
+        }
+      }
+    },
+    {
+      "id": "ee60e6f6-7cf9-4104-84bd-8726e2858e9c",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solve a two-step story",
+      "stem": "A school has 1,000 tickets. It sells 468 on Friday and some on Saturday. After that, 197 tickets are left. How many tickets did it sell on Saturday?",
+      "choices": [],
+      "answer": "335",
+      "compute": "1000-468-197",
+      "solution": "After Friday, 1,000 - 468 = 532 tickets are left. Saturday sold 532 - 197 = 335 tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "335",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000 - 468 - 197 = 335.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.532Z"
+        }
+      }
+    },
+    {
+      "id": "64edba1f-f5cc-4a7e-9380-94a62deb1cbb",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "subtract within 1,000",
+      "stem": "What is $804 - 567$?",
+      "choices": [
+        "347",
+        "247",
+        "237",
+        "363"
+      ],
+      "answer": "237",
+      "compute": "804-567",
+      "solution": "Regroup 804 as 7 hundreds, 9 tens and 14 ones. Ones: 14 - 7 = 7. Tens: 9 - 6 = 3. Hundreds: 7 - 5 = 2. The difference is 237. Check: 237 + 567 = 804.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "237",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "804 - 567 = 237 (check 567 + 237 = 804).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.540Z"
+        }
+      }
+    },
+    {
+      "id": "673991a2-bf20-4cb4-b373-e5aaf40a1c44",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "add in a story",
+      "stem": "A trail has three parts. They are 245 meters, 318 meters and 297 meters long. How many meters long is the whole trail?",
+      "choices": [],
+      "answer": "860",
+      "compute": "245+318+297",
+      "solution": "245 + 318 = 563. Then 563 + 297 = 860 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "860",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "245 + 318 = 563; 563 + 297 = 860.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.568Z"
+        }
+      }
+    },
+    {
+      "id": "3b2b893a-3ae6-48fe-a82a-bf3dd2eea1ed",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "solve a two-step story",
+      "stem": "Tom has 234 trading cards. Sue has 87 more cards than Tom. Lee has 150 fewer cards than Sue. How many cards does Lee have?",
+      "choices": [],
+      "answer": "171",
+      "compute": "234+87-150",
+      "solution": "Sue has 234 + 87 = 321 cards. Lee has 321 - 150 = 171 cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "171",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sue = 234 + 87 = 321; Lee = 321 - 150 = 171.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.610Z"
+        }
+      }
+    },
+    {
+      "id": "81b2d336-2221-4696-890a-a292c042a666",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "estimate to check an answer",
+      "stem": "Which subtraction is closest to $903 - 487$?",
+      "choices": [
+        "$900 - 490$",
+        "$900 - 500$",
+        "$900 - 400$",
+        "$800 - 500$"
+      ],
+      "answer": "$900 - 490$",
+      "compute": null,
+      "solution": "903 is close to 900 and 487 is close to 490. 900 - 490 = 410, which is within 6 of the exact answer, 416. The other choices are farther away.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$900 - 490$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "903 - 487 = 416. 900-490=410 (6 off), 300, 500, 400 (16 off). Closest 900 - 490.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.627Z"
+        }
+      }
+    },
+    {
+      "id": "c1ed00d3-e60d-41ff-a1c4-e5d47bbfed3f",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "subtract within 1,000",
+      "stem": "What is $1{,}000 - 463$?",
+      "choices": [
+        "547",
+        "637",
+        "537",
+        "1,463"
+      ],
+      "answer": "537",
+      "compute": "1000-463",
+      "solution": "1,000 - 463: 1,000 - 400 = 600, 600 - 60 = 540, 540 - 3 = 537. Check: 537 + 463 = 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "537",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000-463 = 537 (check 537+463=1000).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.640Z"
+        }
+      }
+    },
+    {
+      "id": "ff89444a-8286-4497-a358-2219bca2c99a",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "The difference of two numbers is 248. The smaller number is 359. What is the greater number?",
+      "choices": [],
+      "answer": "607",
+      "compute": "359+248",
+      "solution": "The greater number minus the smaller is 248, so the greater number is 359 + 248 = 607.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "607",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greater = 359+248 = 607.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.653Z"
         }
       }
     },

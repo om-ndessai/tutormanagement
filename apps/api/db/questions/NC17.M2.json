@@ -18889,6 +18889,743 @@
       }
     },
     {
+      "id": "e4d39900-22df-4d5f-b819-6ed880f1c99f",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Degree and form of a sum or product",
+      "stem": "Three polynomials, each of degree 1, are multiplied together. What is the degree of the product?",
+      "choices": [],
+      "answer": "3",
+      "compute": "1+1+1",
+      "solution": "Each factor has degree 1, and degrees add when polynomials are multiplied: $1 + 1 + 1 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Degrees add: 1+1+1=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.833Z"
+        }
+      }
+    },
+    {
+      "id": "d32ab261-232a-4e48-b563-acb641424da8",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Find the product $(4 + x)(4 - x)$.",
+      "choices": [
+        "$x^2 - 16$",
+        "$16 + x^2$",
+        "$16 - 8x + x^2$",
+        "$16 - x^2$"
+      ],
+      "answer": "$16 - x^2$",
+      "compute": null,
+      "solution": "This is a sum times a difference, so the middle terms cancel: $16 - x^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16 - x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference of squares: 16-x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.833Z"
+        }
+      }
+    },
+    {
+      "id": "6c7b528f-6dfc-4641-b6aa-d7488dafbe0a",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a missing coefficient or factor",
+      "stem": "Which polynomial, subtracted from $5x^2 + 3x$, leaves $2x^2 + 3x - 1$?",
+      "choices": [
+        "$3x^2 + 1$",
+        "$3x^2 - 1$",
+        "$7x^2 + 6x - 1$",
+        "$3x^2 + 6x - 1$"
+      ],
+      "answer": "$3x^2 + 1$",
+      "compute": null,
+      "solution": "Subtract the leftover from the start: $(5x^2 + 3x) - (2x^2 + 3x - 1) = 3x^2 + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^2 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P = (5x^2+3x)-(2x^2+3x-1) = 3x^2+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.834Z"
+        }
+      }
+    },
+    {
+      "id": "09c6dfb0-273c-4518-bafe-e9ba6588f898",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "The product $(x + 1)(x + 2)(x + 3)$ equals $x^3 + 6x^2 + bx + 6$. What is $b$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "1*2+1*3+2*3",
+      "solution": "$(x + 1)(x + 2) = x^2 + 3x + 2$. Multiplying by $(x + 3)$ gives $x^3 + 6x^2 + 11x + 6$, so $b = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(x+2)=x^2+3x+2; times (x+3): x^3+6x^2+11x+6. b=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.836Z"
+        }
+      }
+    },
+    {
+      "id": "871ef28e-7cca-412e-acac-3b730cc5e8b8",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Which polynomial is equal to $(x - 7)^2$?",
+      "choices": [
+        "$x^2 - 14x + 49$",
+        "$x^2 - 49$",
+        "$x^2 - 14x - 49$",
+        "$x^2 - 7x + 49$"
+      ],
+      "answer": "$x^2 - 14x + 49$",
+      "compute": null,
+      "solution": "$(x - 7)^2 = x^2 - 2 \\cdot 7x + 49 = x^2 - 14x + 49$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 - 14x + 49$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-7)^2=x^2-14x+49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.842Z"
+        }
+      }
+    },
+    {
+      "id": "1892ff25-9fa8-479e-b2bf-def4726cbc73",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "Multiply: $(x + 1)(x^2 + x + 1)$.",
+      "choices": [
+        "$x^3 + 1$",
+        "$x^3 + 2x^2 + 2x + 1$",
+        "$x^3 + x^2 + x + 1$",
+        "$x^3 + 2x^2 + x + 1$"
+      ],
+      "answer": "$x^3 + 2x^2 + 2x + 1$",
+      "compute": null,
+      "solution": "Multiply each term of the trinomial by $x$ and by $1$: $x^3 + x^2 + x + x^2 + x + 1 = x^3 + 2x^2 + 2x + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 + 2x^2 + 2x + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3+x^2+x+x^2+x+1 = x^3+2x^2+2x+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.846Z"
+        }
+      }
+    },
+    {
+      "id": "8af7fc7b-cf2c-4edd-ba9a-a3da0c92fc2a",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or factor",
+      "stem": "The product $(x - 2)(x + n)$ has constant term $-14$. What is $n$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "-14/(-2)",
+      "solution": "The constant term of the product is $-2 \\cdot n = -14$, so $n = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Constant -2n=-14 -> n=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.847Z"
+        }
+      }
+    },
+    {
+      "id": "3d0fb9fc-6999-48e8-bb87-c2c7a64a897e",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract polynomials",
+      "stem": "Add: $(4x^2 - 3x + 6) + (x^2 + 5x - 2)$.",
+      "choices": [
+        "$5x^2 + 2x + 4$",
+        "$3x^2 - 8x + 8$",
+        "$5x^2 + 2x + 8$",
+        "$5x^4 + 2x^2 + 4$"
+      ],
+      "answer": "$5x^2 + 2x + 4$",
+      "compute": null,
+      "solution": "Add the like terms: $4x^2 + x^2 = 5x^2$, $-3x + 5x = 2x$ and $6 + (-2) = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x^2 + 2x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2+2x+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.854Z"
+        }
+      }
+    },
+    {
+      "id": "e355a081-c952-4b1e-a483-bc521fb44baf",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Squares and the difference of two squares",
+      "stem": "The square $(x + 6)^2$ equals $x^2 + bx + 36$. What is $b$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "2*6",
+      "solution": "$(x + 6)^2 = x^2 + 2 \\cdot 6x + 36$, so $b = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+6)^2=x^2+12x+36, b=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.864Z"
+        }
+      }
+    },
+    {
+      "id": "881a40de-557b-4bb3-827c-431fb2dd5aa9",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract polynomials",
+      "stem": "What is the constant term of $(3x^2 + 2x - 9) - (x^2 - 4x - 5)$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-9-(-5)",
+      "solution": "Subtracting $-5$ adds 5, so the constant term is $-9 - (-5) = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-9-(-5)=-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.869Z"
+        }
+      }
+    },
+    {
+      "id": "ca5602b6-b9db-4126-ae6c-0d9b49df4e42",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a monomial by a polynomial",
+      "stem": "Multiply $3x(x^2 - 2x + 4)$. What is the coefficient of $x^2$ in the result?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "3*(-2)",
+      "solution": "Distribute $3x$ to each term: $3x^3 - 6x^2 + 12x$. The coefficient of $x^2$ is $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^3-6x^2+12x; coefficient of x^2 is -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.872Z"
+        }
+      }
+    },
+    {
+      "id": "20d27904-b1f8-4352-a01c-771bdf7b884c",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use polynomial arithmetic in area and volume",
+      "stem": "A square garden has sides of $x + 3$ meters. Which expression gives its area in square meters?",
+      "choices": [
+        "$x^2 + 9$",
+        "$x^2 + 6x + 9$",
+        "$4x + 12$",
+        "$x^2 + 3x + 9$"
+      ],
+      "answer": "$x^2 + 6x + 9$",
+      "compute": null,
+      "solution": "Area is side times side: $(x + 3)^2 = x^2 + 6x + 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 6x + 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+3)^2=x^2+6x+9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.879Z"
+        }
+      }
+    },
+    {
+      "id": "c3d270e3-0c67-421a-813a-3d39e2a878d3",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two binomials",
+      "stem": "Multiply $(2x + 1)$ by $(x + 5)$.",
+      "choices": [
+        "$2x^2 + 11x + 5$",
+        "$2x^2 + 6x + 5$",
+        "$2x^2 + 10x + 5$",
+        "$2x^2 + 11x + 6$"
+      ],
+      "answer": "$2x^2 + 11x + 5$",
+      "compute": null,
+      "solution": "$2x \\cdot x = 2x^2$; $2x \\cdot 5 = 10x$ and $1 \\cdot x = x$, which make $11x$; $1 \\cdot 5 = 5$. The product is $2x^2 + 11x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 + 11x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2+10x+x+5=2x^2+11x+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.893Z"
+        }
+      }
+    },
+    {
+      "id": "9b38d72f-9e35-44d0-b7fd-f1792ffd2ff2",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomials behave like integers",
+      "stem": "Integers are not closed under division, because $1 \\div 2$ is not an integer. Which division shows that polynomials are not closed under division either?",
+      "choices": [
+        "$x^2 \\div x$, which is $x$",
+        "$(x + 1) \\div (x + 1)$, which is $1$",
+        "$(x^2 - 1) \\div (x - 1)$, which is $x + 1$",
+        "$1 \\div x$, which is $\\frac{1}{x}$"
+      ],
+      "answer": "$1 \\div x$, which is $\\frac{1}{x}$",
+      "compute": null,
+      "solution": "$\\frac{1}{x}$ cannot be written as a polynomial, just as $\\frac{1}{2}$ is not an integer. The other quotients are polynomials.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 \\div x$, which is $\\frac{1}{x}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/x is not a polynomial, while the others give polynomials.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.899Z"
+        }
+      }
+    },
+    {
+      "id": "ddc1c267-d0b1-4705-abfb-d60e9bbb11ad",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply two binomials",
+      "stem": "The product $(x - 4)(x + 6)$ is multiplied out. What is its constant term?",
+      "choices": [],
+      "answer": "-24",
+      "compute": "-4*6",
+      "solution": "The constant term comes from multiplying the two constants: $-4 \\cdot 6 = -24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-4)(6)=-24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.918Z"
+        }
+      }
+    },
+    {
+      "id": "a71a23b6-7e95-4a5f-88a8-213151ef7428",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomials behave like integers",
+      "stem": "With $x = 10$, the number 253 can be written as a polynomial whose coefficients are its digits. Which polynomial is it?",
+      "choices": [
+        "$3x^2 + 5x + 2$",
+        "$2x^3 + 5x^2 + 3x$",
+        "$2x^2 + 5x + 3$",
+        "$2x + 5 + 3$"
+      ],
+      "answer": "$2x^2 + 5x + 3$",
+      "compute": null,
+      "solution": "253 means 2 hundreds, 5 tens and 3 ones. With $x = 10$ that is $2x^2 + 5x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 + 5x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "253=2*100+5*10+3=2x^2+5x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.922Z"
+        }
+      }
+    },
+    {
+      "id": "678af0f2-87c0-4215-90a3-bc0eb2cf58c1",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two binomials",
+      "stem": "Which polynomial is equal to $(x + 7)(x + 3)$?",
+      "choices": [
+        "$x^2 + 10x + 10$",
+        "$x^2 + 21$",
+        "$x^2 + 4x + 21$",
+        "$x^2 + 10x + 21$"
+      ],
+      "answer": "$x^2 + 10x + 21$",
+      "compute": null,
+      "solution": "$x \\cdot x = x^2$, $x \\cdot 3 + 7 \\cdot x = 10x$ and $7 \\cdot 3 = 21$, so the product is $x^2 + 10x + 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 10x + 21$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+3x+7x+21=x^2+10x+21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.926Z"
+        }
+      }
+    },
+    {
+      "id": "df038eaf-ab89-4475-a25e-54c16a16bc5e",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "Expand the product $(x - 3)(x^2 + 2x + 1)$.",
+      "choices": [
+        "$x^3 - x^2 - 5x + 3$",
+        "$x^3 + 5x^2 + 7x + 3$",
+        "$x^3 - x^2 - 5x - 3$",
+        "$x^3 + 2x^2 + x - 3$"
+      ],
+      "answer": "$x^3 - x^2 - 5x - 3$",
+      "compute": null,
+      "solution": "$x(x^2 + 2x + 1) = x^3 + 2x^2 + x$ and $-3(x^2 + 2x + 1) = -3x^2 - 6x - 3$. Adding gives $x^3 - x^2 - 5x - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 - x^2 - 5x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3+2x^2+x -3x^2-6x-3 = x^3 - x^2 - 5x - 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.934Z"
+        }
+      }
+    },
+    {
+      "id": "6a2ff244-5e81-4ac3-9fb4-267d5d07f3cc",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use polynomial arithmetic in area and volume",
+      "stem": "A rectangle has length $x + 6$ and width 4. Its area is $4x + c$. What is $c$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4*6",
+      "solution": "Area $= 4(x + 6) = 4x + 24$, so $c = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(x+6) = 4x+24, c=24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.943Z"
+        }
+      }
+    },
+    {
+      "id": "aeb729da-6a5a-4234-aab2-02a18e705afa",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Degree and form of a sum or product",
+      "stem": "Which polynomial is written in standard form, with the highest power of $x$ first?",
+      "choices": [
+        "$7 - 4x^2 + x^3$",
+        "$x^3 - 4x^2 + 7$",
+        "$-4x^2 + x^3 + 7$",
+        "$7 + x^3 - 4x^2$"
+      ],
+      "answer": "$x^3 - 4x^2 + 7$",
+      "compute": null,
+      "solution": "Standard form lists the terms from the highest power to the lowest: $x^3 - 4x^2 + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 - 4x^2 + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Descending powers: x^3 - 4x^2 + 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.946Z"
+        }
+      }
+    },
+    {
+      "id": "574b3e01-8998-42cd-920e-96d82901323a",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract polynomials",
+      "stem": "Add: $(x^3 + 4x) + (2x^2 - 7)$.",
+      "choices": [
+        "$3x^3 + 4x - 7$",
+        "$x^3 + 2x^2 + 4x + 7$",
+        "$x^3 + 2x^2 + 4x - 7$",
+        "$x^3 + 2x^2 - 3x$"
+      ],
+      "answer": "$x^3 + 2x^2 + 4x - 7$",
+      "compute": null,
+      "solution": "No two terms have the same power of $x$, so none combine: the sum is $x^3 + 2x^2 + 4x - 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 + 2x^2 + 4x - 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "No like terms: x^3 + 2x^2 + 4x - 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.961Z"
+        }
+      }
+    },
+    {
+      "id": "94b58a51-9ac1-45d7-8a25-8bb98c684211",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomials behave like integers",
+      "stem": "Adding 47 and 35 by place value with $x = 10$ means adding $4x + 7$ and $3x + 5$. The sum is $7x + c$. What is $c$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "7+5",
+      "solution": "Add like terms: $4x + 3x = 7x$ and $7 + 5 = 12$. So $c = 12$. This is the \"12 ones\" that integer addition would carry.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4x+7)+(3x+5) = 7x+12, c=12 (70+12=82=47+35).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.964Z"
+        }
+      }
+    },
+    {
+      "id": "c541097f-937e-416a-97bf-f47c0f3dc513",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract polynomials",
+      "stem": "Subtract: $(8x^2 + 5) - (3x^2 - 2x)$.",
+      "choices": [
+        "$5x^2 - 2x + 5$",
+        "$5x^2 + 2x + 5$",
+        "$11x^2 - 2x + 5$",
+        "$5x^2 + 2x - 5$"
+      ],
+      "answer": "$5x^2 + 2x + 5$",
+      "compute": null,
+      "solution": "Change the sign of every term being subtracted: $8x^2 - 3x^2 + 2x + 5 = 5x^2 + 2x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x^2 + 2x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x^2+5-3x^2+2x = 5x^2+2x+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.008Z"
+        }
+      }
+    },
+    {
       "id": "94e43871-08de-421a-a2e3-da373fa8a741",
       "topic_id": "NC17.M2.A-APR.1",
       "difficulty": 2,
@@ -19204,6 +19941,733 @@
       }
     },
     {
+      "id": "35b2ef73-bf4a-4684-ad6a-e9acd144f610",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract polynomials",
+      "stem": "What is the sum of the coefficients of $(6x^2 + 2x - 3) - (x^2 - 4x + 5)$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(6+2-3)-(1-4+5)",
+      "solution": "The difference is $5x^2 + 6x - 8$. The coefficients add to $5 + 6 - 8 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2+6x-8; sum 5+6-8=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.837Z"
+        }
+      }
+    },
+    {
+      "id": "e0c69545-09b7-4fef-8ddc-983065de4969",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract polynomials",
+      "stem": "Add: $(5a^2 - 3ab + 2b^2) + (a^2 + 7ab - 4b^2)$.",
+      "choices": [
+        "$6a^2 + 4ab + 2b^2$",
+        "$4a^2 - 10ab + 6b^2$",
+        "$6a^2 + 4ab - 2b^2$",
+        "$6a^2 + 10ab - 2b^2$"
+      ],
+      "answer": "$6a^2 + 4ab - 2b^2$",
+      "compute": null,
+      "solution": "Combine like terms: $5a^2 + a^2 = 6a^2$, $-3ab + 7ab = 4ab$, $2b^2 - 4b^2 = -2b^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6a^2 + 4ab - 2b^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a^2: 5+1=6; ab: -3+7=4; b^2: 2-4=-2. 6a^2+4ab-2b^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.838Z"
+        }
+      }
+    },
+    {
+      "id": "dc553af4-6604-44e8-8156-b92b1edd19f3",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract polynomials",
+      "stem": "Let $P = 2x^2 - 3x + 1$ and $Q = x^2 + x - 6$. What is the value of $P - Q$ when $x = 3$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(2*9-9+1)-(9+3-6)",
+      "solution": "$P - Q = x^2 - 4x + 7$. At $x = 3$ this is $9 - 12 + 7 = 4$. (Also $P(3) = 10$ and $Q(3) = 6$, and $10 - 6 = 4$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P-Q = x^2-4x+7; at 3: 9-12+7=4. (P(3)=10, Q(3)=6.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.840Z"
+        }
+      }
+    },
+    {
+      "id": "4fc0b262-b71f-4a18-aade-cb69533b50fa",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomials behave like integers",
+      "stem": "The integers 12 and 13 have product 156, and with $x = 10$ they are $x + 2$ and $x + 3$. Which polynomial equals $(x + 2)(x + 3)$?",
+      "choices": [
+        "$x^2 + 5x + 6$",
+        "$x^2 + 6x + 5$",
+        "$x^2 + 5x + 5$",
+        "$x^2 + 6$"
+      ],
+      "answer": "$x^2 + 5x + 6$",
+      "compute": null,
+      "solution": "$(x + 2)(x + 3) = x^2 + 5x + 6$, and at $x = 10$ this is $100 + 50 + 6 = 156$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 5x + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(x+3)=x^2+5x+6; check x=10: 100+50+6=156.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.843Z"
+        }
+      }
+    },
+    {
+      "id": "04a550a5-316b-45d7-b4ae-b0fa7cb6e6a2",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "The product $(x + 1)(x + 2)(x - 3)$ equals $x^3 + bx^2 + cx - 6$. What is $b + c$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "(1+2-3)+(1*2+1*(-3)+2*(-3))",
+      "solution": "$(x + 1)(x + 2) = x^2 + 3x + 2$. Times $(x - 3)$: $x^3 - 3x^2 + 3x^2 - 9x + 2x - 6 = x^3 + 0x^2 - 7x - 6$. So $b = 0$, $c = -7$ and $b + c = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2+3x+2)(x-3)=x^3-7x-6, b=0, c=-7, b+c=-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.848Z"
+        }
+      }
+    },
+    {
+      "id": "48961e6b-aa4d-4391-a48c-1a843c273f84",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two binomials",
+      "stem": "Multiply: $(2x + y)(x - 3y)$.",
+      "choices": [
+        "$2x^2 - 6xy - 3y^2$",
+        "$2x^2 - 5xy - 3y^2$",
+        "$2x^2 - 5xy + 3y^2$",
+        "$2x^2 - 7xy - 3y^2$"
+      ],
+      "answer": "$2x^2 - 5xy - 3y^2$",
+      "compute": null,
+      "solution": "$2x \\cdot x = 2x^2$; $2x \\cdot (-3y) = -6xy$ and $y \\cdot x = xy$, which make $-5xy$; $y \\cdot (-3y) = -3y^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 - 5xy - 3y^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2-6xy+xy-3y^2=2x^2-5xy-3y^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.852Z"
+        }
+      }
+    },
+    {
+      "id": "6193baed-5374-4737-ab90-676552c2584c",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Expand $(2x + 1)^2 - (2x - 1)^2$. The result is $bx$. What is $b$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4*2",
+      "solution": "$(2x + 1)^2 = 4x^2 + 4x + 1$ and $(2x - 1)^2 = 4x^2 - 4x + 1$. Their difference is $8x$, so $b = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4x^2+4x+1)-(4x^2-4x+1)=8x; b=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.854Z"
+        }
+      }
+    },
+    {
+      "id": "169eba62-93d9-4951-afa8-f85f7615eade",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or factor",
+      "stem": "The product $(2x + 3)(x + k)$ has $x$-coefficient 11. What is $k$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(11-3)/2",
+      "solution": "The $x$ terms are $2k \\cdot x$ and $3x$, so $2k + 3 = 11$ and $k = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+3)(x+k)=2x^2+(2k+3)x+3k. 2k+3=11 so k=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.871Z"
+        }
+      }
+    },
+    {
+      "id": "67a2eec2-4d35-4fe2-95ba-eab758bf8e34",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Multiply: $(m^3 + 2)(m^3 - 2)$.",
+      "choices": [
+        "$m^6 + 4$",
+        "$m^6 - 4$",
+        "$m^9 - 4$",
+        "$m^6 - 4m^3 + 4$"
+      ],
+      "answer": "$m^6 - 4$",
+      "compute": null,
+      "solution": "The middle terms cancel, leaving $(m^3)^2 - 2^2 = m^6 - 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$m^6 - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference of squares: (m^3)^2-2^2=m^6-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.871Z"
+        }
+      }
+    },
+    {
+      "id": "27bdd89d-8097-44ac-afb3-3365bc224718",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use polynomial arithmetic in area and volume",
+      "stem": "A box has length $x + 3$, width $x - 1$ and height 2. Which expression gives its volume?",
+      "choices": [
+        "$x^2 + 2x - 3$",
+        "$2x^2 + 4x - 6$",
+        "$2x^2 + 4x - 3$",
+        "$2x^2 + 4x + 6$"
+      ],
+      "answer": "$2x^2 + 4x - 6$",
+      "compute": null,
+      "solution": "$(x + 3)(x - 1) = x^2 + 2x - 3$. Multiplying by the height 2 gives $2x^2 + 4x - 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 + 4x - 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x+3)(x-1)=2(x^2+2x-3)=2x^2+4x-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.878Z"
+        }
+      }
+    },
+    {
+      "id": "e9a97608-178b-4476-9e2b-46fcca816d38",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Degree and form of a sum or product",
+      "stem": "The polynomial $A$ has degree 5 and the polynomial $B$ has degree 2. What are the degrees of $A + B$ and of $A \\cdot B$, in that order?",
+      "choices": [
+        "$5$ and $10$",
+        "$7$ and $7$",
+        "$5$ and $7$",
+        "$7$ and $10$"
+      ],
+      "answer": "$5$ and $7$",
+      "compute": null,
+      "solution": "In a sum the highest power survives: degree 5. In a product the degrees add: $5 + 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5$ and $7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "deg(A+B)=5, deg(AB)=5+2=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.895Z"
+        }
+      }
+    },
+    {
+      "id": "41fd0fff-3672-4e7c-b6b2-92ef4c1caa1f",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "When $(x^2 + 3x - 2)(x + 5)$ is multiplied out, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "3*5-2",
+      "solution": "The $x$ terms come from $3x \\cdot 5 = 15x$ and $-2 \\cdot x = -2x$, so the coefficient is $15 - 2 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x terms: 3x*5 + (-2)*x = 15x-2x=13x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.897Z"
+        }
+      }
+    },
+    {
+      "id": "ad9a86f8-1535-4666-a108-c0d06d86ada9",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two binomials",
+      "stem": "The product $(5x + 2)(2x - 3)$ equals $10x^2 + bx - 6$. What is $b$?",
+      "choices": [],
+      "answer": "-11",
+      "compute": "5*(-3)+2*2",
+      "solution": "The $x$ terms are $5x \\cdot (-3) = -15x$ and $2 \\cdot 2x = 4x$, so $b = -15 + 4 = -11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x*(-3)+2*2x=-15x+4x=-11x; b=-11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.898Z"
+        }
+      }
+    },
+    {
+      "id": "e17ffac5-b084-43d8-b146-68698016c431",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Degree and form of a sum or product",
+      "stem": "Let $A = 3x^4 + x^2 - 2$ and $B = -3x^4 + 5x$. What is the degree of $A + B$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The $x^4$ terms cancel, so $A + B = x^2 + 5x - 2$, which has degree 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A+B=x^2+5x-2, degree 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.906Z"
+        }
+      }
+    },
+    {
+      "id": "b62155f2-9670-4661-8042-2a4b838e49f6",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "Multiply: $(2x + 3)(x^2 - x + 4)$.",
+      "choices": [
+        "$2x^3 + x^2 + 11x + 12$",
+        "$2x^3 - 5x^2 + 5x + 12$",
+        "$2x^3 + x^2 + 5x + 12$",
+        "$2x^3 + x^2 + 5x + 7$"
+      ],
+      "answer": "$2x^3 + x^2 + 5x + 12$",
+      "compute": null,
+      "solution": "$2x(x^2 - x + 4) = 2x^3 - 2x^2 + 8x$ and $3(x^2 - x + 4) = 3x^2 - 3x + 12$. Adding gives $2x^3 + x^2 + 5x + 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^3 + x^2 + 5x + 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^3-2x^2+8x+3x^2-3x+12=2x^3+x^2+5x+12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.915Z"
+        }
+      }
+    },
+    {
+      "id": "b9777a6b-be68-4337-814e-39f74edc83cd",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract polynomials",
+      "stem": "Subtract: $(x^3 + 5x) - (3x^2 - x^3 + 2)$.",
+      "choices": [
+        "$-3x^2 + 5x + 2$",
+        "$2x^3 - 3x^2 + 5x + 2$",
+        "$2x^3 + 3x^2 + 5x - 2$",
+        "$2x^3 - 3x^2 + 5x - 2$"
+      ],
+      "answer": "$2x^3 - 3x^2 + 5x - 2$",
+      "compute": null,
+      "solution": "Write the second polynomial with its signs changed: $-3x^2 + x^3 - 2$. Combine with $x^3 + 5x$ to get $2x^3 - 3x^2 + 5x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^3 - 3x^2 + 5x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3+5x-3x^2+x^3-2=2x^3-3x^2+5x-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.927Z"
+        }
+      }
+    },
+    {
+      "id": "b95f78ec-85e4-45b3-84a6-de546fde2ef0",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two binomials",
+      "stem": "When $(x^2 + 3)(x^2 - 5)$ is multiplied out, what is the coefficient of $x^2$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-5+3",
+      "solution": "$(x^2 + 3)(x^2 - 5) = x^4 - 5x^2 + 3x^2 - 15 = x^4 - 2x^2 - 15$. The coefficient of $x^2$ is $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^4 -5x^2 +3x^2 -15 = x^4 -2x^2 -15; coefficient -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.929Z"
+        }
+      }
+    },
+    {
+      "id": "d4ae5031-a54a-4966-9d1a-d982badd9652",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Write $49 \\times 51$ as $(50 - 1)(50 + 1)$ and use $(a - b)(a + b) = a^2 - b^2$. What is the product?",
+      "choices": [],
+      "answer": "2499",
+      "compute": "50^2-1^2",
+      "solution": "$(50 - 1)(50 + 1) = 50^2 - 1^2 = 2500 - 1 = 2499$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2499",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50^2 - 1^2 = 2500 - 1 = 2499.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.935Z"
+        }
+      }
+    },
+    {
+      "id": "cff7384c-4751-42ef-90f7-e48a65198083",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomials behave like integers",
+      "stem": "The polynomial $3x^2 + 12x + 4$ is evaluated at $x = 10$. What number does it equal?",
+      "choices": [],
+      "answer": "424",
+      "compute": "3*100+12*10+4",
+      "solution": "$300 + 120 + 4 = 424$. The coefficient 12 is more than a digit, just as 12 tens carries into the hundreds place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "424",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(100) + 12(10) + 4 = 300 + 120 + 4 = 424.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.949Z"
+        }
+      }
+    },
+    {
+      "id": "8611695f-93da-4ed5-a626-8ce9028d37a4",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "Which polynomial is equal to $x(x + 2)(x - 2)$?",
+      "choices": [
+        "$x^3 - 4$",
+        "$x^3 - 4x^2$",
+        "$x^3 + 4x$",
+        "$x^3 - 4x$"
+      ],
+      "answer": "$x^3 - 4x$",
+      "compute": null,
+      "solution": "$(x + 2)(x - 2) = x^2 - 4$. Multiplying by $x$ gives $x^3 - 4x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 - 4x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x^2-4) = x^3 - 4x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.965Z"
+        }
+      }
+    },
+    {
+      "id": "d8f26d6b-3516-442d-a8f0-c75a46550c3f",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Degree and form of a sum or product",
+      "stem": "One polynomial has 3 terms and another has 2 terms. Which statement about their sum must be true?",
+      "choices": [
+        "The sum has exactly 5 terms.",
+        "The sum has at least 3 terms.",
+        "The sum has exactly 3 terms.",
+        "The sum has at most 5 terms."
+      ],
+      "answer": "The sum has at most 5 terms.",
+      "compute": null,
+      "solution": "Terms with the same power combine, and some may cancel, so there can be fewer than 5 terms but never more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The sum has at most 5 terms.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At most 3+2=5 distinct terms; terms can combine or cancel (e.g. (x^2+x+1)+(-x^2-x) = 1), so only 'at most 5' must hold.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.968Z"
+        }
+      }
+    },
+    {
+      "id": "06b816b9-4988-42ce-aaac-6a7323951563",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Squares and the difference of two squares",
+      "stem": "The polynomial $x^2 - 12x + 36$ is the square of which binomial?",
+      "choices": [
+        "$x - 6$",
+        "$x + 6$",
+        "$x - 12$",
+        "$x - 3$"
+      ],
+      "answer": "$x - 6$",
+      "compute": null,
+      "solution": "$(x - 6)^2 = x^2 - 12x + 36$. Half of 12 is 6, and the middle term is negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-6)^2 = x^2 - 12x + 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.974Z"
+        }
+      }
+    },
+    {
+      "id": "835ceab8-3853-4689-9cb2-3508bfabec0f",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two binomials",
+      "stem": "Multiply: $(4x - 3)(x + 6)$.",
+      "choices": [
+        "$4x^2 + 21x - 18$",
+        "$4x^2 + 27x - 18$",
+        "$4x^2 + 21x + 18$",
+        "$4x^2 - 21x - 18$"
+      ],
+      "answer": "$4x^2 + 21x - 18$",
+      "compute": null,
+      "solution": "$4x \\cdot x = 4x^2$; $4x \\cdot 6 = 24x$ and $-3 \\cdot x = -3x$, which make $21x$; $-3 \\cdot 6 = -18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x^2 + 21x - 18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2 + 24x - 3x - 18 = 4x^2 + 21x - 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.983Z"
+        }
+      }
+    },
+    {
       "id": "ef372a3a-4075-402c-88fe-2c13680c47ff",
       "topic_id": "NC17.M2.A-APR.1",
       "difficulty": 3,
@@ -19515,6 +20979,728 @@
           "work": "(x+5)^2 - (x-1)^2 = x^2 + 10x + 25 - x^2 + 2x - 1 = 12x + 24; b + c = 36.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:46.336Z"
+        }
+      }
+    },
+    {
+      "id": "f1cf715f-2955-47cb-b8a2-b6b0d8e90829",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two binomials",
+      "stem": "Multiply: $(x^2 + 2x)(3x - 4)$.",
+      "choices": [
+        "$3x^3 - 10x^2 - 8x$",
+        "$3x^3 + 2x^2 + 8x$",
+        "$3x^3 + 6x^2 - 8x$",
+        "$3x^3 + 2x^2 - 8x$"
+      ],
+      "answer": "$3x^3 + 2x^2 - 8x$",
+      "compute": null,
+      "solution": "$x^2(3x - 4) = 3x^3 - 4x^2$ and $2x(3x - 4) = 6x^2 - 8x$. Adding gives $3x^3 + 2x^2 - 8x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^3 + 2x^2 - 8x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^3-4x^2+6x^2-8x = 3x^3+2x^2-8x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.808Z"
+        }
+      }
+    },
+    {
+      "id": "1b488c77-4dbf-4610-b066-a5a97f819800",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two binomials",
+      "stem": "What is the sum of the coefficients of the product $(3x - 4)(2x + 5)$ after it is multiplied out?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "(3-4)*(2+5)",
+      "solution": "$(3x - 4)(2x + 5) = 6x^2 + 7x - 20$, and $6 + 7 - 20 = -7$. (Putting $x = 1$ in the factors gives $(-1)(7) = -7$ too.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum of coefficients = value at x=1: (3-4)(2+5)=-7. (6x^2+7x-20: 6+7-20=-7.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.834Z"
+        }
+      }
+    },
+    {
+      "id": "6ab9446e-9e8e-4f4b-b684-fce6cf435bab",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Multiply: $(x - \\sqrt{3})(x + \\sqrt{3})$.",
+      "choices": [
+        "$x^2 - 3$",
+        "$x^2 + 3$",
+        "$x^2 - \\sqrt{3}$",
+        "$x^2 - 2\\sqrt{3}x + 3$"
+      ],
+      "answer": "$x^2 - 3$",
+      "compute": null,
+      "solution": "The middle terms cancel, leaving $x^2 - (\\sqrt{3})^2 = x^2 - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference of squares: x^2-(sqrt3)^2=x^2-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.837Z"
+        }
+      }
+    },
+    {
+      "id": "699415d6-8bfb-4163-be17-d9db76b2ac24",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two binomials",
+      "stem": "Multiply: $\\left(\\frac{1}{2}x + 4\\right)(2x - 6)$.",
+      "choices": [
+        "$x^2 + 5x - 24$",
+        "$x^2 + 11x - 24$",
+        "$x^2 + 5x - 12$",
+        "$x^2 - 5x - 24$"
+      ],
+      "answer": "$x^2 + 5x - 24$",
+      "compute": null,
+      "solution": "$\\frac{1}{2}x \\cdot 2x = x^2$; $\\frac{1}{2}x \\cdot (-6) = -3x$ and $4 \\cdot 2x = 8x$, which make $5x$; $4 \\cdot (-6) = -24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 5x - 24$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-3x+8x-24 = x^2+5x-24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.846Z"
+        }
+      }
+    },
+    {
+      "id": "45fbea12-d74f-4f4f-919d-a9621bf23e7b",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "Which polynomial is the product of the three factors $x + 1$, $x - 1$ and $x + 2$?",
+      "choices": [
+        "$x^3 + 2x^2 - x + 2$",
+        "$x^3 + 2x^2 - x - 2$",
+        "$x^3 + 2x^2 + x - 2$",
+        "$x^3 + 2x^2 - 2$"
+      ],
+      "answer": "$x^3 + 2x^2 - x - 2$",
+      "compute": null,
+      "solution": "$(x + 1)(x - 1) = x^2 - 1$. Times $(x + 2)$: $x^3 + 2x^2 - x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 + 2x^2 - x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(x-1)=x^2-1; (x^2-1)(x+2)=x^3+2x^2-x-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.872Z"
+        }
+      }
+    },
+    {
+      "id": "08cc8d17-c685-478f-b049-c3503abded14",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or factor",
+      "stem": "The product $(x^2 + ax + b)(x + 2)$ equals $x^3 + 5x^2 + 10x + 8$. What is $a + b$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "(5-2)+8/2",
+      "solution": "The constant term gives $2b = 8$, so $b = 4$. The $x^2$ term gives $a + 2 = 5$, so $a = 3$. Check the $x$ term: $b + 2a = 10$. So $a + b = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2+ax+b)(x+2)=x^3+(a+2)x^2+(2a+b)x+2b. a=3, b=4, check 2a+b=10. a+b=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.876Z"
+        }
+      }
+    },
+    {
+      "id": "d80e46da-cfb3-478f-bd41-ecdb874368aa",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Square the binomial: $(2x - 3y)^2$ equals which polynomial?",
+      "choices": [
+        "$4x^2 - 6xy + 9y^2$",
+        "$4x^2 + 9y^2$",
+        "$4x^2 - 12xy - 9y^2$",
+        "$4x^2 - 12xy + 9y^2$"
+      ],
+      "answer": "$4x^2 - 12xy + 9y^2$",
+      "compute": null,
+      "solution": "$(2x - 3y)^2 = (2x)^2 - 2(2x)(3y) + (3y)^2 = 4x^2 - 12xy + 9y^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x^2 - 12xy + 9y^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x)^2-2(2x)(3y)+(3y)^2=4x^2-12xy+9y^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.883Z"
+        }
+      }
+    },
+    {
+      "id": "6ca955c9-7ac0-4ed5-9521-463502413f1f",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Degree and form of a sum or product",
+      "stem": "The product of three polynomials has degree 10. Two of them have degrees 3 and 4. What is the degree of the third?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-3-4",
+      "solution": "Degrees add when polynomials are multiplied, so $3 + 4 + d = 10$ and $d = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Degrees add: 3+4+d=10, d=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.884Z"
+        }
+      }
+    },
+    {
+      "id": "e729f5e6-798c-4b74-8ec4-10aba07c0a45",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add and subtract polynomials",
+      "stem": "Which polynomial, subtracted from $4x^3 - 2x + 7$, leaves $x^3 + 5x^2 - 2x + 1$?",
+      "choices": [
+        "$5x^3 + 5x^2 - 4x + 8$",
+        "$3x^3 + 5x^2 + 6$",
+        "$3x^3 - 5x^2 + 6$",
+        "$3x^3 - 5x^2 - 4x + 6$"
+      ],
+      "answer": "$3x^3 - 5x^2 + 6$",
+      "compute": null,
+      "solution": "Subtract the leftover from the start: $(4x^3 - 2x + 7) - (x^3 + 5x^2 - 2x + 1) = 3x^3 - 5x^2 + 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^3 - 5x^2 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P=(4x^3-2x+7)-(x^3+5x^2-2x+1)=3x^3-5x^2+6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.907Z"
+        }
+      }
+    },
+    {
+      "id": "ffc6624e-56ed-4c91-a96e-1b41b049b435",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use polynomial arithmetic in area and volume",
+      "stem": "A rectangle is $3x + 2$ long and $x + 5$ wide. A square with side $x$ is cut from one corner. Which expression gives the area that is left?",
+      "choices": [
+        "$2x^2 + 17x + 10$",
+        "$4x^2 + 17x + 10$",
+        "$3x^2 + 17x + 10$",
+        "$2x^2 + 17x - 10$"
+      ],
+      "answer": "$2x^2 + 17x + 10$",
+      "compute": null,
+      "solution": "The rectangle has area $(3x + 2)(x + 5) = 3x^2 + 17x + 10$. Subtract the square, $x^2$: $2x^2 + 17x + 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 + 17x + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x+2)(x+5)-x^2=3x^2+17x+10-x^2=2x^2+17x+10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.909Z"
+        }
+      }
+    },
+    {
+      "id": "32033298-96cb-43dd-9112-7befd48829ec",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Squares and the difference of two squares",
+      "stem": "What is $73^2 - 27^2$? Use $a^2 - b^2 = (a - b)(a + b)$.",
+      "choices": [],
+      "answer": "4600",
+      "compute": "(73-27)*(73+27)",
+      "solution": "$73^2 - 27^2 = (73 - 27)(73 + 27) = 46 \\cdot 100 = 4600$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(73-27)(73+27)=46*100=4600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.916Z"
+        }
+      }
+    },
+    {
+      "id": "7c51470d-5945-4962-a7be-6689eada27fa",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Degree and form of a sum or product",
+      "stem": "The polynomials $A$ and $B$ both have degree 6. Which of these could NOT be the degree of $A - B$?",
+      "choices": [
+        "$6$",
+        "$7$",
+        "$3$",
+        "$0$"
+      ],
+      "answer": "$7$",
+      "compute": null,
+      "solution": "The highest power in a difference cannot be higher than in either polynomial, so 7 is impossible. Degree 6 happens when the leading terms differ, and lower degrees when they cancel.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Subtracting cannot raise the degree above 6; 3, 0, 6 all possible (e.g. A=x^6+x^3, B=x^6). 7 impossible.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.924Z"
+        }
+      }
+    },
+    {
+      "id": "434d0e80-6634-4e08-95c6-337cc34acebf",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Squares and the difference of two squares",
+      "stem": "Simplify $(x - 4)^2 - (x - 2)(x - 6)$. What number is the result?",
+      "choices": [],
+      "answer": "4",
+      "compute": "16-12",
+      "solution": "$(x - 4)^2 = x^2 - 8x + 16$ and $(x - 2)(x - 6) = x^2 - 8x + 12$. The difference is $16 - 12 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2-8x+16) - (x^2-8x+12) = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.940Z"
+        }
+      }
+    },
+    {
+      "id": "3d14cd01-ec61-4267-807a-146859d107ae",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract polynomials",
+      "stem": "Let $A = x^2 - 3x + 4$ and $B = 2x^2 + x - 5$. What is the sum of the coefficients of $2A - 3B$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2*(1-3+4)-3*(2+1-5)",
+      "solution": "$2A = 2x^2 - 6x + 8$ and $3B = 6x^2 + 3x - 15$, so $2A - 3B = -4x^2 - 9x + 23$. The coefficients add to $-4 - 9 + 23 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum of coefficients = value at x=1. A(1)=2, B(1)=-2. 2(2) - 3(-2) = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.942Z"
+        }
+      }
+    },
+    {
+      "id": "1abfef04-7fb3-4a5a-8abf-e5e8c7e1a531",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Degree and form of a sum or product",
+      "stem": "The polynomial $P$ has degree 2 and the polynomial $Q$ has degree 5. What is the degree of $(P + Q)(P - Q)$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+5",
+      "solution": "$P + Q$ and $P - Q$ both have degree 5 because the highest power comes from $Q$. Degrees add in a product: $5 + 5 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(P+Q)(P-Q) = P^2 - Q^2; Q^2 has degree 10, P^2 degree 4, so degree 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.944Z"
+        }
+      }
+    },
+    {
+      "id": "25c144c4-1e42-4bb9-bd97-2df5c2feb1d6",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing coefficient or factor",
+      "stem": "The product $(x + a)(x + b)$ equals $x^2 + 2x - 15$. Which values of $a$ and $b$ work?",
+      "choices": [
+        "$-5$ and $3$",
+        "$3$ and $5$",
+        "$15$ and $-1$",
+        "$5$ and $-3$"
+      ],
+      "answer": "$5$ and $-3$",
+      "compute": null,
+      "solution": "We need $a + b = 2$ and $ab = -15$. The numbers 5 and $-3$ add to 2 and multiply to $-15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5$ and $-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a+b=2, ab=-15: 5 and -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.944Z"
+        }
+      }
+    },
+    {
+      "id": "31676569-5f40-4481-b957-1f10deea8e98",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "Which polynomial is equal to $(x + 2)^3$?",
+      "choices": [
+        "$x^3 + 8$",
+        "$x^3 + 6x^2 + 6x + 8$",
+        "$x^3 + 6x^2 + 12x + 8$",
+        "$x^3 + 2x^2 + 4x + 8$"
+      ],
+      "answer": "$x^3 + 6x^2 + 12x + 8$",
+      "compute": null,
+      "solution": "$(x + 2)^2 = x^2 + 4x + 4$. Times $(x + 2)$: $x^3 + 4x^2 + 4x + 2x^2 + 8x + 8 = x^3 + 6x^2 + 12x + 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 + 6x^2 + 12x + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)^3 = x^3 + 3(2)x^2 + 3(4)x + 8 = x^3+6x^2+12x+8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.960Z"
+        }
+      }
+    },
+    {
+      "id": "c1b322ae-adbe-48bf-8edc-4ad08ee8cb43",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomials behave like integers",
+      "stem": "With $x = 10$, the numbers 305 and 47 are $3x^2 + 5$ and $4x + 7$. Which polynomial is their difference $(3x^2 + 5) - (4x + 7)$?",
+      "choices": [
+        "$3x^2 + 4x - 2$",
+        "$3x^2 - 4x + 2$",
+        "$3x^2 - 4x - 2$",
+        "$3x^2 - 4x + 12$"
+      ],
+      "answer": "$3x^2 - 4x - 2$",
+      "compute": null,
+      "solution": "Subtract term by term: $3x^2 - 4x + (5 - 7) = 3x^2 - 4x - 2$. At $x = 10$ this is $300 - 40 - 2 = 258 = 305 - 47$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^2 - 4x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2 + 5 - 4x - 7 = 3x^2 - 4x - 2. Check 305-47=258=300-40-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.971Z"
+        }
+      }
+    },
+    {
+      "id": "bc4b3aa2-ed74-4ea6-b305-c695b890e39b",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a binomial by a trinomial, or three factors",
+      "stem": "The product $(x + 1)(x + 2)(x + 3)(x + 4)$ is multiplied out. What is the coefficient of $x^2$?",
+      "choices": [],
+      "answer": "35",
+      "compute": "1*2+1*3+1*4+2*3+2*4+3*4",
+      "solution": "The $x^2$ term comes from choosing two constants from the four factors and multiplying them: $2 + 3 + 4 + 6 + 8 + 12 = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Coefficient of x^2 = sum of products of pairs of 1,2,3,4: 2+3+4+6+8+12 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.980Z"
+        }
+      }
+    },
+    {
+      "id": "1697fc39-b31a-45df-8693-3a7eb2779eff",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or factor",
+      "stem": "The product $(3x - 2)(x^2 + px + q)$ equals $3x^3 + 7x^2 - 12x + 4$. What is $p + q$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(7+2)/3+4/(-2)",
+      "solution": "The constant term gives $-2q = 4$, so $q = -2$. The $x^2$ term gives $3p - 2 = 7$, so $p = 3$. Then $p + q = 1$. Check the $x$ term: $3q - 2p = -6 - 6 = -12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Expand: 3x^3 + (3p-2)x^2 + (3q-2p)x - 2q. -2q=4, q=-2; 3p-2=7, p=3; check 3q-2p = -12. p+q = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.990Z"
+        }
+      }
+    },
+    {
+      "id": "06c60e60-c059-498d-bc73-b372a5cc3459",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract polynomials",
+      "stem": "A polynomial is added to $3x^2 - 4x + 1$ and the sum is $2x - 5$. What is the constant term of the polynomial that was added?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-5-1",
+      "solution": "The added polynomial is $(2x - 5) - (3x^2 - 4x + 1) = -3x^2 + 6x - 6$. Its constant term is $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Added = (2x-5) - (3x^2-4x+1) = -3x^2 + 6x - 6; constant -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.996Z"
+        }
+      }
+    },
+    {
+      "id": "88ed0657-660a-470a-b8e7-591b9c9acf6d",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use polynomial arithmetic in area and volume",
+      "stem": "A box has length $x + 4$, width $x - 1$ and height $2x$. Its volume is $2x^3 + bx^2 + cx$. What is $b + c$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "6+(-8)",
+      "solution": "$(x + 4)(x - 1) = x^2 + 3x - 4$. Times $2x$: $2x^3 + 6x^2 - 8x$. So $b + c = 6 - 8 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+4)(x-1) = x^2+3x-4; times 2x: 2x^3+6x^2-8x. b+c = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.003Z"
+        }
+      }
+    },
+    {
+      "id": "ee46d125-bc53-4265-b809-b1d633847090",
+      "topic_id": "NC17.M2.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomials behave like integers",
+      "stem": "Multiplying 125 by 12 with $x = 10$ is multiplying $x^2 + 2x + 5$ by $x + 2$. The product is $x^3 + ax^2 + bx + 10$. What is $a + b$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "(2+2)+(4+5)",
+      "solution": "$(x^2 + 2x + 5)(x + 2) = x^3 + 4x^2 + 9x + 10$. So $a + b = 4 + 9 = 13$. At $x = 10$ the product is $1000 + 400 + 90 + 10 = 1500 = 125 \\cdot 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2+2x+5)(x+2) = x^3+4x^2+9x+10; a+b=13. Check 1000+400+90+10=1500=125*12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.008Z"
         }
       }
     },

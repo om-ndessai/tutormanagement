@@ -15824,6 +15824,699 @@
       }
     },
     {
+      "id": "f6d210f3-14d6-495b-9e6c-446b1364ddfc",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Key features of a piecewise graph",
+      "stem": "A graph has no breaks. It rises along a line with slope $3$ until $x = 1$, and then falls along a line with slope $-1$. What does the graph have at $x = 1$?",
+      "choices": [
+        "A valley, or local minimum",
+        "A jump upward",
+        "A peak, or local maximum",
+        "A hole with an open dot"
+      ],
+      "answer": "A peak, or local maximum",
+      "compute": null,
+      "solution": "The graph goes up and then down with no break, so $x = 1$ is the top of a peak: a local maximum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A peak, or local maximum",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Continuous, increasing then decreasing at x = 1: a peak (local maximum).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.105Z"
+        }
+      }
+    },
+    {
+      "id": "a4617263-f968-4892-865d-2691b6c8bf0b",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A function is $f(x) = 2x$ if $0 \\le x \\le 5$, and $f(x) = 10$ if $x > 5$, where $x$ is the number of days and $f(x)$ is a plant's height in centimeters (cm). Which story fits it?",
+      "choices": [
+        "A plant grows 2 cm each day, and never stops growing",
+        "A plant grows 2 cm each day for 5 days, then stops growing",
+        "A plant stays 0 cm tall for 5 days, then grows 2 cm each day",
+        "A plant grows 5 cm each day for 2 days, then stops growing"
+      ],
+      "answer": "A plant grows 2 cm each day for 5 days, then stops growing",
+      "compute": null,
+      "solution": "For the first 5 days the height is $2x$, so it grows 2 cm a day and reaches $10$ cm. After that the height stays at $10$, so it has stopped growing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A plant grows 2 cm each day for 5 days, then stops growing",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x for 0 to 5 days (0 to 10 cm), then constant 10: grows 2 cm/day for 5 days, then stops.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.122Z"
+        }
+      }
+    },
+    {
+      "id": "bba318be-597c-47ee-a01a-2e278a216a0d",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Move between a graph and a rule",
+      "stem": "For $x < 0$, the graph of a function is the straight line through $(-2, 0)$ and $(0, 4)$. What is the slope of this line?",
+      "choices": [],
+      "answer": "2",
+      "compute": "(4-0)/(0-(-2))",
+      "solution": "Slope = rise over run = $\\frac{4 - 0}{0 - (-2)} = \\frac{4}{2} = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4-0)/(0-(-2))=4/2=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.145Z"
+        }
+      }
+    },
+    {
+      "id": "1a12c638-ed01-4406-a52e-4fd92256e915",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A worker earns 10 dollars an hour for the first 8 hours in a day, and 15 dollars for each hour after that. How many dollars does the worker earn in a 10-hour day?",
+      "choices": [],
+      "answer": "110",
+      "compute": "8*10+2*15",
+      "solution": "The first 8 hours pay $8 \\times 10 = 80$ dollars. The other 2 hours pay $2 \\times 15 = 30$ dollars. The total is $110$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8*10 + 2*15 = 80+30=110.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.147Z"
+        }
+      }
+    },
+    {
+      "id": "610e912c-4882-4054-9f7d-66b44230807b",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "The absolute value $|x|$ can be written without bars. Which rule equals $|x|$ when $x < 0$?",
+      "choices": [
+        "$-x$",
+        "$x$",
+        "$x^2$",
+        "$0$"
+      ],
+      "answer": "$-x$",
+      "compute": null,
+      "solution": "For a negative $x$, the absolute value is the opposite of $x$. For example $|-4| = 4 = -(-4)$. So $|x| = -x$ when $x < 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "For x<0, |x|=-x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.155Z"
+        }
+      }
+    },
+    {
+      "id": "043fd158-1466-46e6-a828-67ac458dfad2",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Move between a graph and a rule",
+      "stem": "On a graph, the piece to the left of $x = 3$ ends with an open dot at $x = 3$. The piece to the right starts with a closed dot at $x = 3$. Which condition goes with the right-hand piece?",
+      "choices": [
+        "$x > 3$",
+        "$x \\le 3$",
+        "$x \\ge 3$",
+        "$x < 3$"
+      ],
+      "answer": "$x \\ge 3$",
+      "compute": null,
+      "solution": "A closed dot means the point is included, so the right-hand piece includes $x = 3$ and goes on to larger values: $x \\ge 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Closed dot at 3 on right piece: x >= 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.165Z"
+        }
+      }
+    },
+    {
+      "id": "5782399a-8b4f-4b8c-ad18-b50a8dbc3e5e",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Key features of a piecewise graph",
+      "stem": "A parking lot charges 4 dollars for up to 1 hour, 7 dollars for more than 1 and up to 2 hours, and 10 dollars for more than 2 and up to 3 hours. What does the graph of the cost against the time look like?",
+      "choices": [
+        "One straight line that rises steadily",
+        "A smooth curve with no breaks",
+        "A line that rises and then falls",
+        "Flat steps with jumps between them"
+      ],
+      "answer": "Flat steps with jumps between them",
+      "compute": null,
+      "solution": "The cost stays the same over each interval of time and then jumps to the next amount. That makes flat steps with jumps between them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Flat steps with jumps between them",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Constant cost on each interval, jumps at 1 and 2: step function.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.165Z"
+        }
+      }
+    },
+    {
+      "id": "44b94c12-d1a5-4d5f-a3ea-b2b5ed6a6500",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $f(x) = 4x$ if $x \\le 0$, and $f(x) = x + 10$ if $x > 0$. What is $f(0)$?",
+      "choices": [
+        "0",
+        "10",
+        "4",
+        "14"
+      ],
+      "answer": "0",
+      "compute": "0",
+      "solution": "The input $0$ satisfies $x \\le 0$, so use $4x$: $f(0) = 4 \\cdot 0 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0<=0 so f(0)=4*0=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.171Z"
+        }
+      }
+    },
+    {
+      "id": "6f138a0d-daa8-4a9a-a0db-56b46828d477",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "The function $f(x) = |x + 3|$ can be written as two rules, one for $x < a$ and one for $x \\ge a$. What is $a$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "The expression inside the bars, $x + 3$, is $0$ at $x = -3$. It is negative to the left of $-3$ and not negative from $-3$ on. So $a = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+3 changes sign at x=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.183Z"
+        }
+      }
+    },
+    {
+      "id": "5d9acdad-2a31-44a8-8ca0-ccfdce70ef7c",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $g(x) = x + 4$ if $x < 0$, and $g(x) = 3x$ if $x \\ge 0$. For which value of $x$ is $g(x) = 12$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "12/3",
+      "solution": "If $x + 4 = 12$ then $x = 8$, but $8$ is not less than $0$. If $3x = 12$ then $x = 4$, and $4 \\ge 0$ works. So $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+4=12 -> x=8 not <0. 3x=12 -> x=4 ok.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.189Z"
+        }
+      }
+    },
+    {
+      "id": "a2da8ac1-0430-42e6-8a95-e9e07b39dc4e",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = x - 3$ if $x < 5$, and $f(x) = x + 1$ if $x \\ge 5$. For which value of $x$ is $f(x) = 0$?",
+      "choices": [
+        "-1",
+        "1",
+        "5",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "If $x - 3 = 0$ then $x = 3$, and $3 < 5$ works. If $x + 1 = 0$ then $x = -1$, but $-1$ is not at least $5$. So $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<5: x-3=0 -> x=3 (valid). x>=5: x+1=0 -> x=-1 not >=5. So x=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.204Z"
+        }
+      }
+    },
+    {
+      "id": "60b7fe97-2093-420e-b05a-ac394a9c2efe",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $q(x) = -x$ if $x < -1$, $q(x) = 2$ if $-1 \\le x \\le 1$, and $q(x) = x$ if $x > 1$. What is $q(-5) \\cdot q(0)$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5*2",
+      "solution": "$-5 < -1$, so $q(-5) = -(-5) = 5$. $0$ is between $-1$ and $1$, so $q(0) = 2$. The product is $5 \\cdot 2 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "q(-5): -5 < -1, so -(-5) = 5. q(0) = 2. Product 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.209Z"
+        }
+      }
+    },
+    {
+      "id": "6a24cd29-3f7e-40cc-baf5-0f677ebc1659",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A gym charges 20 dollars a month for up to 10 visits. Each visit after the 10th costs 3 dollars more. How many dollars does a month with 14 visits cost?",
+      "choices": [],
+      "answer": "32",
+      "compute": "20+3*4",
+      "solution": "There are $14 - 10 = 4$ extra visits, which cost $4 \\times 3 = 12$ dollars. The total is $20 + 12 = 32$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 + (14-10)*3 = 20+12 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.286Z"
+        }
+      }
+    },
+    {
+      "id": "c5c86cf2-2c28-4055-809a-66b37464866f",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A phone plan costs 15 dollars for up to 2 gigabytes (GB). Each GB over 2 costs 5 dollars more. Which rule gives the cost $C$ in dollars for $g$ GB when $g > 2$?",
+      "choices": [
+        "$C = 15 + 5(g - 2)$",
+        "$C = 15 + 5(g - 1)$",
+        "$C = 5 + 15(g - 2)$",
+        "$C = 15 + 2(g - 5)$"
+      ],
+      "answer": "$C = 15 + 5(g - 2)$",
+      "compute": null,
+      "solution": "The base cost is 15 dollars. Only the GB over 2, which is $g - 2$, cost 5 dollars each. So $C = 15 + 5(g - 2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$C = 15 + 5(g - 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 plus 5 for each GB over 2: C = 15 + 5(g-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.288Z"
+        }
+      }
+    },
+    {
+      "id": "cfaabbd8-f98b-4649-865c-e4cce5e6bcc1",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $p(x) = 5 - x$ if $x < 2$, and $p(x) = x^2$ if $x \\ge 2$. Find $p(3)$.",
+      "choices": [],
+      "answer": "9",
+      "compute": "3^2",
+      "solution": "Since $3 \\ge 2$, use the rule $x^2$: $p(3) = 3^2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 >= 2 so p(3)=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.304Z"
+        }
+      }
+    },
+    {
+      "id": "619df6ab-4108-4e0d-a474-ddebae82f74a",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = 2x + 5$ if $x < 0$, and $f(x) = x^2 + 3$ if $x \\ge 0$. What is the $y$-intercept of the graph?",
+      "choices": [],
+      "answer": "3",
+      "compute": "0^2+3",
+      "solution": "The $y$-intercept is $f(0)$. Since $0 \\ge 0$, use $x^2 + 3$: $f(0) = 0 + 3 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x=0 use x^2+3: f(0)=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.321Z"
+        }
+      }
+    },
+    {
+      "id": "714a950a-a360-42ab-871d-ee5872883b66",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = x + 2$ if $x < 1$, and $f(x) = x + 5$ if $x \\ge 1$. What is true about the graph at $x = 1$?",
+      "choices": [
+        "It is continuous, because both rules have slope $1$",
+        "It is continuous, because both rules give $3$",
+        "It jumps, because the rules give $3$ and $5$",
+        "It jumps, because the rules give $3$ and $6$"
+      ],
+      "answer": "It jumps, because the rules give $3$ and $6$",
+      "compute": null,
+      "solution": "At $x = 1$ the rule $x + 2$ gives $3$ and the rule $x + 5$ gives $6$. The values differ, so the graph jumps. Equal slopes do not make the pieces meet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It jumps, because the rules give $3$ and $6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left rule at 1: 1+2=3; right rule: f(1)=1+5=6. Values differ, so the graph jumps from 3 to 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.351Z"
+        }
+      }
+    },
+    {
+      "id": "5eec4e9a-3bf8-4fcd-9b0f-ed1e3e7301ae",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = 2x$ if $x < 3$, and $f(x) = x + 3$ if $x \\ge 3$. For how many of the inputs $1$, $3$ and $5$ is $f(x)$ found with the rule $x + 3$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The rule $x + 3$ is used when $x \\ge 3$. That is true for $3$ and $5$, but not for $1$. So the answer is $2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+3 rule applies for x >= 3: inputs 3 and 5. Count 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.587Z"
+        }
+      }
+    },
+    {
+      "id": "d6b8bf20-25e7-420e-bd9e-5c95e91e9955",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Move between a graph and a rule",
+      "stem": "A graph follows the line $y = x$ for $x < 2$, and then a horizontal line at height $2$ for $x \\ge 2$. Which rule defines it?",
+      "choices": [
+        "$x$ if $x \\ge 2$, and $2$ if $x < 2$",
+        "$x$ if $x < 2$, and $2$ if $x \\ge 2$",
+        "$x$ if $x < 2$, and $x + 2$ if $x \\ge 2$",
+        "$x$ if $x < 2$, and $0$ if $x \\ge 2$"
+      ],
+      "answer": "$x$ if $x < 2$, and $2$ if $x \\ge 2$",
+      "compute": null,
+      "solution": "The line $y = x$ is used to the left of $2$, and the constant rule $2$ from $2$ on.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x$ if $x < 2$, and $2$ if $x \\ge 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y=x for x<2, y=2 for x>=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.680Z"
+        }
+      }
+    },
+    {
+      "id": "c31a9f99-bb03-4a2b-9b59-4ee36d7871a7",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = x$ if $x < 3$, and $f(x) = x + 4$ if $x \\ge 3$. The two rules give different values at $x = 3$. By how many units do they differ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "7-3",
+      "solution": "At $x = 3$ the rule $x$ gives $3$ and the rule $x + 4$ gives $7$. They differ by $7 - 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x=3: x gives 3, x+4 gives 7; differ by 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.687Z"
+        }
+      }
+    },
+    {
+      "id": "71cc2a8f-6eeb-4cef-b5de-72664856ae66",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = x + 3$ if $x < 2$, and $f(x) = 7$ if $x \\ge 2$. Which rule is used to find $f(2)$?",
+      "choices": [
+        "The rule $x + 3$, because $x < 2$ includes $2$",
+        "The rule $7$, because $x \\ge 2$ includes $2$",
+        "Both rules, because $2$ is where they change",
+        "Neither rule, because $2$ is where they change"
+      ],
+      "answer": "The rule $7$, because $x \\ge 2$ includes $2$",
+      "compute": null,
+      "solution": "The condition $x \\ge 2$ includes $x = 2$, and $x < 2$ does not. So $f(2)$ uses the rule $7$, and $f(2) = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The rule $7$, because $x \\ge 2$ includes $2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 satisfies x ≥ 2, so f(2) = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.728Z"
+        }
+      }
+    },
+    {
+      "id": "091f81e1-7301-4042-93ba-dfd37c1fc46e",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "A function $g$ takes an input $t$. It multiplies $t$ by $3$ and subtracts $4$ when $t < 2$, and it squares $t$ when $t \\ge 2$. What is $g(-1)$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "3*(-1)-4",
+      "solution": "$-1 < 2$, so the rule is $3t - 4$: $3(-1) - 4 = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1 < 2: g(-1) = 3(-1) - 4 = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.783Z"
+        }
+      }
+    },
+    {
       "id": "2c092515-6066-42a9-8879-f535c825e500",
       "topic_id": "NC17.M4.AF.4",
       "difficulty": 2,
@@ -16130,6 +16823,743 @@
           "work": "Slope (0-6)/(3-0)=-2, intercept 6: 6-2x on [0,3]; then 0.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:27.881Z"
+        }
+      }
+    },
+    {
+      "id": "0914788d-64de-408f-8860-1b972be7768d",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Which rule defines a function, meaning that every input $x$ has exactly one output?",
+      "choices": [
+        "$x + 1$ if $x \\le 2$, and $2x$ if $x \\ge 2$",
+        "$x + 1$ if $x < 2$, and $2x$ if $x \\ge 2$",
+        "$3x$ if $x \\le 1$, and $x + 4$ if $x \\ge 1$",
+        "$5 - x$ if $x \\le 0$, and $x + 1$ if $x \\ge 0$"
+      ],
+      "answer": "$x + 1$ if $x < 2$, and $2x$ if $x \\ge 2$",
+      "compute": null,
+      "solution": "In each wrong rule the break point belongs to both pieces, and the pieces give different values there (for example $3$ and $4$ at $x = 2$). In the correct rule $x = 2$ belongs only to $2x$, so each input has one output.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 1$ if $x < 2$, and $2x$ if $x \\ge 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: x=1 gives 3 and 5. B: x=2 gives 3 and 4. D: x=0 gives 5 and 1. C splits at x=2 with < and ≥: one output each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.097Z"
+        }
+      }
+    },
+    {
+      "id": "9af66337-0faf-4cf1-9864-8c0f58d0d4a3",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = 6 - x$ if $x < 4$, and $f(x) = x - 2$ if $x \\ge 4$. What is the least value that $f(x)$ takes?",
+      "choices": [],
+      "answer": "2",
+      "compute": "4-2",
+      "solution": "For $x < 4$ the values $6 - x$ are greater than $2$. For $x \\ge 4$ the values $x - 2$ are at least $2$, with $2$ reached at $x = 4$. The least value is $2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "For x < 4, 6 − x > 2 (never reaches 2). For x ≥ 4, x − 2 ≥ 2 with 2 at x = 4. Least value 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.110Z"
+        }
+      }
+    },
+    {
+      "id": "025caa68-6ec0-469d-ad2c-e6a21a2d2551",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $f(x) = x^2 - 1$ if $x < -2$, $f(x) = 3x + 2$ if $-2 \\le x < 1$, and $f(x) = 5$ if $x \\ge 1$. Find $f(-3) + f(-2) + f(1)$.",
+      "choices": [],
+      "answer": "9",
+      "compute": "8-4+5",
+      "solution": "$f(-3) = 9 - 1 = 8$. $f(-2) = 3(-2) + 2 = -4$. $f(1) = 5$. The sum is $8 - 4 + 5 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(−3) = 9 − 1 = 8; f(−2) = −6 + 2 = −4; f(1) = 5. Sum 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.113Z"
+        }
+      }
+    },
+    {
+      "id": "c8c5178e-a8c8-465c-b462-2e4b16b8b1e1",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = -2x + 7$ if $x < 3$, and $f(x) = x - 2$ if $x \\ge 3$. Which statement is true?",
+      "choices": [
+        "$f$ is decreasing for $x < 3$ and increasing for $x > 3$",
+        "$f$ is increasing for $x < 3$ and decreasing for $x > 3$",
+        "$f$ is increasing for every $x$",
+        "$f$ is decreasing for every $x$"
+      ],
+      "answer": "$f$ is decreasing for $x < 3$ and increasing for $x > 3$",
+      "compute": null,
+      "solution": "The first piece has slope $-2$, so it falls. The second has slope $1$, so it rises. Both rules give $1$ at $x = 3$, so the pieces join there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f$ is decreasing for $x < 3$ and increasing for $x > 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2x+7 has slope -2 (decreasing for x<3); x-2 slope 1 (increasing for x>3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.141Z"
+        }
+      }
+    },
+    {
+      "id": "1835d7f4-09be-4927-90ad-8c93f44b1a2c",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "Which rule equals $|2x - 6|$ when $x < 3$?",
+      "choices": [
+        "$2x - 6$",
+        "$6 - 2x$",
+        "$2x + 6$",
+        "$-2x - 6$"
+      ],
+      "answer": "$6 - 2x$",
+      "compute": null,
+      "solution": "When $x < 3$, the expression $2x - 6$ is negative, so the absolute value is its opposite: $-(2x - 6) = 6 - 2x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 - 2x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<3 => 2x-6<0, so |2x-6|=-(2x-6)=6-2x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.143Z"
+        }
+      }
+    },
+    {
+      "id": "0bbd9b70-4198-47f8-9e74-94ac1b0451c3",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = x^2 - 4$ if $x < 1$, and $f(x) = 3x - 1$ if $x \\ge 1$. What is the smallest value of $x$ for which $f(x) = 5$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "$x^2 - 4 = 5$ gives $x = 3$ or $x = -3$; only $-3$ is less than $1$. $3x - 1 = 5$ gives $x = 2$, which works. The solutions are $-3$ and $2$, so the smallest is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<1: x^2-4=5 => x=-3 (3 excluded). x>=1: 3x-1=5 => x=2. Smallest -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.153Z"
+        }
+      }
+    },
+    {
+      "id": "87d4620b-52ad-4a57-a6a7-09f94f647183",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = x^2 + 1$ if $x < 0$, and $f(x) = 3 - x$ if $x \\ge 0$. What is the range of $f$?",
+      "choices": [
+        "all real numbers",
+        "all real numbers greater than $1$",
+        "$y \\le 3$",
+        "$1 < y \\le 3$"
+      ],
+      "answer": "all real numbers",
+      "compute": null,
+      "solution": "For $x < 0$ the values $x^2 + 1$ are all numbers greater than $1$. For $x \\ge 0$ the values $3 - x$ are all numbers at most $3$. Together these cover every real number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "all real numbers",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0: x^2+1 in (1,inf). x>=0: 3-x in (-inf,3]. Union is all reals.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.157Z"
+        }
+      }
+    },
+    {
+      "id": "a63296c0-fcda-4323-a488-45bc09add9e0",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = 3x + k$ if $x < 1$, and $f(x) = x^2 + 5$ if $x \\ge 1$. For what value of $k$ is $f$ continuous at $x = 1$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6-3",
+      "solution": "The right rule gives $1 + 5 = 6$ at $x = 1$. The left rule must also give $6$: $3 + k = 6$, so $k = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left at 1: 3+k; right: 1+5=6. k=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.166Z"
+        }
+      }
+    },
+    {
+      "id": "aa2e1d09-0f14-489d-a848-f398c47aa46b",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = x + 1$ if $x < -1$, $f(x) = 2$ if $-1 \\le x < 3$, and $f(x) = x^2 - 7$ if $x \\ge 3$. At which input values does the graph of $f$ have a jump?",
+      "choices": [
+        "At $x = 3$ only",
+        "At both $x = -1$ and $x = 3$",
+        "Nowhere, since $f$ has no jumps",
+        "At $x = -1$ only"
+      ],
+      "answer": "At $x = -1$ only",
+      "compute": null,
+      "solution": "At $x = -1$ the left rule gives $0$ and the middle rule gives $2$: a jump. At $x = 3$ the middle rule gives $2$ and the right rule gives $9 - 7 = 2$: no jump.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "At $x = -1$ only",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At -1: left limit 0, f(-1)=2 -> jump. At 3: left 2, f(3)=9-7=2 -> continuous.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.167Z"
+        }
+      }
+    },
+    {
+      "id": "cdb1f901-78b7-4969-bf6a-d5939d4fd45f",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Move between a graph and a rule",
+      "stem": "A graph is a line through $(0, 1)$ and $(3, 7)$ for $x < 3$, and then a line through $(3, 7)$ and $(5, 3)$ for $x \\ge 3$. Which rule defines it?",
+      "choices": [
+        "$2x + 1$ if $x < 3$, and $-2x + 7$ if $x \\ge 3$",
+        "$2x + 1$ if $x < 3$, and $-2x + 10$ if $x \\ge 3$",
+        "$2x + 1$ if $x < 3$, and $2x - 13$ if $x \\ge 3$",
+        "$2x + 1$ if $x < 3$, and $-2x + 13$ if $x \\ge 3$"
+      ],
+      "answer": "$2x + 1$ if $x < 3$, and $-2x + 13$ if $x \\ge 3$",
+      "compute": null,
+      "solution": "First line: slope $\\frac{7 - 1}{3 - 0} = 2$ and $y$-intercept $1$. Second line: slope $\\frac{3 - 7}{5 - 3} = -2$; through $(3, 7)$ gives $7 = -6 + b$, so $b = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x + 1$ if $x < 3$, and $-2x + 13$ if $x \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope 2, intercept 1: 2x+1. Slope (3-7)/2=-2; 7=-6+b => b=13: -2x+13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.169Z"
+        }
+      }
+    },
+    {
+      "id": "515048b9-ec67-413e-9cb1-60ff741839fb",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = x + 5$ if $x \\le -1$, and $f(x) = x^2 - 9$ if $x > -1$. Which choice lists every zero of $f$?",
+      "choices": [
+        "$-5$, $-3$ and $3$",
+        "$-5$ and $3$",
+        "$-3$ and $3$",
+        "$3$ only"
+      ],
+      "answer": "$-5$ and $3$",
+      "compute": null,
+      "solution": "$x + 5 = 0$ gives $x = -5$, which is at most $-1$. $x^2 - 9 = 0$ gives $x = 3$ or $x = -3$; only $3$ is greater than $-1$. The zeros are $-5$ and $3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5$ and $3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<=-1: x+5=0 -> -5 ok. x>-1: x^2=9 -> 3 (-3 excluded). Zeros -5, 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.173Z"
+        }
+      }
+    },
+    {
+      "id": "efda97a5-eeeb-43c6-8b25-3a21afb0285b",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "An electric company charges 0.10 dollars for each of the first 500 kilowatt-hours (kWh) used in a month, and 0.15 dollars for each kWh above 500. How many dollars is the bill for 700 kWh?",
+      "choices": [],
+      "answer": "80",
+      "compute": "0.10*500+0.15*200",
+      "solution": "The first 500 kWh cost $500 \\times 0.10 = 50$ dollars. The other 200 kWh cost $200 \\times 0.15 = 30$ dollars. The bill is $80$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500*0.10=50; 200*0.15=30; 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.182Z"
+        }
+      }
+    },
+    {
+      "id": "e9efc7cd-23b6-4aaa-a4a1-87bb65556db1",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = 3x + 2$ if $x < 0$, and $f(x) = -x^2 + 5$ if $x \\ge 0$. What happens to $f(x)$ as $x$ gets very large in the negative direction, and as $x$ gets very large in the positive direction?",
+      "choices": [
+        "It rises without bound at both ends",
+        "It falls without bound at both ends",
+        "It falls on the left and rises on the right",
+        "It rises on the left and falls on the right"
+      ],
+      "answer": "It falls without bound at both ends",
+      "compute": null,
+      "solution": "On the far left, $3x + 2$ becomes very negative. On the far right, $-x^2 + 5$ becomes very negative. So $f$ falls at both ends.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It falls without bound at both ends",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x->-inf: 3x+2 -> -inf. x->+inf: -x^2+5 -> -inf. Falls both ends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.184Z"
+        }
+      }
+    },
+    {
+      "id": "0d920b48-ce1e-4456-8656-1c454b21f77a",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A phone plan costs 20 dollars for the first 3 gigabytes (GB), and 6 dollars for each GB after that. A bill is 44 dollars. How many GB were used?",
+      "choices": [],
+      "answer": "7",
+      "compute": "3+(44-20)/6",
+      "solution": "The bill is 24 dollars more than 20 dollars, which pays for $24 \\div 6 = 4$ extra GB. So $3 + 4 = 7$ GB were used.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "44-20=24; 24/6=4 extra GB; 3+4=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.185Z"
+        }
+      }
+    },
+    {
+      "id": "915821ae-26f8-4582-aaf5-1ffd541207ac",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "A function is defined by $f(x) = 2x$ for $-3 \\le x < 0$, and $f(x) = x^2$ for $1 \\le x \\le 4$. Which describes the domain of $f$?",
+      "choices": [
+        "$-3 \\le x < 0$ or $0 \\le x \\le 4$",
+        "$-3 \\le x < 0$ or $1 < x \\le 4$",
+        "$-3 \\le x < 0$ or $1 \\le x \\le 4$",
+        "$-3 \\le x \\le 0$ or $1 \\le x \\le 4$"
+      ],
+      "answer": "$-3 \\le x < 0$ or $1 \\le x \\le 4$",
+      "compute": null,
+      "solution": "The function is defined only where one of its rules applies: from $-3$ up to but not including $0$, and from $1$ to $4$. The inputs from $0$ up to $1$ have no rule.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3 \\le x < 0$ or $1 \\le x \\le 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Union of given intervals: -3<=x<0 or 1<=x<=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.186Z"
+        }
+      }
+    },
+    {
+      "id": "e55de4ee-90b8-4c79-a04a-590c14cd7b76",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = x + 2$ if $x < 1$, and $f(x) = 4$ if $x \\ge 1$. For how many integers $x$ from $-5$ to $5$, inclusive, is $f(x) > 0$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "2+5",
+      "solution": "For $x < 1$: $x + 2 > 0$ means $x > -2$, giving $-1$ and $0$. For $x \\ge 1$: $f(x) = 4 > 0$ always, giving $1, 2, 3, 4, 5$. That is $2 + 5 = 7$ integers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<1 (x=-5..0): x+2>0 -> x>-2: x=-1,0 (2 values). x>=1 (1..5): f=4>0, 5 values. Total 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.202Z"
+        }
+      }
+    },
+    {
+      "id": "da985c01-c96b-42bd-904d-fe76a5ba9844",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Move between a graph and a rule",
+      "stem": "Let $f(x) = -x + 2$ if $x < 0$, $f(x) = 2$ if $0 \\le x \\le 3$, and $f(x) = x - 1$ if $x > 3$. Which describes the graph of $f$?",
+      "choices": [
+        "A falling line, then a flat piece at height $2$, then a rising line, with no breaks",
+        "A rising line, then a flat piece at height $2$, then a falling line, with no breaks",
+        "A falling line, then a flat piece at height $2$, then a rising line, with a jump at $x = 3$",
+        "A falling line, then a flat piece at height $2$, then a rising line, with a jump at $x = 0$"
+      ],
+      "answer": "A falling line, then a flat piece at height $2$, then a rising line, with no breaks",
+      "compute": null,
+      "solution": "The first rule has slope $-1$ (falling), the last has slope $1$ (rising). At $x = 0$ the first rule gives $2$, and at $x = 3$ the last rule gives $2$, so the pieces meet at both places.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A falling line, then a flat piece at height $2$, then a rising line, with no breaks",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0: -x+2 falls, tends to 2 at x=0; flat 2 on [0,3]; x>3: x-1 rises from 2 at x=3. Continuous: no breaks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.222Z"
+        }
+      }
+    },
+    {
+      "id": "5bc57769-92d7-4595-9d4e-fe6cb0925780",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A ride costs 3 dollars to start, plus 1 dollar per mile for the first 5 miles, and 2 dollars per mile for each mile after 5. Which gives the cost $C$ in dollars of a ride of $m$ miles when $m > 5$?",
+      "choices": [
+        "$C = 3 + 2m$",
+        "$C = 8 + 2m$",
+        "$C = 3 + 2(m - 5)$",
+        "$C = 8 + 2(m - 5)$"
+      ],
+      "answer": "$C = 8 + 2(m - 5)$",
+      "compute": null,
+      "solution": "The first 5 miles cost $3 + 5 = 8$ dollars. The remaining $m - 5$ miles cost 2 dollars each. So $C = 8 + 2(m - 5)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$C = 8 + 2(m - 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First 5 miles: 3 + 5 = 8; then 2 per mile after 5: C = 8 + 2(m - 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.240Z"
+        }
+      }
+    },
+    {
+      "id": "b91c80b7-7ffe-4d3d-8516-89a1a034864d",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A store charges 5 dollars for shipping on orders under 50 dollars, and nothing on orders of 50 dollars or more. Which rule gives the shipping cost $S$ in dollars for an order of $x$ dollars?",
+      "choices": [
+        "$S = 5$ if $x \\le 50$, and $S = 0$ if $x > 50$",
+        "$S = 0$ if $x < 50$, and $S = 5$ if $x \\ge 50$",
+        "$S = 5$ if $x < 50$, and $S = 0$ if $x \\ge 50$",
+        "$S = 5$ if $x < 50$, and $S = 50$ if $x \\ge 50$"
+      ],
+      "answer": "$S = 5$ if $x < 50$, and $S = 0$ if $x \\ge 50$",
+      "compute": null,
+      "solution": "Orders under 50 dollars pay 5 dollars, and orders of exactly 50 dollars or more pay nothing, so $50$ belongs to the second piece.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$S = 5$ if $x < 50$, and $S = 0$ if $x \\ge 50$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Under 50 -> 5; 50 or more -> 0: S=5 if x<50, S=0 if x>=50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.277Z"
+        }
+      }
+    },
+    {
+      "id": "a5cdefd8-ea9f-4439-a88a-6dc797c1f3e8",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = x + 1$ if $x \\ne 3$, and $f(3) = 7$. Which statement is true?",
+      "choices": [
+        "The graph is the line $y = x + 1$ with its point at $x = 3$ moved to $(3, 7)$",
+        "The graph is a line with no breaks, because $x + 1$ is a line for every $x$",
+        "The graph is the line $y = x + 1$ with no change, and $f(3) = 4$ there",
+        "The value $f(3)$ is undefined, so $f$ is not a function at all"
+      ],
+      "answer": "The graph is the line $y = x + 1$ with its point at $x = 3$ moved to $(3, 7)$",
+      "compute": null,
+      "solution": "The line $y = x + 1$ would pass through $(3, 4)$, but $f(3)$ is given as $7$. So the point at $x = 3$ sits above the line, and the graph is broken there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The graph is the line $y = x + 1$ with its point at $x = 3$ moved to $(3, 7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f equals x+1 everywhere except x=3, where the point (3,4) is removed and (3,7) is plotted instead.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.350Z"
+        }
+      }
+    },
+    {
+      "id": "020a23ad-72e1-4575-8097-07faf67b4f13",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "Which rule defines $g(x) = 3|x| - x$ without absolute value bars?",
+      "choices": [
+        "$2x$ if $x < 0$, and $-4x$ if $x \\ge 0$",
+        "$-2x$ if $x < 0$, and $4x$ if $x \\ge 0$",
+        "$-4x$ if $x < 0$, and $2x$ if $x \\ge 0$",
+        "$-4x$ if $x < 0$, and $-2x$ if $x \\ge 0$"
+      ],
+      "answer": "$-4x$ if $x < 0$, and $2x$ if $x \\ge 0$",
+      "compute": null,
+      "solution": "If $x < 0$ then $|x| = -x$, so $g(x) = -3x - x = -4x$. If $x \\ge 0$ then $|x| = x$, so $g(x) = 3x - x = 2x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4x$ if $x < 0$, and $2x$ if $x \\ge 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0: |x|=-x so g=-3x-x=-4x. x>=0: g=3x-x=2x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.354Z"
+        }
+      }
+    },
+    {
+      "id": "aa95a2d2-c8c3-4cac-b3ab-858b43c170b0",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $f(x) = 2x + 1$ if $x < 3$, and $f(x) = x^2$ if $x \\ge 3$. Find $f(f(1))$.",
+      "choices": [],
+      "answer": "9",
+      "compute": "3^2",
+      "solution": "$f(1) = 2(1) + 1 = 3$. Then $f(3)$ uses $x^2$ because $3 \\ge 3$: $f(3) = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1)=2(1)+1=3; f(3)=3^2=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.384Z"
+        }
+      }
+    },
+    {
+      "id": "a3b10d50-9d14-4e0c-a55f-9eb4337d24ae",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "The function $y = |x - 4| + 1$ is written as $5 - x$ for $x < 4$, and $x - 3$ for $x \\ge 4$. It equals $3$ at two values of $x$. What is the sum of those two values?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2+6",
+      "solution": "$5 - x = 3$ gives $x = 2$, which is less than $4$. $x - 3 = 3$ gives $x = 6$, which is at least $4$. The sum is $2 + 6 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|x - 4| + 1 = 3 → |x - 4| = 2 → x = 2 or 6 (check: 5-2 = 3, 6-3 = 3). Sum 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.494Z"
         }
       }
     },
@@ -16546,6 +17976,636 @@
       }
     },
     {
+      "id": "850ac9bc-7b63-45d9-babf-5bfa86ae462d",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $f(x) = x^2 - 2x$ if $x \\ge 1$, and $f(x) = 3 - x$ if $x < 1$. What is the sum $f(-1) + f(0) + f(1) + f(2) + f(3)$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "4+3-1+0+3",
+      "solution": "$f(-1) = 3 + 1 = 4$. $f(0) = 3$. $f(1) = 1 - 2 = -1$. $f(2) = 4 - 4 = 0$. $f(3) = 9 - 6 = 3$. The sum is $4 + 3 - 1 + 0 + 3 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(−1) = 4, f(0) = 3, f(1) = −1, f(2) = 0, f(3) = 3. Sum 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.116Z"
+        }
+      }
+    },
+    {
+      "id": "8c7bfd31-0d22-45d7-b5d7-c7974cfc3730",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "Find the sum of all solutions of $|x - 1| + |x - 5| = 8$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "-1+7",
+      "solution": "For $x < 1$: $(1 - x) + (5 - x) = 6 - 2x = 8$, so $x = -1$. For $x > 5$: $2x - 6 = 8$, so $x = 7$. Between $1$ and $5$ the sum is always $4$, never $8$. The sum of the solutions is $-1 + 7 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x>=5: 2x-6=8 -> x=7. x<=1: 6-2x=8 -> x=-1. 1<x<5: sum is 4, no solution. Sum 7+(-1)=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.373Z"
+        }
+      }
+    },
+    {
+      "id": "ee1cc043-6c72-4d00-ad9c-d9a520b25fef",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate a piecewise function",
+      "stem": "Let $f(x) = ax + 2$ if $x < 1$, and $f(x) = x^2 + a$ if $x \\ge 1$, where $a$ is a constant. Given that $f(2) = 9$, find $f(-1)$.",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-(9-4)+2",
+      "solution": "$f(2) = 4 + a = 9$, so $a = 5$. Then $f(-1) = 5(-1) + 2 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(2)=4+a=9 -> a=5. f(-1)=5(-1)+2=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.395Z"
+        }
+      }
+    },
+    {
+      "id": "2c157d70-9543-4181-a4b3-802042e15300",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A library fine is 0.25 dollars for each of the first 10 days a book is late, and 0.50 dollars for each day after that. A fine is 7 dollars. How many days late is the book?",
+      "choices": [],
+      "answer": "19",
+      "compute": "10+(7-2.5)/0.5",
+      "solution": "The first 10 days cost $2.50$ dollars. The remaining $7 - 2.50 = 4.50$ dollars pays for $4.50 \\div 0.50 = 9$ more days. So the book is $10 + 9 = 19$ days late.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First 10 days: 10 × 0.25 = 2.50. Remaining 4.50 ÷ 0.50 = 9 days. Total 19 days.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.466Z"
+        }
+      }
+    },
+    {
+      "id": "5afe18ce-8881-475b-bed3-df240daf6a56",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Which rule gives a function whose graph has no break anywhere?",
+      "choices": [
+        "$x^2$ if $x \\le 1$, and $2x - 1$ if $x > 1$",
+        "$x^2$ if $x \\le 1$, and $2x$ if $x > 1$",
+        "$x + 3$ if $x < 2$, and $x^2$ if $x \\ge 2$",
+        "$5 - x$ if $x \\le 3$, and $x - 2$ if $x > 3$"
+      ],
+      "answer": "$x^2$ if $x \\le 1$, and $2x - 1$ if $x > 1$",
+      "compute": null,
+      "solution": "Check the values at each break point. Correct: $1$ and $2(1) - 1 = 1$. The others give $1$ and $2$; $5$ and $4$; $2$ and $1$, so each has a jump.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2$ if $x \\le 1$, and $2x - 1$ if $x > 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x=1: x^2 = 1 vs 2x = 2 (break); 2x - 1 = 1 (no break). At 3: 2 vs 1 (break). At 2: 5 vs 4 (break). Only the second is continuous.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.501Z"
+        }
+      }
+    },
+    {
+      "id": "ce133d4b-ceab-4098-a16b-a7afd88598cc",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "Which rule defines $f(x) = |x - 2| - |x + 1|$ without absolute value bars?",
+      "choices": [
+        "$-3$ if $x < -1$; $2x - 1$ if $-1 \\le x \\le 2$; $3$ if $x > 2$",
+        "$3$ if $x < -1$; $1 - 2x$ if $-1 \\le x \\le 2$; $-3$ if $x > 2$",
+        "$3$ if $x < -1$; $2x - 1$ if $-1 \\le x \\le 2$; $-3$ if $x > 2$",
+        "$3$ if $x < -1$; $1 - 2x$ if $-1 \\le x \\le 2$; $3$ if $x > 2$"
+      ],
+      "answer": "$3$ if $x < -1$; $1 - 2x$ if $-1 \\le x \\le 2$; $-3$ if $x > 2$",
+      "compute": null,
+      "solution": "For $x < -1$: $(2 - x) - (-x - 1) = 3$. For $-1 \\le x \\le 2$: $(2 - x) - (x + 1) = 1 - 2x$. For $x > 2$: $(x - 2) - (x + 1) = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$ if $x < -1$; $1 - 2x$ if $-1 \\le x \\le 2$; $-3$ if $x > 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x < -1: (2 - x) + (x + 1) = 3; -1 ≤ x ≤ 2: (2 - x) - (x + 1) = 1 - 2x; x > 2: (x - 2) - (x + 1) = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.514Z"
+        }
+      }
+    },
+    {
+      "id": "0d0cdad9-754f-43fb-8f4f-4bd229360384",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = 4 - x^2$ if $x \\le 1$, and $f(x) = 2x + 1$ if $x > 1$. On which intervals is $f$ increasing?",
+      "choices": [
+        "$x < 0$ and $x > 1$",
+        "$x < 0$ and $x > 2$",
+        "$x < 1$ and $x > 1$",
+        "$0 < x < 1$ and $x > 1$"
+      ],
+      "answer": "$x < 0$ and $x > 1$",
+      "compute": null,
+      "solution": "For $x \\le 1$, $4 - x^2$ rises for $x < 0$ and falls for $0 < x < 1$. At $x = 1$ both rules give $3$. For $x > 1$ the slope is $2$, so $f$ rises. So $f$ is increasing for $x < 0$ and for $x > 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < 0$ and $x > 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - x^2 increases for x < 0, decreases on (0, 1]; 2x + 1 increases for x > 1 (f(1) = 3, continuous). Increasing on x < 0 and x > 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.523Z"
+        }
+      }
+    },
+    {
+      "id": "b27d22ae-d2a1-477b-a31c-af59e48cef4c",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = 2x - 3$ if $x < 2$, and $f(x) = x^2 - 6$ if $x \\ge 2$. The equation $f(x) = -2$ has two solutions. What is their sum?",
+      "choices": [],
+      "answer": "5/2",
+      "compute": "1/2+2",
+      "solution": "$2x - 3 = -2$ gives $x = \\frac{1}{2}$, which is less than $2$. $x^2 - 6 = -2$ gives $x = 2$ or $x = -2$; only $2$ is at least $2$. The sum is $\\frac{1}{2} + 2 = \\frac{5}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x < 2: 2x - 3 = -2 → x = 0.5 ✓. x ≥ 2: x^2 = 4 → x = 2 ✓ (−2 excluded). Sum 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.525Z"
+        }
+      }
+    },
+    {
+      "id": "0d9f7310-2588-4eb3-8685-bf644dfebfca",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = x^2 - 4$ if $x < 1$, and $f(x) = 2x + 1$ if $x \\ge 1$. What is the range of $f$?",
+      "choices": [
+        "$y > -4$",
+        "$y \\ge -3$",
+        "$y \\ge -4$",
+        "$y \\ge 3$"
+      ],
+      "answer": "$y \\ge -4$",
+      "compute": null,
+      "solution": "For $x < 1$ the lowest value of $x^2 - 4$ is $-4$, at $x = 0$, and the values grow without bound. For $x \\ge 1$ the values $2x + 1$ are at least $3$, already included. So the range is $y \\ge -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y \\ge -4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "For x<1, x^2 - 4 takes [-4, inf) (min -4 at x=0). For x>=1, 2x+1 >= 3. Union: y >= -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.537Z"
+        }
+      }
+    },
+    {
+      "id": "cd3a108a-a4ec-4100-9332-cf0b948db53c",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = ax + 1$ if $x < 2$, $f(x) = 5$ if $x = 2$, and $f(x) = x^2 - b$ if $x > 2$. For $f$ to be continuous at $x = 2$, what is the value of $a \\cdot b$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "2*(-1)",
+      "solution": "Left side: $2a + 1 = 5$, so $a = 2$. Right side: $4 - b = 5$, so $b = -1$. Then $a \\cdot b = 2 \\cdot (-1) = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Left limit 2a+1 = 5 so a = 2; right limit 4 - b = 5 so b = -1. a*b = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.543Z"
+        }
+      }
+    },
+    {
+      "id": "fb425a78-827e-4038-adf4-403e7e25d936",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Move between a graph and a rule",
+      "stem": "A continuous graph is made of line segments joining $(0, 5)$, $(2, 1)$, $(6, 1)$ and $(8, 5)$ in order. For which value of $x$ on the last segment is $y = 4$?",
+      "choices": [],
+      "answer": "7.5",
+      "compute": "6+(4-1)/2",
+      "solution": "The last segment goes from $(6, 1)$ to $(8, 5)$, so its slope is $\\frac{4}{2} = 2$. Starting at $(6, 1)$, $y$ reaches $4$ after rising $3$, which takes $\\frac{3}{2} = 1.5$ units of $x$. So $x = 7.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last segment (6,1) to (8,5): slope 2, y = 1 + 2(x-6) = 4 gives x = 7.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.545Z"
+        }
+      }
+    },
+    {
+      "id": "af1e3162-3c16-41e9-8cdb-1fd96d599085",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = x^2 - 4x + 1$ if $x < 3$, and $f(x) = 2x - 8$ if $x \\ge 3$. What is the least value of $f$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "4-8+1",
+      "solution": "For $x < 3$, the parabola has its lowest point at $x = 2$, where $4 - 8 + 1 = -3$. For $x \\ge 3$ the values $2x - 8$ are at least $-2$. So the least value is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "For x<3, x^2-4x+1 = (x-2)^2 - 3, min -3 at x=2. For x>=3, 2x-8 >= -2. Least value -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.549Z"
+        }
+      }
+    },
+    {
+      "id": "fa2c6e13-1156-4484-9667-f10a58625e5e",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Key features of a piecewise graph",
+      "stem": "Let $f(x) = 2x$ if $x < 3$, and $f(x) = 12 - x$ if $x \\ge 3$. What is the average rate of change of $f$ from $x = 0$ to $x = 5$?",
+      "choices": [],
+      "answer": "7/5",
+      "compute": "7/5",
+      "solution": "$f(0) = 0$ and $f(5) = 12 - 5 = 7$. The average rate of change is $\\frac{7 - 0}{5 - 0} = \\frac{7}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(0) = 0; f(5) = 12 - 5 = 7. Rate = (7-0)/5 = 7/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.576Z"
+        }
+      }
+    },
+    {
+      "id": "84571e48-1f52-45d3-9512-b819c6933134",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = 2x + 4$ if $x < 0$, and $f(x) = x^2 - x - 6$ if $x \\ge 0$. For which values of $x$ is $f(x) < 0$?",
+      "choices": [
+        "$-2 < x < 0$ or $0 \\le x < 3$",
+        "$x < -2$ or $0 \\le x < 3$",
+        "$x < -2$ or $x > 3$",
+        "$x < 0$ or $0 \\le x < 3$"
+      ],
+      "answer": "$x < -2$ or $0 \\le x < 3$",
+      "compute": null,
+      "solution": "For $x < 0$: $2x + 4 < 0$ means $x < -2$. For $x \\ge 0$: $x^2 - x - 6 = (x - 3)(x + 2) < 0$ means $-2 < x < 3$, and with $x \\ge 0$ that is $0 \\le x < 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -2$ or $0 \\le x < 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0: 2x+4 < 0 gives x < -2. x>=0: (x-3)(x+2) < 0 gives -2<x<3, so 0 <= x < 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.604Z"
+        }
+      }
+    },
+    {
+      "id": "d4fc5af3-8de4-489a-9168-6715dd465bee",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "Let $f(x) = 15x$ if $0 \\le x \\le 4$, and $f(x) = 60 + 20(x - 4)$ if $x > 4$, where $x$ is hours worked and $f(x)$ is pay in dollars. Which story fits it?",
+      "choices": [
+        "20 dollars an hour for the first 4 hours, and 15 dollars for each hour after that",
+        "15 dollars an hour for the first 4 hours, and 20 dollars an hour for all hours, including the first 4",
+        "15 dollars an hour for the first 4 hours, and 20 dollars in total for the hours after that",
+        "15 dollars an hour for the first 4 hours, and 20 dollars for each hour after that"
+      ],
+      "answer": "15 dollars an hour for the first 4 hours, and 20 dollars for each hour after that",
+      "compute": null,
+      "solution": "For the first 4 hours the pay is $15$ dollars an hour, reaching $60$. Beyond 4 hours, each extra hour $(x - 4)$ adds $20$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15 dollars an hour for the first 4 hours, and 20 dollars for each hour after that",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15x for first 4 hours (60), then 20 per hour beyond 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.621Z"
+        }
+      }
+    },
+    {
+      "id": "9498a6f7-7e44-4518-b172-16e8954c3bad",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve equations and inequalities for a piecewise function",
+      "stem": "Let $f(x) = 2x + 3$ if $x < 0$, and $f(x) = 9 - x$ if $x \\ge 0$. For how many integers $x$ is $f(x) \\ge -1$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "2+11",
+      "solution": "For $x < 0$: $2x + 3 \\ge -1$ means $x \\ge -2$, giving $-2$ and $-1$. For $x \\ge 0$: $9 - x \\ge -1$ means $x \\le 10$, giving $0$ to $10$ (11 integers). The total is $2 + 11 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0: 2x+3 >= -1 gives x >= -2: x = -2, -1 (2). x>=0: 9-x >= -1 gives x <= 10: 0..10 (11). Total 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.630Z"
+        }
+      }
+    },
+    {
+      "id": "b24943ac-b21b-475a-9f77-01b7713f32fb",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Absolute value as a piecewise function",
+      "stem": "Let $f(x) = \\frac{|x|}{x}$. Which statement is true?",
+      "choices": [
+        "$f(x) = -1$ for $x < 0$, $f(x) = 1$ for $x > 0$, and $f(0) = 0$",
+        "$f(x) = -1$ for $x < 0$, and $f(x) = 1$ for $x \\ge 0$",
+        "$f(x) = -1$ for $x < 0$, $f(x) = 1$ for $x > 0$, and $f(0)$ is undefined",
+        "$f(x) = 1$ for $x < 0$, $f(x) = -1$ for $x > 0$, and $f(0)$ is undefined"
+      ],
+      "answer": "$f(x) = -1$ for $x < 0$, $f(x) = 1$ for $x > 0$, and $f(0)$ is undefined",
+      "compute": null,
+      "solution": "For $x > 0$, $|x| = x$ so the quotient is $1$. For $x < 0$, $|x| = -x$ so the quotient is $-1$. At $x = 0$ the division by $0$ is not defined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = -1$ for $x < 0$, $f(x) = 1$ for $x > 0$, and $f(0)$ is undefined",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|x|/x = -1 for x<0, 1 for x>0; at x=0 division by zero, so f(0) undefined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.633Z"
+        }
+      }
+    },
+    {
+      "id": "c594df1d-b0c0-462a-8476-c1554c336a45",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Build a piecewise model of a situation",
+      "stem": "A tank is filled at 5 liters a minute for 10 minutes, and then drained at 2 liters a minute. Which rule gives the volume $V$ in liters after $t$ minutes, for $t > 10$ until the tank is empty?",
+      "choices": [
+        "$V = 50 - 2t$",
+        "$V = 50 + 2(t - 10)$",
+        "$V = 50 - 2(t - 10)$",
+        "$V = 2(t - 10)$"
+      ],
+      "answer": "$V = 50 - 2(t - 10)$",
+      "compute": null,
+      "solution": "After 10 minutes the tank holds $5 \\times 10 = 50$ liters. Draining starts then, so after $t$ minutes it has lost $2(t - 10)$ liters: $V = 50 - 2(t - 10)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$V = 50 - 2(t - 10)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 10 min V = 50. Then drains 2 L/min: V = 50 - 2(t-10).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.646Z"
+        }
+      }
+    },
+    {
+      "id": "1c7bd9c1-5939-426a-b609-ccf75157bbe2",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Move between a graph and a rule",
+      "stem": "The graph of $f$ is a line through $(-1, 0)$ and $(1, 4)$ that ends with a closed dot at $(1, 4)$. For larger $x$ it is a line through $(1, 1)$ and $(3, 5)$ that starts with an open dot at $(1, 1)$. Which rule defines $f$?",
+      "choices": [
+        "$2x + 2$ if $x < 1$, and $2x - 1$ if $x \\ge 1$",
+        "$2x + 2$ if $x \\le 1$, and $2x + 1$ if $x > 1$",
+        "$2x + 4$ if $x \\le 1$, and $2x - 1$ if $x > 1$",
+        "$2x + 2$ if $x \\le 1$, and $2x - 1$ if $x > 1$"
+      ],
+      "answer": "$2x + 2$ if $x \\le 1$, and $2x - 1$ if $x > 1$",
+      "compute": null,
+      "solution": "Both lines have slope $2$. The first has $y = 2x + 2$ (check: $(-1, 0)$). The second has $y = 2x - 1$ (check: $(1, 1)$). The closed dot is on the left piece, so it has $x \\le 1$; the open dot means the right piece has $x > 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x + 2$ if $x \\le 1$, and $2x - 1$ if $x > 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First piece slope (4-0)/(1+1)=2, y=2x+2, closed at x=1 so x<=1. Second slope (5-1)/2=2, through (1,1): y=2x-1, open at 1 so x>1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.662Z"
+        }
+      }
+    },
+    {
+      "id": "9690891c-751e-4b87-b3b5-924833f66d85",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = 2$ if $x < 0$, and $f(x) = x + 3$ if $0 \\le x \\le 4$. What is the range of $f$?",
+      "choices": [
+        "$2 \\le y \\le 7$",
+        "$3 \\le y \\le 7$",
+        "$y = 2$, or $0 \\le y \\le 4$",
+        "$y = 2$, or $3 \\le y \\le 7$"
+      ],
+      "answer": "$y = 2$, or $3 \\le y \\le 7$",
+      "compute": null,
+      "solution": "The first rule gives only the value $2$. The second gives $x + 3$ for $x$ from $0$ to $4$, which is every value from $3$ to $7$. The value $2$ and the interval $3$ to $7$ do not join.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2$, or $3 \\le y \\le 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0 gives 2; on [0,4] x+3 gives [3,7]. Range {2} union [3,7].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.667Z"
+        }
+      }
+    },
+    {
       "id": "05a39136-5dfc-4107-b658-7528223ccb4b",
       "topic_id": "NC17.M4.AF.5",
       "difficulty": 1,
@@ -16914,6 +18974,660 @@
       }
     },
     {
+      "id": "95c84724-9525-464a-8de1-ab046674594d",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 2 + 5\\log_{10} x$. What value of $y$ does the model predict at $x = 1000$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "2+5*3",
+      "solution": "$\\log_{10} 1000 = 3$. So $y = 2 + 5(3) = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log10 1000=3; 2+15=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.187Z"
+        }
+      }
+    },
+    {
+      "id": "06eae8cd-a613-42aa-9e3e-537e500816b1",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A linear model $T = 3h + 5$ predicts the number of tickets $T$ sold after $h$ hours. After how many hours does the model predict 23 tickets?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(23-5)/3",
+      "solution": "Solve $3h + 5 = 23$. Then $3h = 18$ and $h = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23 = 3h + 5 -> 3h = 18 -> h = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.208Z"
+        }
+      }
+    },
+    {
+      "id": "516d51a4-2682-4773-9bd0-0c2881222af6",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A savings regression line passes through the points $(2, 11)$ and $(4, 19)$, where $x$ is weeks and $y$ is the amount saved in dollars. What is its slope?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(19-11)/(4-2)",
+      "solution": "Slope $= \\frac{19 - 11}{4 - 2} = \\frac{8}{2} = 4$ dollars per week.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(19-11)/(4-2) = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.330Z"
+        }
+      }
+    },
+    {
+      "id": "59734691-7101-484f-848a-12fc4bf4caf6",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "Sinusoidal regression gives $y = 8\\cos x + 12$. What is the greatest value of $y$ the model predicts?",
+      "choices": [],
+      "answer": "20",
+      "compute": "8+12",
+      "solution": "The cosine is at most 1, so the greatest value is $8(1) + 12 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x has max 1, so max y = 8(1)+12 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.341Z"
+        }
+      }
+    },
+    {
+      "id": "d40996e2-c136-4650-8954-522d02a4ce84",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Residuals and judging fit",
+      "stem": "A data point lies above the regression curve. What is true of its residual (actual value minus predicted value)?",
+      "choices": [
+        "It is negative",
+        "It is positive",
+        "It is zero",
+        "It is equal to the x-value"
+      ],
+      "answer": "It is positive",
+      "compute": null,
+      "solution": "Above the curve means the actual value is greater than the predicted value, so actual - predicted is positive.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is positive",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Above the curve: actual > predicted, residual positive.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.393Z"
+        }
+      }
+    },
+    {
+      "id": "af46ab80-e9a0-454b-aa43-392fe66bdcfe",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A taxi company's fares are modeled by the regression line $C = 1.5m + 3$, where $m$ is the number of miles and $C$ is the cost in dollars. What cost does the model predict for a 10-mile ride?",
+      "choices": [],
+      "answer": "18",
+      "compute": "1.5*10+3",
+      "solution": "Substitute $m = 10$: $C = 1.5(10) + 3 = 15 + 3 = 18$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C = 1.5(10)+3 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.402Z"
+        }
+      }
+    },
+    {
+      "id": "2d082778-f30b-4d98-bef6-161b6bf6fd57",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models a bacteria count as $N = 50(2)^t$, where $t$ is the number of hours. How many bacteria does the model predict at $t = 4$?",
+      "choices": [],
+      "answer": "800",
+      "compute": "50*2^4",
+      "solution": "$N = 50(2)^4 = 50 \\cdot 16 = 800$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50x2^4 = 50x16 = 800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.405Z"
+        }
+      }
+    },
+    {
+      "id": "37ce331d-d055-4d82-b330-51f7f7c47820",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A linear regression of $y$ on $x$ gives a correlation coefficient of $r = 0.05$. Which statement is best supported?",
+      "choices": [
+        "There is a strong positive linear relationship between x and y",
+        "There is almost no linear relationship between x and y",
+        "There is a strong negative linear relationship between x and y",
+        "There is an exact linear relationship between x and y"
+      ],
+      "answer": "There is almost no linear relationship between x and y",
+      "compute": null,
+      "solution": "A value of $r$ close to 0 means the points are not close to any line, so there is almost no linear relationship.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There is almost no linear relationship between x and y",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "r = 0.05 is close to 0: almost no linear relationship.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.442Z"
+        }
+      }
+    },
+    {
+      "id": "41b8ecf8-386a-4bc5-823f-450a33dc1708",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A linear regression models the distance $d$ in miles a car has driven after $h$ hours as $d = 55h + 10$. What does the slope 55 tell you?",
+      "choices": [
+        "The car travels about 55 miles for each hour of driving",
+        "The car had already traveled 55 miles before the first hour",
+        "The car drove for a total of 55 hours on the trip",
+        "The car travels about 10 miles for each hour of driving"
+      ],
+      "answer": "The car travels about 55 miles for each hour of driving",
+      "compute": null,
+      "solution": "The slope is the change in $d$ for each 1 unit increase in $h$. So the car goes 55 miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The car travels about 55 miles for each hour of driving",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope = change in miles per hour: about 55 miles each hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.475Z"
+        }
+      }
+    },
+    {
+      "id": "867bd14a-8063-47a8-93fe-d3a7097f2391",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models the value of an account as $y = 250(1.2)^x$, where $x$ is the number of years. What value does the model predict at the start, when $x = 0$?",
+      "choices": [],
+      "answer": "250",
+      "compute": "250*1.2^0",
+      "solution": "Any number to the power 0 is 1, so $y = 250(1) = 250$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "250",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250 × 1.2^0 = 250.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.497Z"
+        }
+      }
+    },
+    {
+      "id": "0ea009b9-fba5-4dcf-b5d7-77b77b7bc389",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a quadratic regression model",
+      "stem": "Quadratic regression gives $y = -2(x - 4)^2 + 18$. What is the greatest value of $y$ the model predicts?",
+      "choices": [],
+      "answer": "18",
+      "compute": "18",
+      "solution": "The squared term is never negative, so $-2(x-4)^2 \\le 0$. The greatest value is 18, at $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex form with a = -2 < 0: maximum 18 at x = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.519Z"
+        }
+      }
+    },
+    {
+      "id": "3e6c6a99-6539-44f1-a83e-a03ed4a83fcf",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Residuals and judging fit",
+      "stem": "For one data point, the residual from a regression model is exactly 0. What does that mean?",
+      "choices": [
+        "The model predicts that point exactly",
+        "The actual value of that data point is 0",
+        "The regression curve has a slope of 0 there",
+        "The point is very far from the curve"
+      ],
+      "answer": "The model predicts that point exactly",
+      "compute": null,
+      "solution": "Residual = actual - predicted. A residual of 0 means the actual and predicted values are equal, so the curve passes through the point.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The model predicts that point exactly",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Residual = actual - predicted = 0, so prediction equals actual.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.634Z"
+        }
+      }
+    },
+    {
+      "id": "e2104bbd-7e43-40b7-91dd-726c31ac623f",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose a type of regression for data",
+      "stem": "The number of cells in a sample doubles every 5 hours. Which type of regression fits the cell counts best?",
+      "choices": [
+        "Linear",
+        "Sinusoidal",
+        "Logarithmic",
+        "Exponential"
+      ],
+      "answer": "Exponential",
+      "compute": null,
+      "solution": "A quantity that is multiplied by the same factor in equal time periods grows exponentially.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Exponential",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Doubling every fixed period is exponential growth.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.636Z"
+        }
+      }
+    },
+    {
+      "id": "1a2b669b-49e5-4f58-ad9b-3a4e6220aa10",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models the remaining medicine in a body as $y = 640(0.5)^x$ milligrams after $x$ hours. How many milligrams does the model predict after 3 hours?",
+      "choices": [],
+      "answer": "80",
+      "compute": "640*0.5^3",
+      "solution": "$y = 640(0.5)^3 = 640 \\cdot 0.125 = 80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "640 x 0.5^3 = 640/8 = 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.651Z"
+        }
+      }
+    },
+    {
+      "id": "ec311523-599b-4395-b446-8fa8b1a874b3",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a quadratic regression model",
+      "stem": "Quadratic regression models the number of visitors $y$ (in hundreds) to a museum as $y = 2x^2 - 3x + 1$, where $x$ is the month number. What does the model predict for month 3, in hundreds?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2*9-3*3+1",
+      "solution": "Substitute $x = 3$: $2(9) - 3(3) + 1 = 18 - 9 + 1 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(9)-3(3)+1 = 18-9+1 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.661Z"
+        }
+      }
+    },
+    {
+      "id": "d20545f7-b3ae-4b8b-870f-eea08174e6e3",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use a logarithmic regression model",
+      "stem": "The logarithmic regression model is $y = 5 + 2\\ln x$. Which values of $x$ can the model be used with?",
+      "choices": [
+        "All real numbers",
+        "$x \\ge 0$",
+        "$x < 0$",
+        "$x > 0$"
+      ],
+      "answer": "$x > 0$",
+      "compute": null,
+      "solution": "The natural logarithm is defined only for positive numbers, so $x > 0$. Zero is not allowed because $\\ln 0$ is undefined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x > 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ln x defined for x>0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.698Z"
+        }
+      }
+    },
+    {
+      "id": "bf4ad085-6847-4938-90d6-2d20e4835755",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 2 + 3\\log_2 x$. What value of $y$ does the model predict at $x = 8$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "2+3*3",
+      "solution": "$\\log_2 8 = 3$ because $2^3 = 8$. So $y = 2 + 3(3) = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2 8 = 3, so y = 2 + 3·3 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.708Z"
+        }
+      }
+    },
+    {
+      "id": "5a3e4b79-0575-4f76-9e9e-4ac2ee26694f",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "The regression line $P = -4t + 120$ models the number of pages $P$ left to read in a book after $t$ days. What does the intercept 120 tell you?",
+      "choices": [
+        "The book has 120 pages left before any reading is done",
+        "The reader finishes the whole book after 120 days of reading",
+        "The reader reads 120 pages on each day of reading",
+        "The book has 120 pages left after 4 days of reading"
+      ],
+      "answer": "The book has 120 pages left before any reading is done",
+      "compute": null,
+      "solution": "The intercept is the value of $P$ when $t = 0$, before any days have passed. So 120 pages are left at the start.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The book has 120 pages left before any reading is done",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At t = 0 (no days of reading) P = 120: pages left before any reading.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.721Z"
+        }
+      }
+    },
+    {
+      "id": "25104b7e-50e7-4c18-b337-3e10aff7afe2",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose a type of regression for data",
+      "stem": "Data are $x$: 1, 2, 3, 4 and $y$: 7, 10, 13, 16. Which type of regression fits these data exactly?",
+      "choices": [
+        "Quadratic, because y rises faster and faster",
+        "Exponential, because y is multiplied by the same amount",
+        "Linear, because y rises by the same amount each step",
+        "Logarithmic, because y rises more and more slowly"
+      ],
+      "answer": "Linear, because y rises by the same amount each step",
+      "compute": null,
+      "solution": "$y$ goes up by 3 each time $x$ goes up by 1. A constant change means a linear model, $y = 3x + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Linear, because y rises by the same amount each step",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y rises by 3 each step: 7,10,13,16, so y = 3x + 4 exactly. Linear.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.738Z"
+        }
+      }
+    },
+    {
+      "id": "f798631b-a678-4a3d-9dc5-7fd0267e9ff3",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Residuals and judging fit",
+      "stem": "A quadratic model is $y = x^2 + 1$. At $x = 3$ the actual data value is 8. What is the residual (actual value minus predicted value)?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "8-(3^2+1)",
+      "solution": "The model predicts $3^2 + 1 = 10$. Residual $= 8 - 10 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted 3² + 1 = 10; residual 8 - 10 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.744Z"
+        }
+      }
+    },
+    {
+      "id": "67c1bf8b-e52f-4143-8c93-0a83b625751c",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use a quadratic regression model",
+      "stem": "A ball is thrown upward, rises, and falls back down. A quadratic regression $h = at^2 + bt + c$ is fit to its heights. What must be true of $a$?",
+      "choices": [
+        "It is positive, because the graph opens downward",
+        "It is negative, because the graph opens upward",
+        "It is negative, because the graph opens downward",
+        "It is positive, because the graph opens upward"
+      ],
+      "answer": "It is negative, because the graph opens downward",
+      "compute": null,
+      "solution": "The height rises and then falls, so the parabola opens downward. A parabola opens downward when the leading coefficient $a$ is negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is negative, because the graph opens downward",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height rises then falls: parabola opens downward, a < 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.784Z"
+        }
+      }
+    },
+    {
       "id": "86a76e57-c5a4-4dbd-b74c-930da5b8d3e6",
       "topic_id": "NC17.M4.AF.5",
       "difficulty": 2,
@@ -17259,6 +19973,655 @@
           "work": "Extrapolation far outside ages 2-10 is unreliable.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.617Z"
+        }
+      }
+    },
+    {
+      "id": "ea29e7f6-f24f-4cf7-8ec4-3dc5376e91cd",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A regression line models a child's height in centimeters as $y = 6.2x + 30$, where $x$ is the age in years. At what age does the model predict a height of 92 centimeters?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(92-30)/6.2",
+      "solution": "Solve $6.2x + 30 = 92$. Then $6.2x = 62$, so $x = 10$ years.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "92 = 6.2x + 30 -> 6.2x = 62 -> x = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.201Z"
+        }
+      }
+    },
+    {
+      "id": "14d78b09-cf90-4ad5-b1a9-c5deb7a4752d",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Residuals and judging fit",
+      "stem": "A model for monthly rainfall has a residual of $+2.5$ inches for July (actual minus predicted). Which statement is true?",
+      "choices": [
+        "The model predicted 2.5 inches less rain than fell in July",
+        "The model predicted 2.5 inches more rain than fell in July",
+        "The model predicted exactly the amount of rain that fell in July",
+        "The model predicted that 2.5 inches of rain would fall in July"
+      ],
+      "answer": "The model predicted 2.5 inches less rain than fell in July",
+      "compute": null,
+      "solution": "Residual = actual - predicted $= 2.5$, so the actual rainfall was 2.5 inches more than predicted. The model underestimated.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The model predicted 2.5 inches less rain than fell in July",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Residual = actual - predicted = +2.5, so actual is 2.5 more than predicted: the model predicted 2.5 inches less than fell.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.210Z"
+        }
+      }
+    },
+    {
+      "id": "4010d111-8480-470a-8889-bd424cc81945",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "Sinusoidal regression gives $y = 3\\cos\\left(\\frac{\\pi}{6}x\\right) + 20$. What does the model predict at $x = 2$?",
+      "choices": [],
+      "answer": "21.5",
+      "compute": "3*0.5+20",
+      "solution": "At $x = 2$ the angle is $\\frac{\\pi}{6}(2) = \\frac{\\pi}{3}$, and $\\cos\\frac{\\pi}{3} = \\frac{1}{2}$. So $y = 3\\left(\\frac{1}{2}\\right) + 20 = 21.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos(pi/6 x 2) = cos(pi/3) = 1/2; 3 x 1/2 + 20 = 21.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.214Z"
+        }
+      }
+    },
+    {
+      "id": "4cb13221-ac0c-47a9-a450-db1247e2d97e",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A phone plan's monthly cost is modeled by the regression line $y = 0.05x + 20$, where $x$ is the number of minutes used and $y$ is the cost in dollars. What does the model predict for 300 minutes?",
+      "choices": [],
+      "answer": "35",
+      "compute": "0.05*300+20",
+      "solution": "$y = 0.05(300) + 20 = 15 + 20 = 35$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.05 x 300 + 20 = 15 + 20 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.227Z"
+        }
+      }
+    },
+    {
+      "id": "549e0ade-5e1a-426d-a78a-8ef5c2cbbb9b",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models a rumor's spread as $y = 3(2)^x$, where $x$ is the number of days and $y$ is the number of people who have heard it. After how many days does the model predict 96 people?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Solve $3(2)^x = 96$. Then $2^x = 32$, so $x = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "96 = 3 x 2^x -> 2^x = 32 -> x = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.231Z"
+        }
+      }
+    },
+    {
+      "id": "2d409135-81b9-4376-84f9-570055cf3578",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Residuals and judging fit",
+      "stem": "A least-squares linear regression has five residuals. Four of them are 2, -5, 3 and -1. The residuals of a least-squares line add to 0. What is the fifth residual?",
+      "choices": [],
+      "answer": "1",
+      "compute": "0-(2-5+3-1)",
+      "solution": "The four known residuals add to $2 - 5 + 3 - 1 = -1$. The fifth must make the total 0, so it is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 - 5 + 3 - 1 = -1; fifth = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.255Z"
+        }
+      }
+    },
+    {
+      "id": "b4206262-c36c-4c4b-9186-83ba01228a3f",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose a type of regression for data",
+      "stem": "The data are $x$: 1, 2, 3, 4 and $y$: 2, 8, 18, 32. Which type of regression fits best, and why?",
+      "choices": [
+        "Linear, because the differences of the y-values are all the same",
+        "Quadratic, because the differences of the y-values change by a constant 4",
+        "Exponential, because each y-value is a constant multiple of the one before",
+        "Logarithmic, because the y-values rise more and more slowly"
+      ],
+      "answer": "Quadratic, because the differences of the y-values change by a constant 4",
+      "compute": null,
+      "solution": "The differences of $y$ are 6, 10, 14, which are not constant, so it is not linear. The ratios are 4, 2.25, 1.78, not constant, so it is not exponential. The differences change by a constant 4, so it is quadratic ($y = 2x^2$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Quadratic, because the differences of the y-values change by a constant 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First differences 6, 10, 14; second differences 4 constant -> quadratic (y = 2x^2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.258Z"
+        }
+      }
+    },
+    {
+      "id": "6f170fa5-b3f9-41ac-a830-17c0c90b4bb7",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Residuals and judging fit",
+      "stem": "An exponential model is $y = 5(2)^x$. At $x = 3$ the actual data value is 37. What is the residual (actual value minus predicted value)?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "37-5*2^3",
+      "solution": "The model predicts $5(2)^3 = 40$. Residual $= 37 - 40 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted 5*2^3=40; residual 37-40=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.271Z"
+        }
+      }
+    },
+    {
+      "id": "0f3c3acd-e170-462f-a304-8718d00f6380",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression fits data with the form $y = a \\cdot b^x$ and $a > 0$. Which value of $b$ means that $y$ decays as $x$ increases?",
+      "choices": [
+        "$b = 0.7$",
+        "$b = 1$",
+        "$b = 1.7$",
+        "$b = 7$"
+      ],
+      "answer": "$b = 0.7$",
+      "compute": null,
+      "solution": "Each increase of 1 in $x$ multiplies $y$ by $b$. The values decay only when $0 < b < 1$, and only 0.7 is in that range. With $b = 1$ the values stay the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$b = 0.7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Decay when 0<b<1: b=0.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.298Z"
+        }
+      }
+    },
+    {
+      "id": "8db9548e-73fe-4d1e-9e4c-2bccb6791ab6",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "An exponential model $y = a \\cdot b^x$ fits the data $x$: 0, 1, 2, 3 and $y$: 6, 18, 54, 162. What is the value of $b$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "18/6",
+      "solution": "Each $y$-value is the one before times the same factor: $18 \\div 6 = 3$ and $54 \\div 18 = 3$. So $b = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ratio 18/6=54/18=3: b=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.318Z"
+        }
+      }
+    },
+    {
+      "id": "81794c76-4dbf-430e-8793-190c58f8db82",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 8 + 6\\ln x$. How does the increase in $y$ from $x = 1$ to $x = 10$ compare with the increase from $x = 10$ to $x = 100$?",
+      "choices": [
+        "The second increase is 10 times the first, since x grows 10 times as much",
+        "The two increases are equal, because x is multiplied by 10 each time",
+        "The second increase is 9 times the first, since x grows by 90 not 9",
+        "The first increase is larger, since the curve is steeper near x = 1"
+      ],
+      "answer": "The two increases are equal, because x is multiplied by 10 each time",
+      "compute": null,
+      "solution": "The increases are $6\\ln 10 - 6\\ln 1 = 6\\ln 10$ and $6\\ln 100 - 6\\ln 10 = 6\\ln 10$. Equal ratios of $x$ give equal increases in a logarithmic model.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The two increases are equal, because x is multiplied by 10 each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y(10)-y(1)=6 ln10; y(100)-y(10)=6(ln100-ln10)=6 ln10. Equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.328Z"
+        }
+      }
+    },
+    {
+      "id": "76ddb220-2449-4279-a854-dc04cf6fb747",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose a type of regression for data",
+      "stem": "A plant's height rises quickly in the first weeks, then rises more slowly each week, but keeps rising and never turns down. Which type of regression fits best?",
+      "choices": [
+        "Exponential",
+        "Linear",
+        "Logarithmic",
+        "Sinusoidal"
+      ],
+      "answer": "Logarithmic",
+      "compute": null,
+      "solution": "A logarithmic model keeps increasing but with a smaller and smaller rate of change. A quadratic would eventually turn down, a line has a constant rate, and a sinusoid repeats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Logarithmic",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rapid then slowing growth, always increasing: logarithmic.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.335Z"
+        }
+      }
+    },
+    {
+      "id": "534b82be-ddd7-48f3-bcfe-f37c15c22f27",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A regression line passes through the points $(0, 4)$ and $(5, 19)$. What value of $y$ does the line predict at $x = 8$?",
+      "choices": [],
+      "answer": "28",
+      "compute": "4+3*8",
+      "solution": "Slope $= \\frac{19 - 4}{5 - 0} = 3$ and the $y$-intercept is 4. So $y = 3x + 4$, and at $x = 8$ we get $24 + 4 = 28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Slope (19-4)/5=3; y=3x+4; at x=8, y=28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.378Z"
+        }
+      }
+    },
+    {
+      "id": "d9b045b7-aa1f-4258-b88d-fa1da4338b66",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Residuals and judging fit",
+      "stem": "A residual plot for a regression model shows points scattered randomly above and below zero, with no pattern. What does this suggest?",
+      "choices": [
+        "The model is a poor fit, because the residuals are not all zero",
+        "The model is a poor fit, because some residuals are negative",
+        "A different type of model is needed, because the residuals vary",
+        "The model is a reasonable fit, because no pattern is left over"
+      ],
+      "answer": "The model is a reasonable fit, because no pattern is left over",
+      "compute": null,
+      "solution": "Residuals will vary, and some are always negative. A random scatter with no pattern means the model has captured the trend, so it is a reasonable fit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The model is a reasonable fit, because no pattern is left over",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Random residual scatter with no pattern indicates a reasonable fit.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.470Z"
+        }
+      }
+    },
+    {
+      "id": "70cd0354-6e45-4ae0-897f-816235392f13",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "A sinusoidal model has period 8, amplitude 3 and midline $y = 10$. Which equation could it be?",
+      "choices": [
+        "$y = 3\\sin\\left(\\frac{\\pi}{8}x\\right) + 10$",
+        "$y = 10\\sin\\left(\\frac{\\pi}{4}x\\right) + 3$",
+        "$y = 3\\sin\\left(\\frac{\\pi}{4}x\\right) + 10$",
+        "$y = 3\\sin(8x) + 10$"
+      ],
+      "answer": "$y = 3\\sin\\left(\\frac{\\pi}{4}x\\right) + 10$",
+      "compute": null,
+      "solution": "The period is $\\frac{2\\pi}{B}$. For period 8, $B = \\frac{2\\pi}{8} = \\frac{\\pi}{4}$. The amplitude 3 multiplies the sine and the midline 10 is added. The $\\frac{\\pi}{8}$ version has period 16, and $\\sin(8x)$ has period $\\frac{\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 3\\sin\\left(\\frac{\\pi}{4}x\\right) + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 8 means B = 2pi/8 = pi/4; amplitude 3, midline 10: y = 3 sin(pi x/4) + 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.538Z"
+        }
+      }
+    },
+    {
+      "id": "05c2d333-64ce-4c39-887c-ebb64e8e68a2",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "Sinusoidal regression fits the water depth in a harbor. The greatest depth is 25 feet and the least depth is 5 feet. What is the value of the midline of the model, in feet?",
+      "choices": [],
+      "answer": "15",
+      "compute": "(25+5)/2",
+      "solution": "The midline is halfway between the greatest and least values: $\\frac{25 + 5}{2} = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midline = (25 + 5)/2 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.581Z"
+        }
+      }
+    },
+    {
+      "id": "e704b1c0-2878-48e5-9763-0c8de54c400f",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 12 + 8\\log_2 x$. What does the model predict at $x = 32$?",
+      "choices": [],
+      "answer": "52",
+      "compute": "12+8*5",
+      "solution": "$\\log_2 32 = 5$ because $2^5 = 32$. So $y = 12 + 8(5) = 52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log_2 32 = 5; y = 12+40 = 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.658Z"
+        }
+      }
+    },
+    {
+      "id": "5dc620fc-2a90-406f-a1ae-24176a2d312d",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a quadratic regression model",
+      "stem": "Quadratic regression models a factory's cost in thousands of dollars as $C = 0.5x^2 - 4x + 20$, where $x$ is the number of machines. For which value of $x$ does the model predict the least cost?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4/(2*0.5)",
+      "solution": "The least value is at the vertex, where $x = \\frac{-b}{2a} = \\frac{4}{2(0.5)} = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex x = -b/(2a) = 4/(2x0.5) = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.659Z"
+        }
+      }
+    },
+    {
+      "id": "c2f8fd56-d3ef-4675-81b3-cfd99ceb52e8",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression gives $y = 400(0.85)^x$ for the value of a machine after $x$ years. By what percent does the model say the value decreases each year?",
+      "choices": [],
+      "answer": "15",
+      "compute": "100-85",
+      "solution": "The factor 0.85 means 85% of the value is kept each year. So the value decreases by $100 - 85 = 15$ percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor 0.85 = 1 - 0.15: decreases 15% per year.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.691Z"
+        }
+      }
+    },
+    {
+      "id": "35ed1746-df8d-46fc-86e8-cc77062a4b52",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a quadratic regression model",
+      "stem": "Data rise to a maximum of 40 at $x = 5$ and then fall. Which quadratic regression equation has its greatest value of 40 at $x = 5$?",
+      "choices": [
+        "$y = 2x^2 - 20x + 90$",
+        "$y = -2x^2 - 20x - 10$",
+        "$y = -2x^2 + 5x + 40$",
+        "$y = -2x^2 + 20x - 10$"
+      ],
+      "answer": "$y = -2x^2 + 20x - 10$",
+      "compute": null,
+      "solution": "For the key: $x = \\frac{-20}{2(-2)} = 5$ and $y = -2(25) + 100 - 10 = 40$, and it opens downward. The equation with $2x^2$ has a least value, not a greatest. The one with $-20x$ peaks at $x = -5$. The last peaks at $x = 1.25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -2x^2 + 20x - 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need a < 0 and vertex at x = 5. Option -2x² + 20x - 10: vertex -20/(2·-2) = 5, y = -50 + 100 - 10 = 40. 2x² - 20x + 90 has value 40 at 5 but it is a minimum. -2x² - 20x - 10 has vertex at -5; -2x² + 5x + 40 at 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.722Z"
+        }
+      }
+    },
+    {
+      "id": "cfc2136a-30ba-4e38-be01-e07a8daf2a04",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models an investment as $y = 2000(1.05)^x$ dollars after $x$ years. What does the model predict after 2 years, in dollars?",
+      "choices": [],
+      "answer": "2205",
+      "compute": "2000*1.05^2",
+      "solution": "$y = 2000(1.05)^2 = 2000(1.1025) = 2205$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2205",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2000 · 1.05² = 2000 · 1.1025 = 2205.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.731Z"
         }
       }
     },
@@ -17661,6 +21024,622 @@
           "work": "Max when pi x/4 = 2 pi k, x=8k: 0,8,16: 3.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.642Z"
+        }
+      }
+    },
+    {
+      "id": "2bbb1489-80d4-45bf-88a2-2f339660c731",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "Over many days, the correlation between ice cream sales and the number of sunburns is $r = 0.85$. Which conclusion is best supported?",
+      "choices": [
+        "Eating ice cream causes sunburns, because r is close to 1",
+        "Sunburns cause ice cream sales to rise, because r is positive",
+        "The two tend to rise together, but this alone does not show that one causes the other",
+        "There is no relationship between them, because neither causes the other"
+      ],
+      "answer": "The two tend to rise together, but this alone does not show that one causes the other",
+      "compute": null,
+      "solution": "A strong correlation shows the values rise together. It does not show cause. Here hot sunny days probably raise both.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The two tend to rise together, but this alone does not show that one causes the other",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correlation is not causation.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.192Z"
+        }
+      }
+    },
+    {
+      "id": "77635520-40fa-45a6-816b-c92513709786",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose a type of regression for data",
+      "stem": "The data are $x$: 0, 1, 2, 3 and $y$: 100, 70, 49, 34.3. Which type of regression model fits these data exactly, and why?",
+      "choices": [
+        "Exponential, because each y-value is 0.7 times the one before",
+        "Linear, because y falls by the same amount at each step",
+        "Quadratic, because the differences of y change by a constant amount",
+        "Sinusoidal, because the y-values follow a repeating cycle"
+      ],
+      "answer": "Exponential, because each y-value is 0.7 times the one before",
+      "compute": null,
+      "solution": "The ratios are $70 \\div 100 = 0.7$, $49 \\div 70 = 0.7$ and $34.3 \\div 49 = 0.7$. A constant ratio means an exponential model, $y = 100(0.7)^x$. The differences are $-30, -21, -14.7$, which are not constant, and their changes are not constant either.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Exponential, because each y-value is 0.7 times the one before",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70/100 = 0.7, 49/70 = 0.7, 34.3/49 = 0.7: constant ratio, exponential.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.248Z"
+        }
+      }
+    },
+    {
+      "id": "de95b2b9-4f62-42f0-b3b7-da0d2d00035b",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models a population as $y = 800(1.25)^x$, where $x$ is the number of years. By what percent does the model say the population grows over 2 years?",
+      "choices": [
+        "25%",
+        "56.25%",
+        "50%",
+        "156.25%"
+      ],
+      "answer": "56.25%",
+      "compute": null,
+      "solution": "Over 2 years the population is multiplied by $1.25^2 = 1.5625$. That is a growth of $1.5625 - 1 = 0.5625$, or 56.25%. The value 156.25% is the whole new size compared with the start, not the growth.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56.25%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.25^2 = 1.5625, growth 56.25%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.251Z"
+        }
+      }
+    },
+    {
+      "id": "c52a65ec-0822-476e-a637-4c4bbd820d98",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Residuals and judging fit",
+      "stem": "Model P has residuals of 0.2, -0.1, 0.0, 0.1 and -0.2 on five data points. Model Q has residuals of 3, 5, 4, 6 and 7 on the same points. Which statement is true?",
+      "choices": [
+        "Model Q fits better, because all of its residuals are positive",
+        "Model P fits better, and Model P predicts too high at every point",
+        "Model Q fits better, because its residuals are larger in size",
+        "Model P fits better, and Model Q predicts too low at every point"
+      ],
+      "answer": "Model P fits better, and Model Q predicts too low at every point",
+      "compute": null,
+      "solution": "Residuals close to 0 mean a close fit, so P fits better. Q's residuals are all positive, meaning actual values are above predictions, so Q predicts too low at every point.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Model P fits better, and Model Q predicts too low at every point",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P's residuals are tiny and mixed in sign, so P fits better (not always too high). Q's residuals (actual - predicted) are all positive, so Q predicts too low at every point.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.347Z"
+        }
+      }
+    },
+    {
+      "id": "b78104f9-9e11-4e1a-95f9-6250b533cb17",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A regression line models the distance $y$ in kilometers of a runner from home as $y = 0.6x + 2$, where $x$ is the time in minutes. If time is measured in hours $h$ instead, the model becomes $y = mh + 2$. What is $m$?",
+      "choices": [
+        "0.01",
+        "36",
+        "0.6",
+        "360"
+      ],
+      "answer": "36",
+      "compute": "0.6*60",
+      "solution": "One hour is 60 minutes, so $x = 60h$. Then $y = 0.6(60h) + 2 = 36h + 2$, and $m = 36$ kilometers per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x minutes = 60h, so y = 0.6(60h)+2 = 36h+2; m = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.353Z"
+        }
+      }
+    },
+    {
+      "id": "e845c737-2a9a-4516-82c6-3407fc74138d",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 7 + 6\\log_2 x$. By how much does the model say $y$ increases each time $x$ doubles?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Doubling $x$ adds 1 to $\\log_2 x$, because $\\log_2 2x = \\log_2 x + 1$. So $y$ increases by $6 \\cdot 1 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2(2x)=log2 x + 1, so y increases by 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.360Z"
+        }
+      }
+    },
+    {
+      "id": "eebe1d5a-452c-4df0-8155-2145c7fe71e3",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 4 + 3\\ln x$. Which statement about the $y$-intercept of the model is true?",
+      "choices": [
+        "It has no y-intercept, because x = 0 is not in the domain",
+        "Its y-intercept is 4, because ln 0 is equal to 0",
+        "Its y-intercept is 3, because 3 is the coefficient of ln x",
+        "Its y-intercept is 4, because 4 is the constant term"
+      ],
+      "answer": "It has no y-intercept, because x = 0 is not in the domain",
+      "compute": null,
+      "solution": "The graph never reaches $x = 0$, since $\\ln 0$ is undefined. At $x = 1$ the value is 4, but that is not the $y$-intercept.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has no y-intercept, because x = 0 is not in the domain",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "ln x is defined only for x > 0, so x = 0 is not in the domain: no y-intercept.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.479Z"
+        }
+      }
+    },
+    {
+      "id": "ac707070-0a56-4828-997c-25577f20a26a",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "Exponential regression models the mass of a sample in grams as $y = 960(0.5)^{x/3}$, where $x$ is the number of years. What mass does the model predict at $x = 9$?",
+      "choices": [
+        "320",
+        "480",
+        "120",
+        "240"
+      ],
+      "answer": "120",
+      "compute": "960*0.5^(9/3)",
+      "solution": "The exponent is $\\frac{9}{3} = 3$, so the mass is halved 3 times: $960 \\cdot 0.5^3 = 960 \\cdot 0.125 = 120$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "960 × 0.5^3 = 960/8 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.488Z"
+        }
+      }
+    },
+    {
+      "id": "0dec5f21-49ab-4d99-a745-8aa31b97d690",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a quadratic regression model",
+      "stem": "Quadratic regression models a shop's revenue in dollars as $R = -2.5p^2 + 50p$, where $p$ is the price in dollars. What is the greatest revenue the model predicts?",
+      "choices": [
+        "500",
+        "10",
+        "125",
+        "250"
+      ],
+      "answer": "250",
+      "compute": "-2.5*100+50*10",
+      "solution": "The vertex is at $p = \\frac{-50}{2(-2.5)} = 10$. Then $R = -2.5(100) + 50(10) = -250 + 500 = 250$. The value 10 is the price, not the revenue.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "250",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex p = -50/(2*-2.5) = 10; R = -250 + 500 = 250.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.554Z"
+        }
+      }
+    },
+    {
+      "id": "6ef27d64-6185-4a10-a44c-455a7eb5b358",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "Sinusoidal regression gives $y = 5\\sin\\left(\\frac{\\pi}{6}(x - 2)\\right) + 12$. What does the model predict at $x = 5$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "5*1+12",
+      "solution": "At $x = 5$ the angle is $\\frac{\\pi}{6}(3) = \\frac{\\pi}{2}$, and $\\sin\\frac{\\pi}{2} = 1$. So $y = 5(1) + 12 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=5: (pi/6)(3) = pi/2, sin = 1; y = 5 + 12 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.563Z"
+        }
+      }
+    },
+    {
+      "id": "ff8c72e6-6e04-42ae-8e3f-e719414a6dd2",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a quadratic regression model",
+      "stem": "Quadratic regression models a company's cost in thousands of dollars as $C = 0.1x^2 - 2x + 30$, where $x$ is the number of workers. The model gives the same cost at $x = 0$ and at one other positive $x$. What is that other value of $x$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "2/0.1",
+      "solution": "The parabola is symmetric about its vertex at $x = \\frac{2}{2(0.1)} = 10$. The point $x = 0$ is 10 units left of it, so the matching point is 10 units right, at $x = 20$. Check: $C(20) = 40 - 40 + 30 = 30 = C(0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C(0) = 30. 0.1x^2 - 2x = 0 gives x = 0 or x = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.578Z"
+        }
+      }
+    },
+    {
+      "id": "7c6d7ab4-5ca9-4eaa-a499-f68664c44dae",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 4 + 2\\log_3 x$. For what value of $x$ does the model predict $y = 10$?",
+      "choices": [
+        "3",
+        "9",
+        "18",
+        "27"
+      ],
+      "answer": "27",
+      "compute": "3^((10-4)/2)",
+      "solution": "Solve $4 + 2\\log_3 x = 10$. Then $\\log_3 x = 3$, so $x = 3^3 = 27$. The value 3 is $\\log_3 x$, not $x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+2log_3 x = 10 -> log_3 x = 3 -> x = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.637Z"
+        }
+      }
+    },
+    {
+      "id": "a4d5bb42-c690-4d1d-bd3d-efc0e0f2ad15",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Residuals and judging fit",
+      "stem": "The data points are $(1, 3)$, $(2, 5)$ and $(3, 8)$. Model A is $y = 2x + 1$ and Model B is $y = 2.5x$. Which model fits better?",
+      "choices": [
+        "Model A, because two of its residuals are exactly 0",
+        "Model A, because its sum of squared residuals is 0.5 and B has 1",
+        "Model B, because its sum of squared residuals is 0.5 and A has 1",
+        "Model B, because its residuals add to 0 and those of A do not"
+      ],
+      "answer": "Model B, because its sum of squared residuals is 0.5 and A has 1",
+      "compute": null,
+      "solution": "Model A predicts 3, 5, 7, so its residuals are 0, 0, 1 and the sum of squares is 1. Model B predicts 2.5, 5, 7.5, so its residuals are 0.5, 0, 0.5 and the sum of squares is $0.25 + 0 + 0.25 = 0.5$. The smaller sum means the better fit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Model B, because its sum of squared residuals is 0.5 and A has 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: predictions 3,5,7; residuals 0,0,1; SSR 1. B: predictions 2.5,5,7.5; residuals 0.5,0,0.5; SSR 0.5. B fits better by SSR 0.5 vs 1. Option about B residuals summing to 0 is false (sum 1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.642Z"
+        }
+      }
+    },
+    {
+      "id": "8d8f7c46-5634-42a5-8364-97804a7ae4f8",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Residuals and judging fit",
+      "stem": "A quadratic model has a residual of $-3$ at $x = 2$ (actual minus predicted), and the model's value at $x = 2$ is 11. What is the actual data value at $x = 2$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "11-3",
+      "solution": "Residual = actual - predicted, so actual = predicted + residual $= 11 + (-3) = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Actual = predicted + residual = 11-3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.699Z"
+        }
+      }
+    },
+    {
+      "id": "8624b22e-f303-4906-8c2c-8737b7291ce1",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "A sinusoidal model has its greatest value, 30, at $x = 3$ and its next least value, 10, at $x = 9$. Which equation could it be?",
+      "choices": [
+        "$y = 20\\sin\\left(\\frac{\\pi}{6}x\\right) + 10$",
+        "$y = 10\\sin\\left(\\frac{\\pi}{6}x\\right) + 20$",
+        "$y = 10\\sin\\left(\\frac{\\pi}{3}x\\right) + 20$",
+        "$y = 10\\sin\\left(\\frac{\\pi}{12}x\\right) + 20$"
+      ],
+      "answer": "$y = 10\\sin\\left(\\frac{\\pi}{6}x\\right) + 20$",
+      "compute": null,
+      "solution": "The midline is $\\frac{30 + 10}{2} = 20$ and the amplitude is $\\frac{30 - 10}{2} = 10$. A maximum at $x = 3$ and the next minimum at $x = 9$ is a half period of 6, so the period is 12 and $B = \\frac{2\\pi}{12} = \\frac{\\pi}{6}$. Check: $10\\sin\\frac{\\pi}{2} + 20 = 30$ at $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 10\\sin\\left(\\frac{\\pi}{6}x\\right) + 20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max 30, min 10 → amplitude 10, midline 20. Max to next min is half a period = 6, so period 12, B = 2π/12 = π/6. y = 10 sin(πx/6) + 20: x=3 gives 30, x=9 gives 10. Others fail (period 6 gives 20 at x=3; period 24 gives ≈27 at x=3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.714Z"
+        }
+      }
+    },
+    {
+      "id": "fcb00ad7-3b54-4a18-93d0-3ae0eb84213d",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a quadratic regression model",
+      "stem": "Quadratic regression gives $y = x^2 - 6x + 5$. The model predicts $y = 0$ at two values of $x$. How far apart are those two values?",
+      "choices": [],
+      "answer": "4",
+      "compute": "5-1",
+      "solution": "Solve $x^2 - 6x + 5 = 0$. Factor: $(x - 1)(x - 5) = 0$, so $x = 1$ or $x = 5$. They are $5 - 1 = 4$ apart.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x² - 6x + 5 = (x - 1)(x - 5) = 0 → x = 1, 5. Distance 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.717Z"
+        }
+      }
+    },
+    {
+      "id": "6f2b0c7c-4a2d-4e5f-8dda-6238188341c6",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Residuals and judging fit",
+      "stem": "An exponential model is $y = 3(2)^x$. The data points are $(1, 6)$, $(2, 9)$, $(3, 16)$ and $(4, 30)$. What is the sum of the four residuals (actual minus predicted)?",
+      "choices": [],
+      "answer": "-29",
+      "compute": "(6-6)+(9-12)+(16-24)+(30-48)",
+      "solution": "The predicted values are 6, 12, 24, 48. The residuals are $0$, $-3$, $-8$ and $-18$. Their sum is $-29$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted 3·2^x: 6, 12, 24, 48. Residuals: 0, -3, -8, -18. Sum = -29.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.727Z"
+        }
+      }
+    },
+    {
+      "id": "12f8d2ec-bbe6-4bbe-8042-6a60dc93ee1d",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A least-squares regression line has slope 3 and passes through the point $(10, 50)$, the mean of the data. What $y$-value does the line predict at $x = 14$?",
+      "choices": [
+        "62",
+        "53",
+        "42",
+        "92"
+      ],
+      "answer": "62",
+      "compute": "50+3*(14-10)",
+      "solution": "The line rises 3 for each 1 in $x$. From $x = 10$ to $x = 14$ is 4 units, so $y$ rises by $3 \\cdot 4 = 12$, giving $50 + 12 = 62$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "62",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 50 + 3(14 - 10) = 62.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.756Z"
+        }
+      }
+    },
+    {
+      "id": "88adf1e8-077c-4af3-b9c5-ee83f8882308",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a quadratic regression model",
+      "stem": "A quadratic model $y = ax^2 + bx + c$ passes exactly through the points $(0, 3)$, $(1, 6)$ and $(2, 11)$. Which equation is the model?",
+      "choices": [
+        "$y = x^2 + 2x + 3$",
+        "$y = x^2 + 3x + 2$",
+        "$y = 2x^2 + x + 3$",
+        "$y = x^2 + 3x + 3$"
+      ],
+      "answer": "$y = x^2 + 2x + 3$",
+      "compute": null,
+      "solution": "The point $(0, 3)$ gives $c = 3$. Then $a + b + 3 = 6$ and $4a + 2b + 3 = 11$, so $a + b = 3$ and $2a + b = 4$. Subtract: $a = 1$, then $b = 2$. The equation $y = 2x^2 + x + 3$ gives 13 at $x = 2$, not 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = x^2 + 2x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c = 3; a + b = 3; 4a + 2b = 8 → 2a + b = 4 → a = 1, b = 2. y = x² + 2x + 3. Check option 1 at x=1: 7, no.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.766Z"
         }
       }
     },

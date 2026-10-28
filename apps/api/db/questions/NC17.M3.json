@@ -18877,6 +18877,670 @@
       }
     },
     {
+      "id": "4884f6ed-6ca5-4cff-bfc7-e19c40241212",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "In dividing $x^2 + 8x + 5$ by $x + 1$, the first quotient term is $x$. After subtracting $x(x + 1)$ from $x^2 + 8x + 5$, what is the coefficient of $x$ in what is left?",
+      "choices": [],
+      "answer": "7",
+      "compute": "8-1",
+      "solution": "$x^2 + 8x + 5 - (x^2 + x) = 7x + 5$. The coefficient of $x$ is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+8x+5-(x^2+x)=7x+5. Coefficient 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.838Z"
+        }
+      }
+    },
+    {
+      "id": "6f98dfd8-8f8c-494c-897b-233bbcfc3bbd",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a quadratic expression",
+      "stem": "Dividing $x^2 + 4$ by $x^2 + 1$ gives the quotient 1 and a number left over. What is the remainder?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4-1",
+      "solution": "$x^2 + 4 = (x^2 + 1) + 3$, so $r = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+4 = 1*(x^2+1)+3. Remainder 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.840Z"
+        }
+      }
+    },
+    {
+      "id": "63464c01-7e70-4eb7-8b2c-11fa8c26954b",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "A rational expression has a numerator of degree 3 and a divisor of degree 2. It is written as a quotient plus a remainder over the divisor, with the remainder of lower degree than the divisor. What are the degree of the quotient and the largest possible degree of the remainder, in that order?",
+      "choices": [
+        "$1$ and $2$",
+        "$3$ and $1$",
+        "$1$ and $1$",
+        "$2$ and $1$"
+      ],
+      "answer": "$1$ and $1$",
+      "compute": null,
+      "solution": "The quotient has degree $3 - 2 = 1$. The remainder must have degree less than 2, so at most 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$ and $1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quotient degree 3-2=1; remainder degree < 2, so at most 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.842Z"
+        }
+      }
+    },
+    {
+      "id": "484c6a34-7b38-4bd8-9a16-d5fd2058ede2",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "Suppose $\\frac{a(x)}{x - 1} = x + 4 + \\frac{6}{x - 1}$, so $a(x) = (x - 1)(x + 4) + 6$. What is $a(1)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(1-1)*(1+4)+6",
+      "solution": "Put $x = 1$: the product has the factor $x - 1 = 0$, so only the remainder is left: $a(1) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(1)=(0)(5)+6=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.845Z"
+        }
+      }
+    },
+    {
+      "id": "595da079-6366-435f-b8e2-40745c3c4236",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "Rewrite $\\frac{x + 6}{x + 1}$ as a quotient plus a remainder over $x + 1$. Which is correct?",
+      "choices": [
+        "$1 + \\frac{5}{x + 1}$",
+        "$1 + \\frac{6}{x + 1}$",
+        "$1 + \\frac{5}{x}$",
+        "$1 - \\frac{5}{x + 1}$"
+      ],
+      "answer": "$1 + \\frac{5}{x + 1}$",
+      "compute": null,
+      "solution": "Write the numerator as the divisor plus a leftover: $x + 6 = (x + 1) + 5$. So $\\frac{x + 6}{x + 1} = 1 + \\frac{5}{x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 + \\frac{5}{x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+6=(x+1)+5 -> 1+5/(x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.854Z"
+        }
+      }
+    },
+    {
+      "id": "fdcd4fc0-0310-499f-829d-bc349b3dee8e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the remainder as the value of the numerator",
+      "stem": "When $a(x) = x^2 - 3x + 7$ is divided by $x - 2$, the remainder is $a(2)$. What is the remainder?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2^2-3*2+7",
+      "solution": "$a(2) = 4 - 6 + 7 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(2)=4-6+7=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.858Z"
+        }
+      }
+    },
+    {
+      "id": "98dbf7c5-d2fa-49cd-a227-2d42a1188bfe",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "The expression $\\frac{x^2 - 3x + 5}{x - 1}$ can be written as $x - 2 + \\frac{r}{x - 1}$. What is $r$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5-2",
+      "solution": "$(x - 1)(x - 2) = x^2 - 3x + 2$, and $x^2 - 3x + 5$ is 3 more. So $r = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic by 1 on 1,-3,5: 1,-2, remainder 3. r=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.865Z"
+        }
+      }
+    },
+    {
+      "id": "545e3b83-a312-4a3b-9a82-5a249ac066ae",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "Write $\\frac{4x}{x + 3}$ as $q + \\frac{r}{x + 3}$, where $q$ and $r$ are numbers. What is $q + r$?",
+      "choices": [],
+      "answer": "-8",
+      "compute": "4+(-12)",
+      "solution": "$4x = 4(x + 3) - 12$, so $q = 4$ and $r = -12$. Then $q + r = -8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x=4(x+3)-12, so q=4, r=-12, q+r=-8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.882Z"
+        }
+      }
+    },
+    {
+      "id": "3c49f0d3-f064-480f-8c7b-2cfa4cbf9d46",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "When $x^2 + 6x + 11$ is divided by $x + 2$, the result is a quotient plus a remainder over $x + 2$. What is the quotient?",
+      "choices": [
+        "$x + 6$",
+        "$x + 3$",
+        "$x + 2$",
+        "$x + 4$"
+      ],
+      "answer": "$x + 4$",
+      "compute": null,
+      "solution": "$(x + 2)(x + 4) = x^2 + 6x + 8$, and $x^2 + 6x + 11$ is 3 more, so the quotient is $x + 4$ with remainder 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+6x+11=(x+2)(x+4)+3. Quotient x+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.889Z"
+        }
+      }
+    },
+    {
+      "id": "7af4257d-7e8e-43a2-98d8-96c39e9f23e1",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "The expression $\\frac{x^3 + 4x + 6}{x}$ can be written as $x^2 + 4 + \\frac{r}{x}$. What is $r$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Divide each term by $x$: $x^2 + 4 + \\frac{6}{x}$. So $r = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3/x + 4x/x + 6/x = x^2+4+6/x; r=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.901Z"
+        }
+      }
+    },
+    {
+      "id": "4f8b3371-53f8-48f9-b988-7e9d9e9babbc",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{x - 3}{x + 1}$?",
+      "choices": [
+        "$1 + \\frac{4}{x + 1}$",
+        "$1 - \\frac{4}{x + 1}$",
+        "$1 - \\frac{2}{x + 1}$",
+        "$1 - \\frac{4}{x - 1}$"
+      ],
+      "answer": "$1 - \\frac{4}{x + 1}$",
+      "compute": null,
+      "solution": "$x - 3 = (x + 1) - 4$, so $\\frac{x - 3}{x + 1} = 1 - \\frac{4}{x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 - \\frac{4}{x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-3=(x+1)-4, so 1-4/(x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.908Z"
+        }
+      }
+    },
+    {
+      "id": "3b8fe8a1-5987-4667-88f6-965a7b0dfe63",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "A rectangle has area $x^2 + 4x + 7$ and one side $x + 1$. Dividing the area by this side gives $x + 3 + \\frac{r}{x + 1}$. What is $r$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "7-3",
+      "solution": "$(x + 1)(x + 3) = x^2 + 4x + 3$. The area is 4 more, so $r = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(x+3)=x^2+4x+3; remainder 7-3=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.913Z"
+        }
+      }
+    },
+    {
+      "id": "80125d06-bfa0-4283-a2c2-e5189076c599",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "For every $x$ except $-3$, the expression $\\frac{x^2 - 9}{x + 3}$ equals $x + k$. What is $k$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "$x^2 - 9 = (x + 3)(x - 3)$, so dividing by $x + 3$ leaves $x - 3$. Thus $k = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x+3)/(x+3) = x-3, k=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.955Z"
+        }
+      }
+    },
+    {
+      "id": "03372614-eb17-4ff5-9b52-087525cc6b12",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Check a rewrite by combining or by testing a value",
+      "stem": "Which single fraction is equal to $2 + \\frac{5}{x + 3}$?",
+      "choices": [
+        "$\\frac{2x + 8}{x + 3}$",
+        "$\\frac{2x + 11}{x + 3}$",
+        "$\\frac{7}{x + 3}$",
+        "$\\frac{2x + 5}{x + 3}$"
+      ],
+      "answer": "$\\frac{2x + 11}{x + 3}$",
+      "compute": null,
+      "solution": "$2 = \\frac{2(x + 3)}{x + 3} = \\frac{2x + 6}{x + 3}$. Adding $\\frac{5}{x + 3}$ gives $\\frac{2x + 11}{x + 3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2x + 11}{x + 3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 5/(x+3) = (2x+6+5)/(x+3) = (2x+11)/(x+3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.959Z"
+        }
+      }
+    },
+    {
+      "id": "7d0b2a62-b590-40d2-94ba-1ac5c9f04d57",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "The expression $\\frac{x^2 + 5x + 7}{x + 2}$ equals $x + 3 + \\frac{1}{x + 2}$. Which of these is the remainder?",
+      "choices": [
+        "$x + 3$",
+        "$x + 2$",
+        "$7$",
+        "$1$"
+      ],
+      "answer": "$1$",
+      "compute": null,
+      "solution": "In \"quotient plus remainder over divisor\", the remainder is the number on top of the fraction: 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In q + r/b form the remainder is the numerator over x+2: 1. Check (x+2)(x+3)+1 = x^2+5x+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.967Z"
+        }
+      }
+    },
+    {
+      "id": "d731b303-a49e-4d6b-8286-2a2b96e9e126",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "The expression $x + 6 - \\frac{4}{x - 1}$ is a quotient plus a remainder over $x - 1$. What is the quotient?",
+      "choices": [
+        "$x + 6$",
+        "$-4$",
+        "$x - 1$",
+        "$6$"
+      ],
+      "answer": "$x + 6$",
+      "compute": null,
+      "solution": "The part that is not over the divisor is the quotient: $x + 6$. The remainder is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quotient is the polynomial part, x+6; remainder -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.982Z"
+        }
+      }
+    },
+    {
+      "id": "bbbc1607-e7d3-41a8-9731-b195e8c7d46c",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "A cyclist covers $60x + 20$ meters in $x + 1$ minutes, so the average speed is $\\frac{60x + 20}{x + 1}$ meters per minute. Which expression is equal to this?",
+      "choices": [
+        "$60 + \\frac{40}{x + 1}$",
+        "$60 - \\frac{20}{x + 1}$",
+        "$60 + \\frac{20}{x + 1}$",
+        "$60 - \\frac{40}{x + 1}$"
+      ],
+      "answer": "$60 - \\frac{40}{x + 1}$",
+      "compute": null,
+      "solution": "$60x + 20 = 60(x + 1) - 40$, so the speed is $60 - \\frac{40}{x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60 - \\frac{40}{x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60x+20 = 60(x+1) - 40, so 60 - 40/(x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.986Z"
+        }
+      }
+    },
+    {
+      "id": "bca4888a-91e7-4898-ab30-c2f3e0979b2b",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "The expression $\\frac{2x - 1}{x - 4}$ can be written as $2 + \\frac{r}{x - 4}$. What is $r$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "-1+2*4",
+      "solution": "$2(x - 4) = 2x - 8$, and $2x - 1 = (2x - 8) + 7$. So $r = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x-1 = 2(x-4) + 7, r = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.992Z"
+        }
+      }
+    },
+    {
+      "id": "64a6f951-f2f7-48e9-a894-80632353726e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{x^3 + 5}{x}$?",
+      "choices": [
+        "$x^2 + \\frac{5}{x}$",
+        "$x^2 + 5$",
+        "$x^3 + \\frac{5}{x}$",
+        "$x^2 + 5x$"
+      ],
+      "answer": "$x^2 + \\frac{5}{x}$",
+      "compute": null,
+      "solution": "Divide each term by $x$: $\\frac{x^3}{x} = x^2$, and $\\frac{5}{x}$ stays as a fraction.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + \\frac{5}{x}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3/x + 5/x = x^2 + 5/x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.998Z"
+        }
+      }
+    },
+    {
+      "id": "470d8184-de19-4df1-baf9-314bf426e918",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "The polynomial $x^3 + 4x^2 + x + 2$ is divided by $x + 4$. What is the first term of the quotient?",
+      "choices": [
+        "$x^3$",
+        "$x^2$",
+        "$4x^2$",
+        "$x^4$"
+      ],
+      "answer": "$x^2$",
+      "compute": null,
+      "solution": "The first term is the leading term of the numerator divided by the leading term of the divisor: $\\frac{x^3}{x} = x^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3 / x = x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.998Z"
+        }
+      }
+    },
+    {
+      "id": "ac3a328b-fa07-4f4b-8be8-d4f9a7eb618b",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{x^2 + 5x + 9}{x + 2}$?",
+      "choices": [
+        "$x + 3 + \\frac{9}{x + 2}$",
+        "$x + 3 + \\frac{3}{x - 2}$",
+        "$x + 3 + \\frac{3}{x + 2}$",
+        "$x + 5 + \\frac{3}{x + 2}$"
+      ],
+      "answer": "$x + 3 + \\frac{3}{x + 2}$",
+      "compute": null,
+      "solution": "$(x + 2)(x + 3) = x^2 + 5x + 6$, and $x^2 + 5x + 9$ is 3 more. So the expression is $x + 3 + \\frac{3}{x + 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 3 + \\frac{3}{x + 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(x+3) = x^2+5x+6; remainder 3: x+3 + 3/(x+2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.006Z"
+        }
+      }
+    },
+    {
       "id": "6ce5de54-f564-4ae1-b2d6-9451e1867902",
       "topic_id": "NC17.M3.A-APR.6",
       "difficulty": 2,
@@ -19188,6 +19852,699 @@
           "work": "4x + 10 = 4(x + 2) + 2: r = 2.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:46.373Z"
+        }
+      }
+    },
+    {
+      "id": "a818624a-3d65-4322-915e-835e9ce750e8",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "A box has volume $x^3 + 3x^2 + 2x + 8$ and height $x + 1$. The base area is $x^2 + 2x + \\frac{r}{x + 1}$. What is $r$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "$(x + 1)(x^2 + 2x) = x^3 + 3x^2 + 2x$. The volume is 8 more, so $r = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base area = volume/height. Synthetic division of x^3+3x^2+2x+8 by x+1 (root -1): 1, 2, 0, remainder 8. Quotient x^2+2x, remainder 8, so r=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.766Z"
+        }
+      }
+    },
+    {
+      "id": "99da94e4-cd75-4918-986b-9a685bd125c0",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{x^3 - 7x + 4}{x - 2}$?",
+      "choices": [
+        "$x^2 + 2x - 3 - \\frac{2}{x - 2}$",
+        "$x^2 + 2x - 3 - \\frac{2}{x + 2}$",
+        "$x^2 + 2x - 3 + \\frac{2}{x - 2}$",
+        "$x^2 + 2x - 7 - \\frac{2}{x - 2}$"
+      ],
+      "answer": "$x^2 + 2x - 3 - \\frac{2}{x - 2}$",
+      "compute": null,
+      "solution": "Divide (the $x^2$ term is missing, so write $x^3 + 0x^2 - 7x + 4$): $(x - 2)(x^2 + 2x - 3) = x^3 - 7x + 6$, and $x^3 - 7x + 4$ is 2 less. So the expression is $x^2 + 2x - 3 - \\frac{2}{x - 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 2x - 3 - \\frac{2}{x - 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic division of x^3+0x^2-7x+4 by x-2: 1, 2, -3, remainder 4-6=-2. x^2+2x-3-2/(x-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.839Z"
+        }
+      }
+    },
+    {
+      "id": "0a90f522-10aa-4fb0-8e0b-086c8b174e28",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{x^2 - 5x + 1}{x - 2}$?",
+      "choices": [
+        "$x - 3 + \\frac{5}{x - 2}$",
+        "$x - 3 - \\frac{5}{x + 2}$",
+        "$x - 3 - \\frac{5}{x - 2}$",
+        "$x - 3 - \\frac{3}{x - 2}$"
+      ],
+      "answer": "$x - 3 - \\frac{5}{x - 2}$",
+      "compute": null,
+      "solution": "$(x - 2)(x - 3) = x^2 - 5x + 6$, and $x^2 - 5x + 1$ is 5 less. So the expression is $x - 3 - \\frac{5}{x - 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 3 - \\frac{5}{x - 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic by 2: 1, -3, 1-6=-5. x-3-5/(x-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.840Z"
+        }
+      }
+    },
+    {
+      "id": "4138e1d9-2d14-49af-9ca5-b1dceb009ec8",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Check a rewrite by combining or by testing a value",
+      "stem": "Which expression, when combined into a single fraction, gives $\\frac{x^2 + 3x + 4}{x + 1}$?",
+      "choices": [
+        "$x + 2 + \\frac{2}{x + 1}$",
+        "$x + 2 + \\frac{4}{x + 1}$",
+        "$x + 3 + \\frac{1}{x + 1}$",
+        "$x + 2 + \\frac{2}{x}$"
+      ],
+      "answer": "$x + 2 + \\frac{2}{x + 1}$",
+      "compute": null,
+      "solution": "$(x + 2)(x + 1) + 2 = x^2 + 3x + 2 + 2 = x^2 + 3x + 4$. So $x + 2 + \\frac{2}{x + 1}$ is correct.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 2 + \\frac{2}{x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic by -1 on 1,3,4: 1, 2, remainder 2. x+2+2/(x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.846Z"
+        }
+      }
+    },
+    {
+      "id": "b2b152f9-7667-43b1-a1d8-e8f957d8a02b",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the remainder as the value of the numerator",
+      "stem": "A polynomial $a(x)$ equals $(x - 2)(x + 4) - 3$. When $a(x)$ is divided by $x - 2$, what is the remainder?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "Put $x = 2$: the product is zero, so $a(2) = -3$. That is the remainder.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(x)=(x-2)(x+4)-3, so remainder -3 (a(2)=-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.850Z"
+        }
+      }
+    },
+    {
+      "id": "0abb8cbc-aef2-4eb4-8d23-3825fde68681",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "When $2x^2 + x - 3$ is divided by $x + 1$, the quotient is $2x - 1$. What is the remainder?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-3-(-1)",
+      "solution": "$(x + 1)(2x - 1) = 2x^2 + x - 1$, and $2x^2 + x - 3$ is 2 less. So $r = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x-1)(x+1)=2x^2+x-1; remainder (2x^2+x-3)-(2x^2+x-1)=-2. a(-1)=-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.850Z"
+        }
+      }
+    },
+    {
+      "id": "949cd02a-2bb3-47d6-8ea6-a71da1071b3d",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Check a rewrite by combining or by testing a value",
+      "stem": "You are told that $\\frac{3x + 4}{x - 2} = 3 + \\frac{10}{x - 2}$. Use the right-hand side to find the value of $\\frac{3x + 4}{x - 2}$ at $x = 12$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "3+10/(12-2)",
+      "solution": "$3 + \\frac{10}{12 - 2} = 3 + 1 = 4$. (Check: $\\frac{3 \\cdot 12 + 4}{10} = \\frac{40}{10} = 4$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+10/(12-2)=4. Check: 40/10=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.851Z"
+        }
+      }
+    },
+    {
+      "id": "5cc85daa-a36c-47a3-af2e-00a1050de062",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "A polynomial is $a(x) = (x + 3)(x^2 - x + 2) - 5$. Which expression is equal to $\\frac{a(x)}{x + 3}$?",
+      "choices": [
+        "$x^2 - x + 2 + \\frac{5}{x + 3}$",
+        "$x^2 - x - 3 - \\frac{5}{x + 3}$",
+        "$x^2 - x + 2 - \\frac{5}{x}$",
+        "$x^2 - x + 2 - \\frac{5}{x + 3}$"
+      ],
+      "answer": "$x^2 - x + 2 - \\frac{5}{x + 3}$",
+      "compute": null,
+      "solution": "Divide each part by $x + 3$: the product gives $x^2 - x + 2$ and the leftover $-5$ stays over the divisor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 - x + 2 - \\frac{5}{x + 3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(x)/(x+3)=x^2-x+2-5/(x+3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.851Z"
+        }
+      }
+    },
+    {
+      "id": "282fd67a-3777-4056-baa5-20757bb0137c",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "After $x$ liters of a mixture are added, a concentration is $\\frac{8x + 6}{2x + 1}$ grams per liter. Which expression is equal to this?",
+      "choices": [
+        "$4 + \\frac{6}{2x + 1}$",
+        "$4 + \\frac{2}{x + 1}$",
+        "$4 + \\frac{2}{2x + 1}$",
+        "$4 - \\frac{2}{2x + 1}$"
+      ],
+      "answer": "$4 + \\frac{2}{2x + 1}$",
+      "compute": null,
+      "solution": "$8x + 6 = 4(2x + 1) + 2$, so the concentration is $4 + \\frac{2}{2x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + \\frac{2}{2x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x+6=4(2x+1)+2 -> 4+2/(2x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.860Z"
+        }
+      }
+    },
+    {
+      "id": "1138fc25-cc23-4d63-91ee-96cf3e0ca11f",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "Rewrite $\\frac{x^3 + x^2 - 4x + 5}{x - 1}$ as a quotient plus a remainder over $x - 1$. Which is correct?",
+      "choices": [
+        "$x^2 + 2x - 2 + \\frac{5}{x - 1}$",
+        "$x^2 + 2x - 2 + \\frac{3}{x - 1}$",
+        "$x^2 + 2x - 2 + \\frac{3}{x + 1}$",
+        "$x^2 + 2x + 2 + \\frac{3}{x - 1}$"
+      ],
+      "answer": "$x^2 + 2x - 2 + \\frac{3}{x - 1}$",
+      "compute": null,
+      "solution": "Divide by $x - 1$: the quotient is $x^2 + 2x - 2$ because $(x - 1)(x^2 + 2x - 2) = x^3 + x^2 - 4x + 2$, and the numerator is 3 more. So the result is $x^2 + 2x - 2 + \\frac{3}{x - 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 2x - 2 + \\frac{3}{x - 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic division by 1: 1,1,-4,5 -> 1,2,-2 remainder 3. x^2+2x-2+3/(x-1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.893Z"
+        }
+      }
+    },
+    {
+      "id": "1f9a70c9-47ca-47a3-9b86-837622de15be",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the remainder as the value of the numerator",
+      "stem": "The polynomial $x^3 - 2x^2 + 5x - 1$ is divided by $x + 2$. What is the remainder?",
+      "choices": [],
+      "answer": "-27",
+      "compute": "(-2)^3-2*(-2)^2+5*(-2)-1",
+      "solution": "The remainder is the value at $x = -2$: $-8 - 8 - 10 - 1 = -27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder f(-2)=-8-8-10-1=-27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.905Z"
+        }
+      }
+    },
+    {
+      "id": "53bfc61b-891b-4bce-b894-25408f08e991",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "Dividing $3x^2 - 2x + 5$ by $x + 1$ gives a quotient $3x + c$ and a remainder. What is $c$?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "-2-3",
+      "solution": "$3x(x + 1) = 3x^2 + 3x$. Subtracting leaves $-5x + 5$, and $-5(x + 1) = -5x - 5$. So the quotient is $3x - 5$ and $c = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2-2x+5=(x+1)(3x-5)+10; c=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.922Z"
+        }
+      }
+    },
+    {
+      "id": "806dbedf-31ef-47f0-8761-d08f982cb13e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a quadratic expression",
+      "stem": "Write $\\frac{x^2 - 3x + 5}{x^2 + 1}$ as a quotient plus a remainder over $x^2 + 1$, with the remainder of lower degree than $x^2 + 1$. Which is correct?",
+      "choices": [
+        "$1 + \\frac{-3x + 5}{x^2 + 1}$",
+        "$1 + \\frac{3x + 4}{x^2 + 1}$",
+        "$1 + \\frac{-3x + 4}{x^2 + 1}$",
+        "$1 + \\frac{-3x + 4}{x^2 - 1}$"
+      ],
+      "answer": "$1 + \\frac{-3x + 4}{x^2 + 1}$",
+      "compute": null,
+      "solution": "$x^2 - 3x + 5 = (x^2 + 1) + (-3x + 4)$. The remainder $-3x + 4$ has lower degree than $x^2 + 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 + \\frac{-3x + 4}{x^2 + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-3x+5-(x^2+1)=-3x+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.924Z"
+        }
+      }
+    },
+    {
+      "id": "085044e2-6c7b-413f-bf33-9c8afa46ce79",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a quadratic expression",
+      "stem": "The expression $\\frac{3x^2 + 2x - 1}{x^2 - 4}$ can be written as $3 + \\frac{px + q}{x^2 - 4}$. What is $p + q$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "2+11",
+      "solution": "$3(x^2 - 4) = 3x^2 - 12$, and $3x^2 + 2x - 1 = (3x^2 - 12) + (2x + 11)$. So $p = 2$, $q = 11$ and $p + q = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2+2x-1 = 3(x^2-4) + 2x + 11, so p=2, q=11, p+q=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.929Z"
+        }
+      }
+    },
+    {
+      "id": "6c4fb284-ca02-4647-9428-e5f31c1f5f63",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "The expression $\\frac{9 - 2x}{x - 3}$ can be written as $-2 + \\frac{r}{x - 3}$. What is $r$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "9-2*3",
+      "solution": "$-2(x - 3) = -2x + 6$, and $9 - 2x = (-2x + 6) + 3$. So $r = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-2x = -2(x-3) + r = -2x+6+r, so r=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.930Z"
+        }
+      }
+    },
+    {
+      "id": "bbed5751-a106-49fe-9aa7-bff2fb544f20",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the remainder as the value of the numerator",
+      "stem": "When $2x^3 - x + k$ is divided by $x - 1$, the remainder is 7. What is $k$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "7-(2-1)",
+      "solution": "The remainder is the value at $x = 1$: $2 - 1 + k = 7$, so $k = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder = value at x=1: 2 - 1 + k = 1 + k = 7, k = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.965Z"
+        }
+      }
+    },
+    {
+      "id": "18edff36-defe-4950-9825-e6028181f95e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "A company's cost for making $x$ items is $3x^2 + 5x + 40$ dollars, so the average cost per item is $\\frac{3x^2 + 5x + 40}{x}$ dollars. Which expression is equal to this and shows the fixed part spread over the items?",
+      "choices": [
+        "$3x + 5 + 40x$",
+        "$3x + 5 + \\frac{40}{x}$",
+        "$3x + 45$",
+        "$3x^2 + 5x + \\frac{40}{x}$"
+      ],
+      "answer": "$3x + 5 + \\frac{40}{x}$",
+      "compute": null,
+      "solution": "Divide each term by $x$: $3x + 5 + \\frac{40}{x}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x + 5 + \\frac{40}{x}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide each term by x: 3x + 5 + 40/x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.969Z"
+        }
+      }
+    },
+    {
+      "id": "46c9903f-9c29-45a3-b48b-bb4ffa3d16d5",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{3x - 2}{x + 4}$?",
+      "choices": [
+        "$3 - \\frac{14}{x + 4}$",
+        "$3 + \\frac{14}{x + 4}$",
+        "$3 - \\frac{10}{x + 4}$",
+        "$3 - \\frac{14}{x - 4}$"
+      ],
+      "answer": "$3 - \\frac{14}{x + 4}$",
+      "compute": null,
+      "solution": "$3x - 2 = 3(x + 4) - 14$, so the expression is $3 - \\frac{14}{x + 4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 - \\frac{14}{x + 4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x-2 = 3(x+4) - 14, so 3 - 14/(x+4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.977Z"
+        }
+      }
+    },
+    {
+      "id": "e96d9837-d13c-4287-b0d7-5e2d0ea69eb3",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{x^2 + 6}{x - 2}$?",
+      "choices": [
+        "$x + 2 - \\frac{10}{x - 2}$",
+        "$x + 2 + \\frac{6}{x - 2}$",
+        "$x - 2 + \\frac{10}{x - 2}$",
+        "$x + 2 + \\frac{10}{x - 2}$"
+      ],
+      "answer": "$x + 2 + \\frac{10}{x - 2}$",
+      "compute": null,
+      "solution": "There is no $x$ term, so write $x^2 + 0x + 6$. Dividing: $x^2 + 6 = (x - 2)(x + 2) + 10$. So the expression is $x + 2 + \\frac{10}{x - 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 2 + \\frac{10}{x - 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+6 = (x-2)(x+2) + 10, so x+2 + 10/(x-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.978Z"
+        }
+      }
+    },
+    {
+      "id": "40a7a73f-31ae-4c1c-b9f8-b5ba2ee474a7",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "Rewrite $\\frac{6x + 1}{2x + 3}$ as a quotient plus a remainder over $2x + 3$. Which is correct?",
+      "choices": [
+        "$3 + \\frac{8}{2x + 3}$",
+        "$3 - \\frac{8}{2x + 3}$",
+        "$3 - \\frac{8}{x + 3}$",
+        "$3 - \\frac{5}{2x + 3}$"
+      ],
+      "answer": "$3 - \\frac{8}{2x + 3}$",
+      "compute": null,
+      "solution": "$3(2x + 3) = 6x + 9$, and $6x + 1 = (6x + 9) - 8$. So the expression is $3 - \\frac{8}{2x + 3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 - \\frac{8}{2x + 3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x+1 = 3(2x+3) - 8, so 3 - 8/(2x+3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.982Z"
+        }
+      }
+    },
+    {
+      "id": "99b4dc0c-278c-4169-bdc2-3a5dba492889",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "The expression $\\frac{x^3 + 2x^2 + 4x + 1}{x + 2}$ can be written as $x^2 + 4 + \\frac{r}{x + 2}$. What is $r$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "1-4*2",
+      "solution": "$(x + 2)(x^2 + 4) = x^3 + 2x^2 + 4x + 8$, and the numerator $x^3 + 2x^2 + 4x + 1$ is 7 less. So $r = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(x^2+4) = x^3+2x^2+4x+8; numerator minus this = 1-8 = -7. Check a(-2) = -8+8-8+1 = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.990Z"
+        }
+      }
+    },
+    {
+      "id": "aca17982-c0a2-4fbb-9b9a-1afb98687d7c",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "A numerator of degree 6 is divided by a divisor of degree 2. What is the degree of the quotient?",
+      "choices": [],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "The degree of the quotient is the numerator's degree minus the divisor's: $6 - 2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Degree 6-2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.001Z"
         }
       }
     },
@@ -19508,6 +20865,660 @@
           "work": "2x^2 + 5x + 7 - 2(x^2 + 2x + 3) = x + 1: p = 1, q = 1, sum 2.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:46.373Z"
+        }
+      }
+    },
+    {
+      "id": "03f98b2b-edb6-4b59-bca2-b8b66aaf8ad9",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "The average cost per unit, in dollars, of making $x$ units is $\\frac{2x^2 + 30x + 200}{x + 5}$. It can be written as $2x + 20 + \\frac{r}{x + 5}$. What is $r$?",
+      "choices": [],
+      "answer": "100",
+      "compute": "200-20*5",
+      "solution": "$(x + 5)(2x + 20) = 2x^2 + 30x + 100$. The numerator is 100 more, so $r = 100$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic by -5: 2, 30-10=20, 200-100=100. r=100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.845Z"
+        }
+      }
+    },
+    {
+      "id": "6aed4b33-0d61-4137-9f3e-bf74e7524c51",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Check a rewrite by combining or by testing a value",
+      "stem": "A student claims that $\\frac{x^2 - 2x + 8}{x + 2} = x - 4 + \\frac{8}{x + 2}$ for every $x$ except $-2$. At $x = 2$ the left side equals 2. What does the right side equal at $x = 2$, and what does this show?",
+      "choices": [
+        "$2$, so the claim is true",
+        "$0$, so the claim is true",
+        "$0$, so the claim is false",
+        "$2$, so the claim is false"
+      ],
+      "answer": "$0$, so the claim is false",
+      "compute": null,
+      "solution": "At $x = 2$ the right side is $2 - 4 + \\frac{8}{4} = 0$. The sides differ, so the claim is false. (The correct remainder is 16, not 8.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0$, so the claim is false",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Right side at 2: 2-4+8/4=0, left side 2; they differ, so claim false. (True form: x-4+16/(x+2).)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.848Z"
+        }
+      }
+    },
+    {
+      "id": "c1f454d3-6d74-46c7-b66d-7d79ad1df0ab",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "A tank holds $2x + 3$ grams of salt in $x + 4$ liters of water, so the concentration is $\\frac{2x + 3}{x + 4}$ grams per liter. Which expression is equal to this?",
+      "choices": [
+        "$2 - \\frac{5}{x + 4}$",
+        "$2 + \\frac{5}{x + 4}$",
+        "$2 - \\frac{3}{x + 4}$",
+        "$2 - \\frac{5}{x}$"
+      ],
+      "answer": "$2 - \\frac{5}{x + 4}$",
+      "compute": null,
+      "solution": "$2x + 3 = 2(x + 4) - 5$, so the concentration is $2 - \\frac{5}{x + 4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 - \\frac{5}{x + 4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x+3=2(x+4)-5, so 2-5/(x+4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.852Z"
+        }
+      }
+    },
+    {
+      "id": "c2e381d7-cd96-4d44-ad0b-7873c048b73e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "The expression $\\frac{x^4 + 3x^2 - 2}{x - 1}$ is written as a quotient plus $\\frac{r}{x - 1}$. What is the sum of the coefficients of the quotient?",
+      "choices": [],
+      "answer": "10",
+      "compute": "1+1+4+4",
+      "solution": "Divide (write $x^4 + 0x^3 + 3x^2 + 0x - 2$): the quotient is $x^3 + x^2 + 4x + 4$ with remainder 2. Its coefficients add to $1 + 1 + 4 + 4 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic by 1 on 1,0,3,0,-2: 1,1,4,4, remainder 2. Quotient x^3+x^2+4x+4, coefficient sum 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.856Z"
+        }
+      }
+    },
+    {
+      "id": "e9c440f4-2277-4780-82e4-83f016bdf112",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{4x^2 - 9x + 2}{x - 3}$?",
+      "choices": [
+        "$4x + 3 + \\frac{11}{x - 3}$",
+        "$4x - 3 + \\frac{11}{x - 3}$",
+        "$4x + 3 - \\frac{11}{x - 3}$",
+        "$4x + 3 + \\frac{11}{x + 3}$"
+      ],
+      "answer": "$4x + 3 + \\frac{11}{x - 3}$",
+      "compute": null,
+      "solution": "$(x - 3)(4x + 3) = 4x^2 - 9x - 9$, and $4x^2 - 9x + 2$ is 11 more. So the expression is $4x + 3 + \\frac{11}{x - 3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 3 + \\frac{11}{x - 3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic by 3 on 4,-9,2: 4, 3, remainder 11. 4x+3+11/(x-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.857Z"
+        }
+      }
+    },
+    {
+      "id": "ace6c7e3-2eb7-411e-96b5-72a344760949",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the remainder as the value of the numerator",
+      "stem": "The polynomial $x^3 - 3x^2 + px + 6$ is divisible by $x - 2$ with no remainder. What is $p$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "(-(8-12+6))/2",
+      "solution": "The remainder is the value at $x = 2$: $8 - 12 + 2p + 6 = 2p + 2$. Setting it to 0 gives $p = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(2)=8-12+2p+6=2+2p=0 -> p=-1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.858Z"
+        }
+      }
+    },
+    {
+      "id": "2a2fcf9d-b757-4ddb-9ca2-7109dc2c5a15",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{3x^2 + 4x - 7}{3x - 2}$?",
+      "choices": [
+        "$x + 2 - \\frac{7}{3x - 2}$",
+        "$x + 2 - \\frac{3}{3x - 2}$",
+        "$x + 2 + \\frac{3}{3x - 2}$",
+        "$x + 2 - \\frac{3}{x - 2}$"
+      ],
+      "answer": "$x + 2 - \\frac{3}{3x - 2}$",
+      "compute": null,
+      "solution": "$(3x - 2)(x + 2) = 3x^2 + 4x - 4$, and $3x^2 + 4x - 7$ is 3 less. So the expression is $x + 2 - \\frac{3}{3x - 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 2 - \\frac{3}{3x - 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2+4x-7 = (x+2)(3x-2) + (-3): (x+2)(3x-2)=3x^2+4x-4. So x+2-3/(3x-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.867Z"
+        }
+      }
+    },
+    {
+      "id": "facf51d6-7cec-42d9-b3bb-3b1b04b0e0e6",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{6x - 5}{3x + 2}$?",
+      "choices": [
+        "$2 - \\frac{5}{3x + 2}$",
+        "$2 + \\frac{9}{3x + 2}$",
+        "$2 - \\frac{9}{x + 2}$",
+        "$2 - \\frac{9}{3x + 2}$"
+      ],
+      "answer": "$2 - \\frac{9}{3x + 2}$",
+      "compute": null,
+      "solution": "$2(3x + 2) = 6x + 4$, and $6x - 5 = (6x + 4) - 9$. So the expression is $2 - \\frac{9}{3x + 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 - \\frac{9}{3x + 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x-5=2(3x+2)-9, so 2-9/(3x+2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.874Z"
+        }
+      }
+    },
+    {
+      "id": "5ef873d5-e57f-4c48-9c46-17bcb2373c51",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the remainder as the value of the numerator",
+      "stem": "When $x^3 + kx^2 - 4x + 3$ is divided by $x - 2$, the remainder is 7. What is $k$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(7-3)/4",
+      "solution": "The remainder is the value at $x = 2$: $8 + 4k - 8 + 3 = 4k + 3 = 7$, so $k = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder = f(2)=8+4k-8+3=4k+3=7, k=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.875Z"
+        }
+      }
+    },
+    {
+      "id": "34f6b639-19aa-43a0-8d39-b667b0f3fa5e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "When $a(x)$ is divided by $x^2 + 3$, the quotient is $x - 1$ and the remainder is $2x + 5$. Then $a(x) = x^3 + bx^2 + cx + d$. What is $b + c + d$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "-1+5+2",
+      "solution": "$a(x) = (x^2 + 3)(x - 1) + 2x + 5 = x^3 - x^2 + 3x - 3 + 2x + 5 = x^3 - x^2 + 5x + 2$. So $b + c + d = -1 + 5 + 2 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(x)=(x^2+3)(x-1)+2x+5=x^3-x^2+3x-3+2x+5=x^3-x^2+5x+2. b+c+d=-1+5+2=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.875Z"
+        }
+      }
+    },
+    {
+      "id": "90692f4b-514c-4e10-b306-705b662ae2f4",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a quadratic expression",
+      "stem": "Dividing $x^4 + 1$ by $x^2 + 1$ gives the quotient $x^2 - 1$ and a remainder. What is the remainder?",
+      "choices": [],
+      "answer": "2",
+      "compute": "1+1",
+      "solution": "$(x^2 + 1)(x^2 - 1) = x^4 - 1$, and $x^4 + 1$ is 2 more. So $r = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2+1)(x^2-1)=x^4-1; x^4+1-(x^4-1)=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.914Z"
+        }
+      }
+    },
+    {
+      "id": "2c235a4a-d817-48e7-a611-bde11018c6b6",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "Rewrite $\\frac{4x^3 - 2x^2 + 4x + 5}{2x + 1}$ as a quotient plus a remainder over $2x + 1$. Which is correct?",
+      "choices": [
+        "$2x^2 - 2x + 3 + \\frac{5}{2x + 1}$",
+        "$2x^2 - 2x + 3 - \\frac{2}{2x + 1}$",
+        "$2x^2 - 2x + 3 + \\frac{2}{x + 1}$",
+        "$2x^2 - 2x + 3 + \\frac{2}{2x + 1}$"
+      ],
+      "answer": "$2x^2 - 2x + 3 + \\frac{2}{2x + 1}$",
+      "compute": null,
+      "solution": "$(2x + 1)(2x^2 - 2x + 3) = 4x^3 - 2x^2 + 4x + 3$, and the numerator is 2 more. So the result is $2x^2 - 2x + 3 + \\frac{2}{2x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 - 2x + 3 + \\frac{2}{2x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Long division: 2x^2 -> rem -4x^2+4x+5; -2x -> rem 6x+5; +3 -> rem 2. 2x^2-2x+3+2/(2x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.915Z"
+        }
+      }
+    },
+    {
+      "id": "2a6325a6-7761-4e9c-8a8b-c9ae26c841f2",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic expression over a quadratic expression",
+      "stem": "Divide the numerator by the denominator in $\\frac{2x^2 - x + 3}{x^2 + x + 1}$ to write it as a quotient plus a remainder over $x^2 + x + 1$. Which result is correct?",
+      "choices": [
+        "$2 + \\frac{-3x + 1}{x^2 + x + 1}$",
+        "$2 + \\frac{-3x - 1}{x^2 + x + 1}$",
+        "$2 + \\frac{-3x + 1}{x^2 + x - 1}$",
+        "$2 + \\frac{3x + 1}{x^2 + x + 1}$"
+      ],
+      "answer": "$2 + \\frac{-3x + 1}{x^2 + x + 1}$",
+      "compute": null,
+      "solution": "$2(x^2 + x + 1) = 2x^2 + 2x + 2$, and $2x^2 - x + 3 = (2x^2 + 2x + 2) + (-3x + 1)$. So the expression is $2 + \\frac{-3x + 1}{x^2 + x + 1}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + \\frac{-3x + 1}{x^2 + x + 1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2-x+3-2(x^2+x+1)=-3x+1. 2+(-3x+1)/(x^2+x+1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.920Z"
+        }
+      }
+    },
+    {
+      "id": "2753eb13-90b0-4685-9c7c-ca5c440f7c85",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a quadratic expression",
+      "stem": "When $x^3 + x^2 + 5$ is divided by $x^2 + 2$, the quotient is $x + 1$ and the remainder is $px + q$. What is the value of the remainder $px + q$ at $x = 2$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-2*2+3",
+      "solution": "$(x^2 + 2)(x + 1) = x^3 + x^2 + 2x + 2$. Subtracting from $x^3 + x^2 + 5$ leaves $-2x + 3$. At $x = 2$ that is $-4 + 3 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(x^2+2)=x^3+x^2+2x+2; remainder -2x+3; at x=2: -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.920Z"
+        }
+      }
+    },
+    {
+      "id": "ca1421b0-2644-4f81-9e3c-cd9d1c66c3e8",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "For one value of $k$, the expression $\\frac{4x + k}{x + 1}$ equals $4 + \\frac{3}{x + 1}$ for every $x$ except $-1$. What is $k$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "3+4",
+      "solution": "$4 + \\frac{3}{x + 1} = \\frac{4(x + 1) + 3}{x + 1} = \\frac{4x + 7}{x + 1}$. So $k = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+3/(x+1) = (4x+4+3)/(x+1) = (4x+7)/(x+1), so k=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.931Z"
+        }
+      }
+    },
+    {
+      "id": "c9d6767f-4428-472f-b263-b6b368f08f75",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "The expression $\\frac{-x^2 + 5x + 1}{x - 1}$ can be written as $q(x) + \\frac{r}{x - 1}$, where $q(x)$ is a polynomial and $r$ is a number. What is $q(5)$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-5+4",
+      "solution": "$(x - 1)(-x + 4) = -x^2 + 5x - 4$, and the numerator is 5 more. So $q(x) = -x + 4$ and $q(5) = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-x^2+5x+1 = (x-1)(-x+4) + 5 [(x-1)(-x+4) = -x^2+5x-4]. q(x) = -x+4, q(5) = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.938Z"
+        }
+      }
+    },
+    {
+      "id": "1464f9e2-4d19-409a-9d27-082b479fa66d",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic expression over a linear expression",
+      "stem": "The expression $\\frac{2x^2 + 5}{x + 4}$ can be written as $ax + b + \\frac{r}{x + 4}$. What is $r$?",
+      "choices": [],
+      "answer": "37",
+      "compute": "5+2*16",
+      "solution": "There is no $x$ term, so use $2x^2 + 0x + 5$. $(x + 4)(2x - 8) = 2x^2 - 32$, and $2x^2 + 5$ is 37 more. So $r = 37$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder = value at x=-4: 2(16)+5 = 37. (2x^2+5 = (x+4)(2x-8) + 37.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.941Z"
+        }
+      }
+    },
+    {
+      "id": "b2cd89dd-af47-4411-8f7d-94d40bee5236",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Identify the quotient and the remainder",
+      "stem": "A polynomial $a(x)$ satisfies $\\frac{a(x)}{2x + 1} = 3x - 2 + \\frac{4}{2x + 1}$. Which expression is $a(x)$?",
+      "choices": [
+        "$6x^2 - x - 2$",
+        "$6x^2 - x + 2$",
+        "$6x^2 - x + 6$",
+        "$6x^2 + 5x + 2$"
+      ],
+      "answer": "$6x^2 - x + 2$",
+      "compute": null,
+      "solution": "Multiply by the divisor and add the remainder: $(2x + 1)(3x - 2) + 4 = 6x^2 - x - 2 + 4 = 6x^2 - x + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x^2 - x + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(x) = (3x-2)(2x+1) + 4 = 6x^2 - x - 2 + 4 = 6x^2 - x + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.952Z"
+        }
+      }
+    },
+    {
+      "id": "03143b3b-9ad0-4d3d-862a-2e33c0093cce",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a linear expression over a linear expression",
+      "stem": "The expression $\\frac{10 - 4x}{2x - 1}$ can be written as $q + \\frac{r}{2x - 1}$, where $q$ and $r$ are numbers. What is $r$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "10-2*1",
+      "solution": "$-2(2x - 1) = -4x + 2$, and $10 - 4x = (-4x + 2) + 8$. So $q = -2$ and $r = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10-4x = -2(2x-1) + r = -4x+2+r, so q=-2, r=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.981Z"
+        }
+      }
+    },
+    {
+      "id": "32a75f59-d57b-431a-be9a-b94d5fff3f0d",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite an expression from a situation",
+      "stem": "A runner covers $5x^2 + 2x + 9$ meters in $x + 1$ seconds, so the average speed is $\\frac{5x^2 + 2x + 9}{x + 1}$ meters per second. It can be written as $5x - 3 + \\frac{r}{x + 1}$. What is $r$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "9+3",
+      "solution": "$(x + 1)(5x - 3) = 5x^2 + 2x - 3$. The numerator is 12 more, so $r = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(5x-3) = 5x^2+2x-3; r = 9-(-3) = 12. Check a(-1)=5-2+9=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:42.993Z"
+        }
+      }
+    },
+    {
+      "id": "fd37406b-c49d-4ea5-82ee-70890afa250e",
+      "topic_id": "NC17.M3.A-APR.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a cubic expression over a linear expression",
+      "stem": "Which expression is equal to $\\frac{2x^3 - 5x^2 + x + 4}{x - 2}$?",
+      "choices": [
+        "$2x^2 + x - 1 + \\frac{2}{x - 2}$",
+        "$2x^2 - x - 1 - \\frac{2}{x - 2}$",
+        "$2x^2 - x - 1 + \\frac{2}{x - 2}$",
+        "$2x^2 - x - 1 + \\frac{2}{x + 2}$"
+      ],
+      "answer": "$2x^2 - x - 1 + \\frac{2}{x - 2}$",
+      "compute": null,
+      "solution": "$(x - 2)(2x^2 - x - 1) = 2x^3 - 5x^2 + x + 2$, and the numerator is 2 more. So the expression is $2x^2 - x - 1 + \\frac{2}{x - 2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 - x - 1 + \\frac{2}{x - 2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic with 2 on 2,-5,1,4: 2, -1, -1, remainder 2. 2x^2 - x - 1 + 2/(x-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.005Z"
         }
       }
     },

@@ -15968,6 +15968,578 @@
       }
     },
     {
+      "id": "54a6f3f2-e1da-4db3-9658-9bf4798a9005",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a trig equation",
+      "stem": "Which lists every solution of $\\cos x = 0$ for $0 \\le x < 2\\pi$?",
+      "choices": [
+        "$x = 0$ and $x = \\pi$",
+        "$x = \\frac{\\pi}{2}$ and $x = \\frac{3\\pi}{2}$",
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{3\\pi}{4}$",
+        "$x = \\frac{\\pi}{2}$ and $x = \\pi$"
+      ],
+      "answer": "$x = \\frac{\\pi}{2}$ and $x = \\frac{3\\pi}{2}$",
+      "compute": null,
+      "solution": "The cosine is the $x$-coordinate on the unit circle, which is $0$ at the top and the bottom: $\\frac{\\pi}{2}$ and $\\frac{3\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{2}$ and $x = \\frac{3\\pi}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x = 0 where the unit-circle point is (0, ±1): x = π/2 and 3π/2 in [0,2π).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.009Z"
+        }
+      }
+    },
+    {
+      "id": "589919a0-0ecc-450f-9f93-b85182aa86e1",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a trig equation",
+      "stem": "On the unit circle, how many angles $x$ from $0$ up to, but not including, $2\\pi$ have a sine equal to $1$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "The sine is $1$ only at $x = \\frac{\\pi}{2}$ in this interval. So there is $1$ solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x = 1 only at x = pi/2 in [0, 2pi).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.139Z"
+        }
+      }
+    },
+    {
+      "id": "d8f19631-2fa1-4108-b24b-76814fbe80ef",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Phase shift and transformations",
+      "stem": "Which equation gives the graph of $y = \\cos x$ reflected across the $x$-axis?",
+      "choices": [
+        "$y = \\cos(-x)$",
+        "$y = -\\cos x$",
+        "$y = \\frac{1}{\\cos x}$",
+        "$y = \\sin x$"
+      ],
+      "answer": "$y = -\\cos x$",
+      "compute": null,
+      "solution": "Reflecting across the $x$-axis changes every $y$ to its opposite, so $y = -\\cos x$. Note $\\cos(-x) = \\cos x$, which is the same graph.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -\\cos x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reflection across x-axis negates y: y=-cos x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.141Z"
+        }
+      }
+    },
+    {
+      "id": "e931f782-55ac-49dc-a8ee-57ca28e1251e",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a trig equation",
+      "stem": "An angle $x$ with $0 \\le x < 2\\pi$ has a sine of $-1$. Which is $x$?",
+      "choices": [
+        "$x = \\frac{\\pi}{2}$",
+        "$x = \\frac{5\\pi}{4}$",
+        "$x = \\frac{3\\pi}{2}$",
+        "$x = 2\\pi$"
+      ],
+      "answer": "$x = \\frac{3\\pi}{2}$",
+      "compute": null,
+      "solution": "The sine is the $y$-coordinate on the unit circle, and it is $-1$ at the bottom, where $x = \\frac{3\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{3\\pi}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x=-1 at 3pi/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.173Z"
+        }
+      }
+    },
+    {
+      "id": "dfbad691-2349-4ab4-8944-4ba697cd6c0a",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "A rider's height on a wheel is $h = 10 + 8\\sin t$ meters. What is the greatest height the rider reaches, in meters?",
+      "choices": [],
+      "answer": "18",
+      "compute": "10+8",
+      "solution": "The greatest value of $\\sin t$ is $1$, so the greatest height is $10 + 8 = 18$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max of sin t is 1, so h max = 10 + 8 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.207Z"
+        }
+      }
+    },
+    {
+      "id": "f43ea853-ee42-4281-a5aa-1e523d124eed",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "What is the minimum value of $y = 4\\cos x + 1$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-4+1",
+      "solution": "$\\cos x$ is at least $-1$, so $4\\cos x$ is at least $-4$, and the minimum of $y$ is $-4 + 1 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x min -1: 4(-1) + 1 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.232Z"
+        }
+      }
+    },
+    {
+      "id": "9b0c5145-27eb-433c-a027-3d40bd03d5ce",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "A cosine function has a maximum value of $12$ and a minimum value of $4$. Its midline is $y = D$. What is $D$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(12+4)/2",
+      "solution": "The midline is halfway between the maximum and minimum: $\\frac{12 + 4}{2} = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midline D=(12+4)/2=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.267Z"
+        }
+      }
+    },
+    {
+      "id": "825262cd-fb9e-4653-8dfd-3c85af5b2ca0",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tangent and cotangent features",
+      "stem": "Which is an $x$-intercept of the graph of $y = \\tan x$?",
+      "choices": [
+        "$x = \\pi$",
+        "$x = \\frac{\\pi}{2}$",
+        "$x = \\frac{3\\pi}{2}$",
+        "$x = 1$"
+      ],
+      "answer": "$x = \\pi$",
+      "compute": null,
+      "solution": "$\\tan x = \\frac{\\sin x}{\\cos x}$ is $0$ when $\\sin x = 0$, such as at $x = \\pi$. At $x = \\frac{\\pi}{2}$ and $x = \\frac{3\\pi}{2}$ the tangent is undefined, and $\\tan 1$ is not $0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan x = 0 where sin x = 0: x = pi. pi/2 and 3pi/2 are asymptotes; tan 1 != 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.270Z"
+        }
+      }
+    },
+    {
+      "id": "c045153f-dce4-4902-9038-413d858b0417",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Phase shift and transformations",
+      "stem": "Find the value of $y = 3\\cos x + 2$ at $x = \\pi$.",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-3+2",
+      "solution": "$\\cos \\pi = -1$, so $y = 3(-1) + 2 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos pi = -1: 3(-1)+2 = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.315Z"
+        }
+      }
+    },
+    {
+      "id": "e1272b13-217f-4906-aedf-4ab8c169260b",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "Which equation describes a cosine curve with amplitude $2$, period $2\\pi$ and midline $y = 1$?",
+      "choices": [
+        "$y = 2\\cos x + 1$",
+        "$y = \\cos(2x) + 1$",
+        "$y = 2\\cos x - 1$",
+        "$y = \\cos x + 2$"
+      ],
+      "answer": "$y = 2\\cos x + 1$",
+      "compute": null,
+      "solution": "Amplitude $2$ is the multiplier $2$, period $2\\pi$ means no change to $x$, and the midline $y = 1$ is the added $1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 2\\cos x + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Amplitude 2, period 2pi (B=1), midline 1: y=2cos x+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.377Z"
+        }
+      }
+    },
+    {
+      "id": "83161865-ee45-4c26-8159-1271b6becf75",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Secant and cosecant features",
+      "stem": "At which value of $x$ does the graph of $y = \\csc x$ have a vertical asymptote?",
+      "choices": [
+        "$x = \\frac{\\pi}{2}$",
+        "$x = \\frac{3\\pi}{2}$",
+        "$x = 0$",
+        "$x = 1$"
+      ],
+      "answer": "$x = 0$",
+      "compute": null,
+      "solution": "$\\csc x = \\frac{1}{\\sin x}$ is undefined where $\\sin x = 0$. That happens at $x = 0$. At the other values listed, $\\sin x$ is not $0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc x = 1/sin x, asymptotes where sin x = 0: x = k pi. Only x = 0 among options.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.643Z"
+        }
+      }
+    },
+    {
+      "id": "ff14b3c8-e00c-4997-b6da-4dab582eeb57",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tangent and cotangent features",
+      "stem": "What is the period of $y = \\cot x$?",
+      "choices": [
+        "$2\\pi$",
+        "$\\pi$",
+        "$\\frac{\\pi}{2}$",
+        "$1$"
+      ],
+      "answer": "$\\pi$",
+      "compute": null,
+      "solution": "Like the tangent, the cotangent repeats every $\\pi$ units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot has period pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.670Z"
+        }
+      }
+    },
+    {
+      "id": "99c7f359-b82b-42a3-8894-3d1e8531fb08",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Period of a trig function",
+      "stem": "What is the period of $y = \\cos(4x)$?",
+      "choices": [
+        "$\\frac{\\pi}{4}$",
+        "$8\\pi$",
+        "$\\frac{\\pi}{2}$",
+        "$2\\pi$"
+      ],
+      "answer": "$\\frac{\\pi}{2}$",
+      "compute": null,
+      "solution": "The period of $\\cos(Bx)$ is $\\frac{2\\pi}{B}$. With $B = 4$ it is $\\frac{2\\pi}{4} = \\frac{\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 2pi/4 = pi/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.695Z"
+        }
+      }
+    },
+    {
+      "id": "43eaf8c6-70e3-4971-817c-e03cc901e923",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Secant and cosecant features",
+      "stem": "What is the smallest possible value of $|\\csc x|$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$|\\sin x|$ is never more than $1$, so $|\\csc x| = \\frac{1}{|\\sin x|}$ is never less than $1$. It equals $1$ when $\\sin x = \\pm 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|csc x| = 1/|sin x| ≥ 1, with equality at x = π/2. Smallest value 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.725Z"
+        }
+      }
+    },
+    {
+      "id": "792e1626-e49b-4794-aeb5-835110b051b9",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "The function $y = -3\\sin x$ is a sine curve turned upside down. What is the highest value its graph reaches?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$\\sin x$ ranges from $-1$ to $1$, so $-3\\sin x$ ranges from $-3$ to $3$. The maximum is $3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3 sin x ranges from -3 to 3; highest 3 (at x = 3π/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.734Z"
+        }
+      }
+    },
+    {
+      "id": "8b036e01-7539-499b-bf6c-186aade3d488",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Period of a trig function",
+      "stem": "Which function has period $4\\pi$?",
+      "choices": [
+        "$y = \\sin(2x)$",
+        "$y = \\sin(4x)$",
+        "$y = \\sin\\left(\\frac{x}{4}\\right)$",
+        "$y = \\sin\\left(\\frac{x}{2}\\right)$"
+      ],
+      "answer": "$y = \\sin\\left(\\frac{x}{2}\\right)$",
+      "compute": null,
+      "solution": "The period of $\\sin(Bx)$ is $\\frac{2\\pi}{B}$. For $B = \\frac{1}{2}$ it is $2\\pi \\div \\frac{1}{2} = 4\\pi$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\sin\\left(\\frac{x}{2}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period of sin(Bx) = 2π/B. B = 1/2 gives 4π.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.760Z"
+        }
+      }
+    },
+    {
+      "id": "3e68a009-883b-4398-a8db-fedbe7b2ddec",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Secant and cosecant features",
+      "stem": "Which of these is NOT an output value of $y = \\sec x$?",
+      "choices": [
+        "$\\frac{3}{2}$",
+        "$-2$",
+        "$1$",
+        "$\\frac{1}{2}$"
+      ],
+      "answer": "$\\frac{1}{2}$",
+      "compute": null,
+      "solution": "$\\cos x$ is between $-1$ and $1$, so $\\sec x = \\frac{1}{\\cos x}$ is at least $1$ or at most $-1$. The values strictly between $-1$ and $1$, such as $\\frac{1}{2}$, never occur.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "|sec x| ≥ 1, so 1/2 is never an output; -2, 3/2, 1 are.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.777Z"
+        }
+      }
+    },
+    {
+      "id": "c405b46f-ff72-4e27-9305-b2fe3162d5c3",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tangent and cotangent features",
+      "stem": "The cotangent $y = \\cot x$ is undefined at some inputs from $0$ to $2\\pi$, counting both ends. How many such inputs are there?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$\\cot x = \\frac{\\cos x}{\\sin x}$ is undefined where $\\sin x = 0$: at $x = 0$, $x = \\pi$ and $x = 2\\pi$. That is $3$ asymptotes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot x undefined where sin x = 0: x = 0, π, 2π → 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.783Z"
+        }
+      }
+    },
+    {
       "id": "f93d4e5c-77e1-4b87-b29a-271bbcda1225",
       "topic_id": "NC17.PC.F.1",
       "difficulty": 2,
@@ -16410,6 +16982,612 @@
           "work": "tan=-1 in QII and QIV: 3pi/4, 7pi/4.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.633Z"
+        }
+      }
+    },
+    {
+      "id": "88242275-498f-4b89-8bdc-bb17291c6179",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trig inequality",
+      "stem": "For $0 \\le x < 2\\pi$, on which set of values is $\\tan x > 0$?",
+      "choices": [
+        "$0 < x < \\frac{\\pi}{2}$ or $\\frac{3\\pi}{2} < x < 2\\pi$",
+        "$0 < x < \\pi$",
+        "$\\frac{\\pi}{2} < x < \\pi$ or $\\frac{3\\pi}{2} < x < 2\\pi$",
+        "$0 < x < \\frac{\\pi}{2}$ or $\\pi < x < \\frac{3\\pi}{2}$"
+      ],
+      "answer": "$0 < x < \\frac{\\pi}{2}$ or $\\pi < x < \\frac{3\\pi}{2}$",
+      "compute": null,
+      "solution": "The tangent is positive when sine and cosine have the same sign: in the first quadrant and the third quadrant.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0 < x < \\frac{\\pi}{2}$ or $\\pi < x < \\frac{3\\pi}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan>0 in Quadrants I and III: (0,pi/2) and (pi,3pi/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.148Z"
+        }
+      }
+    },
+    {
+      "id": "cb947cf7-cbd5-4281-b6ce-cf95924cd88c",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Phase shift and transformations",
+      "stem": "How is the graph of $y = 2\\sin(2x - \\pi)$ shifted horizontally from the graph of $y = 2\\sin(2x)$?",
+      "choices": [
+        "$\\frac{\\pi}{2}$ units to the right",
+        "$\\pi$ units to the right",
+        "$\\frac{\\pi}{2}$ units to the left",
+        "$\\frac{\\pi}{4}$ units to the right"
+      ],
+      "answer": "$\\frac{\\pi}{2}$ units to the right",
+      "compute": null,
+      "solution": "Factor out the $2$: $2x - \\pi = 2\\left(x - \\frac{\\pi}{2}\\right)$. So the graph is shifted $\\frac{\\pi}{2}$ units to the right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{2}$ units to the right",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2sin(2x-pi)=2sin(2(x-pi/2)): pi/2 right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.150Z"
+        }
+      }
+    },
+    {
+      "id": "1fed7dfc-8626-477c-89ce-db7399520bc1",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Secant and cosecant features",
+      "stem": "The graph of $y = 2\\sec x - 1$ has branches that open upward. What is the $y$-value of the lowest point of such a branch?",
+      "choices": [],
+      "answer": "1",
+      "compute": "2*1-1",
+      "solution": "On an upward branch $\\sec x$ is at least $1$, so the lowest value is $2(1) - 1 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Upward branches: sec x >= 1, min 1, so y=2*1-1=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.156Z"
+        }
+      }
+    },
+    {
+      "id": "7874921a-e491-4004-ad8b-a41f06623581",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "A weight on a spring has position $y = 4\\cos\\left(\\frac{\\pi}{2}t\\right)$ centimeters, where $t$ is in seconds. What is the first time $t > 0$ at which the weight is at its lowest point?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The lowest point is where $\\cos\\left(\\frac{\\pi}{2}t\\right) = -1$, which first happens when $\\frac{\\pi}{2}t = \\pi$. So $t = 2$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lowest when cos=-1: (pi/2)t=pi -> t=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.188Z"
+        }
+      }
+    },
+    {
+      "id": "d6de3d9a-5c75-4969-bcfd-b31475400128",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Secant and cosecant features",
+      "stem": "What is the range of $y = 3\\csc x$?",
+      "choices": [
+        "$y \\le -3$ or $y \\ge 3$",
+        "$y \\le -1$ or $y \\ge 1$",
+        "$-3 \\le y \\le 3$",
+        "all real numbers"
+      ],
+      "answer": "$y \\le -3$ or $y \\ge 3$",
+      "compute": null,
+      "solution": "$\\csc x$ is at most $-1$ or at least $1$. Multiplying by $3$ gives $y \\le -3$ or $y \\ge 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y \\le -3$ or $y \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc x has range |csc x| >= 1, so 3csc x has |y| >= 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.205Z"
+        }
+      }
+    },
+    {
+      "id": "427d0ada-a0b0-41f7-8acf-23b7ca7ebc31",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a trig equation",
+      "stem": "The graph of $y = \\cos(3x)$ touches its greatest height, $1$, several times for $0 \\le x < 2\\pi$. How many times?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$\\cos(3x) = 1$ when $3x = 0, 2\\pi, 4\\pi$ (the next, $6\\pi$, gives $x = 2\\pi$, which is not allowed). So $x = 0, \\frac{2\\pi}{3}, \\frac{4\\pi}{3}$: $3$ solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 3x = 1 when 3x = 2 pi k, x = 0, 2pi/3, 4pi/3 in [0, 2pi): 3 times.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.244Z"
+        }
+      }
+    },
+    {
+      "id": "58900626-4884-4105-a02f-277e190cb216",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "Monthly average temperature peaks at $80$ degrees in July (month $7$) and is lowest at $40$ degrees in January (month $1$). Which equation models the temperature $T$ in degrees in month $t$?",
+      "choices": [
+        "$T = 60 + 20\\sin\\left(\\frac{\\pi}{6}(t - 7)\\right)$",
+        "$T = 60 + 20\\cos\\left(\\frac{\\pi}{6}t\\right)$",
+        "$T = 40 + 20\\cos\\left(\\frac{\\pi}{6}(t - 7)\\right)$",
+        "$T = 60 + 20\\cos\\left(\\frac{\\pi}{6}(t - 7)\\right)$"
+      ],
+      "answer": "$T = 60 + 20\\cos\\left(\\frac{\\pi}{6}(t - 7)\\right)$",
+      "compute": null,
+      "solution": "The midline is $\\frac{80 + 40}{2} = 60$ and the amplitude is $20$. The period is $12$ months, so $B = \\frac{\\pi}{6}$. A cosine shifted $7$ months right peaks at $t = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$T = 60 + 20\\cos\\left(\\frac{\\pi}{6}(t - 7)\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midline (80+40)/2=60, amplitude 20, period 12 -> B=pi/6; max at t=7 so cos shifted by 7. Check t=1: 60+20cos(-pi)=40. Option with 40 midline wrong; unshifted cos peaks at t=0; sin version gives 60 at t=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.292Z"
+        }
+      }
+    },
+    {
+      "id": "5c3bf79a-f106-4114-8de4-54343e8b54e9",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tangent and cotangent features",
+      "stem": "Which function has a vertical asymptote at $x = \\frac{\\pi}{6}$?",
+      "choices": [
+        "$y = \\tan\\left(\\frac{x}{3}\\right)$",
+        "$y = \\tan(6x)$",
+        "$y = \\tan(3x)$",
+        "$y = \\tan\\left(x + \\frac{\\pi}{6}\\right)$"
+      ],
+      "answer": "$y = \\tan(3x)$",
+      "compute": null,
+      "solution": "The tangent has an asymptote where its input is $\\frac{\\pi}{2}$. For $\\tan(3x)$: $3x = \\frac{\\pi}{2}$ gives $x = \\frac{\\pi}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = \\tan(3x)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan(3x) undefined when 3x=pi/2 -> x=pi/6. tan(x+pi/6): asymptotes at pi/3+k pi; tan(6x): at pi/12+k pi/6 (tan(pi)=0 at pi/6); tan(x/3): at 3pi/2+3k pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.298Z"
+        }
+      }
+    },
+    {
+      "id": "281c211c-d3c4-480b-9963-8378ec5c06cd",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "A sinusoidal function has a maximum value of $11$ at $x = 1$ and a minimum value of $-3$ at $x = 4$. What is its amplitude?",
+      "choices": [],
+      "answer": "7",
+      "compute": "(11+3)/2",
+      "solution": "The amplitude is half the distance between the extremes: $\\frac{11 - (-3)}{2} = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(11-(-3))/2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.329Z"
+        }
+      }
+    },
+    {
+      "id": "99abcb6f-fe78-4fb6-a933-765159f06bfe",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tangent and cotangent features",
+      "stem": "Where are the $x$-intercepts of the graph of $y = \\cot x$? Here $k$ is any integer.",
+      "choices": [
+        "$x = k\\pi$",
+        "$x = \\frac{k\\pi}{2}$",
+        "$x = \\frac{\\pi}{4} + k\\pi$",
+        "$x = \\frac{\\pi}{2} + k\\pi$"
+      ],
+      "answer": "$x = \\frac{\\pi}{2} + k\\pi$",
+      "compute": null,
+      "solution": "$\\cot x = \\frac{\\cos x}{\\sin x}$ is $0$ where $\\cos x = 0$, which is at $x = \\frac{\\pi}{2} + k\\pi$. At $x = k\\pi$ the cotangent is undefined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{2} + k\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot x = cos x/sin x = 0 where cos x=0 and sin x !=0: x=pi/2+k pi. (k pi are asymptotes.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.331Z"
+        }
+      }
+    },
+    {
+      "id": "f24a5df0-278a-40c5-8c1a-acd6d05ed238",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "What is the maximum value of $y = 5 - 3\\cos(2x)$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "5+3",
+      "solution": "$\\cos(2x)$ is at least $-1$, so $-3\\cos(2x)$ is at most $3$, and the maximum of $y$ is $5 + 3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos(2x) min is -1, so max y = 5+3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.379Z"
+        }
+      }
+    },
+    {
+      "id": "e328973d-846b-4bf9-9db1-6e9a529eeaf0",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "A sine function has amplitude $4$, period $8$ and midline $y = 2$. It passes through $(0, 2)$ while rising. Which equation could it be?",
+      "choices": [
+        "$y = 4\\sin\\left(\\frac{\\pi}{8}x\\right) + 2$",
+        "$y = 4\\sin(8x) + 2$",
+        "$y = 4\\sin\\left(\\frac{\\pi}{4}x\\right) + 2$",
+        "$y = 4\\cos\\left(\\frac{\\pi}{4}x\\right) + 2$"
+      ],
+      "answer": "$y = 4\\sin\\left(\\frac{\\pi}{4}x\\right) + 2$",
+      "compute": null,
+      "solution": "Period $8$ means $B = \\frac{2\\pi}{8} = \\frac{\\pi}{4}$. A sine curve starts on its midline and rises, which fits. A cosine would start at its maximum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 4\\sin\\left(\\frac{\\pi}{4}x\\right) + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 8: B=2pi/8=pi/4. Sine through midline rising at 0 with positive amplitude: y=4sin(pi/4 x)+2. Cos option is at max at 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.410Z"
+        }
+      }
+    },
+    {
+      "id": "b4aa4bbe-2586-4c76-b71b-63f9ea7c262c",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Phase shift and transformations",
+      "stem": "Let $f(x) = 2\\sin\\left(x - \\frac{\\pi}{6}\\right) + 1$. Find $f\\left(\\frac{2\\pi}{3}\\right)$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "2*1+1",
+      "solution": "$\\frac{2\\pi}{3} - \\frac{\\pi}{6} = \\frac{\\pi}{2}$, and $\\sin\\frac{\\pi}{2} = 1$. So $f = 2(1) + 1 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2π/3 - π/6 = π/2; sin(π/2) = 1; f = 2·1 + 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.434Z"
+        }
+      }
+    },
+    {
+      "id": "1156c552-6d5d-49f6-a60f-590e5d1f26aa",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trig equation",
+      "stem": "Which lists every $x$ with $0 \\le x < 2\\pi$ where the graph of $y = \\cos x$ crosses the horizontal line $y = -\\frac{1}{2}$?",
+      "choices": [
+        "$x = \\frac{2\\pi}{3}$ and $x = \\frac{4\\pi}{3}$",
+        "$x = \\frac{\\pi}{3}$ and $x = \\frac{5\\pi}{3}$",
+        "$x = \\frac{\\pi}{6}$ and $x = \\frac{5\\pi}{6}$",
+        "$x = \\frac{2\\pi}{3}$ and $x = \\frac{5\\pi}{3}$"
+      ],
+      "answer": "$x = \\frac{2\\pi}{3}$ and $x = \\frac{4\\pi}{3}$",
+      "compute": null,
+      "solution": "$\\cos x = -\\frac{1}{2}$. The cosine is negative in the second and third quadrants, at $\\frac{2\\pi}{3}$ and $\\frac{4\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{2\\pi}{3}$ and $x = \\frac{4\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x = -1/2 at 2π/3 and 4π/3 in [0, 2π).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.451Z"
+        }
+      }
+    },
+    {
+      "id": "3fe28ae3-0182-4f16-aa8d-9d68436031a7",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "The function $y = a\\cos x + d$ with $a > 0$ has a maximum value of $4$ and a minimum value of $-8$. Which gives $a$ and $d$?",
+      "choices": [
+        "$a = 6$ and $d = 2$",
+        "$a = 12$ and $d = -2$",
+        "$a = 6$ and $d = -2$",
+        "$a = 2$ and $d = -6$"
+      ],
+      "answer": "$a = 6$ and $d = -2$",
+      "compute": null,
+      "solution": "The amplitude is $a = \\frac{4 - (-8)}{2} = 6$. The midline is $d = \\frac{4 + (-8)}{2} = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$a = 6$ and $d = -2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a = (4 - (-8))/2 = 6; d = (4 + (-8))/2 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.472Z"
+        }
+      }
+    },
+    {
+      "id": "40c497b9-faad-402d-93ed-bb45ca11f7e5",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Secant and cosecant features",
+      "stem": "Which lists every vertical asymptote of $y = \\csc x$ for $0 \\le x \\le 2\\pi$?",
+      "choices": [
+        "$x = \\frac{\\pi}{2}$ and $x = \\frac{3\\pi}{2}$",
+        "$x = 0$, $x = \\pi$ and $x = 2\\pi$",
+        "$x = \\pi$ only",
+        "$x = 0$ and $x = 2\\pi$"
+      ],
+      "answer": "$x = 0$, $x = \\pi$ and $x = 2\\pi$",
+      "compute": null,
+      "solution": "$\\csc x = \\frac{1}{\\sin x}$ is undefined wherever $\\sin x = 0$: $0$, $\\pi$ and $2\\pi$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 0$, $x = \\pi$ and $x = 2\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc x = 1/sin x; sin x = 0 at 0, pi, 2pi in [0, 2pi].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.600Z"
+        }
+      }
+    },
+    {
+      "id": "0328ea55-bda1-492e-b019-5df71a36b519",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tangent and cotangent features",
+      "stem": "What is the smallest positive value of $x$ at which $y = \\tan\\left(\\frac{\\pi}{2}x\\right)$ has a vertical asymptote?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "The tangent has an asymptote when its input is $\\frac{\\pi}{2}$: $\\frac{\\pi}{2}x = \\frac{\\pi}{2}$ gives $x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Asymptote when (pi/2)x = pi/2, so x = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.629Z"
+        }
+      }
+    },
+    {
+      "id": "1b59f52d-1843-4ba4-a261-c9ecb6b2dfa5",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Period of a trig function",
+      "stem": "What is the period of $y = -\\sin\\left(\\frac{2}{3}x\\right) + 1$?",
+      "choices": [
+        "$\\frac{4\\pi}{3}$",
+        "$\\frac{3}{2}$",
+        "$6\\pi$",
+        "$3\\pi$"
+      ],
+      "answer": "$3\\pi$",
+      "compute": null,
+      "solution": "The period is $\\frac{2\\pi}{B}$ with $B = \\frac{2}{3}$: $2\\pi \\cdot \\frac{3}{2} = 3\\pi$. The minus sign and the $+1$ do not change it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period = 2pi/(2/3) = 3pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.652Z"
+        }
+      }
+    },
+    {
+      "id": "97351a9f-5963-4adc-b127-d81898364b9c",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Period of a trig function",
+      "stem": "The function $y = \\sin(Bx)$ with $B > 0$ completes exactly $3$ full cycles for $0 \\le x \\le 2\\pi$. What is $B$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The period is $\\frac{2\\pi}{3}$, and $3$ periods fill $2\\pi$. In general $B$ is the number of cycles in $2\\pi$, so $B = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 cycles on [0, 2π] → period 2π/3 = 2π/B → B = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.771Z"
         }
       }
     },
@@ -16899,6 +18077,573 @@
       }
     },
     {
+      "id": "427f4415-a207-4a97-93dd-2bd64f84084d",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "The monthly temperature is $T = 15 + 10\\sin\\left(\\frac{\\pi}{6}(m - 4)\\right)$ degrees, where $m = 1$ is January. For $1 \\le m < 13$, in which month number is the temperature greatest?",
+      "choices": [],
+      "answer": "7",
+      "compute": "4+3",
+      "solution": "The temperature is greatest when the sine is $1$: $\\frac{\\pi}{6}(m - 4) = \\frac{\\pi}{2}$, so $m - 4 = 3$ and $m = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max when (π/6)(m−4) = π/2 → m = 7 (within 1 ≤ m < 13, only one maximum).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.116Z"
+        }
+      }
+    },
+    {
+      "id": "a06c181e-e882-473b-8981-4f2ba702b6f4",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trig inequality",
+      "stem": "Over one full turn, $0 \\le x \\le 2\\pi$, the graph of $y = \\cos x$ lies below the line $y = \\frac{1}{2}$ on which interval?",
+      "choices": [
+        "$0 \\le x < \\frac{\\pi}{3}$ or $\\frac{5\\pi}{3} < x \\le 2\\pi$",
+        "$\\frac{\\pi}{6} < x < \\frac{11\\pi}{6}$",
+        "$\\frac{\\pi}{3} < x < \\frac{5\\pi}{3}$",
+        "$\\frac{\\pi}{3} < x < \\frac{2\\pi}{3}$"
+      ],
+      "answer": "$\\frac{\\pi}{3} < x < \\frac{5\\pi}{3}$",
+      "compute": null,
+      "solution": "$\\cos x = \\frac{1}{2}$ at $\\frac{\\pi}{3}$ and $\\frac{5\\pi}{3}$. The cosine is below $\\frac{1}{2}$ between them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{3} < x < \\frac{5\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos x = 1/2 at π/3 and 5π/3; cos x < 1/2 between them: π/3 < x < 5π/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.128Z"
+        }
+      }
+    },
+    {
+      "id": "5c10565f-da79-4440-a01b-8a79b081c866",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "A windmill blade tip is at height $h = 10 + 6\\sin\\left(\\frac{\\pi}{2}t\\right)$ meters, where $t$ is in seconds. At what time $t > 0$ is the tip first at its lowest point?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The lowest point is where $\\sin\\left(\\frac{\\pi}{2}t\\right) = -1$, first at $\\frac{\\pi}{2}t = \\frac{3\\pi}{2}$. So $t = 3$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lowest when sin(πt/2) = −1: πt/2 = 3π/2 → t = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.136Z"
+        }
+      }
+    },
+    {
+      "id": "a587c076-5bd9-47c4-bcdf-3335e258e216",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Period of a trig function",
+      "stem": "Which describes the period of $y = 3\\sin(4x - \\pi)$ and how its graph is shifted horizontally from $y = 3\\sin(4x)$?",
+      "choices": [
+        "period $\\frac{\\pi}{2}$, shifted $\\frac{3\\pi}{4}$ to the right",
+        "period $\\frac{\\pi}{2}$, shifted $\\frac{\\pi}{4}$ to the right",
+        "period $8\\pi$, shifted $\\frac{\\pi}{4}$ to the right",
+        "period $\\frac{\\pi}{2}$, shifted $\\frac{\\pi}{4}$ to the left"
+      ],
+      "answer": "period $\\frac{\\pi}{2}$, shifted $\\frac{\\pi}{4}$ to the right",
+      "compute": null,
+      "solution": "The period is $\\frac{2\\pi}{4} = \\frac{\\pi}{2}$. Factor the $4$: $4x - \\pi = 4\\left(x - \\frac{\\pi}{4}\\right)$, a shift of $\\frac{\\pi}{4}$ to the right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "period $\\frac{\\pi}{2}$, shifted $\\frac{\\pi}{4}$ to the right",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 sin(4(x − π/4)): period 2π/4 = π/2, shift π/4 right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.138Z"
+        }
+      }
+    },
+    {
+      "id": "7252c370-445a-4a9e-a487-fea717022e87",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a trig equation",
+      "stem": "Solve $2\\sin\\theta = -1$ for $180^\\circ \\le \\theta \\le 360^\\circ$. What is the smallest solution, in degrees?",
+      "choices": [],
+      "answer": "210",
+      "compute": "180+30",
+      "solution": "$\\sin\\theta = -\\frac{1}{2}$ with reference angle $30^\\circ$. In the third quadrant $\\theta = 180^\\circ + 30^\\circ = 210^\\circ$ (the other is $330^\\circ$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "210",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin theta=-1/2: 210 and 330 degrees; smallest 210.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.151Z"
+        }
+      }
+    },
+    {
+      "id": "745c4117-f335-4e5d-b9a9-00ff35d7ad67",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a trig equation",
+      "stem": "The graph of $y = \\sin(3x)$ is drawn from $x = 0$ up to, but not including, $x = 2\\pi$. At how many points does it cross the horizontal line $y = \\frac{1}{2}$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "3*2",
+      "solution": "Let $u = 3x$, so $0 \\le u < 6\\pi$. The sine equals $\\frac{1}{2}$ twice in every $2\\pi$, so $3 \\times 2 = 6$ solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u=3x in [0,6pi): sin u=1/2 twice per 2pi, 3 periods => 6 (pi/6,5pi/6,13pi/6,17pi/6,25pi/6,29pi/6), each a true crossing.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.162Z"
+        }
+      }
+    },
+    {
+      "id": "ffdae719-0807-45dc-9508-8cc11de5ebcf",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tangent and cotangent features",
+      "stem": "A graph has vertical asymptotes at $x = \\frac{\\pi}{4}$ and $x = \\frac{3\\pi}{4}$, crosses the $x$-axis at $x = \\frac{\\pi}{2}$, and decreases between those asymptotes. Which function could it be?",
+      "choices": [
+        "$y = -\\tan(2x)$",
+        "$y = \\tan(2x)$",
+        "$y = -\\cot(2x)$",
+        "$y = \\cot(2x)$"
+      ],
+      "answer": "$y = -\\tan(2x)$",
+      "compute": null,
+      "solution": "$\\tan(2x)$ has asymptotes at $\\frac{\\pi}{4}$ and $\\frac{3\\pi}{4}$ and a zero at $\\frac{\\pi}{2}$, but it increases. Reflecting it makes it decrease. The cotangent versions have asymptotes at $0$ and $\\frac{\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -\\tan(2x)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan(2x) has asymptotes where 2x = pi/2 + k pi, x = pi/4, 3pi/4; zero at x = pi/2; tan increases, so -tan(2x) decreases. cot(2x) has asymptotes at x = 0, pi/2, so not those.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.215Z"
+        }
+      }
+    },
+    {
+      "id": "3d7f25b4-8926-4d4a-84d2-8c414c2819f8",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Phase shift and transformations",
+      "stem": "Let $g(x) = -2\\cos\\left(\\frac{x}{2} + \\frac{\\pi}{3}\\right)$. Find $g\\left(\\frac{2\\pi}{3}\\right)$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "-2*(-1/2)",
+      "solution": "$\\frac{x}{2} = \\frac{\\pi}{3}$, so the input of the cosine is $\\frac{2\\pi}{3}$, and $\\cos\\frac{2\\pi}{3} = -\\frac{1}{2}$. Then $g = -2 \\cdot \\left(-\\frac{1}{2}\\right) = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x/2 = pi/3; pi/3 + pi/3 = 2pi/3; cos(2pi/3) = -1/2; -2 x -1/2 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.220Z"
+        }
+      }
+    },
+    {
+      "id": "b2f1642b-eb43-489e-b8f4-040e07caa2fc",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Phase shift and transformations",
+      "stem": "Which sequence of transformations takes the graph of $y = \\sin x$ to the graph of $y = -2\\sin\\left(x + \\frac{\\pi}{2}\\right) + 3$?",
+      "choices": [
+        "reflect in the $x$-axis, stretch vertically by 2, shift right $\\frac{\\pi}{2}$, shift up 3",
+        "reflect in the $x$-axis, compress vertically by 2, shift left $\\frac{\\pi}{2}$, shift up 3",
+        "reflect in the $x$-axis, stretch vertically by 2, shift left $\\frac{\\pi}{2}$, shift up 3",
+        "reflect in the $x$-axis, stretch horizontally by 2, shift left $\\frac{\\pi}{2}$, shift up 3"
+      ],
+      "answer": "reflect in the $x$-axis, stretch vertically by 2, shift left $\\frac{\\pi}{2}$, shift up 3",
+      "compute": null,
+      "solution": "The minus sign reflects; the $2$ stretches vertically; $x + \\frac{\\pi}{2}$ shifts left $\\frac{\\pi}{2}$; the $+3$ shifts up $3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "reflect in the $x$-axis, stretch vertically by 2, shift left $\\frac{\\pi}{2}$, shift up 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2 means reflect in x-axis and vertical stretch by 2; x + pi/2 is shift left pi/2; +3 is up 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.252Z"
+        }
+      }
+    },
+    {
+      "id": "93c929c1-75a4-4a1f-92e0-7906196b2f24",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Period of a trig function",
+      "stem": "What is the period of $y = 4\\tan\\left(\\frac{\\pi}{6}x - 1\\right)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The tangent's period is $\\frac{\\pi}{B}$ with $B = \\frac{\\pi}{6}$: $\\pi \\div \\frac{\\pi}{6} = 6$. The $-1$ only shifts the graph.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period of tan(Bx-C) = pi/|B| = pi/(pi/6) = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.294Z"
+        }
+      }
+    },
+    {
+      "id": "b2f4d122-4618-4c65-b30f-6799de34f4a1",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "Which function has a range of $-1 \\le y \\le 5$?",
+      "choices": [
+        "$y = 3\\sin x + 2$",
+        "$y = 3\\sin x + 5$",
+        "$y = 6\\sin x - 1$",
+        "$y = 3\\sin x - 1$"
+      ],
+      "answer": "$y = 3\\sin x + 2$",
+      "compute": null,
+      "solution": "The midline is $\\frac{5 + (-1)}{2} = 2$ and the amplitude is $\\frac{5 - (-1)}{2} = 3$. So $y = 3\\sin x + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 3\\sin x + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 sin x + 2 ranges 2-3=-1 to 2+3=5. 6sin x -1: -7..5; 3sin x+5: 2..8; 3sin x -1: -4..2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.392Z"
+        }
+      }
+    },
+    {
+      "id": "f5cafc43-2f53-48a4-b4a6-c33560ebdbe0",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trig inequality",
+      "stem": "The graph of $y = \\sec x$ is above the line $y = 2$ for which $x$, if $0 \\le x < \\frac{\\pi}{2}$?",
+      "choices": [
+        "$\\frac{\\pi}{3} < x < \\frac{\\pi}{2}$",
+        "$0 \\le x < \\frac{\\pi}{3}$",
+        "$\\frac{\\pi}{6} < x < \\frac{\\pi}{2}$",
+        "$\\frac{\\pi}{4} < x < \\frac{\\pi}{2}$"
+      ],
+      "answer": "$\\frac{\\pi}{3} < x < \\frac{\\pi}{2}$",
+      "compute": null,
+      "solution": "On this interval $\\cos x > 0$, so $\\sec x > 2$ means $\\cos x < \\frac{1}{2}$. That happens for $x > \\frac{\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{3} < x < \\frac{\\pi}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sec x > 2 <=> cos x < 1/2 (cos>0 here) <=> x > pi/3 on [0,pi/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.416Z"
+        }
+      }
+    },
+    {
+      "id": "6148e0b7-3ade-4f12-a703-a1e851150343",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "How many times does $y = 5\\cos(3x) - 2$ reach its maximum value for $0 \\le x \\le 2\\pi$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The maximum happens when $\\cos(3x) = 1$, so $3x = 0, 2\\pi, 4\\pi, 6\\pi$. That gives $x = 0, \\frac{2\\pi}{3}, \\frac{4\\pi}{3}, 2\\pi$: $4$ times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max when cos 3x = 1 → x = 2πk/3: 0, 2π/3, 4π/3, 2π in [0, 2π]. 4 times.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.504Z"
+        }
+      }
+    },
+    {
+      "id": "04b2452b-2107-4edc-bcab-9f9739575c5a",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "The height of a tide is $h = 4 + 3\\sin\\left(\\frac{\\pi}{6}t\\right)$ meters, where $t$ is in hours. What is the first time $t > 0$ at which the height is $5.5$ meters?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$4 + 3\\sin\\left(\\frac{\\pi}{6}t\\right) = 5.5$ gives $\\sin\\left(\\frac{\\pi}{6}t\\right) = \\frac{1}{2}$. The first solution is $\\frac{\\pi}{6}t = \\frac{\\pi}{6}$, so $t = 1$ hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 sin(pi t/6) = 1.5 -> sin = 1/2 -> pi t/6 = pi/6 -> t = 1 (first positive).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.682Z"
+        }
+      }
+    },
+    {
+      "id": "2b9cb4de-f0bc-470f-ad85-a139a24413f9",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trig equation",
+      "stem": "Solve $\\sin x = \\cos x$ for $0 \\le x < 2\\pi$.",
+      "choices": [
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{5\\pi}{4}$",
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{3\\pi}{4}$",
+        "$x = \\frac{\\pi}{4}$ only",
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{7\\pi}{4}$"
+      ],
+      "answer": "$x = \\frac{\\pi}{4}$ and $x = \\frac{5\\pi}{4}$",
+      "compute": null,
+      "solution": "Divide by $\\cos x$: $\\tan x = 1$. The tangent is $1$ in the first and third quadrants: $\\frac{\\pi}{4}$ and $\\frac{5\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{4}$ and $x = \\frac{5\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan x = 1 -> x = pi/4, 5pi/4 in [0,2pi).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.683Z"
+        }
+      }
+    },
+    {
+      "id": "5da93a6d-681a-4db3-aa77-a046bdf14275",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tangent and cotangent features",
+      "stem": "Which gives every vertical asymptote of $y = \\tan\\left(2x - \\frac{\\pi}{2}\\right)$? Here $k$ is any integer.",
+      "choices": [
+        "$x = \\frac{\\pi}{2} + k\\pi$",
+        "$x = k\\pi$",
+        "$x = \\frac{\\pi}{4} + \\frac{k\\pi}{2}$",
+        "$x = \\frac{k\\pi}{2}$"
+      ],
+      "answer": "$x = \\frac{k\\pi}{2}$",
+      "compute": null,
+      "solution": "An asymptote occurs when $2x - \\frac{\\pi}{2} = \\frac{\\pi}{2} + k\\pi$. Then $2x = \\pi + k\\pi$, so $x = \\frac{\\pi}{2} + \\frac{k\\pi}{2}$, which is every multiple of $\\frac{\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{k\\pi}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Asymptotes where 2x - pi/2 = pi/2 + k pi -> 2x = pi + k pi -> x = (k+1)pi/2, i.e. x = k pi/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.704Z"
+        }
+      }
+    },
+    {
+      "id": "1e74e29f-e688-4bd7-9e5d-4258d522be83",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trig inequality",
+      "stem": "The expression $2\\sin x + 1$ is not negative for which values of $x$ with $0 \\le x < 2\\pi$?",
+      "choices": [
+        "$0 \\le x \\le \\frac{5\\pi}{6}$ or $\\frac{7\\pi}{6} \\le x < 2\\pi$",
+        "$0 \\le x \\le \\frac{\\pi}{6}$ or $\\frac{5\\pi}{6} \\le x < 2\\pi$",
+        "$\\frac{\\pi}{6} \\le x \\le \\frac{5\\pi}{6}$ or $\\frac{7\\pi}{6} \\le x \\le \\frac{11\\pi}{6}$",
+        "$0 \\le x \\le \\frac{7\\pi}{6}$ or $\\frac{11\\pi}{6} \\le x < 2\\pi$"
+      ],
+      "answer": "$0 \\le x \\le \\frac{7\\pi}{6}$ or $\\frac{11\\pi}{6} \\le x < 2\\pi$",
+      "compute": null,
+      "solution": "The inequality is $\\sin x \\ge -\\frac{1}{2}$. The sine equals $-\\frac{1}{2}$ at $\\frac{7\\pi}{6}$ and $\\frac{11\\pi}{6}$ and is below it between them. So it is at least $-\\frac{1}{2}$ outside that stretch.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0 \\le x \\le \\frac{7\\pi}{6}$ or $\\frac{11\\pi}{6} \\le x < 2\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 sin x + 1 ≥ 0 ⇔ sin x ≥ -1/2. sin x = -1/2 at 7π/6 and 11π/6; sin x < -1/2 strictly between them. So 0 ≤ x ≤ 7π/6 or 11π/6 ≤ x < 2π.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.710Z"
+        }
+      }
+    },
+    {
+      "id": "92c27ce7-47d0-461e-9418-b3032f404012",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tangent and cotangent features",
+      "stem": "What is the smallest positive $x$-intercept of the graph of $y = \\cot\\left(\\frac{\\pi}{4}x\\right)$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The cotangent is $0$ when its input is $\\frac{\\pi}{2}$ (the first time for positive inputs). $\\frac{\\pi}{4}x = \\frac{\\pi}{2}$ gives $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot(πx/4) = 0 when πx/4 = π/2 + kπ → x = 2 + 4k. Smallest positive: 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.769Z"
+        }
+      }
+    },
+    {
       "id": "d0eec16a-ba95-4f8e-8893-74a50dfe60d0",
       "topic_id": "NC17.PC.F.2",
       "difficulty": 1,
@@ -17267,6 +19012,670 @@
       }
     },
     {
+      "id": "6ff41760-7749-4b48-ba8a-9474fb988f8c",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a reference angle",
+      "stem": "An angle of $120^\\circ$ is in standard position. The acute angle between its terminal ray and the $x$-axis is its reference angle. How many degrees is it?",
+      "choices": [],
+      "answer": "60",
+      "compute": "180-120",
+      "solution": "$120^\\circ$ is in Quadrant II, so the reference angle is $180^\\circ - 120^\\circ = 60^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "180 − 120 = 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.128Z"
+        }
+      }
+    },
+    {
+      "id": "d9d2c3fb-41b1-4e15-a68e-4723ea3a033c",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "On the unit circle, what is the $y$-coordinate of the point at the angle $30^\\circ$? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "1/2",
+      "solution": "The $y$-coordinate of the point at angle $\\theta$ is $\\sin\\theta$, and $\\sin 30^\\circ = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin 30 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.152Z"
+        }
+      }
+    },
+    {
+      "id": "cf256b96-f3c1-4f02-9f8d-c6bde1078145",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a reference angle",
+      "stem": "The angle $\\frac{5\\pi}{6}$ radians is in Quadrant II. What is its reference angle, in degrees?",
+      "choices": [],
+      "answer": "30",
+      "compute": "180-150",
+      "solution": "$\\frac{5\\pi}{6}$ radians is $150^\\circ$. The reference angle is $180^\\circ - 150^\\circ = 30^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pi - 5pi/6 = pi/6 = 30 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.178Z"
+        }
+      }
+    },
+    {
+      "id": "3a2fc234-8f5e-46bd-9056-6038c598e69d",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "What is the exact value of $\\tan 30^\\circ$?",
+      "choices": [
+        "$\\sqrt{3}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{\\sqrt{3}}{3}$",
+        "$\\frac{\\sqrt{3}}{2}$"
+      ],
+      "answer": "$\\frac{\\sqrt{3}}{3}$",
+      "compute": null,
+      "solution": "$\\tan 30^\\circ = \\frac{\\sin 30^\\circ}{\\cos 30^\\circ} = \\frac{1/2}{\\sqrt{3}/2} = \\frac{1}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\sqrt{3}}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan30=1/sqrt3=sqrt3/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.185Z"
+        }
+      }
+    },
+    {
+      "id": "cc680f30-579d-45ab-b56b-e5500fab3c18",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a reference angle",
+      "stem": "A student finds the reference angle for $\\frac{7\\pi}{6}$. Which answer is correct?",
+      "choices": [
+        "$\\frac{5\\pi}{6}$",
+        "$\\frac{\\pi}{6}$",
+        "$\\frac{\\pi}{3}$",
+        "$\\frac{7\\pi}{12}$"
+      ],
+      "answer": "$\\frac{\\pi}{6}$",
+      "compute": null,
+      "solution": "$\\frac{7\\pi}{6}$ is in Quadrant III, just past $\\pi$. The reference angle is $\\frac{7\\pi}{6} - \\pi = \\frac{\\pi}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7pi/6 is in QIII; reference angle 7pi/6 - pi = pi/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.203Z"
+        }
+      }
+    },
+    {
+      "id": "d02d2d50-210e-4d45-a535-992c150aa6ab",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "Find $\\cot 90^\\circ$, using $\\cot\\theta = \\frac{\\cos\\theta}{\\sin\\theta}$.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0/1",
+      "solution": "$\\cos 90^\\circ = 0$ and $\\sin 90^\\circ = 1$, so $\\cot 90^\\circ = \\frac{0}{1} = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 90 = 0, sin 90 = 1, cot 90 = 0/1 = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.210Z"
+        }
+      }
+    },
+    {
+      "id": "8034e160-e46d-4064-97c8-716cb76523cb",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "Every point $(x, y)$ on the unit circle satisfies which equation?",
+      "choices": [
+        "$x + y = 1$",
+        "$x^2 - y^2 = 1$",
+        "$x^2 + y^2 = 2$",
+        "$x^2 + y^2 = 1$"
+      ],
+      "answer": "$x^2 + y^2 = 1$",
+      "compute": null,
+      "solution": "The unit circle has radius 1 and center $(0, 0)$, so each point is 1 unit from the origin. The distance formula gives $x^2 + y^2 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + y^2 = 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit circle centred at origin radius 1: x^2 + y^2 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.237Z"
+        }
+      }
+    },
+    {
+      "id": "3b90f29c-9c34-4708-9e74-b2ae8adb06b7",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "Which angle is coterminal with $\\frac{\\pi}{4}$?",
+      "choices": [
+        "$\\frac{9\\pi}{4}$",
+        "$\\frac{5\\pi}{4}$",
+        "$\\frac{3\\pi}{4}$",
+        "$\\frac{3\\pi}{2}$"
+      ],
+      "answer": "$\\frac{9\\pi}{4}$",
+      "compute": null,
+      "solution": "Coterminal angles differ by a multiple of $2\\pi$. $\\frac{\\pi}{4} + 2\\pi = \\frac{9\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{9\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "pi/4 + 2pi = 9pi/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.279Z"
+        }
+      }
+    },
+    {
+      "id": "5fe8c6e0-3966-4b83-91f3-2f7c94f3ed0f",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "Using $\\tan\\theta = \\frac{\\sin\\theta}{\\cos\\theta}$, find $\\tan 180^\\circ$.",
+      "choices": [],
+      "answer": "0",
+      "compute": "0/-1",
+      "solution": "At $180^\\circ$ the point is $(-1, 0)$, so $\\sin 180^\\circ = 0$ and $\\cos 180^\\circ = -1$. Then $\\tan 180^\\circ = \\frac{0}{-1} = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin180=0, cos180=-1, tan=0/(-1)=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.281Z"
+        }
+      }
+    },
+    {
+      "id": "9d8a1739-7e8d-4fbe-a587-5fbba20dfa33",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "Which point is on the unit circle?",
+      "choices": [
+        "$\\left(\\frac{1}{2}, \\frac{1}{2}\\right)$",
+        "$\\left(\\frac{2}{3}, \\frac{1}{3}\\right)$",
+        "$\\left(\\frac{3}{5}, \\frac{4}{5}\\right)$",
+        "$\\left(\\frac{4}{5}, \\frac{4}{5}\\right)$"
+      ],
+      "answer": "$\\left(\\frac{3}{5}, \\frac{4}{5}\\right)$",
+      "compute": null,
+      "solution": "A point is on the unit circle when $x^2 + y^2 = 1$. For $\\left(\\frac{3}{5}, \\frac{4}{5}\\right)$: $\\frac{9}{25} + \\frac{16}{25} = 1$. The others give $\\frac{1}{2}$, $\\frac{5}{9}$ and $\\frac{32}{25}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(\\frac{3}{5}, \\frac{4}{5}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/5)^2+(4/5)^2 = 9/25+16/25 = 1. Others: 5/9, 32/25, 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.293Z"
+        }
+      }
+    },
+    {
+      "id": "658f66fb-e143-4eac-984f-b9ceb1d81a91",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "A point starts at $(1, 0)$ and moves counterclockwise halfway around the unit circle. What is its $y$-coordinate when it stops?",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "Halfway around is $180^\\circ$. The point stops at $(-1, 0)$, so its $y$-coordinate is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Halfway around = angle pi, point (-1,0); y = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.349Z"
+        }
+      }
+    },
+    {
+      "id": "9003cab3-0eed-4699-a803-553fda02f87e",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "Which is the exact value of $\\sin\\frac{\\pi}{4}$?",
+      "choices": [
+        "$\\frac{1}{2}$",
+        "$\\frac{\\sqrt{2}}{2}$",
+        "$\\frac{\\sqrt{3}}{2}$",
+        "$1$"
+      ],
+      "answer": "$\\frac{\\sqrt{2}}{2}$",
+      "compute": null,
+      "solution": "$\\frac{\\pi}{4}$ is $45^\\circ$, where the unit circle point is $\\left(\\frac{\\sqrt{2}}{2}, \\frac{\\sqrt{2}}{2}\\right)$. The sine is the $y$-coordinate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\sqrt{2}}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin(pi/4)=sqrt2/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.361Z"
+        }
+      }
+    },
+    {
+      "id": "3d66aedb-a038-4402-a5b4-6ffed7142703",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "A point starts at $(1, 0)$ and moves counterclockwise three quarters of the way around the unit circle. What is the sine of the angle it has turned through?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "Three quarters of a turn is $270^\\circ$. The point ends at $(0, -1)$, and the sine is the $y$-coordinate, so $\\sin 270^\\circ = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Three quarters turn = 3pi/2; sin(3pi/2) = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.406Z"
+        }
+      }
+    },
+    {
+      "id": "c61c0254-cdfb-4d36-a3a1-867d0b5cb724",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Signs of the functions by quadrant",
+      "stem": "The terminal ray of an angle $\\theta$ is in Quadrant IV. Which statement is true?",
+      "choices": [
+        "$\\cos\\theta > 0$ and $\\sin\\theta > 0$",
+        "$\\cos\\theta < 0$ and $\\sin\\theta < 0$",
+        "$\\cos\\theta > 0$ and $\\sin\\theta < 0$",
+        "$\\cos\\theta < 0$ and $\\sin\\theta > 0$"
+      ],
+      "answer": "$\\cos\\theta > 0$ and $\\sin\\theta < 0$",
+      "compute": null,
+      "solution": "In Quadrant IV, points have a positive $x$-coordinate and a negative $y$-coordinate. Cosine is the $x$-coordinate and sine is the $y$-coordinate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\cos\\theta > 0$ and $\\sin\\theta < 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quadrant IV: x > 0, y < 0 → cos > 0, sin < 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.521Z"
+        }
+      }
+    },
+    {
+      "id": "df91d775-d09a-457a-9246-0afa748e5f34",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "Rotating $60^\\circ$ clockwise from the positive $x$-axis ends at the same ray as rotating counterclockwise by how many degrees, between $0^\\circ$ and $360^\\circ$?",
+      "choices": [],
+      "answer": "300",
+      "compute": "360-60",
+      "solution": "A clockwise turn of $60^\\circ$ is the angle $-60^\\circ$. Adding a full turn gives $-60^\\circ + 360^\\circ = 300^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-60 degrees is coterminal with 360 - 60 = 300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.550Z"
+        }
+      }
+    },
+    {
+      "id": "537191f5-ad47-46d3-a4e1-0c858e0e2f65",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "If $\\tan\\theta = 2$, what is $\\cot\\theta$? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "1/2",
+      "solution": "$\\cot\\theta$ is the reciprocal of $\\tan\\theta$, so $\\cot\\theta = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot = 1/tan = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.572Z"
+        }
+      }
+    },
+    {
+      "id": "14532fc1-a105-4a6e-a685-f78f2554add8",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "Adding a full turn to an angle returns to the same point on the unit circle. So for every angle $\\theta$, what does $\\sin(\\theta + 360^\\circ)$ equal?",
+      "choices": [
+        "$-\\sin\\theta$",
+        "$\\cos\\theta$",
+        "$\\sin 360^\\circ$",
+        "$\\sin\\theta$"
+      ],
+      "answer": "$\\sin\\theta$",
+      "compute": null,
+      "solution": "The angles $\\theta$ and $\\theta + 360^\\circ$ end at the same point, so their sines (the $y$-coordinates) are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin\\theta$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Periodicity: sin(theta + 360) = sin theta.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.588Z"
+        }
+      }
+    },
+    {
+      "id": "8cf7c638-5e76-40d0-976c-e6fd45a7fdd3",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "The point at $90^\\circ$ on the unit circle is $(0, 1)$. Which point is at $270^\\circ$?",
+      "choices": [
+        "$(0, -1)$",
+        "$(0, 1)$",
+        "$(-1, 0)$",
+        "$(1, 0)$"
+      ],
+      "answer": "$(0, -1)$",
+      "compute": null,
+      "solution": "$270^\\circ$ is three quarters of a turn counterclockwise from $(1, 0)$, straight down. That point is $(0, -1)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(0, -1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "270 degrees: (cos 270, sin 270) = (0, -1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.617Z"
+        }
+      }
+    },
+    {
+      "id": "7bedc28a-d99d-497b-b906-8fa7a1f5b2fd",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "The terminal ray of an angle $\\theta$ passes through the point $\\left(-\\frac{3}{5}, \\frac{4}{5}\\right)$ on the unit circle. What is $\\cos\\theta + \\sin\\theta$? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/5",
+      "compute": "-3/5+4/5",
+      "solution": "Cosine is the $x$-coordinate and sine is the $y$-coordinate. So $\\cos\\theta + \\sin\\theta = -\\frac{3}{5} + \\frac{4}{5} = \\frac{1}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos = -3/5, sin = 4/5; sum 1/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.624Z"
+        }
+      }
+    },
+    {
+      "id": "a15fa728-1871-4b39-8b3b-11b0c2b67d5c",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Signs of the functions by quadrant",
+      "stem": "Which statement about $\\cos 100^\\circ$ is true?",
+      "choices": [
+        "It is positive, because $100^\\circ$ is in Quadrant II",
+        "It is negative, because $100^\\circ$ is in Quadrant II",
+        "It is positive, because $100^\\circ$ is close to $90^\\circ$",
+        "It is zero, because $100^\\circ$ is close to $90^\\circ$"
+      ],
+      "answer": "It is negative, because $100^\\circ$ is in Quadrant II",
+      "compute": null,
+      "solution": "$100^\\circ$ is between $90^\\circ$ and $180^\\circ$, in Quadrant II, where the $x$-coordinate (the cosine) is negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is negative, because $100^\\circ$ is in Quadrant II",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100 deg in QII (90-180), cosine negative there.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.657Z"
+        }
+      }
+    },
+    {
+      "id": "003e9507-6f52-4f38-9439-e9c04c0b2493",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Symmetry of the unit circle",
+      "stem": "The point at the angle $\\theta$ on the unit circle is $(x, y)$. What are the coordinates of the point at the angle $-\\theta$?",
+      "choices": [
+        "$(x, -y)$",
+        "$(-x, y)$",
+        "$(-x, -y)$",
+        "$(y, x)$"
+      ],
+      "answer": "$(x, -y)$",
+      "compute": null,
+      "solution": "Turning by $-\\theta$ goes the same distance in the opposite direction, which reflects the point across the $x$-axis. The $x$-coordinate stays the same and the $y$-coordinate changes sign.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x, -y)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Angle -θ is the reflection across the x-axis: (cos(-θ), sin(-θ)) = (x, -y).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.732Z"
+        }
+      }
+    },
+    {
       "id": "c3c95ce7-5f82-42e7-9581-46e4867d07e7",
       "topic_id": "NC17.PC.F.2",
       "difficulty": 2,
@@ -17607,6 +20016,714 @@
           "work": "sqrt3/(1/sqrt3)=3.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.641Z"
+        }
+      }
+    },
+    {
+      "id": "64bb7629-521b-41a1-8fdd-40f51c3e59f1",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a reference angle",
+      "stem": "An angle of $-135^\\circ$ is in standard position. What is its reference angle, in degrees?",
+      "choices": [],
+      "answer": "45",
+      "compute": "45",
+      "solution": "$-135^\\circ$ is coterminal with $-135^\\circ + 360^\\circ = 225^\\circ$, in Quadrant III. The reference angle is $225^\\circ - 180^\\circ = 45^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "−135° is coterminal with 225°, in Quadrant III; reference angle 225 − 180 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.112Z"
+        }
+      }
+    },
+    {
+      "id": "89d0f0fe-c217-46a1-a16f-48426368be10",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Signs of the functions by quadrant",
+      "stem": "For $\\theta = \\frac{5\\pi}{4}$, which statement about the signs of $\\sec\\theta$ and $\\csc\\theta$ is true?",
+      "choices": [
+        "Both are negative",
+        "Both are positive",
+        "sec is negative and csc is positive",
+        "sec is positive and csc is negative"
+      ],
+      "answer": "Both are negative",
+      "compute": null,
+      "solution": "$\\frac{5\\pi}{4}$ is in Quadrant III, where cosine and sine are both negative. Their reciprocals $\\sec\\theta$ and $\\csc\\theta$ have the same signs, so both are negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both are negative",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5pi/4 in QIII: cos<0, sin<0, so sec<0 and csc<0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.182Z"
+        }
+      }
+    },
+    {
+      "id": "c241cf04-904c-485f-8b72-c5299d402dde",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "Find $\\csc 30^\\circ$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "1/(1/2)",
+      "solution": "$\\sin 30^\\circ = \\frac{1}{2}$, so $\\csc 30^\\circ = \\frac{1}{1/2} = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin 30 = 1/2, csc 30 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.200Z"
+        }
+      }
+    },
+    {
+      "id": "3abe4bf5-8895-4476-9f30-16ca9c997dd8",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "Find $\\cos 240^\\circ$. Give your answer as a fraction.",
+      "choices": [],
+      "answer": "-1/2",
+      "compute": "-1/2",
+      "solution": "$240^\\circ$ is in Quadrant III with reference angle $60^\\circ$. Cosine is negative there, so $\\cos 240^\\circ = -\\cos 60^\\circ = -\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "240 is in QIII, reference 60; cos 240 = -cos 60 = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.216Z"
+        }
+      }
+    },
+    {
+      "id": "f20af957-4f18-4eea-82f0-94775e4f36ad",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "Which is the exact value of $\\cot 60^\\circ$?",
+      "choices": [
+        "$\\sqrt{3}$",
+        "$\\frac{\\sqrt{3}}{3}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{\\sqrt{3}}{2}$"
+      ],
+      "answer": "$\\frac{\\sqrt{3}}{3}$",
+      "compute": null,
+      "solution": "$\\cot 60^\\circ = \\frac{\\cos 60^\\circ}{\\sin 60^\\circ} = \\frac{1/2}{\\sqrt{3}/2} = \\frac{1}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3}$. The value $\\sqrt{3}$ is $\\tan 60^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\sqrt{3}}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot 60 = 1/tan 60 = 1/sqrt3 = sqrt3/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.221Z"
+        }
+      }
+    },
+    {
+      "id": "7430f8c4-f7eb-417c-ac4a-5d0271087e4e",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "What is the exact value of $\\sec 45^\\circ$?",
+      "choices": [
+        "$\\sqrt{2}$",
+        "$\\frac{\\sqrt{2}}{2}$",
+        "$\\sqrt{3}$",
+        "$2$"
+      ],
+      "answer": "$\\sqrt{2}$",
+      "compute": null,
+      "solution": "$\\cos 45^\\circ = \\frac{\\sqrt{2}}{2}$, so $\\sec 45^\\circ = \\frac{2}{\\sqrt{2}} = \\sqrt{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sec 45 = 1/cos 45 = 2/sqrt2 = sqrt2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.234Z"
+        }
+      }
+    },
+    {
+      "id": "2c4c3cb3-e085-4461-b8ce-c6f581d94ce1",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "A point on the unit circle in Quadrant IV has $x$-coordinate $\\frac{5}{13}$. What is its $y$-coordinate? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "-12/13",
+      "compute": "-12/13",
+      "solution": "$x^2 + y^2 = 1$, so $y^2 = 1 - \\frac{25}{169} = \\frac{144}{169}$ and $y = \\pm\\frac{12}{13}$. In Quadrant IV, $y$ is negative, so $y = -\\frac{12}{13}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-12/13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y^2 = 1 - 25/169 = 144/169; QIV so y = -12/13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.243Z"
+        }
+      }
+    },
+    {
+      "id": "9e04a63b-5592-4e25-a664-78edb26cbac1",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "Find $\\sec 300^\\circ$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "1/(1/2)",
+      "solution": "$300^\\circ$ is in Quadrant IV with reference angle $60^\\circ$. Cosine is positive there, so $\\cos 300^\\circ = \\frac{1}{2}$ and $\\sec 300^\\circ = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 300 = cos 60 = 1/2, so sec 300 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.269Z"
+        }
+      }
+    },
+    {
+      "id": "d28277a6-bde1-4d67-8dd6-8337e4011c00",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "Find the exact value of $\\cos\\frac{\\pi}{3} + \\sin\\frac{\\pi}{6}$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1/2+1/2",
+      "solution": "$\\frac{\\pi}{3} = 60^\\circ$ and $\\frac{\\pi}{6} = 30^\\circ$. So $\\cos 60^\\circ + \\sin 30^\\circ = \\frac{1}{2} + \\frac{1}{2} = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos(pi/3)=1/2, sin(pi/6)=1/2, sum 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.272Z"
+        }
+      }
+    },
+    {
+      "id": "deb95733-8ff9-4fad-bcb4-b9880e854cbd",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a reference angle",
+      "stem": "An angle of $\\frac{3\\pi}{4}$ radians in standard position makes an acute angle with the $x$-axis. What is the measure of that acute angle?",
+      "choices": [
+        "$\\frac{3\\pi}{4}$",
+        "$\\frac{\\pi}{4}$",
+        "$\\frac{\\pi}{3}$",
+        "$\\frac{5\\pi}{4}$"
+      ],
+      "answer": "$\\frac{\\pi}{4}$",
+      "compute": null,
+      "solution": "$\\frac{3\\pi}{4}$ is in Quadrant II, so the acute angle with the $x$-axis is $\\pi - \\frac{3\\pi}{4} = \\frac{\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reference angle pi - 3pi/4 = pi/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.290Z"
+        }
+      }
+    },
+    {
+      "id": "f9f69105-645b-4b8c-9edf-c2abcd64eb92",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "What is the smallest positive number $p$ for which $\\tan(x + p) = \\tan x$ for every $x$ where the tangent is defined?",
+      "choices": [
+        "$2\\pi$",
+        "$\\frac{\\pi}{2}$",
+        "$\\pi$",
+        "$4\\pi$"
+      ],
+      "answer": "$\\pi$",
+      "compute": null,
+      "solution": "Points half a turn apart are opposite on the circle, so both sine and cosine change sign and their ratio stays the same. The period of the tangent is $\\pi$, not $2\\pi$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\pi$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan has period pi.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.330Z"
+        }
+      }
+    },
+    {
+      "id": "c250f6ac-d55d-49d5-a42f-e8a89bf123d5",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "The point $\\left(-\\frac{\\sqrt{2}}{2}, \\frac{\\sqrt{2}}{2}\\right)$ is on the unit circle. Which angle from $0$ to $2\\pi$ has this point as its terminal point?",
+      "choices": [
+        "$\\frac{\\pi}{4}$",
+        "$\\frac{5\\pi}{4}$",
+        "$\\frac{3\\pi}{4}$",
+        "$\\frac{7\\pi}{4}$"
+      ],
+      "answer": "$\\frac{3\\pi}{4}$",
+      "compute": null,
+      "solution": "The point has a negative $x$ and a positive $y$, so it is in Quadrant II. Its reference angle is $\\frac{\\pi}{4}$, so the angle is $\\pi - \\frac{\\pi}{4} = \\frac{3\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<0, y>0: QII, reference pi/4: 3pi/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.394Z"
+        }
+      }
+    },
+    {
+      "id": "b63eb50a-8f3f-40de-8de3-e1a37a6f4d8b",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Symmetry of the unit circle",
+      "stem": "If $\\tan\\theta = 2$, what is $\\tan(-\\theta)$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2",
+      "solution": "Reflecting across the $x$-axis keeps the $x$-coordinate and changes the sign of the $y$-coordinate. So $\\sin(-\\theta) = -\\sin\\theta$, $\\cos(-\\theta) = \\cos\\theta$ and $\\tan(-\\theta) = -\\tan\\theta = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tangent is odd: tan(-θ) = -tan θ = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.463Z"
+        }
+      }
+    },
+    {
+      "id": "cd66e16f-90fb-4aa0-89ee-fe95451e1cd6",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Symmetry of the unit circle",
+      "stem": "Which expression equals $\\sin(180^\\circ - \\theta)$ for every angle $\\theta$?",
+      "choices": [
+        "$-\\sin\\theta$",
+        "$\\cos\\theta$",
+        "$-\\cos\\theta$",
+        "$\\sin\\theta$"
+      ],
+      "answer": "$\\sin\\theta$",
+      "compute": null,
+      "solution": "The angles $\\theta$ and $180^\\circ - \\theta$ end at points that are reflections of each other across the $y$-axis. They have the same $y$-coordinate, so the sines are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin\\theta$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin(180° - θ) = sin θ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.468Z"
+        }
+      }
+    },
+    {
+      "id": "91323fd6-935e-46a4-aa97-44ecbf5c2da1",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "Which of these is undefined?",
+      "choices": [
+        "$\\csc 90^\\circ$",
+        "$\\sec 180^\\circ$",
+        "$\\csc 270^\\circ$",
+        "$\\sec 90^\\circ$"
+      ],
+      "answer": "$\\sec 90^\\circ$",
+      "compute": null,
+      "solution": "$\\sec\\theta = \\frac{1}{\\cos\\theta}$ and $\\cos 90^\\circ = 0$, so $\\sec 90^\\circ$ is undefined. The others are $1$, $-1$ and $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sec 90^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sec 90° = 1/cos 90° = 1/0 undefined; csc 270° = -1, sec 180° = -1, csc 90° = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.476Z"
+        }
+      }
+    },
+    {
+      "id": "6735e91a-9492-4e07-9d92-35cf596abdce",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "What is the exact value of $\\sin 315^\\circ$?",
+      "choices": [
+        "$-\\frac{\\sqrt{2}}{2}$",
+        "$\\frac{\\sqrt{2}}{2}$",
+        "$-\\frac{\\sqrt{3}}{2}$",
+        "$-\\frac{1}{2}$"
+      ],
+      "answer": "$-\\frac{\\sqrt{2}}{2}$",
+      "compute": null,
+      "solution": "$315^\\circ$ is in Quadrant IV with reference angle $45^\\circ$. Sine is negative there, so $\\sin 315^\\circ = -\\frac{\\sqrt{2}}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{\\sqrt{2}}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "315° is in QIV, reference 45°: sin = -√2/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.480Z"
+        }
+      }
+    },
+    {
+      "id": "d2995e2a-d8d0-487f-abd6-515eae951130",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "Which value is equal to $\\sin 60^\\circ$?",
+      "choices": [
+        "$\\cos 30^\\circ$",
+        "$\\cos 60^\\circ$",
+        "$\\sin 30^\\circ$",
+        "$\\tan 60^\\circ$"
+      ],
+      "answer": "$\\cos 30^\\circ$",
+      "compute": null,
+      "solution": "$\\sin 60^\\circ = \\frac{\\sqrt{3}}{2}$ and $\\cos 30^\\circ = \\frac{\\sqrt{3}}{2}$. The others are $\\frac{1}{2}$, $\\frac{1}{2}$ and $\\sqrt{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\cos 30^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin 60 = sqrt3/2 = cos 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.600Z"
+        }
+      }
+    },
+    {
+      "id": "79101a9a-ea6e-4499-9281-108d7c432e65",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "What is the exact value of $\\cos\\frac{5\\pi}{6}$?",
+      "choices": [
+        "$\\frac{\\sqrt{3}}{2}$",
+        "$-\\frac{\\sqrt{3}}{2}$",
+        "$-\\frac{1}{2}$",
+        "$-\\frac{\\sqrt{2}}{2}$"
+      ],
+      "answer": "$-\\frac{\\sqrt{3}}{2}$",
+      "compute": null,
+      "solution": "$\\frac{5\\pi}{6}$ is in Quadrant II with reference angle $\\frac{\\pi}{6}$. Cosine is negative there, so $\\cos\\frac{5\\pi}{6} = -\\cos\\frac{\\pi}{6} = -\\frac{\\sqrt{3}}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{\\sqrt{3}}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5pi/6 in QII, reference pi/6, cos negative: -sqrt3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.635Z"
+        }
+      }
+    },
+    {
+      "id": "68608e41-b67b-4bcc-8935-f82cbc50f0c2",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "Find the exact value of $\\cos\\left(\\frac{\\pi}{3} + 6\\pi\\right)$. Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "1/2",
+      "solution": "$6\\pi$ is 3 full turns, so the angle ends where $\\frac{\\pi}{3}$ ends. $\\cos\\frac{\\pi}{3} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6pi is 3 full turns; cos(pi/3) = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.671Z"
+        }
+      }
+    },
+    {
+      "id": "9f97c179-4849-4c4a-b2f5-b4810812b053",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Signs of the functions by quadrant",
+      "stem": "An angle $\\theta$ has $\\tan\\theta > 0$ and $\\sin\\theta < 0$. In which quadrant is its terminal ray?",
+      "choices": [
+        "Quadrant I",
+        "Quadrant II",
+        "Quadrant IV",
+        "Quadrant III"
+      ],
+      "answer": "Quadrant III",
+      "compute": null,
+      "solution": "$\\sin\\theta < 0$ means Quadrant III or IV. $\\tan\\theta = \\frac{\\sin\\theta}{\\cos\\theta} > 0$ needs sine and cosine with the same sign, so both are negative: Quadrant III.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Quadrant III",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin<0 in QIII, QIV; tan>0 in QI, QIII. Both: QIII.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.711Z"
+        }
+      }
+    },
+    {
+      "id": "7084a2d7-2fec-4efe-b9f2-a0f8c5995c5b",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "For which of these angles is $\\tan\\theta$ undefined?",
+      "choices": [
+        "$0^\\circ$",
+        "$180^\\circ$",
+        "$90^\\circ$",
+        "$45^\\circ$"
+      ],
+      "answer": "$90^\\circ$",
+      "compute": null,
+      "solution": "$\\tan\\theta = \\frac{\\sin\\theta}{\\cos\\theta}$ is undefined when $\\cos\\theta = 0$. That is true at $90^\\circ$. At $0^\\circ$ and $180^\\circ$ the tangent is 0, and at $45^\\circ$ it is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$90^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan θ = sin/cos; cos 90° = 0, so tan 90° is undefined. tan 0 = tan 180 = 0, tan 45 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.727Z"
+        }
+      }
+    },
+    {
+      "id": "bddf3cce-1a83-471f-ace0-c89dc0bf1833",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "Which angle from $0$ to $2\\pi$ is coterminal with $\\frac{19\\pi}{4}$?",
+      "choices": [
+        "$\\frac{11\\pi}{4}$",
+        "$\\frac{3\\pi}{4}$",
+        "$\\frac{5\\pi}{4}$",
+        "$\\frac{7\\pi}{4}$"
+      ],
+      "answer": "$\\frac{3\\pi}{4}$",
+      "compute": null,
+      "solution": "Subtract full turns: $\\frac{19\\pi}{4} - 4\\pi = \\frac{19\\pi}{4} - \\frac{16\\pi}{4} = \\frac{3\\pi}{4}$. The angle $\\frac{11\\pi}{4}$ is coterminal too, but it is bigger than $2\\pi$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19π/4 - 2·2π = 19π/4 - 16π/4 = 3π/4. (11π/4 is coterminal but exceeds 2π.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.751Z"
         }
       }
     },
@@ -17956,6 +21073,694 @@
           "work": "cos=-1/2, sin=-sqrt3/2: third quadrant, reference pi/3, angle 4pi/3.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:37:38.526Z"
+        }
+      }
+    },
+    {
+      "id": "3e74338f-9357-454e-89a6-35b94b0221bc",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "A point starts at $(1, 0)$ and travels counterclockwise a distance of $\\frac{25\\pi}{3}$ along the unit circle. At which point does it stop?",
+      "choices": [
+        "$\\left(\\frac{\\sqrt{3}}{2}, \\frac{1}{2}\\right)$",
+        "$\\left(\\frac{1}{2}, \\frac{\\sqrt{3}}{2}\\right)$",
+        "$\\left(-\\frac{1}{2}, \\frac{\\sqrt{3}}{2}\\right)$",
+        "$\\left(\\frac{1}{2}, -\\frac{\\sqrt{3}}{2}\\right)$"
+      ],
+      "answer": "$\\left(\\frac{1}{2}, \\frac{\\sqrt{3}}{2}\\right)$",
+      "compute": null,
+      "solution": "On the unit circle a distance equals the angle in radians. $\\frac{25\\pi}{3} - 8\\pi = \\frac{\\pi}{3}$, so the point is at the angle $\\frac{\\pi}{3}$, which is $\\left(\\frac{1}{2}, \\frac{\\sqrt{3}}{2}\\right)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(\\frac{1}{2}, \\frac{\\sqrt{3}}{2}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25pi/3=8pi+pi/3 -> (cos pi/3, sin pi/3)=(1/2, sqrt3/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.168Z"
+        }
+      }
+    },
+    {
+      "id": "06fab806-5a45-41bb-96a3-564c45ba8911",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Periodicity and coterminal angles",
+      "stem": "Find the exact value of $\\tan\\left(-\\frac{13\\pi}{4}\\right)$.",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "The tangent repeats every $\\pi$. Adding $3\\pi$ gives $-\\frac{13\\pi}{4} + \\frac{12\\pi}{4} = -\\frac{\\pi}{4}$. So $\\tan\\left(-\\frac{13\\pi}{4}\\right) = \\tan\\left(-\\frac{\\pi}{4}\\right) = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan has period pi; -13pi/4 + 4pi = 3pi/4; tan(3pi/4) = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.346Z"
+        }
+      }
+    },
+    {
+      "id": "ed98fff3-cb61-4df7-92b4-7e44d50e8de4",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "Which list puts $\\cos 60^\\circ$, $\\cos 90^\\circ$, $\\cos 30^\\circ$ and $\\cos 45^\\circ$ in order from least to greatest?",
+      "choices": [
+        "$\\cos 30^\\circ$, $\\cos 45^\\circ$, $\\cos 60^\\circ$, $\\cos 90^\\circ$",
+        "$\\cos 90^\\circ$, $\\cos 45^\\circ$, $\\cos 60^\\circ$, $\\cos 30^\\circ$",
+        "$\\cos 60^\\circ$, $\\cos 90^\\circ$, $\\cos 30^\\circ$, $\\cos 45^\\circ$",
+        "$\\cos 90^\\circ$, $\\cos 60^\\circ$, $\\cos 45^\\circ$, $\\cos 30^\\circ$"
+      ],
+      "answer": "$\\cos 90^\\circ$, $\\cos 60^\\circ$, $\\cos 45^\\circ$, $\\cos 30^\\circ$",
+      "compute": null,
+      "solution": "The values are $\\cos 90^\\circ = 0$, $\\cos 60^\\circ = 0.5$, $\\cos 45^\\circ \\approx 0.707$ and $\\cos 30^\\circ \\approx 0.866$. From least to greatest: $90^\\circ$, $60^\\circ$, $45^\\circ$, $30^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\cos 90^\\circ$, $\\cos 60^\\circ$, $\\cos 45^\\circ$, $\\cos 30^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos90=0, cos60=0.5, cos45~0.707, cos30~0.866. Least to greatest: 90,60,45,30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.356Z"
+        }
+      }
+    },
+    {
+      "id": "e9d74e2a-72b3-4301-95c0-79e23acf5a31",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Signs of the functions by quadrant",
+      "stem": "An angle $\\theta$ is in Quadrant II. Which of the six trigonometric functions of $\\theta$ are positive?",
+      "choices": [
+        "Cosine and secant only",
+        "Tangent and cotangent only",
+        "Sine and cosecant only",
+        "All six functions"
+      ],
+      "answer": "Sine and cosecant only",
+      "compute": null,
+      "solution": "In Quadrant II the $y$-coordinate (sine) is positive and the $x$-coordinate (cosine) is negative. Cosecant, the reciprocal of sine, is positive too. Tangent and cotangent are negative, and so are cosine and secant.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Sine and cosecant only",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In QII x<0, y>0: sine and cosecant positive; cos, sec, tan, cot negative.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.357Z"
+        }
+      }
+    },
+    {
+      "id": "5dd46ff0-744b-4bed-98fa-ee568d6fb849",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "Which point is on the unit circle at the angle $\\frac{5\\pi}{3}$?",
+      "choices": [
+        "$\\left(-\\frac{1}{2}, -\\frac{\\sqrt{3}}{2}\\right)$",
+        "$\\left(\\frac{1}{2}, -\\frac{\\sqrt{3}}{2}\\right)$",
+        "$\\left(\\frac{\\sqrt{3}}{2}, -\\frac{1}{2}\\right)$",
+        "$\\left(\\frac{1}{2}, \\frac{\\sqrt{3}}{2}\\right)$"
+      ],
+      "answer": "$\\left(\\frac{1}{2}, -\\frac{\\sqrt{3}}{2}\\right)$",
+      "compute": null,
+      "solution": "$\\frac{5\\pi}{3} = 300^\\circ$, in Quadrant IV with reference angle $60^\\circ$. So $\\cos = \\frac{1}{2}$ and $\\sin = -\\frac{\\sqrt{3}}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(\\frac{1}{2}, -\\frac{\\sqrt{3}}{2}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5pi/3 is in QIV, reference pi/3: (cos, sin) = (1/2, -sqrt3/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.374Z"
+        }
+      }
+    },
+    {
+      "id": "6978fb43-91f3-4d19-b49a-83bffa3156ec",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Coordinates of a point on the unit circle",
+      "stem": "A point on the unit circle in Quadrant III has $x$-coordinate $-\\frac{8}{17}$. What is the sum of its $x$- and $y$-coordinates? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "-23/17",
+      "compute": "-8/17-15/17",
+      "solution": "$y^2 = 1 - \\frac{64}{289} = \\frac{225}{289}$, so $y = -\\frac{15}{17}$ in Quadrant III. The sum is $-\\frac{8}{17} - \\frac{15}{17} = -\\frac{23}{17}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-23/17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y^2 = 1-64/289 = 225/289, y=-15/17 in QIII. Sum -8/17-15/17 = -23/17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.398Z"
+        }
+      }
+    },
+    {
+      "id": "276bf055-3ac3-4228-ad93-a7fdc1f16cd0",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "What is the exact value of $\\csc 300^\\circ$?",
+      "choices": [
+        "$-\\frac{2\\sqrt{3}}{3}$",
+        "$\\frac{2\\sqrt{3}}{3}$",
+        "$-\\frac{\\sqrt{3}}{2}$",
+        "$-2$"
+      ],
+      "answer": "$-\\frac{2\\sqrt{3}}{3}$",
+      "compute": null,
+      "solution": "$\\sin 300^\\circ = -\\frac{\\sqrt{3}}{2}$, so $\\csc 300^\\circ = -\\frac{2}{\\sqrt{3}} = -\\frac{2\\sqrt{3}}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{2\\sqrt{3}}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin300 = -sqrt3/2; csc = -2/sqrt3 = -2sqrt3/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.414Z"
+        }
+      }
+    },
+    {
+      "id": "eae68e94-9688-4814-805f-e523cd4d3883",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "Find the sum, in degrees, of all angles $\\theta$ from $0^\\circ$ to $360^\\circ$ for which $\\sin\\theta = \\frac{1}{2}$.",
+      "choices": [],
+      "answer": "180",
+      "compute": "30+150",
+      "solution": "Sine is positive in Quadrants I and II, with reference angle $30^\\circ$. The angles are $30^\\circ$ and $180^\\circ - 30^\\circ = 150^\\circ$. Their sum is $180^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin θ = 1/2 at 30° and 150° in [0°, 360°]; sum 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.430Z"
+        }
+      }
+    },
+    {
+      "id": "c7b8c5b8-a034-4da0-bb10-4fee0c247471",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "Find the exact value of $\\tan 150^\\circ \\cdot \\cot 330^\\circ$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "(1/3)*3",
+      "solution": "$\\tan 150^\\circ = -\\frac{\\sqrt{3}}{3}$. $\\cot 330^\\circ = \\frac{\\cos 330^\\circ}{\\sin 330^\\circ} = \\frac{\\sqrt{3}/2}{-1/2} = -\\sqrt{3}$. The product is $\\frac{\\sqrt{3}}{3}\\cdot\\sqrt{3} = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan 150° = -1/√3; cot 330° = (√3/2)/(-1/2) = -√3; product = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.467Z"
+        }
+      }
+    },
+    {
+      "id": "41d1e62d-3bb9-4a28-a732-8f28a0534690",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Signs of the functions by quadrant",
+      "stem": "For $\\theta = \\frac{7\\pi}{6}$, how many of the six trigonometric functions of $\\theta$ are negative?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$\\frac{7\\pi}{6}$ is in Quadrant III, where sine and cosine are negative, and so are their reciprocals cosecant and secant. Tangent and cotangent are positive. So 4 are negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7pi/6 is in Quadrant III: sin, cos negative, so csc, sec negative; tan, cot positive. 4 negative.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.529Z"
+        }
+      }
+    },
+    {
+      "id": "71e0e733-159c-4bc5-ad48-16a0054f88a3",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a reference angle",
+      "stem": "Which of these angles does not have $\\frac{\\pi}{6}$ as its reference angle?",
+      "choices": [
+        "$\\frac{2\\pi}{3}$",
+        "$\\frac{5\\pi}{6}$",
+        "$\\frac{7\\pi}{6}$",
+        "$\\frac{11\\pi}{6}$"
+      ],
+      "answer": "$\\frac{2\\pi}{3}$",
+      "compute": null,
+      "solution": "$\\frac{5\\pi}{6}$, $\\frac{7\\pi}{6}$ and $\\frac{11\\pi}{6}$ are $\\frac{\\pi}{6}$ from the $x$-axis in Quadrants II, III and IV. $\\frac{2\\pi}{3}$ is in Quadrant II with reference angle $\\pi - \\frac{2\\pi}{3} = \\frac{\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11pi/6, 5pi/6, 7pi/6 all have reference pi/6; 2pi/3 has reference pi/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.567Z"
+        }
+      }
+    },
+    {
+      "id": "3a20db1c-1600-4aee-84e8-81178871ff61",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "Find $\\sec 240^\\circ$.",
+      "choices": [],
+      "answer": "-2",
+      "compute": "1/(-1/2)",
+      "solution": "$240^\\circ$ is in Quadrant III with reference angle $60^\\circ$, so $\\cos 240^\\circ = -\\frac{1}{2}$ and $\\sec 240^\\circ = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 240 = -1/2, so sec 240 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.590Z"
+        }
+      }
+    },
+    {
+      "id": "58938262-dae3-4353-8f94-cb060e8bff64",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Symmetry of the unit circle",
+      "stem": "The unit circle point at the angle $\\theta$ is $\\left(-\\frac{5}{13}, \\frac{12}{13}\\right)$. What is the sum of the coordinates of the point at the angle $\\theta + \\pi$? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "-7/13",
+      "compute": "5/13-12/13",
+      "solution": "Adding $\\pi$ moves the point to the opposite side of the circle, so both coordinates change sign: the new point is $\\left(\\frac{5}{13}, -\\frac{12}{13}\\right)$. The sum is $\\frac{5}{13} - \\frac{12}{13} = -\\frac{7}{13}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7/13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Point at theta+pi is (5/13, -12/13); sum = -7/13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.607Z"
+        }
+      }
+    },
+    {
+      "id": "fc259894-43e1-4f3d-b124-c42bb7fc8b84",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a reference angle",
+      "stem": "The angle $\\frac{13\\pi}{6}$ is greater than one full turn. What is its reference angle, in degrees?",
+      "choices": [],
+      "answer": "30",
+      "compute": "30",
+      "solution": "$\\frac{13\\pi}{6} - 2\\pi = \\frac{\\pi}{6}$, which is $30^\\circ$ in Quadrant I. A first-quadrant angle is its own reference angle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13pi/6 - 2pi = pi/6 = 30 degrees.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.612Z"
+        }
+      }
+    },
+    {
+      "id": "bfb56e83-7c21-4dae-a53d-f9c64010b609",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "Find the exact value of $\\sin 210^\\circ \\cdot \\cos 300^\\circ$. Give your answer as a fraction.",
+      "choices": [],
+      "answer": "-1/4",
+      "compute": "(-1/2)*(1/2)",
+      "solution": "$\\sin 210^\\circ = -\\frac{1}{2}$ (Quadrant III, reference angle $30^\\circ$) and $\\cos 300^\\circ = \\frac{1}{2}$ (Quadrant IV, reference angle $60^\\circ$). The product is $-\\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin 210 = -1/2, cos 300 = 1/2; product -1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.623Z"
+        }
+      }
+    },
+    {
+      "id": "2551f439-c0db-4ddd-888f-1767842247e3",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "The angle $\\theta$ is in Quadrant III and $\\csc\\theta = -\\frac{5}{3}$. What is $\\sec\\theta$? Give your answer as a fraction.",
+      "choices": [],
+      "answer": "-5/4",
+      "compute": "-5/4",
+      "solution": "$\\sin\\theta = -\\frac{3}{5}$. Then $\\cos^2\\theta = 1 - \\frac{9}{25} = \\frac{16}{25}$, and cosine is negative in Quadrant III, so $\\cos\\theta = -\\frac{4}{5}$. Then $\\sec\\theta = -\\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc = -5/3 -> sin = -3/5. QIII: cos = -4/5. sec = -5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.640Z"
+        }
+      }
+    },
+    {
+      "id": "d30f56c2-37e7-48ff-be8a-e08c45cf843a",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "Find the exact value of $\\sin 60^\\circ \\cos 30^\\circ - \\sin 30^\\circ \\cos 60^\\circ$. Give your answer as a fraction.",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "3/4-1/4",
+      "solution": "$\\sin 60^\\circ \\cos 30^\\circ = \\frac{\\sqrt{3}}{2}\\cdot\\frac{\\sqrt{3}}{2} = \\frac{3}{4}$ and $\\sin 30^\\circ \\cos 60^\\circ = \\frac{1}{2}\\cdot\\frac{1}{2} = \\frac{1}{4}$. The difference is $\\frac{3}{4} - \\frac{1}{4} = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(sqrt3/2)(sqrt3/2) - (1/2)(1/2) = 3/4-1/4 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.665Z"
+        }
+      }
+    },
+    {
+      "id": "af7d0c8d-1f61-4a77-9d4c-7e0d36665b3d",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Sine or cosine at a special angle",
+      "stem": "Find the exact value of $\\left(\\sin 45^\\circ\\right)^2 + \\left(\\cos 30^\\circ\\right)^2$. Give your answer as a fraction.",
+      "choices": [],
+      "answer": "5/4",
+      "compute": "1/2+3/4",
+      "solution": "$\\sin 45^\\circ = \\frac{\\sqrt{2}}{2}$, so its square is $\\frac{2}{4} = \\frac{1}{2}$. $\\cos 30^\\circ = \\frac{\\sqrt{3}}{2}$, so its square is $\\frac{3}{4}$. The sum is $\\frac{1}{2} + \\frac{3}{4} = \\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(sqrt2/2)^2 + (sqrt3/2)^2 = 1/2 + 3/4 = 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.667Z"
+        }
+      }
+    },
+    {
+      "id": "3b02caa4-162b-47b2-a4b8-6b5c08f025eb",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Symmetry of the unit circle",
+      "stem": "Which statement is true for every angle $\\theta$?",
+      "choices": [
+        "$\\cos(\\theta + \\pi) = \\cos\\theta$",
+        "$\\tan(\\theta + \\pi) = -\\tan\\theta$",
+        "$\\sin(-\\theta) = \\sin\\theta$",
+        "$\\sin(\\theta + \\pi) = -\\sin\\theta$"
+      ],
+      "answer": "$\\sin(\\theta + \\pi) = -\\sin\\theta$",
+      "compute": null,
+      "solution": "Adding $\\pi$ moves the point to the opposite side of the circle, so both coordinates change sign: $\\sin(\\theta + \\pi) = -\\sin\\theta$ and $\\cos(\\theta + \\pi) = -\\cos\\theta$. The tangent is unchanged, and $\\sin(-\\theta) = -\\sin\\theta$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin(\\theta + \\pi) = -\\sin\\theta$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin(θ+π) = -sin θ: true. sin(-θ) = -sin θ; tan(θ+π) = tan θ; cos(θ+π) = -cos θ, so the others are false in general.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.735Z"
+        }
+      }
+    },
+    {
+      "id": "15ae6ab8-18ff-43a7-9d3f-00e3ad4c1c41",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "The unit circle point at the angle $\\frac{5\\pi}{6}$ is $\\left(-\\frac{\\sqrt{3}}{2}, \\frac{1}{2}\\right)$. Using $\\cot\\theta = \\frac{x}{y}$ for this point, what is $\\cot\\frac{5\\pi}{6}$?",
+      "choices": [
+        "$\\sqrt{3}$",
+        "$-\\frac{\\sqrt{3}}{3}$",
+        "$\\frac{\\sqrt{3}}{3}$",
+        "$-\\sqrt{3}$"
+      ],
+      "answer": "$-\\sqrt{3}$",
+      "compute": null,
+      "solution": "$\\frac{5\\pi}{6} = 150^\\circ$, with $\\cos 150^\\circ = -\\frac{\\sqrt{3}}{2}$ and $\\sin 150^\\circ = \\frac{1}{2}$. So $\\cot = \\frac{-\\sqrt{3}/2}{1/2} = -\\sqrt{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\sqrt{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cot = x/y = (-√3/2)/(1/2) = -√3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.741Z"
+        }
+      }
+    },
+    {
+      "id": "537ae7b8-c8ed-429c-92b7-6afbe71f7876",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Symmetry of the unit circle",
+      "stem": "Which expression is equal to $\\cos 200^\\circ$?",
+      "choices": [
+        "$\\cos 20^\\circ$",
+        "$-\\cos 70^\\circ$",
+        "$-\\cos 20^\\circ$",
+        "$\\sin 20^\\circ$"
+      ],
+      "answer": "$-\\cos 20^\\circ$",
+      "compute": null,
+      "solution": "$200^\\circ = 180^\\circ + 20^\\circ$ is in Quadrant III, where cosine is negative, with reference angle $20^\\circ$. So $\\cos 200^\\circ = -\\cos 20^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\cos 20^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200° is in QIII, reference 20°, cos negative: cos 200° = -cos 20°. -cos 70° = -sin 20°, different.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.753Z"
+        }
+      }
+    },
+    {
+      "id": "0ae0e506-5fa5-4d81-8d4c-043046550675",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "Three of the four values below are equal to each other. Which one is different from the other three?",
+      "choices": [
+        "$\\sin 30^\\circ$",
+        "$\\cos 120^\\circ$",
+        "$\\cos 60^\\circ$",
+        "$\\sin 150^\\circ$"
+      ],
+      "answer": "$\\cos 120^\\circ$",
+      "compute": null,
+      "solution": "$\\sin 30^\\circ = \\cos 60^\\circ = \\sin 150^\\circ = \\frac{1}{2}$, but $\\cos 120^\\circ = -\\frac{1}{2}$ because cosine is negative in Quadrant II.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\cos 120^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos 60° = sin 150° = sin 30° = 1/2; cos 120° = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:38:43.768Z"
         }
       }
     },
