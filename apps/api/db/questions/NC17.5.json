@@ -8,7 +8,7 @@
     "NC17.5.NBT.5": "Whole-number products only; the largest factors are 3-digit by 2-digit, as the standard says. Skills (rough counts): two-digit by two-digit 4, three-digit by two-digit 6, partial products 6, multiply by a multiple of ten 3, word problems 6, estimate to check 3, missing digit 2. Written work in columns is described by its rows (partial products) in words. Products only, as the standard asks; no division. Money is avoided (no dollar sign).",
     "NC17.5.NBT.6": "All 69 written, 23 per difficulty; nothing left out.",
     "NC17.5.NBT.7": "Decimals are kept to hundredths (products of two tenths reach hundredths); models and drawings are described in words rather than shown. Division of a decimal by a decimal uses friendly numbers that divide exactly.",
-    "NC17.5.NF.1": "Denominators are always related (one a multiple of the other) so the common denominator is the larger; answers are fractions or mixed numbers. Choice answers have no compute because the checker accepts only plain numbers there; keys were verified by exact fraction arithmetic in the generator.",
+    "NC17.5.NF.1": "Denominators are always related (one a multiple of the other) so the common denominator is the larger; answers are fractions or mixed numbers. Choice answers have no compute because the checker accepts only plain numbers there; keys were verified by exact fraction arithmetic in the generator. Denominators are related (one is a multiple of the other: halves, fourths, eighths; thirds and sixths; fifths and tenths; twelfths). Covers adding and subtracting fractions and mixed numbers (with regrouping), word problems, estimating with benchmarks, finding a missing part or start, renaming to a common denominator and finding mistakes. Numeric answers say when simplest form or a mixed number is wanted.",
     "NC17.5.NF.3": "Whole-number answers are avoided; answers are fractions or mixed numbers, as in the standard. Skills (rough counts): fraction as numerator divided by denominator (6), share less than 1 (5), share a mixed number (6), size of a quotient (4), find the amount shared (2), compare shares (2), match a story to a division (2), two-step sharing (2), find the error (1). Decimal answers left out on purpose.",
     "NC17.5.NF.4": "Area and length models are described in words (rows and columns, a rectangle with fractional sides). Answers that are fractions are in simplest form where the stem says so; any equivalent form is accepted.",
     "NC17.5.MD.1": "The conversion fact is always given in the question, as with a conversion chart, so no fact has to be remembered; both customary and metric systems, and time. Almost all are larger unit to smaller unit by multiplying; one item (60 inches to feet) goes the other way and is worded as \"what number times 12 makes 60\". No conversion between customary and metric. Skills (rough counts): customary lengths 4, metric lengths 3, weight or mass 4, capacity 4, time 2, decimal measures 3, convert then add/subtract/compare 7, choose or explain the conversion 2, small unit to large unit 1.",
@@ -22113,6 +22113,69 @@
       }
     },
     {
+      "id": "ea1d8958-9097-4f15-bf75-453e033444f2",
+      "topic_id": "NC17.5.NF.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate sums and differences with benchmark numbers",
+      "stem": "Round each fraction to the nearest of 0, $\\frac{1}{2}$ or 1 to estimate $\\frac{7}{8} + \\frac{1}{10}$. What is the estimate?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1+0",
+      "solution": "7/8 is close to 1 and 1/10 is close to 0. The estimate is 1 + 0 = 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/8 ->1, 1/10 ->0, estimate 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.624Z"
+        }
+      }
+    },
+    {
+      "id": "72562b09-57e4-4aed-93c7-e7e27a03dd28",
+      "topic_id": "NC17.5.NF.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract mixed numbers with unlike denominators",
+      "stem": "Take $2\\frac{1}{3}$ away from $5\\frac{5}{6}$. What is left?",
+      "choices": [
+        "$3\\frac{2}{3}$",
+        "$3\\frac{1}{3}$",
+        "$3\\frac{1}{2}$",
+        "$2\\frac{1}{2}$"
+      ],
+      "answer": "$3\\frac{1}{2}$",
+      "compute": null,
+      "solution": "Wholes: 5 - 2 = 3. Rename 1/3 as 2/6, then 5/6 - 2/6 = 3/6 = 1/2. The difference is 3 1/2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 5/6-2 2/6=3 3/6=3 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.646Z"
+        }
+      }
+    },
+    {
       "id": "9d49a05f-11e8-4ea7-a0cf-2db6d55a7029",
       "topic_id": "NC17.5.NF.1",
       "difficulty": 2,
@@ -22424,6 +22487,35 @@
           "work": "Jo added numerators 2+1=3 and denominators 3+6=9. Correct: 2/3=4/6, 4/6+1/6=5/6. Only option D describes the error.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:13.222Z"
+        }
+      }
+    },
+    {
+      "id": "d048a9fd-ae87-44a1-bbdf-da5e81b1809c",
+      "topic_id": "NC17.5.NF.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract fractions with unlike denominators",
+      "stem": "A candle is $\\frac{11}{12}$ foot tall. After it burns, $\\frac{1}{3}$ foot of it has melted away. How tall is the candle now? Write the answer in simplest form.",
+      "choices": [],
+      "answer": "7/12",
+      "compute": "11/12-1/3",
+      "solution": "Rename 1/3 as 4/12. Then 11/12 - 4/12 = 7/12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11/12-4/12=7/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.644Z"
         }
       }
     },
@@ -22743,6 +22835,74 @@
       }
     },
     {
+      "id": "7b953866-7bf4-4d72-864a-07229be6a96d",
+      "topic_id": "NC17.5.NF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rename fractions and find mistakes with common denominators",
+      "stem": "Mia works out $5\\frac{1}{6} - 2\\frac{1}{2}$. Which is a correct first step?",
+      "choices": [
+        "Rename $\\frac{1}{2}$ as $\\frac{3}{6}$, then regroup 1 whole from the 5 because $\\frac{1}{6}$ is less than $\\frac{3}{6}$",
+        "Subtract the wholes and the fractions separately, taking $\\frac{1}{6}$ from $\\frac{1}{2}$",
+        "Rename $\\frac{1}{6}$ as $\\frac{1}{2}$, then subtract the wholes",
+        "Add 1 to the numerator and the denominator of $\\frac{1}{6}$, then subtract"
+      ],
+      "answer": "Rename $\\frac{1}{2}$ as $\\frac{3}{6}$, then regroup 1 whole from the 5 because $\\frac{1}{6}$ is less than $\\frac{3}{6}$",
+      "compute": null,
+      "solution": "After renaming, 5 1/6 - 2 3/6 cannot be done without regrouping, since 1/6 is less than 3/6. Regroup 5 1/6 as 4 7/6. Then 4 7/6 - 2 3/6 = 2 4/6 = 2 2/3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rename $\\frac{1}{2}$ as $\\frac{3}{6}$, then regroup 1 whole from the 5 because $\\frac{1}{6}$ is less than $\\frac{3}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2=3/6; 1/6<3/6 so regroup: 4 7/6 - 2 3/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.608Z"
+        }
+      }
+    },
+    {
+      "id": "2abd43a4-c633-44e0-89a2-0b07149e6887",
+      "topic_id": "NC17.5.NF.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate sums and differences with benchmark numbers",
+      "stem": "Without finding exact sums, which sum is greater than 2?",
+      "choices": [
+        "$1\\frac{1}{2} + \\frac{3}{8}$",
+        "$\\frac{3}{4} + 1\\frac{1}{4}$",
+        "$1\\frac{7}{8} + \\frac{1}{4}$",
+        "$1\\frac{3}{10} + \\frac{1}{2}$"
+      ],
+      "answer": "$1\\frac{7}{8} + \\frac{1}{4}$",
+      "compute": null,
+      "solution": "1 7/8 + 1/4 = 2 1/8, which is greater than 2. The other sums are 1 7/8, exactly 2, and 1 4/5, so none is greater than 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{7}{8} + \\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.8; exactly 2; 1.875; 1 7/8+1/4=2 1/8>2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.637Z"
+        }
+      }
+    },
+    {
       "id": "38b9246f-ca91-48f4-8074-c83582b702d0",
       "topic_id": "NC17.5.NF.3",
       "difficulty": 1,
@@ -23058,6 +23218,35 @@
       }
     },
     {
+      "id": "b2d6ab8f-2624-41a1-8c17-fed8acfd5099",
+      "topic_id": "NC17.5.NF.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Share equally: the share is less than 1",
+      "stem": "6 friends share 5 granola bars equally. How many granola bars does each friend get?",
+      "choices": [],
+      "answer": "5/6",
+      "compute": "5/6",
+      "solution": "Each friend gets 5 ÷ 6 = $\\frac{5}{6}$ of a bar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 bar each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.635Z"
+        }
+      }
+    },
+    {
       "id": "4f8953a2-b0ca-4eac-a322-a3352c3d6b67",
       "topic_id": "NC17.5.NF.3",
       "difficulty": 2,
@@ -23369,6 +23558,35 @@
           "work": "8 crackers among 5 friends: 8 / 5 = 8/5 each.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:56.197Z"
+        }
+      }
+    },
+    {
+      "id": "906b8a7b-fe89-4909-a415-796022a2556e",
+      "topic_id": "NC17.5.NF.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "A fraction is the numerator divided by the denominator",
+      "stem": "Write $19 \\div 6$ as a mixed number.",
+      "choices": [],
+      "answer": "3 1/6",
+      "compute": "19/6",
+      "solution": "6 × 3 = 18, so 19 ÷ 6 = 3 with 1 left over. The mixed number is $3\\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 1/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19/6=3 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.649Z"
         }
       }
     },

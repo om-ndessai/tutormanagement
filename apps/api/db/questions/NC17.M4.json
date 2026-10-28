@@ -6,7 +6,8 @@
     "NC17.M4.AF.1": "Domains are not tested. Difficulty-3 compositions stay within sums, products, powers, reciprocals, roots and logs.",
     "NC17.M4.AF.2": "Exact answers only: Law of Sines and Law of Cosines items use special angles or given sine values so numeric keys are rational; radical answers are choice questions. No technology needed. Text-only; models are described by their equations or features.",
     "NC17.M4.AF.3": "69 questions written (23 per difficulty). Graphs are given by features or tables of values; irrational answers are choice questions. Extraneous-root questions state the quadratic and ask which roots survive.",
-    "NC17.M4.AF.5": "The standard says regression with technology; every question gives the fitted model or data and asks for a prediction, residual or interpretation by hand.",
+    "NC17.M4.AF.4": "Graphs are given in words (features, points, dots); no figures used.",
+    "NC17.M4.AF.5": "The standard says regression with technology; every question gives the fitted model or data and asks for a prediction, residual or interpretation by hand. Regression is done by technology in class, so every question gives the fitted model, its residuals or a small exact data set and is answered by hand. Sinusoidal and logarithmic fits use exact values (log base 2/3/10, multiples of pi/6).",
     "NC17.M4.SP.2": "Everything is asked by hand: standard errors are chosen to be exact (for example 0.02 or 0.025), z* values are given in the question, and the p-value of a two-sided test is built from a given tail area. The symbol for the sample proportion (p-hat) is not in the converter, so it is written in words.",
     "NC17.M4.SP.3": "Normal-probability and binomial questions are done by hand (empirical rule, symmetry, or a table value given in the stem). Skills: missing probability 2, expected value 3, expected value in games 2, meaning of E(X) 2, binomial conditions 1, binomial mean 2, binomial probability 4, binomial sd 1, sampling-distribution mean 1, sd of sample mean 3, sd of sample proportion 2, normal conditions 1, z-scores 2, empirical rule / normal approximation 2, table values 2."
   },
@@ -15789,6 +15790,40 @@
       }
     },
     {
+      "id": "74b32db3-6286-4e9c-aaac-6da294046e17",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = x + 2$ if $x < 0$, and $f(x) = 5$ if $x > 0$. What is the domain of $f$?",
+      "choices": [
+        "all real numbers",
+        "all real numbers greater than $0$",
+        "all real numbers except $0$",
+        "all real numbers less than $0$"
+      ],
+      "answer": "all real numbers except $0$",
+      "compute": null,
+      "solution": "The rules cover $x < 0$ and $x > 0$. The input $0$ is in neither, so $f(0)$ is not defined. The domain is every real number except $0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "all real numbers except $0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Defined for x<0 and x>0, not at 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.520Z"
+        }
+      }
+    },
+    {
       "id": "2c092515-6066-42a9-8879-f535c825e500",
       "topic_id": "NC17.M4.AF.4",
       "difficulty": 2,
@@ -16419,6 +16454,98 @@
       }
     },
     {
+      "id": "669fc428-ea38-4222-85c8-d961556df263",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Domain, range and which rule applies",
+      "stem": "Let $f(x) = 3x - 1$ if $-2 \\le x < 1$, and $f(x) = 5 - x$ if $1 < x \\le 6$. How many integers are in the domain of $f$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5",
+      "solution": "The first piece has the integers $-2, -1, 0$ (3 of them). The second has $2, 3, 4, 5, 6$ (5 of them). The input $1$ is in neither. In total $3 + 5 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Domain [-2,1)U(1,6]: -2,-1,0,2,3,4,5,6 = 8 integers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.637Z"
+        }
+      }
+    },
+    {
+      "id": "78472b3d-41f0-45d7-8567-6541e2101821",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Continuity and jumps at the break",
+      "stem": "Let $f(x) = x + 3$ if $x < a$, and $f(x) = 11 - x$ if $x \\ge a$. For which value of $a$ is $f$ continuous at $x = a$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(11-3)/2",
+      "solution": "The rules must give the same value at $x = a$: $a + 3 = 11 - a$, so $2a = 8$ and $a = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a+3=11-a, a=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.645Z"
+        }
+      }
+    },
+    {
+      "id": "c1f1f3d7-72c2-49cf-b3aa-fc50af4199c2",
+      "topic_id": "NC17.M4.AF.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Move between a graph and a rule",
+      "stem": "A function has $f(0) = 2$, $f(1) = 4$ and $f(2) = 6$ on a straight line that stops before $x = 3$. For $x \\ge 3$ the function stays at $5$. Which rule defines it?",
+      "choices": [
+        "$2x + 2$ if $x < 3$, and $5$ if $x \\ge 3$",
+        "$2x$ if $x < 3$, and $5$ if $x \\ge 3$",
+        "$2x + 2$ if $x \\le 3$, and $5$ if $x > 3$",
+        "$2x + 2$ if $x < 3$, and $5x$ if $x \\ge 3$"
+      ],
+      "answer": "$2x + 2$ if $x < 3$, and $5$ if $x \\ge 3$",
+      "compute": null,
+      "solution": "The line has slope $2$ and $y$-intercept $2$, so it is $2x + 2$ for $x < 3$. For $x \\ge 3$ the value is the constant $5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x + 2$ if $x < 3$, and $5$ if $x \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Line slope 2 intercept 2: 2x+2 for x<3, 5 for x>=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.648Z"
+        }
+      }
+    },
+    {
       "id": "05a39136-5dfc-4107-b658-7528223ccb4b",
       "topic_id": "NC17.M4.AF.5",
       "difficulty": 1,
@@ -16725,6 +16852,64 @@
           "work": "Slope = change in height per week: 2.5 cm each week.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:41.492Z"
+        }
+      }
+    },
+    {
+      "id": "0d2f27d0-665d-442a-8cfb-611b8693b727",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Residuals and judging fit",
+      "stem": "A model predicts that a store will sell 120 cups of cocoa on a cold day. The store actually sells 135 cups. What is the residual (actual value minus predicted value)?",
+      "choices": [],
+      "answer": "15",
+      "compute": "135-120",
+      "solution": "Residual = actual - predicted $= 135 - 120 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "135-120=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.618Z"
+        }
+      }
+    },
+    {
+      "id": "4fa25f1e-0151-408c-9458-ac3c14fed91f",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "Sinusoidal regression models a water level in feet as $y = 4\\sin\\left(\\frac{\\pi}{3}t\\right) + 10$, where $t$ is in seconds. What is the period of the model, in seconds?",
+      "choices": [],
+      "answer": "6",
+      "compute": "2/(1/3)",
+      "solution": "The period is $\\frac{2\\pi}{B}$ with $B = \\frac{\\pi}{3}$. So the period is $2\\pi \\div \\frac{\\pi}{3} = 6$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2pi/(pi/3)=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.626Z"
         }
       }
     },
@@ -17044,6 +17229,40 @@
       }
     },
     {
+      "id": "0ed36ebe-70b2-4b4b-92f4-309e6d85b386",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use and interpret a linear regression model",
+      "stem": "A linear regression line is fit to a child's heights at ages 2 to 10. A student uses it to predict the height at age 40. Which statement is best?",
+      "choices": [
+        "The prediction is reliable because a straight line continues forever",
+        "The prediction is exact because the line is the line of best fit",
+        "The prediction is unreliable because age 40 is far outside the data",
+        "The prediction is reliable because the correlation is positive here"
+      ],
+      "answer": "The prediction is unreliable because age 40 is far outside the data",
+      "compute": null,
+      "solution": "Using a model far outside the range of the data (extrapolation) is unreliable. People stop growing, so a line fit to ages 2 to 10 will not hold at age 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The prediction is unreliable because age 40 is far outside the data",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Extrapolation far outside ages 2-10 is unreliable.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.617Z"
+        }
+      }
+    },
+    {
       "id": "a0c70572-a586-4495-9f68-e55f4d2b926b",
       "topic_id": "NC17.M4.AF.5",
       "difficulty": 3,
@@ -17355,6 +17574,93 @@
           "work": "Repeating pattern every 12 months: periodic, so sinusoidal.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:41.492Z"
+        }
+      }
+    },
+    {
+      "id": "25685c58-67d4-44c5-80ee-81f4f3797c94",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a logarithmic regression model",
+      "stem": "Logarithmic regression gives $y = 5 + 2\\log_2 x$. What does the model predict at $x = \\frac{1}{4}$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "5+2*(0-2)",
+      "solution": "$\\log_2 \\frac{1}{4} = -2$ because $2^{-2} = \\frac{1}{4}$. So $y = 5 + 2(-2) = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "log2(1/4)=-2; 5-4=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.606Z"
+        }
+      }
+    },
+    {
+      "id": "44414c0a-ca77-4b7a-9572-c6a6059fd682",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use and interpret an exponential regression model",
+      "stem": "An exponential regression model $y = a \\cdot b^x$ with $b > 0$ passes through the points $(0, 50)$ and $(2, 200)$. What does the model predict at $x = 5$?",
+      "choices": [],
+      "answer": "1600",
+      "compute": "50*2^5",
+      "solution": "$a = 50$. At $x = 2$: $50b^2 = 200$, so $b^2 = 4$ and $b = 2$. Then $y = 50(2)^5 = 50 \\cdot 32 = 1600$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a=50, 50b^2=200, b=2; 50x32=1600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.616Z"
+        }
+      }
+    },
+    {
+      "id": "6d7c70a0-d739-4ea3-a178-4b2f95941008",
+      "topic_id": "NC17.M4.AF.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a sinusoidal regression model",
+      "stem": "Sinusoidal regression gives $y = 7\\cos\\left(\\frac{\\pi}{4}x\\right) + 15$. For how many whole-number values of $x$ from 0 to 16, including both 0 and 16, does the model predict its greatest value?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The greatest value occurs when $\\cos\\left(\\frac{\\pi}{4}x\\right) = 1$, that is when $\\frac{\\pi}{4}x = 0, 2\\pi, 4\\pi$. So $x = 0, 8, 16$, which is 3 values.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max when pi x/4 = 2 pi k, x=8k: 0,8,16: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.642Z"
         }
       }
     },

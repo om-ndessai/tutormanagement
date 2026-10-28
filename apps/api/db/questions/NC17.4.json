@@ -8,6 +8,7 @@
     "NC17.4.NBT.1": "Whole numbers up to 100,000 only; every product or quotient stays within that range. Skills (rough counts): value of a digit 4, each place ten times the place to its right 4, compare a digit in two places 4, multiply or divide by 10 5, name the place 2, explain place-value statements 4, count in place-value units 4, build a number from its places 3. Model-based items (blocks, place-value charts) are asked as written statements. Whole numbers within 100,000 only; money is avoided because a dollar sign is not allowed. Place names are asked as choice or by digit, since a word answer cannot be numeric.",
     "NC17.4.NBT.2": "Whole numbers to 100,000. Numeric questions give the numeral without commas; word forms are choice questions. Skills: words (5), numeral from words (5), expanded form (5), numeral from expanded form (5), matching forms (5), zeros as placeholders (5). All 69 written, 23 per difficulty; nothing left out.",
     "NC17.4.NBT.7": "Numbers are within 100,000. Comparisons are written with $>$, $=$ and $<$; number-line and place-value-chart pictures are not used.",
+    "NC17.4.NBT.4": "All numbers are within 100,000 (sums and differences too); no decimals. Covers adding and subtracting with regrouping (including across zeros), word problems and multi-step problems, place-value regrouping, estimating to check, missing addends and starts, and finding mistakes.",
     "NC17.4.NBT.6": "Arrays and area models are described in words (a rectangle with an area and a width). Quotients with remainders are written like \"9 R 3\" in choice questions only; numeric questions ask for the quotient or the remainder separately.",
     "NC17.4.NF.2": "Denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100 only; comparisons are written with $>$, $<$ and $=$. Models are written out in words (equal parts, a whole cut into parts). Skills (rough counts): benchmark one half 4, common denominator 4, common numerator 4, true comparison statement 2, order fractions 4, fractions in a story 5, justify a comparison 3, closest to a benchmark or between two fractions 4.",
     "NC17.4.NF.3": "Denominators 2-12 (common Grade 4 set). Mixed-number answers are written 'w n/d' and may be unsimplified (e.g. 4 2/4, 6/12) so the key follows the working; equivalent forms are accepted. Choice keys that are fractions have no compute (lint rejects compute for a non-plain-number key).",
@@ -22127,6 +22128,40 @@
       }
     },
     {
+      "id": "b6364c3c-182a-43b9-8be5-c92f9cdc35fc",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate sums and differences to check reasonableness",
+      "stem": "Rounding each number to the nearest ten thousand, what is the best estimate of $38{,}200 + 41{,}900$?",
+      "choices": [
+        "70000",
+        "90000",
+        "80000",
+        "8000"
+      ],
+      "answer": "80000",
+      "compute": "80000",
+      "solution": "38,200 rounds to 40,000 and 41,900 rounds to 40,000. The estimate is 40,000 + 40,000 = 80,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40000+40000=80000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.639Z"
+        }
+      }
+    },
+    {
       "id": "be7a0f7f-c585-40c6-8936-215d0ad69339",
       "topic_id": "NC17.4.NBT.4",
       "difficulty": 2,
@@ -22757,6 +22792,64 @@
       }
     },
     {
+      "id": "afff4c46-c9e5-4cc0-8c79-bb320047ca9e",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve addition and subtraction word problems",
+      "stem": "A car's odometer reads $48{,}675$ miles at the start of a trip and $52{,}014$ miles at the end. How many miles long was the trip?",
+      "choices": [],
+      "answer": "3339",
+      "compute": "52014-48675",
+      "solution": "The trip length is the change in the reading: 52,014 - 48,675 = 3,339 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3339",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52014-48675=3339.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.568Z"
+        }
+      }
+    },
+    {
+      "id": "11c99d9b-3076-428d-95b8-aa1bfe699fa8",
+      "topic_id": "NC17.4.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve multi-step word problems",
+      "stem": "A water tank holds $90{,}000$ liters when full. It is full on Monday. On Tuesday $24{,}850$ liters are used and on Wednesday $31{,}275$ liters are used. On Thursday $12{,}500$ liters are added. How many liters are in the tank after Thursday?",
+      "choices": [],
+      "answer": "46375",
+      "compute": "90000-24850-31275+12500",
+      "solution": "Used in total: 24,850 + 31,275 = 56,125. Left: 90,000 - 56,125 = 33,875. After adding: 33,875 + 12,500 = 46,375.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46375",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90000-24850=65150; -31275=33875; +12500=46375.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.602Z"
+        }
+      }
+    },
+    {
       "id": "0e0168f6-4b57-402c-ada8-a1fb67505fd9",
       "topic_id": "NC17.4.NBT.5",
       "difficulty": 1,
@@ -23068,6 +23161,98 @@
           "work": "11 x 15 = 150 + 15 = 165.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:42.830Z"
+        }
+      }
+    },
+    {
+      "id": "16a70062-a69f-432d-b0ff-0b9acd39bcc7",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Word problem with multi-digit multiplication",
+      "stem": "A zoo trail is 125 meters long. Rosa walks the whole trail 3 times. How many meters does she walk?",
+      "choices": [],
+      "answer": "375",
+      "compute": "125*3",
+      "solution": "3 × 100 = 300, 3 × 20 = 60 and 3 × 5 = 15. 300 + 60 + 15 = 375 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "375",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "125x3=375.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.567Z"
+        }
+      }
+    },
+    {
+      "id": "7cd5cc9e-8da4-4e21-be14-b25a3c3755d6",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare and match products",
+      "stem": "Which expression is equal to $3 \\times 40$?",
+      "choices": [
+        "$2 \\times 50$",
+        "$6 \\times 30$",
+        "$4 \\times 30$",
+        "$5 \\times 20$"
+      ],
+      "answer": "$4 \\times 30$",
+      "compute": null,
+      "solution": "3 × 40 = 120. 4 × 30 = 120, but 2 × 50 = 100, 6 × 30 = 180 and 5 × 20 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x40=120=4x30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.605Z"
+        }
+      }
+    },
+    {
+      "id": "5b96be22-e3c7-4c5e-aadf-0fb746040e13",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a two-digit number by a one-digit number",
+      "stem": "Each shelf holds 32 books. How many books do 3 shelves hold?",
+      "choices": [],
+      "answer": "96",
+      "compute": "32*3",
+      "solution": "30 × 3 = 90 and 2 × 3 = 6. 90 + 6 = 96 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32x3=96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.627Z"
         }
       }
     },
@@ -23387,6 +23572,40 @@
       }
     },
     {
+      "id": "efd3ddf9-b646-4f5b-ac24-2e29a4ec876e",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare and match products",
+      "stem": "Which statement about $6 \\times 45$ and $5 \\times 54$ is true?",
+      "choices": [
+        "$6 \\times 45$ is greater than $5 \\times 54$",
+        "$6 \\times 45$ equals $5 \\times 54$",
+        "$6 \\times 45$ is less than $5 \\times 54$",
+        "$6 \\times 45$ equals $4 \\times 70$"
+      ],
+      "answer": "$6 \\times 45$ equals $5 \\times 54$",
+      "compute": null,
+      "solution": "6 × 45 = 270 and 5 × 54 = 270, so they are equal. 4 × 70 = 280, which is not 270.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 45$ equals $5 \\times 54$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x45=270, 5x54=270, equal; 4x70=280.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.634Z"
+        }
+      }
+    },
+    {
       "id": "463cf7c0-1b0e-4658-98cf-0472ed5174a7",
       "topic_id": "NC17.4.NBT.5",
       "difficulty": 3,
@@ -23698,6 +23917,69 @@
           "work": "36x62=2232, 32x63=2016, 34x61=2074, 34x63=2142.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:42.830Z"
+        }
+      }
+    },
+    {
+      "id": "1b58274a-ed5b-4a73-b72e-01e7727f6a48",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a three-digit number by a one-digit number",
+      "stem": "What is the value of $3 \\times 487$?",
+      "choices": [
+        "1441",
+        "1421",
+        "1461",
+        "1471"
+      ],
+      "answer": "1461",
+      "compute": "3*487",
+      "solution": "3 × 400 = 1200, 3 × 80 = 240 and 3 × 7 = 21. 1200 + 240 + 21 = 1461.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1461",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x487 = 1200+240+21 = 1461.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.497Z"
+        }
+      }
+    },
+    {
+      "id": "db8a411e-60d9-4ee5-8e6f-b0451717e43d",
+      "topic_id": "NC17.4.NBT.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Area model of a product",
+      "stem": "A yard is 52 feet long and 34 feet wide. A patio inside it is 12 feet long and 10 feet wide. How many square feet of the yard are NOT covered by the patio?",
+      "choices": [],
+      "answer": "1648",
+      "compute": "52*34-12*10",
+      "solution": "The yard is 52 × 34 square feet: 52 × 30 = 1560 and 52 × 4 = 208, so 1560 + 208 = 1768. The patio is 12 × 10 = 120 square feet. 1768 - 120 = 1648 square feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1648",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52x34=1768; patio 120; 1768-120=1648.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.623Z"
         }
       }
     },

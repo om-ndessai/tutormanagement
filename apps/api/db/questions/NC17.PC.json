@@ -6,7 +6,8 @@
     "NC17.PC.N.3": "Directions are measured counterclockwise from the positive x-axis. Vectors with irrational magnitudes are choice questions.",
     "NC17.PC.A.1": "Graph work is described in words (intercepts, direction, asymptote, labeled points). Solution sets are written as inequalities (not interval unions), since set symbols are not supported. Numeric questions ask for counts of integers, sums or a largest integer so the keys are exact numbers. Text-only; graphs are described by their features in words.",
     "NC17.PC.A.2": "Arcsine and arccosine are written as sin^{-1} and cos^{-1}; irrational solutions are asked as choice questions, and trig solutions are given as exact multiples of pi or degrees. 69 questions written (23 per difficulty). Trig equations are on stated intervals in radians or degrees; irrational answers are choice questions; parametric curves are asked as equations or values.",
-    "NC17.PC.F.2": "Angles are given in degrees or radians as each question says; irrational values are choice questions.",
+    "NC17.PC.F.1": "Graphs are given by features in words; no figures used.",
+    "NC17.PC.F.2": "Angles are given in degrees or radians as each question says; irrational values are choice questions. Exact unit-circle values only; irrational answers are choice questions, rational answers numeric fractions.",
     "NC17.PC.F.3": "Triangle questions use sides and angles with exact answers (60 and 120 degrees, 3-5-7, 5-8-7, 7-15-13, sines given as fractions). Skills: inverse trig solutions (6), Pythagorean identity (5), Law of Cosines side (5) and angle (4), Law of Sines side (4) and the ambiguous case (3), choosing the law (3). The Pythagorean identity covers sin^2 + cos^2 = 1 only. Irrational answers are choice questions.",
     "NC17.PC.F.4": "Covers key features, growth and decay models, equations, transformations, optimization and identifying conics by hand. Optimization is a quadratic-area problem a student can finish without a graphing tool; graph features are asked from the equation.",
     "NC17.PC.F.5": "Skills: evaluate composites 5, find a composite 4, domain of a composite 4, composition models 5, decompose 4, find an inverse 5, check inverses by composition 3. Graphs are not used; inverses of functions with restricted domains are asked by domain and range.",
@@ -15870,6 +15871,103 @@
       }
     },
     {
+      "id": "5f1e087b-b62a-42ba-8a37-4aa4747e9233",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "A sine function has a maximum value of $9$ and a minimum value of $3$. What is its amplitude?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(9-3)/2",
+      "solution": "The amplitude is half the distance from the minimum to the maximum: $\\frac{9 - 3}{2} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(9-3)/2=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.615Z"
+        }
+      }
+    },
+    {
+      "id": "00d3c9f5-cc8e-4e2f-ba11-f5caea7371bb",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Phase shift and transformations",
+      "stem": "How is the graph of $y = \\sin\\left(x - \\frac{\\pi}{4}\\right)$ shifted from the graph of $y = \\sin x$?",
+      "choices": [
+        "$\\frac{\\pi}{4}$ units to the right",
+        "$\\frac{\\pi}{4}$ units to the left",
+        "$\\frac{\\pi}{2}$ units to the right",
+        "$\\frac{\\pi}{4}$ units up"
+      ],
+      "answer": "$\\frac{\\pi}{4}$ units to the right",
+      "compute": null,
+      "solution": "Replacing $x$ by $x - c$ shifts the graph $c$ units to the right. Here $c = \\frac{\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{4}$ units to the right",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-h shifts right by h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.643Z"
+        }
+      }
+    },
+    {
+      "id": "13e93976-fe86-4846-aeb0-7fc54b1d4b37",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Amplitude, midline and extreme values",
+      "stem": "Which function has amplitude $6$?",
+      "choices": [
+        "$y = \\sin(6x) + 1$",
+        "$y = 6\\sin x + 1$",
+        "$y = \\sin x + 6$",
+        "$y = \\sin(x + 6) + 1$"
+      ],
+      "answer": "$y = 6\\sin x + 1$",
+      "compute": null,
+      "solution": "The amplitude is the number multiplying the sine. In $y = 6\\sin x + 1$ the curve goes $6$ above and $6$ below its midline. The other options change the period, the midline or the shift.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 6\\sin x + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Amplitude is the coefficient of sin: 6sin x+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.647Z"
+        }
+      }
+    },
+    {
       "id": "f93d4e5c-77e1-4b87-b29a-271bbcda1225",
       "topic_id": "NC17.PC.F.1",
       "difficulty": 2,
@@ -16181,6 +16279,137 @@
           "work": "Period pi gives B=2; amplitude 3, midline 1; sine rises through midline at 0: y=3sin(2x)+1.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:27.920Z"
+        }
+      }
+    },
+    {
+      "id": "4616f567-e2ae-4980-8b97-757d2849dccd",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trig inequality",
+      "stem": "A student wants every $x$ in one turn of the circle, $0 \\le x \\le 2\\pi$, where $\\sin x$ is at least $\\frac{1}{2}$. Which interval is that?",
+      "choices": [
+        "$0 \\le x \\le \\frac{\\pi}{6}$ or $\\frac{5\\pi}{6} \\le x \\le 2\\pi$",
+        "$\\frac{\\pi}{3} \\le x \\le \\frac{2\\pi}{3}$",
+        "$\\frac{\\pi}{6} \\le x \\le \\frac{5\\pi}{6}$",
+        "$\\frac{\\pi}{6} \\le x \\le \\frac{\\pi}{3}$"
+      ],
+      "answer": "$\\frac{\\pi}{6} \\le x \\le \\frac{5\\pi}{6}$",
+      "compute": null,
+      "solution": "$\\sin x = \\frac{1}{2}$ at $\\frac{\\pi}{6}$ and $\\frac{5\\pi}{6}$. The sine is at least $\\frac{1}{2}$ between them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{\\pi}{6} \\le x \\le \\frac{5\\pi}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x = 1/2 at pi/6 and 5pi/6; sin>=1/2 between.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.603Z"
+        }
+      }
+    },
+    {
+      "id": "97a183c2-f6b3-474e-98ad-4b99f3e8adfd",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Phase shift and transformations",
+      "stem": "The graph of $y = \\cos x$ is stretched vertically by a factor of $3$ and then shifted up $2$ units. Which equation gives the new graph?",
+      "choices": [
+        "$y = \\cos(3x) + 2$",
+        "$y = 3\\cos x + 2$",
+        "$y = 3\\cos(x + 2)$",
+        "$y = 3\\cos x - 2$"
+      ],
+      "answer": "$y = 3\\cos x + 2$",
+      "compute": null,
+      "solution": "A vertical stretch by $3$ multiplies the cosine by $3$. Shifting up $2$ adds $2$ at the end.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 3\\cos x + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertical stretch 3 then up 2: 3cos x + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.605Z"
+        }
+      }
+    },
+    {
+      "id": "e971132f-128f-4f50-9905-b804a595e574",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Period of a trig function",
+      "stem": "What is the period of $y = \\cos\\left(\\frac{\\pi}{5}x\\right)$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2*5",
+      "solution": "The period is $\\frac{2\\pi}{\\pi/5} = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2pi/(pi/5)=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.625Z"
+        }
+      }
+    },
+    {
+      "id": "1d63930c-3d20-4427-820a-d30f20f47194",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a trig equation",
+      "stem": "List every angle $x$ in the interval $0 \\le x < 2\\pi$ whose tangent is $-1$.",
+      "choices": [
+        "$x = \\frac{\\pi}{4}$ and $x = \\frac{5\\pi}{4}$",
+        "$x = \\frac{3\\pi}{4}$ and $x = \\frac{7\\pi}{4}$",
+        "$x = \\frac{3\\pi}{4}$ and $x = \\frac{5\\pi}{4}$",
+        "$x = \\frac{3\\pi}{4}$ only"
+      ],
+      "answer": "$x = \\frac{3\\pi}{4}$ and $x = \\frac{7\\pi}{4}$",
+      "compute": null,
+      "solution": "The tangent is negative in the second and fourth quadrants, with reference angle $\\frac{\\pi}{4}$: $x = \\pi - \\frac{\\pi}{4} = \\frac{3\\pi}{4}$ and $x = 2\\pi - \\frac{\\pi}{4} = \\frac{7\\pi}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{3\\pi}{4}$ and $x = \\frac{7\\pi}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan=-1 in QII and QIV: 3pi/4, 7pi/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.633Z"
         }
       }
     },
@@ -16505,6 +16734,171 @@
       }
     },
     {
+      "id": "c4aed115-fe12-4f81-bdf4-b1d66b5fa2f7",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Secant and cosecant features",
+      "stem": "How many vertical asymptotes does $y = \\sec(2x)$ have for $0 \\le x \\le 2\\pi$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Asymptotes occur where $\\cos(2x) = 0$: $2x = \\frac{\\pi}{2} + k\\pi$, so $x = \\frac{\\pi}{4} + \\frac{k\\pi}{2}$. In the interval these are $\\frac{\\pi}{4}, \\frac{3\\pi}{4}, \\frac{5\\pi}{4}, \\frac{7\\pi}{4}$: $4$ asymptotes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos(2x)=0: x=pi/4+k pi/2: pi/4,3pi/4,5pi/4,7pi/4 in [0,2pi]: 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.604Z"
+        }
+      }
+    },
+    {
+      "id": "51ae0357-d8a4-448e-868e-d3cb6c0b690a",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Secant and cosecant features",
+      "stem": "Which function has a local maximum point at $x = \\frac{\\pi}{2}$ with a $y$-value of $-3$?",
+      "choices": [
+        "$y = 3\\csc x$",
+        "$y = -3\\sec x$",
+        "$y = -3\\csc x$",
+        "$y = 3\\sec x$"
+      ],
+      "answer": "$y = -3\\csc x$",
+      "compute": null,
+      "solution": "At $x = \\frac{\\pi}{2}$, $\\csc x = 1$, so $-3\\csc x = -3$, and this is the top of a downward-opening branch. $3\\csc x$ would give $+3$, and $\\sec x$ is undefined at $\\frac{\\pi}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = -3\\csc x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "On (0,pi), csc x>=1 so -3csc x<=-3, max -3 at pi/2. 3sec undefined at pi/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.606Z"
+        }
+      }
+    },
+    {
+      "id": "9bd75d91-e3ab-4ebd-addb-5ffad68a6b83",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Secant and cosecant features",
+      "stem": "What is the range of $y = -2\\csc x + 1$?",
+      "choices": [
+        "$y \\le -3$ or $y \\ge 1$",
+        "$y \\le -1$ or $y \\ge 3$",
+        "$y \\le -2$ or $y \\ge 2$",
+        "$-1 \\le y \\le 3$"
+      ],
+      "answer": "$y \\le -1$ or $y \\ge 3$",
+      "compute": null,
+      "solution": "$\\csc x \\ge 1$ or $\\csc x \\le -1$. Then $-2\\csc x \\le -2$ or $-2\\csc x \\ge 2$. Adding $1$ gives $y \\le -1$ or $y \\ge 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y \\le -1$ or $y \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc in (-inf,-1]U[1,inf); -2csc in (-inf,-2]U[2,inf); +1: y<=-1 or y>=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.619Z"
+        }
+      }
+    },
+    {
+      "id": "6e5f7df9-7c9a-49d3-9ea3-e9114ca8c670",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Build a trig function from features or a situation",
+      "stem": "A cosine curve has a maximum value of $5$ at $x = 2$, and its next minimum value of $-1$ at $x = 8$. Which equation could it be?",
+      "choices": [
+        "$y = 3\\cos\\left(\\frac{\\pi}{6}(x - 8)\\right) + 2$",
+        "$y = 3\\cos\\left(\\frac{\\pi}{12}(x - 2)\\right) + 2$",
+        "$y = 3\\cos\\left(\\frac{\\pi}{6}(x - 2)\\right) + 5$",
+        "$y = 3\\cos\\left(\\frac{\\pi}{6}(x - 2)\\right) + 2$"
+      ],
+      "answer": "$y = 3\\cos\\left(\\frac{\\pi}{6}(x - 2)\\right) + 2$",
+      "compute": null,
+      "solution": "The amplitude is $3$ and the midline is $2$. Maximum to minimum is half a period, so the period is $12$ and $B = \\frac{\\pi}{6}$. A cosine is at its maximum at its shift, so the shift is $2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 3\\cos\\left(\\frac{\\pi}{6}(x - 2)\\right) + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Amplitude (5-(-1))/2=3, midline 2, half period 6 so period 12, B=pi/6, max at x=2: 3cos(pi/6(x-2))+2. Check x=8: cos(pi)=-1, y=-1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.629Z"
+        }
+      }
+    },
+    {
+      "id": "43b4f77e-d405-4986-8f40-d1e3220c3926",
+      "topic_id": "NC17.PC.F.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a trig equation",
+      "stem": "Factor $2s^2 - s - 1$ with $s = \\sin x$ to solve $2(\\sin x)^2 - \\sin x - 1 = 0$ on the interval $0 \\le x < 2\\pi$. Which choice lists all the solutions?",
+      "choices": [
+        "$x = \\frac{\\pi}{2}$, $x = \\frac{\\pi}{6}$ and $x = \\frac{5\\pi}{6}$",
+        "$x = \\frac{\\pi}{2}$, $x = \\frac{7\\pi}{6}$ and $x = \\frac{11\\pi}{6}$",
+        "$x = \\frac{\\pi}{2}$, $x = \\frac{5\\pi}{6}$ and $x = \\frac{11\\pi}{6}$",
+        "$x = \\frac{3\\pi}{2}$, $x = \\frac{\\pi}{6}$ and $x = \\frac{5\\pi}{6}$"
+      ],
+      "answer": "$x = \\frac{\\pi}{2}$, $x = \\frac{7\\pi}{6}$ and $x = \\frac{11\\pi}{6}$",
+      "compute": null,
+      "solution": "Factor: $(2\\sin x + 1)(\\sin x - 1) = 0$. So $\\sin x = 1$ gives $\\frac{\\pi}{2}$, and $\\sin x = -\\frac{1}{2}$ gives $\\frac{7\\pi}{6}$ and $\\frac{11\\pi}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = \\frac{\\pi}{2}$, $x = \\frac{7\\pi}{6}$ and $x = \\frac{11\\pi}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2s+1)(s-1)=0: sin x=1 -> pi/2; sin x=-1/2 -> 7pi/6, 11pi/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.636Z"
+        }
+      }
+    },
+    {
       "id": "d0eec16a-ba95-4f8e-8893-74a50dfe60d0",
       "topic_id": "NC17.PC.F.2",
       "difficulty": 1,
@@ -16811,6 +17205,64 @@
           "work": "Point at 180 is (-1,0); cos = -1.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:41.530Z"
+        }
+      }
+    },
+    {
+      "id": "1255d8f6-3b58-4eb8-8703-64803f2d48b1",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "Find $\\csc 90^\\circ$, using $\\csc\\theta = \\frac{1}{\\sin\\theta}$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1/1",
+      "solution": "$\\sin 90^\\circ = 1$, so $\\csc 90^\\circ = \\frac{1}{1} = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin 90=1, csc=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.620Z"
+        }
+      }
+    },
+    {
+      "id": "55a8f4c7-c25f-4393-9129-4ba6ddd755a4",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Secant or cosecant at a special angle",
+      "stem": "If $\\cos\\theta = \\frac{1}{3}$, what is $\\sec\\theta$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "1/(1/3)",
+      "solution": "$\\sec\\theta = \\frac{1}{\\cos\\theta} = \\frac{1}{1/3} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sec=1/cos=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.637Z"
         }
       }
     },
@@ -17130,6 +17582,35 @@
       }
     },
     {
+      "id": "3501c125-d294-4dff-9710-a8700dcc2c2b",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tangent or cotangent at a special angle",
+      "stem": "Evaluate $\\tan 60^\\circ \\div \\tan 30^\\circ$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$\\tan 60^\\circ = \\sqrt{3}$ and $\\tan 30^\\circ = \\frac{\\sqrt{3}}{3}$. So the quotient is $\\sqrt{3} \\cdot \\frac{3}{\\sqrt{3}} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt3/(1/sqrt3)=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.641Z"
+        }
+      }
+    },
+    {
       "id": "7c0959a0-231a-4467-b40a-06674fdeab0f",
       "topic_id": "NC17.PC.F.2",
       "difficulty": 3,
@@ -17441,6 +17922,40 @@
           "work": "cos 60 = 1/2, sin 150 = 1/2, tan 225 = tan 45 = 1. Sum = 2.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:41.530Z"
+        }
+      }
+    },
+    {
+      "id": "075c3e85-5c5e-4a7a-b56b-1990ebc49ed0",
+      "topic_id": "NC17.PC.F.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Trig value in any quadrant using the reference angle",
+      "stem": "Which angle from $0$ to $2\\pi$ has $\\cos\\theta = -\\frac{1}{2}$ and $\\sin\\theta = -\\frac{\\sqrt{3}}{2}$?",
+      "choices": [
+        "$\\frac{4\\pi}{3}$",
+        "$\\frac{2\\pi}{3}$",
+        "$\\frac{5\\pi}{3}$",
+        "$\\frac{\\pi}{3}$"
+      ],
+      "answer": "$\\frac{4\\pi}{3}$",
+      "compute": null,
+      "solution": "Both coordinates are negative, so the angle is in Quadrant III. The reference angle is $\\frac{\\pi}{3}$, so the angle is $\\pi + \\frac{\\pi}{3} = \\frac{4\\pi}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{4\\pi}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos=-1/2, sin=-sqrt3/2: third quadrant, reference pi/3, angle 4pi/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.526Z"
         }
       }
     },

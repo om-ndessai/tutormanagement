@@ -7,7 +7,7 @@
     "NC17.M1.A-SSE.3": "Answers asking for two zeros are posed as the smaller/larger/positive zero, their sum or product, or as choice questions. Quadratic equations with a not 1 are included (6x^2+x-12, 2x^2+3x-20, 3x^2+5x-2).",
     "NC17.M1.A-APR.1": "Multiplication is of linear expressions only (and a monomial times a linear one), as the summary says; quadratics are only added and subtracted. Division of polynomials appears once, only as the thing that is not closed.",
     "NC17.M1.A-APR.3": "Skills (rough counts): solve a factored equation 3, zeros of a factored function 3, zeros as x-intercepts 5, factor a trinomial to find zeros 3, write factors or an equation from solutions 5, solve by factoring 5, connect a factor, a zero and a solution 5, quadratic equations in context 3 (plus the rocket and the vertex questions). Leading coefficient is 1 except one that factors out a 2 first. Graphs are described by their features in words.",
-    "NC17.M1.A-CED.1": "Exponential equations that need logarithms are not solved; numeric solve questions use powers that come out exactly (doubling, tripling, halving), and growth or decay rates with awkward answers are choice questions that only ask for the equation or inequality. Quadratic situations are solved by factoring or by square roots only.",
+    "NC17.M1.A-CED.1": "Exponential equations that need logarithms are not solved; numeric solve questions use powers that come out exactly (doubling, tripling, halving), and growth or decay rates with awkward answers are choice questions that only ask for the equation or inequality. Quadratic situations are solved by factoring or by square roots only. Quadratics are all factorable or perfect squares so they can be solved by hand; a numeric answer to a quadratic names the positive or sensible root. Technology-free throughout.",
     "NC17.M1.A-CED.2": "Graphing is tested through what words can carry: intercepts, direction and shape of a graph read from its equation, and tables of values; no picture is referred to. The quadratic questions use the vertex-free features only (intercepts), since vertex form is not named in the summary.",
     "NC17.M1.A-CED.3": "Skills (rough counts): equations from a story 3, inequalities from a story 4, equation plus inequality 2, phrase into an inequality 3, checking values against constraints 3, interpreting a model or solution 3, finding a limit from the constraints 3, solving counts-and-prices 4, two related quantities 3, rates or break-even 2. Solving is kept small and exact; writing the system is the standard's focus. Graphing is not asked because no picture is available.",
     "NC17.M1.A-CED.4": "Formulas are linear in the chosen variable (rearranging uses the steps of solving an equation); numeric questions ask for a value after rearranging. No answer is irrational.",
@@ -15915,6 +15915,137 @@
       }
     },
     {
+      "id": "aa603fc7-1bc8-4b19-8fd4-832f084273c9",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation from a situation",
+      "stem": "A rectangular poster is 2 feet longer than it is wide. Its area is 15 square feet. What is its width, in feet?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Write $w(w + 2) = 15$, so $w^{2} + 2w - 15 = 0$, which factors as $(w + 5)(w - 3) = 0$. A width is positive, so $w = 3$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w(w+2)=15, w^2+2w-15=0, (w+5)(w-3)=0, w=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.618Z"
+        }
+      }
+    },
+    {
+      "id": "7270ba2b-3354-4411-ad79-ec51b0670a5b",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "Lena has 25 stickers and gets 3 more each day. After $d$ days she has 40 stickers. Which equation matches this?",
+      "choices": [
+        "$25d + 3 = 40$",
+        "$28d = 40$",
+        "$25 - 3d = 40$",
+        "$25 + 3d = 40$"
+      ],
+      "answer": "$25 + 3d = 40$",
+      "compute": null,
+      "solution": "She starts with 25 and adds 3 stickers for each of $d$ days, so she has $25 + 3d$ stickers. That equals 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$25 + 3d = 40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 25, add 3 per day: 25+3d=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.619Z"
+        }
+      }
+    },
+    {
+      "id": "e21ae32b-42d8-4149-b9d7-ad817d8b2e1b",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a quadratic equation from a situation",
+      "stem": "A ball is dropped, and its height in feet after $t$ seconds is $100 - 16t^{2}$. Which equation can be used to find when the ball reaches the ground?",
+      "choices": [
+        "$100 - 16t^{2} = 100$",
+        "$100 - 16t = 0$",
+        "$100 + 16t^{2} = 0$",
+        "$100 - 16t^{2} = 0$"
+      ],
+      "answer": "$100 - 16t^{2} = 0$",
+      "compute": null,
+      "solution": "The ball is on the ground when its height is 0, so $100 - 16t^{2} = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$100 - 16t^{2} = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ground means height 0: 100-16t^2=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.622Z"
+        }
+      }
+    },
+    {
+      "id": "2e5cdb53-4d9e-4415-8330-1387300103dc",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a linear equation from a situation",
+      "stem": "A water bottle holds 500 milliliters. Jo drinks 50 milliliters each hour, and after $h$ hours 150 milliliters are left. Which equation represents this?",
+      "choices": [
+        "$500 - 50h = 150$",
+        "$500 + 50h = 150$",
+        "$50 - 500h = 150$",
+        "$450h = 150$"
+      ],
+      "answer": "$500 - 50h = 150$",
+      "compute": null,
+      "solution": "The water starts at 500 and goes down by 50 each hour, so what is left is $500 - 50h$. That equals 150.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$500 - 50h = 150$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500-50h=150.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.627Z"
+        }
+      }
+    },
+    {
       "id": "45df5379-a5cb-4ee0-bf8d-cd68b8887ac5",
       "topic_id": "NC17.M1.A-CED.1",
       "difficulty": 2,
@@ -16230,6 +16361,40 @@
       }
     },
     {
+      "id": "72fc2589-2aae-4ed3-84fe-9c8e883a61fc",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "Maya puts 2,500 dollars in an account that earns 4 percent interest each year, added to the balance once a year. Which equation finds the number of years, $n$, until the balance is $3{,}000$ dollars?",
+      "choices": [
+        "$2{,}500(0.04)^{n} = 3{,}000$",
+        "$2{,}500 + 1.04n = 3{,}000$",
+        "$2{,}500(1.04)^{n} = 3{,}000$",
+        "$2{,}500(1.4)^{n} = 3{,}000$"
+      ],
+      "answer": "$2{,}500(1.04)^{n} = 3{,}000$",
+      "compute": null,
+      "solution": "Earning 4 percent multiplies the balance by 1.04 each year, so after $n$ years it is $2{,}500(1.04)^{n}$. Set this equal to $3{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2{,}500(1.04)^{n} = 3{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Growth factor 1.04 per year: 2500(1.04)^n=3000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.628Z"
+        }
+      }
+    },
+    {
       "id": "e0a895f7-996f-43b8-8a05-d5c27eb771e6",
       "topic_id": "NC17.M1.A-CED.1",
       "difficulty": 3,
@@ -16536,6 +16701,98 @@
           "work": "Factor 0.8 means keeps 80%, loses 20%; starts at 50, worth 20 after t years. D.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:49.001Z"
+        }
+      }
+    },
+    {
+      "id": "2deed2b4-45ea-4b3f-910f-1f6c4c12dddd",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A fish population starts at 64 fish and grows 50 percent each year. After how many years will there be 324 fish?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Write $64(1.5)^{t} = 324$. Year by year: 96, 144, 216, 324. So $t = 4$ years.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64(1.5)^n=324, 1.5^n=324/64=81/16=(3/2)^4, n=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.507Z"
+        }
+      }
+    },
+    {
+      "id": "01c9ed5f-021c-4bc0-a19c-6c22ddc0c4d6",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write an exponential equation from a situation",
+      "stem": "A boat costs 28,000 dollars and loses 12 percent of its value each year. Mr. Lee will sell it when it is worth less than $15{,}000$ dollars. Which inequality finds the number of years, $t$, until then?",
+      "choices": [
+        "$28{,}000(0.12)^{t} < 15{,}000$",
+        "$28{,}000(0.88)^{t} < 15{,}000$",
+        "$28{,}000(0.88)^{t} > 15{,}000$",
+        "$28{,}000 - 0.12t < 15{,}000$"
+      ],
+      "answer": "$28{,}000(0.88)^{t} < 15{,}000$",
+      "compute": null,
+      "solution": "Losing 12 percent leaves 88 percent, so the value is multiplied by 0.88 each year: $28{,}000(0.88)^{t}$. It must be less than $15{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$28{,}000(0.88)^{t} < 15{,}000$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Value 28000(0.88)^t, worth less than 15000: <.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.635Z"
+        }
+      }
+    },
+    {
+      "id": "fb5139ea-2e79-45c2-b3cd-adee6b8856a6",
+      "topic_id": "NC17.M1.A-CED.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve an exponential equation from a situation",
+      "stem": "A lab has 2,000 bacteria, and the number is cut in half every 3 hours. After how many hours are there 125 bacteria?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Halving from 2000 gives 1000, 500, 250, 125, which is 4 halvings. Each takes 3 hours, so it takes $4 \\times 3 = 12$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2000/125=16=2^4, 4 halvings x 3 h = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.635Z"
         }
       }
     },

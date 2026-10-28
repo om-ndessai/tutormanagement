@@ -6,7 +6,7 @@
     "NC17.6.RP.3": "30 questions written. Skills: ratio tables and equivalent ratios 6, unit ratio and unit rate 5, measurement conversions 6, graphs of value pairs (written as ordered pairs) 6, comparing ratios and rates 3, part-to-part and part-to-whole 4. Percent is left out (not in the summary). Graphs are given only as lists of points.",
     "NC17.6.NS.1": "Visual models (strips, number lines) cannot be shown, so meaning is asked in words: how many halves fit in 4, which question a division answers, which multiplication matches. Skills (rough counts): whole number divided by a fraction 5, fraction divided by a whole number 5, fraction divided by a fraction 6, mixed numbers 3, interpreting a quotient 5, word problems 6 (more word-problem contexts also sit under the first three skills). Fractions in answers are given as a/b or mixed numbers.",
     "NC17.6.NS.3": "Answers are terminating decimals throughout (grade 6 standard algorithms). Division quotients always end; 27 divided by 8 is the only whole-number-to-decimal case.",
-    "NC17.6.NS.4": "GCF of numbers to 100 and LCM of numbers to 12 are asked as the standard states; fractions appear through simplest form and the least common denominator.",
+    "NC17.6.NS.4": "GCF of numbers to 100 and LCM of numbers to 12 are asked as the standard states; fractions appear through simplest form and the least common denominator. Whole numbers only; LCM questions use numbers up to 12 except where the prime factorizations are given; GCF up to 100. Fractions appear only as simplifying by the GCF and finding/using a least common denominator (sums of unlike fractions are grade 5 content used here only as an application).",
     "NC17.6.NS.5": "Skills (rough counts): positive and negative numbers for opposite quantities (6), meaning of zero in context (4), absolute value as distance from zero (5), absolute value as magnitude in context (4), rational numbers as signed quantities (4), opposite of a number (2), comparing magnitudes (3), numbers with a given absolute value (2). No question orders signed numbers by value or finds distances between points (6.NS.7 and 6.NS.8). Money is written in words with no dollar sign.",
     "NC17.6.NS.6": "Thirty questions on rational numbers on a number line and in the coordinate plane. The number line and the plane are described in words and coordinates; reflections are across the axes only. No distances between points (a later standard).",
     "NC17.6.EE.1": "Bases and exponents are whole numbers only (no negative or fractional bases, no zero exponent), as the standard says.",
@@ -18955,6 +18955,35 @@
       }
     },
     {
+      "id": "56ed64c9-a9fa-418f-b954-670b33175409",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract decimals",
+      "stem": "Subtract: $10.5 - 3.8$",
+      "choices": [],
+      "answer": "6.7",
+      "compute": "10.5-3.8",
+      "solution": "Line up the decimal points: $10.5 - 3.8 = 6.7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10.5-3.8=6.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.648Z"
+        }
+      }
+    },
+    {
       "id": "bd108f76-1bcf-4d6c-a177-e966dbe119f8",
       "topic_id": "NC17.6.NS.3",
       "difficulty": 2,
@@ -19261,6 +19290,98 @@
           "work": "8.4 / 0.35 = 840 / 35 = 24 pieces.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:55.350Z"
+        }
+      }
+    },
+    {
+      "id": "6a436fc9-3bae-453d-9977-b3a87c10da5a",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide whole numbers to get a decimal quotient",
+      "stem": "A rope 21 meters long is cut into 4 equal pieces. How long is each piece, in meters?",
+      "choices": [],
+      "answer": "5.25",
+      "compute": "21/4",
+      "solution": "$21 \\div 4 = 5.25$. Check: $4 \\times 5.25 = 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21/4=5.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.623Z"
+        }
+      }
+    },
+    {
+      "id": "4f1618a0-022d-4aba-97a8-514f24c6ee3b",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add decimals",
+      "stem": "Find the sum $0.095 + 2.4$.",
+      "choices": [],
+      "answer": "2.495",
+      "compute": "0.095+2.4",
+      "solution": "Write 2.4 as 2.400: $0.095 + 2.400 = 2.495$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.495",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.095+2.400=2.495.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.629Z"
+        }
+      }
+    },
+    {
+      "id": "4bd71c8a-b5c2-40b6-924a-f496ce1fd9d1",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Mixed decimal operations",
+      "stem": "Which equation is true?",
+      "choices": [
+        "$0.8 \\times 0.7 = 5.6$",
+        "$6.3 \\div 0.9 = 0.7$",
+        "$7.1 - 2.46 = 4.64$",
+        "$1.2 + 0.38 = 1.5$"
+      ],
+      "answer": "$7.1 - 2.46 = 4.64$",
+      "compute": null,
+      "solution": "$7.10 - 2.46 = 4.64$ is true. The others are false: $0.8 \\times 0.7 = 0.56$, $6.3 \\div 0.9 = 7$, and $1.2 + 0.38 = 1.58$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7.1 - 2.46 = 4.64$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.58; 0.56; 7; 7.10-2.46=4.64 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.643Z"
         }
       }
     },
@@ -19580,6 +19701,108 @@
       }
     },
     {
+      "id": "1c9bb3c4-64a2-4a19-bb4a-a2db44b3db56",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract decimals",
+      "stem": "What is $100.4 - 0.857$?",
+      "choices": [
+        "99.653",
+        "99.457",
+        "100.543",
+        "99.543"
+      ],
+      "answer": "99.543",
+      "compute": "100.4-0.857",
+      "solution": "Write 100.4 as 100.400: $100.400 - 0.857 = 99.543$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "99.543",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100.400-0.857=99.543.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.620Z"
+        }
+      }
+    },
+    {
+      "id": "e0acfea6-e094-4d8c-8fff-b1e27583bd61",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place the decimal point and estimate",
+      "stem": "Which is the best estimate of $0.49 \\times 31.2$?",
+      "choices": [
+        "12",
+        "1.5",
+        "15",
+        "150"
+      ],
+      "answer": "15",
+      "compute": null,
+      "solution": "Round 0.49 to 0.5 and 31.2 to 30: $0.5 \\times 30 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.5x30=15 (exact 15.288).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.621Z"
+        }
+      }
+    },
+    {
+      "id": "f274847f-102c-4a18-a85a-cc0d4c0e1b57",
+      "topic_id": "NC17.6.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide whole numbers to get a decimal quotient",
+      "stem": "Write $7 \\div 16$ as a decimal.",
+      "choices": [
+        "0.4375",
+        "4.375",
+        "0.04375",
+        "0.3125"
+      ],
+      "answer": "0.4375",
+      "compute": "7/16",
+      "solution": "Divide 7.0000 by 16 to get $0.4375$. Check: $16 \\times 0.4375 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.4375",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/16=0.4375.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.629Z"
+        }
+      }
+    },
+    {
       "id": "46e7cf45-b9e4-4d92-9e76-22bd2d256530",
       "topic_id": "NC17.6.NS.4",
       "difficulty": 1,
@@ -19895,6 +20118,64 @@
       }
     },
     {
+      "id": "2bf2534e-9b44-4a15-bcca-99d267c338fa",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve word problems with the greatest common factor",
+      "stem": "A ribbon 20 inches long and a ribbon 30 inches long are each cut into equal pieces. The pieces are as long as possible, a whole number of inches, with nothing left over. How many inches long is each piece?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The piece length must divide both 20 and 30. The greatest such number is the GCF of 20 and 30, which is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "GCF(20,30)=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.546Z"
+        }
+      }
+    },
+    {
+      "id": "cdfa23f6-ff68-45ea-a94e-842ab3bf3e23",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a greatest common factor",
+      "stem": "The factors of 16 are 1, 2, 4, 8, 16. The factors of 24 are 1, 2, 3, 4, 6, 8, 12, 24. What is the greatest factor that 16 and 24 share?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The numbers in both lists are 1, 2, 4 and 8. The greatest is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Common factors 1,2,4,8; greatest 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.617Z"
+        }
+      }
+    },
+    {
       "id": "a184f793-7ce5-4d4e-98ea-b139d991af42",
       "topic_id": "NC17.6.NS.4",
       "difficulty": 2,
@@ -20206,6 +20487,40 @@
           "work": "GCF(24,36)=12; 24=12x2, 36=12x3, so 12 x (2+3). 12x(2+4)=72; 4 and 6 are not the GCF.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:46:20.286Z"
+        }
+      }
+    },
+    {
+      "id": "aae1d554-7c06-4f33-817d-f550d73a4700",
+      "topic_id": "NC17.6.NS.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a greatest common factor",
+      "stem": "Which statement about 18 and 30 is true?",
+      "choices": [
+        "Their greatest common factor is 6",
+        "Their greatest common factor is 3",
+        "Their greatest common factor is 90",
+        "Their greatest common factor is 12"
+      ],
+      "answer": "Their greatest common factor is 6",
+      "compute": null,
+      "solution": "The factors of 18 are 1, 2, 3, 6, 9, 18 and of 30 are 1, 2, 3, 5, 6, 10, 15, 30. The greatest shared factor is 6. (3 is a common factor but not the greatest, 90 is a multiple of both, and 12 does not divide 30.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Their greatest common factor is 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18=2x3^2, 30=2x3x5, GCF 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.616Z"
         }
       }
     },

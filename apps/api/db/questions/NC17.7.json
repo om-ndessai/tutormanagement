@@ -7,7 +7,7 @@
     "NC17.7.RP.3": "30 questions written. Skills: scale drawings and scale factors 6, percent of a quantity (tax, tip, discount, markup, commission) 6, percent increase and decrease 4, find the whole from a percent 3, unit rates including fractions 5, simple interest 3, percent error 3. Area under scale (7.G.1) is left out. The word percent is used throughout instead of the percent sign.",
     "NC17.7.NS.2": "Skills (rough counts): multiply integers 2, divide integers 2, multiply fractions and mixed numbers 4, divide fractions 3, decimals 4, sign rules 3, terminating decimals 3, repeating decimals 4, in context 5. Repeating decimals are asked as choices (the bar notation) or by a digit position, so every numeric answer is exact.",
     "NC17.7.EE.1": "None left out. Expression answers are choice questions; numeric ones ask for a coefficient, a constant, a missing number or the value at a given x.",
-    "NC17.7.EE.2": "Skills (rough counts): percent change as a multiplier 4, using a multiplier to find a price or percent 4, interpreting a term or factor in context 5, distributing or factoring 6, expanding and combining like terms 5, deciding whether expressions are equivalent 4, writing an expression for a situation 2. Grade 7 level: rational coefficients, no equations to solve beyond finding one unknown number in an equivalent form.",
+    "NC17.7.EE.2": "Skills (rough counts): percent change as a multiplier 4, using a multiplier to find a price or percent 4, interpreting a term or factor in context 5, distributing or factoring 6, expanding and combining like terms 5, deciding whether expressions are equivalent 4, writing an expression for a situation 2. Grade 7 level: rational coefficients, no equations to solve beyond finding one unknown number in an equivalent form. Percent, price and tax questions are a smaller share than in pass A: more geometry (perimeter), rates, ages, shared bills and fractions, and negative factors. Money is in words, never a dollar sign. Grade 7 level: rational coefficients and negatives allowed; no products of two variables.",
     "NC17.7.EE.3": "Skills (rough counts): multi-step percent problems (5), fractions and decimals together (5), converting between fractions/decimals/percents (5), negative numbers (6), estimating to check reasonableness (3), unit prices and rates (4), working backward (2). Money answers are plain numbers with \"in dollars\" in the stem; no dollar sign is used. Percent signs are inside the maths.",
     "NC17.7.EE.4": "Thirty questions on multi-step equations (px + q = r and p(x + q) = r) and inequalities. Graphs of solution sets are described in words (open or closed circle, direction of the arrow). Variables on both sides are left to Grade 8.",
     "NC17.7.G.1": "Whole-number, decimal and simple fraction scales only; no similarity-ratio proofs. Skills: actual length from a drawing (7), drawing length from actual (5), the scale itself (7), actual area from a drawing (5), drawing dimensions when creating a scale drawing (4), areas on the drawing vs real life (2). Drawn figures are described by their measurements, no pictures.",
@@ -18923,6 +18923,103 @@
       }
     },
     {
+      "id": "5277a4d4-d596-4828-865e-04ba2e1de7ee",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Combine like terms",
+      "stem": "Which expression is equal to $x + x + x + 4$?",
+      "choices": [
+        "$x^3 + 4$",
+        "$4x + 3$",
+        "$3x + 12$",
+        "$3x + 4$"
+      ],
+      "answer": "$3x + 4$",
+      "compute": null,
+      "solution": "Adding $x$ three times gives $3x$. The expression is $3x + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+x+x=3x, so 3x+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.602Z"
+        }
+      }
+    },
+    {
+      "id": "4d83f851-aef0-4a89-8b13-9f032968bb07",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Simplify $\\frac{2}{5}x + \\frac{1}{5}x$.",
+      "choices": [
+        "$\\frac{3}{5}x$",
+        "$\\frac{3}{10}x$",
+        "$\\frac{3}{5}x^2$",
+        "$\\frac{2}{25}x$"
+      ],
+      "answer": "$\\frac{3}{5}x$",
+      "compute": null,
+      "solution": "The denominators match, so add the numerators: $\\frac{2}{5} + \\frac{1}{5} = \\frac{3}{5}$. The result is $\\frac{3}{5}x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{5}x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/5+1/5=3/5: 3/5 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.623Z"
+        }
+      }
+    },
+    {
+      "id": "6473093b-dac8-4612-925b-04831688a89a",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Expand linear expressions",
+      "stem": "Expand $7(x + 2)$. What is the constant term?",
+      "choices": [],
+      "answer": "14",
+      "compute": "7*2",
+      "solution": "$7(x + 2) = 7x + 14$. The constant term is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x+14; constant 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.632Z"
+        }
+      }
+    },
+    {
       "id": "ec43b904-5083-42bc-8dd6-019fa2d59373",
       "topic_id": "NC17.7.EE.1",
       "difficulty": 2,
@@ -19239,6 +19336,40 @@
           "work": "1/2 x + 3 = 1/2 (x + 6) since 1/2 x 6 = 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:55.387Z"
+        }
+      }
+    },
+    {
+      "id": "40767742-19e5-4238-b39d-199bd9569706",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Operations with rational coefficients",
+      "stem": "Which expression is equal to $\\frac{3}{4}(8x + 4) - \\frac{1}{2}(4x)$?",
+      "choices": [
+        "$8x + 3$",
+        "$4x + 1$",
+        "$6x + 1$",
+        "$4x + 3$"
+      ],
+      "answer": "$4x + 3$",
+      "compute": null,
+      "solution": "$\\frac{3}{4}(8x + 4) = 6x + 3$ and $\\frac{1}{2}(4x) = 2x$. Subtract: $6x + 3 - 2x = 4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x+3-2x=4x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.640Z"
         }
       }
     },
@@ -19568,6 +19699,69 @@
       }
     },
     {
+      "id": "bd991b9f-6cfd-4eee-9b22-4c9a5ca68a47",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Expand and combine",
+      "stem": "Which expression is equal to $-2(3x - 4) - (5 - 2x)$?",
+      "choices": [
+        "$-8x + 3$",
+        "$-4x - 13$",
+        "$-4x + 13$",
+        "$-4x + 3$"
+      ],
+      "answer": "$-4x + 3$",
+      "compute": null,
+      "solution": "$-2(3x - 4) = -6x + 8$ and $-(5 - 2x) = -5 + 2x$. Together: $-6x + 2x + 8 - 5 = -4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-6x+8-5+2x=-4x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.624Z"
+        }
+      }
+    },
+    {
+      "id": "6d84fd20-1352-4f91-a060-23ecbb13ca4f",
+      "topic_id": "NC17.7.EE.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Operations with rational coefficients",
+      "stem": "Find the value of $\\frac{1}{2}(6x - 8) + \\frac{1}{3}(9x + 6)$ when $x = 2$.",
+      "choices": [],
+      "answer": "10",
+      "compute": "(6*2-8)/2+(9*2+6)/3",
+      "solution": "Simplify: $3x - 4 + 3x + 2 = 6x - 2$. When $x = 2$ it is $12 - 2 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=2: (1/2)(4)+(1/3)(24)=2+8=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.639Z"
+        }
+      }
+    },
+    {
       "id": "1cc9eda9-d7c3-48db-8510-abb29f9602fa",
       "topic_id": "NC17.7.EE.2",
       "difficulty": 1,
@@ -19883,6 +20077,229 @@
       }
     },
     {
+      "id": "af9bc02a-3211-4bf2-b8cc-cd8c653dc7d2",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Sam writes the cost of an order as $2(x + 3)$ dollars. Lia writes it as $2x + 3$ dollars. By how many dollars do the two values differ, no matter what $x$ is?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6-3",
+      "solution": "$2(x + 3) = 2x + 6$. Lia's $2x + 3$ is always 3 less than $2x + 6$, so they differ by 3 dollars for every $x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x+3)=2x+6; 2x+6-(2x+3)=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.565Z"
+        }
+      }
+    },
+    {
+      "id": "f0930a15-237d-4e8c-a5ee-6a9edbad1719",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Ann writes the number of cookies in $n$ boxes with 6 cookies each, plus 4 extra cookies, as $6n + 4$. Raj writes it as $4 + 6n$. Which statement is true?",
+      "choices": [
+        "They are not equivalent because the 4 comes first in the second one",
+        "They are equivalent only when $n$ is 0, since the 4 must come last",
+        "They are not equivalent because $4 + 6n$ can be added up to make $10n$",
+        "They are equivalent because adding in a different order gives the same sum"
+      ],
+      "answer": "They are equivalent because adding in a different order gives the same sum",
+      "compute": null,
+      "solution": "Addition can be done in any order (the commutative property), so $6n + 4 = 4 + 6n$ for every $n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are equivalent because adding in a different order gives the same sum",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Commutative property: same sum in any order.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.567Z"
+        }
+      }
+    },
+    {
+      "id": "178809bb-152e-462b-a745-6b1b5f3322fd",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret a term or factor in context",
+      "stem": "A taxi ride costs $8 + 5n$ dollars for $n$ miles. The term $5n$ is the mileage charge. A ride has a mileage charge of 35 dollars. How many miles was the ride?",
+      "choices": [],
+      "answer": "7",
+      "compute": "35/5",
+      "solution": "The mileage charge $5n$ is 5 dollars for each mile. $35 \\div 5 = 7$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5n=35, n=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.619Z"
+        }
+      }
+    },
+    {
+      "id": "1df022cd-357a-40e8-b5fd-483a4633c5f9",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "A bike is on sale at 0.85 times its original price. The original price was 200 dollars. What is the sale price, in dollars?",
+      "choices": [],
+      "answer": "170",
+      "compute": "0.85*200",
+      "solution": "$0.85 \\times 200 = 170$ dollars. (0.85 means the bike costs 85% of the original price, a 15% discount.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "170",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.85x200=170.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.622Z"
+        }
+      }
+    },
+    {
+      "id": "21390a24-f624-4be0-897e-fb0c167be7c7",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a term or factor in context",
+      "stem": "Mia is $m$ years old. Her uncle is $3m$ years old. What does the 3 tell you?",
+      "choices": [
+        "Her uncle is 3 years older than Mia",
+        "Mia is 3 times as old as her uncle",
+        "Her uncle is 3 times as old as Mia",
+        "Her uncle is 3 years old"
+      ],
+      "answer": "Her uncle is 3 times as old as Mia",
+      "compute": null,
+      "solution": "$3m$ means 3 times $m$, so the uncle's age is 3 times Mia's age.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Her uncle is 3 times as old as Mia",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3m means 3 times m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.628Z"
+        }
+      }
+    },
+    {
+      "id": "ab7acf77-5027-4ebf-933f-2e29fb401ba4",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "A movie ticket costs $t$ dollars. A bag of popcorn costs 4 dollars less than a ticket. Which expression gives the cost, in dollars, of one ticket and one bag of popcorn?",
+      "choices": [
+        "$2t - 4$",
+        "$2t + 4$",
+        "$t - 4$",
+        "$t + 4$"
+      ],
+      "answer": "$2t - 4$",
+      "compute": null,
+      "solution": "The popcorn costs $t - 4$ dollars. Together: $t + (t - 4) = 2t - 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2t - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t+(t-4)=2t-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.632Z"
+        }
+      }
+    },
+    {
+      "id": "62cca76e-effa-41f7-9640-e615d9dbc7ae",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether two expressions are equivalent",
+      "stem": "Which expression is NOT equivalent to $3x + 9$?",
+      "choices": [
+        "$3(x + 3)$",
+        "$3(x + 9)$",
+        "$x + x + x + 9$",
+        "$3x + 3 + 6$"
+      ],
+      "answer": "$3(x + 9)$",
+      "compute": null,
+      "solution": "$3(x + 9) = 3x + 27$, not $3x + 9$. The others are equal to $3x + 9$: $3(x + 3) = 3x + 9$, $x + x + x = 3x$, and $3 + 6 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3(x + 9)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x+9)=3x+27, not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.644Z"
+        }
+      }
+    },
+    {
       "id": "621003e4-6522-490f-b232-f9b8dbe9a98d",
       "topic_id": "NC17.7.EE.2",
       "difficulty": 2,
@@ -20194,6 +20611,195 @@
           "work": "1.06p = 53, p = 53/1.06 = 50.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:08:14.912Z"
+        }
+      }
+    },
+    {
+      "id": "b4819aa6-a648-4de7-a56e-eb4d99266932",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a multiplier to find a price or a percent",
+      "stem": "Boots are on sale at 35% off and cost 52 dollars. How many dollars did the boots cost before the sale?",
+      "choices": [],
+      "answer": "80",
+      "compute": "52/0.65",
+      "solution": "The sale price is 65% of the original price, so $0.65p = 52$. Then $p = 52 \\div 0.65 = 80$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.65p=52, p=80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.532Z"
+        }
+      }
+    },
+    {
+      "id": "061e1e51-714d-40c3-aed9-7c9fea6654f9",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "A theater takes 2 dollars off each of 8 tickets that cost $t$ dollars each. The total cost, in dollars, is $8(t - 2)$. Which expression is equivalent?",
+      "choices": [
+        "$8t - 2$",
+        "$8t - 16$",
+        "$8t + 16$",
+        "$t - 16$"
+      ],
+      "answer": "$8t - 16$",
+      "compute": null,
+      "solution": "The 8 multiplies both terms: $8 \\cdot t = 8t$ and $8 \\cdot 2 = 16$. Keeping the subtraction gives $8t - 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8t - 16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8(t-2)=8t-16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.608Z"
+        }
+      }
+    },
+    {
+      "id": "208a9fc7-09a6-49dd-abe9-4319ba4719e2",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Distribute or factor to see another relationship",
+      "stem": "A phone plan costs a 24 dollar setup fee plus 8 dollars for each of $m$ months, a total of $24 + 8m$ dollars. Which expression is equivalent and shows the cost as 8 times a quantity?",
+      "choices": [
+        "$8(3 + m)$",
+        "$8(24 + m)$",
+        "$32m$",
+        "$8(3m)$"
+      ],
+      "answer": "$8(3 + m)$",
+      "compute": null,
+      "solution": "Factor 8 out of both terms: $24 = 8 \\cdot 3$ and $8m = 8 \\cdot m$. So $24 + 8m = 8(3 + m)$. This shows the setup fee is worth 3 months.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8(3 + m)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24+8m=8(3+m).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.625Z"
+        }
+      }
+    },
+    {
+      "id": "1859a668-7679-49c8-ba1f-f8c8efe29dfd",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write an expression for a situation",
+      "stem": "Kim is $k$ years old. Her brother is twice as old as Kim. Their cousin is 3 years older than the brother. Which expression gives the sum of the three ages?",
+      "choices": [
+        "$4k + 3$",
+        "$5k + 3$",
+        "$5k$",
+        "$6k + 3$"
+      ],
+      "answer": "$5k + 3$",
+      "compute": null,
+      "solution": "Brother: $2k$. Cousin: $2k + 3$. Sum: $k + 2k + (2k + 3) = 5k + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5k + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k+2k+(2k+3)=5k+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.628Z"
+        }
+      }
+    },
+    {
+      "id": "bc0e7b3b-d10f-4f86-89ec-b3747582b8f0",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Expand and combine like terms in context",
+      "stem": "A triangle has sides of $2x + 1$, $x + 4$ and $3x - 2$ centimeters. Its perimeter, in centimeters, is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "Add the sides: $x$ terms $2x + x + 3x = 6x$; numbers $1 + 4 - 2 = 3$. The perimeter is $6x + 3$, so $a + b = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x+3, a+b=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.633Z"
+        }
+      }
+    },
+    {
+      "id": "88400356-07a0-48d5-af35-5fa8dd2effb1",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write an expression for a situation",
+      "stem": "A plant is 12 centimeters tall and grows 2.5 centimeters each week. How many centimeters tall is it after 6 weeks?",
+      "choices": [],
+      "answer": "27",
+      "compute": "12+2.5*6",
+      "solution": "After $w$ weeks the height is $12 + 2.5w$. With $w = 6$: $12 + 15 = 27$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12+2.5x6=27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.638Z"
         }
       }
     },
@@ -20514,6 +21120,93 @@
           "work": "4(3x + k) + 2x = 14x + 4k = 14x + 20, so 4k = 20, k = 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:08:14.912Z"
+        }
+      }
+    },
+    {
+      "id": "2ad871e0-104f-4674-83aa-7811aae36e85",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a percent change as a multiplier",
+      "stem": "A price $p$ is raised by 25%. By what percent must the new price be lowered to return to $p$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "(1-1/1.25)*100",
+      "solution": "The new price is $1.25p$. To get back to $p$ we multiply by $\\frac{1}{1.25} = 0.8$, which is a decrease of 20%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "New price 1.25p; drop 0.25p of 1.25p = 20%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.603Z"
+        }
+      }
+    },
+    {
+      "id": "99247a34-ea8b-4231-ac30-5dae0f106952",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Expand and combine like terms in context",
+      "stem": "A bill of $6x + 9$ dollars is split into three equal shares. Mia pays one share and also pays two tips of $x - 1$ dollars each. She pays $\\frac{1}{3}(6x + 9) + 2(x - 1)$ dollars, which equals $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "4+1",
+      "solution": "$\\frac{1}{3}(6x + 9) = 2x + 3$ and $2(x - 1) = 2x - 2$. The sum is $4x + 1$, so $a + b = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x+3+2x-2=4x+1, a+b=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.640Z"
+        }
+      }
+    },
+    {
+      "id": "6b881694-fd39-4d41-8c2a-02c8bf966466",
+      "topic_id": "NC17.7.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write an expression for a situation",
+      "stem": "A ride costs 4 dollars plus 0.75 dollars for each quarter mile. What is the cost, in dollars, of a 3-mile ride?",
+      "choices": [],
+      "answer": "13",
+      "compute": "4+0.75*12",
+      "solution": "3 miles is 12 quarter miles. The cost is $4 + 0.75 \\times 12 = 4 + 9 = 13$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 miles=12 quarter miles; 4+12x0.75=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.642Z"
         }
       }
     },

@@ -22011,6 +22011,229 @@
       }
     },
     {
+      "id": "d39c7dae-4e19-4b83-a809-f59b99b3e1d8",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "estimate to check an answer",
+      "stem": "Round each number to the nearest hundred, then add to estimate $298 + 507$. What is the estimate?",
+      "choices": [],
+      "answer": "800",
+      "compute": "300+500",
+      "solution": "298 rounds to 300 and 507 rounds to 500. 300 + 500 = 800.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "298->300, 507->500, 800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.579Z"
+        }
+      }
+    },
+    {
+      "id": "0558b661-e4f1-4862-b6e0-438eb54c6835",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "subtract within 1,000",
+      "stem": "What is $749 - 316$?",
+      "choices": [
+        "443",
+        "433",
+        "533",
+        "1,065"
+      ],
+      "answer": "433",
+      "compute": "433",
+      "solution": "Subtract place by place. Ones: 9 - 6 = 3. Tens: 4 - 1 = 3. Hundreds: 7 - 3 = 4. The difference is 433.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "433",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "749-316=433.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.601Z"
+        }
+      }
+    },
+    {
+      "id": "2c05ce85-f4fc-4cd4-b4fa-95125ac62d49",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add within 1,000",
+      "stem": "What is the sum of 156 and 233?",
+      "choices": [],
+      "answer": "389",
+      "compute": "156+233",
+      "solution": "Ones: 6 + 3 = 9. Tens: 5 + 3 = 8. Hundreds: 1 + 2 = 3. The sum is 389.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "389",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "156+233=389.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.621Z"
+        }
+      }
+    },
+    {
+      "id": "95b57ded-d738-4165-a4e8-e2c2ecec32dc",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "add in a story",
+      "stem": "Kim has 125 beads. Lou has 150 beads. How many beads do Kim and Lou have together?",
+      "choices": [],
+      "answer": "275",
+      "compute": "125+150",
+      "solution": "Add: 125 + 150 = 275 beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "275",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "125+150=275.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.621Z"
+        }
+      }
+    },
+    {
+      "id": "325562a9-2499-4310-9def-a8e34f4dfb46",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Ria adds $236 + 154 = 390$. Which subtraction sentence checks her answer?",
+      "choices": [
+        "$236 - 154 = 390$",
+        "$154 - 390 = 236$",
+        "$390 + 154 = 236$",
+        "$390 - 154 = 236$"
+      ],
+      "answer": "$390 - 154 = 236$",
+      "compute": null,
+      "solution": "Subtracting one addend from the sum gives the other addend: 390 - 154 = 236.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$390 - 154 = 236$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Inverse: 390-154=236.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.625Z"
+        }
+      }
+    },
+    {
+      "id": "eca77a5f-18c7-48fd-a80d-600e1176404e",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "subtract in a story",
+      "stem": "A farmer picks 465 apples and sells 230 of them. How many apples are left?",
+      "choices": [
+        "235",
+        "695",
+        "245",
+        "225"
+      ],
+      "answer": "235",
+      "compute": "235",
+      "solution": "Subtract: 465 - 230. Hundreds: 4 - 2 = 2. Tens: 6 - 3 = 3. Ones: 5 - 0 = 5. That leaves 235 apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "235",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "465-230=235.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.632Z"
+        }
+      }
+    },
+    {
+      "id": "f5fb0c47-fa0f-4d02-b344-e3106488f571",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "add within 1,000",
+      "stem": "What is $258 + 136$?",
+      "choices": [
+        "394",
+        "384",
+        "484",
+        "404"
+      ],
+      "answer": "394",
+      "compute": "394",
+      "solution": "Ones: 8 + 6 = 14, write 4 and carry 1 ten. Tens: 5 + 3 + 1 = 9. Hundreds: 2 + 1 = 3. The sum is 394.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "394",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "258+136=394.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.648Z"
+        }
+      }
+    },
+    {
       "id": "94965488-75ee-4694-af8c-c6555b10f347",
       "topic_id": "NC17.3.NBT.2",
       "difficulty": 2,
@@ -22332,6 +22555,122 @@
           "work": "700+200=900.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:01.878Z"
+        }
+      }
+    },
+    {
+      "id": "05f0507e-3916-4516-8a85-527695a13f27",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Max finds $756 - 324$ by subtracting each place: hundreds, tens and ones. What is the difference?",
+      "choices": [],
+      "answer": "432",
+      "compute": "756-324",
+      "solution": "Hundreds: 700 - 300 = 400. Tens: 50 - 20 = 30. Ones: 6 - 4 = 2. 400 + 30 + 2 = 432.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "432",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7-3=4 hundreds, 5-2=3 tens, 6-4=2 ones: 432.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.603Z"
+        }
+      }
+    },
+    {
+      "id": "221e10c3-4d0a-414f-85e8-4725f2ff1a74",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use inverse operations to check or solve",
+      "stem": "Ravi solves $? - 284 = 439$. Use addition to find the ?",
+      "choices": [],
+      "answer": "723",
+      "compute": "439+284",
+      "solution": "The ? minus 284 is 439, so the ? is 439 + 284 = 723.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "723",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?=439+284=723.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.616Z"
+        }
+      }
+    },
+    {
+      "id": "f54ddb38-ff85-4831-8d0f-efa42429e2d2",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "add or subtract using expanded form or place value",
+      "stem": "Find $(400 + 50 + 8) + (300 + 70 + 6)$ by adding the hundreds, the tens and the ones.",
+      "choices": [],
+      "answer": "834",
+      "compute": "458+376",
+      "solution": "Hundreds: 400 + 300 = 700. Tens: 50 + 70 = 120. Ones: 8 + 6 = 14. 700 + 120 + 14 = 834.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "834",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700+120+14=834.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.634Z"
+        }
+      }
+    },
+    {
+      "id": "0c82d7b3-bac3-4808-9da3-e56e140d0f4a",
+      "topic_id": "NC17.3.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "solve a two-step story",
+      "stem": "Tess has 350 marbles. She wins 125 marbles and then gives 80 marbles to her brother. How many marbles does Tess have now?",
+      "choices": [],
+      "answer": "395",
+      "compute": "350+125-80",
+      "solution": "350 + 125 = 475. Then 475 - 80 = 395 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "395",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "350+125=475, -80=395.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.636Z"
         }
       }
     },

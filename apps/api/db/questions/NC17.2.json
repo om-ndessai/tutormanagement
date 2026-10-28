@@ -22082,6 +22082,132 @@
       }
     },
     {
+      "id": "a0c331f1-54ff-4ba5-b611-2778abd49820",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "which place decides a comparison",
+      "stem": "Compare 358 and 392. They both have 3 hundreds. Which place do you look at next to decide which is greater?",
+      "choices": [
+        "The tens place",
+        "The hundreds place",
+        "The ones place",
+        "The thousands place"
+      ],
+      "answer": "The tens place",
+      "compute": null,
+      "solution": "When the hundreds are the same, look at the tens. 5 tens is less than 9 tens, so 358 < 392.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The tens place",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hundreds equal, compare tens (5 vs 9).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.607Z"
+        }
+      }
+    },
+    {
+      "id": "6d2f42ca-b56a-45d0-b12e-cc96a77d7513",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "compare numbers in a story",
+      "stem": "Rosa has three books. They have 120 pages, 210 pages and 102 pages. How many pages are in the longest book?",
+      "choices": [],
+      "answer": "210",
+      "compute": "210",
+      "solution": "Compare hundreds: 120, 210 and 102 have 1, 2 and 1 hundreds. 210 has the most hundreds, so the longest book has 210 pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "210",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "210>120>102: 210.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.620Z"
+        }
+      }
+    },
+    {
+      "id": "4811f92e-a3b6-45e1-94fd-931914912890",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "compare numbers in a story",
+      "stem": "A bus has 215 seats and a train car has 251 seats. How many seats are in the one that has more seats?",
+      "choices": [],
+      "answer": "251",
+      "compute": "251",
+      "solution": "Both have 2 hundreds. 5 tens is more than 1 ten, so 251 is greater than 215. The one with more seats has 251 seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "251",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "251>215: 251.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.631Z"
+        }
+      }
+    },
+    {
+      "id": "8e37906e-6a9a-4e1c-8b4d-4a5c71692a13",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "compare using hundreds, tens and ones or expanded form",
+      "stem": "A number written as 600 + 50 + 3 is compared with 635. Which statement is true?",
+      "choices": [
+        "$600 + 50 + 3 < 635$",
+        "$600 + 50 + 3 = 635$",
+        "$600 + 5 + 3 > 635$",
+        "$600 + 50 + 3 > 635$"
+      ],
+      "answer": "$600 + 50 + 3 > 635$",
+      "compute": null,
+      "solution": "$600 + 50 + 3$ is 653. 653 has 5 tens and 635 has 3 tens, so $653 > 635$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$600 + 50 + 3 > 635$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "653>635.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.641Z"
+        }
+      }
+    },
+    {
       "id": "55fc2ebc-7215-4de7-9f96-3532e2aea93e",
       "topic_id": "NC17.2.NBT.4",
       "difficulty": 2,
@@ -22397,6 +22523,137 @@
       }
     },
     {
+      "id": "588f3f03-5a00-4418-adc3-d8f0cfc0cd38",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "compare two numbers and record with >, = or <",
+      "stem": "Which comparison of 439 and 493 is true?",
+      "choices": [
+        "$439 > 493$",
+        "$439 = 493$",
+        "$439 < 493$",
+        "$493 < 439$"
+      ],
+      "answer": "$439 < 493$",
+      "compute": null,
+      "solution": "Both have 4 hundreds. 3 tens is less than 9 tens, so $439 < 493$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$439 < 493$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 hundreds both; 3 tens < 9 tens: 439<493.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.608Z"
+        }
+      }
+    },
+    {
+      "id": "54834a59-0667-4889-ab18-5365451b7b76",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Which is the least 3-digit number you can make with the digits 5, 0 and 8, using each digit once?",
+      "choices": [
+        "508",
+        "058",
+        "580",
+        "805"
+      ],
+      "answer": "508",
+      "compute": null,
+      "solution": "A 3-digit number cannot start with 0, so put the smallest non-zero digit, 5, in the hundreds place. Then 0, then 8: 508.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "508",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cannot start with 0; least 508.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.622Z"
+        }
+      }
+    },
+    {
+      "id": "4d20ae25-7399-40af-bd14-e6121f1c274a",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Use the digits 6, 0 and 4 once each to make a 3-digit number. What is the greatest number you can make?",
+      "choices": [],
+      "answer": "640",
+      "compute": "640",
+      "solution": "Put the greatest digit, 6, in the hundreds place, then 4, then 0. The number is 640.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "640",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits in decreasing order: 640.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.626Z"
+        }
+      }
+    },
+    {
+      "id": "c5ae5625-7286-4036-a9e5-993117e94864",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "which place decides a comparison",
+      "stem": "Which statement explains why 612 is greater than 598?",
+      "choices": [
+        "2 ones is less than 8 ones",
+        "6 hundreds is more than 5 hundreds",
+        "1 ten is less than 9 tens",
+        "612 has more digits than 598"
+      ],
+      "answer": "6 hundreds is more than 5 hundreds",
+      "compute": null,
+      "solution": "Always compare the hundreds first. 6 hundreds is more than 5 hundreds, so 612 > 598, whatever the tens and ones are. Both numbers have three digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 hundreds is more than 5 hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Compare hundreds first: 6>5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.645Z"
+        }
+      }
+    },
+    {
       "id": "0557587b-e4c6-4eca-8ea6-e0e139dd1ae0",
       "topic_id": "NC17.2.NBT.4",
       "difficulty": 3,
@@ -22708,6 +22965,98 @@
           "work": "3 hundreds 9 tens 9 ones = 399. Only 400 > 399.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:01.840Z"
+        }
+      }
+    },
+    {
+      "id": "32e447e5-589c-44cf-abcf-09aad401a68c",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "The ? is one digit, and $7?9 > 749$ is true. Which digit could the ? be?",
+      "choices": [
+        "2",
+        "3",
+        "5",
+        "4"
+      ],
+      "answer": "5",
+      "compute": null,
+      "solution": "The tens digit must be greater than 4. Of the choices only 5 works: 759 > 749. With 4 the numbers are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7?9>749 needs ?>4 (?=4 gives 749, equal). Only 5 works.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.556Z"
+        }
+      }
+    },
+    {
+      "id": "eb8fa950-751d-4c05-8bb7-b98e751a6e03",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "find a digit or number that makes a comparison true",
+      "stem": "A number has 4 hundreds and 7 tens. It is greater than 472. What is the least number it can be?",
+      "choices": [],
+      "answer": "473",
+      "compute": "473",
+      "solution": "The number looks like 47_. It must be greater than 472, so the ones digit must be at least 3. The least is 473.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "473",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Numbers 470-479; greater than 472: least is 473.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.604Z"
+        }
+      }
+    },
+    {
+      "id": "b25dbd90-daef-4b05-8bac-76bbecc2bb80",
+      "topic_id": "NC17.2.NBT.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "make the greatest or least number from digits",
+      "stem": "Use three of the digits 3, 5, 0 and 8, each at most once, to make a 3-digit number. What is the least 3-digit number you can make?",
+      "choices": [],
+      "answer": "305",
+      "compute": "305",
+      "solution": "A 3-digit number cannot start with 0, so the hundreds digit is 3. Then use the smallest digit left, 0, then 5: 305.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "305",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest nonzero hundreds digit 3, then 0, then 5: 305.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:37:38.605Z"
         }
       }
     },
