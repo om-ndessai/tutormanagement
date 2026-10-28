@@ -6196,6 +6196,35 @@
       }
     },
     {
+      "id": "1ce3357b-480b-4cf8-a442-98eb14935b46",
+      "topic_id": "NC17.3.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Division as group count (repeated subtraction)",
+      "stem": "Ana makes groups of 9 beads from 45 beads. She subtracts 9 again and again: $45 - 9 = 36$, $36 - 9 = 27$, $27 - 9 = 18$, $18 - 9 = 9$, $9 - 9 = 0$. How many groups of 9 beads does she make?",
+      "choices": [],
+      "answer": "5",
+      "compute": "45/9",
+      "solution": "Each subtraction takes away one group of 9 beads. She subtracts 5 times, so there are 5 groups. This is the same as $45 \\div 9 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Five subtractions of 9 reach 0: 5 groups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.001Z"
+        }
+      }
+    },
+    {
       "id": "1f1cdeaa-5b36-466c-91c4-11c844dd4eb8",
       "topic_id": "NC17.3.OA.3",
       "difficulty": 1,
@@ -12316,6 +12345,98 @@
       }
     },
     {
+      "id": "3bfdb295-eed6-4aee-9e75-efa4b41e407d",
+      "topic_id": "NC17.3.OA.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Turn division into an unknown-factor multiplication",
+      "stem": "Which multiplication equation can be used to solve $56 \\div 7 = ?$",
+      "choices": [
+        "$7 \\times ? = 56$",
+        "$? \\times 56 = 7$",
+        "$56 \\times 7 = ?$",
+        "$? + 7 = 56$"
+      ],
+      "answer": "$7 \\times ? = 56$",
+      "compute": null,
+      "solution": "Division asks how many 7s make 56, so it is the same as finding the missing factor in $7 \\times ? = 56$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times ? = 56$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56/7=? is the same as 7x?=56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.825Z"
+        }
+      }
+    },
+    {
+      "id": "46c731a1-ca27-4266-961f-73d74c1f8972",
+      "topic_id": "NC17.3.OA.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unknown factor as division",
+      "stem": "Leo puts 72 cards into 8 equal piles. He writes $8 \\times ? = 72$ to find how many cards are in each pile. What is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "72/8",
+      "solution": "The ? is the number of cards in each pile. $72 \\div 8 = 9$, and $8 \\times 9 = 72$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 9 = 72, so each pile has 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.847Z"
+        }
+      }
+    },
+    {
+      "id": "0e497039-aeba-4a2d-a112-8247bef2b845",
+      "topic_id": "NC17.3.OA.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a known fact to find an unknown factor",
+      "stem": "Sam knows that $6 \\times 8 = 48$. Use this fact to find the ? in $48 \\div ? = 6$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "48/6",
+      "solution": "Dividing 48 into groups of ? gives 6, so $6 \\times ? = 48$. Since $6 \\times 8 = 48$, the ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 8 = 48 so 48 / 8 = 6; ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.870Z"
+        }
+      }
+    },
+    {
       "id": "dd4f5d46-198e-4d82-b14b-8f055400cb54",
       "topic_id": "NC17.3.OA.7",
       "difficulty": 1,
@@ -12617,6 +12738,723 @@
           "work": "27 / 9 = 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.549Z"
+        }
+      }
+    },
+    {
+      "id": "6b6686ea-5da2-49bd-8c4d-a59401ac5aec",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "There are 3 plates with 4 grapes on each plate. How many grapes are there in all?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3*4",
+      "solution": "3 plates of 4 grapes is 3 x 4 = 12 grapes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 groups of 4 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.554Z"
+        }
+      }
+    },
+    {
+      "id": "d6741506-13be-4956-8891-52510cc8c3cb",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "Which number completes $8 \\times 3 = ?$",
+      "choices": [
+        "11",
+        "21",
+        "32",
+        "24"
+      ],
+      "answer": "24",
+      "compute": "8*3",
+      "solution": "8 x 3 = 24. (Adding 8 + 3 gives 11, a different operation.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 × 3 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.582Z"
+        }
+      }
+    },
+    {
+      "id": "e5e2292c-4f30-4c27-aa82-c72404366761",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "What is $5 \\times 5$?",
+      "choices": [
+        "25",
+        "10",
+        "20",
+        "30"
+      ],
+      "answer": "25",
+      "compute": "5*5",
+      "solution": "Counting by 5s five times: 5, 10, 15, 20, 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 × 5 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.600Z"
+        }
+      }
+    },
+    {
+      "id": "f30d0313-0963-4f2d-8c3e-07847b9bbeb7",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "What is 9 times 2?",
+      "choices": [
+        "11",
+        "18",
+        "16",
+        "20"
+      ],
+      "answer": "18",
+      "compute": "9*2",
+      "solution": "9 x 2 = 18. Counting by 9s: 9, 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 × 2 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.602Z"
+        }
+      }
+    },
+    {
+      "id": "228ca4d8-d252-43a1-b1f9-9d03be6e6974",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Know products from memory",
+      "stem": "What is $4 \\times 4$?",
+      "choices": [],
+      "answer": "16",
+      "compute": "4*4",
+      "solution": "4 x 4 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 × 4 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.652Z"
+        }
+      }
+    },
+    {
+      "id": "f039954c-cf8e-4c4e-9e1e-d6c1f718709b",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Which number sentence is in the same fact family as $3 \\times 5 = 15$?",
+      "choices": [
+        "$15 \\div 3 = 5$",
+        "$15 - 3 = 12$",
+        "$3 + 5 = 8$",
+        "$15 \\div 3 = 3$"
+      ],
+      "answer": "$15 \\div 3 = 5$",
+      "compute": null,
+      "solution": "The fact family of 3, 5 and 15 holds 3 x 5 = 15, 5 x 3 = 15, 15 / 3 = 5 and 15 / 5 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$15 \\div 3 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 × 5 = 15 ↔ 15 ÷ 3 = 5. 15 ÷ 3 = 3 is false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.658Z"
+        }
+      }
+    },
+    {
+      "id": "f0c8da85-cea6-4b87-9ba8-de8c19c094af",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "Mom bakes 28 cookies. She puts 4 cookies on each plate. How many plates does she use?",
+      "choices": [],
+      "answer": "7",
+      "compute": "28/4",
+      "solution": "28 / 4 = 7 plates, because 4 x 7 = 28.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 ÷ 4 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.664Z"
+        }
+      }
+    },
+    {
+      "id": "a31e7c41-2bdb-4761-9433-752075e9aa58",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Kai knows $4 \\times 6 = 24$. What is $24 \\div 4$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "24/4",
+      "solution": "Division undoes multiplication: since 4 x 6 = 24, 24 / 4 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24/4=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.708Z"
+        }
+      }
+    },
+    {
+      "id": "f4c04baf-503c-409a-80ea-28518f94c2e8",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$? \\div 2 = 6$. What is the ?",
+      "choices": [],
+      "answer": "12",
+      "compute": "6*2",
+      "solution": "The ? shared into 2 equal parts gives 6, so the ? is 2 x 6 = 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12/2=6, so 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.715Z"
+        }
+      }
+    },
+    {
+      "id": "5d31d383-aa82-4c61-81e4-e4dd2d1cc0fd",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "Which story matches $4 \\times 6$?",
+      "choices": [
+        "Tom has 6 apples and gets 4 more apples. How many apples does he have?",
+        "Tom has 6 apples and gives away 4 apples. How many apples are left?",
+        "Tom has 24 apples and puts 4 apples in each bag. How many bags does he fill?",
+        "There are 4 bags with 6 apples in each bag. How many apples are there in all?"
+      ],
+      "answer": "There are 4 bags with 6 apples in each bag. How many apples are there in all?",
+      "compute": null,
+      "solution": "4 bags with 6 apples in each bag is 4 equal groups of 6, which is 4 x 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 4 bags with 6 apples in each bag. How many apples are there in all?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4×6 = 4 groups of 6: 4 bags with 6 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.743Z"
+        }
+      }
+    },
+    {
+      "id": "2542ac64-d8f6-4490-89c4-4519e257a609",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A teacher puts 18 pencils into 3 cups. Each cup gets the same number of pencils. How many pencils are in each cup?",
+      "choices": [],
+      "answer": "6",
+      "compute": "18/3",
+      "solution": "18 / 3 = 6 pencils in each cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18÷3=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.759Z"
+        }
+      }
+    },
+    {
+      "id": "ff0ae3a9-a942-4995-a498-a67f44178786",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "$2 \\times 8 = 16$. Which division sentence uses the same three numbers and is true?",
+      "choices": [
+        "$16 \\div 8 = 8$",
+        "$8 \\div 16 = 2$",
+        "$2 \\div 16 = 8$",
+        "$16 \\div 2 = 8$"
+      ],
+      "answer": "$16 \\div 2 = 8$",
+      "compute": null,
+      "solution": "Since 2 x 8 = 16, 16 shared into 2 groups gives 8 in each group: 16 / 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16 \\div 2 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16÷2=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.786Z"
+        }
+      }
+    },
+    {
+      "id": "37eb44d7-74f3-4c4c-ba7d-4d28cb3b43fa",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Know quotients from memory",
+      "stem": "What is $24 \\div 8$?",
+      "choices": [
+        "4",
+        "16",
+        "3",
+        "32"
+      ],
+      "answer": "3",
+      "compute": "24/8",
+      "solution": "8 x 3 = 24, so 24 / 8 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x3=24, so 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.817Z"
+        }
+      }
+    },
+    {
+      "id": "ffb10748-c4a4-46ff-a7ea-ca8c97b65cc0",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A box holds 10 crayons. How many crayons are in 7 boxes?",
+      "choices": [
+        "17",
+        "60",
+        "70",
+        "700"
+      ],
+      "answer": "70",
+      "compute": "10*7",
+      "solution": "7 boxes of 10 crayons is 7 x 10 = 70 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x 10 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.861Z"
+        }
+      }
+    },
+    {
+      "id": "b1ab442a-175b-4888-be81-008caa73d363",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Know products from memory",
+      "stem": "Find the product of 3 and 7.",
+      "choices": [],
+      "answer": "21",
+      "compute": "3*7",
+      "solution": "3 x 7 = 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 7 = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.875Z"
+        }
+      }
+    },
+    {
+      "id": "3e32394b-b312-4287-a503-efcc772ce186",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Know quotients from memory",
+      "stem": "What is $18 \\div 2$?",
+      "choices": [
+        "16",
+        "20",
+        "9",
+        "36"
+      ],
+      "answer": "9",
+      "compute": "18/2",
+      "solution": "2 x 9 = 18, so 18 / 2 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 x 9 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.898Z"
+        }
+      }
+    },
+    {
+      "id": "7290f00b-e91c-41bd-be33-fdee5d679dbc",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is $30 \\div 5$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "30/5",
+      "solution": "5 x 6 = 30, so 30 / 5 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 ÷ 5 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.916Z"
+        }
+      }
+    },
+    {
+      "id": "ec7653c5-2249-4ff5-b69e-6017f1fa37d1",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is $16 \\div 2$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "16/2",
+      "solution": "2 x 8 = 16, so 16 / 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 ÷ 2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.921Z"
+        }
+      }
+    },
+    {
+      "id": "5276a45d-d5d5-46d7-aa58-d918db465da5",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "Find the ? in $6 \\times ? = 30$.",
+      "choices": [
+        "6",
+        "5",
+        "24",
+        "36"
+      ],
+      "answer": "5",
+      "compute": "30/6",
+      "solution": "6 x 5 = 30, so the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6×5=30, ?=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.933Z"
+        }
+      }
+    },
+    {
+      "id": "5dada21c-c272-4aa7-8fae-a94725e65b77",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a known fact to find another",
+      "stem": "Jo knows $5 \\times 4 = 20$. She adds one more group of 4. What is $6 \\times 4$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "20+4",
+      "solution": "6 x 4 is one more group of 4 than 5 x 4. 20 + 4 = 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 + 4 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.940Z"
+        }
+      }
+    },
+    {
+      "id": "92147b2e-88a1-4341-ae30-4ee0fb094cb8",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$3 \\times ? = 18$. What is the ?",
+      "choices": [],
+      "answer": "6",
+      "compute": "18/3",
+      "solution": "3 x 6 = 18, so the ? is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 ÷ 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.954Z"
+        }
+      }
+    },
+    {
+      "id": "82f0077a-7bf7-4358-a65b-74292a02739e",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is 40 divided by 4?",
+      "choices": [],
+      "answer": "10",
+      "compute": "40/4",
+      "solution": "4 x 10 = 40, so 40 / 4 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 / 4 = 10 since 4 x 10 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.968Z"
+        }
+      }
+    },
+    {
+      "id": "590a5d07-42dc-461f-aac8-587497ed1504",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$4 \\times ? = 32$. What is the ?",
+      "choices": [],
+      "answer": "8",
+      "compute": "32/4",
+      "solution": "4 x 8 = 32, so the ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 8 = 32, so ? = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.969Z"
         }
       }
     },
@@ -12931,6 +13769,718 @@
       }
     },
     {
+      "id": "4ae3b8d4-647d-45a9-983d-313fe3406a2e",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$7 \\times ? = 56$. What is the ?",
+      "choices": [],
+      "answer": "8",
+      "compute": "56/7",
+      "solution": "7 x 8 = 56, so the ? is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56 ÷ 7 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.590Z"
+        }
+      }
+    },
+    {
+      "id": "f4f257fa-d800-472a-bc54-5cd70d254d57",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "Which expression equals 63?",
+      "choices": [
+        "$7 \\times 9$",
+        "$8 \\times 8$",
+        "$6 \\times 9$",
+        "$7 \\times 8$"
+      ],
+      "answer": "$7 \\times 9$",
+      "compute": null,
+      "solution": "7 x 9 = 63. The others are 64, 54 and 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 × 9 = 63; 6×9=54, 8×8=64, 7×8=56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.601Z"
+        }
+      }
+    },
+    {
+      "id": "e17c4fed-09a9-4b71-9fd9-fb07334af709",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "Which number makes $? \\div 7 = 6$ true?",
+      "choices": [
+        "13",
+        "49",
+        "42",
+        "36"
+      ],
+      "answer": "42",
+      "compute": "6*7",
+      "solution": "The ? is 6 groups of 7: 6 x 7 = 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 × 7 = 42, so 42 ÷ 7 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.617Z"
+        }
+      }
+    },
+    {
+      "id": "5d956fdf-669a-4a14-86a3-75bf787d50b2",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Know quotients from memory",
+      "stem": "What is $49 \\div 7$?",
+      "choices": [
+        "8",
+        "7",
+        "42",
+        "56"
+      ],
+      "answer": "7",
+      "compute": "49/7",
+      "solution": "7 x 7 = 49, so 49 / 7 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 × 7 = 49, so 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.621Z"
+        }
+      }
+    },
+    {
+      "id": "ce527428-d914-4b78-b940-c24a5f03b62a",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a known fact to find another",
+      "stem": "Which expression has the same value as $7 \\times 6$?",
+      "choices": [
+        "$7 \\times 5 + 5$",
+        "$7 \\times 5 + 6$",
+        "$7 \\times 6 + 6$",
+        "$7 \\times 5 + 7$"
+      ],
+      "answer": "$7 \\times 5 + 7$",
+      "compute": null,
+      "solution": "6 groups of 7 is 5 groups of 7 plus one more 7: 7 x 5 + 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 5 + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 × 6 = 42 = 7 × 5 + 7 (35 + 7). Others: 48, 40, 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.623Z"
+        }
+      }
+    },
+    {
+      "id": "c19ea288-f164-4884-afcd-72cac69a3c2c",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a known fact to find another",
+      "stem": "Sam knows $4 \\times 9 = 36$. He doubles 36 to find $8 \\times 9$. What is $8 \\times 9$?",
+      "choices": [],
+      "answer": "72",
+      "compute": "36*2",
+      "solution": "8 groups of 9 is double 4 groups of 9. 36 x 2 = 72.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 × 9 = 2 × 36 = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.624Z"
+        }
+      }
+    },
+    {
+      "id": "2ae13a50-95bf-4dd7-b475-8aaf84b15c3f",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A pack holds 6 markers. Mr. Lee needs 42 markers. How many packs does he need?",
+      "choices": [
+        "7",
+        "6",
+        "8",
+        "36"
+      ],
+      "answer": "7",
+      "compute": "42/6",
+      "solution": "42 / 6 = 7 packs, because 6 x 7 = 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42/6=7 packs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.680Z"
+        }
+      }
+    },
+    {
+      "id": "b286bd78-aa92-42a5-903e-fa3522d8b6c0",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$? \\times 9 = 54$. What is the ?",
+      "choices": [],
+      "answer": "6",
+      "compute": "54/9",
+      "solution": "6 x 9 = 54, so the ? is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x9=54, so 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.680Z"
+        }
+      }
+    },
+    {
+      "id": "6a1d5048-215d-4715-b6cd-2affef22113c",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Hana knows $6 \\times 7 = 42$. Which sentence must be false?",
+      "choices": [
+        "$42 \\div 7 = 7$",
+        "$42 \\div 6 = 7$",
+        "$7 \\times 6 = 42$",
+        "$42 \\div 7 = 6$"
+      ],
+      "answer": "$42 \\div 7 = 7$",
+      "compute": null,
+      "solution": "From 6 x 7 = 42, 42 / 7 = 6, not 7. So 42 / 7 = 7 is false.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$42 \\div 7 = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42/7=6, not 7, so 42/7=7 is false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.722Z"
+        }
+      }
+    },
+    {
+      "id": "cfd41872-590a-493a-ac5e-62e6e88b1107",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Know products from memory",
+      "stem": "What is $6 \\times 6$?",
+      "choices": [],
+      "answer": "36",
+      "compute": "6*6",
+      "solution": "6 x 6 = 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x6=36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.723Z"
+        }
+      }
+    },
+    {
+      "id": "5dd8b954-ece4-4b9b-8bc5-3d214dcad64f",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Which multiplication fact gives the answer to $56 \\div 8$?",
+      "choices": [
+        "$7 \\times 7 = 49$",
+        "$8 \\times 6 = 48$",
+        "$7 \\times 8 = 56$",
+        "$8 \\times 9 = 72$"
+      ],
+      "answer": "$7 \\times 8 = 56$",
+      "compute": null,
+      "solution": "56 / 8 asks what times 8 makes 56. 7 x 8 = 56, so the answer is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 8 = 56$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56÷8=7 because 7×8=56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.744Z"
+        }
+      }
+    },
+    {
+      "id": "9c407779-4ee1-495e-9b85-34a6b6d6da5c",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is $64 \\div 8$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "64/8",
+      "solution": "8 x 8 = 64, so 64 / 8 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x8=64 -> 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.836Z"
+        }
+      }
+    },
+    {
+      "id": "7f188ecf-7817-451a-8671-d8ec0b0370c3",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Know products from memory",
+      "stem": "What is $8 \\times 6$?",
+      "choices": [],
+      "answer": "48",
+      "compute": "8*6",
+      "solution": "8 x 6 = 48. (Five 8s are 40, and one more 8 makes 48.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x6 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.841Z"
+        }
+      }
+    },
+    {
+      "id": "df4ed006-7682-426e-a6f6-193a83ecca15",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "Which is the product of 9 and 4?",
+      "choices": [
+        "32",
+        "36",
+        "13",
+        "40"
+      ],
+      "answer": "36",
+      "compute": "9*4",
+      "solution": "9 x 4 = 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.841Z"
+        }
+      }
+    },
+    {
+      "id": "95f26da2-1271-47ce-8b62-be7e53060f6d",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "If $9 \\times 5 = 45$, then $45 \\div 9 = ?$",
+      "choices": [],
+      "answer": "5",
+      "compute": "45/9",
+      "solution": "Division undoes multiplication: 45 / 9 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 / 9 = 5 since 9 x 5 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.861Z"
+        }
+      }
+    },
+    {
+      "id": "eb68b4e9-2b9f-4692-927c-1a4966b85750",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "The numbers 3, 8 and 24 make a fact family. One fact is $24 \\div 3 = 8$. What is $24 \\div 8$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "24/8",
+      "solution": "Since 3 x 8 = 24, 24 / 8 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 / 8 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.864Z"
+        }
+      }
+    },
+    {
+      "id": "eb2f43db-a3c7-43ef-925f-0f07605dc1f7",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is $54 \\div 6$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "54/6",
+      "solution": "6 x 9 = 54, so 54 / 6 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 9 = 54, so 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.873Z"
+        }
+      }
+    },
+    {
+      "id": "484dbbd7-9d24-44c8-b172-92df5f1a62f2",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A garden has 7 rows of tomato plants. Each row has 8 plants. How many tomato plants are in the garden?",
+      "choices": [],
+      "answer": "56",
+      "compute": "7*8",
+      "solution": "7 rows of 8 plants is 7 x 8 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x 8 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.891Z"
+        }
+      }
+    },
+    {
+      "id": "e811801d-22cf-4a6f-9132-55be7f91f8d5",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a known fact to find another",
+      "stem": "Lee knows $5 \\times 7 = 35$. He uses it to find $6 \\times 7$. What is $6 \\times 7$?",
+      "choices": [],
+      "answer": "42",
+      "compute": "35+7",
+      "solution": "6 x 7 is one more 7 than 5 x 7. 35 + 7 = 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6×7 = 5×7 + 7 = 35 + 7 = 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.911Z"
+        }
+      }
+    },
+    {
+      "id": "2534738c-79ef-4bc8-8580-75130610c4b3",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$72 \\div ? = 8$. What is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "72/8",
+      "solution": "72 divided into groups of 8 gives 9, because 8 x 9 = 72.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 ÷ 9 = 8, so ? = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.926Z"
+        }
+      }
+    },
+    {
+      "id": "2ea19cdc-5e13-461f-8f67-9d133e9d97cb",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "Pam has 63 beads. She makes 7 bracelets with the same number of beads on each. How many beads are on each bracelet?",
+      "choices": [],
+      "answer": "9",
+      "compute": "63/7",
+      "solution": "63 / 7 = 9 beads, because 7 x 9 = 63.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63 / 7 = 9 beads per bracelet.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.966Z"
+        }
+      }
+    },
+    {
+      "id": "afcf560d-7964-495b-bf64-7f0029e9a025",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Know quotients from memory",
+      "stem": "Which division has a quotient of 6?",
+      "choices": [
+        "$36 \\div 4$",
+        "$56 \\div 8$",
+        "$45 \\div 9$",
+        "$48 \\div 8$"
+      ],
+      "answer": "$48 \\div 8$",
+      "compute": null,
+      "solution": "48 / 8 = 6. The others are 9, 7 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$48 \\div 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/4=9, 45/9=5, 56/8=7, 48/8=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.980Z"
+        }
+      }
+    },
+    {
+      "id": "c54891cd-d87f-4f06-bb27-8eac18dc7ce9",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "72 stickers are put in 9 packs. Each pack has the same number of stickers. How many stickers are in each pack?",
+      "choices": [],
+      "answer": "8",
+      "compute": "72/9",
+      "solution": "72 / 9 = 8 stickers in each pack.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 / 9 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.981Z"
+        }
+      }
+    },
+    {
       "id": "417fbc14-eb8f-4608-b0d2-b4bb9e0a02ae",
       "topic_id": "NC17.3.OA.7",
       "difficulty": 3,
@@ -13237,6 +14787,723 @@
           "work": "48 / 6 = number of bags of 6 from 48. Others: subtraction, addition, multiplication (6 x 48).",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.549Z"
+        }
+      }
+    },
+    {
+      "id": "a8d196a1-a5ef-4d14-abe0-34dcddb7eacf",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a known fact to find another",
+      "stem": "Ben knows $10 \\times 7 = 70$. He takes away one group of 7 to find $9 \\times 7$. What is $9 \\times 7$?",
+      "choices": [],
+      "answer": "63",
+      "compute": "70-7",
+      "solution": "9 x 7 is one group of 7 fewer than 10 x 7. 70 - 7 = 63.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70 − 7 = 63.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.622Z"
+        }
+      }
+    },
+    {
+      "id": "01ffe339-c877-4bbe-9aea-1c558d153c61",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A baker puts 6 muffins in each box. She fills 8 boxes and has 5 muffins left over. How many muffins did she bake?",
+      "choices": [],
+      "answer": "53",
+      "compute": "6*8+5",
+      "solution": "8 boxes of 6 is 8 x 6 = 48. With the 5 left over, 48 + 5 = 53.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 × 8 + 5 = 53.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.662Z"
+        }
+      }
+    },
+    {
+      "id": "fa5033c3-72d7-4cba-8cd3-0fa660b2ca9f",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is $45 \\div 5$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "45/5",
+      "solution": "5 x 9 = 45, so 45 / 5 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x9=45, so 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.678Z"
+        }
+      }
+    },
+    {
+      "id": "fc57e96c-cd41-47a8-85c3-eb8c51652c6a",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Ty knows $56 \\div 7 = 8$. He uses it to find the ? in $? \\times 8 = 56$. What is the ?",
+      "choices": [],
+      "answer": "7",
+      "compute": "56/8",
+      "solution": "56 / 7 = 8 means 7 x 8 = 56, so the ? is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56/7=8 so 7x8=56; ?=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.738Z"
+        }
+      }
+    },
+    {
+      "id": "8b62374e-b54f-45db-878f-fe6270d039ef",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Know quotients from memory",
+      "stem": "What is $100 \\div 10$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "100/10",
+      "solution": "10 x 10 = 100, so 100 / 10 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100/10 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.802Z"
+        }
+      }
+    },
+    {
+      "id": "7900e3eb-91c4-4494-b6f4-883e0f83700e",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Know products from memory",
+      "stem": "What is $6 \\times 9$?",
+      "choices": [],
+      "answer": "54",
+      "compute": "6*9",
+      "solution": "6 x 9 = 54.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x9 = 54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.821Z"
+        }
+      }
+    },
+    {
+      "id": "b04f7ff2-e276-4f5f-bea9-0ff284e1e0f0",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "Which story can be solved with $9 \\times 7$?",
+      "choices": [
+        "A shelf has 9 books and 7 more books are put on it. How many books are there?",
+        "A shelf has 63 books in 9 equal rows. How many books are in each row?",
+        "A shelf has 9 rows of books with 7 books in each row. How many books are on the shelf?",
+        "A shelf has 9 books and 7 books are taken off. How many books are left?"
+      ],
+      "answer": "A shelf has 9 rows of books with 7 books in each row. How many books are on the shelf?",
+      "compute": null,
+      "solution": "9 rows with 7 books in each row is 9 equal groups of 7, which is 9 x 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A shelf has 9 rows of books with 7 books in each row. How many books are on the shelf?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 rows of 7 is 9x7; others are 9+7, 9-7, 63/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.822Z"
+        }
+      }
+    },
+    {
+      "id": "af68d343-c35c-4c1e-8bba-39aaf478f8a1",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A movie theater has 8 rows of seats with 9 seats in each row. 20 people are sitting. How many seats are empty?",
+      "choices": [],
+      "answer": "52",
+      "compute": "8*9-20",
+      "solution": "8 x 9 = 72 seats. 72 - 20 = 52 seats are empty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x9 = 72 seats; 72-20 = 52 empty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.835Z"
+        }
+      }
+    },
+    {
+      "id": "6766f65a-5caa-4647-b6b5-99abd0b0b66c",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$48 \\div ? = 6$. What is the ?",
+      "choices": [],
+      "answer": "8",
+      "compute": "48/6",
+      "solution": "48 split into groups of 6 gives 8, because 6 x 8 = 48.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48/8 = 6 -> 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.837Z"
+        }
+      }
+    },
+    {
+      "id": "a95866af-2694-49f8-ab58-bffed7aa9df9",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "Which number makes both $? \\times 8 = 40$ and $40 \\div ? = 8$ true?",
+      "choices": [
+        "5",
+        "8",
+        "32",
+        "48"
+      ],
+      "answer": "5",
+      "compute": "40/8",
+      "solution": "5 x 8 = 40 and 40 / 5 = 8, so the ? is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x8=40 and 40/5=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.838Z"
+        }
+      }
+    },
+    {
+      "id": "3c3cc825-e714-45b0-952c-bfab8dee5722",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "Which two expressions have the same value?",
+      "choices": [
+        "$4 \\times 9$ and $5 \\times 7$",
+        "$4 \\times 8$ and $6 \\times 6$",
+        "$5 \\times 8$ and $6 \\times 6$",
+        "$4 \\times 9$ and $6 \\times 6$"
+      ],
+      "answer": "$4 \\times 9$ and $6 \\times 6$",
+      "compute": null,
+      "solution": "4 x 9 = 36 and 6 x 6 = 36. The other pairs give 36 and 35, 32 and 36, 40 and 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times 9$ and $6 \\times 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 9 = 36 and 6 x 6 = 36. Others: 40 vs 36, 32 vs 36, 36 vs 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.882Z"
+        }
+      }
+    },
+    {
+      "id": "e49d053d-ee2c-4049-8f39-a94b42bdd4b1",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Know products from memory",
+      "stem": "What is $9 \\times 7$?",
+      "choices": [],
+      "answer": "63",
+      "compute": "9*7",
+      "solution": "9 x 7 = 63.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9×7 = 63.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.915Z"
+        }
+      }
+    },
+    {
+      "id": "41a6d235-ecdd-45a3-acab-5336a369f8fa",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a known fact to find another",
+      "stem": "Which shows a correct way to find $8 \\times 6$ using $4 \\times 6$?",
+      "choices": [
+        "Add 4 to $4 \\times 6$",
+        "Halve $4 \\times 6$",
+        "Double $4 \\times 6$",
+        "Subtract 4 from $4 \\times 6$"
+      ],
+      "answer": "Double $4 \\times 6$",
+      "compute": null,
+      "solution": "8 groups of 6 is twice as many as 4 groups of 6, so double 4 x 6 (24 x 2 = 48).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Double $4 \\times 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8×6 = 2×(4×6) = 48: double.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.941Z"
+        }
+      }
+    },
+    {
+      "id": "09fe0a2d-8876-43e7-bc86-4c4177b929a9",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A ribbon 90 centimeters long is cut into 9 pieces of the same length. How many centimeters long is each piece?",
+      "choices": [],
+      "answer": "10",
+      "compute": "90/9",
+      "solution": "90 / 9 = 10 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 ÷ 9 = 10 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.949Z"
+        }
+      }
+    },
+    {
+      "id": "9dec4e4f-439f-4b19-bdcb-19d2877ebf90",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Know products from memory",
+      "stem": "Which pair of factors has a product of 72?",
+      "choices": [
+        "7 and 9",
+        "8 and 9",
+        "8 and 8",
+        "6 and 9"
+      ],
+      "answer": "8 and 9",
+      "compute": null,
+      "solution": "8 x 9 = 72. The other pairs make 63, 64 and 54.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 and 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8×9 = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.960Z"
+        }
+      }
+    },
+    {
+      "id": "aff5f7bb-f048-4f6c-a12a-0477e8600f54",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$? \\div 8 = 7$. What is the ?",
+      "choices": [],
+      "answer": "56",
+      "compute": "7*8",
+      "solution": "The ? shared into groups of 8 gives 7 groups, so the ? is 7 x 8 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 × 7 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.964Z"
+        }
+      }
+    },
+    {
+      "id": "96436567-6d71-464d-a692-61c55c1e1d84",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Which sentence does NOT belong to the fact family of 5, 9 and 45?",
+      "choices": [
+        "$45 \\div 5 = 9$",
+        "$45 - 5 = 40$",
+        "$9 \\times 5 = 45$",
+        "$45 \\div 9 = 5$"
+      ],
+      "answer": "$45 - 5 = 40$",
+      "compute": null,
+      "solution": "A fact family uses only multiplication and division of 5, 9 and 45. A subtraction sentence does not belong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$45 - 5 = 40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Fact family of 5, 9, 45: 5x9, 9x5, 45/5, 45/9. 45-5=40 is not in it.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.974Z"
+        }
+      }
+    },
+    {
+      "id": "914aa516-bf7e-4b16-98fa-71c2553db402",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Know quotients from memory",
+      "stem": "Which quotient is the greatest?",
+      "choices": [
+        "$40 \\div 8$",
+        "$54 \\div 9$",
+        "$63 \\div 9$",
+        "$36 \\div 6$"
+      ],
+      "answer": "$63 \\div 9$",
+      "compute": null,
+      "solution": "The quotients are 7, 5, 6 and 6. The greatest is 63 / 9 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$63 \\div 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40/8=5, 36/6=6, 54/9=6, 63/9=7. Greatest 63/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.985Z"
+        }
+      }
+    },
+    {
+      "id": "6811c811-8cdf-477a-907d-16ca05ed7b48",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Which set of three numbers can make a fact family?",
+      "choices": [
+        "3, 7 and 21",
+        "3, 7 and 10",
+        "7, 8 and 54",
+        "3, 8 and 21"
+      ],
+      "answer": "3, 7 and 21",
+      "compute": null,
+      "solution": "3 x 7 = 21, so 3, 7 and 21 make a fact family. 7 x 8 is 56, not 54, and 3 x 8 is 24, not 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3, 7 and 21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 7 = 21. 3+7=10 is addition; 7x8=56; 3x8=24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.989Z"
+        }
+      }
+    },
+    {
+      "id": "1ee982a9-3d62-40ba-aa89-3f62f4d9e17c",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Link multiplication and division (fact families)",
+      "stem": "Which multiplication sentence proves that $54 \\div 6 = 9$ is correct?",
+      "choices": [
+        "$6 + 9 = 15$",
+        "$54 - 6 = 48$",
+        "$9 \\times 9 = 81$",
+        "$6 \\times 9 = 54$"
+      ],
+      "answer": "$6 \\times 9 = 54$",
+      "compute": null,
+      "solution": "Division is checked with multiplication: 6 x 9 = 54.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 9 = 54$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "54 / 6 = 9 is checked by 6 x 9 = 54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.993Z"
+        }
+      }
+    },
+    {
+      "id": "72b47513-e62e-42ee-9bb2-5855e7e4d250",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown factor or dividend",
+      "stem": "$? \\times 6 = 4 \\times 9$. What is the ?",
+      "choices": [],
+      "answer": "6",
+      "compute": "4*9/6",
+      "solution": "4 x 9 = 36. The ? times 6 must also be 36, so the ? is 36 / 6 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 9 = 36; ? x 6 = 36, ? = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.995Z"
+        }
+      }
+    },
+    {
+      "id": "df09457a-3628-40a5-9204-069e0da8d7c9",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equal groups, rows and sharing problems",
+      "stem": "A farm packs 72 apples with 8 apples in each basket. 5 baskets are sold. How many baskets are left?",
+      "choices": [],
+      "answer": "4",
+      "compute": "72/8-5",
+      "solution": "72 / 8 = 9 baskets. 9 - 5 = 4 baskets are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72/8 = 9 baskets; 9 - 5 = 4 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.005Z"
+        }
+      }
+    },
+    {
+      "id": "bbbf4464-2796-4914-93a3-e79cca0e2e7d",
+      "topic_id": "NC17.3.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Know quotients from memory",
+      "stem": "Which division sentence is true?",
+      "choices": [
+        "$72 \\div 9 = 9$",
+        "$72 \\div 8 = 9$",
+        "$63 \\div 7 = 8$",
+        "$48 \\div 6 = 6$"
+      ],
+      "answer": "$72 \\div 8 = 9$",
+      "compute": null,
+      "solution": "8 x 9 = 72, so 72 / 8 = 9. The others should be 72 / 9 = 8, 63 / 7 = 9 and 48 / 6 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$72 \\div 8 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72/8 = 9 true. 63/7=9, 72/9=8, 48/6=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.006Z"
         }
       }
     },

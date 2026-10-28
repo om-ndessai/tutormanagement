@@ -5221,6 +5221,40 @@
       }
     },
     {
+      "id": "fbfef56f-b54b-4463-ac60-6e22cec2654e",
+      "topic_id": "NC17.M1.A-SSE.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a coefficient in context",
+      "stem": "A gym charges a one-time sign-up fee and a fixed fee each month. The total cost after $m$ months is $25m + 40$ dollars. Which statement describes the 25?",
+      "choices": [
+        "The one-time sign-up fee",
+        "The total cost after one month",
+        "The number of months in the plan",
+        "The fee charged for each month"
+      ],
+      "answer": "The fee charged for each month",
+      "compute": null,
+      "solution": "The 25 is multiplied by $m$, so it is the amount added for each month. The one-time sign-up fee is the 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The fee charged for each month",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 is the coefficient of m, the monthly fee; 40 is the sign-up fee.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.832Z"
+        }
+      }
+    },
+    {
       "id": "f5556594-1e5f-4919-80d5-7e341f3ab0f9",
       "topic_id": "NC17.M1.A-SSE.1",
       "difficulty": 3,
@@ -12785,6 +12819,723 @@
       }
     },
     {
+      "id": "5587aaa8-c413-49d2-b69d-9684f6f7ca5c",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zeros of a function in factored form",
+      "stem": "The function $f(x) = x(x + 5)$ has two zeros. What is the lesser zero?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "-5",
+      "solution": "The factor $x$ is 0 when $x = 0$, and the factor $x + 5$ is 0 when $x = -5$. The lesser zero is $-5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x+5)=0 gives 0 and -5; lesser -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.718Z"
+        }
+      }
+    },
+    {
+      "id": "e2f774f6-5d2b-4cbe-85ee-88eb47607b28",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "How many different solutions does the equation $(x - 5)(x - 5) = 0$ have?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Both factors are 0 when $x = 5$, and for no other value. So the equation has just 1 solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only x=5: one distinct solution.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.725Z"
+        }
+      }
+    },
+    {
+      "id": "dadf4677-d3e3-4d32-861f-2ede03ea6dca",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "The graph of a function crosses the x-axis at $(3, 0)$ and $(-2, 0)$. Which equation could define the function?",
+      "choices": [
+        "$y = (x - 3)(x + 2)$",
+        "$y = (x + 3)(x - 2)$",
+        "$y = (x - 3)(x - 2)$",
+        "$y = (x + 3)(x + 2)$"
+      ],
+      "answer": "$y = (x - 3)(x + 2)$",
+      "compute": null,
+      "solution": "The x-intercept 3 comes from the factor $x - 3$, and the x-intercept $-2$ comes from the factor $x + 2$. So $y = (x - 3)(x + 2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = (x - 3)(x + 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 3 and -2 give factors (x-3)(x+2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.739Z"
+        }
+      }
+    },
+    {
+      "id": "b7366be0-f1a2-475f-8204-7c7d633f8893",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "What value of $x$ makes the factor $x - 11$ equal to 0?",
+      "choices": [],
+      "answer": "11",
+      "compute": "11",
+      "solution": "$x - 11 = 0$ when $x = 11$, since $11 - 11 = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-11=0 at x=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.747Z"
+        }
+      }
+    },
+    {
+      "id": "4dbf8867-f03d-479e-96ab-8f570662eb0d",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "The graph of $y = (x + 2)(x - 9)$ crosses the x-axis at two points. What is the x-coordinate of the point that is farther to the left?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2",
+      "solution": "The graph crosses the x-axis where $y = 0$, so $x = -2$ or $x = 9$. The point farther to the left has the lesser x-coordinate, $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros at -2 and 9; left -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.766Z"
+        }
+      }
+    },
+    {
+      "id": "c6a7305f-25e2-49cc-b5fa-e878571f26d2",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "The equation $x^2 - 4x = 0$ can be written as $x(x - 4) = 0$. What is the greater solution?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Set each factor equal to 0: $x = 0$ or $x - 4 = 0$, so $x = 0$ or $x = 4$. The greater solution is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=0 or 4; greater 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.767Z"
+        }
+      }
+    },
+    {
+      "id": "066c8aeb-0c57-4caa-a7e0-72fdcddfae92",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zeros of a function in factored form",
+      "stem": "For $f(x) = (x + 4)(x - 1)$, what is $f(1)$?",
+      "choices": [],
+      "answer": "0",
+      "compute": "(1+4)*(1-1)",
+      "solution": "$f(1) = (1 + 4)(1 - 1) = 5 \\cdot 0 = 0$. Because $f(1) = 0$, the number 1 is a zero of $f$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1) = 5×0 = 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.781Z"
+        }
+      }
+    },
+    {
+      "id": "f7137ab2-4565-4300-8d62-7d8379a62cae",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "Why is $x = -4$ a solution of $(x + 4)(x - 9) = 0$?",
+      "choices": [
+        "The factor $x + 4$ equals 0 when $x = -4$, so the whole product is 0.",
+        "The factor $x - 9$ equals 0 when $x = -4$, so the whole product is 0.",
+        "The factor $x + 4$ equals 4 when $x = -4$, so the whole product is 0.",
+        "The factor $x - 9$ equals $-4$ when $x = 5$, so the whole product is 0."
+      ],
+      "answer": "The factor $x + 4$ equals 0 when $x = -4$, so the whole product is 0.",
+      "compute": null,
+      "solution": "If $x = -4$, then $x + 4 = 0$. Any product with a factor of 0 is 0, so $x = -4$ is a solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The factor $x + 4$ equals 0 when $x = -4$, so the whole product is 0.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+4=0 when x=-4, product 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.785Z"
+        }
+      }
+    },
+    {
+      "id": "93e78edc-cf87-4bd0-8143-c1381f3887d2",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor a quadratic trinomial to find its zeros",
+      "stem": "Which is the factored form of $x^2 + 4x + 3$?",
+      "choices": [
+        "$(x - 1)(x - 3)$",
+        "$(x + 1)(x + 3)$",
+        "$(x + 1)(x + 4)$",
+        "$(x + 4)(x - 1)$"
+      ],
+      "answer": "$(x + 1)(x + 3)$",
+      "compute": null,
+      "solution": "Find two numbers that multiply to 3 and add to 4: they are 1 and 3. So $x^2 + 4x + 3 = (x + 1)(x + 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x + 1)(x + 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need numbers with product 3 and sum 4: 1 and 3 -> (x+1)(x+3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.800Z"
+        }
+      }
+    },
+    {
+      "id": "35142dd1-563a-4c74-965a-d61e2fa39f0c",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "The equation $(x + 1)(x + 12) = 0$ has two solutions. Which one is closest to zero?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "The solutions are $x = -1$ and $x = -12$. The one closest to zero is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solutions -1 and -12; -1 is closest to 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.821Z"
+        }
+      }
+    },
+    {
+      "id": "1581375a-8509-484e-a057-11a4f25acef8",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "A function has zeros $x = 2$ and $x = -3$. At which points does its graph cross the x-axis?",
+      "choices": [
+        "$(0, 2)$ and $(0, -3)$",
+        "$(-2, 0)$ and $(3, 0)$",
+        "$(2, 0)$ and $(3, 0)$",
+        "$(2, 0)$ and $(-3, 0)$"
+      ],
+      "answer": "$(2, 0)$ and $(-3, 0)$",
+      "compute": null,
+      "solution": "A zero is an x-value where the function equals 0, so the graph crosses the x-axis at $(2, 0)$ and $(-3, 0)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 0)$ and $(-3, 0)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros x=2, x=-3 give x-intercepts (2,0) and (-3,0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.834Z"
+        }
+      }
+    },
+    {
+      "id": "c1addc96-a841-43c3-b087-c4792d65032a",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "A quadratic function has zeros at $x = -2$ and $x = 8$. What number is halfway between the two zeros?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(-2+8)/2",
+      "solution": "Halfway between two numbers is their average: $\\frac{-2 + 8}{2} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-2 + 8)/2 = 6/2 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.853Z"
+        }
+      }
+    },
+    {
+      "id": "b223ce6f-4ca7-4265-b85d-a484e8dba974",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "What is the lesser solution of $(x + 6)(x - 2) = 0$?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-6",
+      "solution": "A product is 0 only when a factor is 0. $x + 6 = 0$ gives $x = -6$, and $x - 2 = 0$ gives $x = 2$. The lesser solution is $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = -6 or x = 2; lesser is -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.862Z"
+        }
+      }
+    },
+    {
+      "id": "4ca26e4f-b6d2-41d9-9490-fe4fdbf2f0e5",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Factor a quadratic trinomial to find its zeros",
+      "stem": "The expression $x^2 + 2x - 15$ factors as $(x + 5)(x - ?)$. What is the ?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Check: $(x + 5)(x - 3) = x^2 - 3x + 5x - 15 = x^2 + 2x - 15$. So the ? is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need 5 x (-k) = -15 so k = 3, and 5 - 3 = 2 matches. (x+5)(x-3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.864Z"
+        }
+      }
+    },
+    {
+      "id": "be62fb30-e696-4dae-9f62-074b94886a08",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "What is the product of the two solutions of $(x - 2)(x - 8) = 0$?",
+      "choices": [],
+      "answer": "16",
+      "compute": "2*8",
+      "solution": "The solutions are $x = 2$ and $x = 8$. Their product is $2 \\cdot 8 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solutions 2 and 8; product 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.888Z"
+        }
+      }
+    },
+    {
+      "id": "4edc8869-cbf0-47de-b9fe-31591c865cd6",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "The number $-5$ is a zero of a quadratic function $f$. Which expression must be a factor of the expression that defines $f$?",
+      "choices": [
+        "$x - 5$",
+        "$5x$",
+        "$x + 5$",
+        "$x^2 - 5$"
+      ],
+      "answer": "$x + 5$",
+      "compute": null,
+      "solution": "A zero of $-5$ means the expression is 0 when $x = -5$. The factor $x + 5$ is 0 when $x = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zero at -5 means (x - (-5)) = x + 5 is a factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.896Z"
+        }
+      }
+    },
+    {
+      "id": "df25581a-0da8-4aa7-908c-c5c1b544bbdb",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "Which quadratic equation has the solutions $x = 0$ and $x = 4$?",
+      "choices": [
+        "$x(x + 4) = 0$",
+        "$x(x - 4) = 0$",
+        "$(x + 4)(x - 4) = 0$",
+        "$(x - 4)(x - 4) = 0$"
+      ],
+      "answer": "$x(x - 4) = 0$",
+      "compute": null,
+      "solution": "The solution $x = 0$ comes from a factor $x$, and $x = 4$ comes from the factor $x - 4$. So the equation is $x(x - 4) = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x(x - 4) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x - 4) = 0 gives x = 0 or x = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.904Z"
+        }
+      }
+    },
+    {
+      "id": "d6beb828-98e9-40bf-b474-94f5927f2e8d",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "The solutions of a quadratic equation are $x = 4$ and $x = -3$. Which equation has these solutions?",
+      "choices": [
+        "$(x + 4)(x - 3) = 0$",
+        "$(x - 4)(x - 3) = 0$",
+        "$(x + 4)(x + 3) = 0$",
+        "$(x - 4)(x + 3) = 0$"
+      ],
+      "answer": "$(x - 4)(x + 3) = 0$",
+      "compute": null,
+      "solution": "The solution $x = 4$ comes from the factor $x - 4$, and the solution $x = -3$ comes from the factor $x + 3$. So the equation is $(x - 4)(x + 3) = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 4)(x + 3) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 4 and -3 come from factors (x-4) and (x+3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.907Z"
+        }
+      }
+    },
+    {
+      "id": "61c99899-ea10-4b83-995a-b305e1a88e28",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "Which values of $x$ make $(x + 9)(x - 1) = 0$ true?",
+      "choices": [
+        "$x = 9$ and $x = -1$",
+        "$x = 9$ and $x = 1$",
+        "$x = -9$ and $x = 1$",
+        "$x = -9$ and $x = -1$"
+      ],
+      "answer": "$x = -9$ and $x = 1$",
+      "compute": null,
+      "solution": "Set each factor equal to 0: $x + 9 = 0$ gives $x = -9$, and $x - 1 = 0$ gives $x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -9$ and $x = 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x+9=0 → x=-9; x-1=0 → x=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.910Z"
+        }
+      }
+    },
+    {
+      "id": "72356039-f6a6-41a2-8ffc-4404d6118cd9",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zeros of a function in factored form",
+      "stem": "What is the positive zero of $f(x) = (x - 7)(x + 3)$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The zeros make a factor 0: $x - 7 = 0$ gives $x = 7$ and $x + 3 = 0$ gives $x = -3$. The positive zero is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 7 and -3; positive zero 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.925Z"
+        }
+      }
+    },
+    {
+      "id": "5360f0b7-e042-4729-b79c-66053f37221d",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "Sam solves $(x - 6)(x + 2) = 0$ and writes $x = -6$ and $x = 2$. What is Sam's mistake?",
+      "choices": [
+        "Sam is correct, because the numbers in the factors are the solutions.",
+        "The factors must be added, which gives $x = -4$.",
+        "The factors must be multiplied, which gives $x = -12$.",
+        "Each factor must be set equal to 0, which gives $x = 6$ and $x = -2$."
+      ],
+      "answer": "Each factor must be set equal to 0, which gives $x = 6$ and $x = -2$.",
+      "compute": null,
+      "solution": "The solutions are the values that make a factor 0: $x - 6 = 0$ gives $x = 6$, and $x + 2 = 0$ gives $x = -2$. Sam used the numbers with the wrong signs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each factor must be set equal to 0, which gives $x = 6$ and $x = -2$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Set x-6=0 and x+2=0: x=6, x=-2. Sam flipped signs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.952Z"
+        }
+      }
+    },
+    {
+      "id": "13fcc3b9-3d72-4c71-b5a5-890703ff62bc",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "What is the sum of the two solutions of $(x - 3)(x + 10) = 0$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "3-10",
+      "solution": "The solutions are $x = 3$ and $x = -10$. Their sum is $3 + (-10) = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solutions 3 and -10; sum = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.982Z"
+        }
+      }
+    },
+    {
+      "id": "d57ba5cd-37df-41ed-9603-5231d28d7cf4",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zeros of a function in factored form",
+      "stem": "Which value of $x$ is a zero of $f(x) = (x - 5)(x + 2)$?",
+      "choices": [
+        "$x = 2$",
+        "$x = -5$",
+        "$x = -2$",
+        "$x = 0$"
+      ],
+      "answer": "$x = -2$",
+      "compute": null,
+      "solution": "The factor $x + 2$ is 0 when $x = -2$, so $f(-2) = 0$ and $-2$ is a zero. (The other zero is 5.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros at x=5 and x=-2. Only -2 offered.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.997Z"
+        }
+      }
+    },
+    {
       "id": "927cb088-ae39-4832-8b56-5cb341acd088",
       "topic_id": "NC17.M1.A-APR.3",
       "difficulty": 2,
@@ -13100,6 +13851,728 @@
       }
     },
     {
+      "id": "26932321-5d49-453e-b8b2-09333944682e",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "Which expression is a factor of $x^2 - x - 12$?",
+      "choices": [
+        "$x + 4$",
+        "$x - 3$",
+        "$x - 4$",
+        "$x - 12$"
+      ],
+      "answer": "$x - 4$",
+      "compute": null,
+      "solution": "$x^2 - x - 12 = (x - 4)(x + 3)$, since $-4$ and $3$ multiply to $-12$ and add to $-1$. So $x - 4$ is a factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-x-12=(x-4)(x+3). Factor x-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.702Z"
+        }
+      }
+    },
+    {
+      "id": "a7dcdc26-e836-4ea7-bc75-c90121d14008",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "The graph of $y = x^2 - 5x - 14$ crosses the x-axis at two points. How far apart are the two points?",
+      "choices": [],
+      "answer": "9",
+      "compute": "7-(-2)",
+      "solution": "$x^2 - 5x - 14 = (x - 7)(x + 2)$, so the graph crosses the x-axis at $x = 7$ and $x = -2$. The distance between them is $7 - (-2) = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-5x-14=(x-7)(x+2); zeros 7 and -2; distance 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.703Z"
+        }
+      }
+    },
+    {
+      "id": "8bb53786-fcac-4707-b008-cd8b9f5ccb20",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "The expression $x - 7$ is a factor of $x^2 - 4x - 21$. What is the other factor, and what is the other zero?",
+      "choices": [
+        "The other factor is $x - 3$, and the other zero is $x = 3$.",
+        "The other factor is $x + 3$, and the other zero is $x = 3$.",
+        "The other factor is $x - 3$, and the other zero is $x = -3$.",
+        "The other factor is $x + 3$, and the other zero is $x = -3$."
+      ],
+      "answer": "The other factor is $x + 3$, and the other zero is $x = -3$.",
+      "compute": null,
+      "solution": "$(x - 7)(x + 3) = x^2 - 4x - 21$, so the other factor is $x + 3$. It is 0 when $x = -3$, so the other zero is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The other factor is $x + 3$, and the other zero is $x = -3$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-4x-21=(x-7)(x+3); other zero -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.704Z"
+        }
+      }
+    },
+    {
+      "id": "cf9226e5-6eaa-43d5-b337-bc6a17e9554b",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "The solutions of a quadratic equation are $x = -6$ and $x = 3$. Which could be the equation?",
+      "choices": [
+        "$x^2 - 3x - 18 = 0$",
+        "$x^2 + 9x - 18 = 0$",
+        "$x^2 + 3x - 18 = 0$",
+        "$x^2 + 3x + 18 = 0$"
+      ],
+      "answer": "$x^2 + 3x - 18 = 0$",
+      "compute": null,
+      "solution": "The equation is $(x + 6)(x - 3) = 0$. Multiply: $x^2 - 3x + 6x - 18 = x^2 + 3x - 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 3x - 18 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+6)(x-3)=x^2+3x-18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.717Z"
+        }
+      }
+    },
+    {
+      "id": "58267cae-c39d-4fb6-8563-040abce024fd",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "How are the solutions of $x^2 + x - 12 = 0$ related to the graph of $y = x^2 + x - 12$?",
+      "choices": [
+        "They are the x-coordinates of the points where the graph crosses the x-axis.",
+        "They are the y-coordinates of the points where the graph crosses the x-axis.",
+        "They are the x-coordinates of the point where the graph crosses the y-axis.",
+        "They are the coordinates of the lowest point of the graph."
+      ],
+      "answer": "They are the x-coordinates of the points where the graph crosses the x-axis.",
+      "compute": null,
+      "solution": "A solution of the equation is an x-value that makes $y = 0$. Those are the x-coordinates of the points where the graph meets the x-axis. (Here $x = -4$ and $x = 3$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are the x-coordinates of the points where the graph crosses the x-axis.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solutions are the zeros: x-intercepts (x=-4, 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.717Z"
+        }
+      }
+    },
+    {
+      "id": "1a88cf65-5d59-48e3-a83f-aa1c3fac9a1c",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What is the lesser solution of $x^2 + 3x - 28 = 0$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "-7",
+      "solution": "Find two numbers that multiply to $-28$ and add to 3: they are 7 and $-4$. So $(x + 7)(x - 4) = 0$, giving $x = -7$ or $x = 4$. The lesser solution is $-7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+7)(x-4)=0; solutions -7, 4; lesser -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.728Z"
+        }
+      }
+    },
+    {
+      "id": "0231c692-18bc-41c3-9f7e-d6e9ba98173f",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "What are the solutions of $(3x - 9)(x + 2) = 0$?",
+      "choices": [
+        "$x = 9$ and $x = -2$",
+        "$x = 3$ and $x = -2$",
+        "$x = -3$ and $x = 2$",
+        "$x = 3$ and $x = 2$"
+      ],
+      "answer": "$x = 3$ and $x = -2$",
+      "compute": null,
+      "solution": "$3x - 9 = 0$ gives $3x = 9$, so $x = 3$. $x + 2 = 0$ gives $x = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 3$ and $x = -2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x-9=0 gives 3; x+2=0 gives -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.733Z"
+        }
+      }
+    },
+    {
+      "id": "e45f62f5-e352-4f42-a4cc-6f79047c6786",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What is the greater solution of $3x^2 - 12x = 0$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Factor out $3x$: $3x(x - 4) = 0$. So $x = 0$ or $x = 4$, and the greater is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x(x-4)=0: 0 and 4; greater 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.737Z"
+        }
+      }
+    },
+    {
+      "id": "34263793-241b-4442-907b-5b6632ed2b27",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "What is the lesser x-intercept of the graph of $y = x^2 - 6x + 5$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Factor: $x^2 - 6x + 5 = (x - 1)(x - 5)$. The graph crosses the x-axis at $x = 1$ and $x = 5$, and the lesser is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-6x+5=(x-1)(x-5); intercepts 1 and 5; lesser 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.741Z"
+        }
+      }
+    },
+    {
+      "id": "31738471-bc0c-40b1-a5e6-bb67eabe6563",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "What is the greater solution of $(2x - 10)(x + 3) = 0$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "Set each factor equal to 0. $2x - 10 = 0$ gives $2x = 10$, so $x = 5$. $x + 3 = 0$ gives $x = -3$. The greater solution is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x-10=0 → x=5; x+3=0 → x=-3; greater 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.761Z"
+        }
+      }
+    },
+    {
+      "id": "4d68d3d6-f328-4cf4-bb5f-215cd2edae3a",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What are all the solutions of $x^2 = 8x$?",
+      "choices": [
+        "$x = 8$ only",
+        "$x = 0$ and $x = 8$",
+        "$x = 0$ and $x = -8$",
+        "$x = 8$ and $x = -8$"
+      ],
+      "answer": "$x = 0$ and $x = 8$",
+      "compute": null,
+      "solution": "Subtract $8x$ from both sides: $x^2 - 8x = 0$, so $x(x - 8) = 0$ and $x = 0$ or $x = 8$. Dividing both sides by $x$ would lose the solution $x = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 0$ and $x = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-8x=0, x(x-8)=0, x=0 or 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.768Z"
+        }
+      }
+    },
+    {
+      "id": "9b70c66d-c551-41ba-b91e-83678f6fdf71",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in context",
+      "stem": "A stone is tossed from a bridge into a river. Its height above the river, in meters, is $h(t) = -5(t + 1)(t - 3)$, where $t$ is the number of seconds after the toss. After how many seconds does the stone hit the river?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The stone hits the river when $h(t) = 0$. That gives $t = -1$ or $t = 3$. A time cannot be negative, so the stone hits the river after 3 seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h=0 at t=-1, 3; t≥0 so t=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.773Z"
+        }
+      }
+    },
+    {
+      "id": "02f7a528-f159-4cb4-a945-3d519ef09b3f",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "The equation $x^2 - 8x + c = 0$ has the solution $x = 6$. What is $c$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "-(36-48)",
+      "solution": "Substitute $x = 6$: $36 - 48 + c = 0$, so $c = 12$. (Check: $x^2 - 8x + 12 = (x - 6)(x - 2)$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36-48+c=0 → c=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.786Z"
+        }
+      }
+    },
+    {
+      "id": "353a4b58-0bc4-489f-bf4a-0ce9aa796bb0",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "A quadratic function $f$ has $f(-4) = 0$, $f(2) = 0$ and $f(0) = -8$. Which equation could define $f$?",
+      "choices": [
+        "$f(x) = (x + 4)(x - 2)$",
+        "$f(x) = (x - 4)(x + 2)$",
+        "$f(x) = 2(x + 4)(x - 2)$",
+        "$f(x) = -(x + 4)(x - 2)$"
+      ],
+      "answer": "$f(x) = (x + 4)(x - 2)$",
+      "compute": null,
+      "solution": "The zeros $-4$ and 2 give the factors $x + 4$ and $x - 2$. Check $f(0)$: $(0 + 4)(0 - 2) = -8$, which matches. The versions with a 2 or a minus sign in front give $-16$ and $8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x + 4)(x - 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros -4,2 give a(x+4)(x-2); f(0)=-8a=-8 -> a=1. Option (x+4)(x-2): f(0)=4(-2)=-8. Others: -(..) gives 8, 2(..) gives -16, (x-4)(x+2) has wrong zeros.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.798Z"
+        }
+      }
+    },
+    {
+      "id": "dba29503-c4c1-42b0-9722-00392b8d4b9b",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Zeros of a function in factored form",
+      "stem": "Which are the zeros of $f(x) = x^2 - 16x$?",
+      "choices": [
+        "$x = 0$ and $x = 16$",
+        "$x = 4$ and $x = -4$",
+        "$x = 16$ only",
+        "$x = 0$ and $x = -16$"
+      ],
+      "answer": "$x = 0$ and $x = 16$",
+      "compute": null,
+      "solution": "Factor out $x$: $f(x) = x(x - 16)$. The factor $x$ is 0 when $x = 0$, and $x - 16$ is 0 when $x = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 0$ and $x = 16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-16x = x(x-16) = 0 -> x=0, x=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.801Z"
+        }
+      }
+    },
+    {
+      "id": "e0d6013a-cb1e-4b4b-a9ee-6bc90e263a73",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in context",
+      "stem": "A rectangular poster is 5 inches longer than it is wide. Its area is 84 square inches. How long is the poster, in inches?",
+      "choices": [],
+      "answer": "12",
+      "compute": "7+5",
+      "solution": "Let the width be $w$. Then $w(w + 5) = 84$, so $w^2 + 5w - 84 = 0$ and $(w + 12)(w - 7) = 0$. The width cannot be negative, so $w = 7$. The length is $7 + 5 = 12$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w(w+5)=84 -> w^2+5w-84=0 -> (w+12)(w-7)=0 -> w=7, length 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.803Z"
+        }
+      }
+    },
+    {
+      "id": "7fc9ff55-762d-4299-ab9b-8d36986d4c6f",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor a quadratic trinomial to find its zeros",
+      "stem": "The function $f(x) = x^2 - 6x + 9$ has exactly one zero. What is it?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$x^2 - 6x + 9 = (x - 3)(x - 3)$, which is 0 only when $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)^2 -> zero at 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.829Z"
+        }
+      }
+    },
+    {
+      "id": "99854e0a-fbbc-4cb3-9233-0be27c03fed7",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation in factored form",
+      "stem": "Which equation has exactly one solution?",
+      "choices": [
+        "$(x - 4)(x + 4) = 0$",
+        "$x(x - 4) = 0$",
+        "$(x - 4)^2 = 0$",
+        "$(x - 4)(x - 1) = 0$"
+      ],
+      "answer": "$(x - 4)^2 = 0$",
+      "compute": null,
+      "solution": "$(x - 4)^2 = (x - 4)(x - 4)$ has the same factor twice, so its only solution is $x = 4$. The other equations each have two different solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 4)^2 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)^2=0 has only x=4; others have two solutions each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.831Z"
+        }
+      }
+    },
+    {
+      "id": "08ce7932-cd46-48a6-8489-061367ddc8dc",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "Lee solves $x(x - 4) = 12$ by setting $x = 12$ or $x - 4 = 12$, and gets $x = 12$ or $x = 16$. Why is Lee's method wrong?",
+      "choices": [
+        "Lee is correct, because a product equal to 12 means each factor must equal 12.",
+        "A product can be split into factors only when the equation is written with a sum.",
+        "A product equal to 12 means the factors must be 3 and 4, so $x$ is 3 or 4.",
+        "A product is 0 only when a factor is 0, so the equation must first be rewritten to equal 0."
+      ],
+      "answer": "A product is 0 only when a factor is 0, so the equation must first be rewritten to equal 0.",
+      "compute": null,
+      "solution": "The zero product property only applies when the product equals 0. Rewrite as $x^2 - 4x - 12 = 0$, so $(x - 6)(x + 2) = 0$ and $x = 6$ or $x = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A product is 0 only when a factor is 0, so the equation must first be rewritten to equal 0.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zero-product property only applies to products equal to 0. Correct: x^2 - 4x - 12 = 0, (x-6)(x+2) = 0, x = 6 or -2. Option D gives the reason.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.875Z"
+        }
+      }
+    },
+    {
+      "id": "a7036d90-bdd7-4f3e-b88f-0019e3763c91",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What is the positive solution of $x^2 - 49 = 0$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Factor the difference of squares: $x^2 - 49 = (x - 7)(x + 7) = 0$. So $x = 7$ or $x = -7$. The positive solution is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2=49, x=±7; positive 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.914Z"
+        }
+      }
+    },
+    {
+      "id": "81b4e9bb-5d74-452c-9e5e-65232448d8d7",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "How many different solutions does $x^2 + 10x + 25 = 0$ have?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$x^2 + 10x + 25 = (x + 5)(x + 5)$, and both factors are 0 only when $x = -5$. So there is just 1 solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+10x+25=(x+5)^2; only x=-5: 1 solution.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.935Z"
+        }
+      }
+    },
+    {
+      "id": "a2abad9e-83cb-4130-853e-5b35e24afaf3",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "The solutions of $x^2 + bx + c = 0$ are $x = 3$ and $x = 8$. What is $b + c$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "-(3+8)+3*8",
+      "solution": "The equation is $(x - 3)(x - 8) = x^2 - 11x + 24 = 0$, so $b = -11$ and $c = 24$. Then $b + c = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x-8) = x^2 - 11x + 24; b=-11, c=24; b+c = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.961Z"
+        }
+      }
+    },
+    {
+      "id": "fc2e42d6-f1b3-422c-b64f-4d9d4cb31027",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What are the solutions of $x^2 - 12x + 35 = 0$?",
+      "choices": [
+        "$x = -5$ and $x = -7$",
+        "$x = 5$ and $x = 7$",
+        "$x = 5$ and $x = -7$",
+        "$x = -5$ and $x = 7$"
+      ],
+      "answer": "$x = 5$ and $x = 7$",
+      "compute": null,
+      "solution": "Find two numbers that multiply to 35 and add to $-12$: they are $-5$ and $-7$. So $(x - 5)(x - 7) = 0$, giving $x = 5$ or $x = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 5$ and $x = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-12x+35 = (x-5)(x-7) = 0, so x = 5 and x = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.973Z"
+        }
+      }
+    },
+    {
       "id": "a27813c1-177e-4135-8d5a-a0485ffc4688",
       "topic_id": "NC17.M1.A-APR.3",
       "difficulty": 3,
@@ -13411,6 +14884,718 @@
           "work": "Opens upward, negative between zeros: -3<x<2.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:03.154Z"
+        }
+      }
+    },
+    {
+      "id": "dff8718e-a41c-4ec4-ac0d-f69955c27105",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "The zeros $p$ and $q$ of a quadratic function satisfy $p + q = 7$ and $pq = 12$, with $p$ less than $q$. What is $p$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The zeros are the solutions of $x^2 - 7x + 12 = 0$, because $(x - p)(x - q) = x^2 - (p + q)x + pq$. Factor: $(x - 3)(x - 4) = 0$. So $p = 3$ and $q = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p and q are roots of t^2-7t+12=(t-3)(t-4); p=3, q=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.685Z"
+        }
+      }
+    },
+    {
+      "id": "e1a2a573-5381-46e3-b8ed-8a713355e8b0",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor a quadratic trinomial to find its zeros",
+      "stem": "The equation $x^2 - 2x - 24 = 0$ has two solutions. What is the sum of their squares?",
+      "choices": [],
+      "answer": "52",
+      "compute": "6^2+(-4)^2",
+      "solution": "$x^2 - 2x - 24 = (x - 6)(x + 4)$, so the solutions are 6 and $-4$. The sum of their squares is $36 + 16 = 52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-6)(x+4): 6 and -4; 36+16=52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.732Z"
+        }
+      }
+    },
+    {
+      "id": "3ffda165-3096-4cbc-82ee-aea14d8ad929",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "Which equation has the same solutions as $2x^2 - 14x + 24 = 0$?",
+      "choices": [
+        "$x^2 - 7x + 12 = 0$",
+        "$x^2 - 14x + 24 = 0$",
+        "$x^2 - 7x + 24 = 0$",
+        "$x^2 + 7x + 12 = 0$"
+      ],
+      "answer": "$x^2 - 7x + 12 = 0$",
+      "compute": null,
+      "solution": "Divide every term by 2: $x^2 - 7x + 12 = 0$. Dividing both sides of an equation by 2 does not change its solutions (3 and 4).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 - 7x + 12 = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide by 2: x^2-7x+12=0 (solutions 3, 4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.740Z"
+        }
+      }
+    },
+    {
+      "id": "03697776-84bb-43c4-a920-ad2b5c564c86",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What is the greater solution of $2x^2 + 7x + 3 = 0$?",
+      "choices": [],
+      "answer": "-1/2",
+      "compute": "-1/2",
+      "solution": "Factor: $2x^2 + 7x + 3 = (2x + 1)(x + 3)$. Then $2x + 1 = 0$ gives $x = -\\frac{1}{2}$, and $x + 3 = 0$ gives $x = -3$. The greater solution is $-\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+1)(x+3)=0, x=-1/2 or -3; greater -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.744Z"
+        }
+      }
+    },
+    {
+      "id": "31d5294b-304d-44e8-9413-e8385794cd6c",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "Which equation has the solutions $x = \\frac{1}{2}$ and $x = -3$?",
+      "choices": [
+        "$(2x - 1)(x + 3) = 0$",
+        "$(2x + 1)(x + 3) = 0$",
+        "$(2x + 1)(x - 3) = 0$",
+        "$(x - 2)(x + 3) = 0$"
+      ],
+      "answer": "$(2x - 1)(x + 3) = 0$",
+      "compute": null,
+      "solution": "$2x - 1 = 0$ gives $x = \\frac{1}{2}$, and $x + 3 = 0$ gives $x = -3$. So $(2x - 1)(x + 3) = 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2x - 1)(x + 3) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x-1=0 -> 1/2; x+3=0 -> -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.806Z"
+        }
+      }
+    },
+    {
+      "id": "7485a0e6-38aa-4484-b02c-e60c9e20e99c",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Zeros of a function in factored form",
+      "stem": "Which statement about $f(x) = (x - 3)^2$ is true?",
+      "choices": [
+        "It has two zeros, $x = 3$ and $x = -3$.",
+        "It has no zeros, because the two factors are the same.",
+        "It has exactly one zero, $x = 3$.",
+        "It has exactly one zero, $x = -3$."
+      ],
+      "answer": "It has exactly one zero, $x = 3$.",
+      "compute": null,
+      "solution": "$f(x) = (x - 3)(x - 3)$ is 0 only when $x - 3 = 0$, which is $x = 3$. So there is exactly one zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has exactly one zero, $x = 3$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)^2=0 only at x=3 (double zero).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.807Z"
+        }
+      }
+    },
+    {
+      "id": "ef7a69bd-d00e-4415-ae84-9615c059936d",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor a quadratic trinomial to find its zeros",
+      "stem": "What is the difference between the greater solution and the lesser solution of $x^2 - 13x + 36 = 0$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "$x^2 - 13x + 36 = (x - 4)(x - 9)$, so the solutions are 4 and 9. The difference is $9 - 4 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-13x+36=(x-4)(x-9); 9-4=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.812Z"
+        }
+      }
+    },
+    {
+      "id": "d663c189-af20-484b-a66d-3449dd9550f2",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What is the lesser solution of $x^2 = 3x + 40$?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "-5",
+      "solution": "Rewrite with 0 on one side: $x^2 - 3x - 40 = 0$. Then $(x - 8)(x + 5) = 0$, so $x = 8$ or $x = -5$. The lesser is $-5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-3x-40=0 -> (x-8)(x+5)=0 -> 8, -5; lesser -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.826Z"
+        }
+      }
+    },
+    {
+      "id": "b817ae71-6cd7-4244-a361-ca27bff98d4e",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "Which function has the same zeros as $g(x) = (x + 1)(x - 5)$?",
+      "choices": [
+        "$h(x) = x^2 + 4x - 5$",
+        "$h(x) = x^2 - 4x + 5$",
+        "$h(x) = x^2 - 6x - 5$",
+        "$h(x) = x^2 - 4x - 5$"
+      ],
+      "answer": "$h(x) = x^2 - 4x - 5$",
+      "compute": null,
+      "solution": "$(x + 1)(x - 5) = x^2 - 5x + x - 5 = x^2 - 4x - 5$. So $h$ is the same function as $g$ and has the same zeros, $-1$ and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$h(x) = x^2 - 4x - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)(x-5) = x^2-4x-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.838Z"
+        }
+      }
+    },
+    {
+      "id": "c2537de5-fa10-429d-ab52-f49b17994374",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "The function $f(x) = x^2 - x - 6$ factors as $(x - 3)(x + 2)$. Which statement is correct?",
+      "choices": [
+        "The graph crosses the x-axis at $(-3, 0)$, because $x - 3$ is a factor.",
+        "The graph crosses the x-axis at $(2, 0)$, because $x + 2$ is a factor.",
+        "The graph crosses the x-axis at $(3, 0)$, because $x - 3$ is a factor.",
+        "The graph crosses the x-axis at $(-6, 0)$, because the constant term is $-6$."
+      ],
+      "answer": "The graph crosses the x-axis at $(3, 0)$, because $x - 3$ is a factor.",
+      "compute": null,
+      "solution": "The factor $x - 3$ is 0 at $x = 3$, so $f(3) = 0$ and the graph crosses the x-axis at $(3, 0)$. The factor $x + 2$ gives the zero $x = -2$, not 2. The constant term is the y-intercept, not an x-intercept.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The graph crosses the x-axis at $(3, 0)$, because $x - 3$ is a factor.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros at 3 and -2: (3,0) because x-3 is a factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.843Z"
+        }
+      }
+    },
+    {
+      "id": "d269c269-67a9-409c-8c59-f79f7bb0d9aa",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "A quadratic function has zeros at $x = -2$ and $x = 4$, and its graph passes through $(0, 16)$. Which equation defines the function?",
+      "choices": [
+        "$f(x) = 2(x + 2)(x - 4)$",
+        "$f(x) = -2(x + 2)(x - 4)$",
+        "$f(x) = -2(x - 2)(x + 4)$",
+        "$f(x) = 16(x + 2)(x - 4)$"
+      ],
+      "answer": "$f(x) = -2(x + 2)(x - 4)$",
+      "compute": null,
+      "solution": "The zeros give $f(x) = a(x + 2)(x - 4)$. At $x = 0$: $a(2)(-4) = -8a = 16$, so $a = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = -2(x + 2)(x - 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(x) = a(x+2)(x-4). f(0) = a(2)(-4) = -8a = 16, so a = -2. f(x) = -2(x+2)(x-4). Option -2(x-2)(x+4) has wrong zeros; 16(...) gives -128; 2(...) gives -16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.848Z"
+        }
+      }
+    },
+    {
+      "id": "e1c25f59-7520-49d0-807d-a65039703a47",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What is the greater solution of $-x^2 + 4x + 12 = 0$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Multiply both sides by $-1$: $x^2 - 4x - 12 = 0$. Then $(x - 6)(x + 2) = 0$, so $x = 6$ or $x = -2$. The greater is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiply by -1: x^2 - 4x - 12 = 0 = (x-6)(x+2); x = 6 or -2. Greater is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.855Z"
+        }
+      }
+    },
+    {
+      "id": "04121366-cfe0-46b1-8fdf-c9a394d86181",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "The solutions of $x^2 + bx + c = 0$ are $x = 4$ and $x = -9$. What is $b - c$?",
+      "choices": [],
+      "answer": "41",
+      "compute": "5-(-36)",
+      "solution": "$(x - 4)(x + 9) = x^2 + 5x - 36$, so $b = 5$ and $c = -36$. Then $b - c = 5 - (-36) = 41$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)(x+9) = x^2 + 5x - 36, b = 5, c = -36, b - c = 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.886Z"
+        }
+      }
+    },
+    {
+      "id": "1aa75c53-5e4f-4b92-91e2-79d2de4c36ba",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in context",
+      "stem": "The sum of a positive number and its square is 56. What is the number?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Let the number be $n$. Then $n + n^2 = 56$, so $n^2 + n - 56 = 0$ and $(n + 8)(n - 7) = 0$. The positive number is 7. (Check: $7 + 49 = 56$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + x^2 = 56, x^2 + x - 56 = 0 = (x+8)(x-7); positive x = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.895Z"
+        }
+      }
+    },
+    {
+      "id": "4e09c19f-27b7-4a4b-8167-e8a1f39c5804",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write the factors or equation from given solutions",
+      "stem": "A quadratic function $f$ has zeros at $x = 3$ and $x = -5$, and $f(0) = -30$. It can be written as $f(x) = a(x - 3)(x + 5)$. What is $a$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "-30/(-3*5)",
+      "solution": "Substitute $x = 0$: $a(0 - 3)(0 + 5) = -15a$. Since $f(0) = -30$, $-15a = -30$, so $a = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(0)=a(-3)(5)=-15a=-30 → a=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.913Z"
+        }
+      }
+    },
+    {
+      "id": "8acf2094-e797-4d89-9f98-b4ba68e37fa1",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in context",
+      "stem": "The height of a triangle is 4 centimeters more than its base. The area of the triangle is 30 square centimeters. What is the base, in centimeters?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Let the base be $b$. Then $\\frac{1}{2}b(b + 4) = 30$, so $b^2 + 4b - 60 = 0$ and $(b + 10)(b - 6) = 0$. The base cannot be negative, so $b = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "b(b+4)/2=30 → b^2+4b-60=0 → (b+10)(b-6)=0 → b=6 (positive). Check 6·10/2=30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.914Z"
+        }
+      }
+    },
+    {
+      "id": "a58b794d-9672-4ea4-ae25-aa0008700934",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What are the zeros of $f(x) = 4x^2 - 36$?",
+      "choices": [
+        "$x = 3$ and $x = -3$",
+        "$x = 9$ and $x = -9$",
+        "$x = 3$ only",
+        "$x = 6$ and $x = -6$"
+      ],
+      "answer": "$x = 3$ and $x = -3$",
+      "compute": null,
+      "solution": "Factor out 4: $4(x^2 - 9) = 4(x - 3)(x + 3)$. The zeros are $x = 3$ and $x = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 3$ and $x = -3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2-36=4(x-3)(x+3); zeros ±3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.918Z"
+        }
+      }
+    },
+    {
+      "id": "551cd89f-1e40-430e-a826-fa45e7175055",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What are the solutions of $3x^2 - 5x - 2 = 0$?",
+      "choices": [
+        "$x = -2$ and $x = \\frac{1}{3}$",
+        "$x = 2$ and $x = \\frac{1}{3}$",
+        "$x = -2$ and $x = -\\frac{1}{3}$",
+        "$x = 2$ and $x = -\\frac{1}{3}$"
+      ],
+      "answer": "$x = 2$ and $x = -\\frac{1}{3}$",
+      "compute": null,
+      "solution": "Factor: $3x^2 - 5x - 2 = (3x + 1)(x - 2)$. Then $3x + 1 = 0$ gives $x = -\\frac{1}{3}$, and $x - 2 = 0$ gives $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 2$ and $x = -\\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x^2-5x-2 = (3x+1)(x-2); x=2, x=-1/3. Check: 3(1/9)+5/3-2=1/3+5/3-2=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.945Z"
+        }
+      }
+    },
+    {
+      "id": "3b74a59b-ddeb-41e7-879c-63862ba5b088",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a quadratic equation by factoring",
+      "stem": "What are the solutions of $(x - 1)(x + 4) = 6$?",
+      "choices": [
+        "$x = 7$ and $x = 2$",
+        "$x = 2$ and $x = -5$",
+        "$x = 1$ and $x = -4$",
+        "$x = -2$ and $x = 5$"
+      ],
+      "answer": "$x = 2$ and $x = -5$",
+      "compute": null,
+      "solution": "Multiply out: $x^2 + 3x - 4 = 6$, so $x^2 + 3x - 10 = 0$ and $(x + 5)(x - 2) = 0$. The solutions are $x = 2$ and $x = -5$. (Setting each factor equal to 6 does not work, because the product is not 0.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 2$ and $x = -5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+3x-4=6 → x^2+3x-10=0 → (x+5)(x-2)=0 → 2, -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.948Z"
+        }
+      }
+    },
+    {
+      "id": "07294539-5f99-45c8-90ae-4283b6ff0ba9",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in context",
+      "stem": "A ball is thrown upward from the ground. Its height in meters after $t$ seconds is $h(t) = -5t^2 + 20t$. For how many seconds is the ball in the air?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The ball is on the ground when $h(t) = 0$. Factor: $-5t^2 + 20t = -5t(t - 4) = 0$, so $t = 0$ or $t = 4$. The ball leaves the ground at 0 seconds and lands at 4 seconds, so it is in the air for 4 seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h=0: -5t(t-4)=0, t=0 or t=4. In the air 4 seconds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.977Z"
+        }
+      }
+    },
+    {
+      "id": "41bad306-e8b0-4b31-8b37-f183af41820c",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Zeros are the x-intercepts of the graph",
+      "stem": "The graph of $y = x^2 + 6x - 16$ crosses the x-axis at two points. What is the x-coordinate of the point halfway between them?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "(-8+2)/2",
+      "solution": "$x^2 + 6x - 16 = (x + 8)(x - 2)$, so the graph crosses at $x = -8$ and $x = 2$. Halfway between is $\\frac{-8 + 2}{2} = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+6x-16 = (x+8)(x-2); zeros -8 and 2; midpoint (-8+2)/2 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.008Z"
+        }
+      }
+    },
+    {
+      "id": "2eb43f1c-8084-4467-a5d8-22e19db1e2c6",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Connect a factor, a zero and a solution",
+      "stem": "One solution of $x^2 + bx + 18 = 0$ is $x = -3$. What is the other solution?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-18/3",
+      "solution": "Substitute $x = -3$: $9 - 3b + 18 = 0$, so $b = 9$. Then $x^2 + 9x + 18 = (x + 3)(x + 6)$, and the other solution is $x = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Product of roots = 18, so other = 18/(-3) = -6 (b=9; (x+3)(x+6)).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.011Z"
+        }
+      }
+    },
+    {
+      "id": "5b820edd-08d3-4253-bf43-124d96b80ed1",
+      "topic_id": "NC17.M1.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a quadratic equation in context",
+      "stem": "A rectangle's length is 2 inches more than 3 times its width. Its area is 33 square inches. What is its width, in inches?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Let the width be $w$. Then $w(3w + 2) = 33$, so $3w^2 + 2w - 33 = 0$ and $(3w + 11)(w - 3) = 0$. The width cannot be negative, so $w = 3$. (Check: the length is 11 and $3 \\cdot 11 = 33$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "w(3w+2)=33, 3w^2+2w-33=0 = (3w+11)(w-3); w=3 (positive). Check 3 x 11 = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.018Z"
         }
       }
     },

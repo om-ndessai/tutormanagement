@@ -9284,6 +9284,40 @@
       }
     },
     {
+      "id": "babaed47-bcbd-4951-8b34-f797b4fdbedc",
+      "topic_id": "NC17.2.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Odd and even with doubles equations",
+      "stem": "Kai has 13 cubes. Kai gets 1 more cube. Which statement is true?",
+      "choices": [
+        "14 is odd because $7 + 7 = 14$",
+        "14 is even because $6 + 6 = 12$",
+        "14 is even because $7 + 7 = 14$",
+        "14 is odd because it is more than 13"
+      ],
+      "answer": "14 is even because $7 + 7 = 14$",
+      "compute": null,
+      "solution": "13 and 1 more is 14 cubes. Two equal groups of 7 make 14, since $7 + 7 = 14$. A number that is a double is even, so 14 is even.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14 is even because $7 + 7 = 14$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13+1=14; 14 = 7+7, even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.005Z"
+        }
+      }
+    },
+    {
       "id": "8062d7ec-961e-490b-aeec-eaa266d4ce7e",
       "topic_id": "NC17.2.OA.4",
       "difficulty": 1,
@@ -10283,6 +10317,40 @@
           "work": "5 twos = 10.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:12:42.307Z"
+        }
+      }
+    },
+    {
+      "id": "506c7049-401e-4cf1-a0e0-34061631aa57",
+      "topic_id": "NC17.2.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write an array total as a sum of equal addends",
+      "stem": "A tray has 2 rows of muffins. Each row has 5 muffins. Which sum adds the muffins row by row?",
+      "choices": [
+        "$2 + 5$",
+        "$5 + 5 + 5$",
+        "$5 + 5$",
+        "$2 + 2$"
+      ],
+      "answer": "$5 + 5$",
+      "compute": null,
+      "solution": "There are 2 rows and each row has 5 muffins, so write 5 two times: $5 + 5 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each row 5, two rows: 5 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.890Z"
         }
       }
     },
@@ -12676,6 +12744,728 @@
       }
     },
     {
+      "id": "2e0b6880-69cb-4e3b-a322-431325df974e",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "A number has 6 in the hundreds place, 1 in the tens place and 8 in the ones place. What is the number?",
+      "choices": [],
+      "answer": "618",
+      "compute": "600+10+8",
+      "solution": "600 + 10 + 8 = 618.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "618",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "600 + 10 + 8 = 618.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.576Z"
+        }
+      }
+    },
+    {
+      "id": "117e4941-df47-424e-a51c-49d58d2e0dea",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "How many ones make 1 ten?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "1 ten is the same as 10 ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 ones make 1 ten.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.616Z"
+        }
+      }
+    },
+    {
+      "id": "a444f369-b49f-481d-af0f-47d894a861fa",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which is 614 written in expanded form?",
+      "choices": [
+        "$60 + 1 + 4$",
+        "$600 + 40 + 1$",
+        "$600 + 10 + 4$",
+        "$100 + 60 + 4$"
+      ],
+      "answer": "$600 + 10 + 4$",
+      "compute": null,
+      "solution": "614 has 6 hundreds (600), 1 ten (10) and 4 ones (4), so it is 600 + 10 + 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$600 + 10 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "614 = 600 + 10 + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.617Z"
+        }
+      }
+    },
+    {
+      "id": "a9839c0b-1264-4b5a-beda-cb1a68e90f9d",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Which is the same as 3 tens?",
+      "choices": [
+        "3 ones",
+        "300 ones",
+        "30 ones",
+        "3 hundreds"
+      ],
+      "answer": "30 ones",
+      "compute": null,
+      "solution": "1 ten is 10 ones, so 3 tens are 30 ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30 ones",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 tens = 30 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.618Z"
+        }
+      }
+    },
+    {
+      "id": "d0221586-b0cb-4772-ac16-86d682b405ab",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "A number has 1 hundred, 9 tens and 0 ones. What is the number?",
+      "choices": [],
+      "answer": "190",
+      "compute": "100+9*10+0",
+      "solution": "1 hundred is 100 and 9 tens is 90, with no ones. 100 + 90 = 190.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "190",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100 + 90 + 0 = 190.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.623Z"
+        }
+      }
+    },
+    {
+      "id": "a6437a49-7821-4885-9425-834693b5df70",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Rosa reads the number nine hundred thirty-two. Which number is it?",
+      "choices": [
+        "923",
+        "329",
+        "9032",
+        "932"
+      ],
+      "answer": "932",
+      "compute": "932",
+      "solution": "Nine hundred is 900, thirty is 30 and two is 2, so 900 + 30 + 2 = 932.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "932",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "nine hundred thirty-two = 932.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.670Z"
+        }
+      }
+    },
+    {
+      "id": "6ee96f3e-79e7-4199-95da-829a6d7d59c3",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "The digit 4 is in the number 843. What is the value of that 4?",
+      "choices": [],
+      "answer": "40",
+      "compute": "4*10",
+      "solution": "The 4 is in the tens place, so it is worth 4 tens, which is 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 is in the tens place: 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.715Z"
+        }
+      }
+    },
+    {
+      "id": "ec86ed1d-44be-4cdc-a9e4-842128085211",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value and place of a digit",
+      "stem": "Which digit is in the hundreds place of 927?",
+      "choices": [
+        "9",
+        "2",
+        "7",
+        "90"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "In 927 the first digit, 9, is in the hundreds place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "927: 9 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.745Z"
+        }
+      }
+    },
+    {
+      "id": "d6b2c722-3227-4931-8351-0e1b5d1424b3",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Ola has 20 tens. She trades 10 tens for 1 hundred, and then trades the other 10 tens for another hundred. How many hundreds does she have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "20/10",
+      "solution": "10 tens make 1 hundred, so 20 tens make 2 hundreds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 tens = 2 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.751Z"
+        }
+      }
+    },
+    {
+      "id": "79db0190-e02f-4773-87c5-e518a6cf044f",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Dev has 10 ten-rods. What can he trade them for?",
+      "choices": [
+        "1 ten-rod",
+        "1 hundred flat",
+        "10 hundred flats",
+        "1 one cube"
+      ],
+      "answer": "1 hundred flat",
+      "compute": null,
+      "solution": "10 tens make 1 hundred, so 10 ten-rods can be traded for 1 hundred flat.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 hundred flat",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 tens = 1 hundred.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.754Z"
+        }
+      }
+    },
+    {
+      "id": "85aff951-07d0-46bf-9d9e-97df2aba6bc7",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which is 480 written in expanded form?",
+      "choices": [
+        "$400 + 80$",
+        "$400 + 8$",
+        "$40 + 8$",
+        "$4 + 80$"
+      ],
+      "answer": "$400 + 80$",
+      "compute": null,
+      "solution": "480 is 4 hundreds and 8 tens: 400 + 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$400 + 80$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "480 = 400+80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.774Z"
+        }
+      }
+    },
+    {
+      "id": "d061c019-780c-4fc1-911a-4c07a5ab2cc2",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value and place of a digit",
+      "stem": "In 305, what is the value of the 3?",
+      "choices": [
+        "3",
+        "30",
+        "350",
+        "300"
+      ],
+      "answer": "300",
+      "compute": "300",
+      "solution": "The 3 is in the hundreds place, so it is worth 3 hundreds, which is 300.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 in hundreds place: 300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.774Z"
+        }
+      }
+    },
+    {
+      "id": "09bfdb24-45da-4c13-96dc-8fa8ab23be27",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Regroup ones as tens",
+      "stem": "Tia has 30 single cubes. She trades them for ten-rods. How many ten-rods does she get?",
+      "choices": [],
+      "answer": "3",
+      "compute": "30/10",
+      "solution": "Every 10 cubes make 1 ten-rod. 30 cubes make 3 ten-rods.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 ones = 3 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.775Z"
+        }
+      }
+    },
+    {
+      "id": "f29cd56e-e631-413d-8f24-777efc6c7ab1",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number in expanded form",
+      "stem": "Write $900 + 3$ as a number.",
+      "choices": [],
+      "answer": "903",
+      "compute": "900+3",
+      "solution": "900 + 3 is 9 hundreds, 0 tens and 3 ones, which is 903.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "903",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "900+3 = 903.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.803Z"
+        }
+      }
+    },
+    {
+      "id": "a32f31be-ce2d-4baf-aad5-62c75a8c9921",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "How many tens are in 70?",
+      "choices": [],
+      "answer": "7",
+      "compute": "70/10",
+      "solution": "Each ten is 10, and 7 tens make 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70 = 7 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.809Z"
+        }
+      }
+    },
+    {
+      "id": "dd7b9fde-008a-49ee-9341-0a410137bd44",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Which shows the number 407?",
+      "choices": [
+        "4 hundreds, 7 tens, 0 ones",
+        "4 hundreds, 0 tens, 7 ones",
+        "7 hundreds, 0 tens, 4 ones",
+        "0 hundreds, 4 tens, 7 ones"
+      ],
+      "answer": "4 hundreds, 0 tens, 7 ones",
+      "compute": null,
+      "solution": "407 has a 4 in the hundreds place, a 0 in the tens place and a 7 in the ones place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 hundreds, 0 tens, 7 ones",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "407 = 4 hundreds, 0 tens, 7 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.820Z"
+        }
+      }
+    },
+    {
+      "id": "694a2069-2b73-4b51-b966-0e47bafaedad",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "What digit is in the ones place of 561?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "The last digit of a number is in the ones place. In 561 it is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "561: ones digit 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.839Z"
+        }
+      }
+    },
+    {
+      "id": "1723e06e-830e-4474-9226-4983a042c887",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Value and place of a digit",
+      "stem": "Which number has a 2 in the hundreds place?",
+      "choices": [
+        "421",
+        "142",
+        "214",
+        "124"
+      ],
+      "answer": "214",
+      "compute": "214",
+      "solution": "Only 214 has its first digit, the hundreds digit, equal to 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "214",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "214 has 2 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.883Z"
+        }
+      }
+    },
+    {
+      "id": "737f60e9-651e-4728-bafc-b514fbc0b447",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Lena has 10 ten-rods. How many ones are the rods worth in all?",
+      "choices": [],
+      "answer": "100",
+      "compute": "10*10",
+      "solution": "Each ten-rod is worth 10 ones. 10 tens make 100, so the rods are worth 100 ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 tens = 100 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.924Z"
+        }
+      }
+    },
+    {
+      "id": "b68cc342-d3dd-4972-886f-0dc3bd0ff7c1",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "A school has 2 boxes of 100 crayons, 6 packs of 10 crayons and 3 loose crayons. How many crayons does the school have?",
+      "choices": [],
+      "answer": "263",
+      "compute": "2*100+6*10+3",
+      "solution": "2 boxes of 100 is 200, 6 packs of 10 is 60 and 3 are loose. 200 + 60 + 3 = 263.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "263",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200 + 60 + 3 = 263.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.929Z"
+        }
+      }
+    },
+    {
+      "id": "9598f5b4-c0d4-4a57-98b2-54c995f6b241",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Mia's blocks show 7 hundreds, 2 tens and 9 ones. What number do the blocks show?",
+      "choices": [],
+      "answer": "729",
+      "compute": "7*100+2*10+9",
+      "solution": "7 hundreds is 700, 2 tens is 20 and 9 ones is 9. 700 + 20 + 9 = 729.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "729",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700+20+9 = 729.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.939Z"
+        }
+      }
+    },
+    {
+      "id": "db3e30ab-16f3-4c09-a302-853108d30a45",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Which shows 250?",
+      "choices": [
+        "2 hundreds, 5 ones",
+        "2 hundreds, 5 tens",
+        "5 hundreds, 2 tens",
+        "2 tens, 5 ones"
+      ],
+      "answer": "2 hundreds, 5 tens",
+      "compute": null,
+      "solution": "250 is 2 hundreds and 5 tens, with no ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 hundreds, 5 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250 = 2 hundreds + 5 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.939Z"
+        }
+      }
+    },
+    {
+      "id": "01537cb2-6adb-48e9-bf4c-e23559dc40ca",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Which means the same as 1 hundred?",
+      "choices": [
+        "10 ones",
+        "10 hundreds",
+        "1 ten",
+        "10 tens"
+      ],
+      "answer": "10 tens",
+      "compute": null,
+      "solution": "Ten tens make one hundred.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 hundred = 10 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.942Z"
+        }
+      }
+    },
+    {
       "id": "9e15eb2a-c654-4521-a00b-cf4e0eed8079",
       "topic_id": "NC17.2.NBT.1",
       "difficulty": 2,
@@ -12986,6 +13776,728 @@
       }
     },
     {
+      "id": "22e4d150-e7f2-4e59-bc18-590805397a90",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "7 hundreds and 13 tens is the same as which?",
+      "choices": [
+        "8 hundreds and 3 tens",
+        "7 hundreds and 3 tens",
+        "8 hundreds and 13 tens",
+        "7 hundreds and 30 tens"
+      ],
+      "answer": "8 hundreds and 3 tens",
+      "compute": null,
+      "solution": "10 of the 13 tens make 1 more hundred, leaving 3 tens: 8 hundreds and 3 tens (830).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 hundreds and 3 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700 + 130 = 830 = 8 hundreds and 3 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.599Z"
+        }
+      }
+    },
+    {
+      "id": "b281673e-3c8d-4cbf-806a-e84c80e2024d",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Value and place of a digit",
+      "stem": "Which number has a 0 in the tens place?",
+      "choices": [
+        "804",
+        "840",
+        "480",
+        "884"
+      ],
+      "answer": "804",
+      "compute": "804",
+      "solution": "Only 804 has its middle digit, the tens digit, equal to 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "804",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "804: tens digit 0. 480 (8), 884 (8), 840 (4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.641Z"
+        }
+      }
+    },
+    {
+      "id": "bee034a9-bdfe-4939-a418-f959e24ed1e3",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Regroup ones as tens",
+      "stem": "How many tens can be made from 83 ones?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(83-3)/10",
+      "solution": "Every 10 ones make 1 ten. 83 ones make 8 tens with 3 ones left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "83 ones = 8 tens and 3 ones; 8 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.660Z"
+        }
+      }
+    },
+    {
+      "id": "906cb978-d104-4959-b3b2-4634a7a9dd9f",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Which number is the same as 40 tens?",
+      "choices": [
+        "4",
+        "40",
+        "4000",
+        "400"
+      ],
+      "answer": "400",
+      "compute": "400",
+      "solution": "10 tens make 100, so 40 tens make 400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 tens = 400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.664Z"
+        }
+      }
+    },
+    {
+      "id": "acd7ff1b-8b23-4bb9-adcc-5a8aecdbe22f",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "A toy store has 2 boxes of 100 cars and 18 packs of 10 cars. How many cars does the store have?",
+      "choices": [],
+      "answer": "380",
+      "compute": "2*100+18*10",
+      "solution": "200 + 180 = 380.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "380",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200 + 180 = 380.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.669Z"
+        }
+      }
+    },
+    {
+      "id": "8fe16ec5-f7c9-4126-b2f9-f980f8ed4c7d",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Which group of blocks also makes 520?",
+      "choices": [
+        "4 hundreds, 2 tens",
+        "4 hundreds, 20 tens",
+        "5 hundreds, 12 tens",
+        "4 hundreds, 12 tens"
+      ],
+      "answer": "4 hundreds, 12 tens",
+      "compute": null,
+      "solution": "4 hundreds and 12 tens is 400 + 120 = 520. The others make 420, 600 and 620.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 hundreds, 12 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 hundreds + 12 tens = 400+120=520. Others: 420, 600, 620.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.676Z"
+        }
+      }
+    },
+    {
+      "id": "fb461c91-ba79-4634-bf71-1f39c69851a3",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Kai has 2 hundred flats and 16 ten-rods. He trades 10 ten-rods for 1 hundred flat. How many hundred flats does he have now?",
+      "choices": [],
+      "answer": "3",
+      "compute": "2+1",
+      "solution": "10 of the 16 ten-rods make 1 more hundred flat. 2 + 1 = 3 hundred flats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 flats + 1 from trading = 3 flats (6 rods left).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.720Z"
+        }
+      }
+    },
+    {
+      "id": "9d302d44-9741-415f-b998-6ddff79e6db8",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which is 306 written in expanded form?",
+      "choices": [
+        "$300 + 60$",
+        "$300 + 6$",
+        "$30 + 6$",
+        "$3 + 0 + 6$"
+      ],
+      "answer": "$300 + 6$",
+      "compute": null,
+      "solution": "306 has 3 hundreds, 0 tens and 6 ones: 300 + 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$300 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "306 = 300 + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.730Z"
+        }
+      }
+    },
+    {
+      "id": "7d7cc51e-60cf-4a93-8329-bd3f3ae8c737",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Ruth reads the number six hundred forty. What number is that?",
+      "choices": [],
+      "answer": "640",
+      "compute": "600+40",
+      "solution": "Six hundred is 600 and forty is 40, so the number is 640.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "640",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "six hundred forty = 640.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.751Z"
+        }
+      }
+    },
+    {
+      "id": "21158a82-8f19-492d-9148-08fb6c445697",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Which is the same as 60 ones?",
+      "choices": [
+        "6 hundreds",
+        "60 tens",
+        "6 tens",
+        "1 hundred"
+      ],
+      "answer": "6 tens",
+      "compute": null,
+      "solution": "10 ones make 1 ten, so 60 ones make 6 tens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60 ones = 6 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.753Z"
+        }
+      }
+    },
+    {
+      "id": "8b2dc6aa-4530-4f2d-a77e-62c046e52dca",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "A number has 5 in the hundreds place. Its tens digit is 4. Its ones digit is 3 more than its tens digit. What is the number?",
+      "choices": [],
+      "answer": "547",
+      "compute": "500+40+7",
+      "solution": "The ones digit is 4 + 3 = 7. The number is 5 hundreds, 4 tens and 7 ones: 547.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "547",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hundreds 5, tens 4, ones 4+3=7 -> 547.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.795Z"
+        }
+      }
+    },
+    {
+      "id": "95921d1b-43e8-4be1-a73f-47f0c62c5ac6",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Regroup ones as tens",
+      "stem": "Owen counts 6 tens and 11 ones. How many ones is that in all?",
+      "choices": [],
+      "answer": "71",
+      "compute": "6*10+11",
+      "solution": "6 tens is 60. 60 + 11 = 71.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "71",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 tens = 60, plus 11 = 71 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.805Z"
+        }
+      }
+    },
+    {
+      "id": "73a4523d-aba5-4a0a-afc7-9cbc555c811d",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "In the number 836, what is the value of the 8 plus the value of the 3?",
+      "choices": [],
+      "answer": "830",
+      "compute": "800+30",
+      "solution": "The 8 is worth 800 and the 3 is worth 30. 800 + 30 = 830.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "830",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "800 + 30 = 830.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.827Z"
+        }
+      }
+    },
+    {
+      "id": "e49b1fa8-a071-449a-a3ed-6618e9282408",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Regroup ones as tens",
+      "stem": "Which number is 6 tens and 14 ones?",
+      "choices": [
+        "614",
+        "64",
+        "74",
+        "164"
+      ],
+      "answer": "74",
+      "compute": "74",
+      "solution": "6 tens is 60 and 14 ones is 14. 60 + 14 = 74.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "74",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 tens = 60, 14 ones = 14; 60 + 14 = 74.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.847Z"
+        }
+      }
+    },
+    {
+      "id": "815755d8-51dc-4349-a85a-8a3eb6582392",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Regroup ones as tens",
+      "stem": "Which number is the same as $500 + 20 + 14$?",
+      "choices": [
+        "5214",
+        "534",
+        "524",
+        "5034"
+      ],
+      "answer": "534",
+      "compute": "500+20+14",
+      "solution": "20 + 14 = 34, so the number is 500 + 34 = 534.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "534",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 + 20 + 14 = 534.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.860Z"
+        }
+      }
+    },
+    {
+      "id": "c9feb46c-1ec2-4138-897f-366a1526b47a",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Value and place of a digit",
+      "stem": "In which number is the value of the 4 equal to 400?",
+      "choices": [
+        "470",
+        "345",
+        "504",
+        "674"
+      ],
+      "answer": "470",
+      "compute": null,
+      "solution": "Only in 470 is the 4 in the hundreds place. In the others it is worth 40 or 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "470",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "470: 4 in hundreds place = 400. 674: 4; 345: 40; 504: 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.875Z"
+        }
+      }
+    },
+    {
+      "id": "e5a60580-2691-47d9-ac1c-67e4114ae270",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Zed has 90 marbles. He puts 10 marbles in each bag. How many bags does he fill?",
+      "choices": [],
+      "answer": "9",
+      "compute": "90/10",
+      "solution": "90 is 9 tens, so he fills 9 bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 = 9 tens, 9 bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.895Z"
+        }
+      }
+    },
+    {
+      "id": "347282f9-ee97-4a7f-8804-7bcf1f6e1edf",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Regroup ones as tens",
+      "stem": "Jo has 3 tens and 25 ones. What number is that?",
+      "choices": [],
+      "answer": "55",
+      "compute": "3*10+25",
+      "solution": "3 tens is 30. 30 + 25 = 55.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 + 25 = 55.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.896Z"
+        }
+      }
+    },
+    {
+      "id": "b4261917-531d-42e7-a92f-b3197e9203e0",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "In the number 957, the digit 5 is worth how many ones?",
+      "choices": [],
+      "answer": "50",
+      "compute": "5*10",
+      "solution": "The 5 is in the tens place, so it is worth 5 tens, which is 50 ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 is in the tens place: 50 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.959Z"
+        }
+      }
+    },
+    {
+      "id": "1a85f728-ee5a-419a-9325-9b309014e065",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Mara says that 3 hundreds and 10 tens make 310. What number is right?",
+      "choices": [
+        "301",
+        "400",
+        "3010",
+        "130"
+      ],
+      "answer": "400",
+      "compute": "400",
+      "solution": "10 tens make 1 more hundred, so 3 hundreds and 10 tens make 4 hundreds, which is 400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 tens = 1 hundred, so 3 hundreds + 10 tens = 4 hundreds = 400. Mara is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.967Z"
+        }
+      }
+    },
+    {
+      "id": "0538eac2-e3c3-4ac5-bb9b-6678cf768008",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Regroup ones as tens",
+      "stem": "A number has 6 hundreds, 0 tens and 14 ones. What is the number?",
+      "choices": [],
+      "answer": "614",
+      "compute": "600+14",
+      "solution": "10 of the ones make 1 ten, so 14 ones are 1 ten and 4 ones. 600 + 14 = 614.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "614",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "600 + 0 + 14 = 614.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.985Z"
+        }
+      }
+    },
+    {
+      "id": "b5319161-c790-4c5b-8f0d-63822de09c5c",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Regroup ones as tens",
+      "stem": "Which number is 2 hundreds, 3 tens and 17 ones?",
+      "choices": [
+        "237",
+        "257",
+        "2317",
+        "247"
+      ],
+      "answer": "247",
+      "compute": "247",
+      "solution": "17 ones is 1 ten and 7 ones. So 2 hundreds, 4 tens and 7 ones: 247.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "247",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200 + 30 + 17 = 247.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.994Z"
+        }
+      }
+    },
+    {
+      "id": "a0ce2e98-7335-4b45-91a0-7e4adf740303",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Lin has 4 boxes of 100 beads, 7 bags of 10 beads and 12 loose beads. How many beads does Lin have?",
+      "choices": [],
+      "answer": "482",
+      "compute": "4*100+7*10+12",
+      "solution": "400 + 70 + 12 = 482.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "482",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400 + 70 + 12 = 482.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.006Z"
+        }
+      }
+    },
+    {
       "id": "0d8dcbb0-cf73-40bb-ab92-5b32ef219985",
       "topic_id": "NC17.2.NBT.1",
       "difficulty": 3,
@@ -13287,6 +14799,723 @@
           "work": "250 = 2 hundreds 5 tens. Trade 1 hundred for 10 tens -> 1 hundred, 15 tens (100 + 150 = 250).",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.507Z"
+        }
+      }
+    },
+    {
+      "id": "16f76386-0131-46f8-9c16-56827d2825ff",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "A number has 3 hundreds, 17 tens and 24 ones. What is the number?",
+      "choices": [],
+      "answer": "494",
+      "compute": "3*100+17*10+24",
+      "solution": "300 + 170 + 24 = 494.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "494",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 + 170 + 24 = 494.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.624Z"
+        }
+      }
+    },
+    {
+      "id": "f400f51c-1215-421f-8cfa-76d020df3747",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Nia says that 50 tens and 3 ones make 53. What is the correct number?",
+      "choices": [
+        "503",
+        "53",
+        "530",
+        "5003"
+      ],
+      "answer": "503",
+      "compute": "503",
+      "solution": "50 tens is 500, and 500 + 3 = 503.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "503",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50 tens = 500, plus 3 ones = 503.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.683Z"
+        }
+      }
+    },
+    {
+      "id": "04b53052-eeef-4f7a-9ff8-c9a1a10a3db9",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "How many ones are in 4 hundreds and 3 tens?",
+      "choices": [],
+      "answer": "430",
+      "compute": "4*100+3*10",
+      "solution": "4 hundreds is 400 ones and 3 tens is 30 ones. 400 + 30 = 430.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "430",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400+30=430 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.715Z"
+        }
+      }
+    },
+    {
+      "id": "b15bc4d9-9392-4966-b348-3ee1643e4521",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "A number has 7 hundreds. Its ones digit is 3. Its tens digit is twice its ones digit. What is the number?",
+      "choices": [],
+      "answer": "763",
+      "compute": "700+60+3",
+      "solution": "The tens digit is 2 x 3 = 6. The number has 7 hundreds, 6 tens and 3 ones: 763.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "763",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hundreds 7, ones 3, tens 6: 763.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.723Z"
+        }
+      }
+    },
+    {
+      "id": "0c5edb12-ebe3-4c23-b3d5-9b9fca08f5f9",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Kofi shows 372 with 3 hundreds, 7 tens and 2 ones. He trades 1 hundred for 10 tens. Then he trades 1 ten for 10 ones. How many tens does he have now?",
+      "choices": [],
+      "answer": "16",
+      "compute": "7+10-1",
+      "solution": "After the first trade he has 7 + 10 = 17 tens. The second trade uses 1 ten, so he has 16 tens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 3h 7t 2o. Hundred to tens: 2h 17t 2o. Ten to ones: 2h 16t 12o. 16 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.727Z"
+        }
+      }
+    },
+    {
+      "id": "379c890a-3028-4c6d-bdbe-3c813b3f4c57",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Sid shows 235 with 2 hundreds, 3 tens and 5 ones. He trades every hundred and every ten for ones. How many ones does he have now?",
+      "choices": [],
+      "answer": "235",
+      "compute": "235",
+      "solution": "Trading does not change the number. All of it in ones is 235 ones.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "235",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200+30+5=235 ones.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.729Z"
+        }
+      }
+    },
+    {
+      "id": "5deab46f-cdb4-4405-922b-34098013b948",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "How many tens are in 7 hundreds and 3 tens?",
+      "choices": [],
+      "answer": "73",
+      "compute": "7*10+3",
+      "solution": "Each hundred is 10 tens, so 7 hundreds are 70 tens. 70 + 3 = 73 tens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "73",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70+3=73 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.733Z"
+        }
+      }
+    },
+    {
+      "id": "1cc0d685-7436-4982-a35f-f035fe3e8d1e",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup ones as tens",
+      "stem": "Maya has 4 hundred flats, 6 ten-rods and 15 one-cubes. She trades ones for tens. Which shows her number after trading?",
+      "choices": [
+        "4 hundreds, 6 tens, 5 ones",
+        "4 hundreds, 7 tens, 5 ones",
+        "5 hundreds, 7 tens, 5 ones",
+        "4 hundreds, 7 tens, 15 ones"
+      ],
+      "answer": "4 hundreds, 7 tens, 5 ones",
+      "compute": null,
+      "solution": "10 of the 15 ones make 1 ten. She has 4 hundreds, 7 tens and 5 ones (475).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 hundreds, 7 tens, 5 ones",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 ones = 1 ten 5 ones; 4 hundreds, 7 tens, 5 ones (475).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.748Z"
+        }
+      }
+    },
+    {
+      "id": "571587af-8c01-4620-974f-e7df94ac16de",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Rae builds 380 using only ten-rods. How many ten-rods does she use?",
+      "choices": [],
+      "answer": "38",
+      "compute": "380/10",
+      "solution": "380 is 38 tens, so she uses 38 ten-rods.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "38",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "380 = 38 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.751Z"
+        }
+      }
+    },
+    {
+      "id": "033932d8-d2cc-42d7-89e3-c5745dea5989",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Regroup tens as hundreds",
+      "stem": "How many hundreds can be made from 35 tens?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(35-5)/10",
+      "solution": "10 tens make 1 hundred. 35 tens make 3 hundreds with 5 tens left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 tens = 3 hundreds and 5 tens; 3 hundreds.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.778Z"
+        }
+      }
+    },
+    {
+      "id": "f9ffdfcc-1acc-48d9-9b10-8814c9a0594d",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Which pair of groups shows the same number?",
+      "choices": [
+        "2 hundreds, 13 tens, 5 ones and 2 hundreds, 3 tens, 5 ones",
+        "3 hundreds, 3 tens, 5 ones and 3 hundreds, 3 tens, 15 ones",
+        "3 hundreds, 3 tens, 5 ones and 4 hundreds, 3 tens, 5 ones",
+        "2 hundreds, 13 tens, 5 ones and 3 hundreds, 3 tens, 5 ones"
+      ],
+      "answer": "2 hundreds, 13 tens, 5 ones and 3 hundreds, 3 tens, 5 ones",
+      "compute": null,
+      "solution": "2 hundreds and 13 tens is 330, so the first group is 335, the same as 3 hundreds, 3 tens, 5 ones. In the other pairs the numbers differ by 100 or by 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 hundreds, 13 tens, 5 ones and 3 hundreds, 3 tens, 5 ones",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2h 13t 5o = 200+130+5 = 335 = 3h 3t 5o.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.791Z"
+        }
+      }
+    },
+    {
+      "id": "b65c9d9f-7a3b-4bc2-851f-c08dc40fc445",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Which number has 4 ones, 5 tens and 9 hundreds?",
+      "choices": [
+        "945",
+        "954",
+        "459",
+        "495"
+      ],
+      "answer": "954",
+      "compute": "954",
+      "solution": "9 hundreds, 5 tens and 4 ones is 900 + 50 + 4 = 954.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "954",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 hundreds, 5 tens, 4 ones = 954.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.802Z"
+        }
+      }
+    },
+    {
+      "id": "9d69903c-3a62-43c4-981a-e914764af3f1",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Pete has 1 hundred flat, 9 ten-rods and 12 one-cubes. He trades until he has the fewest blocks possible. How many blocks does he have then?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2+0+2",
+      "solution": "The total is 100 + 90 + 12 = 202. That is 2 hundreds, 0 tens and 2 ones, which is 2 + 0 + 2 = 4 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100+90+12=202 = 2 flats, 0 rods, 2 cubes -> 4 blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.813Z"
+        }
+      }
+    },
+    {
+      "id": "3a933fbd-43ba-4abd-9c20-3de78a6f62c0",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Regroup tens as hundreds",
+      "stem": "14 tens and 7 ones is the same as 1 hundred, ? tens and 7 ones. What number goes in the ?",
+      "choices": [],
+      "answer": "4",
+      "compute": "14-10",
+      "solution": "10 of the 14 tens make the 1 hundred. That leaves 4 tens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 tens = 1 hundred 4 tens -> 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.833Z"
+        }
+      }
+    },
+    {
+      "id": "02785d29-3812-402e-9cfd-7ec57a0bda6e",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Value and place of a digit",
+      "stem": "A number has a 4 in the hundreds place. Its tens digit is 3 less than its hundreds digit. Its ones digit is 3 more than its tens digit. What is the number?",
+      "choices": [],
+      "answer": "414",
+      "compute": "400+10+4",
+      "solution": "The tens digit is 4 - 3 = 1. The ones digit is 1 + 3 = 4. The number is 414.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "414",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hundreds 4, tens 4-3=1, ones 1+3=4 -> 414.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.842Z"
+        }
+      }
+    },
+    {
+      "id": "2638fcbb-b0f2-4dfb-bd92-92a663c5875b",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Value and place of a digit",
+      "stem": "Which is true about the number 486?",
+      "choices": [
+        "The 8 has a value of 80",
+        "The 8 has a value of 8",
+        "The 4 has a value of 40",
+        "The 6 has a value of 60"
+      ],
+      "answer": "The 8 has a value of 80",
+      "compute": null,
+      "solution": "In 486 the 8 is in the tens place, so it is worth 80. The 4 is worth 400 and the 6 is worth 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 8 has a value of 80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "486: 4 hundreds (400), 8 tens (80), 6 ones (6). Only \"The 8 has a value of 80\" is true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.851Z"
+        }
+      }
+    },
+    {
+      "id": "21fc38e5-9a8b-4afb-8267-fbcb77fc88d1",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Which does NOT show 614?",
+      "choices": [
+        "6 hundreds, 1 ten, 4 ones",
+        "5 hundreds, 11 tens, 4 ones",
+        "6 hundreds, 14 tens",
+        "5 hundreds, 10 tens, 14 ones"
+      ],
+      "answer": "6 hundreds, 14 tens",
+      "compute": null,
+      "solution": "6 hundreds and 14 tens is 600 + 140 = 740. The others are all 614.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 hundreds, 14 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5H10T14O = 500+100+14 = 614; 5H11T4O = 500+110+4 = 614; 6H1T4O = 614; 6H14T = 600+140 = 740, not 614.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.872Z"
+        }
+      }
+    },
+    {
+      "id": "dcfc8dcf-53b4-4916-b659-05cfe98326a2",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ten tens make a hundred; ten ones make a ten",
+      "stem": "Which sentence about 840 is true?",
+      "choices": [
+        "It has 840 tens",
+        "It has 8 tens",
+        "It has 84 tens",
+        "It has 4 hundreds"
+      ],
+      "answer": "It has 84 tens",
+      "compute": null,
+      "solution": "840 is 84 tens, because 84 x 10 = 840.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has 84 tens",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "840 = 84 tens. It has 8 hundreds, 4 tens (in the tens place), not 4 hundreds or 840 tens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.880Z"
+        }
+      }
+    },
+    {
+      "id": "07c3ea03-7909-4f4f-8c4f-eb03ccb3bfaf",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Which number is the same as 26 tens and 5 ones?",
+      "choices": [
+        "265",
+        "2605",
+        "65",
+        "2065"
+      ],
+      "answer": "265",
+      "compute": "265",
+      "solution": "26 tens is 260. 260 + 5 = 265.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "265",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "26 tens = 260; +5 = 265.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.936Z"
+        }
+      }
+    },
+    {
+      "id": "6c9e8cca-cb36-4a0b-a295-4a844accd7cf",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Which shows 305?",
+      "choices": [
+        "3 tens and 5 ones",
+        "35 tens",
+        "3 tens and 50 ones",
+        "30 tens and 5 ones"
+      ],
+      "answer": "30 tens and 5 ones",
+      "compute": null,
+      "solution": "30 tens is 300, and 300 + 5 = 305.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30 tens and 5 ones",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 tens = 300, plus 5 ones = 305. 35 tens=350; 3 tens+50 ones=80; 3 tens+5 ones=35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.986Z"
+        }
+      }
+    },
+    {
+      "id": "ff0cb9de-a29e-4f80-9b4e-1dedd11b9368",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "A shop has 4 boxes of 100 pens, 25 packs of 10 pens and 7 single pens. How many pens does the shop have?",
+      "choices": [],
+      "answer": "657",
+      "compute": "4*100+25*10+7",
+      "solution": "400 + 250 + 7 = 657.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "657",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400 + 250 + 7 = 657.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.995Z"
+        }
+      }
+    },
+    {
+      "id": "67186040-5b82-42a1-ae02-c2d71c4badd0",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Regroup tens as hundreds",
+      "stem": "Which could be used to build 903?",
+      "choices": [
+        "9 hundreds, 3 tens",
+        "8 hundreds, 13 tens",
+        "8 hundreds, 10 tens, 3 ones",
+        "9 hundreds, 30 tens"
+      ],
+      "answer": "8 hundreds, 10 tens, 3 ones",
+      "compute": null,
+      "solution": "8 hundreds, 10 tens and 3 ones is 800 + 100 + 3 = 903. The others make 930, 930 and 1,200.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 hundreds, 10 tens, 3 ones",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9h+30t=1200; 8h+10t+3=903; 9h+3t=930; 8h+13t=930.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.009Z"
+        }
+      }
+    },
+    {
+      "id": "7477fe10-73fa-4719-bced-da09d8488898",
+      "topic_id": "NC17.2.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and build a number from hundreds, tens and ones",
+      "stem": "Zoe's number is 14 tens and 5 ones. What is her number?",
+      "choices": [],
+      "answer": "145",
+      "compute": "14*10+5",
+      "solution": "14 tens is 140. 140 + 5 = 145.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "145",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 tens = 140, +5 = 145.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.010Z"
         }
       }
     },

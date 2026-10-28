@@ -12749,6 +12749,733 @@
       }
     },
     {
+      "id": "fcfc3b73-24e5-456e-a72c-19594a2b655f",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide integers",
+      "stem": "What is $\\frac{-42}{6}$?",
+      "choices": [
+        "$-7$",
+        "$7$",
+        "$-36$",
+        "$-48$"
+      ],
+      "answer": "$-7$",
+      "compute": "-42/6",
+      "solution": "A fraction bar means divide. $-42 \\div 6 = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-42 ÷ 6 = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.632Z"
+        }
+      }
+    },
+    {
+      "id": "9f62fe5c-a9b0-4bcc-aa81-f099781233ba",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $-\\frac{1}{2} \\times 8$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-1/2*8",
+      "solution": "Half of 8 is 4, and a negative times a positive is negative: $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1/2 × 8 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.668Z"
+        }
+      }
+    },
+    {
+      "id": "cd5b7293-a577-4096-bae4-f38dbaae5d36",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $0.9 \\div 3$?",
+      "choices": [],
+      "answer": "0.3",
+      "compute": "0.9/3",
+      "solution": "9 tenths divided by 3 is 3 tenths, which is 0.3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.9/3=0.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.682Z"
+        }
+      }
+    },
+    {
+      "id": "5e4fabee-f3ef-44be-a4a0-c7bf6d034dfe",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "Divide 3 by 5 with long division. What decimal do you get?",
+      "choices": [],
+      "answer": "0.6",
+      "compute": "3/5",
+      "solution": "5 does not go into 3, so write 3.0. 5 goes into 30 six times with nothing left over. The decimal is 0.6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/5=0.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.713Z"
+        }
+      }
+    },
+    {
+      "id": "35aa98ce-5da0-4f6e-9ce2-30dc4d0a6019",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply and divide decimals",
+      "stem": "Find the product of $0.4$ and $1.5$.",
+      "choices": [
+        "$6$",
+        "$0.06$",
+        "$1.9$",
+        "$0.6$"
+      ],
+      "answer": "$0.6$",
+      "compute": "0.4*1.5",
+      "solution": "$4 \\times 15 = 60$. There are two decimal places in total, so the product is 0.60 = 0.6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.4×1.5 = 0.60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.743Z"
+        }
+      }
+    },
+    {
+      "id": "ea857428-a368-4fee-9e81-73f8a1e51edb",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sign of a product or quotient",
+      "stem": "Which statement is true?",
+      "choices": [
+        "The product of two negative numbers is negative",
+        "The quotient of two negative numbers is positive",
+        "The quotient of a positive and a negative number is positive",
+        "The product of a negative number and 0 is negative"
+      ],
+      "answer": "The quotient of two negative numbers is positive",
+      "compute": null,
+      "solution": "Dividing a negative by a negative gives a positive, for example $(-12) \\div (-3) = 4$. The product of two negatives is positive, a positive divided by a negative is negative, and anything times 0 is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The quotient of two negative numbers is positive",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negative ÷ negative is positive; others false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.763Z"
+        }
+      }
+    },
+    {
+      "id": "5fa99891-3541-41c5-95a9-1f91b78c168e",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sign of a product or quotient",
+      "stem": "Which fraction is equal to $-\\frac{5}{6}$?",
+      "choices": [
+        "$\\frac{-5}{-6}$",
+        "$\\frac{5}{-6}$",
+        "$\\frac{6}{-5}$",
+        "$-\\frac{6}{5}$"
+      ],
+      "answer": "$\\frac{5}{-6}$",
+      "compute": null,
+      "solution": "A fraction with one negative sign is negative. $\\frac{5}{-6}$ has the same value as $-\\frac{5}{6}$. $\\frac{-5}{-6}$ is positive and the others have a different size.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{-6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/(-6) = -5/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.774Z"
+        }
+      }
+    },
+    {
+      "id": "8d3862c8-c2d4-4964-ac6b-c628764b22a4",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "Write $\\frac{1}{25}$ as a decimal.",
+      "choices": [],
+      "answer": "0.04",
+      "compute": "1/25",
+      "solution": "$\\frac{1}{25} = \\frac{4}{100} = 0.04$. Long division of 1 by 25 also gives 0.04.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.04",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/25 = 4/100 = 0.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.810Z"
+        }
+      }
+    },
+    {
+      "id": "5056eade-2ee0-4c73-a863-99dc149d792e",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $\\frac{3}{4} \\times \\frac{2}{9}$?",
+      "choices": [
+        "$\\frac{5}{13}$",
+        "$\\frac{27}{8}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{1}{6}$"
+      ],
+      "answer": "$\\frac{1}{6}$",
+      "compute": null,
+      "solution": "Multiply the numerators and the denominators: $\\frac{3 \\times 2}{4 \\times 9} = \\frac{6}{36} = \\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 x 2/9 = 6/36 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.816Z"
+        }
+      }
+    },
+    {
+      "id": "9f5a0212-3820-41be-84e3-60f14bd78587",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Sign of a product or quotient",
+      "stem": "What is $0 \\div (-9)$?",
+      "choices": [],
+      "answer": "0",
+      "compute": "0/(-9)",
+      "solution": "Zero divided by any number that is not zero is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0 divided by any nonzero number is 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.830Z"
+        }
+      }
+    },
+    {
+      "id": "cacfe384-e91c-47cc-9b89-030dff850f8e",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "Which fraction is equal to a decimal that stops?",
+      "choices": [
+        "$\\frac{1}{3}$",
+        "$\\frac{2}{9}$",
+        "$\\frac{3}{8}$",
+        "$\\frac{1}{6}$"
+      ],
+      "answer": "$\\frac{3}{8}$",
+      "compute": null,
+      "solution": "$3 \\div 8 = 0.375$ stops. $\\frac{1}{3} = 0.\\overline{3}$, $\\frac{2}{9} = 0.\\overline{2}$ and $\\frac{1}{6} = 0.1\\overline{6}$ repeat forever.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/8 = 0.375 terminates; 1/3, 2/9, 1/6 repeat.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.836Z"
+        }
+      }
+    },
+    {
+      "id": "ea7e0333-0118-41c6-a955-e46208c3f037",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sign of a product or quotient",
+      "stem": "Which quotient is negative?",
+      "choices": [
+        "$(-20) \\div (-5)$",
+        "$(-15) \\div 3$",
+        "$15 \\div 3$",
+        "$0 \\div (-3)$"
+      ],
+      "answer": "$(-15) \\div 3$",
+      "compute": null,
+      "solution": "Numbers with different signs give a negative quotient: $(-15) \\div 3 = -5$. The others are 4, 5 and 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-15) \\div 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0/(-3) = 0; 15/3 = 5; -15/3 = -5; -20/-5 = 4. Only (-15)/3 is negative.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.865Z"
+        }
+      }
+    },
+    {
+      "id": "d263e90e-6b5a-4441-9ed8-503423ef6f04",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $-\\frac{1}{4} \\times (-8)$?",
+      "choices": [
+        "$-2$",
+        "$-32$",
+        "$\\frac{1}{32}$",
+        "$2$"
+      ],
+      "answer": "$2$",
+      "compute": "(-1/4)*(-8)",
+      "solution": "Two negatives give a positive. A quarter of 8 is 2, so the answer is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negative times negative: 1/4 x 8 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.884Z"
+        }
+      }
+    },
+    {
+      "id": "ecde2c1e-2531-4ca3-ac88-92de5c23e307",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $-0.5 \\times 6$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-0.5*6",
+      "solution": "$0.5 \\times 6 = 3$. A negative times a positive is negative, so the answer is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-0.5 × 6 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.917Z"
+        }
+      }
+    },
+    {
+      "id": "1e952587-352e-4c36-827c-a78cbc5748af",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide fractions",
+      "stem": "What is $\\frac{4}{5} \\div 4$?",
+      "choices": [],
+      "answer": "1/5",
+      "compute": "(4/5)/4",
+      "solution": "4 fifths split into 4 equal groups is 1 fifth in each group: $\\frac{4}{5} \\div 4 = \\frac{1}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4/5) ÷ 4 = 1/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.949Z"
+        }
+      }
+    },
+    {
+      "id": "0ea943de-d02e-4906-b16a-6d94c3563369",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply integers",
+      "stem": "What is $(-8) \\times (-3)$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "(-8)*(-3)",
+      "solution": "A negative times a negative is positive: $8 \\times 3 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-8)(-3) = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.957Z"
+        }
+      }
+    },
+    {
+      "id": "c0bfb751-f833-45e8-bdc2-d4b000f7408a",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Divide 2 by 3 with long division. Which digit repeats forever after the decimal point?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "2 divided by 3 is 0.6666... because each step leaves a remainder of 2 and 20 divided by 3 gives 6 again. The repeating digit is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 = 0.666..., digit 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.958Z"
+        }
+      }
+    },
+    {
+      "id": "96d0732f-84f0-446d-bf10-48aaacef78ad",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Which decimal is equal to $\\frac{2}{3}$?",
+      "choices": [
+        "$0.\\overline{6}$",
+        "$0.6$",
+        "$0.66$",
+        "$0.\\overline{3}$"
+      ],
+      "answer": "$0.\\overline{6}$",
+      "compute": null,
+      "solution": "Long division of 2 by 3 gives 0.666... with the 6 repeating forever, written $0.\\overline{6}$. A decimal that stops, like 0.66, is not equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.\\overline{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 = 0.666... = 0.\\overline{6}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.965Z"
+        }
+      }
+    },
+    {
+      "id": "4a082f09-22c4-4196-b9d5-0f7b912da96c",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A diver's height changes by $-30$ meters in 5 equal steps. Which number shows the change in height for one step, in meters?",
+      "choices": [
+        "$6$",
+        "$-25$",
+        "$-6$",
+        "$-150$"
+      ],
+      "answer": "$-6$",
+      "compute": "-30/5",
+      "solution": "$-30 \\div 5 = -6$, so each step changes the height by $-6$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-30 / 5 = -6 meters per step.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.972Z"
+        }
+      }
+    },
+    {
+      "id": "87c920fb-c69a-48de-a18a-b3e2cc1b4ed5",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A game takes away 4 points for each wrong answer. Rosa gets 7 answers wrong. What is the total change in her score? Use a negative number for points lost.",
+      "choices": [],
+      "answer": "-28",
+      "compute": "-4*7",
+      "solution": "Each wrong answer changes the score by $-4$, so 7 wrong answers change it by $7 \\times (-4) = -28$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x (-4) = -28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.975Z"
+        }
+      }
+    },
+    {
+      "id": "f969972b-d770-47f3-8ab7-b4372edfeebe",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply integers",
+      "stem": "What is $(-9) \\times 5$?",
+      "choices": [
+        "$45$",
+        "$-14$",
+        "$-45$",
+        "$-4$"
+      ],
+      "answer": "$-45$",
+      "compute": "(-9)*5",
+      "solution": "Different signs give a negative product: $9 \\times 5 = 45$, so the answer is $-45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-45$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-9) x 5 = -45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.976Z"
+        }
+      }
+    },
+    {
+      "id": "2fa799bd-6e11-474e-a430-469b8ec20e5c",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide integers",
+      "stem": "What is $72 \\div (-9)$?",
+      "choices": [],
+      "answer": "-8",
+      "compute": "72/(-9)",
+      "solution": "$72 \\div 9 = 8$. A positive divided by a negative is negative, so the answer is $-8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 / (-9) = -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.976Z"
+        }
+      }
+    },
+    {
+      "id": "14f1e386-ea67-4d71-9df9-07e63b631f36",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide fractions",
+      "stem": "What is $-\\frac{2}{5} \\div \\frac{1}{10}$?",
+      "choices": [
+        "$-4$",
+        "$4$",
+        "$-\\frac{1}{4}$",
+        "$-\\frac{1}{25}$"
+      ],
+      "answer": "$-4$",
+      "compute": "(-2/5)/(1/10)",
+      "solution": "$-\\frac{2}{5} = -\\frac{4}{10}$, and there are 4 tenths in $\\frac{4}{10}$. With the negative sign the answer is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2/5 x 10/1 = -20/5 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.984Z"
+        }
+      }
+    },
+    {
       "id": "3899c5ed-964d-4b63-bc48-e8369c4971bc",
       "topic_id": "NC17.7.NS.2",
       "difficulty": 2,
@@ -13064,6 +13791,733 @@
       }
     },
     {
+      "id": "907a346d-420a-40d3-b186-875846b73030",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "Use long division to write $\\frac{13}{20}$ as a decimal.",
+      "choices": [],
+      "answer": "0.65",
+      "compute": "13/20",
+      "solution": "13 divided by 20: 130 divided by 20 is 6 with 10 left, then 100 divided by 20 is 5. The decimal is 0.65.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 ÷ 20: 130 ÷ 20 = 6 R 10, 100 ÷ 20 = 5 → 0.65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.642Z"
+        }
+      }
+    },
+    {
+      "id": "90edfc75-c049-46dc-a2da-f5a529eff8fc",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Maya divides 5 by 11 and gets 0.454545... with the digits 4 and 5 repeating. Which is the correct way to write it?",
+      "choices": [
+        "$0.45$",
+        "$0.4\\overline{5}$",
+        "$0.\\overline{45}$",
+        "$0.\\overline{54}$"
+      ],
+      "answer": "$0.\\overline{45}$",
+      "compute": null,
+      "solution": "The block \"45\" repeats right after the decimal point, so the bar goes over both digits: $0.\\overline{45}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.\\overline{45}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Repeating block 45 from the first decimal place: 0.\\overline{45}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.652Z"
+        }
+      }
+    },
+    {
+      "id": "122c4e66-15c3-4abc-912e-1954264eb8d2",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply integers",
+      "stem": "Pat multiplies the four numbers $-2$, $3$, $-4$ and $-1$. Which is the product?",
+      "choices": [
+        "$-24$",
+        "$24$",
+        "$-4$",
+        "$-12$"
+      ],
+      "answer": "$-24$",
+      "compute": "(-2)*3*(-4)*(-1)",
+      "solution": "$(-2) \\times 3 = -6$; $-6 \\times (-4) = 24$; $24 \\times (-1) = -24$. Three negative factors give a negative product.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-24$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-2)(3) = -6; (-6)(-4) = 24; 24(-1) = -24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.655Z"
+        }
+      }
+    },
+    {
+      "id": "18bfb30e-c884-4664-8f20-95d8d33eb204",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A bank balance changes by a total of $-45$ dollars over 6 weeks, by the same amount each week. What is the change in the balance each week, in dollars?",
+      "choices": [],
+      "answer": "-7.5",
+      "compute": "-45/6",
+      "solution": "$-45 \\div 6 = -7.5$ dollars per week.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-45 ÷ 6 = -7.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.662Z"
+        }
+      }
+    },
+    {
+      "id": "4f9a6319-555e-429c-bf64-6572703e0a15",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $-0.6 \\div 0.05$?",
+      "choices": [
+        "$12$",
+        "$-1.2$",
+        "$-0.12$",
+        "$-12$"
+      ],
+      "answer": "$-12$",
+      "compute": "-0.6/0.05",
+      "solution": "Multiply both numbers by 100: $-60 \\div 5 = -12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.6/0.05=12; negative over positive gives -12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.680Z"
+        }
+      }
+    },
+    {
+      "id": "d1ef4af3-1ea9-4dde-89b4-b7a3da5fd115",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A cave explorer's elevation changes by $-2\\frac{1}{2}$ meters each minute. Which number shows the change in elevation after $3\\frac{1}{5}$ minutes, in meters?",
+      "choices": [
+        "$8$",
+        "$-5.7$",
+        "$-8$",
+        "$-0.78$"
+      ],
+      "answer": "$-8$",
+      "compute": "-8",
+      "solution": "$-\\frac{5}{2} \\times \\frac{16}{5} = -8$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5/2 x 16/5 = -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.707Z"
+        }
+      }
+    },
+    {
+      "id": "0212b0d6-f0b6-47bc-9f64-37ceea03180f",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $\\frac{5}{8} \\times \\left(-\\frac{4}{15}\\right)$?",
+      "choices": [
+        "$\\frac{1}{6}$",
+        "$-\\frac{1}{6}$",
+        "$-\\frac{75}{32}$",
+        "$-\\frac{9}{23}$"
+      ],
+      "answer": "$-\\frac{1}{6}$",
+      "compute": null,
+      "solution": "$-\\frac{20}{120} = -\\frac{1}{6}$. The factors have different signs, so the product is negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{1}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/8 x -4/15 = -20/120 = -1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.730Z"
+        }
+      }
+    },
+    {
+      "id": "b16925a4-f250-4a0b-a877-f0f02262977e",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Sign of a product or quotient",
+      "stem": "The numbers $x$ and $y$ are not zero, and $x \\div y$ is positive. Which statement must be true?",
+      "choices": [
+        "x and y are both positive",
+        "x and y have the same sign",
+        "x is greater than y",
+        "x and y have different signs"
+      ],
+      "answer": "x and y have the same sign",
+      "compute": null,
+      "solution": "A quotient is positive only when both numbers have the same sign. They could both be negative, so \"both positive\" is not forced.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "x and y have the same sign",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A quotient is positive exactly when both have the same sign; both negative also works, so \"both positive\" need not hold.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.738Z"
+        }
+      }
+    },
+    {
+      "id": "e857d931-1139-4970-920d-a6a56a6821a6",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "The decimal for $\\frac{1}{6}$ is found by long division. What digit is in the 7th place after the decimal point?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$\\frac{1}{6} = 0.1666...$: the first digit is 1 and every digit after it is 6. So the 7th digit is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/6 = 0.16666..., digits after the first are all 6; 7th is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.745Z"
+        }
+      }
+    },
+    {
+      "id": "3e25b782-89fb-4358-aeea-821cd56541ec",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide fractions",
+      "stem": "What is $-\\frac{3}{7} \\div \\left(-\\frac{9}{14}\\right)$?",
+      "choices": [
+        "$-\\frac{2}{3}$",
+        "$\\frac{27}{98}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{3}{2}$"
+      ],
+      "answer": "$\\frac{2}{3}$",
+      "compute": null,
+      "solution": "Two negatives give a positive: $\\frac{3}{7} \\times \\frac{14}{9} = \\frac{42}{63} = \\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-3/7)÷(-9/14) = 3/7 × 14/9 = 42/63 = 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.747Z"
+        }
+      }
+    },
+    {
+      "id": "f6326f81-53a2-45f3-bdc1-7b732ff8b0b0",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A wilting plant's height changes by $-0.4$ centimeter each day. What is the total change in its height after 15 days, in centimeters?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-0.4*15",
+      "solution": "$15 \\times (-0.4) = -6$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15×(-0.4) = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.756Z"
+        }
+      }
+    },
+    {
+      "id": "22e387b2-4006-4485-b15d-2dd5fd563577",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "What decimal results from the long division $3 \\div 40$?",
+      "choices": [
+        "$0.075$",
+        "$0.75$",
+        "$0.0075$",
+        "$13.\\overline{3}$"
+      ],
+      "answer": "$0.075$",
+      "compute": null,
+      "solution": "Write 3 as 3.000. 40 does not go into 3 or 30. 40 goes into 300 seven times (280) with 20 left, then 40 goes into 200 five times. So the decimal is 0.075.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.075$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3÷40 = 0.075 (40×0.075=3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.760Z"
+        }
+      }
+    },
+    {
+      "id": "f688f8cb-2a31-4adb-8b70-3be41ebc7ef3",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $2\\frac{1}{4} \\times \\left(-\\frac{2}{3}\\right)$?",
+      "choices": [
+        "$1\\frac{1}{2}$",
+        "$-1\\frac{1}{2}$",
+        "$-\\frac{8}{27}$",
+        "$-2\\frac{11}{12}$"
+      ],
+      "answer": "$-1\\frac{1}{2}$",
+      "compute": null,
+      "solution": "$\\frac{9}{4} \\times \\left(-\\frac{2}{3}\\right) = -\\frac{18}{12} = -\\frac{3}{2} = -1\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/4 × (-2/3) = -18/12 = -3/2 = -1 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.780Z"
+        }
+      }
+    },
+    {
+      "id": "6cdd12df-3bca-4815-9062-0c97f0ee1dce",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply integers",
+      "stem": "What is $(-3) \\times 4 \\div (-6)$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "(-3)*4/(-6)",
+      "solution": "Work left to right: $(-3) \\times 4 = -12$, then $-12 \\div (-6) = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3×4 = -12; -12÷-6 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.782Z"
+        }
+      }
+    },
+    {
+      "id": "dabe29bc-ea04-4920-8c5f-baa96e9a3eae",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $3.6 \\div (-0.12)$?",
+      "choices": [],
+      "answer": "-30",
+      "compute": "3.6/(-0.12)",
+      "solution": "Multiply both numbers by 100: $360 \\div 12 = 30$. The signs differ, so the answer is $-30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.6 ÷ -0.12 = -30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.790Z"
+        }
+      }
+    },
+    {
+      "id": "e06365de-83c5-4c89-b8d8-298d47ae24f7",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A pond loses $\\frac{3}{5}$ inch of water each day to evaporation. Which number shows the change in the water level after 10 days, in inches?",
+      "choices": [
+        "$6$",
+        "$-\\frac{3}{50}$",
+        "$-10\\frac{3}{5}$",
+        "$-6$"
+      ],
+      "answer": "$-6$",
+      "compute": "-6",
+      "solution": "Each day the change is $-\\frac{3}{5}$, so after 10 days it is $10 \\times \\left(-\\frac{3}{5}\\right) = -6$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x (-3/5) = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.804Z"
+        }
+      }
+    },
+    {
+      "id": "26feca1c-c537-45ec-b027-0fdc30496b31",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide integers",
+      "stem": "Which expression has a value of $-6$?",
+      "choices": [
+        "$(-24) \\div 4$",
+        "$(-24) \\div (-4)$",
+        "$24 \\div 4$",
+        "$(-24) \\times 4$"
+      ],
+      "answer": "$(-24) \\div 4$",
+      "compute": null,
+      "solution": "$(-24) \\div 4 = -6$. The others equal 6, 6 and $-96$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-24) \\div 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-24/4 = -6; -24/-4=6; 24/4=6; -24x4=-96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.806Z"
+        }
+      }
+    },
+    {
+      "id": "2693052b-b6cc-44d0-9ea6-60c3a2ecf79b",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Which decimal is equal to $\\frac{7}{15}$?",
+      "choices": [
+        "$0.\\overline{46}$",
+        "$0.46$",
+        "$0.\\overline{466}$",
+        "$0.4\\overline{6}$"
+      ],
+      "answer": "$0.4\\overline{6}$",
+      "compute": null,
+      "solution": "Long division of 7 by 15 gives 0.4666..., where only the 6 repeats. It is written $0.4\\overline{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.4\\overline{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/15: 70/15 = 4 r10, 100/15 = 6 r10, repeating 6: 0.4666... = 0.4 with 6 repeating.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.853Z"
+        }
+      }
+    },
+    {
+      "id": "fe345944-323d-4c2b-b14b-19b40eef28ab",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $-\\frac{5}{6} \\times \\frac{9}{10}$? Write your answer as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "-3/4",
+      "compute": "(-5/6)*(9/10)",
+      "solution": "$-\\frac{45}{60} = -\\frac{3}{4}$ after dividing top and bottom by 15. The sign is negative because the factors have different signs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(5 x 9)/(6 x 10) = -45/60 = -3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.881Z"
+        }
+      }
+    },
+    {
+      "id": "44123784-831b-40cf-8664-9efe9847aa07",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide integers",
+      "stem": "Write $\\frac{-18}{-4}$ as a decimal.",
+      "choices": [],
+      "answer": "4.5",
+      "compute": "18/4",
+      "solution": "A negative divided by a negative is positive. $18 \\div 4 = 4.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-18/-4 = 18/4 = 4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.925Z"
+        }
+      }
+    },
+    {
+      "id": "cb4fc89d-3152-4c67-a627-cd84cb9c7290",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide fractions",
+      "stem": "What is $\\frac{7}{8} \\div \\left(-\\frac{7}{4}\\right)$? Write your answer as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "-1/2",
+      "compute": "(7/8)/(-7/4)",
+      "solution": "$\\frac{7}{8} \\times \\left(-\\frac{4}{7}\\right) = -\\frac{28}{56} = -\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/8 × (-4/7) = -4/8 = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.961Z"
+        }
+      }
+    },
+    {
+      "id": "81fe0e7d-67c8-421d-ae80-61aa16937ced",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $-0.75 \\times 1.2$?",
+      "choices": [],
+      "answer": "-0.9",
+      "compute": "(-0.75)*1.2",
+      "solution": "$75 \\times 12 = 900$, and there are three decimal places, so the size is 0.900 = 0.9. The signs differ, so the answer is $-0.9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-0.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-0.75 x 1.2 = -(0.75*1.2) = -0.9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.966Z"
+        }
+      }
+    },
+    {
+      "id": "7ca346e1-7d32-4e64-90be-0b6d2db4c831",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $-1\\frac{3}{5} \\times 2\\frac{1}{2}$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "(-8/5)*(5/2)",
+      "solution": "Write the mixed numbers as fractions: $-\\frac{8}{5} \\times \\frac{5}{2} = -\\frac{40}{10} = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-8/5 x 5/2 = -40/10 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.977Z"
+        }
+      }
+    },
+    {
       "id": "cfceffef-2a96-4b6e-b10e-3dedf14b2d69",
       "topic_id": "NC17.7.NS.2",
       "difficulty": 3,
@@ -13375,6 +14829,733 @@
           "work": "x*y>0; x*x>0 so x*x*y<0; quotient of xy by itself is 1; x/y>0. Only x*x*y is negative.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:03.077Z"
+        }
+      }
+    },
+    {
+      "id": "576b91a6-c19b-49e6-89cf-dc811a5edc09",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $-9.12 \\div 0.38$?",
+      "choices": [],
+      "answer": "-24",
+      "compute": "(-9.12)/0.38",
+      "solution": "Multiply both numbers by 100: $-912 \\div 38 = -24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.38 × 24 = 9.12; negative ÷ positive → -24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.655Z"
+        }
+      }
+    },
+    {
+      "id": "17ba938f-c424-49a8-8406-8affe80d2319",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide fractions",
+      "stem": "If $a = -\\frac{2}{3}$ and $b = \\frac{4}{9}$, what is $a \\div b$? Write your answer as a fraction.",
+      "choices": [],
+      "answer": "-3/2",
+      "compute": "(-2/3)/(4/9)",
+      "solution": "$-\\frac{2}{3} \\times \\frac{9}{4} = -\\frac{18}{12} = -\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2/3 × 9/4 = -18/12 = -3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.656Z"
+        }
+      }
+    },
+    {
+      "id": "44289e1a-a462-4031-b24f-756148809695",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Which decimal is equal to $\\frac{13}{30}$?",
+      "choices": [
+        "$0.4\\overline{3}$",
+        "$0.\\overline{43}$",
+        "$0.43$",
+        "$0.\\overline{433}$"
+      ],
+      "answer": "$0.4\\overline{3}$",
+      "compute": null,
+      "solution": "$13 \\div 30 = 0.4333...$, where only the 3 repeats: $0.4\\overline{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.4\\overline{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 ÷ 30 = 0.4333..., = 0.4\\overline{3}.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.657Z"
+        }
+      }
+    },
+    {
+      "id": "3e5a1b3c-b708-4aaa-b125-bae369c44c0e",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Sign of a product or quotient",
+      "stem": "Which expression is undefined?",
+      "choices": [
+        "$\\frac{3 - 5}{3}$",
+        "$\\frac{0}{5 - 3}$",
+        "$\\frac{5 - 3}{5}$",
+        "$\\frac{5}{3 - 3}$"
+      ],
+      "answer": "$\\frac{5}{3 - 3}$",
+      "compute": null,
+      "solution": "$3 - 3 = 0$, and dividing by 0 is not defined. The others equal $-\\frac{2}{3}$, 0 and $\\frac{2}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{3 - 3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/(3−3) = 5/0, undefined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.660Z"
+        }
+      }
+    },
+    {
+      "id": "5334244f-7f45-4fd4-82a0-89648ddd2649",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide fractions",
+      "stem": "A number multiplied by $-\\frac{3}{5}$ gives $\\frac{9}{20}$. What is the number? Write your answer as a fraction.",
+      "choices": [],
+      "answer": "-3/4",
+      "compute": "(9/20)/(-3/5)",
+      "solution": "Division undoes multiplication: $\\frac{9}{20} \\div \\left(-\\frac{3}{5}\\right) = -\\frac{9}{20} \\times \\frac{5}{3} = -\\frac{45}{60} = -\\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 9/20 ÷ (-3/5) = 9/20 × (-5/3) = -45/60 = -3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.661Z"
+        }
+      }
+    },
+    {
+      "id": "50337cfa-ef39-4487-984b-4a45e1172fea",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Sign of a product or quotient",
+      "stem": "Which quotient has the greatest value?",
+      "choices": [
+        "$(-6) \\div 0.5$",
+        "$6 \\div 12$",
+        "$(-0.5) \\div (-6)$",
+        "$(-6) \\div (-0.5)$"
+      ],
+      "answer": "$(-6) \\div (-0.5)$",
+      "compute": null,
+      "solution": "$(-6) \\div (-0.5) = 12$. The others are $-12$, 0.5 and about 0.083.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-6) \\div (-0.5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: -12; B: 0.5; C: 1/12; D: 12. Greatest D.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.661Z"
+        }
+      }
+    },
+    {
+      "id": "4d14f1ba-eddd-4c28-9726-a6277dbeb611",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Divide 11 by 18 with long division and round the decimal to the nearest thousandth.",
+      "choices": [],
+      "answer": "0.611",
+      "compute": "0.611",
+      "solution": "$11 \\div 18 = 0.6111...$, which repeats the digit 1. To the nearest thousandth that is 0.611.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.611",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 ÷ 18 = 0.6111..., rounds to 0.611.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.667Z"
+        }
+      }
+    },
+    {
+      "id": "f0e54482-0c43-49e8-b070-486657d5af61",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide fractions",
+      "stem": "Which pair of numbers gives a quotient of $-\\frac{3}{4}$ when the first number is divided by the second?",
+      "choices": [
+        "$-\\frac{3}{2}$ and $-2$",
+        "$\\frac{3}{4}$ and $-4$",
+        "$\\frac{3}{2}$ and $-2$",
+        "$-2$ and $\\frac{3}{2}$"
+      ],
+      "answer": "$\\frac{3}{2}$ and $-2$",
+      "compute": null,
+      "solution": "$\\frac{3}{2} \\div (-2) = -\\frac{3}{4}$. The other pairs give $\\frac{3}{4}$, $-\\frac{3}{16}$ and $-\\frac{4}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{2}$ and $-2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: (-3/2)/(-2) = 3/4; B: (3/4)/(-4) = -3/16; C: (3/2)/(-2) = -3/4; D: -2/(3/2) = -4/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.667Z"
+        }
+      }
+    },
+    {
+      "id": "b1d17d57-80bf-4880-8be6-07b9c7cb4c09",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "The temperature changed by a total of $-17.5$ degrees over 7 hours, by the same amount each hour. At the same rate, what is the change in temperature over 4 hours?",
+      "choices": [],
+      "answer": "-10",
+      "compute": "(-17.5)/7*4",
+      "solution": "Each hour: $-17.5 \\div 7 = -2.5$. For 4 hours: $4 \\times (-2.5) = -10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-17.5/7=-2.5 per hour; x4 = -10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.683Z"
+        }
+      }
+    },
+    {
+      "id": "80d08c28-66bf-486f-ac08-1f2b8480cbc2",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "Find the product of $-3\\frac{1}{3}$ and $1\\frac{4}{5}$.",
+      "choices": [
+        "$6$",
+        "$-3\\frac{4}{15}$",
+        "$-5\\frac{2}{15}$",
+        "$-6$"
+      ],
+      "answer": "$-6$",
+      "compute": "(-10/3)*(9/5)",
+      "solution": "$-\\frac{10}{3} \\times \\frac{9}{5} = -\\frac{90}{15} = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-10/3 x 9/5 = -90/15 = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.718Z"
+        }
+      }
+    },
+    {
+      "id": "9680a89c-547c-4481-9e6a-862b015f3383",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $-1.2 \\times 0.35 \\div (-0.07)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(-1.2)*0.35/(-0.07)",
+      "solution": "$-1.2 \\times 0.35 = -0.42$. Then $-0.42 \\div (-0.07) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1.2×0.35 = -0.42; -0.42 ÷ -0.07 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.747Z"
+        }
+      }
+    },
+    {
+      "id": "f1eaec59-41fa-4687-adab-12b1e989aca4",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A balloon's height changes by $-\\frac{5}{6}$ meter each second. What is the change in its height after $3\\frac{3}{5}$ seconds, in meters?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "(-5/6)*(18/5)",
+      "solution": "$-\\frac{5}{6} \\times \\frac{18}{5} = -\\frac{90}{30} = -3$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5/6 × 18/5 = -90/30 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.783Z"
+        }
+      }
+    },
+    {
+      "id": "38070c3d-133d-4775-a8a1-f16032754a65",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide fractions",
+      "stem": "What is $-2\\frac{1}{4} \\div 1\\frac{1}{8}$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "(-9/4)/(9/8)",
+      "solution": "$-\\frac{9}{4} \\div \\frac{9}{8} = -\\frac{9}{4} \\times \\frac{8}{9} = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-9/4 / 9/8 = -9/4 x 8/9 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.804Z"
+        }
+      }
+    },
+    {
+      "id": "732b44fb-8e36-48aa-bcb0-2bdfd2a6c878",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "The temperature falls by 0.8 degree every 20 minutes. Which number shows the change in temperature after 2 hours, in degrees?",
+      "choices": [
+        "$4.8$",
+        "$-4.8$",
+        "$-1.6$",
+        "$-96$"
+      ],
+      "answer": "$-4.8$",
+      "compute": "-4.8",
+      "solution": "2 hours is 120 minutes, which is 6 periods of 20 minutes. The change is $6 \\times (-0.8) = -4.8$ degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4.8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 hours = 120 min = 6 intervals of 20 min; 6 x (-0.8) = -4.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.808Z"
+        }
+      }
+    },
+    {
+      "id": "16dcf86e-3a7a-4d33-ba2a-d9512c9c92fc",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A drone descends $2\\frac{1}{4}$ meters in $\\frac{3}{4}$ of a minute at a steady rate. Which number is its change in height per minute, in meters?",
+      "choices": [
+        "$-3$",
+        "$3$",
+        "$-1\\frac{11}{16}$",
+        "$-\\frac{1}{3}$"
+      ],
+      "answer": "$-3$",
+      "compute": "-3",
+      "solution": "$-\\frac{9}{4} \\div \\frac{3}{4} = -3$ meters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2 1/4 / (3/4) = -9/4 x 4/3 = -3 m per minute (descending, so negative).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.824Z"
+        }
+      }
+    },
+    {
+      "id": "a1ffb517-c990-49f5-b1ae-602a35f13f15",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply and divide decimals",
+      "stem": "What is $-0.05 \\times 0.8$?",
+      "choices": [
+        "$-0.4$",
+        "$-0.04$",
+        "$0.04$",
+        "$-0.004$"
+      ],
+      "answer": "$-0.04$",
+      "compute": "-0.05*0.8",
+      "solution": "$5 \\times 8 = 40$ with three decimal places gives 0.040 = 0.04. Different signs make it negative: $-0.04$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-0.04$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.05x0.8 = 0.04, negative: -0.04.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.837Z"
+        }
+      }
+    },
+    {
+      "id": "fa83beac-d29d-44ec-83fd-60d6af2bdcbe",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide fractions",
+      "stem": "What is $-\\frac{3}{8} \\div \\left(-1\\frac{1}{2}\\right)$?",
+      "choices": [
+        "$\\frac{1}{4}$",
+        "$-\\frac{1}{4}$",
+        "$\\frac{9}{16}$",
+        "$4$"
+      ],
+      "answer": "$\\frac{1}{4}$",
+      "compute": null,
+      "solution": "$-1\\frac{1}{2} = -\\frac{3}{2}$. Two negatives give a positive: $\\frac{3}{8} \\times \\frac{2}{3} = \\frac{6}{24} = \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3/8 / -3/2 = 3/8 x 2/3 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.843Z"
+        }
+      }
+    },
+    {
+      "id": "025c12b7-2c36-479f-9313-70d3417c385c",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply or divide rational numbers in context",
+      "stem": "A drone's height changes by a total of $-\\frac{15}{4}$ meters in $\\frac{5}{8}$ minute at a steady rate. What is the change in its height per minute, in meters?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "(-15/4)/(5/8)",
+      "solution": "$-\\frac{15}{4} \\div \\frac{5}{8} = -\\frac{15}{4} \\times \\frac{8}{5} = -6$ meters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-15/4 / 5/8 = -15/4 x 8/5 = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.844Z"
+        }
+      }
+    },
+    {
+      "id": "8f1f583a-899f-4d69-8026-e0e07d97d929",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Which fraction has the decimal form $0.\\overline{18}$?",
+      "choices": [
+        "$\\frac{9}{50}$",
+        "$\\frac{2}{11}$",
+        "$\\frac{3}{16}$",
+        "$\\frac{1}{6}$"
+      ],
+      "answer": "$\\frac{2}{11}$",
+      "compute": null,
+      "solution": "$2 \\div 11 = 0.181818...$, which is $0.\\overline{18}$. $\\frac{9}{50} = 0.18$ stops, $\\frac{3}{16} = 0.1875$ and $\\frac{1}{6} = 0.1\\overline{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{11}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.181818... = 18/99 = 2/11. Check: 9/50 = 0.18, 3/16 = 0.1875, 1/6 = 0.1666...",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.848Z"
+        }
+      }
+    },
+    {
+      "id": "21b2a3c1-2183-49e2-897e-c4c1c7ce6342",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "Which fraction is equal to $0.3125$?",
+      "choices": [
+        "$\\frac{5}{32}$",
+        "$\\frac{3}{16}$",
+        "$\\frac{5}{16}$",
+        "$\\frac{5}{12}$"
+      ],
+      "answer": "$\\frac{5}{16}$",
+      "compute": null,
+      "solution": "$5 \\div 16 = 0.3125$. The others give 0.15625, 0.1875 and $0.41\\overline{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{16}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.3125 = 3125/10000 = 5/16. Check 5/32 = 0.15625, 3/16 = 0.1875, 5/12 = 0.41666.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.862Z"
+        }
+      }
+    },
+    {
+      "id": "9d824804-9675-4986-910e-20475b3494f8",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply fractions and mixed numbers",
+      "stem": "What is $-\\frac{3}{5} \\times 2\\frac{1}{2} \\times \\left(-\\frac{4}{9}\\right)$?",
+      "choices": [
+        "$-\\frac{2}{3}$",
+        "$\\frac{4}{15}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{3}{2}$"
+      ],
+      "answer": "$\\frac{2}{3}$",
+      "compute": null,
+      "solution": "$2\\frac{1}{2} = \\frac{5}{2}$. $-\\frac{3}{5} \\times \\frac{5}{2} = -\\frac{3}{2}$, and $-\\frac{3}{2} \\times \\left(-\\frac{4}{9}\\right) = \\frac{12}{18} = \\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Two negatives give a positive. 3/5 x 5/2 = 3/2; 3/2 x 4/9 = 12/18 = 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.874Z"
+        }
+      }
+    },
+    {
+      "id": "cc338728-ae01-43ea-8f83-5b82f4bf3476",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction to a repeating decimal by long division",
+      "stem": "Use long division to write $\\frac{3}{7}$ as a decimal. What is the 20th digit after the decimal point?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$\\frac{3}{7} = 0.428571428571...$ and the block 428571 repeats every 6 digits. The 20th digit is the same as the 2nd digit of the block (20 = 18 + 2), which is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/7 = 0.428571 428571..., period 6. 20 = 3×6 + 2, so the 20th digit is the 2nd of the block: 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.924Z"
+        }
+      }
+    },
+    {
+      "id": "07e6e0e2-1989-4d43-a95d-569ce7f89de3",
+      "topic_id": "NC17.7.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction to a terminating decimal by long division",
+      "stem": "Use long division to write $\\frac{7}{16}$ as a decimal.",
+      "choices": [],
+      "answer": "0.4375",
+      "compute": "7/16",
+      "solution": "Divide 7.0000 by 16: 70 gives 4 (64), remainder 6; 60 gives 3 (48), remainder 12; 120 gives 7 (112), remainder 8; 80 gives 5 and no remainder. The decimal is 0.4375.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.4375",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/16: 70/16=4 r6, 60/16=3 r12, 120/16=7 r8, 80/16=5 r0 → 0.4375.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.942Z"
         }
       }
     },

@@ -6,6 +6,7 @@
     "NC17.5.OA.3": "Plots are described in words (no pictures): reading and plotting ordered pairs, moves between points, and which point lies on a pattern graph. All terms are whole numbers in the first quadrant; rules are additive, with multiples appearing as relationships between matching terms.",
     "NC17.5.NBT.1": "30 questions written. Skills: place value relationships 5, multiply by powers of ten 6, divide by powers of ten 6, exponent form of powers of ten 6, value of a digit 3, explaining the pattern 4. Negative exponents are left out (not Grade 5).",
     "NC17.5.NBT.5": "Whole-number products only; the largest factors are 3-digit by 2-digit, as the standard says. Skills (rough counts): two-digit by two-digit 4, three-digit by two-digit 6, partial products 6, multiply by a multiple of ten 3, word problems 6, estimate to check 3, missing digit 2. Written work in columns is described by its rows (partial products) in words. Products only, as the standard asks; no division. Money is avoided (no dollar sign).",
+    "NC17.5.NBT.6": "All 69 written, 23 per difficulty; nothing left out.",
     "NC17.5.NBT.7": "Decimals are kept to hundredths (products of two tenths reach hundredths); models and drawings are described in words rather than shown. Division of a decimal by a decimal uses friendly numbers that divide exactly.",
     "NC17.5.NF.1": "Denominators are always related (one a multiple of the other) so the common denominator is the larger; answers are fractions or mixed numbers. Choice answers have no compute because the checker accepts only plain numbers there; keys were verified by exact fraction arithmetic in the generator.",
     "NC17.5.NF.3": "Whole-number answers are avoided; answers are fractions or mixed numbers, as in the standard. Skills (rough counts): fraction as numerator divided by denominator (6), share less than 1 (5), share a mixed number (6), size of a quotient (4), find the amount shared (2), compare shares (2), match a story to a division (2), two-step sharing (2), find the error (1). Decimal answers left out on purpose.",
@@ -13497,6 +13498,35 @@
       }
     },
     {
+      "id": "93991365-ad44-4763-9b18-02a0d4f97d28",
+      "topic_id": "NC17.5.NBT.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply two-digit numbers with the standard algorithm",
+      "stem": "A school hall has 32 rows of chairs with 14 chairs in each row. How many chairs are in the hall?",
+      "choices": [],
+      "answer": "448",
+      "compute": "32*14",
+      "solution": "$32 \\times 4 = 128$ and $32 \\times 10 = 320$. Then $128 + 320 = 448$ chairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "448",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32 x 14 = 448.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.889Z"
+        }
+      }
+    },
+    {
       "id": "53697ad0-2b6f-41ef-a38f-23c88dca24b8",
       "topic_id": "NC17.5.NBT.5",
       "difficulty": 2,
@@ -15861,6 +15891,713 @@
       }
     },
     {
+      "id": "05c58544-53b8-43ff-b04b-93001ed11bec",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Check a division or find the dividend",
+      "stem": "Which equation checks that $97 \\div 12 = 8$ R $1$?",
+      "choices": [
+        "$12 \\times 1 + 8 = 20$",
+        "$12 + 8 + 1 = 21$",
+        "$12 \\times 8 + 1 = 97$",
+        "$97 \\times 8 = 776$"
+      ],
+      "answer": "$12 \\times 8 + 1 = 97$",
+      "compute": null,
+      "solution": "Multiply the quotient by the divisor and add the remainder: $12 \\times 8 + 1 = 96 + 1 = 97$, the dividend.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 \\times 8 + 1 = 97$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Check: divisor × quotient + remainder = 12 × 8 + 1 = 97.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.674Z"
+        }
+      }
+    },
+    {
+      "id": "24e5cc80-3f18-4d54-ab1c-aee36e195ba5",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a division story",
+      "stem": "A farmer plants 224 seeds in rows of 16 seeds each. How many rows does she plant?",
+      "choices": [],
+      "answer": "14",
+      "compute": "224/16",
+      "solution": "Divide the seeds by the number in a row: $224 \\div 16$ = 14, because $16 \\times 14 = 224$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "224/16=14 (16x14=224).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.682Z"
+        }
+      }
+    },
+    {
+      "id": "e91f39a1-f145-4913-8243-d52218f472a6",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a two-digit number",
+      "stem": "Find $304 \\div 16$.",
+      "choices": [],
+      "answer": "19",
+      "compute": "304/16",
+      "solution": "$16 \\times 19 = 304$, so $304 \\div 16$ = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16x19=304, so 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.685Z"
+        }
+      }
+    },
+    {
+      "id": "d6f47b31-9385-43bd-9e81-966ab20f3e70",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "Divide 87 by 20. What is the remainder?",
+      "choices": [],
+      "answer": "7",
+      "compute": "87-20*4",
+      "solution": "$20 \\times 4 = 80$ and $87 - 80 = 7$. Since 7 is less than 20, the remainder is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "87=4x20+7, remainder 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.703Z"
+        }
+      }
+    },
+    {
+      "id": "a24edf36-1cc6-4104-a060-7ac22894b029",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Which is the best estimate of $412 \\div 19$?",
+      "choices": [
+        "$2$",
+        "$200$",
+        "$40$",
+        "$20$"
+      ],
+      "answer": "$20$",
+      "compute": null,
+      "solution": "412 is close to 400 and 19 is close to 20. $400 \\div 20 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "412/19 about 400/20=20 (exact 21.7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.709Z"
+        }
+      }
+    },
+    {
+      "id": "5e2773ae-a508-4fb1-9d56-428b3dc79c6d",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a multiple of ten",
+      "stem": "A teacher has 720 stickers to give out in packs of 90 stickers. How many packs can she make?",
+      "choices": [],
+      "answer": "8",
+      "compute": "720/90",
+      "solution": "Divide: $72 \\div 9 = 8$, so $720 \\div 90 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "720/90=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.710Z"
+        }
+      }
+    },
+    {
+      "id": "7d860b85-c421-4bb2-a618-b3a351335c0e",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Check a division or find the dividend",
+      "stem": "Since $16 \\times 21 = 336$, what is $336 \\div 16$?",
+      "choices": [],
+      "answer": "21",
+      "compute": "336/16",
+      "solution": "Division undoes multiplication. $16 \\times 21 = 336$, so $336 \\div 16 = 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "336/16=21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.714Z"
+        }
+      }
+    },
+    {
+      "id": "3121867f-84bd-4043-9bf3-0cc21a210c66",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide with partial quotients",
+      "stem": "To find $306 \\div 18$, Omar takes out 10 groups of 18 (180, leaving 126), then 5 groups (90, leaving 36), then 2 groups (36, leaving 0). What is $306 \\div 18$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "10+5+2",
+      "solution": "Add the partial quotients: 10 + 5 + 2 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10+5+2=17 groups of 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.721Z"
+        }
+      }
+    },
+    {
+      "id": "1d90f7b2-2e3e-411c-8188-bb7e32ec2fcc",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a multiple of ten",
+      "stem": "What is $3{,}200 \\div 80$?",
+      "choices": [],
+      "answer": "40",
+      "compute": "3200/80",
+      "solution": "Divide $320 \\div 8 = 40$, so $3{,}200 \\div 80 = 40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3200/80=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.721Z"
+        }
+      }
+    },
+    {
+      "id": "f6d8a228-9518-4364-95f3-0eeffa3b0d8f",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "What are the quotient and the remainder of $150 \\div 40$?",
+      "choices": [
+        "3 R 30",
+        "30 R 3",
+        "4 R 10",
+        "2 R 70"
+      ],
+      "answer": "3 R 30",
+      "compute": null,
+      "solution": "$40 \\times 3 = 120$ and $150 - 120 = 30$, so the quotient is 3 and the remainder is 30. A remainder is always less than 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 R 30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40×3=120, 150-120=30. 3 R 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.766Z"
+        }
+      }
+    },
+    {
+      "id": "12bd55a3-3a73-4ca2-b55b-e5767a34c499",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the remainder in a story",
+      "stem": "A ferry holds 20 people. How many trips does it need to carry 92 people, if every person must go?",
+      "choices": [
+        "$4$",
+        "$5$",
+        "$12$",
+        "$20$"
+      ],
+      "answer": "$5$",
+      "compute": null,
+      "solution": "$92 \\div 20 = 4$ R $12$. Four trips carry 80 people, and 12 people are still waiting, so a fifth trip is needed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "92÷20 = 4 R 12; need 5 trips.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.787Z"
+        }
+      }
+    },
+    {
+      "id": "3e093714-93d4-4d8b-8c31-577616bd2e9c",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a division story",
+      "stem": "A grocer has 360 cans and packs 24 cans in each case. How many cases does she fill?",
+      "choices": [],
+      "answer": "15",
+      "compute": "360/24",
+      "solution": "$24 \\times 15 = 360$, so she fills 15 cases.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360÷24 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.791Z"
+        }
+      }
+    },
+    {
+      "id": "0fed4f53-a59b-487a-b7f5-4838c0ccf793",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a division story",
+      "stem": "A pool holds 936 gallons of water. A pump adds 12 gallons each minute. How many minutes does it take to fill the pool?",
+      "choices": [],
+      "answer": "78",
+      "compute": "936/12",
+      "solution": "$12 \\times 78 = 936$, so it takes 78 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "78",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "936÷12 = 78.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.793Z"
+        }
+      }
+    },
+    {
+      "id": "e4714a82-3cc8-4cf3-9e53-b7fb42e47a26",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reason about quotients and remainders",
+      "stem": "Which number can NOT be the remainder when a whole number is divided by 18?",
+      "choices": [
+        "0",
+        "18",
+        "9",
+        "17"
+      ],
+      "answer": "18",
+      "compute": null,
+      "solution": "A remainder is always less than the divisor. 18 is not less than 18, so it cannot be a remainder.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A remainder on division by 18 is 0 to 17; 18 cannot be a remainder.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.796Z"
+        }
+      }
+    },
+    {
+      "id": "b0137863-da64-4084-8e14-cf0bee8697f9",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a two-digit number",
+      "stem": "What number do you get when you divide 645 by 15?",
+      "choices": [],
+      "answer": "43",
+      "compute": "645/15",
+      "solution": "$15 \\times 43 = 645$, so the answer is 43.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15x40=600, 45=15x3, so 43.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.806Z"
+        }
+      }
+    },
+    {
+      "id": "9893891e-e30c-4883-9589-b17ab737802b",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the quotient and the remainder",
+      "stem": "How many whole times does 14 fit into 100?",
+      "choices": [],
+      "answer": "7",
+      "compute": "(100-2)/14",
+      "solution": "$14 \\times 7 = 98$ and $14 \\times 8 = 112$, which is too big. So 14 fits into 100 seven whole times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14x7=98, 14x8=112 > 100 -> 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.824Z"
+        }
+      }
+    },
+    {
+      "id": "61178770-3a05-4c2b-a84f-d5d00cdcf31c",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide with an area model",
+      "stem": "Mia splits $288$ into $240$ and $48$ to divide it by $12$ with an area model. Which two divisions does she do?",
+      "choices": [
+        "$240 \\div 48$ and $48 \\div 12$",
+        "$288 \\div 240$ and $288 \\div 48$",
+        "$240 \\div 12$ and $48 \\div 12$",
+        "$240 \\div 12$ and $48 \\div 48$"
+      ],
+      "answer": "$240 \\div 12$ and $48 \\div 12$",
+      "compute": null,
+      "solution": "Each part is divided by 12: $240 \\div 12 = 20$ and $48 \\div 12 = 4$. The answers add to 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$240 \\div 12$ and $48 \\div 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area model: 288 / 12 = 240/12 + 48/12 = 20 + 4 = 24. She divides each part by 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.850Z"
+        }
+      }
+    },
+    {
+      "id": "128edef3-1816-4890-9a07-3c2b679dacc5",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide with an area model",
+      "stem": "An area model splits $225 \\div 15$ into $150 \\div 15$ and $75 \\div 15$. What is $225 \\div 15$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "150/15+75/15",
+      "solution": "$150 \\div 15 = 10$ and $75 \\div 15 = 5$. Add the parts: 10 + 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "150/15 = 10, 75/15 = 5, total 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.852Z"
+        }
+      }
+    },
+    {
+      "id": "3b061cfc-4539-4227-a160-03a9e63cc020",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Divide 79 by 14. Which shows the quotient and the remainder?",
+      "choices": [
+        "5 R 9",
+        "9 R 5",
+        "6 R 5",
+        "4 R 23"
+      ],
+      "answer": "5 R 9",
+      "compute": null,
+      "solution": "$14 \\times 5 = 70$ and $79 - 70 = 9$, so the quotient is 5 and the remainder is 9. A remainder is always less than 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 R 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 x 5 = 70, 79 - 70 = 9 < 14. 5 R 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.869Z"
+        }
+      }
+    },
+    {
+      "id": "7117efa3-5e76-4419-b421-5aea4ecbc0d8",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide with partial quotients",
+      "stem": "Tara starts $195 \\div 15$ by taking out $150$ first. How many more groups of $15$ are in the $45$ that is left?",
+      "choices": [],
+      "answer": "3",
+      "compute": "45/15",
+      "solution": "Divide what is left: $45 \\div 15 = 3$. She takes out 3 more groups of 15 (so the whole quotient is 10 + 3 = 13).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 / 15 = 3 more groups (total 10 + 3 = 13).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.879Z"
+        }
+      }
+    },
+    {
+      "id": "c3156e2c-2f40-4cde-ae6f-cc5fb155341a",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a division story",
+      "stem": "A school has 540 pencils to put in bags of 30. Which equation finds the number of bags?",
+      "choices": [
+        "$540 \\times 30 = 16{,}200$",
+        "$540 - 30 = 510$",
+        "$540 + 30 = 570$",
+        "$540 \\div 30 = 18$"
+      ],
+      "answer": "$540 \\div 30 = 18$",
+      "compute": null,
+      "solution": "Putting pencils into equal bags is division: $540 \\div 30 = 18$ bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$540 \\div 30 = 18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Number of bags = 540 / 30 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.898Z"
+        }
+      }
+    },
+    {
+      "id": "69c6e05a-abe7-489f-b8a6-7c0da6cee5de",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "A gardener has 250 tulip bulbs and plants 30 in each bed. After she fills as many beds as she can, how many bulbs are left over?",
+      "choices": [],
+      "answer": "10",
+      "compute": "250-30*8",
+      "solution": "$30 \\times 8 = 240$ and $250 - 240 = 10$, so 10 bulbs are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30 x 8 = 240, 250 - 240 = 10 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.900Z"
+        }
+      }
+    },
+    {
+      "id": "7555b6b2-6c55-4f43-b3aa-c042ae1de660",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide by a two-digit number",
+      "stem": "Solve $286 \\div 22$.",
+      "choices": [],
+      "answer": "13",
+      "compute": "286/22",
+      "solution": "$22 \\times 13 = 286$, so $286 \\div 22$ = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "22×13 = 286, so 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.929Z"
+        }
+      }
+    },
+    {
       "id": "fab8cce9-90b2-4e2d-aa97-d7ce38950489",
       "topic_id": "NC17.5.NBT.6",
       "difficulty": 2,
@@ -16176,6 +16913,738 @@
       }
     },
     {
+      "id": "ed39c9e7-c262-40db-a22c-99d603b62637",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the remainder in a story",
+      "stem": "Each van seats 15 people. How many vans are needed to take 130 people, so that everyone has a seat?",
+      "choices": [
+        "$9$",
+        "$8$",
+        "$10$",
+        "$15$"
+      ],
+      "answer": "$9$",
+      "compute": null,
+      "solution": "$130 \\div 15 = 8$ R $10$. Eight vans seat 120 people, and 10 people still need seats, so a ninth van is needed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "130 ÷ 15 = 8 R 10, so 9 vans needed.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.619Z"
+        }
+      }
+    },
+    {
+      "id": "5f3c3f1a-3749-49dd-b827-08919b03e759",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with an area model",
+      "stem": "Kofi splits $1{,}350$ into $1{,}000$ and $350$ to divide it by $25$ with an area model. What is $1{,}350 \\div 25$?",
+      "choices": [],
+      "answer": "54",
+      "compute": "1000/25+350/25",
+      "solution": "$1{,}000 \\div 25 = 40$ and $350 \\div 25 = 14$. Add the parts: 40 + 14 = 54.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,000 ÷ 25 = 40, 350 ÷ 25 = 14; 40 + 14 = 54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.620Z"
+        }
+      }
+    },
+    {
+      "id": "6144f5d9-36ed-4c39-bb62-e1b7f2ac8598",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a division story",
+      "stem": "Which story is solved by $1{,}260 \\div 35$?",
+      "choices": [
+        "Pens come 35 to a pack. How many packs hold 1,260 pens?",
+        "There are 1,260 pens and 35 more arrive. How many pens are there now?",
+        "Each of 35 packs holds 1,260 pens. How many pens are there in all?",
+        "There are 1,260 pens and 35 are sold. How many pens are left?"
+      ],
+      "answer": "Pens come 35 to a pack. How many packs hold 1,260 pens?",
+      "compute": null,
+      "solution": "Dividing a total into equal groups finds the number of groups. The other stories add, multiply and subtract.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Pens come 35 to a pack. How many packs hold 1,260 pens?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,260 ÷ 35 = number of packs of 35 in 1,260.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.656Z"
+        }
+      }
+    },
+    {
+      "id": "6e566d03-74ed-432e-9934-a8aad7bf3a2c",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide with an area model",
+      "stem": "Which split of $874$ lets you divide each part by $23$ with no remainder?",
+      "choices": [
+        "$800$ and $74$",
+        "$700$ and $174$",
+        "$850$ and $24$",
+        "$690$ and $184$"
+      ],
+      "answer": "$690$ and $184$",
+      "compute": null,
+      "solution": "$690 \\div 23 = 30$ and $184 \\div 23 = 8$. The other splits have a part that 23 does not divide evenly.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$690$ and $184$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "690 = 23 × 30, 184 = 23 × 8; 690 + 184 = 874. Others not multiples of 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.659Z"
+        }
+      }
+    },
+    {
+      "id": "d2c52bda-da00-4998-afbd-e1f991e9d919",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a division story",
+      "stem": "A farm packs 1,800 eggs into cartons of 12. Then it puts 25 cartons into each crate. How many crates does it fill?",
+      "choices": [],
+      "answer": "6",
+      "compute": "1800/12/25",
+      "solution": "$1{,}800 \\div 12 = 150$ cartons. Then $150 \\div 25 = 6$ crates.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1800/12=150 cartons; 150/25=6 crates.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.675Z"
+        }
+      }
+    },
+    {
+      "id": "bd68641d-3b10-4d13-a3b5-a62ed09830f2",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Which is the best estimate of $7{,}812 \\div 38$?",
+      "choices": [
+        "$200$",
+        "$20$",
+        "$2{,}000$",
+        "$400$"
+      ],
+      "answer": "$200$",
+      "compute": null,
+      "solution": "7,812 is close to 8,000 and 38 is close to 40. $8{,}000 \\div 40 = 200$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$200$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7812/38 is about 8000/40=200 (exact 205.6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.676Z"
+        }
+      }
+    },
+    {
+      "id": "75be8afc-a909-4213-a1a2-c335766cc2e6",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide by a two-digit number",
+      "stem": "What is $1{,}596 \\div 28$?",
+      "choices": [
+        "$57$",
+        "$507$",
+        "$67$",
+        "$75$"
+      ],
+      "answer": "$57$",
+      "compute": "1596/28",
+      "solution": "$28 \\times 57 = 1{,}596$: $28 \\times 50 = 1{,}400$ and $28 \\times 7 = 196$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$57$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28x57=1400+196=1596.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.714Z"
+        }
+      }
+    },
+    {
+      "id": "0e93d7cd-3451-4b8b-becb-4ba2e37b7813",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide by a multiple of ten",
+      "stem": "A ranch has $4{,}800$ pounds of feed to pack into sacks of 60 pounds each. How many sacks does it fill?",
+      "choices": [],
+      "answer": "80",
+      "compute": "4800/60",
+      "solution": "$480 \\div 6 = 80$, so $4{,}800 \\div 60 = 80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4800/60=80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.719Z"
+        }
+      }
+    },
+    {
+      "id": "27fab3f1-6e90-4091-a3ef-a30aeba5211e",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "What is the remainder when $1{,}000$ is divided by $48$?",
+      "choices": [],
+      "answer": "40",
+      "compute": "1000-48*20",
+      "solution": "$48 \\times 20 = 960$ and $1{,}000 - 960 = 40$. Since 40 is less than 48, the remainder is 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48x20=960; 1000-960=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.729Z"
+        }
+      }
+    },
+    {
+      "id": "8b6c83bb-8acb-44fa-bd78-144f3fba386e",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a division story",
+      "stem": "Tickets to a play cost 14 dollars each. The theater collected 2,184 dollars from ticket sales. How many tickets were sold?",
+      "choices": [],
+      "answer": "156",
+      "compute": "2184/14",
+      "solution": "$14 \\times 156 = 2{,}184$, so 156 tickets were sold.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "156",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2184 ÷ 14: 14×150=2100, remainder 84 = 14×6, so 156.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.742Z"
+        }
+      }
+    },
+    {
+      "id": "a87921b1-d125-4ff0-922a-de32d6e55791",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with partial quotients",
+      "stem": "Hana starts $2{,}016 \\div 42$ by taking out 40 groups of 42, which is $1{,}680$. How many more groups of 42 are needed to finish?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(2016-1680)/42",
+      "solution": "$2{,}016 - 1{,}680 = 336$ is left, and $336 \\div 42 = 8$. She needs 8 more groups (the quotient is 48).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2016-1680=336; 336÷42=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.753Z"
+        }
+      }
+    },
+    {
+      "id": "2d6d591a-5938-4450-9094-cfb3208763f0",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Check a division or find the dividend",
+      "stem": "Ravi says $946 \\div 22 = 43$. Which equation shows he is right?",
+      "choices": [
+        "$946 \\times 22 = 20{,}812$",
+        "$946 + 22 = 968$",
+        "$43 \\times 22 = 946$",
+        "$43 + 22 = 65$"
+      ],
+      "answer": "$43 \\times 22 = 946$",
+      "compute": null,
+      "solution": "$43 \\times 22 = 860 + 86 = 946$, so the division is correct.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$43 \\times 22 = 946$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Check by multiplying quotient by divisor: 43×22 = 860+86 = 946.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.783Z"
+        }
+      }
+    },
+    {
+      "id": "765b57d9-6dba-40a8-8863-112822a73b89",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "A fruit stand packs 24 oranges in each bag. It has 1,150 oranges. After it fills every bag it can, how many oranges are not in a bag?",
+      "choices": [],
+      "answer": "22",
+      "compute": "1150-24*47",
+      "solution": "$24 \\times 47 = 1{,}128$ and $1{,}150 - 1{,}128 = 22$. So 22 oranges are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24×47 = 1128; 24×48=1152 > 1150; 1150-1128 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.789Z"
+        }
+      }
+    },
+    {
+      "id": "477af18a-33b5-48c8-92df-f51f8abf461b",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Which division is the best way to estimate $1{,}835 \\div 31$?",
+      "choices": [
+        "$1{,}800 \\div 40$",
+        "$1{,}800 \\div 30$",
+        "$1{,}800 \\div 3$",
+        "$180 \\div 30$"
+      ],
+      "answer": "$1{,}800 \\div 30$",
+      "compute": null,
+      "solution": "Round each number to a nearby one that is easy to divide: 1,835 is close to 1,800 and 31 is close to 30. The estimate is $1{,}800 \\div 30 = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1{,}800 \\div 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1835~1800, 31~30: 1800/30=60, closest compatible estimate.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.799Z"
+        }
+      }
+    },
+    {
+      "id": "6744982c-934c-4e0e-969a-7367f47a824b",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Reason about quotients and remainders",
+      "stem": "Which division has a quotient greater than 100?",
+      "choices": [
+        "$2{,}500 \\div 30$",
+        "$3{,}000 \\div 40$",
+        "$900 \\div 12$",
+        "$4{,}000 \\div 35$"
+      ],
+      "answer": "$4{,}000 \\div 35$",
+      "compute": null,
+      "solution": "$35 \\times 100 = 3{,}500$ is less than 4,000, so the quotient is more than 100. The others come to about 83, 75 and 75.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4{,}000 \\div 35$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4000/35 ~ 114.3 > 100; 900/12=75; 3000/40=75; 2500/30~83.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.811Z"
+        }
+      }
+    },
+    {
+      "id": "2d862aed-f9a8-4d53-a426-ad578a4a7b3b",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with partial quotients",
+      "stem": "Priya divides $1{,}000 \\div 35$ with partial quotients. She takes out 20 groups of 35 ($700$) and then 8 more groups ($280$). What is the remainder?",
+      "choices": [],
+      "answer": "20",
+      "compute": "1000-700-280",
+      "solution": "$1{,}000 - 700 - 280 = 20$. Since 20 is less than 35, no more groups fit, so the remainder is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "700+280=980; 1000-980=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.815Z"
+        }
+      }
+    },
+    {
+      "id": "cf430db6-1e9b-465d-80da-4378fb3d2fde",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Check a division or find the dividend",
+      "stem": "Sofia puts her stickers in piles of 24. She makes 41 piles and has 7 stickers left over. How many stickers does she have?",
+      "choices": [],
+      "answer": "991",
+      "compute": "24*41+7",
+      "solution": "Multiply the piles by the size of a pile and add the leftovers: $24 \\times 41 = 984$, and $984 + 7 = 991$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "991",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24x41 = 984; +7 = 991.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.820Z"
+        }
+      }
+    },
+    {
+      "id": "58f5c0b6-bbf6-4412-801d-10cc73797962",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the quotient and the remainder",
+      "stem": "How many whole times does 28 fit into $1{,}000$?",
+      "choices": [],
+      "answer": "35",
+      "compute": "(1000-20)/28",
+      "solution": "$28 \\times 35 = 980$ and $28 \\times 36 = 1{,}008$, which is too big. So 28 fits 35 whole times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28x35 = 980, 28x36 = 1008 > 1000 -> 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.839Z"
+        }
+      }
+    },
+    {
+      "id": "4414f385-1cab-48ed-aa83-11135cc79514",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "What are the quotient and the remainder of $2{,}459 \\div 41$?",
+      "choices": [
+        "40 R 59",
+        "60 R 1",
+        "58 R 81",
+        "59 R 40"
+      ],
+      "answer": "59 R 40",
+      "compute": null,
+      "solution": "$41 \\times 59 = 2{,}419$ and $2{,}459 - 2{,}419 = 40$, so the quotient is 59 and the remainder is 40. A remainder is always less than 41.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "59 R 40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "41 x 59 = 2419; 2459 - 2419 = 40 < 41. 59 R 40. (41 x 60 = 2460 > 2459.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.881Z"
+        }
+      }
+    },
+    {
+      "id": "816e7477-e201-46d3-8ff4-e22bf951913a",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide with partial quotients",
+      "stem": "Which pair of partial quotients adds up to $1{,}050 \\div 25$?",
+      "choices": [
+        "$30 + 5$",
+        "$40 + 12$",
+        "$40 + 2$",
+        "$20 + 2$"
+      ],
+      "answer": "$40 + 2$",
+      "compute": null,
+      "solution": "$25 \\times 40 = 1{,}000$ and $25 \\times 2 = 50$, and $1{,}000 + 50 = 1{,}050$. So the partial quotients 40 and 2 give a quotient of 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1050 / 25 = 42 = 40 + 2 (25x40 = 1000, 25x2 = 50).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.892Z"
+        }
+      }
+    },
+    {
+      "id": "83eb4123-e525-497d-a034-10ba38982786",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a division story",
+      "stem": "A factory puts 32 bolts in each bag. How many bags can it fill with 1,344 bolts?",
+      "choices": [
+        "$402$",
+        "$42$",
+        "$52$",
+        "$24$"
+      ],
+      "answer": "$42$",
+      "compute": "1344/32",
+      "solution": "$32 \\times 42 = 1{,}344$, so it fills 42 bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$42$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32 x 42 = 1344, so 42 bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.893Z"
+        }
+      }
+    },
+    {
+      "id": "d0c9a610-3d98-47ec-b271-c485a27d3768",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the remainder in a story",
+      "stem": "A bakery packs cupcakes 12 to a box. How many boxes does it need for 260 cupcakes, with every cupcake in a box?",
+      "choices": [
+        "$21$",
+        "$22$",
+        "$8$",
+        "$12$"
+      ],
+      "answer": "$22$",
+      "compute": null,
+      "solution": "$260 \\div 12 = 21$ R $8$. Twenty-one boxes hold 252 cupcakes, and 8 are left, so a twenty-second box is needed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$22$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "260 ÷ 12 = 21 R 8; the 8 leftover cupcakes need another box: 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.906Z"
+        }
+      }
+    },
+    {
+      "id": "f0a72585-ec41-495a-ab06-21a5b598b215",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Divide 758 by 34. Which shows the quotient and the remainder?",
+      "choices": [
+        "10 R 22",
+        "23 R 24",
+        "22 R 10",
+        "21 R 44"
+      ],
+      "answer": "22 R 10",
+      "compute": null,
+      "solution": "$34 \\times 22 = 748$ and $758 - 748 = 10$, so the quotient is 22 and the remainder is 10. A remainder is always less than 34.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22 R 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "34×22 = 748; 758-748 = 10. 22 R 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.931Z"
+        }
+      }
+    },
+    {
       "id": "0ad8ef90-61b1-4cbf-8043-96ad210ec032",
       "topic_id": "NC17.5.NBT.6",
       "difficulty": 3,
@@ -16482,6 +17951,743 @@
           "work": "36 x 200 = 7,200, rem 1,224 = 36 x 34; 234.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:34.581Z"
+        }
+      }
+    },
+    {
+      "id": "abaec2a3-ded8-4f8a-9314-1f316d1874f2",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a division story",
+      "stem": "An airline sold $9{,}576$ tickets, the same number on each of 63 flights. How many tickets were sold for each flight?",
+      "choices": [
+        "$152$",
+        "$15$",
+        "$1{,}520$",
+        "$162$"
+      ],
+      "answer": "$152$",
+      "compute": "9576/63",
+      "solution": "$63 \\times 152 = 9{,}576$: $63 \\times 150 = 9{,}450$ and $63 \\times 2 = 126$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$152$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63 × 150 = 9,450; 9,576 − 9,450 = 126 = 63 × 2; so 152.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.583Z"
+        }
+      }
+    },
+    {
+      "id": "d299eeaf-4642-4902-b0db-888a9c91fe38",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide with an area model",
+      "stem": "Which split of $2{,}952$ lets you divide each part by $72$ with no remainder?",
+      "choices": [
+        "$2{,}900$ and $52$",
+        "$2{,}800$ and $152$",
+        "$2{,}700$ and $252$",
+        "$2{,}880$ and $72$"
+      ],
+      "answer": "$2{,}880$ and $72$",
+      "compute": null,
+      "solution": "$2{,}880 \\div 72 = 40$ and $72 \\div 72 = 1$, so the quotient is 41. 72 does not divide the parts of the other splits evenly.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2{,}880$ and $72$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,880 ÷ 72 = 40 and 72 ÷ 72 = 1; 2,800, 2,900, 2,700 are not multiples of 72 (72×37.5=2,700).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.599Z"
+        }
+      }
+    },
+    {
+      "id": "1b8ea6f2-8b84-4a10-bf9f-a064701bfe65",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "A print shop has $4{,}000$ sheets of paper. It makes booklets of 48 sheets each. After it makes as many booklets as it can, how many sheets are left?",
+      "choices": [],
+      "answer": "16",
+      "compute": "4000-48*83",
+      "solution": "$48 \\times 83 = 3{,}984$ and $4{,}000 - 3{,}984 = 16$. So 16 sheets are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 × 83 = 3,984; 4,000 − 3,984 = 16 (< 48).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.602Z"
+        }
+      }
+    },
+    {
+      "id": "fa1a2a37-b749-443c-8656-2b2d4175f412",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the remainder in a story",
+      "stem": "A farmer packs 2,500 apples into crates of 42 apples each. Which statement is true?",
+      "choices": [
+        "59 crates are full, with 42 apples left over.",
+        "60 crates are full, with 20 apples left over.",
+        "59 crates are full, with 22 apples left over.",
+        "59 crates are full, with 2,478 apples left over."
+      ],
+      "answer": "59 crates are full, with 22 apples left over.",
+      "compute": null,
+      "solution": "$42 \\times 59 = 2{,}478$ and $2{,}500 - 2{,}478 = 22$. So 59 crates are full and 22 apples are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "59 crates are full, with 22 apples left over.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42 × 59 = 2,478; 2,500 − 2,478 = 22. 42 left would fill another crate, 60 crates need 2,520.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.603Z"
+        }
+      }
+    },
+    {
+      "id": "cec4447d-1ac1-4a62-a34e-e95a30b3234a",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "What is the remainder when $9{,}999$ is divided by $98$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "9999-98*102",
+      "solution": "$98 \\times 102 = 9{,}996$ and $9{,}999 - 9{,}996 = 3$. The remainder is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "98 × 102 = 9,996; 9,999 − 9,996 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.614Z"
+        }
+      }
+    },
+    {
+      "id": "95ee52cd-2d56-4795-84db-46494c9d1676",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reason about quotients and remainders",
+      "stem": "A 4-digit whole number is divided by a 2-digit whole number. Which statement about the whole-number part of the quotient is true?",
+      "choices": [
+        "It always has 3 digits.",
+        "It has 2 or 3 digits.",
+        "It always has 4 digits.",
+        "It can have 1 digit."
+      ],
+      "answer": "It has 2 or 3 digits.",
+      "compute": null,
+      "solution": "The smallest 4-digit number divided by the largest 2-digit number is about $1{,}000 \\div 99 \\approx 10$, and the largest divided by the smallest is about $9{,}999 \\div 10 \\approx 999$. So the quotient has 2 or 3 digits.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has 2 or 3 digits.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest: 1,000 ÷ 99 ≈ 10.1 (2 digits); largest: 9,999 ÷ 10 = 999 (3 digits). So 2 or 3 digits, never 1 or 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.654Z"
+        }
+      }
+    },
+    {
+      "id": "ae345bf3-8f92-476a-ba69-b2789d5969fc",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide with partial quotients",
+      "stem": "To find $3{,}150 \\div 45$, Zed takes out 60 groups of 45, which is $2{,}700$, and then divides what is left. What is $3{,}150 \\div 45$?",
+      "choices": [],
+      "answer": "70",
+      "compute": "60+(3150-2700)/45",
+      "solution": "$3{,}150 - 2{,}700 = 450$ is left, and $450 \\div 45 = 10$. Add the partial quotients: 60 + 10 = 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,150 − 2,700 = 450 = 10 × 45; 60 + 10 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.663Z"
+        }
+      }
+    },
+    {
+      "id": "1b85672e-ceb6-4391-85fa-49565657dc9d",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Divide $6{,}000$ by $77$. Which shows the quotient and the remainder?",
+      "choices": [
+        "71 R 77",
+        "78 R 6",
+        "76 R 148",
+        "77 R 71"
+      ],
+      "answer": "77 R 71",
+      "compute": null,
+      "solution": "$77 \\times 77 = 5{,}929$ and $6{,}000 - 5{,}929 = 71$, so the quotient is 77 and the remainder is 71. A remainder is always less than 77.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "77 R 71",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "77x77=5929; 6000-5929=71 (<77). 77 R 71.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.708Z"
+        }
+      }
+    },
+    {
+      "id": "bf11ca28-931b-4948-9be2-5cb10d620930",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide by a two-digit number",
+      "stem": "What is $7{,}326 \\div 18$?",
+      "choices": [
+        "$47$",
+        "$407$",
+        "$4{,}007$",
+        "$417$"
+      ],
+      "answer": "$407$",
+      "compute": "7326/18",
+      "solution": "$18 \\times 407 = 7{,}326$: $18 \\times 400 = 7{,}200$ and $18 \\times 7 = 126$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$407$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18×407 = 7200+126 = 7326.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.755Z"
+        }
+      }
+    },
+    {
+      "id": "0e0334e3-0df0-4d17-b41b-89726755b4fc",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Check a division or find the dividend",
+      "stem": "Luis packs marbles in bags of 53. He fills 128 bags and has 37 marbles left. How many marbles did he have?",
+      "choices": [],
+      "answer": "6821",
+      "compute": "53*128+37",
+      "solution": "$53 \\times 128 = 6{,}784$, and $6{,}784 + 37 = 6{,}821$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6821",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "53×128 = 6784; +37 = 6821.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.757Z"
+        }
+      }
+    },
+    {
+      "id": "4e35a3d5-654f-414d-965f-3e593dc3ac3e",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Check a division or find the dividend",
+      "stem": "Which statement about $1{,}000 \\div 48$ is correct?",
+      "choices": [
+        "$1{,}000 \\div 48 = 21$ R $8$",
+        "$1{,}000 \\div 48 = 20$ R $4$",
+        "$1{,}000 \\div 48 = 20$ R $40$",
+        "$1{,}000 \\div 48 = 21$ R $40$"
+      ],
+      "answer": "$1{,}000 \\div 48 = 20$ R $40$",
+      "compute": null,
+      "solution": "$48 \\times 20 = 960$ and $1{,}000 - 960 = 40$. Check: $48 \\times 20 + 40 = 1{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1{,}000 \\div 48 = 20$ R $40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48×20=960, 1000-960=40 (<48). 20 R 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.759Z"
+        }
+      }
+    },
+    {
+      "id": "29385a55-5f7e-4354-8fdf-c0d334b6b79c",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reason about quotients and remainders",
+      "stem": "A whole number is divided by 45 and the quotient is 20. What is the greatest the whole number can be?",
+      "choices": [],
+      "answer": "944",
+      "compute": "45*20+44",
+      "solution": "The remainder can be at most 44, one less than the divisor. The greatest number is $45 \\times 20 + 44 = 900 + 44 = 944$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "944",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quotient 20 means 900 ≤ n ≤ 900+44 = 944.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.767Z"
+        }
+      }
+    },
+    {
+      "id": "5186dd2e-fd24-41f6-820c-e393cc90e9ac",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Between which two numbers is $5{,}400 \\div 58$?",
+      "choices": [
+        "$90$ and $100$",
+        "$50$ and $90$",
+        "$100$ and $150$",
+        "$150$ and $200$"
+      ],
+      "answer": "$90$ and $100$",
+      "compute": null,
+      "solution": "$58 \\times 90 = 5{,}220$ is less than 5,400, and $58 \\times 100 = 5{,}800$ is more. So the quotient is between 90 and 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$90$ and $100$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "58×90=5220, 58×100=5800; 5400 between → about 93.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.781Z"
+        }
+      }
+    },
+    {
+      "id": "d25b86c2-51a9-4934-83dd-2745f233714e",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a division story",
+      "stem": "A tank holds $9{,}000$ liters of water. Then 450 liters leak out. The rest is poured into barrels of 85 liters, and as many barrels are filled as possible. How many barrels are filled?",
+      "choices": [],
+      "answer": "100",
+      "compute": "(9000-450-50)/85",
+      "solution": "$9{,}000 - 450 = 8{,}550$ liters are left. $85 \\times 100 = 8{,}500$ and $85 \\times 101 = 8{,}585$ is too big, so 100 barrels are filled (with 50 liters left).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9000-450=8550. 85x100=8500, 8550-8500=50<85, so 100 full barrels.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.794Z"
+        }
+      }
+    },
+    {
+      "id": "08bc7438-54d2-49e5-8323-b06163ff39ce",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "What are the quotient and the remainder of $8{,}429 \\div 45$?",
+      "choices": [
+        "187 R 14",
+        "14 R 187",
+        "188 R 31",
+        "186 R 59"
+      ],
+      "answer": "187 R 14",
+      "compute": null,
+      "solution": "$45 \\times 187 = 8{,}415$ and $8{,}429 - 8{,}415 = 14$, so the quotient is 187 and the remainder is 14. A remainder is always less than 45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "187 R 14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45x187 = 8415; 8429-8415 = 14 < 45. 187 R 14. (188 R 31: 45x188=8460>8429; 186 R 59: remainder > divisor.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.804Z"
+        }
+      }
+    },
+    {
+      "id": "37bf8ea2-5b62-4181-8b0e-15f34bbbc5d0",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide with an area model",
+      "stem": "A rectangle has an area of $3{,}576$ square feet and a width of 24 feet. Dina splits the area into $2{,}400$ and $1{,}176$ and divides each part by 24. What is the length of the rectangle in feet?",
+      "choices": [],
+      "answer": "149",
+      "compute": "2400/24+1176/24",
+      "solution": "$2{,}400 \\div 24 = 100$ and $1{,}176 \\div 24 = 49$. The length is 100 + 49 = 149 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "149",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2400/24 = 100, 1176/24 = 49; length 149. Check 24x149 = 3576.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.837Z"
+        }
+      }
+    },
+    {
+      "id": "4fae646f-93b4-4305-8b28-8819887aea36",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide by a two-digit number",
+      "stem": "What is $9{,}504 \\div 66$?",
+      "choices": [],
+      "answer": "144",
+      "compute": "9504/66",
+      "solution": "$66 \\times 144 = 9{,}504$: $66 \\times 100 = 6{,}600$ and $66 \\times 44 = 2{,}904$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "144",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "66 x 144 = 66x100 + 66x44 = 6600 + 2904 = 9504. So 9504 / 66 = 144 exactly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.845Z"
+        }
+      }
+    },
+    {
+      "id": "37cbce46-5fa2-4b49-96cb-c3246484b4f1",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide with partial quotients",
+      "stem": "Nia divides $4{,}000$ by $64$. She takes out 50 groups of 64 ($3{,}200$), then 10 groups ($640$), then 2 groups ($128$). What is the remainder?",
+      "choices": [],
+      "answer": "32",
+      "compute": "4000-3200-640-128",
+      "solution": "$4{,}000 - 3{,}200 = 800$; $800 - 640 = 160$; $160 - 128 = 32$. Another group of 64 does not fit, so the remainder is 32.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3200+640+128 = 3968 (62 groups). 4000 - 3968 = 32, which is less than 64, so remainder 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.846Z"
+        }
+      }
+    },
+    {
+      "id": "35e2b9ee-4461-49bd-9a88-11a7a32fe1f2",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide by a multiple of ten",
+      "stem": "A rope is $8{,}400$ centimeters long. It is cut into pieces that are each 70 centimeters long. How many pieces are there?",
+      "choices": [
+        "$12$",
+        "$1{,}200$",
+        "$130$",
+        "$120$"
+      ],
+      "answer": "$120$",
+      "compute": "8400/70",
+      "solution": "$840 \\div 7 = 120$, so $8{,}400 \\div 70 = 120$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$120$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8400 / 70 = 840/7 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.856Z"
+        }
+      }
+    },
+    {
+      "id": "b5277f81-7877-463f-808d-4017863b2c3b",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the remainder in a story",
+      "stem": "Each bus holds 48 students. How many buses are needed to carry $1{,}075$ students, with everyone on a bus?",
+      "choices": [
+        "$22$",
+        "$23$",
+        "$19$",
+        "$48$"
+      ],
+      "answer": "$23$",
+      "compute": null,
+      "solution": "$1{,}075 \\div 48 = 22$ R $19$. Twenty-two buses carry 1,056 students, and 19 are left, so a twenty-third bus is needed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$23$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 x 22 = 1056, 1075 - 1056 = 19 left, so a 23rd bus is needed: 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.872Z"
+        }
+      }
+    },
+    {
+      "id": "8fca6c54-b560-4fc0-8bfe-f119bb912430",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a division story",
+      "stem": "A school orders $3{,}450$ pencils in boxes of 25. Each classroom gets 12 boxes. How many classrooms can get a full 12 boxes?",
+      "choices": [
+        "$12$",
+        "$11$",
+        "$138$",
+        "$6$"
+      ],
+      "answer": "$11$",
+      "compute": "(138-6)/12",
+      "solution": "$3{,}450 \\div 25 = 138$ boxes. Then $138 \\div 12 = 11$ R $6$, so 11 classrooms get 12 boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$11$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3450 / 25 = 138 boxes. 138 / 12 = 11 r 6, so 11 classrooms get full 12 boxes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.878Z"
+        }
+      }
+    },
+    {
+      "id": "f958465d-0076-4477-b688-e77cd35cada6",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a division story",
+      "stem": "A warehouse stores 5,904 boxes on shelves. Each shelf holds 48 boxes. How many shelves does it need?",
+      "choices": [
+        "$12$",
+        "$132$",
+        "$123$",
+        "$1{,}230$"
+      ],
+      "answer": "$123$",
+      "compute": "5904/48",
+      "solution": "$48 \\times 123 = 5{,}904$: $48 \\times 100 = 4{,}800$ and $48 \\times 23 = 1{,}104$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$123$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48×123 = 4800+960+144 = 5,904 exactly, so 123 shelves.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.915Z"
+        }
+      }
+    },
+    {
+      "id": "3916ab3b-2309-4876-88e0-ae70ecd87f08",
+      "topic_id": "NC17.5.NBT.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Divide $9{,}876$ by $94$. Which shows the quotient and the remainder?",
+      "choices": [
+        "6 R 105",
+        "106 R 88",
+        "105 R 6",
+        "104 R 100"
+      ],
+      "answer": "105 R 6",
+      "compute": null,
+      "solution": "$94 \\times 105 = 9{,}870$ and $9{,}876 - 9{,}870 = 6$, so the quotient is 105 and the remainder is 6. A remainder is always less than 94.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "105 R 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "94×105 = 9,870; 9,876-9,870 = 6. 105 R 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.916Z"
         }
       }
     },

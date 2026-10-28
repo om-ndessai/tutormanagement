@@ -7,7 +7,7 @@
     "NC17.K.CC.4": "Shapes, dot cards and hands are written out in words; seeing 1-5 at a glance is tested through described dot patterns (square, triangle, 2+3 split). Numbers stay within 20 and every question is one step. Written as text: dot patterns are described by where the dots are, never pictured. Numbers stay within 20, mostly within 10; subitizing questions stay within 5.",
     "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3. Counting is shown as written lists and repeated symbols; counts are generated from arrays/rep() in scripts/build-b5-NC17.K.CC.5.mjs. No how-much-more comparisons.",
     "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step. Text only: groups are shown as lists of marks, as numbers in a story or as real-world counts (legs, wheels). No question asks how many more or fewer. Counts stay within 10, never chain two comparisons, and three-group comparisons are left out.",
-    "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1.",
+    "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1. Kindergarten comparison of two written numerals to 10, text only: numerals are given in the stem. Never asks how much more; no chains of comparisons.",
     "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10.",
     "NC17.K.OA.2": "Everything is one step and inside 10. Skills: add to (6), take from (6), put together (6), take apart / one part unknown (6), matching a story and a number sentence (6). The change-unknown and start-unknown problems are Grade 1 (OA.1), so they are left out. Objects and drawings are written as a story (blocks, circles Zoe draws).",
     "NC17.K.OA.3": "Zero is left out as a part (Kindergarten pairs here use 1 or more in each part). Drawings are replaced by number sentences and short stories. Order of a pair (3 and 4 versus 4 and 3) is never asked, since it is ambiguous at this age.",
@@ -10295,6 +10295,40 @@
       }
     },
     {
+      "id": "f0c1ad7e-9c4c-4439-9ba3-309b5c8c82be",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Cardinality: the last number tells how many",
+      "stem": "Pam counts her crayons. She touches each crayon one time and says 1, 2, 3, 4, 5. How many crayons does Pam have?",
+      "choices": [
+        "4",
+        "5",
+        "6",
+        "1"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The last number she says tells how many. Pam has 5 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Last number said is 5: 5 crayons.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.947Z"
+        }
+      }
+    },
+    {
       "id": "d7ac5be2-e783-4baa-b9b9-b4f6629c67ed",
       "topic_id": "NC17.K.CC.4",
       "difficulty": 2,
@@ -12336,6 +12370,35 @@
           "work": "After 18 comes 19.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:12:42.278Z"
+        }
+      }
+    },
+    {
+      "id": "83b4877f-5057-4730-8124-08d1a9af48cf",
+      "topic_id": "NC17.K.CC.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Cardinality: the count stays the same",
+      "stem": "Dee has 5 shells in a row. She counts them from left to right. Then she counts them again from right to left. What is the last number she says the second time?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The number of shells does not change when she counts in a different order. The last number she says is still 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting order does not change the count: she ends at 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.859Z"
         }
       }
     },
@@ -17496,6 +17559,40 @@
       }
     },
     {
+      "id": "d3442992-2ff6-4a85-a4e9-4c5ff05bbec9",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare groups by matching",
+      "stem": "Eli puts one block on each of 5 cards. He still has blocks left over. Are there more blocks or more cards?",
+      "choices": [
+        "More blocks",
+        "More cards",
+        "The same number of each",
+        "There is no way to tell"
+      ],
+      "answer": "More blocks",
+      "compute": null,
+      "solution": "Every card has one block, and some blocks are left over. So there are more blocks than cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "More blocks",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each card has one block and blocks are left over, so more blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.819Z"
+        }
+      }
+    },
+    {
       "id": "0d7ba581-3efd-4c24-b3bb-c29f416b0773",
       "topic_id": "NC17.K.CC.6",
       "difficulty": 3,
@@ -18514,6 +18611,35 @@
       }
     },
     {
+      "id": "5b04f6c5-c54d-4cd6-9218-b4d5934a2fff",
+      "topic_id": "NC17.K.CC.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare groups by matching",
+      "stem": "Lia has 8 red cubes. Tom has 8 blue cubes. Lia puts one red cube next to each blue cube. How many blue cubes have no red cube next to them?",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "Each blue cube gets one red cube. The groups match exactly, so no blue cube is left without one. The answer is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each blue cube gets a red one (8 and 8), so 0 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.988Z"
+        }
+      }
+    },
+    {
       "id": "28624924-ce9c-4f60-a51e-5fe3e6d5f7c2",
       "topic_id": "NC17.K.CC.7",
       "difficulty": 1,
@@ -18834,6 +18960,733 @@
       }
     },
     {
+      "id": "53cbc4b5-d08e-415a-bfa6-50979d85136b",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Which words make this sentence true? 7 is ? 3.",
+      "choices": [
+        "less than",
+        "equal to",
+        "the same as",
+        "greater than"
+      ],
+      "answer": "greater than",
+      "compute": null,
+      "solution": "7 is greater than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "greater than",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 is greater than 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.681Z"
+        }
+      }
+    },
+    {
+      "id": "d8da7756-40f6-491e-a30c-8d659babdc64",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "? is less than 3. The ? is either 1 or 6. Which numeral makes the sentence true?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "1 is less than 3. 6 is not less than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 is less than 3; 6 is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.701Z"
+        }
+      }
+    },
+    {
+      "id": "a61db8e8-6236-474f-8b0b-57cce215be44",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Which numeral is less than 3?",
+      "choices": [
+        "3",
+        "6",
+        "1",
+        "9"
+      ],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Only 1 is less than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 < 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.707Z"
+        }
+      }
+    },
+    {
+      "id": "fae98fb4-f193-42ab-baf6-9d0ee27c68ed",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Which two numerals are the same?",
+      "choices": [
+        "5 and 5",
+        "3 and 8",
+        "6 and 9",
+        "2 and 7"
+      ],
+      "answer": "5 and 5",
+      "compute": null,
+      "solution": "The pair 5 and 5 has the same numeral twice.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 and 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.716Z"
+        }
+      }
+    },
+    {
+      "id": "d885cc52-4ca6-405a-a7db-9d07b1b802d7",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "? is greater than 7. Which numeral can go in the ?",
+      "choices": [
+        "7",
+        "4",
+        "10",
+        "2"
+      ],
+      "answer": "10",
+      "compute": "10",
+      "solution": "Only 10 is greater than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 10 > 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.729Z"
+        }
+      }
+    },
+    {
+      "id": "42d8ef69-1940-42fd-9d50-61b0099299e6",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Pick the greater numeral: 2 or 6.",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is greater than 2, so 6 is the greater numeral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 > 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.750Z"
+        }
+      }
+    },
+    {
+      "id": "7f2c5803-79eb-46e0-85fe-65ef86a24aa4",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Which numeral is less than 4?",
+      "choices": [
+        "4",
+        "7",
+        "10",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Only 2 is less than 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 < 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.779Z"
+        }
+      }
+    },
+    {
+      "id": "3700416e-f002-43c7-b93c-3d2a2ffbf176",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Which is greater: the numeral 4 or the numeral 7?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 comes after 4 when we count, so 7 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 > 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.813Z"
+        }
+      }
+    },
+    {
+      "id": "69aa034d-61a5-4a24-ad77-6eb3053c6e9b",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "7 is greater than ?. The ? is either 3 or 9. Which numeral makes the sentence true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "7 is greater than 3. 7 is not greater than 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7>3 true, 7>9 false -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.817Z"
+        }
+      }
+    },
+    {
+      "id": "1bb0dbc7-28c4-4995-96ad-df296c200610",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Look at 8 and 2 on the board. Which numeral is less?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "2 comes before 8 when we count, so 2 is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 < 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.823Z"
+        }
+      }
+    },
+    {
+      "id": "a0410395-1b7b-42ee-8927-4bc160a560c1",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Ava has a card with 7. Ben has a card with 7. Which sentence is true?",
+      "choices": [
+        "Ava's numeral is greater than Ben's numeral.",
+        "Ava's numeral is equal to Ben's numeral.",
+        "Ava's numeral is less than Ben's numeral.",
+        "Ben's numeral is greater than Ava's numeral."
+      ],
+      "answer": "Ava's numeral is equal to Ben's numeral.",
+      "compute": null,
+      "solution": "Both cards say 7, so the numerals are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ava's numeral is equal to Ben's numeral.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.829Z"
+        }
+      }
+    },
+    {
+      "id": "03431492-8ab1-4bfe-a95b-3737dd92f565",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Which numeral is greater than 6?",
+      "choices": [
+        "6",
+        "5",
+        "9",
+        "3"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Only 9 is greater than 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 > 6; 3 and 5 are less; 6 is equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.857Z"
+        }
+      }
+    },
+    {
+      "id": "2317e54a-9d3a-4069-bf0a-5fd829f272c5",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "One jersey has the numeral 10. Another jersey has the numeral 3. Which numeral is greater?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "10 is greater than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.901Z"
+        }
+      }
+    },
+    {
+      "id": "b1372d98-f87b-4107-89e5-265e242f8fe8",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Look at 2 and 8. Which sentence is true?",
+      "choices": [
+        "2 is less than 8.",
+        "2 is greater than 8.",
+        "2 is equal to 8.",
+        "8 is less than 2."
+      ],
+      "answer": "2 is less than 8.",
+      "compute": null,
+      "solution": "2 comes before 8, so 2 is less than 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 is less than 8.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 is less than 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.912Z"
+        }
+      }
+    },
+    {
+      "id": "e1fbf02f-ff4e-4aa4-a14d-056d9bc73d4a",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "A bus has the numeral 6. A van has the numeral 10. Which numeral is less?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is less than 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 < 10, lesser is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.928Z"
+        }
+      }
+    },
+    {
+      "id": "a71f4012-0cec-4a59-bdee-81c85d68b08f",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Pia compares 10 and 1. Which sentence is true?",
+      "choices": [
+        "10 is less than 1.",
+        "10 is greater than 1.",
+        "10 is equal to 1.",
+        "1 is greater than 10."
+      ],
+      "answer": "10 is greater than 1.",
+      "compute": null,
+      "solution": "10 is much greater than 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 is greater than 1.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.938Z"
+        }
+      }
+    },
+    {
+      "id": "15fe0595-2e2b-4b39-8e44-1142bd5ed073",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Max writes 5 on a note. Ivy writes 2 on a note. Which numeral is greater?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "5 is greater than 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 > 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.948Z"
+        }
+      }
+    },
+    {
+      "id": "a4cb2349-3238-480c-bbcf-e424630c6903",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Ben's ticket says 1. Lia's ticket says 6. Which numeral is greater?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is greater than 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 > 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.955Z"
+        }
+      }
+    },
+    {
+      "id": "0cd70988-4ed7-46cd-85a4-a07cd3c3ea20",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "A girl holds a card with 8. Another card has a numeral less than 8. Which numeral could it be?",
+      "choices": [
+        "8",
+        "9",
+        "10",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Only 3 is less than 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Less than 8: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.960Z"
+        }
+      }
+    },
+    {
+      "id": "9904c225-5cf0-46f1-a7de-c7bbd3a33404",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Rosa has a card with 8. Eli has a card with 5. Which sentence is true?",
+      "choices": [
+        "Rosa's numeral is greater than Eli's.",
+        "Rosa's numeral is less than Eli's.",
+        "Rosa's numeral is equal to Eli's.",
+        "Eli's numeral is greater than Rosa's."
+      ],
+      "answer": "Rosa's numeral is greater than Eli's.",
+      "compute": null,
+      "solution": "8 is greater than 5, so Rosa has the greater numeral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rosa's numeral is greater than Eli's.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 > 5, Rosa greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.965Z"
+        }
+      }
+    },
+    {
+      "id": "390370ad-356c-455f-aa7f-a49bc53606e3",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Tom has a card with 4. Which card has a greater numeral than Tom's?",
+      "choices": [
+        "4",
+        "9",
+        "3",
+        "1"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Only 9 is greater than 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 9 is greater than 4 (1, 3 less; 4 equal).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.970Z"
+        }
+      }
+    },
+    {
+      "id": "b4d45778-347b-45bf-bc6a-e4d8089a9e2d",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Pick the lesser numeral: 5 or 9.",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "5 is less than 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 < 9, lesser is 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.979Z"
+        }
+      }
+    },
+    {
+      "id": "0ec67208-0883-455a-aec0-09d00e7849e0",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Tom's card says 9. Ana's card says 4. Which numeral is less?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4 is less than 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 < 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.015Z"
+        }
+      }
+    },
+    {
       "id": "13b634e9-e96a-4cb4-a635-50607177458f",
       "topic_id": "NC17.K.CC.7",
       "difficulty": 2,
@@ -19149,6 +20002,733 @@
       }
     },
     {
+      "id": "e14340a0-0c4b-42cc-add4-a30ac26c5154",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "The numerals 3 and 4 are on two doors. Which numeral is greater?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4 comes right after 3, so 4 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 > 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.718Z"
+        }
+      }
+    },
+    {
+      "id": "00b4264a-4e1e-45ed-aea1-58c9728b3d33",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Here are three pairs of numerals: 2 and 2, 3 and 8, 6 and 6. How many pairs have equal numerals?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "2 and 2 are equal. 6 and 6 are equal. 3 and 8 are not equal. That is 2 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 and 2, 6 and 6: 2 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.731Z"
+        }
+      }
+    },
+    {
+      "id": "54570902-5678-4c26-be97-7f90e283c07f",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Look at 6 and 9. Which sentence is true?",
+      "choices": [
+        "6 is less than 9.",
+        "6 is greater than 9.",
+        "6 is equal to 9.",
+        "9 is less than 6."
+      ],
+      "answer": "6 is less than 9.",
+      "compute": null,
+      "solution": "6 comes before 9, so 6 is less than 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 is less than 9.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 < 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.742Z"
+        }
+      }
+    },
+    {
+      "id": "871451cd-85e2-4beb-8594-8522bdd0fb85",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Here are two sentences. \"5 is less than 7.\" \"9 is less than 4.\" How many of them are true?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "5 is less than 7 is true. 9 is less than 4 is not true. So 1 is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5<7 true; 9<4 false. 1 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.756Z"
+        }
+      }
+    },
+    {
+      "id": "79f79b27-1a68-4d7e-a13a-96f8dfea56e5",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Lena says, \"My numeral is greater than 4.\" Which numeral could be Lena's?",
+      "choices": [
+        "4",
+        "7",
+        "2",
+        "1"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Only 7 is greater than 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 > 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.760Z"
+        }
+      }
+    },
+    {
+      "id": "3f4503b9-38c4-412a-aef3-5a444dcb4dfc",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "A team has players numbered 8 and 6 on the bench. Which numeral is less?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 is less than 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 < 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.763Z"
+        }
+      }
+    },
+    {
+      "id": "3bfc3269-130b-4736-8213-64b277ba0531",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Dee has the numeral 5. Ed has the numeral 8. Who has the lesser numeral?",
+      "choices": [
+        "Ed",
+        "Both of them",
+        "Neither of them",
+        "Dee"
+      ],
+      "answer": "Dee",
+      "compute": null,
+      "solution": "5 is less than 8, so Dee has the lesser numeral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Dee",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 < 8: Dee.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.765Z"
+        }
+      }
+    },
+    {
+      "id": "06913f63-103f-4d69-9a84-d08364bdbc56",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Three sentences are right. One is wrong. Which one is wrong?",
+      "choices": [
+        "7 is greater than 5.",
+        "10 is less than 9.",
+        "3 is less than 4.",
+        "8 is equal to 8."
+      ],
+      "answer": "10 is less than 9.",
+      "compute": null,
+      "solution": "10 is greater than 9, so \"10 is less than 9\" is wrong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 is less than 9.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 is less than 9 is false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.765Z"
+        }
+      }
+    },
+    {
+      "id": "03dc0e80-be6d-43a0-9a2b-ae822115c4e4",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Which sentence about 4 and 4 is true?",
+      "choices": [
+        "4 is greater than 4.",
+        "4 is less than 4.",
+        "4 is equal to 4.",
+        "4 is not the same as 4."
+      ],
+      "answer": "4 is equal to 4.",
+      "compute": null,
+      "solution": "The numerals are the same, so 4 is equal to 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 is equal to 4.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.780Z"
+        }
+      }
+    },
+    {
+      "id": "f342504a-3ab8-4881-8d5d-b0ac40eb3155",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Ana holds a card with 8. Bo holds a card with 5. Whose card has the greater numeral?",
+      "choices": [
+        "Ana's card",
+        "Bo's card",
+        "Both cards",
+        "Neither card"
+      ],
+      "answer": "Ana's card",
+      "compute": null,
+      "solution": "8 is greater than 5, so Ana has the greater numeral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ana's card",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 > 5: Ana.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.785Z"
+        }
+      }
+    },
+    {
+      "id": "0fd047cf-6b6c-4e96-9458-4d13658a0d32",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Which pair has two numerals that are not equal?",
+      "choices": [
+        "3 and 5",
+        "4 and 4",
+        "6 and 6",
+        "10 and 10"
+      ],
+      "answer": "3 and 5",
+      "compute": null,
+      "solution": "3 and 5 are different numerals. The other pairs have the same numeral twice.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 and 4, 6 and 6, 10 and 10 are equal; 3 and 5 differ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.793Z"
+        }
+      }
+    },
+    {
+      "id": "6fd7b749-1cc7-4305-8272-ae786631f50f",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Which numeral is greater than 7?",
+      "choices": [
+        "7",
+        "5",
+        "9",
+        "2"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Only 9 is greater than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 9 is greater than 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.800Z"
+        }
+      }
+    },
+    {
+      "id": "b38e619b-188c-4529-aaa2-e40c658d270b",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Which pair of numerals has 4 as the lesser numeral?",
+      "choices": [
+        "4 and 2",
+        "4 and 4",
+        "4 and 6",
+        "4 and 1"
+      ],
+      "answer": "4 and 6",
+      "compute": null,
+      "solution": "4 is less than 6. 4 is not less than 2, 4 or 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 and 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 is less than 6; in the others 4 is greater or equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.840Z"
+        }
+      }
+    },
+    {
+      "id": "02a0f0ba-3946-4731-8739-7ae03d754fdc",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Eli's numeral is less than 7. His numeral is 4 or 8. Which numeral is it?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4 is less than 7. 8 is greater than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 < 7 but 8 > 7, so it is 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.849Z"
+        }
+      }
+    },
+    {
+      "id": "adb66647-dabc-44ad-9f9f-0bcd3235db61",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Sam has a card. His numeral is less than 5. Which card could be Sam's?",
+      "choices": [
+        "5",
+        "6",
+        "9",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Only 3 is less than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 < 5; 5 is equal; 6 and 9 greater.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.869Z"
+        }
+      }
+    },
+    {
+      "id": "cc81ec12-16cd-40df-950d-2460aaee3d83",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "? is greater than 5. The ? is 3, 5 or 8. Which numeral makes the sentence true?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "Only 8 is greater than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 > 5; 3 and 5 are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.883Z"
+        }
+      }
+    },
+    {
+      "id": "fc5c674f-57b3-4c20-a022-facfe92a4c0c",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "? is less than 6. Which numeral can go in the ?",
+      "choices": [
+        "6",
+        "2",
+        "7",
+        "10"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Only 2 is less than 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 < 6; 6, 7, 10 are not less than 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.885Z"
+        }
+      }
+    },
+    {
+      "id": "f81de245-2a35-4d73-87ee-7e440f923c6c",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "A page is numbered 8. Another page is numbered 3. Which page numeral is less?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "3 is less than 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 < 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.893Z"
+        }
+      }
+    },
+    {
+      "id": "e18aa3c1-409f-4615-9f58-aa8124d64e2e",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Pick the lesser numeral: 7 or 9.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is less than 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 < 9, so the lesser numeral is 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.905Z"
+        }
+      }
+    },
+    {
+      "id": "9394d02d-8ff2-40a8-b5b3-1b1bd3899bc6",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Two stickers show the numerals 9 and 8. Which numeral is greater?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "9 comes right after 8, so 9 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 > 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.908Z"
+        }
+      }
+    },
+    {
+      "id": "d242a0d5-9d84-4ddd-a2fa-e5835572d603",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Which sentence matches the numerals 10 and 7?",
+      "choices": [
+        "10 is less than 7.",
+        "10 is equal to 7.",
+        "7 is greater than 10.",
+        "10 is greater than 7."
+      ],
+      "answer": "10 is greater than 7.",
+      "compute": null,
+      "solution": "10 is greater than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 is greater than 7.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.930Z"
+        }
+      }
+    },
+    {
+      "id": "c7b71c25-5fe0-4480-987f-74401873e1ea",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Gia's card says 7. Hal's card says 5. Which card has the greater numeral? Write the numeral.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is greater than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 > 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.011Z"
+        }
+      }
+    },
+    {
+      "id": "604c5d63-6f59-48e2-b581-ad307d6ab1dc",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Kai draws a card with 4. Sue draws a card with 7. The player with the greater numeral wins. What numeral wins?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is greater than 4, so Sue wins with 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 > 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.012Z"
+        }
+      }
+    },
+    {
       "id": "6e971060-ccd7-44b1-b1b4-f9780ca8b349",
       "topic_id": "NC17.K.CC.7",
       "difficulty": 3,
@@ -19460,6 +21040,733 @@
           "work": "Compare 10 and 6: 6 is less, so she holds up 6.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:18.188Z"
+        }
+      }
+    },
+    {
+      "id": "622c7711-007e-429a-a077-8272607f2d1d",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Zia's numeral is less than 4. It is not 1 or 2. It is one of the numerals 1 to 10. What is Zia's numeral?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The numerals less than 4 are 1, 2 and 3. It is not 1 or 2, so it is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Numerals less than 4: 1, 2, 3; not 1 or 2, so 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.591Z"
+        }
+      }
+    },
+    {
+      "id": "7eea2eb0-f126-436c-bb57-0cd7fb6f4196",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Here are four pairs of numerals: 3 and 3, 4 and 5, 8 and 8, 10 and 9. How many pairs have equal numerals?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "3 and 3 are equal. 8 and 8 are equal. The other two pairs are not equal. That is 2 pairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 and 3, 8 and 8 are equal: 2 pairs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.708Z"
+        }
+      }
+    },
+    {
+      "id": "a6c01e1b-c10e-4723-8fc5-9634a7818268",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Wes's numeral is greater than 7. It is not 8 and it is not 10. It is one of the numerals 1 to 10. What is Wes's numeral?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The numerals greater than 7 are 8, 9 and 10. It is not 8 or 10, so it is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greater than 7: 8, 9, 10; not 8 or 10 leaves 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.716Z"
+        }
+      }
+    },
+    {
+      "id": "335e8af1-8ade-4d18-ba54-d54bfc2177a0",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Two seats are marked 2 and 1. Which numeral is greater?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "2 comes right after 1, so 2 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 > 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.721Z"
+        }
+      }
+    },
+    {
+      "id": "6e2c6d04-e767-4114-9579-06e62d537ea3",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Dot has the numeral 10 on her paper. Ed has the numeral 9 on his paper. Which numeral is greater?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "10 comes right after 9, so 10 is greater.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 > 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.725Z"
+        }
+      }
+    },
+    {
+      "id": "8a3974c1-8543-443a-bf2f-4011cef9764e",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Here are four sentences. \"6 is less than 7.\" \"10 is less than 9.\" \"5 is equal to 5.\" \"2 is greater than 1.\" How many of them are true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "\"10 is less than 9\" is the only one that is not true. So 3 are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6<7 true; 10<9 false; 5=5 true; 2>1 true: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.730Z"
+        }
+      }
+    },
+    {
+      "id": "f9f9de69-1826-421e-b056-a182ecf27952",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Look at 5 and 4. Which numeral is less?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "4 comes right before 5, so 4 is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 < 5, so 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.743Z"
+        }
+      }
+    },
+    {
+      "id": "2a96e6d2-a363-4271-bcaa-a2c030d255c9",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Pip has a card with 10. Quin has a card with 9. Whose card has the lesser numeral?",
+      "choices": [
+        "Pip's card",
+        "Quin's card",
+        "Both cards",
+        "Neither card"
+      ],
+      "answer": "Quin's card",
+      "compute": null,
+      "solution": "9 is less than 10, so Quin has the lesser numeral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Quin's card",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 < 10, Quin.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.749Z"
+        }
+      }
+    },
+    {
+      "id": "ff266162-e5ad-47a4-a04c-dd21f25f09bd",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "? is less than 7. Which numeral does not make the sentence true?",
+      "choices": [
+        "2",
+        "4",
+        "7",
+        "6"
+      ],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 is not less than 7. The other numerals are less than 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 is not less than 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.789Z"
+        }
+      }
+    },
+    {
+      "id": "a453f20c-fa75-41b9-a3dd-617536eb3f71",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Which numeral is greater than 8 but is not 10?",
+      "choices": [
+        "8",
+        "9",
+        "7",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The numerals greater than 8 are 9 and 10. It is not 10, so it is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Greater than 8: 9 or 10; not 10 -> 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.807Z"
+        }
+      }
+    },
+    {
+      "id": "5018a07b-df4e-436c-9974-83999d2aac4d",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "Tia says, \"5 is less than my numeral.\" Which numeral could be Tia's?",
+      "choices": [
+        "5",
+        "4",
+        "1",
+        "6"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Only 6 is greater than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need a numeral greater than 5: 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.829Z"
+        }
+      }
+    },
+    {
+      "id": "b6a163b7-f8f6-4de4-91a8-96635b4298b9",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Pick the greater of two numerals",
+      "stem": "Which pair of numerals has 8 as the greater numeral?",
+      "choices": [
+        "8 and 9",
+        "8 and 10",
+        "8 and 7",
+        "8 and 8"
+      ],
+      "answer": "8 and 7",
+      "compute": null,
+      "solution": "8 is greater than 7. 8 is not greater than 9, 10 or 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 and 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8>7; 8 and 8 equal; 10, 9 greater than 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.834Z"
+        }
+      }
+    },
+    {
+      "id": "16cdfce5-68cc-491a-ab78-bf5149d17a8a",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "The numerals 7 and 6 are on two keys. Which numeral is less?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "6 comes right before 7, so 6 is less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 is less than 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.849Z"
+        }
+      }
+    },
+    {
+      "id": "14fc839e-81bc-43ca-90de-873e67598668",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Ana has the numeral 3. Bo has the numeral 2. The player with the lesser numeral goes first. What numeral does the first player have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "2 is less than 3, so Bo goes first with 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 < 3, so Bo goes first with 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.854Z"
+        }
+      }
+    },
+    {
+      "id": "63fa98db-8fb6-4d31-b691-600533513e20",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Rex's numeral is less than 3. Which numeral could be Rex's?",
+      "choices": [
+        "3",
+        "5",
+        "10",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Only 2 is less than 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only 2 is less than 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.861Z"
+        }
+      }
+    },
+    {
+      "id": "ee63f5e5-84ef-4781-896a-eaf4d7a99241",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell when two numerals are equal",
+      "stem": "Two cards show equal numerals. Which two cards could they be?",
+      "choices": [
+        "7 and 7",
+        "7 and 8",
+        "9 and 10",
+        "6 and 5"
+      ],
+      "answer": "7 and 7",
+      "compute": null,
+      "solution": "Only 7 and 7 are the same numeral.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7 and 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equal numerals are the same: 7 and 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.884Z"
+        }
+      }
+    },
+    {
+      "id": "a2a937cd-1926-4cc5-a87f-703a175f53f7",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Mia wrote four sentences. Three are right. Which one is wrong?",
+      "choices": [
+        "4 is greater than 3.",
+        "6 is less than 5.",
+        "8 is equal to 8.",
+        "1 is less than 2."
+      ],
+      "answer": "6 is less than 5.",
+      "compute": null,
+      "solution": "6 is greater than 5, so \"6 is less than 5\" is wrong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 is less than 5.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 is greater than 5, so \"6 is less than 5\" is wrong. Others are right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.885Z"
+        }
+      }
+    },
+    {
+      "id": "5e85d86e-61ce-4785-be3c-d7004795acd5",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Sam says, \"2 is greater than 1.\" Which sentence says the same thing?",
+      "choices": [
+        "1 is less than 2.",
+        "1 is greater than 2.",
+        "2 is less than 1.",
+        "1 is equal to 2."
+      ],
+      "answer": "1 is less than 2.",
+      "compute": null,
+      "solution": "If 2 is greater than 1, then 1 is less than 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 is less than 2.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "\"2 is greater than 1\" means \"1 is less than 2\".",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.889Z"
+        }
+      }
+    },
+    {
+      "id": "03727627-fbee-4beb-baff-503a6efa5259",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Kim says, \"3 is greater than 4.\" Jon says, \"3 is less than 4.\" Lee says, \"3 is equal to 4.\" Who is right?",
+      "choices": [
+        "Kim",
+        "Lee",
+        "Nobody",
+        "Jon"
+      ],
+      "answer": "Jon",
+      "compute": null,
+      "solution": "3 comes before 4, so 3 is less than 4. Jon is right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Jon",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 < 4, Jon is right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.899Z"
+        }
+      }
+    },
+    {
+      "id": "8122fe08-8919-4459-aa73-5fe1b35ccf44",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Lee writes 9 on one card and 10 on another card. Which sentence about Lee's cards is true?",
+      "choices": [
+        "9 is less than 10.",
+        "9 is greater than 10.",
+        "9 is equal to 10.",
+        "10 is less than 9."
+      ],
+      "answer": "9 is less than 10.",
+      "compute": null,
+      "solution": "9 comes right before 10, so 9 is less than 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 is less than 10.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 < 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.902Z"
+        }
+      }
+    },
+    {
+      "id": "730e4adb-2338-4a06-8b87-e6f4a5db304c",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Choose the true comparison sentence",
+      "stem": "Here are three sentences. \"8 is greater than 7.\" \"4 is equal to 5.\" \"1 is less than 2.\" How many of them are not true?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "\"4 is equal to 5\" is the only one that is not true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8>7 true; 4=5 false; 1<2 true. 1 not true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.953Z"
+        }
+      }
+    },
+    {
+      "id": "429ce5af-19fb-441f-b2ae-4d5ba1e026bb",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pick the lesser of two numerals",
+      "stem": "Lou has two cards, 10 and 9. He puts the card with the lesser numeral on the table. What numeral is on the table?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "9 is less than 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 < 10, lesser is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.983Z"
+        }
+      }
+    },
+    {
+      "id": "f9ee26f5-9e9c-432e-9f2c-18e8ccaeaf4f",
+      "topic_id": "NC17.K.CC.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a numeral that fits a comparison",
+      "stem": "4 is greater than ?. Which numeral makes the sentence true?",
+      "choices": [
+        "4",
+        "5",
+        "3",
+        "10"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Only 3 is less than 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 > 3. 10, 5 greater; 4 equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.998Z"
         }
       }
     },

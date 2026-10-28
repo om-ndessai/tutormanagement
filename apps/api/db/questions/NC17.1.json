@@ -7,7 +7,7 @@
     "NC17.1.OA.4": "Sums and totals stay within 20. Adding on and rewriting as subtraction are both asked, plus a first-addend-unknown form and matching a number sentence to a story. All sums and totals are within 20. The unknown is written as ? and called \"the ?\". Money is not used.",
     "NC17.1.OA.9": "All sums and minuends within 10 (distractors may exceed 10 as add-instead-of-subtract slips). Answers are computed from the expression in scripts/build-b5-NC17.1.OA.9.mjs.",
     "NC17.1.OA.6": "Number lines are described in words (start at, jump right or left). Subtraction signs are written as plain hyphens, so no LaTeX is used. Text only: number lines are described by where a child stands and jumps. Everything stays within 20. Strategy questions give the strategy in the stem so only the strategy named is needed.",
-    "NC17.1.OA.7": "Every sum and difference stays within 20. A single equation cannot be a numeric question with a true/false answer, so \"is it true\" is asked as which-is-true, which-is-not-true and how-many-are-true; missing numbers and stories are numeric.",
+    "NC17.1.OA.7": "Every sum and difference stays within 20. A single equation cannot be a numeric question with a true/false answer, so \"is it true\" is asked as which-is-true, which-is-not-true and how-many-are-true; missing numbers and stories are numeric. Mostly truth of equations and meaning of the equal sign; a few \"number that makes it true\" items (about 10 of 69) for the balance idea.",
     "NC17.1.OA.8": "All numbers within 20, plus tens within 100. Skills (counts below in reply).",
     "NC17.1.NBT.1": "Counts by ones forward only, with starts below 150 and ends up to 150 (the standard reaches 150, so numbers past 120 are used). Skills: say the next number (7), find the missing number (6), count on a few numbers from a start (6), choose the correct counting list (6), count up to 150 (5). Counting by tens and counting back are other standards.",
     "NC17.1.NBT.7": "Numbers stay within 100 as the standard says. Pictures of objects are replaced by bundles, boxes and rows of ten described in words. Number names are only ever given as text, in choice or numeric stems.",
@@ -18963,6 +18963,690 @@
       }
     },
     {
+      "id": "9c692c0b-1c1a-4943-9471-dbf113595049",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "What does the = sign mean in $2 + 3 = 5$?",
+      "choices": [
+        "The amounts on both sides are equal.",
+        "The left side is bigger.",
+        "The right side is bigger.",
+        "Add the numbers next."
+      ],
+      "answer": "The amounts on both sides are equal.",
+      "compute": null,
+      "solution": "The = sign says the two sides have the same amount. Here both sides are 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The amounts on both sides are equal.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "= means both sides have the same amount.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.615Z"
+        }
+      }
+    },
+    {
+      "id": "a95d7174-152b-4b75-ba9c-5ff5fe19dee3",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "A friend reads $9 = 9$. Which words does the friend say for the = sign?",
+      "choices": [
+        "is more than",
+        "is the same as",
+        "is less than",
+        "is taken away from"
+      ],
+      "answer": "is the same as",
+      "compute": null,
+      "solution": "9 is the same as 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "is the same as",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "= is read \"is the same as\".",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.618Z"
+        }
+      }
+    },
+    {
+      "id": "b4cc75bc-5929-4217-90df-a60ad5a914c6",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Which one has the same value as 7?",
+      "choices": [
+        "$3 + 4$",
+        "$3 + 5$",
+        "$9 - 3$",
+        "$8 + 1$"
+      ],
+      "answer": "$3 + 4$",
+      "compute": null,
+      "solution": "3 + 4 is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 4 = 7; others 8, 9, 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.652Z"
+        }
+      }
+    },
+    {
+      "id": "edaf614a-36ae-43c4-acc0-c4228f43e7e1",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Pick the true equation.",
+      "choices": [
+        "$3 + 2 = 6$",
+        "$3 + 2 = 4$",
+        "$3 + 2 = 5$",
+        "$3 + 2 = 1$"
+      ],
+      "answer": "$3 + 2 = 5$",
+      "compute": null,
+      "solution": "3 + 2 is 5, so only $3 + 2 = 5$ is true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 2 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+2=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.677Z"
+        }
+      }
+    },
+    {
+      "id": "47e047d9-3029-4f1d-b84c-8852c601a01f",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$7 = 10 - ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "10 - 3 is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10-3=7, so 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.704Z"
+        }
+      }
+    },
+    {
+      "id": "bce22d32-11ab-469f-8246-999cb45ae34d",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Tom has 3 apples and 2 pears. Ana has 5 plums. Which equation shows that they have the same number of fruits?",
+      "choices": [
+        "$3 + 2 = 6$",
+        "$3 + 2 = 5$",
+        "$3 + 5 = 2$",
+        "$5 + 2 = 3$"
+      ],
+      "answer": "$3 + 2 = 5$",
+      "compute": null,
+      "solution": "Tom has 3 + 2 = 5 fruits. Ana has 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 2 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+2=5 fruits each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.750Z"
+        }
+      }
+    },
+    {
+      "id": "bee41049-a702-4aaf-8a03-8c59744dafb8",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Both sides must be the same amount. Which equation is true?",
+      "choices": [
+        "$2 + 3 = 4 + 2$",
+        "$2 + 3 = 5 + 2$",
+        "$2 + 3 = 6 - 2$",
+        "$2 + 3 = 4 + 1$"
+      ],
+      "answer": "$2 + 3 = 4 + 1$",
+      "compute": null,
+      "solution": "Both 2 + 3 and 4 + 1 are 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 3 = 4 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+3=5; 4+1=5. Others 6,7,4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.750Z"
+        }
+      }
+    },
+    {
+      "id": "35d3f30c-40e2-41c6-b611-03d6e32d2332",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$6 + 1 = 4 + ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "6 + 1 is 7. 4 + 3 is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+1=7=4+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.759Z"
+        }
+      }
+    },
+    {
+      "id": "920fdec7-6640-4a6c-af19-bfe8b23bd779",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Mo checks some take-away equations. Which one is not true?",
+      "choices": [
+        "$7 - 4 = 4$",
+        "$7 - 4 = 3$",
+        "$7 - 3 = 4$",
+        "$7 - 2 = 5$"
+      ],
+      "answer": "$7 - 4 = 4$",
+      "compute": null,
+      "solution": "7 - 4 is 3, not 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 - 4 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7-4=3, not 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.768Z"
+        }
+      }
+    },
+    {
+      "id": "9abf5038-3872-46a0-a259-a3558232d75c",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Sam put the answer first. Which equation is true?",
+      "choices": [
+        "$9 = 6 + 4$",
+        "$9 = 12 - 2$",
+        "$9 = 6 + 3$",
+        "$9 = 5 + 5$"
+      ],
+      "answer": "$9 = 6 + 3$",
+      "compute": null,
+      "solution": "6 + 3 is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 = 6 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+4=10, 12-2=10, 6+3=9, 5+5=10. Only 9=6+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.912Z"
+        }
+      }
+    },
+    {
+      "id": "3874ae29-5bf7-4935-acfe-f4d7f1f478df",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Lee wrote four equations. Only one is true. Which one?",
+      "choices": [
+        "$10 = 4 + 5$",
+        "$10 = 7 + 3$",
+        "$10 = 12 - 3$",
+        "$10 = 5 + 6$"
+      ],
+      "answer": "$10 = 7 + 3$",
+      "compute": null,
+      "solution": "7 + 3 is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10 = 7 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+6=11, 12-3=9, 7+3=10, 4+5=9. Only 10=7+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.951Z"
+        }
+      }
+    },
+    {
+      "id": "1a3a9a76-a7ca-4268-b099-e6c0a4de897a",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Which story matches $6 = 4 + 2$?",
+      "choices": [
+        "Mo has 6 pens and gives 2 pens away.",
+        "Mo has 6 pens: 4 blue pens and 2 red pens.",
+        "Mo has 4 blue pens and 2 red pens, so he has 8.",
+        "Mo has 4 pens and then gets 6 more pens."
+      ],
+      "answer": "Mo has 6 pens: 4 blue pens and 2 red pens.",
+      "compute": null,
+      "solution": "4 blue pens and 2 red pens make 6 pens, so 6 is the same as 4 + 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Mo has 6 pens: 4 blue pens and 2 red pens.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 = 4 + 2: 6 pens made of 4 blue and 2 red.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.959Z"
+        }
+      }
+    },
+    {
+      "id": "f80f8079-3d3c-437a-a5c3-beccb95dfa6a",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Pick the equation that is not true.",
+      "choices": [
+        "$4 + 4 = 8$",
+        "$10 - 3 = 7$",
+        "$6 + 2 = 8$",
+        "$5 + 5 = 9$"
+      ],
+      "answer": "$5 + 5 = 9$",
+      "compute": null,
+      "solution": "5 + 5 is 10, not 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 5 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5=10, not 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.962Z"
+        }
+      }
+    },
+    {
+      "id": "3bec46d0-5f33-46de-a5a7-5ead8da7e80d",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Look at these equations: $5 = 5$, $4 + 1 = 6$ and $7 = 3 + 4$. How many are true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "5 = 5 is true. 4 + 1 is 5, not 6. 7 = 3 + 4 is true. So 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5=5 true; 4+1=5, not 6, false; 3+4=7 true. Two true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.967Z"
+        }
+      }
+    },
+    {
+      "id": "ca3fccae-d910-4289-b2fa-8b23aeaf51cd",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Max writes $4 + 4 = 8$, $9 - 1 = 8$ and $5 + 3 = 8$. How many of his equations are true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "All three sides work out to 8, so all 3 are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+4=8, 9-1=8, 5+3=8: all three true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.971Z"
+        }
+      }
+    },
+    {
+      "id": "ba8b3e5d-03ed-40df-a281-524436be64dd",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Which of these take-away equations is true?",
+      "choices": [
+        "$9 - 4 = 4$",
+        "$9 - 4 = 6$",
+        "$9 - 4 = 13$",
+        "$9 - 4 = 5$"
+      ],
+      "answer": "$9 - 4 = 5$",
+      "compute": null,
+      "solution": "9 - 4 is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 4 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-4=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.998Z"
+        }
+      }
+    },
+    {
+      "id": "f465a42a-f78a-4f26-a20f-ac79fb01e039",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Each equation starts with 5. Which one is true?",
+      "choices": [
+        "$5 = 9 - 5$",
+        "$5 = 9 + 4$",
+        "$5 = 9 - 4$",
+        "$5 = 9 - 3$"
+      ],
+      "answer": "$5 = 9 - 4$",
+      "compute": null,
+      "solution": "9 - 4 is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 = 9 - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-4=5 true; 9-3=6, 9+4=13, 9-5=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.003Z"
+        }
+      }
+    },
+    {
+      "id": "aec193e8-1618-4a77-bc47-5c07a1320268",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Zoe checks four equations. Which equation is true?",
+      "choices": [
+        "$8 - 5 = 13$",
+        "$8 - 5 = 4$",
+        "$8 - 5 = 3$",
+        "$8 - 5 = 2$"
+      ],
+      "answer": "$8 - 5 = 3$",
+      "compute": null,
+      "solution": "8 - 5 is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 - 5 = 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8-5=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.008Z"
+        }
+      }
+    },
+    {
+      "id": "0534684e-41dc-4a7d-a35a-57b539d826af",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare an operation on each side",
+      "stem": "Which number is the same as 3 + 4 and also the same as 9 - 2?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "3 + 4 = 7 and 9 - 2 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+4=7, 9-2=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.012Z"
+        }
+      }
+    },
+    {
+      "id": "397785fb-49d2-49e5-a0ed-fe7ab9101da9",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Here are two equations: $2 + 2 = 4$ and $3 + 3 = 7$. How many are true?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "2 + 2 is 4, so the first is true. 3 + 3 is 6, not 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+2=4 true; 3+3=6 not 7. One true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.016Z"
+        }
+      }
+    },
+    {
+      "id": "d1606baa-0847-4088-978e-be0d8ca778d8",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Which of these is a true equation?",
+      "choices": [
+        "$6 = 2 + 4$",
+        "$6 = 2 + 5$",
+        "$6 = 8 - 3$",
+        "$6 = 7 + 1$"
+      ],
+      "answer": "$6 = 2 + 4$",
+      "compute": null,
+      "solution": "2 + 4 is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 = 2 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+4=6 true; 7+1=8, 2+5=7, 8-3=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.020Z"
+        }
+      }
+    },
+    {
       "id": "fc8c9e2b-04d9-4310-9929-78a9c84bb48b",
       "topic_id": "NC17.1.OA.7",
       "difficulty": 2,
@@ -19273,6 +19957,709 @@
       }
     },
     {
+      "id": "208621cb-aeaa-4368-ae56-4ba9ef4b6ad1",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Sam wrote $12 = 7 + 5$ and $12 = 8 + 3$. Which sentence is right?",
+      "choices": [
+        "Only the second equation is true.",
+        "Both equations are true.",
+        "Only the first equation is true.",
+        "Neither equation is true."
+      ],
+      "answer": "Only the first equation is true.",
+      "compute": null,
+      "solution": "7 + 5 is 12, so the first is true. 8 + 3 is 11, so the second is not true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only the first equation is true.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 5 = 12 true; 8 + 3 = 11, not 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.632Z"
+        }
+      }
+    },
+    {
+      "id": "e0acab1f-2fa9-4649-9403-f01ab4b81fb4",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Tara checks four take-away equations. Which equation is true?",
+      "choices": [
+        "$16 - 7 = 9$",
+        "$16 - 7 = 8$",
+        "$16 - 7 = 10$",
+        "$16 - 7 = 23$"
+      ],
+      "answer": "$16 - 7 = 9$",
+      "compute": null,
+      "solution": "16 - 7 is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16 - 7 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 − 7 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.669Z"
+        }
+      }
+    },
+    {
+      "id": "f9bdd984-0dff-46b4-a491-a3f7fd0e9c96",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Jo says $3 + 5 = 5 + 3$ cannot be true because the answer does not come after the = sign. Why is Jo wrong?",
+      "choices": [
+        "The = sign must always come before the biggest number.",
+        "Both sides must have a + sign.",
+        "The left side must always be bigger.",
+        "The = sign only needs both sides to be the same amount."
+      ],
+      "answer": "The = sign only needs both sides to be the same amount.",
+      "compute": null,
+      "solution": "Both 3 + 5 and 5 + 3 are 8, so the sides are the same. The = sign does not mean \"the answer comes next\".",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The = sign only needs both sides to be the same amount.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "= means both sides have the same value; 3+5=8 and 5+3=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.681Z"
+        }
+      }
+    },
+    {
+      "id": "bcbf4cce-e01b-4f9c-a1e7-c92559cfcaf1",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$15 - 9 = 9 - ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "15 - 9 is 6. 9 - 3 is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15-9=6, so 9-?=6 gives ?=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.740Z"
+        }
+      }
+    },
+    {
+      "id": "3ff6ea52-68b8-49d8-b5df-63856e0fe0f1",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "A card shows $6 + 6 = 12$, $13 - 4 = 8$, $7 = 15 - 8$ and $9 + 9 = 18$. How many of the equations are true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "6 + 6 = 12 is true. 13 - 4 is 9, not 8. 7 = 15 - 8 is true. 9 + 9 = 18 is true. So 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+6=12 T; 13-4=9≠8 F; 15-8=7 T; 9+9=18 T. 3 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.785Z"
+        }
+      }
+    },
+    {
+      "id": "b80a69ae-eb9f-499a-96e3-170a9a902862",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Which is another way to read $12 - 3 = 9$?",
+      "choices": [
+        "12 take away 3 is bigger than 9.",
+        "12 take away 3 is smaller than 9.",
+        "12 take away 3 is the same as 9.",
+        "12 take away 3 is different from 9."
+      ],
+      "answer": "12 take away 3 is the same as 9.",
+      "compute": null,
+      "solution": "12 - 3 is 9, so the two sides are the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12 take away 3 is the same as 9.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "= means 'is the same as'.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.819Z"
+        }
+      }
+    },
+    {
+      "id": "47f203e2-0a1d-4fc8-8746-1b5687941c77",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Which equation can be read as \"twelve is the same as twenty take away eight\"?",
+      "choices": [
+        "$12 = 20 + 8$",
+        "$20 = 12 - 8$",
+        "$8 = 20 - 12$",
+        "$12 = 20 - 8$"
+      ],
+      "answer": "$12 = 20 - 8$",
+      "compute": null,
+      "solution": "Twelve is 12, the same as is =, and twenty take away eight is 20 - 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 = 20 - 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "twelve = 20 - 8 -> 12 = 20 - 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.821Z"
+        }
+      }
+    },
+    {
+      "id": "81bda1d1-7843-4dd4-ae18-747cfc4363da",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Is $9 + 8 = 17$ true? Which sentence is right?",
+      "choices": [
+        "No, the left side is 16.",
+        "No, the left side is 18.",
+        "No, the right side is 18.",
+        "Yes, both sides are 17."
+      ],
+      "answer": "Yes, both sides are 17.",
+      "compute": null,
+      "solution": "9 + 8 is 17, which is the same as the right side.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Yes, both sides are 17.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 8 = 17, both sides 17, true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.868Z"
+        }
+      }
+    },
+    {
+      "id": "138c5f26-d3d5-4075-8673-b859e5e028e9",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$8 + 4 = 5 + ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "8 + 4 is 12. 5 + 7 is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 4 = 12 = 5 + 7; ? = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.870Z"
+        }
+      }
+    },
+    {
+      "id": "20706e86-5cb9-41db-82fd-eade6dc9d6dd",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Lou wrote his answers on the left side. Which equation is true?",
+      "choices": [
+        "$15 = 8 + 7$",
+        "$15 = 8 + 6$",
+        "$15 = 18 - 2$",
+        "$15 = 9 + 7$"
+      ],
+      "answer": "$15 = 8 + 7$",
+      "compute": null,
+      "solution": "8 + 7 is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$15 = 8 + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+7=15 true; 8+6=14; 18-2=16; 9+7=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.919Z"
+        }
+      }
+    },
+    {
+      "id": "1b00db81-fe36-42a6-b2b0-2dff9156f1bc",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Only one equation is not true. Which one is it?",
+      "choices": [
+        "$11 + 4 = 15$",
+        "$13 - 6 = 8$",
+        "$9 + 9 = 18$",
+        "$20 - 8 = 12$"
+      ],
+      "answer": "$13 - 6 = 8$",
+      "compute": null,
+      "solution": "13 - 6 is 7, not 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$13 - 6 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20-8=12 T; 13-6=7 so \"=8\" false; 11+4=15 T; 9+9=18 T.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.922Z"
+        }
+      }
+    },
+    {
+      "id": "e5ec4d6d-04d4-447d-bf56-f76071036986",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Mo checks $9 + 5 = 14$, $12 - 3 = 8$, $6 = 11 - 5$ and $10 + 7 = 16$. How many are true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "9 + 5 = 14 is true. 12 - 3 is 9, not 8. 6 = 11 - 5 is true. 10 + 7 is 17, not 16. So 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+5=14 T; 12-3=9≠8 F; 11-5=6 T; 10+7=17≠16 F. 2 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.943Z"
+        }
+      }
+    },
+    {
+      "id": "54e0cb44-4b5a-422d-9b63-1822f38e7f06",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Ava has 8 stickers and gets 5 more. Bo has 9 stickers and gets 4 more. Which equation shows they have the same number of stickers?",
+      "choices": [
+        "$8 + 5 = 9 + 5$",
+        "$8 + 5 = 9 + 4$",
+        "$8 + 4 = 9 + 5$",
+        "$8 + 5 = 9 - 4$"
+      ],
+      "answer": "$8 + 5 = 9 + 4$",
+      "compute": null,
+      "solution": "8 + 5 and 9 + 4 are both 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 5 = 9 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ava 8+5=13, Bo 9+4=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.946Z"
+        }
+      }
+    },
+    {
+      "id": "3d73235e-f247-454e-9b45-4163bef07680",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$7 + 5 = 6 + ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "7 + 5 is 12. 6 + 6 is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+5=12 = 6+6; ?=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.958Z"
+        }
+      }
+    },
+    {
+      "id": "1b95e01b-e5fc-4056-ab78-45dec80d7684",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Nia worked out both sides of four equations. Which equation is not true?",
+      "choices": [
+        "$12 - 4 = 5 + 4$",
+        "$9 + 5 = 7 + 7$",
+        "$15 - 6 = 4 + 5$",
+        "$3 + 6 = 12 - 3$"
+      ],
+      "answer": "$12 - 4 = 5 + 4$",
+      "compute": null,
+      "solution": "12 - 4 is 8, but 5 + 4 is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 - 4 = 5 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12-4=8, 5+4=9: not true. 9+5=14=7+7; 15-6=9=4+5; 3+6=9=12-3 all true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.969Z"
+        }
+      }
+    },
+    {
+      "id": "931b4f3b-1e82-4a7f-9c9e-e527070b0c48",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "How many of these equations are not true? $5 + 5 = 9 + 1$, $10 - 4 = 3 + 3$ and $8 + 2 = 2 + 6$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "5 + 5 and 9 + 1 are both 10. 10 - 4 and 3 + 3 are both 6. 8 + 2 is 10 but 2 + 6 is 8, so only the last is not true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+5=10=9+1 true; 10-4=6=3+3 true; 8+2=10 vs 2+6=8 not true. One not true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.979Z"
+        }
+      }
+    },
+    {
+      "id": "1e3ca05b-1ad5-4a82-9a4c-d3007753a4a5",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Pam checked four equations that start with 17. Which one is true?",
+      "choices": [
+        "$17 = 20 - 3$",
+        "$17 = 20 - 4$",
+        "$17 = 9 + 9$",
+        "$17 = 10 + 6$"
+      ],
+      "answer": "$17 = 20 - 3$",
+      "compute": null,
+      "solution": "20 - 3 is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$17 = 20 - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20-3=17 true; 20-4=16; 9+9=18; 10+6=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.979Z"
+        }
+      }
+    },
+    {
+      "id": "646f3341-0c7a-4395-8c0f-402f13624f7c",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Which one has the same value as $9 + 4$?",
+      "choices": [
+        "$20 - 6$",
+        "$9 - 4$",
+        "$20 - 7$",
+        "$13 + 4$"
+      ],
+      "answer": "$20 - 7$",
+      "compute": null,
+      "solution": "9 + 4 is 13 and 20 - 7 is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20 - 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+4=13. 13+4=17, 20-7=13, 9-4=5, 20-6=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.980Z"
+        }
+      }
+    },
+    {
+      "id": "9d67abed-7ac4-4226-a40e-399cd25a4a3f",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Mrs. Cole says three equations are true and one is not. Which one is not true?",
+      "choices": [
+        "$8 = 16 - 8$",
+        "$9 = 4 + 5$",
+        "$13 - 5 = 6 + 2$",
+        "$7 + 5 = 15 - 2$"
+      ],
+      "answer": "$7 + 5 = 15 - 2$",
+      "compute": null,
+      "solution": "7 + 5 is 12, but 15 - 2 is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 5 = 15 - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13-5=8=6+2 true; 16-8=8 true; 4+5=9 true; 7+5=12 vs 15-2=13 not true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.983Z"
+        }
+      }
+    },
+    {
+      "id": "f7d808e1-650e-480c-88cb-2144375664e9",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Mia wrote $6 + 4 = 10$, $10 = 6 + 4$, $10 = 4 + 6$ and $4 + 6 = 11$. How many are true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The first three all have 10 on both sides. The last has 10 on the left and 11 on the right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+4=10, 10=6+4, 10=4+6 true; 4+6=10 not 11. Three true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.984Z"
+        }
+      }
+    },
+    {
+      "id": "52bb7994-f99a-40a1-a9fb-9a3491fab69c",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare an operation on each side",
+      "stem": "The equation $9 + 4 = 8 + 5$ is true. What number is each side equal to?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "9 + 4 is 13 and 8 + 5 is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+4 = 13 = 8+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.017Z"
+        }
+      }
+    },
+    {
+      "id": "fe40fb19-2a0f-480d-a017-e5ef8b133d8a",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$14 = 20 - ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "20 - 6 is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 - 6 = 14, so ? = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.019Z"
+        }
+      }
+    },
+    {
       "id": "09bf5fee-64da-46df-86b9-a8d03f147e8e",
       "topic_id": "NC17.1.OA.7",
       "difficulty": 3,
@@ -19579,6 +20966,743 @@
           "work": "Lin has 8+7=15. 20 - ? = 15, so Omar gives away 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:18.228Z"
+        }
+      }
+    },
+    {
+      "id": "454a491e-ca02-421a-8883-eacdea16cfb8",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Dan says $18 - 9 = 9$ is true but $9 = 18 - 9$ is not true. Is Dan right?",
+      "choices": [
+        "Yes, only the second equation is not true.",
+        "No, only the first equation is not true.",
+        "No, both equations are true.",
+        "No, neither equation is true."
+      ],
+      "answer": "No, both equations are true.",
+      "compute": null,
+      "solution": "18 - 9 is 9, so both equations are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, both equations are true.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 − 9 = 9, so both 18 − 9 = 9 and 9 = 18 − 9 are true; Dan is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.603Z"
+        }
+      }
+    },
+    {
+      "id": "6cccd76f-86de-480b-a2a4-30716ac4939f",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Each equation begins with 9 + 8. Which one is true?",
+      "choices": [
+        "$9 + 8 = 20 - 2$",
+        "$9 + 8 = 19 - 3$",
+        "$9 + 8 = 8 + 8$",
+        "$9 + 8 = 20 - 3$"
+      ],
+      "answer": "$9 + 8 = 20 - 3$",
+      "compute": null,
+      "solution": "Both 9 + 8 and 20 - 3 are 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 + 8 = 20 - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 8 = 17; 20 − 3 = 17 true; 8+8=16, 19−3=16, 20−2=18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.617Z"
+        }
+      }
+    },
+    {
+      "id": "8d42fec4-5865-4124-913a-77529366b34c",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$13 - ? = 6 + 2$. What number makes the equation true?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "6 + 2 is 8. 13 - 5 is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 2 = 8; 13 − 5 = 8, so 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.658Z"
+        }
+      }
+    },
+    {
+      "id": "f9577e48-04c4-4780-a634-db8db3eaeca2",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Which one has the same value as $16 - 8$?",
+      "choices": [
+        "$4 + 4$",
+        "$9 - 8$",
+        "$4 + 5$",
+        "$16 + 8$"
+      ],
+      "answer": "$4 + 4$",
+      "compute": null,
+      "solution": "16 - 8 is 8 and 4 + 4 is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 − 8 = 8 = 4 + 4. Others 24, 9, 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.673Z"
+        }
+      }
+    },
+    {
+      "id": "8bb062f0-e738-4317-9a5b-3fc70ffd51c3",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Ella says $6 + 8 = 14$ is true. Which equation must also be true?",
+      "choices": [
+        "$14 = 8 - 6$",
+        "$14 = 6 + 8$",
+        "$6 = 14 + 8$",
+        "$8 = 14 + 6$"
+      ],
+      "answer": "$14 = 6 + 8$",
+      "compute": null,
+      "solution": "If both sides are the same amount, the sides can swap: 14 = 6 + 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14 = 6 + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The equal sign means both sides are the same amount, so 14 = 6 + 8 is also true. 8-6=2, 14+8=22, 14+6=20 are false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.675Z"
+        }
+      }
+    },
+    {
+      "id": "2bc47af8-535b-447d-abff-df254a3a46c9",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare an operation on each side",
+      "stem": "Which number is the same as both $6 + 9$ and $20 - 5$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "6 + 9 = 15 and 20 - 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+9=15 and 20-5=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.678Z"
+        }
+      }
+    },
+    {
+      "id": "be4f7543-7147-44a9-baae-279400216ef9",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$9 + 8 = 20 - ?$. What number makes the equation true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "9 + 8 is 17. 20 - 3 is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+8=17; 20-3=17, so 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.678Z"
+        }
+      }
+    },
+    {
+      "id": "01f2010f-281b-4714-a405-d92a9924bb45",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Lia has 9 crayons and gets 7 more. Max has 20 crayons and gives away 4. Which equation shows they have the same number of crayons?",
+      "choices": [
+        "$9 + 7 = 20 - 7$",
+        "$9 + 7 = 20 - 4$",
+        "$9 - 7 = 20 - 4$",
+        "$9 + 7 = 20 + 4$"
+      ],
+      "answer": "$9 + 7 = 20 - 4$",
+      "compute": null,
+      "solution": "9 + 7 is 16 and 20 - 4 is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 + 7 = 20 - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Lia 9+7=16, Max 20-4=16: 9+7=20-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.714Z"
+        }
+      }
+    },
+    {
+      "id": "76d4b27e-e0f7-49bd-ab4c-02e90f6a5fc8",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Look at $8 + 9 = 17$, $18 - 9 = 8$, $6 + 7 = 13$ and $20 - 7 = 12$. How many are not true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "18 - 9 is 9, not 8. 20 - 7 is 13, not 12. The other two are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+9=17 true; 18-9=9 so false; 6+7=13 true; 20-7=13 so false: 2 not true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.737Z"
+        }
+      }
+    },
+    {
+      "id": "12411fdf-2057-4bed-a673-33302df4fcce",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Four equations all end in 20. Only one is not true. Which one?",
+      "choices": [
+        "$11 + 9 = 20$",
+        "$12 + 8 = 20$",
+        "$13 + 7 = 20$",
+        "$11 + 8 = 20$"
+      ],
+      "answer": "$11 + 8 = 20$",
+      "compute": null,
+      "solution": "11 + 8 is 19, not 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$11 + 8 = 20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11+8=19, not 20; others are 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.746Z"
+        }
+      }
+    },
+    {
+      "id": "94e85992-6c6a-4669-9529-852bc5a2e820",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "A bag has 14 marbles and Mo takes out 5. A box has 6 marbles. Ria puts some marbles in the box. Now the bag and the box have the same number. How many marbles does Ria put in the box?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The bag has 14 - 5 = 9 marbles. The box needs 9, and 6 + 3 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bag 14-5=9; box 6+?=9, ?=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.749Z"
+        }
+      }
+    },
+    {
+      "id": "079231ca-4b1b-48eb-b048-40ebfa4d8a27",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Dev wrote $15 - 6 = 9$. Pam wrote $9 = 15 - 6$. Which sentence is right?",
+      "choices": [
+        "Only Dev's equation is true.",
+        "Only Pam's equation is true.",
+        "Both equations are true.",
+        "Neither equation is true."
+      ],
+      "answer": "Both equations are true.",
+      "compute": null,
+      "solution": "Both have 9 on one side and 15 - 6 = 9 on the other, so both are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both equations are true.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15-6=9 both ways; equal sign works either direction. Both true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.753Z"
+        }
+      }
+    },
+    {
+      "id": "125953c3-7ade-4892-90bb-d890b161ff95",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Cal says only one equation in his list is wrong. Which one is it?",
+      "choices": [
+        "$7 + 8 = 8 + 7$",
+        "$20 - 5 = 9 + 6$",
+        "$14 = 6 + 8$",
+        "$17 - 9 = 9 + 8$"
+      ],
+      "answer": "$17 - 9 = 9 + 8$",
+      "compute": null,
+      "solution": "17 - 9 is 8, but 9 + 8 is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$17 - 9 = 9 + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17-9=8, 9+8=17: wrong. 14=14, 15=15, 15=15 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.781Z"
+        }
+      }
+    },
+    {
+      "id": "4e3e405e-d5f2-4cb2-ba2c-5fff7f493e60",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Dan wrote four equations: $14 = 7 + 7$, $14 = 20 - 6$, $14 = 9 + 6$ and $14 = 18 - 5$. How many are true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "7 + 7 = 14 and 20 - 6 = 14. But 9 + 6 is 15 and 18 - 5 is 13. So 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+7=14 T; 20-6=14 T; 9+6=15 F; 18-5=13 F. 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.789Z"
+        }
+      }
+    },
+    {
+      "id": "3321b218-96c1-4fa9-8d4a-c999646a92a3",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "The total is on the left in each equation. Which one is true?",
+      "choices": [
+        "$18 = 11 + 8$",
+        "$18 = 20 - 3$",
+        "$18 = 11 + 7$",
+        "$18 = 9 + 8$"
+      ],
+      "answer": "$18 = 11 + 7$",
+      "compute": null,
+      "solution": "11 + 7 is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$18 = 11 + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+8=17, 11+8=19, 20-3=17, 11+7=18. Only 18=11+7 is true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.794Z"
+        }
+      }
+    },
+    {
+      "id": "275d553a-36a7-452a-a2fa-cf46d79536da",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Say what the equal sign means",
+      "stem": "Why is $6 + 3 = 5 + 4$ true?",
+      "choices": [
+        "Both sides equal 10.",
+        "Both sides equal 9.",
+        "The left side is 9 and the right side is 8.",
+        "The left side is 8 and the right side is 9."
+      ],
+      "answer": "Both sides equal 9.",
+      "compute": null,
+      "solution": "6 + 3 is 9 and 5 + 4 is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Both sides equal 9.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+3=9, 5+4=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.805Z"
+        }
+      }
+    },
+    {
+      "id": "b7613f81-24db-4c3e-ac20-a15a8c303231",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "In one equation the two sides are not the same amount. Which equation is it?",
+      "choices": [
+        "$18 - 9 = 10 - 1$",
+        "$7 + 9 = 8 + 8$",
+        "$15 - 8 = 6 + 2$",
+        "$11 - 4 = 2 + 5$"
+      ],
+      "answer": "$15 - 8 = 6 + 2$",
+      "compute": null,
+      "solution": "15 - 8 is 7, but 6 + 2 is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$15 - 8 = 6 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11-4=7=2+5; 15-8=7 vs 6+2=8 (not equal); 16=16; 9=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.813Z"
+        }
+      }
+    },
+    {
+      "id": "5b92657c-2ef0-41f8-b800-764743bbcc3e",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "How many of these are true? $5 + 8 = 13$, $11 = 7 + 4$, $14 - 6 = 7$, $9 = 17 - 8$ and $12 + 3 = 16$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "5 + 8 = 13, 11 = 7 + 4 and 9 = 17 - 8 are true. 14 - 6 is 8 and 12 + 3 is 15, so those are not true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+8=13 true; 7+4=11 true; 14-6=8 not 7 false; 17-8=9 true; 12+3=15 not 16 false. 3 true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.860Z"
+        }
+      }
+    },
+    {
+      "id": "58d7069c-7c4c-423b-b92a-713800caa3b7",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the true equations in a list",
+      "stem": "Zed says $10 + 4 = 20 - 6$ is true. Rae says $10 + 4 = 20 - 5$ is true. How many of them are right?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "10 + 4 is 14 and 20 - 6 is 14, so Zed is right. 20 - 5 is 15, so Rae is wrong.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10+4 = 14, 20-6 = 14: Zed right. 20-5 = 15: Rae wrong. 1 right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.890Z"
+        }
+      }
+    },
+    {
+      "id": "edcfef41-b323-4df8-8d32-0fbdeabf576f",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether an equation is true",
+      "stem": "Each equation ends with = 8. Which equation is not true?",
+      "choices": [
+        "$16 - 9 = 8$",
+        "$16 - 8 = 8$",
+        "$17 - 9 = 8$",
+        "$18 - 10 = 8$"
+      ],
+      "answer": "$16 - 9 = 8$",
+      "compute": null,
+      "solution": "16 - 9 is 7, not 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16 - 9 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16-8 = 8, 18-10 = 8, 17-9 = 8, 16-9 = 7. Not true: 16 - 9 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.904Z"
+        }
+      }
+    },
+    {
+      "id": "06cd0029-6647-497a-adc0-237567f126b9",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare an operation on each side",
+      "stem": "Which two expressions can go on both sides of the = sign to make a true equation?",
+      "choices": [
+        "$5 + 7$ and $14 - 2$",
+        "$5 + 7$ and $14 - 3$",
+        "$5 + 7$ and $4 + 7$",
+        "$5 + 7$ and $14 + 2$"
+      ],
+      "answer": "$5 + 7$ and $14 - 2$",
+      "compute": null,
+      "solution": "5 + 7 is 12 and 14 - 2 is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 7$ and $14 - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+7=12; 14-2=12 true. 14+2=16, 4+7=11, 14-3=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.911Z"
+        }
+      }
+    },
+    {
+      "id": "43f4170c-12f4-424a-add0-0960172fa994",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equations with the total written first",
+      "stem": "Ms. Hill wrote four equations. Which one is not true?",
+      "choices": [
+        "$13 = 9 + 4$",
+        "$12 = 8 + 5$",
+        "$14 = 20 - 6$",
+        "$11 = 15 - 4$"
+      ],
+      "answer": "$12 = 8 + 5$",
+      "compute": null,
+      "solution": "8 + 5 is 13, not 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12 = 8 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20-6=14 T; 8+5=13, not 12 → false; 15-4=11 T; 9+4=13 T.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.932Z"
+        }
+      }
+    },
+    {
+      "id": "b931dd00-594d-4254-bf69-6314cca8567b",
+      "topic_id": "NC17.1.OA.7",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number that makes an equation true",
+      "stem": "$5 + ? = 19 - 8$. What number makes the equation true?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "19 - 8 is 11. 5 + 6 is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19-8=11; 5+6=11, so ?=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.936Z"
         }
       }
     },

@@ -4126,6 +4126,69 @@
       }
     },
     {
+      "id": "a861b9fc-93f7-4726-a6cd-204c460f81a1",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a unit rate",
+      "stem": "A printer prints 40 pages in 8 minutes at a steady rate. How many pages does it print in 1 minute?",
+      "choices": [],
+      "answer": "5",
+      "compute": "40/8",
+      "solution": "The unit rate is $40 \\div 8 = 5$ pages per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 ÷ 8 = 5 pages per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.923Z"
+        }
+      }
+    },
+    {
+      "id": "2e8a8d2d-aaf5-4f65-9ae1-5c0e7e27c50f",
+      "topic_id": "NC17.6.RP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write equivalent unit ratios",
+      "stem": "For every 8 sandwiches, a cafe uses 2 loaves of bread. Which is a unit ratio of sandwiches to loaves?",
+      "choices": [
+        "4 sandwiches to 1 loaf",
+        "1 sandwich to 4 loaves",
+        "8 sandwiches to 1 loaf",
+        "2 sandwiches to 1 loaf"
+      ],
+      "answer": "4 sandwiches to 1 loaf",
+      "compute": null,
+      "solution": "Divide both numbers by 2: 8 sandwiches to 2 loaves is the same as 4 sandwiches to 1 loaf. The second number must be 1 for a unit ratio of sandwiches to loaves.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 sandwiches to 1 loaf",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 sandwiches : 2 loaves = 4 : 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.964Z"
+        }
+      }
+    },
+    {
       "id": "2cd1be07-8235-4bea-83bd-b7494fff8551",
       "topic_id": "NC17.6.RP.2",
       "difficulty": 2,
@@ -9272,6 +9335,35 @@
       }
     },
     {
+      "id": "e394b84a-0759-4bbc-b44c-838b3237a25d",
+      "topic_id": "NC17.6.RP.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratio from a graph of value pairs",
+      "stem": "Dev's reading is graphed as a straight line through (0, 0), with hours on the horizontal axis and pages on the vertical axis. The point (3, 120) is on the line. How many pages does the graph show for 5 hours?",
+      "choices": [],
+      "answer": "200",
+      "compute": "120/3*5",
+      "solution": "The line shows $120 \\div 3 = 40$ pages in each hour. In 5 hours: $40 \\times 5 = 200$ pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate 120/3 = 40 pages/hour; 5 hours: 200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.897Z"
+        }
+      }
+    },
+    {
       "id": "fff7683a-3941-4e66-a028-5c675577767b",
       "topic_id": "NC17.6.RP.4",
       "difficulty": 1,
@@ -12718,6 +12810,733 @@
       }
     },
     {
+      "id": "c69a3d6d-fa31-4bc7-be27-3f1aed13455f",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Whole number divided by a fraction",
+      "stem": "Ravi has 3 pounds of nuts. He puts $\\frac{1}{4}$ pound of nuts in each bag. How many bags can he fill?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3/(1/4)",
+      "solution": "There are 4 quarters in each pound, so 3 pounds hold $3 \\times 4 = 12$ quarters. He fills 12 bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 ÷ 1/4 = 3 × 4 = 12 bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.561Z"
+        }
+      }
+    },
+    {
+      "id": "5172cd24-f0f5-47c4-b1a4-a62ff2439bf8",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide fractions with common denominators",
+      "stem": "What is $\\frac{6}{7} \\div \\frac{2}{7}$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(6/7)/(2/7)",
+      "solution": "Both fractions are sevenths, so ask how many groups of 2 sevenths are in 6 sevenths: $6 \\div 2 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same denominators: 6 sevenths ÷ 2 sevenths = 6 ÷ 2 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.582Z"
+        }
+      }
+    },
+    {
+      "id": "95419106-bce0-4cfc-a3d5-cdb8ab006190",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction divided by a fraction",
+      "stem": "Find $\\frac{1}{2} \\div \\frac{1}{8}$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "(1/2)/(1/8)",
+      "solution": "One half equals $\\frac{4}{8}$. There are 4 eighths in one half, so the quotient is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 ÷ 1/8 = 4/8 ÷ 1/8 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.601Z"
+        }
+      }
+    },
+    {
+      "id": "301a9e9d-77dc-4a5d-b8ff-7789e5ed513b",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret a quotient with a visual model",
+      "stem": "A fraction strip is cut into 8 equal parts, and 6 of the parts are colored. The colored parts are put into groups of 2 parts each. How many groups are there?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(6/8)/(2/8)",
+      "solution": "The colored part is $\\frac{6}{8}$ and each group is $\\frac{2}{8}$, so the number of groups is $\\frac{6}{8} \\div \\frac{2}{8} = 6 \\div 2 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 parts in groups of 2: 6/8 ÷ 2/8 = 3 groups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.615Z"
+        }
+      }
+    },
+    {
+      "id": "b9fd38fb-5915-4a1f-a4d7-96b1eb7df49d",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Mina knows that $5 \\times \\frac{2}{3} = \\frac{10}{3}$. Using this fact, what is $\\frac{10}{3} \\div \\frac{2}{3}$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(10/3)/(2/3)",
+      "solution": "Division undoes multiplication. Since $5 \\times \\frac{2}{3} = \\frac{10}{3}$, dividing $\\frac{10}{3}$ by $\\frac{2}{3}$ gives back 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Since 5 × 2/3 = 10/3, 10/3 ÷ 2/3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.620Z"
+        }
+      }
+    },
+    {
+      "id": "491057e0-804f-42c2-8af8-1f23348578f0",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "Gus has $\\frac{3}{4}$ of a bag of rice. He pours it equally into 3 jars. What fraction of the whole bag is in each jar?",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "(3/4)/3",
+      "solution": "Share 3 fourths equally among 3 jars: each jar gets 1 fourth. So $\\frac{3}{4} \\div 3 = \\frac{1}{4}$ of the bag.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 ÷ 3 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.654Z"
+        }
+      }
+    },
+    {
+      "id": "4799bdf3-125f-4385-aa7d-e9a47eb280c2",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction divided by a whole number",
+      "stem": "What is $\\frac{3}{8} \\div 3$?",
+      "choices": [
+        "$\\frac{9}{8}$",
+        "$\\frac{1}{24}$",
+        "$\\frac{1}{8}$",
+        "$8$"
+      ],
+      "answer": "$\\frac{1}{8}$",
+      "compute": null,
+      "solution": "3 eighths split into 3 equal groups is 1 eighth in each group: $\\frac{3}{8} \\div 3 = \\frac{1}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/8 ÷ 3 = 3/24 = 1/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.657Z"
+        }
+      }
+    },
+    {
+      "id": "db20177b-62ed-4ad5-aa83-e490378c3876",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Which story matches $\\frac{1}{2} \\div 4$?",
+      "choices": [
+        "A baker makes 4 sandwiches from half a loaf each.",
+        "Half a sandwich is cut into pieces that are 4 inches long.",
+        "Four friends share half of a sandwich equally.",
+        "There are 4 halves of a sandwich on a plate."
+      ],
+      "answer": "Four friends share half of a sandwich equally.",
+      "compute": null,
+      "solution": "$\\frac{1}{2} \\div 4$ means one half is split into 4 equal parts, which is what sharing half a sandwich among four friends does. The other stories do not split one half into 4 equal shares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Four friends share half of a sandwich equally.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 ÷ 4: half a sandwich shared among 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.666Z"
+        }
+      }
+    },
+    {
+      "id": "a2d0e328-3ee6-49f1-9575-b7c74e42d897",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide fractions with common denominators",
+      "stem": "Nina finds $\\frac{6}{10} \\div \\frac{2}{10}$ by asking how many groups of 2 tenths are in 6 tenths. What is the quotient?",
+      "choices": [
+        "$3$",
+        "$4$",
+        "$\\frac{1}{3}$",
+        "$\\frac{12}{100}$"
+      ],
+      "answer": "$3$",
+      "compute": "(6/10)/(2/10)",
+      "solution": "6 tenths contain $6 \\div 2 = 3$ groups of 2 tenths, so the quotient is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 tenths ÷ 2 tenths = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.673Z"
+        }
+      }
+    },
+    {
+      "id": "0c1c06f4-d6be-4430-b9d7-e36c65939e57",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Which division has a quotient of 10?",
+      "choices": [
+        "$10 \\div \\frac{1}{2}$",
+        "$5 \\div 2$",
+        "$\\frac{1}{2} \\div 5$",
+        "$5 \\div \\frac{1}{2}$"
+      ],
+      "answer": "$5 \\div \\frac{1}{2}$",
+      "compute": null,
+      "solution": "$5 \\div \\frac{1}{2}$ asks how many halves are in 5, and there are 2 halves in each whole, so the quotient is 10. The others give 20, $\\frac{5}{2}$ and $\\frac{1}{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 \\div \\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 / 5 = 1/10; 5/2=2.5; 5 / (1/2)=10; 10 / (1/2)=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.679Z"
+        }
+      }
+    },
+    {
+      "id": "83dba5f8-f047-483f-bd59-d63a98ecf20d",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction division word problem",
+      "stem": "Rosa has 6 yards of ribbon. Each bracelet uses $\\frac{1}{3}$ yard. How many bracelets can she make?",
+      "choices": [
+        "$2$",
+        "$9$",
+        "$\\frac{1}{18}$",
+        "$18$"
+      ],
+      "answer": "$18$",
+      "compute": "6/(1/3)",
+      "solution": "Each yard makes 3 bracelets, so 6 yards make $6 \\div \\frac{1}{3} = 6 \\times 3 = 18$ bracelets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 / (1/3) = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.720Z"
+        }
+      }
+    },
+    {
+      "id": "c9320d8a-8868-4975-89d0-b7e113842e42",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction divided by a fraction",
+      "stem": "What is $\\frac{1}{4} \\div \\frac{1}{2}$?",
+      "choices": [
+        "$\\frac{1}{2}$",
+        "$2$",
+        "$\\frac{1}{8}$",
+        "$\\frac{3}{4}$"
+      ],
+      "answer": "$\\frac{1}{2}$",
+      "compute": null,
+      "solution": "$\\frac{1}{4}$ is only half of $\\frac{1}{2}$, so $\\frac{1}{4} \\div \\frac{1}{2} = \\frac{1}{4} \\times 2 = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/4)÷(1/2) = 1/4 × 2 = 1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.778Z"
+        }
+      }
+    },
+    {
+      "id": "12c7e8b9-3ae1-4a05-88c5-52d456a209bc",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide fractions with common denominators",
+      "stem": "What is $\\frac{8}{9} \\div \\frac{4}{9}$?",
+      "choices": [
+        "$2$",
+        "$\\frac{1}{2}$",
+        "$\\frac{32}{81}$",
+        "$4$"
+      ],
+      "answer": "$2$",
+      "compute": "(8/9)/(4/9)",
+      "solution": "Both are ninths: 8 ninths divided into groups of 4 ninths gives $8 \\div 4 = 2$ groups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8/9 / 4/9 = 8/4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.826Z"
+        }
+      }
+    },
+    {
+      "id": "3faabe60-9925-4d16-afd0-5720bb4eb258",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Whole number divided by a fraction",
+      "stem": "What is $4 \\div \\frac{1}{6}$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4/(1/6)",
+      "solution": "There are 6 sixths in each whole, so in 4 wholes there are $4 \\times 6 = 24$ sixths.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 / (1/6) = 4 x 6 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.859Z"
+        }
+      }
+    },
+    {
+      "id": "d19914c8-e572-4eb8-ae3a-d171186f5fb7",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret a quotient with a visual model",
+      "stem": "A number line from 0 to 2 has a mark every $\\frac{1}{4}$ unit. How many steps of $\\frac{1}{4}$ unit are needed to get from 0 to 2?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2/(1/4)",
+      "solution": "Each whole unit has 4 steps of $\\frac{1}{4}$. For 2 units: $2 \\div \\frac{1}{4} = 2 \\times 4 = 8$ steps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 / (1/4) = 8 steps.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.865Z"
+        }
+      }
+    },
+    {
+      "id": "9f70c56b-e010-4362-8701-2434949afdac",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a quotient with a visual model",
+      "stem": "Zoe has $\\frac{3}{4}$ of a pan of brownies. Each serving is $\\frac{1}{8}$ of the pan. Which division finds the number of servings?",
+      "choices": [
+        "$\\frac{1}{8} \\div \\frac{3}{4}$",
+        "$\\frac{3}{4} \\div \\frac{1}{8}$",
+        "$\\frac{3}{4} \\times \\frac{1}{8}$",
+        "$\\frac{3}{4} \\div 8$"
+      ],
+      "answer": "$\\frac{3}{4} \\div \\frac{1}{8}$",
+      "compute": null,
+      "solution": "The number of servings is how many $\\frac{1}{8}$s fit into $\\frac{3}{4}$, which is $\\frac{3}{4} \\div \\frac{1}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4} \\div \\frac{1}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Servings = how many 1/8 in 3/4 = 3/4 / 1/8 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.866Z"
+        }
+      }
+    },
+    {
+      "id": "f26b69fe-47c9-49bd-bcf0-704c918b5ac8",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A pitcher holds $\\frac{5}{6}$ gallon of water. Each cup holds $\\frac{1}{6}$ gallon. How many cups can be filled from the pitcher?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(5/6)/(1/6)",
+      "solution": "Count how many sixths are in 5 sixths: $\\frac{5}{6} \\div \\frac{1}{6} = 5$ cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/6) / (1/6) = 5 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.871Z"
+        }
+      }
+    },
+    {
+      "id": "a5ff717f-6562-427e-9639-24352746cff7",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction divided by a whole number",
+      "stem": "What is $\\frac{4}{5} \\div 2$?",
+      "choices": [],
+      "answer": "2/5",
+      "compute": "(4/5)/2",
+      "solution": "Splitting 4 fifths into 2 equal groups gives 2 fifths in each group. The answer is $\\frac{2}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4/5) ÷ 2 = 4/10 = 2/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.910Z"
+        }
+      }
+    },
+    {
+      "id": "48a27d18-db92-4921-a7b0-550cd5e24f4a",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction division word problem",
+      "stem": "A walking path is $\\frac{3}{4}$ mile long. It is split into 3 parts of equal length. How long is each part, in miles?",
+      "choices": [
+        "$\\frac{9}{4}$",
+        "$3$",
+        "$\\frac{1}{12}$",
+        "$\\frac{1}{4}$"
+      ],
+      "answer": "$\\frac{1}{4}$",
+      "compute": null,
+      "solution": "$\\frac{3}{4} \\div 3$: 3 fourths split into 3 equal parts gives 1 fourth each. Each part is $\\frac{1}{4}$ mile.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/4) ÷ 3 = 1/4 mile.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.912Z"
+        }
+      }
+    },
+    {
+      "id": "bbcfc4c2-30a4-4d25-96db-cf761b21b26d",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a quotient with a visual model",
+      "stem": "Each whole strip is cut into 3 equal pieces. Max has 4 whole strips and counts every piece. Which equation shows what Max counted?",
+      "choices": [
+        "$4 \\div 3 = \\frac{4}{3}$",
+        "$4 \\times \\frac{1}{3} = \\frac{4}{3}$",
+        "$4 \\div \\frac{1}{3} = 12$",
+        "$\\frac{1}{3} \\div 4 = \\frac{1}{12}$"
+      ],
+      "answer": "$4 \\div \\frac{1}{3} = 12$",
+      "compute": null,
+      "solution": "Counting thirds in 4 wholes is $4 \\div \\frac{1}{3} = 4 \\times 3 = 12$ pieces.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\div \\frac{1}{3} = 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each strip 3 thirds, 4 strips → 12 pieces: 4 ÷ 1/3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.933Z"
+        }
+      }
+    },
+    {
+      "id": "2b01fb02-6422-4baf-a197-0401c9db21bc",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Fraction divided by a fraction",
+      "stem": "Which quotient is less than 1?",
+      "choices": [
+        "$\\frac{2}{3} \\div \\frac{1}{6}$",
+        "$\\frac{1}{2} \\div \\frac{3}{4}$",
+        "$\\frac{3}{4} \\div \\frac{1}{2}$",
+        "$\\frac{5}{6} \\div \\frac{5}{6}$"
+      ],
+      "answer": "$\\frac{1}{2} \\div \\frac{3}{4}$",
+      "compute": null,
+      "solution": "Dividing a smaller amount by a larger one gives less than 1. Here $\\frac{1}{2} < \\frac{3}{4}$, so $\\frac{1}{2} \\div \\frac{3}{4} = \\frac{2}{3}$. The others are 4, $\\frac{3}{2}$ and 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2} \\div \\frac{3}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 / 3/4 = 2/3 < 1; 5/6/5/6=1; 2/3/1/6=4; 3/4/1/2=3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.987Z"
+        }
+      }
+    },
+    {
+      "id": "dd39d50a-0b53-458e-b3be-edfbb58115ad",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Fraction divided by a whole number",
+      "stem": "What is $\\frac{2}{3} \\div 4$?",
+      "choices": [],
+      "answer": "1/6",
+      "compute": "(2/3)/4",
+      "solution": "Dividing by 4 is the same as multiplying by $\\frac{1}{4}$: $\\frac{2}{3} \\times \\frac{1}{4} = \\frac{2}{12} = \\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 x 1/4 = 2/12 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.007Z"
+        }
+      }
+    },
+    {
+      "id": "e0d5b632-38cf-4dcf-bab5-c164f29fb486",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Which statement about $3 \\div \\frac{1}{4}$ is true?",
+      "choices": [
+        "The answer is $\\frac{3}{4}$, because 3 is split into 4 parts.",
+        "The answer is 12, because each whole holds 4 fourths.",
+        "The answer is $\\frac{1}{12}$, because 3 is split into fourths twice.",
+        "The answer is 7, because 3 and 4 are added together."
+      ],
+      "answer": "The answer is 12, because each whole holds 4 fourths.",
+      "compute": null,
+      "solution": "There are 4 fourths in each whole, so 3 wholes hold $3 \\times 4 = 12$ fourths. The quotient is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The answer is 12, because each whole holds 4 fourths.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 / 1/4 = 3 x 4 = 12; each whole holds 4 fourths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.017Z"
+        }
+      }
+    },
+    {
       "id": "49983606-a165-4116-9e22-d4cf561ba0e7",
       "topic_id": "NC17.6.NS.1",
       "difficulty": 2,
@@ -13038,6 +13857,733 @@
       }
     },
     {
+      "id": "65efd076-85b2-48c9-85ea-3ba8661ec99d",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with a mixed number",
+      "stem": "Find $3\\frac{1}{2} \\div 2$. Write the answer as a mixed number.",
+      "choices": [],
+      "answer": "1 3/4",
+      "compute": "(7/2)/2",
+      "solution": "$3\\frac{1}{2} = \\frac{7}{2}$, and $\\frac{7}{2} \\div 2 = \\frac{7}{4} = 1\\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 1/2 ÷ 2 = 7/2 × 1/2 = 7/4 = 1 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.653Z"
+        }
+      }
+    },
+    {
+      "id": "8cf82679-20d7-487f-9a71-c17dc2dbae9e",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction divided by a fraction",
+      "stem": "What is $\\frac{7}{9} \\div \\frac{7}{3}$?",
+      "choices": [],
+      "answer": "1/3",
+      "compute": "(7/9)/(7/3)",
+      "solution": "$\\frac{7}{9} \\times \\frac{3}{7} = \\frac{21}{63} = \\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/9 × 3/7 = 3/9 = 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.669Z"
+        }
+      }
+    },
+    {
+      "id": "97bff8a0-4b71-45a6-9e7c-4b34134d9cf9",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A cyclist rides $\\frac{3}{4}$ mile in $\\frac{1}{8}$ hour at a steady speed. How many miles does the cyclist ride in 1 hour?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(3/4)/(1/8)",
+      "solution": "In 1 hour there are 8 periods of $\\frac{1}{8}$ hour, so the distance is $8 \\times \\frac{3}{4} = 6$ miles. This is $\\frac{3}{4} \\div \\frac{1}{8} = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 ÷ 1/8 = 6/8 ÷ 1/8 = 6 miles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.673Z"
+        }
+      }
+    },
+    {
+      "id": "075760a2-437a-48b2-96ae-fb56df11cbeb",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide fractions with common denominators",
+      "stem": "Which shows $\\frac{2}{3} \\div \\frac{3}{4}$ rewritten with common denominators?",
+      "choices": [
+        "$\\frac{2}{12} \\div \\frac{3}{12}$",
+        "$\\frac{8}{12} \\div \\frac{3}{12}$",
+        "$\\frac{3}{12} \\div \\frac{4}{12}$",
+        "$\\frac{8}{12} \\div \\frac{9}{12}$"
+      ],
+      "answer": "$\\frac{8}{12} \\div \\frac{9}{12}$",
+      "compute": null,
+      "solution": "The least common denominator of 3 and 4 is 12. $\\frac{2}{3} = \\frac{8}{12}$ and $\\frac{3}{4} = \\frac{9}{12}$, so the problem becomes $\\frac{8}{12} \\div \\frac{9}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{8}{12} \\div \\frac{9}{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3=8/12, 3/4=9/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.724Z"
+        }
+      }
+    },
+    {
+      "id": "27c93cd4-c1ac-45dc-9457-8d9ab2955014",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A farmer has $\\frac{7}{8}$ acre of land. He splits it into garden plots of $\\frac{1}{16}$ acre each. How many plots does he make?",
+      "choices": [],
+      "answer": "14",
+      "compute": "(7/8)/(1/16)",
+      "solution": "$\\frac{7}{8} \\div \\frac{1}{16} = \\frac{7}{8} \\times 16 = 14$ plots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/8 / 1/16 = 14/16 / 1/16 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.739Z"
+        }
+      }
+    },
+    {
+      "id": "9ab31c0d-f577-4756-a21a-ed011afe503c",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Whole number divided by a fraction",
+      "stem": "A tank holds 9 liters of water. A bottle holds $\\frac{3}{4}$ liter. How many bottles can be filled from the tank?",
+      "choices": [],
+      "answer": "12",
+      "compute": "9/(3/4)",
+      "solution": "$9 \\div \\frac{3}{4} = 9 \\times \\frac{4}{3} = 12$ bottles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 ÷ 3/4 = 9×4/3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.748Z"
+        }
+      }
+    },
+    {
+      "id": "f03b1202-b63c-4da5-83e5-b7a4904defb8",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide fractions with common denominators",
+      "stem": "Mia rewrites $\\frac{2}{3} \\div \\frac{5}{6}$ with common denominators as $\\frac{4}{6} \\div \\frac{5}{6}$. What is the quotient?",
+      "choices": [],
+      "answer": "4/5",
+      "compute": "(4/6)/(5/6)",
+      "solution": "With the same denominator, divide the numerators: $4 \\div 5 = \\frac{4}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4/6 / 5/6 = 4/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.799Z"
+        }
+      }
+    },
+    {
+      "id": "92a5f486-83f4-40de-a497-e42f36aa8898",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Without finding the quotients, which has the greatest value?",
+      "choices": [
+        "$\\frac{3}{4} \\div \\frac{1}{2}$",
+        "$\\frac{3}{4} \\div \\frac{3}{4}$",
+        "$\\frac{3}{4} \\div \\frac{1}{8}$",
+        "$\\frac{3}{4} \\div 3$"
+      ],
+      "answer": "$\\frac{3}{4} \\div \\frac{1}{8}$",
+      "compute": null,
+      "solution": "The dividend $\\frac{3}{4}$ is the same each time, so the smallest divisor gives the greatest quotient. The smallest divisor is $\\frac{1}{8}$ (quotient 6).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4} \\div \\frac{1}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same dividend 3/4; smallest divisor gives largest quotient: 1/8 (quotient 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.800Z"
+        }
+      }
+    },
+    {
+      "id": "6c79e224-0160-4304-b8a8-1139a05c8ee8",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction division word problem",
+      "stem": "Ben has $\\frac{2}{3}$ liter of paint. One coat on a shelf takes $\\frac{1}{6}$ liter. How many shelves can Ben cover with one coat each?",
+      "choices": [
+        "$\\frac{1}{4}$",
+        "$4$",
+        "$\\frac{1}{9}$",
+        "$\\frac{5}{6}$"
+      ],
+      "answer": "$4$",
+      "compute": "(2/3)/(1/6)",
+      "solution": "$\\frac{2}{3} \\div \\frac{1}{6} = \\frac{4}{6} \\div \\frac{1}{6} = 4$ shelves.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2/3 / 1/6 = 4/6 / 1/6 = 4 shelves.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.808Z"
+        }
+      }
+    },
+    {
+      "id": "10414f16-a281-4bf6-966c-eee54627c103",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction divided by a whole number",
+      "stem": "What is $\\frac{5}{6} \\div 10$?",
+      "choices": [
+        "$\\frac{1}{12}$",
+        "$\\frac{25}{3}$",
+        "$12$",
+        "$\\frac{1}{60}$"
+      ],
+      "answer": "$\\frac{1}{12}$",
+      "compute": null,
+      "solution": "$\\frac{5}{6} \\times \\frac{1}{10} = \\frac{5}{60} = \\frac{1}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 x 1/10 = 5/60 = 1/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.811Z"
+        }
+      }
+    },
+    {
+      "id": "f7d788b7-f392-489c-b9d0-8c3164deb740",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction divided by a fraction",
+      "stem": "Find $\\frac{5}{8} \\div \\frac{3}{4}$.",
+      "choices": [],
+      "answer": "5/6",
+      "compute": "(5/8)/(3/4)",
+      "solution": "$\\frac{5}{8} \\times \\frac{4}{3} = \\frac{20}{24} = \\frac{5}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/8 x 4/3 = 20/24 = 5/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.818Z"
+        }
+      }
+    },
+    {
+      "id": "a983c9d7-8956-4311-8a72-479f7193a568",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with a mixed number",
+      "stem": "Find $2\\frac{1}{3} \\div \\frac{7}{9}$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "(7/3)/(7/9)",
+      "solution": "Write $2\\frac{1}{3}$ as $\\frac{7}{3}$. Then $\\frac{7}{3} \\times \\frac{9}{7} = \\frac{63}{21} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/3 / 7/9 = 7/3 x 9/7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.844Z"
+        }
+      }
+    },
+    {
+      "id": "08d03e60-1518-4f97-9450-680cd6fe6a88",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "A number multiplied by $\\frac{3}{5}$ gives $\\frac{9}{10}$. What is the number?",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "(9/10)/(3/5)",
+      "solution": "Division undoes multiplication, so the number is $\\frac{9}{10} \\div \\frac{3}{5} = \\frac{9}{10} \\times \\frac{5}{3} = \\frac{45}{30} = \\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n x 3/5 = 9/10, n = 9/10 / 3/5 = 9/10 x 5/3 = 45/30 = 3/2. Check 3/2 x 3/5 = 9/10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.850Z"
+        }
+      }
+    },
+    {
+      "id": "e200a451-3600-497d-9b20-5ade10e3cc50",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Whole number divided by a fraction",
+      "stem": "What is $6 \\div \\frac{3}{4}$?",
+      "choices": [
+        "$4\\frac{1}{2}$",
+        "$8$",
+        "$\\frac{1}{8}$",
+        "$2$"
+      ],
+      "answer": "$8$",
+      "compute": "6/(3/4)",
+      "solution": "$6 \\times \\frac{4}{3} = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 / (3/4) = 6 x 4/3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.882Z"
+        }
+      }
+    },
+    {
+      "id": "c59400ac-3d8d-4612-8088-199c2bd3fb67",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction division word problem",
+      "stem": "Four friends share $\\frac{3}{5}$ of a pizza equally. What fraction of the whole pizza does each friend get?",
+      "choices": [
+        "$\\frac{12}{5}$",
+        "$\\frac{3}{20}$",
+        "$\\frac{20}{3}$",
+        "$\\frac{3}{9}$"
+      ],
+      "answer": "$\\frac{3}{20}$",
+      "compute": null,
+      "solution": "$\\frac{3}{5} \\div 4 = \\frac{3}{5} \\times \\frac{1}{4} = \\frac{3}{20}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{20}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/5) ÷ 4 = 3/5 × 1/4 = 3/20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.909Z"
+        }
+      }
+    },
+    {
+      "id": "ced462dc-2b99-449d-862d-e10c8b4ee058",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide with a mixed number",
+      "stem": "A shelf is $5\\frac{1}{4}$ feet long. Each book takes $\\frac{3}{4}$ foot of space. How many books fit on the shelf?",
+      "choices": [
+        "$3\\frac{15}{16}$",
+        "$\\frac{1}{7}$",
+        "$6$",
+        "$7$"
+      ],
+      "answer": "$7$",
+      "compute": "(21/4)/(3/4)",
+      "solution": "$5\\frac{1}{4} = \\frac{21}{4}$, and $\\frac{21}{4} \\div \\frac{3}{4} = 7$ books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 1/4 = 21/4; 21/4 ÷ 3/4 = 21/3 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.943Z"
+        }
+      }
+    },
+    {
+      "id": "469b5488-3f4e-4e53-a8c8-bd760c6c17eb",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide with a mixed number",
+      "stem": "Rewrite both mixed numbers as fractions and divide. Which is the quotient of $4\\frac{1}{2}$ divided by $1\\frac{1}{2}$?",
+      "choices": [
+        "$4$",
+        "$\\frac{1}{3}$",
+        "$6\\frac{3}{4}$",
+        "$3$"
+      ],
+      "answer": "$3$",
+      "compute": "(9/2)/(3/2)",
+      "solution": "$\\frac{9}{2} \\div \\frac{3}{2} = \\frac{9}{2} \\times \\frac{2}{3} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/2 ÷ 3/2 = 9/3 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.944Z"
+        }
+      }
+    },
+    {
+      "id": "e85c06e9-61e5-4b36-ae99-5c8ab3c3db40",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient with a visual model",
+      "stem": "A strip is cut into twelfths. Zoe colors 9 twelfths and puts the colored part into groups of 3 twelfths each. Which division matches?",
+      "choices": [
+        "$\\frac{3}{12} \\div \\frac{9}{12}$",
+        "$\\frac{9}{12} \\times \\frac{3}{12}$",
+        "$\\frac{9}{12} \\div \\frac{3}{12}$",
+        "$\\frac{9}{12} \\div 3$"
+      ],
+      "answer": "$\\frac{9}{12} \\div \\frac{3}{12}$",
+      "compute": null,
+      "solution": "The colored part is $\\frac{9}{12}$ and each group is $\\frac{3}{12}$, so the number of groups is $\\frac{9}{12} \\div \\frac{3}{12} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{9}{12} \\div \\frac{3}{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "How many groups of 3/12 in 9/12: 9/12 ÷ 3/12 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.957Z"
+        }
+      }
+    },
+    {
+      "id": "a79c420a-5dc9-4ca3-8ccc-cac1f3d5ed5b",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction divided by a whole number",
+      "stem": "A recipe makes 4 equal servings and uses $\\frac{2}{3}$ cup of oil in all. How much oil is in each serving, in cups?",
+      "choices": [],
+      "answer": "1/6",
+      "compute": "(2/3)/4",
+      "solution": "$\\frac{2}{3} \\div 4 = \\frac{2}{3} \\times \\frac{1}{4} = \\frac{2}{12} = \\frac{1}{6}$ cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/3) ÷ 4 = 2/12 = 1/6 cup.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.963Z"
+        }
+      }
+    },
+    {
+      "id": "8ae49521-33aa-475a-a0c6-d6073b5d8aa5",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fraction divided by a fraction",
+      "stem": "What is $\\frac{3}{10} \\div \\frac{9}{5}$?",
+      "choices": [
+        "$\\frac{27}{50}$",
+        "$3$",
+        "$\\frac{1}{6}$",
+        "$6$"
+      ],
+      "answer": "$\\frac{1}{6}$",
+      "compute": null,
+      "solution": "$\\frac{3}{10} \\times \\frac{5}{9} = \\frac{15}{90} = \\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/10 x 5/9 = 15/90 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.986Z"
+        }
+      }
+    },
+    {
+      "id": "eac86627-aa2f-487e-ae75-d43f53a3d709",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Which multiplication fact checks that $\\frac{3}{4} \\div \\frac{1}{2} = 1\\frac{1}{2}$?",
+      "choices": [
+        "$1\\frac{1}{2} \\times \\frac{1}{2} = \\frac{3}{4}$",
+        "$\\frac{3}{4} \\times \\frac{1}{2} = 1\\frac{1}{2}$",
+        "$1\\frac{1}{2} \\times \\frac{3}{4} = \\frac{1}{2}$",
+        "$1\\frac{1}{2} \\times 2 = \\frac{3}{4}$"
+      ],
+      "answer": "$1\\frac{1}{2} \\times \\frac{1}{2} = \\frac{3}{4}$",
+      "compute": null,
+      "solution": "Quotient times divisor must equal the dividend: $1\\frac{1}{2} \\times \\frac{1}{2} = \\frac{3}{4}$. The other equations are not true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{1}{2} \\times \\frac{1}{2} = \\frac{3}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 / 1/2 = 1 1/2 is checked by 1 1/2 x 1/2 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.990Z"
+        }
+      }
+    },
+    {
+      "id": "0535b1cc-369c-46ad-a81a-858e390d950f",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Which story is modeled by $\\frac{3}{4} \\div \\frac{1}{8}$?",
+      "choices": [
+        "How many $\\frac{1}{8}$-cup scoops fit in $\\frac{3}{4}$ cup of flour?",
+        "What is $\\frac{1}{8}$ of $\\frac{3}{4}$ cup of flour?",
+        "What is $\\frac{3}{4}$ cup of flour shared equally by 8 people?",
+        "How much flour is in $\\frac{1}{8}$ cup plus $\\frac{3}{4}$ cup?"
+      ],
+      "answer": "How many $\\frac{1}{8}$-cup scoops fit in $\\frac{3}{4}$ cup of flour?",
+      "compute": null,
+      "solution": "$\\frac{3}{4} \\div \\frac{1}{8}$ asks how many pieces of size $\\frac{1}{8}$ fit in $\\frac{3}{4}$, which is the scoop question.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many $\\frac{1}{8}$-cup scoops fit in $\\frac{3}{4}$ cup of flour?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Division by 1/8 asks how many 1/8s fit in 3/4 (6 scoops).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.015Z"
+        }
+      }
+    },
+    {
+      "id": "adb9bb7e-799d-4dbc-9bf9-6e4f515225fb",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Fraction divided by a whole number",
+      "stem": "Find $\\frac{9}{10} \\div 6$.",
+      "choices": [],
+      "answer": "3/20",
+      "compute": "(9/10)/6",
+      "solution": "$\\frac{9}{10} \\times \\frac{1}{6} = \\frac{9}{60} = \\frac{3}{20}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/10 x 1/6 = 9/60 = 3/20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.016Z"
+        }
+      }
+    },
+    {
       "id": "b606c083-7a59-4645-abb6-064e748347c3",
       "topic_id": "NC17.6.NS.1",
       "difficulty": 3,
@@ -13344,6 +14890,699 @@
           "work": "9/2 / 3/4 = 9/2 x 4/3 = 6 bags; 6 - 3 = 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:53.794Z"
+        }
+      }
+    },
+    {
+      "id": "d109da06-00a6-45f6-ae13-cf564a10c2a8",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Which is the best estimate of $7\\frac{8}{9} \\div \\frac{1}{2}$?",
+      "choices": [
+        "$16$",
+        "$4$",
+        "$8$",
+        "$12$"
+      ],
+      "answer": "$16$",
+      "compute": null,
+      "solution": "$7\\frac{8}{9}$ is close to 8, and $8 \\div \\frac{1}{2} = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 8/9 ≈ 8; 8 ÷ 1/2 = 16 (exact ≈ 15.8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.622Z"
+        }
+      }
+    },
+    {
+      "id": "0ed255cf-3a3e-4a1e-a04d-843a4c49090a",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A 6 meter ribbon is cut into pieces that are each $\\frac{3}{4}$ meter long. Then every piece is cut in half. How many small pieces are there?",
+      "choices": [],
+      "answer": "16",
+      "compute": "6/(3/4)*2",
+      "solution": "$6 \\div \\frac{3}{4} = 8$ pieces. Cutting each in half doubles the count: $8 \\times 2 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 ÷ 3/4 = 8 pieces; each cut in half → 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.660Z"
+        }
+      }
+    },
+    {
+      "id": "700817f1-db1d-4ec8-8885-869b2b04bbea",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fraction division word problem",
+      "stem": "A water tank is $\\frac{3}{4}$ full. A pump empties $\\frac{1}{12}$ of the tank each hour. How many hours will the pump need to empty the water in the tank?",
+      "choices": [
+        "$\\frac{1}{16}$",
+        "$16$",
+        "$\\frac{2}{3}$",
+        "$9$"
+      ],
+      "answer": "$9$",
+      "compute": "(3/4)/(1/12)",
+      "solution": "$\\frac{3}{4} \\div \\frac{1}{12} = \\frac{3}{4} \\times 12 = 9$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 ÷ 1/12 = 9/12 ÷ 1/12 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.668Z"
+        }
+      }
+    },
+    {
+      "id": "6e54d860-1283-4df3-b735-897065cdc4f9",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide with a mixed number",
+      "stem": "Find $5\\frac{5}{6} \\div 1\\frac{3}{4}$. Write the answer as a mixed number.",
+      "choices": [],
+      "answer": "3 1/3",
+      "compute": "(35/6)/(7/4)",
+      "solution": "$\\frac{35}{6} \\times \\frac{4}{7} = \\frac{140}{42} = \\frac{10}{3} = 3\\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 1/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35/6 / 7/4 = 35/6 x 4/7 = 140/42 = 10/3 = 3 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.706Z"
+        }
+      }
+    },
+    {
+      "id": "3fb1aa17-41a2-443c-8663-5ddad14c80ae",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide with a mixed number",
+      "stem": "Find $6\\frac{2}{3} \\div 5$. Write the answer as a mixed number.",
+      "choices": [],
+      "answer": "1 1/3",
+      "compute": "(20/3)/5",
+      "solution": "$6\\frac{2}{3} = \\frac{20}{3}$, and $\\frac{20}{3} \\div 5 = \\frac{20}{15} = \\frac{4}{3} = 1\\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 1/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20/3 / 5 = 20/15 = 4/3 = 1 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.725Z"
+        }
+      }
+    },
+    {
+      "id": "a7514e4b-c7a2-4d68-9e09-af4fb5a940e5",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide with a mixed number",
+      "stem": "Sam divides $3\\frac{1}{3}$ by $2\\frac{1}{2}$ after rewriting each as a fraction. What quotient should he get?",
+      "choices": [
+        "$8\\frac{1}{3}$",
+        "$\\frac{3}{4}$",
+        "$1\\frac{1}{2}$",
+        "$1\\frac{1}{3}$"
+      ],
+      "answer": "$1\\frac{1}{3}$",
+      "compute": null,
+      "solution": "$\\frac{10}{3} \\div \\frac{5}{2} = \\frac{10}{3} \\times \\frac{2}{5} = \\frac{20}{15} = 1\\frac{1}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/3 ÷ 5/2 = 10/3 × 2/5 = 20/15 = 4/3 = 1 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.741Z"
+        }
+      }
+    },
+    {
+      "id": "b16a39b5-4158-4b7a-8e51-4c41d90743f3",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide fractions with common denominators",
+      "stem": "Gus finds $\\frac{7}{8} \\div \\frac{3}{4}$ by writing both fractions with denominator 8: $\\frac{7}{8} \\div \\frac{6}{8}$. What is the quotient?",
+      "choices": [
+        "$\\frac{6}{7}$",
+        "$\\frac{21}{32}$",
+        "$\\frac{7}{6}$",
+        "$\\frac{7}{3}$"
+      ],
+      "answer": "$\\frac{7}{6}$",
+      "compute": null,
+      "solution": "$\\frac{7}{8} \\div \\frac{6}{8} = 7 \\div 6 = \\frac{7}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{7}{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/8 ÷ 6/8 = 7/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.765Z"
+        }
+      }
+    },
+    {
+      "id": "9518e658-82a5-461a-9fc1-c3770cb9c5c1",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Whole number divided by a fraction",
+      "stem": "A store has 9 kilograms of sugar. It packs the sugar into bags of $\\frac{3}{8}$ kilogram each. How many bags does it fill?",
+      "choices": [
+        "$3\\frac{3}{8}$",
+        "$24$",
+        "$\\frac{1}{24}$",
+        "$3$"
+      ],
+      "answer": "$24$",
+      "compute": "9/(3/8)",
+      "solution": "$9 \\div \\frac{3}{8} = 9 \\times \\frac{8}{3} = 24$ bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 ÷ 3/8 = 9×8/3 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.790Z"
+        }
+      }
+    },
+    {
+      "id": "547d11d7-a799-489e-97ec-681c85494f16",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a quotient with a visual model",
+      "stem": "Maya uses a strip cut into twelfths. For $\\frac{3}{4} \\div \\frac{1}{6}$ she shows $\\frac{3}{4}$ as 9 twelfths and $\\frac{1}{6}$ as 2 twelfths. Which number sentence about twelfths gives the quotient?",
+      "choices": [
+        "$9 \\div 2 = 4\\frac{1}{2}$",
+        "$9 \\times 2 = 18$",
+        "$9 \\div 12 = \\frac{3}{4}$",
+        "$12 \\div 2 = 6$"
+      ],
+      "answer": "$9 \\div 2 = 4\\frac{1}{2}$",
+      "compute": null,
+      "solution": "Both are measured in twelfths, so divide the counts: $9 \\div 2 = 4\\frac{1}{2}$. Indeed $\\frac{3}{4} \\div \\frac{1}{6} = \\frac{9}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 \\div 2 = 4\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 twelfths / 2 twelfths = 9/2 = 4 1/2; check (3/4)(6)=4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.801Z"
+        }
+      }
+    },
+    {
+      "id": "37b6da6c-6ce6-436a-a262-212125c3029d",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A pump fills $\\frac{3}{10}$ of a pool in $\\frac{3}{4}$ hour at a steady rate. What fraction of the pool does it fill in 1 hour?",
+      "choices": [],
+      "answer": "2/5",
+      "compute": "(3/10)/(3/4)",
+      "solution": "The amount per hour is $\\frac{3}{10} \\div \\frac{3}{4} = \\frac{3}{10} \\times \\frac{4}{3} = \\frac{12}{30} = \\frac{2}{5}$ of the pool.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (3/10) / (3/4) = 3/10 x 4/3 = 4/10 = 2/5 of the pool per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.845Z"
+        }
+      }
+    },
+    {
+      "id": "48d6a1c9-7d09-46ef-8455-e03eb31ab54e",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide with a mixed number",
+      "stem": "Jon walks $2\\frac{1}{2}$ miles in $\\frac{3}{4}$ hour at a steady pace. How many miles per hour is that?",
+      "choices": [
+        "$3\\frac{1}{3}$",
+        "$1\\frac{7}{8}$",
+        "$\\frac{3}{10}$",
+        "$3\\frac{1}{4}$"
+      ],
+      "answer": "$3\\frac{1}{3}$",
+      "compute": null,
+      "solution": "$\\frac{5}{2} \\div \\frac{3}{4} = \\frac{5}{2} \\times \\frac{4}{3} = \\frac{10}{3} = 3\\frac{1}{3}$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3\\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/2) / (3/4) = 5/2 x 4/3 = 20/6 = 10/3 = 3 1/3 mph.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.867Z"
+        }
+      }
+    },
+    {
+      "id": "22edda2e-92f1-49b9-b00d-f9724fceb39a",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction divided by a fraction",
+      "stem": "What number makes $\\frac{5}{6} \\div ? = \\frac{5}{18}$ true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(5/6)/(5/18)",
+      "solution": "The missing divisor is the dividend divided by the quotient: $\\frac{5}{6} \\div \\frac{5}{18} = \\frac{5}{6} \\times \\frac{18}{5} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = (5/6) ÷ (5/18) = 5/6 × 18/5 = 3. Check 5/6 ÷ 3 = 5/18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.909Z"
+        }
+      }
+    },
+    {
+      "id": "356d12ea-8c82-49f5-98c7-bd8228994d7c",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fraction divided by a fraction",
+      "stem": "Which value of $n$ makes $\\frac{3}{4} \\div n = 6$ true?",
+      "choices": [
+        "$8$",
+        "$\\frac{9}{2}$",
+        "$\\frac{1}{8}$",
+        "$\\frac{2}{9}$"
+      ],
+      "answer": "$\\frac{1}{8}$",
+      "compute": null,
+      "solution": "The divisor is the dividend divided by the quotient: $n = \\frac{3}{4} \\div 6 = \\frac{3}{24} = \\frac{1}{8}$. Check: $\\frac{3}{4} \\div \\frac{1}{8} = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n = (3/4) ÷ 6 = 3/24 = 1/8. Check 3/4 ÷ 1/8 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.954Z"
+        }
+      }
+    },
+    {
+      "id": "34a7cbf1-32c0-428a-8507-71061452d1b3",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Fraction divided by a fraction",
+      "stem": "Which division has a quotient of $2\\frac{1}{4}$?",
+      "choices": [
+        "$\\frac{3}{4} \\div 3$",
+        "$\\frac{3}{4} \\div \\frac{1}{3}$",
+        "$\\frac{3}{4} \\times \\frac{1}{3}$",
+        "$\\frac{1}{3} \\div \\frac{3}{4}$"
+      ],
+      "answer": "$\\frac{3}{4} \\div \\frac{1}{3}$",
+      "compute": null,
+      "solution": "$\\frac{3}{4} \\div \\frac{1}{3} = \\frac{3}{4} \\times 3 = \\frac{9}{4} = 2\\frac{1}{4}$. The others give $\\frac{1}{4}$, $\\frac{1}{4}$ and $\\frac{4}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4} \\div \\frac{1}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/4 ÷ 1/3 = 9/4 = 2 1/4. Others: 4/9, 1/4, 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.956Z"
+        }
+      }
+    },
+    {
+      "id": "69d48854-f185-4186-9cd4-e4979c5f6f00",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide with a mixed number",
+      "stem": "A pitcher holds $3\\frac{1}{3}$ liters. A cup holds $\\frac{5}{6}$ liter. How many cups does it take to fill the pitcher?",
+      "choices": [
+        "$2\\frac{7}{9}$",
+        "$4$",
+        "$\\frac{1}{4}$",
+        "$4\\frac{1}{6}$"
+      ],
+      "answer": "$4$",
+      "compute": "(10/3)/(5/6)",
+      "solution": "$\\frac{10}{3} \\div \\frac{5}{6} = \\frac{10}{3} \\times \\frac{6}{5} = 4$ cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/3 / 5/6 = 10/3 x 6/5 = 60/15 = 4 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.978Z"
+        }
+      }
+    },
+    {
+      "id": "c5571d83-8371-4b42-9526-07d0b594b24f",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "Mia has 4 cups of flour and uses $\\frac{1}{2}$ cup for a sauce. Each loaf of bread needs $\\frac{7}{8}$ cup. How many loaves can she bake with the flour that is left?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(4-1/2)/(7/8)",
+      "solution": "Flour left: $4 - \\frac{1}{2} = 3\\frac{1}{2} = \\frac{7}{2}$ cups. Then $\\frac{7}{2} \\div \\frac{7}{8} = \\frac{7}{2} \\times \\frac{8}{7} = 4$ loaves.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - 1/2 = 7/2. 7/2 / 7/8 = 7/2 x 8/7 = 4 loaves.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.988Z"
+        }
+      }
+    },
+    {
+      "id": "c3be6cfe-5fc9-41e9-94c0-3394fa49a5b4",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A painter paints $\\frac{1}{6}$ of a wall in $\\frac{1}{4}$ hour. At this rate, how many hours does it take to paint the whole wall? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "1/((1/6)/(1/4))",
+      "solution": "Per hour the painter does $\\frac{1}{6} \\div \\frac{1}{4} = \\frac{2}{3}$ of the wall. The whole wall takes $1 \\div \\frac{2}{3} = \\frac{3}{2}$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Hours per wall = (1/4)/(1/6) = 6/4 = 3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.999Z"
+        }
+      }
+    },
+    {
+      "id": "28f251c2-5639-45e9-b8a5-5b43a9542239",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide fractions with common denominators",
+      "stem": "Use common denominators to find $\\frac{5}{6} \\div \\frac{7}{9}$. Write the answer as a fraction.",
+      "choices": [],
+      "answer": "15/14",
+      "compute": "(15/18)/(14/18)",
+      "solution": "The least common denominator is 18: $\\frac{15}{18} \\div \\frac{14}{18} = 15 \\div 14 = \\frac{15}{14}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15/14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 = 15/18, 7/9 = 14/18; quotient 15/14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.000Z"
+        }
+      }
+    },
+    {
+      "id": "8cace47d-eeda-4fb1-8747-be54a6850b07",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction division word problem",
+      "stem": "A rectangle has an area of $\\frac{5}{6}$ square meter and a width of $\\frac{2}{3}$ meter. What is its length, in meters? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "5/4",
+      "compute": "(5/6)/(2/3)",
+      "solution": "Area = length $\\times$ width, so length $= \\frac{5}{6} \\div \\frac{2}{3} = \\frac{5}{6} \\times \\frac{3}{2} = \\frac{15}{12} = \\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length = (5/6)/(2/3) = 5/6 x 3/2 = 15/12 = 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.002Z"
+        }
+      }
+    },
+    {
+      "id": "da0c376e-1609-44e5-8090-563fbad2f3f7",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "Kim wrote $\\frac{4}{5} \\div \\frac{2}{3} = \\frac{4}{5} \\times \\frac{2}{3} = \\frac{8}{15}$. What was her mistake?",
+      "choices": [
+        "She multiplied by $\\frac{5}{4}$ instead of by $\\frac{4}{5}$",
+        "She found a common denominator and then added",
+        "She multiplied by $\\frac{2}{3}$ instead of by its reciprocal",
+        "She divided the numerators but not the denominators"
+      ],
+      "answer": "She multiplied by $\\frac{2}{3}$ instead of by its reciprocal",
+      "compute": null,
+      "solution": "Dividing by $\\frac{2}{3}$ means multiplying by its reciprocal $\\frac{3}{2}$. Correct: $\\frac{4}{5} \\times \\frac{3}{2} = \\frac{12}{10} = \\frac{6}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She multiplied by $\\frac{2}{3}$ instead of by its reciprocal",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct: 4/5 x 3/2 = 6/5. She multiplied by 2/3 instead of its reciprocal 3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.009Z"
+        }
+      }
+    },
+    {
+      "id": "64e61b06-0e97-46a2-8480-d7713eb78d12",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Fraction divided by a whole number",
+      "stem": "A chef pours $2\\frac{1}{4}$ liters of soup equally into 6 jars. How many liters are in each jar? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "3/8",
+      "compute": "(9/4)/6",
+      "solution": "$\\frac{9}{4} \\div 6 = \\frac{9}{24} = \\frac{3}{8}$ liter.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/4 / 6 = 9/24 = 3/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.013Z"
+        }
+      }
+    },
+    {
+      "id": "1005f2ee-9364-45c0-881c-ebebbde56e88",
+      "topic_id": "NC17.6.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret a quotient of fractions",
+      "stem": "When a number $x$ is divided by $\\frac{3}{4}$, the quotient is $2\\frac{2}{3}$. What is $x$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "(8/3)*(3/4)",
+      "solution": "Quotient times divisor gives the dividend: $x = 2\\frac{2}{3} \\times \\frac{3}{4} = \\frac{8}{3} \\times \\frac{3}{4} = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 2 2/3 x 3/4 = 8/3 x 3/4 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.019Z"
         }
       }
     },

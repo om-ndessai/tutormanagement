@@ -6,7 +6,7 @@
     "NC17.4.OA.3": "All whole-number answers; products stay within 4-digit by 1-digit and 2-digit by 2-digit. Estimation questions state the rounding place, so each has one answer. Remainder questions say whether to round up, drop or use the remainder.",
     "NC17.4.OA.4": "All numbers stay within 50 (the summary range). Prime/composite questions use numbers up to 50 only. Numbers kept within 50 for factors and primality; multiples go no higher than 100.",
     "NC17.4.NBT.1": "Whole numbers up to 100,000 only; every product or quotient stays within that range. Skills (rough counts): value of a digit 4, each place ten times the place to its right 4, compare a digit in two places 4, multiply or divide by 10 5, name the place 2, explain place-value statements 4, count in place-value units 4, build a number from its places 3. Model-based items (blocks, place-value charts) are asked as written statements. Whole numbers within 100,000 only; money is avoided because a dollar sign is not allowed. Place names are asked as choice or by digit, since a word answer cannot be numeric.",
-    "NC17.4.NBT.2": "Whole numbers to 100,000. Numeric questions give the numeral without commas; word forms are choice questions. Skills: words (5), numeral from words (5), expanded form (5), numeral from expanded form (5), matching forms (5), zeros as placeholders (5).",
+    "NC17.4.NBT.2": "Whole numbers to 100,000. Numeric questions give the numeral without commas; word forms are choice questions. Skills: words (5), numeral from words (5), expanded form (5), numeral from expanded form (5), matching forms (5), zeros as placeholders (5). All 69 written, 23 per difficulty; nothing left out.",
     "NC17.4.NBT.7": "Numbers are within 100,000. Comparisons are written with $>$, $=$ and $<$; number-line and place-value-chart pictures are not used.",
     "NC17.4.NBT.6": "Arrays and area models are described in words (a rectangle with an area and a width). Quotients with remainders are written like \"9 R 3\" in choice questions only; numeric questions ask for the quotient or the remainder separately.",
     "NC17.4.NF.2": "Denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100 only; comparisons are written with $>$, $<$ and $=$. Models are written out in words (equal parts, a whole cut into parts). Skills (rough counts): benchmark one half 4, common denominator 4, common numerator 4, true comparison statement 2, order fractions 4, fractions in a story 5, justify a comparison 3, closest to a benchmark or between two fractions 4.",
@@ -7245,6 +7245,69 @@
       }
     },
     {
+      "id": "e73e55b4-546f-49b2-adc4-e347edeff3b6",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor pairs",
+      "stem": "Which two numbers are a factor pair of 24?",
+      "choices": [
+        "4 and 8",
+        "3 and 8",
+        "2 and 14",
+        "6 and 6"
+      ],
+      "answer": "3 and 8",
+      "compute": null,
+      "solution": "A factor pair multiplies to make 24. $3 \\times 8 = 24$. The other pairs make $4 \\times 8 = 32$, $2 \\times 14 = 28$ and $6 \\times 6 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 and 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 8 = 24. 6x6 = 36, 2x14 = 28, 4x8 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.885Z"
+        }
+      }
+    },
+    {
+      "id": "8cf0c926-bae6-450c-84f8-b1e84cb7b819",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiples",
+      "stem": "What is the smallest multiple of 7 that is greater than 30?",
+      "choices": [],
+      "answer": "35",
+      "compute": "35",
+      "solution": "The multiples of 7 are 7, 14, 21, 28, 35, and so on. The first one greater than 30 is 35, because $7 \\times 5 = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 7: 28, 35. Smallest above 30 is 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.891Z"
+        }
+      }
+    },
+    {
       "id": "1dfad8d4-de28-440b-8748-5925149e1096",
       "topic_id": "NC17.4.OA.4",
       "difficulty": 2,
@@ -8249,6 +8312,35 @@
           "work": "3×8 = 24.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:04:15.671Z"
+        }
+      }
+    },
+    {
+      "id": "a6955c89-fbd6-4f34-b597-e423f0665da8",
+      "topic_id": "NC17.4.OA.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Prime and composite numbers",
+      "stem": "How many prime numbers are greater than 30 and less than 50?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The numbers 31, 37, 41, 43 and 47 have no factors other than 1 and themselves. Every other number from 32 to 49 has another factor pair. So there are 5 primes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Primes 31-49: 31, 37, 41, 43, 47 -> 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.825Z"
         }
       }
     },
@@ -15807,6 +15899,738 @@
       }
     },
     {
+      "id": "ffac7852-9b2f-4755-9996-443ed56a189b",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "The number on a sign is $81{,}530$. Which word name matches the sign?",
+      "choices": [
+        "eighty-one thousand, fifty-three",
+        "eighty thousand, five hundred thirty",
+        "eighty-one thousand, five hundred thirty",
+        "eight thousand, one hundred fifty-three"
+      ],
+      "answer": "eighty-one thousand, five hundred thirty",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $81{,}530$ is eighty-one thousand, five hundred thirty. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "eighty-one thousand, five hundred thirty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81,530: eighty-one thousand, five hundred thirty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.614Z"
+        }
+      }
+    },
+    {
+      "id": "2ef3fd10-7dce-42d3-9096-15e80527db8c",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "Ben reads the number $23{,}418$ aloud. Which is how he says it?",
+      "choices": [
+        "twenty-three thousand, four hundred eighteen",
+        "twenty-three thousand, one hundred forty-eight",
+        "thirty-two thousand, four hundred eighteen",
+        "two thousand, three hundred forty-eight"
+      ],
+      "answer": "twenty-three thousand, four hundred eighteen",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $23{,}418$ is twenty-three thousand, four hundred eighteen. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "twenty-three thousand, four hundred eighteen",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23,418: twenty-three thousand, four hundred eighteen.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.621Z"
+        }
+      }
+    },
+    {
+      "id": "5d2a5d3f-68f8-442d-836e-6a6952b05328",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "A library has $5{,}764$ books. Which is the number of books in words?",
+      "choices": [
+        "five thousand, six hundred seventy-four",
+        "five thousand, seven hundred sixty-four",
+        "five thousand, seven hundred forty-six",
+        "fifty-seven thousand, six hundred forty"
+      ],
+      "answer": "five thousand, seven hundred sixty-four",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $5{,}764$ is five thousand, seven hundred sixty-four. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "five thousand, seven hundred sixty-four",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5,764: five thousand, seven hundred sixty-four.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.642Z"
+        }
+      }
+    },
+    {
+      "id": "63aaa266-b18f-4615-8016-ec9454f330c8",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from expanded form",
+      "stem": "$70{,}000 + 3{,}000 + 200 + 10 + 5$ is the same as which number? Write it as a numeral.",
+      "choices": [],
+      "answer": "73215",
+      "compute": "70000+3000+200+10+5",
+      "solution": "Seven ten thousands, 3 thousands, 2 hundreds, 1 ten and 5 ones make 73,215.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "73215",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,000+3,000+200+10+5 = 73,215.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.745Z"
+        }
+      }
+    },
+    {
+      "id": "74beb8e2-8d67-4bfb-b05a-f14d6e8e0bac",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which expanded form equals $56{,}472$?",
+      "choices": [
+        "$5{,}000 + 600 + 400 + 70 + 2$",
+        "$50{,}000 + 6{,}000 + 400 + 7 + 2$",
+        "$50{,}000 + 6{,}000 + 40 + 70 + 2$",
+        "$50{,}000 + 6{,}000 + 400 + 70 + 2$"
+      ],
+      "answer": "$50{,}000 + 6{,}000 + 400 + 70 + 2$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $50{,}000 + 6{,}000 + 400 + 70 + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50{,}000 + 6{,}000 + 400 + 70 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56,472 = 50,000+6,000+400+70+2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.757Z"
+        }
+      }
+    },
+    {
+      "id": "aa2b8486-31a0-4880-baf0-3a7bbe489b15",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the mistake in a written number",
+      "stem": "Four students wrote $8{,}150$ in words. Who wrote it correctly?",
+      "choices": [
+        "Raj: eight thousand, fifteen",
+        "Sol: eight thousand, one hundred five",
+        "Uma: eight hundred fifteen",
+        "Tia: eight thousand, one hundred fifty"
+      ],
+      "answer": "Tia: eight thousand, one hundred fifty",
+      "compute": null,
+      "solution": "8,150 is 8 thousands, 1 hundred and 5 tens, so it is eight thousand, one hundred fifty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Tia: eight thousand, one hundred fifty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,150 = eight thousand, one hundred fifty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.780Z"
+        }
+      }
+    },
+    {
+      "id": "a2f613c2-35a2-40fe-9349-2daadd2f1ccc",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which sum breaks $4{,}683$ into thousands, hundreds, tens and ones?",
+      "choices": [
+        "$4{,}000 + 600 + 80 + 3$",
+        "$400 + 600 + 80 + 3$",
+        "$4{,}000 + 60 + 80 + 3$",
+        "$4{,}000 + 600 + 30 + 8$"
+      ],
+      "answer": "$4{,}000 + 600 + 80 + 3$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $4{,}000 + 600 + 80 + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4{,}000 + 600 + 80 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4683 = 4000+600+80+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.795Z"
+        }
+      }
+    },
+    {
+      "id": "da372f94-aaaa-472b-9f4c-b148f135dc5e",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Which word name matches $60{,}000 + 4{,}000 + 700$?",
+      "choices": [
+        "sixty-four thousand, seventy",
+        "six thousand, four hundred seventy",
+        "sixty-four thousand, seven hundred",
+        "sixty thousand, four hundred seven"
+      ],
+      "answer": "sixty-four thousand, seven hundred",
+      "compute": null,
+      "solution": "60,000 + 4,000 = 64,000, and 700 is seven hundred, so the number is 64,700: sixty-four thousand, seven hundred.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "sixty-four thousand, seven hundred",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,000+4,000+700 = 64,700: sixty-four thousand, seven hundred.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.810Z"
+        }
+      }
+    },
+    {
+      "id": "6f7c4a2f-2df3-4469-88b7-efbd60c38109",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "A farm grew $4{,}281$ pumpkins. How would you write that number in words?",
+      "choices": [
+        "four thousand, two hundred eighteen",
+        "four thousand, eight hundred twenty-one",
+        "forty-two thousand, eight hundred ten",
+        "four thousand, two hundred eighty-one"
+      ],
+      "answer": "four thousand, two hundred eighty-one",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $4{,}281$ is four thousand, two hundred eighty-one. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "four thousand, two hundred eighty-one",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,281 = four thousand, two hundred eighty-one.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.856Z"
+        }
+      }
+    },
+    {
+      "id": "88124f5b-dcac-4e24-b3a1-7ff994827fa3",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "Zoe says her number is eighty thousand, nine hundred. What numeral is her number?",
+      "choices": [],
+      "answer": "80900",
+      "compute": "80*1000+900",
+      "solution": "eighty thousand, nine hundred: the thousands part is 80 thousand and the rest is 900. Put a 0 in every place that is not named. The numeral is 80900.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80900",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80,000 + 900 = 80,900.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.867Z"
+        }
+      }
+    },
+    {
+      "id": "1c9f6991-9e73-45d8-8c9a-9520209464bd",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A town has sixteen thousand, two hundred eighty-three people. How many people is that, written with digits?",
+      "choices": [],
+      "answer": "16283",
+      "compute": "16*1000+283",
+      "solution": "sixteen thousand, two hundred eighty-three: the thousands part is 16 thousand and the rest is 283. Put a 0 in every place that is not named. The numeral is 16283.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16283",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16,000 + 283 = 16,283.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.871Z"
+        }
+      }
+    },
+    {
+      "id": "1601af7a-7457-4c90-b6e2-45b18b653e84",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "A number has 2 thousands, 5 hundreds, 0 tens and 6 ones. What is the number?",
+      "choices": [],
+      "answer": "2506",
+      "compute": "2*1000+5*100+0*10+6",
+      "solution": "The 0 holds the tens place, so the number is 2,506.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2506",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2000 + 500 + 0 + 6 = 2506.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.894Z"
+        }
+      }
+    },
+    {
+      "id": "eab55997-33d7-4e19-a098-0c16c97862fa",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A toy store sold thirty-one thousand, four hundred twelve toys last year. Write the number of toys as a numeral.",
+      "choices": [],
+      "answer": "31412",
+      "compute": "31*1000+412",
+      "solution": "thirty-one thousand, four hundred twelve: the thousands part is 31 thousand and the rest is 412. Put a 0 in every place that is not named. The numeral is 31412.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31412",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "31 thousand = 31,000, plus 412 → 31,412.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.908Z"
+        }
+      }
+    },
+    {
+      "id": "f4412c89-ff8f-49ce-8587-a9e63c96a9ae",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A concert had fifty thousand, four hundred people. Write the number of people as a numeral.",
+      "choices": [],
+      "answer": "50400",
+      "compute": "50*1000+400",
+      "solution": "fifty thousand, four hundred: the thousands part is 50 thousand and the rest is 400. Put a 0 in every place that is not named. The numeral is 50400.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50,000 + 400 = 50,400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.938Z"
+        }
+      }
+    },
+    {
+      "id": "93f68e8e-c885-4f18-92d7-a8863a9a51c9",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A school fundraiser raised twelve thousand, five hundred fifty-six dollars. Write the amount as a numeral.",
+      "choices": [],
+      "answer": "12556",
+      "compute": "12*1000+556",
+      "solution": "twelve thousand, five hundred fifty-six: the thousands part is 12 thousand and the rest is 556. Put a 0 in every place that is not named. The numeral is 12556.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12556",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "twelve thousand five hundred fifty-six = 12,556.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.970Z"
+        }
+      }
+    },
+    {
+      "id": "ac215e90-c987-424b-9991-7c820c0c21c8",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which sum shows $7{,}415$ in expanded form?",
+      "choices": [
+        "$7{,}000 + 40 + 10 + 5$",
+        "$7{,}000 + 400 + 10 + 5$",
+        "$700 + 400 + 10 + 5$",
+        "$7{,}000 + 400 + 1 + 5$"
+      ],
+      "answer": "$7{,}000 + 400 + 10 + 5$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $7{,}000 + 400 + 10 + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7{,}000 + 400 + 10 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,415 = 7,000 + 400 + 10 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.971Z"
+        }
+      }
+    },
+    {
+      "id": "44da2f5d-f31a-4526-946f-1fb3d0420c70",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "Which numeral is the same as three thousand, five?",
+      "choices": [
+        "$3{,}050$",
+        "$3{,}005$",
+        "$3{,}500$",
+        "$30{,}005$"
+      ],
+      "answer": "$3{,}005$",
+      "compute": null,
+      "solution": "There are no hundreds and no tens, so those places hold 0: 3,005.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3{,}005$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "three thousand, five = 3,005.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.973Z"
+        }
+      }
+    },
+    {
+      "id": "2e99898b-06eb-4243-9dfc-40a9a9c50fa2",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Dee wants a correct way to write $12{,}345$. Which one should she pick?",
+      "choices": [
+        "twelve thousand, three hundred forty-five",
+        "twelve thousand, three hundred fifty-four",
+        "twenty-one thousand, three hundred forty-five",
+        "twelve thousand, thirty-four"
+      ],
+      "answer": "twelve thousand, three hundred forty-five",
+      "compute": null,
+      "solution": "12,345 has 12 in the thousands part and 345 in the rest: twelve thousand, three hundred forty-five. The other names change a digit or drop one.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "twelve thousand, three hundred forty-five",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12,345 = twelve thousand, three hundred forty-five.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.974Z"
+        }
+      }
+    },
+    {
+      "id": "07020163-093a-472d-951d-099d98305fe5",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Mina says a number in words: six thousand, two hundred eighty-one. Which expanded form is the same number?",
+      "choices": [
+        "$6{,}000 + 200 + 80 + 1$",
+        "$600 + 200 + 80 + 1$",
+        "$6{,}000 + 200 + 80 + 10$",
+        "$6{,}000 + 20 + 80 + 1$"
+      ],
+      "answer": "$6{,}000 + 200 + 80 + 1$",
+      "compute": null,
+      "solution": "Six thousand, two hundred eighty-one is 6,281 = 6,000 + 200 + 80 + 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6{,}000 + 200 + 80 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "six thousand two hundred eighty-one = 6,281 = 6,000+200+80+1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.981Z"
+        }
+      }
+    },
+    {
+      "id": "c987c9df-84e2-4eaa-8680-70579b9b454f",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "What is $34{,}926$ written in expanded form?",
+      "choices": [
+        "$3{,}000 + 400 + 90 + 20 + 6$",
+        "$30{,}000 + 4{,}000 + 90 + 20 + 6$",
+        "$30{,}000 + 4{,}000 + 900 + 20 + 6$",
+        "$30{,}000 + 4{,}000 + 900 + 2 + 6$"
+      ],
+      "answer": "$30{,}000 + 4{,}000 + 900 + 20 + 6$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $30{,}000 + 4{,}000 + 900 + 20 + 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$30{,}000 + 4{,}000 + 900 + 20 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "34,926 = 30,000 + 4,000 + 900 + 20 + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.992Z"
+        }
+      }
+    },
+    {
+      "id": "bfdfffcf-21e2-4893-8cf2-239b2c49c660",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "What numeral is the same as thirty-five thousand, six hundred twelve?",
+      "choices": [],
+      "answer": "35612",
+      "compute": "35*1000+612",
+      "solution": "thirty-five thousand, six hundred twelve: the thousands part is 35 thousand and the rest is 612. Put a 0 in every place that is not named. The numeral is 35612.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35612",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "thirty-five thousand, six hundred twelve = 35,612.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.993Z"
+        }
+      }
+    },
+    {
+      "id": "a07d228b-1d9c-4511-a612-1ee27fe8617d",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from expanded form",
+      "stem": "Ana writes a number in expanded form: $2{,}000 + 600 + 80 + 4$. What number did she write?",
+      "choices": [],
+      "answer": "2684",
+      "compute": "2000+600+80+4",
+      "solution": "Add the parts: 2,000 + 600 = 2,600; 2,600 + 80 = 2,680; 2,680 + 4 = 2,684.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2684",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,000+600+80+4 = 2,684.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.001Z"
+        }
+      }
+    },
+    {
+      "id": "a770be67-a8bb-4d77-a019-2ba5856fdca8",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number from its place values",
+      "stem": "A number has the digit 5 in the ten thousands place, 3 in the thousands place, 1 in the hundreds place, 4 in the tens place and 8 in the ones place. What is the number?",
+      "choices": [],
+      "answer": "53148",
+      "compute": "5*10000+3*1000+1*100+4*10+8",
+      "solution": "Write each digit in its place from the left: 5, 3, 1, 4, 8. The number is 53,148.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53148",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 ten thousands, 3 thousands, 1 hundred, 4 tens, 8 ones = 53,148.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:08.004Z"
+        }
+      }
+    },
+    {
       "id": "5d7bc896-1a95-488d-ab99-ee11f05ecd4f",
       "topic_id": "NC17.4.NBT.2",
       "difficulty": 2,
@@ -16127,6 +16951,743 @@
       }
     },
     {
+      "id": "615d679a-05a9-402e-89cb-6c4fefa8b061",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "A lake is fifty-two thousand, six hundred feet around. Which expanded form shows that distance?",
+      "choices": [
+        "$50{,}000 + 2{,}000 + 60$",
+        "$5{,}000 + 200 + 600$",
+        "$50{,}000 + 2{,}000 + 600$",
+        "$50{,}000 + 200 + 600$"
+      ],
+      "answer": "$50{,}000 + 2{,}000 + 600$",
+      "compute": null,
+      "solution": "Fifty-two thousand, six hundred is 52,600 = 50,000 + 2,000 + 600.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50{,}000 + 2{,}000 + 600$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52,600 = 50,000 + 2,000 + 600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.546Z"
+        }
+      }
+    },
+    {
+      "id": "b8bee10a-3f51-4c4c-9c15-535fa11ba650",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from expanded form",
+      "stem": "Find the number: $4 \\times 10{,}000 + 3 \\times 1{,}000 + 5 \\times 10$.",
+      "choices": [],
+      "answer": "43050",
+      "compute": "4*10000+3*1000+5*10",
+      "solution": "The products are 40,000, 3,000 and 50. There are no hundreds and no ones, so the number is 43,050.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43050",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,000 + 3,000 + 50 = 43,050.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.600Z"
+        }
+      }
+    },
+    {
+      "id": "f8ffffbe-5a09-43d2-8a57-bbda811c3f66",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "A bag holds $15{,}010$ beads. Which tells the number of beads in words?",
+      "choices": [
+        "fifteen thousand, ten",
+        "fifteen thousand, one hundred",
+        "one thousand, five hundred ten",
+        "fifteen thousand, one"
+      ],
+      "answer": "fifteen thousand, ten",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $15{,}010$ is fifteen thousand, ten. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "fifteen thousand, ten",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15,010 = fifteen thousand, ten.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.619Z"
+        }
+      }
+    },
+    {
+      "id": "f307ba43-54ad-4e19-aa6c-30e1d146beab",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which expanded form matches the numeral $18{,}090$?",
+      "choices": [
+        "$10{,}000 + 8{,}000 + 90$",
+        "$10{,}000 + 8{,}000 + 900$",
+        "$10{,}000 + 800 + 90$",
+        "$10{,}000 + 8{,}000 + 9$"
+      ],
+      "answer": "$10{,}000 + 8{,}000 + 90$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $10{,}000 + 8{,}000 + 90$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10{,}000 + 8{,}000 + 90$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18,090 = 10,000 + 8,000 + 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.659Z"
+        }
+      }
+    },
+    {
+      "id": "e6b719e0-2476-462f-bb49-c89067abc22c",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number from its place values",
+      "stem": "A number has a 7 in the ten thousands place, a 3 in the hundreds place and a 9 in the ones place. Every other place holds a 0. What is the number?",
+      "choices": [],
+      "answer": "70309",
+      "compute": "7*10000+3*100+9",
+      "solution": "7 ten thousands, 0 thousands, 3 hundreds, 0 tens and 9 ones: 70,309.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70309",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 ten thousands, 0 thousands, 3 hundreds, 0 tens, 9 ones: 70,309.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.679Z"
+        }
+      }
+    },
+    {
+      "id": "5bbc9bfa-0392-4734-b51e-2d0f38be42ed",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Which expanded form matches the words thirty-two thousand, forty?",
+      "choices": [
+        "$30{,}000 + 2{,}000 + 400$",
+        "$30{,}000 + 2{,}000 + 40$",
+        "$3{,}000 + 200 + 40$",
+        "$30{,}000 + 200 + 40$"
+      ],
+      "answer": "$30{,}000 + 2{,}000 + 40$",
+      "compute": null,
+      "solution": "Thirty-two thousand is 32,000 and forty is 40, so the number is 32,040 = 30,000 + 2,000 + 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$30{,}000 + 2{,}000 + 40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32,040 = 30,000+2,000+40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.709Z"
+        }
+      }
+    },
+    {
+      "id": "1893afea-5605-427a-9770-60c92eb39949",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the mistake in a written number",
+      "stem": "Jin wrote seventy thousand, three hundred as $70{,}030$. What is his mistake?",
+      "choices": [
+        "The 7 should be in the thousands place, not the ten thousands place.",
+        "A 3 should also be in the ones place.",
+        "There is no mistake in his numeral.",
+        "The 3 should be in the hundreds place, not the tens place."
+      ],
+      "answer": "The 3 should be in the hundreds place, not the tens place.",
+      "compute": null,
+      "solution": "Seventy thousand, three hundred is 70,300. Jin put the 3 one place too far right, in the tens place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The 3 should be in the hundreds place, not the tens place.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Seventy thousand, three hundred = 70,300; he put the 3 in the tens place.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.722Z"
+        }
+      }
+    },
+    {
+      "id": "9742afc4-0ec7-483f-8259-9e1a21d60507",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Which pair names the same number?",
+      "choices": [
+        "$20{,}600$ and twenty thousand, sixty",
+        "$20{,}006$ and twenty thousand, sixty",
+        "$20{,}060$ and twenty thousand, sixty",
+        "$20{,}060$ and twenty thousand, six hundred"
+      ],
+      "answer": "$20{,}060$ and twenty thousand, sixty",
+      "compute": null,
+      "solution": "Twenty thousand, sixty is 20,060. Only the first pair matches it with the numeral 20,060.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20{,}060$ and twenty thousand, sixty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20,060 = twenty thousand, sixty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.732Z"
+        }
+      }
+    },
+    {
+      "id": "d883a422-58b5-40e4-8517-d0ff20fe2101",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "Which word name matches the numeral $39{,}902$?",
+      "choices": [
+        "thirty-nine thousand, ninety-two",
+        "thirty-nine thousand, nine hundred two",
+        "thirty-nine thousand, nine hundred twenty",
+        "three thousand, nine hundred two"
+      ],
+      "answer": "thirty-nine thousand, nine hundred two",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $39{,}902$ is thirty-nine thousand, nine hundred two. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "thirty-nine thousand, nine hundred two",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "39,902 = thirty-nine thousand, nine hundred two.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.737Z"
+        }
+      }
+    },
+    {
+      "id": "11fd17a7-47e5-48a3-bee6-566fd13c2959",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "What numeral is the same as fifty-one thousand, thirty?",
+      "choices": [],
+      "answer": "51030",
+      "compute": "51*1000+30",
+      "solution": "51 thousand is 51,000 and 30 is thirty, so the number is 51,030.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "51030",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "51 thousand and 30 = 51,030.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.742Z"
+        }
+      }
+    },
+    {
+      "id": "3a2b5fc7-8689-4b24-9430-b9e195cc714c",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Which word name equals $30{,}000 + 700 + 5$?",
+      "choices": [
+        "thirty thousand, seventy-five",
+        "thirty thousand, seven hundred five",
+        "three thousand, seven hundred five",
+        "thirty thousand, seven hundred fifty"
+      ],
+      "answer": "thirty thousand, seven hundred five",
+      "compute": null,
+      "solution": "30,000 + 700 + 5 = 30,705, which is thirty thousand, seven hundred five.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "thirty thousand, seven hundred five",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30,705 = thirty thousand, seven hundred five.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.752Z"
+        }
+      }
+    },
+    {
+      "id": "acbe8d2c-e00c-4a25-90e1-9fc719756d4d",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the mistake in a written number",
+      "stem": "Lina says the expanded form of $40{,}500$ is $40{,}000 + 500$. Her brother says it is $4{,}000 + 500$. Who is right?",
+      "choices": [
+        "Lina, because the 4 stands for 40,000.",
+        "Her brother, because the 4 stands for 4,000.",
+        "Both, because zeros do not matter.",
+        "Neither, because the 5 stands for 50."
+      ],
+      "answer": "Lina, because the 4 stands for 40,000.",
+      "compute": null,
+      "solution": "The 4 is in the ten thousands place, so it stands for 40,000. The 5 is in the hundreds place, so it stands for 500.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Lina, because the 4 stands for 40,000.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,500 = 40,000+500; the 4 is 40,000. Lina.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.768Z"
+        }
+      }
+    },
+    {
+      "id": "6b832811-075c-4109-b765-5a2c3b0de036",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A museum counted forty thousand, three hundred two visitors in a year. How many visitors is that, written with digits?",
+      "choices": [],
+      "answer": "40302",
+      "compute": "40*1000+302",
+      "solution": "forty thousand, three hundred two: the thousands part is 40 thousand and the rest is 302. Put a 0 in every place that is not named. The numeral is 40302.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40302",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,000+302 = 40,302.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.788Z"
+        }
+      }
+    },
+    {
+      "id": "ddcf32f8-e7b0-40bd-a05e-7485d1b6638a",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which shows $72{,}004$ in expanded form?",
+      "choices": [
+        "$70{,}000 + 2{,}000 + 400$",
+        "$70{,}000 + 2{,}000 + 40$",
+        "$7{,}000 + 200 + 4$",
+        "$70{,}000 + 2{,}000 + 4$"
+      ],
+      "answer": "$70{,}000 + 2{,}000 + 4$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $70{,}000 + 2{,}000 + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$70{,}000 + 2{,}000 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72,004 = 70,000+2,000+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.818Z"
+        }
+      }
+    },
+    {
+      "id": "98b096fd-b261-4443-8532-529b30afcfea",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "The score in a video game was $90{,}060$. Which is its word name?",
+      "choices": [
+        "ninety thousand, six hundred",
+        "nine thousand, sixty",
+        "ninety thousand, six",
+        "ninety thousand, sixty"
+      ],
+      "answer": "ninety thousand, sixty",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $90{,}060$ is ninety thousand, sixty. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "ninety thousand, sixty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90,060 = ninety thousand, sixty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.830Z"
+        }
+      }
+    },
+    {
+      "id": "17e8ddaf-6df6-4699-86f3-43b7341f1301",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "What numeral matches the words eleven thousand, eleven?",
+      "choices": [],
+      "answer": "11011",
+      "compute": "11*1000+11",
+      "solution": "Eleven thousand is 11,000 and eleven is 11, so the number is 11,011.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11011",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11,000 + 11 = 11,011.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.883Z"
+        }
+      }
+    },
+    {
+      "id": "e5f0ebc7-6abc-4e4c-8319-e46b6af7acd8",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Sam writes $60{,}250$ in expanded form. Which could he have written?",
+      "choices": [
+        "$6{,}000 + 200 + 50$",
+        "$60{,}000 + 2{,}000 + 50$",
+        "$60{,}000 + 200 + 50$",
+        "$60{,}000 + 200 + 5$"
+      ],
+      "answer": "$60{,}000 + 200 + 50$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $60{,}000 + 200 + 50$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60{,}000 + 200 + 50$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,250 = 60,000 + 200 + 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.888Z"
+        }
+      }
+    },
+    {
+      "id": "6d2b2301-6f7c-460b-b6f9-9b78196dbe8a",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number from its place values",
+      "stem": "A checkout machine shows 6 thousands, no hundreds, no tens and 4 ones. What number does it show?",
+      "choices": [],
+      "answer": "6004",
+      "compute": "6*1000+4",
+      "solution": "Empty places are 0: 6,004.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6004",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6,000 + 4 = 6,004.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.934Z"
+        }
+      }
+    },
+    {
+      "id": "a3374859-b37a-4b0f-9071-b751bb5f3c47",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A video has been watched eighty-eight thousand, eight hundred eight times. Write that number with digits.",
+      "choices": [],
+      "answer": "88808",
+      "compute": "88*1000+808",
+      "solution": "eighty-eight thousand, eight hundred eight: the thousands part is 88 thousand and the rest is 808. Put a 0 in every place that is not named. The numeral is 88808.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "88808",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "88,000 + 800 + 8 = 88,808.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.941Z"
+        }
+      }
+    },
+    {
+      "id": "2caeb042-03d1-4f99-97f9-ab28162316d5",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "Jo wrote $80{,}000 + 6{,}000 + 20 + 9$ and skipped the hundreds place. What number is it? Write it as a numeral.",
+      "choices": [],
+      "answer": "86029",
+      "compute": "80000+6000+20+9",
+      "solution": "Nothing is added in the hundreds place, so it holds 0: 86,029.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "86029",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80,000+6,000+0+20+9 = 86,029.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.950Z"
+        }
+      }
+    },
+    {
+      "id": "0427245b-b449-4c29-b92b-9d2d5059c8a6",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "A number is made of 4 ten thousands, 6 hundreds and 5 ones. What is the number?",
+      "choices": [],
+      "answer": "40605",
+      "compute": "4*10000+6*100+5",
+      "solution": "The thousands and tens places are not named, so they hold 0: 40,605.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40605",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,000 + 600 + 5 = 40,605.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.950Z"
+        }
+      }
+    },
+    {
+      "id": "b26e73bb-4950-4231-a89d-ecadc967417e",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "A phone company has $20{,}045$ customers. Which word name shows that number?",
+      "choices": [
+        "twenty thousand, four hundred five",
+        "two thousand, forty-five",
+        "twenty thousand, forty-five",
+        "twenty thousand, four hundred fifty"
+      ],
+      "answer": "twenty thousand, forty-five",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $20{,}045$ is twenty thousand, forty-five. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "twenty thousand, forty-five",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20,045 = twenty thousand, forty-five.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.952Z"
+        }
+      }
+    },
+    {
+      "id": "0e9dd5fc-a0fb-4117-a032-f219768a9aaa",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the mistake in a written number",
+      "stem": "Rita's step counter shows $35{,}070$. She reads it as thirty-five thousand, seven hundred. What is her mistake?",
+      "choices": [
+        "She said thirty-five thousand, but the 3 stands for only 3,000.",
+        "She said seven hundred, but the 7 stands for 70.",
+        "She should have said the 5 stands for 500.",
+        "She should have said there are no thousands."
+      ],
+      "answer": "She said seven hundred, but the 7 stands for 70.",
+      "compute": null,
+      "solution": "In 35,070 the 7 is in the tens place, so it is seventy. The number is thirty-five thousand, seventy.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She said seven hundred, but the 7 stands for 70.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35,070: the 7 is in the tens place, 70, not 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.962Z"
+        }
+      }
+    },
+    {
       "id": "28c8712c-18b6-4328-b0de-ae3b6b8b53ef",
       "topic_id": "NC17.4.NBT.2",
       "difficulty": 3,
@@ -16433,6 +17994,723 @@
           "work": "5,000 + 9 = 5,009.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:03:44.219Z"
+        }
+      }
+    },
+    {
+      "id": "e9ce2a9b-8f77-47c3-b644-a5169eb872c2",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "What number is $80{,}000 + 80 + 8$? Write it as a numeral.",
+      "choices": [],
+      "answer": "80088",
+      "compute": "80000+80+8",
+      "solution": "The thousands and hundreds places hold 0, so the number is 80,088.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80088",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80,000 + 80 + 8 = 80,088.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.590Z"
+        }
+      }
+    },
+    {
+      "id": "3daae1cb-3e19-460c-af76-b3e3c8a30611",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number from its place values",
+      "stem": "A number has 3 ones, 9 thousands and 1 ten thousand, and nothing else. What is the number?",
+      "choices": [],
+      "answer": "19003",
+      "compute": "1*10000+9*1000+3",
+      "solution": "Fill the empty hundreds and tens places with 0: 19,003.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19003",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,000 + 9,000 + 3 = 19,003.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.616Z"
+        }
+      }
+    },
+    {
+      "id": "50e0d6c2-d224-4eb9-95da-999e16b0bbfd",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "A website counted ten thousand, one hundred one clicks. Which expanded form shows the number of clicks?",
+      "choices": [
+        "$10{,}000 + 1{,}000 + 1$",
+        "$10{,}000 + 100 + 10$",
+        "$10{,}000 + 100 + 1$",
+        "$1{,}000 + 100 + 1$"
+      ],
+      "answer": "$10{,}000 + 100 + 1$",
+      "compute": null,
+      "solution": "Ten thousand, one hundred one is 10,101 = 10,000 + 100 + 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10{,}000 + 100 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,101 = 10,000 + 100 + 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.670Z"
+        }
+      }
+    },
+    {
+      "id": "42b2e11e-1f5c-4482-896c-6f70d6836287",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Which is NOT a correct way to write $50{,}406$?",
+      "choices": [
+        "fifty thousand, four hundred six",
+        "$50{,}000 + 400 + 6$",
+        "$5 \\times 10{,}000 + 4 \\times 100 + 6$",
+        "fifty thousand, forty-six"
+      ],
+      "answer": "fifty thousand, forty-six",
+      "compute": null,
+      "solution": "50,406 is fifty thousand, four hundred six = 50,000 + 400 + 6. Fifty thousand, forty-six is 50,046, a different number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "fifty thousand, forty-six",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50,406: A, B, C correct; fifty thousand, forty-six is 50,046.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.672Z"
+        }
+      }
+    },
+    {
+      "id": "cb5957fc-1604-4f10-ac0b-eca66bb79a92",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from expanded form",
+      "stem": "Find the number: $7 \\times 10{,}000 + 2 \\times 100 + 5$.",
+      "choices": [],
+      "answer": "70205",
+      "compute": "7*10000+2*100+5",
+      "solution": "The parts are 70,000, 200 and 5. The thousands and tens places are empty, so the number is 70,205.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70205",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,000+200+5=70,205.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.684Z"
+        }
+      }
+    },
+    {
+      "id": "b7a05baf-4e6e-4337-a74a-1a940e246ab4",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Numbers with zeros as placeholders",
+      "stem": "How many zeros are in the numeral for seventy thousand, seven?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "Seventy thousand, seven is 70,007. It has 3 zeros.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70,007 has three zeros.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.716Z"
+        }
+      }
+    },
+    {
+      "id": "683320e7-fbe6-4bba-851f-8836a0ac39e3",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match words, numerals and expanded form",
+      "stem": "Which is true about the number one hundred thousand?",
+      "choices": [
+        "It is written as a 1 followed by four zeros.",
+        "It is written as a 1 followed by six zeros.",
+        "It is written as a 1 followed by five zeros.",
+        "It is written as a 1 followed by three zeros."
+      ],
+      "answer": "It is written as a 1 followed by five zeros.",
+      "compute": null,
+      "solution": "One hundred thousand is 100,000: a 1 followed by 5 zeros.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is written as a 1 followed by five zeros.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100,000: 1 followed by five zeros.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.717Z"
+        }
+      }
+    },
+    {
+      "id": "d9f31a7a-fdaa-4d41-ae97-7e391321029f",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from expanded form",
+      "stem": "What number is $14 \\times 1{,}000 + 6 \\times 100 + 8$?",
+      "choices": [],
+      "answer": "14608",
+      "compute": "14*1000+6*100+8",
+      "solution": "14 thousands is 14,000, and 6 hundreds is 600, so the number is 14,000 + 600 + 8 = 14,608.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14608",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14,000+600+8=14,608.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.740Z"
+        }
+      }
+    },
+    {
+      "id": "d5275865-3dd2-4540-9ab6-d788e2f39dca",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number from its place values",
+      "stem": "A number is 52 thousands and 17 ones. Write the number as a numeral.",
+      "choices": [],
+      "answer": "52017",
+      "compute": "52*1000+17",
+      "solution": "52 thousands is 52,000. Adding 17 ones gives 52,017.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52017",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52,000+17 = 52,017.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.749Z"
+        }
+      }
+    },
+    {
+      "id": "3f074935-61e9-4cfe-bf61-c5d0bd08d607",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A sign reads twenty thousand, twenty-two. Write the number on the sign as a numeral.",
+      "choices": [],
+      "answer": "20022",
+      "compute": "20*1000+22",
+      "solution": "twenty thousand, twenty-two: the thousands part is 20 thousand and the rest is 22. Put a 0 in every place that is not named. The numeral is 20022.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20022",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20,000+22 = 20,022.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.752Z"
+        }
+      }
+    },
+    {
+      "id": "f51eff16-3614-4171-a9a6-017a98b2b616",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A video game character has ninety thousand, ninety points. Write the points as a numeral.",
+      "choices": [],
+      "answer": "90090",
+      "compute": "90*1000+90",
+      "solution": "ninety thousand, ninety: the thousands part is 90 thousand and the rest is 90. Put a 0 in every place that is not named. The numeral is 90090.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90090",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90,000+90 = 90,090.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.754Z"
+        }
+      }
+    },
+    {
+      "id": "9bd0224d-3338-4410-9302-d7b2b2bd8b04",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "A meter reads ninety-nine thousand, ninety-nine. Write the reading as a numeral.",
+      "choices": [],
+      "answer": "99099",
+      "compute": "99*1000+99",
+      "solution": "ninety-nine thousand, ninety-nine: the thousands part is 99 thousand and the rest is 99. Put a 0 in every place that is not named. The numeral is 99099.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "99099",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "99,000+99 = 99,099.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.762Z"
+        }
+      }
+    },
+    {
+      "id": "eae4be02-038c-4c64-86e4-5f9d7fc244c0",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which sum is the expanded form of $10{,}010$?",
+      "choices": [
+        "$10{,}000 + 100$",
+        "$1{,}000 + 10$",
+        "$10{,}000 + 1{,}000 + 10$",
+        "$10{,}000 + 10$"
+      ],
+      "answer": "$10{,}000 + 10$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $10{,}000 + 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10{,}000 + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,010 = 10,000+10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.777Z"
+        }
+      }
+    },
+    {
+      "id": "2d19d4e5-90bc-477e-9d73-78917a487165",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "A faraway town is $46{,}007$ feet from the airport. Which tells the distance in words?",
+      "choices": [
+        "forty-six thousand, seventy",
+        "forty-six thousand, seven hundred",
+        "four thousand, six hundred seven",
+        "forty-six thousand, seven"
+      ],
+      "answer": "forty-six thousand, seven",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $46{,}007$ is forty-six thousand, seven. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "forty-six thousand, seven",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46,007 = forty-six thousand, seven.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.792Z"
+        }
+      }
+    },
+    {
+      "id": "65e7bcaa-2079-4ea0-96cf-25c713943bc0",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the mistake in a written number",
+      "stem": "Omar wrote thirty thousand, four hundred as $3{,}400$, which is not right. What numeral should he have written?",
+      "choices": [],
+      "answer": "30400",
+      "compute": "30*1000+400",
+      "solution": "Thirty thousand is 30,000 and four hundred is 400, so the number is 30,400. Omar left out the zero in the ten thousands place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Thirty thousand four hundred = 30,400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.833Z"
+        }
+      }
+    },
+    {
+      "id": "f12301b1-e641-4660-9138-b48e611f2588",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "Which word name matches the numeral $90{,}909$?",
+      "choices": [
+        "ninety thousand, nine hundred nine",
+        "ninety thousand, ninety-nine",
+        "ninety-nine thousand, nine",
+        "nine thousand, nine hundred nine"
+      ],
+      "answer": "ninety thousand, nine hundred nine",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $90{,}909$ is ninety thousand, nine hundred nine. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "ninety thousand, nine hundred nine",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90,909 = ninety thousand, nine hundred nine.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.841Z"
+        }
+      }
+    },
+    {
+      "id": "51f5384d-b4d9-49e0-a961-4a0277745577",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the mistake in a written number",
+      "stem": "Kira wrote $23{,}067$ in expanded form as $20{,}000 + 3{,}000 + 600 + 7$. What is her mistake?",
+      "choices": [
+        "She wrote 600 where the digit stands for 60.",
+        "She wrote 3,000 where the digit stands for 300.",
+        "She left out the 7.",
+        "She wrote 20,000 where the digit stands for 2,000."
+      ],
+      "answer": "She wrote 600 where the digit stands for 60.",
+      "compute": null,
+      "solution": "In 23,067 the 6 is in the tens place, so it stands for 60, not 600. The correct sum is 20,000 + 3,000 + 60 + 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She wrote 600 where the digit stands for 60.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23,067 = 20,000 + 3,000 + 60 + 7. The 6 is in the tens place, worth 60, not 600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.873Z"
+        }
+      }
+    },
+    {
+      "id": "73091456-9ea5-4135-8041-80383cfeb7b9",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Pablo breaks $40{,}308$ apart by place value. Which is his sum?",
+      "choices": [
+        "$40{,}000 + 300 + 8$",
+        "$4{,}000 + 300 + 8$",
+        "$40{,}000 + 30 + 8$",
+        "$40{,}000 + 300 + 80$"
+      ],
+      "answer": "$40{,}000 + 300 + 8$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $40{,}000 + 300 + 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40{,}000 + 300 + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40,308 = 40,000 + 300 + 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.879Z"
+        }
+      }
+    },
+    {
+      "id": "0746b34c-5043-4646-8dda-0b975be46fb9",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from words",
+      "stem": "What numeral is read sixty thousand, six hundred six?",
+      "choices": [],
+      "answer": "60606",
+      "compute": "60*1000+606",
+      "solution": "Sixty thousand is 60,000 and six hundred six is 606, so the number is 60,606.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60606",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60,000 + 600 + 6 = 60,606.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.886Z"
+        }
+      }
+    },
+    {
+      "id": "98a39118-647c-48a1-94e1-1116b1affff7",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number as a numeral from expanded form",
+      "stem": "Find the number: $5 \\times 1{,}000 + 2 \\times 10{,}000 + 7 \\times 10$.",
+      "choices": [],
+      "answer": "25070",
+      "compute": "5*1000+2*10000+7*10",
+      "solution": "The parts are 5,000, 20,000 and 70. Order them from the largest place: 20,000 + 5,000 + 70 = 25,070.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25070",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5×1,000=5,000; 2×10,000=20,000; 7×10=70. Total 25,070.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.906Z"
+        }
+      }
+    },
+    {
+      "id": "bae0f4b2-b133-42e8-9b73-5d18388edfb1",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a number from its place values",
+      "stem": "A number has 8 ten thousands, 4 hundreds and 7 ones, and nothing else. What is the number?",
+      "choices": [],
+      "answer": "80407",
+      "compute": "8*10000+4*100+7",
+      "solution": "The thousands and tens places are empty, so they hold 0: 80,407.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80407",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80,000 + 400 + 7 = 80,407.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.927Z"
+        }
+      }
+    },
+    {
+      "id": "01ac570c-d58f-4b1b-aa43-ab9874b39b60",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a number in words",
+      "stem": "A prize is worth $10{,}500$ dollars. Which tells the prize in words?",
+      "choices": [
+        "ten thousand, fifty",
+        "ten thousand, five hundred",
+        "one thousand, five hundred",
+        "fifteen thousand"
+      ],
+      "answer": "ten thousand, five hundred",
+      "compute": null,
+      "solution": "Say the thousands first, then the rest. $10{,}500$ is ten thousand, five hundred. The other choices name different numbers because a digit was moved, dropped or put in the wrong place.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "ten thousand, five hundred",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,500 = ten thousand, five hundred.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.940Z"
+        }
+      }
+    },
+    {
+      "id": "56834a0b-a843-4c33-96d6-f5730e117649",
+      "topic_id": "NC17.4.NBT.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a number in expanded form",
+      "stem": "Which expanded form is correct for $97{,}030$?",
+      "choices": [
+        "$90{,}000 + 7{,}000 + 300$",
+        "$90{,}000 + 7{,}000 + 30$",
+        "$9{,}000 + 700 + 30$",
+        "$90{,}000 + 700 + 30$"
+      ],
+      "answer": "$90{,}000 + 7{,}000 + 30$",
+      "compute": null,
+      "solution": "Give each digit its place value and skip any place that holds a 0: $90{,}000 + 7{,}000 + 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$90{,}000 + 7{,}000 + 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "97,030 = 90,000 + 7,000 + 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:24:07.946Z"
         }
       }
     },
