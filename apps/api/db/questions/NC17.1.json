@@ -2,27 +2,27 @@
   "level_id": "NC17.1",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.1.G.1": "Thirty questions in words only: defining and non-defining attributes (color, size, direction, material), naming flat and solid shapes from attributes, counting sides and corners, and building with straws. Drawing is tested by what a student would draw, since a canvas cannot be used here. Solid shapes are limited to cube, cone, cylinder and sphere.",
-    "NC17.1.G.2": "Shapes are described in words. Counts of sides and corners are of the outside of the joined shape, and each stem fixes how the shapes are joined so there is one answer. No fractions beyond halves are used (halves of a circle).",
-    "NC17.1.G.3": "Circles and rectangles are described in words; no pictures. Questions stay on halves, fourths/quarters, equal shares and \"more shares are smaller\".",
-    "NC17.1.MD.1": "Grade 1 lengths are compared without numbers of units (that is 1.MD.2). Questions use word statements, three or four objects, and a third object (string, rope, stick) for indirect comparison. Numeric answers are counts or a place in an order (1, 2 or 3).",
-    "NC17.1.MD.2": "Grade 1: all lengths are whole numbers of units, within 20; no question uses a ruler or a picture. A few later questions use the idea that a shorter unit needs more copies; \"end to end with no gaps or overlaps\" is tested in words.",
-    "NC17.1.MD.3": "Grade 1: clocks are given in words (hand positions, digital times), never pictures. Half past times are always described with the short hand between two numbers, so the description is true. Time answers are digital choice options (a time cannot be a numeric answer); numeric questions ask for an hour, a hand number, a minute count or a count of clocks. No questions on elapsed time or minutes other than :00 and :30.",
-    "NC17.1.MD.4": "Grade 1: data in up to three categories is written out as a list or counts; totals stay within 20. No picture graph is used. Organising (sorting and counting a written list) is tested in the sort-a-list questions.",
-    "NC17.1.MD.5": "Grade 1: coins are named and valued only by name (penny 1, nickel 5, dime 10, quarter 25 cents), never shown. Everything is related to pennies, as the summary asks; sums of mixed coins are Grade 2 and left out. Same-coin amounts stay within 50 pennies. Coins are not told apart by size, since no picture is shown.",
-    "NC17.1.NBT.1": "Counts by ones forward only, with starts below 150 and ends up to 150 (the standard reaches 150, so numbers past 120 are used). Skills: say the next number (7), find the missing number (6), count on a few numbers from a start (6), choose the correct counting list (6), count up to 150 (5). Counting by tens and counting back are other standards.",
-    "NC17.1.NBT.2": "Grade 1 only: numbers kept within 100, whole-number answers. Digits and tens/ones picture work are written out in words; place value of numbers above 99 is left to other standards.",
-    "NC17.1.NBT.3": "Numbers stay within two digits; the symbol is recorded in number sentences because a symbol cannot be chosen in a four-option list without a fourth meaningless option.",
-    "NC17.1.NBT.4": "All sums within 100. Models (tens rods, ones cubes, bundles) are written out in words. Explaining reasoning is tested by choosing the correct way or finishing a described strategy.",
-    "NC17.1.NBT.5": "All numbers and answers stay within 100 (the standard covers two-digit numbers); the only answer of 100 is 10 more than 90.",
-    "NC17.1.NBT.6": "Minuends 10 to 90 only, differences 0 to 80, tens subtracted from tens. Models are written as rods of ten, number lines as jumps of tens. Skills: tens from a multiple of 10, rods of ten, count back on a number line, story problems, explain the tens reasoning, compare and match differences.",
-    "NC17.1.NBT.7": "Numbers stay within 100 as the standard says. Pictures of objects are replaced by bundles, boxes and rows of ten described in words. Number names are only ever given as text, in choice or numeric stems.",
     "NC17.1.OA.1": "All sums and starting amounts are within 20. Skills: result unknown (3), put together (6), change unknown (5), start unknown (4), compare (7), matching a story to a number sentence (5). Compare is about a quarter because it has three forms (difference, bigger, smaller unknown).",
     "NC17.1.OA.3": "Sums are within 20. Grade 1 does not name the properties for students, so the questions test the strategies (turn-around facts, making a ten, adding in a convenient order) and equations showing them. Choice options within each question end the same way.",
     "NC17.1.OA.4": "Sums and totals stay within 20. Adding on and rewriting as subtraction are both asked, plus a first-addend-unknown form and matching a number sentence to a story.",
     "NC17.1.OA.6": "Number lines are described in words (start at, jump right or left). Subtraction signs are written as plain hyphens, so no LaTeX is used.",
     "NC17.1.OA.7": "Every sum and difference stays within 20. A single equation cannot be a numeric question with a true/false answer, so \"is it true\" is asked as which-is-true, which-is-not-true and how-many-are-true; missing numbers and stories are numeric.",
-    "NC17.1.OA.8": "All numbers within 20, plus tens within 100. Skills (counts below in reply)."
+    "NC17.1.OA.8": "All numbers within 20, plus tens within 100. Skills (counts below in reply).",
+    "NC17.1.NBT.1": "Counts by ones forward only, with starts below 150 and ends up to 150 (the standard reaches 150, so numbers past 120 are used). Skills: say the next number (7), find the missing number (6), count on a few numbers from a start (6), choose the correct counting list (6), count up to 150 (5). Counting by tens and counting back are other standards.",
+    "NC17.1.NBT.7": "Numbers stay within 100 as the standard says. Pictures of objects are replaced by bundles, boxes and rows of ten described in words. Number names are only ever given as text, in choice or numeric stems.",
+    "NC17.1.NBT.2": "Grade 1 only: numbers kept within 100, whole-number answers. Digits and tens/ones picture work are written out in words; place value of numbers above 99 is left to other standards.",
+    "NC17.1.NBT.3": "Numbers stay within two digits; the symbol is recorded in number sentences because a symbol cannot be chosen in a four-option list without a fourth meaningless option.",
+    "NC17.1.NBT.4": "All sums within 100. Models (tens rods, ones cubes, bundles) are written out in words. Explaining reasoning is tested by choosing the correct way or finishing a described strategy.",
+    "NC17.1.NBT.5": "All numbers and answers stay within 100 (the standard covers two-digit numbers); the only answer of 100 is 10 more than 90.",
+    "NC17.1.NBT.6": "Minuends 10 to 90 only, differences 0 to 80, tens subtracted from tens. Models are written as rods of ten, number lines as jumps of tens. Skills: tens from a multiple of 10, rods of ten, count back on a number line, story problems, explain the tens reasoning, compare and match differences.",
+    "NC17.1.MD.1": "Grade 1 lengths are compared without numbers of units (that is 1.MD.2). Questions use word statements, three or four objects, and a third object (string, rope, stick) for indirect comparison. Numeric answers are counts or a place in an order (1, 2 or 3).",
+    "NC17.1.MD.2": "Grade 1: all lengths are whole numbers of units, within 20; no question uses a ruler or a picture. A few later questions use the idea that a shorter unit needs more copies; \"end to end with no gaps or overlaps\" is tested in words.",
+    "NC17.1.MD.3": "Grade 1: clocks are given in words (hand positions, digital times), never pictures. Half past times are always described with the short hand between two numbers, so the description is true. Time answers are digital choice options (a time cannot be a numeric answer); numeric questions ask for an hour, a hand number, a minute count or a count of clocks. No questions on elapsed time or minutes other than :00 and :30.",
+    "NC17.1.MD.5": "Grade 1: coins are named and valued only by name (penny 1, nickel 5, dime 10, quarter 25 cents), never shown. Everything is related to pennies, as the summary asks; sums of mixed coins are Grade 2 and left out. Same-coin amounts stay within 50 pennies. Coins are not told apart by size, since no picture is shown.",
+    "NC17.1.MD.4": "Grade 1: data in up to three categories is written out as a list or counts; totals stay within 20. No picture graph is used. Organising (sorting and counting a written list) is tested in the sort-a-list questions.",
+    "NC17.1.G.1": "Thirty questions in words only: defining and non-defining attributes (color, size, direction, material), naming flat and solid shapes from attributes, counting sides and corners, and building with straws. Drawing is tested by what a student would draw, since a canvas cannot be used here. Solid shapes are limited to cube, cone, cylinder and sphere.",
+    "NC17.1.G.2": "Shapes are described in words. Counts of sides and corners are of the outside of the joined shape, and each stem fixes how the shapes are joined so there is one answer. No fractions beyond halves are used (halves of a circle).",
+    "NC17.1.G.3": "Circles and rectangles are described in words; no pictures. Questions stay on halves, fourths/quarters, equal shares and \"more shares are smaller\"."
   },
   "questions": [
     {
@@ -3442,6 +3442,665 @@
       }
     },
     {
+      "id": "dc3fc197-4774-4134-826c-ba35bb43c875",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare sums of three numbers",
+      "stem": "Which sum is the least?",
+      "choices": [
+        "$3 + 2 + 1$",
+        "$1 + 2 + 2$",
+        "$2 + 4 + 1$",
+        "$3 + 3 + 2$"
+      ],
+      "answer": "$1 + 2 + 2$",
+      "compute": null,
+      "solution": "The sums are 5, 6, 7 and 8. The least is 1 + 2 + 2 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 + 2 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sums: 6, 5, 7, 8. Least is 1+2+2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.824Z"
+        }
+      }
+    },
+    {
+      "id": "246fa352-363f-42d3-aeda-6605c041f397",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Which story can be solved with $3 + 2 + 4$?",
+      "choices": [
+        "Jo has 3 ducks and 2 hens. How many birds does she have?",
+        "Jo has 3 ducks, 2 hens and 4 geese. How many birds does she have?",
+        "Jo has 9 ducks. 2 fly away and then 4 fly away. How many ducks are left?",
+        "Jo has 3 ducks, 5 hens and 4 geese. How many birds does she have?"
+      ],
+      "answer": "Jo has 3 ducks, 2 hens and 4 geese. How many birds does she have?",
+      "compute": null,
+      "solution": "The story puts together 3, 2 and 4, so it matches 3 + 2 + 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Jo has 3 ducks, 2 hens and 4 geese. How many birds does she have?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 ducks, 2 hens, 4 geese: 3+2+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.861Z"
+        }
+      }
+    },
+    {
+      "id": "2f20a539-c765-48c5-b779-7d722f70e3f1",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together three groups in a story",
+      "stem": "There are 5 boys, 3 girls and 2 teachers at a party. How many people are at the party?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+3+2",
+      "solution": "Add the three groups: 5 + 3 + 2 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 3 + 2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.900Z"
+        }
+      }
+    },
+    {
+      "id": "11194531-c03c-4063-8a88-f8c2c506be5c",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the number sentence for a story",
+      "stem": "A box has 6 red crayons, 2 blue crayons and 1 green crayon. Which number sentence shows how many crayons are in the box?",
+      "choices": [
+        "$6 - 2 - 1 = 3$",
+        "$6 + 2 = 8$",
+        "$6 + 2 + 1 = 9$",
+        "$6 + 2 + 1 = 8$"
+      ],
+      "answer": "$6 + 2 + 1 = 9$",
+      "compute": null,
+      "solution": "Add all three groups: 6 + 2 + 1 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 + 2 + 1 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 2 + 1 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.910Z"
+        }
+      }
+    },
+    {
+      "id": "98450126-be0d-4f49-8fdc-52eb9aae35b7",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the number sentence for a story",
+      "stem": "Dan saw 5 cats, 2 dogs and 2 birds at the park. Which number sentence tells how many animals Dan saw?",
+      "choices": [
+        "$5 + 2 - 2 = 5$",
+        "$5 + 2 + 2 = 9$",
+        "$5 + 2 + 2 = 10$",
+        "$5 - 2 - 2 = 1$"
+      ],
+      "answer": "$5 + 2 + 2 = 9$",
+      "compute": null,
+      "solution": "Dan saw all three groups, so add: 5 + 2 + 2 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 2 + 2 = 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+2+2=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.933Z"
+        }
+      }
+    },
+    {
+      "id": "9e2c4c54-afc5-4125-a41f-78e96c4661d6",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers with doubles",
+      "stem": "Tia has 4 red cups, 4 blue cups and 1 green cup. How many cups does she have?",
+      "choices": [],
+      "answer": "9",
+      "compute": "4+4+1",
+      "solution": "4 + 4 = 8, and 8 + 1 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+4+1=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.944Z"
+        }
+      }
+    },
+    {
+      "id": "7cd5f40d-ebde-49f6-9009-9c4e5598aab1",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers without a story",
+      "stem": "Add these three numbers: 3, 3 and 4. What is the sum?",
+      "choices": [],
+      "answer": "10",
+      "compute": "3+3+4",
+      "solution": "3 + 3 = 6, and 6 + 4 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 3 + 4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.989Z"
+        }
+      }
+    },
+    {
+      "id": "f1892240-60d1-431e-9636-5bbdb401eae7",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers from a list of data",
+      "stem": "Rae counted the books she read. Monday: 2 books. Tuesday: 3 books. Wednesday: 3 books. How many books did she read in all?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2+3+3",
+      "solution": "Add the three days: 2 + 3 + 3 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+3+3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.008Z"
+        }
+      }
+    },
+    {
+      "id": "601fb262-22bc-4206-b61a-3ed075d6c843",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers from a list of data",
+      "stem": "A class counted its pets. Dogs: 3. Cats: 4. Fish: 2. How many pets are there in all?",
+      "choices": [
+        "9",
+        "7",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Add the three groups: 3 + 4 + 2 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+4+2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.062Z"
+        }
+      }
+    },
+    {
+      "id": "d419dee8-4fac-4fd8-8c66-d28b248ce223",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number in a sum of three",
+      "stem": "What number is the ? in $2 + ? + 3 = 7$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "7-2-3",
+      "solution": "2 + 3 = 5. To get to 7 you need 2 more, so the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 3 = 5; 7 - 5 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.088Z"
+        }
+      }
+    },
+    {
+      "id": "c8796f53-5a84-481a-be74-7a4847c682c5",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Max had 4 coins. He found 2 coins on Monday and 2 coins on Tuesday. How many coins does Max have now?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4+2+2",
+      "solution": "Start with 4, add 2, then add 2 more: 4 + 2 + 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 2 + 2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.326Z"
+        }
+      }
+    },
+    {
+      "id": "4876bb4e-1ead-45e3-8213-472a82690117",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "A train has 3 cars. At the first station 2 cars are added. At the next station 1 more car is added. How many cars does the train have now?",
+      "choices": [
+        "5",
+        "7",
+        "6",
+        "4"
+      ],
+      "answer": "6",
+      "compute": "3+2+1",
+      "solution": "Add the cars: 3 + 2 + 1 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 cars + 2 + 1 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.343Z"
+        }
+      }
+    },
+    {
+      "id": "3557ac70-0f5d-44f3-83c1-046e63efdf4a",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers without a story",
+      "stem": "Find the sum of $5 + 1 + 3$.",
+      "choices": [],
+      "answer": "9",
+      "compute": "5+1+3",
+      "solution": "5 + 1 = 6, and 6 + 3 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 1 + 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.361Z"
+        }
+      }
+    },
+    {
+      "id": "de4bf957-6322-40a1-a46b-42a6ccdc4c96",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Put together three groups in a story",
+      "stem": "In a toy box there is 1 ball, 5 cars and 2 dolls. How many toys are in the box?",
+      "choices": [
+        "7",
+        "9",
+        "6",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "1+5+2",
+      "solution": "Add the three groups: 1 + 5 + 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 5 + 2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.369Z"
+        }
+      }
+    },
+    {
+      "id": "570c180b-9e39-4849-bb43-ba7397eb9afa",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together three groups in a story",
+      "stem": "A garden has 3 roses, 2 tulips and 4 daisies. How many flowers are in the garden?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3+2+4",
+      "solution": "Add the three groups: 3 + 2 + 4 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+2+4=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.469Z"
+        }
+      }
+    },
+    {
+      "id": "8d33693f-9593-4e13-8b4f-2ba0be1be3a6",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers in any order",
+      "stem": "Jan finds that $4 + 3 + 2 = 9$. What is $2 + 3 + 4$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "2+3+4",
+      "solution": "It is the same three numbers in a different order, so the sum is still 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order does not change the sum: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.479Z"
+        }
+      }
+    },
+    {
+      "id": "d41d18a3-8b8c-458c-865e-27f38fa8c20d",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together three groups in a story",
+      "stem": "A bag has 4 red marbles, 1 blue marble and 5 yellow marbles. How many marbles are in the bag?",
+      "choices": [],
+      "answer": "10",
+      "compute": "4+1+5",
+      "solution": "Add the three groups: 4 + 1 + 5 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+1+5=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.504Z"
+        }
+      }
+    },
+    {
+      "id": "b0efeb95-2d07-4aa6-a06d-7731caf11a0d",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Ann takes 2 steps, then 3 steps, then 1 step. How many steps does she take in all?",
+      "choices": [
+        "6",
+        "5",
+        "7",
+        "8"
+      ],
+      "answer": "6",
+      "compute": "2+3+1",
+      "solution": "Add the steps: 2 + 3 + 1 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 3 + 1 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.598Z"
+        }
+      }
+    },
+    {
+      "id": "e7f9d64c-cfae-44dc-8f42-7d0fb36889c1",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers in any order",
+      "stem": "Which expression has the same value as $1 + 2 + 5$?",
+      "choices": [
+        "$5 + 2 + 2$",
+        "$1 + 2 + 4$",
+        "$5 + 2 + 1$",
+        "$1 + 5 + 3$"
+      ],
+      "answer": "$5 + 2 + 1$",
+      "compute": null,
+      "solution": "The same three numbers added in a different order give the same sum: 5 + 2 + 1 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 2 + 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1+2+5 = 8. 1+5+3 = 9, 5+2+1 = 8, 1+2+4 = 7, 5+2+2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.603Z"
+        }
+      }
+    },
+    {
+      "id": "ca7e50aa-e276-4785-b39f-bf68e99ae9cc",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add three numbers without a story",
+      "stem": "Find $1 + 1 + 6$.",
+      "choices": [
+        "8",
+        "7",
+        "9",
+        "6"
+      ],
+      "answer": "8",
+      "compute": "8",
+      "solution": "1 + 1 = 2, and 2 + 6 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 1 + 6 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.626Z"
+        }
+      }
+    },
+    {
+      "id": "8e6afb19-98f1-4fe4-a83c-dc9246c2aa1b",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Pip drinks 2 cups of water in the morning, 3 cups after lunch and 2 cups at night. How many cups does Pip drink in all?",
+      "choices": [],
+      "answer": "7",
+      "compute": "2+3+2",
+      "solution": "Add the cups: 2 + 3 + 2 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+3+2=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.655Z"
+        }
+      }
+    },
+    {
       "id": "3d0b6be2-b775-4a10-8f3d-7f6de5884bfb",
       "topic_id": "NC17.1.OA.2",
       "difficulty": 2,
@@ -3743,6 +4402,694 @@
           "work": "5 + 5 + 6 = 16 points.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:12.060Z"
+        }
+      }
+    },
+    {
+      "id": "cff08460-a61c-49d6-afa1-48e73751e414",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers with doubles",
+      "stem": "Ivy sees 5 ducks on the pond, 5 ducks on the grass and 3 ducks in the barn. How many ducks does she see?",
+      "choices": [],
+      "answer": "13",
+      "compute": "5+5+3",
+      "solution": "5 + 5 = 10, and 10 + 3 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 + 3 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.752Z"
+        }
+      }
+    },
+    {
+      "id": "12f8c9dc-3da5-4cd2-acf8-12e8eba112d6",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Which story can be solved with $6 + 5 + 4$?",
+      "choices": [
+        "Ivy has 6 plums and 5 pears. How many pieces of fruit does she have?",
+        "Ivy has 15 plums. She gives away 5 and then 4 more. How many plums are left?",
+        "Ivy has 6 plums, 5 pears and 14 figs. How many pieces of fruit does she have?",
+        "Ivy has 6 plums, 5 pears and 4 figs. How many pieces of fruit does she have?"
+      ],
+      "answer": "Ivy has 6 plums, 5 pears and 4 figs. How many pieces of fruit does she have?",
+      "compute": null,
+      "solution": "The story puts together 6, 5 and 4, so it matches 6 + 5 + 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ivy has 6 plums, 5 pears and 4 figs. How many pieces of fruit does she have?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 plums + 5 pears + 4 figs = 6+5+4. Others are 6+5+14, subtraction, or two addends.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.793Z"
+        }
+      }
+    },
+    {
+      "id": "ce4b1285-d840-4440-a7e5-19c955f6c2b6",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Rob saves 5 dollars in May, 6 dollars in June and 5 dollars in July. How many dollars does Rob save in all?",
+      "choices": [],
+      "answer": "16",
+      "compute": "5+6+5",
+      "solution": "Add the dollars: 5 + 6 + 5 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 6 + 5 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.960Z"
+        }
+      }
+    },
+    {
+      "id": "20987ce6-9610-4d94-8481-4f84f8ab9fbc",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers by making a ten",
+      "stem": "Lee strings 4 red beads, then 6 blue beads, then 5 green beads. Making a ten with 4 and 6 first can help. How many beads does Lee string?",
+      "choices": [],
+      "answer": "15",
+      "compute": "4+6+5",
+      "solution": "4 + 6 = 10. Then 10 + 5 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+6 = 10, 10+5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.009Z"
+        }
+      }
+    },
+    {
+      "id": "38341922-4dd8-4393-b887-2e935b0467e3",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers in any order",
+      "stem": "Look at this number sentence: $7 + 2 + 5 = 5 + ? + 7$. What number is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Both sides use 7, 2 and 5. The numbers are in a different order, so the ? is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Commutative: 7+2+5 = 5+2+7, so ? = 2 (14 = 12 + ?).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.035Z"
+        }
+      }
+    },
+    {
+      "id": "4f07b9da-a6b7-46b7-8c7a-b4d016b2db33",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Kim has 8 marbles. She wins 3 marbles, and then wins 4 more. How many marbles does Kim have now?",
+      "choices": [
+        "14",
+        "15",
+        "16",
+        "7"
+      ],
+      "answer": "15",
+      "compute": "15",
+      "solution": "Add the marbles: 8 + 3 + 4 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+3+4 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.039Z"
+        }
+      }
+    },
+    {
+      "id": "ac1d4fc5-baca-486f-bb39-f8619db7645a",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers without a story",
+      "stem": "What is $3 + 8 + 2$?",
+      "choices": [
+        "12",
+        "14",
+        "11",
+        "13"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "8 + 2 = 10, and 10 + 3 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+8+2 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.063Z"
+        }
+      }
+    },
+    {
+      "id": "60e7242e-a3ca-4a64-afd1-3742ff1cfe95",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add three numbers without a story",
+      "stem": "What is $9 + 3 + 1$?",
+      "choices": [
+        "12",
+        "13",
+        "14",
+        "10"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "9 + 1 = 10, and 10 + 3 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 + 3 = 12; 12 + 1 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.081Z"
+        }
+      }
+    },
+    {
+      "id": "9f1ed1c7-c346-4b7b-9c38-c79a7056fa45",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the number sentence for a story",
+      "stem": "Ben had 5 stamps. He got 6 more, and then got 4 more. Which number sentence can find how many stamps he has now?",
+      "choices": [
+        "$5 + 6 - 4 = ?$",
+        "$5 - 6 - 4 = ?$",
+        "$5 + 6 + 4 = ?$",
+        "$5 + 4 = ?$"
+      ],
+      "answer": "$5 + 6 + 4 = ?$",
+      "compute": null,
+      "solution": "Ben got more stamps twice, so add all three numbers: 5 + 6 + 4 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 6 + 4 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 6 + 4 = ?",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.159Z"
+        }
+      }
+    },
+    {
+      "id": "fe5a343b-55d0-471b-8afb-6be8bc5ad868",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number in a sum of three",
+      "stem": "Lena puts 5 stickers on her book and 4 stickers on her bag. She puts some more stickers on her desk. She has 14 stickers in all. How many stickers are on her desk?",
+      "choices": [],
+      "answer": "5",
+      "compute": "14-5-4",
+      "solution": "5 + 4 = 9 stickers are on the book and bag. 14 - 9 = 5 stickers are on the desk.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+4=9; 14-9=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.188Z"
+        }
+      }
+    },
+    {
+      "id": "df5da8b8-e8d1-4a37-be88-1b05d80453d4",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers from a list of data",
+      "stem": "Mia's sticker chart shows Red: 7. Yellow: 2. Green: 6. How many stickers does she have in all?",
+      "choices": [],
+      "answer": "15",
+      "compute": "7+2+6",
+      "solution": "Add the three colors: 7 + 2 + 6 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+2+6=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.190Z"
+        }
+      }
+    },
+    {
+      "id": "e70dba39-e624-49a4-aa51-fed3a3316379",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the number sentence for a story",
+      "stem": "A shop sold 8 hats on Friday, 4 hats on Saturday and 3 hats on Sunday. Which number sentence shows how many hats were sold?",
+      "choices": [
+        "$8 + 4 + 3 = 14$",
+        "$8 - 4 - 3 = 1$",
+        "$8 + 4 - 3 = 9$",
+        "$8 + 4 + 3 = 15$"
+      ],
+      "answer": "$8 + 4 + 3 = 15$",
+      "compute": null,
+      "solution": "Add the hats sold on the three days: 8 + 4 + 3 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 4 + 3 = 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+4+3=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.205Z"
+        }
+      }
+    },
+    {
+      "id": "84eabf0f-cbfc-48f5-b11d-34ee3270813a",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare sums of three numbers",
+      "stem": "Which number sentence is true?",
+      "choices": [
+        "$4 + 4 + 4 = 6 + 6$",
+        "$3 + 5 + 6 = 9 + 4$",
+        "$2 + 7 + 5 = 6 + 6$",
+        "$8 + 2 + 2 = 4 + 7$"
+      ],
+      "answer": "$4 + 4 + 4 = 6 + 6$",
+      "compute": null,
+      "solution": "4 + 4 + 4 = 12 and 6 + 6 = 12, so these are equal. The other sentences have unequal sides (14 and 13, 14 and 12, 12 and 11).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4 + 4 = 6 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 vs 12; 14 vs 13; 12=12 true; 12 vs 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.228Z"
+        }
+      }
+    },
+    {
+      "id": "1dc2b841-f2af-4f4e-beec-d4172cdc30bc",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers from a list of data",
+      "stem": "The class wrote down how many spelling words it learned. Monday: 4 words. Tuesday: 7 words. Wednesday: 5 words. How many words did it learn in all?",
+      "choices": [],
+      "answer": "16",
+      "compute": "4+7+5",
+      "solution": "Add the three days: 4 + 7 + 5 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+7+5=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.232Z"
+        }
+      }
+    },
+    {
+      "id": "748c250b-84a6-4f9f-90dd-94f4a1bc59c4",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Put together three groups in a story",
+      "stem": "A zoo has 6 lions, 3 tigers and 8 bears. How many animals does the zoo have?",
+      "choices": [
+        "16",
+        "17",
+        "18",
+        "9"
+      ],
+      "answer": "17",
+      "compute": "17",
+      "solution": "Add the three groups: 6 + 3 + 8 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 3 + 8 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.275Z"
+        }
+      }
+    },
+    {
+      "id": "7c59261b-a7c9-4917-b4b9-de2b8d66361a",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers by making a ten",
+      "stem": "What is $4 + 7 + 6$? Hint: 4 and 6 make a ten.",
+      "choices": [],
+      "answer": "17",
+      "compute": "4+6+7",
+      "solution": "4 + 6 = 10. Then 10 + 7 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+6=10, 10+7=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.377Z"
+        }
+      }
+    },
+    {
+      "id": "999a26d5-2664-4d2c-a8f0-3af46f157411",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers with doubles",
+      "stem": "A bakery has 7 plain muffins, 7 berry muffins and 2 nut muffins. How many muffins does the bakery have?",
+      "choices": [],
+      "answer": "16",
+      "compute": "7+7+2",
+      "solution": "7 + 7 = 14, and 14 + 2 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+7+2=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.387Z"
+        }
+      }
+    },
+    {
+      "id": "076dfe1f-dbe9-4cf7-9a0f-33ff7fac0275",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number in a sum of three",
+      "stem": "Which number goes in the ?: $7 + 5 + ? = 15$",
+      "choices": [
+        "3",
+        "2",
+        "4",
+        "12"
+      ],
+      "answer": "3",
+      "compute": "15-7-5",
+      "solution": "7 + 5 = 12. To get to 15 you need 3 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+5=12; 15-12=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.424Z"
+        }
+      }
+    },
+    {
+      "id": "16e00d3d-72fb-452a-916c-7e3d802f4e8e",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "A line of 6 kids waits for the slide. Then 3 more kids join the line. Then 5 more kids join. How many kids are in the line?",
+      "choices": [],
+      "answer": "14",
+      "compute": "6+3+5",
+      "solution": "Add the kids: 6 + 3 + 5 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+3+5=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.508Z"
+        }
+      }
+    },
+    {
+      "id": "7fd31368-6d28-491c-a948-48bca532c90d",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare sums of three numbers",
+      "stem": "Which sum is greater than 15?",
+      "choices": [
+        "$5 + 5 + 4$",
+        "$6 + 4 + 4$",
+        "$8 + 4 + 4$",
+        "$7 + 3 + 4$"
+      ],
+      "answer": "$8 + 4 + 4$",
+      "compute": null,
+      "solution": "The sums are 14, 14, 16 and 14. Only 8 + 4 + 4 = 16 is greater than 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 4 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+4+4 = 16 > 15; others are 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.592Z"
+        }
+      }
+    },
+    {
+      "id": "d5449883-384b-4b33-a01d-f81d4828c3b3",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Put together three groups in a story",
+      "stem": "A pencil case has 9 crayons, 3 markers and 2 pencils. How many things are in the case?",
+      "choices": [],
+      "answer": "14",
+      "compute": "9+3+2",
+      "solution": "Add the three groups: 9 + 3 + 2 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+3=12; 12+2=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.653Z"
+        }
+      }
+    },
+    {
+      "id": "ab786d4c-3a53-432a-832e-749380137c55",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Nina collects eggs from three hens. She gets 5 eggs from the red hen, 6 eggs from the white hen and 3 eggs from the brown hen. How many eggs does she collect?",
+      "choices": [],
+      "answer": "14",
+      "compute": "5+6+3",
+      "solution": "Add the eggs: 5 + 6 + 3 = 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+6+3=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.659Z"
         }
       }
     },
@@ -4058,6 +5405,670 @@
           "work": "4 + 7 + 8 = 19 pets.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:12.060Z"
+        }
+      }
+    },
+    {
+      "id": "399a896c-e235-47d3-856c-ba3f11d65aba",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers from a list of data",
+      "stem": "The class voted for a pet. Dog: 8 votes. Cat: 7 votes. Fish: 4 votes. How many votes were there in all?",
+      "choices": [],
+      "answer": "19",
+      "compute": "8+7+4",
+      "solution": "Add the three groups of votes: 8 + 7 + 4 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 7 + 4 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.839Z"
+        }
+      }
+    },
+    {
+      "id": "6ff3f901-d163-40b2-ba2b-5f0ded1100fe",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Put together three groups in a story",
+      "stem": "A box has 5 red blocks, 8 yellow blocks and 6 blue blocks. How many blocks are in the box?",
+      "choices": [
+        "19",
+        "18",
+        "20",
+        "13"
+      ],
+      "answer": "19",
+      "compute": "19",
+      "solution": "Add the three groups: 5 + 8 + 6 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+8+6=19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.943Z"
+        }
+      }
+    },
+    {
+      "id": "3460c149-8cc0-43f8-b49f-13a9ec443e6d",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number in a sum of three",
+      "stem": "Ben read 5 pages on Monday, some pages on Tuesday and 8 pages on Wednesday. He read 19 pages in all. How many pages did he read on Tuesday?",
+      "choices": [],
+      "answer": "6",
+      "compute": "19-5-8",
+      "solution": "5 + 8 = 13 pages on Monday and Wednesday. 19 - 13 = 6 pages on Tuesday.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 - 5 - 8 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.988Z"
+        }
+      }
+    },
+    {
+      "id": "eb1b651a-a520-49ad-aaf7-0f92b7020a6b",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the number sentence for a story",
+      "stem": "Ruth has 4 blue pens, some red pens and 6 green pens. She has 15 pens in all. Which number sentence can find the number of red pens?",
+      "choices": [
+        "$4 + 6 + 15 = ?$",
+        "$4 + ? + 6 = 10$",
+        "$15 + 4 + 6 = ?$",
+        "$4 + ? + 6 = 15$"
+      ],
+      "answer": "$4 + ? + 6 = 15$",
+      "compute": null,
+      "solution": "The red pens are the unknown. The three groups together make 15, so 4 + ? + 6 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + ? + 6 = 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + ? + 6 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.991Z"
+        }
+      }
+    },
+    {
+      "id": "86c439b5-7d3e-494f-9515-d3fd1d5605bc",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Which story can be solved with $9 + 4 + 6$?",
+      "choices": [
+        "Sam has 9 red kites and 4 blue kites. How many kites does he have?",
+        "Sam has 19 kites. He gives 4 away and then 6 away. How many kites are left?",
+        "Sam has 9 red kites, 4 blue kites and 16 green kites. How many kites does he have?",
+        "Sam has 9 red kites, 4 blue kites and 6 green kites. How many kites does he have?"
+      ],
+      "answer": "Sam has 9 red kites, 4 blue kites and 6 green kites. How many kites does he have?",
+      "compute": null,
+      "solution": "The story puts together 9, 4 and 6, so it matches 9 + 4 + 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Sam has 9 red kites, 4 blue kites and 6 green kites. How many kites does he have?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+4+6 matches 9 red, 4 blue, 6 green kites (sum 19).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.042Z"
+        }
+      }
+    },
+    {
+      "id": "178e1ace-38ce-4137-9db1-c5b3a9b684c5",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing number in a sum of three",
+      "stem": "Which number goes in the ?: $8 + ? + 5 = 17$",
+      "choices": [
+        "3",
+        "5",
+        "4",
+        "12"
+      ],
+      "answer": "4",
+      "compute": "17-8-5",
+      "solution": "8 + 5 = 13. To get to 17 you need 4 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 5 = 13; 17 - 13 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.120Z"
+        }
+      }
+    },
+    {
+      "id": "372cbd5a-ad23-4d41-8071-d435814fe625",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add three numbers with doubles",
+      "stem": "What is $9 + 9 + 2$?",
+      "choices": [
+        "18",
+        "20",
+        "19",
+        "22"
+      ],
+      "answer": "20",
+      "compute": "20",
+      "solution": "9 + 9 = 18, and 18 + 2 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+9=18, +2=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.207Z"
+        }
+      }
+    },
+    {
+      "id": "0fb1c74f-f12f-4e6c-b38a-9dab838ff262",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Ravi has 7 marbles. He gets 6 more on Monday and 5 more on Tuesday. How many marbles does Ravi have now?",
+      "choices": [
+        "17",
+        "19",
+        "18",
+        "13"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Add the marbles: 7 + 6 + 5 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+6=13, +5=18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.207Z"
+        }
+      }
+    },
+    {
+      "id": "8a13e0e9-b7fc-40b9-835b-d7dc88d982d4",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers in any order",
+      "stem": "Look at this number sentence: $6 + 9 + 4 = 4 + ? + 6$. What number is the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Both sides use 6, 9 and 4 in a different order, so the ? is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+9+4=19 = 4+?+6 -> ?=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.216Z"
+        }
+      }
+    },
+    {
+      "id": "361760af-1484-4ae7-a387-314edeabbaef",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the number sentence for a story",
+      "stem": "Lily has 8 shells. She finds 7 more, and then 4 more. Which number sentence shows how many shells she has now?",
+      "choices": [
+        "$8 + 7 + 4 = 18$",
+        "$8 + 7 - 4 = 11$",
+        "$8 + 7 + 4 = 20$",
+        "$8 + 7 + 4 = 19$"
+      ],
+      "answer": "$8 + 7 + 4 = 19$",
+      "compute": null,
+      "solution": "She keeps getting more shells, so add: 8 + 7 + 4 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 7 + 4 = 19$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+7+4=19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.218Z"
+        }
+      }
+    },
+    {
+      "id": "f4aa7ead-24ab-4a55-9374-13baee0b81e9",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put together three groups in a story",
+      "stem": "A pet shop has 9 fish, 6 birds and 5 hamsters. How many animals does the shop have?",
+      "choices": [],
+      "answer": "20",
+      "compute": "9+6+5",
+      "solution": "Add the three groups: 9 + 6 + 5 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+6+5=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.512Z"
+        }
+      }
+    },
+    {
+      "id": "29fbb2e2-4766-4e61-8596-7c4d72af2519",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare sums of three numbers",
+      "stem": "Which sum is less than 16?",
+      "choices": [
+        "$7 + 5 + 3$",
+        "$9 + 5 + 3$",
+        "$8 + 6 + 3$",
+        "$6 + 6 + 5$"
+      ],
+      "answer": "$7 + 5 + 3$",
+      "compute": null,
+      "solution": "The sums are 17, 17, 15 and 17. Only 7 + 5 + 3 = 15 is less than 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 + 5 + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+5+3 = 15 < 16; 9+5+3 = 17, 6+6+5 = 17, 8+6+3 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.582Z"
+        }
+      }
+    },
+    {
+      "id": "5945f5d5-d7b7-441f-9f82-8de0580565d2",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers by making a ten",
+      "stem": "Hal scores 8 points, then 6 points, then 4 points in a game. Making a ten with 6 and 4 can help. How many points does Hal score in all?",
+      "choices": [],
+      "answer": "18",
+      "compute": "8+6+4",
+      "solution": "6 + 4 = 10. Then 10 + 8 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 6 + 4 = 8 + 10 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.606Z"
+        }
+      }
+    },
+    {
+      "id": "47a32c52-5d83-4779-be07-5b49007e4a6e",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers with doubles",
+      "stem": "Dina has 8 red beads, 8 blue beads and 3 yellow beads. How many beads does Dina have?",
+      "choices": [],
+      "answer": "19",
+      "compute": "8+8+3",
+      "solution": "8 + 8 = 16, and 16 + 3 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 8 + 3 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.624Z"
+        }
+      }
+    },
+    {
+      "id": "36f93bbe-fb87-4fe8-8669-88dbc13d11fd",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Jo fills a jar with 8 buttons. Then she adds 7 buttons. Then she adds 3 more buttons. How many buttons are in the jar?",
+      "choices": [],
+      "answer": "18",
+      "compute": "8+7+3",
+      "solution": "Add the buttons: 8 + 7 + 3 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+7=15; 15+3=18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.630Z"
+        }
+      }
+    },
+    {
+      "id": "cfbec107-39b4-4c65-a28c-868d4652a612",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers without a story",
+      "stem": "Add 5, 9 and 6. What is the sum?",
+      "choices": [],
+      "answer": "20",
+      "compute": "5+9+6",
+      "solution": "5 + 9 = 14, and 14 + 6 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+9=14; 14+6=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.635Z"
+        }
+      }
+    },
+    {
+      "id": "367d834e-69de-4b85-985d-bb9402b6a752",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add three numbers by making a ten",
+      "stem": "What is $6 + 7 + 4$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "6+7+4",
+      "solution": "6 and 4 make a ten. Then 10 + 7 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+4=10; 10+7=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.636Z"
+        }
+      }
+    },
+    {
+      "id": "58a043d6-7247-47a6-aed1-70ac619c2cd8",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add three numbers in a story (more and more)",
+      "stem": "Chip has 4 toy trucks. Dad gives him 9 more, and Mom gives him 5 more. How many toy trucks does Chip have now?",
+      "choices": [
+        "17",
+        "19",
+        "18",
+        "13"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "Add the trucks: 4 + 9 + 5 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+9=13; 13+5=18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.657Z"
+        }
+      }
+    },
+    {
+      "id": "6308269d-007b-4f9e-b814-bffd82b939d8",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare sums of three numbers",
+      "stem": "Which number sentence is false?",
+      "choices": [
+        "$7 + 7 + 4 = 18$",
+        "$5 + 8 + 5 = 19$",
+        "$9 + 3 + 6 = 18$",
+        "$6 + 6 + 6 = 18$"
+      ],
+      "answer": "$5 + 8 + 5 = 19$",
+      "compute": null,
+      "solution": "5 + 8 + 5 = 18, not 19, so this sentence is false. The other three sums are all 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 + 8 + 5 = 19$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+3+6=18 true; 7+7+4=18 true; 6+6+6=18 true; 5+8+5=18, not 19: false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.658Z"
+        }
+      }
+    },
+    {
+      "id": "f692212e-8c86-477e-a3e0-4fde8d1bfc23",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number in a sum of three",
+      "stem": "A bag has 7 red marbles, some blue marbles and 4 green marbles. There are 17 marbles in all. How many marbles are blue?",
+      "choices": [],
+      "answer": "6",
+      "compute": "17-7-4",
+      "solution": "7 + 4 = 11 marbles are red or green. 17 - 11 = 6 marbles are blue.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+4=11; 17-11=6 blue.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.661Z"
+        }
+      }
+    },
+    {
+      "id": "62991fbb-a038-4acd-b6b0-50f1d7125c78",
+      "topic_id": "NC17.1.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add three numbers in any order",
+      "stem": "Which expression is NOT equal to $9 + 4 + 6$?",
+      "choices": [
+        "$9 + 4 + 5$",
+        "$6 + 4 + 9$",
+        "$4 + 9 + 6$",
+        "$9 + 6 + 4$"
+      ],
+      "answer": "$9 + 4 + 5$",
+      "compute": null,
+      "solution": "9 + 4 + 6 = 19. The three expressions with 9, 4 and 6 in another order also equal 19. 9 + 4 + 5 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 + 4 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+4+6=19; 9+4+5=18 not equal; the others are reorderings equal to 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.669Z"
         }
       }
     },

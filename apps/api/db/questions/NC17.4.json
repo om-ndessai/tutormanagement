@@ -2,22 +2,25 @@
   "level_id": "NC17.4",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.4.G.2": "Shapes are given by their sides and angles in words. Naming questions say \"most specific name\" so that rectangle, square, rhombus and parallelogram are never both defensible; a trapezoid is always described as having exactly one pair of parallel sides, and no question asks whether one kind of shape belongs inside another (that is grade 5).",
-    "NC17.4.MD.1": "Questions are one-step and stay with whole numbers: larger units to smaller ones, comparisons, unit choice and estimates, and one-step problems. Converting a smaller unit to a larger one (which needs fractions or decimals) is left out as beyond the grade.",
-    "NC17.4.MD.2": "Only larger-to-smaller conversions with whole-number answers (m, cm, mm, km, kg, g, L, mL). Length models are written as lines of meter sticks; tables are written out.",
-    "NC17.4.MD.3": "Grade 4 area and perimeter of rectangles and rectilinear figures (composed or with a piece cut out), all with whole numbers. Rectilinear shapes are described by the rectangles that make them (no figure is referred to). Perimeter of an L-shape is not asked, as it cannot be stated fairly in words. Fixed area and fixed perimeter are asked as listing/counting rectangles with whole-number sides, comparing perimeters or areas, and finding greatest or least.",
-    "NC17.4.MD.4": "Line plots, bar graphs and tables are written as lists of counts (each X stands for one item); one question shows data in fourths of an inch. Collecting data is tested through the choice of question, the table and the plot, not by running a survey.",
-    "NC17.4.MD.6": "The protractor cannot be shown, so readings are given in words: which mark a ray crosses, and which scale starts at 0 on the first ray. Whole degrees only; no angle sums of triangles or vertical angles (later grades).",
+    "NC17.4.OA.1": "Grade 4 multiplicative comparison within facts and a few 2- and 3-digit products and quotients. Skills: interpreting a comparison equation, choosing an equation, find larger / smaller / how many times, additive versus multiplicative, multi-step. Wrote 69 (23 per difficulty), all whole numbers within Grade 4 multiplication facts and multi-digit by one-digit. Contexts avoid the first-pass stems; no figure needed.",
+    "NC17.4.OA.3": "All whole-number answers; products stay within 4-digit by 1-digit and 2-digit by 2-digit. Estimation questions state the rounding place, so each has one answer. Remainder questions say whether to round up, drop or use the remainder.",
+    "NC17.4.OA.4": "All numbers stay within 50 (the summary range). Prime/composite questions use numbers up to 50 only.",
     "NC17.4.NBT.1": "Whole numbers up to 100,000 only; every product or quotient stays within that range. Skills (rough counts): value of a digit 4, each place ten times the place to its right 4, compare a digit in two places 4, multiply or divide by 10 5, name the place 2, explain place-value statements 4, count in place-value units 4, build a number from its places 3. Model-based items (blocks, place-value charts) are asked as written statements.",
     "NC17.4.NBT.2": "Whole numbers to 100,000. Numeric questions give the numeral without commas; word forms are choice questions. Skills: words (5), numeral from words (5), expanded form (5), numeral from expanded form (5), matching forms (5), zeros as placeholders (5).",
-    "NC17.4.NBT.6": "Arrays and area models are described in words (a rectangle with an area and a width). Quotients with remainders are written like \"9 R 3\" in choice questions only; numeric questions ask for the quotient or the remainder separately.",
     "NC17.4.NBT.7": "Numbers are within 100,000. Comparisons are written with $>$, $=$ and $<$; number-line and place-value-chart pictures are not used.",
+    "NC17.4.NBT.6": "Arrays and area models are described in words (a rectangle with an area and a width). Quotients with remainders are written like \"9 R 3\" in choice questions only; numeric questions ask for the quotient or the remainder separately.",
     "NC17.4.NF.2": "Denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100 only; comparisons are written with $>$, $<$ and $=$. Models are written out in words (equal parts, a whole cut into parts). Skills (rough counts): benchmark one half 4, common denominator 4, common numerator 4, true comparison statement 2, order fractions 4, fractions in a story 5, justify a comparison 3, closest to a benchmark or between two fractions 4.",
     "NC17.4.NF.3": "Denominators 2-12 (common Grade 4 set). Mixed-number answers are written 'w n/d' and may be unsimplified (e.g. 4 2/4, 6/12) so the key follows the working; equivalent forms are accepted. Choice keys that are fractions have no compute (lint rejects compute for a non-plain-number key).",
     "NC17.4.NF.6": "Grade 4 decimal notation is limited to tenths and hundredths, with a few sums that pass 1 (as in 4.NF.5). Numeric answers may be given as a fraction or a decimal (for example 34/100 or 0.34). Comparing decimals and decimal addition with carrying belong to other standards and are not asked.",
     "NC17.4.NF.7": "Models are described in words (a square cut into 100 or 10 equal parts, shaded columns and squares). The statement's records with >, = and < appear as true-statement choices because a bare symbol cannot be a four-option choice.",
-    "NC17.4.OA.1": "Grade 4 multiplicative comparison within facts and a few 2- and 3-digit products and quotients. Skills: interpreting a comparison equation, choosing an equation, find larger / smaller / how many times, additive versus multiplicative, multi-step. Wrote 69 (23 per difficulty), all whole numbers within Grade 4 multiplication facts and multi-digit by one-digit. Contexts avoid the first-pass stems; no figure needed.",
-    "NC17.4.OA.4": "All numbers stay within 50 (the summary range). Prime/composite questions use numbers up to 50 only."
+    "NC17.4.MD.1": "Questions are one-step and stay with whole numbers: larger units to smaller ones, comparisons, unit choice and estimates, and one-step problems. Converting a smaller unit to a larger one (which needs fractions or decimals) is left out as beyond the grade.",
+    "NC17.4.MD.2": "Only larger-to-smaller conversions with whole-number answers (m, cm, mm, km, kg, g, L, mL). Length models are written as lines of meter sticks; tables are written out.",
+    "NC17.4.MD.8": "A clock time is not a number, so end and start times are choice questions; numeric questions ask for minutes (or minutes past a named hour). Subtract time intervals has 7 questions because several elapsed-time stories also subtract.",
+    "NC17.4.MD.3": "Grade 4 area and perimeter of rectangles and rectilinear figures (composed or with a piece cut out), all with whole numbers. Rectilinear shapes are described by the rectangles that make them (no figure is referred to). Perimeter of an L-shape is not asked, as it cannot be stated fairly in words. Fixed area and fixed perimeter are asked as listing/counting rectangles with whole-number sides, comparing perimeters or areas, and finding greatest or least.",
+    "NC17.4.MD.4": "Line plots, bar graphs and tables are written as lists of counts (each X stands for one item); one question shows data in fourths of an inch. Collecting data is tested through the choice of question, the table and the plot, not by running a survey.",
+    "NC17.4.MD.6": "The protractor cannot be shown, so readings are given in words: which mark a ray crosses, and which scale starts at 0 on the first ray. Whole degrees only; no angle sums of triangles or vertical angles (later grades).",
+    "NC17.4.G.2": "Shapes are given by their sides and angles in words. Naming questions say \"most specific name\" so that rectangle, square, rhombus and parallelogram are never both defensible; a trapezoid is always described as having exactly one pair of parallel sides, and no question asks whether one kind of shape belongs inside another (that is grade 5).",
+    "NC17.4.G.3": "Shapes, letters and grid rows are described in words; no picture is referred to. Drawing a line is tested by asking where lines go, how many there are, and which squares must match."
   },
   "questions": [
     {
@@ -3447,6 +3450,694 @@
       }
     },
     {
+      "id": "6291ff7b-07a1-47d0-b55a-22a35cc76f90",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpreting remainders",
+      "stem": "Ella has 25 red beads and 18 blue beads. She makes bracelets with 8 beads each, using as many beads as she can. How many beads are left over?",
+      "choices": [],
+      "answer": "3",
+      "compute": "43-8*5",
+      "solution": "Ella has 25 + 18 = 43 beads. 43 / 8 = 5 bracelets with 3 beads left over, since 8 x 5 = 40 and 43 - 40 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 + 18 = 43. 43 = 5 x 8 + 3. 3 left over.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.886Z"
+        }
+      }
+    },
+    {
+      "id": "38419c39-6539-479f-a4ba-dd49657a951c",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-step problems with division",
+      "stem": "Rosa has 33 stamps. She buys 15 more and puts all of her stamps in an album with 6 stamps on each page. How many pages does she fill?",
+      "choices": [
+        "48",
+        "5",
+        "2",
+        "8"
+      ],
+      "answer": "8",
+      "compute": "(33+15)/6",
+      "solution": "Rosa has 33 + 15 = 48 stamps. Each page holds 6, so 48 / 6 = 8 pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "33 + 15 = 48; 48 / 6 = 8 pages.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.901Z"
+        }
+      }
+    },
+    {
+      "id": "815ca6a7-3a82-4b6b-b534-d13a1dcf980f",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "A teacher takes 29 students on a trip. Each van seats 6 students. How many vans does she need so that every student has a seat?",
+      "choices": [
+        "4",
+        "6",
+        "5",
+        "23"
+      ],
+      "answer": "5",
+      "compute": "(29+1)/6",
+      "solution": "29 / 6 = 4 with 5 students left over. Those 5 students need another van, so she needs 4 + 1 = 5 vans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "29 / 6 = 4 r 5, so 5 vans.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.904Z"
+        }
+      }
+    },
+    {
+      "id": "f06531bb-18fe-43b3-bad0-9c66b612d06c",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "A parking lot has 75 cars. Then 22 cars leave and 14 cars arrive. How many cars are in the lot now?",
+      "choices": [],
+      "answer": "67",
+      "compute": "75-22+14",
+      "solution": "75 - 22 = 53 cars are left after some leave. Then 53 + 14 = 67 cars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75 - 22 + 14 = 67.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.959Z"
+        }
+      }
+    },
+    {
+      "id": "fe2eed5b-f48a-42aa-94de-5a28b05f8d49",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "A library had 250 books. It got 80 new books and then lent out 120 books. How many books does the library have now?",
+      "choices": [],
+      "answer": "210",
+      "compute": "250+80-120",
+      "solution": "First add: 250 + 80 = 330. Then subtract: 330 - 120 = 210. The library has 210 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "210",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250 + 80 - 120 = 210.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.970Z"
+        }
+      }
+    },
+    {
+      "id": "c4b4e923-eaf4-489c-9585-fd46865e0689",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Checking an answer by estimation",
+      "stem": "A farmer has 200 apples. He fills 6 baskets with 28 apples in each basket. Round 28 to the nearest ten to estimate how many apples are left.",
+      "choices": [],
+      "answer": "20",
+      "compute": "200-30*6",
+      "solution": "28 rounds to 30. The baskets hold about 30 x 6 = 180 apples. 200 - 180 = 20 apples are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Round 28 to 30; 6*30 = 180; 200 - 180 = 20 (estimate). Exact would be 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.974Z"
+        }
+      }
+    },
+    {
+      "id": "243d3472-1671-4121-bb2f-21e816dd1367",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "A rope is 47 feet long. Pete cuts it into pieces that are each 5 feet long. How many pieces of exactly 5 feet can he cut?",
+      "choices": [
+        "10",
+        "2",
+        "9",
+        "8"
+      ],
+      "answer": "9",
+      "compute": "(47-2)/5",
+      "solution": "47 / 5 = 9 with 2 feet left over. The leftover 2 feet is too short, so he gets 9 pieces.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 / 5 = 9 r 2, so 9 pieces.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.976Z"
+        }
+      }
+    },
+    {
+      "id": "241a60ca-93d4-4aa6-9899-9928dde5d00d",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "A school has 50 children for lunch. Each table seats 4 children. How many tables are needed so that every child has a seat?",
+      "choices": [
+        "13",
+        "12",
+        "14",
+        "46"
+      ],
+      "answer": "13",
+      "compute": "(50+2)/4",
+      "solution": "50 / 4 = 12 with 2 children left over. Those 2 children need a table too, so 12 + 1 = 13 tables.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "50/4 = 12 r 2, need 13 tables.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.982Z"
+        }
+      }
+    },
+    {
+      "id": "fdb269ea-1b70-484e-a4b3-bcf5bcdf43a4",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-step problems with division",
+      "stem": "A coach has 63 water bottles to share equally among 7 teams. Each team gives 4 of its bottles to the referees. How many bottles does each team keep?",
+      "choices": [
+        "9",
+        "59",
+        "5",
+        "13"
+      ],
+      "answer": "5",
+      "compute": "63/7-4",
+      "solution": "63 / 7 = 9 bottles for each team. Each team gives away 4, so it keeps 9 - 4 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63/7 = 9; 9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.990Z"
+        }
+      }
+    },
+    {
+      "id": "45b9c047-55f1-446a-bfe9-b75855897029",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "Kim reads 9 pages each day for 5 days. Her book has 60 pages. How many pages does she still have to read?",
+      "choices": [],
+      "answer": "15",
+      "compute": "60-9*5",
+      "solution": "She has read 9 x 5 = 45 pages. 60 - 45 = 15 pages are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 × 5 = 45 read; 60 - 45 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.022Z"
+        }
+      }
+    },
+    {
+      "id": "9c43cbbb-7f42-4418-b654-ad95140d928f",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-step problems with multiplication",
+      "stem": "Nora practices violin for 10 minutes each day for 6 days. On the seventh day she practices for 25 minutes. How many minutes does she practice in all?",
+      "choices": [
+        "85",
+        "60",
+        "95",
+        "35"
+      ],
+      "answer": "85",
+      "compute": "10*6+25",
+      "solution": "In 6 days she practices 10 x 6 = 60 minutes. Add the seventh day: 60 + 25 = 85 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "85",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10*6 = 60, + 25 = 85.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.047Z"
+        }
+      }
+    },
+    {
+      "id": "258ca475-6c01-4f35-a14f-01778a6bb382",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpreting remainders",
+      "stem": "Max has 35 cards. He puts the same number of cards in each of 4 folders, using as many cards as he can. How many cards are in each folder?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(35-3)/4",
+      "solution": "35 / 4 = 8 with 3 left over. Each folder gets 8 cards, and the 3 extra cards are not put in a folder.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 ÷ 4 = 8 remainder 3, so 8 cards in each folder (3 left over).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.246Z"
+        }
+      }
+    },
+    {
+      "id": "a431afb6-05c2-471e-be78-b119b0afda53",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Checking an answer by estimation",
+      "stem": "Sue has 48 shells. She finds 31 more and then 22 more. Round each number to the nearest ten to estimate how many shells she has.",
+      "choices": [],
+      "answer": "100",
+      "compute": "50+30+20",
+      "solution": "48 rounds to 50, 31 rounds to 30 and 22 rounds to 20. 50 + 30 + 20 = 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 rounds to 50, 31 to 30, 22 to 20; 50+30+20 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.301Z"
+        }
+      }
+    },
+    {
+      "id": "0b3331c4-5d83-43a6-8329-2db6184f4353",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Checking an answer by estimation",
+      "stem": "Which is the best estimate of $62 + 39 + 18$ when each number is rounded to the nearest ten?",
+      "choices": [
+        "100",
+        "150",
+        "80",
+        "120"
+      ],
+      "answer": "120",
+      "compute": "60+40+20",
+      "solution": "62 rounds to 60, 39 rounds to 40 and 18 rounds to 20. 60 + 40 + 20 = 120.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "62 -> 60, 39 -> 40, 18 -> 20; 60+40+20 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.309Z"
+        }
+      }
+    },
+    {
+      "id": "7e6f291a-a67f-4f85-b0a8-30ed68a27598",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A farmer plants 9 rows of corn with 7 plants in each row. Then 12 of the plants do not grow. How many corn plants grow?",
+      "choices": [],
+      "answer": "51",
+      "compute": "9*7-12",
+      "solution": "9 x 7 = 63 plants were planted. 63 - 12 = 51 plants grow.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "51",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 7 = 63; 63 - 12 = 51.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.348Z"
+        }
+      }
+    },
+    {
+      "id": "9911ad8a-aa35-469e-ab68-2d52c655aaa8",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A bakery sells 5 trays of cookies with 8 cookies on each tray. It also sells 7 single cookies. How many cookies does the bakery sell in all?",
+      "choices": [
+        "40",
+        "20",
+        "75",
+        "47"
+      ],
+      "answer": "47",
+      "compute": "5*8+7",
+      "solution": "The trays hold 5 x 8 = 40 cookies. Add the 7 single cookies: 40 + 7 = 47.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 8 = 40, + 7 = 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.351Z"
+        }
+      }
+    },
+    {
+      "id": "f3cb9797-62de-4b28-a3b5-594cd120ba1e",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step problems with division",
+      "stem": "A scout troop picks 48 apples and shares them equally among 6 baskets. Then 5 more apples are put in each basket. How many apples are in each basket now?",
+      "choices": [],
+      "answer": "13",
+      "compute": "48/6+5",
+      "solution": "48 / 6 = 8 apples in each basket at first. Adding 5 more to each basket gives 8 + 5 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48/6=8 per basket; 8+5=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.382Z"
+        }
+      }
+    },
+    {
+      "id": "bb8c6406-0a88-4a41-bee1-c885c2a4bf40",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Problems that use all four operations",
+      "stem": "Ivy has 5 packs with 6 beads in each pack. She uses 9 beads to make a bracelet. Which expression shows how many beads she has left?",
+      "choices": [
+        "$5 + 6 - 9$",
+        "$5 \\times 6 - 9$",
+        "$5 \\times 6 + 9$",
+        "$(5 + 6) \\times 9$"
+      ],
+      "answer": "$5 \\times 6 - 9$",
+      "compute": null,
+      "solution": "The packs hold 5 x 6 beads in all. She uses 9 of them, so subtract 9: $5 \\times 6 - 9$ (which is 21 beads).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 \\times 6 - 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5*6=30 beads, minus 9 used.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.407Z"
+        }
+      }
+    },
+    {
+      "id": "7ec5947a-67dc-4aad-a356-aadba7a8cd48",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step problems with division",
+      "stem": "Four friends share the cost of a game that costs 36 dollars and a snack that costs 12 dollars. They each pay the same amount. How many dollars does each friend pay?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(36+12)/4",
+      "solution": "The total cost is 36 + 12 = 48 dollars. Shared among 4 friends: 48 / 4 = 12 dollars each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36+12=48; 48/4=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.421Z"
+        }
+      }
+    },
+    {
+      "id": "6267d6f8-13ac-4bca-a322-a91c6bbe3209",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "Ben has 3 boxes with 4 toy cars in each box. A friend gives him 8 more cars. He puts all the cars equally into 4 bags. How many cars are in each bag?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(3*4+8)/4",
+      "solution": "3 x 4 = 12 cars in the boxes. Add 8: 12 + 8 = 20 cars. Share into 4 bags: 20 / 4 = 5 cars in each bag.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3*4=12, +8=20, /4=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.490Z"
+        }
+      }
+    },
+    {
+      "id": "d8f5834d-8ec9-4bbd-8463-a34866abbde6",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Two-step problems with multiplication",
+      "stem": "Luis buys 4 packs of juice boxes with 6 boxes in each pack. He drinks 5 of the boxes. How many juice boxes are left?",
+      "choices": [],
+      "answer": "19",
+      "compute": "4*6-5",
+      "solution": "4 x 6 = 24 juice boxes in all. After he drinks 5, 24 - 5 = 19 are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 6 = 24; 24 - 5 = 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.530Z"
+        }
+      }
+    },
+    {
+      "id": "842a71bc-185f-4e0b-a6bc-8452540c878b",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "Dana scored 36 points in the first game and 29 points in the second game. Her goal is 80 points in all. How many more points does she need to reach her goal?",
+      "choices": [
+        "65",
+        "15",
+        "44",
+        "109"
+      ],
+      "answer": "15",
+      "compute": "80-36-29",
+      "solution": "Points so far: 36 + 29 = 65. Points still needed: 80 - 65 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36+29=65; 80-65=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.630Z"
+        }
+      }
+    },
+    {
       "id": "f35b3b80-e598-4c76-85b5-11dc74d1f82d",
       "topic_id": "NC17.4.OA.3",
       "difficulty": 2,
@@ -3762,6 +4453,728 @@
       }
     },
     {
+      "id": "5c3d77a3-c028-46ba-bd55-fee80e6921ed",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-step problems with division",
+      "stem": "A farmer packs 360 eggs into cartons of 12 eggs each. He sells each carton for 3 dollars. How many dollars does he get for all the cartons?",
+      "choices": [
+        "30",
+        "33",
+        "1,080",
+        "90"
+      ],
+      "answer": "90",
+      "compute": "360/12*3",
+      "solution": "360 / 12 = 30 cartons. 30 cartons at 3 dollars each is 30 x 3 = 90 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360/12 = 30 cartons; 30 × 3 = 90 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.732Z"
+        }
+      }
+    },
+    {
+      "id": "0b713372-2e19-44ca-8421-867b2e6f7ff1",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "Marcus runs 3,400 meters on Monday and 2,850 meters on Tuesday. He wants to run 10,000 meters by the end of Wednesday. How many meters must he run on Wednesday?",
+      "choices": [
+        "6,250",
+        "3,750",
+        "6,600",
+        "7,150"
+      ],
+      "answer": "3,750",
+      "compute": "10000-3400-2850",
+      "solution": "So far he has run 3,400 + 2,850 = 6,250 meters. He still needs 10,000 - 6,250 = 3,750 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3,750",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3400 + 2850 = 6250. 10000 - 6250 = 3750.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.917Z"
+        }
+      }
+    },
+    {
+      "id": "0bee6056-1c01-44c4-b415-c5c897ac99c8",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Problems that use all four operations",
+      "stem": "Hana earns 12 dollars each week for 9 weeks. She spends 48 dollars and puts the rest into 3 jars, with the same amount in each jar. How many dollars are in each jar?",
+      "choices": [
+        "60",
+        "20",
+        "92",
+        "36"
+      ],
+      "answer": "20",
+      "compute": "(12*9-48)/3",
+      "solution": "She earns 12 x 9 = 108 dollars. After spending 48, she has 108 - 48 = 60 dollars. In 3 jars: 60 / 3 = 20 dollars each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12x9=108; 108-48=60; 60/3=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.931Z"
+        }
+      }
+    },
+    {
+      "id": "afbe1b02-7ad1-46ed-b358-8fa473e684ac",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "Mr. Chen drove 328 miles on Friday. On Saturday he drove 57 miles fewer than on Friday. How many miles did he drive on the two days together?",
+      "choices": [],
+      "answer": "599",
+      "compute": "328+(328-57)",
+      "solution": "On Saturday he drove 328 - 57 = 271 miles. Together: 328 + 271 = 599 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "599",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Saturday 328-57=271. Total 328+271=599.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.935Z"
+        }
+      }
+    },
+    {
+      "id": "e0872801-34dc-454f-86dc-0f999cf4dec5",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "A coach buys 6 sets of 15 cones and 4 sets of 10 cones. He puts all the cones into 10 equal rows. How many cones are in each row?",
+      "choices": [],
+      "answer": "13",
+      "compute": "(6*15+4*10)/10",
+      "solution": "6 x 15 = 90 cones and 4 x 10 = 40 cones, so 90 + 40 = 130 cones. In 10 equal rows: 130 / 10 = 13 cones per row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x15=90; 4x10=40; 130/10=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.937Z"
+        }
+      }
+    },
+    {
+      "id": "08e856e3-ef2a-41a0-b9ed-bd75d3e6cd19",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpreting remainders",
+      "stem": "A store has 275 markers. It puts 6 markers in each pack and fills as many packs as it can. How many markers are left over, not in a pack?",
+      "choices": [],
+      "answer": "5",
+      "compute": "275-6*45",
+      "solution": "275 / 6 = 45 with a remainder, since 6 x 45 = 270. 275 - 270 = 5 markers are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "275 = 6x45 + 5, so 5 left over.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.939Z"
+        }
+      }
+    },
+    {
+      "id": "5bf5e9c9-debd-4747-a0d0-7b1e453f2387",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Checking an answer by estimation",
+      "stem": "A theater sold 412 tickets on Friday, 389 on Saturday, and 205 on Sunday. Round each number to the nearest hundred to estimate the total number of tickets sold.",
+      "choices": [
+        "1,000",
+        "900",
+        "1,100",
+        "1,200"
+      ],
+      "answer": "1,000",
+      "compute": "400+400+200",
+      "solution": "412 rounds to 400, 389 rounds to 400 and 205 rounds to 200. 400 + 400 + 200 = 1,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400+400+200=1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.940Z"
+        }
+      }
+    },
+    {
+      "id": "068c9cd0-071d-4d34-8b89-f71859483678",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step problems with division",
+      "stem": "A hiking club walks 126 miles in 9 days, going the same distance each day. At that pace, how many miles does the club walk in 5 days?",
+      "choices": [],
+      "answer": "70",
+      "compute": "126/9*5",
+      "solution": "126 / 9 = 14 miles each day. In 5 days: 14 x 5 = 70 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "126/9=14 miles a day; 14x5=70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.943Z"
+        }
+      }
+    },
+    {
+      "id": "474b50c2-74f1-4609-a336-cec2006579a9",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "Dad buys 5 packs of 12 juice boxes for a party. The 20 guests each drink 2 boxes. The boxes that are left are shared equally among 4 neighbors. How many boxes does each neighbor get?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(5*12-20*2)/4",
+      "solution": "He buys 5 x 12 = 60 boxes. The guests drink 20 x 2 = 40. That leaves 60 - 40 = 20 boxes. Shared among 4 neighbors: 20 / 4 = 5 each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5*12 = 60; 20*2 = 40; 60 - 40 = 20; 20/4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.983Z"
+        }
+      }
+    },
+    {
+      "id": "586a7edf-ed14-4346-a381-34a68b561d9c",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Checking an answer by estimation",
+      "stem": "A warehouse has 7 shelves with 312 boxes on each shelf and 195 more boxes in the back. Round each number of boxes to the nearest hundred to estimate how many boxes the warehouse has in all.",
+      "choices": [],
+      "answer": "2300",
+      "compute": "7*300+200",
+      "solution": "312 rounds to 300 and 195 rounds to 200. 7 x 300 = 2,100, and 2,100 + 200 = 2,300 boxes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "312 rounds to 300; 7×300 = 2100. 195 rounds to 200. Estimate 2100+200 = 2300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.002Z"
+        }
+      }
+    },
+    {
+      "id": "3b813c9f-09be-46c4-8d0b-e7a18105b310",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-step problems with division",
+      "stem": "Zane has 72 cards and Tess has 54 cards. They put all the cards together and share them equally among 9 friends. How many cards does each friend get?",
+      "choices": [
+        "8",
+        "6",
+        "14",
+        "18"
+      ],
+      "answer": "14",
+      "compute": "(72+54)/9",
+      "solution": "Together there are 72 + 54 = 126 cards. Shared among 9 friends: 126 / 9 = 14 cards each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72+54 = 126; 126 ÷ 9 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.009Z"
+        }
+      }
+    },
+    {
+      "id": "4c2a41ff-a1fa-47da-8ab2-a1b0a389b464",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Checking an answer by estimation",
+      "stem": "Eva wants to estimate the cost of 7 jackets that cost 39 dollars each and a hat that costs 21 dollars. She rounds each price to the nearest ten dollars. Which expression shows her estimate?",
+      "choices": [
+        "$7 \\times 30 + 20$",
+        "$7 + 40 + 20$",
+        "$7 \\times 40 \\times 20$",
+        "$7 \\times 40 + 20$"
+      ],
+      "answer": "$7 \\times 40 + 20$",
+      "compute": null,
+      "solution": "39 rounds to 40 and 21 rounds to 20. The jackets cost about 7 x 40 and the hat about 20, so the estimate is $7 \\times 40 + 20$ (which is 300 dollars).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7 \\times 40 + 20$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "39 → 40, 21 → 20; estimate 7 × 40 + 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.016Z"
+        }
+      }
+    },
+    {
+      "id": "aca87f2f-704c-45e4-9321-6223286c1f15",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "Ms. Lopez has 130 cookies for 14 guests. Each guest gets the same number of whole cookies, and the cookies that cannot be shared evenly stay on the plate. How many cookies does each guest get?",
+      "choices": [
+        "10",
+        "4",
+        "9",
+        "116"
+      ],
+      "answer": "9",
+      "compute": "(130-4)/14",
+      "solution": "130 / 14 = 9 with 4 left over (14 x 9 = 126). Each guest gets 9 cookies, and 4 stay on the plate.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "130 / 14 = 9 remainder 4 (14*9=126). Each guest gets 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.046Z"
+        }
+      }
+    },
+    {
+      "id": "019d1025-d820-4140-b2fa-b8af563f5087",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "A school library has 1,250 books. It buys 485 new books and gives away 360 old books. How many books does the library have now?",
+      "choices": [],
+      "answer": "1375",
+      "compute": "1250+485-360",
+      "solution": "1,250 + 485 = 1,735 books after the purchase. 1,735 - 360 = 1,375 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1375",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1250 + 485 = 1735; 1735 - 360 = 1375.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.109Z"
+        }
+      }
+    },
+    {
+      "id": "c78d8687-a52e-4794-bbf4-f258f64d7d63",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpreting remainders",
+      "stem": "Tanya has 94 stickers. She gives 22 of them to her brother and puts the rest on pages with 7 stickers on each page. How many stickers are left over after she fills as many pages as she can?",
+      "choices": [],
+      "answer": "2",
+      "compute": "(94-22)-7*10",
+      "solution": "She keeps 94 - 22 = 72 stickers. 72 / 7 = 10 pages, since 7 x 10 = 70. 72 - 70 = 2 stickers are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "94 - 22 = 72; 72 / 7 = 10 pages remainder 2. 2 left over.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.153Z"
+        }
+      }
+    },
+    {
+      "id": "45470740-9a27-4ead-bc37-ce9b3d9f756c",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A factory makes 235 toys each day for 4 days. Then it ships 600 toys. How many toys are left?",
+      "choices": [],
+      "answer": "340",
+      "compute": "235*4-600",
+      "solution": "235 x 4 = 940 toys made. 940 - 600 = 340 toys are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "340",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "235*4 = 940; 940 - 600 = 340.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.164Z"
+        }
+      }
+    },
+    {
+      "id": "ddbef1ed-8f5d-435c-b844-3aaccf3e13c7",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A concert hall has 18 rows with 25 seats in each row. Of these seats, 140 are reserved. How many seats are not reserved?",
+      "choices": [],
+      "answer": "310",
+      "compute": "18*25-140",
+      "solution": "18 x 25 = 450 seats in all. 450 - 140 = 310 seats are not reserved.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "310",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18*25=450; 450-140=310.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.189Z"
+        }
+      }
+    },
+    {
+      "id": "e7e206c0-bc4d-4fa6-ba9e-5ea793cbf486",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "A bus holds 48 students. A school trip has 250 students. What is the fewest number of buses that can carry all the students?",
+      "choices": [
+        "6",
+        "5",
+        "7",
+        "10"
+      ],
+      "answer": "6",
+      "compute": "(250+38)/48",
+      "solution": "250 / 48 = 5 with 10 students left over (48 x 5 = 240). Those 10 students need another bus, so the school needs 6 buses.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250/48 = 5 r 10, so 6 buses.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.199Z"
+        }
+      }
+    },
+    {
+      "id": "e01f9926-b2ef-45eb-b394-49e96516b472",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-step problems with multiplication",
+      "stem": "Priya buys 6 tickets that cost 14 dollars each. A coupon takes 9 dollars off the whole order. How many dollars does she pay?",
+      "choices": [
+        "93",
+        "84",
+        "30",
+        "75"
+      ],
+      "answer": "75",
+      "compute": "6*14-9",
+      "solution": "6 x 14 = 84 dollars for the tickets. The coupon takes off 9, so she pays 84 - 9 = 75 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6*14=84; 84-9=75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.221Z"
+        }
+      }
+    },
+    {
+      "id": "caa3cde4-1ba7-4b9e-8f7a-9cc6edfe83c7",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-step problems with multiplication",
+      "stem": "Rae has 4 times as many beads as Jade. Jade has 37 beads. How many more beads does Rae have than Jade?",
+      "choices": [
+        "111",
+        "148",
+        "185",
+        "33"
+      ],
+      "answer": "111",
+      "compute": "4*37-37",
+      "solution": "Rae has 4 x 37 = 148 beads. 148 - 37 = 111 more beads than Jade.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "111",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rae 4*37=148; 148-37=111.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.237Z"
+        }
+      }
+    },
+    {
+      "id": "97461309-a4b5-42c7-a77f-f27d23287a3e",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step problems with division",
+      "stem": "A bakery makes 288 rolls and packs them in bags of 6 rolls each. It sells 31 of the bags. How many bags are left?",
+      "choices": [],
+      "answer": "17",
+      "compute": "288/6-31",
+      "solution": "288 / 6 = 48 bags. After selling 31, 48 - 31 = 17 bags are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "288 ÷ 6 = 48 bags; 48 - 31 = 17 bags left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.259Z"
+        }
+      }
+    },
+    {
+      "id": "ffc6dd86-060c-428a-98b4-e7cf4256c117",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Problems that use all four operations",
+      "stem": "Jake has 80 dollars. He buys 3 games that cost 15 dollars each. Let n be the number of dollars he has left. Which number sentence can be used to find n?",
+      "choices": [
+        "$(80 - 3) \\times 15 = n$",
+        "$80 - 3 + 15 = n$",
+        "$80 - 3 \\times 15 = n$",
+        "$80 \\div 3 - 15 = n$"
+      ],
+      "answer": "$80 - 3 \\times 15 = n$",
+      "compute": null,
+      "solution": "The 3 games cost 3 x 15 dollars. That amount is taken away from 80, so $80 - 3 \\times 15 = n$ (n is 35).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$80 - 3 \\times 15 = n$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Games cost 3x15 = 45; left 80 - 45 = 35. Sentence: 80 - 3 x 15 = n.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.318Z"
+        }
+      }
+    },
+    {
+      "id": "8bbc0017-335f-40a0-9ced-7df3b5d70a04",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Checking an answer by estimation",
+      "stem": "Ben buys 8 books that cost 19 dollars each and a bag that costs 31 dollars. Round each price to the nearest ten dollars to estimate how many dollars he spends.",
+      "choices": [],
+      "answer": "190",
+      "compute": "8*20+30",
+      "solution": "19 rounds to 20 and 31 rounds to 30. 8 x 20 = 160, and 160 + 30 = 190 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "190",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Books 19 -> 20, 8 x 20 = 160; bag 31 -> 30. Estimate 190.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.345Z"
+        }
+      }
+    },
+    {
       "id": "e80483b0-d4b9-442d-908a-8f3a22b27e05",
       "topic_id": "NC17.4.OA.3",
       "difficulty": 3,
@@ -4073,6 +5486,699 @@
           "work": "8 x 215 = 1,720; 3,962 + 1,720 = 5,682. Estimate: 4,000 + 8 x 200 = 5,600. Closest option 5,600.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.459Z"
+        }
+      }
+    },
+    {
+      "id": "0ece0da6-6617-4b73-a776-ff9b30f8c0ee",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "A school club collected 2,450 dollars in week one. In week two it collected 380 dollars less than in week one. The goal is 6,000 dollars. How many more dollars are needed to reach the goal?",
+      "choices": [],
+      "answer": "1480",
+      "compute": "6000-(2450+2450-380)",
+      "solution": "Week two: 2,450 - 380 = 2,070 dollars. So far: 2,450 + 2,070 = 4,520 dollars. Still needed: 6,000 - 4,520 = 1,480 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1480",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Week two: 2450 - 380 = 2070. Total 4520. 6000 - 4520 = 1480.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.862Z"
+        }
+      }
+    },
+    {
+      "id": "dbc6dd7e-8e8b-45b3-98f1-572d6458506f",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step problems with division",
+      "stem": "Sixteen students each have 18 stickers. They put all their stickers together and share them equally among 9 groups. How many stickers does each group get?",
+      "choices": [],
+      "answer": "32",
+      "compute": "16*18/9",
+      "solution": "The students have 16 x 18 = 288 stickers. Shared among 9 groups: 288 / 9 = 32 stickers each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 x 18 = 288. 288 / 9 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.918Z"
+        }
+      }
+    },
+    {
+      "id": "82ab214d-0499-4d41-900a-aaa8228be4be",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A truck carries 4 crates with 125 melons in each crate and 3 crates with 250 melons in each crate. How many melons does the truck carry?",
+      "choices": [
+        "875",
+        "1,750",
+        "375",
+        "1,250"
+      ],
+      "answer": "1,250",
+      "compute": "4*125+3*250",
+      "solution": "4 x 125 = 500 melons and 3 x 250 = 750 melons. 500 + 750 = 1,250 melons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,250",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 125 = 500; 3 x 250 = 750; total 1250.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.920Z"
+        }
+      }
+    },
+    {
+      "id": "650812d0-869d-443d-bc6c-6dca4b672339",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "Zoe has 6 boxes with 24 beads in each box and 4 boxes with 18 beads in each box. She uses 36 beads for a necklace and shares the rest equally among 12 friends. How many beads does each friend get?",
+      "choices": [],
+      "answer": "15",
+      "compute": "(6*24+4*18-36)/12",
+      "solution": "6 x 24 = 144 beads and 4 x 18 = 72 beads, so she has 144 + 72 = 216 beads. After the necklace: 216 - 36 = 180. Shared among 12 friends: 180 / 12 = 15 beads each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x24=144; 4x18=72; 144+72=216; 216-36=180; 180/12=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.923Z"
+        }
+      }
+    },
+    {
+      "id": "592b27e2-d595-4c1f-8f3c-4a172d313638",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step problems with division",
+      "stem": "A theater sold 1,260 tickets in 7 days, the same number each day. Each ticket costs 8 dollars. How many dollars did the theater take in on one day?",
+      "choices": [
+        "180",
+        "10,080",
+        "1,440",
+        "1,268"
+      ],
+      "answer": "1,440",
+      "compute": "1260/7*8",
+      "solution": "1,260 / 7 = 180 tickets each day. At 8 dollars each: 180 x 8 = 1,440 dollars in one day.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,440",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1260 ÷ 7 = 180 tickets per day; 180 × 8 = 1440 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.013Z"
+        }
+      }
+    },
+    {
+      "id": "e880d891-35bd-4a25-b5bc-61da5f15a4da",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Checking an answer by estimation",
+      "stem": "A city park had 4,215 visitors on Monday, 2,880 on Tuesday, and 6,120 on Wednesday. Round each number to the nearest thousand to estimate the total number of visitors.",
+      "choices": [],
+      "answer": "13000",
+      "compute": "4000+3000+6000",
+      "solution": "4,215 rounds to 4,000, 2,880 rounds to 3,000 and 6,120 rounds to 6,000. 4,000 + 3,000 + 6,000 = 13,000.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13000",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4215→4000, 2880→3000, 6120→6000; total 13000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.032Z"
+        }
+      }
+    },
+    {
+      "id": "a90aae5b-8492-4bee-8542-f10944e33a7f",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step problems with multiplication",
+      "stem": "Dee has 5 times as many marbles as Eli, and Eli has 3 times as many marbles as Fay. Fay has 14 marbles. How many marbles does Dee have?",
+      "choices": [
+        "210",
+        "70",
+        "42",
+        "22"
+      ],
+      "answer": "210",
+      "compute": "14*3*5",
+      "solution": "Eli has 3 x 14 = 42 marbles. Dee has 5 times as many as Eli: 5 x 42 = 210 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "210",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Eli = 3*14 = 42; Dee = 5*42 = 210.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.045Z"
+        }
+      }
+    },
+    {
+      "id": "1bf4844c-255b-4afe-a703-1de7ff291a6c",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step problems with division",
+      "stem": "A baker uses 4 cups of flour for each loaf. She has 2 bags with 150 cups of flour in each bag and uses all of it. She sells every loaf for 6 dollars. How many dollars does she get?",
+      "choices": [
+        "75",
+        "1,800",
+        "81",
+        "450"
+      ],
+      "answer": "450",
+      "compute": "2*150/4*6",
+      "solution": "She has 2 x 150 = 300 cups of flour. 300 / 4 = 75 loaves. At 6 dollars each: 75 x 6 = 450 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "450",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2*150 = 300 cups; 300/4 = 75 loaves; 75*6 = 450 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.064Z"
+        }
+      }
+    },
+    {
+      "id": "a2d9e0cd-7776-4a41-b58a-be03393795ae",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step problems with division",
+      "stem": "A farmer picks 1,248 apples and packs them equally into 8 crates. He sells 5 of the crates. How many apples are left?",
+      "choices": [],
+      "answer": "468",
+      "compute": "1248/8*(8-5)",
+      "solution": "1,248 / 8 = 156 apples in each crate. After selling 5 crates, 3 crates are left: 3 x 156 = 468 apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "468",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1248 / 8 = 156 per crate. 8 - 5 = 3 crates left: 3 x 156 = 468.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.107Z"
+        }
+      }
+    },
+    {
+      "id": "3a4d2e45-93bf-46ce-bdfe-eeea68cbd86e",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A museum charges 12 dollars for an adult ticket and 7 dollars for a child ticket. A school group buys 15 adult tickets and 38 child tickets and pays with 500 dollars. How many dollars of change does the group get?",
+      "choices": [],
+      "answer": "54",
+      "compute": "500-(15*12+38*7)",
+      "solution": "Adult tickets: 15 x 12 = 180 dollars. Child tickets: 38 x 7 = 266 dollars. Total: 180 + 266 = 446 dollars. Change: 500 - 446 = 54 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15*12=180; 38*7=266; total 446; 500-446=54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.129Z"
+        }
+      }
+    },
+    {
+      "id": "67735df7-b040-4de0-a564-23bf123bc45d",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "Hector read 1,248 pages in June, which was 375 pages more than in May. In April he read 290 fewer pages than in May. How many pages did he read in April?",
+      "choices": [
+        "873",
+        "583",
+        "958",
+        "1,163"
+      ],
+      "answer": "583",
+      "compute": "1248-375-290",
+      "solution": "In May he read 1,248 - 375 = 873 pages. In April he read 290 fewer: 873 - 290 = 583 pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "583",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "May = 1248 - 375 = 873. April = 873 - 290 = 583.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.136Z"
+        }
+      }
+    },
+    {
+      "id": "4dd0e9a6-bbda-4f17-9b7e-70ef46b4a846",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Problems that use all four operations",
+      "stem": "Tess has 200 dollars. She buys 4 tickets that cost 26 dollars each. She shares the money she has left equally among 3 friends. How many dollars does each friend get?",
+      "choices": [
+        "96",
+        "174",
+        "32",
+        "304"
+      ],
+      "answer": "32",
+      "compute": "(200-4*26)/3",
+      "solution": "The tickets cost 4 x 26 = 104 dollars. She has 200 - 104 = 96 dollars left. Shared among 3 friends: 96 / 3 = 32 dollars each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4*26 = 104; 200 - 104 = 96; 96/3 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.156Z"
+        }
+      }
+    },
+    {
+      "id": "5a0908ab-507f-4a1e-b6ca-b916b9b34842",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Checking an answer by estimation",
+      "stem": "A farm packs 4,860 eggs into cartons of 12 eggs and sells each carton for 3 dollars. Round 4,860 to 4,800 to estimate how many dollars the farm gets.",
+      "choices": [
+        "1,200",
+        "120",
+        "12,000",
+        "400"
+      ],
+      "answer": "1,200",
+      "compute": "4800/12*3",
+      "solution": "4,800 / 12 = 400 cartons. At 3 dollars each: 400 x 3 = 1,200 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1,200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4800/12 = 400 cartons; 400*3 = 1200 dollars. (Exact 4860/12=405, 1215 dollars, near 1,200.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.184Z"
+        }
+      }
+    },
+    {
+      "id": "2d6d07b0-4568-4d4e-8708-912d48e2d8cd",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "Pete saves 14 dollars each week for 12 weeks. His sister saves 9 dollars each week for 16 weeks. They buy a gift for 120 dollars and share the money that is left equally between them. How many dollars does each get?",
+      "choices": [],
+      "answer": "96",
+      "compute": "(14*12+9*16-120)/2",
+      "solution": "Pete saves 14 x 12 = 168 dollars and his sister saves 9 x 16 = 144 dollars, so 168 + 144 = 312 dollars. After the gift: 312 - 120 = 192 dollars. Each gets 192 / 2 = 96 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pete 14*12=168, sister 9*16=144, total 312; 312-120=192; 192/2=96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.206Z"
+        }
+      }
+    },
+    {
+      "id": "27cb9a64-6c79-464a-8908-c805cc79c670",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Problems that use all four operations",
+      "stem": "A school sells 240 pens for 2 dollars each and 150 notebooks for 3 dollars each. It paid 380 dollars for all the items and shares the profit equally among 5 clubs. How many dollars does each club get?",
+      "choices": [],
+      "answer": "110",
+      "compute": "(240*2+150*3-380)/5",
+      "solution": "Pens: 240 x 2 = 480 dollars. Notebooks: 150 x 3 = 450 dollars. Sales: 480 + 450 = 930 dollars. Profit: 930 - 380 = 550 dollars. Each club: 550 / 5 = 110 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sales 240*2=480, 150*3=450, total 930; profit 930-380=550; 550/5=110.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.215Z"
+        }
+      }
+    },
+    {
+      "id": "f5cc5fec-f8bd-4410-8c20-5aaea88c88c8",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step addition and subtraction problems",
+      "stem": "A stadium has 45,000 seats. On Saturday 28,650 people came to a game, and on Sunday 31,275 people came. How many more people came over the two days than the number of seats in the stadium?",
+      "choices": [],
+      "answer": "14925",
+      "compute": "28650+31275-45000",
+      "solution": "Together 28,650 + 31,275 = 59,925 people came. 59,925 - 45,000 = 14,925 more people than seats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14925",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28,650+31,275=59,925; 59,925-45,000=14,925.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.236Z"
+        }
+      }
+    },
+    {
+      "id": "983b33fe-927e-4d6e-bc6e-4deabd345b15",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step problems with multiplication",
+      "stem": "A bakery bakes 48 trays of muffins with 15 muffins on each tray. It sells all but 120 of the muffins. How many muffins does the bakery sell?",
+      "choices": [],
+      "answer": "600",
+      "compute": "48*15-120",
+      "solution": "48 x 15 = 720 muffins. It sells all but 120, so 720 - 120 = 600 muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 × 15 = 720; 720 - 120 = 600 sold.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.267Z"
+        }
+      }
+    },
+    {
+      "id": "8788b72b-944a-4fdf-aff3-eae93e5a3ac0",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "A school has 214 students going to a play. Each row seats 15 students, and the school pays 6 dollars for each row it uses. How many dollars does the school pay?",
+      "choices": [
+        "90",
+        "84",
+        "96",
+        "21"
+      ],
+      "answer": "90",
+      "compute": "15*6",
+      "solution": "214 / 15 = 14 with 4 students left over (15 x 14 = 210). Those 4 students need a row too, so 15 rows are used. 15 x 6 = 90 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "214 ÷ 15 = 14 r 4, so 15 rows are needed; 15 × 6 = 90 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.299Z"
+        }
+      }
+    },
+    {
+      "id": "b6f2c89e-00ac-48bb-8473-81658ceaf325",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Problems that use all four operations",
+      "stem": "A club has 5 groups of 12 students and 8 groups of 9 students. All the students are put into 6 equal teams. Which expression gives the number of students on each team?",
+      "choices": [
+        "$5 \\times 12 + 8 \\times 9 \\div 6$",
+        "$(5 \\times 12 + 8 \\times 9) \\div 6$",
+        "$(5 + 8) \\times (12 + 9) \\div 6$",
+        "$(5 \\times 12 + 8 \\times 9) \\times 6$"
+      ],
+      "answer": "$(5 \\times 12 + 8 \\times 9) \\div 6$",
+      "compute": null,
+      "solution": "All the students: 5 x 12 + 8 x 9. This whole total is divided by 6, so the addition needs parentheses: $(5 \\times 12 + 8 \\times 9) \\div 6$ (which is 22 students).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5 \\times 12 + 8 \\times 9) \\div 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = 5x12 + 8x9 = 60 + 72 = 132; divided into 6 teams: (5x12 + 8x9) / 6 = 22. Option A divides only 8x9 by order of operations.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.306Z"
+        }
+      }
+    },
+    {
+      "id": "b0fcfda5-4ac4-4616-85bb-99d8118156b3",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpreting remainders",
+      "stem": "Ravi has 300 stickers. He puts 14 stickers on each page and fills as many pages as he can. He gives the leftover stickers to his sister, who already has 9 stickers. How many stickers does his sister have now?",
+      "choices": [],
+      "answer": "15",
+      "compute": "(300-14*21)+9",
+      "solution": "300 / 14 = 21 pages, since 14 x 21 = 294. The leftover is 300 - 294 = 6 stickers. His sister then has 6 + 9 = 15 stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300/14 = 21 pages (294), 6 left. Sister: 9+6=15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.478Z"
+        }
+      }
+    },
+    {
+      "id": "93bb97b0-1169-45c0-b805-ec575df49076",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpreting remainders",
+      "stem": "Anna has 200 beads. She makes necklaces with 12 beads each and uses as many beads as she can. She sells each necklace for 3 dollars and sells them all. How many dollars does she get?",
+      "choices": [
+        "51",
+        "16",
+        "48",
+        "600"
+      ],
+      "answer": "48",
+      "compute": "(200-8)/12*3",
+      "solution": "200 / 12 = 16 with 8 beads left over (12 x 16 = 192). Only 16 whole necklaces can be made. 16 x 3 = 48 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "200/12=16 r 8: 16 necklaces. 16*3=48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.486Z"
+        }
+      }
+    },
+    {
+      "id": "7c06bbd9-cd84-48f5-a581-45b0bfdafa54",
+      "topic_id": "NC17.4.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Checking an answer by estimation",
+      "stem": "Mia has 297 stamps and buys 6 packs with 48 stamps in each pack. She says she now has 485 stamps. Which statement uses a good estimate to show her answer is too low?",
+      "choices": [
+        "$300 + 6 \\times 50$ is about 600, so 485 is too high.",
+        "$300 + 6 + 50$ is about 356, so 485 is too high.",
+        "$300 \\times 6 + 50$ is about 1,850, so 485 is too low.",
+        "$300 + 6 \\times 50$ is about 600, so 485 is too low."
+      ],
+      "answer": "$300 + 6 \\times 50$ is about 600, so 485 is too low.",
+      "compute": null,
+      "solution": "Round 297 to 300 and 48 to 50. The estimate is 300 + 6 x 50 = 300 + 300 = 600. Mia's answer of 485 is well below 600, so it is too low.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$300 + 6 \\times 50$ is about 600, so 485 is too low.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Actual 297 + 6*48 = 297 + 288 = 585. Estimate 300 + 6*50 = 600, so 485 is too low.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.573Z"
         }
       }
     },
@@ -19167,6 +21273,922 @@
       }
     },
     {
+      "id": "d14609e6-8952-4f62-bab5-8d3101c0ac32",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the end time",
+      "stem": "Lena starts her homework at 5:40 p.m. and works for 30 minutes. How many minutes after 6:00 p.m. does she stop?",
+      "choices": [],
+      "answer": "10",
+      "compute": "40+30-60",
+      "solution": "5:40 plus 20 minutes is 6:00. She has 10 more minutes to work, so she stops 10 minutes after 6:00 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5:40 + 30 min = 6:10, which is 10 minutes after 6:00.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.694Z"
+        }
+      }
+    },
+    {
+      "id": "58118a75-3860-4c78-a049-aa2e11e1b265",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the elapsed time",
+      "stem": "How much time passes from 2:40 p.m. to 3:05 p.m.?",
+      "choices": [
+        "35 minutes",
+        "65 minutes",
+        "45 minutes",
+        "25 minutes"
+      ],
+      "answer": "25 minutes",
+      "compute": null,
+      "solution": "From 2:40 to 3:00 is 20 minutes. From 3:00 to 3:05 is 5 more minutes. 20 + 5 = 25 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2:40 to 3:00 = 20 min, 3:00 to 3:05 = 5 min: 25 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.839Z"
+        }
+      }
+    },
+    {
+      "id": "1ab0cf15-087f-41f1-b1cf-b924bd988ac5",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the elapsed time",
+      "stem": "Mia starts reading at 4:45 p.m. and stops at 5:10 p.m. How many minutes does she read?",
+      "choices": [],
+      "answer": "25",
+      "compute": "15+10",
+      "solution": "From 4:45 to 5:00 is 15 minutes. From 5:00 to 5:10 is 10 more minutes. 15 + 10 = 25 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4:45 to 5:00 is 15 min, 5:00 to 5:10 is 10 min; 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.960Z"
+        }
+      }
+    },
+    {
+      "id": "244ce264-43e9-4a8b-82bc-3efe24c4267d",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the start time",
+      "stem": "A class ends at 10:05 a.m. and lasted 45 minutes. How many minutes after 9:00 a.m. did the class start?",
+      "choices": [],
+      "answer": "20",
+      "compute": "65-45",
+      "solution": "Go back 5 minutes from 10:05 to 10:00. Go back 40 more minutes to 9:20. The class started 20 minutes after 9:00 a.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10:05 - 45 min = 9:20 a.m., 20 minutes after 9:00.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.085Z"
+        }
+      }
+    },
+    {
+      "id": "d60fa54d-dab6-42ee-b840-cc64c9ed68d4",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the start time",
+      "stem": "A movie ends at 6:15 p.m. It lasted 30 minutes. What time did it start?",
+      "choices": [
+        "5:45 p.m.",
+        "6:45 p.m.",
+        "5:15 p.m.",
+        "5:30 p.m."
+      ],
+      "answer": "5:45 p.m.",
+      "compute": null,
+      "solution": "Go back 15 minutes from 6:15 to 6:00. Go back 15 more minutes to 5:45. The movie started at 5:45 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5:45 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6:15 minus 30 min = 5:45 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.198Z"
+        }
+      }
+    },
+    {
+      "id": "1d734516-f8bf-41d4-8f5e-15f894175388",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add time intervals",
+      "stem": "Pia spends 30 minutes on math and 45 minutes on reading. How much time is that in all?",
+      "choices": [
+        "1 hour 5 minutes",
+        "1 hour 25 minutes",
+        "1 hour 15 minutes",
+        "1 hour 45 minutes"
+      ],
+      "answer": "1 hour 15 minutes",
+      "compute": null,
+      "solution": "30 + 45 = 75 minutes. 75 minutes is 1 hour and 15 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 hour 15 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30+45=75 min = 1 h 15 min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.475Z"
+        }
+      }
+    },
+    {
+      "id": "0f9af8c3-078d-4546-9297-f08ed0214013",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract time intervals",
+      "stem": "A game lasts 1 hour. It has been going for 40 minutes. How much time is left?",
+      "choices": [
+        "40 minutes",
+        "20 minutes",
+        "60 minutes",
+        "30 minutes"
+      ],
+      "answer": "20 minutes",
+      "compute": null,
+      "solution": "1 hour is 60 minutes. 60 - 40 = 20 minutes are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60-40=20 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.485Z"
+        }
+      }
+    },
+    {
+      "id": "b481072a-3682-4dae-aaae-654bb4fa600b",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the end time",
+      "stem": "Practice starts at 3:50 p.m. and lasts 20 minutes. What time does practice end?",
+      "choices": [
+        "4:20 p.m.",
+        "4:00 p.m.",
+        "4:10 p.m.",
+        "3:30 p.m."
+      ],
+      "answer": "4:10 p.m.",
+      "compute": null,
+      "solution": "3:50 plus 10 minutes is 4:00. There are 10 more minutes to add, so practice ends at 4:10 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4:10 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:50 + 10 min = 4:00, +10 more = 4:10 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.509Z"
+        }
+      }
+    },
+    {
+      "id": "701ac38b-04ce-48bf-940c-54a0f0a3e705",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add time intervals",
+      "stem": "Ravi walks for 45 minutes and then rides his bike for 30 minutes. How many minutes does he spend walking and riding in all?",
+      "choices": [],
+      "answer": "75",
+      "compute": "45+30",
+      "solution": "45 + 30 = 75 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 + 30 = 75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.526Z"
+        }
+      }
+    },
+    {
+      "id": "ecf8b096-f948-4750-ab02-cfbf993c764c",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the end time",
+      "stem": "Soccer practice starts at 4:45 p.m. and lasts 1 hour 30 minutes. What time does practice end?",
+      "choices": [
+        "6:45 p.m.",
+        "5:15 p.m.",
+        "7:15 p.m.",
+        "6:15 p.m."
+      ],
+      "answer": "6:15 p.m.",
+      "compute": null,
+      "solution": "4:45 plus 1 hour is 5:45. 5:45 plus 15 minutes is 6:00, and 15 more minutes is 6:15. Practice ends at 6:15 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6:15 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4:45 + 1:00 = 5:45; + 30 min = 6:15 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.911Z"
+        }
+      }
+    },
+    {
+      "id": "90a1620d-d5ea-4c3c-aa3f-8ca82a9e37d2",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract time intervals",
+      "stem": "Sam has 1 hour 20 minutes to finish a project. He has worked for 45 minutes. How much time does he have left?",
+      "choices": [
+        "35 minutes",
+        "25 minutes",
+        "65 minutes",
+        "75 minutes"
+      ],
+      "answer": "35 minutes",
+      "compute": null,
+      "solution": "1 hour 20 minutes is 80 minutes. 80 - 45 = 35 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 - 45 = 35 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.972Z"
+        }
+      }
+    },
+    {
+      "id": "9f68d35a-2987-404c-98b6-f01cef04b65b",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the elapsed time",
+      "stem": "A play starts at 8:35 a.m. and ends at 11:10 a.m. How many minutes long is the play?",
+      "choices": [],
+      "answer": "155",
+      "compute": "25+120+10",
+      "solution": "From 8:35 to 9:00 is 25 minutes. From 9:00 to 11:00 is 2 hours, or 120 minutes. From 11:00 to 11:10 is 10 minutes. 25 + 120 + 10 = 155 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "155",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8:35 to 11:35 is 180 min; back 25 min to 11:10 gives 155 min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.997Z"
+        }
+      }
+    },
+    {
+      "id": "e51b728f-ab6a-445e-9767-83ef52112e35",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the start time",
+      "stem": "A recital ended at 7:10 p.m. and lasted 1 hour 45 minutes. How many minutes after 5:00 p.m. did it start?",
+      "choices": [],
+      "answer": "25",
+      "compute": "130-105",
+      "solution": "Go back 1 hour from 7:10 to 6:10. Go back 10 more minutes to 6:00, then 35 more minutes to 5:25. It started 25 minutes after 5:00 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7:10 p.m. minus 1 h 45 min: 7:10 - 1:00 = 6:10; 6:10 - 45 min = 5:25 p.m. That is 25 minutes after 5:00.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.079Z"
+        }
+      }
+    },
+    {
+      "id": "10402e75-8514-4469-977d-f44d974eb399",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the start time",
+      "stem": "A cake bakes for 50 minutes and comes out of the oven at 3:20 p.m. What time did it go into the oven?",
+      "choices": [
+        "4:10 p.m.",
+        "2:30 p.m.",
+        "2:50 p.m.",
+        "3:30 p.m."
+      ],
+      "answer": "2:30 p.m.",
+      "compute": null,
+      "solution": "Go back 20 minutes from 3:20 to 3:00. Go back 30 more minutes to 2:30. The cake went in at 2:30 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2:30 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:20 - 50 min = 2:30 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.119Z"
+        }
+      }
+    },
+    {
+      "id": "0815d052-f45e-473a-9338-44e11cb86598",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the elapsed time",
+      "stem": "A tutoring class starts at 1:50 p.m. and ends at 4:25 p.m. How long is the class?",
+      "choices": [
+        "2 hours 35 minutes",
+        "2 hours 25 minutes",
+        "3 hours 25 minutes",
+        "3 hours 35 minutes"
+      ],
+      "answer": "2 hours 35 minutes",
+      "compute": null,
+      "solution": "From 1:50 to 2:00 is 10 minutes. From 2:00 to 4:00 is 2 hours. From 4:00 to 4:25 is 25 minutes. 10 + 25 = 35 minutes, so the class is 2 hours 35 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 hours 35 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1:50 to 3:50 = 2 h; 3:50 to 4:25 = 35 min: 2 h 35 min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.408Z"
+        }
+      }
+    },
+    {
+      "id": "133c4f80-bf93-4e00-bbdc-1563375924d6",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract time intervals",
+      "stem": "A movie is 2 hours 10 minutes long. Dana has watched 1 hour 35 minutes of it. How many minutes of the movie are left?",
+      "choices": [],
+      "answer": "35",
+      "compute": "130-95",
+      "solution": "2 hours 10 minutes is 130 minutes. 1 hour 35 minutes is 95 minutes. 130 - 95 = 35 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2h10m=130 min, 1h35m=95 min; 130-95=35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.461Z"
+        }
+      }
+    },
+    {
+      "id": "9dd256e6-8b1e-43c9-86c6-c64f977c7283",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the end time",
+      "stem": "A train leaves at 9:40 a.m. The ride takes 2 hours 35 minutes. How many minutes after 12:00 noon does the train arrive?",
+      "choices": [],
+      "answer": "15",
+      "compute": "40+35-60",
+      "solution": "9:40 plus 2 hours is 11:40. 11:40 plus 20 minutes is 12:00. The remaining 15 minutes take the train to 12:15, so it arrives 15 minutes after noon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9:40 + 2h35m = 12:15 p.m., 15 minutes after noon.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.467Z"
+        }
+      }
+    },
+    {
+      "id": "076a6c18-6e82-4268-a884-f7e2426c2d14",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add time intervals",
+      "stem": "A trip has two parts. The first part takes 2 hours 40 minutes and the second part takes 1 hour 35 minutes. How long is the whole trip?",
+      "choices": [
+        "3 hours 15 minutes",
+        "4 hours 5 minutes",
+        "4 hours 15 minutes",
+        "4 hours 35 minutes"
+      ],
+      "answer": "4 hours 15 minutes",
+      "compute": null,
+      "solution": "Add the hours: 2 + 1 = 3 hours. Add the minutes: 40 + 35 = 75 minutes, which is 1 hour 15 minutes. 3 hours + 1 hour 15 minutes = 4 hours 15 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 hours 15 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2h40 + 1h35 = 3h75 = 4h15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.493Z"
+        }
+      }
+    },
+    {
+      "id": "451c26a1-cfd7-4049-9bd4-b1f46a518144",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add time intervals",
+      "stem": "Kai practices piano for 1 hour 25 minutes on Saturday and 55 minutes on Sunday. How many minutes does he practice in all?",
+      "choices": [],
+      "answer": "140",
+      "compute": "85+55",
+      "solution": "1 hour 25 minutes is 85 minutes. 85 + 55 = 140 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "140",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85+55=140.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.494Z"
+        }
+      }
+    },
+    {
+      "id": "741cfc11-029d-44e8-b2b2-6bb93c3e5750",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract time intervals",
+      "stem": "School starts at 8:25 a.m. and ends at 3:10 p.m. Lunch and recess take 55 minutes of the day. How many minutes of class time are there?",
+      "choices": [],
+      "answer": "350",
+      "compute": "(35+6*60+10)-55",
+      "solution": "From 8:25 a.m. to 2:25 p.m. is 6 hours, then 45 more minutes to 3:10 p.m., so 6 hours 45 minutes = 405 minutes. 405 - 55 = 350 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "350",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8:25 a.m. to 3:10 p.m. = 6 h 45 min = 405 min. 405 - 55 = 350.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.782Z"
+        }
+      }
+    },
+    {
+      "id": "456b8fb6-bd38-4cf2-a87c-dc05d02f9733",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract time intervals",
+      "stem": "A road trip takes 4 hours 20 minutes. The family has driven for 2 hours 45 minutes. How much longer do they have to drive?",
+      "choices": [
+        "1 hour 25 minutes",
+        "2 hours 25 minutes",
+        "1 hour 35 minutes",
+        "1 hour 45 minutes"
+      ],
+      "answer": "1 hour 35 minutes",
+      "compute": null,
+      "solution": "4 hours 20 minutes is 260 minutes. 2 hours 45 minutes is 165 minutes. 260 - 165 = 95 minutes, which is 1 hour 35 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 hour 35 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 h 20 min - 2 h 45 min = 260-165 = 95 min = 1 h 35 min.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.953Z"
+        }
+      }
+    },
+    {
+      "id": "7c316280-8b3d-4aab-ad43-1c9037244b11",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add time intervals",
+      "stem": "Ana practices on three days. She practices 45 minutes on the first day, 1 hour 10 minutes on the second day, and 50 minutes on the third day. How many minutes does she practice in all?",
+      "choices": [],
+      "answer": "165",
+      "compute": "45+70+50",
+      "solution": "1 hour 10 minutes is 70 minutes. 45 + 70 + 50 = 165 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "165",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 h 10 min = 70 min. 45 + 70 + 50 = 165 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.076Z"
+        }
+      }
+    },
+    {
+      "id": "2989776b-0763-4803-8f2b-318b5c12e054",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add time intervals",
+      "stem": "Leo starts a task at 4:50 p.m. He works for 40 minutes, takes a 15-minute break, and then works for 25 more minutes. What time does he finish?",
+      "choices": [
+        "6:00 p.m.",
+        "6:20 p.m.",
+        "5:45 p.m.",
+        "6:10 p.m."
+      ],
+      "answer": "6:10 p.m.",
+      "compute": null,
+      "solution": "The whole time is 40 + 15 + 25 = 80 minutes, or 1 hour 20 minutes. 4:50 plus 1 hour is 5:50. 5:50 plus 20 minutes is 6:10 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6:10 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4:50 + 40 min = 5:30; + 15 = 5:45; + 25 = 6:10 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.285Z"
+        }
+      }
+    },
+    {
+      "id": "4d06500c-a3c9-4431-91cf-5999bcc7208d",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the end time",
+      "stem": "Jo starts getting ready to bake at 10:50 a.m. Preparing takes 35 minutes and baking takes 1 hour 40 minutes. What time is the baking finished?",
+      "choices": [
+        "12:05 p.m.",
+        "1:15 p.m.",
+        "12:55 p.m.",
+        "1:05 p.m."
+      ],
+      "answer": "1:05 p.m.",
+      "compute": null,
+      "solution": "Preparing and baking take 35 + 100 = 135 minutes, which is 2 hours 15 minutes. 10:50 plus 2 hours is 12:50. 12:50 plus 15 minutes is 1:05 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1:05 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10:50 + 35 min = 11:25 a.m.; + 1 h 40 min = 1:05 p.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.292Z"
+        }
+      }
+    },
+    {
+      "id": "39a21bdd-fe97-4f49-b316-927c6ab5f40f",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the start time",
+      "stem": "Zoe walks 15 minutes to a bus stop and then rides the bus for 50 minutes. She arrives at school at 8:05 a.m. What time did she leave home?",
+      "choices": [
+        "7:15 a.m.",
+        "7:00 a.m.",
+        "7:50 a.m.",
+        "6:50 a.m."
+      ],
+      "answer": "7:00 a.m.",
+      "compute": null,
+      "solution": "The whole trip takes 15 + 50 = 65 minutes. Go back 5 minutes from 8:05 to 8:00, then 60 more minutes to 7:00. She left at 7:00 a.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7:00 a.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total 65 min; 8:05 - 65 min = 7:00 a.m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.411Z"
+        }
+      }
+    },
+    {
+      "id": "4eb442a8-0363-4a24-bcc8-4b750c47d217",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract time intervals",
+      "stem": "A TV program starts at 7:35 p.m. and ends at 9:10 p.m. It has 18 minutes of ads. How many minutes of the program are not ads?",
+      "choices": [],
+      "answer": "77",
+      "compute": "(25+60+10)-18",
+      "solution": "From 7:35 to 9:10 is 25 + 60 + 10 = 95 minutes. 95 - 18 = 77 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "77",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7:35 to 9:10 = 25 + 60 + 10 = 95 min; 95 - 18 = 77.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.434Z"
+        }
+      }
+    },
+    {
+      "id": "0b539566-e100-4db1-9b4e-0c0c2c606e30",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the elapsed time",
+      "stem": "Which pair of start and end times has exactly 2 hours 45 minutes between them?",
+      "choices": [
+        "3:35 p.m. to 6:20 p.m.",
+        "3:35 p.m. to 6:10 p.m.",
+        "3:35 p.m. to 5:50 p.m.",
+        "3:35 p.m. to 6:35 p.m."
+      ],
+      "answer": "3:35 p.m. to 6:20 p.m.",
+      "compute": null,
+      "solution": "3:35 plus 2 hours is 5:35. 5:35 plus 25 minutes is 6:00, and 20 more minutes is 6:20. So 3:35 p.m. to 6:20 p.m. is 2 hours 45 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3:35 p.m. to 6:20 p.m.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:35 + 2h45m = 6:20 p.m. Others: 2h35, 2h15, 3h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.461Z"
+        }
+      }
+    },
+    {
+      "id": "8c520294-3d1f-4eea-904e-a20415edbcd2",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the end time",
+      "stem": "A meeting begins at 12:50 p.m. and lasts 3 hours 25 minutes. How many minutes after 4:00 p.m. does the meeting end?",
+      "choices": [],
+      "answer": "15",
+      "compute": "50+25-60",
+      "solution": "12:50 plus 3 hours is 3:50. 3:50 plus 10 minutes is 4:00, and 15 more minutes is 4:15. The meeting ends 15 minutes after 4:00 p.m.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12:50 + 3h25m = 4:15 p.m.; 15 minutes after 4:00.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.491Z"
+        }
+      }
+    },
+    {
+      "id": "f0bea6b5-7d57-4bfa-bc27-a0fed40997b1",
+      "topic_id": "NC17.4.MD.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the elapsed time",
+      "stem": "A train leaves at 11:48 a.m. and arrives at 3:17 p.m. How many minutes long is the trip?",
+      "choices": [],
+      "answer": "209",
+      "compute": "12+3*60+17",
+      "solution": "From 11:48 a.m. to 12:00 noon is 12 minutes. From noon to 3:00 p.m. is 180 minutes. From 3:00 to 3:17 is 17 minutes. 12 + 180 + 17 = 209 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "209",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11:48 a.m. to 12:00 = 12 min; 12:00 to 3:00 = 180 min; 3:00 to 3:17 = 17 min. Total 209.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.525Z"
+        }
+      }
+    },
+    {
       "id": "cd938d32-6dab-40cc-9bb2-b3df3bd17722",
       "topic_id": "NC17.4.MD.3",
       "difficulty": 1,
@@ -23884,6 +26906,922 @@
           "work": "A square has four right angles, so it is a rectangle. A rectangle need not have equal sides, so not every rectangle is a square. Only Sam.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:46:20.286Z"
+        }
+      }
+    },
+    {
+      "id": "57ad4b39-9c3e-47b7-8b5c-7c9669338d3f",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count the lines of symmetry of a shape",
+      "stem": "How many lines of symmetry does a square have?",
+      "choices": [
+        "1",
+        "2",
+        "4",
+        "8"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "A square can be folded along 2 lines through opposite corners and 2 lines through the middles of opposite sides. That is 4 lines.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square: 2 diagonals + 2 midlines = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.831Z"
+        }
+      }
+    },
+    {
+      "id": "9b282164-e7ff-41f4-9926-5b1395d06592",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the lines of symmetry of a shape",
+      "stem": "An equilateral triangle has 3 sides that are all the same length. How many lines of symmetry does it have?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Each line goes from a corner to the middle of the side across from it. There are 3 corners, so there are 3 lines.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "An equilateral triangle has 3 lines of symmetry.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.033Z"
+        }
+      }
+    },
+    {
+      "id": "184ee328-44b1-4260-a964-4d7bb2b83445",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count the lines of symmetry of a shape",
+      "stem": "A rectangle is 9 cm long and 4 cm wide. It is not a square. How many lines of symmetry does it have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "One line runs down the middle the long way and one runs across the middle the short way. A rectangle that is not a square has 2 lines of symmetry.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A non-square rectangle has 2 lines of symmetry (through midpoints of opposite sides); diagonals are not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.131Z"
+        }
+      }
+    },
+    {
+      "id": "028e3403-9f5e-4255-9340-71efc969e5ef",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "Which of these flat shapes has no line of symmetry?",
+      "choices": [
+        "a square with 4 equal sides and 4 square corners",
+        "a triangle with 3 sides of different lengths",
+        "a rectangle with two long sides and two short sides",
+        "a triangle with 3 sides that are all equal"
+      ],
+      "answer": "a triangle with 3 sides of different lengths",
+      "compute": null,
+      "solution": "A triangle whose 3 sides are all different cannot be folded so that its two halves match. The other shapes can be folded to match.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a triangle with 3 sides of different lengths",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scalene triangle has no line of symmetry; rectangle 2, equilateral 3, square 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.190Z"
+        }
+      }
+    },
+    {
+      "id": "adeb47a8-b94c-478b-b083-d0216c0734e0",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use symmetry to find lengths and areas",
+      "stem": "A shape has a line of symmetry. One corner is 3 cm to the left of the line. The matching corner is on the right side of the line. How many centimeters to the right of the line is the matching corner?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Matching points are the same distance from the line of symmetry, so the matching corner is 3 cm to the right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reflection keeps the distance: 3 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.244Z"
+        }
+      }
+    },
+    {
+      "id": "806c7240-49ab-4cf8-863c-39438592b7af",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "Which of these block capital letters has a line of symmetry?",
+      "choices": [
+        "T",
+        "F",
+        "G",
+        "R"
+      ],
+      "answer": "T",
+      "compute": null,
+      "solution": "Fold the letter T down the middle of its upright part and the two halves match. F, G and R cannot be folded to match.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "T",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "T has a vertical line of symmetry; R, G and F have none.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.260Z"
+        }
+      }
+    },
+    {
+      "id": "efe107bd-9f28-411b-ab74-51b143808bbc",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Complete a figure that is symmetric about a line",
+      "stem": "A row of 6 squares has a line of symmetry down the middle. In the left 3 squares of the row, 2 squares are shaded. The row is symmetric. How many squares in the whole row are shaded?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2*2",
+      "solution": "The right 3 squares are a mirror image of the left 3, so they also have 2 shaded squares. In all, 2 + 2 = 4 squares are shaded.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The 2 shaded squares on the left mirror to 2 on the right: 2 + 2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.277Z"
+        }
+      }
+    },
+    {
+      "id": "4299e28a-6dff-4984-b882-d2c336d1e6dc",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "A triangle has sides of 6 cm, 6 cm and 4 cm. How many lines of symmetry does it have?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Two sides are equal, so the triangle can be folded from the corner between them to the middle of the 4 cm side. It has 1 line of symmetry.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Isosceles but not equilateral: 1 line of symmetry (through the apex and the middle of the 4 cm base).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.292Z"
+        }
+      }
+    },
+    {
+      "id": "526d484b-6753-47ae-97dd-0f3445fa6b1b",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Test whether a line is a line of symmetry",
+      "stem": "A line of symmetry divides a flat shape into two parts. What is true about the two parts?",
+      "choices": [
+        "They are the same shape but have different sizes",
+        "They touch each other at only one corner of the shape",
+        "They always have different areas from each other",
+        "They match exactly when the shape is folded on the line"
+      ],
+      "answer": "They match exactly when the shape is folded on the line",
+      "compute": null,
+      "solution": "Folding on a line of symmetry makes one part land exactly on the other, so the two parts match.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They match exactly when the shape is folded on the line",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A line of symmetry gives two halves that match when folded on the line.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.375Z"
+        }
+      }
+    },
+    {
+      "id": "eddf29cb-2b11-449e-a6bf-f263679ad5c0",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Test whether a line is a line of symmetry",
+      "stem": "Maya folds a paper heart down the middle and the two halves match exactly. What is the fold line called?",
+      "choices": [
+        "a line of symmetry",
+        "a perpendicular line",
+        "a parallel line",
+        "a diagonal line"
+      ],
+      "answer": "a line of symmetry",
+      "compute": null,
+      "solution": "A fold line that makes the two parts match is a line of symmetry.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a line of symmetry",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Folding so halves match exactly: the fold is a line of symmetry.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.685Z"
+        }
+      }
+    },
+    {
+      "id": "3ef296a6-3098-44ad-b288-b1e768a01848",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "Which triangle has exactly one line of symmetry?",
+      "choices": [
+        "a triangle with sides 5 cm, 5 cm and 8 cm",
+        "a triangle with sides 5 cm, 5 cm and 5 cm",
+        "a triangle with sides 5 cm, 6 cm and 8 cm",
+        "a triangle with sides 4 cm, 7 cm and 9 cm"
+      ],
+      "answer": "a triangle with sides 5 cm, 5 cm and 8 cm",
+      "compute": null,
+      "solution": "A triangle with exactly two equal sides has one line of symmetry. Three equal sides give 3 lines, and three different sides give none.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a triangle with sides 5 cm, 5 cm and 8 cm",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Isosceles (5,5,8) has exactly one line; equilateral has 3; scalene has 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.748Z"
+        }
+      }
+    },
+    {
+      "id": "98823538-8664-4c7b-a93c-398174617b78",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Test whether a line is a line of symmetry",
+      "stem": "Leo folds a rectangular paper (not a square) along a diagonal, from one corner to the opposite corner, and the two parts do not match. What does this show?",
+      "choices": [
+        "A rectangle has no lines of symmetry",
+        "The paper has to be a square",
+        "The diagonal is not a line of symmetry of the rectangle",
+        "The diagonal is the only line of symmetry of a rectangle"
+      ],
+      "answer": "The diagonal is not a line of symmetry of the rectangle",
+      "compute": null,
+      "solution": "The parts do not match, so the diagonal is not a line of symmetry. A rectangle does have lines of symmetry, but they join the middles of opposite sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The diagonal is not a line of symmetry of the rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Halves do not match when folded on a diagonal, so the diagonal is not a line of symmetry (a non-square rectangle still has 2 lines through midpoints).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.832Z"
+        }
+      }
+    },
+    {
+      "id": "eaefa1e2-0117-4c72-b814-ba10ce0fe876",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "Count the letters of the word SHAPE, written in block capitals, that have at least one line of symmetry. How many are there?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "H, A and E can be folded so the halves match. S and P cannot. That is 3 letters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "S: none; H: yes; A: yes (vertical); P: none; E: yes (horizontal). 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.897Z"
+        }
+      }
+    },
+    {
+      "id": "e96d6016-b9ee-4a4c-a52a-3bfd30905d6b",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count the lines of symmetry of a shape",
+      "stem": "A regular pentagon has 5 equal sides and 5 equal angles. How many lines of symmetry does it have?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "A line goes from each corner to the middle of the side across from it. There are 5 corners, so there are 5 lines.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Regular pentagon: 5 lines (each vertex to midpoint of opposite side).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.922Z"
+        }
+      }
+    },
+    {
+      "id": "85921c05-f0ad-44ab-855d-94b8af58b139",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Complete a figure that is symmetric about a line",
+      "stem": "A row has 8 squares, numbered 1 to 8 from the left. A line of symmetry runs down the middle, between squares 4 and 5. Square 2 is matched by a square on the other side of the line. What is the number of the matching square?",
+      "choices": [],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "Square 4 matches square 5, square 3 matches 6 and square 2 matches 7. The two numbers in a pair add up to 9, so 9 - 2 = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mirror over line between 4 and 5: n <-> 9-n. 2 <-> 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.058Z"
+        }
+      }
+    },
+    {
+      "id": "5456eebb-a5df-4e18-8a9a-a2f30c662e07",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Relate a regular polygon to its lines of symmetry",
+      "stem": "A stop sign is a regular octagon with 8 equal sides and 8 equal angles. How many lines of symmetry does it have?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "A regular shape has as many lines of symmetry as it has sides. An octagon has 8 sides, so it has 8 lines.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A regular n-gon has n lines of symmetry: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.070Z"
+        }
+      }
+    },
+    {
+      "id": "2a6defde-b433-420c-b0ec-debfc8e34527",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place and describe lines of symmetry",
+      "stem": "Which statement about a rectangle that is not a square is true?",
+      "choices": [
+        "It has 2 lines of symmetry, and both go through the corners",
+        "It has 2 lines of symmetry, and neither goes through a corner",
+        "It has 4 lines of symmetry, and two go through the corners",
+        "It has 1 line of symmetry, and it goes down the middle"
+      ],
+      "answer": "It has 2 lines of symmetry, and neither goes through a corner",
+      "compute": null,
+      "solution": "The two lines join the middles of opposite sides. A fold along a diagonal does not make the halves match, so no line goes through a corner.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has 2 lines of symmetry, and neither goes through a corner",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Non-square rectangle: 2 lines of symmetry through midpoints of opposite sides, none through corners.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.115Z"
+        }
+      }
+    },
+    {
+      "id": "7f16f53f-6771-426d-b9d0-ef16ceed4a98",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use symmetry to find lengths and areas",
+      "stem": "A figure is cut out along a line of symmetry into two matching pieces. The whole figure has an area of 46 square centimeters. What is the area of one piece, in square centimeters?",
+      "choices": [],
+      "answer": "23",
+      "compute": "46/2",
+      "solution": "Matching pieces have equal areas, so each piece is half of 46, which is 23 square centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A line of symmetry splits the figure into two congruent halves: 46/2 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.150Z"
+        }
+      }
+    },
+    {
+      "id": "3b4a153c-d6c4-4ca5-8022-74b81856390e",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "In which list does every block capital letter have at least one line of symmetry?",
+      "choices": [
+        "A, F, T, U",
+        "M, R, T, U",
+        "A, M, T, J",
+        "A, M, T, U"
+      ],
+      "answer": "A, M, T, U",
+      "compute": null,
+      "solution": "A, M, T and U can each be folded so the halves match. F, R and J cannot.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A, M, T, U",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A, M, T, U each have a vertical line of symmetry. F, J, R have none.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.198Z"
+        }
+      }
+    },
+    {
+      "id": "18be2842-4f90-4db1-972b-fd320c82ff71",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Complete a figure that is symmetric about a line",
+      "stem": "A shape has a horizontal line of symmetry. A corner is 2 cm above the line. Where is the matching corner?",
+      "choices": [
+        "2 cm above the line, next to the first corner",
+        "4 cm below the line, under the first corner",
+        "2 cm below the line, under the first corner",
+        "on the line, under the first corner"
+      ],
+      "answer": "2 cm below the line, under the first corner",
+      "compute": null,
+      "solution": "A matching point is the same distance from the line on the other side, so it is 2 cm below the line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 cm below the line, under the first corner",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Reflection over a horizontal line: same distance on other side, directly below: 2 cm below.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.237Z"
+        }
+      }
+    },
+    {
+      "id": "c3a1fb57-249d-4d1b-8b1d-2845283d63bb",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Recognise a figure or letter with line symmetry",
+      "stem": "A shape has exactly 2 lines of symmetry. Which shape could it be?",
+      "choices": [
+        "a rectangle that is not a square",
+        "a square",
+        "an equilateral triangle",
+        "a parallelogram with no square corners and sides of two different lengths"
+      ],
+      "answer": "a rectangle that is not a square",
+      "compute": null,
+      "solution": "A rectangle that is not a square has 2 lines. A square has 4, an equilateral triangle has 3, and the slanted parallelogram has none.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a rectangle that is not a square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Non-square rectangle: 2 lines. Square 4, equilateral triangle 3, such parallelogram 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.926Z"
+        }
+      }
+    },
+    {
+      "id": "b1341294-4787-4858-aeb9-49bec14c88ba",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Relate a regular polygon to its lines of symmetry",
+      "stem": "A regular polygon has 7 lines of symmetry. How many sides does it have?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "A regular polygon has one line of symmetry for each side, so 7 lines means 7 sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A regular n-gon has n lines of symmetry; n = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.031Z"
+        }
+      }
+    },
+    {
+      "id": "35d338d1-7795-4e25-a7b4-42e1b33cd0e0",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place and describe lines of symmetry",
+      "stem": "Which block capital letter has both a vertical line of symmetry and a horizontal line of symmetry?",
+      "choices": [
+        "A",
+        "H",
+        "E",
+        "T"
+      ],
+      "answer": "H",
+      "compute": null,
+      "solution": "H matches when folded either down the middle or across the middle. A and T have only a vertical line, and E has only a horizontal line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "H",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "H has vertical and horizontal lines; T and A only vertical; E only horizontal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.059Z"
+        }
+      }
+    },
+    {
+      "id": "85824e20-2465-4d73-b57c-dc8ff4ffd2cc",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Place and describe lines of symmetry",
+      "stem": "A rectangle is 14 cm long and 6 cm wide. It is cut along both of its lines of symmetry into 4 matching rectangles. What is the perimeter of one small rectangle, in centimeters?",
+      "choices": [],
+      "answer": "20",
+      "compute": "2*(7+3)",
+      "solution": "Each cut halves a side, so each small rectangle is 7 cm by 3 cm. Its perimeter is 2 x (7 + 3) = 20 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cut along both symmetry lines: 7 cm by 3 cm pieces. Perimeter 2(7+3)=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.189Z"
+        }
+      }
+    },
+    {
+      "id": "f987181b-28ff-45d3-9d83-d673475a9d0d",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Test whether a line is a line of symmetry",
+      "stem": "Ben says that a parallelogram with no square corners and sides of two different lengths has 2 lines of symmetry along its diagonals. Which statement is correct?",
+      "choices": [
+        "Ben is right: the diagonals are its 2 lines of symmetry",
+        "Ben is wrong: it has 4 lines of symmetry in all",
+        "Ben is wrong: it has no lines of symmetry",
+        "Ben is wrong: it has 1 line of symmetry in all"
+      ],
+      "answer": "Ben is wrong: it has no lines of symmetry",
+      "compute": null,
+      "solution": "Folding such a parallelogram on a diagonal, or on a line through the middles of opposite sides, does not make the parts match. It has no lines of symmetry.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ben is wrong: it has no lines of symmetry",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A parallelogram that is neither a rectangle nor a rhombus has no line of symmetry (its diagonals are not mirror lines).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.250Z"
+        }
+      }
+    },
+    {
+      "id": "605f034a-af38-4d35-89ce-9504d69c23dd",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Complete a figure that is symmetric about a line",
+      "stem": "A row has 6 squares, numbered 1 to 6 from the left. A line of symmetry runs down the middle, between squares 3 and 4. Squares 1 and 3 are shaded. Which squares must be shaded for the whole row to be symmetric?",
+      "choices": [
+        "1, 3, 5 and 6",
+        "1, 2, 5 and 6",
+        "1, 3, 4 and 5",
+        "1, 3, 4 and 6"
+      ],
+      "answer": "1, 3, 4 and 6",
+      "compute": null,
+      "solution": "Square 1 matches 6 and square 3 matches 4, so squares 1, 3, 4 and 6 are shaded.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1, 3, 4 and 6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mirror pairs across the line: 1-6, 2-5, 3-4. Shaded 1 and 3 need 6 and 4. Answer 1, 3, 4, 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.342Z"
+        }
+      }
+    },
+    {
+      "id": "b06b140a-c0dc-4364-bf71-29742c5b3100",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place and describe lines of symmetry",
+      "stem": "A regular hexagon has 6 lines of symmetry. Which description of them is correct?",
+      "choices": [
+        "3 go through opposite corners and 3 go through the middles of opposite sides",
+        "2 go through opposite corners and 4 go through the middles of opposite sides",
+        "4 go through opposite corners and 2 go through the middles of opposite sides",
+        "all 6 go through opposite corners and none go through the middles of sides"
+      ],
+      "answer": "3 go through opposite corners and 3 go through the middles of opposite sides",
+      "compute": null,
+      "solution": "A hexagon has 6 corners, which make 3 pairs of opposite corners, and 6 sides, which make 3 pairs of opposite sides. That gives 3 + 3 = 6 lines.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 go through opposite corners and 3 go through the middles of opposite sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Regular hexagon: 3 lines through opposite vertices, 3 through midpoints of opposite sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.372Z"
+        }
+      }
+    },
+    {
+      "id": "93c2ed99-4d9d-446a-8201-948b63ecc5d9",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Complete a figure that is symmetric about a line",
+      "stem": "A row has 10 squares, numbered 1 to 10 from the left, with a line of symmetry between squares 5 and 6. The row is symmetric. Squares 2, 3 and 8 are shaded. Exactly one more square is shaded. What is its number?",
+      "choices": [],
+      "answer": "9",
+      "compute": "11-2",
+      "solution": "Square 3 matches 8 already. Square 2 matches 11 - 2 = 9, so square 9 is the one that is also shaded.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mirror between 5 and 6 maps k to 11-k: 2<->9, 3<->8. 2,3,8 shaded; 9 must be shaded.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.471Z"
+        }
+      }
+    },
+    {
+      "id": "8763ef5d-e245-4ea4-8212-874d624dbb97",
+      "topic_id": "NC17.4.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use symmetry to find lengths and areas",
+      "stem": "A shape has a vertical line of symmetry. Point A is 5 cm to the left of the line, and point B is the matching point on the right. How far apart are A and B, in centimeters?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5*2",
+      "solution": "B is also 5 cm from the line, on the other side. The distance from A to B is 5 + 5 = 10 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B is 5 cm right of the line; distance 5+5=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.479Z"
         }
       }
     }

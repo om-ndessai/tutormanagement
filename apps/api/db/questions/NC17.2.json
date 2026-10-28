@@ -2,25 +2,25 @@
   "level_id": "NC17.2",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.2.G.1": "Drawing is asked as naming or counting what would be drawn, since the questions are text only. Trapezoids and rhombuses are left out as they belong to later grades; vertices are always glossed as corners.",
-    "NC17.2.G.3": "Circles and rectangles are described in words; no pictures. \"Equal shares can differ in shape\" is asked from written cutting descriptions.",
-    "NC17.2.MD.1": "All 30 written in words only (no pictures of rulers): readings are given as marks (start/end). Tool choice, unit choice and reading/subtracting from a ruler are covered; 19 choice and 11 numeric because tool and unit questions are naturally choice. Conversions between units (MD.2) and estimating (MD.3) deliberately left out.",
-    "NC17.2.MD.10": "Graphs are written out as lists of counts (each picture stands for 1, bars go up by ones); building a graph is tested as the number of pictures or the height of a bar, not by drawing. Numbers stay within 35 except totals.",
-    "NC17.2.MD.3": "Grade 2 estimation of length is tested with reasonable-length choices, best-unit choices, and estimates built from a stated benchmark length (a hand, a paper clip, a step). No conversions between units are asked (those belong to later grades); comparing units asks only that a longer unit takes a smaller count.",
-    "NC17.2.MD.4": "Lengths are given in words and as ruler marks; no picture is needed.",
-    "NC17.2.MD.5": "Whole-number lengths within 100 (inches, feet, centimeters, meters), no units in numeric answers. Skills: add lengths to a total (5), subtract for the length left (5), compare two lengths (6), unknown part or start (6), choose the equation with a ? (5), two-step (3). Every equation question has one equation that fits; the others each come from a mix-up of the operation or of the places of the numbers.",
-    "NC17.2.MD.6": "Number lines are described in words (start, jump left or right, land on). Skills: show a whole number as a length from 0 (5), add on a number line (8), subtract on a number line (6), match jumps to a number sentence (6), find the distance between two points (5). All numbers within 100. Missing-jump questions are phrased as the length of a jump between two points on the line, as the standard asks for differences on it.",
-    "NC17.2.MD.7": "Grade 2: clocks are described by where the short and long hand point, since no picture is shown; times are plain text such as 3:20 p.m. A time cannot be a numeric answer, so questions whose answer is a time are choice questions, and numeric ones ask for the minutes, the hand's number or one part of the time (10 numeric, 20 choice). The nearest-five-minutes skill is asked with the hand a little before or a little past a number, and with a digital time. Elapsed time is left out.",
-    "NC17.2.MD.8": "Grade 2: the cent and dollar symbols are written as words (\"cents\", \"dollars\"), because the bank allows no dollar sign; the cent sign is avoided too. Amounts are all in cents (under 100) or all in whole dollars, never mixed. Coin pictures are described by coin names.",
+    "NC17.2.OA.1": "All amounts and answers are within 100. Skills: one-step result unknown (4), put together (5), change unknown (2), start unknown (3), compare (5), matching to an equation (4), two-step (7, including start-unknown and change-unknown ones). All numbers and results are within 100. Unknowns in every position, add-to/take-from/put-together/compare, one- and two-step, and matching stories to equations.",
+    "NC17.2.OA.3": "Odd/even answers are words, so those are choice questions; numeric ones ask for pairs, leftovers, group sizes or the number in a doubles equation. All numbers stay within 20.",
+    "NC17.2.OA.4": "Arrays are described in words (rows and columns) and total at most 25 (5 by 5). Where a sum is asked, options never include the column-wise sum of the same array, so exactly one option is correct.",
     "NC17.2.NBT.2": "Whole numbers within 1000 only; no counting back by 5s, 10s or 100s (the standard names skip-counting forward). Skills: count on by ones (3), count back by ones (3), skip-count by 10s (6), by 5s (5), by 100s (6), missing number in a pattern (4), rule of a pattern (3).",
     "NC17.2.NBT.3": "All numbers are below 1000 (a few two-digit ones at difficulty 1). Number words are written with hyphens, e.g. forty-six. Numerals and expanded forms are asked both ways; a words answer is a choice question. Expanded-form distractors never include a valid sum (e.g. 400 + 18 for 418) so only one option is correct.",
     "NC17.2.NBT.4": "Statements of comparison are written with the symbols in $...$. Answers are whole numbers or a digit; a symbol alone is never an option (only three symbols exist), so the symbol is chosen inside a full statement.",
     "NC17.2.NBT.6": "Sums stay under 300 (three two-digit numbers at most). Missing-addend questions are solved by counting up or knowing the sum, not by formal subtraction rules. Place-value drawings are replaced by tens-and-ones sentences.",
     "NC17.2.NBT.7": "Within 1000, whole numbers only. Written methods are described in words rather than shown as columns.",
     "NC17.2.NBT.8": "Starting numbers are kept between 100 and 900 as the standard says; answers stay within 1,000.",
-    "NC17.2.OA.1": "All amounts and answers are within 100. Skills: one-step result unknown (4), put together (5), change unknown (2), start unknown (3), compare (5), matching to an equation (4), two-step (7, including start-unknown and change-unknown ones).",
-    "NC17.2.OA.3": "Odd/even answers are words, so those are choice questions; numeric ones ask for pairs, leftovers, group sizes or the number in a doubles equation. All numbers stay within 20.",
-    "NC17.2.OA.4": "Arrays are described in words (rows and columns) and total at most 25 (5 by 5). Where a sum is asked, options never include the column-wise sum of the same array, so exactly one option is correct."
+    "NC17.2.MD.1": "All 30 written in words only (no pictures of rulers): readings are given as marks (start/end). Tool choice, unit choice and reading/subtracting from a ruler are covered; 19 choice and 11 numeric because tool and unit questions are naturally choice. Conversions between units (MD.2) and estimating (MD.3) deliberately left out.",
+    "NC17.2.MD.3": "Grade 2 estimation of length is tested with reasonable-length choices, best-unit choices, and estimates built from a stated benchmark length (a hand, a paper clip, a step). No conversions between units are asked (those belong to later grades); comparing units asks only that a longer unit takes a smaller count.",
+    "NC17.2.MD.4": "Lengths are given in words and as ruler marks; no picture is needed.",
+    "NC17.2.MD.5": "Whole-number lengths within 100 (inches, feet, centimeters, meters), no units in numeric answers. Skills: add lengths to a total (5), subtract for the length left (5), compare two lengths (6), unknown part or start (6), choose the equation with a ? (5), two-step (3). Every equation question has one equation that fits; the others each come from a mix-up of the operation or of the places of the numbers.",
+    "NC17.2.MD.6": "Number lines are described in words (start, jump left or right, land on). Skills: show a whole number as a length from 0 (5), add on a number line (8), subtract on a number line (6), match jumps to a number sentence (6), find the distance between two points (5). All numbers within 100. Missing-jump questions are phrased as the length of a jump between two points on the line, as the standard asks for differences on it.",
+    "NC17.2.MD.7": "Grade 2: clocks are described by where the short and long hand point, since no picture is shown; times are plain text such as 3:20 p.m. A time cannot be a numeric answer, so questions whose answer is a time are choice questions, and numeric ones ask for the minutes, the hand's number or one part of the time (10 numeric, 20 choice). The nearest-five-minutes skill is asked with the hand a little before or a little past a number, and with a digital time. Elapsed time is left out.",
+    "NC17.2.MD.8": "Grade 2: the cent and dollar symbols are written as words (\"cents\", \"dollars\"), because the bank allows no dollar sign; the cent sign is avoided too. Amounts are all in cents (under 100) or all in whole dollars, never mixed. Coin pictures are described by coin names.",
+    "NC17.2.MD.10": "Graphs are written out as lists of counts (each picture stands for 1, bars go up by ones); building a graph is tested as the number of pictures or the height of a bar, not by drawing. Numbers stay within 35 except totals.",
+    "NC17.2.G.1": "Drawing is asked as naming or counting what would be drawn, since the questions are text only. Trapezoids and rhombuses are left out as they belong to later grades; vertices are always glossed as corners.",
+    "NC17.2.G.3": "Circles and rectangles are described in words; no pictures. \"Equal shares can differ in shape\" is asked from written cutting descriptions."
   },
   "questions": [
     {
@@ -330,6 +330,728 @@
           "work": "60 - 25 = 35.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.675Z"
+        }
+      }
+    },
+    {
+      "id": "93b8c7e0-a144-407a-bc41-36aa629da346",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "A shelf had 50 books. Some books were borrowed. Now 35 books are on the shelf. Which equation matches the story? Use ? for the number of books borrowed.",
+      "choices": [
+        "$50 + ? = 35$",
+        "$50 - ? = 35$",
+        "$35 - 50 = ?$",
+        "$? - 50 = 35$"
+      ],
+      "answer": "$50 - ? = 35$",
+      "compute": null,
+      "solution": "Start with 50, take away the unknown number, and 35 are left: $50 - ? = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$50 - ? = 35$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 50, take away ? books, leaves 35: 50 - ? = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.713Z"
+        }
+      }
+    },
+    {
+      "id": "8f2298f4-99f8-4e91-a48f-218816ceb427",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "A teacher had 75 crayons. She gave away 25 crayons. How many crayons does she have left?",
+      "choices": [
+        "50",
+        "100",
+        "60",
+        "40"
+      ],
+      "answer": "50",
+      "compute": "75-25",
+      "solution": "Subtract the crayons she gave away: 75 - 25 = 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75 - 25 = 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.724Z"
+        }
+      }
+    },
+    {
+      "id": "6f6b1fcc-e1de-45c3-a7ab-218c6e111071",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "A parking lot has 33 cars and 4 trucks. How many cars and trucks are in the lot in all?",
+      "choices": [],
+      "answer": "37",
+      "compute": "33+4",
+      "solution": "Put the parts together: 33 + 4 = 37.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "33 + 4 = 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.763Z"
+        }
+      }
+    },
+    {
+      "id": "00efc36d-b59d-4dca-b812-9d48649f96ba",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare: difference unknown",
+      "stem": "Tom ran 37 laps. Uma ran 30 laps. How many fewer laps did Uma run than Tom?",
+      "choices": [],
+      "answer": "7",
+      "compute": "37-30",
+      "solution": "Find the difference: 37 - 30 = 7. Uma ran 7 fewer laps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "37 - 30 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.841Z"
+        }
+      }
+    },
+    {
+      "id": "d0e98e87-a7e2-47aa-b4cc-50914c75648f",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together: one part unknown",
+      "stem": "Kim has 64 books. 40 of the books are on a shelf. The rest are in a bag. How many books are in the bag?",
+      "choices": [],
+      "answer": "24",
+      "compute": "64-40",
+      "solution": "The whole is 64 and one part is 40. The other part is 64 - 40 = 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 - 40 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.885Z"
+        }
+      }
+    },
+    {
+      "id": "97716d22-bd60-4d52-ae56-93603029bf0f",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Dan has 14 toy trains. Sue has 9 toy trains. How many toy trains do they have together? Which equation shows this? Use ? for that number.",
+      "choices": [
+        "$14 - 9 = ?$",
+        "$9 - 14 = ?$",
+        "$14 + 9 = ?$",
+        "$14 + ? = 9$"
+      ],
+      "answer": "$14 + 9 = ?$",
+      "compute": null,
+      "solution": "Together means put the parts together, so add: $14 + 9 = ?$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14 + 9 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Together: 14 + 9 = ?.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.919Z"
+        }
+      }
+    },
+    {
+      "id": "7a00d603-6889-4851-b461-28736f1fc02f",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Put together: total unknown",
+      "stem": "The library has 45 story books and 30 picture books. How many story books and picture books are there in all?",
+      "choices": [
+        "75",
+        "15",
+        "65",
+        "85"
+      ],
+      "answer": "75",
+      "compute": "45+30",
+      "solution": "Add the two parts: 45 + 30 = 75.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45+30=75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.923Z"
+        }
+      }
+    },
+    {
+      "id": "7653459d-65e6-475b-9ec6-994069de61e3",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Sid has 26 red balloons and 30 blue balloons. How many balloons does Sid have in all?",
+      "choices": [],
+      "answer": "56",
+      "compute": "26+30",
+      "solution": "Put the two parts together: 26 + 30 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "26+30=56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.927Z"
+        }
+      }
+    },
+    {
+      "id": "8c11060b-f95f-4806-9cb9-0147d1bf4a5d",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare: bigger amount unknown",
+      "stem": "Nia has 20 buttons. Ben has 6 more buttons than Nia. How many buttons does Ben have?",
+      "choices": [],
+      "answer": "26",
+      "compute": "20+6",
+      "solution": "Ben has 6 more than Nia, so add: 20 + 6 = 26.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20+6=26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.932Z"
+        }
+      }
+    },
+    {
+      "id": "434db870-5791-4878-a4ac-11fd1cc25f80",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add to: start unknown",
+      "stem": "Mei had some ribbons. She got 20 more ribbons. Now she has 90 ribbons. The equation is $? + 20 = 90$. What is the ?",
+      "choices": [],
+      "answer": "70",
+      "compute": "90-20",
+      "solution": "To find the start, take away what was added: 90 - 20 = 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "90 - 20 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.977Z"
+        }
+      }
+    },
+    {
+      "id": "9f0e9bc6-d50e-4e7a-a3e6-35633e4ed38c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Mia has 23 cookies. She bakes 15 more cookies. Which equation shows how many cookies Mia has now? Use ? for that number.",
+      "choices": [
+        "$23 - 15 = ?$",
+        "$15 - 23 = ?$",
+        "$? + 23 = 15$",
+        "$23 + 15 = ?$"
+      ],
+      "answer": "$23 + 15 = ?$",
+      "compute": null,
+      "solution": "She has 23 and gets 15 more, so we add: $23 + 15 = ?$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$23 + 15 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "23 + 15 = ?.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.978Z"
+        }
+      }
+    },
+    {
+      "id": "c41d3957-e20a-47b1-9d2e-d4fa288770a4",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare: smaller amount unknown",
+      "stem": "Ron has 40 grapes. Pam has 8 fewer grapes than Ron. How many grapes does Pam have?",
+      "choices": [],
+      "answer": "32",
+      "compute": "40-8",
+      "solution": "Pam has 8 fewer, so subtract: 40 - 8 = 32.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 - 8 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.987Z"
+        }
+      }
+    },
+    {
+      "id": "7ec8f7bd-e096-4655-9551-56158d4c2ce6",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add to: change unknown",
+      "stem": "A tank had 25 fish. Dad put some more fish in the tank. Now the tank has 40 fish. How many fish did Dad put in?",
+      "choices": [
+        "15",
+        "65",
+        "25",
+        "5"
+      ],
+      "answer": "15",
+      "compute": "40-25",
+      "solution": "The tank went from 25 to 40 fish, so Dad added 40 - 25 = 15 fish.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 - 25 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.006Z"
+        }
+      }
+    },
+    {
+      "id": "66df9ee5-52a8-4831-aa25-d8dbb6a0b06a",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "There are 48 ducks on a pond. Then 20 ducks fly away. How many ducks are still on the pond?",
+      "choices": [
+        "68",
+        "38",
+        "28",
+        "18"
+      ],
+      "answer": "28",
+      "compute": "48-20",
+      "solution": "Ducks flew away, so subtract: 48 - 20 = 28.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 - 20 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.017Z"
+        }
+      }
+    },
+    {
+      "id": "5b3935a6-6265-4bce-bbca-426cd0f4e023",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare: difference unknown",
+      "stem": "The red team has 52 points. The blue team has 41 points. How many more points does the red team have than the blue team?",
+      "choices": [
+        "93",
+        "12",
+        "11",
+        "21"
+      ],
+      "answer": "11",
+      "compute": "52-41",
+      "solution": "Find the difference: 52 - 41 = 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52 - 41 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.021Z"
+        }
+      }
+    },
+    {
+      "id": "9d8e9964-ccb0-4bc7-a571-6cf8acb7c3f7",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take from: change unknown",
+      "stem": "Leo had 70 marbles. He lost some marbles. Now he has 50 marbles. How many marbles did Leo lose?",
+      "choices": [],
+      "answer": "20",
+      "compute": "70-50",
+      "solution": "He went from 70 to 50, so he lost 70 - 50 = 20 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70 - 50 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.024Z"
+        }
+      }
+    },
+    {
+      "id": "781ae82d-a5ca-47f3-81ec-cc5fb529c20b",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take from: change unknown",
+      "stem": "Gus had 80 raisins. He ate some raisins. Now he has 70 raisins. The equation is $80 - ? = 70$. What is the ?",
+      "choices": [],
+      "answer": "10",
+      "compute": "80-70",
+      "solution": "The ? is how many he ate: 80 - 70 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 - 10 = 70, so ? = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.048Z"
+        }
+      }
+    },
+    {
+      "id": "4a146416-de83-4f19-b62c-3c2f33692e4d",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take from: start unknown",
+      "stem": "Some pears were in a basket. Mom took 10 pears out of the basket. Now 25 pears are in the basket. How many pears were in the basket at first?",
+      "choices": [
+        "15",
+        "35",
+        "45",
+        "30"
+      ],
+      "answer": "35",
+      "compute": "25+10",
+      "solution": "Before she took 10 out there were 10 more: 25 + 10 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? - 10 = 25 -> 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.071Z"
+        }
+      }
+    },
+    {
+      "id": "43a57129-8bd8-4eaa-9647-8782473ae61c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Some frogs sat on a log. 12 more frogs jumped on. Now there are 30 frogs on the log. Which equation matches the story? Use ? for the number of frogs at first.",
+      "choices": [
+        "$12 + 30 = ?$",
+        "$? - 12 = 30$",
+        "$12 - ? = 30$",
+        "$? + 12 = 30$"
+      ],
+      "answer": "$? + 12 = 30$",
+      "compute": null,
+      "solution": "Some frogs plus 12 more makes 30: $? + 12 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$? + 12 = 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unknown start, add 12, result 30: ? + 12 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.151Z"
+        }
+      }
+    },
+    {
+      "id": "8b892862-3071-4afa-8dde-f18e987f8f18",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "There are 41 children at a camp. 6 children go home. How many children are still at the camp?",
+      "choices": [],
+      "answer": "35",
+      "compute": "41-6",
+      "solution": "Subtract the children who left: 41 - 6 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "41-6=35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.194Z"
+        }
+      }
+    },
+    {
+      "id": "23f29d0b-231d-4324-96c2-ce368e760409",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "Kai has 19 toy cars. He buys 30 more toy cars. How many toy cars does Kai have now?",
+      "choices": [],
+      "answer": "49",
+      "compute": "19+30",
+      "solution": "Add 30 to 19: 19 + 30 = 49.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19+30=49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.201Z"
+        }
+      }
+    },
+    {
+      "id": "e051cd87-b849-4114-beb3-c7543275f787",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Put together: one part unknown",
+      "stem": "A zoo has 80 birds. 50 of the birds are parrots. The rest are owls. How many owls are there?",
+      "choices": [
+        "130",
+        "40",
+        "20",
+        "30"
+      ],
+      "answer": "30",
+      "compute": "80-50",
+      "solution": "The whole is 80 and the parrots are 50. The owls are 80 - 50 = 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 - 50 = 30 owls.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.269Z"
+        }
+      }
+    },
+    {
+      "id": "22e51f27-8889-4fe8-8bee-181f0c2d7ae1",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "Pia has 34 stamps. A friend gives her 5 more stamps. How many stamps does Pia have now?",
+      "choices": [],
+      "answer": "39",
+      "compute": "34+5",
+      "solution": "Pia starts with 34 and gets 5 more, so add: 34 + 5 = 39.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "39",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "34 + 5 = 39.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.550Z"
         }
       }
     },
@@ -649,6 +1371,728 @@
       }
     },
     {
+      "id": "cd8d82cd-334d-45f9-b1bb-4640d32f4542",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Put together: both parts unknown",
+      "stem": "A bag holds 60 tokens. Some tokens are gold and the rest are silver. Which could be the number of gold tokens and the number of silver tokens?",
+      "choices": [
+        "45 gold and 25 silver",
+        "35 gold and 35 silver",
+        "30 gold and 20 silver",
+        "45 gold and 15 silver"
+      ],
+      "answer": "45 gold and 15 silver",
+      "compute": null,
+      "solution": "The two parts must add to 60. 45 + 15 = 60. The other pairs add to 70, 70 and 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45 gold and 15 silver",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need gold + silver = 60: 45+25=70, 35+35=70, 30+20=50, 45+15=60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.832Z"
+        }
+      }
+    },
+    {
+      "id": "eeb2af33-5d32-4541-89b3-e399e8683732",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A pet shop had 36 fish. It got 29 more fish. Then it sold 40 fish. How many fish are in the shop now?",
+      "choices": [],
+      "answer": "25",
+      "compute": "36+29-40",
+      "solution": "First add: 36 + 29 = 65. Then subtract: 65 - 40 = 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 + 29 = 65; 65 - 40 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.837Z"
+        }
+      }
+    },
+    {
+      "id": "5ee8772d-85e5-4347-af83-761c54e18b05",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A class collected 34 cans on Monday and 29 cans on Tuesday. The class wants 80 cans. How many more cans does the class need?",
+      "choices": [],
+      "answer": "17",
+      "compute": "80-34-29",
+      "solution": "So far: 34 + 29 = 63 cans. Still needed: 80 - 63 = 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "34 + 29 = 63; 80 - 63 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.838Z"
+        }
+      }
+    },
+    {
+      "id": "d3ad513f-3804-4a94-a60f-36907473fdbe",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Unknown in any position",
+      "stem": "Which number makes this equation true? $? - 24 = 51$",
+      "choices": [
+        "27",
+        "75",
+        "85",
+        "73"
+      ],
+      "answer": "75",
+      "compute": "51+24",
+      "solution": "Something minus 24 is 51, so the number is 51 + 24 = 75. Check: 75 - 24 = 51.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 51 + 24 = 75.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.860Z"
+        }
+      }
+    },
+    {
+      "id": "4232ef42-df51-4248-8469-ea0776a69ab4",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add to: start unknown",
+      "stem": "Some swans were on a lake. 19 more swans came. Now there are 80 swans. How many swans were on the lake at first?",
+      "choices": [
+        "61",
+        "99",
+        "71",
+        "69"
+      ],
+      "answer": "61",
+      "compute": "80-19",
+      "solution": "Before 19 came, there were 80 - 19 = 61 swans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "61",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "80 - 19 = 61.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.899Z"
+        }
+      }
+    },
+    {
+      "id": "b3828c16-e4b7-4e45-afe8-24a52a7eb47c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add to: start unknown",
+      "stem": "Wen had some tickets. She won 27 more tickets. Now she has 64 tickets. How many tickets did Wen have at first?",
+      "choices": [],
+      "answer": "37",
+      "compute": "64-27",
+      "solution": "Before winning 27, she had 27 fewer: 64 - 27 = 37.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 - 27 = 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.903Z"
+        }
+      }
+    },
+    {
+      "id": "08c04c4a-48b0-48cf-9510-af204bba8848",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add to: change unknown",
+      "stem": "Jared had 38 baseball cards. He traded for some more cards. Now he has 71 baseball cards. How many cards did he get in the trade?",
+      "choices": [
+        "109",
+        "43",
+        "33",
+        "37"
+      ],
+      "answer": "33",
+      "compute": "71-38",
+      "solution": "He went from 38 to 71, so he got 71 - 38 = 33 cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "71 - 38 = 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.921Z"
+        }
+      }
+    },
+    {
+      "id": "053434f8-781b-482d-b37b-06cd7c7e6a58",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "There were 83 cupcakes at a party. Guests ate 47 of the cupcakes. How many cupcakes were left?",
+      "choices": [
+        "36",
+        "130",
+        "46",
+        "34"
+      ],
+      "answer": "36",
+      "compute": "83-47",
+      "solution": "Subtract: 83 - 47 = 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "83-47=36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.927Z"
+        }
+      }
+    },
+    {
+      "id": "dca20459-34ae-4b37-915d-1aee1f35a3f1",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Lia has 34 acorns. Max has 19 more acorns than Lia. Which equation finds how many acorns Max has? Use ? for that number.",
+      "choices": [
+        "$34 - 19 = ?$",
+        "$19 - 34 = ?$",
+        "$34 + 19 = ?$",
+        "$? + 34 = 19$"
+      ],
+      "answer": "$34 + 19 = ?$",
+      "compute": null,
+      "solution": "Max has more, so add 19 to Lia's 34: $34 + 19 = ?$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$34 + 19 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max = 34+19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.952Z"
+        }
+      }
+    },
+    {
+      "id": "ddbcec8d-5c40-4905-9a56-dbf74e993913",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare: bigger amount unknown",
+      "stem": "Ivy read 28 pages. She read 15 fewer pages than Omar. How many pages did Omar read?",
+      "choices": [
+        "43",
+        "13",
+        "53",
+        "42"
+      ],
+      "answer": "43",
+      "compute": "28+15",
+      "solution": "Ivy read fewer pages, so Omar read more: 28 + 15 = 43.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ivy read 15 fewer than Omar, so Omar = 28+15=43.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.956Z"
+        }
+      }
+    },
+    {
+      "id": "f5cd6a01-e80f-4eb6-85f2-38343ff2452e",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Take from: change unknown",
+      "stem": "A library had 91 DVDs. Some DVDs were checked out. Now 56 DVDs are on the shelves. How many DVDs were checked out?",
+      "choices": [],
+      "answer": "35",
+      "compute": "91-56",
+      "solution": "The number checked out is 91 - 56 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "91 - 56 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.994Z"
+        }
+      }
+    },
+    {
+      "id": "074bca9a-a055-4916-b6da-4a16e2131d28",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "A garden had 27 tulips. Some more tulips bloomed. Now there are 52 tulips. Which equation could you use to find how many tulips bloomed? Use ? for that number.",
+      "choices": [
+        "$27 - ? = 52$",
+        "$52 + 27 = ?$",
+        "$? - 52 = 27$",
+        "$27 + ? = 52$"
+      ],
+      "answer": "$27 + ? = 52$",
+      "compute": null,
+      "solution": "27 tulips plus the new ones makes 52: $27 + ? = 52$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$27 + ? = 52$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start 27, add unknown, get 52: 27 + ? = 52. Others wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.040Z"
+        }
+      }
+    },
+    {
+      "id": "8e9bdc6e-e597-4ad5-8708-4a346ba4e2ae",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare: difference unknown",
+      "stem": "A tall tree is 82 feet high. A short tree is 59 feet high. How many feet taller is the tall tree than the short tree?",
+      "choices": [],
+      "answer": "23",
+      "compute": "82-59",
+      "solution": "Find the difference: 82 - 59 = 23.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "82 - 59 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.085Z"
+        }
+      }
+    },
+    {
+      "id": "5b890714-0f40-4502-a90e-78136b588a7b",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Put together: one part unknown",
+      "stem": "A bus carried 73 riders. 49 of the riders were adults. The rest were children. How many riders were children?",
+      "choices": [],
+      "answer": "24",
+      "compute": "73-49",
+      "solution": "The children are the whole minus the adults: 73 - 49 = 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "73 - 49 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.090Z"
+        }
+      }
+    },
+    {
+      "id": "f618c38e-6ae5-4c62-aa59-9fe660c42d8b",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Which story matches $64 - ? = 29$?",
+      "choices": [
+        "A shelf had 64 books. 29 books were taken. Now some books are on the shelf.",
+        "Some books were on a shelf. 29 books were taken. Now 64 books are on the shelf.",
+        "A shelf had 64 books. Some books were taken. Now 29 books are on the shelf.",
+        "A shelf had 29 books. Some books were added. Now 64 books are on the shelf."
+      ],
+      "answer": "A shelf had 64 books. Some books were taken. Now 29 books are on the shelf.",
+      "compute": null,
+      "solution": "Start with 64, take away an unknown number, and 29 are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A shelf had 64 books. Some books were taken. Now 29 books are on the shelf.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 - ? = 29: start 64, unknown taken away, 29 left. Story C. A is 64-29=?, B is ?-29=64, D is 29+?=64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.126Z"
+        }
+      }
+    },
+    {
+      "id": "8ce1033f-e14d-402a-b690-9c80450c0055",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare: difference unknown",
+      "stem": "On Friday, 76 people came to the play. On Saturday, 58 people came. How many fewer people came on Saturday than on Friday?",
+      "choices": [],
+      "answer": "18",
+      "compute": "76-58",
+      "solution": "Find the difference: 76 - 58 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "76 - 58 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.128Z"
+        }
+      }
+    },
+    {
+      "id": "46dd15bd-40c2-4381-8f2c-96ba9260b56e",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "A store sold 47 bags of rice on Saturday and 38 bags of rice on Sunday. How many bags of rice did it sell in all?",
+      "choices": [],
+      "answer": "85",
+      "compute": "47+38",
+      "solution": "Add: 47 + 38 = 85.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "85",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 + 38 = 85.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.138Z"
+        }
+      }
+    },
+    {
+      "id": "e7089329-b61e-4155-81bc-5cf29581d135",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Take from: start unknown",
+      "stem": "A farmer had some goats. He sold 23 goats. Now he has 45 goats. How many goats did the farmer have at first?",
+      "choices": [
+        "22",
+        "68",
+        "58",
+        "78"
+      ],
+      "answer": "68",
+      "compute": "45+23",
+      "solution": "He sold 23, so at first he had 23 more than now: 45 + 23 = 68.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start - 23 = 45; start = 45 + 23 = 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.175Z"
+        }
+      }
+    },
+    {
+      "id": "36ad304d-0cf4-4d08-b480-adb514e97406",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A box had 85 crayons. Ella took 30 crayons. Then Sam took 24 crayons. How many crayons are in the box now?",
+      "choices": [],
+      "answer": "31",
+      "compute": "85-30-24",
+      "solution": "Take away 30: 85 - 30 = 55. Then take away 24: 55 - 24 = 31.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85-30=55; 55-24=31.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.195Z"
+        }
+      }
+    },
+    {
+      "id": "1df94d1d-1e99-4bd7-a849-5443df141512",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unknown in any position",
+      "stem": "Cal had 82 grapes. He ate some grapes. Now 37 grapes are left. The equation is $82 - ? = 37$. What is the ?",
+      "choices": [],
+      "answer": "45",
+      "compute": "82-37",
+      "solution": "The ? is how many he ate: 82 - 37 = 45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "82-37=45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.211Z"
+        }
+      }
+    },
+    {
+      "id": "b627ea25-7155-4923-a3b1-81fb4b26c723",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Two-step word problem",
+      "stem": "Rob has 24 red pens and 18 blue pens. He gives 15 pens to his sister. How many pens does Rob have left?",
+      "choices": [
+        "57",
+        "27",
+        "9",
+        "33"
+      ],
+      "answer": "27",
+      "compute": "24+18-15",
+      "solution": "First find all his pens: 24 + 18 = 42. Then subtract 15: 42 - 15 = 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24+18=42; 42-15=27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.227Z"
+        }
+      }
+    },
+    {
+      "id": "ab46252e-be56-44eb-978f-09c230ec941c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "Ned has 30 toy trains. Ora has 12 more toy trains than Ned. Pia has 10 fewer toy trains than Ora. How many toy trains does Pia have?",
+      "choices": [],
+      "answer": "32",
+      "compute": "30+12-10",
+      "solution": "Ora has 30 + 12 = 42. Pia has 10 fewer: 42 - 10 = 32.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ora 30+12=42; Pia 42-10=32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.238Z"
+        }
+      }
+    },
+    {
+      "id": "9579fb3b-5355-455e-8dcf-f5dc5ea0f5c5",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare: smaller amount unknown",
+      "stem": "A red scarf is 65 centimeters long. It is 17 centimeters longer than a blue scarf. How long is the blue scarf, in centimeters?",
+      "choices": [],
+      "answer": "48",
+      "compute": "65-17",
+      "solution": "The blue scarf is shorter: 65 - 17 = 48 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Blue = 65 - 17 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.282Z"
+        }
+      }
+    },
+    {
       "id": "bb6408cb-e88d-44f9-80d0-73d34d1d9bf0",
       "topic_id": "NC17.2.OA.1",
       "difficulty": 3,
@@ -960,6 +2404,728 @@
           "work": "38 + 27 = 65 filled; 100 - 65 = 35 empty.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:55:27.675Z"
+        }
+      }
+    },
+    {
+      "id": "8d954562-419b-4756-b1aa-503b800f4200",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step: start unknown",
+      "stem": "Some pens were in a drawer. Ali took out 17 pens. Then Bea put 30 pens in. Now there are 61 pens in the drawer. How many pens were in the drawer at first?",
+      "choices": [],
+      "answer": "48",
+      "compute": "61-30+17",
+      "solution": "Work backward. Before Bea put in 30: 61 - 30 = 31. Before Ali took out 17: 31 + 17 = 48.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x - 17 + 30 = 61 -> x + 13 = 61 -> x = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.876Z"
+        }
+      }
+    },
+    {
+      "id": "0c238c9d-9ae6-4a26-a2e2-845f42ab3b75",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step word problem",
+      "stem": "Ana has 45 books. Ben has 18 fewer books than Ana. How many books do Ana and Ben have together?",
+      "choices": [
+        "63",
+        "90",
+        "27",
+        "72"
+      ],
+      "answer": "72",
+      "compute": "45+45-18",
+      "solution": "Ben has 45 - 18 = 27 books. Together: 45 + 27 = 72.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ben 45 - 18 = 27; together 45 + 27 = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.974Z"
+        }
+      }
+    },
+    {
+      "id": "d694f879-0fb7-48c6-bb84-09b02325a369",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step: change unknown",
+      "stem": "A choir has 45 singers. 12 singers leave. Then some new singers join. Now the choir has 51 singers. How many new singers joined?",
+      "choices": [],
+      "answer": "18",
+      "compute": "51-(45-12)",
+      "solution": "After 12 leave: 45 - 12 = 33. To reach 51: 51 - 33 = 18 joined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "45 - 12 = 33; 51 - 33 = 18 joined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.999Z"
+        }
+      }
+    },
+    {
+      "id": "804f38e8-b54a-4cab-a185-3dcd90616fcc",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A florist had 48 roses and 36 tulips. She used 50 of the flowers for a wedding. How many flowers does she have left?",
+      "choices": [],
+      "answer": "34",
+      "compute": "48+36-50",
+      "solution": "All flowers: 48 + 36 = 84. Left: 84 - 50 = 34.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48 + 36 = 84; 84 - 50 = 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.029Z"
+        }
+      }
+    },
+    {
+      "id": "9a7d8533-2733-4fe1-b296-8b51af39803c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "Mr. Cruz drove 38 miles in the morning and 27 miles in the afternoon. His whole trip is 90 miles. How many miles does he still have to drive?",
+      "choices": [],
+      "answer": "25",
+      "compute": "90-38-27",
+      "solution": "He has driven 38 + 27 = 65 miles. Still to drive: 90 - 65 = 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "38 + 27 = 65; 90 - 65 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.032Z"
+        }
+      }
+    },
+    {
+      "id": "72e03f5d-fcb7-47e5-8739-dd4dfc7cf3f3",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Unknown in any position",
+      "stem": "Which equation has a ? that is equal to 36?",
+      "choices": [
+        "$? + 29 = 36$",
+        "$? - 29 = 65$",
+        "$65 + 29 = ?$",
+        "$? + 29 = 65$"
+      ],
+      "answer": "$? + 29 = 65$",
+      "compute": null,
+      "solution": "Check each: 36 + 29 = 65 is true. The others give 7, 94 and 94.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$? + 29 = 65$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?+29=65 -> 36. Others give 7, 94, 94.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.049Z"
+        }
+      }
+    },
+    {
+      "id": "c8b280bd-51e0-47f1-906f-3d796f95eb7a",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "Zed counted 52 birds in the morning. In the afternoon he counted 17 fewer birds than in the morning. How many birds did he count in all that day?",
+      "choices": [],
+      "answer": "87",
+      "compute": "52+52-17",
+      "solution": "Afternoon: 52 - 17 = 35. In all: 52 + 35 = 87.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "87",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Afternoon 52-17 = 35; total 52+35 = 87.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.054Z"
+        }
+      }
+    },
+    {
+      "id": "4955e4a9-b756-424a-b027-e2dc0b4852b2",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put together: one part unknown",
+      "stem": "Hal and Ida have 91 shells together. Hal has 56 shells. How many shells does Ida have?",
+      "choices": [],
+      "answer": "35",
+      "compute": "91-56",
+      "solution": "Ida has the whole minus Hal's shells: 91 - 56 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "91 - 56 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.079Z"
+        }
+      }
+    },
+    {
+      "id": "c917adda-10ac-444e-bd89-10d653d9211e",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A pencil costs 35 cents and an eraser costs 28 cents. Mia pays with 100 cents. How many cents does she get back?",
+      "choices": [],
+      "answer": "37",
+      "compute": "100-35-28",
+      "solution": "The cost is 35 + 28 = 63 cents. Change: 100 - 63 = 37 cents.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35 + 28 = 63; 100 - 63 = 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.167Z"
+        }
+      }
+    },
+    {
+      "id": "15ea14a1-c36d-4426-9869-f29eb22d99ad",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A blue book has 23 pages. A green book has 28 more pages than the blue book. How many pages do the two books have in all?",
+      "choices": [],
+      "answer": "74",
+      "compute": "23+23+28",
+      "solution": "Green has 23 + 28 = 51 pages. In all: 23 + 51 = 74.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "74",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Green = 23 + 28 = 51; total = 23 + 51 = 74.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.251Z"
+        }
+      }
+    },
+    {
+      "id": "0fcdcc36-2012-4f72-bdeb-09c53683d5e9",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "Dina made 36 paper cranes. Eli made 14 fewer cranes than Dina. Fay made 9 more cranes than Eli. How many cranes did Fay make?",
+      "choices": [],
+      "answer": "31",
+      "compute": "36-14+9",
+      "solution": "Eli made 36 - 14 = 22. Fay made 9 more: 22 + 9 = 31.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "31",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Eli = 36 - 14 = 22; Fay = 22 + 9 = 31.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.254Z"
+        }
+      }
+    },
+    {
+      "id": "80be6ad9-21db-43b7-b524-dcdd65a0f73c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step: start unknown",
+      "stem": "Some candies were in a bowl. Kate ate 17 candies. Then Mark ate 22 candies. Now 35 candies are left. How many candies were in the bowl at first?",
+      "choices": [],
+      "answer": "74",
+      "compute": "35+17+22",
+      "solution": "They ate 17 + 22 = 39 in all. At first: 35 + 39 = 74.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "74",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start = 35 + 22 + 17 = 74.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.256Z"
+        }
+      }
+    },
+    {
+      "id": "bade01ab-22c2-4e0b-8de4-74d70406b99e",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Two-step word problem",
+      "stem": "A library had 64 books. People borrowed 29 books. Then 35 books were returned. How many books are in the library now?",
+      "choices": [],
+      "answer": "70",
+      "compute": "64-29+35",
+      "solution": "After borrowing: 64 - 29 = 35. After returns: 35 + 35 = 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 - 29 = 35; 35 + 35 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.278Z"
+        }
+      }
+    },
+    {
+      "id": "893d54cc-839d-4b65-ad22-3e76e2b95515",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "The red team has 71 points. The blue team has 54 points. Which equation can be used to find how many more points the red team has than the blue team? Use ? for that number.",
+      "choices": [
+        "$54 + ? = 71$",
+        "$71 + 54 = ?$",
+        "$54 - ? = 71$",
+        "$? - 71 = 54$"
+      ],
+      "answer": "$54 + ? = 71$",
+      "compute": null,
+      "solution": "The blue team's points plus the difference make the red team's points: $54 + ? = 71$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$54 + ? = 71$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference: 54 + ? = 71 (? = 17).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.337Z"
+        }
+      }
+    },
+    {
+      "id": "b303898c-4b62-4d1a-b480-1865eeeaadb7",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step word problem",
+      "stem": "Cam has 27 coins in one jar and 19 coins in another jar. Dee has 40 coins. Who has more coins?",
+      "choices": [
+        "Dee has 6 more coins",
+        "Cam has 6 more coins",
+        "Cam has 14 more coins",
+        "Dee has 13 more coins"
+      ],
+      "answer": "Cam has 6 more coins",
+      "compute": null,
+      "solution": "Cam has 27 + 19 = 46 coins. 46 - 40 = 6, so Cam has 6 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Cam has 6 more coins",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cam 27 + 19 = 46; Dee 40. Cam has 6 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.354Z"
+        }
+      }
+    },
+    {
+      "id": "9e25d8f0-d4e3-4b1c-8a39-0eca85599d8d",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Related equations",
+      "stem": "Which equation has the same ? as $? + 35 = 82$?",
+      "choices": [
+        "$82 + 35 = ?$",
+        "$82 - 35 = ?$",
+        "$35 - 82 = ?$",
+        "$35 + 82 = ?$"
+      ],
+      "answer": "$82 - 35 = ?$",
+      "compute": null,
+      "solution": "If ? plus 35 is 82, then ? = 82 - 35 = 47. Only $82 - 35 = ?$ gives 47.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$82 - 35 = ?$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "?+35=82 -> ?=82-35 (=47).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.389Z"
+        }
+      }
+    },
+    {
+      "id": "bebd651a-a986-4ca7-b5d7-80a5ed749b63",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare: smaller amount unknown",
+      "stem": "A pine tree is 76 feet tall. It is 29 feet taller than an oak tree. How tall is the oak tree, in feet?",
+      "choices": [
+        "47",
+        "105",
+        "57",
+        "53"
+      ],
+      "answer": "47",
+      "compute": "76-29",
+      "solution": "The oak is shorter by 29 feet: 76 - 29 = 47.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "76 - 29 = 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.439Z"
+        }
+      }
+    },
+    {
+      "id": "d2c0ce60-ad7e-405d-9a0a-eb21de623bb2",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Take from: change unknown",
+      "stem": "A game has 100 stars. Jay collected some stars. Now 38 stars are left. How many stars did Jay collect?",
+      "choices": [],
+      "answer": "62",
+      "compute": "100-38",
+      "solution": "Stars collected: 100 - 38 = 62.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "62",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100-38=62.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.481Z"
+        }
+      }
+    },
+    {
+      "id": "a12ca920-6737-4f09-9da7-3f08b45834fb",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add to: start unknown",
+      "stem": "Some tourists were on a boat. 39 more tourists got on. Now 94 tourists are on the boat. How many tourists were on the boat at first?",
+      "choices": [
+        "133",
+        "65",
+        "55",
+        "45"
+      ],
+      "answer": "55",
+      "compute": "94-39",
+      "solution": "Before 39 got on, there were 94 - 39 = 55 tourists.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start + 39 = 94, so start = 94 - 39 = 55.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.519Z"
+        }
+      }
+    },
+    {
+      "id": "21553bdd-d55f-4722-a3c3-081e217045bf",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare: difference unknown",
+      "stem": "Mia saved 83 coins and Noah saved 49 coins. How many more coins must Noah save to have as many as Mia?",
+      "choices": [
+        "132",
+        "44",
+        "34",
+        "36"
+      ],
+      "answer": "34",
+      "compute": "83-49",
+      "solution": "Find the difference: 83 - 49 = 34.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "83 - 49 = 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.554Z"
+        }
+      }
+    },
+    {
+      "id": "003b1828-2e75-4c40-b2f0-09d705f2da89",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step: change unknown",
+      "stem": "A shop had 95 scarves. It sold 28 scarves on Monday and some more on Tuesday. Now 40 scarves are left. How many scarves were sold on Tuesday?",
+      "choices": [
+        "67",
+        "33",
+        "27",
+        "123"
+      ],
+      "answer": "27",
+      "compute": "95-28-40",
+      "solution": "After Monday: 95 - 28 = 67. To get to 40: 67 - 40 = 27 sold on Tuesday.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "95 - 28 = 67 left after Monday; 67 - 40 = 27 sold Tuesday.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.560Z"
+        }
+      }
+    },
+    {
+      "id": "c8696b88-3c89-4c92-98a6-0f107147cb6c",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Two-step word problem",
+      "stem": "A teacher gave out 28 pencils and has 36 pencils left. Then she gets a new box of 24 pencils. How many pencils does she have now?",
+      "choices": [
+        "88",
+        "12",
+        "64",
+        "60"
+      ],
+      "answer": "60",
+      "compute": "36+24",
+      "solution": "She has 36 left, then gets 24 more: 36 + 24 = 60. The 28 she gave out are already gone.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "She has 36 left, then gets 24: 36 + 24 = 60 (the 28 given out is extra information).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.585Z"
+        }
+      }
+    },
+    {
+      "id": "dbfa2d40-e960-4b0c-95d2-cc5111cdf3d1",
+      "topic_id": "NC17.2.OA.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to an equation",
+      "stem": "Bo had some seashells. He gave 15 seashells to a friend and found 22 more. Now he has 70 seashells. Which equation matches the story? Use ? for the number of seashells Bo had at first.",
+      "choices": [
+        "$? + 15 - 22 = 70$",
+        "$? - 15 + 22 = 70$",
+        "$? - 15 - 22 = 70$",
+        "$? + 15 + 22 = 70$"
+      ],
+      "answer": "$? - 15 + 22 = 70$",
+      "compute": null,
+      "solution": "He started with ?, gave away 15 (subtract), found 22 (add), and ended with 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$? - 15 + 22 = 70$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Start ?, gave away 15 (subtract), found 22 (add), now 70: ? - 15 + 22 = 70 (?=63).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.651Z"
         }
       }
     },

@@ -2,15 +2,16 @@
   "level_id": "NC17.5",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.5.MD.1": "The conversion fact is always given in the question, as with a conversion chart, so no fact has to be remembered; both customary and metric systems, and time. Almost all are larger unit to smaller unit by multiplying; one item (60 inches to feet) goes the other way and is worded as \"what number times 12 makes 60\". No conversion between customary and metric. Skills (rough counts): customary lengths 4, metric lengths 3, weight or mass 4, capacity 4, time 2, decimal measures 3, convert then add/subtract/compare 7, choose or explain the conversion 2, small unit to large unit 1.",
-    "NC17.5.MD.4": "Pictures of cube stacks are written as layers, rows and towers. Cubic-centimeter and cubic-foot units appear only to name the unit; volume of a rectangular prism by formula (NC.5.MD.5) is not asked.",
+    "NC17.5.OA.2": "Whole-number expressions with parentheses and brackets (no braces, since the converter has no \\{). Skills: evaluate, write from words, interpret without evaluating, properties, two-step word problems, equivalent expressions, missing number. A student cannot be asked to \"explain\" in text, so explaining is tested as choosing the right statement. Wrote 69 (23 per difficulty), whole numbers only. Braces are avoided; brackets and parentheses are used for grouping. Mixed expressions without grouping appear only where multiplication or division inside a term is unambiguous.",
+    "NC17.5.OA.3": "Plots are described in words (no pictures): reading and plotting ordered pairs, moves between points, and which point lies on a pattern graph. All terms are whole numbers in the first quadrant; rules are additive, with multiples appearing as relationships between matching terms.",
     "NC17.5.NBT.1": "30 questions written. Skills: place value relationships 5, multiply by powers of ten 6, divide by powers of ten 6, exponent form of powers of ten 6, value of a digit 3, explaining the pattern 4. Negative exponents are left out (not Grade 5).",
     "NC17.5.NBT.5": "Whole-number products only; the largest factors are 3-digit by 2-digit, as the standard says. Skills (rough counts): two-digit by two-digit 4, three-digit by two-digit 6, partial products 6, multiply by a multiple of ten 3, word problems 6, estimate to check 3, missing digit 2. Written work in columns is described by its rows (partial products) in words.",
     "NC17.5.NBT.7": "Decimals are kept to hundredths (products of two tenths reach hundredths); models and drawings are described in words rather than shown. Division of a decimal by a decimal uses friendly numbers that divide exactly.",
     "NC17.5.NF.1": "Denominators are always related (one a multiple of the other) so the common denominator is the larger; answers are fractions or mixed numbers. Choice answers have no compute because the checker accepts only plain numbers there; keys were verified by exact fraction arithmetic in the generator.",
     "NC17.5.NF.3": "Whole-number answers are avoided; answers are fractions or mixed numbers, as in the standard. Skills (rough counts): fraction as numerator divided by denominator (6), share less than 1 (5), share a mixed number (6), size of a quotient (4), find the amount shared (2), compare shares (2), match a story to a division (2), two-step sharing (2), find the error (1). Decimal answers left out on purpose.",
     "NC17.5.NF.4": "Area and length models are described in words (rows and columns, a rectangle with fractional sides). Answers that are fractions are in simplest form where the stem says so; any equivalent form is accepted.",
-    "NC17.5.OA.2": "Whole-number expressions with parentheses and brackets (no braces, since the converter has no \\{). Skills: evaluate, write from words, interpret without evaluating, properties, two-step word problems, equivalent expressions, missing number. A student cannot be asked to \"explain\" in text, so explaining is tested as choosing the right statement. Wrote 69 (23 per difficulty), whole numbers only. Braces are avoided; brackets and parentheses are used for grouping. Mixed expressions without grouping appear only where multiplication or division inside a term is unambiguous."
+    "NC17.5.MD.1": "The conversion fact is always given in the question, as with a conversion chart, so no fact has to be remembered; both customary and metric systems, and time. Almost all are larger unit to smaller unit by multiplying; one item (60 inches to feet) goes the other way and is worded as \"what number times 12 makes 60\". No conversion between customary and metric. Skills (rough counts): customary lengths 4, metric lengths 3, weight or mass 4, capacity 4, time 2, decimal measures 3, convert then add/subtract/compare 7, choose or explain the conversion 2, small unit to large unit 1.",
+    "NC17.5.MD.4": "Pictures of cube stacks are written as layers, rows and towers. Cubic-centimeter and cubic-foot units appear only to name the unit; volume of a rectangular prism by formula (NC.5.MD.5) is not asked."
   },
   "questions": [
     {
@@ -3440,6 +3441,665 @@
       }
     },
     {
+      "id": "87ce8ae6-2be6-44f4-9cd6-7ffba8047c46",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "A baker puts 6 rolls in each bag. The ordered pairs (bags, rolls) are (1, 6), (2, 12), and (3, 18). How many rolls are in 5 bags?",
+      "choices": [],
+      "answer": "30",
+      "compute": "6*5",
+      "solution": "Each bag has 6 rolls, so 5 bags have 5 x 6 = 30 rolls. The pair is (5, 30).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "rolls = 6 × bags; 5 bags → 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.752Z"
+        }
+      }
+    },
+    {
+      "id": "309d1094-120d-42a8-88c2-7c24f824698b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "Each ticket costs 5 dollars. The ordered pairs (tickets, dollars) are (1, 5), (2, 10), and (3, 15). What does the ordered pair (4, 20) tell you?",
+      "choices": [
+        "20 tickets cost 4 dollars.",
+        "4 tickets cost 5 dollars.",
+        "4 tickets cost 20 dollars.",
+        "24 tickets cost 20 dollars."
+      ],
+      "answer": "4 tickets cost 20 dollars.",
+      "compute": null,
+      "solution": "The first number is the number of tickets and the second is the cost in dollars. So (4, 20) means 4 tickets cost 20 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 tickets cost 20 dollars.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(tickets, dollars) = (4, 20): 4 tickets cost 20 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.824Z"
+        }
+      }
+    },
+    {
+      "id": "26f4b89e-f7ba-4de0-bcf4-88e7c9ae514b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A: 0, 2, 4, 6, 8. Pattern B: 0, 6, 12, 18, 24. Which ordered pair (A, B) is made from matching terms?",
+      "choices": [
+        "$(6, 12)$",
+        "$(6, 18)$",
+        "$(4, 18)$",
+        "$(18, 6)$"
+      ],
+      "answer": "$(6, 18)$",
+      "compute": null,
+      "solution": "The number 6 is the 4th term of A. The 4th term of B is 18. So the pair is (6, 18).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6, 18)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Matching terms: (0,0),(2,6),(4,12),(6,18),(8,24). Only (6,18) is listed.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.961Z"
+        }
+      }
+    },
+    {
+      "id": "6bdcd179-3054-4d60-aea5-68babd29f28d",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 0, 1, 2, 3, 4, 5. Pattern B: 0, 4, 8, 12, 16, 20. Each term of B is the same number of times the matching term of A. What is that number?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20/5",
+      "solution": "Compare matching terms: 4 is 4 times 1, 8 is 4 times 2, and 20 is 4 times 5. Each term of B is 4 times the matching term of A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4/1 = 8/2 = 12/3 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.981Z"
+        }
+      }
+    },
+    {
+      "id": "fb36287b-e9fb-4925-9dc2-5e230c3c8dfc",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A starts at 1 and adds 1. Pattern B starts at 3 and adds 3. Matching terms make ordered pairs (A, B). What is the sum of the two numbers in the 6th ordered pair?",
+      "choices": [],
+      "answer": "24",
+      "compute": "6+18",
+      "solution": "The 6th term of A is 6 and the 6th term of B is 18 (3, 6, 9, 12, 15, 18). The 6th pair is (6, 18), and 6 + 18 = 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6th pair: A = 6, B = 18; sum 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.986Z"
+        }
+      }
+    },
+    {
+      "id": "bea9caaf-c036-48b2-ae60-9638a9011b1b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "Two patterns make the ordered pairs (1, 6), (2, 7), and (3, 8). What number is added to the first number to get the second number?",
+      "choices": [],
+      "answer": "5",
+      "compute": "6-1",
+      "solution": "6 - 1 = 5, 7 - 2 = 5, and 8 - 3 = 5. Each second number is the first number plus 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6-1=5, 7-2=5, 8-3=5. Add 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.004Z"
+        }
+      }
+    },
+    {
+      "id": "6e3a9383-def6-44d0-b390-fec91be3aa53",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "Which rule makes the pattern 9, 15, 21, 27?",
+      "choices": [
+        "Start at 9 and add 6.",
+        "Start at 9 and add 9.",
+        "Start at 6 and add 9.",
+        "Start at 9 and multiply by 3."
+      ],
+      "answer": "Start at 9 and add 6.",
+      "compute": null,
+      "solution": "From 9 to 15 is 6 more, from 15 to 21 is 6 more, and from 21 to 27 is 6 more. The rule is start at 9 and add 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Start at 9 and add 6.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9, 15, 21, 27: differences of 6, start at 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.027Z"
+        }
+      }
+    },
+    {
+      "id": "eb920cb9-7b36-47f0-9a7b-4436004e97c8",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "A pattern starts at 4, and the next terms are 9, 14, 19. What number is added each time?",
+      "choices": [],
+      "answer": "5",
+      "compute": "9-4",
+      "solution": "9 - 4 = 5, 14 - 9 = 5, and 19 - 14 = 5. The rule is add 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-4 = 5, 14-9 = 5, 19-14 = 5. Add 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.085Z"
+        }
+      }
+    },
+    {
+      "id": "c96277df-3389-43c0-ad39-e312780aaa85",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Pattern B starts at 2 and the rule is \"add 8\". Which number is a term of pattern B?",
+      "choices": [
+        "24",
+        "30",
+        "32",
+        "26"
+      ],
+      "answer": "26",
+      "compute": null,
+      "solution": "The terms of B are 2, 10, 18, 26, 34, and so on. Only 26 is on the list.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms: 2, 10, 18, 26, 34. 26 is a term; 24, 30, 32 are not (each term is 2 more than a multiple of 8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.130Z"
+        }
+      }
+    },
+    {
+      "id": "fd185c38-f112-4dd6-8f76-cbe5f9dd05b3",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Lena makes a number pattern. She writes 7 first, and then adds 4 each time. What is the 5th number she writes?",
+      "choices": [],
+      "answer": "23",
+      "compute": "7+4*4",
+      "solution": "The terms are 7, 11, 15, 19, 23. The 5th number is 23.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7, 11, 15, 19, 23. 5th is 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.137Z"
+        }
+      }
+    },
+    {
+      "id": "231554fd-bd4f-4894-9f99-b48d7e85705f",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "Which tells how to plot the point $(5, 3)$, starting at the origin?",
+      "choices": [
+        "Move 5 units right, then 3 units up.",
+        "Move 3 units right, then 5 units up.",
+        "Move 5 units up, then 3 units right.",
+        "Move 8 units right."
+      ],
+      "answer": "Move 5 units right, then 3 units up.",
+      "compute": null,
+      "solution": "In an ordered pair, the first number tells how far to move right and the second tells how far to move up. For (5, 3), move 5 units right and 3 units up.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Move 5 units right, then 3 units up.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-coordinate first: 5 right, then 3 up.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.141Z"
+        }
+      }
+    },
+    {
+      "id": "31a78bca-1432-4a5e-9345-f3a846eb0108",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A: 0, 4, 8, 12. Pattern B: 1, 5, 9, 13. Which list shows the ordered pairs (A, B) made from matching terms?",
+      "choices": [
+        "$(0, 4), (8, 12), (1, 5), (9, 13)$",
+        "$(1, 0), (5, 4), (9, 8), (13, 12)$",
+        "$(0, 13), (4, 9), (8, 5), (12, 1)$",
+        "$(0, 1), (4, 5), (8, 9), (12, 13)$"
+      ],
+      "answer": "$(0, 1), (4, 5), (8, 9), (12, 13)$",
+      "compute": null,
+      "solution": "Match the first term of A with the first term of B, the second with the second, and so on, and write A first: (0, 1), (4, 5), (8, 9), (12, 13).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(0, 1), (4, 5), (8, 9), (12, 13)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pair the matching terms in order: (0,1), (4,5), (8,9), (12,13).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.177Z"
+        }
+      }
+    },
+    {
+      "id": "da786bf9-cac1-4fd7-a379-e9c0d4089131",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "A plant is 2 inches tall when Rosa starts to measure it, and it grows 3 inches each week. The ordered pairs (weeks, inches) begin (0, 2), (1, 5), and (2, 8). How many inches tall is the plant after 4 weeks?",
+      "choices": [],
+      "answer": "14",
+      "compute": "2+3*4",
+      "solution": "The heights are 2, 5, 8, 11, 14 for weeks 0, 1, 2, 3, 4. After 4 weeks the plant is 14 inches tall.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height = 2+3w; w=4 gives 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.204Z"
+        }
+      }
+    },
+    {
+      "id": "556c9f49-281c-405e-bfcf-3846f11b7be1",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 10, 20, 30, 40. Pattern B: 5, 10, 15, 20. Each term of A is how many times the matching term of B?",
+      "choices": [],
+      "answer": "2",
+      "compute": "10/5",
+      "solution": "10 is 2 times 5, 20 is 2 times 10, 30 is 2 times 15, and 40 is 2 times 20. Each term of A is 2 times the matching term of B.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/5 = 20/10 = 30/15 = 40/20 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.280Z"
+        }
+      }
+    },
+    {
+      "id": "bdfe0056-0fe8-40ea-bd3b-c9dacd5c4fad",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "A pattern starts at 1 and the rule is \"add 6\". Which list shows the first four terms?",
+      "choices": [
+        "1, 6, 12, 18",
+        "1, 7, 13, 19",
+        "1, 7, 14, 21",
+        "6, 12, 18, 24"
+      ],
+      "answer": "1, 7, 13, 19",
+      "compute": null,
+      "solution": "Start at 1 and add 6 each time: 1, 7, 13, 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1, 7, 13, 19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 1+6 = 7, 13, 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.288Z"
+        }
+      }
+    },
+    {
+      "id": "3414335d-8ab5-4f8d-979f-20cd01c2e92a",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Ben saves 2 dollars each week and Cora saves 8 dollars each week. Both start with 0 dollars. Which statement is true about their savings after the same number of weeks?",
+      "choices": [
+        "Cora has 6 dollars more than Ben.",
+        "Ben has 4 times as much as Cora.",
+        "Cora has 4 times as much as Ben.",
+        "Cora has 8 times as much as Ben."
+      ],
+      "answer": "Cora has 4 times as much as Ben.",
+      "compute": null,
+      "solution": "Ben has 2, 4, 6, 8, ... dollars and Cora has 8, 16, 24, 32, ... dollars. Each of Cora's amounts is 4 times Ben's.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Cora has 4 times as much as Ben.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After n weeks: Ben 2n, Cora 8n. Cora always has 4 times as much. (6 more only at week 1.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.373Z"
+        }
+      }
+    },
+    {
+      "id": "4657c863-265d-42d1-9047-15ee842000e4",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Pattern A starts at 0 and the rule is \"add 5\". What is the 7th term of pattern A?",
+      "choices": [],
+      "answer": "30",
+      "compute": "5*6",
+      "solution": "The terms are 0, 5, 10, 15, 20, 25, 30. The 7th term is 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0,5,10,15,20,25,30 -> 7th term 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.414Z"
+        }
+      }
+    },
+    {
+      "id": "187a2a6a-0683-43e1-985f-2630ba11c845",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "Which pattern follows the rule \"start at 1 and add 9\"?",
+      "choices": [
+        "1, 9, 18, 27",
+        "9, 18, 27, 36",
+        "1, 10, 20, 30",
+        "1, 10, 19, 28"
+      ],
+      "answer": "1, 10, 19, 28",
+      "compute": null,
+      "solution": "Start at 1 and add 9 each time: 1, 10, 19, 28.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1, 10, 19, 28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1, 10, 19, 28 (each +9).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.475Z"
+        }
+      }
+    },
+    {
+      "id": "d62a1223-6200-475b-99ae-36d66ac3d1ca",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A: 2, 4, 6, 8. Pattern B: 3, 6, 9, 12. Matching terms make ordered pairs (A, B), so the first pair is (2, 3). What is the sum of the two numbers in the third pair?",
+      "choices": [],
+      "answer": "15",
+      "compute": "6+9",
+      "solution": "The third terms are 6 and 9, so the third pair is (6, 9). The sum is 6 + 9 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Third pair (6, 9); 6 + 9 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.548Z"
+        }
+      }
+    },
+    {
+      "id": "0fcc61ad-4eb9-4a93-bb5a-b9082a185d40",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 3, 4, 5, 6. Pattern B: 8, 9, 10, 11. Which statement is true about the matching terms?",
+      "choices": [
+        "Each term of B is 5 more than the matching term of A.",
+        "Each term of B is 5 times the matching term of A.",
+        "Each term of A is 5 more than the matching term of B.",
+        "Each term of B is 3 more than the matching term of A."
+      ],
+      "answer": "Each term of B is 5 more than the matching term of A.",
+      "compute": null,
+      "solution": "Compare matching terms: 8 - 3 = 5, 9 - 4 = 5, 10 - 5 = 5, 11 - 6 = 5. Each B term is 5 more than the A term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each term of B is 5 more than the matching term of A.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8-3 = 9-4 = 10-5 = 11-6 = 5: B is 5 more than A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.584Z"
+        }
+      }
+    },
+    {
+      "id": "15147bad-5c5a-498d-80ce-9f288f09e52a",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "Pattern A is 1, 2, 3 and pattern B is 4, 8, 12. Zoe plots the points (1, 4), (2, 8), and (3, 12) on a coordinate plane. How many units above the horizontal axis is the point (3, 12)?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The second number of an ordered pair tells how far up the point is. For (3, 12) that is 12 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The point (3,12) has y-coordinate 12, so it is 12 units above the horizontal axis.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.691Z"
+        }
+      }
+    },
+    {
       "id": "e3e7c765-9e21-4c85-a475-6a3e9cacaba9",
       "topic_id": "NC17.5.OA.3",
       "difficulty": 2,
@@ -3755,6 +4415,733 @@
       }
     },
     {
+      "id": "58027f62-21af-457f-a2ba-8940c901a40b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "The points $(2, 1)$, $(4, 2)$, $(6, 3)$, and $(8, 4)$ are plotted, and the points keep going in the same way. What is the first number of the point whose second number is 9?",
+      "choices": [],
+      "answer": "18",
+      "compute": "9*2",
+      "solution": "Each first number is 2 times the second number. When the second number is 9, the first number is 2 x 9 = 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First number is twice the second: 2×9 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.705Z"
+        }
+      }
+    },
+    {
+      "id": "3adad2be-d6a0-4bd0-af1c-c34f71be87c8",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "Each tricycle has 3 wheels. The ordered pairs (tricycles, wheels) are (1, 3), (2, 6), and (3, 9). Which statement is true?",
+      "choices": [
+        "The number of wheels is 3 times the number of tricycles.",
+        "The number of tricycles is 3 times the number of wheels.",
+        "The number of wheels is 3 more than the number of tricycles.",
+        "The number of wheels is 6 times the number of tricycles."
+      ],
+      "answer": "The number of wheels is 3 times the number of tricycles.",
+      "compute": null,
+      "solution": "3 is 3 times 1, 6 is 3 times 2, and 9 is 3 times 3. The wheels are always 3 times the tricycles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of wheels is 3 times the number of tricycles.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Wheels = 3 × tricycles (1→3, 2→6, 3→9).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.736Z"
+        }
+      }
+    },
+    {
+      "id": "500579fb-b11f-4999-9d3d-ea8f1067b65a",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "The points $(0, 0)$, $(4, 2)$, $(8, 4)$, and $(12, 6)$ are plotted. Which describes how to move from one point to the next?",
+      "choices": [
+        "Right 4 units and up 2 units",
+        "Right 2 units and up 4 units",
+        "Right 4 units and up 4 units",
+        "Right 6 units and up 12 units"
+      ],
+      "answer": "Right 4 units and up 2 units",
+      "compute": null,
+      "solution": "From (0, 0) to (4, 2) the first number goes up by 4 and the second by 2. The same happens at every step: right 4 units and up 2 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Right 4 units and up 2 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x increases by 4, y by 2 each step.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.738Z"
+        }
+      }
+    },
+    {
+      "id": "ba510bb1-a1ae-4a09-b395-40c89c4fe739",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "These points are plotted on a coordinate plane: $(0, 2)$, $(1, 4)$, $(2, 6)$, and $(3, 8)$. The points keep going in the same way. How many units above the horizontal axis is the point whose first number is 7?",
+      "choices": [],
+      "answer": "16",
+      "compute": "2+2*7",
+      "solution": "Each time the first number goes up by 1, the second number goes up by 2, starting at 2. When the first number is 7, the second number is 2 + 2 x 7 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 2x + 2; x = 7 → 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.748Z"
+        }
+      }
+    },
+    {
+      "id": "07aea12f-0acc-4a46-b4da-d54700771ae2",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "Which pair of rules makes every term of pattern B 5 more than the matching term of pattern A?",
+      "choices": [
+        "A: start at 0, add 2. B: start at 0, add 7.",
+        "A: start at 0, add 2. B: start at 5, add 2.",
+        "A: start at 0, add 2. B: start at 0, add 10.",
+        "A: start at 5, add 2. B: start at 0, add 2."
+      ],
+      "answer": "A: start at 0, add 2. B: start at 5, add 2.",
+      "compute": null,
+      "solution": "Pattern B must go up by the same amount as A and begin 5 higher. A: 0, 2, 4, ... and B: 5, 7, 9, ... Each B term is 5 more than the A term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A: start at 0, add 2. B: start at 5, add 2.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 0,2,4…; B: 5,7,9… each 5 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.749Z"
+        }
+      }
+    },
+    {
+      "id": "4c0c53b3-1290-4a44-a2c5-7a4bb6ad9616",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "A pattern starts at 12 and the rule is \"add 7\". What is the 8th term of the pattern?",
+      "choices": [],
+      "answer": "61",
+      "compute": "12+7*7",
+      "solution": "The 8th term is the start plus 7 additions of 7: 12 + 7 x 7 = 12 + 49 = 61.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "61",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8th term = 12 + 7×7 = 61.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.751Z"
+        }
+      }
+    },
+    {
+      "id": "a90a33d4-7a7b-4936-83dc-1fc3d9ff8f78",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "The ordered pairs (2, 6), (4, 12), and (6, 18) follow a rule. If the same rule is used with a first number of 1, what is the second number?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6/2*1",
+      "solution": "Each second number is 3 times the first number (6 = 3 x 2, 12 = 3 x 4, 18 = 3 x 6). So when the first number is 1, the second number is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second = 3 * first (6=3*2, 12=3*4, 18=3*6). 1 -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.964Z"
+        }
+      }
+    },
+    {
+      "id": "ffe1bf70-7575-4133-9df6-158d68722f20",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 8, 16, 24, 32. Pattern B: 1, 2, 3, 4. Each term of A is how many times the matching term of B?",
+      "choices": [],
+      "answer": "8",
+      "compute": "32/4",
+      "solution": "8 is 8 times 1, 16 is 8 times 2, 24 is 8 times 3, and 32 is 8 times 4. Each term of A is 8 times the matching term of B.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8/1=16/2=24/3=32/4=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.000Z"
+        }
+      }
+    },
+    {
+      "id": "93e5c269-3fd3-4d9a-8091-9c589c919a6e",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "The ordered pairs (1, 7), (2, 8), and (3, 9) are made from matching terms of two patterns. Which rule tells how to get the second number from the first number?",
+      "choices": [
+        "Add 7.",
+        "Multiply by 7.",
+        "Multiply by 6.",
+        "Add 6."
+      ],
+      "answer": "Add 6.",
+      "compute": null,
+      "solution": "7 - 1 = 6, 8 - 2 = 6, and 9 - 3 = 6. The second number is the first number plus 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 6.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7-1=8-2=9-3=6, so add 6. Multiply by 7 fails for (2,8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.042Z"
+        }
+      }
+    },
+    {
+      "id": "b5398f9b-bbaf-4f65-a6ce-c5cbafb24ce3",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Pattern B starts at 0 and the rule is \"add 9\". Which of these numbers is a term of pattern B?",
+      "choices": [
+        "61",
+        "63",
+        "65",
+        "67"
+      ],
+      "answer": "63",
+      "compute": null,
+      "solution": "Every term of B is a multiple of 9: 0, 9, 18, 27, 36, 45, 54, 63. Only 63 is on the list.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms are multiples of 9: 0, 9, ..., 54, 63, 72. 63 = 9 x 7. 67, 65, 61 are not multiples of 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.089Z"
+        }
+      }
+    },
+    {
+      "id": "8188ae09-3562-4981-a1ef-430650f973ac",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "Jo plots the points $(1, 3)$, $(2, 6)$, and $(3, 9)$ on a coordinate plane. If the pattern continues, which point is also on her graph?",
+      "choices": [
+        "$(4, 10)$",
+        "$(5, 12)$",
+        "$(4, 12)$",
+        "$(12, 4)$"
+      ],
+      "answer": "$(4, 12)$",
+      "compute": null,
+      "solution": "Each time the first number goes up by 1, the second number goes up by 3. After (3, 9) comes (4, 12).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, 12)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 3x; x=4 gives 12. (4,12).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.134Z"
+        }
+      }
+    },
+    {
+      "id": "f92834c1-54ba-45f3-afe4-e2c5ac157ac7",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A starts at 4 and adds 4. Pattern B starts at 2 and adds 2. The term 14 is in pattern B. What is the matching term of pattern A?",
+      "choices": [],
+      "answer": "28",
+      "compute": "14*2",
+      "solution": "B: 2, 4, 6, 8, 10, 12, 14, so 14 is the 7th term. A: 4, 8, 12, 16, 20, 24, 28. The 7th term of A is 28.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B: 2,4,6,8,10,12,14 -> 14 is the 7th term. A 7th term: 4*7 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.142Z"
+        }
+      }
+    },
+    {
+      "id": "a0236f4a-4de9-430e-bfd4-7ec3fdf2c885",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A starts at 0 and adds 6. Pattern B starts at 0 and adds 4. Matching terms make the ordered pairs (A, B): (0, 0), (6, 4), (12, 8), and so on. What is the sum of the two numbers in the 7th ordered pair?",
+      "choices": [],
+      "answer": "60",
+      "compute": "6*6+4*6",
+      "solution": "The 7th term of A is 6 x 6 = 36. The 7th term of B is 4 x 6 = 24. The 7th pair is (36, 24), and 36 + 24 = 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7th pair is the term with 6 additions: A = 6*6 = 36, B = 4*6 = 24; sum 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.182Z"
+        }
+      }
+    },
+    {
+      "id": "8fd26a44-f3c6-4e67-a072-426d5311a629",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 4, 8, 12, 16. Pattern B: 1, 2, 3, 4. Which statement is true about the matching terms?",
+      "choices": [
+        "Each term of B is 4 times the matching term of A.",
+        "Each term of A is 3 more than the matching term of B.",
+        "Each term of A is 4 times the matching term of B.",
+        "Each term of B is 4 more than the matching term of A."
+      ],
+      "answer": "Each term of A is 4 times the matching term of B.",
+      "compute": null,
+      "solution": "4 is 4 times 1, 8 is 4 times 2, 12 is 4 times 3, and 16 is 4 times 4. Each A term is 4 times the matching B term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each term of A is 4 times the matching term of B.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 = 4*1, 8 = 4*2, 12 = 4*3, 16 = 4*4: A is 4 times B. (3 more works only for the first pair.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.182Z"
+        }
+      }
+    },
+    {
+      "id": "31f2d8d2-7730-47b4-9b9e-5cd5bedaa6b5",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Pattern A starts at 3 and the rule is \"add 4\". Pattern B starts at 0 and the rule is \"add 8\". What is the 5th term of B minus the 5th term of A?",
+      "choices": [],
+      "answer": "13",
+      "compute": "8*4-(3+4*4)",
+      "solution": "The 5th term of A is 3 + 4 x 4 = 19. The 5th term of B is 0 + 8 x 4 = 32. The difference is 32 - 19 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 3,7,11,15,19; B: 0,8,16,24,32. 32-19=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.186Z"
+        }
+      }
+    },
+    {
+      "id": "255ef362-83fc-4f37-b3cc-dd4cfd7d07ae",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A starts at 1 and adds 3. Pattern B starts at 2 and adds 6. Which list shows the first four ordered pairs (A, B)?",
+      "choices": [
+        "$(1, 2), (4, 5), (7, 8), (10, 11)$",
+        "$(1, 2), (4, 8), (7, 14), (10, 20)$",
+        "$(1, 2), (3, 8), (5, 14), (7, 20)$",
+        "$(2, 1), (8, 4), (14, 7), (20, 10)$"
+      ],
+      "answer": "$(1, 2), (4, 8), (7, 14), (10, 20)$",
+      "compute": null,
+      "solution": "A: 1, 4, 7, 10. B: 2, 8, 14, 20. Matching terms make (1, 2), (4, 8), (7, 14), (10, 20).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(1, 2), (4, 8), (7, 14), (10, 20)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 1,4,7,10; B: 2,8,14,20. Pairs (1,2),(4,8),(7,14),(10,20).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.186Z"
+        }
+      }
+    },
+    {
+      "id": "d71c33f6-5e16-4e79-bfce-7ba553c7ef8e",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "Ned has 15 dollars and saves 5 dollars each week. The ordered pairs (weeks, dollars) begin (0, 15), (1, 20), and (2, 25). How many dollars does Ned have after 6 weeks?",
+      "choices": [],
+      "answer": "45",
+      "compute": "15+5*6",
+      "solution": "After 6 weeks Ned has saved 5 x 6 = 30 dollars more. 15 + 30 = 45 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15+5*6=45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.242Z"
+        }
+      }
+    },
+    {
+      "id": "d9638f37-f242-446a-a4fb-29ae79d4e71e",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A: 5, 10, 15, 20. Pattern B: 2, 4, 6, 8. Matching terms make ordered pairs (A, B). The pattern continues, and in one pair A is 40. What is B in that pair?",
+      "choices": [],
+      "answer": "16",
+      "compute": "40/5*2",
+      "solution": "A: 5, 10, 15, 20, 25, 30, 35, 40, so 40 is the 8th term. The 8th term of B is 16 (2 x 8).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A = 5n, B = 2n. A = 40 when n = 8, so B = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.341Z"
+        }
+      }
+    },
+    {
+      "id": "1c05b0df-3dda-4d3a-9f64-0a4c1035916b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 7, 12, 17, 22. Pattern B: 2, 7, 12, 17. Which statement is true about the matching terms?",
+      "choices": [
+        "Each term of A is 5 more than the matching term of B.",
+        "Each term of B is 5 more than the matching term of A.",
+        "Each term of A is 5 times the matching term of B.",
+        "Each term of A is 2 more than the matching term of B."
+      ],
+      "answer": "Each term of A is 5 more than the matching term of B.",
+      "compute": null,
+      "solution": "Compare matching terms: 7 - 2 = 5, 12 - 7 = 5, 17 - 12 = 5, 22 - 17 = 5. Each A term is 5 more than the matching B term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each term of A is 5 more than the matching term of B.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7-2=5, 12-7=5, 17-12=5, 22-17=5: each term of A is 5 more than B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.520Z"
+        }
+      }
+    },
+    {
+      "id": "9035fe0d-3529-4a76-abbe-e44efa70fa6b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Each term of pattern B is 4 times the matching term of pattern A. Pattern A has the term 21. What is the matching term of pattern B?",
+      "choices": [],
+      "answer": "84",
+      "compute": "4*21",
+      "solution": "The matching term of B is 4 times 21, which is 84.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "84",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 21 = 84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.545Z"
+        }
+      }
+    },
+    {
+      "id": "eb5bfc67-c3c8-403d-b7a7-7f050596248d",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A starts at 2 and adds 2. Pattern B starts at 5 and adds 5. Matching terms make ordered pairs (A, B), such as (2, 5) and (4, 10). Which ordered pair is NOT made from matching terms?",
+      "choices": [
+        "$(10, 25)$",
+        "$(12, 30)$",
+        "$(16, 40)$",
+        "$(14, 30)$"
+      ],
+      "answer": "$(14, 30)$",
+      "compute": null,
+      "solution": "The pairs are (2, 5), (4, 10), (6, 15), (8, 20), (10, 25), (12, 30), (14, 35), (16, 40). The pair (14, 30) is not on the list, because the pair for 14 is (14, 35).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(14, 30)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A = 2n, B = 5n: (10,25) n=5, (12,30) n=6, (16,40) n=8 fit; (14,30) would need (14,35).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.555Z"
+        }
+      }
+    },
+    {
+      "id": "6cd8c5b9-a2d6-4a91-bdc2-a977e5e21d8a",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "A store has 6 cans on a shelf and adds 4 cans every day. How many cans are on the shelf after 5 days?",
+      "choices": [
+        "30",
+        "20",
+        "24",
+        "26"
+      ],
+      "answer": "26",
+      "compute": "6+4*5",
+      "solution": "After each day the number of cans goes 6, 10, 14, 18, 22, 26. After 5 days there are 26 cans.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4*5 = 26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.575Z"
+        }
+      }
+    },
+    {
+      "id": "00e9e565-f4eb-426f-bf88-69c08870ca62",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "A gym charges 8 dollars for each visit. The ordered pairs (visits, dollars) are (1, 8), (2, 16), and (3, 24). Which ordered pair shows the cost of 6 visits?",
+      "choices": [
+        "$(6, 14)$",
+        "$(48, 6)$",
+        "$(6, 48)$",
+        "$(6, 36)$"
+      ],
+      "answer": "$(6, 48)$",
+      "compute": null,
+      "solution": "6 visits cost 6 x 8 = 48 dollars. The first number is the visits, so the pair is (6, 48).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6, 48)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 visits cost 6*8 = 48: (6, 48).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.590Z"
+        }
+      }
+    },
+    {
       "id": "6d314ce7-6c29-48ef-addc-037f7b1dbcaf",
       "topic_id": "NC17.5.OA.3",
       "difficulty": 3,
@@ -4066,6 +5453,699 @@
           "work": "A: 0, 2, 4; B: 0, 6, 12 -> B = 3A. Others: (0,3,5..) no; (0,5,10) vs (0,2,4) is 2.5x; A add 6 B add 2 gives B = A/3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.498Z"
+        }
+      }
+    },
+    {
+      "id": "0c1872b6-b4ce-43c1-b493-6cd82d67cd1b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "A pattern starts at 3 and the rule is \"add 8\". The number 67 is a term of the pattern. Counting the first term (3) as the 1st term, which term is 67?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(67-3)/8+1",
+      "solution": "From 3 to 67 the pattern adds 67 - 3 = 64, which is 8 additions of 8. So 67 comes 8 terms after the 1st term, and it is the 9th term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 8(n-1) = 67 → n-1 = 8 → n = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.732Z"
+        }
+      }
+    },
+    {
+      "id": "406f62ae-0c4f-4e81-b5a2-69da86654c80",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A starts at 0 and adds 6. Pattern B starts at 15 and adds 6. The 8th term of A is 42. What is the 8th term of B?",
+      "choices": [],
+      "answer": "57",
+      "compute": "42+15",
+      "solution": "Each term of B is 15 more than the matching term of A. The 8th term of B is 42 + 15 = 57.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "57",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A's nth term = 6(n-1); 8th = 42. B is 15 more each term: 42+15 = 57.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.018Z"
+        }
+      }
+    },
+    {
+      "id": "b3c5a6cc-a0f8-42e8-ba39-5ebc006a3263",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "Which rules make the ordered pairs (1, 5), (2, 8), (3, 11), and (4, 14)?",
+      "choices": [
+        "First numbers: start at 1, add 1. Second numbers: start at 5, add 3.",
+        "First numbers: start at 1, add 1. Second numbers: start at 5, add 5.",
+        "First numbers: start at 1, add 3. Second numbers: start at 5, add 1.",
+        "First numbers: start at 1, add 1. Second numbers: start at 3, add 5."
+      ],
+      "answer": "First numbers: start at 1, add 1. Second numbers: start at 5, add 3.",
+      "compute": null,
+      "solution": "The first numbers 1, 2, 3, 4 start at 1 and add 1. The second numbers 5, 8, 11, 14 start at 5 and add 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "First numbers: start at 1, add 1. Second numbers: start at 5, add 3.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First numbers 1,2,3,4 (start 1 add 1); second 5,8,11,14 (start 5 add 3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.030Z"
+        }
+      }
+    },
+    {
+      "id": "c08d31d7-fd3e-4b55-8958-a69d251161ac",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A starts at 5 and adds 5. Pattern B starts at 12 and adds 4. Matching terms make ordered pairs (A, B). What is the second number in the pair whose first number is 35?",
+      "choices": [],
+      "answer": "36",
+      "compute": "12+4*6",
+      "solution": "A: 5, 10, 15, 20, 25, 30, 35, so 35 is the 7th term. The 7th term of B is 12 + 4 x 6 = 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 5,10,...,35 is term 7. B term 7: 12 + 6*4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.065Z"
+        }
+      }
+    },
+    {
+      "id": "b5dda1a7-51cd-4a0a-9d64-1c16d0de45db",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Rule 1 starts at 0 and adds 4. Rule 2 starts at 0 and adds 10. What is the 6th term made by Rule 2 minus the 6th term made by Rule 1?",
+      "choices": [],
+      "answer": "30",
+      "compute": "10*5-4*5",
+      "solution": "The 6th term of Rule 2 is 10 x 5 = 50. The 6th term of Rule 1 is 4 x 5 = 20. The difference is 50 - 20 = 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rule 2: 0,10,20,30,40,50 -> 50. Rule 1: 0,4,8,12,16,20 -> 20. 50-20=30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.190Z"
+        }
+      }
+    },
+    {
+      "id": "4604eadc-4215-437e-9541-018a72ba360d",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "Pattern A is 0, 3, 6, 9 and pattern B is 0, 2, 4, 6. Matching terms are graphed as the points (A, B), including the point with first number 9. What number goes in place of the ? in the point $(9, ?)$",
+      "choices": [],
+      "answer": "6",
+      "compute": "2*3",
+      "solution": "9 is the 4th term of A, so the point uses the 4th term of B, which is 6. The point is (9, 6).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 is the 4th term of A; 4th term of B is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.191Z"
+        }
+      }
+    },
+    {
+      "id": "b389166f-5251-4c51-a606-763515b908c5",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "Tickets cost 6 dollars each. The ordered pairs (tickets, dollars) are (1, 6), (2, 12), and (3, 18). Pia says (9, 15) is on the graph because 9 + 6 = 15. Which statement is correct?",
+      "choices": [
+        "Pia is right. The second number is 6 more than the first.",
+        "Pia is wrong. The second number is 6 times the first, so the pair is (9, 45).",
+        "Pia is wrong. The second number is 6 times the first, so the pair is (9, 54).",
+        "Pia is wrong. The first number is 6 times the second, so the pair is (54, 9)."
+      ],
+      "answer": "Pia is wrong. The second number is 6 times the first, so the pair is (9, 54).",
+      "compute": null,
+      "solution": "Each ticket costs 6 dollars, so the second number is 6 times the first: 6 x 9 = 54. The pair for 9 tickets is (9, 54), not (9, 15).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Pia is wrong. The second number is 6 times the first, so the pair is (9, 54).",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dollars = 6 × tickets, so for 9 tickets it is (9, 54); Pia is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.293Z"
+        }
+      }
+    },
+    {
+      "id": "25136eb8-5054-4d51-98eb-0f194ff2ac64",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "A hiker walks 4 miles each hour. The ordered pairs (hours, miles) should fit this pattern. Which ordered pair does NOT fit?",
+      "choices": [
+        "$(6, 20)$",
+        "$(2, 8)$",
+        "$(5, 20)$",
+        "$(7, 28)$"
+      ],
+      "answer": "$(6, 20)$",
+      "compute": null,
+      "solution": "The miles must be 4 times the hours. 4 x 2 = 8, 4 x 5 = 20, and 4 x 7 = 28 all fit, but 4 x 6 = 24, not 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6, 20)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "miles = 4 x hours. (6, 20): 4 x 6 = 24, not 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.361Z"
+        }
+      }
+    },
+    {
+      "id": "bebf37f2-2cb6-4b4d-8a39-1ee71e3348cc",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Pattern A starts at 4 and adds 6. Pattern B starts at 10 and adds 6. What is the sum of the 9th term of A and the 9th term of B?",
+      "choices": [],
+      "answer": "110",
+      "compute": "(4+6*8)+(10+6*8)",
+      "solution": "The 9th term of A is 4 + 6 x 8 = 52. The 9th term of B is 10 + 6 x 8 = 58. The sum is 52 + 58 = 110.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "110",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A9 = 4 + 8*6 = 52; B9 = 10 + 48 = 58; sum 110.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.442Z"
+        }
+      }
+    },
+    {
+      "id": "b1ade80a-19b1-4429-891f-437e2379d1bd",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "Plant A is 4 centimeters tall and grows 2 centimeters each week. Plant B is 10 centimeters tall and grows 1 centimeter each week. After how many weeks are the two plants the same height?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(10-4)/(2-1)",
+      "solution": "Plant A: 4, 6, 8, 10, 12, 14, 16 (weeks 0 to 6). Plant B: 10, 11, 12, 13, 14, 15, 16. The heights first match at week 6, when both are 16 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 2w = 10 + w -> w = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.444Z"
+        }
+      }
+    },
+    {
+      "id": "478087e5-4274-4d85-950a-c8983a405ebb",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A is 0, 4, 8, 12. Pattern B is 0, 8, 16, 24. Which statement is NOT true?",
+      "choices": [
+        "Each term of B is 4 more than the matching term of A.",
+        "Each term of B is 2 times the matching term of A.",
+        "Each term of A is half of the matching term of B.",
+        "Each term of B minus the matching term of A equals that term of A."
+      ],
+      "answer": "Each term of B is 4 more than the matching term of A.",
+      "compute": null,
+      "solution": "The first terms are 0 and 0, so B is not 4 more than A (and 8 is not 4 more than 4). The other three statements are true: B is double A, A is half of B, and B - A = A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each term of B is 4 more than the matching term of A.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B-A = 0,4,8,12 = A (true); B = 2A (true); A = B/2 (true); 'B is 4 more than A' fails (0 vs 0, 8 vs 16).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.449Z"
+        }
+      }
+    },
+    {
+      "id": "4e7248dd-ac08-4bbd-b648-b11368cdfa9d",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "A graph shows the points $(1, 3)$, $(2, 5)$, $(3, 7)$, and $(4, 9)$. Which statement describes the pattern of the points?",
+      "choices": [
+        "The first number goes up by 2 and the second number goes up by 1.",
+        "Both numbers go up by 2 from one point to the next.",
+        "The first number goes up by 1 and the second number goes up by 2.",
+        "The second number is always 3 times the first number."
+      ],
+      "answer": "The first number goes up by 1 and the second number goes up by 2.",
+      "compute": null,
+      "solution": "From one point to the next, the first number goes 1, 2, 3, 4 (up by 1) and the second number goes 3, 5, 7, 9 (up by 2). The second number is 3 times the first only for (1, 3).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The first number goes up by 1 and the second number goes up by 2.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x: 1,2,3,4 (+1); y: 3,5,7,9 (+2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.452Z"
+        }
+      }
+    },
+    {
+      "id": "0817778d-7003-4fc5-8035-9c8a01fbe817",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "The points $(0, 1)$, $(2, 4)$, $(4, 7)$, and $(6, 10)$ are graphed. They come from matching terms of pattern A and pattern B. Which rules make them?",
+      "choices": [
+        "A: start at 0, add 3. B: start at 1, add 2.",
+        "A: start at 0, add 2. B: start at 1, add 3.",
+        "A: start at 1, add 2. B: start at 0, add 3.",
+        "A: start at 0, add 2. B: start at 4, add 3."
+      ],
+      "answer": "A: start at 0, add 2. B: start at 1, add 3.",
+      "compute": null,
+      "solution": "The first numbers are 0, 2, 4, 6: start at 0 and add 2. The second numbers are 1, 4, 7, 10: start at 1 and add 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A: start at 0, add 2. B: start at 1, add 3.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First numbers 0,2,4,6: start 0 add 2. Second numbers 1,4,7,10: start 1 add 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.533Z"
+        }
+      }
+    },
+    {
+      "id": "b1f5c79a-b37b-4c7b-af55-0c479c67b40a",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A starts at 3 and adds 3. Pattern B starts at 4 and adds 4. Matching terms make ordered pairs (A, B). Which ordered pair is made from matching terms?",
+      "choices": [
+        "$(18, 22)$",
+        "$(21, 24)$",
+        "$(24, 18)$",
+        "$(18, 24)$"
+      ],
+      "answer": "$(18, 24)$",
+      "compute": null,
+      "solution": "A: 3, 6, 9, 12, 15, 18 and B: 4, 8, 12, 16, 20, 24. The 6th terms are 18 and 24, so (18, 24) is made from matching terms.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(18, 24)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Term n: A = 3n, B = 4n. (18,24) is n = 6. (21,24): n=7 gives (21,28). (18,22) and (24,18) do not fit.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.536Z"
+        }
+      }
+    },
+    {
+      "id": "8a62f71e-3785-4142-bfde-85907b287cad",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "The ordered pairs (4, 10), (8, 20), and (12, 30) follow a pattern that keeps going. What is the first number in the pair whose second number is 60?",
+      "choices": [],
+      "answer": "24",
+      "compute": "60/10*4",
+      "solution": "Both numbers go up together: first numbers 4, 8, 12, ... and second numbers 10, 20, 30, ... The second number 60 is 6 times 10, so the first number is 6 times 4, which is 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second = 2.5 x first (or first goes up 4 as second goes up 10). 60 is the 6th pair: first = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.549Z"
+        }
+      }
+    },
+    {
+      "id": "b25af34c-78af-484c-9154-051d7dbb5777",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "A point starts at $(0, 0)$ on a coordinate plane. It moves right 3 units and up 4 units, and it makes this same move 5 times in a row. What is the second number of the ordered pair where it stops?",
+      "choices": [],
+      "answer": "20",
+      "compute": "4*5",
+      "solution": "Each move goes up 4 units, so 5 moves go up 4 x 5 = 20 units. The point stops at (15, 20), so the second number is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Up 4 each move, 5 moves: 20. Stops at (15, 20).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.551Z"
+        }
+      }
+    },
+    {
+      "id": "565f2cb3-4bb6-47b7-89cb-f018a4f02c7c",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Generate the terms of a pattern from a rule",
+      "stem": "Pattern A starts at 7 and the rule is \"add 5\". Which is the first term of pattern A that is greater than 50?",
+      "choices": [
+        "57",
+        "52",
+        "47",
+        "55"
+      ],
+      "answer": "52",
+      "compute": null,
+      "solution": "The terms are 7, 12, 17, 22, 27, 32, 37, 42, 47, 52. The terms 47 and below are not greater than 50, so the first one greater than 50 is 52.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terms: 7, 12, 17, 22, 27, 32, 37, 42, 47, 52, 57. First above 50 is 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.572Z"
+        }
+      }
+    },
+    {
+      "id": "4dd411c0-bc02-46c1-b834-5408ad5f184b",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read and plot ordered pairs on the coordinate plane",
+      "stem": "The points $(1, 4)$, $(2, 7)$, and $(3, 10)$ are plotted, and the points keep going in the same way. What is the first number of the point whose second number is 31?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(31-4)/3+1",
+      "solution": "The second numbers go 4, 7, 10, ... adding 3 each time, while the first numbers go up by 1. From 4 to 31 is 27, which is 9 steps of 3, so the first number is 1 + 9 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second number = 3x + 1; 3x + 1 = 31 gives x = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.602Z"
+        }
+      }
+    },
+    {
+      "id": "cca301e9-440f-4d79-8040-3e65636b2f48",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ordered pairs in a real situation",
+      "stem": "A taxi ride costs 3 dollars to start plus 2 dollars for each mile. The ordered pairs (miles, dollars) begin (0, 3), (1, 5), and (2, 7). How many dollars does a 9-mile ride cost?",
+      "choices": [],
+      "answer": "21",
+      "compute": "3+2*9",
+      "solution": "Each mile adds 2 dollars to the starting 3 dollars. For 9 miles: 3 + 2 x 9 = 3 + 18 = 21 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2*9 = 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.609Z"
+        }
+      }
+    },
+    {
+      "id": "06309949-59b9-4ab1-8ece-e88ccb46f204",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Form ordered pairs from matching terms",
+      "stem": "Pattern A: 1, 3, 5, 7. Pattern B: 4, 6, 8, 10. Both patterns keep going. Which ordered pair (A, B) is made from the 5th terms?",
+      "choices": [
+        "$(9, 13)$",
+        "$(10, 12)$",
+        "$(9, 12)$",
+        "$(11, 14)$"
+      ],
+      "answer": "$(9, 12)$",
+      "compute": null,
+      "solution": "The 5th term of A is 9 (1, 3, 5, 7, 9) and the 5th term of B is 12 (4, 6, 8, 10, 12). The pair is (9, 12).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(9, 12)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 1,3,5,7,9; B: 4,6,8,10,12. (9, 12).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.618Z"
+        }
+      }
+    },
+    {
+      "id": "a747973a-cd22-49d9-aca7-870138426070",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Relate matching terms of two patterns",
+      "stem": "Pattern A: 5, 10, 15, 20. Pattern B: 20, 40, 60, 80. Which statement is true about the matching terms?",
+      "choices": [
+        "Each term of B is 15 more than the matching term of A.",
+        "Each term of B is 20 times the matching term of A.",
+        "Each term of A is 4 times the matching term of B.",
+        "Each term of B is 4 times the matching term of A."
+      ],
+      "answer": "Each term of B is 4 times the matching term of A.",
+      "compute": null,
+      "solution": "20 is 4 times 5, 40 is 4 times 10, 60 is 4 times 15, and 80 is 4 times 20. Each B term is 4 times the A term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each term of B is 4 times the matching term of A.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A:5,10,15,20; B:20,40,60,80. 20/5=40/10=60/15=80/20=4, so B = 4 x A. Differences 15,30,45,60 not constant; A is not 4 x B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.627Z"
+        }
+      }
+    },
+    {
+      "id": "342972a0-62ce-4c80-8431-a04e5b1232aa",
+      "topic_id": "NC17.5.OA.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find or choose the rule of a pattern",
+      "stem": "Which pair of rules makes every term of pattern A twice the matching term of pattern B?",
+      "choices": [
+        "A: start at 0, add 10. B: start at 0, add 2.",
+        "A: start at 0, add 5. B: start at 0, add 10.",
+        "A: start at 10, add 5. B: start at 5, add 5.",
+        "A: start at 0, add 10. B: start at 0, add 5."
+      ],
+      "answer": "A: start at 0, add 10. B: start at 0, add 5.",
+      "compute": null,
+      "solution": "If A starts at 0 and adds 10, its terms are 0, 10, 20, 30. B starts at 0 and adds 5: 0, 5, 10, 15. Each A term is twice the B term.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A: start at 0, add 10. B: start at 0, add 5.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "D: A 0,10,20,30; B 0,5,10,15: A=2B for every term. A option: 10,15,20 vs 5,10,15: 15 is not 2x10. B option: B=2A. C: A=5B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.632Z"
         }
       }
     },
@@ -17276,6 +19356,932 @@
           "work": "First at (8, 5); second at (11, 5); x = 11.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:22:22.570Z"
+        }
+      }
+    },
+    {
+      "id": "d164b4ea-29f8-429e-b2d7-90b4a3b9d369",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Order and nest the categories",
+      "stem": "Which of these groups includes all of the others?",
+      "choices": [
+        "All the squares",
+        "All the rectangles",
+        "All the rhombuses",
+        "All the parallelograms"
+      ],
+      "answer": "All the parallelograms",
+      "compute": null,
+      "solution": "Every square, every rectangle and every rhombus is a parallelogram. None of the other groups includes all the rest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "All the parallelograms",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Squares, rectangles and rhombuses are all parallelograms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.739Z"
+        }
+      }
+    },
+    {
+      "id": "e7b29046-5046-4379-b897-6a55fae9c962",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "True and false statements about the hierarchy",
+      "stem": "Which statement is always true?",
+      "choices": [
+        "Every rectangle is a square",
+        "Every rhombus is a rectangle",
+        "Every square is a rectangle",
+        "Every parallelogram is a rectangle"
+      ],
+      "answer": "Every square is a rectangle",
+      "compute": null,
+      "solution": "A square has 4 right angles and opposite sides that are equal, so it has every attribute of a rectangle. A rectangle can have sides of different lengths, so it is not always a square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every square is a rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has 4 right angles, so it is always a rectangle. Others fail.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.960Z"
+        }
+      }
+    },
+    {
+      "id": "cf2967af-a36a-4819-b865-8f361701f19b",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Classify a shape from its attributes",
+      "stem": "A flat shape has 4 straight sides and 4 square corners. Which is the most specific name that is sure to fit it?",
+      "choices": [
+        "rectangle",
+        "square",
+        "rhombus",
+        "parallelogram"
+      ],
+      "answer": "rectangle",
+      "compute": null,
+      "solution": "Four square corners make it a rectangle. It might have sides of different lengths, so it is not sure to be a square or a rhombus. \"Parallelogram\" is true too, but a rectangle is more specific.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 right angles guarantees a rectangle; not necessarily a square or rhombus; rectangle more specific than parallelogram.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.991Z"
+        }
+      }
+    },
+    {
+      "id": "5e6e9539-147a-4968-9d66-a2b663fd0989",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Attributes pass down to subcategories",
+      "stem": "Which attribute do ALL parallelograms have, so that every rectangle has it too?",
+      "choices": [
+        "All four sides are equal",
+        "All four angles are right angles",
+        "Exactly one pair of parallel sides",
+        "Opposite sides are parallel"
+      ],
+      "answer": "Opposite sides are parallel",
+      "compute": null,
+      "solution": "Every parallelogram has opposite sides that are parallel, and a rectangle is a parallelogram. Equal sides and right angles are not true of all parallelograms.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Opposite sides are parallel",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All parallelograms have opposite sides parallel, inherited by rectangles. Others are not true of all parallelograms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.134Z"
+        }
+      }
+    },
+    {
+      "id": "fdd663fb-8c9b-47f8-88f2-2dcbd234b12c",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Classify a shape from its attributes",
+      "stem": "A flat shape has 4 sides that are all the same length and 4 square corners. Which is the most specific name for it?",
+      "choices": [
+        "a rectangle",
+        "a square",
+        "a rhombus",
+        "a parallelogram"
+      ],
+      "answer": "a square",
+      "compute": null,
+      "solution": "4 equal sides make it a rhombus and 4 square corners make it a rectangle. A shape that is both is a square, the most specific name.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Four equal sides and four right angles: square (most specific).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.147Z"
+        }
+      }
+    },
+    {
+      "id": "ca75337a-98e3-4288-837e-29024a36a0dc",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Sort shapes into categories",
+      "stem": "Look at these shapes: a square, a rectangle, a rhombus, and a triangle. How many of them are parallelograms?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Squares, rectangles and rhombuses all have 2 pairs of parallel sides, so they are parallelograms. A triangle is not. That makes 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square, rectangle, rhombus are parallelograms; triangle is not. 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.338Z"
+        }
+      }
+    },
+    {
+      "id": "c5648b15-7074-4a91-9443-5fd0e5593b27",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Attributes pass down to subcategories",
+      "stem": "Every parallelogram has 2 pairs of parallel sides. A rectangle is a parallelogram. How many pairs of parallel sides does every rectangle have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "A rectangle is a parallelogram, so it has every attribute of a parallelogram. It has 2 pairs of parallel sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangle is a parallelogram, so it inherits 2 pairs of parallel sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.354Z"
+        }
+      }
+    },
+    {
+      "id": "3aa58559-edfa-45bc-882a-268cc4e6415b",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "True and false statements about the hierarchy",
+      "stem": "Which statement is NOT always true?",
+      "choices": [
+        "A square is a rhombus",
+        "A rectangle is a rhombus",
+        "A square is a parallelogram",
+        "A rhombus is a parallelogram"
+      ],
+      "answer": "A rectangle is a rhombus",
+      "compute": null,
+      "solution": "A rectangle can have sides of different lengths, but a rhombus has 4 equal sides. The other three statements are always true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A rectangle is a rhombus",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rectangle need not have equal sides, so it is not always a rhombus; the others are always true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.446Z"
+        }
+      }
+    },
+    {
+      "id": "e78ee212-541c-43e9-ab21-2635258d6d9c",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use a category's attribute on a subcategory",
+      "stem": "Every parallelogram has opposite sides that are equal in length. A rectangle is a parallelogram. One side of a rectangle is 7 cm long and the next side is 3 cm long. How long, in centimeters, is the side opposite the 7 cm side?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "A rectangle is a parallelogram, so its opposite sides are equal. The side opposite the 7 cm side is also 7 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Opposite sides of a parallelogram are equal; the side opposite the 7 cm side is 7 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.514Z"
+        }
+      }
+    },
+    {
+      "id": "bbf14a02-9a16-4808-ab7a-7c818a5cb853",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a category's attribute on a subcategory",
+      "stem": "A square is a rhombus, and every rhombus has 4 sides that are all the same length. A square has a perimeter of 36 cm. How long, in centimeters, is each side of the square?",
+      "choices": [],
+      "answer": "9",
+      "compute": "36/4",
+      "solution": "All 4 sides of a square are equal. Each side is 36 divided by 4, which is 9 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.747Z"
+        }
+      }
+    },
+    {
+      "id": "095883db-5bc1-43b1-8c62-b85516106d7a",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Classify a shape from its attributes",
+      "stem": "A quadrilateral has 4 equal sides, but its corners are not square corners. Which is the most specific name that fits?",
+      "choices": [
+        "square",
+        "rectangle",
+        "rhombus",
+        "parallelogram"
+      ],
+      "answer": "rhombus",
+      "compute": null,
+      "solution": "Four equal sides make it a rhombus. Because its corners are not square corners, it is not a square or a rectangle. \"Parallelogram\" is true but less specific.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rhombus",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 equal sides makes it a rhombus; no right angles so not a square (or rectangle). Most specific: rhombus.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.830Z"
+        }
+      }
+    },
+    {
+      "id": "780be2cf-3839-42cb-9735-d7301a34250c",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Sort shapes into categories",
+      "stem": "A rectangle that is not a square has sides of 3 cm and 7 cm. Here are 5 names: quadrilateral, parallelogram, rectangle, rhombus, square. How many of the names fit this rectangle?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The shape is a rectangle, so it is also a parallelogram and a quadrilateral. Its sides are not all equal, so it is not a rhombus or a square. 3 names fit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A 3 by 7 rectangle is a quadrilateral, a parallelogram and a rectangle; not a rhombus (sides unequal) nor a square. 3 names.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.997Z"
+        }
+      }
+    },
+    {
+      "id": "9b1c3c10-a7cc-4d97-a11f-be53a979d5db",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Attributes pass down to subcategories",
+      "stem": "Which description does NOT fit every rectangle?",
+      "choices": [
+        "a shape with 4 right angles",
+        "a shape with 4 equal sides",
+        "a shape with 4 sides",
+        "a shape with 2 pairs of parallel sides"
+      ],
+      "answer": "a shape with 4 equal sides",
+      "compute": null,
+      "solution": "A rectangle always has 4 sides, 4 right angles and 2 pairs of parallel sides. Its sides are not always all equal. Only a rectangle that is a square has that.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a shape with 4 equal sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Every rectangle has 4 sides, 4 right angles, 2 pairs of parallel sides; not every rectangle has 4 equal sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.083Z"
+        }
+      }
+    },
+    {
+      "id": "87012da7-cafe-4048-93e9-8654cbb1d854",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Order and nest the categories",
+      "stem": "Quadrilateral: 4 straight sides. A parallelogram has everything a quadrilateral has and adds: opposite sides parallel. A rectangle has everything a parallelogram has and adds: 4 right angles. A square has everything a rectangle has and adds: 4 equal sides. How many attributes in this list does every square have?",
+      "choices": [],
+      "answer": "4",
+      "compute": "1+1+1+1",
+      "solution": "A square keeps the quadrilateral attribute (4 straight sides), the parallelogram attribute (opposite sides parallel) and the rectangle attribute (4 right angles), and adds its own (4 equal sides). That is 1 + 1 + 1 + 1 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square has: 4 straight sides, opposite sides parallel, 4 right angles, 4 equal sides: 4 attributes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.106Z"
+        }
+      }
+    },
+    {
+      "id": "8dc5e441-0ed6-4b76-822d-8bc8e61bb624",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "True and false statements about the hierarchy",
+      "stem": "Which statement about squares and rhombuses is true?",
+      "choices": [
+        "Every rhombus is a square, but not every square is a rhombus",
+        "Every square is a rhombus, and every rhombus is a square",
+        "A square can never be a rhombus",
+        "Every square is a rhombus, but not every rhombus is a square"
+      ],
+      "answer": "Every square is a rhombus, but not every rhombus is a square",
+      "compute": null,
+      "solution": "A square has 4 equal sides, so it is a rhombus. A rhombus may not have square corners, so it is not always a square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Every square is a rhombus, but not every rhombus is a square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has 4 equal sides, so it is a rhombus; a rhombus need not have right angles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.116Z"
+        }
+      }
+    },
+    {
+      "id": "0c4a68e1-97e3-47bd-bd76-5926c4049b00",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "True and false statements about the hierarchy",
+      "stem": "Maya says, \"A rectangle can never be a rhombus.\" Which fact shows she is wrong?",
+      "choices": [
+        "A rectangle has four right angles but may have unequal sides",
+        "A rhombus has four equal sides but may have unequal angles",
+        "A square has four right angles and four equal sides",
+        "Every parallelogram has two pairs of parallel sides"
+      ],
+      "answer": "A square has four right angles and four equal sides",
+      "compute": null,
+      "solution": "A square has four right angles, so it is a rectangle. It also has four equal sides, so it is a rhombus. One shape that is both shows that a rectangle can be a rhombus.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A square has four right angles and four equal sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square is a rectangle with four equal sides, so it is a rhombus too: a rectangle can be a rhombus.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.181Z"
+        }
+      }
+    },
+    {
+      "id": "acc58f7a-9996-4f70-86af-bfe43aec5869",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Sort shapes into categories",
+      "stem": "Here are 4 shapes: a square, a rhombus, a parallelogram with 4 right angles, and a parallelogram. How many of them are always rectangles?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "A square is a rectangle. A parallelogram with 4 right angles is a rectangle. A rhombus can have angles that are not right angles, and a parallelogram does not always have 4 right angles. So 2 of the shapes are always rectangles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square: always a rectangle (4 right angles). Rhombus: not always. Parallelogram with 4 right angles: a rectangle. General parallelogram: not always. Count = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.301Z"
+        }
+      }
+    },
+    {
+      "id": "91981105-f184-4648-98b5-f00cf522fa4d",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Order and nest the categories",
+      "stem": "Which list goes from the broadest category to the most specific?",
+      "choices": [
+        "quadrilateral, parallelogram, rectangle, square",
+        "square, rectangle, parallelogram, quadrilateral",
+        "quadrilateral, rectangle, parallelogram, square",
+        "parallelogram, quadrilateral, rectangle, square"
+      ],
+      "answer": "quadrilateral, parallelogram, rectangle, square",
+      "compute": null,
+      "solution": "Every square is a rectangle, every rectangle is a parallelogram, and every parallelogram is a quadrilateral. So the broadest category comes first and the square last.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "quadrilateral, parallelogram, rectangle, square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Quadrilateral contains parallelogram contains rectangle contains square.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.524Z"
+        }
+      }
+    },
+    {
+      "id": "4b1f4272-355f-4107-aaa2-3edf4b21a770",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Attributes pass down to subcategories",
+      "stem": "All parallelograms have opposite sides that are equal in length. Which shapes must also have opposite sides equal in length?",
+      "choices": [
+        "Rectangles, rhombuses, and squares",
+        "Rectangles and squares only",
+        "Rhombuses and squares only",
+        "Every kind of quadrilateral"
+      ],
+      "answer": "Rectangles, rhombuses, and squares",
+      "compute": null,
+      "solution": "Rectangles, rhombuses and squares are all parallelograms, so they all have this attribute. A quadrilateral that is not a parallelogram may not have it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rectangles, rhombuses, and squares",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangles, rhombuses and squares are all parallelograms, so all have opposite sides equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.596Z"
+        }
+      }
+    },
+    {
+      "id": "0719d8bf-59fa-4397-98f4-0a2a3e5e92db",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "True and false statements about the hierarchy",
+      "stem": "Which statement is true?",
+      "choices": [
+        "Some rhombuses are rectangles",
+        "No rhombus is a rectangle",
+        "Every rhombus is a rectangle",
+        "Every rectangle is a rhombus"
+      ],
+      "answer": "Some rhombuses are rectangles",
+      "compute": null,
+      "solution": "A square is a rhombus and also a rectangle, so some rhombuses are rectangles. A rhombus with angles that are not right angles is not a rectangle, and a rectangle with unequal sides is not a rhombus.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Some rhombuses are rectangles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square is both a rhombus and a rectangle, so some rhombuses are rectangles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.757Z"
+        }
+      }
+    },
+    {
+      "id": "650e4f34-479c-4638-878e-50deb7d33efd",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a category's attribute on a subcategory",
+      "stem": "Every rectangle is a parallelogram, so its opposite sides are equal in length. A rectangle has one side of 8 cm and a perimeter of 34 cm. How long, in centimeters, is the side next to the 8 cm side?",
+      "choices": [],
+      "answer": "9",
+      "compute": "34/2-8",
+      "solution": "Opposite sides are equal, so two sides of 8 cm are used. The sum of two neighboring sides is half of the perimeter: 34 / 2 = 17. The other side is 17 - 8 = 9 cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter 34 = 2(8 + w), so 8 + w = 17, w = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.796Z"
+        }
+      }
+    },
+    {
+      "id": "23c42a2c-bf25-4c43-92de-2be2bb104f92",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Order and nest the categories",
+      "stem": "What is the most specific category that includes all rectangles, all rhombuses, and all squares?",
+      "choices": [
+        "quadrilaterals",
+        "parallelograms",
+        "rectangles",
+        "rhombuses"
+      ],
+      "answer": "parallelograms",
+      "compute": null,
+      "solution": "All three kinds have 2 pairs of parallel sides, so all are parallelograms. Quadrilaterals include them too, but that category is broader. Rectangles do not include every rhombus, and rhombuses do not include every rectangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "parallelograms",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangles, rhombuses and squares are all parallelograms; rhombuses are not all rectangles and vice versa. Most specific: parallelograms.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.836Z"
+        }
+      }
+    },
+    {
+      "id": "f6e90ea9-7bb9-400c-8106-a3ed5ebfcbee",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Classify a shape from its attributes",
+      "stem": "A quadrilateral has 2 pairs of parallel sides and 4 equal sides. Its angles measure 60, 120, 60 and 120 degrees. Here are 5 names: quadrilateral, parallelogram, rectangle, rhombus, square. How many of the names fit it?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "It has 2 pairs of parallel sides, so it is a parallelogram and a quadrilateral. It has 4 equal sides, so it is a rhombus. It has no right angles, so it is not a rectangle or a square. 3 names fit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rhombus with 60/120 angles: quadrilateral, parallelogram, rhombus fit; not rectangle or square. 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.894Z"
+        }
+      }
+    },
+    {
+      "id": "942fd8ca-866c-44d3-b1fb-2dbea3535245",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Attributes pass down to subcategories",
+      "stem": "Which argument is correct?",
+      "choices": [
+        "Squares have 4 right angles and squares are rhombuses, so rhombuses have 4 right angles",
+        "Squares have 4 equal sides and squares are rectangles, so rectangles have 4 equal sides",
+        "Rectangles have 4 right angles and squares are rectangles, so squares have 4 right angles",
+        "Squares have 4 right angles and squares are parallelograms, so parallelograms have 4 right angles"
+      ],
+      "answer": "Rectangles have 4 right angles and squares are rectangles, so squares have 4 right angles",
+      "compute": null,
+      "solution": "Attributes of a category belong to every subcategory, so they pass down from rectangles to squares. They do not pass up: some rhombuses, rectangles and parallelograms are not squares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Rectangles have 4 right angles and squares are rectangles, so squares have 4 right angles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Attributes pass down from a category to subcategories: rectangles have 4 right angles, squares are rectangles, so squares have 4 right angles. Others pass attributes up, which is invalid.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.922Z"
+        }
+      }
+    },
+    {
+      "id": "94bd5cd5-466e-4d12-b028-5c2fb9dc248b",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Sort shapes into categories",
+      "stem": "Six quadrilaterals are described. A: 4 equal sides and 4 right angles. B: 4 right angles, with sides of 3 cm and 5 cm. C: 4 equal sides and no right angles. D: 2 pairs of parallel sides, neighboring sides unequal, no right angles. E: 2 pairs of parallel sides, 4 equal sides, no right angles. F: only 1 pair of parallel sides. How many of the six are rhombuses?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "A rhombus is a quadrilateral with 4 equal sides. A, C and E have 4 equal sides. B, D and F do not. So 3 are rhombuses (A is a square, which is also a rhombus).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rhombus = 4 equal sides: A (square), C, E. B rectangle 3x5, D parallelogram, F trapezoid are not. 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.197Z"
+        }
+      }
+    },
+    {
+      "id": "fd55681c-fb8e-483c-9c4a-0016a0800345",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Sort shapes into categories",
+      "stem": "A teacher has 10 shapes: 3 squares, 2 rectangles that are not squares, 2 rhombuses that are not squares, 2 parallelograms that are neither rectangles nor rhombuses, and 1 quadrilateral that is not a parallelogram. How many of the 10 shapes have 2 pairs of parallel sides?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3+2+2+2",
+      "solution": "Squares, rectangles, rhombuses and parallelograms all have 2 pairs of parallel sides: 3 + 2 + 2 + 2 = 9. Only the last quadrilateral, which is not a parallelogram, is left out.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Parallelograms: squares 3, rectangles 2, rhombuses 2, parallelograms 2 = 9. The other quadrilateral is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.213Z"
+        }
+      }
+    },
+    {
+      "id": "c6504fdf-99fd-4ffd-9a40-2238869da99f",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Classify a shape from its attributes",
+      "stem": "A quadrilateral has 4 right angles and 4 equal sides. Which list contains only names that fit it?",
+      "choices": [
+        "square, rectangle, rhombus, parallelogram, pentagon",
+        "square, rectangle, rhombus, triangle, quadrilateral",
+        "square, rectangle, parallelogram, quadrilateral, hexagon",
+        "square, rectangle, rhombus, parallelogram, quadrilateral"
+      ],
+      "answer": "square, rectangle, rhombus, parallelogram, quadrilateral",
+      "compute": null,
+      "solution": "It is a square, and a square is also a rectangle, a rhombus, a parallelogram and a quadrilateral. A pentagon, a triangle and a hexagon have the wrong number of sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "square, rectangle, rhombus, parallelogram, quadrilateral",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square is a square, rectangle, rhombus, parallelogram, quadrilateral; not triangle, pentagon, hexagon.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.229Z"
+        }
+      }
+    },
+    {
+      "id": "d0d473cc-e58f-4a9d-8b13-859e5e5cd830",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count the true statements",
+      "stem": "Count how many of these statements are true. Every square is a rectangle. Every rectangle is a square. Every rhombus is a parallelogram. Every parallelogram is a rhombus. Every square is a rhombus.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "True: every square is a rectangle; every rhombus is a parallelogram; every square is a rhombus. False: not every rectangle is a square; not every parallelogram is a rhombus. So 3 are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square is rectangle: T. Rectangle is square: F. Rhombus is parallelogram: T. Parallelogram is rhombus: F. Square is rhombus: T. Count 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.316Z"
+        }
+      }
+    },
+    {
+      "id": "4f97194c-d297-4307-b3f9-c03eddb64796",
+      "topic_id": "NC17.5.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Spot an impossible description",
+      "stem": "Which description is impossible for any quadrilateral?",
+      "choices": [
+        "a rhombus whose four angles are all right angles",
+        "a rectangle whose four sides are all equal",
+        "a rectangle with only one pair of parallel sides",
+        "a parallelogram with two different side lengths"
+      ],
+      "answer": "a rectangle with only one pair of parallel sides",
+      "compute": null,
+      "solution": "Every rectangle is a parallelogram, so it has two pairs of parallel sides. The other three are possible: a square, a square, and a rectangle that is not a square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a rectangle with only one pair of parallel sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rectangle is a parallelogram, so it has two pairs of parallel sides; \"only one pair\" is impossible. A square is a rhombus with right angles and a rectangle with equal sides; a non-rhombus parallelogram has two side lengths.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.524Z"
         }
       }
     }

@@ -2,6 +2,9 @@
   "level_id": "NC17.M1",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
+    "NC17.M1.N-RN.2": "All integer-exponent rules (product, quotient, power of a power, power of a product or quotient, zero, negative) with variable and numeric bases. Choice algebra answers were checked numerically in the build script. Distractors are common slips (adding for multiplying, ignoring a coefficient, sign of the exponent). Scientific-notation context kept to one question.",
+    "NC17.M1.A-SSE.1": "Interpreting parts of expressions (A-SSE.1): 30 questions, 10 per difficulty, linear, exponential and quadratic expressions with contexts. Everything is asked in words; meaning-in-context questions are choice, value-of-a-part and counting questions are numeric.",
+    "NC17.M1.A-SSE.3": "Answers asking for two zeros are posed as the smaller/larger/positive zero, their sum or product, or as choice questions. Quadratic equations with a not 1 are included (6x^2+x-12, 2x^2+3x-20, 3x^2+5x-2).",
     "NC17.M1.A-APR.1": "Multiplication is of linear expressions only (and a monomial times a linear one), as the summary says; quadratics are only added and subtracted. Division of polynomials appears once, only as the thing that is not closed.",
     "NC17.M1.A-APR.3": "Skills (rough counts): solve a factored equation 3, zeros of a factored function 3, zeros as x-intercepts 5, factor a trinomial to find zeros 3, write factors or an equation from solutions 5, solve by factoring 5, connect a factor, a zero and a solution 5, quadratic equations in context 3 (plus the rocket and the vertex questions). Leading coefficient is 1 except one that factors out a 2 first. Graphs are described by their features in words.",
     "NC17.M1.A-CED.1": "Exponential equations that need logarithms are not solved; numeric solve questions use powers that come out exactly (doubling, tripling, halving), and growth or decay rates with awkward answers are choice questions that only ask for the equation or inequality. Quadratic situations are solved by factoring or by square roots only.",
@@ -9,30 +12,30 @@
     "NC17.M1.A-CED.3": "Skills (rough counts): equations from a story 3, inequalities from a story 4, equation plus inequality 2, phrase into an inequality 3, checking values against constraints 3, interpreting a model or solution 3, finding a limit from the constraints 3, solving counts-and-prices 4, two related quantities 3, rates or break-even 2. Solving is kept small and exact; writing the system is the standard's focus. Graphing is not asked because no picture is available.",
     "NC17.M1.A-CED.4": "Formulas are linear in the chosen variable (rearranging uses the steps of solving an equation); numeric questions ask for a value after rearranging. No answer is irrational.",
     "NC17.M1.A-REI.1": "Text-only: steps are written out rather than shown. 17 choice, 13 numeric because naming a justification is naturally a choice. Skills: name the step done (6), justify with a property (5), square roots and Zero Product Property (5), completing the square (4), why a method works (3), find the error (3), carry out justified steps (3), check by substitution (1).",
-    "NC17.M1.A-REI.10": "Graphs are never shown: points are tested by substituting, and lines are described by points or equations. The standard is conceptual, so many questions are about what it means to lie on the graph.",
-    "NC17.M1.A-REI.11": "Graphs are never shown: crossing points are given as coordinates, graphs are described by their equations or by features, and approximation \"with technology or tables\" is asked through written tables of values (exact crossings and \"between two x-values\" brackets). Skills: why the x-coordinate solves f(x) = g(x) (3), the common output (3), writing the equation (2), number of solutions (3), linear (6), tables (5), exponential (4), quadratic (4).",
-    "NC17.M1.A-REI.12": "Graphs are described in words (solid or dashed, which side is shaded, intercepts, corners) and regions are tested with points; no figure is referred to. Numeric answers are intercepts, counts of points, a corner coordinate or a greatest or least whole number.",
     "NC17.M1.A-REI.3": "All solutions are single numbers or simple inequality statements; no graphing of solution sets on number lines (not testable in text). Skills: two-step equations (5), variables on both sides (5), distributive property and like terms (5), fractions and decimals (5), number of solutions (2), linear inequalities incl. reversing the sign (6), one compound inequality, one literal equation (letters as coefficients).",
     "NC17.M1.A-REI.4": "Only taking square roots and factoring are used, as the summary says: no completing the square and no quadratic formula. A few equations have irrational solutions (written with a radical), asked only as choice questions.",
     "NC17.M1.A-REI.5": "Text-only. 17 choice, 13 numeric: explaining WHY is naturally a choice, so the numeric ones check the mechanics (sums, multiples, multipliers, recovering an equation). Skills: add two equations (3), a solution still fits the new equation (4), adding equals to equals (2), multiply an equation by a number (4), why the solutions stay the same (4), recover the old equation (2), add a multiple of one equation to the other (6), which replacements are allowed (5).",
     "NC17.M1.A-REI.6": "Text-only: tables are written out in the stem, and graphs are given by their equations, two points on each line, or a crossing point. 15 choice, 15 numeric. Skills: elimination (6), substitution (5), word problems (5), tables (4), graph (3), no or infinitely many solutions (3), interpret in context (3), check a point (1).",
-    "NC17.M1.A-SSE.1": "Interpreting parts of expressions (A-SSE.1): 30 questions, 10 per difficulty, linear, exponential and quadratic expressions with contexts. Everything is asked in words; meaning-in-context questions are choice, value-of-a-part and counting questions are numeric.",
-    "NC17.M1.A-SSE.3": "Answers asking for two zeros are posed as the smaller/larger/positive zero, their sum or product, or as choice questions. Quadratic equations with a not 1 are included (6x^2+x-12, 2x^2+3x-20, 3x^2+5x-2).",
-    "NC17.M1.F-BF.2": "Arithmetic and geometric sequences only; explicit and recursive forms use a_1 and a_{n-1} notation. Percent decay and doubling stories kept to ratio form.",
+    "NC17.M1.A-REI.10": "Graphs are never shown: points are tested by substituting, and lines are described by points or equations. The standard is conceptual, so many questions are about what it means to lie on the graph.",
+    "NC17.M1.A-REI.11": "Graphs are never shown: crossing points are given as coordinates, graphs are described by their equations or by features, and approximation \"with technology or tables\" is asked through written tables of values (exact crossings and \"between two x-values\" brackets). Skills: why the x-coordinate solves f(x) = g(x) (3), the common output (3), writing the equation (2), number of solutions (3), linear (6), tables (5), exponential (4), quadratic (4).",
+    "NC17.M1.A-REI.12": "Graphs are described in words (solid or dashed, which side is shaded, intercepts, corners) and regions are tested with points; no figure is referred to. Numeric answers are intercepts, counts of points, a corner coordinate or a greatest or least whole number.",
     "NC17.M1.F-IF.1": "Skills: recognize a function from ordered pairs (3), evaluate f(x) and the meaning of the notation (7), link f(x) to the graph of y = f(x) (4), domain and range (6), find an input for a given output (2), function from an equation, graph or situation (5), swapped relation (1), missing value (1). Graph features are described in words or points, since no picture can be shown.",
     "NC17.M1.F-IF.4": "Graphs are described by their features in words or by short tables; no pictures. Quadratic features need the vertex, which is standard in NC Math 1.",
     "NC17.M1.F-IF.5": "Domain and range in context, written as text only: graphs are given as described segments, arcs or tables of values.",
     "NC17.M1.F-IF.6": "Tables and graphs are given as pairs of values or points, since no picture can be shown. Formulas are linear, quadratic and exponential only (NC Math 1). Skills: from a table or two values, from points on a graph, from a formula, interpreting in context, comparing, finding a missing value, and the linear case.",
     "NC17.M1.F-IF.8": "Quadratics are given in standard, factored or vertex form as text; exponential forms like (1.02)^{12t} are interpreted from the written function.",
     "NC17.M1.F-IF.9": "Graphs are never shown: functions are given as equations, tables written as lists, two points, or verbal descriptions. Quadratic tables are symmetric so the vertex is readable.",
+    "NC17.M1.F-BF.2": "Arithmetic and geometric sequences only; explicit and recursive forms use a_1 and a_{n-1} notation. Percent decay and doubling stories kept to ratio form.",
     "NC17.M1.F-LE.3": "Graphs are described by where they meet and which is above (text only); tables are written as lists of values. Growth is compared with linear and quadratic functions only, with whole-number inputs. Quadratic tables appear as comparisons, not as a topic of their own.",
     "NC17.M1.F-LE.5": "Thirty questions on the meaning of the parameters of a linear function (slope as rate, y-intercept as starting value) and of an exponential function (initial value a, base b as growth or decay factor and percent change), plus choosing a model type, writing a model from its parameters and the effect of changing a parameter. Graphs are not used; tables and two-point descriptions stand in.",
     "NC17.M1.G-GPE.4": "Thirty questions: distance, perimeter, area of rectangles and triangles (including non-axis-aligned shapes and triangles needing the enclosing-rectangle method), and classifying triangles and quadrilaterals by slopes and lengths. Coordinates are given in text; no figures. Irrational lengths only appear inside choice questions or as intermediate steps.",
     "NC17.M1.G-GPE.5": "Equations of lines are choice questions; the numeric versions ask for a y-intercept, a crossing point or an unknown constant. Coordinates and slopes are stated in text; no graphs are used.",
+    "NC17.M1.S-ID.1": "The standard says to use technology to draw histograms and box plots; these questions are answered by hand from written-out data, bars and five-number summaries. Quartile questions state the method or use data where it is stated.",
     "NC17.M1.S-ID.2": "Text-only: data are given as short lists or as five-number summaries, and spread is compared by range, IQR (Q1 and Q3 as medians of the lower and upper halves, stated in each question that needs it) and a given standard deviation. Standard deviation is never computed by hand; it is interpreted from given values or compared on small sets.",
     "NC17.M1.S-ID.3": "All 30 questions are on outliers and their effect on center, spread and shape; quartiles are defined by the median of each half where IQR is used. Graphs are described in words only.",
     "NC17.M1.S-ID.6": "Fitting a least squares line or exponential model needs technology, so every fitted equation is given and the questions ask for predictions, interpretation, residuals and judgments of fit. Plotting is tested only through which variable goes on which axis and the direction of association, since a plot cannot be drawn in text.",
     "NC17.M1.S-ID.7": "All models are given as equations or as two points on the line (no scatter plot is shown), so residuals and fitting are left to S-ID.6 and S-ID.8; the question asks only about reading and using a stated model. Interpolation and extrapolation are judged against a stated range of the data.",
+    "NC17.M1.S-ID.8": "Technology (computing r or residual plots) is replaced by hand-sized data with exact r, sums given, or residual patterns described in words.",
     "NC17.M1.S-ID.9": "Many questions are choice or counting questions, since the standard is conceptual (a numeric answer fits only counting statements). Studies and data are described in words, no pictures."
   },
   "questions": [
@@ -352,6 +355,728 @@
       }
     },
     {
+      "id": "4c6c86c2-0c31-4ad6-a3f6-6fc69d9547d3",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Zero exponent",
+      "stem": "Evaluate $3^0 + 4^0$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "1+1",
+      "solution": "Any nonzero number to the power 0 is 1, so $3^0 + 4^0 = 1 + 1 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 1 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.717Z"
+        }
+      }
+    },
+    {
+      "id": "11f1dee4-8c97-442c-a5e1-e08b84dd41cb",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Spot and explain a mistake",
+      "stem": "Nina says $5^0 = 0$. Which statement shows her mistake?",
+      "choices": [
+        "$5^0 = 5$, because the exponent 0 leaves the base unchanged",
+        "$5^0 = 1$, because any nonzero number to the power 0 equals 1",
+        "$5^0 = -5$, because the exponent 0 changes the sign of the base",
+        "$5^0 = \\frac{1}{5}$, because the exponent 0 flips the base upside down"
+      ],
+      "answer": "$5^0 = 1$, because any nonzero number to the power 0 equals 1",
+      "compute": null,
+      "solution": "Any nonzero number to the power 0 is 1. For example, $\\frac{5^2}{5^2} = 5^{2-2} = 5^0$, and a number divided by itself is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5^0 = 1$, because any nonzero number to the power 0 equals 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Any nonzero base to the 0 power is 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.757Z"
+        }
+      }
+    },
+    {
+      "id": "6801973c-b361-425d-bac3-a7469c31cfb7",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Write $\\left(3^2\\right)^2$ as a single whole number.",
+      "choices": [],
+      "answer": "81",
+      "compute": "3^4",
+      "solution": "$\\left(3^2\\right)^2 = 3^4 = 81$. Or: $3^2 = 9$ and $9^2 = 81$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3^2)^2 = 3^4 = 81.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.894Z"
+        }
+      }
+    },
+    {
+      "id": "033943ab-28bc-43d8-90c2-81aa69f129c6",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Power of a product or quotient",
+      "stem": "Which expression is equivalent to $\\left(\\frac{x}{3}\\right)^2$?",
+      "choices": [
+        "$\\frac{x^2}{3}$",
+        "$\\frac{x}{9}$",
+        "$\\frac{x^2}{6}$",
+        "$\\frac{x^2}{9}$"
+      ],
+      "answer": "$\\frac{x^2}{9}$",
+      "compute": null,
+      "solution": "The exponent applies to both the top and the bottom: $\\frac{x^2}{3^2} = \\frac{x^2}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^2}{9}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x/3)^2=x^2/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.937Z"
+        }
+      }
+    },
+    {
+      "id": "37614f57-e6eb-4c19-be83-8a89ca8ccf00",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing exponent",
+      "stem": "For $a \\ne 0$, $a^{?} \\cdot a^2 = a^9$. What number is the ?",
+      "choices": [],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "Exponents add when multiplying, so ? $+ 2 = 9$ and ? $= 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? + 2 = 9, ? = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.976Z"
+        }
+      }
+    },
+    {
+      "id": "f24e6045-aacd-4d87-96a0-c76d28eb4bfb",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Which expression is equal to $6^3 \\cdot 6^{-3}$?",
+      "choices": [
+        "$0$",
+        "$6^{9}$",
+        "$6^{-9}$",
+        "$1$"
+      ],
+      "answer": "$1$",
+      "compute": "1",
+      "solution": "Add the exponents: $6^{3 + (-3)} = 6^0 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6^{3+(-3)} = 6^0 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.006Z"
+        }
+      }
+    },
+    {
+      "id": "c55491b4-89fa-4469-af8c-0966655b32f1",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Negative exponents",
+      "stem": "Write $10^{-2}$ as a decimal.",
+      "choices": [],
+      "answer": "0.01",
+      "compute": "1/100",
+      "solution": "$10^{-2} = \\frac{1}{10^2} = \\frac{1}{100} = 0.01$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.01",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^{-2} = 1/100 = 0.01.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.021Z"
+        }
+      }
+    },
+    {
+      "id": "e088a8cf-7c16-4487-9681-a60e9df43132",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Negative exponents",
+      "stem": "Which expression is equivalent to $x^{-5}$, for $x \\ne 0$?",
+      "choices": [
+        "$-\\frac{1}{x^5}$",
+        "$\\frac{1}{x^{-5}}$",
+        "$\\frac{1}{x^5}$",
+        "$-5x$"
+      ],
+      "answer": "$\\frac{1}{x^5}$",
+      "compute": null,
+      "solution": "A negative exponent means the reciprocal: $x^{-5} = \\frac{1}{x^5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{x^5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^{-5} = 1/x^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.057Z"
+        }
+      }
+    },
+    {
+      "id": "73455de5-6091-4bae-9fbb-2da6c56196ea",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Negative exponents",
+      "stem": "Which number is equal to $10^{-3}$?",
+      "choices": [
+        "$-\\frac{1}{1000}$",
+        "$\\frac{1}{30}$",
+        "$-30$",
+        "$\\frac{1}{1000}$"
+      ],
+      "answer": "$\\frac{1}{1000}$",
+      "compute": null,
+      "solution": "A negative exponent means the reciprocal: $10^{-3} = \\frac{1}{10^3} = \\frac{1}{1000}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{1000}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^-3 = 1/1000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.075Z"
+        }
+      }
+    },
+    {
+      "id": "fe56f646-1dd3-4a0e-9220-7a7f4a960602",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Negative exponents",
+      "stem": "Zane evaluates $3^{-2}$ by writing it as a fraction with 1 on the top. What fraction does he get?",
+      "choices": [],
+      "answer": "1/9",
+      "compute": "1/9",
+      "solution": "$3^{-2} = \\frac{1}{3^2} = \\frac{1}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^-2 = 1/3^2 = 1/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.075Z"
+        }
+      }
+    },
+    {
+      "id": "6ec82fcb-82da-4321-b025-710e0f2aeab2",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $\\frac{2^8}{2^5}$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "2^3",
+      "solution": "Subtract the exponents: $2^{8-5} = 2^3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(8-5) = 2^3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.150Z"
+        }
+      }
+    },
+    {
+      "id": "a8f2d082-eb86-4e36-8b28-fcc518f89b4a",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Power of a product or quotient",
+      "stem": "Which expression is equivalent to $(ab)^3$?",
+      "choices": [
+        "$ab^3$",
+        "$a^3b$",
+        "$a^3b^3$",
+        "$a^3 + b^3$"
+      ],
+      "answer": "$a^3b^3$",
+      "compute": null,
+      "solution": "The exponent applies to each factor: $(ab)^3 = a^3b^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$a^3b^3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(ab)^3 = a^3 b^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.158Z"
+        }
+      }
+    },
+    {
+      "id": "371bcf27-ba82-4593-ad88-f512f83a2e57",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Product of powers",
+      "stem": "Simplify $3x^2 \\cdot x^3$. The result is $3x^n$. What is $n$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "The coefficient 3 stays. Add the exponents of $x$: $x^2 \\cdot x^3 = x^5$. So $n = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2·x^3 = x^5, so 3x^5: n = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.249Z"
+        }
+      }
+    },
+    {
+      "id": "f2f22c29-096c-4544-a4b0-f5f0d7c56d68",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Product of powers",
+      "stem": "Simplify $k^2 \\cdot k^6 \\cdot k$. The result is $k^n$. What is $n$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "2+6+1",
+      "solution": "When powers of the same base are multiplied, the exponents are added. $k^2 \\cdot k^6 \\cdot k^1 = k^{2+6+1} = k^9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k^2·k^6·k^1 = k^9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.257Z"
+        }
+      }
+    },
+    {
+      "id": "1261c993-f882-4bff-bfbc-e13378a9c0a7",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Power of a power",
+      "stem": "Which expression equals $\\left(w^{5}\\right)^{2}$?",
+      "choices": [
+        "$w^{7}$",
+        "$w^{25}$",
+        "$w^{10}$",
+        "$2w^{5}$"
+      ],
+      "answer": "$w^{10}$",
+      "compute": null,
+      "solution": "Multiply the exponents: $5 \\cdot 2 = 10$, so $\\left(w^5\\right)^2 = w^{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$w^{10}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(w^5)^2 = w^10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.502Z"
+        }
+      }
+    },
+    {
+      "id": "f6eb7f25-8c33-4dc9-b00e-cebab48156b2",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Quotient of powers",
+      "stem": "Which expression is equal to $\\frac{m^5}{m^5}$, for $m \\ne 0$?",
+      "choices": [
+        "$1$",
+        "$m^{10}$",
+        "$0$",
+        "$m$"
+      ],
+      "answer": "$1$",
+      "compute": "1",
+      "solution": "A number divided by itself is 1. By the rule, $m^{5-5} = m^0 = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m^5/m^5 = m^0 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.513Z"
+        }
+      }
+    },
+    {
+      "id": "836ab083-4953-4752-a503-374ef322371f",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Power of a power",
+      "stem": "For $t \\ne 0$, $(t^7)^2 = t^{?}$. What number is the ?",
+      "choices": [],
+      "answer": "14",
+      "compute": "7*2",
+      "solution": "A power of a power multiplies the exponents: $(t^7)^2 = t^{7 \\cdot 2} = t^{14}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(t^7)^2 = t^14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.524Z"
+        }
+      }
+    },
+    {
+      "id": "ed94a679-e329-42c3-bd1c-63ab03c11a45",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $7^0 \\cdot 5^2$.",
+      "choices": [],
+      "answer": "25",
+      "compute": "1*25",
+      "solution": "$7^0 = 1$ and $5^2 = 25$, so the product is 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7^0 = 1; 5^2 = 25; product 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.531Z"
+        }
+      }
+    },
+    {
+      "id": "98547459-d6ce-4f12-acb0-767c8365e965",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Quotient of powers",
+      "stem": "Which expression is equivalent to $\\frac{x^{10}}{x^3}$, for $x \\ne 0$?",
+      "choices": [
+        "$x^7$",
+        "$x^{13}$",
+        "$x^{30}$",
+        "$x^{-7}$"
+      ],
+      "answer": "$x^7$",
+      "compute": null,
+      "solution": "When powers of the same base are divided, the exponents are subtracted: $x^{10-3} = x^7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^10/x^3 = x^7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.543Z"
+        }
+      }
+    },
+    {
+      "id": "8b7836bb-0f28-4802-8685-11f38b73c417",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zero exponent",
+      "stem": "Four expressions are shown. Only one of them equals 1 for every nonzero $x$. Which one?",
+      "choices": [
+        "$8 \\cdot x^{0}$",
+        "$(8x)^0$",
+        "$(8x)^1$",
+        "$8 + x^0$"
+      ],
+      "answer": "$(8x)^0$",
+      "compute": null,
+      "solution": "Anything nonzero to the power 0 is 1, and $8x$ is nonzero, so $(8x)^0 = 1$. In $8 \\cdot x^0$ only the $x$ has the exponent, so it equals $8 \\cdot 1 = 8$. Also $(8x)^1 = 8x$ and $8 + x^0 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(8x)^0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + x^0 = 9; (8x)^1 = 8x; (8x)^0 = 1 for 8x nonzero, i.e. every nonzero x; 8*x^0 = 8. Only (8x)^0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.558Z"
+        }
+      }
+    },
+    {
+      "id": "b242f1c3-f5eb-49bd-958d-450c1f3e6fc2",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Power of a product or quotient",
+      "stem": "Raise the fraction $\\frac{2}{3}$ to the power 2. What fraction do you get?",
+      "choices": [],
+      "answer": "4/9",
+      "compute": "4/9",
+      "solution": "The exponent applies to the top and the bottom: $\\frac{2^2}{3^2} = \\frac{4}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/3)^2 = 4/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.574Z"
+        }
+      }
+    },
+    {
+      "id": "55afbb49-aee8-4f45-adee-2d84f664ac1a",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Negative exponents",
+      "stem": "For $x \\ne 0$, $\\frac{1}{x^{-2}} = x^n$. What is $n$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$x^{-2} = \\frac{1}{x^2}$, so $\\frac{1}{x^{-2}} = x^2$. Then $n = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/x^(-2) = x^2, n = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.621Z"
+        }
+      }
+    },
+    {
+      "id": "d6f5a2e6-e5f3-422b-9a72-a1fda5c8559a",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Spot and explain a mistake",
+      "stem": "Maya simplified $x^2 \\cdot x^3$ and wrote $x^6$. What should she have done?",
+      "choices": [
+        "Subtract the exponents, which gives $x^1$",
+        "Add the exponents, which gives $x^5$",
+        "Multiply the exponents, which gives $x^6$, so she was right",
+        "Add the exponents and the bases, which gives $2x^5$"
+      ],
+      "answer": "Add the exponents, which gives $x^5$",
+      "compute": null,
+      "solution": "When multiplying powers of the same base, add the exponents: $x^{2+3} = x^5$. Multiplying the exponents is the rule for a power of a power.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add the exponents, which gives $x^5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 * x^3 = x^(2+3) = x^5: add exponents.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.623Z"
+        }
+      }
+    },
+    {
       "id": "5b1b5add-639d-48b0-ad1e-208cb465d4d7",
       "topic_id": "NC17.M1.N-RN.2",
       "difficulty": 2,
@@ -667,6 +1392,733 @@
       }
     },
     {
+      "id": "51086d16-f15b-4a19-a5f6-64abdf7677c3",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For $x \\ne 0$, $\\frac{x^{7} \\cdot x^{-2}}{x^{4}} = x^n$. What is $n$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "7-2-4",
+      "solution": "Add the exponents on top: $7 + (-2) = 5$. Then subtract the bottom: $5 - 4 = 1$. So $n = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + (-2) - 4 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.711Z"
+        }
+      }
+    },
+    {
+      "id": "2258d922-8b4f-4481-a029-4206a49d80b4",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Power of a product or quotient",
+      "stem": "Simplify $\\left(\\frac{x^2}{y^3}\\right)^{4}$, for $y \\ne 0$.",
+      "choices": [
+        "$\\frac{x^6}{y^7}$",
+        "$\\frac{x^8}{y^7}$",
+        "$\\frac{x^{16}}{y^{81}}$",
+        "$\\frac{x^8}{y^{12}}$"
+      ],
+      "answer": "$\\frac{x^8}{y^{12}}$",
+      "compute": null,
+      "solution": "Multiply each exponent by 4: $x^{2 \\cdot 4} = x^8$ and $y^{3 \\cdot 4} = y^{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^8}{y^{12}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2)^4 = x^8, (y^3)^4 = y^12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.757Z"
+        }
+      }
+    },
+    {
+      "id": "02ec2fb0-f12a-4178-b3b0-b9eaf8108b78",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Negative exponents",
+      "stem": "Which expression is equivalent to $(2x)^{-3}$, for $x \\ne 0$?",
+      "choices": [
+        "$\\frac{1}{8x^3}$",
+        "$\\frac{1}{2x^3}$",
+        "$-8x^3$",
+        "$\\frac{8}{x^3}$"
+      ],
+      "answer": "$\\frac{1}{8x^3}$",
+      "compute": null,
+      "solution": "$(2x)^{-3} = \\frac{1}{(2x)^3} = \\frac{1}{2^3x^3} = \\frac{1}{8x^3}$. The exponent applies to the 2 as well as the $x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{8x^3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x)^-3 = 1/(2x)^3 = 1/(8x^3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.935Z"
+        }
+      }
+    },
+    {
+      "id": "ba7fa133-0e27-4386-9ea1-370ff0afd8b0",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For $x \\ne 0$, $\\left(x^{3}\\right)^{-2} \\cdot x^{8} = x^n$. What is $n$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "-6+8",
+      "solution": "$\\left(x^3\\right)^{-2} = x^{-6}$. Then $x^{-6} \\cdot x^8 = x^2$, so $n = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^3)^-2=x^-6; x^-6 x^8=x^2. n=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.952Z"
+        }
+      }
+    },
+    {
+      "id": "ff3e74fe-b508-4792-80b7-9d5559a5d7be",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Power of a product or quotient",
+      "stem": "Simplify $(3a^2b)^3$.",
+      "choices": [
+        "$27a^6b^3$",
+        "$9a^5b^3$",
+        "$27a^5b^3$",
+        "$3a^6b^3$"
+      ],
+      "answer": "$27a^6b^3$",
+      "compute": null,
+      "solution": "Apply the exponent 3 to every factor: $3^3 \\cdot \\left(a^2\\right)^3 \\cdot b^3 = 27a^6b^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$27a^6b^3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^3 a^6 b^3 = 27a^6b^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.955Z"
+        }
+      }
+    },
+    {
+      "id": "477082c9-225e-416e-9e0c-4fce0b5398c3",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Spot and explain a mistake",
+      "stem": "Leah simplified $\\frac{x^{-3}}{x^{2}}$ and wrote $x^{-1}$, which is not correct. What is the correct simplification, for $x \\ne 0$?",
+      "choices": [
+        "$x^{5}$",
+        "$x^{-5}$",
+        "$x^{-6}$",
+        "$x$"
+      ],
+      "answer": "$x^{-5}$",
+      "compute": null,
+      "solution": "Subtract the exponents: $-3 - 2 = -5$. Leah added them instead, so the correct answer is $x^{-5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^{-5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^(-3-2) = x^-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.961Z"
+        }
+      }
+    },
+    {
+      "id": "912533e1-e9fa-4ed1-89ab-a6387e183465",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $\\frac{2x^{-3}}{y^{-1}}$, for $x \\ne 0$ and $y \\ne 0$?",
+      "choices": [
+        "$\\frac{2}{x^3y}$",
+        "$\\frac{2y}{x^3}$",
+        "$2x^3y$",
+        "$\\frac{2x^3}{y}$"
+      ],
+      "answer": "$\\frac{2y}{x^3}$",
+      "compute": null,
+      "solution": "$x^{-3} = \\frac{1}{x^3}$ moves $x$ to the bottom. $\\frac{1}{y^{-1}} = y$ moves $y$ to the top. So the result is $\\frac{2y}{x^3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2y}{x^3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^-3 = 1/x^3, 1/y^-1 = y, so 2y/x^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.972Z"
+        }
+      }
+    },
+    {
+      "id": "7f90b7a4-e814-4ec7-913a-1767c72bc2ee",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Negative exponents",
+      "stem": "Evaluate $\\left(\\frac{3}{4}\\right)^{-2}$.",
+      "choices": [],
+      "answer": "16/9",
+      "compute": "16/9",
+      "solution": "A negative exponent flips the fraction: $\\left(\\frac{3}{4}\\right)^{-2} = \\left(\\frac{4}{3}\\right)^2 = \\frac{16}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4/3)^2 = 16/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.984Z"
+        }
+      }
+    },
+    {
+      "id": "da11056f-1c13-475c-ba2d-48d8e21771ff",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For $x \\ne 0$, what is the value of $\\frac{\\left(5x^{2}\\right)^{2}}{x^{4}}$?",
+      "choices": [],
+      "answer": "25",
+      "compute": "5^2",
+      "solution": "$\\left(5x^2\\right)^2 = 25x^4$. Then $\\frac{25x^4}{x^4} = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25x^4 / x^4 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.984Z"
+        }
+      }
+    },
+    {
+      "id": "0c1842c7-1524-4b37-b605-68744261a555",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing exponent",
+      "stem": "For $x \\ne 0$, $\\frac{x^{?}}{x^{5}} = x^{-3}$. What number is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "Subtract the exponents: ? $- 5 = -3$, so ? $= 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^{?-5} = x^{-3}, so ? - 5 = -3, ? = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.003Z"
+        }
+      }
+    },
+    {
+      "id": "16eed3b9-6839-4579-ba9a-4471dd3c5cb2",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Write $10^{-2} \\cdot 10^{-1}$ as a decimal.",
+      "choices": [],
+      "answer": "0.001",
+      "compute": "1/1000",
+      "solution": "Add the exponents: $10^{-2 + (-1)} = 10^{-3} = \\frac{1}{1000} = 0.001$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.001",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10^{-3} = 0.001.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.033Z"
+        }
+      }
+    },
+    {
+      "id": "1716181b-c22e-492d-ac09-a2422e051e81",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $\\frac{1}{3x^{-2}}$, for $x \\ne 0$?",
+      "choices": [
+        "$\\frac{1}{3x^2}$",
+        "$3x^2$",
+        "$\\frac{x^2}{3}$",
+        "$\\frac{3}{x^2}$"
+      ],
+      "answer": "$\\frac{x^2}{3}$",
+      "compute": null,
+      "solution": "$\\frac{1}{x^{-2}} = x^2$, and the 3 stays on the bottom. So the result is $\\frac{x^2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^2}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/(3x^-2) = x^2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.112Z"
+        }
+      }
+    },
+    {
+      "id": "ab72f242-c291-445d-a609-5963e5b6b58a",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Quotient of powers",
+      "stem": "Simplify $\\frac{x^{-4}}{x^{-7}}$, for $x \\ne 0$.",
+      "choices": [
+        "$x^{-11}$",
+        "$x^{-3}$",
+        "$x^3$",
+        "$x^{11}$"
+      ],
+      "answer": "$x^3$",
+      "compute": null,
+      "solution": "Subtract the exponents: $-4 - (-7) = -4 + 7 = 3$, so the result is $x^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^-4 / x^-7 = x^(-4+7) = x^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.114Z"
+        }
+      }
+    },
+    {
+      "id": "f706be67-7ab6-4aa2-b0f1-1adeffa198de",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Product of powers",
+      "stem": "Simplify $4x^{-2} \\cdot 3x^{5}$, for $x \\ne 0$.",
+      "choices": [
+        "$12x^3$",
+        "$12x^{-10}$",
+        "$7x^3$",
+        "$12x^7$"
+      ],
+      "answer": "$12x^3$",
+      "compute": null,
+      "solution": "Multiply the coefficients: $4 \\cdot 3 = 12$. Add the exponents: $-2 + 5 = 3$. The result is $12x^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12x^3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4*3 = 12; x^(-2+5) = x^3. 12x^3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.160Z"
+        }
+      }
+    },
+    {
+      "id": "d9e525e4-0230-4803-a125-fb966385f71c",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $\\left(5^{-1}\\right)^{-2}$.",
+      "choices": [],
+      "answer": "25",
+      "compute": "5^2",
+      "solution": "Multiply the exponents: $(-1)(-2) = 2$, so $5^2 = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5^-1)^-2 = 5^2 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.168Z"
+        }
+      }
+    },
+    {
+      "id": "5855dfd8-e505-4594-a70a-6fd61f00795d",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Negative exponents",
+      "stem": "Which expression is NOT equal to $x^{-2}$, for $x \\ne 0$?",
+      "choices": [
+        "$\\frac{1}{x^2}$",
+        "$\\left(x^2\\right)^{-1}$",
+        "$\\frac{x^{-1}}{x^{-3}}$",
+        "$x^{-5} \\cdot x^{3}$"
+      ],
+      "answer": "$\\frac{x^{-1}}{x^{-3}}$",
+      "compute": null,
+      "solution": "$\\frac{x^{-1}}{x^{-3}} = x^{-1-(-3)} = x^2$, which is not $x^{-2}$. The other three all equal $\\frac{1}{x^2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^{-1}}{x^{-3}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^-5*x^3=x^-2; x^-1/x^-3 = x^2 (not equal); (x^2)^-1=x^-2; 1/x^2=x^-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.204Z"
+        }
+      }
+    },
+    {
+      "id": "b972584d-43d9-44ee-a03e-98576fd55bd5",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $4^{0} + 2^{-2}$.",
+      "choices": [],
+      "answer": "5/4",
+      "compute": "1+1/4",
+      "solution": "$4^0 = 1$ and $2^{-2} = \\frac{1}{4}$, so the sum is $1 + \\frac{1}{4} = \\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^0 = 1, 2^-2 = 1/4; sum = 5/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.248Z"
+        }
+      }
+    },
+    {
+      "id": "985fff74-bd3a-44ee-999b-00f9b0b34ca4",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "Simplify $\\frac{\\left(x^{2}\\right)^{3}}{x^{-4}}$, for $x \\ne 0$.",
+      "choices": [
+        "$x^{2}$",
+        "$x^{-10}$",
+        "$x^{9}$",
+        "$x^{10}$"
+      ],
+      "answer": "$x^{10}$",
+      "compute": null,
+      "solution": "$\\left(x^2\\right)^3 = x^6$. Then $\\frac{x^6}{x^{-4}} = x^{6-(-4)} = x^{10}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^{10}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2)^3 = x^6; x^6 / x^-4 = x^10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.283Z"
+        }
+      }
+    },
+    {
+      "id": "20ca49f5-4710-4618-bc09-10c22b482b75",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $a^{3} \\cdot b^{-2} \\cdot a^{-1}$ when written with only positive exponents, for $a \\ne 0$ and $b \\ne 0$?",
+      "choices": [
+        "$\\frac{a^2}{b^2}$",
+        "$\\frac{a^4}{b^2}$",
+        "$a^2b^2$",
+        "$\\frac{b^2}{a^2}$"
+      ],
+      "answer": "$\\frac{a^2}{b^2}$",
+      "compute": null,
+      "solution": "Add the exponents of $a$: $3 + (-1) = 2$. Then $b^{-2} = \\frac{1}{b^2}$. So the result is $\\frac{a^2}{b^2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{a^2}{b^2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a^3 * a^-1 = a^2; b^-2 = 1/b^2. Result a^2/b^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.315Z"
+        }
+      }
+    },
+    {
+      "id": "177404b3-e5d5-4468-b3b3-69c3dffb82e4",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $2^{-3} \\cdot 2^{5}$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "2^2",
+      "solution": "Add the exponents: $2^{-3+5} = 2^2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(-3+5) = 2^2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.317Z"
+        }
+      }
+    },
+    {
+      "id": "2a792dad-c83b-4af9-8157-b87592891e15",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide which exponent statement is true",
+      "stem": "Which equation is true for every nonzero $x$?",
+      "choices": [
+        "$x^{3} \\cdot x^{2} = x^{6}$",
+        "$\\frac{x^{6}}{x^{2}} = x^{3}$",
+        "$\\left(2x\\right)^{3} = 2x^{3}$",
+        "$\\left(x^{3}\\right)^{2} = x^{6}$"
+      ],
+      "answer": "$\\left(x^{3}\\right)^{2} = x^{6}$",
+      "compute": null,
+      "solution": "$\\left(x^3\\right)^2 = x^{6}$ is true. The others are false: $x^3 \\cdot x^2 = x^5$, $\\frac{x^6}{x^2} = x^4$ and $(2x)^3 = 8x^3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(x^{3}\\right)^{2} = x^{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x)^3=8x^3; (x^3)^2=x^6 true; x^6/x^2=x^4; x^3*x^2=x^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.468Z"
+        }
+      }
+    },
+    {
+      "id": "58d398fa-fe13-4663-b000-3e6b5b274cf0",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $\\frac{3^{-2} \\cdot 3^{4}}{3^{0}}$.",
+      "choices": [],
+      "answer": "9",
+      "compute": "3^2",
+      "solution": "Add the exponents on top: $-2 + 4 = 2$. Since $3^0 = 1$, the result is $3^2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^-2 x 3^4 = 3^2 = 9; divided by 3^0 = 1: 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.556Z"
+        }
+      }
+    },
+    {
+      "id": "542cc8d8-d5e6-446b-8360-45f2803a48f2",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $\\frac{2^{-3}}{2^{-6}}$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "2^3",
+      "solution": "Subtract the exponents: $-3 - (-6) = 3$, so $2^3 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(-3)/2^(-6) = 2^3 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.582Z"
+        }
+      }
+    },
+    {
       "id": "50db1e77-5071-4dfc-a10a-af9751888a28",
       "topic_id": "NC17.M1.N-RN.2",
       "difficulty": 3,
@@ -978,6 +2430,728 @@
           "work": "(a^2 b^-3)^-2 = a^-4 b^6. p = -4, q = 6, p*q = -24.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:26.321Z"
+        }
+      }
+    },
+    {
+      "id": "b219b417-3634-4521-9615-568386737b11",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For nonzero $a$ and $b$, $\\left(\\frac{a^{-2}b^{3}}{a^{4}b}\\right)^{-1} = a^{p}b^{q}$. What is $p + q$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "Inside: $a^{-2-4}b^{3-1} = a^{-6}b^{2}$. Taking the power $-1$ gives $a^{6}b^{-2}$. So $p = 6$, $q = -2$ and $p + q = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Inside: a^{-2-4}b^{3-1} = a^{-6}b^2. Inverse: a^6 b^{-2}. p+q = 6-2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.684Z"
+        }
+      }
+    },
+    {
+      "id": "7ecbadae-54d0-4d92-a425-dfaf7e0612eb",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $\\frac{4^{-2} \\cdot 2^{5}}{8^{-1}}$.",
+      "choices": [],
+      "answer": "16",
+      "compute": "(1/16)*32/(1/8)",
+      "solution": "$4^{-2} = \\frac{1}{16}$, $2^5 = 32$ and $8^{-1} = \\frac{1}{8}$. So the value is $\\frac{1}{16} \\cdot 32 \\cdot 8 = 2 \\cdot 8 = 16$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^{-2} = 1/16, 2^5 = 32, 8^{-1} = 1/8: (32/16)×8 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.765Z"
+        }
+      }
+    },
+    {
+      "id": "18dae2c2-ca33-4ac3-a707-d5b1cc716555",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Spot and explain a mistake",
+      "stem": "Dev simplified $\\frac{\\left(2x^{-3}\\right)^{2}}{x^{-1}}$ and wrote $\\frac{4}{x^{7}}$, which is not correct. What is the correct simplification, for $x \\ne 0$?",
+      "choices": [
+        "$\\frac{2}{x^5}$",
+        "$4x^5$",
+        "$\\frac{4}{x^6}$",
+        "$\\frac{4}{x^5}$"
+      ],
+      "answer": "$\\frac{4}{x^5}$",
+      "compute": null,
+      "solution": "The top is $4x^{-6}$. Dividing by $x^{-1}$ subtracts the exponent: $-6 - (-1) = -5$. So the result is $4x^{-5} = \\frac{4}{x^5}$. Dev added $-6$ and $-1$ instead.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{4}{x^5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x^-3)^2 = 4x^-6; divided by x^-1 gives 4x^-5 = 4/x^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.061Z"
+        }
+      }
+    },
+    {
+      "id": "0af7c60d-a139-4969-9d1f-6fa060d64610",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing exponent",
+      "stem": "For $x \\ne 0$, $\\frac{x^{n} \\cdot x^{-3}}{x^{4}} = x^{-1}$. What is $n$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "-1+3+4",
+      "solution": "The exponent on the left is $n + (-3) - 4 = n - 7$. Setting $n - 7 = -1$ gives $n = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^n x^-3 / x^4 = x^(n-7) = x^-1, so n - 7 = -1, n = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.082Z"
+        }
+      }
+    },
+    {
+      "id": "2edd5ca5-4f2a-490b-b2a0-15fabb001e89",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide which exponent statement is true",
+      "stem": "Which equation is true for all nonzero $x$ and $y$?",
+      "choices": [
+        "$\\left(x^{-2}\\right)^{3} = x^{-2+3} = x^{1}$",
+        "$\\frac{x^{-3}}{y^{-2}} = \\frac{y^2}{x^3}$",
+        "$\\frac{x^{4}}{x^{-2}} = x^{4-2} = x^{2}$",
+        "$(3x)^{-1} = 3x^{-1}$"
+      ],
+      "answer": "$\\frac{x^{-3}}{y^{-2}} = \\frac{y^2}{x^3}$",
+      "compute": null,
+      "solution": "$x^{-3}$ moves to the bottom and $y^{-2}$ moves to the top, giving $\\frac{y^2}{x^3}$. The others are false: $\\left(x^{-2}\\right)^3 = x^{-6}$, $\\frac{x^4}{x^{-2}} = x^6$ and $(3x)^{-1} = \\frac{1}{3x}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^{-3}}{y^{-2}} = \\frac{y^2}{x^3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x)^-1 = 1/(3x), not 3/x. (x^-2)^3 = x^-6. x^4/x^-2 = x^6. x^-3/y^-2 = y^2/x^3: true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.103Z"
+        }
+      }
+    },
+    {
+      "id": "af95ea55-b64f-41ff-9c0c-af5da667a453",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "Which expression is equal to 1 for every nonzero $x$?",
+      "choices": [
+        "$\\frac{x^{5} \\cdot x^{-2}}{x^{2}}$",
+        "$\\frac{x^{5} \\cdot x^{-2}}{x^{3}}$",
+        "$\\frac{x^{5} \\cdot x^{2}}{x^{3}}$",
+        "$\\frac{x^{5}}{x^{-2} \\cdot x^{3}}$"
+      ],
+      "answer": "$\\frac{x^{5} \\cdot x^{-2}}{x^{3}}$",
+      "compute": null,
+      "solution": "$\\frac{x^5 \\cdot x^{-2}}{x^3} = x^{5-2-3} = x^0 = 1$. The others simplify to $x$, $x^4$ and $x^4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^{5} \\cdot x^{-2}}{x^{3}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(a) x^5/x^1 = x^4. (b) x^7/x^3 = x^4. (c) x^3/x^2 = x. (d) x^3/x^3 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.109Z"
+        }
+      }
+    },
+    {
+      "id": "47c050d2-3f82-4917-bd70-b2e193cbd608",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Exponents in a context",
+      "stem": "A square has side length $3x^{-2}$ units, for $x \\ne 0$. Which expression gives its area, in square units, with only positive exponents?",
+      "choices": [
+        "$\\frac{9}{x^2}$",
+        "$\\frac{6}{x^4}$",
+        "$9x^4$",
+        "$\\frac{9}{x^4}$"
+      ],
+      "answer": "$\\frac{9}{x^4}$",
+      "compute": null,
+      "solution": "Area is side squared: $\\left(3x^{-2}\\right)^2 = 9x^{-4} = \\frac{9}{x^4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{9}{x^4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x^-2)^2 = 9x^-4 = 9/x^4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.116Z"
+        }
+      }
+    },
+    {
+      "id": "fff3c7f1-a9de-4c27-ac30-f19d627de40a",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For $a \\ne 0$, $\\frac{\\left(a^{3}\\right)^{-2}}{a^{-8}} = a^n$. What is $n$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "-6+8",
+      "solution": "$\\left(a^3\\right)^{-2} = a^{-6}$. Then $\\frac{a^{-6}}{a^{-8}} = a^{-6-(-8)} = a^2$, so $n = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(a^3)^-2 = a^-6; a^-6 / a^-8 = a^2. n = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.142Z"
+        }
+      }
+    },
+    {
+      "id": "e1969560-1e38-406e-996f-0636fbf52b79",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Evaluate $\\left(5^{-2} \\cdot 5^{3}\\right)^{-1}$.",
+      "choices": [],
+      "answer": "1/5",
+      "compute": "1/5",
+      "solution": "Inside: $5^{-2+3} = 5^1$. Then $\\left(5^1\\right)^{-1} = 5^{-1} = \\frac{1}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5^(-2+3) = 5^1; (5)^-1 = 1/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.166Z"
+        }
+      }
+    },
+    {
+      "id": "ca6ceea7-599f-4ef7-8fae-33bb95ff82aa",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Negative exponents",
+      "stem": "Which expression is equal to the sum $x^{-2} + x^{-2}$, for $x \\ne 0$? Remember that this is a sum, not a product.",
+      "choices": [
+        "$\\frac{2}{x^2}$",
+        "$x^{-4}$",
+        "$\\frac{1}{2x^2}$",
+        "$2x^{2}$"
+      ],
+      "answer": "$\\frac{2}{x^2}$",
+      "compute": null,
+      "solution": "Adding two equal terms doubles one of them: $x^{-2} + x^{-2} = 2x^{-2} = \\frac{2}{x^2}$. Exponents are added only when powers are multiplied, not when they are added.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{x^2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^-2 + x^-2 = 2x^-2 = 2/x^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.264Z"
+        }
+      }
+    },
+    {
+      "id": "897df791-4c84-4d4b-91ca-95ca7aec68e3",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a given power to find another",
+      "stem": "If $m^{5} = 2$, what is the value of $m^{-10}$?",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "1/2^2",
+      "solution": "$m^{-10} = \\left(m^{5}\\right)^{-2} = 2^{-2} = \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "m^-10 = (m^5)^-2 = 2^-2 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.268Z"
+        }
+      }
+    },
+    {
+      "id": "2373e1a0-6b06-42c2-9afc-a2f0b2fea431",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Exponents in a context",
+      "stem": "A square sticker has sides of length $2 \\times 10^{-3}$ meters. Which is its area in square meters?",
+      "choices": [
+        "$2 \\times 10^{-6}$",
+        "$4 \\times 10^{-5}$",
+        "$4 \\times 10^{6}$",
+        "$4 \\times 10^{-6}$"
+      ],
+      "answer": "$4 \\times 10^{-6}$",
+      "compute": null,
+      "solution": "Area is side squared: $\\left(2 \\times 10^{-3}\\right)^2 = 2^2 \\times 10^{-6} = 4 \\times 10^{-6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 \\times 10^{-6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x10^-3)^2 = 4 x 10^-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.331Z"
+        }
+      }
+    },
+    {
+      "id": "7b445871-bab4-4b0c-a674-7ce4b03aba20",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $\\frac{\\left(2x^{-2}y^{3}\\right)^{3}}{4x^{-1}y^{2}}$ when written with only positive exponents?",
+      "choices": [
+        "$\\frac{6y^{7}}{x^{5}}$",
+        "$\\frac{2y^{7}}{x^{5}}$",
+        "$2x^{5}y^{7}$",
+        "$\\frac{2y^{7}}{x^{7}}$"
+      ],
+      "answer": "$\\frac{2y^{7}}{x^{5}}$",
+      "compute": null,
+      "solution": "The top is $8x^{-6}y^{9}$. Dividing by $4x^{-1}y^{2}$ gives $2x^{-6-(-1)}y^{9-2} = 2x^{-5}y^{7} = \\frac{2y^{7}}{x^{5}}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2y^{7}}{x^{5}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x^-2y^3)^3=8x^-6y^9; /(4x^-1y^2) = 2x^-5y^7 = 2y^7/x^5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.392Z"
+        }
+      }
+    },
+    {
+      "id": "c441f5d3-f3f4-4cd4-a9fb-ca72a1b52f18",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing exponent",
+      "stem": "What value of $n$ makes $2^{n} \\cdot 2^{-5} = \\frac{1}{8}$ true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "$\\frac{1}{8} = 2^{-3}$. So $n + (-5) = -3$, and $n = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2^(n-5)=2^-3 -> n=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.393Z"
+        }
+      }
+    },
+    {
+      "id": "ad235f31-7e7b-48d9-b5b7-6b277a54c574",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a given power to find another",
+      "stem": "If $a^{-1} = 5$, what is the value of $a^{-3}$?",
+      "choices": [],
+      "answer": "125",
+      "compute": "5^3",
+      "solution": "$a^{-3} = \\left(a^{-1}\\right)^3 = 5^3 = 125$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a=1/5; a^-3 = 5^3 = 125.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.402Z"
+        }
+      }
+    },
+    {
+      "id": "c338ed7f-e0fd-4f57-b400-af5957f868c4",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For $x \\ne 0$, $\\frac{\\left(2x^{3}\\right)^{-2}}{(4x)^{-1}} = \\frac{k}{x^{m}}$. What is $k + m$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "1+5",
+      "solution": "The top is $2^{-2}x^{-6} = \\frac{1}{4x^6}$ and the bottom is $\\frac{1}{4x}$. Dividing gives $\\frac{1}{4x^6} \\cdot 4x = \\frac{x}{x^6} = \\frac{1}{x^5}$. So $k = 1$, $m = 5$ and $k + m = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x^3)^-2 = 1/(4x^6); divided by 1/(4x) gives 4x/(4x^6) = 1/x^5; k=1, m=5, sum 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.431Z"
+        }
+      }
+    },
+    {
+      "id": "066c5b63-55d2-4b59-8d61-2823bdf4c861",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine product, quotient and power rules",
+      "stem": "For $x \\ne 0$, $\\left(\\frac{2x^{-3}}{x^{-5}}\\right)^{3} = kx^{n}$. What is $k + n$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "8+6",
+      "solution": "Inside: $2x^{-3-(-5)} = 2x^2$. Cube it: $2^3x^{6} = 8x^6$. So $k = 8$, $n = 6$ and $k + n = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^{-3}/x^{-5}=2x^2; cubed: 8x^6. k=8, n=6, sum 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.472Z"
+        }
+      }
+    },
+    {
+      "id": "47e1aca6-7cc7-4236-80fa-1c9bfe044a2b",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $\\frac{\\left(a^{2}b^{-1}\\right)^{-3}}{a^{-2}b^{4}}$ when written with only positive exponents?",
+      "choices": [
+        "$\\frac{1}{a^4b}$",
+        "$\\frac{1}{a^8b}$",
+        "$\\frac{b^7}{a^4}$",
+        "$\\frac{a^4}{b}$"
+      ],
+      "answer": "$\\frac{1}{a^4b}$",
+      "compute": null,
+      "solution": "The top is $a^{-6}b^{3}$. Dividing by $a^{-2}b^{4}$ gives $a^{-6-(-2)}b^{3-4} = a^{-4}b^{-1} = \\frac{1}{a^4b}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{a^4b}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(a^2b^-1)^-3=a^-6 b^3. Divide by a^-2 b^4: a^-4 b^-1 = 1/(a^4 b).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.488Z"
+        }
+      }
+    },
+    {
+      "id": "18c3032e-01aa-4586-aa16-509193487fdc",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "What is the sum of $\\frac{1}{2^{-3}}$ and $\\frac{1}{3^{-2}}$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "8+9",
+      "solution": "$\\frac{1}{2^{-3}} = 2^3 = 8$ and $\\frac{1}{3^{-2}} = 3^2 = 9$. The sum is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2^-3 = 2^3 = 8; 1/3^-2 = 3^2 = 9. Sum 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.540Z"
+        }
+      }
+    },
+    {
+      "id": "e8880cce-1a09-4a97-9836-c33d2906fae4",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $\\left(\\frac{x^{-2}y}{z^{3}}\\right)^{-2}$ when written with only positive exponents?",
+      "choices": [
+        "$\\frac{x^4z^6}{y^2}$",
+        "$\\frac{x^4}{y^2z^6}$",
+        "$\\frac{y^2}{x^4z^6}$",
+        "$\\frac{x^2z^6}{y^2}$"
+      ],
+      "answer": "$\\frac{x^4z^6}{y^2}$",
+      "compute": null,
+      "solution": "Multiply each exponent by $-2$: $x^{4}y^{-2}z^{6}$. Moving $y^{-2}$ to the bottom gives $\\frac{x^4z^6}{y^2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{x^4z^6}{y^2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^-2 y z^-3)^-2 = x^4 y^-2 z^6 = x^4 z^6 / y^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.546Z"
+        }
+      }
+    },
+    {
+      "id": "649a35f6-f561-4e21-88d5-662ff963170b",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate expressions with integer exponents",
+      "stem": "Ivy finds the difference between $\\left(\\frac{1}{3}\\right)^{-2}$ and $3^{-2}$, taking the first minus the second. What is the difference, as a fraction?",
+      "choices": [],
+      "answer": "80/9",
+      "compute": "9-1/9",
+      "solution": "$\\left(\\frac{1}{3}\\right)^{-2} = 3^2 = 9$ and $3^{-2} = \\frac{1}{9}$. So $9 - \\frac{1}{9} = \\frac{80}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/3)^-2 = 3^2 = 9; 3^-2 = 1/9; 9 - 1/9 = 81/9 - 1/9 = 80/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.638Z"
+        }
+      }
+    },
+    {
+      "id": "72b77162-bf39-4fe6-aa63-86a362ec7aca",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite with only positive exponents",
+      "stem": "Which expression is equivalent to $\\frac{9x^{-4}}{3^{-1}x^{2}}$ when written with only positive exponents, for $x \\ne 0$?",
+      "choices": [
+        "$\\frac{3}{x^6}$",
+        "$\\frac{27}{x^2}$",
+        "$\\frac{27}{x^6}$",
+        "$27x^6$"
+      ],
+      "answer": "$\\frac{27}{x^6}$",
+      "compute": null,
+      "solution": "$\\frac{9}{3^{-1}} = 9 \\cdot 3 = 27$. For $x$: $x^{-4-2} = x^{-6} = \\frac{1}{x^6}$. So the result is $\\frac{27}{x^6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{27}{x^6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x^-4 / (3^-1 x^2) = 9*3 * x^(-4-2) = 27x^-6 = 27/x^6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.664Z"
+        }
+      }
+    },
+    {
+      "id": "bdfa8adc-f7a5-45d6-8e39-c3523f497c0a",
+      "topic_id": "NC17.M1.N-RN.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide which exponent statement is true",
+      "stem": "Which pair of expressions is equivalent for every nonzero $x$?",
+      "choices": [
+        "$x^{-3} \\cdot x^{2}$ and $x^{-6}$",
+        "$\\frac{x^{-3}}{x^{2}}$ and $x^{-1}$",
+        "$(x^{-3})^{2}$ and $\\frac{1}{x^{6}}$",
+        "$\\left(x^{2}\\right)^{-3}$ and $x^{-1}$"
+      ],
+      "answer": "$(x^{-3})^{2}$ and $\\frac{1}{x^{6}}$",
+      "compute": null,
+      "solution": "$\\left(x^{-3}\\right)^2 = x^{-6} = \\frac{1}{x^6}$. In the other pairs the first expression is $x^{-1}$, $x^{-5}$ or $x^{-6}$, so they do not match the second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x^{-3})^{2}$ and $\\frac{1}{x^{6}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^-3)^2 = x^-6 = 1/x^6 (equivalent). (x^2)^-3=x^-6 not x^-1; x^-3/x^2 = x^-5 not x^-1; x^-3*x^2 = x^-1 not x^-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.665Z"
         }
       }
     },
@@ -31214,6 +33388,1833 @@
       }
     },
     {
+      "id": "fa437c38-070a-496c-97da-91311cc7c0fa",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Midpoint from endpoints, whole-number coordinates",
+      "stem": "What is the midpoint of the segment with endpoints $(2, 4)$ and $(6, 10)$?",
+      "choices": [
+        "$(8, 14)$",
+        "$(4, 7)$",
+        "$(2, 3)$",
+        "$(7, 4)$"
+      ],
+      "answer": "$(4, 7)$",
+      "compute": null,
+      "solution": "Add the x-coordinates and divide by 2: (2 + 6) / 2 = 4. Add the y-coordinates and divide by 2: (4 + 10) / 2 = 7. The midpoint is (4, 7).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, 7)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "((2+6)/2, (4+10)/2) = (4, 7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.712Z"
+        }
+      }
+    },
+    {
+      "id": "66623adc-a8d1-4740-b832-22238cff7974",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Midpoint with negative or decimal coordinates",
+      "stem": "What is the midpoint of the segment with endpoints $(0, 0)$ and $(8, -6)$?",
+      "choices": [
+        "$(8, -6)$",
+        "$(4, 3)$",
+        "$(-4, 3)$",
+        "$(4, -3)$"
+      ],
+      "answer": "$(4, -3)$",
+      "compute": null,
+      "solution": "Average the x-coordinates: (0 + 8) / 2 = 4. Average the y-coordinates: (0 + (-6)) / 2 = -3. The midpoint is (4, -3).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(4, -3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "((0+8)/2, (0-6)/2) = (4, -3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.916Z"
+        }
+      }
+    },
+    {
+      "id": "5058d3c7-a9e6-4dc4-9857-ea8ddee4355c",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Midpoint in a context (map, circle, number line)",
+      "stem": "On a number line, point A is at 4 and point B is at 12. What number is at the midpoint of the segment AB?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(4+12)/2",
+      "solution": "The midpoint is the number halfway between 4 and 12: (4 + 12) / 2 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4 + 12)/2 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.096Z"
+        }
+      }
+    },
+    {
+      "id": "f603dee6-3218-4a30-9dce-ea66a2ac73f9",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Midpoint from endpoints, whole-number coordinates",
+      "stem": "Segment AB has endpoints $A(0, 0)$ and $B(10, 0)$. How far from A, in units, is the midpoint of AB?",
+      "choices": [],
+      "answer": "5",
+      "compute": "10/2",
+      "solution": "The segment is 10 units long and the midpoint is halfway along it, so it is 10 / 2 = 5 units from A.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint at (5, 0), 5 units from A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.117Z"
+        }
+      }
+    },
+    {
+      "id": "21fbf376-f104-4638-80c6-67a573a35f21",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Midpoint in a context (map, circle, number line)",
+      "stem": "On a map grid, a park is at $(2, 6)$ and a school is at $(8, 2)$. A bus stop is exactly halfway between them. What are the coordinates of the bus stop?",
+      "choices": [
+        "$(10, 8)$",
+        "$(6, -4)$",
+        "$(5, 4)$",
+        "$(3, 2)$"
+      ],
+      "answer": "$(5, 4)$",
+      "compute": null,
+      "solution": "Average the x-coordinates: (2 + 8) / 2 = 5. Average the y-coordinates: (6 + 2) / 2 = 4. The bus stop is at (5, 4).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint ((2+8)/2,(6+2)/2)=(5,4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.210Z"
+        }
+      }
+    },
+    {
+      "id": "9d351533-e09b-4bc6-8d5b-cfcd7040d85f",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Midpoint from endpoints, whole-number coordinates",
+      "stem": "Which point is the midpoint of the segment from $(-2, 0)$ to $(6, 4)$?",
+      "choices": [
+        "$(4, 4)$",
+        "$(2, 4)$",
+        "$(2, 2)$",
+        "$(4, 2)$"
+      ],
+      "answer": "$(2, 2)$",
+      "compute": null,
+      "solution": "Average the x-coordinates: (-2 + 6) / 2 = 2. Average the y-coordinates: (0 + 4) / 2 = 2. The midpoint is (2, 2).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "((-2+6)/2, (0+4)/2) = (2, 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.258Z"
+        }
+      }
+    },
+    {
+      "id": "aca9f3cf-c635-42b9-b635-64f621d7373b",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Missing endpoint from the midpoint and the other endpoint",
+      "stem": "M is the midpoint of segment AB. Point A is $(1, 2)$ and M is $(4, 5)$. What is the x-coordinate of B?",
+      "choices": [],
+      "answer": "7",
+      "compute": "2*4-1",
+      "solution": "From A to M the x-coordinate goes up by 3, so it goes up by 3 more to reach B: 4 + 3 = 7. (Or: 2 * 4 - 1 = 7.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B_x = 2*4 - 1 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.432Z"
+        }
+      }
+    },
+    {
+      "id": "f20a4526-db07-41ae-ac16-99019cf11130",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Missing endpoint from the midpoint and the other endpoint",
+      "stem": "M is the midpoint of segment AB. Point A is $(1, 3)$ and M is $(3, 6)$. What are the coordinates of B?",
+      "choices": [
+        "$(5, 9)$",
+        "$(2, 3)$",
+        "$(6, 12)$",
+        "$(4, 9)$"
+      ],
+      "answer": "$(5, 9)$",
+      "compute": null,
+      "solution": "From A to M, x goes up by 2 and y goes up by 3. Go the same distance again from M: (3 + 2, 6 + 3) = (5, 9).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, 9)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B = 2M - A = (6-1, 12-3) = (5,9).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.502Z"
+        }
+      }
+    },
+    {
+      "id": "2d209509-a64a-4bf8-8876-df060a917c40",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Midpoint from endpoints, whole-number coordinates",
+      "stem": "What is the x-coordinate of the midpoint of the segment with endpoints $(2, 0)$ and $(10, 6)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(2+10)/2",
+      "solution": "The x-coordinate of the midpoint is the average of 2 and 10: (2 + 10) / 2 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2+10)/2=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.509Z"
+        }
+      }
+    },
+    {
+      "id": "3aac56da-c32c-436b-aa14-5d8b548bcca1",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Midpoint from endpoints, whole-number coordinates",
+      "stem": "What is the y-coordinate of the midpoint of the segment with endpoints $(1, 3)$ and $(5, 9)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "(3+9)/2",
+      "solution": "The y-coordinate of the midpoint is the average of 3 and 9: (3 + 9) / 2 = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3 + 9)/2 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.565Z"
+        }
+      }
+    },
+    {
+      "id": "b054c4e1-2dbd-4679-be1b-f78bf21db43b",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Midpoint in a context (map, circle, number line)",
+      "stem": "The endpoints of a diameter of a circle are $(-3, -1)$ and $(9, 7)$. What is the x-coordinate of the center of the circle?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(-3+9)/2",
+      "solution": "The center of a circle is the midpoint of any diameter. The x-coordinate is (-3 + 9) / 2 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Center is the midpoint: (-3+9)/2 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.763Z"
+        }
+      }
+    },
+    {
+      "id": "3039c21f-4ea8-4f71-8c50-d9f17eb08143",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Midpoint with negative or decimal coordinates",
+      "stem": "What is the x-coordinate of the midpoint of the segment with endpoints $(-9, 2)$ and $(3, 8)$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "(-9+3)/2",
+      "solution": "Average the x-coordinates: (-9 + 3) / 2 = -6 / 2 = -3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-9 + 3)/2 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.974Z"
+        }
+      }
+    },
+    {
+      "id": "6082583c-801f-4562-bbf0-2a558c45cc8e",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Missing endpoint from the midpoint and the other endpoint",
+      "stem": "M is the midpoint of segment AB. Point A is $(-3, 4)$ and M is $(1, -2)$. What are the coordinates of B?",
+      "choices": [
+        "$(-1, 1)$",
+        "$(4, -6)$",
+        "$(2, -4)$",
+        "$(5, -8)$"
+      ],
+      "answer": "$(5, -8)$",
+      "compute": null,
+      "solution": "From A to M, x goes up by 4 and y goes down by 6. Go the same way again from M: (1 + 4, -2 - 6) = (5, -8). Check: the midpoint of (-3, 4) and (5, -8) is (1, -2).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, -8)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B = 2M - A = (2+3, -4-4) = (5, -8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.982Z"
+        }
+      }
+    },
+    {
+      "id": "f208efac-28ac-4ddb-8399-eeb4417dc922",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Midpoint in a context (map, circle, number line)",
+      "stem": "The endpoints of a diameter of a circle are $(-5, 2)$ and $(7, -4)$. What is the center of the circle?",
+      "choices": [
+        "$(2, -2)$",
+        "$(1, -1)$",
+        "$(6, -3)$",
+        "$(1, 1)$"
+      ],
+      "answer": "$(1, -1)$",
+      "compute": null,
+      "solution": "The center is the midpoint of a diameter. x: (-5 + 7) / 2 = 1. y: (2 + (-4)) / 2 = -1. The center is (1, -1).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(1, -1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Center = midpoint = ((-5+7)/2, (2-4)/2) = (1, -1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.094Z"
+        }
+      }
+    },
+    {
+      "id": "0583f151-f4ed-41b6-9b9b-c069185d9aa3",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Midpoint in a context (map, circle, number line)",
+      "stem": "Two drones hover at $(5, -4)$ and $(5, 8)$. A third drone stays exactly halfway between them. Where is it?",
+      "choices": [
+        "$(10, 4)$",
+        "$(5, 6)$",
+        "$(0, 2)$",
+        "$(5, 2)$"
+      ],
+      "answer": "$(5, 2)$",
+      "compute": null,
+      "solution": "x: (5 + 5) / 2 = 5. y: (-4 + 8) / 2 = 2. The third drone is at (5, 2).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint ((5+5)/2, (-4+8)/2) = (5, 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.115Z"
+        }
+      }
+    },
+    {
+      "id": "6d53b25d-361f-43b5-b078-feaf09b40fdd",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a midpoint",
+      "stem": "The midpoint of segment AB is $(5, -3)$. Point A is $(9, -1)$. What is the y-coordinate of B?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "2*(-3)-(-1)",
+      "solution": "Solve (-1 + y) / 2 = -3. Then -1 + y = -6, so y = -5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y_B = 2*(-3) - (-1) = -6 + 1 = -5. (x_B = 1.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.172Z"
+        }
+      }
+    },
+    {
+      "id": "f6fe0440-a947-4be6-90e1-793a282a7acc",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Missing endpoint from the midpoint and the other endpoint",
+      "stem": "M is the midpoint of segment AB. Point A is $(2, -5)$ and M is $(6, 1)$. What is the y-coordinate of B?",
+      "choices": [],
+      "answer": "7",
+      "compute": "2*1-(-5)",
+      "solution": "The y-coordinate of M is the average of the two endpoints, so (-5 + y) / 2 = 1. Then -5 + y = 2, and y = 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y_B = 2*1 - (-5) = 7. (x_B = 10.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.180Z"
+        }
+      }
+    },
+    {
+      "id": "fbd6d03a-b674-4348-82ea-9cb48f2ede08",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Midpoint formula and reasoning",
+      "stem": "Which pair of points are the endpoints of a segment whose midpoint is $(3, 2)$?",
+      "choices": [
+        "$(0, 0)$ and $(3, 2)$",
+        "$(-1, 4)$ and $(7, 0)$",
+        "$(1, 0)$ and $(2, 4)$",
+        "$(2, 1)$ and $(4, 4)$"
+      ],
+      "answer": "$(-1, 4)$ and $(7, 0)$",
+      "compute": null,
+      "solution": "Check each pair. For (-1, 4) and (7, 0): x = (-1 + 7) / 2 = 3 and y = (4 + 0) / 2 = 2, so the midpoint is (3, 2). The other pairs have midpoints (1.5, 1), (1.5, 2) and (3, 2.5).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-1, 4)$ and $(7, 0)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoints: (2,1)&(4,4) -> (3,2.5); (1,0)&(2,4) -> (1.5,2); (-1,4)&(7,0) -> (3,2); (0,0)&(3,2) -> (1.5,1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.254Z"
+        }
+      }
+    },
+    {
+      "id": "98cea5f5-c61b-43bd-ab74-37de075085f3",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Midpoint with negative or decimal coordinates",
+      "stem": "What is the midpoint of the segment with endpoints $(-4, 3)$ and $(2, -7)$?",
+      "choices": [
+        "$(-1, -2)$",
+        "$(-2, -4)$",
+        "$(3, -5)$",
+        "$(-1, 2)$"
+      ],
+      "answer": "$(-1, -2)$",
+      "compute": null,
+      "solution": "x: (-4 + 2) / 2 = -1. y: (3 + (-7)) / 2 = -2. The midpoint is (-1, -2).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-1, -2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "((-4+2)/2,(3-7)/2)=(-1,-2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.483Z"
+        }
+      }
+    },
+    {
+      "id": "2543492f-6d42-469f-98a2-682c78cdf3f7",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a midpoint",
+      "stem": "M is the midpoint of segment PQ. Point P is $(-6, 4)$ and M is $(-1, 0)$. What is the x-coordinate of Q?",
+      "choices": [],
+      "answer": "4",
+      "compute": "2*(-1)-(-6)",
+      "solution": "Solve (-6 + x) / 2 = -1. Then -6 + x = -2, so x = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Q_x = 2(-1) - (-6) = -2 + 6 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.525Z"
+        }
+      }
+    },
+    {
+      "id": "ceb5da3e-5190-4244-809b-20dc0e55e76d",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Midpoint formula and reasoning",
+      "stem": "Segment AB has endpoints $A(a, b)$ and $B(c, d)$. Which gives its midpoint?",
+      "choices": [
+        "$\\left(\\frac{a-c}{2}, \\frac{b-d}{2}\\right)$",
+        "$(a+c, b+d)$",
+        "$\\left(\\frac{a+c}{2}, \\frac{b+d}{2}\\right)$",
+        "$\\left(\\frac{a+b}{2}, \\frac{c+d}{2}\\right)$"
+      ],
+      "answer": "$\\left(\\frac{a+c}{2}, \\frac{b+d}{2}\\right)$",
+      "compute": null,
+      "solution": "The midpoint is the average of the x-coordinates and the average of the y-coordinates: the x-coordinates are a and c, and the y-coordinates are b and d.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(\\frac{a+c}{2}, \\frac{b+d}{2}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint averages x and y coordinates: ((a+c)/2, (b+d)/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.708Z"
+        }
+      }
+    },
+    {
+      "id": "bcd982e7-bd37-4a4c-8f4f-f8ec2bcf4a59",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Missing endpoint from the midpoint and the other endpoint",
+      "stem": "The midpoint of segment AB is $(1, 5)$ and A is $(-2, 1)$. What is the sum of the coordinates of B?",
+      "choices": [],
+      "answer": "13",
+      "compute": "(2*1+2)+(2*5-1)",
+      "solution": "B = (2 * 1 - (-2), 2 * 5 - 1) = (4, 9). The sum of its coordinates is 4 + 9 = 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B = (2·1 - (-2), 2·5 - 1) = (4, 9). Sum 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.903Z"
+        }
+      }
+    },
+    {
+      "id": "75456af6-5b1b-4811-9983-0898e205b510",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Midpoint with negative or decimal coordinates",
+      "stem": "What is the x-coordinate of the midpoint of the segment with endpoints $(-4.5, 3)$ and $(2, 6)$?",
+      "choices": [],
+      "answer": "-1.25",
+      "compute": "(-4.5+2)/2",
+      "solution": "Average the x-coordinates: (-4.5 + 2) / 2 = -2.5 / 2 = -1.25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-4.5 + 2)/2 = -2.5/2 = -1.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.034Z"
+        }
+      }
+    },
+    {
+      "id": "a7734e19-c201-4b85-8df7-00c7138f0887",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Midpoint from endpoints, whole-number coordinates",
+      "stem": "A triangle has vertices $A(0, 0)$, $B(8, 2)$ and $C(4, 10)$. What is the midpoint of side BC?",
+      "choices": [
+        "$(6, 6)$",
+        "$(4, 1)$",
+        "$(2, 5)$",
+        "$(12, 12)$"
+      ],
+      "answer": "$(6, 6)$",
+      "compute": null,
+      "solution": "Side BC has endpoints (8, 2) and (4, 10). x: (8 + 4) / 2 = 6. y: (2 + 10) / 2 = 6. The midpoint is (6, 6). The other options are the midpoints of AB and AC and the sum of B and C.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(6, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint of B(8,2), C(4,10): (6, 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.375Z"
+        }
+      }
+    },
+    {
+      "id": "ec422363-2a9a-4cef-9153-a0538aa22678",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Midpoint formula and reasoning",
+      "stem": "The diagonals of a parallelogram have the same midpoint. In parallelogram ABCD, A is $(1, 1)$, B is $(6, 0)$ and C is $(7, 5)$. What is the y-coordinate of D?",
+      "choices": [],
+      "answer": "6",
+      "compute": "1+5-0",
+      "solution": "The diagonals are AC and BD. The midpoint of AC is (4, 3). It is also the midpoint of BD, so (0 + y) / 2 = 3 and y = 6. (D is (2, 6).)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint of AC = (4,3) = midpoint of BD. D = (8-6, 6-0) = (2,6). y=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.466Z"
+        }
+      }
+    },
+    {
+      "id": "20714b03-84ad-4d14-9d77-54f817a78fd3",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Midpoint in a context (map, circle, number line)",
+      "stem": "Positions along a hallway are marked in meters like a number line. Mia stands at -7. Sam stands exactly halfway between Mia and Jon, at -2.5. At what position does Jon stand?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2*(-2.5)-(-7)",
+      "solution": "C is halfway between A and B, so (-7 + b) / 2 = -2.5. Then -7 + b = -5, and b = 2. (From -7 to -2.5 is 4.5 units; 4.5 more units from -2.5 reaches 2.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-7+J)/2=-2.5 -> J=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.492Z"
+        }
+      }
+    },
+    {
+      "id": "73862d50-db22-4885-ac38-7df213312d51",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Midpoint with negative or decimal coordinates",
+      "stem": "What is the midpoint of the segment with endpoints $(-3, 5)$ and $(6, -2)$?",
+      "choices": [
+        "$(1.5, 1.5)$",
+        "$(3, 3)$",
+        "$(4.5, 3.5)$",
+        "$(1.5, -1.5)$"
+      ],
+      "answer": "$(1.5, 1.5)$",
+      "compute": null,
+      "solution": "x: (-3 + 6) / 2 = 3 / 2 = 1.5. y: (5 + (-2)) / 2 = 3 / 2 = 1.5. The midpoint is (1.5, 1.5).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(1.5, 1.5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "((-3+6)/2, (5-2)/2) = (1.5, 1.5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.539Z"
+        }
+      }
+    },
+    {
+      "id": "926a7763-02a9-4029-97f8-a631e4edee2c",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a midpoint",
+      "stem": "The midpoint of segment AB lies on the y-axis. Point A is $(-5, 3)$ and point B is $(h, 9)$. What is the value of $h$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "A point on the y-axis has x-coordinate 0. So (-5 + h) / 2 = 0, which gives h = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midpoint x = (-5 + h)/2 = 0 on the y-axis, so h = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.558Z"
+        }
+      }
+    },
+    {
+      "id": "3c8b283f-a06e-48b4-9ff0-992d92aa0a69",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a midpoint",
+      "stem": "The midpoint of the segment from $(2, k)$ to $(10, 8)$ is $(6, 3)$. What is the value of $k$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "2*3-8",
+      "solution": "The y-coordinate of the midpoint is (k + 8) / 2 = 3. So k + 8 = 6, and k = -2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(k + 8)/2 = 3 gives k + 8 = 6, k = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.577Z"
+        }
+      }
+    },
+    {
+      "id": "9aa4785e-0025-4204-8335-71dbc02d1a20",
+      "topic_id": "NC17.M1.G-GPE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Missing endpoint from the midpoint and the other endpoint",
+      "stem": "A rescue tower is at $(3, -4)$ on a grid of the shoreline. A buoy at $(-1.5, 2)$ is exactly halfway between the tower and a boat. Where is the boat?",
+      "choices": [
+        "$(-4.5, 6)$",
+        "$(-3, 4)$",
+        "$(-6, 8)$",
+        "$(1.5, -2)$"
+      ],
+      "answer": "$(-6, 8)$",
+      "compute": null,
+      "solution": "The buoy is the midpoint. From the tower to the buoy, x goes down by 4.5 and y goes up by 6. Go the same way again from the buoy: (-1.5 - 4.5, 2 + 6) = (-6, 8).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-6, 8)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Boat = 2*buoy - tower = (-3 - 3, 4 + 4) = (-6, 8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.607Z"
+        }
+      }
+    },
+    {
+      "id": "6362b38d-db38-42e5-891d-daff1299d250",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Five-number summary from a list of data",
+      "stem": "A class records 5 quiz scores: 12, 5, 9, 7, 15. To draw a box plot, the scores are put in order. What number is the median, where the line inside the box is drawn?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "In order the scores are 5, 7, 9, 12, 15. The middle score is 9, so the line inside the box is at 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ordered: 5, 7, 9, 12, 15; median 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.748Z"
+        }
+      }
+    },
+    {
+      "id": "f132af67-75de-4e5e-84ee-ebf9f0af5223",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Building a histogram: bins and counts",
+      "stem": "Data: 2, 4, 5, 7, 8, 11, 12. A histogram uses the bins 0 to 4, 5 to 9 and 10 to 14, and each bin includes both of its end values. How many data values are in the bin 5 to 9?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The values from 5 through 9 are 5, 7 and 8. That is 3 values.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Values 5, 7, 8 lie in 5-9: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.996Z"
+        }
+      }
+    },
+    {
+      "id": "c72540ec-4189-4bb7-9804-fff97c9fe46e",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choosing and comparing histograms and box plots",
+      "stem": "Which display shows the median and the quartiles of a data set at a glance?",
+      "choices": [
+        "A histogram of the data",
+        "A circle graph of the data",
+        "A box plot of the data",
+        "A tally chart of the data"
+      ],
+      "answer": "A box plot of the data",
+      "compute": null,
+      "solution": "A box plot is drawn from the median and the quartiles. A histogram shows how many values fall in each interval.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A box plot of the data",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A box plot shows the median and quartiles (five-number summary).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.010Z"
+        }
+      }
+    },
+    {
+      "id": "2b1fdbc8-a522-47e3-882e-b5a34c4bfa89",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reading a histogram from its bars",
+      "stem": "In a histogram of test scores, what does the height of a bar show?",
+      "choices": [
+        "the highest score in that bar's interval",
+        "the average of the scores in that bar's interval",
+        "how many scores fall in that bar's interval",
+        "the width of that bar's interval"
+      ],
+      "answer": "how many scores fall in that bar's interval",
+      "compute": null,
+      "solution": "The height of a bar is the frequency: the number of data values in the interval under the bar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "how many scores fall in that bar's interval",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bar height is the frequency (count) in the interval.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.034Z"
+        }
+      }
+    },
+    {
+      "id": "bb0fcc54-6e5a-4205-abe0-4dd960dcdfca",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reading a box plot",
+      "stem": "In a box plot, about what part of the data is inside the box?",
+      "choices": [
+        "a quarter of the data",
+        "three quarters of the data",
+        "all of the data",
+        "half of the data"
+      ],
+      "answer": "half of the data",
+      "compute": null,
+      "solution": "The box runs from Q1 to Q3. A quarter of the data is below Q1 and a quarter is above Q3, so the middle half is inside the box.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "half of the data",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The box spans Q1 to Q3, the middle 50% of the data.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.256Z"
+        }
+      }
+    },
+    {
+      "id": "4751a7ab-3274-43ab-bd8b-7bec7b504c40",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choosing and comparing histograms and box plots",
+      "stem": "Which data set could be shown in a histogram?",
+      "choices": [
+        "the favorite pets of 30 different students",
+        "the colors of 30 flowers in a garden",
+        "the heights of 30 plants, in centimeters",
+        "the cities where 30 students at a school live"
+      ],
+      "answer": "the heights of 30 plants, in centimeters",
+      "compute": null,
+      "solution": "A histogram groups numerical data into intervals on a number line. Pets, colors and cities are categories, not numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the heights of 30 plants, in centimeters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Histograms show numerical data; heights in cm is the only quantitative set.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.378Z"
+        }
+      }
+    },
+    {
+      "id": "c01b5f3a-a7ff-4bd0-b01a-fb49c2299240",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Five-number summary from a list of data",
+      "stem": "Which list gives the five numbers that a box plot is drawn from?",
+      "choices": [
+        "minimum, mean, median, mode, maximum",
+        "minimum, first quartile, median, third quartile, maximum",
+        "minimum, mean, median, standard deviation, maximum",
+        "lowest value, range, mean, interquartile range, highest value"
+      ],
+      "answer": "minimum, first quartile, median, third quartile, maximum",
+      "compute": null,
+      "solution": "A box plot is drawn from the five-number summary: the minimum, the first (lower) quartile, the median, the third (upper) quartile and the maximum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "minimum, first quartile, median, third quartile, maximum",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Five-number summary: minimum, Q1, median, Q3, maximum.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.662Z"
+        }
+      }
+    },
+    {
+      "id": "fbf0d470-4e62-4079-b09a-6b9cd75be5f9",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reading a box plot",
+      "stem": "A box plot of bike trip lengths in miles has minimum 12, Q1 20, median 25, Q3 31 and maximum 40. What is the range of the trip lengths?",
+      "choices": [],
+      "answer": "28",
+      "compute": "40-12",
+      "solution": "The range is the maximum minus the minimum: 40 - 12 = 28 miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Range = 40-12 = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.666Z"
+        }
+      }
+    },
+    {
+      "id": "32d6b74a-6005-4c2e-ad9b-78d46fe66b0e",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reading a histogram from its bars",
+      "stem": "A histogram shows minutes of homework done by students. Bars: 0 to 9 minutes: 3 students, 10 to 19 minutes: 8 students, 20 to 29 minutes: 6 students, 30 to 39 minutes: 2 students. How many students are in the histogram in all?",
+      "choices": [],
+      "answer": "19",
+      "compute": "3+8+6+2",
+      "solution": "Add the heights of the bars: 3 + 8 + 6 + 2 = 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+8+6+2=19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.680Z"
+        }
+      }
+    },
+    {
+      "id": "96eca703-2173-463f-8b20-027ca29e483c",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Five-number summary from a list of data",
+      "stem": "Nine students walked these numbers of minutes: 6, 15, 3, 10, 18, 5, 14, 9, 12. Find the upper quartile (Q3). Use the median of the upper half of the data, leaving out the median of all nine values.",
+      "choices": [],
+      "answer": "14.5",
+      "compute": "(14+15)/2",
+      "solution": "In order: 3, 5, 6, 9, 10, 12, 14, 15, 18. The median is 10. The upper half, leaving out 10, is 12, 14, 15, 18. Its median is (14 + 15) / 2 = 14.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sorted: 3,5,6,9,10,12,14,15,18. Median 10. Upper half 12,14,15,18; Q3 = (14+15)/2 = 14.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.008Z"
+        }
+      }
+    },
+    {
+      "id": "3c7d8183-3c2d-433d-ae6b-6687ab25728e",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Reading a histogram from its bars",
+      "stem": "A histogram shows the ages of 25 people. Bars: 0 to 9 years: 8 people, 10 to 19 years: 7 people, 20 to 29 years: 5 people, 30 to 39 years: 3 people, 40 to 49 years: 2 people. Which interval contains the median age (the 13th age in order)?",
+      "choices": [
+        "0 to 9 years",
+        "20 to 29 years",
+        "10 to 19 years",
+        "30 to 39 years"
+      ],
+      "answer": "10 to 19 years",
+      "compute": null,
+      "solution": "Count up the bars: 8 people are 0 to 9, and 8 + 7 = 15 people are 19 or younger. So the 13th age is in the 10 to 19 bar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 to 19 years",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cumulative: 0-9 holds 1st-8th, 10-19 holds 9th-15th. 13th is in 10-19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.128Z"
+        }
+      }
+    },
+    {
+      "id": "5a494dee-be00-4c1c-abab-560b4e53e454",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Building a histogram: bins and counts",
+      "stem": "Data: 3, 7, 8, 12, 14, 15, 18, 21. A histogram uses the bins 0 to 9, 10 to 19 and 20 to 29. Which list gives the heights of its three bars?",
+      "choices": [
+        "3, 5, 0",
+        "4, 3, 1",
+        "8, 18, 21",
+        "3, 4, 1"
+      ],
+      "answer": "3, 4, 1",
+      "compute": null,
+      "solution": "In 0 to 9: 3, 7, 8 (3 values). In 10 to 19: 12, 14, 15, 18 (4 values). In 20 to 29: 21 (1 value). The heights are 3, 4, 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3, 4, 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0-9: 3, 7, 8 -> 3. 10-19: 12, 14, 15, 18 -> 4. 20-29: 21 -> 1. Heights 3, 4, 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.169Z"
+        }
+      }
+    },
+    {
+      "id": "c79d25c0-ef2d-4799-8bf2-b31512a905f9",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Choosing and comparing histograms and box plots",
+      "stem": "Two box plots show delivery times in minutes. Store X: Q1 12, median 20, Q3 28. Store Y: Q1 15, median 22, Q3 27. How many minutes greater is the interquartile range of Store X than that of Store Y?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(28-12)-(27-15)",
+      "solution": "Store X: 28 - 12 = 16. Store Y: 27 - 15 = 12. The difference is 16 - 12 = 4 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "IQR X = 28-12 = 16; IQR Y = 27-15 = 12; difference 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.178Z"
+        }
+      }
+    },
+    {
+      "id": "f63d4ce4-e8dd-4dab-ae20-834cb8eac45d",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Building a histogram: bins and counts",
+      "stem": "The weights of dogs run from 20 pounds to 80 pounds. A histogram covers 20 to 80 with 6 bins of equal width. What is the width of each bin, in pounds?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(80-20)/6",
+      "solution": "The bins cover 80 - 20 = 60 pounds. 60 / 6 = 10 pounds each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(80 - 20)/6 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.290Z"
+        }
+      }
+    },
+    {
+      "id": "60982dfa-2d51-43fc-8a15-ccdec18c6e7d",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Five-number summary from a list of data",
+      "stem": "Seven runners finished a race in these numbers of minutes: 14, 6, 9, 11, 3, 8, 12. Each quartile is the median of one half of the data, leaving out the median of all seven values. Which is the five-number summary (minimum, Q1, median, Q3, maximum)?",
+      "choices": [
+        "3, 7, 9, 11.5, 14",
+        "3, 8, 9, 11, 14",
+        "6, 8, 9, 11, 12",
+        "3, 6, 9, 12, 14"
+      ],
+      "answer": "3, 6, 9, 12, 14",
+      "compute": null,
+      "solution": "In order: 3, 6, 8, 9, 11, 12, 14. The median is 9. The lower half is 3, 6, 8, so Q1 = 6. The upper half is 11, 12, 14, so Q3 = 12. The minimum is 3 and the maximum is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3, 6, 9, 12, 14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sorted 3,6,8,9,11,12,14. Median 9; lower half 3,6,8 -> Q1=6; upper 11,12,14 -> Q3=12. 3,6,9,12,14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.483Z"
+        }
+      }
+    },
+    {
+      "id": "2e9af078-4c9c-4a8a-8691-bd3533c38bd4",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Reading a box plot",
+      "stem": "A box plot of daily high temperatures in degrees Fahrenheit has minimum 31, Q1 40, median 47, Q3 58 and maximum 71. What is the interquartile range?",
+      "choices": [],
+      "answer": "18",
+      "compute": "58-40",
+      "solution": "The interquartile range is Q3 - Q1 = 58 - 40 = 18 degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "IQR = 58-40 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.485Z"
+        }
+      }
+    },
+    {
+      "id": "086abe10-2e16-4fd2-8a8e-37b2c0b6a02d",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Reading a histogram from its bars",
+      "stem": "A histogram of 25 quiz scores has these bars: 50 to 59: 2 scores, 60 to 69: 5 scores, 70 to 79: 9 scores, 80 to 89: 6 scores, 90 to 99: 3 scores. What percent of the scores are below 70?",
+      "choices": [],
+      "answer": "28",
+      "compute": "(2+5)/25*100",
+      "solution": "Scores below 70 are in the first two bars: 2 + 5 = 7. Then 7 / 25 = 0.28, which is 28 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Below 70: 2 + 5 = 7 of 25 = 28%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.624Z"
+        }
+      }
+    },
+    {
+      "id": "6262ea07-0678-4972-bb7f-b73e16af087f",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choosing and comparing histograms and box plots",
+      "stem": "Two box plots show test scores. Class A: minimum 40, Q1 55, median 65, Q3 80, maximum 95. Class B: minimum 50, Q1 60, median 68, Q3 75, maximum 90. Which statement is true?",
+      "choices": [
+        "Class A's middle half of scores is more spread out than Class B's",
+        "Class B's range is greater than the range of Class A",
+        "Class A has the higher median of the two classes",
+        "Class B's lowest score is lower than the lowest score in Class A"
+      ],
+      "answer": "Class A's middle half of scores is more spread out than Class B's",
+      "compute": null,
+      "solution": "Class A's IQR is 80 - 55 = 25 and Class B's is 75 - 60 = 15. Class A's range is 55 and Class B's is 40. The medians are 65 and 68, and the minimums are 40 and 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Class A's middle half of scores is more spread out than Class B's",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ranges: A 95-40=55, B 90-50=40. IQR: A 80-55=25, B 75-60=15, so A middle half more spread. B min 50 > 40. Medians A 65 < B 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.635Z"
+        }
+      }
+    },
+    {
+      "id": "58861606-53c3-4f60-81be-4921fc5fb22e",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reading a histogram from its bars",
+      "stem": "A histogram of 30 values has these bars: 0 to 4: 4 values, 5 to 9: 11 values, 10 to 14: 9 values, 15 to 19: 6 values. Which statement is true?",
+      "choices": [
+        "20 of the 30 values are from 5 through 14",
+        "The greatest value in the data set is 11",
+        "More than half of the values are at least 10",
+        "Exactly 4 of the values are less than 10"
+      ],
+      "answer": "20 of the 30 values are from 5 through 14",
+      "compute": null,
+      "solution": "The bars 5 to 9 and 10 to 14 hold 11 + 9 = 20 values. The height 11 is a count, not a value. The values at least 10 number 9 + 6 = 15, exactly half. The values below 10 number 4 + 11 = 15, not 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20 of the 30 values are from 5 through 14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-9: 11 and 10-14: 9 give 20 values from 5 through 14 (bins imply whole numbers). Less than 10: 15, not 4. At least 10: 15, exactly half, not more. Greatest value is at most 19, 11 is a count.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.043Z"
+        }
+      }
+    },
+    {
+      "id": "b25ec7e5-63ba-4613-a45e-726c3ef65f3f",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Building a histogram: bins and counts",
+      "stem": "A teacher makes two histograms of the same 40 test scores. One uses bins of width 5 and the other uses bins of width 20. Which statement is true?",
+      "choices": [
+        "The width-5 histogram has more bars, so it shows more detail about the shape of the data",
+        "The width-20 histogram has more bars, so it shows more detail about the shape of the data",
+        "Both histograms have the same number of bars, because they use the same 40 scores",
+        "The width-5 histogram has fewer bars, so each of its bars is taller"
+      ],
+      "answer": "The width-5 histogram has more bars, so it shows more detail about the shape of the data",
+      "compute": null,
+      "solution": "Narrower bins split the same scores into more bars, which shows more detail. Wider bins give fewer, taller bars and hide detail.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The width-5 histogram has more bars, so it shows more detail about the shape of the data",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Narrower bins (width 5) over the same range give more bars and show more detail of the shape.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.043Z"
+        }
+      }
+    },
+    {
+      "id": "2f937b15-85b9-4aa7-b980-2bdbc51e97e9",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reading a histogram from its bars",
+      "stem": "A histogram of 40 plant heights in centimeters has these bars: 0 to 4: 3 plants, 5 to 9: 7 plants, 10 to 14: 12 plants, 15 to 19: 10 plants, 20 to 24: 6 plants, 25 to 29: 2 plants. What percent of the plants are from 5 through 14 centimeters tall?",
+      "choices": [],
+      "answer": "47.5",
+      "compute": "(7+12)/40*100",
+      "solution": "The bars 5 to 9 and 10 to 14 hold 7 + 12 = 19 plants. 19 / 40 = 0.475, which is 47.5 percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-9: 7, 10-14: 12 -> 19 of 40 = 47.5%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.073Z"
+        }
+      }
+    },
+    {
+      "id": "2c049c5d-b196-45f6-8ed6-57364dd01581",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Reading a box plot",
+      "stem": "A box plot has minimum 10, Q1 14, median 15, Q3 30 and maximum 32. Which statement is true?",
+      "choices": [
+        "Most of the data lies in the short stretch from 30 to 32",
+        "The top half of the data is more spread out than the bottom half",
+        "Half of the data is greater than the value 30",
+        "The median is closer to the maximum than to the minimum"
+      ],
+      "answer": "The top half of the data is more spread out than the bottom half",
+      "compute": null,
+      "solution": "The lower half runs from 10 to 15, a spread of 5. The upper half runs from 15 to 32, a spread of 17. Only a fourth of the data is above 30, and the median 15 is 5 from the minimum but 17 from the maximum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The top half of the data is more spread out than the bottom half",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bottom half spans 10 to 15 (5), top half 15 to 32 (17): top half more spread. 30-32 holds only a quarter; only a quarter exceed 30; median 15 is 5 from min and 17 from max.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.099Z"
+        }
+      }
+    },
+    {
+      "id": "7555a29d-9867-4b5c-9c1b-ed3054cf4434",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reading a box plot",
+      "stem": "A box plot summarizes 160 trip times in minutes: minimum 5, Q1 12, median 18, Q3 30 and maximum 55. About one fourth of the trips lie in each section of the plot. How many trips took between 12 and 55 minutes?",
+      "choices": [],
+      "answer": "120",
+      "compute": "160/4*3",
+      "solution": "From Q1 (12) up to the maximum (55) are three sections of the plot: 3 fourths of the trips. 160 / 4 = 40 per section, and 3 x 40 = 120.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 to 55 covers Q1 to max: three of the four quarters. 3/4 x 160 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.099Z"
+        }
+      }
+    },
+    {
+      "id": "786fbdcc-7e7b-483e-aea6-c168de2af798",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Five-number summary from a list of data",
+      "stem": "A data set has the five-number summary: minimum 2, Q1 4, median 6, Q3 9, maximum 12. Each quartile is the median of one half of the data, leaving out the median of an odd number of values. Which data set has this summary?",
+      "choices": [
+        "2, 4, 4, 6, 8, 9, 12",
+        "2, 3, 4, 6, 8, 10, 12",
+        "2, 4, 5, 8, 9, 12, 12",
+        "2, 5, 6, 6, 9, 11, 12"
+      ],
+      "answer": "2, 4, 4, 6, 8, 9, 12",
+      "compute": null,
+      "solution": "For 2, 4, 4, 6, 8, 9, 12 the median is 6, the lower half 2, 4, 4 has median 4, and the upper half 8, 9, 12 has median 9. The other sets have a different Q1, median or Q3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2, 4, 4, 6, 8, 9, 12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Set 1: median 6; lower 2,4,4 -> Q1 4; upper 8,9,12 -> Q3 9; min 2 max 12. Match. Set 2 Q1=3; set 3 Q1=5; set 4 median 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.208Z"
+        }
+      }
+    },
+    {
+      "id": "4eaecb2f-6335-46f0-be68-72e969cc9592",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choosing and comparing histograms and box plots",
+      "stem": "A histogram shows 40 salaries in thousands of dollars. Each bar includes its left end but not its right end. Bars: 0 to 20: 22 salaries, 20 to 40: 10 salaries, 40 to 60: 5 salaries, 60 to 80: 2 salaries, 80 to 100: 1 salary. Which statement about the box plot of these salaries is true?",
+      "choices": [
+        "The median is in the 20 to 40 bar and Q3 is in the 40 to 60 bar",
+        "The median and Q3 are both in the 0 to 20 bar",
+        "The median is in the 0 to 20 bar and Q3 is in the 40 to 60 bar",
+        "The median is in the 0 to 20 bar and Q3 is in the 20 to 40 bar"
+      ],
+      "answer": "The median is in the 0 to 20 bar and Q3 is in the 20 to 40 bar",
+      "compute": null,
+      "solution": "The median is the mean of the 20th and 21st values, both within the first 22. Q3 is the mean of the 30th and 31st values; the first two bars hold 22 + 10 = 32 values, so both are in the 20 to 40 bar.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The median is in the 0 to 20 bar and Q3 is in the 20 to 40 bar",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Median: 20th/21st values, both in 0-20 (first 22). Q3: 30th/31st values; cumulative 22 then 23-32 in 20-40. So median in 0-20, Q3 in 20-40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.506Z"
+        }
+      }
+    },
+    {
+      "id": "274e9061-581f-4ef9-87bd-be46884c46b6",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choosing and comparing histograms and box plots",
+      "stem": "A box plot has minimum 0, Q1 2, median 3, Q3 10 and maximum 40. Which description of a histogram of the same data fits it?",
+      "choices": [
+        "tall bars at the right, with a few short bars far to the left",
+        "tall bars at the left, with a few short bars far to the right",
+        "bars of about equal height all along the number line",
+        "one tall bar in the middle, with bars falling off evenly on both sides"
+      ],
+      "answer": "tall bars at the left, with a few short bars far to the right",
+      "compute": null,
+      "solution": "Half of the data is 3 or less, and a quarter lies between 10 and 40. So most values are bunched at the low end, with a few far larger ones: tall bars at the left and a long tail to the right.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "tall bars at the left, with a few short bars far to the right",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Five-number summary 0,2,3,10,40: half the data in 0-3, long upper whisker to 40, so right-skewed: tall bars at left, few short bars far right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.632Z"
+        }
+      }
+    },
+    {
+      "id": "34fc3c38-9a8b-4a1b-bf1d-65079efa5915",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Five-number summary from a list of data",
+      "stem": "Twelve delivery times in minutes: 38, 22, 44, 25, 31, 51, 28, 35, 25, 40, 33, 30. The lower half is the 6 smallest values and the upper half is the 6 largest values. Q1 and Q3 are the medians of those halves. What is the interquartile range (Q3 - Q1)?",
+      "choices": [],
+      "answer": "12.5",
+      "compute": "(38+40)/2-(25+28)/2",
+      "solution": "In order: 22, 25, 25, 28, 30, 31, 33, 35, 38, 40, 44, 51. The lower half is 22, 25, 25, 28, 30, 31, so Q1 = (25 + 28) / 2 = 26.5. The upper half is 33, 35, 38, 40, 44, 51, so Q3 = (38 + 40) / 2 = 39. The IQR is 39 - 26.5 = 12.5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sorted: 22,25,25,28,30,31 | 33,35,38,40,44,51. Q1=(25+28)/2=26.5, Q3=(38+40)/2=39. IQR=12.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.665Z"
+        }
+      }
+    },
+    {
+      "id": "9eba648d-35b7-408a-9cf7-a6f58dc8f24b",
+      "topic_id": "NC17.M1.S-ID.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Building a histogram: bins and counts",
+      "stem": "Sixteen plants have these heights in centimeters: 3, 17, 8, 12, 5, 14, 9, 22, 11, 7, 13, 18, 6, 10, 24, 12. A histogram uses the bins 0 to 4, 5 to 9, 10 to 14, 15 to 19 and 20 to 24 (each includes both of its end values). How many values are in the tallest bar?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Count each bin: 0 to 4 has 1 value; 5 to 9 has 5, 6, 7, 8, 9 (5 values); 10 to 14 has 10, 11, 12, 12, 13, 14 (6 values); 15 to 19 has 2; 20 to 24 has 2. The tallest bar is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0-4: 3 (1). 5-9: 8,5,9,7,6 (5). 10-14: 12,14,11,13,10,12 (6). 15-19: 17,18 (2). 20-24: 22,24 (2). Total 16. Tallest bar 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.667Z"
+        }
+      }
+    },
+    {
       "id": "fc061e0c-7aa5-42f2-8e85-134229132d44",
       "topic_id": "NC17.M1.S-ID.2",
       "difficulty": 1,
@@ -34932,6 +38933,961 @@
           "work": "3*40+35 = 155, but 40 years is far outside 0-15: doubtful.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:47:09.687Z"
+        }
+      }
+    },
+    {
+      "id": "fded377f-7d80-40e5-a6d6-625abfe2cc0f",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compute and interpret a residual",
+      "stem": "A line of best fit predicts $y = 2x + 5$. At $x = 4$, the observed value is $y = 16$. A residual is the observed value minus the predicted value. What is the residual?",
+      "choices": [],
+      "answer": "3",
+      "compute": "16-(2*4+5)",
+      "solution": "Predicted: $2(4) + 5 = 13$. Residual: $16 - 13 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted 2(4)+5 = 13; residual 16-13 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.758Z"
+        }
+      }
+    },
+    {
+      "id": "cd59b090-93cc-4984-86b5-0629336c0c85",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compute and interpret a residual",
+      "stem": "The residual for one point is positive, where residual means observed value minus predicted value. Where is that point?",
+      "choices": [
+        "Below the line of best fit",
+        "On the line of best fit",
+        "Exactly on the $x$-axis",
+        "Above the line of best fit"
+      ],
+      "answer": "Above the line of best fit",
+      "compute": null,
+      "solution": "A positive residual means the observed value is greater than the predicted value, so the point is above the line.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Above the line of best fit",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Residual = observed - predicted > 0, so observed y exceeds the line's value: the point is above the line.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.997Z"
+        }
+      }
+    },
+    {
+      "id": "f09d32b7-4b7a-440f-9527-5200fdc4c600",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the correlation coefficient",
+      "stem": "A line of best fit for a data set slopes downward (it has a negative slope). Which statement about $r$ must be true?",
+      "choices": [
+        "$r$ is positive",
+        "$r$ is negative",
+        "$r$ is equal to the slope",
+        "$r$ is equal to $0$"
+      ],
+      "answer": "$r$ is negative",
+      "compute": null,
+      "solution": "The sign of $r$ always matches the direction of the line of best fit. A downward slope means $r$ is negative. It is not the slope itself.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$r$ is negative",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "r has the same sign as the slope of the least-squares line, so r is negative.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.038Z"
+        }
+      }
+    },
+    {
+      "id": "d71895e5-3a07-4b5f-a9bc-ebdee9eac8fa",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Correlation versus causation and properties of r",
+      "stem": "A town finds that on days when more ice cream is sold, more people get sunburned, with $r = 0.85$. Which conclusion is best supported?",
+      "choices": [
+        "Eating ice cream causes people to get more sunburns",
+        "They tend to rise together, but one need not cause the other",
+        "Sunburns cause people to buy more ice cream",
+        "The two are unrelated, since $r$ is below $1$"
+      ],
+      "answer": "They tend to rise together, but one need not cause the other",
+      "compute": null,
+      "solution": "A strong correlation shows the two move together. It does not show cause. Something else, such as hot sunny weather, can drive both.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They tend to rise together, but one need not cause the other",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Strong positive correlation, but correlation is not causation (both driven by sunny weather).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.114Z"
+        }
+      }
+    },
+    {
+      "id": "dd121445-7424-4697-ba12-fdcb2fd3180b",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compute the correlation coefficient",
+      "stem": "For a data set, $S_{xy} = -12$, $S_{xx} = 16$ and $S_{yy} = 25$. Use $r = \\frac{S_{xy}}{\\sqrt{S_{xx} \\cdot S_{yy}}}$ to find $r$.",
+      "choices": [],
+      "answer": "-0.6",
+      "compute": "-12/20",
+      "solution": "$S_{xx} \\cdot S_{yy} = 16 \\cdot 25 = 400$ and $\\sqrt{400} = 20$. So $r = -12 / 20 = -0.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-0.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(16*25) = 20; r = -12/20 = -0.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.168Z"
+        }
+      }
+    },
+    {
+      "id": "7354a378-ef0d-4f9f-95a3-4b563432d61a",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Describe a relationship from a scatter plot",
+      "stem": "Maya plots the outdoor temperature against the number of cups of hot chocolate a stand sells each day. The points fall close to a line that slopes downward from left to right. Which description fits best?",
+      "choices": [
+        "A strong positive linear relationship",
+        "A weak negative linear relationship",
+        "A strong negative linear relationship",
+        "A weak positive linear relationship"
+      ],
+      "answer": "A strong negative linear relationship",
+      "compute": null,
+      "solution": "Points close to a line mean a strong relationship. The line slopes down, so as temperature rises, sales fall: the relationship is negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A strong negative linear relationship",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Downward slope = negative; points close to a line = strong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.271Z"
+        }
+      }
+    },
+    {
+      "id": "2b092986-5da0-4a25-b9b6-77827cd30869",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the correlation coefficient",
+      "stem": "Which value of $r$ shows the strongest linear relationship?",
+      "choices": [
+        "$r = -0.92$",
+        "$r = 0.85$",
+        "$r = 0.30$",
+        "$r = -0.45$"
+      ],
+      "answer": "$r = -0.92$",
+      "compute": null,
+      "solution": "Strength depends on how close $r$ is to $1$ or $-1$, not on the sign. The value $-0.92$ is closest to $-1$, so it is the strongest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$r = -0.92$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Strength = |r|; 0.92 largest.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.405Z"
+        }
+      }
+    },
+    {
+      "id": "37aab081-d850-451b-bd03-452befaa21c9",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Judge a linear fit from a residual plot",
+      "stem": "A residual plot for a linear model shows points scattered at random above and below the horizontal axis, with no pattern. What does this suggest?",
+      "choices": [
+        "A linear model is a poor fit for the data",
+        "The correlation coefficient is exactly $0$",
+        "The data set contains no outliers",
+        "A linear model is a good fit for the data"
+      ],
+      "answer": "A linear model is a good fit for the data",
+      "compute": null,
+      "solution": "Residuals scattered at random with no pattern mean a line captures the trend in the data, so a linear model is a good fit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A linear model is a good fit for the data",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Random residual scatter with no pattern indicates a linear model fits well.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.468Z"
+        }
+      }
+    },
+    {
+      "id": "67726ca6-d6ad-49d2-8050-9479a458d8a9",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Describe a relationship from a scatter plot",
+      "stem": "Four data sets have correlation coefficients $0.64$, $-0.38$, $0.05$ and $-0.91$. How many of the data sets show a negative linear relationship?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "A negative $r$ means a negative relationship. Two of the values, $-0.38$ and $-0.91$, are negative. The answer is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negative r: -0.38 and -0.91. Two.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.608Z"
+        }
+      }
+    },
+    {
+      "id": "2f9e736f-a381-414f-b4db-a4305461fe4f",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compute the correlation coefficient",
+      "stem": "The points $(1, 3)$, $(2, 5)$, $(3, 7)$ and $(4, 9)$ all lie exactly on one line that slopes upward. What is the value of $r$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Points that lie exactly on a line with a positive slope have a perfect positive correlation, so $r = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Points exactly on an increasing line (y=2x+1): r = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.646Z"
+        }
+      }
+    },
+    {
+      "id": "30885afd-03b9-442a-8de5-178e08833391",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Judge a linear fit from a residual plot",
+      "stem": "A residual plot for a linear model shows the points forming a clear U-shaped curve. What is the best conclusion?",
+      "choices": [
+        "A curved model would fit these data better than a line",
+        "The line fits well, since some residuals are above the axis and some below",
+        "The correlation coefficient must be exactly $0$",
+        "The data set must contain exactly one outlier"
+      ],
+      "answer": "A curved model would fit these data better than a line",
+      "compute": null,
+      "solution": "A pattern in the residual plot, such as a U shape, means the data bend in a way the line misses. A curve would fit better.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A curved model would fit these data better than a line",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A clear pattern (U-shape) in residuals means a linear model is not appropriate; a curved model fits better.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.694Z"
+        }
+      }
+    },
+    {
+      "id": "9d9baaca-1802-48e9-8651-e6c8c904e13f",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute and interpret a residual",
+      "stem": "A model predicts that a used car will sell for 9000 dollars. It actually sells for 8200 dollars. What is the residual (observed minus predicted), in dollars?",
+      "choices": [],
+      "answer": "-800",
+      "compute": "8200-9000",
+      "solution": "Residual = observed $-$ predicted $= 8200 - 9000 = -800$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-800",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8200 - 9000 = -800.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.724Z"
+        }
+      }
+    },
+    {
+      "id": "8ce597e0-e6ca-4fb9-93f0-041fe1fc8111",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute and interpret a residual",
+      "stem": "The line $y = 3x - 2$ is used to model three points: $(2, 5)$, $(4, 9)$ and $(6, 18)$. What is the largest absolute value of a residual (distance of a point above or below the line) among the three points?",
+      "choices": [],
+      "answer": "2",
+      "compute": "18-16",
+      "solution": "Predicted values: $4$, $10$, $16$. Residuals: $5 - 4 = 1$, $9 - 10 = -1$, $18 - 16 = 2$. The largest absolute value is $2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted: x=2 ->4, residual 1; x=4 ->10, residual -1; x=6 ->16, residual 2. Largest |residual| = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.841Z"
+        }
+      }
+    },
+    {
+      "id": "e72b04df-300b-44df-afc6-717ff7b6fae5",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the correlation coefficient",
+      "stem": "The correlation between hours of TV watched per week and test scores is $r = -0.7$. Which is the best interpretation?",
+      "choices": [
+        "Watching TV causes test scores to fall by 70 percent",
+        "Seventy percent of students who watch TV get low scores",
+        "More TV time tends to go with lower scores, fairly strongly",
+        "Each extra hour of TV lowers a score by exactly $0.7$ points"
+      ],
+      "answer": "More TV time tends to go with lower scores, fairly strongly",
+      "compute": null,
+      "solution": "A negative $r$ means the variables move in opposite directions. The size $0.7$ is fairly strong. $r$ does not show cause, a percent of students, or a slope.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "More TV time tends to go with lower scores, fairly strongly",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "r = -0.7: negative, fairly strong linear association; it is not a slope, percent or cause.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.079Z"
+        }
+      }
+    },
+    {
+      "id": "b38f1e72-befa-4a7a-8c83-4576c42b71a5",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the correlation coefficient",
+      "stem": "Four data sets have these correlation coefficients: Set P, $r = 0.62$; Set Q, $r = -0.81$; Set R, $r = 0.79$; Set S, $r = -0.15$. Which set has points closest to lying on a straight line?",
+      "choices": [
+        "Set R",
+        "Set P",
+        "Set Q",
+        "Set S"
+      ],
+      "answer": "Set Q",
+      "compute": null,
+      "solution": "The set with $r$ farthest from $0$ (closest to $1$ or $-1$) is closest to a line. $|-0.81|$ is the largest, so it is Set Q.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Set Q",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest |r| is 0.81 for Set Q.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.244Z"
+        }
+      }
+    },
+    {
+      "id": "1ea07d4e-c313-4987-acd6-53664f86915c",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Describe a relationship from a scatter plot",
+      "stem": "For five points, the $x$-values are $1, 2, 3, 4, 5$ and the $y$-values are $9, 7, 8, 4, 2$. Which statement describes $r$?",
+      "choices": [
+        "$r$ is close to $1$",
+        "$r$ is close to $0$",
+        "$r$ is close to $0.5$",
+        "$r$ is close to $-1$"
+      ],
+      "answer": "$r$ is close to $-1$",
+      "compute": null,
+      "solution": "As $x$ goes up, $y$ mostly goes down, and the points follow a line closely. Computing gives $r \\approx -0.92$, which is close to $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$r$ is close to $-1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Means 3 and 6; Sxy=-17, Sxx=10, Syy=34; r=-17/sqrt(340)~-0.92.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.397Z"
+        }
+      }
+    },
+    {
+      "id": "abde55e1-f90d-443c-b1f3-f6f0858f4195",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute the correlation coefficient",
+      "stem": "A teacher records $(x, y)$ for five students: $(1, 1)$, $(2, 3)$, $(3, 2)$, $(4, 5)$ and $(5, 4)$. The mean of the $x$-values is 3, the mean of the $y$-values is 3, and the sums of squared deviations are $S_{xx} = 10$ and $S_{yy} = 10$. Use $r = \\frac{S_{xy}}{\\sqrt{S_{xx} \\cdot S_{yy}}}$ to find $r$.",
+      "choices": [],
+      "answer": "0.8",
+      "compute": "8/10",
+      "solution": "Deviations of $x$: $-2, -1, 0, 1, 2$. Deviations of $y$: $-2, 0, -1, 2, 1$. Products: $4, 0, 0, 2, 2$, so $S_{xy} = 8$. Then $r = 8 / \\sqrt{100} = 0.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x dev: -2,-1,0,1,2; y dev: -2,0,-1,2,1. Sxy = 4+0+0+2+2 = 8. Check Syy = 4+0+1+4+1 = 10. r = 8/sqrt(100) = 0.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.593Z"
+        }
+      }
+    },
+    {
+      "id": "88c35ce5-3385-4725-92cc-898f0d7add40",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute and interpret a residual",
+      "stem": "A model predicts a plant's height with $y = 1.5x + 12$, where $x$ is the number of weeks and $y$ is the height in centimeters. After 10 weeks the plant is 25 centimeters tall. What is the residual (observed minus predicted), in centimeters?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "25-(1.5*10+12)",
+      "solution": "Predicted: $1.5(10) + 12 = 27$. Residual: $25 - 27 = -2$. The plant is 2 centimeters shorter than predicted.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted 1.5*10 + 12 = 27; residual 25 - 27 = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.625Z"
+        }
+      }
+    },
+    {
+      "id": "25e93ac4-3175-42d9-814f-fa9e90ae177c",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Correlation versus causation and properties of r",
+      "stem": "A study finds $r = 0.7$ between the number of libraries and the number of restaurants in a city. Which statement is false?",
+      "choices": [
+        "Building more libraries will cause more restaurants to open",
+        "Cities with more libraries tend to have more restaurants",
+        "The relationship is positive and fairly strong",
+        "City size may explain both counts"
+      ],
+      "answer": "Building more libraries will cause more restaurants to open",
+      "compute": null,
+      "solution": "Correlation does not show cause. The false claim says libraries cause restaurants to open; a third factor such as city size may explain both.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Building more libraries will cause more restaurants to open",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correlation does not show causation, so \"Building more libraries will cause more restaurants to open\" is false. The others are true/plausible statements.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.649Z"
+        }
+      }
+    },
+    {
+      "id": "154ee0d0-6271-4a2c-ba38-a5247077dacb",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Correlation versus causation and properties of r",
+      "stem": "The correlation between students' heights in inches and their weights in pounds is $r = 0.8$. Every height is then converted from inches to centimeters. What is the new correlation coefficient?",
+      "choices": [],
+      "answer": "0.8",
+      "compute": "0.8",
+      "solution": "Changing the units of a variable, by multiplying by a positive number, does not change $r$. It stays $0.8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Converting units is a positive linear change (x2.54), which does not change r: 0.8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.651Z"
+        }
+      }
+    },
+    {
+      "id": "9e5b6474-5b8a-4945-8c0d-47748591f5af",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compute the correlation coefficient",
+      "stem": "The data are $(1, 7)$, $(2, 9)$, $(3, 5)$, $(4, 3)$ and $(5, 1)$. Use $r = \\frac{S_{xy}}{\\sqrt{S_{xx} \\cdot S_{yy}}}$ to find $r$.",
+      "choices": [],
+      "answer": "-0.9",
+      "compute": "-18/20",
+      "solution": "Means: the mean of $x$ is 3 and the mean of $y$ is 5. Deviations of $x$: $-2, -1, 0, 1, 2$; of $y$: $2, 4, 0, -2, -4$. $S_{xy} = -4 - 4 + 0 - 2 - 8 = -18$. $S_{xx} = 10$, $S_{yy} = 4 + 16 + 0 + 4 + 16 = 40$. So $r = -18 / \\sqrt{400} = -0.9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-0.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Means: x 3, y 5. dx: -2,-1,0,1,2; dy: 2,4,0,-2,-4. Sxy = -4-4+0-2-8 = -18. Sxx = 10, Syy = 40. r = -18/sqrt(400) = -18/20 = -0.9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.876Z"
+        }
+      }
+    },
+    {
+      "id": "9a440eef-9f91-493a-971b-296d18805827",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Correlation versus causation and properties of r",
+      "stem": "A scatter plot has points close to a line, with $r = 0.95$. One new point is added at a middle $x$-value, far above the line that the other points follow. What happens to $r$?",
+      "choices": [
+        "It moves closer to $0$",
+        "It moves closer to $1$",
+        "It does not change",
+        "It becomes exactly $0$"
+      ],
+      "answer": "It moves closer to $0$",
+      "compute": null,
+      "solution": "A point far from the line weakens the linear trend, so $r$ gets smaller in size and moves toward $0$. It does not become exactly $0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It moves closer to $0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A point at middle x far off the line weakens the linear pattern, so r drops toward 0 (it stays positive, not exactly 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.930Z"
+        }
+      }
+    },
+    {
+      "id": "3f05608b-b9d0-4766-8f32-9ab2caef5435",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Judge a linear fit from a residual plot",
+      "stem": "The residuals of a linear model, listed in order of increasing $x$, are $4, 1, -2, -4, -2, 1, 4$. What does this pattern suggest?",
+      "choices": [
+        "The residuals are random, so a line is a good model",
+        "The residuals are equal, so the data are linear",
+        "The correlation coefficient must be negative",
+        "The data curve, so a line is not a good model"
+      ],
+      "answer": "The data curve, so a line is not a good model",
+      "compute": null,
+      "solution": "The residuals fall and then rise in a smooth U shape. A pattern like this means the data are curved, so a line is not a good model.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The data curve, so a line is not a good model",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Residuals go positive, negative, positive in a U shape: a systematic pattern, so the data curve and a line is not a good fit.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.943Z"
+        }
+      }
+    },
+    {
+      "id": "2b4fcc1c-a811-422d-b50c-7e9905335d64",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compute the correlation coefficient",
+      "stem": "A data set has $r = 0.5$, $S_{xx} = 16$ and $S_{yy} = 36$. Find $S_{xy}$ if $r = \\frac{S_{xy}}{\\sqrt{S_{xx} \\cdot S_{yy}}}$.",
+      "choices": [],
+      "answer": "12",
+      "compute": "0.5*24",
+      "solution": "$\\sqrt{16 \\cdot 36} = \\sqrt{576} = 24$. So $S_{xy} = r \\cdot 24 = 0.5 \\cdot 24 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "S_xy = r*sqrt(16*36) = 0.5*24 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.991Z"
+        }
+      }
+    },
+    {
+      "id": "de211fb6-13ec-4f4c-ab36-ee54dd6603d0",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compute and interpret a residual",
+      "stem": "A line of best fit is $y = 0.8x + 4$. At $x = 15$, the residual (observed minus predicted) is $-2.5$. What is the observed value of $y$ at that point?",
+      "choices": [],
+      "answer": "13.5",
+      "compute": "0.8*15+4-2.5",
+      "solution": "Predicted: $0.8(15) + 4 = 16$. Observed = predicted + residual $= 16 + (-2.5) = 13.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Predicted y = 0.8(15)+4 = 16. Observed = 16 + (-2.5) = 13.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.001Z"
+        }
+      }
+    },
+    {
+      "id": "04bddf03-edeb-4328-bb6a-df3efc869a3f",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Correlation versus causation and properties of r",
+      "stem": "Which statement about the correlation coefficient is true?",
+      "choices": [
+        "A value of $r$ near $0$ means the two variables are unrelated in every way",
+        "The value of $r$ is the slope of the line of best fit",
+        "A value of $r$ near $0$ can occur when the points follow a clear curve",
+        "A value of $r$ can be greater than $1$ for very steep data"
+      ],
+      "answer": "A value of $r$ near $0$ can occur when the points follow a clear curve",
+      "compute": null,
+      "solution": "$r$ measures only straight-line relationships. Points can follow a clear curve and still have $r$ near $0$. $r$ is not the slope and is always between $-1$ and $1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A value of $r$ near $0$ can occur when the points follow a clear curve",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "r is not the slope, is between -1 and 1, and measures only linear association; points on a clear curve (e.g. a U shape) can give r near 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.103Z"
+        }
+      }
+    },
+    {
+      "id": "12900b1b-5461-49cc-af49-18c84d1cd5f7",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Judge a linear fit from a residual plot",
+      "stem": "A data set has $r = 0.97$, but its residual plot shows a clear curved pattern. Which conclusion is best?",
+      "choices": [
+        "A line is the best model, because $r$ is close to $1$",
+        "A line is not the best model, even though $r$ is high",
+        "The residual plot must have been drawn wrongly",
+        "The correlation coefficient must be computed again"
+      ],
+      "answer": "A line is not the best model, even though $r$ is high",
+      "compute": null,
+      "solution": "A high $r$ only says the trend is strongly linear on average. A curved residual pattern shows a line misses a systematic bend, so a curve fits better.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A line is not the best model, even though $r$ is high",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A curved residual pattern means a linear model is not appropriate despite high r.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.439Z"
+        }
+      }
+    },
+    {
+      "id": "63665868-336f-4ed4-aa8e-91cc30e71226",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the correlation coefficient",
+      "stem": "Four data sets have these correlation coefficients: A, $0.7$; B, $-0.9$; C, $0.85$; D, $-0.3$. Which list orders them from the strongest to the weakest linear relationship?",
+      "choices": [
+        "C, A, D, B",
+        "B, D, A, C",
+        "B, C, A, D",
+        "D, A, C, B"
+      ],
+      "answer": "B, C, A, D",
+      "compute": null,
+      "solution": "Strength is the size of $r$ (ignore the sign): B $0.9$, C $0.85$, A $0.7$, D $0.3$. So the order is B, C, A, D.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "B, C, A, D",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Strength by |r|: B 0.9, C 0.85, A 0.7, D 0.3. Order B, C, A, D.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.522Z"
+        }
+      }
+    },
+    {
+      "id": "130cf763-d7f7-45af-87f1-895ac63a0f4a",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compute and interpret a residual",
+      "stem": "The residual is observed minus predicted. For one point the residual is $-4$. Mia says the line's prediction for that point was 4 too low. Which statement is correct?",
+      "choices": [
+        "Mia is correct, since the residual is negative",
+        "Mia is wrong, since the prediction was 4 too high",
+        "Mia is wrong, since a residual cannot be negative",
+        "Mia is wrong, since the point lies on the line"
+      ],
+      "answer": "Mia is wrong, since the prediction was 4 too high",
+      "compute": null,
+      "solution": "Observed $-$ predicted $= -4$ means observed is 4 less than predicted. So the prediction was 4 too high, not too low.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Mia is wrong, since the prediction was 4 too high",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Residual = observed - predicted = -4, so predicted = observed + 4: the prediction was 4 too high. Mia is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.523Z"
+        }
+      }
+    },
+    {
+      "id": "2851b730-0a5a-406b-b3d4-7086a9cb69ae",
+      "topic_id": "NC17.M1.S-ID.8",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Correlation versus causation and properties of r",
+      "stem": "For a data set, $r = -0.6$. Every $y$-value is replaced by its opposite (the new $y$ is $-y$). What is the new value of $r$?",
+      "choices": [],
+      "answer": "0.6",
+      "compute": "0.6",
+      "solution": "Multiplying every $y$-value by $-1$ flips the direction of the relationship, so the sign of $r$ changes. The size stays the same: $r = 0.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negating y negates every product deviation, so r becomes 0.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.624Z"
         }
       }
     },

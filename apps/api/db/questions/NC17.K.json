@@ -8,21 +8,22 @@
     "NC17.K.CC.5": "Picture work is written out as rows of letters or lists of names, counted in the text. Counts stay within 20; no question asks how many more, and none chains comparisons. Counting categories (how many of one kind) is left out: it belongs to K.MD.3.",
     "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step.",
     "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1.",
-    "NC17.K.G.1": "Kindergarten: shapes and positions are given in words only. A ball is called a sphere; shapes are named, never counted by sides beyond what the standard needs. Some questions list items by name so the student must know which are spheres, cylinders, cubes or circles. No pictures.",
-    "NC17.K.G.2": "Kindergarten: shapes are named from sides, corners, faces or everyday things written out, since no pictures are shown. Naming is a choice skill by nature, so only 7 numeric questions are written: each counts the shapes (or things) that have one name, which needs the naming first. Names used: circle, square, triangle, rectangle, hexagon, sphere, cube, cone, cylinder. Descriptions of a square never list rectangle among the options, because a square is also a rectangle. Orientation and size appear in the turned-shape and big/small questions.",
-    "NC17.K.G.3": "Only flat-or-solid is tested (naming shapes and their attributes belong to other standards). Pictures are written out, so everyday objects (ball, box, can) stand for solid shapes and a drawing on paper for a flat one. A few numeric questions give the position in a written list.",
-    "NC17.K.G.4": "Thirty questions in words only (no pictures): same shape in different sizes and turns, flat against solid, corners and sides, and sorting short lists. Comparisons are never \"how many more\".",
-    "NC17.K.G.6": "Shapes are written out in words; no pictures. Kindergarten counts stay within 10 and each question is one step.",
-    "NC17.K.MD.1": "Words only, so the questions ask which words and things are measurable and which attribute a word tells about (length, height, weight). No comparing and no \"how much more\" (that is K.MD.2). 9 of 30 are numeric because only counting questions (\"how many of these words...\") fit a number answer; the rest are choice. Skills: tell what can be measured (6), match a word to its attribute (6), choose what to measure (7), name several attributes of one object (7), pick an object that has an attribute (4).",
-    "NC17.K.MD.2": "Kindergarten compares two objects directly and never asks how much more, so every question asks which one, or counts objects against one reference object (each compared directly, never chained). Pictures are written out in words; numeric questions are counts or a typed object number (1 or 2). Only length, height and weight are used, with line-up-the-ends and the attribute word.",
-    "NC17.K.MD.3": "Kindergarten: lists are written out as words; counts kept within 12 and no question asks how many more. Sorting is by color, shape, size or kind.",
-    "NC17.K.NBT.1": "All pictures (ten frames, strips, bundles) are described in words. No question asks how much more; compare questions ask only who has more.",
     "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10.",
     "NC17.K.OA.2": "Everything is one step and inside 10. Skills: add to (6), take from (6), put together (6), take apart / one part unknown (6), matching a story and a number sentence (6). The change-unknown and start-unknown problems are Grade 1 (OA.1), so they are left out. Objects and drawings are written as a story (blocks, circles Zoe draws).",
     "NC17.K.OA.3": "Zero is left out as a part (Kindergarten pairs here use 1 or more in each part). Drawings are replaced by number sentences and short stories. Order of a pair (3 and 4 versus 4 and 3) is never asked, since it is ambiguous at this age.",
     "NC17.K.OA.4": "Written for Kindergarten: one step, numbers 0 to 10, ten-frames and objects described in words. Skills: story 7, number sentence 4 (+ missing start 3), ten-frame 3, pairs 6, zero and ten 3.",
+    "NC17.K.OA.6": "Total up to 5, one step. \"Without counting one by one\" (subitizing) cannot be tested in text, so groups are written as numbers and the questions test combining small groups and their partners.",
     "NC17.K.OA.5": "Kept to sums and differences within 5, one step, no missing-number sentences (those come in Grade 1). Pictures are told in words.",
-    "NC17.K.OA.6": "Total up to 5, one step. \"Without counting one by one\" (subitizing) cannot be tested in text, so groups are written as numbers and the questions test combining small groups and their partners."
+    "NC17.K.NBT.1": "All pictures (ten frames, strips, bundles) are described in words. No question asks how much more; compare questions ask only who has more.",
+    "NC17.K.MD.1": "Words only, so the questions ask which words and things are measurable and which attribute a word tells about (length, height, weight). No comparing and no \"how much more\" (that is K.MD.2). 9 of 30 are numeric because only counting questions (\"how many of these words...\") fit a number answer; the rest are choice. Skills: tell what can be measured (6), match a word to its attribute (6), choose what to measure (7), name several attributes of one object (7), pick an object that has an attribute (4).",
+    "NC17.K.MD.2": "Kindergarten compares two objects directly and never asks how much more, so every question asks which one, or counts objects against one reference object (each compared directly, never chained). Pictures are written out in words; numeric questions are counts or a typed object number (1 or 2). Only length, height and weight are used, with line-up-the-ends and the attribute word.",
+    "NC17.K.MD.3": "Kindergarten: lists are written out as words; counts kept within 12 and no question asks how many more. Sorting is by color, shape, size or kind.",
+    "NC17.K.G.1": "Kindergarten: shapes and positions are given in words only. A ball is called a sphere; shapes are named, never counted by sides beyond what the standard needs. Some questions list items by name so the student must know which are spheres, cylinders, cubes or circles. No pictures.",
+    "NC17.K.G.2": "Kindergarten: shapes are named from sides, corners, faces or everyday things written out, since no pictures are shown. Naming is a choice skill by nature, so only 7 numeric questions are written: each counts the shapes (or things) that have one name, which needs the naming first. Names used: circle, square, triangle, rectangle, hexagon, sphere, cube, cone, cylinder. Descriptions of a square never list rectangle among the options, because a square is also a rectangle. Orientation and size appear in the turned-shape and big/small questions.",
+    "NC17.K.G.3": "Only flat-or-solid is tested (naming shapes and their attributes belong to other standards). Pictures are written out, so everyday objects (ball, box, can) stand for solid shapes and a drawing on paper for a flat one. A few numeric questions give the position in a written list.",
+    "NC17.K.G.4": "Thirty questions in words only (no pictures): same shape in different sizes and turns, flat against solid, corners and sides, and sorting short lists. Comparisons are never \"how many more\".",
+    "NC17.K.G.5": "Text-only: building and drawing are asked through sides and corners of the shape being made, solids by what they are modeled on. Drawing itself (the act) cannot be shown, so the draw questions ask what the finished shape must have. No \"how many more\" comparisons; the \"how many more sticks\" ones are an unfinished build (3+?=4 style, within 10). Zero as an answer appears once (a circle has no straight sides).",
+    "NC17.K.G.6": "Shapes are written out in words; no pictures. Kindergarten counts stay within 10 and each question is one step."
   },
   "questions": [
     {
@@ -3374,6 +3375,699 @@
       }
     },
     {
+      "id": "71d2dbff-2d64-400f-aaca-b42425d26654",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Which number is missing? 17, ?, 19, 20",
+      "choices": [
+        "16",
+        "21",
+        "18",
+        "8"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "After 17 comes 18, then 19 and 20. The missing number is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17, 18, 19, 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.870Z"
+        }
+      }
+    },
+    {
+      "id": "aaa6cf58-5fc2-4a25-b941-b3c4c572b648",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Fill in the count: 13, ?, 15, 16. What is the ?",
+      "choices": [],
+      "answer": "14",
+      "compute": "13+1",
+      "solution": "The numbers go 13, 14, 15, 16. The ? is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13, 14, 15, 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.878Z"
+        }
+      }
+    },
+    {
+      "id": "c74592fe-d9b6-4003-8f21-dca9f76e25ff",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Kai counts 7 blocks. He puts one more block down and counts it. What number does he say for the new block?",
+      "choices": [],
+      "answer": "8",
+      "compute": "7+1",
+      "solution": "Kai does not start again at 1. He counts on from 7, so the next number is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 blocks counted, next one is 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.884Z"
+        }
+      }
+    },
+    {
+      "id": "42d4064d-9d62-4287-a9ff-0e5bd93d4e4b",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "A tower has 5 blocks. Sam adds 4 more blocks. He counts on from 5 as he adds them. What is the last number he says?",
+      "choices": [],
+      "answer": "9",
+      "compute": "5+4",
+      "solution": "He says 6, 7, 8, 9. The last number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counts on: 6, 7, 8, 9. Last number 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.916Z"
+        }
+      }
+    },
+    {
+      "id": "b3c59987-83a1-4746-b0f1-373d28874c84",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Say the next number when counting on",
+      "stem": "Lina counts her steps out loud: 16, 17, 18. What number does she say next?",
+      "choices": [],
+      "answer": "19",
+      "compute": "18+1",
+      "solution": "The numbers go up by one each time. After 18 comes 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16, 17, 18, 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.920Z"
+        }
+      }
+    },
+    {
+      "id": "bf3a8e94-5f71-4365-9e0f-4e5cb3ca4769",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the right way to count on",
+      "stem": "Pia starts at 8 and counts on. What does she say?",
+      "choices": [
+        "1, 2, 3",
+        "7, 6, 5",
+        "10, 12, 14",
+        "9, 10, 11"
+      ],
+      "answer": "9, 10, 11",
+      "compute": null,
+      "solution": "Counting on from 8 means saying the next numbers: 9, 10, 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9, 10, 11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 8: 9, 10, 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.953Z"
+        }
+      }
+    },
+    {
+      "id": "52f210aa-992b-4955-8aa1-c7e4d1717b10",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say the next number when counting on",
+      "stem": "Count by ones. Which number comes right after 12?",
+      "choices": [
+        "13",
+        "11",
+        "14",
+        "21"
+      ],
+      "answer": "13",
+      "compute": "13",
+      "solution": "Counting on from 12, the next number is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 12 comes 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.980Z"
+        }
+      }
+    },
+    {
+      "id": "767aa60c-f8a0-476f-8b80-0e2fbd0eca23",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Omar starts at 15 and counts on 2 numbers. What is the last number he says?",
+      "choices": [
+        "16",
+        "17",
+        "18",
+        "13"
+      ],
+      "answer": "17",
+      "compute": "17",
+      "solution": "He says 16, then 17. The last number is 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15, then 16, 17: last says 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.995Z"
+        }
+      }
+    },
+    {
+      "id": "c4a686a0-6678-4ea8-bd5d-ab09044dee4b",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Name a number said part way through counting on",
+      "stem": "Start at 12. Say the next three numbers. What is the second number you say?",
+      "choices": [],
+      "answer": "14",
+      "compute": "12+2",
+      "solution": "You say 13, then 14, then 15. The second number is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 12: 13, 14, 15. The second is 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.052Z"
+        }
+      }
+    },
+    {
+      "id": "fab9e2d3-6614-405c-9ee8-0de1d4896187",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Gus has counted 6 cubes. He adds 2 more cubes. What does he say for the 2 new cubes?",
+      "choices": [
+        "1, 2",
+        "7, 8",
+        "6, 7",
+        "8, 9"
+      ],
+      "answer": "7, 8",
+      "compute": null,
+      "solution": "He keeps counting from 6, so the new cubes are 7 and 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7, 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counts on from 6: 7, 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.070Z"
+        }
+      }
+    },
+    {
+      "id": "40d12b05-e0ad-4734-97cc-726c732e45a2",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Pam stands on stone 13 and hops forward 3 stones. She says the number of each stone she lands on. What does she say on the last stone?",
+      "choices": [],
+      "answer": "16",
+      "compute": "13+3",
+      "solution": "She says 14, 15, 16. The last number is 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "From 13 hop 3: 14, 15, 16. Last 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.073Z"
+        }
+      }
+    },
+    {
+      "id": "d5f238eb-b870-4f06-9054-a030de9e7218",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say the next number when counting on",
+      "stem": "Sue says 18 as she touches a bead on a string. Then she touches the next bead. Which number does she say?",
+      "choices": [
+        "17",
+        "20",
+        "19",
+        "81"
+      ],
+      "answer": "19",
+      "compute": "19",
+      "solution": "The next number after 18 is 19.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "19",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 18: next is 19.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.115Z"
+        }
+      }
+    },
+    {
+      "id": "92853cd6-f5c6-43ac-ae5d-1474e539e7d2",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Fill in the count: 9, 10, ?, 12. What is the ?",
+      "choices": [],
+      "answer": "11",
+      "compute": "10+1",
+      "solution": "After 10 comes 11, and then 12. The ? is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on: 9, 10, 11, 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.122Z"
+        }
+      }
+    },
+    {
+      "id": "19828d19-87ab-4f53-ad09-72d2a367af5f",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name a number said part way through counting on",
+      "stem": "Start at 9. Say the next two numbers. What is the second number you say?",
+      "choices": [
+        "10",
+        "11",
+        "12",
+        "9"
+      ],
+      "answer": "11",
+      "compute": "11",
+      "solution": "After 9 you say 10, and then 11. The second number is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Next two after 9: 10, 11. Second is 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.183Z"
+        }
+      }
+    },
+    {
+      "id": "c5cf4b5f-6e2f-46bd-96e8-53f46e030cdd",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Say the next number when counting on",
+      "stem": "Count on: 12, 13, 14, 15, 16, ?. What is the ?",
+      "choices": [],
+      "answer": "17",
+      "compute": "16+1",
+      "solution": "After 16 comes 17.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Next after 16 is 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.193Z"
+        }
+      }
+    },
+    {
+      "id": "2f367c64-ff25-4cbc-b030-a633a9d7c640",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "A girl counts as a bell rings: 12, 13, 14, ?, 16. What is the ?",
+      "choices": [],
+      "answer": "15",
+      "compute": "14+1",
+      "solution": "The numbers go up by one: 14, 15, 16. The ? is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12, 13, 14, 15, 16: the missing number is 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.295Z"
+        }
+      }
+    },
+    {
+      "id": "d2614494-7d72-475f-94a6-083d74d306be",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the right way to count on",
+      "stem": "Which one shows counting on from 13?",
+      "choices": [
+        "14, 15, 16",
+        "1, 2, 3",
+        "12, 11, 10",
+        "15, 17, 19"
+      ],
+      "answer": "14, 15, 16",
+      "compute": null,
+      "solution": "Counting on from 13 means 14, 15, 16. Counting by ones, going up.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14, 15, 16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 13: 14, 15, 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.327Z"
+        }
+      }
+    },
+    {
+      "id": "5329fd4e-6e50-4219-a8d0-93aeaf5f6490",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Ana has counted 11 beads. She counts on to the next bead. Which number does she say?",
+      "choices": [
+        "12",
+        "1",
+        "10",
+        "21"
+      ],
+      "answer": "12",
+      "compute": "12",
+      "solution": "She has already said 11. The next number is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 11 comes 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.415Z"
+        }
+      }
+    },
+    {
+      "id": "e2ce65e7-e763-4d91-ac0e-0d89889a0731",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "There are 10 cars in a row. Dana puts 2 more cars at the end and counts on from 10. What is the last number she says?",
+      "choices": [],
+      "answer": "12",
+      "compute": "10+2",
+      "solution": "She says 11 for the first new car and 12 for the second. The last number is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10, then 11, 12: last number 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.436Z"
+        }
+      }
+    },
+    {
+      "id": "80b7ca8a-4385-418b-bdd7-03c0c3e62905",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Jo has counted 14 stickers. She finds 1 more sticker and keeps counting from 14. What number does she say for it?",
+      "choices": [],
+      "answer": "15",
+      "compute": "14+1",
+      "solution": "She counts on from 14, so the new sticker is number 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 14: 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.522Z"
+        }
+      }
+    },
+    {
+      "id": "a83cfafc-efe2-4a3c-81b2-ed7210ef0080",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Rick stands on step 6 of the stairs. He climbs 3 more steps and says each number. What is the last number he says?",
+      "choices": [
+        "8",
+        "10",
+        "3",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "He says 7, 8, 9. The last number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "From 6, climb 3 saying 7, 8, 9. Last is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.609Z"
+        }
+      }
+    },
+    {
+      "id": "6b7a6e40-4d11-4b52-9755-a82b96a603c7",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Which number goes in the gap? 6, 7, 8, ?, 10",
+      "choices": [
+        "7",
+        "11",
+        "9",
+        "19"
+      ],
+      "answer": "9",
+      "compute": "9",
+      "solution": "After 8 comes 9, then 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6,7,8,9,10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.648Z"
+        }
+      }
+    },
+    {
       "id": "19118f8e-26ee-40df-86f7-172039712d64",
       "topic_id": "NC17.K.CC.2",
       "difficulty": 2,
@@ -3689,6 +4383,699 @@
       }
     },
     {
+      "id": "5ebfde77-eef5-4d7e-bf9d-0d7b1d752234",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Fern has counted 25 beads on a string. She threads on 3 more beads. What does she say for the 3 new beads?",
+      "choices": [
+        "1, 2, 3",
+        "25, 26, 27",
+        "27, 28, 29",
+        "26, 27, 28"
+      ],
+      "answer": "26, 27, 28",
+      "compute": null,
+      "solution": "She counts on from 25, so the new beads are 26, 27 and 28.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26, 27, 28",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 25: 26, 27, 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.713Z"
+        }
+      }
+    },
+    {
+      "id": "09bdc4d8-9adc-4068-b01a-f38fca287ae0",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Name a number said part way through counting on",
+      "stem": "Start at 45. Say the next three numbers. What is the third number you say?",
+      "choices": [],
+      "answer": "48",
+      "compute": "45+3",
+      "solution": "You say 46, 47, 48. The third number is 48.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46, 47, 48; third is 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.757Z"
+        }
+      }
+    },
+    {
+      "id": "fc4fc36d-3f88-49f5-95a6-9d55f9d53267",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Say the next number when counting on",
+      "stem": "A class counts jumping jacks out loud: 33, 34, 35. What number do they say next?",
+      "choices": [],
+      "answer": "36",
+      "compute": "35+1",
+      "solution": "They count up by one. After 35 comes 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 35 comes 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.947Z"
+        }
+      }
+    },
+    {
+      "id": "b733a52a-37b7-40ff-8572-80e52e88e6e8",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Say the next number when counting on",
+      "stem": "Count by ones. Which number comes right after 48?",
+      "choices": [
+        "47",
+        "50",
+        "58",
+        "49"
+      ],
+      "answer": "49",
+      "compute": "49",
+      "solution": "Counting on from 48, the next number is 49.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 48 comes 49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.985Z"
+        }
+      }
+    },
+    {
+      "id": "bf839368-cb80-4dfc-aed8-1348c1d58178",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Which numbers go in the gaps? 51, ?, 53, ?, 55",
+      "choices": [
+        "50 and 56",
+        "52 and 54",
+        "52 and 56",
+        "54 and 52"
+      ],
+      "answer": "52 and 54",
+      "compute": null,
+      "solution": "The numbers go up by one: 51, 52, 53, 54, 55.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52 and 54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on: 51, 52, 53, 54, 55. Gaps are 52 then 54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.013Z"
+        }
+      }
+    },
+    {
+      "id": "569a924f-80ae-4761-b425-8df9ad969141",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the right way to count on",
+      "stem": "Which one shows counting on from 52?",
+      "choices": [
+        "1, 2, 3",
+        "51, 50, 49",
+        "53, 54, 55",
+        "62, 72, 82"
+      ],
+      "answer": "53, 54, 55",
+      "compute": null,
+      "solution": "Counting on from 52 means saying 53, 54, 55.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53, 54, 55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 52: 53, 54, 55.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.018Z"
+        }
+      }
+    },
+    {
+      "id": "e827e5a5-c384-4bc3-bd04-f5df674c4293",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Greg starts at 60 and counts on 3 numbers. What is the last number he says?",
+      "choices": [],
+      "answer": "63",
+      "compute": "60+3",
+      "solution": "He says 61, 62, 63. The last number is 63.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on 3 numbers from 60: 61, 62, 63. Last is 63.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.036Z"
+        }
+      }
+    },
+    {
+      "id": "835a55b1-2667-4799-8e3b-57a7a1c7b9ff",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Nora counts 21 coins in a jar. She puts in 5 more coins and counts on from 21. What is the last number she says?",
+      "choices": [],
+      "answer": "26",
+      "compute": "21+5",
+      "solution": "She says 22, 23, 24, 25, 26. The last number is 26.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 21 five times: 22, 23, 24, 25, 26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.154Z"
+        }
+      }
+    },
+    {
+      "id": "27387363-6e2f-44fd-a44f-acd835823cb2",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Count: 46, ?, 48, 49, 50. What is the ?",
+      "choices": [],
+      "answer": "47",
+      "compute": "46+1",
+      "solution": "After 46 comes 47, then 48, 49 and 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46, 47, 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.158Z"
+        }
+      }
+    },
+    {
+      "id": "ceab0fd4-8398-4f58-b8e8-798fcfa38328",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Helen counts 35 marbles in a jar. She drops in 3 more and counts on from 35. Which is the last number she says?",
+      "choices": [
+        "38",
+        "36",
+        "37",
+        "39"
+      ],
+      "answer": "38",
+      "compute": "38",
+      "solution": "She says 36, 37, 38. The last number is 38.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "38",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36, 37, 38: last 38.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.232Z"
+        }
+      }
+    },
+    {
+      "id": "97c62692-6611-4ae2-ba90-f7245b5d8403",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Kay starts at 34 and counts on 3 numbers. Which is the last number she says?",
+      "choices": [
+        "35",
+        "36",
+        "37",
+        "38"
+      ],
+      "answer": "37",
+      "compute": "37",
+      "solution": "She says 35, 36, 37. The last number is 37.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35, 36, 37: the last is 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.282Z"
+        }
+      }
+    },
+    {
+      "id": "48020973-eb55-42e2-b990-12bda9b74c65",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Which number is missing? 35, 36, ?, 38, 39",
+      "choices": [
+        "27",
+        "37",
+        "47",
+        "34"
+      ],
+      "answer": "37",
+      "compute": "37",
+      "solution": "The numbers go up by one: 36, 37, 38.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on 35, 36, 37, 38, 39: missing 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.311Z"
+        }
+      }
+    },
+    {
+      "id": "be13fb5c-4b03-455d-ab2c-119161d5a73b",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Say the next number when counting on",
+      "stem": "Mara counts cars as they go by: 44, 45, 46, 47, 48. What number does she say for the next car?",
+      "choices": [],
+      "answer": "49",
+      "compute": "48+1",
+      "solution": "After 48 comes 49.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 48 comes 49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.328Z"
+        }
+      }
+    },
+    {
+      "id": "c1fe41fd-b9ae-454e-801c-92f15afb8b9b",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Lily has counted 43 buttons. She counts on 4 more buttons. What is the last number she says?",
+      "choices": [
+        "47",
+        "46",
+        "48",
+        "44"
+      ],
+      "answer": "47",
+      "compute": "47",
+      "solution": "She says 44, 45, 46, 47. The last number is 47.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "43, then 44, 45, 46, 47. Last said 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.356Z"
+        }
+      }
+    },
+    {
+      "id": "3830f28c-07bd-438d-b82b-402b337d179b",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Say the next number when counting on",
+      "stem": "Ben is on page 57 of his book. He turns to the next page. What page number is it?",
+      "choices": [
+        "56",
+        "58",
+        "67",
+        "59"
+      ],
+      "answer": "58",
+      "compute": "58",
+      "solution": "The next number after 57 is 58.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "58",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Next after 57 is 58.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.425Z"
+        }
+      }
+    },
+    {
+      "id": "699673ad-ed47-472f-9990-faea48b0bc9a",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Find the missing number: 54, 55, 56, ?, 58",
+      "choices": [
+        "47",
+        "59",
+        "57",
+        "46"
+      ],
+      "answer": "57",
+      "compute": "57",
+      "solution": "After 56 comes 57, then 58.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "57",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "54,55,56,57,58.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.498Z"
+        }
+      }
+    },
+    {
+      "id": "fabc57c6-4716-4585-b35a-84f1d7de7fce",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Dev has counted 36 stamps in a book. He puts in one more stamp. What number does he say for it?",
+      "choices": [],
+      "answer": "37",
+      "compute": "36+1",
+      "solution": "He counts on from 36. The new stamp is number 37.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count on from 36: the next number is 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.517Z"
+        }
+      }
+    },
+    {
+      "id": "52bce973-3038-4dcf-9673-4f65d8be0702",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Count on: 66, 67, ?, 69, 70. What is the ?",
+      "choices": [],
+      "answer": "68",
+      "compute": "67+1",
+      "solution": "After 67 comes 68, then 69 and 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "66, 67, 68, 69, 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.579Z"
+        }
+      }
+    },
+    {
+      "id": "da747af0-dd5a-4e95-b307-356788cc2fd2",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the number that was skipped in a count",
+      "stem": "Pip counts: 22, 23, 25. Which number did Pip skip?",
+      "choices": [
+        "21",
+        "26",
+        "3",
+        "24"
+      ],
+      "answer": "24",
+      "compute": "24",
+      "solution": "After 23 comes 24. Pip left it out.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "22, 23, 24, 25: skipped 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.625Z"
+        }
+      }
+    },
+    {
+      "id": "dacbe030-195a-4c49-8d37-862bd47a00ea",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Fill in the count: 61, 62, ?, 64. What is the ?",
+      "choices": [],
+      "answer": "63",
+      "compute": "62+1",
+      "solution": "After 62 comes 63, then 64.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "63",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "61, 62, 63, 64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.641Z"
+        }
+      }
+    },
+    {
+      "id": "0ac94507-32e6-48fd-96e1-8dd47af2232e",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Uri has counted 41 birds on a wire. Then 4 more birds land, and he counts on from 41. What is the last number he says?",
+      "choices": [],
+      "answer": "45",
+      "compute": "41+4",
+      "solution": "He says 42, 43, 44, 45. The last number is 45.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42, 43, 44, 45. Last number 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.668Z"
+        }
+      }
+    },
+    {
+      "id": "561a1f89-694d-47ed-95f2-b4841cb7653f",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "A shop has 24 apples on a shelf. The clerk adds 3 more apples and counts on from 24. What is the last number she says?",
+      "choices": [],
+      "answer": "27",
+      "compute": "24+3",
+      "solution": "She says 25, 26, 27. The last number is 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25, 26, 27. Last number 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.672Z"
+        }
+      }
+    },
+    {
       "id": "10bf2606-fe5b-499e-9b34-0d593a3f6dff",
       "topic_id": "NC17.K.CC.2",
       "difficulty": 3,
@@ -4000,6 +5387,704 @@
           "work": "98, 99, 100: missing 99.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:12.024Z"
+        }
+      }
+    },
+    {
+      "id": "64ea7d9d-0cac-451e-8979-1186eff6e2ba",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Beth has counted 47 beans in a jar. She adds 5 more beans and counts on from 47. What is the last number she says?",
+      "choices": [],
+      "answer": "52",
+      "compute": "47+5",
+      "solution": "She says 48, 49, 50, 51, 52. The last number is 52.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "52",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 + 5: 48, 49, 50, 51, 52 → 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.739Z"
+        }
+      }
+    },
+    {
+      "id": "ccad067d-78ab-4142-bcfa-e6594e18aa4e",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Pat counts: 89, 90, ?. What is the ?",
+      "choices": [
+        "80",
+        "92",
+        "91",
+        "100"
+      ],
+      "answer": "91",
+      "compute": "91",
+      "solution": "After 90 comes 91.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "91",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 90 comes 91.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.957Z"
+        }
+      }
+    },
+    {
+      "id": "26d7306f-2d72-4de2-b916-a49be9cc8a2f",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Lu counts on from 96 and stops at 100. Which numbers does she say?",
+      "choices": [
+        "97, 98, 99, 100",
+        "97, 98, 99, 90",
+        "97, 98, 99, 101",
+        "97, 98, 100"
+      ],
+      "answer": "97, 98, 99, 100",
+      "compute": null,
+      "solution": "After 96 come 97, 98, 99 and then 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "97, 98, 99, 100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on from 96 to 100: 97, 98, 99, 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.965Z"
+        }
+      }
+    },
+    {
+      "id": "1d60251f-7bd2-4ef5-ace0-cae54719fb92",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "A runner's lap counter shows 39. The runner finishes one more lap. What number will the counter show?",
+      "choices": [],
+      "answer": "40",
+      "compute": "39+1",
+      "solution": "After 39 comes 40, the next tens number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 39 comes 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.060Z"
+        }
+      }
+    },
+    {
+      "id": "c2c965a9-5436-4e4b-9866-4cb2089a026e",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Kofi has 18 toy cars in a box. He puts in 4 more and counts on from 18. What is the last number he says?",
+      "choices": [],
+      "answer": "22",
+      "compute": "18+4",
+      "solution": "He says 19, 20, 21, 22. The last number is 22.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count on from 18: 19, 20, 21, 22. Last 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.076Z"
+        }
+      }
+    },
+    {
+      "id": "bac3db63-50bf-4fee-8e06-ff0b14fb2bf0",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Hal has counted 87 shells. He finds 4 more shells and counts on from 87. Which is the last number he says?",
+      "choices": [
+        "90",
+        "92",
+        "81",
+        "91"
+      ],
+      "answer": "91",
+      "compute": "91",
+      "solution": "He says 88, 89, 90, 91. The last number is 91.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "91",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "88, 89, 90, 91: last number 91.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.219Z"
+        }
+      }
+    },
+    {
+      "id": "8ae542ca-61b6-4d25-89d0-f761b34fce82",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Zara counts 19 pennies. She finds 1 more penny and keeps counting. What number does she say for it?",
+      "choices": [],
+      "answer": "20",
+      "compute": "19+1",
+      "solution": "She counts on from 19. The next number is 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 19 she says 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.286Z"
+        }
+      }
+    },
+    {
+      "id": "fbb9cdbf-41ee-43b4-b77b-70088441a893",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the number that was skipped in a count",
+      "stem": "Ravi counts: 27, 28, 29, 20. Which number should he say instead of 20?",
+      "choices": [
+        "21",
+        "31",
+        "30",
+        "40"
+      ],
+      "answer": "30",
+      "compute": "30",
+      "solution": "After 29 comes 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 29 comes 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.297Z"
+        }
+      }
+    },
+    {
+      "id": "6dae0c7e-9aa5-4756-b670-7995876d4eb3",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on a few numbers and name the last one",
+      "stem": "Cy hops along stepping stones starting on stone 55. He hops 5 times and says the number of each stone. What does he say on his last hop?",
+      "choices": [],
+      "answer": "60",
+      "compute": "55+5",
+      "solution": "He says 56, 57, 58, 59, 60. The last number is 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starts on 55; hops 5 times: 56, 57, 58, 59, 60. Last hop: 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.306Z"
+        }
+      }
+    },
+    {
+      "id": "53a6d24c-b7dc-4327-b7b5-4c15a55bb468",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Ollie's tower has 69 blocks. He adds 2 more blocks and counts on. What number does he say for the top block?",
+      "choices": [],
+      "answer": "71",
+      "compute": "69+2",
+      "solution": "He says 70, then 71. The top block is number 71.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "71",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "69, then 70, 71: top block is 71.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.416Z"
+        }
+      }
+    },
+    {
+      "id": "b7330210-6744-4172-8d41-0c09e72fe6cc",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the number that was skipped in a count",
+      "stem": "Mo counts: 66, 67, 68, 70. Which number did Mo skip?",
+      "choices": [
+        "69",
+        "65",
+        "71",
+        "60"
+      ],
+      "answer": "69",
+      "compute": "69",
+      "solution": "After 68 comes 69. Mo left it out.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "69",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "66,67,68,69,70: skipped 69.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.500Z"
+        }
+      }
+    },
+    {
+      "id": "5d56044e-d875-4ba1-894c-38392f9e5b47",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Count: 78, 79, 80, ?, 82. What is the ?",
+      "choices": [],
+      "answer": "81",
+      "compute": "80+1",
+      "solution": "After 80 comes 81, then 82.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "78, 79, 80, 81, 82.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.526Z"
+        }
+      }
+    },
+    {
+      "id": "721d8eb8-98fb-4b47-aaa9-0ac86784f22d",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Say the next number when counting on",
+      "stem": "Eli says 99. What number does he say next?",
+      "choices": [
+        "100",
+        "90",
+        "101",
+        "98"
+      ],
+      "answer": "100",
+      "compute": "100",
+      "solution": "After 99 comes 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 99 comes 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.549Z"
+        }
+      }
+    },
+    {
+      "id": "4e63e93b-3281-4a46-9380-899ca8657334",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Count on: 85, 86, 87, 88, 89, ?. What is the ?",
+      "choices": [],
+      "answer": "90",
+      "compute": "89+1",
+      "solution": "After 89 comes 90.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85, 86, 87, 88, 89, then 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.558Z"
+        }
+      }
+    },
+    {
+      "id": "a468060d-17f6-4f31-9bb0-185eaa7e84ea",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Counting on, which number comes after 69 and before 71?",
+      "choices": [
+        "60",
+        "70",
+        "68",
+        "72"
+      ],
+      "answer": "70",
+      "compute": "70",
+      "solution": "The numbers go 69, 70, 71.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 69 and before 71 is 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.587Z"
+        }
+      }
+    },
+    {
+      "id": "b52254b8-92b2-4afb-8ba4-96bb9f83017a",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Gail has counted 76 stickers. She gets 6 more and counts on from 76. What is the last number she says?",
+      "choices": [],
+      "answer": "82",
+      "compute": "76+6",
+      "solution": "She says 77, 78, 79, 80, 81, 82. The last number is 82.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "82",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "76 + 6: 77, 78, 79, 80, 81, 82.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.620Z"
+        }
+      }
+    },
+    {
+      "id": "df98388a-b9c7-497f-b8ba-01b7ea82df94",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Which number comes right after 79 when you count by ones?",
+      "choices": [
+        "70",
+        "78",
+        "90",
+        "80"
+      ],
+      "answer": "80",
+      "compute": "80",
+      "solution": "After 79 comes 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting on by ones: 79, then 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.633Z"
+        }
+      }
+    },
+    {
+      "id": "b0a0de43-c344-4241-8d54-25e8fa28a6c3",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Which count goes across the tens number correctly?",
+      "choices": [
+        "58, 59, 50, 51",
+        "58, 59, 60, 61",
+        "58, 59, 70, 71",
+        "58, 59, 61, 62"
+      ],
+      "answer": "58, 59, 60, 61",
+      "compute": null,
+      "solution": "After 59 comes 60, then 61.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "58, 59, 60, 61",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Count by ones crossing tens: 58, 59, 60, 61.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.639Z"
+        }
+      }
+    },
+    {
+      "id": "6adf3216-43cf-4c16-9961-a3ad97dce92b",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Which number is missing? 48, 49, ?, 51, 52",
+      "choices": [
+        "40",
+        "50",
+        "60",
+        "41"
+      ],
+      "answer": "50",
+      "compute": "50",
+      "solution": "After 49 comes 50, then 51 and 52.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "48, 49, 50, 51, 52.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.654Z"
+        }
+      }
+    },
+    {
+      "id": "b8aafbbe-aaac-4727-8a32-bd59ff73cce1",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count on from a number without starting again at 1",
+      "stem": "Dara has counted 95 coins. She adds 5 more coins and counts on from 95. What is the last number she says?",
+      "choices": [
+        "99",
+        "101",
+        "90",
+        "100"
+      ],
+      "answer": "100",
+      "compute": "100",
+      "solution": "She says 96, 97, 98, 99, 100. The last number is 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counts on 96, 97, 98, 99, 100. Last number 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.663Z"
+        }
+      }
+    },
+    {
+      "id": "fcb7a634-162b-4157-ab6b-16984aa50718",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on across a tens number or up to 100",
+      "stem": "Wes counts: 97, 98, 99, ?. What is the ?",
+      "choices": [],
+      "answer": "100",
+      "compute": "99+1",
+      "solution": "After 99 comes 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "97, 98, 99, 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.673Z"
+        }
+      }
+    },
+    {
+      "id": "0126ab1b-fe71-42fc-b0ff-79def3707b58",
+      "topic_id": "NC17.K.CC.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Which numbers are missing? 88, 89, ?, 91, ?, 93",
+      "choices": [
+        "80 and 82",
+        "91 and 92",
+        "90 and 92",
+        "90 and 94"
+      ],
+      "answer": "90 and 92",
+      "compute": null,
+      "solution": "The numbers go up by one: 88, 89, 90, 91, 92, 93.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90 and 92",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "88, 89, 90, 91, 92, 93: 90 and 92.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.683Z"
         }
       }
     },
@@ -21901,6 +23986,927 @@
           "work": "A can has flat round ends; a cone has one flat round end. Cube has square faces, ball none.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:30:37.417Z"
+        }
+      }
+    },
+    {
+      "id": "41e6c179-3f20-4666-800e-34d41d2a903f",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Jo draws a shape with 3 straight sides and 3 corners. Which shape did Jo draw?",
+      "choices": [
+        "circle",
+        "square",
+        "rectangle",
+        "triangle"
+      ],
+      "answer": "triangle",
+      "compute": null,
+      "solution": "A shape with 3 straight sides and 3 corners is a triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "triangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 straight sides and 3 corners: triangle.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.758Z"
+        }
+      }
+    },
+    {
+      "id": "60a842cf-70e3-4a12-b8ad-24b90af104de",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name the shape that models a real object",
+      "stem": "Ava has a party hat. Which solid shape is like the party hat?",
+      "choices": [
+        "cone",
+        "cube",
+        "sphere",
+        "cylinder"
+      ],
+      "answer": "cone",
+      "compute": null,
+      "solution": "A party hat is round at the bottom and has a point at the top. That is a cone.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "cone",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A party hat is shaped like a cone.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.973Z"
+        }
+      }
+    },
+    {
+      "id": "ecfe92ac-e245-4569-827f-65c91a0848bb",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tell flat shapes from solid shapes",
+      "stem": "Which one is a solid shape?",
+      "choices": [
+        "sphere",
+        "circle",
+        "square",
+        "triangle"
+      ],
+      "answer": "sphere",
+      "compute": null,
+      "solution": "A sphere is solid, like a ball. You can hold it. A circle, a square and a triangle are flat.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "sphere",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Triangle, square, circle are flat; a sphere is solid.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.012Z"
+        }
+      }
+    },
+    {
+      "id": "be914d20-da69-4490-818b-a251bd3cf915",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Leo draws a triangle. How many corners does his triangle have?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "A triangle has 3 corners.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A triangle has 3 corners.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.030Z"
+        }
+      }
+    },
+    {
+      "id": "65a3c815-e17b-4caa-a79d-32b9f416e744",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Max builds a square with straws. Each side is 1 straw. How many straws does he use?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "A square has 4 sides. Max uses 4 straws.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square has 4 sides; 1 straw each, 4 straws.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.094Z"
+        }
+      }
+    },
+    {
+      "id": "d8be8e67-c287-421b-9403-bd4a935dd219",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Tia builds a triangle with sticks. Each side is 1 stick. How many sticks does she use?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "A triangle has 3 sides. Tia uses 3 sticks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A triangle has 3 sides: 3 sticks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.106Z"
+        }
+      }
+    },
+    {
+      "id": "7608dd9a-9478-4f2a-a9da-2cdaef12be2b",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tell flat shapes from solid shapes",
+      "stem": "Sue has a circle, a cube and a triangle. How many of her shapes are flat?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The circle and the triangle are flat. The cube is solid. So 2 shapes are flat.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Circle and triangle are flat; the cube is solid. 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.109Z"
+        }
+      }
+    },
+    {
+      "id": "8245b152-2865-4274-a99c-92230e87491c",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "A rectangle has 2 long sides and 2 short sides. Tom builds one with sticks, 1 stick for each side. How many long sticks does he use?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The rectangle has 2 long sides, so Tom uses 2 long sticks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 long sides need 2 long sticks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.370Z"
+        }
+      }
+    },
+    {
+      "id": "5902bde5-87d1-4add-a275-d7d837f22e6f",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Mia draws a shape with no straight sides and no corners. Which shape did Mia draw?",
+      "choices": [
+        "square",
+        "triangle",
+        "circle",
+        "hexagon"
+      ],
+      "answer": "circle",
+      "compute": null,
+      "solution": "A circle is round. It has no straight sides and no corners.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "circle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "No straight sides, no corners: circle.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.445Z"
+        }
+      }
+    },
+    {
+      "id": "5bb5c4aa-6ec6-463c-b9b5-8e04bbd3da76",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Name the shape that models a real object",
+      "stem": "Ben rolls a die. Which solid shape can Ben use to model the die?",
+      "choices": [
+        "sphere",
+        "cube",
+        "cone",
+        "cylinder"
+      ],
+      "answer": "cube",
+      "compute": null,
+      "solution": "A die has flat square sides and square corners all around. That is a cube.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "cube",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A die is a cube.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.505Z"
+        }
+      }
+    },
+    {
+      "id": "166e49e1-b0b1-40ff-9c6e-d54003748948",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tell flat shapes from solid shapes",
+      "stem": "Which one is a flat shape?",
+      "choices": [
+        "cube",
+        "cone",
+        "square",
+        "sphere"
+      ],
+      "answer": "square",
+      "compute": null,
+      "solution": "A square is flat. A cube, a cone and a sphere are solid shapes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square is 2-D; cube, cone, sphere are solids.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.677Z"
+        }
+      }
+    },
+    {
+      "id": "5720d548-33e5-43f6-bb81-16b5cddaba46",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a solid shape",
+      "stem": "Lena builds a solid shape with clay. It has a flat round bottom and a point at the top. Which shape is it?",
+      "choices": [
+        "cylinder",
+        "cone",
+        "sphere",
+        "cube"
+      ],
+      "answer": "cone",
+      "compute": null,
+      "solution": "A solid shape with a round bottom and a point at the top is a cone. A cylinder has two flat round ends.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "cone",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Flat round base and a point on top: cone.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.733Z"
+        }
+      }
+    },
+    {
+      "id": "43f1327c-14ac-4ab8-b6b4-82a9d535ce2f",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Ben draws a shape with 6 straight sides and 6 corners. Which shape did he draw?",
+      "choices": [
+        "hexagon",
+        "triangle",
+        "square",
+        "rectangle"
+      ],
+      "answer": "hexagon",
+      "compute": null,
+      "solution": "A shape with 6 straight sides and 6 corners is a hexagon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "hexagon",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 sides and 6 corners: hexagon.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.850Z"
+        }
+      }
+    },
+    {
+      "id": "6c5cf1b0-b43b-4a4c-967f-8ba690a4800e",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a solid shape",
+      "stem": "Jen builds a house. The walls are a cube and the roof is a cone. How many solid shapes does she use?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Jen uses 1 cube and 1 cone. That makes 2 solid shapes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A cube and a cone: 2 solid shapes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.923Z"
+        }
+      }
+    },
+    {
+      "id": "ceff9c74-f8f3-4dc4-ab8d-8a089eb94f37",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Pia builds a hexagon with straws. She uses 1 straw for each side. How many straws does she use?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "A hexagon has 6 sides. Pia uses 6 straws.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A hexagon has 6 sides, so 6 straws.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.924Z"
+        }
+      }
+    },
+    {
+      "id": "26506f7d-1035-4a99-a840-5234ff64a2dd",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Kim has 3 sticks. She joins them end to end. Which flat shape can she build?",
+      "choices": [
+        "square",
+        "rectangle",
+        "circle",
+        "triangle"
+      ],
+      "answer": "triangle",
+      "compute": null,
+      "solution": "Three sticks make 3 sides. A flat shape with 3 sides is a triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "triangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Three sticks joined end to end close into a triangle; square/rectangle need 4, circle none.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.925Z"
+        }
+      }
+    },
+    {
+      "id": "a01c1244-2ee6-456d-8e13-99feb96b3960",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Vic is building a triangle with sticks. He has put down 2 sticks. How many more sticks does he need?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "A triangle needs 3 sticks. Vic has 2. He needs 1 more stick, because 2 and 1 make 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A triangle has 3 sides; 3 - 2 = 1 more stick.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.038Z"
+        }
+      }
+    },
+    {
+      "id": "80cf252b-ea21-4e1c-b448-02c748b72d47",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name the shape that models a real object",
+      "stem": "A door is flat. It has 2 long sides, 2 short sides and 4 square corners. Which flat shape can Eli draw to model the door?",
+      "choices": [
+        "square",
+        "triangle",
+        "rectangle",
+        "circle"
+      ],
+      "answer": "rectangle",
+      "compute": null,
+      "solution": "A flat shape with 2 long sides, 2 short sides and 4 square corners is a rectangle. A square has 4 sides that are all the same length.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rectangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 long, 2 short sides, 4 square corners: rectangle.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.362Z"
+        }
+      }
+    },
+    {
+      "id": "ed0573a0-a57b-4fcf-b0fe-6befe55bdb77",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Name the shape that models a real object",
+      "stem": "Which object can Rosa model with a cylinder?",
+      "choices": [
+        "a ball",
+        "a soup can",
+        "a party hat",
+        "a die"
+      ],
+      "answer": "a soup can",
+      "compute": null,
+      "solution": "A soup can has two flat round ends and a curved side. That is a cylinder. A ball is a sphere, a party hat is a cone and a die is a cube.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a soup can",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A soup can is a cylinder; ball sphere, party hat cone, die cube.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.577Z"
+        }
+      }
+    },
+    {
+      "id": "b5bf7913-00aa-4e00-800b-3b09e62b4139",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Wes is building a rectangle with sticks. He has put down 2 long sticks and 1 short stick. How many more sticks does he need?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "A rectangle needs 2 long sticks and 2 short sticks. Wes has both long sticks and 1 short stick. He needs 1 more short stick.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A rectangle needs 4 sticks (2 long, 2 short). He has 3, so 1 more (a short one).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.934Z"
+        }
+      }
+    },
+    {
+      "id": "e3da6ed8-e9a3-4d32-b626-ded6a69404c5",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Which directions can Mina use to draw a triangle?",
+      "choices": [
+        "Draw 3 straight sides that meet at 3 corners",
+        "Draw 4 straight sides that meet at 4 corners",
+        "Draw 1 round line that has no corners",
+        "Draw 3 round lines that meet at 3 corners"
+      ],
+      "answer": "Draw 3 straight sides that meet at 3 corners",
+      "compute": null,
+      "solution": "A triangle has 3 straight sides and 3 corners. The other directions make a different shape or a shape that cannot close.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Draw 3 straight sides that meet at 3 corners",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A triangle has 3 straight sides and 3 corners.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.015Z"
+        }
+      }
+    },
+    {
+      "id": "3b31fe70-09e2-4948-ab24-d6172c9338d8",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tell flat shapes from solid shapes",
+      "stem": "Which sentence about a square is true?",
+      "choices": [
+        "It is a solid shape that can roll",
+        "It is a flat shape with 3 corners",
+        "It is a flat shape with 4 straight sides",
+        "It is a solid shape with a point at the top"
+      ],
+      "answer": "It is a flat shape with 4 straight sides",
+      "compute": null,
+      "solution": "A square is a flat shape. It has 4 straight sides and 4 corners. It cannot roll and it has no point like a cone.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is a flat shape with 4 straight sides",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A square is a flat shape with 4 straight sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.227Z"
+        }
+      }
+    },
+    {
+      "id": "c788b46d-2f0c-4437-bb4f-0e1d9bf49f13",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Kai draws a hexagon. It is a flat shape with 6 straight sides. How many corners does it have?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The straight sides meet at the corners. A hexagon has 6 sides, so it has 6 corners.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A hexagon has 6 sides and 6 corners.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.390Z"
+        }
+      }
+    },
+    {
+      "id": "608b51ce-5a65-42c1-8c31-08ab819bd3b4",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Omar draws a flat shape with 2 long sides and 2 short sides. Its corners are square. How many corners does Omar's shape have?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "A flat shape with 2 long sides and 2 short sides is a rectangle. It has 4 corners.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rectangle: 4 corners.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.398Z"
+        }
+      }
+    },
+    {
+      "id": "d19ee643-6559-41e4-92e1-2cf9af126042",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Name the shape that models a real object",
+      "stem": "Dan cuts a square sandwich from one corner to the opposite corner. Each half has 3 straight sides. Which flat shape does each half model?",
+      "choices": [
+        "square",
+        "rectangle",
+        "circle",
+        "triangle"
+      ],
+      "answer": "triangle",
+      "compute": null,
+      "solution": "Each half has 3 straight sides and 3 corners. That is a triangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "triangle",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each half has 3 straight sides: a triangle.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.417Z"
+        }
+      }
+    },
+    {
+      "id": "4cb630ee-babb-428f-979c-0cc8e799e969",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Draw a flat shape from its sides and corners",
+      "stem": "Zara draws a circle. How many straight sides does her circle have?",
+      "choices": [],
+      "answer": "0",
+      "compute": "0",
+      "solution": "A circle is round. It has no straight sides, so the answer is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A circle has 0 straight sides.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.448Z"
+        }
+      }
+    },
+    {
+      "id": "f8fb5208-8854-4153-8293-7c5f77370384",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Name the shape that models a real object",
+      "stem": "Which object can Rey model with a drawn rectangle?",
+      "choices": [
+        "a round plate",
+        "a slice of pizza",
+        "a basketball",
+        "a book cover"
+      ],
+      "answer": "a book cover",
+      "compute": null,
+      "solution": "A book cover is flat with 2 long sides, 2 short sides and 4 square corners. That is a rectangle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "a book cover",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A book cover is a rectangle; a plate is a circle, pizza slice roughly a triangle, basketball a sphere.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.509Z"
+        }
+      }
+    },
+    {
+      "id": "618f75d1-cd48-42ba-8182-2abe52364c7c",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Build a solid shape",
+      "stem": "Lena wants to build a tower shaped like a cylinder. Which blocks should she stack, one on top of another?",
+      "choices": [
+        "flat square blocks",
+        "flat round blocks",
+        "flat triangle blocks",
+        "pointed cone blocks"
+      ],
+      "answer": "flat round blocks",
+      "compute": null,
+      "solution": "A cylinder has round flat ends and a curved side. Stacking flat round blocks makes that shape.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "flat round blocks",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A cylinder is a stack of flat circles: flat round blocks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.532Z"
+        }
+      }
+    },
+    {
+      "id": "a2971fdd-75e9-473f-8661-6a4653ac1183",
+      "topic_id": "NC17.K.G.5",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Build a flat shape from sticks and count the pieces",
+      "stem": "Pam is building a hexagon with sticks. She has put down 4 sticks. How many more sticks does she need?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "A hexagon needs 6 sticks. Pam has 4. She needs 2 more sticks, because 4 and 2 make 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A hexagon has 6 sides: 6 - 4 = 2 more sticks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.598Z"
         }
       }
     },

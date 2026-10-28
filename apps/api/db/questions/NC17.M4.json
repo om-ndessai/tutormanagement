@@ -2,9 +2,9 @@
   "level_id": "NC17.M4",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
+    "NC17.M4.N.2": "Matrices and vectors are written by their rows and components; a matrix answer is a choice question with every option written the same way. Matrix-times-vector and determinants are not in the standard summary and were left out. Vectors are given as components, never as drawn arrows.",
     "NC17.M4.AF.2": "Exact answers only: Law of Sines and Law of Cosines items use special angles or given sine values so numeric keys are rational; radical answers are choice questions. No technology needed.",
     "NC17.M4.AF.5": "The standard says regression with technology; every question gives the fitted model or data and asks for a prediction, residual or interpretation by hand.",
-    "NC17.M4.N.2": "Matrices and vectors are written by their rows and components; a matrix answer is a choice question with every option written the same way. Matrix-times-vector and determinants are not in the standard summary and were left out. Vectors are given as components, never as drawn arrows.",
     "NC17.M4.SP.2": "Everything is asked by hand: standard errors are chosen to be exact (for example 0.02 or 0.025), z* values are given in the question, and the p-value of a two-sided test is built from a given tail area. The symbol for the sample proportion (p-hat) is not in the converter, so it is written in words.",
     "NC17.M4.SP.3": "Normal-probability and binomial questions are done by hand (empirical rule, symmetry, or a table value given in the stem). Skills: missing probability 2, expected value 3, expected value in games 2, meaning of E(X) 2, binomial conditions 1, binomial mean 2, binomial probability 4, binomial sd 1, sampling-distribution mean 1, sd of sample mean 3, sd of sample proportion 2, normal conditions 1, z-scores 2, empirical rule / normal approximation 2, table values 2."
   },
@@ -321,6 +321,728 @@
           "work": "12i^2=-12.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:11.952Z"
+        }
+      }
+    },
+    {
+      "id": "4838855a-e4cb-4f96-a170-d8a043ee8253",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "What is $(-i)(-i)$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "$(-i)(-i) = i^2 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-i)(-i) = i^2 = -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.902Z"
+        }
+      }
+    },
+    {
+      "id": "ba2d00b4-e785-4fdb-9305-4c33e41735b5",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract complex numbers",
+      "stem": "Find the difference: $(7 - 2i) - (3 - 6i)$.",
+      "choices": [
+        "$4 - 8i$",
+        "$10 - 8i$",
+        "$4 + 4i$",
+        "$-4 - 4i$"
+      ],
+      "answer": "$4 + 4i$",
+      "compute": null,
+      "solution": "Subtract the real parts: $7 - 3 = 4$. Subtract the imaginary parts: $-2 - (-6) = 4$. The difference is $4 + 4i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 4i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(7-3) + (-2+6)i = 4 + 4i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.916Z"
+        }
+      }
+    },
+    {
+      "id": "fe894d89-19c5-4fec-bef6-da410b2c620b",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "What is the imaginary part of $-(4 - 7i)$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "$-(4 - 7i) = -4 + 7i$, so the imaginary part is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(4-7i)=-4+7i; imaginary part 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.954Z"
+        }
+      }
+    },
+    {
+      "id": "678a2239-68e7-4fcf-87e4-0bc4960099a8",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "In the complex number $6 - 9i$, what is the coefficient of $i$?",
+      "choices": [],
+      "answer": "-9",
+      "compute": "-9",
+      "solution": "Written as $a + bi$, the number $6 - 9i$ has $a = 6$ and $b = -9$. The coefficient of $i$ is $-9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6-9i = 6+(-9)i; coefficient -9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.955Z"
+        }
+      }
+    },
+    {
+      "id": "237af6af-6ef4-437b-88a4-b80d7e8eb1f6",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract complex numbers",
+      "stem": "Subtract $4i$ from $9 + 6i$. What is the imaginary part of the result?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$9 + 6i - 4i = 9 + 2i$, so the imaginary part is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(9+6i) - 4i = 9+2i; imaginary part 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.015Z"
+        }
+      }
+    },
+    {
+      "id": "99b1a2fa-1321-48ed-b51c-2534064a8077",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract complex numbers",
+      "stem": "What is $(10 + 3i) - (4 + 3i)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The imaginary parts cancel: $3i - 3i = 0$. The real parts give $10 - 4 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(10-4) + (3-3)i = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.056Z"
+        }
+      }
+    },
+    {
+      "id": "18b11270-8635-4f53-8bbd-27700c8e0c84",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "What is $-2(5 - 3i)$?",
+      "choices": [
+        "$-10 + 6i$",
+        "$-10 - 6i$",
+        "$-10 + 3i$",
+        "$3 - 3i$"
+      ],
+      "answer": "$-10 + 6i$",
+      "compute": null,
+      "solution": "Multiply both parts by $-2$: $-2 \\cdot 5 = -10$ and $-2 \\cdot (-3i) = 6i$. The product is $-10 + 6i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-10 + 6i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2*5 = -10; -2*(-3i) = +6i. -10 + 6i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.132Z"
+        }
+      }
+    },
+    {
+      "id": "9949bfa4-9787-4ad3-b5cc-0bbe48c7348c",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "Which property is shown by $(4 + 2i) + 0 = 4 + 2i$?",
+      "choices": [
+        "Commutative property of addition",
+        "Associative property of addition",
+        "Identity property of addition",
+        "Inverse property of addition"
+      ],
+      "answer": "Identity property of addition",
+      "compute": null,
+      "solution": "Adding 0 leaves a number unchanged, which is the identity property of addition.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Identity property of addition",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Adding 0 leaves the number unchanged: identity property of addition.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.145Z"
+        }
+      }
+    },
+    {
+      "id": "8a59ea57-2c29-4b1e-9233-ff0e99f3e24d",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "A complex number $4 + 9i$ is added to its complex conjugate. What is the result?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The conjugate of $4 + 9i$ is $4 - 9i$. The sum is $(4 + 4) + (9 - 9)i = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4+9i)+(4-9i) = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.146Z"
+        }
+      }
+    },
+    {
+      "id": "1850c8bb-4c65-4fa0-a4c6-a95a6b0b7012",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "Simplify $5 + i^2$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$i^2 = -1$, so $5 + i^2 = 5 - 1 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "i^2=-1; 5-1=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.230Z"
+        }
+      }
+    },
+    {
+      "id": "7690caa4-2d41-484d-acd4-8bdbd8c21cc3",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract complex numbers",
+      "stem": "Which number must be added to $2 + i$ to get $5 + 4i$?",
+      "choices": [
+        "$7 + 5i$",
+        "$3 + 5i$",
+        "$-3 - 3i$",
+        "$3 + 3i$"
+      ],
+      "answer": "$3 + 3i$",
+      "compute": null,
+      "solution": "The number is the difference $5 + 4i$ - $2 + i$: $5 - 2 = 3$ and $4 - 1 = 3$, so $3 + 3i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 3i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5 + 4i) - (2 + i) = 3 + 3i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.363Z"
+        }
+      }
+    },
+    {
+      "id": "abb25392-bffe-4018-9fc8-ddeeeefd6c7e",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "Triple each part of a number to find $3(-2 + i)$. What is the result?",
+      "choices": [
+        "$-6 + i$",
+        "$-6 + 3i$",
+        "$1 + 3i$",
+        "$-2 + 3i$"
+      ],
+      "answer": "$-6 + 3i$",
+      "compute": null,
+      "solution": "$3 \\cdot (-2) = -6$ and $3 \\cdot i = 3i$. The result is $-6 + 3i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6 + 3i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(-2+i) = -6+3i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.455Z"
+        }
+      }
+    },
+    {
+      "id": "94744890-9c7b-49e8-98cb-17e74a2f33fa",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract complex numbers",
+      "stem": "Let $u = 5 + 8i$ and $v = 2 + 3i$. Write $u - v$ as $a + bi$. What is $b$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$8 - 3 = 5$, so $b = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u - v = (5-2) + (8-3)i = 3 + 5i, b = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.567Z"
+        }
+      }
+    },
+    {
+      "id": "7f629fa1-dc15-4f38-ac7b-171a8d23cac6",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "Compute $7(1 + 4i)$. What is the sum of the real part and the imaginary part of the product?",
+      "choices": [],
+      "answer": "35",
+      "compute": "35",
+      "solution": "$7(1 + 4i) = 7 + 28i$. The sum of the parts is $7 + 28 = 35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7(1+4i) = 7 + 28i; 7 + 28 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.584Z"
+        }
+      }
+    },
+    {
+      "id": "06d1ba4d-98b1-4e98-a39a-69a069d3453d",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "The complex conjugate of a number is found by changing the sign of its imaginary part. What is the conjugate of $2 - 7i$?",
+      "choices": [
+        "$2 + 7i$",
+        "$-2 + 7i$",
+        "$-2 - 7i$",
+        "$7 + 2i$"
+      ],
+      "answer": "$2 + 7i$",
+      "compute": null,
+      "solution": "Change the sign of the imaginary part: $-7i$ becomes $+7i$. The conjugate is $2 + 7i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 7i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Change sign of imaginary part: 2 + 7i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.602Z"
+        }
+      }
+    },
+    {
+      "id": "2412496a-21e0-4ca8-95b7-8efebcf5ccdc",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add complex numbers",
+      "stem": "On the complex plane, the point $-3 + 5i$ is moved by adding $6 - 2i$. What is the real part of the new point?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Add the real parts: $-3 + 6 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3 + 6 = 3 (new point 3 + 3i).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.607Z"
+        }
+      }
+    },
+    {
+      "id": "1499728c-8040-4374-97ac-a36486193ec8",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add complex numbers",
+      "stem": "The sum of $2 - 7i$ and $5 + 3i$ is written $a + bi$. What is $b$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-4",
+      "solution": "Add the imaginary parts: $-7 + 3 = -4$, so $b = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Imaginary parts: -7 + 3 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.618Z"
+        }
+      }
+    },
+    {
+      "id": "22204357-0c7d-4282-b84f-0e43720e4cec",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add complex numbers",
+      "stem": "Find the sum: $(-4 + 2i) + (4 + 5i)$.",
+      "choices": [
+        "$-8 + 7i$",
+        "$7i$",
+        "$-3i$",
+        "$10i$"
+      ],
+      "answer": "$7i$",
+      "compute": null,
+      "solution": "Real parts: $-4 + 4 = 0$. Imaginary parts: $2 + 5 = 7$. The sum is $7i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-4+4) + (2+5)i = 0 + 7i = 7i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.653Z"
+        }
+      }
+    },
+    {
+      "id": "30e89c9c-844b-4516-8d44-98c9dbb0cf34",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add complex numbers",
+      "stem": "Two parts of a circuit are wired one after the other. Their impedances are $3 + 4i$ ohms and $5 - i$ ohms, and the total impedance is the sum. What is the total, in ohms?",
+      "choices": [
+        "$8 + 3i$",
+        "$8 + 5i$",
+        "$-2 + 5i$",
+        "$11$"
+      ],
+      "answer": "$8 + 3i$",
+      "compute": null,
+      "solution": "Add the real parts: $3 + 5 = 8$. Add the imaginary parts: $4 + (-1) = 3$. The total is $8 + 3i$ ohms.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8 + 3i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3+5) + (4-1)i = 8+3i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.671Z"
+        }
+      }
+    },
+    {
+      "id": "1a29824c-efdf-4cae-988c-8bba27e04ae7",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "What is $i^4$?",
+      "choices": [
+        "$-1$",
+        "$1$",
+        "$i$",
+        "$-i$"
+      ],
+      "answer": "$1$",
+      "compute": "1",
+      "solution": "$i^2 = -1$, so $i^4 = i^2 \\cdot i^2 = (-1)(-1) = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "i^4 = (i^2)^2 = (-1)^2 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.675Z"
+        }
+      }
+    },
+    {
+      "id": "f086125c-be7f-4d81-a365-73fd4a8ef8bc",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "What is $(2i)^2$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-4",
+      "solution": "$(2i)^2 = 2^2 \\cdot i^2 = 4 \\cdot (-1) = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2i)^2 = 4i^2 = -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.677Z"
+        }
+      }
+    },
+    {
+      "id": "ac66f4cf-810e-4bdb-8dfc-80d82a720d4f",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "What is the additive inverse of $-3 + 8i$?",
+      "choices": [
+        "$3 + 8i$",
+        "$-3 - 8i$",
+        "$8 - 3i$",
+        "$3 - 8i$"
+      ],
+      "answer": "$3 - 8i$",
+      "compute": null,
+      "solution": "The additive inverse is the number that adds to the original to give 0. Change the sign of both parts: $3 - 8i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 - 8i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Additive inverse is the negative: -(-3+8i) = 3-8i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.678Z"
+        }
+      }
+    },
+    {
+      "id": "ee46e1a2-3348-41e7-8729-f7729437ff54",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add complex numbers",
+      "stem": "What is $(1 + i) + (1 - i)$?",
+      "choices": [
+        "$2 + 2i$",
+        "$2i$",
+        "$2$",
+        "$2 - 2i$"
+      ],
+      "answer": "$2$",
+      "compute": "2",
+      "solution": "Real parts: $1 + 1 = 2$. Imaginary parts: $1 + (-1) = 0$. The sum is $2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1+1) + (i-i) = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.686Z"
         }
       }
     },
@@ -650,6 +1372,738 @@
       }
     },
     {
+      "id": "c541a266-81b3-40cd-955d-726430302df2",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "Multiply $7 - 2i$ by $7 + 2i$.",
+      "choices": [],
+      "answer": "53",
+      "compute": "53",
+      "solution": "$(7 - 2i)(7 + 2i) = 49 - 4i^2 = 49 + 4 = 53$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(7-2i)(7+2i) = 49 + 4 = 53.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.725Z"
+        }
+      }
+    },
+    {
+      "id": "d98756fc-1064-45f7-9897-fc6a1e621a04",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Square or cube a complex number",
+      "stem": "Which number equals $(2 - i)^2 - 3$?",
+      "choices": [
+        "$4i$",
+        "$-4$",
+        "$-4i$",
+        "$-4 - 4i$"
+      ],
+      "answer": "$-4i$",
+      "compute": null,
+      "solution": "$(2 - i)^2 = 4 - 4i + i^2 = 3 - 4i$. Subtracting 3 leaves $-4i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2-i)^2 = 3 - 4i; minus 3 = -4i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.898Z"
+        }
+      }
+    },
+    {
+      "id": "eac97b4f-1897-448a-ab94-1e68ce3b106c",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "The number $(3i)^2$ is multiplied by $2 + i$. What is the imaginary part of the result?",
+      "choices": [],
+      "answer": "-9",
+      "compute": "-9",
+      "solution": "$(3i)^2 = -9$, so the product is $-9(2 + i) = -18 - 9i$. The imaginary part is $-9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3i)^2 = -9. -9(2+i) = -18 - 9i. Imaginary part -9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.898Z"
+        }
+      }
+    },
+    {
+      "id": "b564a2e5-cff7-4ecd-8eae-e319fb20d3c7",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "Compute $(6 - 2i)(6 + 2i) - 4$.",
+      "choices": [],
+      "answer": "36",
+      "compute": "36",
+      "solution": "$(6 - 2i)(6 + 2i) = 36 - 4i^2 = 40$. Then $40 - 4 = 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(6-2i)(6+2i) = 36 + 4 = 40. 40 - 4 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.900Z"
+        }
+      }
+    },
+    {
+      "id": "09df19c5-022c-432d-a7dd-6b7cb688b6fa",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Square or cube a complex number",
+      "stem": "Find $(4 + i)^2$.",
+      "choices": [
+        "$16 + i$",
+        "$17 + 8i$",
+        "$15 + 8i$",
+        "$15 + i$"
+      ],
+      "answer": "$15 + 8i$",
+      "compute": null,
+      "solution": "$(4 + i)^2 = 16 + 8i + i^2 = 16 + 8i - 1 = 15 + 8i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$15 + 8i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4+i)^2 = 16 + 8i - 1 = 15 + 8i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.911Z"
+        }
+      }
+    },
+    {
+      "id": "806c688b-13e6-42aa-a848-7d781add03ab",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "Which number equals $i^{27}$?",
+      "choices": [
+        "$i$",
+        "$-i$",
+        "$1$",
+        "$-1$"
+      ],
+      "answer": "$-i$",
+      "compute": null,
+      "solution": "The powers of $i$ repeat every 4. Since $27 = 4 \\cdot 6 + 3$, $i^{27} = i^3 = -i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27=4x6+3, i^27=i^3=-i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.954Z"
+        }
+      }
+    },
+    {
+      "id": "107e290d-7630-4e90-9d20-e36ad190ddce",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "Expand $4i(1 + 2i)$.",
+      "choices": [
+        "$8 + 4i$",
+        "$4 + 8i$",
+        "$-8 - 4i$",
+        "$-8 + 4i$"
+      ],
+      "answer": "$-8 + 4i$",
+      "compute": null,
+      "solution": "$4i \\cdot 1 = 4i$ and $4i \\cdot 2i = 8i^2 = -8$. The result is $-8 + 4i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-8 + 4i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4i+8i^2 = -8+4i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.957Z"
+        }
+      }
+    },
+    {
+      "id": "557d912c-febf-44fa-94d7-4e388aec94b3",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "What is the value of $i^8 + i^9 \\cdot i^3$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$i^8 = 1$. Also $i^9 \\cdot i^3 = i^{12} = 1$. The total is $1 + 1 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "i^8 = 1; i^9*i^3 = i^12 = 1; sum 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.958Z"
+        }
+      }
+    },
+    {
+      "id": "38dd96d0-2688-46c4-b866-83bad470f9be",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two complex numbers",
+      "stem": "Find $(-1 + 3i)(2 + i)$.",
+      "choices": [
+        "$-5 + 5i$",
+        "$1 + 5i$",
+        "$-2 + 3i$",
+        "$-5 - 7i$"
+      ],
+      "answer": "$-5 + 5i$",
+      "compute": null,
+      "solution": "$-2 - i + 6i + 3i^2 = -2 + 5i - 3 = -5 + 5i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5 + 5i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2 - i + 6i + 3i^2 = -2 + 5i - 3 = -5 + 5i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.973Z"
+        }
+      }
+    },
+    {
+      "id": "311f16c7-31f1-4239-a9c5-244a9f685a79",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add complex numbers",
+      "stem": "Find the imaginary part of $(5 + 3i) - (8 - 2i) + (1 - 4i)$.",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "Imaginary parts: $3 - (-2) + (-4) = 3 + 2 - 4 = 1$. (The whole number is $-2 + i$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Imag: 3 - (-2) + (-4) = 1. (Real -2.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.055Z"
+        }
+      }
+    },
+    {
+      "id": "bce452b6-fd5c-471c-8873-0f950c9a5e75",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two complex numbers",
+      "stem": "What is the real part of the product $(5 + 2i)(1 - 4i)$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "$(5 + 2i)(1 - 4i) = 5 - 20i + 2i - 8i^2 = 5 - 18i + 8 = 13 - 18i$. The real part is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5+2i)(1-4i) = 5 - 20i + 2i - 8i^2 = 5 + 8 - 18i = 13 - 18i. Real part 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.104Z"
+        }
+      }
+    },
+    {
+      "id": "b29f053d-5db6-4503-b0fb-0cc95603106d",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "Which statement about the number 9 is true?",
+      "choices": [
+        "9 is a complex number whose imaginary part is 0",
+        "9 is not a complex number, since complex numbers must contain $i$",
+        "9 is a complex number whose real part is 0",
+        "9 is a complex number whose imaginary part is 9"
+      ],
+      "answer": "9 is a complex number whose imaginary part is 0",
+      "compute": null,
+      "solution": "A real number is a complex number with imaginary part 0: $9 = 9 + 0i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 is a complex number whose imaginary part is 0",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 = 9 + 0i: real part 9, imaginary part 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.129Z"
+        }
+      }
+    },
+    {
+      "id": "fd38e79a-d421-449d-8a06-47f9d378b9d1",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract complex numbers",
+      "stem": "A complex quantity changes from $6 - 2i$ to $1 + 3i$. Which number was added to it?",
+      "choices": [
+        "$7 + i$",
+        "$-5 + 5i$",
+        "$5 - 5i$",
+        "$-5 - 5i$"
+      ],
+      "answer": "$-5 + 5i$",
+      "compute": null,
+      "solution": "The change is the end minus the start: $(1 - 6) + (3 - (-2))i = -5 + 5i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5 + 5i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1+3i)-(6-2i) = -5+5i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.187Z"
+        }
+      }
+    },
+    {
+      "id": "b028c9d1-ab21-4716-ba4c-3f52911c4ac8",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Square or cube a complex number",
+      "stem": "Let $w = 1 - 3i$. What is the real part of $w^2$?",
+      "choices": [],
+      "answer": "-8",
+      "compute": "-8",
+      "solution": "$w^2 = 1 - 6i + 9i^2 = 1 - 6i - 9 = -8 - 6i$. The real part is $-8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1-3i)^2 = 1-6i+9i^2 = -8-6i. Real part -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.191Z"
+        }
+      }
+    },
+    {
+      "id": "a49b393a-301b-46e8-8f98-bb2099b261d5",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "The point $4 - i$ is multiplied by $i$ twice, one multiplication after the other. Which number results?",
+      "choices": [
+        "$4 - i$",
+        "$-4 - i$",
+        "$1 + 4i$",
+        "$-4 + i$"
+      ],
+      "answer": "$-4 + i$",
+      "compute": null,
+      "solution": "Multiplying by $i$ twice is multiplying by $i^2 = -1$. So $(4 - i)(-1) = -4 + i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4 + i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplying by i twice is by i^2=-1: -(4-i)=-4+i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.230Z"
+        }
+      }
+    },
+    {
+      "id": "1254aef7-4f31-4805-9960-b7ca81a5db27",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two complex numbers",
+      "stem": "Multiply: $(3 - 2i)(4 + i)$.",
+      "choices": [
+        "$10 - 5i$",
+        "$12 - 2i$",
+        "$14 + 11i$",
+        "$14 - 5i$"
+      ],
+      "answer": "$14 - 5i$",
+      "compute": null,
+      "solution": "FOIL: $12 + 3i - 8i - 2i^2 = 12 - 5i + 2 = 14 - 5i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$14 - 5i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12+3i-8i-2i^2 = 12-5i+2 = 14-5i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.231Z"
+        }
+      }
+    },
+    {
+      "id": "f1f1721c-190c-4f3d-9302-f53872c02d96",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve for an unknown in a complex expression",
+      "stem": "Real numbers $x$ and $y$ make $(2 + xi) + (y - 3i) = 7 + 4i$ true. What is $x + y$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Real parts: $2 + y = 7$, so $y = 5$. Imaginary parts: $x - 3 = 4$, so $x = 7$. Then $x + y = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Real: 2 + y = 7, y = 5. Imag: x - 3 = 4, x = 7. x + y = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.352Z"
+        }
+      }
+    },
+    {
+      "id": "44c7604c-9c0b-46ac-87bb-2d71bf0160d8",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "What is the product of $2 + 6i$ and its complex conjugate?",
+      "choices": [
+        "$-32$",
+        "$40$",
+        "$4 + 36i$",
+        "$40i$"
+      ],
+      "answer": "$40$",
+      "compute": "40",
+      "solution": "The conjugate is $2 - 6i$. The product is $2^2 - (6i)^2 = 4 + 36 = 40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2+6i)(2-6i) = 4 + 36 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.355Z"
+        }
+      }
+    },
+    {
+      "id": "17afec38-cd51-4da1-bca4-b4243f6e100e",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "Which equation shows the distributive property?",
+      "choices": [
+        "$(2 + 3i) + (1 + i) = (1 + i) + (2 + 3i)$",
+        "$(2i)(3i) = (3i)(2i)$",
+        "$(1 + i) + 0 = 1 + i$",
+        "$2(3 + i) = 6 + 2i$"
+      ],
+      "answer": "$2(3 + i) = 6 + 2i$",
+      "compute": null,
+      "solution": "The distributive property multiplies a number across a sum: $2(3 + i) = 2 \\cdot 3 + 2 \\cdot i$. The other equations show the commutative and identity properties.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2(3 + i) = 6 + 2i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(3+i) = 6 + 2i is distributive; others are commutative, identity, commutative.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.359Z"
+        }
+      }
+    },
+    {
+      "id": "baaf8a41-0945-4997-9772-f0af170b44ef",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "On the complex plane, multiplying a number by $i$ turns its point 90 degrees counterclockwise about the origin. The point $3 + 2i$ is multiplied by $i$. Which point results?",
+      "choices": [
+        "$-2 + 3i$",
+        "$2 + 3i$",
+        "$-3 - 2i$",
+        "$3 - 2i$"
+      ],
+      "answer": "$-2 + 3i$",
+      "compute": null,
+      "solution": "$i(3 + 2i) = 3i + 2i^2 = 3i - 2 = -2 + 3i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2 + 3i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "i(3+2i) = 3i + 2i^2 = -2 + 3i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.647Z"
+        }
+      }
+    },
+    {
+      "id": "a35e2863-6d6a-4a1e-912b-de32977c451a",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two complex numbers",
+      "stem": "Write $(2 - 3i)(5 - i)$ in the form $a + bi$. What is $b$?",
+      "choices": [],
+      "answer": "-17",
+      "compute": "-17",
+      "solution": "$(2 - 3i)(5 - i) = 10 - 2i - 15i + 3i^2 = 10 - 17i - 3 = 7 - 17i$, so $b = -17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2-3i)(5-i) = 10 -2i -15i +3i^2 = 10-3 -17i = 7-17i. b = -17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.656Z"
+        }
+      }
+    },
+    {
+      "id": "0b9e9087-b16a-40d5-878a-eef278a97a80",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "Which property is used to show $(2 + i) + ((3 - i) + 5i) = ((2 + i) + (3 - i)) + 5i$?",
+      "choices": [
+        "Commutative property of addition",
+        "Distributive property",
+        "Associative property of addition",
+        "Identity property of addition"
+      ],
+      "answer": "Associative property of addition",
+      "compute": null,
+      "solution": "Only the grouping of the three terms changes, which is the associative property of addition.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Associative property of addition",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only the grouping changes, order is the same: associative property of addition.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.666Z"
+        }
+      }
+    },
+    {
+      "id": "0d7ce3de-2971-4492-8347-7c20ec4d6647",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Square or cube a complex number",
+      "stem": "What is the real part of $(3 + 2i)^2$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$(3 + 2i)^2 = 9 + 12i + 4i^2 = 9 + 12i - 4 = 5 + 12i$. The real part is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3+2i)^2 = 9+12i+4i^2 = 5+12i. Real part 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.669Z"
+        }
+      }
+    },
+    {
       "id": "944bba77-be4d-48a8-ad27-09c9d5887dea",
       "topic_id": "NC17.M4.N.1",
       "difficulty": 3,
@@ -961,6 +2415,694 @@
           "work": "(2i)^3=8i^3=8(-i)=-8i.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:11.952Z"
+        }
+      }
+    },
+    {
+      "id": "2194b5d9-cc90-44b6-8f85-ee508ae0dc73",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve for an unknown in a complex expression",
+      "stem": "For what real value of $a$ is the product $(a + 3i)(2 - i)$ a real number?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$(a + 3i)(2 - i) = 2a - ai + 6i - 3i^2 = (2a + 3) + (6 - a)i$. The imaginary part is 0 when $a = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(a+3i)(2-i) = 2a - ai + 6i + 3 = (2a+3) + (6-a)i. Real when a = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.708Z"
+        }
+      }
+    },
+    {
+      "id": "16d2ddd7-7bf0-4a21-856c-dd9008d3901b",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Square or cube a complex number",
+      "stem": "What is $(2 + 3i)^2 - (2 - 3i)^2$?",
+      "choices": [
+        "$24$",
+        "$24i$",
+        "$-10$",
+        "$0$"
+      ],
+      "answer": "$24i$",
+      "compute": null,
+      "solution": "$(2 + 3i)^2 = -5 + 12i$ and $(2 - 3i)^2 = -5 - 12i$. Their difference is $24i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2+3i)^2 = -5+12i; (2-3i)^2 = -5-12i; difference 24i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.711Z"
+        }
+      }
+    },
+    {
+      "id": "cc17d27e-a6e1-4219-ad2f-70e0136c1ae6",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve for an unknown in a complex expression",
+      "stem": "Real numbers $a$ and $b$ satisfy $(2 + ai) + (b - 5i) = 1 - 2i$. What is $a - b$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Imaginary parts: $a - 5 = -2$, so $a = 3$. Real parts: $2 + b = 1$, so $b = -1$. Then $a - b = 3 - (-1) = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Real: 2+b = 1 → b = -1. Imag: a-5 = -2 → a = 3. a-b = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.725Z"
+        }
+      }
+    },
+    {
+      "id": "60df155e-e494-42e3-aa7d-16dc1f2ff357",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by a real number or by i",
+      "stem": "The number $2 + 5i$ is multiplied by $i$, the result is multiplied by $i$ again, and that result is tripled. What is the real part of the final number?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-6",
+      "solution": "$i \\cdot i = -1$, so the product is $-3(2 + 5i) = -6 - 15i$. The real part is $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2+5i)i = -5+2i; ×i = -2-5i; ×3 = -6-15i. Real part -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.731Z"
+        }
+      }
+    },
+    {
+      "id": "d8e95b33-90fe-4ae7-91ff-f184d0a73297",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Square or cube a complex number",
+      "stem": "Find $(2 - i)^3$.",
+      "choices": [
+        "$2 - 11i$",
+        "$8 - i$",
+        "$2 + 11i$",
+        "$14 - 11i$"
+      ],
+      "answer": "$2 - 11i$",
+      "compute": null,
+      "solution": "$(2 - i)^2 = 3 - 4i$. Then $(3 - 4i)(2 - i) = 6 - 3i - 8i + 4i^2 = 6 - 11i - 4 = 2 - 11i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 - 11i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2-i)^2 = 4 - 4i - 1 = 3 - 4i. (3-4i)(2-i) = 6 - 3i - 8i + 4i^2 = 2 - 11i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.895Z"
+        }
+      }
+    },
+    {
+      "id": "26ae556f-b3be-4189-83d7-81d2159ba673",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "What is $i^{50} + i^{51}$?",
+      "choices": [
+        "$1 + i$",
+        "$-1 - i$",
+        "$-1 + i$",
+        "$1 - i$"
+      ],
+      "answer": "$-1 - i$",
+      "compute": null,
+      "solution": "$i^{50} = i^2 = -1$ since $50 = 4 \\cdot 12 + 2$. $i^{51} = i^3 = -i$. The sum is $-1 - i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1 - i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "i^50=i^2=-1; i^51=i^3=-i; sum -1-i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.933Z"
+        }
+      }
+    },
+    {
+      "id": "99f99efe-ced4-4e77-a0eb-dc27fa822a8c",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "A complex number has imaginary part 3 and a positive real part. Its product with its complex conjugate is 34. What is its real part?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "With real part $x$, the product is $x^2 + 9 = 34$. So $x^2 = 25$ and $x = 5$ (positive).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(a+3i)(a-3i)=a^2+9=34, a^2=25, a=5 (positive).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.934Z"
+        }
+      }
+    },
+    {
+      "id": "9e0459c5-649c-4044-b7b2-4b0483666eda",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two complex numbers",
+      "stem": "The product $(2 + i)(4 - 3i)$ is written $a + bi$. What is $a - b$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "$(2 + i)(4 - 3i) = 8 - 6i + 4i - 3i^2 = 11 - 2i$. So $a - b = 11 - (-2) = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2+i)(4-3i)=8-6i+4i-3i^2=11-2i. a-b=11-(-2)=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.938Z"
+        }
+      }
+    },
+    {
+      "id": "07ff078f-79da-4a9d-a3e3-7dfc4dee3047",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "Which statement is NOT true?",
+      "choices": [
+        "The product of two complex numbers that are not real is never a real number",
+        "The sum of a complex number and its conjugate is always a real number",
+        "Every real number is also a complex number",
+        "The sum of two complex numbers is always a complex number"
+      ],
+      "answer": "The product of two complex numbers that are not real is never a real number",
+      "compute": null,
+      "solution": "A counterexample: $(1 + i)(1 - i) = 2$ is real. The other statements are true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The product of two complex numbers that are not real is never a real number",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "i*i = -1 is real, so 'product of two non-real complex numbers is never real' is false. Others true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.963Z"
+        }
+      }
+    },
+    {
+      "id": "4cb294f2-5769-47fb-a9f3-585d89c6fdfe",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve for an unknown in a complex expression",
+      "stem": "For what value of $k$ is $(4 + ki)(1 + 2i)$ a pure imaginary number (real part 0)?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The real part of $(4 + ki)(1 + 2i)$ is $4 - 2k$. Setting $4 - 2k = 0$ gives $k = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(4+ki)(1+2i)=(4-2k)+(8+k)i. Real 0: k=2 (imag part 10, nonzero).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.217Z"
+        }
+      }
+    },
+    {
+      "id": "c4ec5f60-82da-4a8a-9cd5-baa5c3073e6e",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Square or cube a complex number",
+      "stem": "What is the real part of $(1 + i)^4$?",
+      "choices": [],
+      "answer": "-4",
+      "compute": "-4",
+      "solution": "$(1 + i)^2 = 1 + 2i + i^2 = 2i$. Then $(2i)^2 = 4i^2 = -4$. The real part is $-4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1+i)^2=2i; (2i)^2=-4. Real part -4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.233Z"
+        }
+      }
+    },
+    {
+      "id": "7a85ad6d-19c0-4761-af15-bdfad0351882",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Square or cube a complex number",
+      "stem": "A student works out $(3 - 2i)^2 = 9 + 4i^2 = 9 - 4 = 5$. What is the mistake?",
+      "choices": [
+        "The value of $i^2$ was taken as $-1$ instead of $1$",
+        "The $9$ should have been $6$",
+        "The middle term $-12i$ was left out",
+        "The $4i^2$ should have been subtracted, giving $9 - 4i^2$"
+      ],
+      "answer": "The middle term $-12i$ was left out",
+      "compute": null,
+      "solution": "$(a + b)^2$ has the middle term $2ab$. Here $2(3)(-2i) = -12i$. The correct result is $9 - 12i - 4 = 5 - 12i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The middle term $-12i$ was left out",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3-2i)^2 = 9 - 12i + 4i^2 = 5 - 12i. The student omitted the cross term 2·3·(-2i) = -12i. The i^2 = -1 step was correct.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.249Z"
+        }
+      }
+    },
+    {
+      "id": "f2dc2e18-0718-4c40-a942-ba65d1330323",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two complex numbers",
+      "stem": "What is $(1 + i)^2(1 - i)^2$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$(1 + i)(1 - i) = 1 - i^2 = 2$. So the product is $2^2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "((1+i)(1-i))^2 = (1+1)^2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.287Z"
+        }
+      }
+    },
+    {
+      "id": "537be931-8344-4940-923c-0bde5c19ca4a",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two complex numbers",
+      "stem": "Let $z = 1 + 2i$ and $w = 3 - i$. Find $zw - z - w$.",
+      "choices": [
+        "$1 + 4i$",
+        "$4 + 3i$",
+        "$1 + 6i$",
+        "$7 + 6i$"
+      ],
+      "answer": "$1 + 4i$",
+      "compute": null,
+      "solution": "$zw = 3 - i + 6i - 2i^2 = 5 + 5i$. Then $5 + 5i - (1 + 2i) - (3 - i) = 1 + 4i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 + 4i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "zw = (1+2i)(3-i) = 3 - i + 6i - 2i^2 = 5 + 5i. zw - z - w = 5+5i - 1 - 2i - 3 + i = 1 + 4i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.310Z"
+        }
+      }
+    },
+    {
+      "id": "9fc295ee-b77c-43f9-b5e5-9630ab3c717b",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "Let $z = 3 + 2i$. What is the real part of $z\\overline{z} - z^2$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "$z\\overline{z} = 13$ and $z^2 = 5 + 12i$. So $z\\overline{z} - z^2 = 8 - 12i$, with real part 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "z zbar = 9+4 = 13; z^2 = 9-4+12i = 5+12i; 13-(5+12i) = 8-12i; real part 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.413Z"
+        }
+      }
+    },
+    {
+      "id": "dafef512-c960-47ae-83fb-1d543925c50c",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Square or cube a complex number",
+      "stem": "Which number, when squared, gives $-5 + 12i$?",
+      "choices": [
+        "$3 + 2i$",
+        "$2 + 3i$",
+        "$2 - 3i$",
+        "$5 + 12i$"
+      ],
+      "answer": "$2 + 3i$",
+      "compute": null,
+      "solution": "$(2 + 3i)^2 = 4 + 12i + 9i^2 = 4 + 12i - 9 = -5 + 12i$. The others square to different numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 3i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2+3i)^2 = 4+12i+9i^2 = -5+12i. Check others: (2-3i)^2=-5-12i, (3+2i)^2=5+12i, (5+12i)^2=-119+120i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.511Z"
+        }
+      }
+    },
+    {
+      "id": "972c15c0-ef83-4e4f-a5f3-09a100b8f237",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Square or cube a complex number",
+      "stem": "Let $z = 2 - i$. Write $z^2 - 2z + 5$ as $a + bi$. What is $b$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2",
+      "solution": "$z^2 = 3 - 4i$ and $2z = 4 - 2i$. So $z^2 - 2z + 5 = (3 - 4) + (-4 + 2)i + 5 = 4 - 2i$. Then $b = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "z^2 = 4 - 4i - 1 = 3 - 4i. -2z = -4 + 2i. Sum + 5 = 4 - 2i. b = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.542Z"
+        }
+      }
+    },
+    {
+      "id": "41c7de86-f75a-4cff-8643-aea362e90a3b",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use i squared equals -1 and powers of i",
+      "stem": "What is $i + i^2 + i^3 + \\dots + i^{10}$?",
+      "choices": [
+        "$0$",
+        "$-1$",
+        "$-1 + i$",
+        "$1 + i$"
+      ],
+      "answer": "$-1 + i$",
+      "compute": null,
+      "solution": "Every four consecutive powers sum to $i - 1 - i + 1 = 0$. The first eight terms sum to 0, leaving $i^9 + i^{10} = i - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1 + i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Powers of i cycle i, -1, -i, 1 with sum 0. i..i^8 sum 0; i^9 + i^10 = i - 1 = -1 + i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.593Z"
+        }
+      }
+    },
+    {
+      "id": "d70d2185-ec17-4619-a6f1-a40d963bd65e",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two complex numbers",
+      "stem": "Start with $1 + i$. Multiply it by $2 - i$, then subtract $1 + 4i$. What is the imaginary part of the result?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "$(1 + i)(2 - i) = 2 - i + 2i - i^2 = 3 + i$. Then $3 + i - (1 + 4i) = 2 - 3i$. The imaginary part is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1+i)(2-i) = 2 - i + 2i + 1 = 3 + i; minus (1+4i) gives 2 - 3i. Imaginary part -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.595Z"
+        }
+      }
+    },
+    {
+      "id": "c2217e91-bb73-49ec-b2bf-7827512bbe36",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of complex numbers and the number system",
+      "stem": "Which property justifies the step $(2 + i)[(3 - i) + 4] = (2 + i)(3 - i) + (2 + i)(4)$?",
+      "choices": [
+        "Associative property of multiplication",
+        "Commutative property of multiplication",
+        "Closure property of addition",
+        "Distributive property"
+      ],
+      "answer": "Distributive property",
+      "compute": null,
+      "solution": "The factor $(2 + i)$ is multiplied by each term in the brackets, which is the distributive property.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Distributive property",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(b + c) = ab + ac: distributive property.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.614Z"
+        }
+      }
+    },
+    {
+      "id": "898882ae-76fa-45d5-a1b3-352e41055828",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a complex number by its conjugate",
+      "stem": "For real numbers $a$ and $b$, which expression equals $(a + bi)(a - bi)$?",
+      "choices": [
+        "$a^2 - b^2$",
+        "$a^2 + 2abi - b^2$",
+        "$a^2 + b^2$",
+        "$2a$"
+      ],
+      "answer": "$a^2 + b^2$",
+      "compute": null,
+      "solution": "$(a + bi)(a - bi) = a^2 - b^2i^2 = a^2 + b^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$a^2 + b^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(a+bi)(a-bi) = a^2 - abi + abi - b^2 i^2 = a^2 + b^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.645Z"
+        }
+      }
+    },
+    {
+      "id": "99db7cb8-4f24-4ed2-b57d-9f99dcd70fe4",
+      "topic_id": "NC17.M4.N.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Square or cube a complex number",
+      "stem": "What is the real part of $(1 - 2i)^3$?",
+      "choices": [],
+      "answer": "-11",
+      "compute": "-11",
+      "solution": "$(1 - 2i)^2 = 1 - 4i + 4i^2 = -3 - 4i$. Then $(-3 - 4i)(1 - 2i) = -3 + 6i - 4i + 8i^2 = -11 + 2i$. The real part is $-11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1-2i)^2 = 1-4i+4i^2 = -3-4i. (-3-4i)(1-2i) = -3+6i-4i+8i^2 = -3-8+2i = -11+2i. Real part -11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.655Z"
         }
       }
     },

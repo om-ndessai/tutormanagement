@@ -2,6 +2,10 @@
   "level_id": "NC17.7",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
+    "NC17.7.RP.1": "Answers are fractions, mixed numbers or whole numbers; money is in dollars with whole-number or simple fraction answers.",
+    "NC17.7.RP.2": "Proportional relationships (7.RP.2): 30 questions, 10 per difficulty. Graphs and tables are written out as words and lists. Both the table-recognition and graph-recognition questions are choice because they are asked as which-of-these. The relationships are all with positive constants; no negative values are used.",
+    "NC17.7.RP.3": "30 questions written. Skills: scale drawings and scale factors 6, percent of a quantity (tax, tip, discount, markup, commission) 6, percent increase and decrease 4, find the whole from a percent 3, unit rates including fractions 5, simple interest 3, percent error 3. Area under scale (7.G.1) is left out. The word percent is used throughout instead of the percent sign.",
+    "NC17.7.NS.2": "Skills (rough counts): multiply integers 2, divide integers 2, multiply fractions and mixed numbers 4, divide fractions 3, decimals 4, sign rules 3, terminating decimals 3, repeating decimals 4, in context 5. Repeating decimals are asked as choices (the bar notation) or by a digit position, so every numeric answer is exact.",
     "NC17.7.EE.1": "None left out. Expression answers are choice questions; numeric ones ask for a coefficient, a constant, a missing number or the value at a given x.",
     "NC17.7.EE.2": "Skills (rough counts): percent change as a multiplier 4, using a multiplier to find a price or percent 4, interpreting a term or factor in context 5, distributing or factoring 6, expanding and combining like terms 5, deciding whether expressions are equivalent 4, writing an expression for a situation 2. Grade 7 level: rational coefficients, no equations to solve beyond finding one unknown number in an equivalent form.",
     "NC17.7.EE.3": "Skills (rough counts): multi-step percent problems (5), fractions and decimals together (5), converting between fractions/decimals/percents (5), negative numbers (6), estimating to check reasonableness (3), unit prices and rates (4), working backward (2). Money answers are plain numbers with \"in dollars\" in the stem; no dollar sign is used. Percent signs are inside the maths.",
@@ -9,9 +13,7 @@
     "NC17.7.G.1": "Whole-number, decimal and simple fraction scales only; no similarity-ratio proofs. Skills: actual length from a drawing (7), drawing length from actual (5), the scale itself (7), actual area from a drawing (5), drawing dimensions when creating a scale drawing (4), areas on the drawing vs real life (2). Drawn figures are described by their measurements, no pictures.",
     "NC17.7.G.2": "Text-only: construction is asked through compass/arc and protractor steps in words. SSA (two triangles) is asked once, with the shortest distance given, so it can be reasoned by hand.",
     "NC17.7.G.5": "All figures are described in words (lines that cross, a ray on a straight line). Angles around a point and angle pairs from parallel lines are not used, since the summary names only supplementary, complementary, vertical and adjacent angles.",
-    "NC17.7.NS.2": "Skills (rough counts): multiply integers 2, divide integers 2, multiply fractions and mixed numbers 4, divide fractions 3, decimals 4, sign rules 3, terminating decimals 3, repeating decimals 4, in context 5. Repeating decimals are asked as choices (the bar notation) or by a digit position, so every numeric answer is exact.",
-    "NC17.7.RP.2": "Proportional relationships (7.RP.2): 30 questions, 10 per difficulty. Graphs and tables are written out as words and lists. Both the table-recognition and graph-recognition questions are choice because they are asked as which-of-these. The relationships are all with positive constants; no negative values are used.",
-    "NC17.7.RP.3": "30 questions written. Skills: scale drawings and scale factors 6, percent of a quantity (tax, tip, discount, markup, commission) 6, percent increase and decrease 4, find the whole from a percent 3, unit rates including fractions 5, simple interest 3, percent error 3. Area under scale (7.G.1) is left out. The word percent is used throughout instead of the percent sign.",
+    "NC17.7.SP.2": "Samples are given as written lists of results (nobody can draw a sample in text). Variation is tested by comparing the written estimates and by the effect of sample size.",
     "NC17.7.SP.3": "Quartiles are always the medians of the lower and upper halves, and the stem says so; sets have an even number of values so the halves are unambiguous. Visual overlap is tested through written ranges and lists, not dot plots. Statistics in the keys were computed by the generator from the data.",
     "NC17.7.SP.5": "Grade 7 probability as a number from 0 to 1 and what it says about likelihood: valid probabilities, impossible/unlikely/neither/likely/certain, comparing and ordering, interpreting a probability, and finding a probability from equally likely outcomes (kept simple, as support for the scale; no compound events, no long-run frequency, no complements). The last items go backward from a probability to a count (24 marbles, 40 tickets).",
     "NC17.7.SP.6": "Experiments are given as counts, lists or short tables of results; no pictures."
@@ -328,6 +330,694 @@
       }
     },
     {
+      "id": "81d4df7e-292c-49cd-bd63-0b20b1b938de",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A beetle crawls $\\frac{1}{4}$ centimeter in $\\frac{1}{8}$ second at a steady speed. How many centimeters does it crawl in 1 second?",
+      "choices": [
+        "$2$",
+        "$\\frac{1}{2}$",
+        "$8$",
+        "$\\frac{1}{32}$"
+      ],
+      "answer": "$2$",
+      "compute": "2",
+      "solution": "$\\frac{1}{4} \\div \\frac{1}{8} = \\frac{1}{4} \\times 8 = 2$. The beetle crawls 2 centimeters in 1 second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/4)/(1/8) = 2 cm per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.672Z"
+        }
+      }
+    },
+    {
+      "id": "8a8a99a0-00bd-4149-a364-4cca9942af4a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A tortoise walks $\\frac{1}{2}$ meter in 2 minutes at a steady pace. How many meters does it walk in 1 minute? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "(1/2)/2",
+      "solution": "$\\frac{1}{2} \\div 2 = \\frac{1}{4}$. The tortoise walks $\\frac{1}{4}$ meter in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)/2 = 1/4 meter per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.870Z"
+        }
+      }
+    },
+    {
+      "id": "5e22943e-9ce8-4933-91fd-1a89d802208e",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "Pablo knits 6 inches of a scarf in $\\frac{1}{3}$ hour. How many inches does he knit in 1 hour?",
+      "choices": [],
+      "answer": "18",
+      "compute": "6/(1/3)",
+      "solution": "$6 \\div \\frac{1}{3} = 6 \\times 3 = 18$. He knits 18 inches in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 / (1/3) = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.912Z"
+        }
+      }
+    },
+    {
+      "id": "9e765ef8-466a-4f8c-9af7-ab6ae5b7db08",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "Rosa bikes 6 miles in $\\frac{3}{4}$ hour at a steady speed. How many miles does she bike in 1 hour?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6/(3/4)",
+      "solution": "$6 \\div \\frac{3}{4} = 6 \\times \\frac{4}{3} = 8$. Rosa bikes 8 miles in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 / (3/4) = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.918Z"
+        }
+      }
+    },
+    {
+      "id": "c6e2ec95-b2c5-44af-bd47-d964d4ab6188",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "Dev reads $\\frac{2}{5}$ of a book in $\\frac{1}{2}$ hour at a steady pace. Which expression gives the part of the book he reads in 1 hour?",
+      "choices": [
+        "$\\frac{1}{2} \\div \\frac{2}{5}$",
+        "$\\frac{2}{5} \\div \\frac{1}{2}$",
+        "$\\frac{2}{5} \\times \\frac{1}{2}$",
+        "$\\frac{2}{5} + \\frac{1}{2}$"
+      ],
+      "answer": "$\\frac{2}{5} \\div \\frac{1}{2}$",
+      "compute": null,
+      "solution": "The part read in 1 hour is the part read divided by the hours: $\\frac{2}{5} \\div \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{5} \\div \\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (2/5) / (1/2) = 4/5 book per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.922Z"
+        }
+      }
+    },
+    {
+      "id": "f30447fe-c94b-4f5b-bb55-5271fb36eba9",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "A rate is 2 meters for every $\\frac{1}{2}$ second. Which is the same rate?",
+      "choices": [
+        "1 meter for every 1 second",
+        "4 meters for every 1 second",
+        "2 meters for every 1 second",
+        "8 meters for every 1 second"
+      ],
+      "answer": "4 meters for every 1 second",
+      "compute": null,
+      "solution": "$\\frac{1}{2}$ second is half of 1 second, so in 1 second the distance doubles: $2 \\times 2 = 4$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 meters for every 1 second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 m per 1/2 s = 2/(1/2)=4 m per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.925Z"
+        }
+      }
+    },
+    {
+      "id": "123fe3d2-5626-4682-b3c3-8acc7185b564",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A robot paints $\\frac{1}{3}$ of a fence in $\\frac{1}{2}$ hour at a steady rate. What part of the fence does it paint in 1 hour?",
+      "choices": [
+        "$\\frac{1}{6}$",
+        "$\\frac{3}{2}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{5}{6}$"
+      ],
+      "answer": "$\\frac{2}{3}$",
+      "compute": null,
+      "solution": "$\\frac{1}{3} \\div \\frac{1}{2} = \\frac{1}{3} \\times 2 = \\frac{2}{3}$. The robot paints $\\frac{2}{3}$ of the fence in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (1/3)/(1/2) = 2/3 of the fence per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.929Z"
+        }
+      }
+    },
+    {
+      "id": "7d953d52-aaaa-4f9a-a5dc-60523f99c3ac",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "A leaking pipe loses $\\frac{1}{8}$ liter of water in $\\frac{1}{2}$ minute. How many liters does it lose in 1 minute? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "1/4",
+      "compute": "(1/8)/(1/2)",
+      "solution": "$\\frac{1}{8} \\div \\frac{1}{2} = \\frac{1}{8} \\times 2 = \\frac{1}{4}$. It loses $\\frac{1}{4}$ liter in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/8)/(1/2)=1/4 liter per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.930Z"
+        }
+      }
+    },
+    {
+      "id": "60f9c5f6-f7e8-4809-ab89-0f9298d67a01",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit price with fractional amounts",
+      "stem": "$\\frac{3}{4}$ pound of walnuts costs 6 dollars. How many dollars does 1 pound of walnuts cost?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6/(3/4)",
+      "solution": "$6 \\div \\frac{3}{4} = 6 \\times \\frac{4}{3} = 8$. One pound costs 8 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 / (3/4) = 6 * 4/3 = 8 dollars per pound.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.038Z"
+        }
+      }
+    },
+    {
+      "id": "8fb55f50-4598-46d5-8deb-f399128fddc6",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A sprinkler waters $\\frac{1}{4}$ of a lawn each minute. How many minutes does it take to water the whole lawn?",
+      "choices": [],
+      "answer": "4",
+      "compute": "1/(1/4)",
+      "solution": "The whole lawn is 1. $1 \\div \\frac{1}{4} = 4$. It takes 4 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 / (1/4) = 4 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.141Z"
+        }
+      }
+    },
+    {
+      "id": "8f8b292c-5bd3-48de-946a-108c11169e78",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A conveyor belt carries a box $\\frac{3}{5}$ meter in $\\frac{1}{5}$ second at a steady speed. How many meters does the box move in 1 second?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(3/5)/(1/5)",
+      "solution": "Divide the distance by the time: $\\frac{3}{5} \\div \\frac{1}{5} = 3$. The box moves 3 meters in 1 second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/5)/(1/5) = 3 meters per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.163Z"
+        }
+      }
+    },
+    {
+      "id": "86309467-c369-4dac-9590-1e707ebefb51",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "A pipe fills 3 buckets in $\\frac{1}{4}$ hour at a steady rate. How many buckets does it fill in 1 hour?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3/(1/4)",
+      "solution": "$3 \\div \\frac{1}{4} = 3 \\times 4 = 12$. The pipe fills 12 buckets in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 / (1/4) = 12 buckets per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.173Z"
+        }
+      }
+    },
+    {
+      "id": "382d7982-68e7-4e7a-9661-3b140d8df193",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare rates",
+      "stem": "Hose A fills $\\frac{1}{2}$ of a tub in $\\frac{1}{2}$ minute. Hose B fills $\\frac{1}{3}$ of a tub in $\\frac{1}{6}$ minute. Which statement is true?",
+      "choices": [
+        "Hose A is faster, filling 1 tub in 1 minute",
+        "Hose B is faster, filling 2 tubs in 1 minute",
+        "Hose B is faster, filling 3 tubs in 1 minute",
+        "The hoses fill at the same rate, 1 tub in 1 minute"
+      ],
+      "answer": "Hose B is faster, filling 2 tubs in 1 minute",
+      "compute": null,
+      "solution": "Hose A: $\\frac{1}{2} \\div \\frac{1}{2} = 1$ tub in 1 minute. Hose B: $\\frac{1}{3} \\div \\frac{1}{6} = 2$ tubs in 1 minute. Hose B is faster.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Hose B is faster, filling 2 tubs in 1 minute",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: (1/2)/(1/2)=1 tub/min. B: (1/3)/(1/6)=2 tubs/min. B faster, 2 tubs per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.196Z"
+        }
+      }
+    },
+    {
+      "id": "33a5881f-18a8-48ae-913e-d2fbb455096d",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit price with fractional amounts",
+      "stem": "Nuts cost 3 dollars for $\\frac{1}{4}$ pound. How many dollars do they cost for 1 pound?",
+      "choices": [
+        "$12$",
+        "$\\frac{3}{4}$",
+        "$\\frac{1}{12}$",
+        "$3$"
+      ],
+      "answer": "$12$",
+      "compute": "12",
+      "solution": "Divide the cost by the weight: $3 \\div \\frac{1}{4} = 3 \\times 4 = 12$. One pound costs 12 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 / (1/4) = 12 dollars per pound.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.234Z"
+        }
+      }
+    },
+    {
+      "id": "afb4c31c-604a-4fd8-9df9-ff55f61c24d2",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A machine labels 4 boxes in $\\frac{1}{2}$ minute at a steady rate. How many minutes does it take to label 1 box?",
+      "choices": [
+        "8 minutes",
+        "$\\frac{1}{2}$ minute",
+        "2 minutes",
+        "$\\frac{1}{8}$ minute"
+      ],
+      "answer": "$\\frac{1}{8}$ minute",
+      "compute": null,
+      "solution": "Divide the time by the number of boxes: $\\frac{1}{2} \\div 4 = \\frac{1}{8}$. It takes $\\frac{1}{8}$ minute for 1 box.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{8}$ minute",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Time per box = (1/2)/4 = 1/8 minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.384Z"
+        }
+      }
+    },
+    {
+      "id": "9f45ddca-146a-4bb2-b077-f1b2d49c0fc1",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A hose fills $\\frac{1}{2}$ of a bucket in $\\frac{1}{3}$ minute. At that steady rate, how many buckets does it fill in 1 minute? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "(1/2)/(1/3)",
+      "solution": "$\\frac{1}{2} \\div \\frac{1}{3} = \\frac{1}{2} \\times 3 = \\frac{3}{2}$. The hose fills $\\frac{3}{2}$ buckets in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)/(1/3) = 3/2 buckets per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.458Z"
+        }
+      }
+    },
+    {
+      "id": "88aa9819-be76-4fb0-a708-8757c9e0afe1",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "Mina reads $\\frac{1}{6}$ of a book in $\\frac{1}{3}$ hour at a steady pace. What part of the book does she read in 1 hour?",
+      "choices": [
+        "$\\frac{1}{2}$",
+        "$\\frac{1}{18}$",
+        "$2$",
+        "$\\frac{2}{3}$"
+      ],
+      "answer": "$\\frac{1}{2}$",
+      "compute": null,
+      "solution": "$\\frac{1}{6} \\div \\frac{1}{3} = \\frac{1}{6} \\times 3 = \\frac{3}{6} = \\frac{1}{2}$. She reads $\\frac{1}{2}$ of the book in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/6)/(1/3) = 3/6 = 1/2 of the book per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.534Z"
+        }
+      }
+    },
+    {
+      "id": "d8f78854-6304-4a45-bc6f-a69d9352bfc4",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A fountain uses $\\frac{1}{3}$ gallon of water in $\\frac{1}{2}$ hour. How many gallons does it use in 1 hour? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "2/3",
+      "compute": "(1/3)/(1/2)",
+      "solution": "$\\frac{1}{3} \\div \\frac{1}{2} = \\frac{1}{3} \\times 2 = \\frac{2}{3}$. It uses $\\frac{2}{3}$ gallon in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/3) / (1/2) = 2/3 gallon per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.568Z"
+        }
+      }
+    },
+    {
+      "id": "3238691a-b6db-47c6-8794-75dfadf82b5f",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A snail crawls $\\frac{1}{3}$ foot in $\\frac{1}{6}$ hour at a steady pace. How many feet does it crawl in 1 hour?",
+      "choices": [
+        "$6$",
+        "$\\frac{1}{2}$",
+        "$\\frac{1}{18}$",
+        "$2$"
+      ],
+      "answer": "$2$",
+      "compute": "2",
+      "solution": "Divide the distance by the time: $\\frac{1}{3} \\div \\frac{1}{6} = \\frac{1}{3} \\times 6 = 2$. The snail crawls 2 feet in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/3) / (1/6) = 2 feet per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.576Z"
+        }
+      }
+    },
+    {
+      "id": "99342049-2a69-4b3c-bb4c-b2888bf2af7c",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "An ant walks $\\frac{2}{5}$ inch in $\\frac{1}{10}$ second. At that steady speed, how many inches does it walk in 1 second?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(2/5)/(1/10)",
+      "solution": "$\\frac{2}{5} \\div \\frac{1}{10} = \\frac{2}{5} \\times 10 = 4$. The ant walks 4 inches in 1 second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2/5)/(1/10) = 2/5 * 10 = 4 inches per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.580Z"
+        }
+      }
+    },
+    {
+      "id": "80a410ba-fc00-4ccf-8010-d9c613b07507",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A stream carries a leaf $\\frac{1}{2}$ meter in $\\frac{1}{4}$ second at a steady speed. Which statement is also true?",
+      "choices": [
+        "The leaf moves 4 meters in 1 second",
+        "The leaf moves 1 meter in 1 second",
+        "The leaf moves 2 meters in 1 second",
+        "The leaf moves $\\frac{1}{8}$ meter in 1 second"
+      ],
+      "answer": "The leaf moves 2 meters in 1 second",
+      "compute": null,
+      "solution": "$\\frac{1}{2} \\div \\frac{1}{4} = \\frac{1}{2} \\times 4 = 2$. The leaf moves 2 meters in 1 second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The leaf moves 2 meters in 1 second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)/(1/4) = 2 meters per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.597Z"
+        }
+      }
+    },
+    {
+      "id": "fd146290-a807-4da1-8106-c3db8d017fa1",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A paint mix uses $\\frac{5}{6}$ liter of blue paint for every $\\frac{1}{3}$ liter of white paint. How many liters of blue paint go with 1 liter of white paint? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "5/2",
+      "compute": "(5/6)/(1/3)",
+      "solution": "$\\frac{5}{6} \\div \\frac{1}{3} = \\frac{5}{6} \\times 3 = \\frac{15}{6} = \\frac{5}{2}$. So $\\frac{5}{2}$ liters of blue go with 1 liter of white.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/6)/(1/3) = 5/6 * 3 = 5/2 liters.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.605Z"
+        }
+      }
+    },
+    {
       "id": "b09b1eeb-912c-451b-8b97-025463773f10",
       "topic_id": "NC17.7.RP.1",
       "difficulty": 2,
@@ -634,6 +1324,728 @@
           "work": "(3/4)/(5/2) = 3/4 * 2/5 = 6/20 = 3/10 kg per meter.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:36.427Z"
+        }
+      }
+    },
+    {
+      "id": "fe897c20-a1fd-40bf-b60a-0a3901fdf941",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit price with fractional amounts",
+      "stem": "A bag of $2\\frac{1}{2}$ pounds of oranges costs 15 dollars. How many dollars does 1 pound of oranges cost?",
+      "choices": [],
+      "answer": "6",
+      "compute": "15/(5/2)",
+      "solution": "$2\\frac{1}{2} = \\frac{5}{2}$. $15 \\div \\frac{5}{2} = 15 \\times \\frac{2}{5} = 6$. One pound costs 6 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 / 2.5 = 6 dollars per pound.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.712Z"
+        }
+      }
+    },
+    {
+      "id": "a1387cbe-89ad-40c1-a7aa-35a5539382c6",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "A loom weaves $\\frac{3}{4}$ of a rug in $\\frac{1}{3}$ day at a steady rate. How many rugs does it weave in $2\\frac{1}{2}$ days? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "45/8",
+      "compute": "(3/4)/(1/3)*(5/2)",
+      "solution": "$\\frac{3}{4} \\div \\frac{1}{3} = \\frac{9}{4}$ rugs per day. In $2\\frac{1}{2}$ days: $\\frac{9}{4} \\times \\frac{5}{2} = \\frac{45}{8}$ rugs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45/8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate (3/4)/(1/3) = 9/4 rugs/day. × 5/2 = 45/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.739Z"
+        }
+      }
+    },
+    {
+      "id": "956db2e5-aa24-4638-8a01-64d3f15bef1b",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "Which of these has a unit rate of 3 liters per minute?",
+      "choices": [
+        "$1\\frac{1}{2}$ liters in $\\frac{1}{2}$ minute",
+        "$1\\frac{1}{2}$ liters in 2 minutes",
+        "$\\frac{1}{2}$ liter in $1\\frac{1}{2}$ minutes",
+        "3 liters in $\\frac{1}{2}$ minute"
+      ],
+      "answer": "$1\\frac{1}{2}$ liters in $\\frac{1}{2}$ minute",
+      "compute": null,
+      "solution": "$1\\frac{1}{2}$ liters in $\\frac{1}{2}$ minute: $\\frac{3}{2} \\div \\frac{1}{2} = 3$ liters per minute. The others give $\\frac{3}{4}$, $\\frac{1}{3}$ and 6 liters per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{1}{2}$ liters in $\\frac{1}{2}$ minute",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5/0.5 = 3 L/min. Others: 0.75, 6, 1/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.766Z"
+        }
+      }
+    },
+    {
+      "id": "53277dfe-6129-4222-a5a3-08a242388c05",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "A printer's unit rate is $2\\frac{1}{4}$ pages per second. What does this tell you?",
+      "choices": [
+        "The printer takes $2\\frac{1}{4}$ seconds to print 1 page",
+        "The printer prints 2 pages every $\\frac{1}{4}$ second",
+        "The printer prints 2 pages in $1\\frac{1}{4}$ seconds",
+        "The printer prints $2\\frac{1}{4}$ pages in 1 second"
+      ],
+      "answer": "The printer prints $2\\frac{1}{4}$ pages in 1 second",
+      "compute": null,
+      "solution": "A unit rate per second is the amount for 1 second, so the printer prints $2\\frac{1}{4}$ pages in 1 second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The printer prints $2\\frac{1}{4}$ pages in 1 second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 1/4 pages per second means 2 1/4 pages in 1 second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.924Z"
+        }
+      }
+    },
+    {
+      "id": "41584a7c-d9b1-499a-b1eb-2617b6e18d9a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find how much time or how many are needed",
+      "stem": "A jogger runs at a steady 6 miles per hour. How many hours does it take to run $4\\frac{1}{2}$ miles? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "(9/2)/6",
+      "solution": "$4\\frac{1}{2} = \\frac{9}{2}$. Hours = distance divided by speed: $\\frac{9}{2} \\div 6 = \\frac{9}{12} = \\frac{3}{4}$. It takes $\\frac{3}{4}$ hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Time = distance/rate = (9/2)/6 = 9/12 = 3/4 hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.958Z"
+        }
+      }
+    },
+    {
+      "id": "5a5ff2f7-e0f0-4274-8f28-0c49e642d184",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A farmer picks $\\frac{3}{4}$ bushel of apples in $\\frac{1}{2}$ hour. How long does it take the farmer to pick 1 bushel at that steady rate?",
+      "choices": [
+        "$1\\frac{1}{2}$ hours",
+        "$\\frac{3}{8}$ hour",
+        "$\\frac{2}{3}$ hour",
+        "$1\\frac{1}{4}$ hours"
+      ],
+      "answer": "$\\frac{2}{3}$ hour",
+      "compute": null,
+      "solution": "Divide the time by the amount: $\\frac{1}{2} \\div \\frac{3}{4} = \\frac{1}{2} \\times \\frac{4}{3} = \\frac{4}{6} = \\frac{2}{3}$. It takes $\\frac{2}{3}$ hour per bushel.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}$ hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (3/4)/(1/2) = 3/2 bushel per hour. Time for 1 bushel = 1/(3/2) = 2/3 hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.007Z"
+        }
+      }
+    },
+    {
+      "id": "7696720d-7665-4c29-abd1-52a07458f113",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A baker uses $\\frac{3}{4}$ cup of oil for $2\\frac{1}{4}$ loaves of bread. How many cups of oil does 1 loaf need? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "1/3",
+      "compute": "(3/4)/(9/4)",
+      "solution": "$2\\frac{1}{4} = \\frac{9}{4}$. $\\frac{3}{4} \\div \\frac{9}{4} = \\frac{3}{4} \\times \\frac{4}{9} = \\frac{12}{36} = \\frac{1}{3}$. Each loaf needs $\\frac{1}{3}$ cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/4) ÷ (9/4) = 3/9 = 1/3 cup per loaf.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.026Z"
+        }
+      }
+    },
+    {
+      "id": "d700d152-d8f1-451a-bf69-f34a61cfdfc4",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rate per one of the other quantity",
+      "stem": "$2\\frac{1}{4}$ liters of paint cover $\\frac{3}{4}$ of a wall. How many liters of paint are needed to cover a whole wall?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(9/4)/(3/4)",
+      "solution": "$2\\frac{1}{4} = \\frac{9}{4}$. $\\frac{9}{4} \\div \\frac{3}{4} = 3$. A whole wall needs 3 liters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(9/4) / (3/4) = 3 liters per whole wall.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.047Z"
+        }
+      }
+    },
+    {
+      "id": "db1555a7-c777-45b8-994a-c9d4767c3f01",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit price with fractional amounts",
+      "stem": "A scooter goes 18 miles on $\\frac{2}{3}$ gallon of fuel. How many miles can it go on 1 gallon?",
+      "choices": [],
+      "answer": "27",
+      "compute": "18/(2/3)",
+      "solution": "$18 \\div \\frac{2}{3} = 18 \\times \\frac{3}{2} = 27$. It goes 27 miles on 1 gallon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18 / (2/3) = 18 * 3/2 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.169Z"
+        }
+      }
+    },
+    {
+      "id": "b136c163-d7eb-4b36-8ac9-4a54083ee138",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "A faucet fills $\\frac{3}{8}$ of a sink in $\\frac{1}{4}$ minute. At that steady rate, how many sinks does it fill in 2 minutes?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(3/8)/(1/4)*2",
+      "solution": "$\\frac{3}{8} \\div \\frac{1}{4} = \\frac{3}{2}$ sinks per minute. In 2 minutes: $\\frac{3}{2} \\times 2 = 3$ sinks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate (3/8)/(1/4)=3/2 sinks per minute; 2 min -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.241Z"
+        }
+      }
+    },
+    {
+      "id": "b1e6ab3a-e275-4b54-ba23-7cc1697ffa50",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "Water flows from a pipe at a steady rate: $\\frac{3}{8}$ gallon in $\\frac{1}{4}$ minute. How many gallons flow in 3 minutes?",
+      "choices": [
+        "$\\frac{9}{32}$ gallon",
+        "$2\\frac{1}{4}$ gallons",
+        "$4\\frac{1}{2}$ gallons",
+        "9 gallons"
+      ],
+      "answer": "$4\\frac{1}{2}$ gallons",
+      "compute": null,
+      "solution": "$\\frac{3}{8} \\div \\frac{1}{4} = \\frac{3}{2}$ gallons per minute. In 3 minutes: $\\frac{3}{2} \\times 3 = \\frac{9}{2} = 4\\frac{1}{2}$ gallons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4\\frac{1}{2}$ gallons",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (3/8)÷(1/4) = 3/2 gal/min. In 3 min: 9/2 = 4 1/2 gallons.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.257Z"
+        }
+      }
+    },
+    {
+      "id": "03a314a3-3902-413b-8c3c-0d2e097995a1",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "A hiker walks $2\\frac{1}{2}$ miles in $\\frac{3}{4}$ hour at a steady pace. How many miles does the hiker walk in 1 hour? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "10/3",
+      "compute": "(5/2)/(3/4)",
+      "solution": "$2\\frac{1}{2} = \\frac{5}{2}$. $\\frac{5}{2} \\div \\frac{3}{4} = \\frac{5}{2} \\times \\frac{4}{3} = \\frac{20}{6} = \\frac{10}{3}$. The hiker walks $\\frac{10}{3}$ miles in 1 hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/2) ÷ (3/4) = (5/2)(4/3) = 20/6 = 10/3 miles per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.272Z"
+        }
+      }
+    },
+    {
+      "id": "0a7ba722-ff65-4315-8e88-066d2d3727a5",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A tortoise walks $\\frac{1}{6}$ mile each hour at a steady pace. How many miles does it walk in $2\\frac{1}{2}$ hours? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "5/12",
+      "compute": "(1/6)*(5/2)",
+      "solution": "$2\\frac{1}{2} = \\frac{5}{2}$. $\\frac{1}{6} \\times \\frac{5}{2} = \\frac{5}{12}$. The tortoise walks $\\frac{5}{12}$ mile.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/6) x (5/2) = 5/12 mile.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.325Z"
+        }
+      }
+    },
+    {
+      "id": "003a00b6-4223-4e80-add6-875e0154101a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare rates",
+      "stem": "Cyclist A rides $\\frac{3}{4}$ mile in $\\frac{1}{4}$ hour. Cyclist B rides $2\\frac{1}{2}$ miles in 1 hour. Both ride at steady speeds. Which statement is true?",
+      "choices": [
+        "Cyclist B is faster: $2\\frac{1}{2}$ miles per hour compared with 3 miles per hour",
+        "Cyclist A is faster: $\\frac{3}{16}$ mile per hour compared with $2\\frac{1}{2}$ miles per hour",
+        "Cyclist A is faster: 3 miles per hour compared with $2\\frac{1}{2}$ miles per hour",
+        "The two ride at the same speed, 3 miles per hour"
+      ],
+      "answer": "Cyclist A is faster: 3 miles per hour compared with $2\\frac{1}{2}$ miles per hour",
+      "compute": null,
+      "solution": "Cyclist A: $\\frac{3}{4} \\div \\frac{1}{4} = 3$ miles per hour. Cyclist B: $2\\frac{1}{2}$ miles per hour. Since 3 is greater than $2\\frac{1}{2}$, Cyclist A is faster.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Cyclist A is faster: 3 miles per hour compared with $2\\frac{1}{2}$ miles per hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: (3/4)/(1/4)=3 mph; B: 2.5 mph. A is faster.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.396Z"
+        }
+      }
+    },
+    {
+      "id": "38904845-8d6b-4918-90ed-26398fd3ddb4",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare rates",
+      "stem": "Pipe A fills $\\frac{5}{6}$ of a tank in $\\frac{1}{3}$ hour. Pipe B fills $\\frac{3}{4}$ of a tank in $\\frac{1}{4}$ hour. Which statement is true?",
+      "choices": [
+        "Pipe B is faster: 3 tanks per hour compared with $2\\frac{1}{2}$ tanks per hour",
+        "Pipe A is faster: $2\\frac{1}{2}$ tanks per hour compared with 3 tanks per hour",
+        "Pipe A is faster, because $\\frac{5}{6}$ is greater than $\\frac{3}{4}$",
+        "The pipes are equally fast, at $\\frac{1}{2}$ tank per hour"
+      ],
+      "answer": "Pipe B is faster: 3 tanks per hour compared with $2\\frac{1}{2}$ tanks per hour",
+      "compute": null,
+      "solution": "Pipe A: $\\frac{5}{6} \\div \\frac{1}{3} = \\frac{5}{2}$ tanks per hour. Pipe B: $\\frac{3}{4} \\div \\frac{1}{4} = 3$ tanks per hour. Pipe B is faster.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Pipe B is faster: 3 tanks per hour compared with $2\\frac{1}{2}$ tanks per hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: (5/6)/(1/3)=5/2 tanks/h; B: (3/4)/(1/4)=3 tanks/h. B faster.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.412Z"
+        }
+      }
+    },
+    {
+      "id": "640c05af-3fa4-4b41-b38e-490bbd5bbd4c",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "A trail crew builds $\\frac{5}{6}$ kilometer of path in $2\\frac{1}{4}$ hours at a steady pace. Which expression gives the kilometers built in 1 hour?",
+      "choices": [
+        "$2\\frac{1}{4} \\div \\frac{5}{6}$",
+        "$\\frac{5}{6} \\times 2\\frac{1}{4}$",
+        "$\\frac{5}{6} \\div \\frac{1}{4}$",
+        "$\\frac{5}{6} \\div 2\\frac{1}{4}$"
+      ],
+      "answer": "$\\frac{5}{6} \\div 2\\frac{1}{4}$",
+      "compute": null,
+      "solution": "Kilometers in 1 hour = kilometers built divided by hours worked: $\\frac{5}{6} \\div 2\\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{6} \\div 2\\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Km per hour = (5/6) / (2 1/4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.423Z"
+        }
+      }
+    },
+    {
+      "id": "cb8b0826-4cf3-4894-aaac-1170b0e7f354",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit rate from a ratio of fractions",
+      "stem": "A machine seals $2\\frac{1}{2}$ boxes in $\\frac{1}{2}$ minute. At that steady rate, how many boxes does it seal in 1 minute?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(5/2)/(1/2)",
+      "solution": "$2\\frac{1}{2} = \\frac{5}{2}$. $\\frac{5}{2} \\div \\frac{1}{2} = 5$. It seals 5 boxes in 1 minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/2)/(1/2) = 5 boxes per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.434Z"
+        }
+      }
+    },
+    {
+      "id": "7a668f70-fbea-454f-8e52-55509b11c7f6",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "Which of these is NOT the same rate as $\\frac{3}{4}$ mile in $\\frac{1}{2}$ hour?",
+      "choices": [
+        "$1\\frac{1}{2}$ miles in 1 hour",
+        "$\\frac{3}{4}$ mile in $\\frac{1}{4}$ hour",
+        "3 miles in 2 hours",
+        "$\\frac{3}{8}$ mile in $\\frac{1}{4}$ hour"
+      ],
+      "answer": "$\\frac{3}{4}$ mile in $\\frac{1}{4}$ hour",
+      "compute": null,
+      "solution": "$\\frac{3}{4}$ mile in $\\frac{1}{2}$ hour is $\\frac{3}{2}$ miles per hour. $\\frac{3}{4}$ mile in $\\frac{1}{4}$ hour is 3 miles per hour, so it is a different rate. The others are all $\\frac{3}{2}$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4}$ mile in $\\frac{1}{4}$ hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate 1.5 mi/h. A: 3 mi/h (different); B 1.5; C 1.5; D 1.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.454Z"
+        }
+      }
+    },
+    {
+      "id": "2fe329a8-88ea-47bb-994d-f126db048c1f",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A runner takes $\\frac{1}{2}$ hour to run $2\\frac{1}{2}$ miles at a steady pace. How many hours does the runner take to run 1 mile?",
+      "choices": [
+        "5 hours",
+        "$\\frac{1}{5}$ hour",
+        "$\\frac{5}{4}$ hours",
+        "3 hours"
+      ],
+      "answer": "$\\frac{1}{5}$ hour",
+      "compute": null,
+      "solution": "$\\frac{1}{2} \\div \\frac{5}{2} = \\frac{1}{2} \\times \\frac{2}{5} = \\frac{1}{5}$. It takes $\\frac{1}{5}$ hour per mile.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{5}$ hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Time per mile = (1/2)/(5/2)=1/5 hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.473Z"
+        }
+      }
+    },
+    {
+      "id": "54ea7483-f213-4b4f-9529-3f35d6da4803",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Unit price with fractional amounts",
+      "stem": "Store A sells $\\frac{3}{4}$ pound of cheese for 3 dollars. Store B sells $\\frac{2}{3}$ pound of the same cheese for 3 dollars. Which statement is true?",
+      "choices": [
+        "Store B is cheaper, at $4\\frac{1}{2}$ dollars per pound",
+        "Store A is cheaper, at 4 dollars per pound",
+        "Store A is cheaper, at $\\frac{3}{4}$ dollar per pound",
+        "Store B is cheaper, at $\\frac{2}{3}$ dollar per pound"
+      ],
+      "answer": "Store A is cheaper, at 4 dollars per pound",
+      "compute": null,
+      "solution": "Store A: $3 \\div \\frac{3}{4} = 4$ dollars per pound. Store B: $3 \\div \\frac{2}{3} = \\frac{9}{2} = 4\\frac{1}{2}$ dollars per pound. Store A costs less per pound.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Store A is cheaper, at 4 dollars per pound",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 3/(3/4)=4 $/lb. B: 3/(2/3)=4.50 $/lb. A cheaper at 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.485Z"
+        }
+      }
+    },
+    {
+      "id": "d9f30db9-f088-400e-b724-94e6cf87aa6a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "Ana walks $\\frac{2}{3}$ mile in $\\frac{1}{4}$ hour at a steady pace. How many miles does she walk in 2 hours? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "16/3",
+      "compute": "(2/3)/(1/4)*2",
+      "solution": "$\\frac{2}{3} \\div \\frac{1}{4} = \\frac{2}{3} \\times 4 = \\frac{8}{3}$ miles per hour. In 2 hours: $\\frac{8}{3} \\times 2 = \\frac{16}{3}$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate (2/3)/(1/4)=8/3 mph; in 2 h: 16/3 miles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.489Z"
+        }
+      }
+    },
+    {
+      "id": "6f02509c-bfb2-473c-8cd4-803a8906fd6a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "Jo finds the rate for $\\frac{3}{4}$ mile in $\\frac{1}{2}$ hour by computing $\\frac{3}{4} \\times \\frac{1}{2} = \\frac{3}{8}$. Which statement is correct?",
+      "choices": [
+        "Jo is right, so the rate is $\\frac{3}{8}$ mile per hour",
+        "Jo should add, so the rate is $1\\frac{1}{4}$ miles per hour",
+        "Jo should divide $\\frac{1}{2}$ by $\\frac{3}{4}$, so the rate is $\\frac{2}{3}$ mile per hour",
+        "Jo should divide, so the rate is $1\\frac{1}{2}$ miles per hour"
+      ],
+      "answer": "Jo should divide, so the rate is $1\\frac{1}{2}$ miles per hour",
+      "compute": null,
+      "solution": "A rate per 1 hour comes from dividing the distance by the time: $\\frac{3}{4} \\div \\frac{1}{2} = \\frac{3}{2} = 1\\frac{1}{2}$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Jo should divide, so the rate is $1\\frac{1}{2}$ miles per hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (3/4)/(1/2) = 3/2 = 1 1/2 miles per hour. Jo multiplied wrongly; dividing 1/2 by 3/4 gives hours per mile, not miles per hour.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.510Z"
+        }
+      }
+    },
+    {
+      "id": "e28792b5-c918-40e4-a92d-8329672e109c",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Unit price with fractional amounts",
+      "stem": "$\\frac{3}{5}$ yard of ribbon costs 9 dollars. How many dollars does 1 yard of ribbon cost?",
+      "choices": [],
+      "answer": "15",
+      "compute": "9/(3/5)",
+      "solution": "$9 \\div \\frac{3}{5} = 9 \\times \\frac{5}{3} = 15$. One yard costs 15 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 / (3/5) = 9 x 5/3 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.521Z"
         }
       }
     },
@@ -949,6 +2361,728 @@
           "work": "Rate (1/6)/(1/4) = 4/6 = 2/3 gal per hour; *2 = 4/3 = 1 1/3 gallons.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:36.427Z"
+        }
+      }
+    },
+    {
+      "id": "023620a4-01e7-41cc-8cf0-cf66376256ed",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A train goes $\\frac{5}{6}$ mile in $\\frac{1}{2}$ minute at a steady speed. How many miles does it go in 1 hour?",
+      "choices": [],
+      "answer": "100",
+      "compute": "(5/6)/(1/2)*60",
+      "solution": "$\\frac{5}{6} \\div \\frac{1}{2} = \\frac{5}{3}$ miles per minute. There are 60 minutes in 1 hour, so $\\frac{5}{3} \\times 60 = 100$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(5/6)/(1/2) = 5/3 mi/min × 60 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.740Z"
+        }
+      }
+    },
+    {
+      "id": "a761e8c3-824c-43be-b9bd-42f63da8cf3a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find how much time or how many are needed",
+      "stem": "A machine fills $\\frac{5}{8}$ of a crate in $\\frac{1}{4}$ hour at a steady rate. How many hours does it take to fill 3 crates? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "6/5",
+      "compute": "3/((5/8)/(1/4))",
+      "solution": "$\\frac{5}{8} \\div \\frac{1}{4} = \\frac{5}{2}$ crates per hour. Hours = $3 \\div \\frac{5}{2} = 3 \\times \\frac{2}{5} = \\frac{6}{5}$. It takes $\\frac{6}{5}$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate (5/8)/(1/4) = 5/2 crates/h. 3 crates: 3/(5/2) = 6/5 h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.765Z"
+        }
+      }
+    },
+    {
+      "id": "20385308-2cbc-4c6b-b4ea-4e8d721c716f",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare rates",
+      "stem": "Four steady rates are listed. Which is the slowest?",
+      "choices": [
+        "$\\frac{2}{3}$ mile in $\\frac{1}{2}$ hour",
+        "$\\frac{5}{6}$ mile in $\\frac{1}{2}$ hour",
+        "$\\frac{3}{4}$ mile in $\\frac{1}{2}$ hour",
+        "1 mile in $\\frac{1}{2}$ hour"
+      ],
+      "answer": "$\\frac{2}{3}$ mile in $\\frac{1}{2}$ hour",
+      "compute": null,
+      "solution": "In miles per hour the rates are $\\frac{5}{3}$, $\\frac{3}{2}$, $\\frac{4}{3}$ and 2. The smallest is $\\frac{4}{3}$, which is $\\frac{2}{3}$ mile in $\\frac{1}{2}$ hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{2}{3}$ mile in $\\frac{1}{2}$ hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rates per half hour: 1, 3/4, 5/6, 2/3. Smallest 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.904Z"
+        }
+      }
+    },
+    {
+      "id": "477eb3b0-9326-4487-9d9f-27e1457469cb",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "A cyclist rides $\\frac{3}{5}$ mile in $\\frac{1}{10}$ hour, and then keeps that same steady speed for another $1\\frac{1}{2}$ hours. How many miles in all does the cyclist ride? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "48/5",
+      "compute": "3/5+(3/5)/(1/10)*(3/2)",
+      "solution": "$\\frac{3}{5} \\div \\frac{1}{10} = 6$ miles per hour. In $1\\frac{1}{2}$ hours: $6 \\times \\frac{3}{2} = 9$ miles. Add the first part: $9 + \\frac{3}{5} = \\frac{48}{5}$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Speed (3/5)/(1/10)=6 mph. Another 1.5 h: 9 miles. Total 9+3/5=48/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.948Z"
+        }
+      }
+    },
+    {
+      "id": "6e9a1499-17a6-4627-9c99-1812504c780d",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare rates",
+      "stem": "Which costs the least per pound?",
+      "choices": [
+        "$\\frac{3}{4}$ pound for 6 dollars",
+        "$\\frac{2}{3}$ pound for 5 dollars",
+        "$1\\frac{1}{2}$ pounds for 10 dollars",
+        "$\\frac{1}{2}$ pound for 3 dollars"
+      ],
+      "answer": "$\\frac{1}{2}$ pound for 3 dollars",
+      "compute": null,
+      "solution": "Dollars per pound: $6 \\div \\frac{3}{4} = 8$; $5 \\div \\frac{2}{3} = \\frac{15}{2}$; $10 \\div \\frac{3}{2} = \\frac{20}{3}$; $3 \\div \\frac{1}{2} = 6$. The least is 6 dollars per pound.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$ pound for 3 dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: 3/(1/2)=6 $/lb; B: 6/(3/4)=8; C: 5/(2/3)=7.5; D: 10/1.5=6.67. A least.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.950Z"
+        }
+      }
+    },
+    {
+      "id": "4e8b2bb8-3123-4d43-a4d7-d26e7a6ec16f",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "A sprayer uses $3\\frac{1}{2}$ liters of cleaner to cover $8\\frac{3}{4}$ square meters. How many square meters does 1 liter cover? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "5/2",
+      "compute": "(35/4)/(7/2)",
+      "solution": "$8\\frac{3}{4} = \\frac{35}{4}$ and $3\\frac{1}{2} = \\frac{7}{2}$. $\\frac{35}{4} \\div \\frac{7}{2} = \\frac{35}{4} \\times \\frac{2}{7} = \\frac{70}{28} = \\frac{5}{2}$. One liter covers $\\frac{5}{2}$ square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(35/4)/(7/2)=35/4 x 2/7 = 70/28 = 5/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.953Z"
+        }
+      }
+    },
+    {
+      "id": "5245fd68-c1f7-4f3d-bd36-68f871a67eb9",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "Machine A makes $\\frac{3}{4}$ of a toy in $\\frac{1}{2}$ minute. Machine B makes $\\frac{2}{3}$ of a toy in $\\frac{1}{3}$ minute. Both work at steady rates. How many toys do the two machines make together in 4 minutes?",
+      "choices": [],
+      "answer": "14",
+      "compute": "((3/4)/(1/2)+(2/3)/(1/3))*4",
+      "solution": "Machine A: $\\frac{3}{4} \\div \\frac{1}{2} = \\frac{3}{2}$ toys per minute. Machine B: $\\frac{2}{3} \\div \\frac{1}{3} = 2$ toys per minute. Together: $\\frac{3}{2} + 2 = \\frac{7}{2}$ toys per minute, so in 4 minutes they make $\\frac{7}{2} \\times 4 = 14$ toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: (3/4)/(1/2) = 3/2 toys/min. B: (2/3)/(1/3) = 2 toys/min. Together 7/2 per min; in 4 min 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.965Z"
+        }
+      }
+    },
+    {
+      "id": "c424b6b4-83d6-43e0-add0-8291af8a18b7",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Unit rate with mixed numbers or whole numbers",
+      "stem": "A bug crawls $\\frac{1}{2}$ foot in 20 seconds at a steady pace. How many feet does it crawl in 1 minute?",
+      "choices": [
+        "$\\frac{1}{40}$",
+        "$1\\frac{1}{2}$",
+        "$10$",
+        "$\\frac{1}{6}$"
+      ],
+      "answer": "$1\\frac{1}{2}$",
+      "compute": null,
+      "solution": "20 seconds is $\\frac{1}{3}$ minute. $\\frac{1}{2} \\div \\frac{1}{3} = \\frac{3}{2} = 1\\frac{1}{2}$ feet per minute. (Or: 1 minute is 3 groups of 20 seconds, and $3 \\times \\frac{1}{2} = 1\\frac{1}{2}$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 min = 3 * 20 s, so 3 * 1/2 = 1 1/2 ft.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.975Z"
+        }
+      }
+    },
+    {
+      "id": "3eaf5f0a-8a82-4a84-980b-51e69f1a2794",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "Water is added to a pool at a steady $1\\frac{1}{2}$ inches every $\\frac{3}{4}$ hour. The pool needs to rise 9 inches, and it has already risen 3 inches. How many more hours are needed?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(9-3)/((3/2)/(3/4))",
+      "solution": "$1\\frac{1}{2} \\div \\frac{3}{4} = \\frac{3}{2} \\times \\frac{4}{3} = 2$ inches per hour. The pool still needs $9 - 3 = 6$ inches, so $6 \\div 2 = 3$ hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate (3/2)/(3/4) = 2 in/h. Still needs 9 - 3 = 6 in; 6/2 = 3 h.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.980Z"
+        }
+      }
+    },
+    {
+      "id": "2c9ab627-6ff0-4f15-a954-e877f673a2a5",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "A faucet leaks $\\frac{1}{4}$ gallon every $\\frac{1}{2}$ hour. Which equation gives the gallons $g$ that leak in $t$ hours?",
+      "choices": [
+        "$g = \\frac{1}{2}t$",
+        "$g = 2t$",
+        "$g = \\frac{1}{8}t$",
+        "$g = \\frac{3}{4}t$"
+      ],
+      "answer": "$g = \\frac{1}{2}t$",
+      "compute": null,
+      "solution": "The unit rate is $\\frac{1}{4} \\div \\frac{1}{2} = \\frac{1}{2}$ gallon per hour, so the gallons are $\\frac{1}{2}$ times the hours: $g = \\frac{1}{2}t$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g = \\frac{1}{2}t$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (1/4)/(1/2) = 1/2 gallon per hour, so g = (1/2)t.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.088Z"
+        }
+      }
+    },
+    {
+      "id": "2afa13c4-df3a-4e1e-88bd-b672cc629e2a",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rate per one of the other quantity",
+      "stem": "Which is the number of pages per second for a printer that prints 10 pages in $\\frac{5}{6}$ of a minute? (There are 60 seconds in a minute.)",
+      "choices": [
+        "$12$",
+        "$0.5$",
+        "$0.2$",
+        "$0.12$"
+      ],
+      "answer": "$0.2$",
+      "compute": "1/5",
+      "solution": "$\\frac{5}{6}$ of a minute is 50 seconds. 10 pages in 50 seconds is $10 \\div 50 = 0.2$ pages per second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/6 minute = 50 seconds. 10 pages / 50 s = 0.2 pages per second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.093Z"
+        }
+      }
+    },
+    {
+      "id": "dd1f25d8-7a41-47bc-9dab-03857dde01ab",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "Tom says that $\\frac{2}{3}$ mile in $\\frac{1}{2}$ hour is a rate of $\\frac{1}{3}$ mile per hour. Which statement explains his mistake?",
+      "choices": [
+        "He divided the hours by the miles",
+        "He added $\\frac{2}{3}$ and $\\frac{1}{2}$ instead of dividing",
+        "He divided correctly but did not simplify",
+        "He multiplied $\\frac{2}{3}$ by $\\frac{1}{2}$ instead of dividing"
+      ],
+      "answer": "He multiplied $\\frac{2}{3}$ by $\\frac{1}{2}$ instead of dividing",
+      "compute": null,
+      "solution": "Tom's answer, $\\frac{2}{3} \\times \\frac{1}{2} = \\frac{1}{3}$, comes from multiplying. The right rate is $\\frac{2}{3} \\div \\frac{1}{2} = \\frac{4}{3}$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He multiplied $\\frac{2}{3}$ by $\\frac{1}{2}$ instead of dividing",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Correct rate: (2/3)/(1/2) = 4/3 mph. Tom's 1/3 = (2/3)(1/2): he multiplied. (Hours/miles would be 3/4; adding gives 7/6.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.105Z"
+        }
+      }
+    },
+    {
+      "id": "dd6ce4bf-a02f-4089-a80b-f88b756dff02",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "Which pair of rates is equal?",
+      "choices": [
+        "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute and 3 gallons in $1\\frac{1}{2}$ minutes",
+        "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute and 3 gallons in $\\frac{3}{4}$ minute",
+        "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute and 1 gallon in $\\frac{1}{4}$ minute",
+        "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute and $1\\frac{1}{2}$ gallons in 2 minutes"
+      ],
+      "answer": "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute and 3 gallons in $1\\frac{1}{2}$ minutes",
+      "compute": null,
+      "solution": "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute is 2 gallons per minute. 3 gallons in $1\\frac{1}{2}$ minutes is $3 \\div \\frac{3}{2} = 2$ gallons per minute. The other second rates are 4, 4 and $\\frac{3}{4}$ gallons per minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{2}$ gallon in $\\frac{1}{4}$ minute and 3 gallons in $1\\frac{1}{2}$ minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Base rate (1/2)/(1/4) = 2 gal/min. 3/(3/2) = 2 yes; 3/(3/4) = 4; 1/(1/4) = 4; (3/2)/2 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.286Z"
+        }
+      }
+    },
+    {
+      "id": "1afed8cb-05c5-4295-a44e-f45dd73b9a61",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rate per one of the other quantity",
+      "stem": "A printer prints 4 pages in $\\frac{2}{3}$ minute at a steady rate. Which statement is true?",
+      "choices": [
+        "It prints 6 pages in 1 minute, and 1 page takes 6 minutes",
+        "It prints $\\frac{8}{3}$ pages in 1 minute, and 1 page takes $\\frac{1}{6}$ minute",
+        "It prints $\\frac{1}{6}$ page in 1 minute, and 1 page takes 6 minutes",
+        "It prints 6 pages in 1 minute, and 1 page takes $\\frac{1}{6}$ minute"
+      ],
+      "answer": "It prints 6 pages in 1 minute, and 1 page takes $\\frac{1}{6}$ minute",
+      "compute": null,
+      "solution": "Pages per minute: $4 \\div \\frac{2}{3} = 6$. Minutes per page: $\\frac{2}{3} \\div 4 = \\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It prints 6 pages in 1 minute, and 1 page takes $\\frac{1}{6}$ minute",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate 4 / (2/3) = 6 pages per minute; time per page (2/3)/4 = 1/6 minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.307Z"
+        }
+      }
+    },
+    {
+      "id": "fb8712f0-ee89-4655-a75b-2f167f4d2c68",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "A runner goes $1\\frac{1}{2}$ miles in $\\frac{1}{4}$ hour at a steady pace. How many miles does the runner go in $2\\frac{1}{4}$ hours? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "27/2",
+      "compute": "(3/2)/(1/4)*(9/4)",
+      "solution": "$1\\frac{1}{2} \\div \\frac{1}{4} = \\frac{3}{2} \\times 4 = 6$ miles per hour. In $2\\frac{1}{4}$ hours: $6 \\times \\frac{9}{4} = \\frac{54}{4} = \\frac{27}{2}$ miles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate (3/2)/(1/4) = 6 mph. In 9/4 h: 6 x 9/4 = 54/4 = 27/2 miles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.312Z"
+        }
+      }
+    },
+    {
+      "id": "43dbb82f-685b-47b1-93d7-f3c6e5c2d2cf",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare rates",
+      "stem": "Kay bikes $\\frac{2}{3}$ mile in $\\frac{1}{4}$ hour. Lin bikes $\\frac{5}{6}$ mile in $\\frac{1}{3}$ hour. Both go at steady speeds. How many more miles per hour does Kay bike than Lin? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "1/6",
+      "compute": "(2/3)/(1/4)-(5/6)/(1/3)",
+      "solution": "Kay: $\\frac{2}{3} \\div \\frac{1}{4} = \\frac{8}{3}$ miles per hour. Lin: $\\frac{5}{6} \\div \\frac{1}{3} = \\frac{5}{2}$ miles per hour. The difference is $\\frac{8}{3} - \\frac{5}{2} = \\frac{16}{6} - \\frac{15}{6} = \\frac{1}{6}$ mile per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Kay: (2/3)/(1/4) = 8/3 mph. Lin: (5/6)/(1/3) = 5/2 mph. 8/3 - 5/2 = 16/6 - 15/6 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.329Z"
+        }
+      }
+    },
+    {
+      "id": "b251181f-76ab-401f-aedd-f9b7257e41e0",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multi-step rate problems",
+      "stem": "A paint roller covers $\\frac{1}{2}$ square meter in $\\frac{1}{6}$ minute at a steady rate. How many square meters does it cover in 4 minutes?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(1/2)/(1/6)*4",
+      "solution": "$\\frac{1}{2} \\div \\frac{1}{6} = 3$ square meters per minute. In 4 minutes: $3 \\times 4 = 12$ square meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate (1/2)/(1/6) = 3 m^2/min; 4 min -> 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.429Z"
+        }
+      }
+    },
+    {
+      "id": "f8ec142c-0892-4cb2-bbf3-b54f3b3fdb22",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write or interpret a unit rate",
+      "stem": "A car goes $\\frac{3}{4}$ mile in $\\frac{1}{6}$ minute. Which expression gives the miles it goes in 5 minutes at that steady speed?",
+      "choices": [
+        "$\\left(\\frac{1}{6} \\div \\frac{3}{4}\\right) \\times 5$",
+        "$\\frac{3}{4} \\div \\frac{1}{6} \\times \\frac{1}{5}$",
+        "$\\left(\\frac{3}{4} \\div \\frac{1}{6}\\right) \\times 5$",
+        "$\\frac{3}{4} \\times \\frac{1}{6} \\times 5$"
+      ],
+      "answer": "$\\left(\\frac{3}{4} \\div \\frac{1}{6}\\right) \\times 5$",
+      "compute": null,
+      "solution": "First find the miles in 1 minute: $\\frac{3}{4} \\div \\frac{1}{6}$. Then multiply by 5 minutes: $\\left(\\frac{3}{4} \\div \\frac{1}{6}\\right) \\times 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(\\frac{3}{4} \\div \\frac{1}{6}\\right) \\times 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Unit rate (3/4)/(1/6) = 4.5 mi/min, times 5 = 22.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.457Z"
+        }
+      }
+    },
+    {
+      "id": "6ad6aa06-6b9c-45d9-bd64-bcff66486b98",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find how much time or how many are needed",
+      "stem": "A spring stretches $\\frac{3}{4}$ inch for every $\\frac{1}{2}$ pound hung on it. How many pounds stretch it $4\\frac{1}{2}$ inches?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(9/2)/((3/4)/(1/2))",
+      "solution": "$\\frac{3}{4} \\div \\frac{1}{2} = \\frac{3}{2}$ inches for each pound. $4\\frac{1}{2} = \\frac{9}{2}$, and $\\frac{9}{2} \\div \\frac{3}{2} = 3$. It takes 3 pounds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate: (3/4)/(1/2)=3/2 inch per pound. Pounds for 4 1/2 in: (9/2)/(3/2)=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.459Z"
+        }
+      }
+    },
+    {
+      "id": "6e69b01a-ec7f-4b1b-81fb-6c5879c5c3d2",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a unit rate to find an amount",
+      "stem": "A car uses $\\frac{3}{8}$ gallon of gas to go 9 miles. Which statement is true?",
+      "choices": [
+        "The car uses 24 gallons to go 1 mile",
+        "The car goes 24 miles on 1 gallon",
+        "The car goes 3 miles on 1 gallon",
+        "The car goes $\\frac{27}{8}$ miles on 1 gallon"
+      ],
+      "answer": "The car goes 24 miles on 1 gallon",
+      "compute": null,
+      "solution": "$9 \\div \\frac{3}{8} = 9 \\times \\frac{8}{3} = 24$. The car goes 24 miles on 1 gallon.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The car goes 24 miles on 1 gallon",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 / (3/8) = 24 miles per gallon.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.462Z"
+        }
+      }
+    },
+    {
+      "id": "938f7a12-fe52-4bf2-8770-273aff5b18f8",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare rates",
+      "stem": "Which rate is greater than 4 miles per hour?",
+      "choices": [
+        "3 miles in $\\frac{3}{4}$ hour",
+        "$1\\frac{1}{2}$ miles in $\\frac{1}{2}$ hour",
+        "$2\\frac{1}{2}$ miles in $\\frac{1}{2}$ hour",
+        "$\\frac{1}{2}$ mile in $\\frac{1}{8}$ hour"
+      ],
+      "answer": "$2\\frac{1}{2}$ miles in $\\frac{1}{2}$ hour",
+      "compute": null,
+      "solution": "The rates in miles per hour are 5, 4, 3 and 4. Only $2\\frac{1}{2}$ miles in $\\frac{1}{2}$ hour (5 miles per hour) is greater than 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2\\frac{1}{2}$ miles in $\\frac{1}{2}$ hour",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/(3/4)=4 (not greater); 1.5/0.5=3; 0.5/(1/8)=4; 2.5/0.5=5 > 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.464Z"
+        }
+      }
+    },
+    {
+      "id": "4cbbb3b0-21be-409d-8c15-c48853837f29",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a unit rate to find how much time or how many are needed",
+      "stem": "A bucket drips $\\frac{1}{8}$ liter of water in $\\frac{1}{3}$ minute at a steady rate. How many minutes does it take to drip 3 liters?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3/((1/8)/(1/3))",
+      "solution": "$\\frac{1}{8} \\div \\frac{1}{3} = \\frac{3}{8}$ liter per minute. Minutes = $3 \\div \\frac{3}{8} = 3 \\times \\frac{8}{3} = 8$. It takes 8 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = (1/8)/(1/3) = 3/8 L per minute. 3 / (3/8) = 8 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.529Z"
+        }
+      }
+    },
+    {
+      "id": "787b989a-bd6e-4aaf-b28f-52ee4e539a31",
+      "topic_id": "NC17.7.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Unit price with fractional amounts",
+      "stem": "$2\\frac{1}{2}$ yards of ribbon cost 6 dollars. How many yards of ribbon cost 15 dollars? Write the answer as a fraction.",
+      "choices": [],
+      "answer": "25/4",
+      "compute": "15/(6/(5/2))",
+      "solution": "$2\\frac{1}{2} = \\frac{5}{2}$. The price is $6 \\div \\frac{5}{2} = \\frac{12}{5}$ dollars per yard. Yards for 15 dollars: $15 \\div \\frac{12}{5} = 15 \\times \\frac{5}{12} = \\frac{25}{4}$ yards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate = 2.5/6 = 5/12 yard per dollar. 15 x 5/12 = 75/12 = 25/4 yards.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.532Z"
         }
       }
     },
@@ -15169,6 +17303,956 @@
           "work": "A sample of 3 is too small to conclude that ALL students like math; random draws can still be unrepresentative when tiny.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:22:44.525Z"
+        }
+      }
+    },
+    {
+      "id": "0ca7f2a1-78ea-40b3-9593-0e3edfbd05ca",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate a population count from a random sample",
+      "stem": "A factory tests a random sample of 200 light bulbs and finds that 6 are defective. About how many defective bulbs would you expect in a batch of 5,000 bulbs?",
+      "choices": [],
+      "answer": "150",
+      "compute": "6/200*5000",
+      "solution": "6 out of 200 is 3%. Three percent of 5,000 is 150 bulbs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "150",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/200 = 0.03; 0.03 × 5000 = 150.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.731Z"
+        }
+      }
+    },
+    {
+      "id": "7ea62a83-91bc-49e9-b4f8-cabd1dec7627",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compare estimates from several random samples",
+      "stem": "Five random samples each gave an estimate of the percent of students who like art: 40, 44, 38, 42 and 46. What is the range of these five estimates, in percentage points?",
+      "choices": [],
+      "answer": "8",
+      "compute": "46-38",
+      "solution": "The largest estimate is 46 and the smallest is 38, so the range is 46 - 38 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "46 - 38 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.977Z"
+        }
+      }
+    },
+    {
+      "id": "aed430cd-1590-484b-9859-20a2c2d66980",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Combine several random samples into one estimate",
+      "stem": "Three random samples of 25 students each found 10, 12 and 14 students who prefer apples. What is the mean number of students per sample who prefer apples?",
+      "choices": [],
+      "answer": "12",
+      "compute": "(10+12+14)/3",
+      "solution": "The sum is 10 + 12 + 14 = 36. The mean is 36 / 3 = 12 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(10 + 12 + 14)/3 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.997Z"
+        }
+      }
+    },
+    {
+      "id": "d20679e0-a433-4b5c-809b-02900bc4163b",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate a population count from a random sample",
+      "stem": "A random sample of 40 students from a school of 600 students found that 10 of the 40 prefer soccer. Based on the sample, estimate how many of the 600 students prefer soccer.",
+      "choices": [],
+      "answer": "150",
+      "compute": "10/40*600",
+      "solution": "10 out of 40 is 1/4 of the sample. One fourth of 600 is 150 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "150",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/40 = 1/4; 600/4 = 150.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.056Z"
+        }
+      }
+    },
+    {
+      "id": "84d62023-1ca6-4537-adb8-1251d66a09a8",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Explain why random samples give different results",
+      "stem": "Two random samples of 30 students each are taken from one school. They find 12 and 15 students who ride the bus. Why do the results differ?",
+      "choices": [
+        "One of the samples must have been counted wrongly by someone",
+        "The number of bus riders at the school changed between the samples",
+        "Random samples from one school must always give the same result",
+        "Each sample has different students, so the results vary by chance"
+      ],
+      "answer": "Each sample has different students, so the results vary by chance",
+      "compute": null,
+      "solution": "Each random sample picks different students, so counts differ a little from sample to sample. This is normal variation, not a mistake.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each sample has different students, so the results vary by chance",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Random samples contain different students, so counts vary by chance (sampling variability).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.102Z"
+        }
+      }
+    },
+    {
+      "id": "1bf32562-520d-41f7-9e52-809e20e90ffc",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sample size and variation in estimates",
+      "stem": "Mia asks random students how many pets they have, using a sample of 15 students or a sample of 150 students. She could repeat either sample many times. Which sample would give estimates that vary less?",
+      "choices": [
+        "The sample of 15 students",
+        "The sample of 150 students",
+        "Both would vary by the same amount",
+        "Neither; random samples always give the same value"
+      ],
+      "answer": "The sample of 150 students",
+      "compute": null,
+      "solution": "Larger random samples give estimates that are closer together from sample to sample.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The sample of 150 students",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Larger samples vary less: 150.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.235Z"
+        }
+      }
+    },
+    {
+      "id": "00d72476-234d-477d-9690-d5eec31654cb",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate a population percent from a random sample",
+      "stem": "In a random sample of 80 library visitors, 20 borrowed a book. Which is the best estimate of the percent of all visitors who borrow a book?",
+      "choices": [
+        "25%",
+        "20%",
+        "75%",
+        "80%"
+      ],
+      "answer": "25%",
+      "compute": null,
+      "solution": "20 out of 80 is 1/4, which is 25%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20/80 = 1/4 = 25%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.248Z"
+        }
+      }
+    },
+    {
+      "id": "d6f56c4e-dcc4-4a8c-acee-025307c0df16",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Estimate a population mean or total from a sample mean",
+      "stem": "A random sample of 5 students were asked how many books they read last month. The answers were 6, 8, 7, 9 and 10. Use the sample mean to estimate the mean number of books read by all students in the school.",
+      "choices": [],
+      "answer": "8",
+      "compute": "(6+8+7+9+10)/5",
+      "solution": "The sum is 6 + 8 + 7 + 9 + 10 = 40. The mean is 40 / 5 = 8 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(6+8+7+9+10)/5 = 40/5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.374Z"
+        }
+      }
+    },
+    {
+      "id": "e44c1108-329d-4b54-b35e-6399c881dbfb",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Judge a claim using several random samples",
+      "stem": "A random sample of 50 students found that 20 own a bike. A school has 500 students. A student says about 200 of them own a bike. Which statement is best?",
+      "choices": [
+        "This is not reasonable: a sample can never predict a whole school",
+        "This is not reasonable: the answer should be 20, the sample count",
+        "This is reasonable: 20 out of 50 is 40%, and 40% of 500 is 200",
+        "This is not reasonable: 500 divided by 50 is 10, so about 10 students"
+      ],
+      "answer": "This is reasonable: 20 out of 50 is 40%, and 40% of 500 is 200",
+      "compute": null,
+      "solution": "20 out of 50 is 40%. If the sample is typical, 40% of the 500 students is 200 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "This is reasonable: 20 out of 50 is 40%, and 40% of 500 is 200",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20/50 = 40%; 0.4*500 = 200: reasonable.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.454Z"
+        }
+      }
+    },
+    {
+      "id": "7bf3c5fa-f587-49b7-b3cb-47877d4d43dd",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare estimates from several random samples",
+      "stem": "Four random samples of the same size gave estimates of 30%, 32%, 34% and 32% for the percent of students who walk to school. Which statement is best?",
+      "choices": [
+        "The estimates are different, so none of them can be trusted",
+        "The percent in the school must be exactly equal to 30%",
+        "The percent in the school must be exactly equal to 34%",
+        "The estimates are close, so the percent is probably near 32%"
+      ],
+      "answer": "The estimates are close, so the percent is probably near 32%",
+      "compute": null,
+      "solution": "The four estimates are close and their mean is 32%, so about 32% of all students probably walk.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The estimates are close, so the percent is probably near 32%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Estimates vary slightly around 32%; the best inference is the percent is probably near 32%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.682Z"
+        }
+      }
+    },
+    {
+      "id": "89f670c4-d096-4d59-8467-b0f2c2b568a7",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compare estimates from several random samples",
+      "stem": "Ravi takes five random samples of the same size and finds the proportion of left-handed students: 0.08, 0.12, 0.10, 0.11 and 0.09. Which is the best estimate of the proportion of left-handed students in the whole school?",
+      "choices": [
+        "0.12",
+        "0.10",
+        "0.08",
+        "0.50"
+      ],
+      "answer": "0.10",
+      "compute": "(0.08+0.12+0.10+0.11+0.09)/5",
+      "solution": "The mean of the five proportions is 0.50 / 5 = 0.10, so about 0.10 of the students are left-handed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mean of samples = (0.08+0.12+0.10+0.11+0.09)/5 = 0.50/5 = 0.10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.947Z"
+        }
+      }
+    },
+    {
+      "id": "d11600e5-2409-4fa1-87a3-d0cdc219b3de",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Sample size and variation in estimates",
+      "stem": "Sam took many random samples of size 10 and his estimates ranged from 20% to 80%. Tia took many random samples of size 100 from the same population and her estimates ranged from 45% to 55%. Which conclusion is best?",
+      "choices": [
+        "Larger samples vary less, so Tia's estimates are more dependable",
+        "Smaller samples are more dependable because they are easier to count",
+        "The ranges differ because Sam and Tia sampled different populations",
+        "The range of the estimates does not depend on the sample size"
+      ],
+      "answer": "Larger samples vary less, so Tia's estimates are more dependable",
+      "compute": null,
+      "solution": "Tia's larger samples gave a much narrower range, which shows that larger random samples vary less.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Larger samples vary less, so Tia's estimates are more dependable",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Larger samples give estimates with less variability, so Tia's are more dependable.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.983Z"
+        }
+      }
+    },
+    {
+      "id": "4fbd9f02-b112-4ac9-954b-10da94d9561d",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine several random samples into one estimate",
+      "stem": "Six random samples of the same size were used to find the mean number of text messages sent per day. The sample means were 12, 15, 11, 14, 13 and 13. Estimate the population mean by finding the mean of these sample means.",
+      "choices": [],
+      "answer": "13",
+      "compute": "(12+15+11+14+13+13)/6",
+      "solution": "The sum is 12 + 15 + 11 + 14 + 13 + 13 = 78. The mean is 78 / 6 = 13 messages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum 78; 78/6=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.193Z"
+        }
+      }
+    },
+    {
+      "id": "95bd7bd5-4de3-42dd-b333-64db850686a0",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare estimates from several random samples",
+      "stem": "Seven random samples gave these estimates of the percent of students who own a pet: 47, 42, 50, 45, 41, 44 and 46. Use the median of the seven estimates as the estimate of the percent of all students who own a pet.",
+      "choices": [],
+      "answer": "45",
+      "compute": "45",
+      "solution": "In order the estimates are 41, 42, 44, 45, 46, 47, 50. The middle value is 45, so the estimate is 45%.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order: 41, 42, 44, 45, 46, 47, 50. Median (4th) = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.276Z"
+        }
+      }
+    },
+    {
+      "id": "0d572d38-eb10-43a9-ba81-eaaca1c671ac",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Explain why random samples give different results",
+      "stem": "Nina takes a random sample of 30 students and finds that 18 prefer red. She says that exactly 60% of all students in the school prefer red. What is wrong with her statement?",
+      "choices": [
+        "Nothing is wrong, because a random sample shows the exact percent of all students",
+        "A new random sample could give a different percent, so 60% is an estimate",
+        "A percent cannot be found from a sample of only 30 students at all",
+        "The percent should be found by adding 18 and 30 and then halving it"
+      ],
+      "answer": "A new random sample could give a different percent, so 60% is an estimate",
+      "compute": null,
+      "solution": "A sample gives an estimate. A different random sample would probably give a slightly different percent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A new random sample could give a different percent, so 60% is an estimate",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18/30 = 60% is a sample estimate; another random sample would vary, so it is not exact.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.302Z"
+        }
+      }
+    },
+    {
+      "id": "062bfb7e-4d4c-4c7e-b2a2-ea016c181f7c",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine several random samples into one estimate",
+      "stem": "Four random samples of 50 students each found that 21, 24, 18 and 25 students walk to school. Use all four samples together to estimate how many of the 1,200 students in the school walk to school.",
+      "choices": [],
+      "answer": "528",
+      "compute": "88/200*1200",
+      "solution": "In all, 21 + 24 + 18 + 25 = 88 of the 200 students sampled walk. That is 44%, and 44% of 1,200 is 528.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "528",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(21+24+18+25)/200 = 88/200 = 0.44; 0.44*1200 = 528.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.395Z"
+        }
+      }
+    },
+    {
+      "id": "3ec98f69-a09a-4a52-bcce-287fcc9cd27b",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Sample size and variation in estimates",
+      "stem": "Lina takes random samples of the same size to estimate a mean, and her estimates vary a lot. What could she do to make the estimates vary less?",
+      "choices": [
+        "Use a smaller random sample each time",
+        "Ask only students she knows well",
+        "Use a larger random sample each time",
+        "Ask the same student again and again"
+      ],
+      "answer": "Use a larger random sample each time",
+      "compute": null,
+      "solution": "Larger random samples vary less. Asking only friends, or the same student, would not be a random sample.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Use a larger random sample each time",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Larger random samples reduce variability.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.402Z"
+        }
+      }
+    },
+    {
+      "id": "4bf0b74b-0feb-470c-b0d5-8c7c6cbe6a11",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Judge a claim using several random samples",
+      "stem": "A company says that 90% of its customers are satisfied. Three random samples of 50 customers had 36, 35 and 37 satisfied customers. Which statement is best?",
+      "choices": [
+        "The claim is supported: more than half of each sample is satisfied",
+        "The claim is supported: samples vary, so any percent is possible",
+        "The claim is supported: the counts 36, 35 and 37 are close to each other",
+        "The claim is doubtful: all three samples are near 70%, far below 90%"
+      ],
+      "answer": "The claim is doubtful: all three samples are near 70%, far below 90%",
+      "compute": null,
+      "solution": "36, 35 and 37 out of 50 are 72%, 70% and 74%. These are close together and far from 90%, so the claim is doubtful.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The claim is doubtful: all three samples are near 70%, far below 90%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/50=72%, 35/50=70%, 37/50=74%, all far below 90%: claim doubtful.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.405Z"
+        }
+      }
+    },
+    {
+      "id": "7bd6225d-ad26-4e60-86ec-e21759ec58f9",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate a population count from a random sample",
+      "stem": "A random sample suggests that 3/8 of the students in a school play an instrument. About 270 students at the school play an instrument. Based on this estimate, how many students attend the school?",
+      "choices": [],
+      "answer": "720",
+      "compute": "270/(3/8)",
+      "solution": "3/8 of the students is 270, so 1/8 is 270 / 3 = 90. All 8 eighths are 8 x 90 = 720 students.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "720",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3/8)N = 270 -> N = 720.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.427Z"
+        }
+      }
+    },
+    {
+      "id": "93f9bfd8-313c-4bf8-bc77-c7bae356b25a",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Estimate a population mean or total from a sample mean",
+      "stem": "A cafe has 400 receipts. A random sample of 8 receipts had totals of 6, 9, 12, 7, 10, 8, 11 and 9 dollars. Use the sample mean to estimate the total of all 400 receipts, in dollars.",
+      "choices": [],
+      "answer": "3600",
+      "compute": "(6+9+12+7+10+8+11+9)/8*400",
+      "solution": "The sum of the sample is 72, so the sample mean is 72 / 8 = 9 dollars. For 400 receipts the estimate is 9 x 400 = 3,600 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum 72, mean 9; 9*400=3600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.494Z"
+        }
+      }
+    },
+    {
+      "id": "b01f8ec2-5acb-44a6-bad9-bcb9f0786c5f",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Judge a claim using several random samples",
+      "stem": "A town says its mean commute is 25 minutes. Six random samples of 40 residents gave sample means of 24, 27, 25, 26, 23 and 25 minutes. Which statement is best?",
+      "choices": [
+        "The claim is plausible: the sample means cluster around 25 minutes",
+        "The claim is false: only two of the sample means are equal to 25",
+        "The claim is false: the sample means are not all the same number",
+        "The claim is false: the largest sample mean is 27, which is above 25"
+      ],
+      "answer": "The claim is plausible: the sample means cluster around 25 minutes",
+      "compute": null,
+      "solution": "The sample means are 24, 27, 25, 26, 23 and 25, and their mean is 150 / 6 = 25 minutes. Random samples vary, and these vary only a little around 25, so the claim is plausible.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The claim is plausible: the sample means cluster around 25 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sample means 23-27 cluster around 25; variation is expected, so the claim is plausible.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.925Z"
+        }
+      }
+    },
+    {
+      "id": "158381ea-35f2-4061-b1cc-7dce27e6819a",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine several random samples into one estimate",
+      "stem": "A random sample of 80 items had 5 defective items, and another random sample of 120 items had 9 defective items. Treat the two samples as one combined sample. Estimate how many defective items are in a shipment of 4,000 items.",
+      "choices": [],
+      "answer": "280",
+      "compute": "14/200*4000",
+      "solution": "In all, 14 of the 200 sampled items are defective, which is 7%. Seven percent of 4,000 is 280 items.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "280",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 defective in 200 = 0.07; 0.07*4000 = 280.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.067Z"
+        }
+      }
+    },
+    {
+      "id": "bdc5d580-c67a-4b31-9e4d-85b6bde43459",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a population count from a random sample",
+      "stem": "Six random samples of 40 students each found 4, 5, 3, 6, 4 and 5 left-handed students. Which is the best estimate of the number of left-handed students in a school of 900?",
+      "choices": [
+        "about 450",
+        "about 100",
+        "about 200",
+        "about 45"
+      ],
+      "answer": "about 100",
+      "compute": null,
+      "solution": "In all, 27 of the 240 students sampled are left-handed. That is 11.25%, and 11.25% of 900 is about 100.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "about 100",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Mean = (4+5+3+6+4+5)/6 = 27/6 = 4.5 per 40 students. 4.5/40 x 900 = 101.25, about 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.106Z"
+        }
+      }
+    },
+    {
+      "id": "7c5a3d20-3ddb-4c13-8607-0afc73054aed",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine several random samples into one estimate",
+      "stem": "A bag holds 200 marbles, some blue. A student mixes the bag, draws 20 marbles at random, records the number of blue ones, and puts them back. Over 10 draws the blue counts were 6, 8, 7, 9, 5, 7, 8, 6, 7 and 7. Estimate how many of the 200 marbles are blue.",
+      "choices": [],
+      "answer": "70",
+      "compute": "(6+8+7+9+5+7+8+6+7+7)/(10*20)*200",
+      "solution": "In all, 70 blue marbles were drawn out of 10 x 20 = 200 marbles. That is 35%, and 35% of 200 is 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "70",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum of counts = 70; mean 7 blue per 20. 7/20 * 200 = 70.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.183Z"
+        }
+      }
+    },
+    {
+      "id": "5b3fad7c-8469-4355-8cf0-63d78e6b8b4a",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Sample size and variation in estimates",
+      "stem": "One class takes 50 random samples of size 20, and another class takes 50 random samples of size 200, all from the same population. Which description of the 100 estimates is most likely?",
+      "choices": [
+        "The estimates from size 20 are more tightly clustered than those from size 200",
+        "The estimates from size 200 are more tightly clustered than those from size 20",
+        "The two groups of estimates are spread out by the same amount as each other",
+        "All the estimates from size 200 are exactly equal to the population value"
+      ],
+      "answer": "The estimates from size 200 are more tightly clustered than those from size 20",
+      "compute": null,
+      "solution": "Larger random samples vary less, so the estimates from size 200 are closer together.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The estimates from size 200 are more tightly clustered than those from size 20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Larger samples give less variable estimates, so size-200 estimates cluster more tightly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.251Z"
+        }
+      }
+    },
+    {
+      "id": "2d716650-8a57-4cab-ba5c-bdc9bd472964",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare estimates from several random samples",
+      "stem": "Five random samples gave estimates of 12%, 18%, 15%, 14% and 16% for the percent of students who use a library card. Which statement is best supported?",
+      "choices": [
+        "The percent for all students is exactly 15%, the mean of the estimates",
+        "The percent for all students is probably above 18%, the largest estimate",
+        "The percent for all students is probably between 12% and 18%, near 15%",
+        "The estimates differ, so sampling cannot give useful information"
+      ],
+      "answer": "The percent for all students is probably between 12% and 18%, near 15%",
+      "compute": null,
+      "solution": "The five estimates run from 12% to 18% and their mean is 75 / 5 = 15%. They suggest a value near 15%, not an exact one.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The percent for all students is probably between 12% and 18%, near 15%",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Estimates vary around 15% within 12-18%; best supported: probably between 12% and 18%, near 15%.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.346Z"
+        }
+      }
+    },
+    {
+      "id": "44f2e747-8336-4403-a54c-4349a2b9d125",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate a population count from a random sample",
+      "stem": "Biologists tag 50 fish in a lake and release them. Later they catch a random sample of 40 fish and find that 5 have tags. Assuming the sample is typical, estimate how many fish are in the lake.",
+      "choices": [],
+      "answer": "400",
+      "compute": "50/(5/40)",
+      "solution": "5 of the 40 sampled fish, or 1/8, are tagged. The 50 tagged fish are about 1/8 of all the fish, so there are about 50 x 8 = 400 fish.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/40 = 50/N -> N = 50*40/5 = 400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.386Z"
+        }
+      }
+    },
+    {
+      "id": "ef558a9a-b66d-4ab7-bd24-73235c93140e",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a population count from a random sample",
+      "stem": "In a random sample of 150 residents, 63 said they favor a new park. About how many of the 9,000 residents of the town would be expected to favor the new park?",
+      "choices": [
+        "6,300",
+        "5,220",
+        "630",
+        "3,780"
+      ],
+      "answer": "3,780",
+      "compute": "63/150*9000",
+      "solution": "63 out of 150 is 0.42. Then 0.42 x 9,000 = 3,780 residents.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3,780",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63/150=0.42; 0.42*9000=3780.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.473Z"
+        }
+      }
+    },
+    {
+      "id": "6d46327d-82ab-4a59-bcf9-020f55c1efd9",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare estimates from several random samples",
+      "stem": "Four students each took five random samples of the same size from one population. Which list of the five sample proportions has the smallest range?",
+      "choices": [
+        "0.35, 0.47, 0.41, 0.38, 0.44",
+        "0.30, 0.52, 0.41, 0.45, 0.37",
+        "0.40, 0.44, 0.42, 0.41, 0.43",
+        "0.42, 0.50, 0.38, 0.44, 0.46"
+      ],
+      "answer": "0.40, 0.44, 0.42, 0.41, 0.43",
+      "compute": null,
+      "solution": "The ranges are 0.04, 0.12, 0.22 and 0.12. The list 0.40 to 0.44 has the smallest range.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.40, 0.44, 0.42, 0.41, 0.43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ranges: A 0.50-0.38=0.12; B 0.44-0.40=0.04; C 0.47-0.35=0.12; D 0.52-0.30=0.22. Smallest is B.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.512Z"
+        }
+      }
+    },
+    {
+      "id": "8ac123c2-e91e-4616-9395-1070c33581b2",
+      "topic_id": "NC17.7.SP.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Estimate a population mean or total from a sample mean",
+      "stem": "A random sample of 10 students reported their daily screen time in hours: 2, 3, 3, 4, 1, 2, 5, 3, 2 and 3. Use the sample mean to estimate the total daily screen time, in hours, of all 250 students in the grade.",
+      "choices": [],
+      "answer": "700",
+      "compute": "28/10*250",
+      "solution": "The sum of the sample is 28 hours, so the mean is 2.8 hours. For 250 students the estimate is 2.8 x 250 = 700 hours.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "700",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum = 2+3+3+4+1+2+5+3+2+3 = 28; mean 2.8 hours. 2.8 x 250 = 700.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.535Z"
         }
       }
     },

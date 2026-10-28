@@ -2,18 +2,22 @@
   "level_id": "NC17.6",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.6.EE.1": "Bases and exponents are whole numbers only (no negative or fractional bases, no zero exponent), as the standard says.",
-    "NC17.6.EE.5": "Equations only (the summary names equations), so no inequalities. Exponent equations use whole-number values only; no negative numbers. Contexts give the equation and ask which value from a set makes it true.",
-    "NC17.6.EE.7": "One-step equations x + p = q and px = q with whole numbers, decimals and fractions (nonnegative answers). Solving by hand; writing an equation from a story or matching a story to an equation is asked as choice questions (the equation options are the only choices that carry a variable name; the others use letters as in the question).",
-    "NC17.6.EE.8": "Only > and < are used, as the summary says (x > c or x < c); no at least / at most / greater-or-equal wording. Number line graphs are described in words (open or closed circle, direction of shading).",
-    "NC17.6.G.2": "Fractional-edge volume only: whole-number answers where friendly, otherwise fractions or mixed numbers. Choice answers carry their unit so all four options end alike. No cube roots or unit conversions (outside grade 6).",
-    "NC17.6.G.4": "Nets are described in words (the faces they contain), never drawn. Answers are whole numbers or short decimals; slant heights are given, never derived.",
+    "NC17.6.RP.1": "Unit rates are left to NC.6.RP.2 and percents to NC.6.RP.3; this part covers ratio meaning, language, tables, tape diagrams, double number lines and graph points.",
+    "NC17.6.RP.3": "30 questions written. Skills: ratio tables and equivalent ratios 6, unit ratio and unit rate 5, measurement conversions 6, graphs of value pairs (written as ordered pairs) 6, comparing ratios and rates 3, part-to-part and part-to-whole 4. Percent is left out (not in the summary). Graphs are given only as lists of points.",
     "NC17.6.NS.1": "Visual models (strips, number lines) cannot be shown, so meaning is asked in words: how many halves fit in 4, which question a division answers, which multiplication matches. Skills (rough counts): whole number divided by a fraction 5, fraction divided by a whole number 5, fraction divided by a fraction 6, mixed numbers 3, interpreting a quotient 5, word problems 6 (more word-problem contexts also sit under the first three skills). Fractions in answers are given as a/b or mixed numbers.",
     "NC17.6.NS.3": "Answers are terminating decimals throughout (grade 6 standard algorithms). Division quotients always end; 27 divided by 8 is the only whole-number-to-decimal case.",
     "NC17.6.NS.4": "GCF of numbers to 100 and LCM of numbers to 12 are asked as the standard states; fractions appear through simplest form and the least common denominator.",
     "NC17.6.NS.5": "Skills (rough counts): positive and negative numbers for opposite quantities (6), meaning of zero in context (4), absolute value as distance from zero (5), absolute value as magnitude in context (4), rational numbers as signed quantities (4), opposite of a number (2), comparing magnitudes (3), numbers with a given absolute value (2). No question orders signed numbers by value or finds distances between points (6.NS.7 and 6.NS.8). Money is written in words with no dollar sign.",
     "NC17.6.NS.6": "Thirty questions on rational numbers on a number line and in the coordinate plane. The number line and the plane are described in words and coordinates; reflections are across the axes only. No distances between points (a later standard).",
-    "NC17.6.RP.3": "30 questions written. Skills: ratio tables and equivalent ratios 6, unit ratio and unit rate 5, measurement conversions 6, graphs of value pairs (written as ordered pairs) 6, comparing ratios and rates 3, part-to-part and part-to-whole 4. Percent is left out (not in the summary). Graphs are given only as lists of points.",
+    "NC17.6.EE.1": "Bases and exponents are whole numbers only (no negative or fractional bases, no zero exponent), as the standard says.",
+    "NC17.6.EE.4": "Whole-number coefficients, one half in one question; no negative answers. Property names in the justification questions are the grade 6 ones (commutative, associative, identity, distributive).",
+    "NC17.6.EE.5": "Equations only (the summary names equations), so no inequalities. Exponent equations use whole-number values only; no negative numbers. Contexts give the equation and ask which value from a set makes it true.",
+    "NC17.6.EE.6": "Writing an expression has a choice answer, so 21 of 30 are choice questions. The 9 numeric questions have the student form the expression from the story and then use it for a given value of the variable; no equation-solving (6.EE.7) and no named parts of an expression (6.EE.2b).",
+    "NC17.6.EE.7": "One-step equations x + p = q and px = q with whole numbers, decimals and fractions (nonnegative answers). Solving by hand; writing an equation from a story or matching a story to an equation is asked as choice questions (the equation options are the only choices that carry a variable name; the others use letters as in the question).",
+    "NC17.6.EE.8": "Only > and < are used, as the summary says (x > c or x < c); no at least / at most / greater-or-equal wording. Number line graphs are described in words (open or closed circle, direction of shading).",
+    "NC17.6.G.2": "Fractional-edge volume only: whole-number answers where friendly, otherwise fractions or mixed numbers. Choice answers carry their unit so all four options end alike. No cube roots or unit conversions (outside grade 6).",
+    "NC17.6.G.3": "Drawing the polygon is asked through its vertices in words; no picture is shown. Side lengths only on sides sharing a coordinate (horizontal or vertical), with coordinates in all four quadrants (Grade 6).",
+    "NC17.6.G.4": "Nets are described in words (the faces they contain), never drawn. Answers are whole numbers or short decimals; slant heights are given, never derived.",
     "NC17.6.SP.1": "Recognising a statistical question is mostly a choice task, so only 6 of 30 are numeric (counts of how many questions in a list are statistical or not, and how many different answers there are); a bare number cannot test the idea fairly otherwise. Only everyday contexts with a clear single answer or clear variability are used; borderline questions were avoided.",
     "NC17.6.SP.2": "Distributions of data are written as lists of values/counts since no dot plots or histograms can be shown. Spread is tested with the range only (no IQR or MAD, which belong to SP.5).",
     "NC17.6.SP.3": "Quartiles are defined in the stem as the median of each half, so no convention is assumed; MAD is defined in the stem.",
@@ -337,6 +341,699 @@
       }
     },
     {
+      "id": "783aca9c-65bc-4539-9707-3d874771a263",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio tables",
+      "stem": "Which row of a ratio table matches \"for every 2 apples there are 3 oranges\"?",
+      "choices": [
+        "4 apples and 6 oranges",
+        "4 apples and 5 oranges",
+        "3 apples and 4 oranges",
+        "6 apples and 4 oranges"
+      ],
+      "answer": "4 apples and 6 oranges",
+      "compute": null,
+      "solution": "Doubling both numbers of 2 apples and 3 oranges gives 4 apples and 6 oranges. The ratio stays 2 to 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 apples and 6 oranges",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2:3 doubled is 4:6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.713Z"
+        }
+      }
+    },
+    {
+      "id": "c138d50b-c201-4f5a-9688-406e16211bbc",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "A pen holds 2 hens for every 1 rooster. How many hens are in the pen if it has 6 roosters?",
+      "choices": [],
+      "answer": "12",
+      "compute": "2*6",
+      "solution": "Each rooster goes with 2 hens. 6 roosters go with 6 x 2 = 12 hens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 hens per rooster × 6 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.735Z"
+        }
+      }
+    },
+    {
+      "id": "ef71cb34-e8d9-4536-b5ee-11b09f87a254",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "For every 3 red tiles in a mosaic there are 4 blue tiles. The mosaic has 12 red tiles. How many blue tiles does it have?",
+      "choices": [],
+      "answer": "16",
+      "compute": "12/3*4",
+      "solution": "12 red tiles is 4 groups of 3 red tiles. Each group goes with 4 blue tiles, so there are 4 x 4 = 16 blue tiles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 red = 4x3, so blue = 4x4=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.948Z"
+        }
+      }
+    },
+    {
+      "id": "35ce2bf0-8fdd-48a7-aec3-55c20aed7b10",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Double number lines",
+      "stem": "A double number line has cups of flour on the top and cups of sugar on the bottom. The mark 2 on the top lines up with 4 on the bottom, and 3 on the top lines up with 6 on the bottom. Which is the ratio of cups of flour to cups of sugar?",
+      "choices": [
+        "2 to 1",
+        "1 to 2",
+        "1 to 4",
+        "2 to 6"
+      ],
+      "answer": "1 to 2",
+      "compute": null,
+      "solution": "Each cup of flour lines up with 2 cups of sugar, so the ratio of flour to sugar is 1 to 2. The ratio 2 to 1 puts the quantities in the wrong order.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1 to 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Flour:sugar 2:4 = 3:6 = 1:2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.950Z"
+        }
+      }
+    },
+    {
+      "id": "3c4ad803-c520-40cc-b7ed-202cd5234e30",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a ratio from a situation",
+      "stem": "A class has 12 girls and 15 boys. The ratio of girls to all the students is 12 to ?. What is the ?",
+      "choices": [],
+      "answer": "27",
+      "compute": "12+15",
+      "solution": "All the students are 12 girls + 15 boys = 27 students, so the ratio of girls to all the students is 12 to 27.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All students = 12 + 15 = 27; ratio 12 to 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.018Z"
+        }
+      }
+    },
+    {
+      "id": "5894a67f-84d2-4778-8d81-50870f40f215",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a ratio from a situation",
+      "stem": "In a choir, 6 of the 10 singers are altos. Which is the ratio of altos to all the singers?",
+      "choices": [
+        "6 to 4",
+        "10 to 6",
+        "4 to 10",
+        "6 to 10"
+      ],
+      "answer": "6 to 10",
+      "compute": null,
+      "solution": "The altos are 6 and all the singers are 10, so the ratio of altos to all the singers is 6 to 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 to 10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Altos to all = 6 to 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.044Z"
+        }
+      }
+    },
+    {
+      "id": "b90f67a9-17be-4f60-9d04-68b741becbc2",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio language and notation",
+      "stem": "Which is another way to write the ratio 5 to 9?",
+      "choices": [
+        "5:9",
+        "9:5",
+        "5:4",
+        "14:5"
+      ],
+      "answer": "5:9",
+      "compute": null,
+      "solution": "The ratio 5 to 9 can be written 5:9, with the numbers in the same order. 9:5 is reversed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5:9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The ratio 5 to 9 is written 5:9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.095Z"
+        }
+      }
+    },
+    {
+      "id": "f07d4b65-db23-4475-ae52-e0fb27a50b49",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent ratios",
+      "stem": "A box has 10 red crayons and 15 blue crayons. The ratio 10 to 15 written in simplest form is 2 to ?. What is the ?",
+      "choices": [],
+      "answer": "3",
+      "compute": "15/5",
+      "solution": "Divide both numbers by 5: 10 / 5 = 2 and 15 / 5 = 3. The ratio is 2 to 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10:15, divide by 5: 2:3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.113Z"
+        }
+      }
+    },
+    {
+      "id": "8563efa7-5105-4915-9bc1-a3fb036efa5c",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio tables",
+      "stem": "A ratio table has the pairs 1 and 5, 2 and 10, 3 and 15. Which rule connects the first number to the second number?",
+      "choices": [
+        "Add 4 to the first number",
+        "Multiply the first number by 2",
+        "Multiply the first number by 5",
+        "Divide the first number by 5"
+      ],
+      "answer": "Multiply the first number by 5",
+      "compute": null,
+      "solution": "1 x 5 = 5, 2 x 5 = 10 and 3 x 5 = 15, so each second number is the first number times 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiply the first number by 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1->5, 2->10, 3->15: second = 5 x first.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.121Z"
+        }
+      }
+    },
+    {
+      "id": "ac3555f8-9633-4123-bdd4-5799a89a9e45",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a ratio from a situation",
+      "stem": "Mia has 4 pencils and 9 pens. Which ratio compares her pencils to all the pens and pencils she has?",
+      "choices": [
+        "4 to 9",
+        "4 to 13",
+        "9 to 4",
+        "4 to 5"
+      ],
+      "answer": "4 to 13",
+      "compute": null,
+      "solution": "All the pens and pencils are 4 + 9 = 13. The ratio of pencils to all of them is 4 to 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 to 13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = 4 + 9 = 13; pencils to all = 4 to 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.155Z"
+        }
+      }
+    },
+    {
+      "id": "950c5f41-eccb-45a7-83d3-cf32870da44c",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a ratio from a situation",
+      "stem": "A fruit bowl holds 8 pears and 3 bananas. Which is the ratio of bananas to pears?",
+      "choices": [
+        "8 to 3",
+        "3 to 8",
+        "3 to 11",
+        "11 to 8"
+      ],
+      "answer": "3 to 8",
+      "compute": null,
+      "solution": "The ratio of bananas to pears puts the bananas first: 3 bananas to 8 pears, or 3 to 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 to 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bananas to pears = 3 to 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.179Z"
+        }
+      }
+    },
+    {
+      "id": "b4088413-862f-4d49-ac3f-bef85fa509ab",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio language and notation",
+      "stem": "At a park the ratio of dogs to cats is 1 to 3. Which sentence is true?",
+      "choices": [
+        "There are 3 cats for every dog",
+        "There are 3 dogs for every cat",
+        "There are 3 more cats than dogs",
+        "There are 4 pets for every cat"
+      ],
+      "answer": "There are 3 cats for every dog",
+      "compute": null,
+      "solution": "In the ratio 1 to 3 the first number is dogs and the second is cats, so there are 3 cats for every 1 dog.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 3 cats for every dog",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 dog to 3 cats means 3 cats for every dog. Others misread the ratio or treat it as a difference.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.266Z"
+        }
+      }
+    },
+    {
+      "id": "99066e06-8f79-4410-b6e8-f22507e93ac6",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ratio tables",
+      "stem": "A ratio table for trail mix shows 2 cups of nuts with 3 cups of raisins, and 4 cups of nuts with 6 cups of raisins. How many cups of raisins go with 8 cups of nuts?",
+      "choices": [],
+      "answer": "12",
+      "compute": "8/2*3",
+      "solution": "Every time the nuts go up by 2 cups, the raisins go up by 3 cups. 8 cups of nuts is 4 groups of 2, so there are 4 x 3 = 12 cups of raisins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Nuts:raisins = 2:3; 8 nuts = 4×2, so 4×3 = 12 raisins.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.272Z"
+        }
+      }
+    },
+    {
+      "id": "c0383291-ea1e-4356-a783-d0df97acbb7e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "Which ratio is equivalent to 3 to 5?",
+      "choices": [
+        "6 to 8",
+        "4 to 6",
+        "9 to 15",
+        "9 to 11"
+      ],
+      "answer": "9 to 15",
+      "compute": null,
+      "solution": "Multiply both numbers by 3: 3 x 3 = 9 and 5 x 3 = 15. The other options add the same number to both, which does not keep the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 to 15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:5 ×3 = 9:15. 9:11, 6:8, 4:6 are not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.275Z"
+        }
+      }
+    },
+    {
+      "id": "d80b71b0-9efc-4122-aa3a-874379da58f4",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "A recipe uses 1 cup of rice for every 2 cups of water. How many cups of water go with 6 cups of rice?",
+      "choices": [],
+      "answer": "12",
+      "compute": "6*2",
+      "solution": "Each cup of rice goes with 2 cups of water. 6 cups of rice go with 6 x 2 = 12 cups of water.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Water = 2 x rice = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.437Z"
+        }
+      }
+    },
+    {
+      "id": "28cf0c27-5b39-4fc9-b9ed-4c01954d2a7e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "A zoo has 3 lions for every 2 tigers. The zoo has 10 tigers. How many lions does it have?",
+      "choices": [],
+      "answer": "15",
+      "compute": "10/2*3",
+      "solution": "10 tigers is 5 groups of 2 tigers. Each group goes with 3 lions, so there are 5 x 3 = 15 lions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/2=5 groups; 5*3=15 lions.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.495Z"
+        }
+      }
+    },
+    {
+      "id": "2f267655-0162-4250-b4d5-ad66fe177eb7",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram has 2 equal boxes for Jo's marbles and 5 equal boxes of the same size for Sam's marbles. Which is the ratio of Jo's marbles to Sam's marbles?",
+      "choices": [
+        "5 to 2",
+        "2 to 7",
+        "7 to 5",
+        "2 to 5"
+      ],
+      "answer": "2 to 5",
+      "compute": null,
+      "solution": "Jo has 2 boxes and Sam has 5 boxes of the same size, so the ratio of Jo's marbles to Sam's marbles is 2 to 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 to 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 boxes to 5 boxes: 2 to 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.537Z"
+        }
+      }
+    },
+    {
+      "id": "3444482e-6baa-442f-a643-f21bfde2f37e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a ratio from a situation",
+      "stem": "A team has 7 players and 5 of them are girls. The ratio of girls to boys on the team is 5 to ?. What is the ?",
+      "choices": [],
+      "answer": "2",
+      "compute": "7-5",
+      "solution": "The boys are 7 - 5 = 2 players. The ratio of girls to boys is 5 to 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Boys = 7 - 5 = 2; ratio 5 to 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.553Z"
+        }
+      }
+    },
+    {
+      "id": "54833c39-a1e1-4a11-b941-38962146ba79",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram for stickers has 4 equal parts for star stickers and 1 equal part for heart stickers. Each part stands for 3 stickers. How many star stickers are there?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4*3",
+      "solution": "There are 4 equal parts of star stickers, and each part is 3 stickers: 4 x 3 = 12 star stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 parts x 3 = 12 star stickers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.601Z"
+        }
+      }
+    },
+    {
+      "id": "36bcc483-992b-49c3-b642-e78655c67366",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Ratio language and notation",
+      "stem": "Which does NOT show the ratio of 3 squares to 7 circles?",
+      "choices": [
+        "3 to 7",
+        "3:7",
+        "7:3",
+        "3 for every 7"
+      ],
+      "answer": "7:3",
+      "compute": null,
+      "solution": "The ratio of squares to circles starts with the 3 squares, so it is 3 to 7, 3:7 or 3 for every 7. The ratio 7:3 puts the circles first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7:3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 squares to 7 circles is 3:7; 7:3 reverses it.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.610Z"
+        }
+      }
+    },
+    {
+      "id": "ac06f318-5a7f-4a92-9976-cb5a23db2258",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Ratios as points on a graph",
+      "stem": "Each point (x, y) shows x notebooks and y pencils in a gift pack. The points (1, 4), (2, 8) and (3, 12) lie on one line through (0, 0). How many pencils go with 5 notebooks?",
+      "choices": [],
+      "answer": "20",
+      "compute": "5*4",
+      "solution": "Each notebook goes with 4 pencils, so 5 notebooks go with 5 x 4 = 20 pencils.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Points lie on y=4x (4 pencils per notebook). x=5 gives y=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.628Z"
+        }
+      }
+    },
+    {
+      "id": "8a19950b-0c50-4694-bfd8-5f8c4e4fb79d",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Double number lines",
+      "stem": "On a double number line, miles are on the top and minutes are on the bottom. The mark 1 mile lines up with 10 minutes, and 2 miles lines up with 20 minutes. How many minutes line up with 5 miles?",
+      "choices": [],
+      "answer": "50",
+      "compute": "5*10",
+      "solution": "Each mile lines up with 10 minutes, so 5 miles line up with 5 x 10 = 50 minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 minutes per mile; 5 miles -> 50 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.636Z"
+        }
+      }
+    },
+    {
       "id": "deca7b56-fcf2-4f0b-b794-5460bde51855",
       "topic_id": "NC17.6.RP.1",
       "difficulty": 2,
@@ -652,6 +1349,733 @@
       }
     },
     {
+      "id": "07ed7c15-4bce-4df1-81b5-9a6b194d5cfa",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiplicative, not additive, reasoning",
+      "stem": "A recipe uses 2 cups of oats with 3 cups of milk. A bigger batch uses 6 cups of oats. Zoe says it needs 7 cups of milk, because 6 is 4 more than 2. Which statement is correct?",
+      "choices": [
+        "It needs 7 cups of milk, because both amounts go up by the same number",
+        "It needs 8 cups of milk, because the amount of milk doubles",
+        "It needs 12 cups of milk, because the amount of milk is multiplied by 4",
+        "It needs 9 cups of milk, because both amounts are multiplied by 3"
+      ],
+      "answer": "It needs 9 cups of milk, because both amounts are multiplied by 3",
+      "compute": null,
+      "solution": "To keep the ratio, multiply both amounts by the same number. 2 x 3 = 6, so 3 x 3 = 9 cups of milk. Adding 4 to both amounts does not keep the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It needs 9 cups of milk, because both amounts are multiplied by 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/2 = 3, so milk is 3×3 = 9 cups (multiplicative, not additive).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.699Z"
+        }
+      }
+    },
+    {
+      "id": "62a1933c-c27f-41c3-83cc-26b1afd96f97",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram for a class has 3 equal parts for girls and 4 equal parts for boys of the same size. There are 28 students in all. How many girls are there?",
+      "choices": [],
+      "answer": "12",
+      "compute": "28/(3+4)*3",
+      "solution": "There are 3 + 4 = 7 equal parts in all. 28 / 7 = 4 students in each part. The girls are 3 parts, so 3 x 4 = 12 girls.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 parts = 28, each part 4; girls 3×4 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.737Z"
+        }
+      }
+    },
+    {
+      "id": "604cf804-bb6e-478a-816d-7f6042280abb",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "Which ratio is equivalent to 20 to 36?",
+      "choices": [
+        "10 to 26",
+        "5 to 8",
+        "5 to 9",
+        "20 to 9"
+      ],
+      "answer": "5 to 9",
+      "compute": null,
+      "solution": "Divide both numbers by 4: 20 / 4 = 5 and 36 / 4 = 9. The ratio 10 to 26 comes from subtracting 10, which does not keep the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5 to 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20:36 ÷ 4 = 5:9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.758Z"
+        }
+      }
+    },
+    {
+      "id": "a0374588-bfa4-4e6a-afd3-8ecd67690a95",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Tape diagrams",
+      "stem": "Mei and Lou share 45 stickers in the ratio 4 to 5. A tape diagram shows 4 equal parts for Mei and 5 equal parts for Lou. How many stickers does Lou get?",
+      "choices": [],
+      "answer": "25",
+      "compute": "45/(4+5)*5",
+      "solution": "There are 4 + 5 = 9 equal parts. 45 / 9 = 5 stickers in each part. Lou has 5 parts, so 5 x 5 = 25 stickers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 parts = 45, each 5; Lou 5×5 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.764Z"
+        }
+      }
+    },
+    {
+      "id": "9de20a20-9ff2-4517-9d5a-224eacea4838",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ratio tables",
+      "stem": "A ratio table shows pages read and minutes: 6 pages in 9 minutes, ? pages in 15 minutes, and 18 pages in 27 minutes. What number replaces the ?",
+      "choices": [],
+      "answer": "10",
+      "compute": "6/9*15",
+      "solution": "6 pages in 9 minutes is 2 pages for every 3 minutes (divide both by 3). 15 minutes is 5 groups of 3 minutes, so 5 x 2 = 10 pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6:9 = 2:3 (pages:minutes). 15 minutes -> 15x2/3=10 pages. Check 18:27=2:3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.941Z"
+        }
+      }
+    },
+    {
+      "id": "65a74f7c-bd2f-4769-bb85-2779c693dbcd",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a ratio from a situation",
+      "stem": "A store has 12 laptops and 8 tablets. Which statement is true?",
+      "choices": [
+        "There are 3 tablets for every 2 laptops",
+        "There are 3 laptops for every 5 tablets",
+        "There are 5 laptops for every 3 tablets",
+        "There are 3 laptops for every 2 tablets"
+      ],
+      "answer": "There are 3 laptops for every 2 tablets",
+      "compute": null,
+      "solution": "The ratio of laptops to tablets is 12 to 8. Divide both by 4 to get 3 to 2: 3 laptops for every 2 tablets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 3 laptops for every 2 tablets",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12:8 = 3:2 laptops to tablets.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.962Z"
+        }
+      }
+    },
+    {
+      "id": "1058bb3b-f67a-4be0-b116-8903c621affa",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a ratio from a situation",
+      "stem": "Of 30 trees in a park, 24 are maples. Which statement is true?",
+      "choices": [
+        "The ratio of maples to all trees is 4 to 1",
+        "The ratio of maples to other trees is 4 to 1",
+        "The ratio of other trees to maples is 4 to 1",
+        "The ratio of other trees to all trees is 4 to 1"
+      ],
+      "answer": "The ratio of maples to other trees is 4 to 1",
+      "compute": null,
+      "solution": "There are 30 - 24 = 6 other trees. Maples to other trees is 24 to 6, or 4 to 1. Maples to all trees is 24 to 30, or 4 to 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The ratio of maples to other trees is 4 to 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Maples 24, others 6; 24:6 = 4:1 maples to others.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.985Z"
+        }
+      }
+    },
+    {
+      "id": "3d58c965-6bd2-4b6a-af78-a4a29b23760e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Double number lines",
+      "stem": "A double number line shows minutes on the top and pages read on the bottom, at a steady pace. The mark 4 minutes lines up with 6 pages. Which mark on the top lines up with 18 pages?",
+      "choices": [
+        "16 minutes",
+        "12 minutes",
+        "9 minutes",
+        "27 minutes"
+      ],
+      "answer": "12 minutes",
+      "compute": null,
+      "solution": "18 pages is 3 times 6 pages, so the minutes are 3 times 4 minutes, which is 12 minutes. Adding 12 to both numbers would give 16 minutes, which is not the same pace.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12 minutes",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 pages per 4 min; 18 = 3*6, so 3*4 = 12 minutes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.992Z"
+        }
+      }
+    },
+    {
+      "id": "e86da61c-aba3-4f9e-a3eb-610fb6508ad0",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "The ratio of salt to water in a brine is 1 to 20. Which mixture has the same ratio?",
+      "choices": [
+        "2 tablespoons of salt and 22 cups of water",
+        "1 tablespoon of salt and 21 cups of water",
+        "2 tablespoons of salt and 40 cups of water",
+        "20 tablespoons of salt and 1 cup of water"
+      ],
+      "answer": "2 tablespoons of salt and 40 cups of water",
+      "compute": null,
+      "solution": "Multiplying both numbers of 1 to 20 by 2 gives 2 to 40. Adding the same amount to both would not keep the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 tablespoons of salt and 40 cups of water",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1:20 = 2:40. Others: 2:22, 1:21, 20:1 not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.003Z"
+        }
+      }
+    },
+    {
+      "id": "7cad5bde-ec9a-47eb-874e-1eb4ff207651",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram shows 2 equal parts for Lena's money and 7 equal parts of the same size for Omar's money. Omar has 35 dollars. Which equation finds the value $p$ of one part?",
+      "choices": [
+        "$9p = 35$",
+        "$2p = 35$",
+        "$7p = 2$",
+        "$7p = 35$"
+      ],
+      "answer": "$7p = 35$",
+      "compute": null,
+      "solution": "Omar's money is 7 equal parts and he has 35 dollars, so 7p = 35. Then p = 5 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7p = 35$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Omar's 7 parts total 35: 7p = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.011Z"
+        }
+      }
+    },
+    {
+      "id": "43fe6add-d6bb-4e30-b78f-7555fa71650e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "Water and juice are mixed in the ratio 3 to 5. How many cups of juice are in 40 cups of the mix?",
+      "choices": [],
+      "answer": "25",
+      "compute": "40/(3+5)*5",
+      "solution": "There are 3 + 5 = 8 parts in the mix. 40 / 8 = 5 cups in each part. The juice is 5 parts, so 5 x 5 = 25 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Juice is 5 of every 8 cups: 40*5/8 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.039Z"
+        }
+      }
+    },
+    {
+      "id": "09dd306e-a8ec-423a-8b42-ea708e2bb86b",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "A lemonade uses 3 cups of lemon juice for every 8 cups of water. How many cups of lemon juice go with 32 cups of water?",
+      "choices": [],
+      "answer": "12",
+      "compute": "32/8*3",
+      "solution": "32 cups of water is 4 groups of 8 cups. Each group goes with 3 cups of lemon juice, so 4 x 3 = 12 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32 = 8*4, so lemon 3*4 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.061Z"
+        }
+      }
+    },
+    {
+      "id": "fc015136-2107-45d6-8a4b-27efdcc3111b",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "The ratio of fiction books to nonfiction books on a shelf is 5 to 3. There are 15 fiction books. How many books are on the shelf in all?",
+      "choices": [],
+      "answer": "24",
+      "compute": "15/5*(5+3)",
+      "solution": "15 fiction books is 3 groups of 5. So there are 3 groups of 3 nonfiction books, which is 9. In all, 15 + 9 = 24 books.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 = 5*3, nonfiction 3*3 = 9; total 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.070Z"
+        }
+      }
+    },
+    {
+      "id": "64fa855d-9cae-43ff-8c50-071dd497b81e",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "Pia has 2 red beads for every 3 blue beads on a bracelet. The bracelet has 15 beads in all. Which is true?",
+      "choices": [
+        "6 red beads and 9 blue beads",
+        "9 red beads and 6 blue beads",
+        "5 red beads and 10 blue beads",
+        "2 red beads and 13 blue beads"
+      ],
+      "answer": "6 red beads and 9 blue beads",
+      "compute": null,
+      "solution": "Each group of 2 red and 3 blue has 5 beads. 15 / 5 = 3 groups, so there are 3 x 2 = 6 red beads and 3 x 3 = 9 blue beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 red beads and 9 blue beads",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ratio 2:3, 5 beads per group; 15/5 = 3 groups; red 2x3 = 6, blue 3x3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.082Z"
+        }
+      }
+    },
+    {
+      "id": "05483030-7342-4531-bf1b-cbe49c3c4cd8",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiplicative, not additive, reasoning",
+      "stem": "Which statement about ratios is true?",
+      "choices": [
+        "Multiplying both numbers of a ratio by 4 gives an equivalent ratio",
+        "Adding 4 to both numbers of a ratio gives an equivalent ratio",
+        "Reversing the order of the two numbers gives an equivalent ratio",
+        "Subtracting 4 from both numbers of a ratio gives an equivalent ratio"
+      ],
+      "answer": "Multiplying both numbers of a ratio by 4 gives an equivalent ratio",
+      "compute": null,
+      "solution": "An equivalent ratio comes from multiplying or dividing both numbers by the same number. Adding or subtracting does not keep the ratio, and reversing the order changes what is compared.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiplying both numbers of a ratio by 4 gives an equivalent ratio",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Equivalent ratios come from multiplying (or dividing) both numbers by the same nonzero number. Adding/subtracting or reversing does not (e.g. 1:2 vs 5:6, 2:1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.093Z"
+        }
+      }
+    },
+    {
+      "id": "aaaabaf0-228b-4f0c-91e8-be0a66d031f4",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Double number lines",
+      "stem": "On a double number line, hours are on the top and dollars earned are on the bottom, at a steady rate. The mark 2 hours lines up with 14 dollars. How many dollars line up with 5 hours?",
+      "choices": [],
+      "answer": "35",
+      "compute": "14/2*5",
+      "solution": "2 hours line up with 14 dollars, so 1 hour lines up with 7 dollars. 5 hours line up with 5 x 7 = 35 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14/2 = 7 dollars per hour; 5 x 7 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.101Z"
+        }
+      }
+    },
+    {
+      "id": "32c96dfb-e5a7-457e-80c0-61f9b704c82c",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ratios as points on a graph",
+      "stem": "Each point (x, y) shows x cups of flour and y cups of sugar. The points (4, 6) and (6, 9) lie on a line through (0, 0). A point on this line has x equal to 10. What is its y?",
+      "choices": [],
+      "answer": "15",
+      "compute": "10*6/4",
+      "solution": "The ratio of x to y is 4 to 6, which is 2 to 3. 10 is 5 groups of 2, so y is 5 x 3 = 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Line through origin: y/x = 6/4 = 1.5. y = 1.5*10 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.125Z"
+        }
+      }
+    },
+    {
+      "id": "b6378935-e555-4ede-9fb3-4c5e1e847356",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "The ratio of Sam's cats to his dogs is 3 to 2. He has 6 cats. How many pets does he have in all?",
+      "choices": [],
+      "answer": "10",
+      "compute": "6/3*(3+2)",
+      "solution": "6 cats is 2 groups of 3 cats. So he has 2 groups of 2 dogs, which is 4 dogs. In all, 6 + 4 = 10 pets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:2 with 6 cats -> 4 dogs; 6 + 4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.157Z"
+        }
+      }
+    },
+    {
+      "id": "bf32879d-2435-4801-957e-2351591b03ad",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "The ratio of the length to the width of a poster is 7 to 4. The width is 20 centimeters. What is the length in centimeters?",
+      "choices": [],
+      "answer": "35",
+      "compute": "20/4*7",
+      "solution": "20 cm is 5 groups of 4. So the length is 5 groups of 7, which is 35 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length/width = 7/4; width 20 = 4*5, length 7*5=35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.218Z"
+        }
+      }
+    },
+    {
+      "id": "0d07d525-699a-45a4-b086-4bb0418051a8",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ratio tables",
+      "stem": "Which list of pairs (red tiles, blue tiles) shows equivalent ratios?",
+      "choices": [
+        "2 to 3, 4 to 5, 6 to 7",
+        "2 to 3, 4 to 6, 6 to 8",
+        "2 to 3, 4 to 6, 6 to 9",
+        "2 to 3, 3 to 4, 4 to 5"
+      ],
+      "answer": "2 to 3, 4 to 6, 6 to 9",
+      "compute": null,
+      "solution": "In 2 to 3, 4 to 6 and 6 to 9, both numbers are multiplied by the same number each time (2, then 3). In the other lists the same number is added each time, which does not keep the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 to 3, 4 to 6, 6 to 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2:3=4:6=6:9 (all 2/3). Others differ (6:8=3:4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.466Z"
+        }
+      }
+    },
+    {
+      "id": "3ef96d42-dba0-446a-9d7a-f789881be842",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "The ratio of adult tickets to child tickets sold for a play is 4 to 9. The theater sold 36 child tickets. How many adult tickets did it sell?",
+      "choices": [],
+      "answer": "16",
+      "compute": "36/9*4",
+      "solution": "36 child tickets is 4 groups of 9. Each group goes with 4 adult tickets, so 4 x 4 = 16 adult tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36/9=4 per part; adults 4*4=16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.481Z"
+        }
+      }
+    },
+    {
+      "id": "75ea1dff-d3cf-4084-8224-67a851663c72",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram shows red paint as 5 equal parts and blue paint as 2 equal parts of the same size. Which is the ratio of blue paint to all the paint?",
+      "choices": [
+        "2 to 7",
+        "2 to 5",
+        "5 to 7",
+        "7 to 2"
+      ],
+      "answer": "2 to 7",
+      "compute": null,
+      "solution": "All the paint is 5 + 2 = 7 parts. Blue is 2 parts, so the ratio of blue paint to all the paint is 2 to 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 to 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Blue 2 parts of 7 total: 2 to 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.487Z"
+        }
+      }
+    },
+    {
+      "id": "cb8b026b-968a-47e1-acc9-b94f3656ddac",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Ratio language and notation",
+      "stem": "A class has 9 girls and 12 boys. Which statement is true?",
+      "choices": [
+        "The ratio of girls to all students is 3 to 4",
+        "The ratio of girls to boys is 3 to 4",
+        "The ratio of boys to girls is 3 to 4",
+        "The ratio of boys to all students is 3 to 4"
+      ],
+      "answer": "The ratio of girls to boys is 3 to 4",
+      "compute": null,
+      "solution": "The ratio of girls to boys is 9 to 12, which is 3 to 4 in simplest form. There are 21 students in all, so the ratio of girls to all students is 9 to 21, or 3 to 7. The ratio of boys to girls is 4 to 3, and boys to all students is 4 to 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The ratio of girls to boys is 3 to 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9:12 = 3:4 girls to boys. Girls:all = 9:21=3:7; boys:all=12:21=4:7; boys:girls=4:3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.640Z"
+        }
+      }
+    },
+    {
       "id": "be035766-e4fb-44c9-baaf-3305f6327e44",
       "topic_id": "NC17.6.RP.1",
       "difficulty": 3,
@@ -963,6 +2387,728 @@
           "work": "18:30 = 3:5; 21 = 3*7, so 5*7 = 35: 21 to 35.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:36.389Z"
+        }
+      }
+    },
+    {
+      "id": "25469a74-6e47-4ea5-9cab-320c0d678e8f",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "A recipe uses sugar and flour in the ratio 3 to 8. Tess used 24 cups of flour. Her friend used 5 more cups of sugar than Tess. How many cups of sugar did her friend use?",
+      "choices": [],
+      "answer": "14",
+      "compute": "24/8*3+5",
+      "solution": "24 cups of flour is 3 groups of 8, so Tess used 3 groups of 3 cups of sugar, which is 9 cups. Her friend used 9 + 5 = 14 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tess: 3/8 = s/24 -> s = 9 cups sugar. Friend: 9 + 5 = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.878Z"
+        }
+      }
+    },
+    {
+      "id": "c9c6f3e2-7a7e-45eb-b6c4-5884bccdebde",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "Tom runs 3 laps for every 2 laps Ben runs. Ben ran 14 laps. How many laps did they run together?",
+      "choices": [],
+      "answer": "35",
+      "compute": "14/2*(3+2)",
+      "solution": "14 laps is 7 groups of 2. So Tom ran 7 groups of 3, which is 21 laps. Together they ran 21 + 14 = 35 laps.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Tom = 14*3/2 = 21; total 21 + 14 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.968Z"
+        }
+      }
+    },
+    {
+      "id": "38067f29-46e6-451c-ac22-1992de9c817b",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ratio tables",
+      "stem": "The first two rows of a ratio table of hours and dollars are 3 and 24, then 5 and 40. Which could be the next row?",
+      "choices": [
+        "8 and 59",
+        "8 and 64",
+        "8 and 32",
+        "9 and 70"
+      ],
+      "answer": "8 and 64",
+      "compute": null,
+      "solution": "The rate is 8 dollars for each hour (24 / 3 = 8 and 40 / 5 = 8). 8 hours go with 8 x 8 = 64 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 and 64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Rate $8/h (24/3 = 40/5 = 8). 8*8 = 64; 59, 70 (9*8=72), 32 fail.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.993Z"
+        }
+      }
+    },
+    {
+      "id": "3a4cfa2b-8ba2-40fa-bfb3-1ad337699e58",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratios as points on a graph",
+      "stem": "Each point (x, y) shows x gallons of paint and y rooms painted. The points (5, 2) and (10, 4) lie on a line through (0, 0). A point on this line has y equal to 14. What is its x?",
+      "choices": [],
+      "answer": "35",
+      "compute": "14/2*5",
+      "solution": "The ratio of x to y is 5 to 2. y = 14 is 7 groups of 2, so x is 7 x 5 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = (2/5)x; 14 = 0.4x → x = 35. Check (5,2),(10,4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.036Z"
+        }
+      }
+    },
+    {
+      "id": "43f97d76-c77c-4148-bf94-16d19fa0cefa",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a ratio from a situation",
+      "stem": "Which is the ratio of 2 hours to 30 minutes, written with both quantities in minutes?",
+      "choices": [
+        "2 to 30",
+        "30 to 120",
+        "2 to 0.5",
+        "120 to 30"
+      ],
+      "answer": "120 to 30",
+      "compute": null,
+      "solution": "2 hours is 120 minutes, so the ratio is 120 to 30, which is 4 to 1. Both quantities must use the same unit.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120 to 30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 hours = 120 min; 120 to 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.059Z"
+        }
+      }
+    },
+    {
+      "id": "87d79c29-1296-4a8e-9f2c-26895f487d76",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiplicative, not additive, reasoning",
+      "stem": "Sasha says that 3 to 4 and 4 to 3 are equivalent ratios. Which statement is correct?",
+      "choices": [
+        "They are not equivalent, because the order of the quantities changed",
+        "They are equivalent, because they use the same two numbers",
+        "They are equivalent, because 3 + 4 equals 4 + 3",
+        "They are equivalent, because both add up to 7"
+      ],
+      "answer": "They are not equivalent, because the order of the quantities changed",
+      "compute": null,
+      "solution": "Equivalent ratios come from multiplying or dividing both numbers by the same number, and 3 to 4 cannot become 4 to 3 that way. Reversing the order compares the quantities the other way around.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are not equivalent, because the order of the quantities changed",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:4 compares first to second; 4:3 reverses; not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.069Z"
+        }
+      }
+    },
+    {
+      "id": "a11ad448-2ba7-4412-9fc9-3f81928aa067",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equivalent ratios",
+      "stem": "Box A has 4 red marbles and 6 blue marbles. Box B has 10 red marbles and 15 blue marbles. All the marbles are poured into one bag. The ratio of red to blue marbles in the bag is 14 to ?. What is the ?",
+      "choices": [],
+      "answer": "21",
+      "compute": "6+15",
+      "solution": "The bag has 4 + 10 = 14 red marbles and 6 + 15 = 21 blue marbles, so the ratio is 14 to 21.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "21",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Red 4 + 10 = 14; blue 6 + 15 = 21. Ratio 14 to 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.084Z"
+        }
+      }
+    },
+    {
+      "id": "f363a5cd-83a6-454f-a996-e3ab81f1302b",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Double number lines",
+      "stem": "A double number line has pairs of marks that line up at a steady ratio. The marks 6 and 15 line up. Which other two marks also line up?",
+      "choices": [
+        "10 and 19",
+        "8 and 17",
+        "10 and 25",
+        "12 and 20"
+      ],
+      "answer": "10 and 25",
+      "compute": null,
+      "solution": "6 to 15 is 2 to 5. 10 to 25 is 5 groups of 2 to 5 groups of 5, so it is also 2 to 5. The others do not keep the ratio.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10 and 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6:15 = 2:5. 10:25 = 2:5 yes. 8:17, 12:20 = 3:5, 10:19 no.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.099Z"
+        }
+      }
+    },
+    {
+      "id": "e0266e59-f1e1-4236-ae82-6db4c168e485",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram shows 5 equal parts for sneakers and 4 equal parts of the same size for sandals. There are 72 shoes in all. Which expression gives the number of shoes in one part?",
+      "choices": [
+        "$72 \\div 5$",
+        "$72 \\div 4$",
+        "$72 \\div 20$",
+        "$72 \\div 9$"
+      ],
+      "answer": "$72 \\div 9$",
+      "compute": null,
+      "solution": "There are 5 + 4 = 9 equal parts in all, so one part is 72 / 9 = 8 shoes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$72 \\div 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 equal parts in all: 72 / 9 = 8 shoes per part.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.118Z"
+        }
+      }
+    },
+    {
+      "id": "6fcc2ba1-575c-4c51-9dbf-14a617ff4a08",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "The ratio of cars to trucks in a lot is 7 to 2. Which could NOT be the total number of vehicles?",
+      "choices": [
+        "27",
+        "45",
+        "50",
+        "54"
+      ],
+      "answer": "50",
+      "compute": null,
+      "solution": "Each group of 7 cars and 2 trucks has 9 vehicles, so the total must be a multiple of 9. 27, 45 and 54 are multiples of 9, but 50 is not.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7:2 gives totals that are multiples of 9. 54=9*6, 45=9*5, 27=9*3; 50 is not a multiple of 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.124Z"
+        }
+      }
+    },
+    {
+      "id": "0f183bed-770f-455e-8c4f-01b0e78c751f",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "A school wants 1 teacher for every 15 students. It has 480 students and 12 teachers. How many more teachers does it need?",
+      "choices": [],
+      "answer": "20",
+      "compute": "480/15-12",
+      "solution": "480 / 15 = 32 teachers are needed. It has 12, so it needs 32 - 12 = 20 more teachers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "480/15 = 32 teachers needed; 32 - 12 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.127Z"
+        }
+      }
+    },
+    {
+      "id": "82024969-952d-4e7f-be75-424efd7d3a82",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "Which pair of mixes has the same ratio of juice to water?",
+      "choices": [
+        "A: 3 juice, 5 water; B: 9 juice, 15 water",
+        "A: 3 juice, 5 water; B: 6 juice, 8 water",
+        "A: 3 juice, 5 water; B: 5 juice, 3 water",
+        "A: 3 juice, 5 water; B: 9 juice, 20 water"
+      ],
+      "answer": "A: 3 juice, 5 water; B: 9 juice, 15 water",
+      "compute": null,
+      "solution": "Multiplying 3 and 5 by 3 gives 9 and 15, so mix B has the same ratio as mix A. In the others the numbers were added to, reversed, or not scaled together.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A: 3 juice, 5 water; B: 9 juice, 15 water",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3:5 = 9:15 (×3). 6:8 = 3:4, 9:20 no, 5:3 reversed.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.261Z"
+        }
+      }
+    },
+    {
+      "id": "a44916ec-9246-48d5-89a8-cf574f200279",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "A bakery sold muffins and bagels in the ratio 5 to 3. It sold 18 fewer bagels than muffins. How many muffins and bagels did it sell in all?",
+      "choices": [],
+      "answer": "72",
+      "compute": "18/(5-3)*(5+3)",
+      "solution": "The difference of 5 - 3 = 2 parts is 18 items, so 1 part is 9 items. In all there are 5 + 3 = 8 parts, and 8 x 9 = 72 items.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference is 5-3 = 2 parts = 18, so 1 part = 9. Total 8 parts = 72 (45 muffins, 27 bagels).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.283Z"
+        }
+      }
+    },
+    {
+      "id": "666523c9-f784-4b73-bd8f-1cc1c089fa2d",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing quantity from a ratio",
+      "stem": "A garden has 12 tomato plants and 20 pepper plants. Another garden has the same ratio of tomato plants to pepper plants and has 21 tomato plants. How many pepper plants does it have?",
+      "choices": [],
+      "answer": "35",
+      "compute": "21/12*20",
+      "solution": "12 to 20 is 3 to 5 in simplest form. 21 tomato plants is 7 groups of 3, so there are 7 x 5 = 35 pepper plants.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12:20 = 3:5. 21 tomatoes = 3x7, so peppers = 5x7 = 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.314Z"
+        }
+      }
+    },
+    {
+      "id": "b795387b-a564-4f4e-ac2f-1ef5d3d642b2",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Tape diagrams",
+      "stem": "A tape diagram shows 3 equal parts for Mia's books and 5 equal parts of the same size for Leo's books. Leo has 10 more books than Mia. Which equation finds the number of books $p$ in one part?",
+      "choices": [
+        "$2p = 10$",
+        "$8p = 10$",
+        "$5p = 10$",
+        "$3p = 10$"
+      ],
+      "answer": "$2p = 10$",
+      "compute": null,
+      "solution": "Leo has 5 - 3 = 2 more parts than Mia, and that is 10 books, so 2p = 10 and p = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2p = 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Leo 5 parts minus Mia 3 parts = 2 parts = 10, so 2p = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.349Z"
+        }
+      }
+    },
+    {
+      "id": "83f43b30-5a3a-45aa-85ab-531fda5b0614",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "The ratio of the length to the width of a flag is 3 to 2. The perimeter of the flag is 60 centimeters. What is its length in centimeters?",
+      "choices": [],
+      "answer": "18",
+      "compute": "60/(2*(3+2))*3",
+      "solution": "One length and one width make 3 + 2 = 5 parts, and the perimeter is 2 lengths and 2 widths, which is 10 parts. 60 / 10 = 6 centimeters in a part. The length is 3 parts, so 3 x 6 = 18 centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "L + W = 30, L:W = 3:2, so L = 3/5 x 30 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.367Z"
+        }
+      }
+    },
+    {
+      "id": "3fb3d352-3ea9-47c7-a945-31fe53c32cc8",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "Mia has 8 red beads and 12 blue beads. She adds more of each color so the ratio of red to blue stays the same. Which could be her new totals?",
+      "choices": [
+        "14 red beads and 18 blue beads",
+        "14 red beads and 21 blue beads",
+        "12 red beads and 20 blue beads",
+        "16 red beads and 22 blue beads"
+      ],
+      "answer": "14 red beads and 21 blue beads",
+      "compute": null,
+      "solution": "8 to 12 is 2 to 3. 14 to 21 is 7 groups of 2 to 7 groups of 3, so it is also 2 to 3. For the other options, the ratio is not 2 to 3 (for example 14 to 18 is 7 to 9).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14 red beads and 21 blue beads",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8:12 = 2:3. 14:21 = 2:3 yes; 14:18=7:9; 12:20=3:5; 16:22=8:11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.468Z"
+        }
+      }
+    },
+    {
+      "id": "52548ec9-6a5d-4a37-853a-2926152e10b5",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "A paint mix uses 3 parts blue to 5 parts white. Lila has 12 cups of blue paint and 25 cups of white paint. What is the greatest number of cups of mix she can make using this ratio?",
+      "choices": [],
+      "answer": "32",
+      "compute": "12/3*(3+5)",
+      "solution": "The 25 cups of white would need 15 cups of blue, but she has only 12. So the blue paint limits her. 12 cups of blue is 4 groups of 3, which goes with 4 x 5 = 20 cups of white. In all, 12 + 20 = 32 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Blue limits: 12/3 = 4 batches (white needs 20 <= 25). 4 x (3+5) = 32 cups.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.528Z"
+        }
+      }
+    },
+    {
+      "id": "7eada3b9-c434-4796-a844-05f941b63a58",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "Two numbers are in the ratio 5 to 8 and their sum is 91. What is the greater number?",
+      "choices": [],
+      "answer": "56",
+      "compute": "91/(5+8)*8",
+      "solution": "There are 5 + 8 = 13 parts. 91 / 13 = 7 in each part. The greater number is 8 parts, so 8 x 7 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 parts = 91, one part = 7. Greater = 8 x 7 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.535Z"
+        }
+      }
+    },
+    {
+      "id": "63d3b7da-e20b-4a75-b717-5918e5bd29a8",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent ratios",
+      "stem": "Which ratio is equivalent to 1.5 to 2.5?",
+      "choices": [
+        "1 to 2",
+        "3 to 5",
+        "3 to 4",
+        "15 to 2"
+      ],
+      "answer": "3 to 5",
+      "compute": null,
+      "solution": "Multiply both numbers by 2: 1.5 x 2 = 3 and 2.5 x 2 = 5. The ratio is 3 to 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 to 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.5:2.5 = 15:25 = 3:5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.552Z"
+        }
+      }
+    },
+    {
+      "id": "3d29d8d5-7781-4753-b731-a32a60787639",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Ratio language and notation",
+      "stem": "Which does NOT describe a ratio of red cars to blue cars of 2 to 3?",
+      "choices": [
+        "For every 2 red cars there are 3 blue cars",
+        "6 red cars and 9 blue cars",
+        "10 red cars and 15 blue cars",
+        "2 of every 3 cars are red"
+      ],
+      "answer": "2 of every 3 cars are red",
+      "compute": null,
+      "solution": "If 2 of every 3 cars are red, the other 1 is blue, so the ratio of red to blue is 2 to 1. The other options are all 2 to 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 of every 3 cars are red",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "'2 of every 3 cars are red' is part-to-whole: red:blue would be 2:1, not 2:3. The others are 2:3 (6:9 and 10:15 are equivalent).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.561Z"
+        }
+      }
+    },
+    {
+      "id": "541764cc-5745-4318-a11b-0fdcef8fc581",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Parts, totals and differences of a ratio",
+      "stem": "The ratio of afternoon tickets to evening tickets sold for a show is 5 to 8. In all, 104 tickets were sold. How many more evening tickets than afternoon tickets were sold?",
+      "choices": [],
+      "answer": "24",
+      "compute": "104/(5+8)*(8-5)",
+      "solution": "There are 5 + 8 = 13 parts. 104 / 13 = 8 tickets in each part. Evening has 8 - 5 = 3 more parts, so 3 x 8 = 24 more tickets.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 8 = 13 parts, 104/13 = 8 per part. Evening 64, afternoon 40, difference 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.581Z"
+        }
+      }
+    },
+    {
+      "id": "95b373ec-5226-4e9d-a48f-07adc8dbb1b4",
+      "topic_id": "NC17.6.RP.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ratio tables",
+      "stem": "A ratio table has these rows: 6 and 15, then 10 and ?, then 14 and 35. What number replaces the ?",
+      "choices": [],
+      "answer": "25",
+      "compute": "10/6*15",
+      "solution": "6 to 15 is 2 to 5. 10 is 5 groups of 2, so the missing number is 5 x 5 = 25. Check: 14 to 35 is 7 groups of 2 to 7 groups of 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6:15 = 2:5 (also 14:35); 10 -> 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.612Z"
         }
       }
     },
@@ -15157,6 +17303,961 @@
       }
     },
     {
+      "id": "468466b5-4aab-422f-a16f-4ab36f67ecb4",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Test equivalence by substituting values",
+      "stem": "Sam wants to test whether $3x$ and $x+x+x$ are equivalent. What is the value of $x+x+x$ when $x=4$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4+4+4",
+      "solution": "Put 4 in for $x$: $4+4+4=12$. Also $3x = 3 \\cdot 4 = 12$, so the two expressions agree for this value.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 4 + 4 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.859Z"
+        }
+      }
+    },
+    {
+      "id": "99e8a971-26d8-4a92-b6d4-17044d1d5fa1",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Combine like terms to write an equivalent expression",
+      "stem": "Which expression is equivalent to $2a+5a$?",
+      "choices": [
+        "$10a$",
+        "$7a^2$",
+        "$7a$",
+        "$3a$"
+      ],
+      "answer": "$7a$",
+      "compute": null,
+      "solution": "Both terms are multiples of $a$, so add the numbers in front: $2+5=7$. The result is $7a$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7a$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2a+5a = 7a.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.056Z"
+        }
+      }
+    },
+    {
+      "id": "30d8a1bd-af4f-4d8a-ac28-c37790a39152",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Spot expressions that are not equivalent",
+      "stem": "Which pair of expressions is equivalent?",
+      "choices": [
+        "$x+x$ and $2x$",
+        "$x+x$ and $x^2$",
+        "$3 \\cdot x$ and $x+3$",
+        "$5+x$ and $5x$"
+      ],
+      "answer": "$x+x$ and $2x$",
+      "compute": null,
+      "solution": "Adding $x$ to itself gives 2 groups of $x$, so $x+x=2x$. Try $x=4$ in the others: $4+4=8$ but $4^2=16$; $3 \\cdot 4=12$ but $4+3=7$; $5+4=9$ but $5 \\cdot 4=20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x+x$ and $2x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + x = 2x for every x. x^2, 5x and x+3 differ (e.g. x=3: 6 vs 9; 8 vs 15; 9 vs 6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.080Z"
+        }
+      }
+    },
+    {
+      "id": "a18df505-e82c-4d18-84fd-8f3550bb472f",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Combine like terms to write an equivalent expression",
+      "stem": "Which expression is equivalent to $6y-y$?",
+      "choices": [
+        "$6$",
+        "$5y$",
+        "$7y$",
+        "$6y^2$"
+      ],
+      "answer": "$5y$",
+      "compute": null,
+      "solution": "Think of $y$ as $1y$. Then $6y-1y=(6-1)y=5y$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5y$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6y - y = 5y.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.157Z"
+        }
+      }
+    },
+    {
+      "id": "8bc11848-fef5-4e52-a905-fc3f9cc474c9",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Justify equivalence with a property",
+      "stem": "Why is $x+0$ equivalent to $x$?",
+      "choices": [
+        "Adding 0 to a number makes the number 0",
+        "Adding 0 to a number doubles the number",
+        "Adding 0 to a number does not change it",
+        "Adding 0 to a number makes it one larger"
+      ],
+      "answer": "Adding 0 to a number does not change it",
+      "compute": null,
+      "solution": "Zero is the identity for addition: adding 0 to any number gives back that same number, so $x+0=x$ for every $x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Adding 0 to a number does not change it",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0 is the additive identity: adding 0 does not change the number.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.170Z"
+        }
+      }
+    },
+    {
+      "id": "aab64e99-acfe-40c1-88c2-c5e56089503c",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent expressions using the distributive property",
+      "stem": "The expression $4(x+2)$ is equivalent to $4x+n$. What is the value of $n$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "4*2",
+      "solution": "The 4 multiplies both terms: $4(x+2)=4x+4 \\cdot 2 = 4x+8$. So $n=8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(x+2) = 4x + 8; n = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.171Z"
+        }
+      }
+    },
+    {
+      "id": "c679364b-cfdb-4440-a11c-c88f8a664ea7",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Equivalent expressions in a context",
+      "stem": "Each box holds $b$ pencils. Mia has 3 boxes and Sam has 2 boxes, so together they have $3b+2b$ pencils. This is equivalent to $nb$. What is the value of $n$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "3 boxes and 2 boxes make 5 boxes, so $3b+2b=5b$ and $n=5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3b+2b=5b; n=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.239Z"
+        }
+      }
+    },
+    {
+      "id": "59c02b37-4b19-4200-8710-193bdba4b0ee",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Equivalent expressions using the distributive property",
+      "stem": "Which expression is equivalent to $3(x+4)$?",
+      "choices": [
+        "$3x+4$",
+        "$3x+12$",
+        "$12x+3$",
+        "$3x+7$"
+      ],
+      "answer": "$3x+12$",
+      "compute": null,
+      "solution": "The 3 multiplies both terms inside the parentheses: $3 \\cdot x + 3 \\cdot 4 = 3x+12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x+12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x+4) = 3x + 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.375Z"
+        }
+      }
+    },
+    {
+      "id": "16fe8809-4ffe-43fe-af47-536a75229ad8",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Justify equivalence with a property",
+      "stem": "Which property shows that $4+n$ is equivalent to $n+4$?",
+      "choices": [
+        "associative property of addition",
+        "identity property of addition",
+        "distributive property of addition",
+        "commutative property of addition"
+      ],
+      "answer": "commutative property of addition",
+      "compute": null,
+      "solution": "Changing the order of the numbers being added does not change the sum. That is the commutative property of addition.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "commutative property of addition",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Order swapped: commutative property of addition.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.452Z"
+        }
+      }
+    },
+    {
+      "id": "98d557e2-7567-4c4e-a497-1395568dd968",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Combine like terms to write an equivalent expression",
+      "stem": "The expression $x+x+x+x+x$ is equivalent to $nx$. What is the value of $n$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Adding $x$ five times gives 5 groups of $x$, which is $5x$. So $n=5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Five x terms: 5x, n=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.470Z"
+        }
+      }
+    },
+    {
+      "id": "6f8eec7c-a21d-42bd-bbff-b5809f2f4088",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Test equivalence by substituting values",
+      "stem": "Maya tests $2(x+3)$ and $2x+3$ by putting in $x=4$. What does she find?",
+      "choices": [
+        "The values are 14 and 11, so the expressions are not equivalent",
+        "The values are 14 and 14, so the expressions are equivalent",
+        "The values are 10 and 11, so the expressions are not equivalent",
+        "The values are 11 and 11, so the expressions are equivalent"
+      ],
+      "answer": "The values are 14 and 11, so the expressions are not equivalent",
+      "compute": null,
+      "solution": "When $x=4$: $2(4+3)=2 \\cdot 7=14$ and $2 \\cdot 4+3=8+3=11$. The values differ, so the expressions are not equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The values are 14 and 11, so the expressions are not equivalent",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(7) = 14; 8 + 3 = 11; not equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.989Z"
+        }
+      }
+    },
+    {
+      "id": "e2ca9136-a163-48dd-9a78-a134d056ef03",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine like terms to write an equivalent expression",
+      "stem": "Which expression is equivalent to $9x+4+2x-1$?",
+      "choices": [
+        "$11x+3$",
+        "$11x+5$",
+        "$13x$",
+        "$7x+3$"
+      ],
+      "answer": "$11x+3$",
+      "compute": null,
+      "solution": "Combine the $x$ terms: $9x+2x=11x$. Combine the numbers: $4-1=3$. The result is $11x+3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$11x+3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x+2x = 11x; 4-1 = 3: 11x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.063Z"
+        }
+      }
+    },
+    {
+      "id": "322e4772-30e7-4e92-b5b2-a53d3a52f3d3",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent expressions using the distributive property",
+      "stem": "Which expression is equivalent to $5(2x-3)$?",
+      "choices": [
+        "$10x-3$",
+        "$7x-8$",
+        "$10x+15$",
+        "$10x-15$"
+      ],
+      "answer": "$10x-15$",
+      "compute": null,
+      "solution": "The 5 multiplies both terms: $5 \\cdot 2x = 10x$ and $5 \\cdot 3 = 15$. Keeping the subtraction gives $10x-15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10x-15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5*2x - 5*3 = 10x - 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.071Z"
+        }
+      }
+    },
+    {
+      "id": "1ae34d3a-4352-49f9-bf70-62adff0f3dd6",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Test equivalence by substituting values",
+      "stem": "Dev checks that $3(x+1)$ and $3x+3$ are equivalent by using $x=7$. What value do both expressions have when $x=7$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "3*(7+1)",
+      "solution": "$3(7+1)=3 \\cdot 8=24$ and $3 \\cdot 7+3=21+3=24$. Both are 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(7+1) = 24; 3(7)+3 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.086Z"
+        }
+      }
+    },
+    {
+      "id": "908b6be0-fd10-44ac-aa87-3b212e8af09f",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine like terms to write an equivalent expression",
+      "stem": "The expression $7a+3b+2a+b$ is equivalent to $9a+nb$. What is the value of $n$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "3+1",
+      "solution": "Combine the $a$ terms: $7a+2a=9a$. Combine the $b$ terms: $3b+b=3b+1b=4b$. So $n=4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7a + 2a = 9a; 3b + b = 4b. n = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.117Z"
+        }
+      }
+    },
+    {
+      "id": "db0249dd-7a87-444e-a0d9-4558b6db5319",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equivalent expressions in a context",
+      "stem": "A rectangle is 5 units wide and $(x+4)$ units long, so its area is $5(x+4)$ square units. This is equivalent to $5x+n$. What is the value of $n$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "5*4",
+      "solution": "$5(x+4)=5 \\cdot x+5 \\cdot 4=5x+20$. So $n=20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5(x+4) = 5x + 20. n = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.120Z"
+        }
+      }
+    },
+    {
+      "id": "e43bed9d-ecb2-4789-ad01-1f0f2e66c1ba",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Equivalent expressions using the distributive property",
+      "stem": "The expressions $6x+9$ and $3(2x+m)$ are equivalent. What is the value of $m$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "9/3",
+      "solution": "$3(2x+m)=6x+3m$. For this to equal $6x+9$, we need $3m=9$, so $m=3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(2x+m)=6x+3m; 3m=9, m=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.127Z"
+        }
+      }
+    },
+    {
+      "id": "1b8b8465-fe6c-4d2f-b167-8735d7861580",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Equivalent expressions in a context",
+      "stem": "Four friends each buy one ticket that costs $t$ dollars and one snack that costs 3 dollars. The total cost in dollars is $4(t+3)$. Which expression is equivalent?",
+      "choices": [
+        "$4t+3$",
+        "$12t+4$",
+        "$4t+12$",
+        "$4t+7$"
+      ],
+      "answer": "$4t+12$",
+      "compute": null,
+      "solution": "Each of the 4 friends pays for a ticket and a snack: 4 tickets cost $4t$ and 4 snacks cost $4 \\cdot 3=12$. The total is $4t+12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4t+12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(t+3) = 4t + 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.261Z"
+        }
+      }
+    },
+    {
+      "id": "aca37ecc-4d06-483a-b298-3503538a6530",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Justify equivalence with a property",
+      "stem": "Which statement correctly explains why $3x+2x=5x$?",
+      "choices": [
+        "$x$ is multiplied by $x$, so the sum is $5x^2$",
+        "$3$ groups of $x$ and $2$ groups of $x$ make $6$ groups of $x$",
+        "$3x$ and $2x$ each have an $x$, so the result is $x$",
+        "$3$ groups of $x$ and $2$ groups of $x$ make $5$ groups of $x$"
+      ],
+      "answer": "$3$ groups of $x$ and $2$ groups of $x$ make $5$ groups of $x$",
+      "compute": null,
+      "solution": "$3x$ means 3 groups of $x$ and $2x$ means 2 groups of $x$. Together that is $3+2=5$ groups of $x$, which is $5x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$ groups of $x$ and $2$ groups of $x$ make $5$ groups of $x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x's plus 2 x's is 5 x's (distributive: (3+2)x).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.388Z"
+        }
+      }
+    },
+    {
+      "id": "3ce52266-4ac6-43df-926d-4bb3dfd77123",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Spot expressions that are not equivalent",
+      "stem": "Which expression is NOT equivalent to $4x+8$?",
+      "choices": [
+        "$4(x+2)$",
+        "$4(x+8)$",
+        "$2(2x+4)$",
+        "$x+x+x+x+8$"
+      ],
+      "answer": "$4(x+8)$",
+      "compute": null,
+      "solution": "$4(x+8)=4x+32$, which is not $4x+8$. The others both equal $4x+8$: $4(x+2)=4x+8$, $2(2x+4)=4x+8$ and $x+x+x+x=4x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4(x+8)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(x+2)=4x+8; 2(2x+4)=4x+8; x+x+x+x+8=4x+8; 4(x+8)=4x+32, not equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.460Z"
+        }
+      }
+    },
+    {
+      "id": "c0c38c43-6da1-4fd8-b481-87bd0874c20e",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equivalent expressions in a context",
+      "stem": "Lila buys 3 packs of markers that each cost $m$ dollars, and then 5 more packs at the same price. Her total is $3m+5m$ dollars. Tom writes the same total as $2(nm)$. What is the value of $n$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(3+5)/2",
+      "solution": "$3m+5m=8m$. Tom's expression $2(nm)=2nm$ must also be $8m$, so $2n=8$ and $n=4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3m+5m=8m. 2(nm)=2nm=8m so n=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.922Z"
+        }
+      }
+    },
+    {
+      "id": "043ee9ae-bf9c-4262-8ea1-4f0db96585ff",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent expressions in a context",
+      "stem": "Ana pays a fee of 6 dollars plus 3 dollars for each of $g$ games, a total of $6+3g$ dollars. Ben writes the same total as $3(g+2)$. Which statement is correct?",
+      "choices": [
+        "They are equivalent because $3(g+2)=3g+6$",
+        "They are not equivalent because $3(g+2)=3g+2$",
+        "They are not equivalent: $3(g+2)=g+6$",
+        "They are not equivalent because $3(g+2)=3g+5$"
+      ],
+      "answer": "They are equivalent because $3(g+2)=3g+6$",
+      "compute": null,
+      "solution": "$3(g+2)=3g+3 \\cdot 2=3g+6$, and $6+3g$ is the same as $3g+6$ by the commutative property. So the expressions are equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are equivalent because $3(g+2)=3g+6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(g+2)=3g+6=6+3g, so equivalent.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.932Z"
+        }
+      }
+    },
+    {
+      "id": "e9baa190-ab52-4237-9e83-e0085431f948",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Equivalent expressions using the distributive property",
+      "stem": "Which expression is equivalent to $12x+18$?",
+      "choices": [
+        "$6(2x+18)$",
+        "$6(2x+3)$",
+        "$12(x+18)$",
+        "$6(x+3)$"
+      ],
+      "answer": "$6(2x+3)$",
+      "compute": null,
+      "solution": "Both 12 and 18 are multiples of 6, so factor out 6: $12x+18=6(2x+3)$. Check: $6 \\cdot 2x=12x$ and $6 \\cdot 3=18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6(2x+3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6(2x + 3) = 12x + 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.987Z"
+        }
+      }
+    },
+    {
+      "id": "aad80d45-6d08-4ef4-b813-25033f4c66b6",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Test equivalence by substituting values",
+      "stem": "Jon puts $x=1$ and then $x=10$ into $2(x+3)$ and $2x+n$. Each time the two expressions have the same value. What is the value of $n$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "2*3",
+      "solution": "$2(x+3)=2x+6$, so the expressions match for every $x$ only when $n=6$. Check: at $x=1$, $2(4)=8$ and $2+6=8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x+3)=2x+6; equal for x=1 and x=10 forces n=6 (2+6=8=2+n; 26=20+n).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.051Z"
+        }
+      }
+    },
+    {
+      "id": "1196b060-1f27-48d4-b3a3-1454f5ac101d",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine like terms to write an equivalent expression",
+      "stem": "The expression $4(x+3)+2x$ is equivalent to $ax+12$. What is the value of $a$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "4+2",
+      "solution": "$4(x+3)=4x+12$. Adding $2x$ gives $4x+2x+12=6x+12$. So $a=6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x + 12 + 2x = 6x + 12, a = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.107Z"
+        }
+      }
+    },
+    {
+      "id": "c683e20f-790d-4263-bbf5-8f3384cdc059",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Spot expressions that are not equivalent",
+      "stem": "Which statement about $2(x+5)$ and $2x+5$ is true?",
+      "choices": [
+        "They are equivalent because the 2 multiplies only the $x$",
+        "They are equivalent because both expressions have a 2 and a 5",
+        "They are not equivalent because $2(x+5)=2x+7$",
+        "They are not equivalent because $2(x+5)=2x+10$, not $2x+5$"
+      ],
+      "answer": "They are not equivalent because $2(x+5)=2x+10$, not $2x+5$",
+      "compute": null,
+      "solution": "The 2 multiplies both terms inside the parentheses: $2(x+5)=2x+10$. That differs from $2x+5$, so the expressions are not equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are not equivalent because $2(x+5)=2x+10$, not $2x+5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x+5)=2x+10, not 2x+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.213Z"
+        }
+      }
+    },
+    {
+      "id": "054c07aa-1e27-4e5d-b720-3013bd1516ac",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Spot expressions that are not equivalent",
+      "stem": "How many of these four expressions are equivalent to $6x+12$? The expressions are $6(x+2)$, $2(3x+6)$, $6x+2$ and $3(2x+4)$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$6(x+2)=6x+12$, $2(3x+6)=6x+12$ and $3(2x+4)=6x+12$ are all equivalent. $6x+2$ is not. So 3 of them are equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6(x+2)=6x+12, 2(3x+6)=6x+12, 3(2x+4)=6x+12; 6x+2 is not. 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.228Z"
+        }
+      }
+    },
+    {
+      "id": "af145351-ad87-4251-8761-2731cc558191",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Test equivalence by substituting values",
+      "stem": "Maya tests $3x$ and $x+4$ with $x=2$ and gets 6 for both. Which conclusion is correct?",
+      "choices": [
+        "Both give 6 at $x=2$, so they are equivalent for every value of $x$",
+        "Both contain $x$ and a number, so they are equivalent for every $x$",
+        "One match is not enough; at $x=3$ the values are 9 and 7, so they are not equivalent",
+        "One match is not enough; at $x=3$ the values are 9 and 9, so they are equivalent"
+      ],
+      "answer": "One match is not enough; at $x=3$ the values are 9 and 7, so they are not equivalent",
+      "compute": null,
+      "solution": "Equivalent expressions must match for EVERY value of $x$. Try $x=3$: $3 \\cdot 3=9$ but $3+4=7$. They differ, so the expressions are not equivalent.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "One match is not enough; at $x=3$ the values are 9 and 7, so they are not equivalent",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x=3: 3x=9, x+4=7. Not equivalent; one match is not enough.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.241Z"
+        }
+      }
+    },
+    {
+      "id": "8d9423e0-749b-468b-b152-241c07d8a65c",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Equivalent expressions using the distributive property",
+      "stem": "The expression $\\frac{1}{2}(8x+6)$ is equivalent to $4x+n$. What is the value of $n$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "6/2",
+      "solution": "Half of $8x$ is $4x$ and half of 6 is 3. So $\\frac{1}{2}(8x+6)=4x+3$ and $n=3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1/2)(8x+6) = 4x + 3, so n = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.248Z"
+        }
+      }
+    },
+    {
+      "id": "6a07390c-9156-4a5c-8d92-4d08bbb0acdb",
+      "topic_id": "NC17.6.EE.4",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Justify equivalence with a property",
+      "stem": "Which property justifies changing $2(3x)$ into $(2 \\cdot 3)x$?",
+      "choices": [
+        "commutative property of multiplication",
+        "associative property of multiplication",
+        "distributive property of multiplication",
+        "identity property of multiplication"
+      ],
+      "answer": "associative property of multiplication",
+      "compute": null,
+      "solution": "Only the grouping changes, not the order of the numbers. Regrouping a product is the associative property of multiplication.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "associative property of multiplication",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(3x) = (2*3)x regroups factors: associative property.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.513Z"
+        }
+      }
+    },
+    {
       "id": "88dfaf92-5552-4edd-b0bb-a03d0b2020b0",
       "topic_id": "NC17.6.EE.5",
       "difficulty": 1,
@@ -16108,6 +19209,981 @@
           "work": "n=6: 18-8=10 true; 36-6=30 true; 30-4=26 not 24; 3+4=7 true.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:33:09.809Z"
+        }
+      }
+    },
+    {
+      "id": "3b7e08f3-445f-40d9-a660-345f5eb6d105",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "write an expression for a story",
+      "stem": "A number $k$ of stickers is shared equally among 4 friends. Which expression gives how many stickers each friend gets?",
+      "choices": [
+        "$4 \\div k$",
+        "$4k$",
+        "$k - 4$",
+        "$k \\div 4$"
+      ],
+      "answer": "$k \\div 4$",
+      "compute": null,
+      "solution": "Sharing equally means dividing. The $k$ stickers are split into 4 equal parts, so each friend gets $k \\div 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$k \\div 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sharing k equally among 4: k ÷ 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.023Z"
+        }
+      }
+    },
+    {
+      "id": "089fb343-549b-4eb8-a935-155f02c8ba59",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "write an expression for a phrase",
+      "stem": "Which expression means \"the product of 8 and a number $y$\"?",
+      "choices": [
+        "$8y$",
+        "$8 + y$",
+        "$y - 8$",
+        "$8 \\div y$"
+      ],
+      "answer": "$8y$",
+      "compute": null,
+      "solution": "\"Product\" means multiply. The product of 8 and $y$ is $8y$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8y$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Product of 8 and y = 8y.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.102Z"
+        }
+      }
+    },
+    {
+      "id": "66c0c60e-a7ad-4f9b-8a97-c716c0ed4c6a",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "say what a part of an expression means in the story",
+      "stem": "Pens cost 5 dollars each. The cost of $p$ pens, in dollars, is $5p$. What does $p$ stand for?",
+      "choices": [
+        "the cost of one pen",
+        "the total cost in dollars",
+        "the number of pens bought",
+        "the number of dollars in 5"
+      ],
+      "answer": "the number of pens bought",
+      "compute": null,
+      "solution": "Each pen costs 5 dollars, so the cost is 5 times the number of pens. The letter $p$ is the number of pens bought.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the number of pens bought",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In 5p, 5 is dollars per pen, so p is the number of pens.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.263Z"
+        }
+      }
+    },
+    {
+      "id": "43f8947b-8a7e-4077-b8f8-d1a025bab9ea",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "write an expression for a phrase",
+      "stem": "Which expression means \"seven more than a number $n$\"?",
+      "choices": [
+        "$7n$",
+        "$n + 7$",
+        "$n - 7$",
+        "$7 - n$"
+      ],
+      "answer": "$n + 7$",
+      "compute": null,
+      "solution": "\"More than\" means add. Seven more than $n$ is $n + 7$. The expression $7n$ would mean 7 times $n$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$n + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Seven more than n: n+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.388Z"
+        }
+      }
+    },
+    {
+      "id": "2b875ca9-3dbc-443c-a9ca-a0890c364682",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "use a variable to find an amount in a story (one operation)",
+      "stem": "A pencil costs 3 dollars. Zoe buys $p$ pencils. How many dollars do the pencils cost when $p$ is 8?",
+      "choices": [],
+      "answer": "24",
+      "compute": "3*8",
+      "solution": "The cost is 3 dollars times the number of pencils, $3p$. When $p = 8$, $3 \\times 8 = 24$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cost = 3p; p=8 gives 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.513Z"
+        }
+      }
+    },
+    {
+      "id": "12fcd0b2-72b7-499d-920c-111f79ffc7c0",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "write an expression for a story",
+      "stem": "Lena had $m$ dollars and spent 9 dollars. Which expression gives how many dollars she has left?",
+      "choices": [
+        "$9 - m$",
+        "$m + 9$",
+        "$m - 9$",
+        "$9m$"
+      ],
+      "answer": "$m - 9$",
+      "compute": null,
+      "solution": "Spending takes away from what she had. Start with $m$ and subtract 9: $m - 9$. The order matters, so $9 - m$ is not the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$m - 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "She has m - 9 dollars left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.527Z"
+        }
+      }
+    },
+    {
+      "id": "aa76d449-e420-4afd-b2ff-a180712926b6",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "use a variable to find an amount in a story (one operation)",
+      "stem": "Jo is 4 years older than her brother. Let $b$ be her brother's age in years. How old is Jo, in years, when $b$ is 9?",
+      "choices": [],
+      "answer": "13",
+      "compute": "9+4",
+      "solution": "Jo's age is $b + 4$. When $b = 9$, Jo is $9 + 4 = 13$ years old.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Jo = b + 4 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.538Z"
+        }
+      }
+    },
+    {
+      "id": "d205fffb-7de5-4b5a-ac7a-48805eec16a7",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "write an expression with two variables",
+      "stem": "Ana has $x$ red cards and $y$ blue cards. Which expression gives the total number of cards she has?",
+      "choices": [
+        "$xy$",
+        "$x - y$",
+        "$x \\div y$",
+        "$x + y$"
+      ],
+      "answer": "$x + y$",
+      "compute": null,
+      "solution": "The total of the two groups is found by adding: $x + y$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + y$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = x + y.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.547Z"
+        }
+      }
+    },
+    {
+      "id": "c4dea5a2-591b-42e4-8e2a-07faa1279224",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "use a variable in a measurement formula",
+      "stem": "A square has sides that are each $s$ centimeters long. Which expression gives its perimeter, in centimeters?",
+      "choices": [
+        "$s + 4$",
+        "$4s$",
+        "$s \\times s$",
+        "$2s$"
+      ],
+      "answer": "$4s$",
+      "compute": null,
+      "solution": "A square has 4 equal sides, so the perimeter is $s + s + s + s = 4s$. The expression $s \\times s$ would give the area.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4s$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter = 4s.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.553Z"
+        }
+      }
+    },
+    {
+      "id": "148aca85-af35-4715-92b7-f657717f2feb",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "choose what a variable stands for",
+      "stem": "Maya is saving money. She does not yet know how many dollars she will have saved by June. Which is the best way to define a variable for this?",
+      "choices": [
+        "Let $d$ be the number of dollars Maya has saved",
+        "Let $d$ be the name of the person who is saving",
+        "Let $d$ be the fixed amount of 20 dollars Maya started with",
+        "Let $d$ be the month in which Maya stops saving"
+      ],
+      "answer": "Let $d$ be the number of dollars Maya has saved",
+      "compute": null,
+      "solution": "A variable stands for an amount that is unknown or can change. The number of dollars saved is that amount. A name, a month, or a fixed known amount is not.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Let $d$ be the number of dollars Maya has saved",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The unknown quantity is the dollars saved, so d = number of dollars Maya has saved. Others are a known amount, a name, or a month.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.560Z"
+        }
+      }
+    },
+    {
+      "id": "d8bd1999-3b22-4565-af2a-b56d55f62c3f",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "write an expression for a story",
+      "stem": "Which situation can be written as $t - 12$?",
+      "choices": [
+        "A tank holds $t$ gallons and 12 gallons are used",
+        "A tank holds 12 gallons and $t$ gallons are used",
+        "A tank holds $t$ gallons and 12 gallons are added",
+        "A tank holds $t$ gallons that are poured into 12 equal buckets"
+      ],
+      "answer": "A tank holds $t$ gallons and 12 gallons are used",
+      "compute": null,
+      "solution": "$t - 12$ means start with $t$ and take away 12. Only the first situation does that. The second would be $12 - t$, the third $t + 12$ and the fourth $t \\div 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A tank holds $t$ gallons and 12 gallons are used",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t gallons minus 12 used: t - 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.763Z"
+        }
+      }
+    },
+    {
+      "id": "3418d064-1168-4ee0-bc86-359cc2a08164",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use a variable to find an amount in a story (two operations)",
+      "stem": "Jada reads $p$ pages each day for 6 days. On the 7th day she reads 14 more pages. How many pages has she read in all if $p$ is 9?",
+      "choices": [],
+      "answer": "68",
+      "compute": "6*9+14",
+      "solution": "For the first 6 days she reads $6p$ pages, then 14 more: $6p + 14$. With $p = 9$: $6 \\times 9 + 14 = 54 + 14 = 68$ pages.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "68",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6p + 14 = 54 + 14 = 68.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.981Z"
+        }
+      }
+    },
+    {
+      "id": "f7ab8452-6608-477e-a92f-d918a4a3946a",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use a variable to find an amount in a story (two operations)",
+      "stem": "Think of a number $n$. Multiply it by 4, then subtract 3. What number do you end up with if you start with 10?",
+      "choices": [],
+      "answer": "37",
+      "compute": "4*10-3",
+      "solution": "The steps give $4n - 3$. With $n = 10$: $4 \\times 10 - 3 = 40 - 3 = 37$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 4 = 40; 40 - 3 = 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.103Z"
+        }
+      }
+    },
+    {
+      "id": "5ad261ff-cec7-47e9-aaea-984718845135",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "use a variable in a measurement formula",
+      "stem": "A rectangle is $w$ centimeters wide. Its length is 5 centimeters more than its width. Which expression gives its perimeter, in centimeters?",
+      "choices": [
+        "$2w + 2(w + 5)$",
+        "$w(w + 5)$",
+        "$w + (w + 5)$",
+        "$4w + 5$"
+      ],
+      "answer": "$2w + 2(w + 5)$",
+      "compute": null,
+      "solution": "The length is $w + 5$. The perimeter adds two widths and two lengths: $2w + 2(w + 5)$. The product $w(w + 5)$ is the area.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2w + 2(w + 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length w + 5. P = 2w + 2(w + 5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.110Z"
+        }
+      }
+    },
+    {
+      "id": "0d2ab359-4c16-4dd4-8149-4267ec15fcac",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use two variables to find an amount in a story",
+      "stem": "A store sells notebooks for 3 dollars each and pens for 2 dollars each. Mia buys $n$ notebooks and $p$ pens. How many dollars does she pay when $n$ is 4 and $p$ is 5?",
+      "choices": [],
+      "answer": "22",
+      "compute": "3*4+2*5",
+      "solution": "The cost is $3n + 2p$ dollars. With $n = 4$ and $p = 5$: $3 \\times 4 + 2 \\times 5 = 12 + 10 = 22$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3n + 2p = 3(4) + 2(5) = 12 + 10 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.114Z"
+        }
+      }
+    },
+    {
+      "id": "52061fe8-2757-4ce4-84b3-5e20e0aa635f",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "say what a part of an expression means in the story",
+      "stem": "Carlos earns 9 dollars for each hour he works, plus a 10 dollar bonus. His pay for $h$ hours is $9h + 10$ dollars. What does $9h$ stand for?",
+      "choices": [
+        "the number of hours Carlos worked",
+        "the amount of the bonus in dollars",
+        "his pay for the hours worked, without the bonus",
+        "his total pay with the bonus included"
+      ],
+      "answer": "his pay for the hours worked, without the bonus",
+      "compute": null,
+      "solution": "Each hour pays 9 dollars, so $9h$ is the pay for $h$ hours. The bonus is the separate $+ 10$, and the sum is the total pay.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "his pay for the hours worked, without the bonus",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9h is 9 dollars times hours: pay for hours worked, without bonus.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.366Z"
+        }
+      }
+    },
+    {
+      "id": "7fc14f5b-c0b0-453a-96a5-a99030f696c8",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "write an expression for a phrase",
+      "stem": "Which expression means \"four more than three times a number $n$\"?",
+      "choices": [
+        "$4n + 3$",
+        "$3n + 4$",
+        "$3(n + 4)$",
+        "$7n$"
+      ],
+      "answer": "$3n + 4$",
+      "compute": null,
+      "solution": "\"Three times a number\" is $3n$. \"Four more than\" that adds 4: $3n + 4$. The expression $3(n + 4)$ adds 4 first.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3n + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Three times n plus four: 3n+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.435Z"
+        }
+      }
+    },
+    {
+      "id": "774263b2-c626-41bc-8827-2b692d5983b4",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "use a variable for any number in a general statement",
+      "stem": "An odd number is 1 more than an even number, and every even number is 2 times a whole number $k$. Which odd number do you get when $k$ is 14?",
+      "choices": [],
+      "answer": "29",
+      "compute": "2*14+1",
+      "solution": "The even number is $2k$ and the odd number is $2k + 1$. With $k = 14$: $2 \\times 14 + 1 = 29$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "29",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Even = 2k = 28; odd = 28 + 1 = 29.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.542Z"
+        }
+      }
+    },
+    {
+      "id": "f18aad5f-c51f-4f90-8b1f-c01b2fd67c6f",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "write an expression with two operations for a story",
+      "stem": "A wire $L$ centimeters long is cut into 6 equal pieces. Then 2 centimeters are trimmed off one piece. Which expression gives that piece's length now, in centimeters?",
+      "choices": [
+        "$L \\div (6 - 2)$",
+        "$6L - 2$",
+        "$L \\div 6 - 2$",
+        "$(L - 2) \\div 6$"
+      ],
+      "answer": "$L \\div 6 - 2$",
+      "compute": null,
+      "solution": "Each piece is $L \\div 6$ long. Trimming 2 cm from one piece leaves $L \\div 6 - 2$. Cutting after taking off 2 cm from the wire would give $(L - 2) \\div 6$, which is a different order.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$L \\div 6 - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each piece is L/6; trimming 2 gives L/6 - 2, i.e. L ÷ 6 - 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.544Z"
+        }
+      }
+    },
+    {
+      "id": "63aaef20-77ca-4c5b-897a-3d19d4c777fb",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "write an expression with two operations for a story",
+      "stem": "A gym charges a one-time sign-up fee of 20 dollars plus 15 dollars each month. Which expression gives the total cost, in dollars, for $m$ months?",
+      "choices": [
+        "$35m$",
+        "$15 + 20m$",
+        "$20 + 15 + m$",
+        "$20 + 15m$"
+      ],
+      "answer": "$20 + 15m$",
+      "compute": null,
+      "solution": "The fee of 20 dollars is paid once. The 15 dollars is paid $m$ times, which is $15m$. Total: $20 + 15m$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$20 + 15m$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Total = 20 + 15m.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.592Z"
+        }
+      }
+    },
+    {
+      "id": "859c25b3-0c05-4d14-8f16-2c037ab9555b",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "write an expression with two variables",
+      "stem": "A teacher buys $b$ books at 8 dollars each and $s$ packs of stickers at 3 dollars each, and then uses a coupon worth 5 dollars. Which expression gives what she pays, in dollars?",
+      "choices": [
+        "$8b + 3s + 5$",
+        "$5(8b + 3s)$",
+        "$11(b + s) - 5$",
+        "$8b + 3s - 5$"
+      ],
+      "answer": "$8b + 3s - 5$",
+      "compute": null,
+      "solution": "Books cost $8b$ and stickers cost $3s$. The coupon takes 5 dollars off the total: $8b + 3s - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8b + 3s - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8b + 3s, then subtract the 5-dollar coupon: 8b + 3s - 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.824Z"
+        }
+      }
+    },
+    {
+      "id": "9fbfc1ab-05df-4984-aeb9-517370948b8e",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "use a variable for any number in a general statement",
+      "stem": "Three whole numbers in a row can all be named using one variable. If the smallest of them is $n$, which expression gives the sum of the three numbers?",
+      "choices": [
+        "$3n$",
+        "$3n + 3$",
+        "$n + 3$",
+        "$3n + 2$"
+      ],
+      "answer": "$3n + 3$",
+      "compute": null,
+      "solution": "The three numbers are $n$, $n + 1$ and $n + 2$. Their sum is $n + (n + 1) + (n + 2) = 3n + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3n + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n + (n+1) + (n+2) = 3n + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.897Z"
+        }
+      }
+    },
+    {
+      "id": "a833a13c-d0c1-4c77-876c-ce2e2e32acc2",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "use two variables to find an amount in a story",
+      "stem": "Tia opens $x$ new packs of 10 cards each, and those are all the cards she has. She then gives 3 cards to each of $f$ friends. How many cards does Tia have left when $x$ is 5 and $f$ is 6?",
+      "choices": [],
+      "answer": "32",
+      "compute": "10*5-3*6",
+      "solution": "She has $10x$ cards and gives away $3f$ of them, so she has $10x - 3f$ left. With $x = 5$ and $f = 6$: $50 - 18 = 32$ cards.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10x - 3f = 50 - 18 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.986Z"
+        }
+      }
+    },
+    {
+      "id": "17f3b16b-610a-4767-a767-ea4dee4df184",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "use a variable to find an amount in a story (two operations)",
+      "stem": "A tank holds 120 liters of water. Water drains out at $d$ liters per minute for 8 minutes. How many liters are left in the tank when $d$ is 9?",
+      "choices": [],
+      "answer": "48",
+      "compute": "120-8*9",
+      "solution": "In 8 minutes, $8d$ liters drain out, so $120 - 8d$ liters are left. With $d = 9$: $120 - 8 \\times 9 = 120 - 72 = 48$ liters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 - 8d = 120 - 72 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.991Z"
+        }
+      }
+    },
+    {
+      "id": "49da39a5-1503-4418-b16d-34b930bbb07d",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "write an expression for a story",
+      "stem": "Ravi has $r$ stickers. Ben has 5 fewer than twice as many stickers as Ravi. Which expression gives the number of stickers Ben has?",
+      "choices": [
+        "$5 - 2r$",
+        "$2(r - 5)$",
+        "$2r + 5$",
+        "$2r - 5$"
+      ],
+      "answer": "$2r - 5$",
+      "compute": null,
+      "solution": "\"Twice as many as Ravi\" is $2r$. \"5 fewer than\" that subtracts 5: $2r - 5$. The expression $2(r - 5)$ takes 5 away before doubling.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2r - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Twice Ravi's is 2r, 5 fewer: 2r - 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.995Z"
+        }
+      }
+    },
+    {
+      "id": "a71c1e0d-1d14-4d6f-8276-a7ff45a6b21b",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "use a variable for any number in a general statement",
+      "stem": "When $n$ can be any whole number, which expression always gives an even number?",
+      "choices": [
+        "$2n + 1$",
+        "$n + 2$",
+        "$2n$",
+        "$3n$"
+      ],
+      "answer": "$2n$",
+      "compute": null,
+      "solution": "$2n$ is 2 times a whole number, so it is always even. $2n + 1$ is always odd, and $n + 2$ and $3n$ are odd for some values of $n$, such as $n = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2n$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2n always even; 2n+1 odd; n+2 and 3n depend on n.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.497Z"
+        }
+      }
+    },
+    {
+      "id": "ea2ca153-2694-4e0e-8895-0320f688bf55",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "use a variable in a measurement formula",
+      "stem": "A rectangular garden is $w$ meters wide. Its length is 1 meter more than twice its width. What is the perimeter of the garden, in meters, when $w$ is 5?",
+      "choices": [],
+      "answer": "32",
+      "compute": "2*(2*5+1+5)",
+      "solution": "The length is $2w + 1$, which is $2 \\times 5 + 1 = 11$ meters. The perimeter is $2 \\times 11 + 2 \\times 5 = 22 + 10 = 32$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Length 2*5+1=11; perimeter 2(5+11)=32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.502Z"
+        }
+      }
+    },
+    {
+      "id": "a48a1a43-31a3-4b26-bb7a-2c57862896f6",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "write an expression for a phrase",
+      "stem": "Which phrase matches the expression $\\frac{n}{3} + 8$?",
+      "choices": [
+        "8 more than the quotient of $n$ and 3",
+        "the quotient of $n + 8$ and 3",
+        "8 more than the quotient of 3 and $n$",
+        "3 more than the quotient of $n$ and 8"
+      ],
+      "answer": "8 more than the quotient of $n$ and 3",
+      "compute": null,
+      "solution": "$\\frac{n}{3}$ is $n$ divided by 3, the quotient of $n$ and 3. Adding 8 makes it 8 more than that quotient.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8 more than the quotient of $n$ and 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n/3 + 8 is 8 more than the quotient of n and 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.531Z"
+        }
+      }
+    },
+    {
+      "id": "31797585-a5d0-4e5c-826f-96827e9ace40",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "say what a part of an expression means in the story",
+      "stem": "Adult tickets cost $a$ dollars each and child tickets cost $c$ dollars each. What does the expression $2a + 3c$ stand for?",
+      "choices": [
+        "the cost of 3 adult tickets and 2 child tickets",
+        "the cost of 2 adult tickets and 3 child tickets",
+        "the cost of 5 tickets that all cost the same",
+        "the number of adult and child tickets bought"
+      ],
+      "answer": "the cost of 2 adult tickets and 3 child tickets",
+      "compute": null,
+      "solution": "$2a$ is the cost of 2 adult tickets and $3c$ is the cost of 3 child tickets. Adding them gives the cost of both groups together.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the cost of 2 adult tickets and 3 child tickets",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2a is the cost of 2 adult tickets, 3c of 3 child tickets; sum is total cost.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.565Z"
+        }
+      }
+    },
+    {
+      "id": "648e7f19-9173-48b3-a42f-233bf8760cf6",
+      "topic_id": "NC17.6.EE.6",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "choose what a variable stands for",
+      "stem": "A train travels at a steady 60 miles per hour. Which meaning for $t$ lets you write the distance the train goes, in miles, as $60t$?",
+      "choices": [
+        "the speed of the train in miles per hour",
+        "the number of miles the train goes in one hour",
+        "the number of hours the train travels",
+        "the number of trains on the track"
+      ],
+      "answer": "the number of hours the train travels",
+      "compute": null,
+      "solution": "Distance is speed times time. At 60 miles per hour, the distance is 60 times the number of hours, so $t$ must be the number of hours traveled.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the number of hours the train travels",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "distance = 60 * hours, so t is the number of hours travelled.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.610Z"
         }
       }
     },
@@ -20833,6 +24909,951 @@
           "work": "Each cube 1/8 cm^3; 90/8=45/4.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:37:47.515Z"
+        }
+      }
+    },
+    {
+      "id": "cda37240-e518-47d2-ad29-b56ec9e332a0",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify a polygon from its vertices",
+      "stem": "The points $(2, 2)$, $(8, 2)$, $(8, 5)$ and $(2, 5)$ are joined in order, and the last point is joined back to the first. What shape is made?",
+      "choices": [
+        "A rectangle that is not a square",
+        "A square with side length 6",
+        "A triangle with three sides",
+        "A pentagon with five sides"
+      ],
+      "answer": "A rectangle that is not a square",
+      "compute": null,
+      "solution": "The sides are 6 units (bottom and top) and 3 units (left and right), and all four corners are square. That is a rectangle whose sides are not all equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A rectangle that is not a square",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sides 6 (horizontal) and 3 (vertical), right angles: rectangle, not a square.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.747Z"
+        }
+      }
+    },
+    {
+      "id": "35a24acc-3e5f-49f2-8a06-bd8bdc8066f8",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize horizontal and vertical segments",
+      "stem": "Which pair of points can be joined to make a horizontal segment?",
+      "choices": [
+        "$(2, 6)$ and $(2, 9)$",
+        "$(2, 6)$ and $(9, 6)$",
+        "$(2, 6)$ and $(9, 9)$",
+        "$(6, 2)$ and $(6, 9)$"
+      ],
+      "answer": "$(2, 6)$ and $(9, 6)$",
+      "compute": null,
+      "solution": "A horizontal segment is flat, so both points have the same y-coordinate. Only $(2, 6)$ and $(9, 6)$ both have y-coordinate 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 6)$ and $(9, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Horizontal segment: same y-coordinate. (2,6) and (9,6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.831Z"
+        }
+      }
+    },
+    {
+      "id": "8c7b04ec-aefa-4e6b-8d6a-bd9eee9895cd",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Length of a side that shares a coordinate",
+      "stem": "Points $A(2, 3)$ and $B(7, 3)$ are joined by a segment. How many units long is $\\overline{AB}$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "7-2",
+      "solution": "Both points have y-coordinate 3, so the segment is horizontal. Its length is the difference of the x-coordinates: 7 - 2 = 5 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.974Z"
+        }
+      }
+    },
+    {
+      "id": "a0c1fc1a-101c-47eb-91c9-0b7ab7b5563d",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Length of a side that shares a coordinate",
+      "stem": "A triangle has vertices $(1, 6)$, $(1, 1)$ and $(5, 1)$. How many units long is the side from $(1, 1)$ to $(5, 1)$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "5-1",
+      "solution": "Both points have y-coordinate 1, so the side is horizontal. Its length is 5 - 1 = 4 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.976Z"
+        }
+      }
+    },
+    {
+      "id": "17934a25-9f86-4753-9379-24bda4ce63b3",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Perimeter from the vertices",
+      "stem": "A rectangle has vertices $(0, 0)$, $(6, 0)$, $(6, 3)$ and $(0, 3)$. What is its perimeter in units?",
+      "choices": [],
+      "answer": "18",
+      "compute": "2*(6+3)",
+      "solution": "The bottom side runs from x = 0 to x = 6, so it is 6 units long. The left side runs from y = 0 to y = 3, so it is 3 units long. Perimeter = 6 + 3 + 6 + 3 = 18 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sides 6 and 3; perimeter 2(6+3) = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.029Z"
+        }
+      }
+    },
+    {
+      "id": "4183aeaf-8e4b-45ac-86bb-9220019809bd",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Length of a side that shares a coordinate",
+      "stem": "A square has vertices $(1, 2)$, $(9, 2)$, $(9, 10)$ and $(1, 10)$. How many units long is one side?",
+      "choices": [],
+      "answer": "8",
+      "compute": "9-1",
+      "solution": "The bottom side runs from $(1, 2)$ to $(9, 2)$ at the same height, so its length is 9 - 1 = 8 units. All sides of a square are equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1,2) to (9,2): |9-1| = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.133Z"
+        }
+      }
+    },
+    {
+      "id": "b27cd0dd-afc6-4056-8ea0-a66eba316f7d",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a missing vertex",
+      "stem": "A vertical segment starts at $(5, 2)$ and goes up 4 units. What is the other endpoint?",
+      "choices": [
+        "$(9, 2)$",
+        "$(5, -2)$",
+        "$(5, 6)$",
+        "$(1, 2)$"
+      ],
+      "answer": "$(5, 6)$",
+      "compute": null,
+      "solution": "A vertical segment keeps the same x-coordinate, 5. Going up 4 units makes the y-coordinate 2 + 4 = 6. The endpoint is $(5, 6)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(5, 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Up 4: (5, 2+4) = (5,6).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.501Z"
+        }
+      }
+    },
+    {
+      "id": "d35416ed-1b9a-441f-8ae4-1c846f6f73a4",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identify a polygon from its vertices",
+      "stem": "The points $A(1, 1)$, $B(4, 1)$, $C(4, 3)$, $D(2, 5)$ and $E(1, 3)$ are joined in order, and $E$ is joined back to $A$. How many sides does the polygon have?",
+      "choices": [
+        "4",
+        "5",
+        "6",
+        "10"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "There is one side from each point to the next: $AB$, $BC$, $CD$, $DE$ and $EA$. That makes 5 sides.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertices A,B,C,D,E joined in a closed loop: 5 segments, a pentagon (non-self-intersecting).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.528Z"
+        }
+      }
+    },
+    {
+      "id": "7d6a6b9d-0f09-4aa0-bd9a-ae95946638ed",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find a missing vertex",
+      "stem": "Three vertices of a rectangle are $(1, 1)$, $(6, 1)$ and $(6, 4)$. What is the fourth vertex?",
+      "choices": [
+        "$(4, 1)$",
+        "$(1, 6)$",
+        "$(4, 6)$",
+        "$(1, 4)$"
+      ],
+      "answer": "$(1, 4)$",
+      "compute": null,
+      "solution": "The fourth vertex is above $(1, 1)$ and level with $(6, 4)$, so it has x-coordinate 1 and y-coordinate 4. The vertex is $(1, 4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(1, 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1,1),(6,1) share y=1; (6,1),(6,4) share x=6. Fourth: (1,4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.545Z"
+        }
+      }
+    },
+    {
+      "id": "fa6155af-4f52-45a7-b28a-b1244a1746b6",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Length of a side that shares a coordinate",
+      "stem": "A segment joins $C(4, 1)$ and $D(4, 8)$. How many units long is it?",
+      "choices": [],
+      "answer": "7",
+      "compute": "8-1",
+      "solution": "Both points have x-coordinate 4, so the segment is vertical. Its length is the difference of the y-coordinates: 8 - 1 = 7 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same x; 8 - 1 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.579Z"
+        }
+      }
+    },
+    {
+      "id": "28864db3-361c-4b6e-933f-31f4894fb93a",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Area of a rectangle from the vertices",
+      "stem": "A rectangle has vertices $(2, 1)$, $(2, 9)$, $(7, 9)$ and $(7, 1)$. What is its area in square units?",
+      "choices": [],
+      "answer": "40",
+      "compute": "(9-1)*(7-2)",
+      "solution": "The left side is 9 - 1 = 8 units long and the top side is 7 - 2 = 5 units long. Area = 8 x 5 = 40 square units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width 7-2 = 5, height 9-1 = 8; area 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.071Z"
+        }
+      }
+    },
+    {
+      "id": "ccbcca8b-bb44-405c-9168-ebf8f954c77a",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Side length across the axes",
+      "stem": "A segment joins $(-2, -7)$ and $(-2, -1)$. How many units long is it?",
+      "choices": [
+        "8 units",
+        "9 units",
+        "5 units",
+        "6 units"
+      ],
+      "answer": "6 units",
+      "compute": null,
+      "solution": "Both points have x-coordinate -2, so the segment is vertical. The y-coordinates are on the same side of the x-axis, so subtract the distances: 7 - 1 = 6 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same x; |-1 - (-7)| = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.172Z"
+        }
+      }
+    },
+    {
+      "id": "2e823d2c-5c07-44f8-b63e-56628fceb7d1",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Length of a side that shares a coordinate",
+      "stem": "A right triangle has vertices $(1, 1)$, $(7, 1)$ and $(7, 5)$. Two of its sides are horizontal or vertical. What is the sum of the lengths of those two sides, in units?",
+      "choices": [],
+      "answer": "10",
+      "compute": "(7-1)+(5-1)",
+      "solution": "The first side is horizontal: 7 - 1 = 6 units. The second side is vertical: 5 - 1 = 4 units. 6 + 4 = 10 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Horizontal (1,1)-(7,1): 6. Vertical (7,1)-(7,5): 4. Sum 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.291Z"
+        }
+      }
+    },
+    {
+      "id": "1b3574d2-54d3-4127-8eb5-896cd28f4071",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Perimeter from the vertices",
+      "stem": "A rectangle has vertices $(-3, -2)$, $(4, -2)$, $(4, 3)$ and $(-3, 3)$. What is its perimeter in units?",
+      "choices": [],
+      "answer": "24",
+      "compute": "2*((3+4)+(2+3))",
+      "solution": "The bottom side runs from x = -3 to x = 4, so it is 3 + 4 = 7 units long. The right side runs from y = -2 to y = 3, so it is 2 + 3 = 5 units long. Perimeter = 2 x (7 + 5) = 24 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width 4 - (-3) = 7, height 3 - (-2) = 5. Perimeter 2(7+5) = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.332Z"
+        }
+      }
+    },
+    {
+      "id": "32e4e247-dd61-4b17-9d87-c7befc366739",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Side length across the axes",
+      "stem": "Points $A(-3, 4)$ and $B(5, 4)$ are joined by a segment. How many units long is $\\overline{AB}$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5",
+      "solution": "The points have the same y-coordinate, so the segment is horizontal. They are on opposite sides of the y-axis, so add the distances from the axis: 3 + 5 = 8 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same y; |5-(-3)|=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.384Z"
+        }
+      }
+    },
+    {
+      "id": "3609ec96-703d-460e-92e4-7abf39fa6bfc",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify a polygon from its vertices",
+      "stem": "Which list of points, joined in order and closed, makes a rectangle?",
+      "choices": [
+        "$(1, 1)$, $(5, 1)$, $(5, 3)$, $(2, 3)$",
+        "$(1, 1)$, $(5, 1)$, $(5, 3)$, $(1, 3)$",
+        "$(1, 1)$, $(5, 1)$, $(4, 3)$, $(1, 3)$",
+        "$(1, 1)$, $(5, 1)$, $(5, 3)$, $(1, 4)$"
+      ],
+      "answer": "$(1, 1)$, $(5, 1)$, $(5, 3)$, $(1, 3)$",
+      "compute": null,
+      "solution": "A rectangle has a horizontal pair and a vertical pair of sides. Only the first list has the top side level with the bottom and both side edges straight up and down: the last point must be $(1, 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(1, 1)$, $(5, 1)$, $(5, 3)$, $(1, 3)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1,1),(5,1),(5,3),(1,3): sides 4 and 2, right angles. Others are not rectangles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.401Z"
+        }
+      }
+    },
+    {
+      "id": "0853e9cb-212b-4308-91b2-a5767f27cbed",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing vertex",
+      "stem": "Three vertices of a rectangle are $(-5, 2)$, $(1, 2)$ and $(1, -4)$. What is the fourth vertex?",
+      "choices": [
+        "$(-5, 4)$",
+        "$(5, -4)$",
+        "$(-5, -4)$",
+        "$(-4, -5)$"
+      ],
+      "answer": "$(-5, -4)$",
+      "compute": null,
+      "solution": "The fourth vertex is directly below $(-5, 2)$ and level with $(1, -4)$. So its x-coordinate is -5 and its y-coordinate is -4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-5, -4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-5,2) and (1,2) share y=2; (1,2) and (1,-4) share x=1. Fourth: (-5,-4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.538Z"
+        }
+      }
+    },
+    {
+      "id": "c7c96a27-cbf3-4858-b09a-493dbae01ef4",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Side length across the axes",
+      "stem": "A segment joins $(-4, 3)$ and $(-4, -6)$. How many units long is it?",
+      "choices": [
+        "9 units",
+        "3 units",
+        "10 units",
+        "7 units"
+      ],
+      "answer": "9 units",
+      "compute": null,
+      "solution": "The x-coordinates are equal, so the segment is vertical. The points are on opposite sides of the x-axis, so add 3 and 6: 3 + 6 = 9 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same x; |3 - (-6)| = 9 units.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.567Z"
+        }
+      }
+    },
+    {
+      "id": "d0149196-fdec-4e3e-a727-e20fc393fb14",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identify a polygon from its vertices",
+      "stem": "The points $(-2, 1)$, $(3, 1)$, $(3, -4)$ and $(-2, -4)$ are joined in order and closed. Which statement is true?",
+      "choices": [
+        "It is a square with sides of 6 units",
+        "It is a rectangle with sides of 3 and 5 units",
+        "It is a rectangle with sides of 4 and 5 units",
+        "It is a square with sides of 5 units"
+      ],
+      "answer": "It is a square with sides of 5 units",
+      "compute": null,
+      "solution": "The top side runs from x = -2 to x = 3, which is 2 + 3 = 5 units. The right side runs from y = 1 to y = -4, which is 1 + 4 = 5 units. All sides are 5 units with square corners, so it is a square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is a square with sides of 5 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Top side (-2,1)-(3,1): 5. Right side (3,1)-(3,-4): 5. All sides 5 with right angles: square, side 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.569Z"
+        }
+      }
+    },
+    {
+      "id": "d6539c00-f132-45ab-b296-daa701924e2c",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a length",
+      "stem": "A vertical segment joins $(3, 2)$ and $(3, k)$. It is 7 units long, and $k$ is greater than 2. What is $k$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "2+7",
+      "solution": "The segment is vertical, so its length is the difference of the y-coordinates. Since k is greater than 2, k - 2 = 7, so k = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "k - 2 = 7, k = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.577Z"
+        }
+      }
+    },
+    {
+      "id": "74551942-185a-43d2-9c88-42056343b807",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Perimeter from the vertices",
+      "stem": "Three vertices of a rectangle are $A(-3, 2)$, $B(5, 2)$ and $C(5, -4)$. What is the perimeter of the rectangle?",
+      "choices": [
+        "14 units",
+        "48 units",
+        "28 units",
+        "20 units"
+      ],
+      "answer": "28 units",
+      "compute": null,
+      "solution": "AB is horizontal: 3 + 5 = 8 units. BC is vertical: 2 + 4 = 6 units. Perimeter = 2 x (8 + 6) = 28 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "28 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = 5-(-3) = 8, BC = 2-(-4) = 6. Perimeter 2(8+6) = 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.737Z"
+        }
+      }
+    },
+    {
+      "id": "fba85c25-85eb-4fb6-9123-515a8e028488",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Perimeter from the vertices",
+      "stem": "A rectangle has vertices $(-6, -3)$, $(-6, 5)$, $(3, 5)$ and $(3, -3)$. What is its perimeter in units?",
+      "choices": [],
+      "answer": "34",
+      "compute": "2*((5+3)+(6+3))",
+      "solution": "The left side runs from y = -3 to y = 5, so it is 3 + 5 = 8 units. The top side runs from x = -6 to x = 3, so it is 6 + 3 = 9 units. Perimeter = 2 x (8 + 9) = 34 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width 3-(-6) = 9; height 5-(-3) = 8. Perimeter 2(9+8) = 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.859Z"
+        }
+      }
+    },
+    {
+      "id": "6548484f-f520-485d-b05d-6da06807b344",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Area of a rectangle from the vertices",
+      "stem": "A rectangle has vertices $(-7, -2)$, $(5, -2)$, $(5, -9)$ and $(-7, -9)$. What is its area?",
+      "choices": [
+        "84 square units",
+        "38 square units",
+        "19 square units",
+        "60 square units"
+      ],
+      "answer": "84 square units",
+      "compute": null,
+      "solution": "The top side is 7 + 5 = 12 units long. The right side is 9 - 2 = 7 units long. Area = 12 x 7 = 84 square units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "84 square units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Width 5-(-7) = 12; height -2-(-9) = 7. Area 84.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.863Z"
+        }
+      }
+    },
+    {
+      "id": "8788af28-a24c-4411-9613-7879054c2a90",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a length",
+      "stem": "A rectangle has a perimeter of 30 units. One side runs from $(-2, 3)$ to $(6, 3)$, and the other two vertices are above that side. What is the y-coordinate of those two vertices?",
+      "choices": [],
+      "answer": "10",
+      "compute": "3+(30/2-(2+6))",
+      "solution": "The given side is 2 + 6 = 8 units long. Half the perimeter is 15, so the height is 15 - 8 = 7 units. The other vertices are 7 units above y = 3, so their y-coordinate is 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side length 6 - (-2) = 8. 2(8 + w) = 30, w = 7. Vertices above: y = 3 + 7 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.962Z"
+        }
+      }
+    },
+    {
+      "id": "4541e2c4-5a80-40e6-acc9-6a0860c64a9e",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Length of a side that shares a coordinate",
+      "stem": "Triangle $ABC$ has vertices $A(-2, 1)$, $B(4, 1)$ and $C(4, 6)$. Which statement gives the lengths of $\\overline{AB}$ and $\\overline{BC}$?",
+      "choices": [
+        "$AB$ is 2 units and $BC$ is 5 units",
+        "$AB$ is 6 units and $BC$ is 7 units",
+        "$AB$ is 2 units and $BC$ is 7 units",
+        "$AB$ is 6 units and $BC$ is 5 units"
+      ],
+      "answer": "$AB$ is 6 units and $BC$ is 5 units",
+      "compute": null,
+      "solution": "A and B share y-coordinate 1, and A is left of the y-axis, so AB = 2 + 4 = 6 units. B and C share x-coordinate 4, so BC = 6 - 1 = 5 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$AB$ is 6 units and $BC$ is 5 units",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = 4 - (-2) = 6; BC = 6 - 1 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.988Z"
+        }
+      }
+    },
+    {
+      "id": "0cdbf148-3679-4ab4-b048-fb4c03753982",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Perimeter from the vertices",
+      "stem": "A square has one side from $(-1, 4)$ to $(-1, -5)$. What is the perimeter of the square in units?",
+      "choices": [],
+      "answer": "36",
+      "compute": "4*(4+5)",
+      "solution": "The side is vertical and crosses the x-axis, so its length is 4 + 5 = 9 units. A square has four equal sides: 4 x 9 = 36 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side length |4 - (-5)| = 9. Perimeter 4 x 9 = 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.087Z"
+        }
+      }
+    },
+    {
+      "id": "925b2d62-aeda-48a5-bb17-8de3bec4b123",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Identify a polygon from its vertices",
+      "stem": "Which list of vertices, joined in order and closed, makes a square with sides of 4 units?",
+      "choices": [
+        "$(2, -1)$, $(2, 3)$, $(6, 3)$, $(6, -1)$",
+        "$(2, -1)$, $(2, 3)$, $(6, 3)$, $(6, 0)$",
+        "$(2, -1)$, $(2, 4)$, $(6, 4)$, $(6, -1)$",
+        "$(2, -1)$, $(2, 3)$, $(5, 3)$, $(5, -1)$"
+      ],
+      "answer": "$(2, -1)$, $(2, 3)$, $(6, 3)$, $(6, -1)$",
+      "compute": null,
+      "solution": "In the first list, the left side is 3 + 1 = 4 units, the top is 6 - 2 = 4 units, and the right side is 4 units, with square corners. The others have a side of 3 or 5 units, or a slanted side.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, -1)$, $(2, 3)$, $(6, 3)$, $(6, -1)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Option 1 sides: 4,4,4,4 with right angles: square. Others: (6,0) not closing square; 5x4; 4x3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.197Z"
+        }
+      }
+    },
+    {
+      "id": "c210cedc-bb1f-4433-b130-aad572bd8e31",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown coordinate from a length",
+      "stem": "A rectangle has vertices $(1, 2)$, $(1, 8)$, $(k, 8)$ and $(k, 2)$, with $k$ greater than 1. Its perimeter is 22 units. What is $k$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "1+(22/2-(8-2))",
+      "solution": "The vertical sides are 8 - 2 = 6 units long. Half the perimeter is 11, so the horizontal side is 11 - 6 = 5 units long. Then k - 1 = 5, so k = 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height 8 - 2 = 6. Perimeter 2(w + 6) = 22 gives w = 5, so k - 1 = 5 and k = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.296Z"
+        }
+      }
+    },
+    {
+      "id": "17ddbc9b-9ddb-4216-b6b0-992b92120dff",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Side length across the axes",
+      "stem": "Mara says the segment from $(-8, 3)$ to $(5, 3)$ is 3 units long because 8 - 5 = 3. What is her mistake?",
+      "choices": [
+        "The segment is vertical, so she should use the y-coordinates",
+        "The points are on opposite sides of the y-axis, so she should add 8 and 5",
+        "She should add 8 and 5 and then double the result",
+        "She should subtract 5 - 8 and write the result as -3"
+      ],
+      "answer": "The points are on opposite sides of the y-axis, so she should add 8 and 5",
+      "compute": null,
+      "solution": "Both y-coordinates are 3, so the segment is horizontal and the x-coordinates are used. -8 and 5 are on opposite sides of the y-axis, so the length is 8 + 5 = 13 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The points are on opposite sides of the y-axis, so she should add 8 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Horizontal segment from x=-8 to x=5: length 8 + 5 = 13, since the points are on opposite sides of the y-axis.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.339Z"
+        }
+      }
+    },
+    {
+      "id": "5d32bf7a-826d-4652-8d17-6980093c539f",
+      "topic_id": "NC17.6.G.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Perimeter from the vertices",
+      "stem": "A polygon has vertices $(0, 0)$, $(6, 0)$, $(6, 2)$, $(3, 2)$, $(3, 5)$ and $(0, 5)$, joined in order and closed. What is its perimeter in units?",
+      "choices": [],
+      "answer": "22",
+      "compute": "6+2+3+3+3+5",
+      "solution": "Each side is horizontal or vertical. The lengths in order are 6, 2, 3, 3, 3 and 5 units. Their sum is 22 units.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sides: 6, 2, 3, 3, 3, 5. Perimeter 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.346Z"
         }
       }
     },

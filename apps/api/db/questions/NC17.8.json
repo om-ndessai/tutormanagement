@@ -2,6 +2,8 @@
   "level_id": "NC17.8",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
+    "NC17.8.NS.1": "Irrational numbers are asked as rational versus irrational (square roots of perfect and non-perfect squares, pi), which fractions terminate or repeat, converting between fractions and decimals, repeating decimal to fraction (including the 10x/100x/1000x step), and statements about expansions. Locating irrationals on a number line or approximating them belongs to NS.2 and was left out. Numeric answers for repeating decimals are asked as fractions, or as a digit of the block.",
+    "NC17.8.NS.2": "Approximating irrational numbers (8.NS.2): 30 questions, 10 per difficulty. Irrational answers are never asked for exactly: numeric answers are rounded estimates, and the choice questions ask for positions, comparisons, orders or true statements. A few cube-root questions are included because the summary says roots. Number lines are described only through bracketing numbers.",
     "NC17.8.EE.1": "Numerical expressions only (no variables), as the summary says. Negative-exponent answers are fractions or decimals, which Grade 8 uses.",
     "NC17.8.EE.2": "Cube roots are written in words (the cube root of 27) because the PDF converter has no cube-root symbol; perfect cubes stay at or under 343, squares at or under 400; no negative cubes (standard says positive p).",
     "NC17.8.EE.3": "Skills (rough counts): large numbers 4, small numbers 5, estimating with one digit times a power of ten 3, how many times as large 6, ordering 4, problems about large quantities 4 and small quantities 4. Answers that are in scientific notation are asked as choices; numeric questions ask for an exponent, a ratio or a standard-form number. Some questions multiply or divide numbers in scientific notation only to compare or estimate sizes.",
@@ -18,7 +20,6 @@
     "NC17.8.G.5": "Skills (counts): triangle angle sum 6, exterior angle 3, parallel lines corresponding/alternate/vertical 6, same-side interior 3, angle expressions 3, deciding when lines are parallel 2, informal arguments 3, angle-angle similarity 4. Figures are written out with numbered angles (upper/lower = above/below the line, left/right = side of the transversal). Similarity stays at angle-angle; side ratios are not asked.",
     "NC17.8.G.6": "The standard is to explain the theorem and its converse, so no question asks for a missing side length (that is the next standard, 8.G.7) and none uses a square root. Explanation is tested through areas of squares, the four-triangle area argument, the converse, and checking written arguments. No picture is needed: squares and triangles are described by their measurements.",
     "NC17.8.G.9": "Answers in terms of pi are choice questions; numeric answers say to use 3.14. Solids are described in words.",
-    "NC17.8.NS.2": "Approximating irrational numbers (8.NS.2): 30 questions, 10 per difficulty. Irrational answers are never asked for exactly: numeric answers are rounded estimates, and the choice questions ask for positions, comparisons, orders or true statements. A few cube-root questions are included because the summary says roots. Number lines are described only through bracketing numbers.",
     "NC17.8.SP.2": "Informal line fitting is written out as lists of points and described lines, since no scatter plot can be shown. Skills: judging fit (balance of points and size of distances), vertical distances, comparing two lines, finding a line from two points, when a line is reasonable, using a fitted line, counting points above or below. Interpreting slope and intercept in context is left to the next standard (8.SP.3).",
     "NC17.8.SP.4": "Tables are written as lists by row; no pictures are used."
   },
@@ -349,6 +350,738 @@
       }
     },
     {
+      "id": "f177213f-d316-41fc-b7ca-d0923d907e34",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Which of these decimals repeats forever?",
+      "choices": [
+        "$0.875$, which stops after exactly 3 digits",
+        "$0.1414\\ldots$, which repeats the block 14",
+        "$0.2$, which stops after exactly 1 digit",
+        "$0.64$, which stops after exactly 2 digits"
+      ],
+      "answer": "$0.1414\\ldots$, which repeats the block 14",
+      "compute": null,
+      "solution": "$0.141414\\ldots$ repeats the block 14 again and again. The other three decimals end.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.1414\\ldots$, which repeats the block 14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.1414... repeats block 14; the others terminate.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.756Z"
+        }
+      }
+    },
+    {
+      "id": "4b7d9e00-bfab-4528-851a-4c95f0903cf7",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "Which number is irrational and between 3 and 4?",
+      "choices": [
+        "$3.5$",
+        "$\\frac{10}{3}$",
+        "$\\sqrt{10}$",
+        "$\\sqrt{16}$"
+      ],
+      "answer": "$\\sqrt{10}$",
+      "compute": null,
+      "solution": "$\\sqrt{10}$ is about 3.16 and 10 is not a perfect square, so it is irrational. $3.5$ and $\\frac{10}{3}$ are rational, and $\\sqrt{16} = 4$ is not between 3 and 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{10}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/3 rational, 3.5 rational, sqrt16=4 not between and rational, sqrt10 ~ 3.16 irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.978Z"
+        }
+      }
+    },
+    {
+      "id": "008cc9f5-d13d-479c-b179-ed5b2bc2ea4d",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "The square root of 144 is a rational number. What whole number is $\\sqrt{144}$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "$12 \\times 12 = 144$, so $\\sqrt{144} = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12 × 12 = 144, so √144 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.012Z"
+        }
+      }
+    },
+    {
+      "id": "900e8903-4d44-442e-9b56-1bb41534c28a",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Statements about decimal expansions",
+      "stem": "How many of the numbers $0.5$, $\\pi$, $\\frac{1}{3}$ and $\\sqrt{2}$ are rational?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$0.5 = \\frac{1}{2}$ and $\\frac{1}{3}$ are fractions, so they are rational. $\\pi$ and $\\sqrt{2}$ are irrational. That is 2 rational numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.5 and 1/3 rational; pi and sqrt2 irrational. 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.052Z"
+        }
+      }
+    },
+    {
+      "id": "5b7854c2-be52-45ac-9e16-e20fa88f5a9b",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decimals that never end and never repeat",
+      "stem": "Dan lists four decimals. Which one is the decimal of a rational number?",
+      "choices": [
+        "$0.1020030004\\ldots$ with one more 0 each time",
+        "$0.123456789101112\\ldots$ with the whole numbers in order",
+        "$0.666\\ldots$ with the digit 6 repeating forever",
+        "$3.14159\\ldots$ that never ends and never repeats"
+      ],
+      "answer": "$0.666\\ldots$ with the digit 6 repeating forever",
+      "compute": null,
+      "solution": "A rational number has a decimal that ends or repeats a block forever. Only $0.666\\ldots$ repeats a block. The other three never repeat.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.666\\ldots$ with the digit 6 repeating forever",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.666... repeats, = 2/3, rational. Others never repeat.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.058Z"
+        }
+      }
+    },
+    {
+      "id": "c8588981-641e-4fb7-a725-534fad1811be",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Lena has $x = 0.7777\\ldots$ and finds that $10x - x = 7$, so $9x = 7$. What fraction is $x$?",
+      "choices": [],
+      "answer": "7/9",
+      "compute": "7/9",
+      "solution": "From $9x = 7$ we get $x = \\frac{7}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x = 7 -> x = 7/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.060Z"
+        }
+      }
+    },
+    {
+      "id": "637d87eb-b5b9-46d8-8e5b-77aa9fc1cce3",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Digits of a repeating decimal",
+      "stem": "The decimal $0.363636\\ldots$ has the block 36 repeating forever. What is the 4th digit after the decimal point?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The digits are 3, 6, 3, 6, ... so the 4th digit is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits 3,6,3,6: 4th is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.068Z"
+        }
+      }
+    },
+    {
+      "id": "77c150f4-c52b-49ff-900c-ddf6a9934bbf",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Which decimal is equal to $\\frac{4}{9}$?",
+      "choices": [
+        "$0.44$ and then it ends",
+        "$0.49$ and then it ends",
+        "$0.444\\ldots$ with the 4 repeating forever",
+        "$0.9444\\ldots$ with the 4 repeating forever"
+      ],
+      "answer": "$0.444\\ldots$ with the 4 repeating forever",
+      "compute": null,
+      "solution": "$4 \\div 9 = 0.444\\ldots$. The remainder 4 comes back every step, so the digit 4 repeats forever.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.444\\ldots$ with the 4 repeating forever",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4/9 = 0.4444... repeating.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.119Z"
+        }
+      }
+    },
+    {
+      "id": "442fe1eb-4a76-4f40-b67f-96b412770ec1",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "The decimal $0.25$ is the same as $0.25000\\ldots$. Which statement is true?",
+      "choices": [
+        "It is rational, because its decimal ends",
+        "It is irrational, because the zeros go on forever",
+        "It is irrational, because it is not a whole number",
+        "It is neither rational nor irrational, because it is a decimal"
+      ],
+      "answer": "It is rational, because its decimal ends",
+      "compute": null,
+      "solution": "$0.25 = \\frac{25}{100} = \\frac{1}{4}$ can be written as a fraction of two integers, so it is rational. A decimal that ends is always rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is rational, because its decimal ends",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.25 = 1/4, terminating decimal, rational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.122Z"
+        }
+      }
+    },
+    {
+      "id": "42357101-ebbb-468e-94b1-41f43e8478fc",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "A recipe uses $\\frac{5}{8}$ cup of milk. Write $\\frac{5}{8}$ as a decimal.",
+      "choices": [],
+      "answer": "0.625",
+      "compute": "5/8",
+      "solution": "$5 \\div 8 = 0.625$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.625",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/8 = 0.625.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.149Z"
+        }
+      }
+    },
+    {
+      "id": "126cc959-7241-41d8-ad9d-caf433347d9a",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Sam wants a fraction whose decimal stops after a few digits. Which fraction should he pick?",
+      "choices": [
+        "$\\frac{3}{8}$",
+        "$\\frac{3}{7}$",
+        "$\\frac{3}{11}$",
+        "$\\frac{4}{9}$"
+      ],
+      "answer": "$\\frac{3}{8}$",
+      "compute": null,
+      "solution": "$3 \\div 8 = 0.375$, which stops. $\\frac{3}{7}$, $\\frac{3}{11}$ and $\\frac{4}{9}$ all give decimals that repeat forever.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/8=0.375 terminates (denominator 2^3); 4/9, 3/7, 3/11 repeat.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.216Z"
+        }
+      }
+    },
+    {
+      "id": "9e327def-bcb3-42b1-a4af-7d5156d6a93a",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Method for converting a repeating decimal",
+      "stem": "Nia sets $x = 0.5555\\ldots$, so $10x = 5.5555\\ldots$. What is $10x - x$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$5.5555\\ldots - 0.5555\\ldots = 5$, because the repeating parts cancel.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10x - x = 5.5555... - 0.5555... = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.290Z"
+        }
+      }
+    },
+    {
+      "id": "83bf5121-75a0-47cc-90da-c1396a1fd54f",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Which fraction is equal to $0.111\\ldots$, where the digit 1 repeats forever?",
+      "choices": [
+        "$\\frac{1}{10}$",
+        "$\\frac{1}{11}$",
+        "$\\frac{11}{100}$",
+        "$\\frac{1}{9}$"
+      ],
+      "answer": "$\\frac{1}{9}$",
+      "compute": null,
+      "solution": "$1 \\div 9 = 0.111\\ldots$, so $0.111\\ldots = \\frac{1}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{9}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 0.111...; 10x - x = 1, so x = 1/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.302Z"
+        }
+      }
+    },
+    {
+      "id": "54ef649d-dc43-466a-8827-01822725e3c8",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "Ana sorts numbers into a rational pile and an irrational pile. Which of these goes in the irrational pile?",
+      "choices": [
+        "$\\frac{22}{7}$",
+        "$\\sqrt{25}$",
+        "$0.6$",
+        "$\\sqrt{13}$"
+      ],
+      "answer": "$\\sqrt{13}$",
+      "compute": null,
+      "solution": "13 is not a perfect square, so $\\sqrt{13}$ has a decimal that never ends and never repeats. $\\frac{22}{7}$ is a fraction, $\\sqrt{25} = 5$ and $0.6 = \\frac{3}{5}$, so those three are rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{13}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13 is not a perfect square, so sqrt 13 is irrational. 0.6, sqrt 25 = 5, 22/7 are rational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.315Z"
+        }
+      }
+    },
+    {
+      "id": "ef7136f5-486a-49c6-a9b2-0a5855125268",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "Which of these numbers can be written as a fraction with whole numbers on the top and the bottom?",
+      "choices": [
+        "$0.75$",
+        "$\\pi$",
+        "$\\sqrt{10}$",
+        "$\\sqrt{21}$"
+      ],
+      "answer": "$0.75$",
+      "compute": null,
+      "solution": "$0.75 = \\frac{3}{4}$. The numbers $\\pi$, $\\sqrt{10}$ and $\\sqrt{21}$ are irrational, so none of them can be written as a fraction of whole numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.75$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.75 = 3/4; the others are irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.339Z"
+        }
+      }
+    },
+    {
+      "id": "17d033a7-0cd8-4790-94c1-1f87c6704dc6",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Zoe says the repeating decimal $0.888\\ldots$ equals a fraction with 8 on the top. What number is on the bottom?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "Since $\\frac{1}{9} = 0.111\\ldots$, we get $\\frac{8}{9} = 0.888\\ldots$. The bottom number is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.888... = 8/9. Bottom 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.365Z"
+        }
+      }
+    },
+    {
+      "id": "b1c1db15-3bf1-4096-ab6b-4c712c1c7c9d",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "A rope is $\\frac{7}{20}$ of a meter long. Write $\\frac{7}{20}$ as a decimal.",
+      "choices": [],
+      "answer": "0.35",
+      "compute": "7/20",
+      "solution": "$\\frac{7}{20} = \\frac{35}{100} = 0.35$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/20 = 35/100 = 0.35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.371Z"
+        }
+      }
+    },
+    {
+      "id": "7cbb8c49-68b0-4d9f-be1a-8abc03493f03",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "Write $1\\frac{1}{4}$ as a decimal.",
+      "choices": [],
+      "answer": "1.25",
+      "compute": "5/4",
+      "solution": "$\\frac{1}{4} = 0.25$, so $1\\frac{1}{4} = 1.25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 1/4 = 1.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.374Z"
+        }
+      }
+    },
+    {
+      "id": "49d62edb-8a93-4fc8-8071-9f7304c67ef3",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "Pat says $\\sqrt{20}$ is rational because 20 is a whole number. Which reply is correct?",
+      "choices": [
+        "Yes, every whole number has a rational square root, since whole numbers are rational",
+        "No, 20 is not a perfect square, so $\\sqrt{20}$ is irrational",
+        "Yes, because 4.5 times 4.5 equals 20 exactly",
+        "No, because the square root of a number is always negative"
+      ],
+      "answer": "No, 20 is not a perfect square, so $\\sqrt{20}$ is irrational",
+      "compute": null,
+      "solution": "$4 \\times 4 = 16$ and $5 \\times 5 = 25$, so no whole number squares to 20. $4.5 \\times 4.5 = 20.25$, not 20. So $\\sqrt{20}$ is irrational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, 20 is not a perfect square, so $\\sqrt{20}$ is irrational",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 lies between 16 and 25, so it is not a perfect square; its square root is irrational. 4.5^2=20.25, square roots are not always negative.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.377Z"
+        }
+      }
+    },
+    {
+      "id": "48f75b8c-a7bd-4c8b-a1f3-e94f859223d5",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "Which number is both an integer and a rational number?",
+      "choices": [
+        "$\\frac{1}{2}$",
+        "$\\sqrt{5}$",
+        "$\\pi$",
+        "$-4$"
+      ],
+      "answer": "$-4$",
+      "compute": null,
+      "solution": "$-4$ is an integer, and it is rational because $-4 = \\frac{-4}{1}$. $\\frac{1}{2}$ is rational but not an integer, and $\\sqrt{5}$ and $\\pi$ are not rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-4 is an integer and rational; pi, sqrt5 irrational; 1/2 not an integer.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.399Z"
+        }
+      }
+    },
+    {
+      "id": "0269c07b-8814-4705-a6bd-99e544644d3f",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "Which statement about $\\sqrt{36}$ is correct?",
+      "choices": [
+        "It is irrational, because it has a square root sign",
+        "It is rational, because $\\sqrt{36} = 6$",
+        "It is irrational, because 36 is even",
+        "It is rational, because 36 is not a perfect square"
+      ],
+      "answer": "It is rational, because $\\sqrt{36} = 6$",
+      "compute": null,
+      "solution": "36 is a perfect square, $6 \\times 6 = 36$, so $\\sqrt{36} = 6$, a whole number. Whole numbers are rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is rational, because $\\sqrt{36} = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(36) = 6 = 6/1, rational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.525Z"
+        }
+      }
+    },
+    {
+      "id": "f103d14b-dc27-4018-8c34-bbdb23751f88",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "Which of these square roots is not a whole number?",
+      "choices": [
+        "$\\sqrt{64}$",
+        "$\\sqrt{90}$",
+        "$\\sqrt{81}$",
+        "$\\sqrt{100}$"
+      ],
+      "answer": "$\\sqrt{90}$",
+      "compute": null,
+      "solution": "$\\sqrt{64} = 8$, $\\sqrt{81} = 9$ and $\\sqrt{100} = 10$. 90 is not a perfect square, so $\\sqrt{90}$ is not a whole number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{90}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt64 = 8, sqrt81 = 9, sqrt100 = 10; 90 is not a perfect square, so sqrt90 is not whole.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.564Z"
+        }
+      }
+    },
+    {
+      "id": "868f94cd-be44-4ac4-8349-e0b38934176e",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "Kim divides 1 by 8 using long division. What decimal does she get?",
+      "choices": [],
+      "answer": "0.125",
+      "compute": "1/8",
+      "solution": "$1 \\div 8 = 0.125$, and the division ends there with no remainder.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.125",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 / 8 = 0.125 (terminates).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.566Z"
+        }
+      }
+    },
+    {
       "id": "a33d3fa5-94c0-4c50-99f6-e5f01f6b87ba",
       "topic_id": "NC17.8.NS.1",
       "difficulty": 2,
@@ -664,6 +1397,733 @@
       }
     },
     {
+      "id": "66edfb8b-6262-49e3-ba35-6fad5ef25b9b",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "Jo says that every decimal that goes on forever is irrational. Which number shows that Jo is wrong?",
+      "choices": [
+        "$\\frac{1}{3}$, which is $0.333\\ldots$",
+        "$\\sqrt{2}$, which is $1.41421\\ldots$",
+        "$\\pi$, which is $3.141592\\ldots$",
+        "$\\sqrt{3}$, which is $1.73205\\ldots$"
+      ],
+      "answer": "$\\frac{1}{3}$, which is $0.333\\ldots$",
+      "compute": null,
+      "solution": "$\\frac{1}{3} = 0.333\\ldots$ goes on forever, yet it is a fraction, so it is rational. The other three go on forever and are irrational, so they agree with Jo.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{3}$, which is $0.333\\ldots$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3 = 0.333... goes on forever but is rational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.726Z"
+        }
+      }
+    },
+    {
+      "id": "10b1679b-3c5c-4739-94dd-04f6309b96f9",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Marcus says $\\frac{3}{12}$ has a repeating decimal because 12 has a factor of 3. Is he right?",
+      "choices": [
+        "No, since $\\frac{3}{12} = \\frac{1}{4} = 0.25$, which ends",
+        "Yes, since 12 has a factor of 3, every fraction with 12 on the bottom repeats",
+        "No, since every fraction with an even number on the bottom ends",
+        "Yes, since $3 \\div 12 = 0.333\\ldots$"
+      ],
+      "answer": "No, since $\\frac{3}{12} = \\frac{1}{4} = 0.25$, which ends",
+      "compute": null,
+      "solution": "$\\frac{3}{12}$ simplifies to $\\frac{1}{4}$, and $1 \\div 4 = 0.25$ ends. Simplify first before deciding.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, since $\\frac{3}{12} = \\frac{1}{4} = 0.25$, which ends",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/12 = 1/4 = 0.25, terminates. Option D is false (1/6 repeats).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.863Z"
+        }
+      }
+    },
+    {
+      "id": "2bab218b-14c4-4074-8867-ee9d6156374b",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decimals that never end and never repeat",
+      "stem": "Which of these patterned decimals is rational?",
+      "choices": [
+        "$0.1011011101111\\ldots$, with one more 1 each time",
+        "$0.2030040005\\ldots$, with one more 0 each time",
+        "$0.12345678910\\ldots$, listing the whole numbers in order",
+        "$0.24682468\\ldots$, with the block 2468 repeating forever"
+      ],
+      "answer": "$0.24682468\\ldots$, with the block 2468 repeating forever",
+      "compute": null,
+      "solution": "A rational number has a decimal that ends or repeats a block forever. Only the first decimal repeats a block. The others never settle into a repeating block.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.24682468\\ldots$, with the block 2468 repeating forever",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only the repeating block 2468 is a repeating decimal, so rational. The others never repeat.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.877Z"
+        }
+      }
+    },
+    {
+      "id": "3041619f-a90b-447b-8299-4d97f78f4d33",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Digits of a repeating decimal",
+      "stem": "The decimal for $\\frac{1}{7}$ is $0.142857142857\\ldots$ with the block 142857 repeating forever. What is the 10th digit after the decimal point?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The block has 6 digits. After one full block (6 digits), the 10th digit is the 4th digit of the block, which is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits 1,4,2,8,5,7,1,4,2,8: 10th is position 4 of the block (10 mod 6 = 4) = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.936Z"
+        }
+      }
+    },
+    {
+      "id": "a57a3638-393c-40dd-9ce0-1df56185282a",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Write $0.090909\\ldots$, with the block 09 repeating forever, as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "1/11",
+      "compute": "1/11",
+      "solution": "$100x - x = 9$, so $99x = 9$ and $x = \\frac{9}{99} = \\frac{1}{11}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=0.0909..., 100x-x=9, 99x=9, x=9/99=1/11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.938Z"
+        }
+      }
+    },
+    {
+      "id": "352da09c-0641-41a1-8522-8851f4b01e60",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Method for converting a repeating decimal",
+      "stem": "Rosa wants to write $x = 0.7272\\ldots$, with the block 72 repeating forever, as a fraction. Which step helps?",
+      "choices": [
+        "Subtract $x$ from $10x$ to get $9x = 7.2$",
+        "Subtract $x$ from $100x$ to get $99x = 7.2$",
+        "Subtract $x$ from $100x$ to get $99x = 72$",
+        "Add $x$ to $100x$ to get $101x = 72$"
+      ],
+      "answer": "Subtract $x$ from $100x$ to get $99x = 72$",
+      "compute": null,
+      "solution": "$100x = 72.7272\\ldots$ and $x = 0.7272\\ldots$. Subtracting cancels the repeating part and leaves $99x = 72$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Subtract $x$ from $100x$ to get $99x = 72$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100x=72.7272..., 100x-x=72, 99x=72. (10x-x gives 6.5454..., not 7.2.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.939Z"
+        }
+      }
+    },
+    {
+      "id": "c7b063de-613a-48d1-bc9e-9e03d5f16f2f",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "Which statement explains why every integer is a rational number?",
+      "choices": [
+        "Every integer is a perfect square, such as 4 or 9",
+        "Any integer $n$ can be written as the fraction $\\frac{n}{1}$",
+        "Every integer is a decimal that never ends and never repeats",
+        "Every integer is a positive number greater than zero"
+      ],
+      "answer": "Any integer $n$ can be written as the fraction $\\frac{n}{1}$",
+      "compute": null,
+      "solution": "A rational number is any number that can be written as a fraction of two integers. Writing $n = \\frac{n}{1}$ does this for every integer.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Any integer $n$ can be written as the fraction $\\frac{n}{1}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "An integer n equals n/1, a ratio of integers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.945Z"
+        }
+      }
+    },
+    {
+      "id": "d0bad232-cb41-48f1-bfe0-c26228056c14",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "Which list has only irrational numbers?",
+      "choices": [
+        "$\\sqrt{3}$, $\\sqrt{49}$, $\\pi$",
+        "$\\pi$, $\\frac{5}{3}$, $\\sqrt{17}$",
+        "$\\sqrt{3}$, $\\pi$, $\\sqrt{17}$",
+        "$\\sqrt{17}$, $\\sqrt{5}$, $0.272727\\ldots$"
+      ],
+      "answer": "$\\sqrt{3}$, $\\pi$, $\\sqrt{17}$",
+      "compute": null,
+      "solution": "$\\sqrt{3}$, $\\pi$ and $\\sqrt{17}$ are all irrational. The other lists hold $\\sqrt{49} = 7$, $\\frac{5}{3}$, or $0.272727\\ldots = \\frac{3}{11}$, which are rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{3}$, $\\pi$, $\\sqrt{17}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "√3, π, √17 all irrational. Others include 0.2727... (=27/99), 5/3, √49=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.028Z"
+        }
+      }
+    },
+    {
+      "id": "26539100-13cd-407b-b8ee-8950cbfc80d9",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "Exactly one of these is a rational number. Which one?",
+      "choices": [
+        "$\\sqrt{0.5}$",
+        "$\\sqrt{4.9}$",
+        "$\\sqrt{0.07}$",
+        "$\\sqrt{0.49}$"
+      ],
+      "answer": "$\\sqrt{0.49}$",
+      "compute": null,
+      "solution": "$\\sqrt{0.49} = 0.7$ because $0.7 \\times 0.7 = 0.49$. The other numbers are not squares of any fraction, so they are irrational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{0.49}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(0.49)=0.7 rational. 0.5, 4.9=49/10, 0.07=7/100 are not perfect squares of rationals, so their roots are irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.037Z"
+        }
+      }
+    },
+    {
+      "id": "c0e9a61d-075a-4eb8-bb8b-128257db0697",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Tom ate 7 of 12 equal slices of a pizza. As a decimal, what part of the pizza did he eat?",
+      "choices": [
+        "$0.58333\\ldots$ with the 3 repeating forever",
+        "$0.58$ and then it ends",
+        "$0.5833$ and then it ends",
+        "$0.5757\\ldots$ with the block 57 repeating forever"
+      ],
+      "answer": "$0.58333\\ldots$ with the 3 repeating forever",
+      "compute": null,
+      "solution": "$7 \\div 12 = 0.58333\\ldots$. After the digits 5 and 8, the remainder repeats, so the 3 repeats forever.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0.58333\\ldots$ with the 3 repeating forever",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/12 = 0.58333..., the 3 repeats.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.037Z"
+        }
+      }
+    },
+    {
+      "id": "97c9fec9-87f5-459b-8e83-cc634d39e03d",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decimals that never end and never repeat",
+      "stem": "Which of these numbers has a decimal that never ends and never repeats?",
+      "choices": [
+        "$\\sqrt{\\frac{16}{9}}$",
+        "$\\frac{13}{7}$",
+        "$\\sqrt{12}$",
+        "$\\sqrt{0.25}$"
+      ],
+      "answer": "$\\sqrt{12}$",
+      "compute": null,
+      "solution": "12 is not a perfect square, so $\\sqrt{12}$ is irrational. $\\sqrt{\\frac{16}{9}} = \\frac{4}{3}$ and $\\sqrt{0.25} = 0.5$ are rational, and so is $\\frac{13}{7}$, whose decimal repeats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(0.25)=0.5, 13/7 repeats, sqrt(16/9)=4/3; sqrt12 = 2sqrt3 irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.056Z"
+        }
+      }
+    },
+    {
+      "id": "9108079b-e059-4d48-b527-89f94eb614b6",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Digits of a repeating decimal",
+      "stem": "The decimal for $\\frac{7}{11}$ is $0.636363\\ldots$ with the block 63 repeating forever. What is the 25th digit after the decimal point?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The odd places hold 6 and the even places hold 3. The 25th place is odd, so the digit is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Odd positions are 6, even are 3; 25 is odd -> 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.069Z"
+        }
+      }
+    },
+    {
+      "id": "7fa4059c-e192-49db-890c-2c48ed9d9a0f",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decimals that never end and never repeat",
+      "stem": "A calculator shows $\\sqrt{7} = 2.6457513\\ldots$ and cannot show the whole decimal. Why not?",
+      "choices": [
+        "The decimal ends, but only after a very long string of digits",
+        "It never ends and never repeats, because $\\sqrt{7}$ is irrational",
+        "The decimal repeats, so a single block is all it would need to show",
+        "Every square root has a decimal that is too long to ever show"
+      ],
+      "answer": "It never ends and never repeats, because $\\sqrt{7}$ is irrational",
+      "compute": null,
+      "solution": "7 is not a perfect square, so $\\sqrt{7}$ is irrational. Its decimal goes on forever with no repeating block, so no screen can show all of it. Some square roots, such as $\\sqrt{9} = 3$, do end.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It never ends and never repeats, because $\\sqrt{7}$ is irrational",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt7 is irrational, so its decimal never ends or repeats.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.072Z"
+        }
+      }
+    },
+    {
+      "id": "1ae82d1f-6cbf-45c5-be2a-5c293bc8b757",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "Write $3\\frac{7}{8}$ as a decimal.",
+      "choices": [],
+      "answer": "3.875",
+      "compute": "31/8",
+      "solution": "$7 \\div 8 = 0.875$, so $3\\frac{7}{8} = 3.875$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3.875",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/8 = 0.875; 3.875.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.072Z"
+        }
+      }
+    },
+    {
+      "id": "27e46724-91de-4107-a0f2-21a26681aa21",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "One of these negative numbers is irrational. Which one?",
+      "choices": [
+        "$-\\sqrt{16}$",
+        "$-\\frac{18}{4}$",
+        "$-1.8$",
+        "$-\\sqrt{18}$"
+      ],
+      "answer": "$-\\sqrt{18}$",
+      "compute": null,
+      "solution": "18 is not a perfect square, so $-\\sqrt{18}$ is irrational. $-\\sqrt{16} = -4$, $-\\frac{18}{4}$ and $-1.8 = -\\frac{9}{5}$ are all rational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\sqrt{18}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-sqrt16 = -4, -18/4 = -4.5, -1.8 rational; -sqrt18 = -3sqrt2 irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.073Z"
+        }
+      }
+    },
+    {
+      "id": "dacea6bf-364c-4a5d-b255-a88b1b446864",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "How many of the numbers $\\sqrt{15}$, $\\sqrt{16}$, $\\sqrt{17}$, $\\sqrt{18}$, $\\sqrt{19}$ and $\\sqrt{20}$ are irrational?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Only 16 is a perfect square, so $\\sqrt{16} = 4$ is rational. The other five are irrational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only sqrt16 = 4 is rational; 5 irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.074Z"
+        }
+      }
+    },
+    {
+      "id": "c522fa47-33e7-4ba1-bbbb-e400c21d7bb6",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Ravi's calculator shows $0.2727\\ldots$ with the block 27 repeating forever. As a fraction in lowest terms, what is it?",
+      "choices": [],
+      "answer": "3/11",
+      "compute": "3/11",
+      "solution": "Let $x = 0.2727\\ldots$. Then $100x - x = 27$, so $99x = 27$ and $x = \\frac{27}{99} = \\frac{3}{11}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.2727... = 27/99 = 3/11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.146Z"
+        }
+      }
+    },
+    {
+      "id": "a1b2ad52-b221-4b77-a7b0-89d34e40b191",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "A bolt is $\\frac{3}{16}$ of an inch wide. Write $\\frac{3}{16}$ as a decimal.",
+      "choices": [],
+      "answer": "0.1875",
+      "compute": "3/16",
+      "solution": "$3 \\div 16 = 0.1875$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.1875",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/16=0.1875.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.240Z"
+        }
+      }
+    },
+    {
+      "id": "b33c021e-70f3-4e4f-9258-4f4aec1e09b2",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Method for converting a repeating decimal",
+      "stem": "Let $x = 0.246246246\\ldots$ with the block 246 repeating forever. What is $1000x - x$?",
+      "choices": [],
+      "answer": "246",
+      "compute": "246",
+      "solution": "$1000x = 246.246246\\ldots$. Subtracting $x = 0.246246\\ldots$ leaves exactly 246.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "246",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000x = 246.246...; 1000x - x = 246.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.404Z"
+        }
+      }
+    },
+    {
+      "id": "69296bec-49eb-437c-8cc7-b8f96a4fdd77",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Method for converting a repeating decimal",
+      "stem": "Let $x = 2.4444\\ldots$, with the digit 4 repeating forever. What is $10x - x$?",
+      "choices": [],
+      "answer": "22",
+      "compute": "24-2",
+      "solution": "$10x = 24.4444\\ldots$ and $x = 2.4444\\ldots$, so $10x - x = 22$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10x = 24.444...; 10x - x = 22 (x = 22/9).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.426Z"
+        }
+      }
+    },
+    {
+      "id": "e4a2f92d-0d38-406b-b906-6f08ee377798",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "A board is $\\frac{13}{40}$ of a yard long. Write $\\frac{13}{40}$ as a decimal.",
+      "choices": [],
+      "answer": "0.325",
+      "compute": "13/40",
+      "solution": "$13 \\div 40 = 0.325$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.325",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "13/40 = 325/1000 = 0.325.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.447Z"
+        }
+      }
+    },
+    {
+      "id": "49188810-61a1-47aa-a8ca-b7f8fc2e9ea2",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Priya changes four fractions to decimals by long division. Only one of the decimals stops. Which fraction is it?",
+      "choices": [
+        "$\\frac{5}{12}$",
+        "$\\frac{4}{15}$",
+        "$\\frac{3}{14}$",
+        "$\\frac{9}{40}$"
+      ],
+      "answer": "$\\frac{9}{40}$",
+      "compute": null,
+      "solution": "$\\frac{9}{40} = 0.225$ stops. $\\frac{5}{12} = 0.41666\\ldots$, $\\frac{4}{15} = 0.2666\\ldots$ and $\\frac{3}{14} = 0.214285714\\ldots$ all go on forever.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{9}{40}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "40 = 2^3*5, so 9/40 = 0.225 terminates. 15, 12, 14 have factors 3 or 7, so those repeat.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.578Z"
+        }
+      }
+    },
+    {
+      "id": "752844ec-dcf5-43f6-83de-f122df8dd672",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Write $2.333\\ldots$, with the 3 repeating forever, as an improper fraction in lowest terms.",
+      "choices": [],
+      "answer": "7/3",
+      "compute": "7/3",
+      "solution": "$0.333\\ldots = \\frac{1}{3}$, so $2.333\\ldots = 2\\frac{1}{3} = \\frac{7}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.333... = 2 + 1/3 = 7/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.591Z"
+        }
+      }
+    },
+    {
       "id": "512b9708-ea85-4fbf-86e7-60ce1d78b0dc",
       "topic_id": "NC17.8.NS.1",
       "difficulty": 3,
@@ -975,6 +2435,704 @@
           "work": "Side = sqrt50, irrational; 7.07^2 = 49.9849, not 50. 7.5^2 = 56.25. So D.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:58:36.464Z"
+        }
+      }
+    },
+    {
+      "id": "18affd7d-7820-4afa-8ddf-cbc9f28782e2",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Writing a fraction as a decimal",
+      "stem": "Write $\\frac{43}{80}$ as a decimal.",
+      "choices": [],
+      "answer": "0.5375",
+      "compute": "43/80",
+      "solution": "$43 \\div 80 = 0.5375$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.5375",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "43/80 = 43×125/10000 = 5375/10000 = 0.5375.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.756Z"
+        }
+      }
+    },
+    {
+      "id": "0953d7cb-de24-4bfd-ae6d-77aa3dac5045",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Write $0.0888\\ldots$, where only the digit 8 repeats forever, as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "4/45",
+      "compute": "8/90",
+      "solution": "Let $x = 0.0888\\ldots$. Then $100x - 10x = 8.888\\ldots - 0.888\\ldots = 8$, so $90x = 8$ and $x = \\frac{8}{90} = \\frac{4}{45}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4/45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 0.0888…; 10x = 0.888… = 8/9, so x = 8/90 = 4/45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:47:12.766Z"
+        }
+      }
+    },
+    {
+      "id": "5ff79e53-b46b-401b-a777-c9b5dd81ef77",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Method for converting a repeating decimal",
+      "stem": "Let $x = 3.1818\\ldots$, with the block 18 repeating forever. What is $100x - x$?",
+      "choices": [],
+      "answer": "315",
+      "compute": "318-3",
+      "solution": "$100x = 318.1818\\ldots$ and $x = 3.1818\\ldots$, so $100x - x = 315$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "315",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100x = 318.1818..., x = 3.1818..., 100x - x = 315.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.913Z"
+        }
+      }
+    },
+    {
+      "id": "58c2febe-9604-4d77-9b9e-2961c27917dc",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "Maria finds the square roots of four positive numbers. Three of the results can be written as fractions. Which square root cannot?",
+      "choices": [
+        "$\\sqrt{0.016}$",
+        "$\\sqrt{0.0016}$",
+        "$\\sqrt{1.69}$",
+        "$\\sqrt{\\frac{81}{16}}$"
+      ],
+      "answer": "$\\sqrt{0.016}$",
+      "compute": null,
+      "solution": "$\\sqrt{0.0016} = 0.04$, $\\sqrt{1.69} = 1.3$ and $\\sqrt{\\frac{81}{16}} = \\frac{9}{4}$. But $0.016 = \\frac{16}{1000}$ is not the square of any fraction, so $\\sqrt{0.016}$ is irrational.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{0.016}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(0.0016) = 0.04; sqrt(81/16) = 9/4; sqrt(1.69) = 1.3. 0.016 = 2/125, not a perfect square of a rational: irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.920Z"
+        }
+      }
+    },
+    {
+      "id": "e340f88a-e95d-44d0-8d67-605bb200a051",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Terminating or repeating decimals",
+      "stem": "The decimal for $\\frac{1}{6}$ is $0.1666\\ldots$ with the 6 repeating forever. What is the sum of the first 10 digits after the decimal point?",
+      "choices": [],
+      "answer": "55",
+      "compute": "1+9*6",
+      "solution": "The first digit is 1 and the next nine digits are all 6. The sum is $1 + 9 \\times 6 = 55$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "55",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Digits 1 then nine 6s: 1+54=55.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.946Z"
+        }
+      }
+    },
+    {
+      "id": "2f49febc-e859-4424-b834-eddad6b3ccf7",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Which fraction has a decimal that repeats a block of exactly two digits?",
+      "choices": [
+        "$\\frac{7}{12}$",
+        "$\\frac{4}{13}$",
+        "$\\frac{5}{11}$",
+        "$\\frac{7}{16}$"
+      ],
+      "answer": "$\\frac{5}{11}$",
+      "compute": null,
+      "solution": "$\\frac{5}{11} = 0.4545\\ldots$ repeats the block 45. $\\frac{7}{12} = 0.58333\\ldots$ repeats one digit, $\\frac{4}{13} = 0.307692307692\\ldots$ repeats six digits and $\\frac{7}{16} = 0.4375$ ends.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{5}{11}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/11=0.4545... (block 45). 4/13 has period 6, 7/16=0.4375 terminates, 7/12=0.58333... repeats one digit.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.947Z"
+        }
+      }
+    },
+    {
+      "id": "3c57b9ec-ef56-4bf6-9aab-43744003dce2",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Terminating or repeating decimals",
+      "stem": "For how many of the fractions $\\frac{1}{2}$, $\\frac{1}{3}$, $\\frac{1}{4}$, $\\frac{1}{5}$, $\\frac{1}{6}$, $\\frac{1}{7}$, $\\frac{1}{8}$, $\\frac{1}{9}$ and $\\frac{1}{10}$ does the decimal end?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$\\frac{1}{2} = 0.5$, $\\frac{1}{4} = 0.25$, $\\frac{1}{5} = 0.2$, $\\frac{1}{8} = 0.125$ and $\\frac{1}{10} = 0.1$ end. The fractions with 3, 6, 7 and 9 on the bottom repeat. That is 5 fractions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Terminating: 1/2, 1/4, 1/5, 1/8, 1/10 (denominators 2^a5^b). 1/3,1/6,1/7,1/9 repeat. Count 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.954Z"
+        }
+      }
+    },
+    {
+      "id": "89ee5b1f-619f-4310-be37-e38495898180",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "Ravi says $\\sqrt{16} = 4.000\\ldots$ goes on forever, so it is irrational. Which reply is correct?",
+      "choices": [
+        "Yes, any decimal that goes on forever without ending is irrational",
+        "Yes, because a number written with a decimal point is irrational",
+        "No, because $\\sqrt{16}$ is a negative number, not a decimal",
+        "No, $4.000\\ldots$ repeats the digit 0, so $\\sqrt{16}$ is rational"
+      ],
+      "answer": "No, $4.000\\ldots$ repeats the digit 0, so $\\sqrt{16}$ is rational",
+      "compute": null,
+      "solution": "$\\sqrt{16} = 4$ is a whole number, so it is rational. Its decimal $4.000\\ldots$ repeats the digit 0, which is a repeating decimal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, $4.000\\ldots$ repeats the digit 0, so $\\sqrt{16}$ is rational",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt16 = 4 = 4.000..., a repeating (terminating) decimal, so rational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.966Z"
+        }
+      }
+    },
+    {
+      "id": "783f936e-f149-4dfd-a412-649fe896895c",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "Which number is rational but is not an integer?",
+      "choices": [
+        "$\\sqrt{\\frac{16}{4}}$",
+        "$\\sqrt{\\frac{4}{9}}$",
+        "$-\\frac{15}{5}$",
+        "$\\sqrt{\\frac{6}{4}}$"
+      ],
+      "answer": "$\\sqrt{\\frac{4}{9}}$",
+      "compute": null,
+      "solution": "$\\sqrt{\\frac{4}{9}} = \\frac{2}{3}$ is rational and not an integer. $\\sqrt{\\frac{16}{4}} = 2$ and $-\\frac{15}{5} = -3$ are integers, and $\\sqrt{\\frac{6}{4}}$ is irrational because $\\frac{6}{4}$ is not the square of a fraction.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{\\frac{4}{9}}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(16/4)=2 integer; sqrt(4/9)=2/3 rational non-integer; -15/5=-3 integer; sqrt(6/4)=sqrt6/2 irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.967Z"
+        }
+      }
+    },
+    {
+      "id": "7427a2db-5c98-4414-b108-14bc280fa0ec",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decimals that never end and never repeat",
+      "stem": "Which description cannot belong to any number?",
+      "choices": [
+        "a rational number whose decimal ends after a few digits",
+        "an irrational number whose decimal repeats a block forever",
+        "a rational number whose decimal goes on forever and never ends",
+        "an irrational number whose decimal goes on forever and never ends"
+      ],
+      "answer": "an irrational number whose decimal repeats a block forever",
+      "compute": null,
+      "solution": "A decimal that repeats a block forever is the decimal of a fraction, so it is rational. An irrational number cannot have such a decimal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "an irrational number whose decimal repeats a block forever",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A repeating decimal is always rational, so an irrational number cannot repeat a block forever. Others exist (pi; 0.25; 1/3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.983Z"
+        }
+      }
+    },
+    {
+      "id": "236a3adb-b726-4af1-8428-f2b42038b6e2",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "What is the smallest whole number greater than 200 whose square root is a rational number?",
+      "choices": [],
+      "answer": "225",
+      "compute": "15^2",
+      "solution": "$14^2 = 196$ is less than 200 and $15^2 = 225$. So 225 is the smallest.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "225",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Square root of a whole number is rational only for perfect squares; 14^2 = 196, 15^2 = 225.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:27.989Z"
+        }
+      }
+    },
+    {
+      "id": "c17f06c0-7840-4ea3-8ce2-d8d21f0cd692",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Method for converting a repeating decimal",
+      "stem": "Ruben says $0.1212\\ldots$, with the block 12 repeating forever, equals $\\frac{12}{100}$. Which statement is correct?",
+      "choices": [
+        "It equals $\\frac{12}{99} = \\frac{4}{33}$, because $99x = 12$",
+        "Ruben is right, because the block 12 has two digits, so the bottom is 100",
+        "It equals $\\frac{12}{90}$, because $10x - x$ gives $9x = 12$",
+        "It equals $\\frac{1}{12}$, because the repeating block is 12"
+      ],
+      "answer": "It equals $\\frac{12}{99} = \\frac{4}{33}$, because $99x = 12$",
+      "compute": null,
+      "solution": "Let $x = 0.1212\\ldots$. Then $100x = 12.1212\\ldots$, so $100x - x = 12$ and $x = \\frac{12}{99} = \\frac{4}{33}$. The fraction $\\frac{12}{100} = 0.12$ ends, so it is not equal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It equals $\\frac{12}{99} = \\frac{4}{33}$, because $99x = 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=0.1212..., 100x - x = 12, 99x = 12, x = 12/99 = 4/33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.051Z"
+        }
+      }
+    },
+    {
+      "id": "d688148f-55cd-41b7-a6c4-b5fdc25ec1e2",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Telling rational from irrational numbers",
+      "stem": "Which number is irrational, greater than 5 and less than 6?",
+      "choices": [
+        "$5.5$",
+        "$\\frac{16}{3}$",
+        "$\\sqrt{30}$",
+        "$\\sqrt{36}$"
+      ],
+      "answer": "$\\sqrt{30}$",
+      "compute": null,
+      "solution": "$\\sqrt{30}$ is about 5.48 and 30 is not a perfect square, so it is irrational. $5.5$ and $\\frac{16}{3}$ are rational, and $\\sqrt{36} = 6$ is not less than 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{30}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.5 and 16/3 rational; sqrt36 = 6 not less than 6 and rational; sqrt30 is about 5.48, irrational.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.120Z"
+        }
+      }
+    },
+    {
+      "id": "4ebdb1f3-a446-492c-9076-6c602e0f7ff0",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Exactly one of these fractions is equal to a decimal that stops. Which one? (Simplify first.)",
+      "choices": [
+        "$\\frac{14}{42}$",
+        "$\\frac{14}{21}$",
+        "$\\frac{14}{35}$",
+        "$\\frac{14}{24}$"
+      ],
+      "answer": "$\\frac{14}{35}$",
+      "compute": null,
+      "solution": "$\\frac{14}{35} = \\frac{2}{5} = 0.4$ stops. $\\frac{14}{42} = \\frac{1}{3}$, $\\frac{14}{21} = \\frac{2}{3}$ and $\\frac{14}{24} = \\frac{7}{12}$ all repeat.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{14}{35}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14/42=1/3, 14/24=7/12, 14/21=2/3 all repeat; 14/35=2/5=0.4 stops.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.144Z"
+        }
+      }
+    },
+    {
+      "id": "6680c070-9dde-4a34-a0db-5d010cad9c15",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Write $1.2727\\ldots$, with the block 27 repeating forever, as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "14/11",
+      "compute": "1+27/99",
+      "solution": "$0.2727\\ldots = \\frac{27}{99} = \\frac{3}{11}$, so $1.2727\\ldots = 1\\frac{3}{11} = \\frac{14}{11}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14/11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.2727... = 1 + 27/99 = 1 + 3/11 = 14/11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.145Z"
+        }
+      }
+    },
+    {
+      "id": "408fd993-d1f7-4498-a46f-d94463c9e9d5",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Digits of a repeating decimal",
+      "stem": "The decimal for $\\frac{5}{13}$ is $0.384615384615\\ldots$ with the block 384615 repeating forever. What is the 100th digit after the decimal point?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The block has 6 digits. $100 = 16 \\times 6 + 4$, so the 100th digit is the 4th digit of the block, which is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100 = 6*16+4; 4th digit of 384615 is 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.243Z"
+        }
+      }
+    },
+    {
+      "id": "a18c097d-ba6d-4c98-bbdc-0d506af0a2d8",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Write $0.1666\\ldots$, where only the digit 6 repeats forever, as a fraction in lowest terms.",
+      "choices": [],
+      "answer": "1/6",
+      "compute": "1/6",
+      "solution": "Let $x = 0.1666\\ldots$. Then $100x - 10x = 16.666\\ldots - 1.666\\ldots = 15$, so $90x = 15$ and $x = \\frac{15}{90} = \\frac{1}{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 0.1666..., 10x = 1.666..., 100x = 16.666...; 90x = 15, x = 15/90 = 1/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.258Z"
+        }
+      }
+    },
+    {
+      "id": "9ef5c54c-83ff-4f1f-a22c-91586a44582d",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decimals that never end and never repeat",
+      "stem": "Mara says a circle with diameter 5 units has a circumference of exactly 15.7 units, because 3.14 times 5 is 15.7. Which reply is correct?",
+      "choices": [
+        "Yes, because 3.14 is the exact value of $\\pi$ as a decimal",
+        "Yes, because $\\pi$ is a decimal that repeats after 3.14",
+        "No, because $\\pi$ is exactly $\\frac{22}{7}$, which is a different number",
+        "No, $\\pi$ never ends and never repeats, so 3.14 is only close"
+      ],
+      "answer": "No, $\\pi$ never ends and never repeats, so 3.14 is only close",
+      "compute": null,
+      "solution": "$\\pi$ is irrational, so no decimal that ends, such as 3.14, equals it. Neither does $\\frac{22}{7}$. Using 3.14 gives only an approximation.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No, $\\pi$ never ends and never repeats, so 3.14 is only close",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "π is irrational: its decimal neither ends nor repeats, so 3.14×5 is only an approximation of 5π. 22/7 is also only an approximation.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.262Z"
+        }
+      }
+    },
+    {
+      "id": "f68f800b-820c-4848-add9-6fe22e55bba4",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Writing a repeating decimal as a fraction",
+      "stem": "Which fraction is equal to $1.0909\\ldots$, where the block 09 repeats forever?",
+      "choices": [
+        "$\\frac{12}{11}$",
+        "$\\frac{109}{100}$",
+        "$\\frac{10}{9}$",
+        "$\\frac{109}{99}$"
+      ],
+      "answer": "$\\frac{12}{11}$",
+      "compute": null,
+      "solution": "$0.0909\\ldots = \\frac{9}{99} = \\frac{1}{11}$, so $1.0909\\ldots = 1\\frac{1}{11} = \\frac{12}{11}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{12}{11}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1.0909... = 1 + 0.0909... = 1 + 9/99 = 1 + 1/11 = 12/11. (109/99 = 1.10101...)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.313Z"
+        }
+      }
+    },
+    {
+      "id": "867dd8f2-7b33-4edd-9d8c-6884a3362d78",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Square roots: perfect squares and irrational roots",
+      "stem": "For how many whole numbers $n$ from 50 to 150, including both 50 and 150, is $\\sqrt{n}$ a rational number?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The perfect squares from 50 to 150 are 64, 81, 100, 121 and 144. That is 5 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(n) rational iff n is a perfect square: 64, 81, 100, 121, 144 -> 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.394Z"
+        }
+      }
+    },
+    {
+      "id": "2ee40bf7-765c-4905-83b5-80a24c73155c",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Terminating or repeating decimals",
+      "stem": "Which pair of fractions both have decimals that repeat forever?",
+      "choices": [
+        "$\\frac{1}{6}$ and $\\frac{5}{9}$",
+        "$\\frac{1}{6}$ and $\\frac{3}{8}$",
+        "$\\frac{7}{20}$ and $\\frac{5}{9}$",
+        "$\\frac{3}{4}$ and $\\frac{1}{6}$"
+      ],
+      "answer": "$\\frac{1}{6}$ and $\\frac{5}{9}$",
+      "compute": null,
+      "solution": "$\\frac{1}{6} = 0.1666\\ldots$ and $\\frac{5}{9} = 0.555\\ldots$ both repeat. In each other pair, one fraction ($\\frac{3}{8}$, $\\frac{7}{20}$ or $\\frac{3}{4}$) has a decimal that ends.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{6}$ and $\\frac{5}{9}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7/20=0.35 terminates; 3/4, 3/8 terminate; 1/6=0.1666..., 5/9=0.555... both repeat.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.460Z"
+        }
+      }
+    },
+    {
+      "id": "338e0882-7381-4ff7-92e7-007fc3c2d607",
+      "topic_id": "NC17.8.NS.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Statements about decimal expansions",
+      "stem": "Ella says $0.4999\\ldots$, with the 9 repeating forever, and $0.5$ are different numbers. Which statement is correct?",
+      "choices": [
+        "She is right, because $0.4999\\ldots$ is always a little less than $0.5$",
+        "They are equal, because $0.4999\\ldots$ is another name for $\\frac{1}{2}$",
+        "She is right, because $0.4999\\ldots$ is irrational and $0.5$ is not",
+        "They are equal, because $0.4999\\ldots$ rounds down to $0.4$ in the tenths"
+      ],
+      "answer": "They are equal, because $0.4999\\ldots$ is another name for $\\frac{1}{2}$",
+      "compute": null,
+      "solution": "Let $x = 0.4999\\ldots$. Then $10x - x = 4.999\\ldots - 0.4999\\ldots = 4.5$, so $9x = 4.5$ and $x = 0.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They are equal, because $0.4999\\ldots$ is another name for $\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.4999... = 0.4 + 0.0999... = 0.4 + 0.1 = 0.5 = 1/2. They are equal.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T18:48:28.539Z"
         }
       }
     },
