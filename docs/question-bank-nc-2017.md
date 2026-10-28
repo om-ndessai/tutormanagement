@@ -136,7 +136,7 @@ quartile on an odd-length list with no method stated, a clock face assumed round
 sound like counts when read aloud; and three whose solutions name an option by its position. They are
 listed in the workspace (`hold5.json`).
 
-**Still to do.** 21 standards have no questions yet; their writers were stopped by the account's usage
+**Still to do** (as of the first release; the 21 were done on 2026-10-28, below). 21 standards have no questions yet; their writers were stopped by the account's usage
 limit:
 - NC.K.G.5, NC.3.MD.8, NC.4.MD.8, NC.4.G.3, NC.5.G.3
 - NC.6.EE.4, NC.6.EE.6, NC.6.G.3, NC.7.SP.2
@@ -155,36 +155,45 @@ transcript. The briefs and scripts are now in the repository (`docs/question-ban
 README), so the work can resume anywhere. Same pipeline: Sonnet writers, `lintQuestion`, Opus solving
 blind; only `checked` is kept, nothing approved.
 
-**Done on this branch** (5,311 new questions; every one `checked`):
+**Done on this branch** (7,902 new questions, all `checked`, none approved; NC 2017 goes from 10,440 to
+18,342 and the whole bank from 40,738 to 48,640):
 - **Pass A on the 21 empty standards**: all 21 now hold questions. NC 2017 has no standard without them.
-- **Pass B** (topping a standard up to about 99) on 72 of the 361 standards, taken round robin over the
+- **Pass B** (topping a standard up to about 99) on 110 of the 361 standards, taken round robin over the
   14 levels, so every level gained.
-- **Repairs**: about 50 questions the blind solver flagged were replaced by new ones on the same standard
-  and difficulty and solved again.
+- **Repairs**: 50 questions the blind solver flagged were replaced by new ones on the same standard and
+  difficulty and solved again; 10 flagged only for a lost backslash were fixed and solved again.
 
 | Level | Standards | At ~99 | Questions before | Questions now |
 | --- | --- | --- | --- | --- |
-| Kindergarten | 23 | 7 | 721 | 1,166 |
-| Grade 1 | 23 | 7 | 758 | 1,169 |
-| Grade 2 | 23 | 5 | 690 | 1,035 |
-| Grade 3 | 20 | 5 | 569 | 944 |
-| Grade 4 | 25 | 6 | 758 | 1,163 |
-| Grade 5 | 17 | 6 | 549 | 924 |
-| Grade 6 | 31 | 5 | 838 | 1,272 |
-| Grade 7 | 23 | 5 | 660 | 1,035 |
-| Grade 8 | 25 | 5 | 750 | 1,095 |
-| NC Math 1 | 41 | 5 | 1,133 | 1,568 |
-| NC Math 2 | 47 | 4 | 1,284 | 1,676 |
-| NC Math 3 | 41 | 4 | 1,071 | 1,495 |
-| NC Math 4 | 10 | 4 | 300 | 575 |
-| Precalculus | 12 | 4 | 359 | 634 |
+| Kindergarten | 23 | 9 | 721 | 1,304 |
+| Grade 1 | 23 | 9 | 758 | 1,307 |
+| Grade 2 | 23 | 8 | 690 | 1,240 |
+| Grade 3 | 20 | 8 | 569 | 1,150 |
+| Grade 4 | 25 | 9 | 758 | 1,368 |
+| Grade 5 | 17 | 9 | 549 | 1,126 |
+| Grade 6 | 31 | 8 | 838 | 1,476 |
+| Grade 7 | 23 | 8 | 660 | 1,238 |
+| Grade 8 | 25 | 7 | 750 | 1,232 |
+| NC Math 1 | 41 | 7 | 1,133 | 1,706 |
+| NC Math 2 | 47 | 7 | 1,284 | 1,882 |
+| NC Math 3 | 41 | 7 | 1,071 | 1,695 |
+| NC Math 4 | 10 | 7 | 300 | 779 |
+| Precalculus | 12 | 7 | 359 | 839 |
+| **All** | **361** | **110** | **10,440** | **18,342** |
 
-(The table is as of the last commit that touched it; `node docs/question-bank-workspace/tools/status.mjs`
-gives the current count.)
+About 3% of what was written was flagged by the blind solver, nearly all for alignment (a bare calculation
+in a word-problem standard, a neighbouring standard's skill) or wording a child could read two ways, and
+none of those was kept.
 
-**Still to do:** pass B on the rest of the standards (`plan-b.mjs` lists them). **The 16 held questions**
-of the first release are not here: their text never left the Mac (`qb3/hold5.json` and `final/`). They
-are not needed for coverage, since pass B fills those standards anyway; fix them there only if wanted.
+**Still to do** (stopped on 2026-10-28 at the owner's request, everything solved was merged first):
+- **Pass B on the other 251 standards**: 228 hold 30-89 questions and 23 hold 27-30. `plan-b.mjs` lists
+  them in round-robin order; at the pace so far that is about 17,000 more questions.
+- **43 flagged questions not yet replaced** (the repair queue lived in the cloud session's scratchpad and
+  is not kept). They are not in the bank; pass B's top-up to 99 covers their standards anyway.
+- **The 16 held questions** of the first release are not here: their text never left the Mac
+  (`qb3/hold5.json` and `final/`). They are not needed for coverage, since pass B fills those standards
+  anyway; fix them there only if wanted.
+- Pass B's top-up counts 33 per difficulty, so a standard that pass A left at 27-29 is filled to 99 too.
 
 **New checks.** The blind solvers found LaTeX backslashes lost in the JSON: `"\times"` in a file is a tab
 and "imes", and a JavaScript string drops `\c` from `\circ`. The workspace lint now refuses control
@@ -245,6 +254,6 @@ the two generated SQL files, `db/release-questions.mjs` and docs. No schema chan
 **Do not run `npm run questions:export` before the load.** It rewrites `db/questions/*.json` from
 production, which would drop every question not yet loaded.
 
-**Size.** `questions.sql` is about 40 MB at 46,000 questions (about 0.85 KB each). GitHub refuses a file
+**Size.** `questions.sql` is about 41 MB at 48,640 questions (about 0.85 KB each). GitHub refuses a file
 over 100 MB, which this file reaches at roughly 115,000 questions; if the merged banks approach that,
 split `questions.sql` by curriculum before committing it.

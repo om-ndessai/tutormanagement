@@ -39,6 +39,7 @@ time, solvers before writers.
 | Replacements for the flagged | `node tools/repair-input.mjs r<N>` | prompt a Sonnet agent with REPAIR.md; questions flagged only for a lost backslash are re-solved instead |
 | Check the repository files | `node tools/verify.mjs` | the e2e spec's lint over every NC17 question, plus control characters and bare LaTeX |
 | Sort, regenerate SQL | `node tools/finalize.mjs` | then commit `apps/api/db` |
+| All of the last three, then commit and push | `tools/ship.sh <chunk>…` | commits with the Claude session's attribution lines: edit them first |
 | Where things stand | `node tools/status.mjs` | |
 
 A question is kept only when the blind solver's answer matches the key (`checkAnswer`), all four
