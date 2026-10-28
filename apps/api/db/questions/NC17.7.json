@@ -16069,6 +16069,534 @@
       }
     },
     {
+      "id": "98866a4e-d1e9-4bc7-a864-0c82d04731b4",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find an equal expression or true statement",
+      "stem": "Only one of these expressions has a value below zero. Which one is it?",
+      "choices": [
+        "$(-3) \\times (-5)$",
+        "$-3 - (-5)$",
+        "$(-3) + (-5)$",
+        "$-15 \\div (-3)$"
+      ],
+      "answer": "$(-3) + (-5)$",
+      "compute": null,
+      "solution": "$(-3) + (-5) = -8$. The others equal 15, 2 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(-3) + (-5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-8; 5; 15; 2. Only -8 is below zero.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.011Z"
+        }
+      }
+    },
+    {
+      "id": "334850f8-e9f4-454a-9152-32b6ab527436",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "A ribbon is 5.6 meters long. It is cut into 4 equal pieces. How long is each piece, in meters?",
+      "choices": [],
+      "answer": "1.4",
+      "compute": "5.6/4",
+      "solution": "$5.6 \\div 4 = 1.4$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5.6 / 4 = 1.4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.039Z"
+        }
+      }
+    },
+    {
+      "id": "b6d8e4fd-6725-4103-a239-6d6cf46c105b",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "A hiker starts at $-35$ meters, which is 35 meters below sea level, and climbs 80 meters. What is the hiker's elevation now, in meters?",
+      "choices": [],
+      "answer": "45",
+      "compute": "-35+80",
+      "solution": "$-35 + 80 = 45$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-35 + 80 = 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.087Z"
+        }
+      }
+    },
+    {
+      "id": "bf385337-164d-408d-8e5c-6affc3b68a48",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "A recipe needs $\\frac{3}{4}$ cup of flour. Eli makes half of the recipe. How many cups of flour does he need?",
+      "choices": [
+        "$\\frac{3}{2}$",
+        "$\\frac{5}{4}$",
+        "$\\frac{1}{4}$",
+        "$\\frac{3}{8}$"
+      ],
+      "answer": "$\\frac{3}{8}$",
+      "compute": null,
+      "solution": "Half of $\\frac{3}{4}$ is $\\frac{1}{2} \\times \\frac{3}{4} = \\frac{3}{8}$ cup.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{8}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 x 3/4 = 3/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.105Z"
+        }
+      }
+    },
+    {
+      "id": "25ac540d-4695-428f-8c40-99e93e08f66c",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Divide: $-56 \\div (-7)$.",
+      "choices": [
+        "$-8$",
+        "$7$",
+        "$-49$",
+        "$8$"
+      ],
+      "answer": "$8$",
+      "compute": "56/7",
+      "solution": "Two negatives give a positive quotient: $56 \\div 7 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negative / negative = positive; 56/7 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.113Z"
+        }
+      }
+    },
+    {
+      "id": "f5de9fa7-d977-4926-b117-46aa863b666e",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Evaluate $-23 + 15$.",
+      "choices": [],
+      "answer": "-8",
+      "compute": "-23+15",
+      "solution": "Start at $-23$ and move 15 up the number line: $-23 + 15 = -8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-23+15=-8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.134Z"
+        }
+      }
+    },
+    {
+      "id": "822aa879-83d4-4d7a-b642-cef625664da3",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "Find the value of $-8 \\div 2 + 6$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "-8/2+6",
+      "solution": "Divide first: $-8 \\div 2 = -4$. Then $-4 + 6 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-8/2=-4; -4+6=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.143Z"
+        }
+      }
+    },
+    {
+      "id": "8677b183-f072-4ce1-b409-dcf6c617dc21",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Subtract: $-\\frac{2}{5} - \\frac{1}{5}$.",
+      "choices": [
+        "$-\\frac{3}{5}$",
+        "$-\\frac{1}{5}$",
+        "$\\frac{3}{5}$",
+        "$-\\frac{3}{10}$"
+      ],
+      "answer": "$-\\frac{3}{5}$",
+      "compute": null,
+      "solution": "The denominators match, so subtract the numerators: $-2 - 1 = -3$. The answer is $-\\frac{3}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{3}{5}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2/5-1/5=-3/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.160Z"
+        }
+      }
+    },
+    {
+      "id": "8ef95cd1-4459-4750-9be3-4e9a205c7034",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Find $-0.4 \\times (-0.5)$.",
+      "choices": [],
+      "answer": "0.2",
+      "compute": "0.4*0.5",
+      "solution": "A negative times a negative is positive. $0.4 \\times 0.5 = 0.2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "0.2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-0.4)(-0.5)=0.2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.177Z"
+        }
+      }
+    },
+    {
+      "id": "a39217f3-c129-4d32-8f60-ba6cf6dc9032",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Compute with mixed numbers",
+      "stem": "Add: $1\\frac{1}{2} + 2\\frac{1}{4}$. Write the answer as a mixed number.",
+      "choices": [],
+      "answer": "3 3/4",
+      "compute": null,
+      "solution": "$1\\frac{1}{2} + 2\\frac{1}{4} = 1\\frac{2}{4} + 2\\frac{1}{4} = 3\\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 1/2+2 1/4=3 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.216Z"
+        }
+      }
+    },
+    {
+      "id": "d91255e4-f67a-4708-8ed0-f211cc9fee63",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "A diver starts at the surface (0 meters) and goes down 3 meters each minute for 6 minutes. What number shows her position now, in meters?",
+      "choices": [],
+      "answer": "-18",
+      "compute": "-3*6",
+      "solution": "Going down is negative: $6 \\times (-3) = -18$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x (-3) = -18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.282Z"
+        }
+      }
+    },
+    {
+      "id": "e392b898-0c47-4d9e-bde2-1b414c310e0a",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Find the product of $-9$ and $6$.",
+      "choices": [],
+      "answer": "-54",
+      "compute": "-9*6",
+      "solution": "A negative times a positive is negative: $9 \\times 6 = 54$, so the product is $-54$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-54",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-9 x 6 = -54.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.342Z"
+        }
+      }
+    },
+    {
+      "id": "edd1bb28-7fae-4fa0-928c-d784981faf41",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract rational numbers",
+      "stem": "What is $7 - (-5)$?",
+      "choices": [
+        "$2$",
+        "$12$",
+        "$-12$",
+        "$-2$"
+      ],
+      "answer": "$12$",
+      "compute": "7+5",
+      "solution": "Subtracting $-5$ is the same as adding 5: $7 + 5 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7+5=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.373Z"
+        }
+      }
+    },
+    {
+      "id": "cd5905b9-bcaa-4e96-b29e-3f5e2565e81e",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "What is $\\frac{1}{2} + \\frac{1}{3} \\times 3$?",
+      "choices": [
+        "$\\frac{3}{2}$",
+        "$\\frac{5}{2}$",
+        "$\\frac{11}{18}$",
+        "$\\frac{1}{6}$"
+      ],
+      "answer": "$\\frac{3}{2}$",
+      "compute": null,
+      "solution": "Multiply first: $\\frac{1}{3} \\times 3 = 1$. Then $\\frac{1}{2} + 1 = \\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/3x3=1; 1/2+1=3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.374Z"
+        }
+      }
+    },
+    {
+      "id": "2b94d7a8-bd31-4c94-8052-5328898ddfee",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compute with mixed numbers",
+      "stem": "Subtract the mixed numbers: $3\\frac{1}{3} - 1\\frac{2}{3}$.",
+      "choices": [
+        "$1\\frac{2}{3}$",
+        "$2\\frac{1}{3}$",
+        "$1\\frac{1}{3}$",
+        "$2\\frac{2}{3}$"
+      ],
+      "answer": "$1\\frac{2}{3}$",
+      "compute": null,
+      "solution": "$3\\frac{1}{3} = \\frac{10}{3}$ and $1\\frac{2}{3} = \\frac{5}{3}$, so the difference is $\\frac{5}{3} = 1\\frac{2}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1\\frac{2}{3}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/3 - 5/3 = 5/3 = 1 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.380Z"
+        }
+      }
+    },
+    {
+      "id": "862f5b15-ee1e-40d8-8529-c327485c73e5",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "Evaluate $5 - 2 \\times (-3)$.",
+      "choices": [],
+      "answer": "11",
+      "compute": "5+2*3",
+      "solution": "Multiply first: $2 \\times (-3) = -6$. Then $5 - (-6) = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x(-3)=-6; 5-(-6)=11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.411Z"
+        }
+      }
+    },
+    {
+      "id": "5a12ec6d-05a2-4865-8586-2c128557092f",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "Max buys 4 pencils that cost 0.35 dollars each and a ruler that costs 1.20 dollars. How many dollars does he spend in all?",
+      "choices": [],
+      "answer": "2.6",
+      "compute": "4*0.35+1.2",
+      "solution": "Pencils: $4 \\times 0.35 = 1.40$. Add the ruler: $1.40 + 1.20 = 2.60$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x0.35=1.40; +1.20 = 2.60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.413Z"
+        }
+      }
+    },
+    {
       "id": "a6be89df-7595-4549-8749-346355ec1280",
       "topic_id": "NC17.7.NS.3",
       "difficulty": 2,
@@ -16481,6 +17009,631 @@
       }
     },
     {
+      "id": "ef394097-590d-48be-84aa-38e018daa170",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find an equal expression or true statement",
+      "stem": "Which expression is equal to $\\frac{3}{4} \\div \\left(-\\frac{3}{8}\\right)$?",
+      "choices": [
+        "$\\frac{3}{4} \\times \\left(-\\frac{8}{3}\\right)$",
+        "$\\frac{3}{4} \\times \\left(-\\frac{3}{8}\\right)$",
+        "$\\frac{4}{3} \\times \\left(-\\frac{3}{8}\\right)$",
+        "$\\frac{3}{4} \\times \\frac{8}{3}$"
+      ],
+      "answer": "$\\frac{3}{4} \\times \\left(-\\frac{8}{3}\\right)$",
+      "compute": null,
+      "solution": "Dividing by $-\\frac{3}{8}$ is the same as multiplying by its reciprocal, $-\\frac{8}{3}$. The sign stays negative.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{3}{4} \\times \\left(-\\frac{8}{3}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Dividing by -3/8 is multiplying by its reciprocal -8/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:45.988Z"
+        }
+      }
+    },
+    {
+      "id": "78ccfe30-db1d-4f11-9036-6b0a9d5473ed",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "A pond's water level is measured against its normal level. It was $+3.2$ cm, then it fell 5.7 cm, and then it rose 1.8 cm. What is the level now, compared with normal, in cm?",
+      "choices": [
+        "$-0.7$",
+        "$0.7$",
+        "$-4.3$",
+        "$10.7$"
+      ],
+      "answer": "$-0.7$",
+      "compute": "3.2-5.7+1.8",
+      "solution": "$3.2 - 5.7 = -2.5$, and $-2.5 + 1.8 = -0.7$ cm.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-0.7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3.2 - 5.7 = -2.5; -2.5 + 1.8 = -0.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.016Z"
+        }
+      }
+    },
+    {
+      "id": "40681d0d-ae87-42e3-a8c7-5648feeae759",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "Leo buys 6 pens that cost 1.35 dollars each. He pays with a 10-dollar bill. How many dollars of change does he get?",
+      "choices": [],
+      "answer": "1.9",
+      "compute": "10-6*1.35",
+      "solution": "Pens: $6 \\times 1.35 = 8.10$. Change: $10 - 8.10 = 1.90$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 1.35 = 8.10; 10 - 8.10 = 1.90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.039Z"
+        }
+      }
+    },
+    {
+      "id": "b04382ff-877e-4907-82a9-6a96a20e5197",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "Ben buys 2.5 pounds of apples at 1.80 dollars a pound and 3 pounds of pears at 2.10 dollars a pound. How many dollars does he spend in all?",
+      "choices": [],
+      "answer": "10.8",
+      "compute": "2.5*1.8+3*2.1",
+      "solution": "Apples: $2.5 \\times 1.80 = 4.50$. Pears: $3 \\times 2.10 = 6.30$. Total: $10.80$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10.8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.5 x 1.80 = 4.50; 3 x 2.10 = 6.30; total 10.80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.041Z"
+        }
+      }
+    },
+    {
+      "id": "42924718-a49d-4588-abff-a316812727fb",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Evaluate $\\frac{3}{5} - 1.25$. Give the answer as a decimal.",
+      "choices": [],
+      "answer": "-0.65",
+      "compute": "3/5-1.25",
+      "solution": "$\\frac{3}{5} = 0.6$, and $0.6 - 1.25 = -0.65$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-0.65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3/5 = 0.6; 0.6 - 1.25 = -0.65.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.051Z"
+        }
+      }
+    },
+    {
+      "id": "c05a290f-9bd7-49a4-86ba-ab24c58f0f12",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "Over 5 days, the temperature changed by $-3$, $+2.5$, $-4$, $+1$ and $-2.5$ degrees. What was the total change, in degrees?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-3+2.5-4+1-2.5",
+      "solution": "$-3 + 2.5 = -0.5$; $-0.5 - 4 = -4.5$; $-4.5 + 1 = -3.5$; $-3.5 - 2.5 = -6$ degrees.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3 + 2.5 = -0.5; -0.5 - 4 = -4.5; +1 = -3.5; -2.5 = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.053Z"
+        }
+      }
+    },
+    {
+      "id": "5c71f0c8-d30a-4efb-a1dc-535e6118a790",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Evaluate $\\left(-\\frac{2}{3}\\right) \\times \\left(-\\frac{9}{10}\\right) \\times 5$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "2/3*9/10*5",
+      "solution": "$\\frac{2}{3} \\times \\frac{9}{10} = \\frac{3}{5}$, and $\\frac{3}{5} \\times 5 = 3$. The product of two negatives is positive.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-2/3)(-9/10) = 18/30 = 3/5; x 5 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.056Z"
+        }
+      }
+    },
+    {
+      "id": "4bd31d8f-baed-4cfd-80ca-e3ef31cec93d",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute with mixed numbers",
+      "stem": "Find $4\\frac{1}{2} \\times 1\\frac{1}{3}$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "9/2*4/3",
+      "solution": "Write both as improper fractions: $\\frac{9}{2} \\times \\frac{4}{3} = \\frac{36}{6} = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/2 x 4/3 = 36/6 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.101Z"
+        }
+      }
+    },
+    {
+      "id": "5058fff6-fcab-48fa-a504-aad9e6a86c52",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Compute with mixed numbers",
+      "stem": "What is $2\\frac{2}{3} + 1\\frac{3}{4} - 4\\frac{1}{6}$?",
+      "choices": [
+        "$\\frac{103}{12}$",
+        "$-\\frac{1}{4}$",
+        "$\\frac{1}{4}$",
+        "$\\frac{5}{4}$"
+      ],
+      "answer": "$\\frac{1}{4}$",
+      "compute": null,
+      "solution": "Use twelfths: $\\frac{32}{12} + \\frac{21}{12} - \\frac{50}{12} = \\frac{3}{12} = \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8/3+7/4-25/6 = 32/12+21/12-50/12 = 3/12 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.123Z"
+        }
+      }
+    },
+    {
+      "id": "6eabbcd5-46e1-49ed-a5c5-03c55fea0043",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find an equal expression or true statement",
+      "stem": "Which expression is equal to $-\\frac{1}{2} \\times (6 - 4)$?",
+      "choices": [
+        "$-3 - 2$",
+        "$3 - 2$",
+        "$-3 + 4$",
+        "$-3 + 2$"
+      ],
+      "answer": "$-3 + 2$",
+      "compute": null,
+      "solution": "Distribute: $-\\frac{1}{2} \\times 6 = -3$ and $-\\frac{1}{2} \\times (-4) = +2$, so the expression equals $-3 + 2 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1/2 x 2 = -1. 3-2=1, -3+4=1, -3+2=-1, -3-2=-5. Only -3+2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.131Z"
+        }
+      }
+    },
+    {
+      "id": "3a642c12-0661-4fe6-a29d-e030d7dc5912",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "Evaluate $\\left(\\frac{1}{2} - \\frac{3}{4}\\right) \\times 8$.",
+      "choices": [],
+      "answer": "-2",
+      "compute": "(1/2-3/4)*8",
+      "solution": "Do the parentheses first: $\\frac{1}{2} - \\frac{3}{4} = -\\frac{1}{4}$. Then $-\\frac{1}{4} \\times 8 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2-3/4=-1/4; -1/4 x 8=-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.163Z"
+        }
+      }
+    },
+    {
+      "id": "1088d577-403a-4071-881d-81bf51d69ba4",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing number in an equation",
+      "stem": "What number makes this true? $-12.6 + ? = 5.4$",
+      "choices": [
+        "$-18$",
+        "$18$",
+        "$7.2$",
+        "$-7.2$"
+      ],
+      "answer": "$18$",
+      "compute": "5.4+12.6",
+      "solution": "Add 12.6 to both sides: $? = 5.4 + 12.6 = 18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$18$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 5.4 + 12.6 = 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.277Z"
+        }
+      }
+    },
+    {
+      "id": "5756814f-5eb6-4c2c-a29e-1cc71e903c50",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compute with mixed numbers",
+      "stem": "Ana has $6\\frac{1}{2}$ meters of cloth. Each costume uses $\\frac{7}{8}$ meter. How many whole costumes can she make?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "$6\\frac{1}{2} \\div \\frac{7}{8} = \\frac{13}{2} \\times \\frac{8}{7} = \\frac{52}{7}$, which is about 7.4. She can make 7 whole costumes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6.5 / (7/8) = 13/2 x 8/7 = 52/7 = 7 3/7. 7 whole costumes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.311Z"
+        }
+      }
+    },
+    {
+      "id": "12c7c189-089c-4c72-8028-644ef33c8304",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Find $-\\frac{5}{6} + \\frac{3}{4}$.",
+      "choices": [],
+      "answer": "-1/12",
+      "compute": null,
+      "solution": "Use a common denominator of 12: $-\\frac{10}{12} + \\frac{9}{12} = -\\frac{1}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-10/12 + 9/12 = -1/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.322Z"
+        }
+      }
+    },
+    {
+      "id": "915bf975-5b5e-41f8-a0ce-c7fef117c7bc",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "A submarine is at $-240$ feet. It rises 15 feet each minute for 8 minutes. What is its position now, in feet?",
+      "choices": [],
+      "answer": "-120",
+      "compute": "-240+15*8",
+      "solution": "It rises $15 \\times 8 = 120$ feet. $-240 + 120 = -120$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-240 + 15x8 = -240+120 = -120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.365Z"
+        }
+      }
+    },
+    {
+      "id": "7df0ee66-3357-45a0-b2a6-27c4dae9c3f9",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "What is $2.5 - 0.5 \\times (3 - 7)$?",
+      "choices": [
+        "$-8$",
+        "$0.5$",
+        "$4.5$",
+        "$-6$"
+      ],
+      "answer": "$4.5$",
+      "compute": "2.5+0.5*4",
+      "solution": "Parentheses: $3 - 7 = -4$. Multiply: $0.5 \\times (-4) = -2$. Then $2.5 - (-2) = 4.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3-7=-4; 0.5x(-4)=-2; 2.5-(-2)=4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.372Z"
+        }
+      }
+    },
+    {
+      "id": "a96be63d-3c34-42b8-b31f-4c145dbf9528",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Find $-\\frac{5}{12} \\div \\left(-\\frac{15}{8}\\right)$.",
+      "choices": [],
+      "answer": "2/9",
+      "compute": "5/12*8/15",
+      "solution": "Dividing by a fraction means multiplying by its reciprocal: $\\frac{5}{12} \\times \\frac{8}{15} = \\frac{40}{180} = \\frac{2}{9}$. Both numbers are negative, so the quotient is positive.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-5/12) x (-8/15) = 40/180 = 2/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.395Z"
+        }
+      }
+    },
+    {
+      "id": "1a693d20-fa7c-41e9-b026-cd3d175e6f86",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "Evaluate $-4 + 6 \\div (-3)$.",
+      "choices": [
+        "$-2$",
+        "$-6$",
+        "$-\\frac{2}{3}$",
+        "$2$"
+      ],
+      "answer": "$-6$",
+      "compute": "-4-2",
+      "solution": "Divide first: $6 \\div (-3) = -2$. Then $-4 + (-2) = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/(-3)=-2; -4-2=-6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.402Z"
+        }
+      }
+    },
+    {
+      "id": "d1ede41b-9a16-475f-9ee1-3897aa17202f",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "What is $-2.4 \\times 0.5 \\times (-3)$?",
+      "choices": [
+        "$3.6$",
+        "$-3.6$",
+        "$0.36$",
+        "$7.2$"
+      ],
+      "answer": "$3.6$",
+      "compute": "2.4*0.5*3",
+      "solution": "$-2.4 \\times 0.5 = -1.2$. Then $-1.2 \\times (-3) = 3.6$, since two negatives give a positive.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3.6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2.4x0.5=-1.2; x(-3)=3.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.405Z"
+        }
+      }
+    },
+    {
+      "id": "6565f346-251f-4e2e-a434-eef2ca1e9515",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "A trail is $5\\frac{1}{4}$ kilometers long. A guide marks it into sections that are each $\\frac{3}{4}$ kilometer long. How many sections are there?",
+      "choices": [
+        "$\\frac{63}{16}$",
+        "$7$",
+        "$4$",
+        "$6$"
+      ],
+      "answer": "$7$",
+      "compute": "21/3",
+      "solution": "$5\\frac{1}{4} = \\frac{21}{4}$, and $\\frac{21}{4} \\div \\frac{3}{4} = \\frac{21}{4} \\times \\frac{4}{3} = 7$ sections.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21/4 / 3/4 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.407Z"
+        }
+      }
+    },
+    {
       "id": "b0a3ac43-66e2-468a-ad39-dcee1d1a4b7b",
       "topic_id": "NC17.7.NS.3",
       "difficulty": 3,
@@ -16826,6 +17979,631 @@
           "work": "? = (5/6) / (-2/3) = (5/6)(-3/2) = -15/12 = -5/4. Check: (-2/3)(-5/4)=10/12=5/6.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.348Z"
+        }
+      }
+    },
+    {
+      "id": "78abad5b-baa5-4656-b1f2-c21493aeba2d",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Evaluate $\\frac{7}{10} - 1.35 + \\frac{9}{4}$. Give the answer as a decimal.",
+      "choices": [],
+      "answer": "1.6",
+      "compute": "0.7-1.35+2.25",
+      "solution": "Change to decimals: $0.7 - 1.35 + 2.25$. $0.7 - 1.35 = -0.65$, and $-0.65 + 2.25 = 1.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0.7 - 1.35 = -0.65; + 2.25 = 1.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.061Z"
+        }
+      }
+    },
+    {
+      "id": "166aa6b0-f384-4559-a48e-d22657ba14f4",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "Noor has 48 dollars. She spends $\\frac{1}{4}$ of it on lunch and then $\\frac{2}{3}$ of what is left on a book. How many dollars does she have left?",
+      "choices": [
+        "$12$",
+        "$24$",
+        "$36$",
+        "$16$"
+      ],
+      "answer": "$12$",
+      "compute": "48*3/4*1/3",
+      "solution": "Lunch: $\\frac{1}{4} \\times 48 = 12$, leaving 36. Book: $\\frac{2}{3} \\times 36 = 24$, leaving $36 - 24 = 12$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/4 of 48 = 12, left 36; 2/3 of 36 = 24 on book; left 36 - 24 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.064Z"
+        }
+      }
+    },
+    {
+      "id": "a990891a-d7bc-4de6-9b6d-43fa555a8845",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compute with mixed numbers",
+      "stem": "Find $3\\frac{3}{4} \\div \\left(-1\\frac{1}{4}\\right)$.",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-15/5",
+      "solution": "$3\\frac{3}{4} = \\frac{15}{4}$ and $-1\\frac{1}{4} = -\\frac{5}{4}$. $\\frac{15}{4} \\times \\left(-\\frac{4}{5}\\right) = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15/4 / (-5/4) = 15/4 x (-4/5) = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.090Z"
+        }
+      }
+    },
+    {
+      "id": "9bfb7ec0-dfc4-434f-bf3e-1493ec822a10",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "A board is 2.4 meters long. Pieces that are each $\\frac{3}{8}$ meter long are cut from it. How many whole pieces can be cut?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$2.4 \\div \\frac{3}{8} = 2.4 \\times \\frac{8}{3} = 6.4$. Only the 6 whole pieces count.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2.4 / (3/8) = 2.4 x 8/3 = 6.4, so 6 whole pieces.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.125Z"
+        }
+      }
+    },
+    {
+      "id": "a9a099c4-6b81-4ac7-80c8-c8fc9f715778",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find an equal expression or true statement",
+      "stem": "Four expressions use $-\\frac{1}{2}$ and $\\frac{1}{4}$. Which one is the greatest?",
+      "choices": [
+        "$-\\frac{1}{2} \\div \\frac{1}{4}$",
+        "$-\\frac{1}{2} + \\frac{1}{4}$",
+        "$-\\frac{1}{2} - \\frac{1}{4}$",
+        "$-\\frac{1}{2} \\times \\frac{1}{4}$"
+      ],
+      "answer": "$-\\frac{1}{2} \\times \\frac{1}{4}$",
+      "compute": null,
+      "solution": "The values are $-\\frac{1}{8}$, $-2$, $-\\frac{1}{4}$ and $-\\frac{3}{4}$. The greatest is $-\\frac{1}{8}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{1}{2} \\times \\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1/2 / 1/4=-2; -1/2+1/4=-1/4; -1/2-1/4=-3/4; -1/2 x 1/4=-1/8. Greatest is -1/8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.130Z"
+        }
+      }
+    },
+    {
+      "id": "777efe9a-55ea-4719-8dc4-c3db027cd32a",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "What is $(-1.5 \\times 4) \\div (-0.25)$?",
+      "choices": [
+        "$-24$",
+        "$\\frac{3}{2}$",
+        "$6$",
+        "$24$"
+      ],
+      "answer": "$24$",
+      "compute": "1.5*4/0.25",
+      "solution": "$-1.5 \\times 4 = -6$. Then $-6 \\div (-0.25) = 24$, since two negatives give a positive and 0.25 goes into 6 twenty-four times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-1.5x4=-6; -6 / -0.25 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.132Z"
+        }
+      }
+    },
+    {
+      "id": "cdf37039-a38d-479f-83a8-df16d596b275",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Evaluate $-2\\frac{1}{3} \\times 1\\frac{4}{7}$. Give the answer as an improper fraction.",
+      "choices": [],
+      "answer": "-11/3",
+      "compute": null,
+      "solution": "$-2\\frac{1}{3} = -\\frac{7}{3}$ and $1\\frac{4}{7} = \\frac{11}{7}$. The product is $-\\frac{77}{21} = -\\frac{11}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-7/3 x 11/7 = -11/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.137Z"
+        }
+      }
+    },
+    {
+      "id": "db97dc10-5d51-4d96-bbdc-863c5278a0dc",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "Evaluate $-3.2 + 4 \\times \\left(\\frac{1}{2} - \\frac{7}{8}\\right)$. Give the answer as a decimal.",
+      "choices": [],
+      "answer": "-4.7",
+      "compute": "-3.2+4*(1/2-7/8)",
+      "solution": "Parentheses: $\\frac{1}{2} - \\frac{7}{8} = -\\frac{3}{8}$. Multiply: $4 \\times \\left(-\\frac{3}{8}\\right) = -1.5$. Then $-3.2 - 1.5 = -4.7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2 - 7/8 = -3/8; 4 x (-3/8) = -1.5; -3.2 + (-1.5) = -4.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.229Z"
+        }
+      }
+    },
+    {
+      "id": "7b8b3491-c542-4347-9723-1d445d30cd69",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Find $-0.6 \\div \\frac{3}{8}$. Give the answer as a decimal.",
+      "choices": [],
+      "answer": "-1.6",
+      "compute": "-0.6*8/3",
+      "solution": "$-0.6 \\times \\frac{8}{3} = -\\frac{4.8}{3} = -1.6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1.6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-0.6 / (3/8) = -0.6 x 8/3 = -4.8/3 = -1.6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.242Z"
+        }
+      }
+    },
+    {
+      "id": "12d1876d-efb2-4a9f-8eff-bea1c2dcf20a",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "Evaluate $\\left(-\\frac{1}{2}\\right) \\times \\left(-\\frac{1}{2}\\right) + 3 \\times \\left(-\\frac{1}{4}\\right)$.",
+      "choices": [],
+      "answer": "-1/2",
+      "compute": null,
+      "solution": "$\\frac{1}{4} + \\left(-\\frac{3}{4}\\right) = -\\frac{2}{4} = -\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-1/2)(-1/2) = 1/4; 3 x (-1/4) = -3/4; 1/4 - 3/4 = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.267Z"
+        }
+      }
+    },
+    {
+      "id": "25e78201-f2fe-403b-a04b-0d306461e21f",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a problem with decimals, fractions and money",
+      "stem": "A phone plan costs 25.50 dollars a month, plus 0.15 dollars for each text after the first 200. In one month, Raj sends 340 texts. How many dollars does he pay?",
+      "choices": [],
+      "answer": "46.5",
+      "compute": "25.5+0.15*140",
+      "solution": "Extra texts: $340 - 200 = 140$, costing $140 \\times 0.15 = 21$. Total: $25.50 + 21 = 46.50$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "46.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Texts over 200: 340 - 200 = 140; 140 x 0.15 = 21.00; 25.50 + 21.00 = 46.50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.272Z"
+        }
+      }
+    },
+    {
+      "id": "a602edd3-a8ac-4adc-b3d2-a0a591c8e865",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing number in an equation",
+      "stem": "What number makes this true? $? \\div (-4) = 2.5$",
+      "choices": [],
+      "answer": "-10",
+      "compute": "2.5*(-4)",
+      "solution": "Multiply both sides by $-4$: $? = 2.5 \\times (-4) = -10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 2.5 x (-4) = -10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.369Z"
+        }
+      }
+    },
+    {
+      "id": "bb314e8a-3777-4fd2-8992-380c8fbfbff7",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compute with mixed numbers",
+      "stem": "Multiply first, then add: which is the value of $-1\\frac{2}{3} \\times 2\\frac{1}{4} + 4$?",
+      "choices": [
+        "$\\frac{31}{4}$",
+        "$\\frac{1}{4}$",
+        "$-\\frac{1}{4}$",
+        "$-\\frac{31}{4}$"
+      ],
+      "answer": "$\\frac{1}{4}$",
+      "compute": null,
+      "solution": "$-\\frac{5}{3} \\times \\frac{9}{4} = -\\frac{45}{12} = -\\frac{15}{4}$. Then $-\\frac{15}{4} + 4 = \\frac{1}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-5/3 x 9/4 = -15/4; -15/4+16/4 = 1/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.383Z"
+        }
+      }
+    },
+    {
+      "id": "919b39ed-68f7-4750-b122-faabe5fc3f49",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Find $-8.4 - (-3.15) + (-0.75)$.",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-8.4+3.15-0.75",
+      "solution": "$-8.4 + 3.15 = -5.25$, and $-5.25 - 0.75 = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-8.4+3.15 = -5.25; -5.25-0.75 = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.387Z"
+        }
+      }
+    },
+    {
+      "id": "624f5cc3-a516-434d-a9f5-9f97ff404c5a",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "What is $\\frac{-4.5 + 2 \\times 3}{-0.5}$?",
+      "choices": [
+        "$-3$",
+        "$3$",
+        "$15$",
+        "$-16.5$"
+      ],
+      "answer": "$-3$",
+      "compute": null,
+      "solution": "Top: $2 \\times 3 = 6$ and $-4.5 + 6 = 1.5$. Then $1.5 \\div (-0.5) = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x3=6; -4.5+6=1.5; 1.5/(-0.5) = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.400Z"
+        }
+      }
+    },
+    {
+      "id": "51cc2f22-27d7-482b-bcd4-38dee719ec37",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "A stock began the week at 25.40 dollars. Its changes were $-1.20$ on Monday, $+0.85$ on Tuesday, $-2.05$ on Wednesday and $+1.50$ on Thursday, in dollars. What was its price after Thursday, in dollars?",
+      "choices": [
+        "$28.6$",
+        "$19.8$",
+        "$24.5$",
+        "$31$"
+      ],
+      "answer": "$24.5$",
+      "compute": "25.4-1.2+0.85-2.05+1.5",
+      "solution": "Total change: $-1.20 + 0.85 - 2.05 + 1.50 = -0.90$. Price: $25.40 - 0.90 = 24.50$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$24.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25.40-1.20=24.20; +0.85=25.05; -2.05=23.00; +1.50=24.50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.403Z"
+        }
+      }
+    },
+    {
+      "id": "0fcce973-42a6-4797-b12a-8bde23e6e1a2",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find an equal expression or true statement",
+      "stem": "Which expression is NOT equal to $-\\frac{3}{4} \\times 12$?",
+      "choices": [
+        "$-3 \\times 3$",
+        "$-12 \\times \\frac{3}{4}$",
+        "$-12 \\div \\left(-\\frac{4}{3}\\right)$",
+        "$12 \\div \\left(-\\frac{4}{3}\\right)$"
+      ],
+      "answer": "$-12 \\div \\left(-\\frac{4}{3}\\right)$",
+      "compute": null,
+      "solution": "$-\\frac{3}{4} \\times 12 = -9$. Three of the expressions equal $-9$, but $-12 \\div \\left(-\\frac{4}{3}\\right) = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-12 \\div \\left(-\\frac{4}{3}\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Target -9. 12/(-4/3) = -9; -3x3=-9; -12/(-4/3)=9; -12x3/4=-9. Only C differs.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.408Z"
+        }
+      }
+    },
+    {
+      "id": "a1b7a15e-cdd0-45a1-a6b3-06665cd1a02d",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add and subtract rational numbers",
+      "stem": "What is $-\\frac{5}{6} - \\left(-\\frac{3}{4}\\right) - \\frac{1}{3}$?",
+      "choices": [
+        "$-\\frac{1}{12}$",
+        "$-\\frac{3}{13}$",
+        "$-\\frac{5}{12}$",
+        "$-\\frac{19}{12}$"
+      ],
+      "answer": "$-\\frac{5}{12}$",
+      "compute": null,
+      "solution": "Use twelfths: $-\\frac{10}{12} + \\frac{9}{12} - \\frac{4}{12} = -\\frac{5}{12}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{5}{12}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-10/12 + 9/12 - 4/12 = -5/12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.409Z"
+        }
+      }
+    },
+    {
+      "id": "35f9109d-dce6-4433-9b9f-5dd61b7836d6",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "A diver is at $-4.5$ meters. She swims down 1.25 meters each minute for 6 minutes and then swims up 3 meters. What is her position now, in meters?",
+      "choices": [],
+      "answer": "-9",
+      "compute": "-4.5-6*1.25+3",
+      "solution": "Down: $6 \\times 1.25 = 7.5$. Position: $-4.5 - 7.5 + 3 = -9$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-4.5 - 6x1.25 = -4.5-7.5 = -12; +3 = -9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.428Z"
+        }
+      }
+    },
+    {
+      "id": "6268f82e-0a22-49ef-b476-c4c57869e6f8",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use the order of operations with rational numbers",
+      "stem": "What is $0.75 \\div \\left(\\frac{1}{2} - 2\\right) + 3$?",
+      "choices": [
+        "$3.5$",
+        "$2.5$",
+        "$0.5$",
+        "$-3.5$"
+      ],
+      "answer": "$2.5$",
+      "compute": "0.75/(-1.5)+3",
+      "solution": "Parentheses: $\\frac{1}{2} - 2 = -1.5$. Divide: $0.75 \\div (-1.5) = -0.5$. Then $-0.5 + 3 = 2.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2.5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1/2-2 = -1.5; 0.75/(-1.5) = -0.5; -0.5+3 = 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.432Z"
         }
       }
     },

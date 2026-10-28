@@ -15999,6 +15999,631 @@
       }
     },
     {
+      "id": "67fe3377-7f2b-46a5-ad2e-e897e89dd4a3",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "Maya divides $3{,}000$ by $11$ and writes the answer as a quotient and a remainder. What is her remainder?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3000-11*272",
+      "solution": "$11 \\times 272 = 2{,}992$, and $3{,}000 - 2{,}992 = 8$. The remainder is 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "11 x 272 = 2992; 3000 - 2992 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.042Z"
+        }
+      }
+    },
+    {
+      "id": "238d814c-3ed5-4d33-a80c-03d4e352bc6a",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "A number is divided by $24$. The quotient is $150$ and the remainder is $11$. What is the number?",
+      "choices": [
+        "$3{,}611$",
+        "$3{,}600$",
+        "$185$",
+        "$3{,}589$"
+      ],
+      "answer": "$3{,}611$",
+      "compute": null,
+      "solution": "Dividend = divisor $\\times$ quotient + remainder = $24 \\times 150 + 11 = 3{,}611$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3{,}611$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "24 x 150 + 11 = 3600 + 11 = 3611.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.054Z"
+        }
+      }
+    },
+    {
+      "id": "86581f66-e3d9-4d99-995b-bc6793f533cf",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Divide $2{,}345$ by $9$. Which shows the quotient and the remainder?",
+      "choices": [
+        "5 R 260",
+        "260 R 5",
+        "261 R 5",
+        "26 R 5"
+      ],
+      "answer": "260 R 5",
+      "compute": null,
+      "solution": "$9 \\times 260 = 2{,}340$, and $2{,}345 - 2{,}340 = 5$. So the quotient is 260 and the remainder is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "260 R 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 260 = 2340; 2345 - 2340 = 5. 260 R 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.064Z"
+        }
+      }
+    },
+    {
+      "id": "3449b2e1-1edc-40e5-bd44-1a507e743f84",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "Which is the quotient when $8{,}120$ is divided by $8$?",
+      "choices": [
+        "$115$",
+        "$1{,}150$",
+        "$1{,}105$",
+        "$1{,}015$"
+      ],
+      "answer": "$1{,}015$",
+      "compute": null,
+      "solution": "8 goes into 8 once, into 1 zero times, into 12 once (rem 4), and into 40 five times. The quotient is $1{,}015$. Check: $8 \\times 1{,}015 = 8{,}120$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1{,}015$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 x 1015 = 8120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.068Z"
+        }
+      }
+    },
+    {
+      "id": "b9dd148d-fe7c-4c98-9762-75f5e7050da7",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the remainder",
+      "stem": "Which number could be the remainder when a whole number is divided by $8$?",
+      "choices": [
+        "$8$",
+        "$9$",
+        "$3$",
+        "$12$"
+      ],
+      "answer": "$3$",
+      "compute": null,
+      "solution": "A remainder must be smaller than the divisor. Only 3 is less than 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Remainder must be less than 8: only 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.083Z"
+        }
+      }
+    },
+    {
+      "id": "35b10cd5-7004-4941-bf1e-ef981eb40bae",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "About how many times does $59$ go into $3{,}580$? Choose the best estimate.",
+      "choices": [
+        "$60$",
+        "$6$",
+        "$600$",
+        "$30$"
+      ],
+      "answer": "$60$",
+      "compute": "3600/60",
+      "solution": "Round to friendly numbers: $3{,}600 \\div 60 = 60$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$60$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3580/59 is about 3600/60=60 (actual ~60.7).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.149Z"
+        }
+      }
+    },
+    {
+      "id": "fb57df14-e4d5-4228-b0e2-936495b3cfda",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide with long division",
+      "stem": "Find the quotient: $18{,}360$ divided by $24$.",
+      "choices": [],
+      "answer": "765",
+      "compute": "18360/24",
+      "solution": "$18{,}360 \\div 24 = 765$. Check: $24 \\times 765 = 18{,}360$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "765",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18360/24=765 (24x765=18360).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.168Z"
+        }
+      }
+    },
+    {
+      "id": "70337170-d0f0-4918-b62d-01a193735bce",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A club has $1{,}250$ dollars to spend on tickets that cost $15$ dollars each. How many tickets can it buy?",
+      "choices": [],
+      "answer": "83",
+      "compute": "(1250-5)/15",
+      "solution": "$1{,}250 \\div 15 = 83$ R $5$. It can buy 83 tickets; the 5 dollars left are not enough for another.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "83",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1250/15=83 R 5, so 83 tickets.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.170Z"
+        }
+      }
+    },
+    {
+      "id": "b4565a5d-3c72-411d-9acb-3c69bb6ad9a7",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the remainder",
+      "stem": "Which division has a remainder of $0$?",
+      "choices": [
+        "$2{,}412 \\div 5$",
+        "$2{,}412 \\div 6$",
+        "$2{,}412 \\div 7$",
+        "$2{,}412 \\div 8$"
+      ],
+      "answer": "$2{,}412 \\div 6$",
+      "compute": null,
+      "solution": "$2{,}412 \\div 6 = 402$ exactly. The others leave remainders: 2 with 5, 4 with 7, and 4 with 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2{,}412 \\div 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2412/6=402 exactly; /7=344 R4, /8=301 R4, /5=482 R2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.197Z"
+        }
+      }
+    },
+    {
+      "id": "5a3c3e1a-1c9e-42fe-8170-be0f253bab34",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "A rope $3{,}015$ centimeters long is cut into $5$ equal pieces. How long is each piece, in centimeters?",
+      "choices": [],
+      "answer": "603",
+      "compute": "3015/5",
+      "solution": "$3{,}015 \\div 5 = 603$. The 5 does not go into the 1 (tens place), so the quotient needs a 0 there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "603",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3015 / 5 = 603.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.257Z"
+        }
+      }
+    },
+    {
+      "id": "0e5a8cb2-337e-4753-9ed9-585869f3d9e4",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "Write the quotient of $20{,}160$ divided by $32$.",
+      "choices": [],
+      "answer": "630",
+      "compute": "20160/32",
+      "solution": "$20{,}160 \\div 32 = 630$. Check: $32 \\times 630 = 20{,}160$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "630",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20160 / 32 = 630 (32 x 630 = 20160).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.297Z"
+        }
+      }
+    },
+    {
+      "id": "3a06630a-6662-4fec-9597-e0211a09e609",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use division to find a rate",
+      "stem": "A train travels $1{,}260$ miles in $9$ hours at a steady speed. How many miles does it travel each hour?",
+      "choices": [],
+      "answer": "140",
+      "compute": "1260/9",
+      "solution": "Rate = distance divided by time: $1{,}260 \\div 9 = 140$ miles per hour.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "140",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1260 / 9 = 140.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.312Z"
+        }
+      }
+    },
+    {
+      "id": "13f7fb27-d6f8-420a-b632-d7d79cd296c4",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "A number is divided by $15$ and the answer is exactly $240$, with nothing left over. What is the number?",
+      "choices": [],
+      "answer": "3600",
+      "compute": "15*240",
+      "solution": "Division is undone by multiplication: $15 \\times 240 = 3{,}600$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15 x 240 = 3600.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.320Z"
+        }
+      }
+    },
+    {
+      "id": "fa684c9c-a9a9-455c-80a9-0a2dfb5f0d24",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "Packing $6{,}040$ seeds into packets of $50$ gives $6{,}040 \\div 50 = 120$ R $40$. What does the quotient $120$ tell us?",
+      "choices": [
+        "The number of seeds left over",
+        "The number of full packets",
+        "The number of seeds in each packet",
+        "The number of packets still empty"
+      ],
+      "answer": "The number of full packets",
+      "compute": null,
+      "solution": "The quotient counts how many groups of 50 fit: 120 full packets. The remainder, 40, is the seeds left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The number of full packets",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120 is the number of full packets of 50; 40 seeds left over.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.325Z"
+        }
+      }
+    },
+    {
+      "id": "8f761f71-241d-4058-96f5-dcf9a32dae86",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A stadium has $4{,}000$ seats. They are set in rows of $15$ seats. How many rows can be filled completely?",
+      "choices": [],
+      "answer": "266",
+      "compute": "(4000-10)/15",
+      "solution": "$4{,}000 \\div 15 = 266$ R $10$. Only the 266 complete rows count; the 10 extra seats do not fill a row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "266",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4000/15 = 266 R10, so 266 full rows.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.350Z"
+        }
+      }
+    },
+    {
+      "id": "cd205482-8403-40c6-8826-3f39f304cce6",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A school needs seats for $1{,}000$ students on buses that each seat $48$. Dividing gives $1{,}000 \\div 48 = 20$ R $40$. How many buses are needed so that every student has a seat?",
+      "choices": [
+        "$20$",
+        "$40$",
+        "$21$",
+        "$41$"
+      ],
+      "answer": "$21$",
+      "compute": "20+1",
+      "solution": "20 full buses seat 960 students. The 40 students left over still need a seat, so one more bus is needed: 21 buses.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$21$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "20 buses seat 960, 40 left need another bus: 21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.359Z"
+        }
+      }
+    },
+    {
+      "id": "d2db1060-f024-4239-b781-e609d89b6db8",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use division to find a rate",
+      "stem": "A factory makes $5{,}400$ bolts in $6$ hours, the same number each hour. Which expression gives the number of bolts made in one hour?",
+      "choices": [
+        "$5{,}400 \\times 6$",
+        "$6 \\div 5{,}400$",
+        "$5{,}400 - 6$",
+        "$5{,}400 \\div 6$"
+      ],
+      "answer": "$5{,}400 \\div 6$",
+      "compute": null,
+      "solution": "Bolts per hour = total bolts divided by hours: $5{,}400 \\div 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5{,}400 \\div 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same each hour: 5400 / 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.367Z"
+        }
+      }
+    },
+    {
+      "id": "7b98c38b-fd05-419d-be53-8e6e69426062",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a division word problem",
+      "stem": "A school buys $3{,}480$ notebooks. They come in packs of $12$ notebooks each. How many packs does the school get?",
+      "choices": [],
+      "answer": "290",
+      "compute": "3480/12",
+      "solution": "Each pack holds 12 notebooks, so divide: $3{,}480 \\div 12 = 290$ packs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "290",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3480/12 = 290.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.426Z"
+        }
+      }
+    },
+    {
+      "id": "7801703a-6ae2-4b45-8619-0cdf24dd7952",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Divide with long division",
+      "stem": "Use long division to find $6{,}552 \\div 8$.",
+      "choices": [],
+      "answer": "819",
+      "compute": "6552/8",
+      "solution": "Divide step by step: 8 goes into 65 eight times (64), then 8 goes into 15 once, then into 72 nine times, so $6{,}552 \\div 8 = 819$. Check: $8 \\times 819 = 6{,}552$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "819",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8x819 = 6552.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.428Z"
+        }
+      }
+    },
+    {
+      "id": "8d6544b8-8e73-47b4-b908-be804faaab1c",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a division word problem",
+      "stem": "A prize of $12{,}000$ dollars is shared equally among $16$ winners. How many dollars does each winner get?",
+      "choices": [],
+      "answer": "750",
+      "compute": "12000/16",
+      "solution": "$12{,}000 \\div 16 = 750$ dollars each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "750",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12000/16 = 750.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.430Z"
+        }
+      }
+    },
+    {
       "id": "e2b44fd9-4682-48d0-b5c5-c4f85e4efde5",
       "topic_id": "NC17.6.NS.2",
       "difficulty": 2,
@@ -16474,6 +17099,578 @@
       }
     },
     {
+      "id": "e99e585b-b1e6-405d-af96-73651c8baea1",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "A hotel has $3{,}100$ towels to give equally to its $28$ rooms, as many as possible to each room. How many towels are left over?",
+      "choices": [],
+      "answer": "20",
+      "compute": "3100-28*110",
+      "solution": "$28 \\times 110 = 3{,}080$ and $3{,}100 - 3{,}080 = 20$. Each room gets 110 and 20 are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 x 110 = 3080; 3100 - 3080 = 20. Quotient 110, remainder 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:45.952Z"
+        }
+      }
+    },
+    {
+      "id": "d61d9a49-f7be-4819-bfed-b5ee3b7c87d4",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide with long division",
+      "stem": "Which is the value of $30{,}888 \\div 36$?",
+      "choices": [
+        "$848$",
+        "$868$",
+        "$8{,}580$",
+        "$858$"
+      ],
+      "answer": "$858$",
+      "compute": "30888/36",
+      "solution": "$36 \\times 858 = 30{,}888$, so the quotient is 858.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$858$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 x 858 = 28800 + 2088 = 30888.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.056Z"
+        }
+      }
+    },
+    {
+      "id": "437935ac-8cf0-48c8-88db-e914c9358732",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a division word problem",
+      "stem": "A charity collected $15{,}400$ dollars in May and $12{,}200$ dollars in June. It shared the total equally among $46$ families. How many dollars did each family get?",
+      "choices": [],
+      "answer": "600",
+      "compute": "(15400+12200)/46",
+      "solution": "Total: $15{,}400 + 12{,}200 = 27{,}600$. Then $27{,}600 \\div 46 = 600$ dollars each.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "600",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15400 + 12200 = 27600; 27600 / 46 = 600 (46 x 600 = 27600).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.062Z"
+        }
+      }
+    },
+    {
+      "id": "dc081208-929c-4170-b23f-fa2ae2043573",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "Which is the quotient when $63{,}042$ is divided by $21$?",
+      "choices": [
+        "$302$",
+        "$3{,}020$",
+        "$3{,}002$",
+        "$3{,}200$"
+      ],
+      "answer": "$3{,}002$",
+      "compute": null,
+      "solution": "21 goes into 63 three times, then into 0 and 0 zero times, then into 42 twice, so the quotient is $3{,}002$. Check: $21 \\times 3{,}002 = 63{,}042$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3{,}002$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "21 x 3002 = 63042.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.062Z"
+        }
+      }
+    },
+    {
+      "id": "3faf4d2a-2243-4700-8e72-02a0e0690c91",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "Which expression equals $6{,}000$ and so checks that $6{,}000 \\div 175 = 34$ R $50$?",
+      "choices": [
+        "$175 \\times 50 + 34$",
+        "$175 \\times 34 + 50$",
+        "$175 \\times 34 - 50$",
+        "$175 + 34 + 50$"
+      ],
+      "answer": "$175 \\times 34 + 50$",
+      "compute": null,
+      "solution": "Check by multiplying the divisor and quotient and adding the remainder: $175 \\times 34 + 50 = 5{,}950 + 50 = 6{,}000$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$175 \\times 34 + 50$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "divisor x quotient + remainder: 175 x 34 = 5950; + 50 = 6000.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.067Z"
+        }
+      }
+    },
+    {
+      "id": "1006c63d-a10a-4a9c-8f9a-ba003ddf74d4",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use division to find a rate",
+      "stem": "A tank holds $9{,}000$ liters. A hose fills it at $75$ liters each minute. How many minutes does it take to fill the tank?",
+      "choices": [],
+      "answer": "120",
+      "compute": "9000/75",
+      "solution": "$9{,}000 \\div 75 = 120$ minutes.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "120",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9000 / 75 = 120.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.080Z"
+        }
+      }
+    },
+    {
+      "id": "2d66157b-86d8-4228-a34b-42179c861619",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "Which is the value of $41{,}964 \\div 52$?",
+      "choices": [
+        "$87$",
+        "$870$",
+        "$807$",
+        "$817$"
+      ],
+      "answer": "$807$",
+      "compute": "41964/52",
+      "solution": "52 goes into 419 eight times (416), then into 36 zero times, then into 364 seven times. The quotient is 807. Check: $52 \\times 807 = 41{,}964$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$807$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "52 x 807 = 41600 + 364 = 41964.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.101Z"
+        }
+      }
+    },
+    {
+      "id": "7cf584e4-1983-4bd2-9611-be5b4dbd0fdc",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with long division",
+      "stem": "A warehouse stores $56{,}000$ kilograms of grain in $140$ equal crates. How many kilograms are in each crate?",
+      "choices": [],
+      "answer": "400",
+      "compute": "56000/140",
+      "solution": "$56{,}000 \\div 140 = 400$ kilograms.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "400",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "56000 / 140 = 400.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.103Z"
+        }
+      }
+    },
+    {
+      "id": "c80ba321-0f09-41f4-999a-96a8ea76346c",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Divide with long division",
+      "stem": "A theater sold $35{,}904$ tickets over $48$ weeks, the same number each week. How many tickets did it sell each week?",
+      "choices": [],
+      "answer": "748",
+      "compute": "35904/48",
+      "solution": "$35{,}904 \\div 48 = 748$ tickets a week.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "748",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35904/48=748 (48x748=35904).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.183Z"
+        }
+      }
+    },
+    {
+      "id": "3ff6e1ca-a979-4e84-9020-4156d0b4646d",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "Rosa finds $8{,}248 \\div 8$ and gets $131$. Which is her mistake?",
+      "choices": [
+        "She left out a 0 above the 2, where 8 does not go into 2",
+        "She forgot to bring down the last digit",
+        "She wrote the remainder as the quotient",
+        "She multiplied instead of dividing"
+      ],
+      "answer": "She left out a 0 above the 2, where 8 does not go into 2",
+      "compute": null,
+      "solution": "The correct quotient is 1,031: 8 goes into 8 once, into 2 zero times (a 0 must be written), into 24 three times, and into 8 once. Rosa left out the zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "She left out a 0 above the 2, where 8 does not go into 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8248 / 8: 8/8=1, 2/8=0 (write 0), 24/8=3, 8/8=1 -> 1031. Rosa got 131: she skipped the 0 in the hundreds place where 8 does not go into 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.226Z"
+        }
+      }
+    },
+    {
+      "id": "13a4e17d-05d1-44bb-a26a-52b9c82dd48c",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "The product of a number and $38$ is $7{,}030$. What is the number?",
+      "choices": [],
+      "answer": "185",
+      "compute": "7030/38",
+      "solution": "Undo the multiplication by dividing: $7{,}030 \\div 38 = 185$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "185",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7030 / 38: 38 x 185 = 6840 + 190 = 7030. Number = 185.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.249Z"
+        }
+      }
+    },
+    {
+      "id": "71a6da7a-e92a-412b-9758-e980470fe31a",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Place the first digit of the quotient",
+      "stem": "To find $7{,}280 \\div 14$, you start with 72 (since 14 does not go into 7). In which place is the first digit of the quotient?",
+      "choices": [
+        "Thousands",
+        "Tens",
+        "Ones",
+        "Hundreds"
+      ],
+      "answer": "Hundreds",
+      "compute": null,
+      "solution": "The 72 stands for 72 hundreds, so the first quotient digit (5) is in the hundreds place. The quotient is 520.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Hundreds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7280 / 14 = 520. Starting with 72 (72 hundreds), the first digit 5 is in the hundreds place.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.271Z"
+        }
+      }
+    },
+    {
+      "id": "61c23fd9-dd58-4ba9-99b7-d7ab2e3f3b36",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "When a number is divided by $25$, the quotient is $212$ and the remainder is $9$. What is the number?",
+      "choices": [
+        "$5{,}300$",
+        "$5{,}291$",
+        "$246$",
+        "$5{,}309$"
+      ],
+      "answer": "$5{,}309$",
+      "compute": null,
+      "solution": "$25 \\times 212 = 5{,}300$, and adding the remainder gives $5{,}309$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5{,}309$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 x 212 + 9 = 5300 + 9 = 5309.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.285Z"
+        }
+      }
+    },
+    {
+      "id": "fa9e069c-e660-47cb-bc42-82091138ed98",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "Each of the situations uses $8{,}000 \\div 36 = 222$ R $8$. In which one is the answer $223$?",
+      "choices": [
+        "How many full bags of 36 marbles can be made from 8,000 marbles?",
+        "How many bags are needed to hold 8,000 marbles if each bag holds 36 and all marbles must be bagged?",
+        "How many marbles are left over after filling as many bags of 36 as possible?",
+        "How many marbles does each of 36 children get if 8,000 are shared equally and extras are not given out?"
+      ],
+      "answer": "How many bags are needed to hold 8,000 marbles if each bag holds 36 and all marbles must be bagged?",
+      "compute": null,
+      "solution": "The 8 extra marbles still need a bag, so the number of bags needed is $222 + 1 = 223$. The other situations give 222, 8 and 222.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "How many bags are needed to hold 8,000 marbles if each bag holds 36 and all marbles must be bagged?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bags needed to hold all marbles rounds up: 222 full bags + 1 for the 8 left = 223. Others give 222, 222, 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.294Z"
+        }
+      }
+    },
+    {
+      "id": "2c0dee89-da5d-4eae-b485-823e08d33c75",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use division to find a rate",
+      "stem": "A shop sold $36$ identical bicycles for $14{,}940$ dollars in all. What was the price of one bicycle, in dollars?",
+      "choices": [],
+      "answer": "415",
+      "compute": "14940/36",
+      "solution": "$14{,}940 \\div 36 = 415$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "415",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14940 / 36 = 415 (36 x 415 = 14940).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.332Z"
+        }
+      }
+    },
+    {
+      "id": "f0f055dc-9a04-4e4c-a585-796d93476cbc",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the remainder",
+      "stem": "Which division leaves a remainder of $6$?",
+      "choices": [
+        "$7{,}000 \\div 12$",
+        "$7{,}000 \\div 14$",
+        "$7{,}000 \\div 15$",
+        "$7{,}000 \\div 13$"
+      ],
+      "answer": "$7{,}000 \\div 13$",
+      "compute": null,
+      "solution": "$13 \\times 538 = 6{,}994$ and $7{,}000 - 6{,}994 = 6$. The others leave 4, 0 and 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7{,}000 \\div 13$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12x583=6996 R4; 13x538=6994 R6; 14x500 R0; 15x466=6990 R10. Only 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.344Z"
+        }
+      }
+    },
+    {
+      "id": "b217577b-f23d-4994-9d68-778e06db98ca",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A collector has $4{,}050$ cards. Each album page holds $35$ cards. Dividing gives $4{,}050 \\div 35 = 115$ R $25$. Which statement is true?",
+      "choices": [
+        "115 pages are full, and 25 cards are on the next page",
+        "25 pages are full, and 115 cards are on the next page",
+        "116 pages are full, and no cards are left over",
+        "115 pages are full, and 35 cards are on the next page"
+      ],
+      "answer": "115 pages are full, and 25 cards are on the next page",
+      "compute": null,
+      "solution": "The quotient is the number of full pages (115). The remainder, 25, is the cards on a page that is not full.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "115 pages are full, and 25 cards are on the next page",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "35x115=4025, 4050-4025=25. 115 full pages, 25 cards on the next.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.354Z"
+        }
+      }
+    },
+    {
+      "id": "db3451d8-c88e-45b8-8fab-892e1e09fe64",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A company must move $4{,}500$ boxes. Each truck carries at most $85$ boxes. What is the fewest number of trucks that can move all the boxes?",
+      "choices": [],
+      "answer": "53",
+      "compute": "52+1",
+      "solution": "$4{,}500 \\div 85 = 52$ R $80$. 52 full trucks leave 80 boxes, which need one more truck: 53 trucks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85x52=4420, remainder 80, so 53 trucks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.355Z"
+        }
+      }
+    },
+    {
       "id": "39fb4467-75ce-4d47-b48e-e0567f78b749",
       "topic_id": "NC17.6.NS.2",
       "difficulty": 3,
@@ -16901,6 +18098,544 @@
           "work": "42 x 1,004 = 42,000 + 168 = 42,168.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.369Z"
+        }
+      }
+    },
+    {
+      "id": "63c44000-b2f5-466d-bfea-79fc8aaf79fb",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the remainder",
+      "stem": "Which division has the greatest remainder?",
+      "choices": [
+        "$1{,}000 \\div 13$",
+        "$1{,}000 \\div 7$",
+        "$1{,}000 \\div 9$",
+        "$1{,}000 \\div 11$"
+      ],
+      "answer": "$1{,}000 \\div 13$",
+      "compute": null,
+      "solution": "The remainders are 6 (for 7), 1 (for 9), 10 (for 11) and 12 (for 13). The greatest is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1{,}000 \\div 13$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1000/13 = 76 R12; 1000/11 = 90 R10; 1000/7 = 142 R6; 1000/9 = 111 R1. Greatest remainder 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:45.965Z"
+        }
+      }
+    },
+    {
+      "id": "660237f3-4401-490c-858d-a01368620d9c",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Place the first digit of the quotient",
+      "stem": "What is the first digit of the quotient $31{,}488 \\div 192$?",
+      "choices": [
+        "$3$",
+        "$1$",
+        "$6$",
+        "$4$"
+      ],
+      "answer": "$1$",
+      "compute": null,
+      "solution": "192 does not go into 3 or 31, but it goes into 314 once, and that 314 stands for hundreds, so the first digit is 1 in the hundreds place. The quotient is 164.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "192 x 164 = 30720 + 768 = 31488, so quotient 164; first digit 1 (314 / 192 = 1).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.063Z"
+        }
+      }
+    },
+    {
+      "id": "7ba696c1-c28f-4ba7-81dd-ef5b9f0c880f",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a remainder as a fraction",
+      "stem": "A roll of ribbon is $7{,}500$ centimeters long. It is cut into $28$ equal pieces with none left over. Write the length of each piece, in centimeters, as a mixed number in lowest terms.",
+      "choices": [],
+      "answer": "267 6/7",
+      "compute": "7500/28",
+      "solution": "$7{,}500 \\div 28 = 267$ R $24$. The remainder 24 is shared among 28 pieces: $\\frac{24}{28} = \\frac{6}{7}$. Each piece is $267\\frac{6}{7}$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "267 6/7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "28 x 267 = 7476; 7500 - 7476 = 24; 24/28 = 6/7. 267 6/7 cm.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.109Z"
+        }
+      }
+    },
+    {
+      "id": "12900dbb-4cf1-44e1-aedf-f3dbe5c21c3f",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "A number is divided by $108$. The quotient is $72$ and the remainder is $95$. What is the number?",
+      "choices": [],
+      "answer": "7871",
+      "compute": "108*72+95",
+      "solution": "$108 \\times 72 = 7{,}776$, and $7{,}776 + 95 = 7{,}871$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7871",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "108 x 72 = 7776; + 95 = 7871.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.111Z"
+        }
+      }
+    },
+    {
+      "id": "ded6c7aa-3460-4286-a4c3-c561231a726e",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "Ben divided $30{,}240$ by $63$ and got $48$. Which statement is true?",
+      "choices": [
+        "He is right, because $63 \\times 48 = 30{,}240$",
+        "He is wrong, because $63 \\times 48 = 3{,}024$, so the quotient should be $4{,}800$",
+        "He is wrong, because $63 \\times 48 = 3{,}024$, so the quotient should be $4.8$",
+        "He is wrong, because $63 \\times 48 = 3{,}024$, so the quotient should be $480$"
+      ],
+      "answer": "He is wrong, because $63 \\times 48 = 3{,}024$, so the quotient should be $480$",
+      "compute": null,
+      "solution": "$63 \\times 48 = 3{,}024$, which is not 30,240. A quotient ten times as big works: $63 \\times 480 = 30{,}240$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He is wrong, because $63 \\times 48 = 3{,}024$, so the quotient should be $480$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "63x48=3024, ten times too small; 30240/63=480 (63x480=30240).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.126Z"
+        }
+      }
+    },
+    {
+      "id": "59c03955-9757-462f-adaa-bf5fe927d2ed",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A company must carry $9{,}500$ sacks in trucks that each hold $120$. Dividing gives $9{,}500 \\div 120 = 79$ R $20$. Which statement is correct?",
+      "choices": [
+        "79 trucks are needed, and 20 sacks are left behind",
+        "80 trucks are needed, and each carries 20 sacks",
+        "80 trucks are needed, and the last one carries only 20 sacks",
+        "20 trucks are needed, and the last carries 79 sacks"
+      ],
+      "answer": "80 trucks are needed, and the last one carries only 20 sacks",
+      "compute": null,
+      "solution": "79 trucks are full. The 20 sacks left still need a truck, so 80 trucks are needed and the last carries 20 sacks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80 trucks are needed, and the last one carries only 20 sacks",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "79 full trucks carry 9480, 20 sacks remain, so 80 trucks with the last carrying 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.162Z"
+        }
+      }
+    },
+    {
+      "id": "ec7e8768-4e62-4219-8fb2-408ae1d1ca68",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "Three fields give $12{,}480$, $9{,}360$ and $7{,}800$ pounds of corn. A truck carries $150$ pounds. How many truckloads are needed to carry all the corn?",
+      "choices": [
+        "$197$",
+        "$199$",
+        "$90$",
+        "$198$"
+      ],
+      "answer": "$198$",
+      "compute": "197+1",
+      "solution": "Total: $12{,}480 + 9{,}360 + 7{,}800 = 29{,}640$. $29{,}640 \\div 150 = 197$ R $90$, so 197 full loads plus one more: 198.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$198$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12480+9360+7800=29640. 29640/150=197.6, so 198 truckloads.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.175Z"
+        }
+      }
+    },
+    {
+      "id": "57d65e3f-2e36-4cd4-8bd4-bb98cc44838b",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Divide $54{,}321$ by $237$. Which shows the quotient and the remainder?",
+      "choices": [
+        "48 R 229",
+        "229 R 48",
+        "230 R 48",
+        "229 R 285"
+      ],
+      "answer": "229 R 48",
+      "compute": null,
+      "solution": "$237 \\times 229 = 54{,}273$ and $54{,}321 - 54{,}273 = 48$. The answer is 229 R 48.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "229 R 48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "237x229=54273; 54321-54273=48. So 229 R 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.179Z"
+        }
+      }
+    },
+    {
+      "id": "7e692be2-b35c-4864-9b50-e31f7b3b3001",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Which is the best estimate of $59{,}800 \\div 298$?",
+      "choices": [
+        "$20$",
+        "$200$",
+        "$2{,}000$",
+        "$300$"
+      ],
+      "answer": "$200$",
+      "compute": "60000/300",
+      "solution": "Round to $60{,}000 \\div 300 = 200$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$200$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "60000/300=200.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.182Z"
+        }
+      }
+    },
+    {
+      "id": "31d8c831-2718-415a-b71a-905043e3e349",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A bakery packs $14{,}400$ rolls into bags of $35$ rolls. It sells only full bags. How many full bags does it make?",
+      "choices": [],
+      "answer": "411",
+      "compute": "(14400-15)/35",
+      "solution": "$14{,}400 \\div 35 = 411$ R $15$. There are 411 full bags.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "411",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14400/35=411 R 15 (35x411=14385), so 411 full bags.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.185Z"
+        }
+      }
+    },
+    {
+      "id": "e8fbcbb3-8865-4d39-9fb0-b3e4b4d8b481",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a division word problem",
+      "stem": "A school collected $82{,}500$ bottle caps. It sorted them into bags of $275$ caps and gave the bags equally to $12$ classes. How many bags did each class get?",
+      "choices": [],
+      "answer": "25",
+      "compute": "82500/275/12",
+      "solution": "$82{,}500 \\div 275 = 300$ bags. $300 \\div 12 = 25$ bags for each class.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "82,500 / 275 = 300 bags; 300 / 12 = 25 bags per class.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.249Z"
+        }
+      }
+    },
+    {
+      "id": "160fd147-9cd9-4fe7-9d6a-340c7c7e8688",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide with long division",
+      "stem": "Use long division to find $85{,}188 \\div 124$.",
+      "choices": [],
+      "answer": "687",
+      "compute": "85188/124",
+      "solution": "$124 \\times 687 = 85{,}188$, so the quotient is 687.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "687",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "85188 / 124: 124 x 687 = 86800 - 1612 = 85188. Quotient 687, no remainder.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.266Z"
+        }
+      }
+    },
+    {
+      "id": "d9f147f6-46c4-4c75-9d8d-c4c8f0e96f56",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use division to find a rate",
+      "stem": "The total cost of $36$ identical tablets is $14{,}364$ dollars. How many dollars does one tablet cost?",
+      "choices": [],
+      "answer": "399",
+      "compute": "14364/36",
+      "solution": "$14{,}364 \\div 36 = 399$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "399",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14364 / 36 = 399 (36 x 400 = 14400, minus 36).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.314Z"
+        }
+      }
+    },
+    {
+      "id": "f725e5eb-dcf3-401b-98e3-c5718f9ee09e",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use multiplication to check or reverse a division",
+      "stem": "When $10{,}000$ is divided by a certain whole number, the quotient is $156$ and the remainder is $16$. What is the number?",
+      "choices": [],
+      "answer": "64",
+      "compute": "(10000-16)/156",
+      "solution": "Take away the remainder: $10{,}000 - 16 = 9{,}984$. This is $156$ groups of the number, so the number is $9{,}984 \\div 156 = 64$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divisor = (10000-16)/156 = 9984/156 = 64; 64x156=9984, remainder 16<64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.397Z"
+        }
+      }
+    },
+    {
+      "id": "f7a87846-899f-43ad-b196-ac861ee920de",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "What is $87{,}720 \\div 215$?",
+      "choices": [
+        "$408$",
+        "$48$",
+        "$480$",
+        "$4{,}080$"
+      ],
+      "answer": "$408$",
+      "compute": "87720/215",
+      "solution": "215 goes into 877 four times (860), then into 172 zero times, then into 1,720 eight times. The quotient is 408.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$408$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "215x408 = 86000+1720 = 87720.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.408Z"
+        }
+      }
+    },
+    {
+      "id": "3277e80d-5c15-4d39-abbc-0d20fffca28e",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "Divide $36{,}036$ by $36$.",
+      "choices": [],
+      "answer": "1001",
+      "compute": "36036/36",
+      "solution": "36 goes into 36 once, then into 0 zero times, then into 3 zero times, then into 36 once. The quotient is $1{,}001$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1001",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36x1001 = 36036.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.413Z"
+        }
+      }
+    },
+    {
+      "id": "40e88684-2469-46dc-9c62-4e33751e2682",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A prize fund of $50{,}000$ dollars is shared among $365$ winners. Each gets $136$ dollars and $360$ dollars are left, since $50{,}000 \\div 365 = 136$ R $360$. What does the remainder tell us?",
+      "choices": [
+        "Each winner gets 360 dollars more",
+        "There are 360 winners who get nothing",
+        "360 dollars are left after each winner gets 136 dollars",
+        "The fund was 360 dollars short"
+      ],
+      "answer": "360 dollars are left after each winner gets 136 dollars",
+      "compute": null,
+      "solution": "The remainder is what is left after giving every winner 136 dollars: 360 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "360 dollars are left after each winner gets 136 dollars",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "365x136=49640, 50000-49640=360 left over after each gets 136.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.414Z"
         }
       }
     },

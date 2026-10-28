@@ -19089,6 +19089,539 @@
       }
     },
     {
+      "id": "e0d8b941-4468-430e-890b-622f2e6551d2",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "The diagonal of the multiplication table",
+      "stem": "The diagonal of a multiplication table has the products $1 \\times 1$, $2 \\times 2$, $3 \\times 3$ and $4 \\times 4$, which are 1, 4, 9 and 16. What is the next product on the diagonal?",
+      "choices": [],
+      "answer": "25",
+      "compute": "5*5",
+      "solution": "The next fact on the diagonal is 5 x 5 = 25.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 x 5 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.071Z"
+        }
+      }
+    },
+    {
+      "id": "6b221019-3036-41b6-8fe2-125b9f85153e",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Which number would NOT be said when counting by 2s from 2?",
+      "choices": [
+        "71",
+        "38",
+        "52",
+        "96"
+      ],
+      "answer": "71",
+      "compute": null,
+      "solution": "Counting by 2s says only even numbers. 71 is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "71",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting by 2s from 2 gives even numbers; 71 is odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.091Z"
+        }
+      }
+    },
+    {
+      "id": "8b04e6bf-954a-4835-8e16-5bf5ed80ea4e",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. Lu is on 23. She moves down 1 row and then 1 square to the right. What number is she on now?",
+      "choices": [],
+      "answer": "34",
+      "compute": "23+10+1",
+      "solution": "Down 1 row is 10 more: 33. One square to the right is 1 more: 34.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "34",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Down a row adds 10: 33; right adds 1: 34.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.097Z"
+        }
+      }
+    },
+    {
+      "id": "7ad2ec59-c934-4ff7-b1fe-75bb6ba9fd15",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Missing numbers in a row or column of the multiplication table",
+      "stem": "The 6s row of a multiplication table is 6, 12, 18, ?, 30. What number goes in place of the ?",
+      "choices": [],
+      "answer": "24",
+      "compute": "18+6",
+      "solution": "Each product is 6 more than the one before it. 18 + 6 = 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6,12,18,24,30: add 6 each time, 18+6=24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.125Z"
+        }
+      }
+    },
+    {
+      "id": "2d4d26dd-605a-4cc9-823b-4c763b670dc3",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "The numbers 3, 13, 23 and 33 are in one column of a hundreds board that has rows of 10. What number comes next in that column?",
+      "choices": [],
+      "answer": "43",
+      "compute": "33+10",
+      "solution": "Each number in the column is 10 more than the one above it. 33 + 10 = 43.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "43",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Column adds 10 each row: 33+10=43.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.145Z"
+        }
+      }
+    },
+    {
+      "id": "c43bd243-7a02-45c0-a2cf-a004d8dae3c0",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Adding rows of the multiplication table",
+      "stem": "In a multiplication table, each product in the 5s row is the 2s product plus the 3s product. Since $2 \\times 4 = 8$ and $3 \\times 4 = 12$, what is $5 \\times 4$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "8+12",
+      "solution": "8 + 12 = 20, so 5 x 4 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8+12=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.193Z"
+        }
+      }
+    },
+    {
+      "id": "bdcaf878-a994-4ce4-958b-042960f00640",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Missing numbers in a row or column of the multiplication table",
+      "stem": "A row of a multiplication table begins 8, 16, 24, 32. Which row is it?",
+      "choices": [
+        "the 4s row",
+        "the 8s row",
+        "the 6s row",
+        "the 2s row"
+      ],
+      "answer": "the 8s row",
+      "compute": null,
+      "solution": "The row begins with 8 x 1 = 8 and goes up by 8 each time, so it is the 8s row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the 8s row",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8,16,24,32 = 8x1,8x2,... the 8s row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.219Z"
+        }
+      }
+    },
+    {
+      "id": "b9789d24-78c2-47c1-ad00-8182cf3ac20b",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Doubling patterns in the multiplication table",
+      "stem": "Tia knows that $5 \\times 4 = 20$. The 10s row of a multiplication table is double the 5s row. What is $10 \\times 4$?",
+      "choices": [],
+      "answer": "40",
+      "compute": "2*20",
+      "solution": "Double 20 is 40, so 10 x 4 = 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 x 4 = 2 x 20 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.238Z"
+        }
+      }
+    },
+    {
+      "id": "4e1ae473-7511-487c-896a-b934cc0e0f36",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "Sam colors 3, 14, 25 and 36 in a slanting line on a hundreds board. Each number is 11 more than the one before it. What number comes next in the line?",
+      "choices": [],
+      "answer": "47",
+      "compute": "36+11",
+      "solution": "36 + 11 = 47.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "47",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 + 11 = 47.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.241Z"
+        }
+      }
+    },
+    {
+      "id": "b5d73172-d16a-4a74-99a6-fb9793ed4ce0",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Skip counting on a hundreds board",
+      "stem": "Pip colors every 10th number on a hundreds board: 10, 20, 30, and so on. Which number does Pip color?",
+      "choices": [
+        "65",
+        "60",
+        "61",
+        "16"
+      ],
+      "answer": "60",
+      "compute": null,
+      "solution": "Counting by 10s says 10, 20, 30, 40, 50, 60. Only 60 is in the pattern.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 10 end in 0: 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.255Z"
+        }
+      }
+    },
+    {
+      "id": "0ba563d6-7e3b-4113-8967-0a03cd93ecf5",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. What number is directly below 46?",
+      "choices": [],
+      "answer": "56",
+      "compute": "46+10",
+      "solution": "Moving down one row adds 10: 46 + 10 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Directly below is 10 more: 46 + 10 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.256Z"
+        }
+      }
+    },
+    {
+      "id": "8d3c039d-a026-4a92-99c1-3da79ae0e5ac",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Even numbers end in 0, 2, 4, 6 or 8. Which digit can an even number NOT end in?",
+      "choices": [
+        "7",
+        "0",
+        "4",
+        "8"
+      ],
+      "answer": "7",
+      "compute": null,
+      "solution": "The ones digit of an even number is always 0, 2, 4, 6 or 8. A number ending in 7 is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 is odd, so an even number cannot end in 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.279Z"
+        }
+      }
+    },
+    {
+      "id": "3d1b81e4-40b6-4622-82ba-c33778b48254",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Even and odd patterns in sums and products",
+      "stem": "Which sentence is true about any whole number times 2?",
+      "choices": [
+        "The product is always odd",
+        "The product always ends in 2",
+        "The product is always even",
+        "The product is always a multiple of 5"
+      ],
+      "answer": "The product is always even",
+      "compute": null,
+      "solution": "Times 2 makes pairs, so the product can always be split into two equal groups. It is always even, but it does not always end in 2 or 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The product is always even",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2n is always even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.292Z"
+        }
+      }
+    },
+    {
+      "id": "158a3165-e5c3-4bc9-8713-b327297e71e1",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. What number is directly above 58?",
+      "choices": [],
+      "answer": "48",
+      "compute": "58-10",
+      "solution": "Moving up one row takes away 10: 58 - 10 = 48.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Directly above is 10 less: 58 - 10 = 48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.295Z"
+        }
+      }
+    },
+    {
+      "id": "d35d58c4-922c-4872-95ec-b93113267c7b",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Patterns in the 9s",
+      "stem": "The digits of every product in the 9s row (from $9 \\times 1$ to $9 \\times 9$) add up to 9. Which of these numbers is in the 9s row?",
+      "choices": [
+        "74",
+        "76",
+        "78",
+        "72"
+      ],
+      "answer": "72",
+      "compute": null,
+      "solution": "7 + 2 = 9, and 9 x 8 = 72. The digits of 74, 76 and 78 add to 11, 13 and 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "72 = 9 x 8, digits 7 + 2 = 9. 78, 76, 74 have digit sums 15, 13, 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.302Z"
+        }
+      }
+    },
+    {
+      "id": "b36ea50b-7168-4778-9310-dc9fb4e910c0",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Symmetry of the multiplication table",
+      "stem": "Which fact has the same product as $6 \\times 3$ in a multiplication table?",
+      "choices": [
+        "$3 \\times 6$",
+        "$3 \\times 3$",
+        "$6 \\times 6$",
+        "$6 \\times 2$"
+      ],
+      "answer": "$3 \\times 6$",
+      "compute": null,
+      "solution": "The order of the factors does not change the product, so 6 x 3 and 3 x 6 are both 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 3 = 18 = 3 x 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.331Z"
+        }
+      }
+    },
+    {
+      "id": "5237af78-5ca0-4dc6-b70a-9f3f06f54faf",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Ana counts by 10s from 10 up to 90. Which number does she NOT say?",
+      "choices": [
+        "30",
+        "50",
+        "90",
+        "75"
+      ],
+      "answer": "75",
+      "compute": null,
+      "solution": "Counting by 10s says only numbers that end in 0. 75 ends in 5, so she does not say it.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "75",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,20,...,90; 75 is not a multiple of 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.404Z"
+        }
+      }
+    },
+    {
       "id": "a3873cd6-a826-4071-8a32-2087f4c6dd47",
       "topic_id": "NC17.3.OA.9",
       "difficulty": 2,
@@ -19525,6 +20058,602 @@
       }
     },
     {
+      "id": "7f612620-883a-4a4f-96ab-f4e43e2e7248",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Adding rows of the multiplication table",
+      "stem": "Which two facts can Ben add to find $7 \\times 6$?",
+      "choices": [
+        "$3 \\times 6$ and $4 \\times 7$",
+        "$3 \\times 6$ and $4 \\times 6$",
+        "$7 \\times 3$ and $6 \\times 4$",
+        "$3 \\times 4$ and $6 \\times 6$"
+      ],
+      "answer": "$3 \\times 6$ and $4 \\times 6$",
+      "compute": null,
+      "solution": "7 = 3 + 4, so 7 x 6 = 3 x 6 + 4 x 6 = 18 + 24 = 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 6$ and $4 \\times 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x6 = 3x6 + 4x6 = 18+24 = 42. Others: 21+24=45, 18+28=46, 12+36=48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.143Z"
+        }
+      }
+    },
+    {
+      "id": "fc141a53-ca15-4a7a-b17d-c23e56d81499",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. The numbers 14, 25, 36 and 47 are in a slanting line. What is the rule for the line?",
+      "choices": [
+        "Add 10",
+        "Add 9",
+        "Add 11",
+        "Add 12"
+      ],
+      "answer": "Add 11",
+      "compute": null,
+      "solution": "25 - 14 = 11, 36 - 25 = 11 and 47 - 36 = 11. Each move is 1 row down (10) and 1 square right (1).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Add 11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14->25->36->47: +11 each.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.176Z"
+        }
+      }
+    },
+    {
+      "id": "a620c371-e2ef-4143-8df5-a36d7e86f9f1",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "How many numbers on a hundreds board (1 to 100) are multiples of 10?",
+      "choices": [],
+      "answer": "10",
+      "compute": "100/10",
+      "solution": "10, 20, 30, 40, 50, 60, 70, 80, 90 and 100 are 10 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10,20,...,100: 10 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.178Z"
+        }
+      }
+    },
+    {
+      "id": "c1558017-b408-4354-91ab-e3b74b5bd0c9",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "The diagonal of the multiplication table",
+      "stem": "Which list shows products on the diagonal of a multiplication table, where the row number and the column number are the same?",
+      "choices": [
+        "2, 4, 6, 8",
+        "3, 6, 9, 12",
+        "4, 9, 16, 25",
+        "5, 10, 15, 20"
+      ],
+      "answer": "4, 9, 16, 25",
+      "compute": null,
+      "solution": "4 = 2 x 2, 9 = 3 x 3, 16 = 4 x 4 and 25 = 5 x 5. The other lists count by 2s, 3s and 5s, which are rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4, 9, 16, 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Diagonal products are squares: 4,9,16,25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.201Z"
+        }
+      }
+    },
+    {
+      "id": "28e4e1af-ac50-4187-9b1a-5fc1f2f84339",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "Which number is in the same column as 24 on a hundreds board with rows of 10?",
+      "choices": [
+        "42",
+        "26",
+        "64",
+        "25"
+      ],
+      "answer": "64",
+      "compute": null,
+      "solution": "Numbers in a column have the same ones digit. 24 ends in 4, and so does 64.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same column = same ones digit 4: 64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.209Z"
+        }
+      }
+    },
+    {
+      "id": "53aed363-1e28-48eb-ac67-7364afb96704",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Skip counting on a hundreds board",
+      "stem": "Ben colors every 6th number on a hundreds board: 6, 12, 18, 24, and so on. Which of these numbers will he color?",
+      "choices": [
+        "46",
+        "50",
+        "48",
+        "52"
+      ],
+      "answer": "48",
+      "compute": "48",
+      "solution": "6 x 8 = 48, so 48 is in the pattern. The others are not multiples of 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "48",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 6: 48 = 6x8. 46, 50, 52 are not multiples of 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.228Z"
+        }
+      }
+    },
+    {
+      "id": "39f15af3-b4f0-4e3f-a041-e6bee9a7d6da",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Missing numbers in a row or column of the multiplication table",
+      "stem": "Mia finds 24 in the 3s row of a multiplication table. Which column number is it in?",
+      "choices": [],
+      "answer": "8",
+      "compute": "24/3",
+      "solution": "3 x 8 = 24, so it is in column 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 x 8 = 24, so column 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.232Z"
+        }
+      }
+    },
+    {
+      "id": "ac093ee5-f2d1-4032-9779-3985ef4c7069",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "The diagonal of the multiplication table",
+      "stem": "On the diagonal of a multiplication table, the row number and the column number are the same. The product 49 is on the diagonal. What is its row number?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "7 x 7 = 49, so the row number is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 x 7 = 49, row 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.247Z"
+        }
+      }
+    },
+    {
+      "id": "6304b24b-7c68-44fc-95d5-cc59ba847d03",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Adding rows of the multiplication table",
+      "stem": "In a multiplication table, the 5s row is the 2s row plus the 3s row. Since $2 \\times 8 = 16$ and $3 \\times 8 = 24$, what is $5 \\times 8$?",
+      "choices": [],
+      "answer": "40",
+      "compute": "16+24",
+      "solution": "16 + 24 = 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16 + 24 = 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.251Z"
+        }
+      }
+    },
+    {
+      "id": "3a1561c1-21cf-497b-a173-ef2815055b97",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Ones digits repeating in a skip-counting pattern",
+      "stem": "Counting by 4s from 4, the ones digits go 4, 8, 2, 6, 0 and then repeat. What is the ones digit of the 8th number?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "The digits repeat every 5 numbers. The 6th is 4, the 7th is 8 and the 8th is 2. Check: 4 x 8 = 32.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cycle 4,8,2,6,0 of length 5; 8th = 3rd in cycle = 2. Check 4 x 8 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.273Z"
+        }
+      }
+    },
+    {
+      "id": "2896b0da-3032-4416-88b0-b9d0bf89a654",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Rae counts by 5s from 5 and stops at 35. She says every number in the pattern from 5 to 35. How many numbers does she say?",
+      "choices": [],
+      "answer": "7",
+      "compute": "35/5",
+      "solution": "5, 10, 15, 20, 25, 30, 35 is 7 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5,10,15,20,25,30,35: 7 numbers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.283Z"
+        }
+      }
+    },
+    {
+      "id": "85cd33e5-0899-4ddc-93ce-1aab0641e71b",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Doubling patterns in the multiplication table",
+      "stem": "The 6s row of a multiplication table is double the 3s row. If $3 \\times 7 = 21$, what is $6 \\times 7$?",
+      "choices": [],
+      "answer": "42",
+      "compute": "2*21",
+      "solution": "Double 21 is 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 7 = 2 x 21 = 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.290Z"
+        }
+      }
+    },
+    {
+      "id": "3e038c2b-2612-4993-9165-4a7186fc071f",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. Jo is on 67 and moves up 3 rows. What number is Jo on now?",
+      "choices": [],
+      "answer": "37",
+      "compute": "67-30",
+      "solution": "Each row up takes away 10. Three rows is 30. 67 - 30 = 37.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "37",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Up 3 rows = 30 less: 67 - 30 = 37.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.300Z"
+        }
+      }
+    },
+    {
+      "id": "72fcff8d-79ee-4d4b-8574-fb929020b5f1",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. Kim starts on 8 and moves down 1 row and 1 square to the left each time. She lands on 8, 17 and 26. What number does she land on next?",
+      "choices": [],
+      "answer": "35",
+      "compute": "26+9",
+      "solution": "Down 1 row is 10 more and 1 square left is 1 less, so each move adds 9. 26 + 9 = 35.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "35",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Down 1 row is +10, left 1 is -1, so +9 each move: 8, 17, 26, 35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.338Z"
+        }
+      }
+    },
+    {
+      "id": "6e262eff-6157-40b0-90a5-513c61750396",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Even and odd patterns in sums and products",
+      "stem": "Which product must be even, without multiplying?",
+      "choices": [
+        "$7 \\times 9$",
+        "$5 \\times 11$",
+        "$9 \\times 9$",
+        "$3 \\times 8$"
+      ],
+      "answer": "$3 \\times 8$",
+      "compute": null,
+      "solution": "8 is even, so 3 groups of 8 can be split into pairs. The other products are odd times odd, which is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 is even so 3x8 is even; 5x11, 9x9, 7x9 are odd x odd = odd.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.341Z"
+        }
+      }
+    },
+    {
+      "id": "b989cb6f-7c95-475c-8394-d7e429bff35b",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Doubling patterns in the multiplication table",
+      "stem": "Ben knows that $5 \\times 7 = 35$. Which idea helps him find $10 \\times 7$?",
+      "choices": [
+        "Add 5 to 35, because the 10s row is 5 more than the 5s row",
+        "Add 10 to 35, because 10 is the row number",
+        "Half of 35, because the 10s row is half the 5s row",
+        "Double 35, because the 10s row is double the 5s row"
+      ],
+      "answer": "Double 35, because the 10s row is double the 5s row",
+      "compute": null,
+      "solution": "Ten is two fives, so 10 x 7 is double 5 x 7. Double 35 is 70.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Double 35, because the 10s row is double the 5s row",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 = 2x5 so 10x7 = 2 x 35 = 70. Doubling is right.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.357Z"
+        }
+      }
+    },
+    {
+      "id": "8b3f04de-21b3-40fc-b98e-420d89cf95c2",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Patterns in the 9s",
+      "stem": "Here is a trick for the 9s: $9 \\times n$ is $10 \\times n$ minus $n$. Use it to find $9 \\times 8$.",
+      "choices": [],
+      "answer": "72",
+      "compute": "10*8-8",
+      "solution": "10 x 8 = 80. 80 - 8 = 72.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10x8-8 = 80-8 = 72.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.410Z"
+        }
+      }
+    },
+    {
+      "id": "fbd379e9-971e-46f1-badf-1f95e85be543",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Even and odd patterns in sums and products",
+      "stem": "The products in the 3s row go odd, even, odd, even, and so on, starting with $3 \\times 1 = 3$. Which product is odd?",
+      "choices": [
+        "$3 \\times 9$",
+        "$3 \\times 6$",
+        "$3 \\times 8$",
+        "$3 \\times 10$"
+      ],
+      "answer": "$3 \\times 9$",
+      "compute": null,
+      "solution": "The odd products come at the odd-numbered facts: 3 x 1, 3 x 3, 3 x 5, 3 x 7, 3 x 9. So 3 x 9 = 27 is odd. The other products are 18, 24 and 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x odd is odd: 3x9=27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.418Z"
+        }
+      }
+    },
+    {
+      "id": "1a698954-0e5a-4d0a-b3be-be0205a29cde",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Even and odd patterns in sums and products",
+      "stem": "Lena adds two odd numbers, $7 + 9$. Which statement is true about the sum?",
+      "choices": [
+        "It is odd, because both numbers are odd",
+        "It is even, because the two leftover ones make a pair",
+        "It is odd, because 7 is less than 9",
+        "It is even, because 7 + 9 ends in 5"
+      ],
+      "answer": "It is even, because the two leftover ones make a pair",
+      "compute": null,
+      "solution": "Each odd number is some pairs and one leftover. The two leftovers make one more pair, so the sum is even. 7 + 9 = 16.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is even, because the two leftover ones make a pair",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each odd number has one left over; two left-overs make a pair, so even (16).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.429Z"
+        }
+      }
+    },
+    {
       "id": "242c5810-879e-4d2e-a9a4-8d08443adf04",
       "topic_id": "NC17.3.OA.9",
       "difficulty": 3,
@@ -19938,6 +21067,631 @@
           "work": "Ten 9s = 10 x 9, take away one 9: 10 x 9 - 9 = 90 - 9 = 81.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.371Z"
+        }
+      }
+    },
+    {
+      "id": "b8506b79-e187-498a-b8a1-506471799a7b",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "Mina says every number in one column of a hundreds board ends in the same digit. Why is she right?",
+      "choices": [
+        "Each step down a row adds 1, which does not change the ones digit",
+        "Each step down a row adds 10, which makes the ones digit 1 bigger",
+        "Each step down a row adds 100, which does not change the ones digit",
+        "Each step down a row adds 10, which does not change the ones digit"
+      ],
+      "answer": "Each step down a row adds 10, which does not change the ones digit",
+      "compute": null,
+      "solution": "Adding 10 changes the tens digit and leaves the ones digit alone. A row is 10 numbers long, so one step down adds 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each step down a row adds 10, which does not change the ones digit",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Down one row adds 10; ones digit unchanged.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.157Z"
+        }
+      }
+    },
+    {
+      "id": "5a69dc89-30fe-4faf-ba2e-0461d9af363d",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Skip counting on a hundreds board",
+      "stem": "Tom circles every 8th number on a hundreds board: 8, 16, 24, and so on. What is the last number he circles?",
+      "choices": [],
+      "answer": "96",
+      "compute": "8*12",
+      "solution": "8 x 12 = 96 and 8 x 13 = 104 is past 100, so 96 is the last.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "96",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 8 up to 100: largest 8x12=96.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.159Z"
+        }
+      }
+    },
+    {
+      "id": "b2f99d81-bab2-46d5-bdd9-590426ad2d0e",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "The diagonal of the multiplication table",
+      "stem": "On the diagonal of a multiplication table with rows and columns 1 to 10, the row number and the column number are the same. Which number is NOT on the diagonal?",
+      "choices": [
+        "49",
+        "64",
+        "81",
+        "72"
+      ],
+      "answer": "72",
+      "compute": null,
+      "solution": "49 = 7 x 7, 64 = 8 x 8 and 81 = 9 x 9 are on the diagonal. 72 = 8 x 9 uses two different numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "72",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Diagonal = squares 1,4,9,...,100. 49,64,81 are squares; 72 is not.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.169Z"
+        }
+      }
+    },
+    {
+      "id": "66daf300-4c77-4e11-9cca-697ed1944c14",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Doubling patterns in the multiplication table",
+      "stem": "In a multiplication table, each product in the 3s row is half of the product in the 6s row. If $6 \\times 8 = 48$, what is $3 \\times 8$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "48/2",
+      "solution": "Half of 48 is 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Half of 48 is 24 (3x8=24).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.173Z"
+        }
+      }
+    },
+    {
+      "id": "5bf224dd-ce81-4b37-8421-4ce86afd0fe5",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Doubling patterns in the multiplication table",
+      "stem": "The 6s row of a multiplication table is double the 3s row. Which fact can you double to find $6 \\times 9$?",
+      "choices": [
+        "$2 \\times 9$",
+        "$4 \\times 9$",
+        "$3 \\times 9$",
+        "$6 \\times 4$"
+      ],
+      "answer": "$3 \\times 9$",
+      "compute": null,
+      "solution": "Six is two threes, so 6 x 9 is double 3 x 9. Double 27 is 54.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 \\times 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 x 9 = 2 x (3 x 9) = 2 x 27 = 54. Double 3 x 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.231Z"
+        }
+      }
+    },
+    {
+      "id": "0f13e7c7-e8c2-432a-999e-7e11a458be22",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "The diagonal of the multiplication table",
+      "stem": "The products on the diagonal of a multiplication table are 1, 4, 9, 16, 25. The steps between them are 3, 5, 7 and 9. Which describes the steps?",
+      "choices": [
+        "Each step is 3 more than the step before",
+        "Each step is 2 more than the step before",
+        "Each step is double the step before",
+        "All the steps are the same size"
+      ],
+      "answer": "Each step is 2 more than the step before",
+      "compute": null,
+      "solution": "5 - 3 = 2, 7 - 5 = 2 and 9 - 7 = 2. Each step is 2 more than the one before.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Each step is 2 more than the step before",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3,5,7,9: each step is 2 more than the one before.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.233Z"
+        }
+      }
+    },
+    {
+      "id": "980dc4b4-2fce-43d4-b60c-338390c92e4a",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Ones digits repeating in a skip-counting pattern",
+      "stem": "Counting by 6s from 6, the ones digits go 6, 2, 8, 4, 0 and then repeat. What is the ones digit of the 17th number?",
+      "choices": [],
+      "answer": "2",
+      "compute": null,
+      "solution": "The digits repeat every 5 numbers. 17 = 3 x 5 + 2, so the 17th has the same ones digit as the 2nd, which is 2. Check: 6 x 17 = 102.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cycle of 5 digits; 17 = 3x5 + 2, so the 2nd digit in the cycle: 2. Check: 6 x 17 = 102.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.244Z"
+        }
+      }
+    },
+    {
+      "id": "5aa0823f-8af3-4964-840c-f3604bb5cd06",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Symmetry of the multiplication table",
+      "stem": "A multiplication table has rows and columns numbered 1 to 10. Which product appears exactly once?",
+      "choices": [
+        "49",
+        "48",
+        "42",
+        "56"
+      ],
+      "answer": "49",
+      "compute": null,
+      "solution": "49 = 7 x 7 is on the diagonal and has no other facts. 48 = 6 x 8 and 8 x 6, 42 = 6 x 7 and 7 x 6, and 56 = 7 x 8 and 8 x 7, so each shows twice.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "49 = 7 x 7 only. 48 = 6x8 and 8x6; 42 = 6x7 and 7x6; 56 = 7x8 and 8x7 -- each twice.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.269Z"
+        }
+      }
+    },
+    {
+      "id": "5badbf89-dd63-4cb2-a880-5da9111b0ae1",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Which statement is true about every number you say when counting by 10s from 10?",
+      "choices": [
+        "It is odd, and it is also in the 5s pattern",
+        "It is even, but it is never in the 5s pattern",
+        "It is odd, and it is never in the 5s pattern",
+        "It is even, and it is also in the 5s pattern"
+      ],
+      "answer": "It is even, and it is also in the 5s pattern",
+      "compute": null,
+      "solution": "Every number ending in 0 is even. Counting by 5s lands on 10, 20, 30 and so on, so each is also in the 5s pattern.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is even, and it is also in the 5s pattern",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10, 20, 30, ... all even and all multiples of 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.274Z"
+        }
+      }
+    },
+    {
+      "id": "e5dde555-410a-4991-9814-819a8cef9dd0",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Missing numbers in a row or column of the multiplication table",
+      "stem": "Two products that are next to each other in one row of a multiplication table are 18 and 24. Which row are they in?",
+      "choices": [
+        "the 3s row",
+        "the 4s row",
+        "the 8s row",
+        "the 6s row"
+      ],
+      "answer": "the 6s row",
+      "compute": null,
+      "solution": "Neighbors in a row differ by the row number. 24 - 18 = 6, and 6 x 3 = 18 and 6 x 4 = 24.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the 6s row",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Neighbours in a row differ by the row number: 24 - 18 = 6, the 6s row (6x3, 6x4).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.277Z"
+        }
+      }
+    },
+    {
+      "id": "8124c410-4c2c-49cb-b60b-0a0dd8130322",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Missing numbers in a row or column of the multiplication table",
+      "stem": "In the 4s row of a multiplication table, 28 is in column 7. In which column is 36?",
+      "choices": [],
+      "answer": "9",
+      "compute": "36/4",
+      "solution": "Each column adds 4. 36 is 8 more than 28, which is 2 more columns: 7 + 2 = 9. Check: 4 x 9 = 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 9 = 36, column 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.299Z"
+        }
+      }
+    },
+    {
+      "id": "396a6e3d-d7a8-441e-a570-cb52fccae97f",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Adding rows of the multiplication table",
+      "stem": "In a multiplication table, each product in the 7s row is the 4s product plus the 3s product. Since $4 \\times 8 = 32$ and $3 \\times 8 = 24$, what is $7 \\times 8$?",
+      "choices": [],
+      "answer": "56",
+      "compute": "32+24",
+      "solution": "32 + 24 = 56.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "32 + 24 = 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.305Z"
+        }
+      }
+    },
+    {
+      "id": "aeb51600-5bd4-487a-a511-e6b29b2b6a26",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. A slanting line starts on 1 and moves down 1 row and 1 square to the right each time. The 1st number is 1, the 2nd is 12 and the 3rd is 23. What is the 7th number?",
+      "choices": [],
+      "answer": "67",
+      "compute": "1+11*6",
+      "solution": "Each move adds 11. From the 1st to the 7th number there are 6 moves: 1 + 6 x 11 = 67.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "67",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Each step adds 11: 1, 12, 23, 34, 45, 56, 67. 7th is 67.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.328Z"
+        }
+      }
+    },
+    {
+      "id": "cf48823d-2047-463a-8e7b-70affcf643d1",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Skip counting on a hundreds board",
+      "stem": "Count by 7s from 7: 7, 14, 21, and so on. What is the first number you say that is greater than 50?",
+      "choices": [],
+      "answer": "56",
+      "compute": "7*8",
+      "solution": "7 x 7 = 49 is not greater than 50. 7 x 8 = 56 is the first that is.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "56",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7,14,21,28,35,42,49,56: first above 50 is 56.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.335Z"
+        }
+      }
+    },
+    {
+      "id": "7143fba3-f699-433c-8da1-70f43d381da3",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. Pia is on 85. She moves up 1 row and 1 square to the left, again and again. She lands on 74 and then 63. What number is she on after 4 moves in all?",
+      "choices": [],
+      "answer": "41",
+      "compute": "85-11*4",
+      "solution": "Each move takes away 11. Four moves take away 44. 85 - 44 = 41.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Up 1 row and left 1 is -11: 85, 74, 63, 52, 41. After 4 moves 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.346Z"
+        }
+      }
+    },
+    {
+      "id": "7026cb3a-a673-4f49-92ff-eb35495999db",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Even and odd patterns in sums and products",
+      "stem": "Tess picks any whole number. Which result is always odd?",
+      "choices": [
+        "Double the number, then add 1",
+        "Double the number, then add 2",
+        "Add 1 to the number, then double it",
+        "Triple the number"
+      ],
+      "answer": "Double the number, then add 1",
+      "compute": null,
+      "solution": "Doubling gives an even number, and an even number plus 1 is odd. The next two are always even, and tripling gives an odd number only when the starting number is odd.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Double the number, then add 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2n is even, 2n+1 is odd always. 3n can be even; 2n+2 and 2(n+1) are even.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.371Z"
+        }
+      }
+    },
+    {
+      "id": "979d336b-e548-4d3a-801a-d3e0fb6dc699",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Even and odd patterns in sums and products",
+      "stem": "Zoe adds four odd numbers together. What can you say about the sum?",
+      "choices": [
+        "The sum is always odd",
+        "The sum is always even",
+        "The sum could be odd or even",
+        "The sum is always a multiple of 4"
+      ],
+      "answer": "The sum is always even",
+      "compute": null,
+      "solution": "Two odd numbers make an even sum. Four odd numbers make two even sums, and those add to an even number. For example, 1 + 3 + 5 + 7 = 16, but 1 + 1 + 1 + 3 = 6 is not a multiple of 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The sum is always even",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "odd+odd=even, even+even=even. Not always multiple of 4: 1+1+1+3=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.382Z"
+        }
+      }
+    },
+    {
+      "id": "4c636d4f-0956-4890-abfd-ca12b7fda308",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Adding rows of the multiplication table",
+      "stem": "In a multiplication table, each product in the 6s row is the 10s product minus the 4s product. Since $10 \\times 7 = 70$ and $4 \\times 7 = 28$, what is $6 \\times 7$?",
+      "choices": [],
+      "answer": "42",
+      "compute": "70-28",
+      "solution": "70 - 28 = 42.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "70-28 = 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.412Z"
+        }
+      }
+    },
+    {
+      "id": "a1ba195d-a78e-4ba5-ab6f-8b3a5a79e1d1",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "A number from 1 to 100 is on Cam's list if it is a multiple of 5 and it is also even. How many numbers are on Cam's list?",
+      "choices": [],
+      "answer": "10",
+      "compute": "100/10",
+      "solution": "Multiples of 5 end in 0 or 5, and even ones end in 0. Those are 10, 20, 30, ... 100, which is 10 numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiples of 5 that are even = multiples of 10: 10,...,100 -> 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.422Z"
+        }
+      }
+    },
+    {
+      "id": "b349ebc2-7052-4c7e-a542-c00ccc6c1f08",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Symmetry of the multiplication table",
+      "stem": "A multiplication table has rows and columns numbered 1 to 10. In how many places does the product 36 appear?",
+      "choices": [],
+      "answer": "3",
+      "compute": null,
+      "solution": "36 = 4 x 9, 9 x 4 and 6 x 6. That is 3 places. 6 x 6 is on the diagonal, so it counts only once.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "36 = 4x9, 9x4, 6x6 within 1-10 (3x12, 2x18 out). 3 places.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.427Z"
         }
       }
     },

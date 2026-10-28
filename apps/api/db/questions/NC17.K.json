@@ -25420,6 +25420,510 @@
       }
     },
     {
+      "id": "9c01e503-1cbd-471c-bc49-5ea082a73566",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "Ivy has 4 apples. She eats 1 apple. How many apples does Ivy have left?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4-1",
+      "solution": "Ivy eats 1 apple, so we take 1 away from 4. 4 - 1 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.013Z"
+        }
+      }
+    },
+    {
+      "id": "97ad437b-7165-4b4c-8cf4-8b59dc7c89eb",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "A box has 5 crayons. Omar takes 3 crayons out of the box. How many crayons are in the box now?",
+      "choices": [
+        "8",
+        "3",
+        "2",
+        "1"
+      ],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "Taking 3 crayons out leaves 5 - 3 = 2 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 3 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.014Z"
+        }
+      }
+    },
+    {
+      "id": "92f40153-82eb-49b6-9760-bdffcae69065",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take apart: one part unknown",
+      "stem": "There are 6 kids on a bus. 2 kids are girls. The rest are boys. How many kids are boys?",
+      "choices": [
+        "2",
+        "8",
+        "4",
+        "3"
+      ],
+      "answer": "4",
+      "compute": "6-2",
+      "solution": "Take the girls away from all 6 kids. 6 - 2 = 4 boys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.059Z"
+        }
+      }
+    },
+    {
+      "id": "8f442d54-2fe8-429e-a499-77df322fc398",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Sue has 5 hats. She gives 1 hat away. Which number sentence matches the story?",
+      "choices": [
+        "$5 - 1 = 4$",
+        "$5 + 1 = 6$",
+        "$4 - 1 = 3$",
+        "$5 - 4 = 1$"
+      ],
+      "answer": "$5 - 1 = 4$",
+      "compute": null,
+      "solution": "Sue starts with 5 and 1 goes away, so we take away: 5 - 1 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5 - 1 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Has 5, gives 1 away, left 4: 5 - 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.066Z"
+        }
+      }
+    },
+    {
+      "id": "6283c26e-b043-4ebd-98e8-a2f44a20859e",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Put together: total unknown",
+      "stem": "A farm has 3 cows and 3 pigs. How many animals are on the farm?",
+      "choices": [
+        "6",
+        "3",
+        "5",
+        "7"
+      ],
+      "answer": "6",
+      "compute": "3+3",
+      "solution": "Put the cows and pigs together: 3 + 3 = 6 animals.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 3 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.080Z"
+        }
+      }
+    },
+    {
+      "id": "b445ecaf-500c-4aef-aab2-746c9107cc0b",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "Uma has 4 beads. 1 bead is blue. The rest are green. How many beads are green?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4-1",
+      "solution": "Take the blue bead away from all 4 beads. 4 - 1 = 3 green beads.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 - 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.084Z"
+        }
+      }
+    },
+    {
+      "id": "6b706b9f-5fcf-4fa0-8fd1-f6a5ba01ee1d",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "Ruth has 6 buttons. She loses 3 buttons. How many buttons does Ruth have left?",
+      "choices": [
+        "9",
+        "6",
+        "4",
+        "3"
+      ],
+      "answer": "3",
+      "compute": "6-3",
+      "solution": "Ruth loses buttons, so we take away. 6 - 3 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 - 3 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.086Z"
+        }
+      }
+    },
+    {
+      "id": "958990f5-cb95-4f6f-92d3-297c129f85f1",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Match a story to a number sentence",
+      "stem": "Raj has 3 stamps. He gets 2 more stamps. Raj writes 3 + 2 = ? for the story. What number is the ?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "The ? is the number of stamps Raj has now. 3 + 2 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.090Z"
+        }
+      }
+    },
+    {
+      "id": "32aa86fd-6f8e-4d3f-900d-10aebd4c5cdb",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "3 balloons are tied to a gate. 1 balloon floats away. How many balloons are tied to the gate now?",
+      "choices": [],
+      "answer": "2",
+      "compute": "3-1",
+      "solution": "3 balloons take away 1 balloon leaves 3 - 1 = 2 balloons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3-1=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.142Z"
+        }
+      }
+    },
+    {
+      "id": "96c9026f-472f-48b8-a520-ed70cfcc03c0",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "There are 5 socks on a line. Tia takes 2 socks off the line. How many socks are on the line now?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5-2",
+      "solution": "Tia takes 2 away from 5. 5 - 2 = 3 socks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5-2=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.161Z"
+        }
+      }
+    },
+    {
+      "id": "e52a92ec-0385-4ba5-bddd-26d78d3802d0",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "There are 3 cups on a table. Pam puts 3 more cups on the table. How many cups are on the table now?",
+      "choices": [],
+      "answer": "6",
+      "compute": "3+3",
+      "solution": "3 cups and 3 more cups is 3 + 3 = 6 cups.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3+3=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.166Z"
+        }
+      }
+    },
+    {
+      "id": "69115219-d842-485c-b439-63032ab01cf0",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "5 birds sit in a tree. 1 more bird lands in the tree. How many birds are in the tree now?",
+      "choices": [],
+      "answer": "6",
+      "compute": "5+1",
+      "solution": "5 birds and 1 more bird is 5 + 1 = 6 birds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+1=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.184Z"
+        }
+      }
+    },
+    {
+      "id": "56b6ff58-7603-42f0-a3cd-9ac2ed94e876",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "A shelf has 6 books. 5 books are big. The rest are small. How many books are small?",
+      "choices": [],
+      "answer": "1",
+      "compute": "6-5",
+      "solution": "Take the big books away from all 6. 6 - 5 = 1 small book.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6-5=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.198Z"
+        }
+      }
+    },
+    {
+      "id": "9de5c5fd-4342-46e7-8708-8d5d536b336d",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Take apart: one part unknown",
+      "stem": "Leo has 3 toy trucks. 1 truck is red. The rest are blue. How many trucks are blue?",
+      "choices": [
+        "1",
+        "4",
+        "3",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "3-1",
+      "solution": "Take the red truck away from all 3 trucks. 3 - 1 = 2 blue trucks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 - 1 = 2 blue.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.259Z"
+        }
+      }
+    },
+    {
+      "id": "369f4daf-5704-479f-9129-38da45f1ddce",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add to: result unknown",
+      "stem": "Kofi has 2 pencils. He finds 2 more pencils. How many pencils does Kofi have now?",
+      "choices": [
+        "2",
+        "4",
+        "0",
+        "5"
+      ],
+      "answer": "4",
+      "compute": "2+2",
+      "solution": "He finds more pencils, so we add. 2 + 2 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2+2=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.368Z"
+        }
+      }
+    },
+    {
+      "id": "6bc36870-c451-499c-a906-fdd35c31945e",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add to: result unknown",
+      "stem": "4 frogs sit on a log. 1 more frog jumps on. How many frogs are on the log now?",
+      "choices": [
+        "5",
+        "4",
+        "3",
+        "6"
+      ],
+      "answer": "5",
+      "compute": "4+1",
+      "solution": "4 frogs and 1 more frog is 4 + 1 = 5 frogs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4+1=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.417Z"
+        }
+      }
+    },
+    {
       "id": "398c29fb-a5e4-4fdc-a5d9-f8e47257acc3",
       "topic_id": "NC17.K.OA.2",
       "difficulty": 2,
@@ -25890,6 +26394,593 @@
       }
     },
     {
+      "id": "c816b9ce-fa15-476b-8594-086adab9aff5",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Take apart: one part unknown",
+      "stem": "Ravi has 8 buttons. 5 buttons are round. The rest are square. How many buttons are square?",
+      "choices": [
+        "3",
+        "13",
+        "5",
+        "4"
+      ],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "Take the round buttons away from all 8. 8 - 5 = 3 square buttons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 5 = 3 square.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.002Z"
+        }
+      }
+    },
+    {
+      "id": "cbf9ba8e-41f9-4e7a-ad8e-71d47626cd1b",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Pete has 9 chalk sticks. He loses 4 chalk sticks. Which number sentence matches the story?",
+      "choices": [
+        "$9 + 4 = 13$",
+        "$5 - 4 = 1$",
+        "$9 - 4 = 5$",
+        "$9 - 5 = 4$"
+      ],
+      "answer": "$9 - 4 = 5$",
+      "compute": null,
+      "solution": "Pete starts with 9 and loses 4, so we take away: 9 - 4 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 4 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Has 9, loses 4, left 5: 9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.012Z"
+        }
+      }
+    },
+    {
+      "id": "c24e2fca-7884-4173-81a6-20c84c4fd394",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "8 cars are parked on a street. 3 cars drive away. How many cars are parked on the street now?",
+      "choices": [
+        "5",
+        "11",
+        "4",
+        "6"
+      ],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "Cars drive away, so we take away. 8 - 3 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.040Z"
+        }
+      }
+    },
+    {
+      "id": "efa0dd62-2b72-41e6-bd78-b3964bcd2a48",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "Maya has 9 grapes on her plate. She eats 5 grapes. How many grapes are on her plate now?",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "Maya eats 5 grapes, so we take 5 away from 9. 9 - 5 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 5 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.050Z"
+        }
+      }
+    },
+    {
+      "id": "db89cea6-c82b-4fcb-a06f-ce84e69811e4",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "A farmer has 6 hens. She buys 4 more hens. How many hens does the farmer have now?",
+      "choices": [],
+      "answer": "10",
+      "compute": "6+4",
+      "solution": "6 hens and 4 more hens is 6 + 4 = 10 hens.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 4 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.054Z"
+        }
+      }
+    },
+    {
+      "id": "ab88b5b9-49bf-4b4b-add9-e9532472a0f8",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Put together: total unknown",
+      "stem": "At a party there are 4 boys and 5 girls. How many children are at the party?",
+      "choices": [
+        "1",
+        "8",
+        "9",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "4+5",
+      "solution": "Put the boys and girls together: 4 + 5 = 9 children.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.057Z"
+        }
+      }
+    },
+    {
+      "id": "f5289cbe-6f8a-4a45-9bc4-7bb7da33a773",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Hana has 3 red cups and 5 blue cups. Which number sentence shows how many cups she has in all?",
+      "choices": [
+        "$5 - 3 = 2$",
+        "$8 - 5 = 3$",
+        "$3 + 8 = 11$",
+        "$3 + 5 = 8$"
+      ],
+      "answer": "$3 + 5 = 8$",
+      "compute": null,
+      "solution": "To find how many in all, put the cups together: 3 + 5 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3 + 5 = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 red + 5 blue: 3 + 5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.059Z"
+        }
+      }
+    },
+    {
+      "id": "883b6d59-ca59-4424-8c65-b556612bf0d8",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Sol writes 8 - 3 = 5. Which story could Sol be telling?",
+      "choices": [
+        "Sol has 8 stickers. He gives 3 away. Now he has 5 stickers.",
+        "Sol has 8 stickers. He gets 3 more. Now he has 11 stickers.",
+        "Sol has 3 stickers. He gets 5 more. Now he has 8 stickers.",
+        "Sol has 5 stickers. He gives 3 away. Now he has 2 stickers."
+      ],
+      "answer": "Sol has 8 stickers. He gives 3 away. Now he has 5 stickers.",
+      "compute": null,
+      "solution": "8 - 3 = 5 means start with 8, take 3 away, and 5 are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Sol has 8 stickers. He gives 3 away. Now he has 5 stickers.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5: has 8, gives 3 away, 5 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.081Z"
+        }
+      }
+    },
+    {
+      "id": "b00a8de1-59d8-4daf-8115-72d425f6570c",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Put together: total unknown",
+      "stem": "Tess sees 3 bees and 6 ants in the grass. How many bugs does Tess see in all?",
+      "choices": [
+        "3",
+        "8",
+        "10",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "3+6",
+      "solution": "Put the bees and ants together: 3 + 6 = 9 bugs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 6 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.088Z"
+        }
+      }
+    },
+    {
+      "id": "b18b9d10-8d95-4e3c-8857-f519ca72528a",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add to: result unknown",
+      "stem": "5 kids are in line for the slide. 3 more kids join the line. How many kids are in line now?",
+      "choices": [
+        "2",
+        "7",
+        "8",
+        "9"
+      ],
+      "answer": "8",
+      "compute": "5+3",
+      "solution": "5 kids and 3 more kids is 5 + 3 = 8 kids.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5+3=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.147Z"
+        }
+      }
+    },
+    {
+      "id": "113cab9b-f7ae-4503-a274-955b845667a3",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Dan has 6 green markers and 2 orange markers. How many markers does Dan have in all?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6+2",
+      "solution": "Put the markers together: 6 + 2 = 8 markers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+2=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.148Z"
+        }
+      }
+    },
+    {
+      "id": "a4c3bebf-5c85-4ed8-a73a-c2ebb0249ce8",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose adding or taking away for a story",
+      "stem": "Which story is solved by taking away?",
+      "choices": [
+        "Ana has 6 pens. She gets 2 more pens. How many pens now?",
+        "Ana has 6 pens and 2 markers. How many things in all?",
+        "Ana has 6 pens. She loses 2 pens. How many pens are left?",
+        "Ana has 2 pens in a cup and 6 in a bag. How many pens in all?"
+      ],
+      "answer": "Ana has 6 pens. She loses 2 pens. How many pens are left?",
+      "compute": null,
+      "solution": "Losing pens means taking away: 6 - 2. The other stories add or put together.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Ana has 6 pens. She loses 2 pens. How many pens are left?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Losing pens is take-away.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.190Z"
+        }
+      }
+    },
+    {
+      "id": "e16d2387-0127-4f27-9225-574c18c4b651",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Take apart: one part unknown",
+      "stem": "There are 9 pets at a shop. 2 pets are rabbits. The rest are hamsters. How many pets are hamsters?",
+      "choices": [
+        "11",
+        "7",
+        "2",
+        "6"
+      ],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "Take the rabbits away from all 9 pets. 9 - 2 = 7 hamsters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-2=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.207Z"
+        }
+      }
+    },
+    {
+      "id": "e89c22da-65d6-40bb-8b5a-70249f7ce93e",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add to: result unknown",
+      "stem": "Bo has 4 trains. For his birthday he gets 5 more trains. How many trains does Bo have now?",
+      "choices": [
+        "1",
+        "8",
+        "10",
+        "9"
+      ],
+      "answer": "9",
+      "compute": "4+5",
+      "solution": "He gets more trains, so we add. 4 + 5 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 5 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.235Z"
+        }
+      }
+    },
+    {
+      "id": "7e5f2404-7fe5-4266-b88e-b6814435d8d1",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "A tray has 7 muffins on the left side and 3 muffins on the right side. How many muffins are on the tray?",
+      "choices": [],
+      "answer": "10",
+      "compute": "7+3",
+      "solution": "Put the muffins together: 7 + 3 = 10 muffins.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 3 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.252Z"
+        }
+      }
+    },
+    {
+      "id": "0e34b11d-953f-4450-84a2-5149d87a9b94",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "A tree has 10 apples on it. 4 apples fall to the ground. How many apples are on the tree now?",
+      "choices": [],
+      "answer": "6",
+      "compute": "10-4",
+      "solution": "Take the 4 fallen apples away from 10. 10 - 4 = 6 apples.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 4 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.298Z"
+        }
+      }
+    },
+    {
+      "id": "b3112b52-0c2e-40d9-ac29-7da49e8fd57d",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Eva writes 6 + 2 = 8. Which story could Eva be telling?",
+      "choices": [
+        "8 birds sit on a wire. 2 birds fly away. Now there are 6 birds.",
+        "6 birds sit on a wire. 2 birds fly away. Now there are 4 birds.",
+        "2 birds sit on a wire. 8 more birds come. Now there are 10 birds.",
+        "6 birds sit on a wire. 2 more birds come. Now there are 8 birds."
+      ],
+      "answer": "6 birds sit on a wire. 2 more birds come. Now there are 8 birds.",
+      "compute": null,
+      "solution": "6 + 2 = 8 means 6 and then 2 more make 8. That is the story where 2 more birds come.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6 birds sit on a wire. 2 more birds come. Now there are 8 birds.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 2 = 8: 6 birds, 2 more come, now 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.304Z"
+        }
+      }
+    },
+    {
+      "id": "7795f6eb-1990-4307-afd4-d135db77ca20",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "Kim has 7 toy bricks. She gives 5 bricks to her sister. How many bricks does Kim have left?",
+      "choices": [
+        "12",
+        "2",
+        "3",
+        "1"
+      ],
+      "answer": "2",
+      "compute": "7-5",
+      "solution": "Kim gives bricks away, so we take away. 7 - 5 = 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7-5=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.348Z"
+        }
+      }
+    },
+    {
       "id": "2eac6e7b-208f-43bd-9d1a-5fdaaf050dfa",
       "topic_id": "NC17.K.OA.2",
       "difficulty": 3,
@@ -26327,6 +27418,622 @@
           "work": "9 - 7 = 2 ants.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.358Z"
+        }
+      }
+    },
+    {
+      "id": "bb1d0c7a-d4a3-4c05-a593-caf68fc96b8a",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose adding or taking away for a story",
+      "stem": "Which story is solved by adding?",
+      "choices": [
+        "Zed has 8 cups. He gives 5 cups away. How many cups now?",
+        "Zed has 8 cups. 5 cups are red. How many are not red?",
+        "Zed has 8 cups. He drops 3 cups. How many cups now?",
+        "Zed has 3 cups. He gets 5 more cups. How many cups now?"
+      ],
+      "answer": "Zed has 3 cups. He gets 5 more cups. How many cups now?",
+      "compute": null,
+      "solution": "Getting more cups means adding: 3 + 5. The other stories take away.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Zed has 3 cups. He gets 5 more cups. How many cups now?",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Only the third story is add-to: 3 + 5 = 8. Others are take-from or take-apart.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.015Z"
+        }
+      }
+    },
+    {
+      "id": "70309e24-31cc-46f3-b3c0-94508faa6358",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "A jar has 10 jellybeans. Lena eats 9 jellybeans. How many jellybeans are left in the jar?",
+      "choices": [],
+      "answer": "1",
+      "compute": "10-9",
+      "solution": "Take 9 away from 10. 10 - 9 = 1 jellybean.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 9 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.057Z"
+        }
+      }
+    },
+    {
+      "id": "650873a7-6d28-471c-9708-77b48f1c4bff",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Put together: total unknown",
+      "stem": "A pet shop has 6 fish and 3 turtles. How many animals does the shop have in all?",
+      "choices": [
+        "3",
+        "9",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "Put the fish and turtles together: 6 + 3 = 9 animals.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6 + 3 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.059Z"
+        }
+      }
+    },
+    {
+      "id": "a07a8885-6b68-4673-aa8d-9167874c4f7f",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Dee has 10 pennies. She spends 6 pennies. Which number sentence matches the story?",
+      "choices": [
+        "$10 - 6 = 4$",
+        "$10 + 6 = 16$",
+        "$6 - 4 = 2$",
+        "$10 - 4 = 6$"
+      ],
+      "answer": "$10 - 6 = 4$",
+      "compute": null,
+      "solution": "Dee starts with 10 and spends 6, so we take away: 10 - 6 = 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10 - 6 = 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Has 10, spends 6, left 4: 10 - 6 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.092Z"
+        }
+      }
+    },
+    {
+      "id": "01871ae2-e698-46ae-9255-553a63d10129",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Pam counts 8 bees and 2 butterflies in a garden. How many insects does she count in all?",
+      "choices": [],
+      "answer": "10",
+      "compute": "8+2",
+      "solution": "Put the bees and butterflies together: 8 + 2 = 10 insects.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.120Z"
+        }
+      }
+    },
+    {
+      "id": "294dbec9-f767-4826-9313-adb19a7a9dc1",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "Fay has 9 stickers on a sheet. She peels off 6 stickers. How many stickers are still on the sheet?",
+      "choices": [
+        "3",
+        "15",
+        "4",
+        "2"
+      ],
+      "answer": "3",
+      "compute": "9-6",
+      "solution": "Fay takes 6 stickers off, so we take away. 9 - 6 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9-6=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.127Z"
+        }
+      }
+    },
+    {
+      "id": "9ecb9bd4-7412-4515-95a1-884324eb3a47",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "Gus has 10 marbles. 8 marbles are in a bag. The rest are in his pocket. How many marbles are in his pocket?",
+      "choices": [],
+      "answer": "2",
+      "compute": "10-8",
+      "solution": "Take the marbles in the bag away from all 10. 10 - 8 = 2 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10-8=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.138Z"
+        }
+      }
+    },
+    {
+      "id": "79675284-fcf5-44e5-8883-96adcafb4255",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "There are 4 dogs and 6 cats at a park. Which number sentence shows how many animals are at the park?",
+      "choices": [
+        "$6 - 4 = 2$",
+        "$4 + 6 = 10$",
+        "$10 - 6 = 4$",
+        "$4 + 4 = 8$"
+      ],
+      "answer": "$4 + 6 = 10$",
+      "compute": null,
+      "solution": "To find how many in all, put the dogs and cats together: 4 + 6 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 + 6 = 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Put together 4 dogs and 6 cats: 4+6=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.146Z"
+        }
+      }
+    },
+    {
+      "id": "19875e73-ba2e-438d-9d09-d0b32307c79b",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "9 ants are on a log. 1 more ant crawls onto the log. How many ants are on the log now?",
+      "choices": [],
+      "answer": "10",
+      "compute": "9+1",
+      "solution": "9 ants and 1 more ant is 9 + 1 = 10 ants.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9+1=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.165Z"
+        }
+      }
+    },
+    {
+      "id": "bef651c0-61aa-491e-86db-02cb10ce293c",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose adding or taking away for a story",
+      "stem": "Mo has 8 apples. 5 apples are red. The rest are green. To find how many apples are green, what do you do?",
+      "choices": [
+        "Take 5 away from 8",
+        "Add 5 to 8",
+        "Add 5 and 3",
+        "Take 8 away from 5"
+      ],
+      "answer": "Take 5 away from 8",
+      "compute": null,
+      "solution": "The green apples are what is left when the red ones are taken away: 8 - 5 = 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Take 5 away from 8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Green = 8-5 = 3: take 5 away from 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.172Z"
+        }
+      }
+    },
+    {
+      "id": "5a0a97cb-f139-4533-8c69-d64e862300dc",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Which story matches $3 + 6 = 9$?",
+      "choices": [
+        "Tom has 9 pens. He gives 3 pens away. Now he has 6 pens.",
+        "Tom has 9 pens. He loses 6 pens. Now he has 3 pens.",
+        "Tom has 6 red pens and 3 blue pens. He has 3 pens in all.",
+        "Tom has 3 red pens and 6 blue pens. He has 9 pens in all."
+      ],
+      "answer": "Tom has 3 red pens and 6 blue pens. He has 9 pens in all.",
+      "compute": null,
+      "solution": "3 + 6 = 9 means 3 and 6 put together make 9 in all.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Tom has 3 red pens and 6 blue pens. He has 9 pens in all.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 red and 6 blue pens make 9 in all.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.174Z"
+        }
+      }
+    },
+    {
+      "id": "b32a26b1-1f16-4321-9a8b-2d9281a3b1df",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a number sentence to a story",
+      "stem": "Which story matches $10 - 4 = 6$?",
+      "choices": [
+        "There are 6 grapes in a bowl. Kim puts in 4 more grapes. Now there are 10 grapes.",
+        "There are 10 grapes in a bowl. Kim eats 6 grapes. Now there are 4 grapes.",
+        "There are 10 grapes in a bowl. Kim eats 4 grapes. Now there are 6 grapes.",
+        "There are 4 grapes in a bowl and 6 grapes in a cup. There are 10 grapes in all."
+      ],
+      "answer": "There are 10 grapes in a bowl. Kim eats 4 grapes. Now there are 6 grapes.",
+      "compute": null,
+      "solution": "10 - 4 = 6 means start with 10, take 4 away, and 6 are left.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "There are 10 grapes in a bowl. Kim eats 4 grapes. Now there are 6 grapes.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 grapes, eats 4, 6 left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.196Z"
+        }
+      }
+    },
+    {
+      "id": "f3a53ec0-60e1-400b-a0dd-b75a73638da3",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add to: result unknown",
+      "stem": "A shelf has 6 toys. Sara puts 3 more toys on the shelf. How many toys are on the shelf now?",
+      "choices": [
+        "3",
+        "9",
+        "8",
+        "10"
+      ],
+      "answer": "9",
+      "compute": "6+3",
+      "solution": "Sara puts more toys on, so we add. 6 + 3 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6+3=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.210Z"
+        }
+      }
+    },
+    {
+      "id": "3487b098-bc57-4c7d-be76-5293be2a2e38",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Take apart: one part unknown",
+      "stem": "Cora has 8 shapes. 3 shapes are circles. The rest are squares. How many shapes are squares?",
+      "choices": [
+        "11",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "Take the circles away from all 8 shapes. 8 - 3 = 5 squares.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 shapes, 3 circles: 8 - 3 = 5 squares.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.222Z"
+        }
+      }
+    },
+    {
+      "id": "53b23a41-bdb9-47e0-9f93-d6d441bcc077",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Take from: result unknown",
+      "stem": "Wes has 8 pennies. He spends 3 pennies. How many pennies does Wes have left?",
+      "choices": [
+        "11",
+        "4",
+        "3",
+        "5"
+      ],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "Wes spends pennies, so we take away. 8 - 3 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 - 3 = 5 pennies left.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.225Z"
+        }
+      }
+    },
+    {
+      "id": "c04998e2-f9ae-4fb2-9eff-7b3b1b59483f",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "A farmer has 10 animals. 3 animals are sheep. The rest are goats. How many animals are goats?",
+      "choices": [],
+      "answer": "7",
+      "compute": "10-3",
+      "solution": "Take the sheep away from all 10 animals. 10 - 3 = 7 goats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 3 = 7 goats.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.317Z"
+        }
+      }
+    },
+    {
+      "id": "4ef80ed9-01a9-4863-8f64-7b2b996f418c",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "Hugo draws 7 stars on a page. Then he draws 3 more stars on the page. How many stars are on the page now?",
+      "choices": [],
+      "answer": "10",
+      "compute": "7+3",
+      "solution": "7 stars and 3 more stars is 7 + 3 = 10 stars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 + 3 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.318Z"
+        }
+      }
+    },
+    {
+      "id": "91974c18-aa05-4d28-82dc-9c82a10c4b6d",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add to: result unknown",
+      "stem": "Pat has 5 shells. He finds 5 more shells on the beach. How many shells does Pat have now?",
+      "choices": [
+        "0",
+        "5",
+        "10",
+        "9"
+      ],
+      "answer": "10",
+      "compute": "5+5",
+      "solution": "He finds more shells, so we add. 5 + 5 = 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 5 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.323Z"
+        }
+      }
+    },
+    {
+      "id": "e7a24c0f-0c05-4ef5-8dc6-ff2507764987",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose adding or taking away for a story",
+      "stem": "Jo has 3 red balls and 5 blue balls. To find how many balls Jo has in all, what do you do?",
+      "choices": [
+        "Take 3 away from 5",
+        "Put 3 and 5 together",
+        "Take 5 away from 3",
+        "Put 3 and 3 together"
+      ],
+      "answer": "Put 3 and 5 together",
+      "compute": null,
+      "solution": "In all means putting the groups together: 3 + 5 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Put 3 and 5 together",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "In all means put together: 3 and 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.330Z"
         }
       }
     },

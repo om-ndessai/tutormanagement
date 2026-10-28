@@ -15788,6 +15788,728 @@
       }
     },
     {
+      "id": "08b219c5-598d-4bea-9706-67108bd5caae",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number that completes the square",
+      "stem": "The trinomial $x^2 + 20x + 100$ equals $(x + n)^2$. What is $n$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20/2",
+      "solution": "In $(x + n)^2 = x^2 + 2nx + n^2$, the middle term $2nx$ must be $20x$, so $n = 10$. Check: $n^2 = 100$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+n)^2 = x^2 + 2nx + n^2; 2n = 20, n = 10, n^2 = 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.017Z"
+        }
+      }
+    },
+    {
+      "id": "9a17ca41-ab6e-4e31-9671-654fc6df721f",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Which is the vertex form of $x^2 + 12x + 40$?",
+      "choices": [
+        "$(x + 6)^2 + 40$",
+        "$(x + 6)^2 + 76$",
+        "$(x + 6)^2 + 4$",
+        "$(x + 12)^2 - 104$"
+      ],
+      "answer": "$(x + 6)^2 + 4$",
+      "compute": null,
+      "solution": "Half of 12 is 6 and $6^2 = 36$. Then $x^2 + 12x + 40 = (x^2 + 12x + 36) + 4 = (x + 6)^2 + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x + 6)^2 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+6)^2 = x^2+12x+36; 40 - 36 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.040Z"
+        }
+      }
+    },
+    {
+      "id": "b078c3fd-d639-4a94-82db-b241d514d1ae",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether a quadratic has a minimum or a maximum",
+      "stem": "Which statement is true about $f(x) = -x^2 + 6x + 1$?",
+      "choices": [
+        "It has a minimum value, because the coefficient of $x^2$ is negative",
+        "It has a minimum value, because the coefficient of $x$ is positive",
+        "It has a maximum value, because the coefficient of $x^2$ is negative",
+        "It has neither a maximum nor a minimum value"
+      ],
+      "answer": "It has a maximum value, because the coefficient of $x^2$ is negative",
+      "compute": null,
+      "solution": "The $x^2$ coefficient is $-1$, so the parabola opens downward and its highest point is a maximum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has a maximum value, because the coefficient of $x^2$ is negative",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Leading coefficient -1 < 0: opens down, so a maximum.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.055Z"
+        }
+      }
+    },
+    {
+      "id": "f427ef1d-5324-4a2a-b1d7-96bd85173a02",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number that completes the square",
+      "stem": "Factoring out 2 gives $2x^2 + 12x = 2(x^2 + 6x)$. What number is added inside the parentheses to complete the square?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(6/2)^2",
+      "solution": "Inside the parentheses we have $x^2 + 6x$. Half of 6 is 3, and $3^2 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(6/2)^2 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.056Z"
+        }
+      }
+    },
+    {
+      "id": "4f368ee2-aa4f-4233-b6db-a71acf64af9b",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "The graph of $y = (x + 2)^2 - 9$ is a parabola that opens upward. What is the $y$-coordinate of its lowest point?",
+      "choices": [],
+      "answer": "-9",
+      "compute": "-9",
+      "solution": "A square is never negative, so $(x + 2)^2 \\ge 0$ and the smallest value of $y$ is $0 - 9 = -9$ (when $x = -2$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex (-2, -9); lowest y is -9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.060Z"
+        }
+      }
+    },
+    {
+      "id": "dd93ede9-76ee-442c-ac56-96b2ae32ccdc",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Decide whether a quadratic has a minimum or a maximum",
+      "stem": "Which function has a maximum value rather than a minimum value?",
+      "choices": [
+        "$f(x) = x^2 - 8x + 3$",
+        "$f(x) = 2x^2 + 8x - 3$",
+        "$f(x) = (x - 8)^2 - 3$",
+        "$f(x) = -x^2 + 8x - 3$"
+      ],
+      "answer": "$f(x) = -x^2 + 8x - 3$",
+      "compute": null,
+      "solution": "A quadratic has a maximum when the coefficient of $x^2$ is negative. Only $-x^2 + 8x - 3$ has a negative $x^2$ coefficient.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = -x^2 + 8x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negative leading coefficient only in -x^2 + 8x - 3; others open up.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.063Z"
+        }
+      }
+    },
+    {
+      "id": "06a63b2d-75a5-4989-ad54-a7271e2481c6",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Write $y = x^2 - 6x + 4$ as $y = (x - 3)^2 + k$. What is $k$?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "4-9",
+      "solution": "$(x - 3)^2 = x^2 - 6x + 9$. To get back to $x^2 - 6x + 4$ we subtract 5, so $k = 4 - 9 = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)^2 = x^2 - 6x + 9; k = 4 - 9 = -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.089Z"
+        }
+      }
+    },
+    {
+      "id": "8b64e8b6-3bbc-4a3b-93eb-f6f50e7ab858",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "A ball's height in feet is $h = -(t - 3)^2 + 16$, where $t$ is the time in seconds. What is the greatest height of the ball, in feet?",
+      "choices": [],
+      "answer": "16",
+      "compute": "16",
+      "solution": "The square is at least 0, so $h \\le 16$. The greatest height is 16 feet (at $t = 3$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(t-3)^2 <= 0, so max 16 at t = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.115Z"
+        }
+      }
+    },
+    {
+      "id": "97a4d280-49cf-429e-ba92-d76c18e59076",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "Complete the square to find the minimum value of $f(x) = x^2 + 10x + 30$.",
+      "choices": [
+        "5",
+        "55",
+        "-5",
+        "30"
+      ],
+      "answer": "5",
+      "compute": "30-25",
+      "solution": "$x^2 + 10x + 30 = (x + 5)^2 + 5$, so the minimum value is 5 (at $x = -5$).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+10x+30=(x+5)^2+5, minimum 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.134Z"
+        }
+      }
+    },
+    {
+      "id": "93626174-d389-4eab-891e-8b5744c0bb91",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "What is the maximum value of $f(x) = -(x + 5)^2 + 2$?",
+      "choices": [
+        "2",
+        "-5",
+        "5",
+        "-2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$(x + 5)^2 \\ge 0$, so $-(x + 5)^2 \\le 0$ and $f(x) \\le 2$. The largest value is 2, at $x = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(x+5)^2<=0 so max is 2 at x=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.137Z"
+        }
+      }
+    },
+    {
+      "id": "503b56cb-5512-4ecd-9ce4-5c952df51563",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find the number that completes the square",
+      "stem": "Which number is added to $x^2 - 4x$ to complete the square?",
+      "choices": [
+        "4",
+        "16",
+        "-2",
+        "8"
+      ],
+      "answer": "4",
+      "compute": "(4/2)^2",
+      "solution": "Half of the coefficient $-4$ is $-2$, and $(-2)^2 = 4$. So $x^2 - 4x + 4 = (x - 2)^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(b/2)^2=(-2)^2=4: x^2-4x+4=(x-2)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.140Z"
+        }
+      }
+    },
+    {
+      "id": "35546cbb-545f-4939-bf69-54062add86ee",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the minimum value of $f(x) = x^2 - 4x + 1$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "1-4",
+      "solution": "$x^2 - 4x + 1 = (x - 2)^2 - 3$. The smallest value is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-4x+1=(x-2)^2-3, minimum -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.150Z"
+        }
+      }
+    },
+    {
+      "id": "9f02cc98-a8a7-4291-960d-e6324e5b6af9",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Which expression is equal to $x^2 - 2x + 7$?",
+      "choices": [
+        "$(x - 1)^2 + 8$",
+        "$(x - 1)^2 + 6$",
+        "$(x + 1)^2 + 6$",
+        "$(x - 1)^2 + 7$"
+      ],
+      "answer": "$(x - 1)^2 + 6$",
+      "compute": null,
+      "solution": "$(x - 1)^2 = x^2 - 2x + 1$, which is 6 less than $x^2 - 2x + 7$. So $x^2 - 2x + 7 = (x - 1)^2 + 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 1)^2 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-2x+1+6=(x-1)^2+6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.184Z"
+        }
+      }
+    },
+    {
+      "id": "29dc3b97-9a8c-482b-a2dc-6c04a02a168e",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "A bakery's daily profit, in dollars, is $P = -(n - 40)^2 + 250$, where $n$ is the number of loaves baked. How many loaves give the greatest profit?",
+      "choices": [],
+      "answer": "40",
+      "compute": "40",
+      "solution": "The profit is largest when $(n - 40)^2 = 0$, that is $n = 40$ loaves.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex at n=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.187Z"
+        }
+      }
+    },
+    {
+      "id": "e9206f36-1053-4f4b-8f30-1a364c6d3488",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Which equation shows $y = x^2 - 8x + 16$ as a perfect square?",
+      "choices": [
+        "$y = (x + 4)^2$",
+        "$y = (x - 8)^2$",
+        "$y = (x - 4)^2 + 16$",
+        "$y = (x - 4)^2$"
+      ],
+      "answer": "$y = (x - 4)^2$",
+      "compute": null,
+      "solution": "Half of $-8$ is $-4$ and $(-4)^2 = 16$, so $x^2 - 8x + 16 = (x - 4)^2$ with nothing left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = (x - 4)^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-8x+16=(x-4)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.189Z"
+        }
+      }
+    },
+    {
+      "id": "5907a2ff-b8c7-4451-9022-b2af1c95bdbb",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the number that completes the square",
+      "stem": "A student is completing the square for $x^2 + 16x$. What number does the student add?",
+      "choices": [],
+      "answer": "64",
+      "compute": "(16/2)^2",
+      "solution": "Half of 16 is 8, and $8^2 = 64$. Adding 64 gives $x^2 + 16x + 64 = (x + 8)^2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(16/2)^2=64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.192Z"
+        }
+      }
+    },
+    {
+      "id": "450c7615-1435-40e8-aa45-3184610cacdd",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "Which function has a minimum value of 4?",
+      "choices": [
+        "$f(x) = (x - 4)^2 + 1$",
+        "$f(x) = (x + 1)^2 + 4$",
+        "$f(x) = -(x + 1)^2 + 4$",
+        "$f(x) = (x + 4)^2$"
+      ],
+      "answer": "$f(x) = (x + 1)^2 + 4$",
+      "compute": null,
+      "solution": "$(x + 1)^2 + 4$ opens upward and its lowest value is 4. The one with the minus sign opens downward (it has a maximum of 4), and the other two have minimum values 1 and 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x + 1)^2 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)^2+4 has minimum 4; first has max 4; third min 1; fourth min 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.199Z"
+        }
+      }
+    },
+    {
+      "id": "b97c9a52-9bf5-465e-a7bd-98b25458033f",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Compare the extreme values of two quadratics",
+      "stem": "Let $f(x) = (x - 1)^2 + 4$ and $g(x) = (x + 3)^2 + 2$. Which statement is true?",
+      "choices": [
+        "The minimum value of $f$ is less than the minimum value of $g$",
+        "Both functions have the same minimum value",
+        "The minimum value of $g$ is less than the minimum value of $f$",
+        "$f$ has a minimum value but $g$ has a maximum value"
+      ],
+      "answer": "The minimum value of $g$ is less than the minimum value of $f$",
+      "compute": null,
+      "solution": "The minimum of $f$ is 4 and the minimum of $g$ is 2, so $g$ has the lower minimum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The minimum value of $g$ is less than the minimum value of $f$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Min f=4, min g=2; g is less.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.217Z"
+        }
+      }
+    },
+    {
+      "id": "611a5c93-2345-43ad-8757-c63185164e4d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the minimum value of $f(x) = x^2 + 6x + 10$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "10-9",
+      "solution": "$x^2 + 6x + 10 = (x + 3)^2 + 1$. The square is at least 0, so the minimum value is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + 6x + 10 = (x + 3)^2 + 1; minimum 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.248Z"
+        }
+      }
+    },
+    {
+      "id": "945e9063-3950-4a34-9420-28652c37a4ac",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "At what value of $x$ does $f(x) = (x + 9)^2 + 1$ have its minimum?",
+      "choices": [],
+      "answer": "-9",
+      "compute": "-9",
+      "solution": "The squared part is smallest (0) when $x + 9 = 0$, that is $x = -9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x + 9)^2 is least at x = -9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.263Z"
+        }
+      }
+    },
+    {
+      "id": "58c31352-fb7b-4f21-9cb0-6110fc2e081e",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "What is the minimum value of $f(x) = 3(x - 1)^2 + 2$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$3(x - 1)^2 \\ge 0$, with 0 when $x = 1$. So the smallest value of $f$ is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex form, a=3>0, min is k=2 at x=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.347Z"
+        }
+      }
+    },
+    {
+      "id": "6d6e87ff-8f6c-46cc-9874-59aa15b0e1ef",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "Which point is the highest point on the graph of $y = -(x - 2)^2 + 11$?",
+      "choices": [
+        "$(-2, 11)$",
+        "$(2, 11)$",
+        "$(2, -11)$",
+        "$(11, 2)$"
+      ],
+      "answer": "$(2, 11)$",
+      "compute": null,
+      "solution": "The maximum value is 11, reached when $x - 2 = 0$, that is $x = 2$. The point is $(2, 11)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(2, 11)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex (2,11), opens down, so highest point (2,11).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.353Z"
+        }
+      }
+    },
+    {
+      "id": "bc5c6ed9-f59d-42d2-8bac-679f341f69cc",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "The function $f(x) = x^2 + 14x + 50$ can be written as $f(x) = (x + 7)^2 + 1$. At what value of $x$ does $f$ have its minimum value?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "-7",
+      "solution": "The minimum happens when $(x + 7)^2 = 0$, so $x = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+7)^2+1 min at x=-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.424Z"
+        }
+      }
+    },
+    {
       "id": "ac4828b0-bd84-431b-8e26-4cbc25a5a84d",
       "topic_id": "NC17.M2.A-SSE.3",
       "difficulty": 2,
@@ -16244,6 +16966,573 @@
           "work": "x^2+18x+81-81+70 = (x+9)^2 - 11; h = 9, k = -11, h + k = -2.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.379Z"
+        }
+      }
+    },
+    {
+      "id": "01b42883-ea67-48a3-8cfc-1af0d7d8fe5d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the minimum value of $f(x) = x^2 + 14x + 38$?",
+      "choices": [],
+      "answer": "-11",
+      "compute": "38-49",
+      "solution": "$x^2 + 14x + 38 = (x + 7)^2 + 38 - 49 = (x + 7)^2 - 11$. The minimum value is $-11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+14x+38 = (x+7)^2 - 49 + 38 = (x+7)^2 - 11. Minimum -11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.053Z"
+        }
+      }
+    },
+    {
+      "id": "618d8cc5-8fd8-44b3-bdcc-a89588d25a71",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient not 1)",
+      "stem": "Write $2x^2 + 12x + 5$ as $2(x + 3)^2 + k$. What is $k$?",
+      "choices": [],
+      "answer": "-13",
+      "compute": "5-2*9",
+      "solution": "$2(x + 3)^2 = 2x^2 + 12x + 18$. To get $2x^2 + 12x + 5$ we subtract 13, so $k = 5 - 18 = -13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x+3)^2 = 2x^2 + 12x + 18; k = 5 - 18 = -13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.055Z"
+        }
+      }
+    },
+    {
+      "id": "6e93d5ce-5165-470b-926b-b5a80f7690d3",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "A diver's height above the water, in meters, is $h = -t^2 + 4t + 12$, where $t$ is the time in seconds. What is the diver's greatest height, in meters?",
+      "choices": [],
+      "answer": "16",
+      "compute": "4+12",
+      "solution": "$-t^2 + 4t + 12 = -(t^2 - 4t + 4) + 4 + 12 = -(t - 2)^2 + 16$. The greatest height is 16 meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "h = -(t^2 - 4t) + 12 = -(t-2)^2 + 4 + 12 = -(t-2)^2 + 16. Greatest height 16 at t = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.065Z"
+        }
+      }
+    },
+    {
+      "id": "1c6bf13b-2f95-4dfd-9179-05d2eee504bf",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "Which statement is true about $f(x) = 3(x - 1)^2 - 4$?",
+      "choices": [
+        "It has a minimum value of $1$ at $x = -4$",
+        "It has a maximum value of $-4$ at $x = 1$",
+        "It has a minimum value of $-4$ at $x = -1$",
+        "It has a minimum value of $-4$ at $x = 1$"
+      ],
+      "answer": "It has a minimum value of $-4$ at $x = 1$",
+      "compute": null,
+      "solution": "The 3 is positive, so the parabola opens upward. $3(x - 1)^2$ is 0 at $x = 1$, so the minimum is $-4$ there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has a minimum value of $-4$ at $x = 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a = 3 > 0, vertex (1, -4): minimum -4 at x = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.092Z"
+        }
+      }
+    },
+    {
+      "id": "e53ae0dd-695a-401d-939d-1d89fdb17b6d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Which expression is equivalent to $x^2 - 14x + 60$?",
+      "choices": [
+        "$(x - 7)^2 + 11$",
+        "$(x - 7)^2 + 109$",
+        "$(x + 7)^2 + 11$",
+        "$(x - 7)^2 - 11$"
+      ],
+      "answer": "$(x - 7)^2 + 11$",
+      "compute": null,
+      "solution": "Half of $-14$ is $-7$ and $(-7)^2 = 49$. So $x^2 - 14x + 60 = (x^2 - 14x + 49) + 11 = (x - 7)^2 + 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 7)^2 + 11$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-7)^2 = x^2 - 14x + 49; 60 - 49 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.099Z"
+        }
+      }
+    },
+    {
+      "id": "90d1f434-40eb-4fc9-9e0f-36d83f7914d9",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Describe the outputs of a quadratic",
+      "stem": "Which describes all the outputs of $f(x) = x^2 - 8x + 19$?",
+      "choices": [
+        "$f(x) \\ge 3$",
+        "$f(x) \\le 3$",
+        "$f(x) \\ge 19$",
+        "$f(x) \\ge -3$"
+      ],
+      "answer": "$f(x) \\ge 3$",
+      "compute": null,
+      "solution": "$x^2 - 8x + 19 = (x - 4)^2 + 3$. The square is at least 0, so every output is at least 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)^2 - 16 + 19 = (x-4)^2 + 3, so f(x) >= 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.120Z"
+        }
+      }
+    },
+    {
+      "id": "3967ad47-cb5a-435e-b841-661e1df66d4f",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient not 1)",
+      "stem": "Which expression is equivalent to $2x^2 - 16x + 30$?",
+      "choices": [
+        "$2(x - 4)^2 + 14$",
+        "$2(x + 4)^2 - 2$",
+        "$2(x - 4)^2 - 2$",
+        "$2(x - 4)^2 + 30$"
+      ],
+      "answer": "$2(x - 4)^2 - 2$",
+      "compute": null,
+      "solution": "$2x^2 - 16x + 30 = 2(x^2 - 8x) + 30 = 2(x^2 - 8x + 16) - 32 + 30 = 2(x - 4)^2 - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2(x - 4)^2 - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x^2-8x)+30=2(x-4)^2-32+30=2(x-4)^2-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.164Z"
+        }
+      }
+    },
+    {
+      "id": "d32bb86b-940d-44f4-98e4-216f8170855d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "The cost, in dollars, of making $x$ items is $C = x^2 - 20x + 150$. How many items give the lowest cost?",
+      "choices": [],
+      "answer": "10",
+      "compute": "20/2",
+      "solution": "$x^2 - 20x + 150 = (x - 10)^2 + 50$. The cost is lowest when $x = 10$ items.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C=(x-10)^2+50, lowest at x=10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.165Z"
+        }
+      }
+    },
+    {
+      "id": "a78eeeed-71c4-4491-9676-06fac7fd0da4",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "What is the greatest value of $f(x) = -2(x + 4)^2 + 15$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "15",
+      "solution": "$-2(x + 4)^2 \\le 0$, so $f(x) \\le 15$. The greatest value is 15.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex form with a=-2<0: maximum is 15 at x=-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.227Z"
+        }
+      }
+    },
+    {
+      "id": "2b1d5d7a-7cb6-4b17-9268-09ca7022aded",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "At what value of $x$ does $f(x) = -x^2 - 10x + 3$ reach its maximum?",
+      "choices": [
+        "$x = 5$",
+        "$x = 28$",
+        "$x = -5$",
+        "$x = -10$"
+      ],
+      "answer": "$x = -5$",
+      "compute": null,
+      "solution": "$-x^2 - 10x + 3 = -(x^2 + 10x + 25) + 25 + 3 = -(x + 5)^2 + 28$. The maximum (28) occurs at $x = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = -(-10)/(2*(-1)) = -5. f = -(x+5)^2 + 28.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.281Z"
+        }
+      }
+    },
+    {
+      "id": "4057504b-ab71-40ad-b36b-6fe1de4be7fa",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the maximum value of $f(x) = -x^2 + 10x - 18$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "25-18",
+      "solution": "$-x^2 + 10x - 18 = -(x^2 - 10x + 25) + 25 - 18 = -(x - 5)^2 + 7$. The maximum value is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(x^2 - 10x) - 18 = -(x - 5)^2 + 25 - 18 = -(x-5)^2 + 7. Maximum 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.291Z"
+        }
+      }
+    },
+    {
+      "id": "415f5b6e-53c5-46a7-a005-b07195f9f51c",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the number that completes the square",
+      "stem": "For which value of $c$ is $x^2 - 9x + c$ a perfect square trinomial?",
+      "choices": [
+        "$\\frac{81}{2}$",
+        "$\\frac{9}{2}$",
+        "$81$",
+        "$\\frac{81}{4}$"
+      ],
+      "answer": "$\\frac{81}{4}$",
+      "compute": null,
+      "solution": "Half of $-9$ is $-\\frac{9}{2}$, and $\\left(-\\frac{9}{2}\\right)^2 = \\frac{81}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{81}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c = (9/2)^2 = 81/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.308Z"
+        }
+      }
+    },
+    {
+      "id": "f823f0b1-6996-4f1c-8395-53a0c85774d6",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient not 1)",
+      "stem": "What is the maximum value of $f(x) = -2x^2 + 12x - 7$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "18-7",
+      "solution": "$-2x^2 + 12x - 7 = -2(x^2 - 6x + 9) + 18 - 7 = -2(x - 3)^2 + 11$. The maximum value is 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2(x^2 - 6x) - 7 = -2(x - 3)^2 + 18 - 7 = -2(x-3)^2 + 11. Maximum 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.334Z"
+        }
+      }
+    },
+    {
+      "id": "a83c9573-7345-4f37-8b0c-d9f69f712b0d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Compare the extreme values of two quadratics",
+      "stem": "Let $f(x) = x^2 - 6x + 13$ and $g(x) = -x^2 + 4x + 1$. What is the minimum value of $f$ plus the maximum value of $g$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "4+5",
+      "solution": "$f(x) = (x - 3)^2 + 4$ has minimum 4. $g(x) = -(x - 2)^2 + 5$ has maximum 5. The sum is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = (x-3)^2+4, min 4. g = -(x-2)^2+5, max 5. Sum 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.340Z"
+        }
+      }
+    },
+    {
+      "id": "0d34283d-4c2b-4166-9602-d190ade9b483",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Which expression is equal to $-x^2 + 6x - 5$?",
+      "choices": [
+        "$-(x - 3)^2 - 4$",
+        "$-(x - 3)^2 + 4$",
+        "$-(x + 3)^2 + 4$",
+        "$-(x - 3)^2 + 14$"
+      ],
+      "answer": "$-(x - 3)^2 + 4$",
+      "compute": null,
+      "solution": "Factor out $-1$: $-(x^2 - 6x + 5) = -[(x - 3)^2 - 4] = -(x - 3)^2 + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-(x - 3)^2 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(x^2-6x)-5 = -(x-3)^2+9-5 = -(x-3)^2+4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.351Z"
+        }
+      }
+    },
+    {
+      "id": "5139e0aa-3de1-47cc-8e61-f6e92a7c686c",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Decide whether a quadratic has a minimum or a maximum",
+      "stem": "Which statement is true about $f(x) = 4x - x^2 - 1$?",
+      "choices": [
+        "It has a maximum value, because the $x^2$ term is negative",
+        "It has a minimum value, because the first term is positive",
+        "It has a minimum value, because the $x^2$ term is negative",
+        "It has a minimum value, because the constant term is negative"
+      ],
+      "answer": "It has a maximum value, because the $x^2$ term is negative",
+      "compute": null,
+      "solution": "In standard form $f(x) = -x^2 + 4x - 1$. The $x^2$ coefficient is negative, so the parabola opens downward and has a maximum.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has a maximum value, because the $x^2$ term is negative",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = -x^2+4x-1, leading coefficient negative, opens down, has a maximum.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.362Z"
+        }
+      }
+    },
+    {
+      "id": "28784947-d1ab-450d-9d0e-460be36af52a",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the minimum value of $f(x) = x^2 - 16x + 70$?",
+      "choices": [
+        "-6",
+        "6",
+        "70",
+        "134"
+      ],
+      "answer": "6",
+      "compute": "70-64",
+      "solution": "$x^2 - 16x + 70 = (x - 8)^2 + 70 - 64 = (x - 8)^2 + 6$. The minimum value is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-8)^2 -64+70 = (x-8)^2+6; min 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.375Z"
+        }
+      }
+    },
+    {
+      "id": "c0be42a4-1bf9-4743-9fea-6c823835bc81",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient not 1)",
+      "stem": "What is the minimum value of $f(x) = 3x^2 - 6x + 8$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "$3x^2 - 6x + 8 = 3(x^2 - 2x + 1) - 3 + 8 = 3(x - 1)^2 + 5$. The minimum value is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x^2-2x)+8 = 3(x-1)^2-3+8 = 3(x-1)^2+5; min 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.401Z"
         }
       }
     },
@@ -16777,6 +18066,510 @@
           "work": "-(x^2 - 8x) + k = -(x-4)^2 + 16 + k; max 16 + k = 20, k = 4.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.372Z"
+        }
+      }
+    },
+    {
+      "id": "96ac29c6-c043-4dee-8eab-0bcecec02771",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number that completes the square",
+      "stem": "What number must be added to $x^2 - \\frac{2}{3}x$ to complete the square? Give the answer as a fraction.",
+      "choices": [],
+      "answer": "1/9",
+      "compute": "(1/3)^2",
+      "solution": "Half of $-\\frac{2}{3}$ is $-\\frac{1}{3}$, and $\\left(-\\frac{1}{3}\\right)^2 = \\frac{1}{9}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Half of -2/3 is -1/3; (-1/3)^2 = 1/9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.052Z"
+        }
+      }
+    },
+    {
+      "id": "11e83a3e-56e7-46d5-b17a-117fbe2514b8",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the maximum value of $f(x) = -x^2 + 7x - 6$? Give the answer as a fraction or decimal.",
+      "choices": [],
+      "answer": "25/4",
+      "compute": "49/4-6",
+      "solution": "$-x^2 + 7x - 6 = -\\left(x - \\frac{7}{2}\\right)^2 + \\frac{49}{4} - 6 = -\\left(x - \\frac{7}{2}\\right)^2 + \\frac{25}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(x^2 - 7x) - 6 = -(x - 3.5)^2 + 12.25 - 6 = -(x-3.5)^2 + 6.25. Max 25/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.098Z"
+        }
+      }
+    },
+    {
+      "id": "c00a9c6d-953a-4799-8ab1-5d824b61df0f",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Decide whether a quadratic has a minimum or a maximum",
+      "stem": "Which statement is true about $f(x) = (3 - x)(x + 1)$?",
+      "choices": [
+        "It has a minimum value of 4",
+        "It has a maximum value of 4",
+        "It has a maximum value of 3",
+        "It has a minimum value of $-4$"
+      ],
+      "answer": "It has a maximum value of 4",
+      "compute": null,
+      "solution": "Expanding gives $f(x) = -x^2 + 2x + 3 = -(x - 1)^2 + 4$. The $x^2$ coefficient is negative, so there is a maximum, and it is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It has a maximum value of 4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3-x)(x+1)=-x^2+2x+3=-(x-1)^2+4. Opens down, maximum 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.149Z"
+        }
+      }
+    },
+    {
+      "id": "a5d49826-6a18-45ed-8a57-50e2fe10fa0e",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient 1)",
+      "stem": "What is the minimum value of $f(x) = x^2 + 3x + 5$? Give the answer as a fraction.",
+      "choices": [],
+      "answer": "11/4",
+      "compute": "5-9/4",
+      "solution": "$x^2 + 3x + 5 = \\left(x + \\frac{3}{2}\\right)^2 + 5 - \\frac{9}{4} = \\left(x + \\frac{3}{2}\\right)^2 + \\frac{11}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+3/2)^2+5-9/4=(x+3/2)^2+11/4. Minimum 11/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.203Z"
+        }
+      }
+    },
+    {
+      "id": "085d5535-469b-4a06-b9df-31d5afe9e26c",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient not 1)",
+      "stem": "Which expression is equivalent to $-2x^2 + 8x - 3$?",
+      "choices": [
+        "$-2(x - 2)^2 + 1$",
+        "$-2(x - 2)^2 - 11$",
+        "$-2(x - 2)^2 + 5$",
+        "$-2(x + 2)^2 + 5$"
+      ],
+      "answer": "$-2(x - 2)^2 + 5$",
+      "compute": null,
+      "solution": "$-2x^2 + 8x - 3 = -2(x^2 - 4x + 4) + 8 - 3 = -2(x - 2)^2 + 5$. Note the 4 inside the parentheses is multiplied by $-2$, so it adds 8 outside.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2(x - 2)^2 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2(x^2-4x)-3=-2(x-2)^2+8-3=-2(x-2)^2+5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.204Z"
+        }
+      }
+    },
+    {
+      "id": "1863146d-db27-43c9-8900-204f0b8f3122",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Which expression is equivalent to $x^2 + 5x + 1$?",
+      "choices": [
+        "$\\left(x + \\frac{5}{2}\\right)^2 - \\frac{25}{4}$",
+        "$\\left(x + \\frac{5}{2}\\right)^2 - \\frac{21}{4}$",
+        "$\\left(x + \\frac{5}{2}\\right)^2 + \\frac{21}{4}$",
+        "$(x + 5)^2 - 24$"
+      ],
+      "answer": "$\\left(x + \\frac{5}{2}\\right)^2 - \\frac{21}{4}$",
+      "compute": null,
+      "solution": "Half of 5 is $\\frac{5}{2}$ and its square is $\\frac{25}{4}$. So $x^2 + 5x + 1 = \\left(x^2 + 5x + \\frac{25}{4}\\right) + 1 - \\frac{25}{4} = \\left(x + \\frac{5}{2}\\right)^2 - \\frac{21}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\left(x + \\frac{5}{2}\\right)^2 - \\frac{21}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+5/2)^2+1-25/4=(x+5/2)^2-21/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.206Z"
+        }
+      }
+    },
+    {
+      "id": "9aaba968-1b76-462d-9b82-5f18748683e4",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient not 1)",
+      "stem": "Which expression is equivalent to $4x^2 + 12x + 5$?",
+      "choices": [
+        "$4\\left(x + \\frac{3}{2}\\right)^2 + 14$",
+        "$4(x + 3)^2 - 31$",
+        "$4\\left(x + \\frac{3}{2}\\right)^2 - 9$",
+        "$4\\left(x + \\frac{3}{2}\\right)^2 - 4$"
+      ],
+      "answer": "$4\\left(x + \\frac{3}{2}\\right)^2 - 4$",
+      "compute": null,
+      "solution": "$4x^2 + 12x + 5 = 4(x^2 + 3x) + 5 = 4\\left(x^2 + 3x + \\frac{9}{4}\\right) - 9 + 5 = 4\\left(x + \\frac{3}{2}\\right)^2 - 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4\\left(x + \\frac{3}{2}\\right)^2 - 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4(x^2+3x)+5=4(x+3/2)^2-9+5=4(x+3/2)^2-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.212Z"
+        }
+      }
+    },
+    {
+      "id": "265c4099-5512-4302-be3d-d5ae8cf549e7",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "The sum of two numbers is 12. What is the greatest possible product of the two numbers?",
+      "choices": [],
+      "answer": "36",
+      "compute": "6*6",
+      "solution": "If one number is $x$, the other is $12 - x$, and the product is $x(12 - x) = -x^2 + 12x = -(x - 6)^2 + 36$. The greatest product is 36.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "36",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(12-x)=-(x-6)^2+36, max 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.215Z"
+        }
+      }
+    },
+    {
+      "id": "a2114dc6-df8e-4795-8c1a-8e811a66687d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "A ball is launched upward from a platform. Its height in meters is $h = -5t^2 + 20t + 2$, where $t$ is the time in seconds. Which statement is true?",
+      "choices": [
+        "The greatest height is 22 meters, reached at $t = 4$ seconds",
+        "The greatest height is 2 meters, reached at $t = 0$ seconds",
+        "The greatest height is 6 meters, reached at $t = 2$ seconds",
+        "The greatest height is 22 meters, reached at $t = 2$ seconds"
+      ],
+      "answer": "The greatest height is 22 meters, reached at $t = 2$ seconds",
+      "compute": null,
+      "solution": "$-5t^2 + 20t + 2 = -5(t^2 - 4t + 4) + 20 + 2 = -5(t - 2)^2 + 22$. The greatest height is 22 meters at $t = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The greatest height is 22 meters, reached at $t = 2$ seconds",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Vertex at t = -20/(2*-5) = 2; h(2) = -20 + 40 + 2 = 22. Greatest height 22 m at t = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.237Z"
+        }
+      }
+    },
+    {
+      "id": "feb16cc1-7548-44c9-a607-4819d723167f",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "At what value of $x$ does $f(x) = -2x^2 + 6x + 1$ reach its maximum? Give the answer as a fraction or decimal.",
+      "choices": [],
+      "answer": "3/2",
+      "compute": "6/(2*2)",
+      "solution": "$-2x^2 + 6x + 1 = -2\\left(x^2 - 3x + \\frac{9}{4}\\right) + \\frac{9}{2} + 1 = -2\\left(x - \\frac{3}{2}\\right)^2 + \\frac{11}{2}$. The maximum is at $x = \\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = -b/(2a) = -6/(-4) = 3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.280Z"
+        }
+      }
+    },
+    {
+      "id": "306eaee0-fc84-456e-870c-4c1b962c9c09",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Work backward from the minimum or maximum value",
+      "stem": "The function $f(x) = x^2 + bx + c$ has a minimum value of $-5$ at $x = 3$. Which function is $f$?",
+      "choices": [
+        "$f(x) = x^2 - 6x + 4$",
+        "$f(x) = x^2 + 6x + 4$",
+        "$f(x) = x^2 - 6x - 5$",
+        "$f(x) = x^2 - 3x + 4$"
+      ],
+      "answer": "$f(x) = x^2 - 6x + 4$",
+      "compute": null,
+      "solution": "The vertex form is $f(x) = (x - 3)^2 - 5 = x^2 - 6x + 9 - 5 = x^2 - 6x + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = x^2 - 6x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = (x - 3)^2 - 5 = x^2 - 6x + 9 - 5 = x^2 - 6x + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.293Z"
+        }
+      }
+    },
+    {
+      "id": "8434b8d9-b53b-4fb5-98c8-cfa3652085d3",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient not 1)",
+      "stem": "Write $3x^2 + 18x + 20$ as $3(x + 3)^2 + k$. What is $k$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "20-3*9",
+      "solution": "$3(x + 3)^2 = 3x^2 + 18x + 27$, so $k = 20 - 27 = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x + 3)^2 = 3x^2 + 18x + 27; 20 - 27 = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.296Z"
+        }
+      }
+    },
+    {
+      "id": "2ef51562-567b-4f91-9874-f153656bddf6",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Read the minimum or maximum value from vertex form",
+      "stem": "Which statement is true about $f(x) = -\\frac{1}{2}(x - 6)^2 - 3$?",
+      "choices": [
+        "Its maximum value is $-3$, at $x = 6$",
+        "Its minimum value is $-3$, at $x = 6$",
+        "Its maximum value is $-3$, at $x = -6$",
+        "Its maximum value is $6$, at $x = -3$"
+      ],
+      "answer": "Its maximum value is $-3$, at $x = 6$",
+      "compute": null,
+      "solution": "The coefficient $-\\frac{1}{2}$ is negative, so the parabola opens downward. The square is 0 at $x = 6$, giving the maximum value $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Its maximum value is $-3$, at $x = 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a = -1/2 < 0, vertex (6, -3): maximum -3 at x = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.307Z"
+        }
+      }
+    },
+    {
+      "id": "3edbb0d8-46b4-41df-a428-ce4c1686a9f8",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Compare the extreme values of two quadratics",
+      "stem": "Let $f(x) = x^2 + 6x + c$ and $g(x) = -x^2 + 4x + 7$. For what value of $c$ is the minimum value of $f$ equal to the maximum value of $g$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "11+9",
+      "solution": "$g(x) = -(x - 2)^2 + 11$ has maximum 11. $f(x) = (x + 3)^2 + c - 9$ has minimum $c - 9$. Setting $c - 9 = 11$ gives $c = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "min f = c - 9 (at x = -3); max g at x = 2: -4 + 8 + 7 = 11. c - 9 = 11, c = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.321Z"
+        }
+      }
+    },
+    {
+      "id": "f4f09e98-df20-42e8-9a13-d5b064247dd7",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the minimum or maximum value by completing the square (leading coefficient not 1)",
+      "stem": "What is the minimum value of $f(x) = 2x^2 + 10x + 7$?",
+      "choices": [
+        "$\\frac{3}{4}$",
+        "$-\\frac{5}{2}$",
+        "$-\\frac{11}{2}$",
+        "$\\frac{11}{2}$"
+      ],
+      "answer": "$-\\frac{11}{2}$",
+      "compute": null,
+      "solution": "$2x^2 + 10x + 7 = 2\\left(x^2 + 5x + \\frac{25}{4}\\right) - \\frac{25}{2} + 7 = 2\\left(x + \\frac{5}{2}\\right)^2 - \\frac{11}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{11}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x^2+5x)+7 = 2(x+5/2)^2 - 25/2 + 7 = 2(x+5/2)^2 - 11/2. Min -11/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.339Z"
+        }
+      }
+    },
+    {
+      "id": "0824b03c-acb4-45bf-95be-5d774aa90432",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve a maximum or minimum problem in context",
+      "stem": "The revenue, in dollars, from selling a toy at a price of $x$ dollars is $R(x) = x(60 - 3x)$. What is the greatest possible revenue, in dollars?",
+      "choices": [],
+      "answer": "300",
+      "compute": "3*100",
+      "solution": "$R(x) = -3x^2 + 60x = -3(x^2 - 20x + 100) + 300 = -3(x - 10)^2 + 300$. The greatest revenue is 300 dollars, at a price of 10 dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "300",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "R = -3x^2+60x = -3(x-10)^2+300; max 300.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.425Z"
         }
       }
     },

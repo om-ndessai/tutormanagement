@@ -16004,6 +16004,539 @@
       }
     },
     {
+      "id": "e696d100-1023-4f87-a3bc-e89d89642e9f",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zeros, x-intercepts and solutions",
+      "stem": "Which are the solutions of $x(x - 3) = 0$?",
+      "choices": [
+        "$3$ and $-3$",
+        "$0$ and $-3$",
+        "$0$ and $3$",
+        "$1$ and $3$"
+      ],
+      "answer": "$0$ and $3$",
+      "compute": null,
+      "solution": "Either $x = 0$ or $x - 3 = 0$, so $x = 0$ or $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0$ and $3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = 0 or x - 3 = 0, so 0 and 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.081Z"
+        }
+      }
+    },
+    {
+      "id": "b53c3bbc-2b7f-42c4-af6b-b35e5904cabf",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "What is the largest zero of $p(x) = x(x + 5)(x - 3)$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The zeros are 0, $-5$ and 3. The largest is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 0, -5, 3. Largest 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.086Z"
+        }
+      }
+    },
+    {
+      "id": "fc94b151-52dd-4167-9697-0a062f30c9f2",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Test whether a number is a zero",
+      "stem": "Which of these numbers is a zero of $f(x) = x^3 - 4x$?",
+      "choices": [
+        "4",
+        "1",
+        "8",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$f(2) = 8 - 8 = 0$. The others give $f(4) = 48$, $f(1) = -3$ and $f(8) = 480$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3-4x=x(x-2)(x+2); zeros 0,2,-2. Of the options only 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.131Z"
+        }
+      }
+    },
+    {
+      "id": "4de7852b-3a28-47f3-84eb-4db3f65f81bd",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor theorem: factors and values",
+      "stem": "If $x - 5$ is a factor of a polynomial $q(x)$, which statement must be true?",
+      "choices": [
+        "$q(-5) = 0$",
+        "$q(0) = 5$",
+        "$q(5) = 0$",
+        "$q(5) = 5$"
+      ],
+      "answer": "$q(5) = 0$",
+      "compute": null,
+      "solution": "The factor $x - 5$ is 0 when $x = 5$, so the whole product $q(5)$ is 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$q(5) = 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor theorem: x-5 a factor means q(5)=0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.133Z"
+        }
+      }
+    },
+    {
+      "id": "b62a9aba-867b-44fe-a1f8-5856d888499c",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor to find zeros",
+      "stem": "Which are the zeros of $f(x) = x^2 - x - 12$?",
+      "choices": [
+        "$4$ and $-3$",
+        "$-4$ and $3$",
+        "$4$ and $3$",
+        "$12$ and $-1$"
+      ],
+      "answer": "$4$ and $-3$",
+      "compute": null,
+      "solution": "$x^2 - x - 12 = (x - 4)(x + 3)$, so the zeros are 4 and $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4$ and $-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-x-12=(x-4)(x+3), zeros 4 and -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.135Z"
+        }
+      }
+    },
+    {
+      "id": "219a9f2c-f0b8-4c0f-b609-844336eb28ef",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor theorem: factors and values",
+      "stem": "A table shows $g(-2) = 0$, $g(0) = 6$ and $g(3) = 0$ for a polynomial $g$. Which two expressions are factors of $g(x)$?",
+      "choices": [
+        "$x - 2$ and $x + 3$",
+        "$x$ and $x - 6$",
+        "$x + 2$ and $x - 3$",
+        "$x + 6$ and $x$"
+      ],
+      "answer": "$x + 2$ and $x - 3$",
+      "compute": null,
+      "solution": "The inputs $-2$ and 3 give 0, so they are zeros and $x + 2$ and $x - 3$ are factors. The input 0 gives 6, not 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 2$ and $x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros at -2 and 3 give factors x+2 and x-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.153Z"
+        }
+      }
+    },
+    {
+      "id": "cb0b46d6-2e53-4fc2-bf37-fcbfa1f2c6c8",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Zeros, x-intercepts and solutions",
+      "stem": "Which statement about the graph of $y = f(x)$ is true?",
+      "choices": [
+        "The $y$-coordinates of its $x$-intercepts are the zeros of $f$",
+        "The $x$-coordinates of its $x$-intercepts are the zeros of $f$",
+        "The $x$-coordinate of its $y$-intercept is a zero of $f$",
+        "The $y$-coordinate of its $y$-intercept is a zero of $f$"
+      ],
+      "answer": "The $x$-coordinates of its $x$-intercepts are the zeros of $f$",
+      "compute": null,
+      "solution": "A zero is an $x$-value where $f(x) = 0$, which is exactly where the graph meets the $x$-axis. Every $x$-intercept has $y$-coordinate 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The $x$-coordinates of its $x$-intercepts are the zeros of $f$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros are where y=0, the x-coordinates of x-intercepts.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.188Z"
+        }
+      }
+    },
+    {
+      "id": "94d4dd08-c88c-4bae-b3fc-1964d5ba51a1",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "The function $f(x) = (x - 3)(x - 4)$ can be written as $f(x) = x^2 + bx + 12$. What is $b$?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "-(3+4)",
+      "solution": "$(x - 3)(x - 4) = x^2 - 4x - 3x + 12 = x^2 - 7x + 12$, so $b = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x-4)=x^2-7x+12, b=-7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.202Z"
+        }
+      }
+    },
+    {
+      "id": "b40a972e-b8c2-481f-be2d-9f750797f47f",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "Factor $x^2 - 9x + 20$ to solve $x^2 - 9x + 20 = 0$. What is the smaller solution?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$x^2 - 9x + 20 = (x - 4)(x - 5)$, so the solutions are 4 and 5. The smaller is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 - 9x + 20 = (x - 4)(x - 5); solutions 4 and 5; smaller is 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.246Z"
+        }
+      }
+    },
+    {
+      "id": "e37da128-332c-4d75-98f1-b3c4cb49bb6c",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "The polynomial $f(x) = x^2 + bx - 12$ has $x - 3$ as a factor. What is $b$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(12-9)/3",
+      "solution": "Since $x - 3$ is a factor, $f(3) = 0$: $9 + 3b - 12 = 0$, so $3b = 3$ and $b = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(3) = 9 + 3b - 12 = 0, so 3b = 3, b = 1. Check (x-3)(x+4) = x^2 + x - 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.258Z"
+        }
+      }
+    },
+    {
+      "id": "4a5bb885-9924-460f-9009-2e8693933a1d",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "Which polynomial function has zeros at $x = -1$ and $x = 5$?",
+      "choices": [
+        "$f(x) = (x - 1)(x + 5)$",
+        "$f(x) = (x + 1)(x + 5)$",
+        "$f(x) = (x - 1)(x - 5)$",
+        "$f(x) = (x + 1)(x - 5)$"
+      ],
+      "answer": "$f(x) = (x + 1)(x - 5)$",
+      "compute": null,
+      "solution": "A zero at $-1$ gives the factor $x + 1$, and a zero at 5 gives the factor $x - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x + 1)(x - 5)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros -1 and 5 give factors (x+1)(x-5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.287Z"
+        }
+      }
+    },
+    {
+      "id": "8d3b583e-979d-41b6-ab60-84f6909224db",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "What is the positive solution of $x^2 - 49 = 0$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "$x^2 - 49 = (x - 7)(x + 7)$, so $x = 7$ or $x = -7$. The positive solution is 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2=49, x=+-7; positive 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.364Z"
+        }
+      }
+    },
+    {
+      "id": "02b8d8bc-3cab-49de-a2cf-4c0ed08838b5",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count zeros and find the degree",
+      "stem": "How many different zeros does $f(x) = (x + 2)^3(x - 5)$ have?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The zeros are $-2$ and 5. Repeating a factor does not make a new zero, so there are 2 different zeros.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros -2 and 5: 2 different.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.385Z"
+        }
+      }
+    },
+    {
+      "id": "fbb3d314-466d-4c57-b026-46323dbb2c7c",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "Solve $x^2 + 7x = 0$. What is the negative solution?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "-7",
+      "solution": "$x^2 + 7x = x(x + 7) = 0$, so $x = 0$ or $x = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x+7)=0; x=0 or -7; negative -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.392Z"
+        }
+      }
+    },
+    {
+      "id": "fac57153-09f5-4780-82d6-367cc2c92e80",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "The function $h(x) = (x - 4)(x + 6)(x - 1)$ has three zeros. What is the smallest zero?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-6",
+      "solution": "The zeros are 4, $-6$ and 1. The smallest is $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 4, -6, 1; smallest -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.399Z"
+        }
+      }
+    },
+    {
+      "id": "cd03a1d8-44f2-45df-b089-068de245486b",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiplicity and the graph at a zero",
+      "stem": "What does the graph of $f(x) = (x - 2)^2$ do at $x = 2$?",
+      "choices": [
+        "It crosses the $x$-axis and continues below",
+        "It touches the $x$-axis but does not cross it",
+        "It does not meet the $x$-axis at all",
+        "It has a hole at $x = 2$"
+      ],
+      "answer": "It touches the $x$-axis but does not cross it",
+      "compute": null,
+      "solution": "The factor $x - 2$ appears twice (the zero has multiplicity 2, an even number), so the graph touches the $x$-axis at 2 and turns back without crossing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It touches the $x$-axis but does not cross it",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Double zero at 2 and (x-2)^2>=0: touches, does not cross.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.419Z"
+        }
+      }
+    },
+    {
+      "id": "745e5760-e6d0-42be-974f-1c249fe267d8",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Count zeros and find the degree",
+      "stem": "What is the least possible degree of a polynomial that has zeros at $-2$, $0$, $3$ and $5$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Each zero needs its own factor: $(x + 2)$, $x$, $(x - 3)$ and $(x - 5)$. That is 4 factors, so the degree is at least 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At least one factor per zero: degree 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.424Z"
+        }
+      }
+    },
+    {
       "id": "24d7787e-1d8f-4e2c-93c8-d5ed80d6bfc0",
       "topic_id": "NC17.M3.A-APR.3",
       "difficulty": 2,
@@ -16450,6 +16983,587 @@
       }
     },
     {
+      "id": "35dda2a9-a7df-457e-a860-7382cfabca91",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiplicity and the graph at a zero",
+      "stem": "A polynomial of degree 5 has a zero at $x = 1$ with multiplicity 2 and a zero at $x = -4$ with multiplicity 1. Its only other zero is $x = 3$. What is the multiplicity of the zero at $x = 3$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-2-1",
+      "solution": "The multiplicities add up to the degree: $2 + 1 + m = 5$, so $m = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 1 + m = 5, so m = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.106Z"
+        }
+      }
+    },
+    {
+      "id": "9e8cf249-d53d-473d-8b8f-13461926183d",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Test whether a number is a zero",
+      "stem": "Of the numbers 1, 2 and 3, which one is not a zero of $f(x) = x^3 - 7x + 6$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$f(1) = 1 - 7 + 6 = 0$, $f(2) = 8 - 14 + 6 = 0$, and $f(3) = 27 - 21 + 6 = 12$. So 3 is not a zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1) = 0, f(2) = 8 - 14 + 6 = 0, f(3) = 27 - 21 + 6 = 12. So 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.108Z"
+        }
+      }
+    },
+    {
+      "id": "9be20f07-ddac-4555-a001-80280523c423",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor theorem: factors and values",
+      "stem": "Let $f(x) = x^3 + x^2 - 4x - 4$. How many of the expressions $x - 2$, $x - 1$, $x + 1$ and $x + 2$ are factors of $f(x)$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$f(2) = 0$, $f(1) = -6$, $f(-1) = 0$ and $f(-2) = 0$. So $x - 2$, $x + 1$ and $x + 2$ are factors, which is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2(x+1) - 4(x+1) = (x+1)(x-2)(x+2). f(1) = -6 so x-1 is not. 3 factors.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.121Z"
+        }
+      }
+    },
+    {
+      "id": "757bec69-b7fd-4bf4-8b46-3466f9d8a6a8",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Test whether a number is a zero",
+      "stem": "The table shows some values of a polynomial $f$: $f(-3) = 0$, $f(-1) = 8$, $f(0) = 6$, $f(2) = 0$, $f(4) = 30$. What is the sum of the $x$-values in the table that are zeros of $f$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-3+2",
+      "solution": "The zeros in the table are the inputs with output 0: $x = -3$ and $x = 2$. Their sum is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros in the table: x=-3 and x=2 (f=0). Sum -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.128Z"
+        }
+      }
+    },
+    {
+      "id": "1d493420-d56c-4553-a8ee-006d9f64fad6",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factor to find zeros",
+      "stem": "What are all the solutions of $x^3 - 9x = 0$?",
+      "choices": [
+        "$0$, $3$ and $-3$",
+        "$3$ and $-3$",
+        "$0$ and $3$",
+        "$0$, $9$ and $-9$"
+      ],
+      "answer": "$0$, $3$ and $-3$",
+      "compute": null,
+      "solution": "$x^3 - 9x = x(x^2 - 9) = x(x - 3)(x + 3)$, so $x = 0$, $3$ or $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$0$, $3$ and $-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x^2-9)=x(x-3)(x+3)=0: 0,3,-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.167Z"
+        }
+      }
+    },
+    {
+      "id": "26dbe729-71f8-4b24-a8a2-7401a426d3af",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "What is the sum of the zeros of $f(x) = x^3 - 5x^2 - x + 5$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5+1-1",
+      "solution": "Group: $x^2(x - 5) - (x - 5) = (x - 5)(x^2 - 1) = (x - 5)(x - 1)(x + 1)$. The zeros are 5, 1 and $-1$, and their sum is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2(x-5)-(x-5)=(x-5)(x-1)(x+1): zeros 5,1,-1, sum 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.193Z"
+        }
+      }
+    },
+    {
+      "id": "1eb860fd-b80c-4685-9270-b50bdb897c95",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "What is the product of the zeros of $f(x) = (x + 2)(x - 3)(x - 5)$?",
+      "choices": [],
+      "answer": "-30",
+      "compute": "-2*3*5",
+      "solution": "The zeros are $-2$, 3 and 5. Their product is $-2 \\times 3 \\times 5 = -30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros are -2, 3, 5. Product = (-2)(3)(5) = -30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.223Z"
+        }
+      }
+    },
+    {
+      "id": "7fdd2801-d867-4b2f-8479-c27102b58c13",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "What are the zeros of $f(x) = (2x + 5)(x - 4)$?",
+      "choices": [
+        "$-\\frac{5}{2}$ and $4$",
+        "$\\frac{5}{2}$ and $-4$",
+        "$-5$ and $4$",
+        "$-\\frac{2}{5}$ and $4$"
+      ],
+      "answer": "$-\\frac{5}{2}$ and $4$",
+      "compute": null,
+      "solution": "$2x + 5 = 0$ gives $x = -\\frac{5}{2}$, and $x - 4 = 0$ gives $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{5}{2}$ and $4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x + 5 = 0 gives x = -5/2; x - 4 = 0 gives x = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.243Z"
+        }
+      }
+    },
+    {
+      "id": "b59b9865-fd59-4983-80c8-164463a8e7ea",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Zeros, x-intercepts and solutions",
+      "stem": "If 3 is a zero of a function $f$, which statement must be true?",
+      "choices": [
+        "The point $(0, 3)$ is on the graph of $f$",
+        "$x + 3$ is a factor of $f(x)$",
+        "The point $(3, 0)$ is on the graph of $f$",
+        "$f(0) = 3$"
+      ],
+      "answer": "The point $(3, 0)$ is on the graph of $f$",
+      "compute": null,
+      "solution": "A zero of 3 means $f(3) = 0$, so the point $(3, 0)$ is on the graph. The factor would be $x - 3$, not $x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The point $(3, 0)$ is on the graph of $f$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(3) = 0, so (3, 0) is on the graph. x+3 would mean a zero at -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.288Z"
+        }
+      }
+    },
+    {
+      "id": "a6bf4e31-f6e0-4e5b-a3a6-b7091a8e8980",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "A quadratic function $f$ has zeros at $-3$ and $5$ and a leading coefficient of 2. What is $f(0)$?",
+      "choices": [],
+      "answer": "-30",
+      "compute": "2*3*(-5)",
+      "solution": "$f(x) = 2(x + 3)(x - 5)$, so $f(0) = 2 \\times 3 \\times (-5) = -30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = 2(x + 3)(x - 5); f(0) = 2(3)(-5) = -30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.310Z"
+        }
+      }
+    },
+    {
+      "id": "781da08a-7a32-43ff-b481-5dcb26d82532",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Zeros, x-intercepts and solutions",
+      "stem": "How many $x$-intercepts does the graph of $y = x(x - 2)^2(x + 1)$ have?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The zeros are 0, 2 and $-1$. The graph meets the $x$-axis at 3 different points.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros x = 0, 2, -1: three distinct x-intercepts.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.319Z"
+        }
+      }
+    },
+    {
+      "id": "b5dea419-5ce3-4198-ab7d-a5ef6c98cd3a",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use a known zero or factor to find the other zeros",
+      "stem": "The polynomial $p(x) = x^3 + 2x^2 - 5x - 6$ has $x = -1$ as a zero. What is the product of its other two zeros?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-3*2",
+      "solution": "Dividing out $x + 1$ gives $p(x) = (x + 1)(x^2 + x - 6) = (x + 1)(x + 3)(x - 2)$. The other zeros are $-3$ and 2, with product $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p / (x + 1) = x^2 + x - 6 = (x + 3)(x - 2); other zeros -3, 2; product -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.327Z"
+        }
+      }
+    },
+    {
+      "id": "b9c949fc-821c-4d93-8453-4f8621f81c50",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Complex zeros",
+      "stem": "Which list gives all the zeros of $f(x) = (x - 1)(x^2 + 4)$?",
+      "choices": [
+        "$1$, $2i$ and $-2i$",
+        "$1$, $2$ and $-2$",
+        "$1$ and $-4$",
+        "$1$, $4i$ and $-4i$"
+      ],
+      "answer": "$1$, $2i$ and $-2i$",
+      "compute": null,
+      "solution": "$x - 1 = 0$ gives $x = 1$. $x^2 + 4 = 0$ gives $x^2 = -4$, so $x = 2i$ or $x = -2i$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$, $2i$ and $-2i$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=1; x^2+4=0 gives x=+-2i.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.360Z"
+        }
+      }
+    },
+    {
+      "id": "b7e2ab27-5286-4b3e-bf7d-3a65d5f45b90",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use a known zero or factor to find the other zeros",
+      "stem": "The polynomial $f(x) = 2x^3 - 5x^2 - 4x + 12$ has $x - 2$ as a factor. What are all of its zeros?",
+      "choices": [
+        "$2$ and $\\frac{3}{2}$",
+        "$2$ and $-3$",
+        "$-2$ and $\\frac{3}{2}$",
+        "$2$ and $-\\frac{3}{2}$"
+      ],
+      "answer": "$2$ and $-\\frac{3}{2}$",
+      "compute": null,
+      "solution": "Dividing out $x - 2$ gives $f(x) = (x - 2)(2x^2 - x - 6) = (x - 2)(2x + 3)(x - 2)$. The zeros are 2 (twice) and $-\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2$ and $-\\frac{3}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Synthetic division by 2: 2, -1, -6, 0 -> 2x^2-x-6=(2x+3)(x-2). Zeros 2 (double) and -3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.363Z"
+        }
+      }
+    },
+    {
+      "id": "57058ea0-b5f0-4903-83c9-bf4a7351f8fe",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "For which value of $k$ is $x + 1$ a factor of $x^3 + 3x^2 + kx - 6$?",
+      "choices": [
+        "4",
+        "-4",
+        "-6",
+        "6"
+      ],
+      "answer": "-4",
+      "compute": "-4",
+      "solution": "The value $x = -1$ must be a zero: $-1 + 3 - k - 6 = -4 - k = 0$, so $k = -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(-1) = -1+3-k-6 = -4-k = 0, k=-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.384Z"
+        }
+      }
+    },
+    {
+      "id": "e554cb5a-69f3-4909-9215-0856d64ec06d",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "The expression $x - 3$ is a factor of $p(x) = x^3 - 2x^2 + kx - 12$. What is $k$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(12-27+18)/3",
+      "solution": "$p(3) = 27 - 18 + 3k - 12 = 3k - 3 = 0$, so $k = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(3)=27-18+3k-12 = 3k-3 = 0, k=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.389Z"
+        }
+      }
+    },
+    {
+      "id": "cc4e975e-9857-4e85-88a9-23912f35828e",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count zeros and find the degree",
+      "stem": "What is the least possible degree of a polynomial whose graph crosses the $x$-axis at $x = -1$ and $x = 2$, and touches it at $x = 5$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "1+1+2",
+      "solution": "Crossing needs multiplicity at least 1 at each of $-1$ and 2, and touching needs multiplicity at least 2 at 5. The degree is at least $1 + 1 + 2 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Crossing zeros odd multiplicity (min 1 each), touching even (min 2): 1+1+2=4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.406Z"
+        }
+      }
+    },
+    {
+      "id": "6c61dab6-f7e5-4e34-8726-54a0203b1a73",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "Solve $3x^2 - 12x - 15 = 0$. What is the positive solution?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$3x^2 - 12x - 15 = 3(x^2 - 4x - 5) = 3(x - 5)(x + 1)$, so $x = 5$ or $x = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-4x-5=0 -> (x-5)(x+1)=0; positive 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.422Z"
+        }
+      }
+    },
+    {
+      "id": "4c603442-1f3e-4b3f-a88d-9c2b8438f3f9",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "Solve $x^2 = 5x + 14$. What is the negative solution?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "-2",
+      "solution": "Rewrite as $x^2 - 5x - 14 = 0$, which factors as $(x - 7)(x + 2) = 0$. The solutions are 7 and $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-5x-14=0 -> (x-7)(x+2)=0; negative -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.431Z"
+        }
+      }
+    },
+    {
       "id": "c11f71ec-b9e2-4763-9789-eeaea7123da5",
       "topic_id": "NC17.M3.A-APR.3",
       "difficulty": 3,
@@ -16790,6 +17904,665 @@
           "work": "Discriminant 16 - 20 = -4 < 0: no real solutions, no x-intercepts. (0,5) is the y-intercept, so D is false.",
           "run_id": "claude-code",
           "at": "2026-10-28T19:32:34.353Z"
+        }
+      }
+    },
+    {
+      "id": "a583c3cf-daa7-48c1-a12a-4b06703fe5bb",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Factor theorem: factors and values",
+      "stem": "A polynomial $f$ satisfies $f(1) = 0$, $f(-2) = 0$ and $f(0) = -6$. Which statement must be true?",
+      "choices": [
+        "$(x + 1)(x - 2)$ is a factor of $f(x)$",
+        "$(x - 1)(x + 2)$ is a factor of $f(x)$",
+        "$x(x - 1)$ is a factor of $f(x)$",
+        "$(x - 1)(x + 2)(x + 6)$ is a factor of $f(x)$"
+      ],
+      "answer": "$(x - 1)(x + 2)$ is a factor of $f(x)$",
+      "compute": null,
+      "solution": "Zeros at 1 and $-2$ give the factors $x - 1$ and $x + 2$. Since $f(0) = -6 \\ne 0$, $x$ is not a factor, and nothing says 6 or $-6$ is a zero.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 1)(x + 2)$ is a factor of $f(x)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(1)=0 and f(-2)=0 so (x-1) and (x+2) are factors, hence (x-1)(x+2). x is not a factor since f(0)=-6; (x+6) not forced.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:45.974Z"
+        }
+      }
+    },
+    {
+      "id": "db2ca0b4-f402-43e0-82e6-231b1f85124e",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "Solve $2x^3 + 3x^2 - 8x - 12 = 0$ by grouping. What is the sum of the solutions? Give the answer as a fraction or decimal.",
+      "choices": [],
+      "answer": "-3/2",
+      "compute": "-3/2+2-2",
+      "solution": "$x^2(2x + 3) - 4(2x + 3) = (2x + 3)(x^2 - 4) = (2x + 3)(x - 2)(x + 2)$. The solutions are $-\\frac{3}{2}$, 2 and $-2$, with sum $-\\frac{3}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2(2x+3) - 4(2x+3) = (x-2)(x+2)(2x+3). Solutions 2, -2, -3/2. Sum -3/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.067Z"
+        }
+      }
+    },
+    {
+      "id": "9c4e8055-a35c-4267-893c-dfb13c7f8f18",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a known zero or factor to find the other zeros",
+      "stem": "The polynomial $f(x) = x^4 - x^3 - 7x^2 + x + 6$ has zeros at $x = -2$ and $x = 3$. It has two other zeros. What is the positive one?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "$(x + 2)(x - 3) = x^2 - x - 6$ divides $f(x)$, and $f(x) = (x^2 - x - 6)(x^2 - 1)$. The other zeros are $x^2 - 1 = 0$, that is 1 and $-1$. The positive one is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide by (x+2)(x-3) = x^2 - x - 6: quotient x^2 - 1 (x^2(x^2-x-6) = x^4-x^3-6x^2; remainder -x^2+x+6 = -(x^2-x-6)). Zeros +1, -1. Positive: 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.069Z"
+        }
+      }
+    },
+    {
+      "id": "c016a443-7347-4ad7-83b4-21092b0d6eed",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Factor to find zeros",
+      "stem": "How many real solutions does $x^5 - x = 0$ have?",
+      "choices": [
+        "1",
+        "4",
+        "3",
+        "5"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$x^5 - x = x(x^4 - 1) = x(x^2 - 1)(x^2 + 1) = x(x - 1)(x + 1)(x^2 + 1)$. The real solutions are 0, 1 and $-1$; $x^2 + 1 = 0$ has none.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x^4-1) = x(x-1)(x+1)(x^2+1). Real: 0, 1, -1 -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.069Z"
+        }
+      }
+    },
+    {
+      "id": "0cac1e5b-4a8b-44ea-b0bd-89adc16e7bb5",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "Which function has the zeros $2$, $3i$ and $-3i$?",
+      "choices": [
+        "$f(x) = (x - 2)(x^2 + 9)$",
+        "$f(x) = (x - 2)(x^2 - 9)$",
+        "$f(x) = (x + 2)(x^2 + 9)$",
+        "$f(x) = (x - 2)(x - 9)$"
+      ],
+      "answer": "$f(x) = (x - 2)(x^2 + 9)$",
+      "compute": null,
+      "solution": "The zeros $3i$ and $-3i$ come from $x^2 + 9 = 0$, and the zero 2 comes from $x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x - 2)(x^2 + 9)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + 9 = 0 gives x = +-3i; x - 2 gives 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.082Z"
+        }
+      }
+    },
+    {
+      "id": "16d6569c-b484-4343-8b5d-afa7c3df0257",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "What is the sum of the zeros of $f(x) = (x - 2)(x + 3)(2x - 5)(x + 1)$? Give the answer as a fraction or decimal.",
+      "choices": [],
+      "answer": "1/2",
+      "compute": "2-3+5/2-1",
+      "solution": "The zeros are 2, $-3$, $\\frac{5}{2}$ and $-1$. Their sum is $2 - 3 + 2.5 - 1 = 0.5 = \\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 2, -3, 5/2, -1. Sum = 2 - 3 + 2.5 - 1 = 0.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.085Z"
+        }
+      }
+    },
+    {
+      "id": "ad9843bd-8397-4983-98b3-ceedc6f80acb",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor theorem: factors and values",
+      "stem": "Let $f(x) = x^3 - 6x^2 + 11x - 6$. For which one of the numbers 1, 2, 3 and 4 is $x$ minus that number not a factor of $f(x)$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$f(1) = 0$, $f(2) = 8 - 24 + 22 - 6 = 0$, $f(3) = 27 - 54 + 33 - 6 = 0$, but $f(4) = 64 - 96 + 44 - 6 = 6$. So $x - 4$ is not a factor.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = (x-1)(x-2)(x-3); f(4) = 64 - 96 + 44 - 6 = 6 != 0. So 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.100Z"
+        }
+      }
+    },
+    {
+      "id": "bc59c650-90f0-49c6-aaba-fd67dafe98d9",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "Which polynomial in standard form has a double zero at $x = -1$ and a single zero at $x = 2$?",
+      "choices": [
+        "$x^3 - 3x + 2$",
+        "$x^3 - 3x - 2$",
+        "$x^3 + 3x - 2$",
+        "$x^3 - 2x^2 - x + 2$"
+      ],
+      "answer": "$x^3 - 3x - 2$",
+      "compute": null,
+      "solution": "$(x + 1)^2(x - 2) = (x^2 + 2x + 1)(x - 2) = x^3 - 2x^2 + 2x^2 - 4x + x - 2 = x^3 - 3x - 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 - 3x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)^2(x-2) = (x^2+2x+1)(x-2) = x^3 - 3x - 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.112Z"
+        }
+      }
+    },
+    {
+      "id": "71d80adb-542c-423d-bf79-2ccc1b5f7f75",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "The polynomial $p(x) = x^3 + ax^2 + bx + 12$ has $x + 1$ and $x - 2$ as factors. What is $a + b$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-7+4",
+      "solution": "$p(-1) = -1 + a - b + 12 = 0$ gives $a - b = -11$. $p(2) = 8 + 4a + 2b + 12 = 0$ gives $2a + b = -10$. Adding the two equations gives $3a = -21$, so $a = -7$ and $b = 4$. Then $a + b = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(-1)=0: -1+a-b+12=0 so a-b=-11. p(2)=0: 8+4a+2b+12=0 so 2a+b=-10. Adding: 3a=-21, a=-7, b=4. Check (x+1)(x-2)(x-6)=x^3-7x^2+4x+12. a+b=-3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.122Z"
+        }
+      }
+    },
+    {
+      "id": "1979786b-99b6-445d-8aa2-767b0509d681",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Factor to find zeros",
+      "stem": "What is the greatest solution of $x^4 - 17x^2 + 16 = 0$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$x^4 - 17x^2 + 16 = (x^2 - 1)(x^2 - 16) = (x - 1)(x + 1)(x - 4)(x + 4)$. The solutions are $\\pm 1$ and $\\pm 4$; the greatest is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2-1)(x^2-16)=0, x=+-1,+-4. Greatest 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.139Z"
+        }
+      }
+    },
+    {
+      "id": "58019099-f894-4366-88dc-65be625a4588",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use a known zero or factor to find the other zeros",
+      "stem": "The polynomial $f(x) = x^3 - 2x^2 - 11x + 12$ has $x = 4$ as a zero. What is the difference between its greatest zero and its least zero?",
+      "choices": [],
+      "answer": "7",
+      "compute": "4-(-3)",
+      "solution": "$f(x) = (x - 4)(x^2 + 2x - 3) = (x - 4)(x + 3)(x - 1)$. The zeros are 4, $-3$ and 1. The difference is $4 - (-3) = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide by x-4: x^2+2x-3=(x+3)(x-1). Zeros 4,1,-3. 4-(-3)=7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.141Z"
+        }
+      }
+    },
+    {
+      "id": "2676493a-56a8-4cfa-bbbf-64ef5f04619f",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Complex zeros",
+      "stem": "Which of these functions has exactly two different real zeros?",
+      "choices": [
+        "$f(x) = (x^2 + 1)(x - 3)$",
+        "$f(x) = (x - 2)^3$",
+        "$f(x) = x(x - 1)(x + 1)$",
+        "$f(x) = (x - 1)^2(x + 4)$"
+      ],
+      "answer": "$f(x) = (x - 1)^2(x + 4)$",
+      "compute": null,
+      "solution": "$(x - 1)^2(x + 4)$ has the zeros 1 and $-4$. $(x^2 + 1)(x - 3)$ has only the real zero 3, since $x^2 + 1 = 0$ has no real solution. $(x - 2)^3$ has only 2, and $x(x - 1)(x + 1)$ has three.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = (x - 1)^2(x + 4)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)^3: one zero; (x-1)^2(x+4): 1,-4 two; (x^2+1)(x-3): one real; x(x-1)(x+1): three.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.186Z"
+        }
+      }
+    },
+    {
+      "id": "5e1260fb-d5c3-4f4f-9b19-cf51847430d9",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use a known zero or factor to find the other zeros",
+      "stem": "The polynomial $f(x) = 2x^3 + x^2 - 8x - 4$ has $x = -\\frac{1}{2}$ as a zero. Which list gives all of its zeros?",
+      "choices": [
+        "$\\frac{1}{2}$, $2$ and $-2$",
+        "$-\\frac{1}{2}$, $2$ and $-2$",
+        "$-\\frac{1}{2}$, $4$ and $-4$",
+        "$-\\frac{1}{2}$, $2$ and $2$"
+      ],
+      "answer": "$-\\frac{1}{2}$, $2$ and $-2$",
+      "compute": null,
+      "solution": "The factor is $2x + 1$, and $f(x) = (2x + 1)(x^2 - 4) = (2x + 1)(x - 2)(x + 2)$. The zeros are $-\\frac{1}{2}$, 2 and $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{1}{2}$, $2$ and $-2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2(2x+1)-4(2x+1)=(2x+1)(x-2)(x+2): -1/2, 2, -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.191Z"
+        }
+      }
+    },
+    {
+      "id": "e1488611-d7fd-4656-bcf0-076edbe47df6",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "A cubic polynomial $p$ has zeros at $-2$, $1$ and $3$, and $p(0) = 12$. What is $p(2)$?",
+      "choices": [],
+      "answer": "-8",
+      "compute": "2*(2+2)*(2-1)*(2-3)",
+      "solution": "$p(x) = a(x + 2)(x - 1)(x - 3)$. From $p(0) = a(2)(-1)(-3) = 6a = 12$ we get $a = 2$. Then $p(2) = 2(4)(1)(-1) = -8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p=k(x+2)(x-1)(x-3); p(0)=6k=12, k=2. p(2)=2(4)(1)(-1)=-8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.213Z"
+        }
+      }
+    },
+    {
+      "id": "01659381-110f-45a4-9e75-491cd807b2ae",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Count zeros and find the degree",
+      "stem": "What is the least possible degree of a polynomial with a zero of multiplicity 3 at $x = 0$, a zero at $x = 2$ where the graph touches the axis, and a zero at $x = -1$ where the graph crosses it?",
+      "choices": [
+        "3",
+        "5",
+        "6",
+        "7"
+      ],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Touching needs multiplicity at least 2 and crossing needs at least 1. The degree is at least $3 + 2 + 1 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplicity 3 at 0, touching at 2 needs even multiplicity >=2, crossing at -1 needs odd >=1: 3+2+1=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.214Z"
+        }
+      }
+    },
+    {
+      "id": "403d7439-538b-4bfa-88d5-c1c08ca17b0d",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiplicity and the graph at a zero",
+      "stem": "A quartic polynomial $p$ touches the $x$-axis at $x = -1$ and at $x = 3$, and $p(0) = 18$. What is $p(1)$?",
+      "choices": [],
+      "answer": "32",
+      "compute": "2*(1+1)^2*(1-3)^2",
+      "solution": "Touching means each zero has multiplicity 2: $p(x) = a(x + 1)^2(x - 3)^2$. $p(0) = a(1)(9) = 18$ gives $a = 2$. Then $p(1) = 2(4)(4) = 32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Touches at -1 and 3 means even multiplicity; quartic so p = a(x+1)^2(x-3)^2. p(0) = a*1*9 = 18, a = 2. p(1) = 2*(2^2)*(-2)^2 = 2*4*4 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.230Z"
+        }
+      }
+    },
+    {
+      "id": "6e84598a-4d47-43dc-8f4c-b4d0a3f09a43",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "The equation $x^2 + kx - 12 = 0$ has $-2$ as a solution. What is the other solution?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "Putting $x = -2$ gives $4 - 2k - 12 = 0$, so $k = -4$. Then $x^2 - 4x - 12 = (x - 6)(x + 2)$, so the other solution is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Product of roots = -12, so other = -12 / -2 = 6. Check: 4 - 2k - 12 = 0, k = -4; x^2 - 4x - 12 = (x - 6)(x + 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.268Z"
+        }
+      }
+    },
+    {
+      "id": "c2550dad-922a-43fb-a47f-dcd8335aac71",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "For which value of $k$ is $x + 3$ a factor of $x^3 + 4x^2 + kx + 3$?",
+      "choices": [
+        "-22",
+        "12",
+        "-4",
+        "4"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "We need $f(-3) = 0$: $-27 + 36 - 3k + 3 = 12 - 3k = 0$, so $k = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(-3) = -27 + 36 - 3k + 3 = 12 - 3k = 0, k = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.306Z"
+        }
+      }
+    },
+    {
+      "id": "c91b8e88-4c1d-49ea-8300-1c2c926f66fe",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count zeros and find the degree",
+      "stem": "A polynomial of degree 7 has exactly three different zeros, all real. One has multiplicity 2 and another has multiplicity 3. What is the multiplicity of the third?",
+      "choices": [],
+      "answer": "2",
+      "compute": "7-2-3",
+      "solution": "The multiplicities add up to the degree: $2 + 3 + m = 7$, so $m = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "All zeros real, multiplicities sum to degree 7: 2+3+m=7, m=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.343Z"
+        }
+      }
+    },
+    {
+      "id": "700999a2-0a85-4e56-a8fe-dd4b51d8eea9",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiplicity and the graph at a zero",
+      "stem": "A student studies $f(x) = -(x - 1)^2(x + 2)^3$. Which description of the graph at its two $x$-intercepts is correct?",
+      "choices": [
+        "It turns around at the zero $1$ and passes through the axis at the zero $-2$",
+        "It passes through the axis at the zero $1$ and turns around at the zero $-2$",
+        "It passes through the axis at both zeros, $1$ and $-2$",
+        "It turns around at both zeros, $1$ and $-2$"
+      ],
+      "answer": "It turns around at the zero $1$ and passes through the axis at the zero $-2$",
+      "compute": null,
+      "solution": "The zero 1 has multiplicity 2 (even), so the graph touches the axis and turns around. The zero $-2$ has multiplicity 3 (odd), so the graph crosses the axis there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It turns around at the zero $1$ and passes through the axis at the zero $-2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-1)^2 even multiplicity: turns at 1. (x+2)^3 odd: passes through at -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.421Z"
+        }
+      }
+    },
+    {
+      "id": "63cc0ce9-1806-49e5-9bf0-16aeb12273fe",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Zeros, x-intercepts and solutions",
+      "stem": "How many different real solutions does $(x^2 - 4)(x^2 + 1)(x - 2) = 0$ have?",
+      "choices": [
+        "1",
+        "3",
+        "4",
+        "2"
+      ],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$x^2 - 4 = 0$ gives $x = 2$ or $x = -2$. $x^2 + 1 = 0$ has no real solution. $x - 2 = 0$ gives $x = 2$ again. The different real solutions are 2 and $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-4=0 -> +-2; x^2+1 none real; x-2 -> 2 again. Different: 2, -2 -> 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:34:46.423Z"
         }
       }
     },
