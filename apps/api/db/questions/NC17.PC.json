@@ -2,9 +2,9 @@
   "level_id": "NC17.PC",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.PC.N.2": "30 questions, matrices written by their rows; every matrix answer is computed by the generator.",
+    "NC17.PC.N.2": "30 questions, matrices written by their rows; every matrix answer is computed by the generator. 69 written (23 per difficulty). No transposes, determinants or inverses (not in the summary). Matrices are written by rows.",
     "NC17.PC.N.3": "Directions are measured counterclockwise from the positive x-axis. Vectors with irrational magnitudes are choice questions.",
-    "NC17.PC.A.1": "Graph work is described in words (intercepts, direction, asymptote, labeled points). Solution sets are written as inequalities (not interval unions), since set symbols are not supported. Numeric questions ask for counts of integers, sums or a largest integer so the keys are exact numbers.",
+    "NC17.PC.A.1": "Graph work is described in words (intercepts, direction, asymptote, labeled points). Solution sets are written as inequalities (not interval unions), since set symbols are not supported. Numeric questions ask for counts of integers, sums or a largest integer so the keys are exact numbers. Text-only; graphs are described by their features in words.",
     "NC17.PC.A.2": "Arcsine and arccosine are written as sin^{-1} and cos^{-1}; irrational solutions are asked as choice questions, and trig solutions are given as exact multiples of pi or degrees.",
     "NC17.PC.F.2": "Angles are given in degrees or radians as each question says; irrational values are choice questions.",
     "NC17.PC.F.3": "Triangle questions use sides and angles with exact answers (60 and 120 degrees, 3-5-7, 5-8-7, 7-15-13, sines given as fractions). Skills: inverse trig solutions (6), Pythagorean identity (5), Law of Cosines side (5) and angle (4), Law of Sines side (4) and the ambiguous case (3), choosing the law (3). The Pythagorean identity covers sin^2 + cos^2 = 1 only. Irrational answers are choice questions.",
@@ -3450,6 +3450,738 @@
       }
     },
     {
+      "id": "4e21dd4d-ec6b-4cd7-bb0e-70418f900b8c",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $A$ has rows $[3, -2]$ and $[0, 5]$. Which matrix $B$ makes $A + B$ the zero matrix?",
+      "choices": [
+        "rows $[3, -2]$ and $[0, 5]$",
+        "rows $[-3, -2]$ and $[0, -5]$",
+        "rows $[-3, 2]$ and $[0, 5]$",
+        "rows $[-3, 2]$ and $[0, -5]$"
+      ],
+      "answer": "rows $[-3, 2]$ and $[0, -5]$",
+      "compute": null,
+      "solution": "Each entry of $B$ must be the opposite of the matching entry of $A$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[-3, 2]$ and $[0, -5]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B = -A = rows [-3,2] and [0,-5].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.297Z"
+        }
+      }
+    },
+    {
+      "id": "e7127679-1e7e-4b1a-affb-ce4e095f7766",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply matrices",
+      "stem": "The matrix $D$ has rows $[3, 0]$ and $[0, 2]$ and the matrix $M$ has rows $[1, 4]$ and $[5, -1]$. Which matrix is $DM$?",
+      "choices": [
+        "rows $[3, 8]$ and $[15, -2]$",
+        "rows $[3, 0]$ and $[0, -2]$",
+        "rows $[3, 12]$ and $[10, -2]$",
+        "rows $[3, 12]$ and $[5, -1]$"
+      ],
+      "answer": "rows $[3, 12]$ and $[10, -2]$",
+      "compute": null,
+      "solution": "$D$ is diagonal, so $DM$ multiplies row 1 of $M$ by 3 and row 2 of $M$ by 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[3, 12]$ and $[10, -2]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1: 3*[1,4] = [3,12]; Row2: 2*[5,-1] = [10,-2].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.328Z"
+        }
+      }
+    },
+    {
+      "id": "8429e9fd-d2d2-4739-8dde-571fed887d0a",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sizes in matrix operations",
+      "stem": "Which pair of matrix sizes can be added?",
+      "choices": [
+        "2 by 3 and 3 by 2",
+        "2 by 3 and 2 by 3",
+        "2 by 3 and 2 by 2",
+        "3 by 3 and 3 by 2"
+      ],
+      "answer": "2 by 3 and 2 by 3",
+      "compute": null,
+      "solution": "Matrices can be added only when they have the same number of rows and the same number of columns.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 by 3 and 2 by 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Addition needs identical sizes: 2 by 3 and 2 by 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.331Z"
+        }
+      }
+    },
+    {
+      "id": "9d1d8352-9092-48bc-95e1-5abf8818a758",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract matrices",
+      "stem": "Find $B - A$ when $A$ is the matrix with rows $[1, 3]$ and $[2, 5]$ and $B$ is the matrix with rows $[4, 1]$ and $[0, 7]$. Which matrix is the result?",
+      "choices": [
+        "rows $[-3, 2]$ and $[2, -2]$",
+        "rows $[3, -2]$ and $[-2, 2]$",
+        "rows $[3, 2]$ and $[2, 2]$",
+        "rows $[5, 4]$ and $[2, 12]$"
+      ],
+      "answer": "rows $[3, -2]$ and $[-2, 2]$",
+      "compute": null,
+      "solution": "Subtract entry by entry with $B$ first: $4-1, 1-3, 0-2, 7-5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[3, -2]$ and $[-2, 2]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B - A = [4-1, 1-3],[0-2, 7-5] = [3,-2],[-2,2].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.340Z"
+        }
+      }
+    },
+    {
+      "id": "4e1ea41d-de8b-4947-b3ec-de63c59a563a",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Distributive property",
+      "stem": "The matrices are $A$ with rows $[1, 2]$ and $[0, 1]$, $B$ with rows $[3, 0]$ and $[1, 1]$ and $C$ with rows $[2, 1]$ and $[0, 1]$. What is the entry in row 1, column 1 of $A(B + C)$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "1*5+2*1",
+      "solution": "$B + C$ has rows $[5, 1]$ and $[1, 2]$. Row 1 of $A$, $[1, 2]$, with column 1 of $B + C$, $[5, 1]$, gives $5 + 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B + C = [5,1],[1,2]; row1 of A [1,2] dot col1 [5,1] = 5 + 2 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.358Z"
+        }
+      }
+    },
+    {
+      "id": "6f80c6f0-ae42-4f21-a4de-d91b979309dc",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Distributive property",
+      "stem": "The matrices $A$, $B$ and $C$ have sizes that allow the operations. Which expression is equal to $(A + B)C$?",
+      "choices": [
+        "$AC + B$",
+        "$AC + BC$",
+        "$CA + CB$",
+        "$ABC$"
+      ],
+      "answer": "$AC + BC$",
+      "compute": null,
+      "solution": "Multiplying a sum on the right by $C$ distributes: $(A + B)C = AC + BC$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$AC + BC$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Right distributive law: (A+B)C = AC+BC. Matrix multiplication not commutative so CA+CB is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.377Z"
+        }
+      }
+    },
+    {
+      "id": "c92535ee-bdff-4724-a8a7-bcb292de2cda",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "Multiply $A$, which has rows $[1, 2]$ and $[3, 4]$, by $B$, which has rows $[0, -1]$ and $[2, 5]$, in that order. What number is in the top row and the right-hand column of $AB$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "1*(-1)+2*5",
+      "solution": "Row 1 of $A$ with column 2 of $B$: $1 \\cdot (-1) + 2 \\cdot 5 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 1 of A [1,2], column 2 of B [-1,5]: -1+10 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.387Z"
+        }
+      }
+    },
+    {
+      "id": "0a4cc896-5643-4223-a08d-c132d371ec6f",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Combine matrix operations",
+      "stem": "Evaluate $2A + 3B$ for $A$ with rows $[1, 4]$ and $[3, -2]$ and $B$ with rows $[0, 5]$ and $[-1, 2]$. What number is in the bottom left corner of the result?",
+      "choices": [],
+      "answer": "3",
+      "compute": "2*3+3*(-1)",
+      "solution": "$2 \\cdot 3 + 3 \\cdot (-1) = 6 - 3 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bottom left: 2*3 + 3*(-1) = 6-3 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.404Z"
+        }
+      }
+    },
+    {
+      "id": "ba6d1a05-948c-48f7-8ed2-8abffe922598",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract matrices",
+      "stem": "Two 3 by 3 matrices are subtracted. $A$ has rows $[1, 4, 2]$, $[0, -3, 5]$ and $[6, 1, -2]$ and $B$ has rows $[2, -1, 0]$, $[3, 3, -5]$ and $[1, 0, 4]$. In $A - B$, what number is in the middle row and the last column?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5-(-5)",
+      "solution": "Subtract the entries in row 2, column 3: $5 - (-5) = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2, col 3: 5 - (-5) = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.420Z"
+        }
+      }
+    },
+    {
+      "id": "67ec9a32-e8a6-4782-a81a-67b403015dfa",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Commutative property",
+      "stem": "Which statement about multiplying matrices is true?",
+      "choices": [
+        "$AB$ always equals $BA$.",
+        "$AB$ can be found whenever $A + B$ can be found.",
+        "$AB$ can be found whenever $A$ and $B$ have the same size.",
+        "$AB$ and $BA$ can be different matrices."
+      ],
+      "answer": "$AB$ and $BA$ can be different matrices.",
+      "compute": null,
+      "solution": "Matrix multiplication is not commutative: for many pairs of square matrices, $AB \\ne BA$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$AB$ and $BA$ can be different matrices.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Matrix multiplication is not commutative in general; AB and BA can differ. Same size does not guarantee AB defined (2x3 by 2x3). A+B defined same condition. So only 'can be different' is true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.436Z"
+        }
+      }
+    },
+    {
+      "id": "4e5c9ad9-ab4d-4ca2-9a8d-ff19cf239ad7",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The matrix $A$ has the single row $[2, -1, 4]$ and the matrix $B$ has rows $[3]$, $[5]$ and $[-2]$. The product $AB$ has one entry. What is it?",
+      "choices": [],
+      "answer": "-7",
+      "compute": "2*3+(-1)*5+4*(-2)",
+      "solution": "$2 \\cdot 3 + (-1) \\cdot 5 + 4 \\cdot (-2) = 6 - 5 - 8 = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = 2*3 + (-1)*5 + 4*(-2) = 6-5-8 = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.449Z"
+        }
+      }
+    },
+    {
+      "id": "62e4819c-a4a6-46e2-93fd-5c0b67ae07fc",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Associative property",
+      "stem": "Three matrices $A$, $B$ and $C$ have sizes that allow the product $ABC$. Which statement is true?",
+      "choices": [
+        "Multiplying $AB$ first gives a different final matrix than multiplying $BC$ first.",
+        "Multiplying in the order $CBA$ gives the same final matrix.",
+        "Multiplying $AB$ first or $BC$ first gives the same final matrix.",
+        "The final matrix is the same only if all three matrices are the same size."
+      ],
+      "answer": "Multiplying $AB$ first or $BC$ first gives the same final matrix.",
+      "compute": null,
+      "solution": "Matrix multiplication is associative: $(AB)C = A(BC)$. The order of the matrices matters, but not the grouping.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Multiplying $AB$ first or $BC$ first gives the same final matrix.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Matrix multiplication is associative: (AB)C = A(BC). CBA generally differs or undefined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.452Z"
+        }
+      }
+    },
+    {
+      "id": "d5b6454f-bfb9-406c-8e3e-2a933f09316a",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Commutative property",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[3, 4]$ and the matrix $B$ has rows $[0, 1]$ and $[1, 0]$. What is the entry in row 1, column 1 of $BA$, with $B$ on the left?",
+      "choices": [],
+      "answer": "3",
+      "compute": "0*1+1*3",
+      "solution": "Row 1 of $B$, $[0, 1]$, with column 1 of $A$, $[1, 3]$, gives $0 \\cdot 1 + 1 \\cdot 3 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1 of B [0,1] times column 1 of A [1,3]: 0*1+1*3 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.481Z"
+        }
+      }
+    },
+    {
+      "id": "4f6d2e4c-183b-4f56-897f-dac878c1a480",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Scalar multiplication of matrices",
+      "stem": "The matrix $D$ has rows $[6, -4]$ and $[10, 0]$. Which matrix is $\\frac{1}{2}D$?",
+      "choices": [
+        "rows $[3, -2]$ and $[5, 0]$",
+        "rows $[12, -8]$ and $[20, 0]$",
+        "rows $[3, -4]$ and $[5, 0]$",
+        "rows $[-3, 2]$ and $[-5, 0]$"
+      ],
+      "answer": "rows $[3, -2]$ and $[5, 0]$",
+      "compute": null,
+      "solution": "Halve every entry of $D$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[3, -2]$ and $[5, 0]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Halve each entry: [3,-2],[5,0].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.485Z"
+        }
+      }
+    },
+    {
+      "id": "91202e50-2e2c-4b72-9835-b6d62ba06882",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Powers of a matrix",
+      "stem": "The matrix $A$ has rows $[0, 1]$ and $[1, 0]$. Which matrix is $A^2$?",
+      "choices": [
+        "rows $[0, 1]$ and $[1, 0]$",
+        "rows $[0, 0]$ and $[0, 0]$",
+        "rows $[1, 1]$ and $[1, 1]$",
+        "rows $[1, 0]$ and $[0, 1]$"
+      ],
+      "answer": "rows $[1, 0]$ and $[0, 1]$",
+      "compute": null,
+      "solution": "Row 1 of $A$ with the columns of $A$ gives $1$ and $0$; row 2 gives $0$ and $1$. So $A^2$ is the identity matrix.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[1, 0]$ and $[0, 1]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "[[0,1],[1,0]]^2 = [[1,0],[0,1]].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.487Z"
+        }
+      }
+    },
+    {
+      "id": "08afe451-ed83-4b5e-8bd3-c82a65f993cb",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Identity and zero matrices",
+      "stem": "The matrix $I$ is the 2 by 2 identity matrix, and the matrix $M$ has rows $[4, -3]$ and $[2, 7]$. What is the entry in row 2, column 1 of $MI$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Multiplying by the identity leaves $M$ unchanged, so the entry is the entry of $M$ in row 2, column 1, which is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "MI = M; row 2, column 1 of M is 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.601Z"
+        }
+      }
+    },
+    {
+      "id": "f792fa8a-1544-4008-9bb1-b17909c7d2d0",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Identity and zero matrices",
+      "stem": "The matrix $A$ is 2 by 2 and the matrix $O$ is the 2 by 2 zero matrix. Which statement is true?",
+      "choices": [
+        "$A + O = A$ and $AO = O$.",
+        "$A + O = O$ and $AO = A$.",
+        "$A + O = A$ and $AO = A$.",
+        "$A + O = O$ and $AO = O$."
+      ],
+      "answer": "$A + O = A$ and $AO = O$.",
+      "compute": null,
+      "solution": "Adding the zero matrix changes nothing, and multiplying by it gives the zero matrix.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A + O = A$ and $AO = O$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A+O = A (additive identity); AO = O (every entry is a sum of products with 0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.601Z"
+        }
+      }
+    },
+    {
+      "id": "0875f3be-bea7-467e-b6ad-09efa84cb321",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Scalar multiplication of matrices",
+      "stem": "The matrix $M$ has rows $[6, 10]$ and $[8, 4]$. It shows what is in two kinds of box: the rows are the kinds, and the columns are pencils and erasers. A teacher orders 3 boxes of each kind, so the totals are the matrix $3M$. How many erasers come in the 3 boxes of the first kind?",
+      "choices": [],
+      "answer": "30",
+      "compute": "3*10",
+      "solution": "The entry in row 1, column 2 of $3M$ is $3 \\cdot 10 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3M = [18, 30],[24, 12]; first kind, erasers (column 2): 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.616Z"
+        }
+      }
+    },
+    {
+      "id": "8337a21b-1994-48f4-b6a2-dacbb1453619",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Scalar multiplication of matrices",
+      "stem": "The matrix $C$ has rows $[2, -3]$ and $[4, 1]$. What is the entry in row 1, column 2 of $-2C$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "-2*-3",
+      "solution": "Multiply $-3$ by $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 1 col 2 of C is -3; -2*(-3)=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.675Z"
+        }
+      }
+    },
+    {
+      "id": "6e2fa8ed-0c99-47b8-bb89-aabfa03b86b6",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Sizes in matrix operations",
+      "stem": "The matrix $A$ has 2 rows and 4 columns. The matrix $B$ has 3 rows and 2 columns. Which statement is true?",
+      "choices": [
+        "Only $AB$ can be found.",
+        "Only $BA$ can be found.",
+        "Both $AB$ and $BA$ can be found.",
+        "Neither $AB$ nor $BA$ can be found."
+      ],
+      "answer": "Only $BA$ can be found.",
+      "compute": null,
+      "solution": "$AB$ would need 4 rows in $B$, but $B$ has 3. $BA$ needs the columns of $B$ (2) to equal the rows of $A$ (2), which works.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only $BA$ can be found.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB: A 2x4 by B 3x2, 4 != 3, no. BA: 3x2 by 2x4, yes (3x4). Only BA.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.756Z"
+        }
+      }
+    },
+    {
+      "id": "8337c6e9-4113-4acc-bc7c-6c8298daa4cd",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Sizes in matrix operations",
+      "stem": "The matrix $A$ has 4 rows and 3 columns, and the matrix $B$ has 3 rows and 6 columns. How many numbers are in the product $AB$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4*6",
+      "solution": "$AB$ has 4 rows and 6 columns, so $4 \\cdot 6 = 24$ numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB is 4x6 = 24 entries.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.775Z"
+        }
+      }
+    },
+    {
+      "id": "5a111c53-ae67-49da-af20-b5f7b5c93f97",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply matrices",
+      "stem": "The matrix $A$ has rows $[2, 1]$ and $[0, 3]$ and the matrix $X$ has rows $[4]$ and $[-2]$. Which matrix is $AX$?",
+      "choices": [
+        "rows $[8]$ and $[-2]$",
+        "rows $[8]$ and $[-6]$",
+        "rows $[6]$ and $[-6]$",
+        "rows $[12]$ and $[-6]$"
+      ],
+      "answer": "rows $[6]$ and $[-6]$",
+      "compute": null,
+      "solution": "Row 1: $2 \\cdot 4 + 1 \\cdot (-2) = 6$. Row 2: $0 \\cdot 4 + 3 \\cdot (-2) = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[6]$ and $[-6]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "[2*4 + 1*(-2), 0*4 + 3*(-2)] = [6, -6].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.798Z"
+        }
+      }
+    },
+    {
+      "id": "e24f4843-6223-4114-b850-d72136b7c804",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $J$ shows the scores of two students on three quizzes: rows $[8, 9, 7]$ and $[6, 10, 9]$. The matrix $K$ shows the bonus points added to each score: rows $[1, 0, 2]$ and $[2, 1, 0]$. Which matrix shows the scores after the bonus points?",
+      "choices": [
+        "rows $[9, 9, 9]$ and $[8, 11, 9]$",
+        "rows $[7, 9, 5]$ and $[4, 9, 9]$",
+        "rows $[9, 9, 9]$ and $[6, 10, 9]$",
+        "rows $[8, 0, 14]$ and $[12, 10, 0]$"
+      ],
+      "answer": "rows $[9, 9, 9]$ and $[8, 11, 9]$",
+      "compute": null,
+      "solution": "Add the bonus points to the scores entry by entry: $J + K$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[9, 9, 9]$ and $[8, 11, 9]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "J + K = [9,9,9; 8,11,9].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.811Z"
+        }
+      }
+    },
+    {
       "id": "849380ce-e3da-4622-8a99-2c96a37a675c",
       "topic_id": "NC17.PC.N.2",
       "difficulty": 2,
@@ -3765,6 +4497,723 @@
       }
     },
     {
+      "id": "890a4684-2ce4-469e-a7a6-f7b59ec52a70",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distributive property",
+      "stem": "The matrix $AB$ has rows $[1, 2]$ and $[0, 3]$. The matrix $AC$ has rows $[4, 0]$ and $[1, 1]$. The sizes of $A$, $B$ and $C$ allow all the operations. What is the entry in row 2, column 2 of $A(B + C)$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "3+1",
+      "solution": "By the distributive property $A(B + C) = AB + AC$. Add the entries in row 2, column 2: $3 + 1 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A(B+C) = AB + AC = rows [5,2] and [1,4]; row 2 col 2 = 3 + 1 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.288Z"
+        }
+      }
+    },
+    {
+      "id": "ca47556f-e196-40f0-9680-a10063c12ad6",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Sizes in matrix operations",
+      "stem": "The matrix $A$ is 2 by 3 and the matrix $B$ is 3 by 2. Which statement is true?",
+      "choices": [
+        "$AB$ and $BA$ can both be found, but they have different sizes.",
+        "$AB$ and $BA$ can both be found and they have the same size.",
+        "$AB$ can be found but $BA$ cannot.",
+        "Neither $AB$ nor $BA$ can be found."
+      ],
+      "answer": "$AB$ and $BA$ can both be found, but they have different sizes.",
+      "compute": null,
+      "solution": "$AB$ is 2 by 2 and $BA$ is 3 by 3, so both exist but their sizes differ.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$AB$ and $BA$ can both be found, but they have different sizes.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB: (2x3)(3x2) = 2x2. BA: (3x2)(2x3) = 3x3. Both exist, different sizes.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.335Z"
+        }
+      }
+    },
+    {
+      "id": "9b175ad3-74c9-4fb3-97cd-0d16f1cbd9d6",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $A$ has rows $[2, 1]$ and $[0, 4]$ and the matrix $B$ has rows $[3, 6]$ and $[9, 0]$. The matrix $X$ satisfies $3(X - A) = B$. What is the entry in row 2, column 1 of $X$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "0+9/3",
+      "solution": "Divide by 3: $X - A = \\frac{1}{3}B$, so $X = A + \\frac{1}{3}B$. The entry is $0 + \\frac{9}{3} = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "X = A + B/3 = [2+1, 1+2],[0+3, 4+0]; row2 col1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.349Z"
+        }
+      }
+    },
+    {
+      "id": "319c22b1-3b6b-4c53-98e1-cb709c0fc024",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Commutative property",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[0, 1]$ and the matrix $B$ has rows $[1, 0]$ and $[1, 1]$. Which statement is true?",
+      "choices": [
+        "$AB = BA$, because both products have 1 in row 1, column 1.",
+        "$AB \\ne BA$, because the entry in row 2, column 2 is 3 in $AB$ and 1 in $BA$.",
+        "$AB \\ne BA$, because the entry in row 1, column 1 is 3 in $AB$ and 1 in $BA$.",
+        "$AB = BA$, because matrices of the same size can be multiplied in either order."
+      ],
+      "answer": "$AB \\ne BA$, because the entry in row 1, column 1 is 3 in $AB$ and 1 in $BA$.",
+      "compute": null,
+      "solution": "$AB$ has rows $[3, 2]$ and $[1, 1]$ and $BA$ has rows $[1, 2]$ and $[1, 3]$. They differ, for example in row 1, column 1 (3 and 1).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$AB \\ne BA$, because the entry in row 1, column 1 is 3 in $AB$ and 1 in $BA$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [3,2],[1,1]; BA = [1,2],[1,3]. Row1 col1: 3 in AB, 1 in BA (true). Row2 col2 is 1 in AB, 3 in BA, so option 3 reversed.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.356Z"
+        }
+      }
+    },
+    {
+      "id": "0ae0b846-805a-4fc6-96d4-cf828f21da7d",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Scalar multiplication of matrices",
+      "stem": "The matrix $A$ has rows $[2, -4]$ and $[6, 0]$. The matrix $B$ has rows $[-3, 6]$ and $[-9, 0]$. The number $k$ satisfies $kA = B$. What is $k$?",
+      "choices": [],
+      "answer": "-3/2",
+      "compute": "-3/2",
+      "solution": "Compare the entries in row 1, column 1: $2k = -3$, so $k = -\\frac{3}{2}$. Check: $-4 \\cdot (-\\frac{3}{2}) = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Entry-wise: 2k=-3, -4k=6, 6k=-9 all give k=-3/2 (0=0 fine).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.384Z"
+        }
+      }
+    },
+    {
+      "id": "a9eddeba-7fa7-4921-82b0-8bcbe9a99258",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Associative property",
+      "stem": "The matrix $A$ has rows $[1, 1]$ and $[0, 1]$, the matrix $B$ has rows $[2, 0]$ and $[0, 3]$ and the matrix $C$ has rows $[1]$ and $[2]$. The product $ABC$ has two rows. What is the number in row 1?",
+      "choices": [],
+      "answer": "8",
+      "compute": "1*2+1*6",
+      "solution": "Because multiplication is associative, find $BC$ first: rows $[2]$ and $[6]$. Then $A(BC)$ has row 1 equal to $1 \\cdot 2 + 1 \\cdot 6 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "BC = [2,6]^T; A*BC = [2+6, 6] = [8,6]. Row 1: 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.422Z"
+        }
+      }
+    },
+    {
+      "id": "d6ea6f61-6d84-49da-ab2f-3ef2fa1fa5c9",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The 3 by 3 matrix $A$ has rows $[1, 0, 2]$, $[3, 1, -1]$ and $[2, 2, 0]$, and the 3 by 1 matrix $X$ has rows $[2]$, $[1]$ and $[3]$. What is the entry in row 2 of the product $AX$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "3*2+1*1+(-1)*3",
+      "solution": "Row 2 of $A$ with $X$: $3 \\cdot 2 + 1 \\cdot 1 + (-1) \\cdot 3 = 6 + 1 - 3 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2: 3*2 + 1*1 + (-1)*3 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.423Z"
+        }
+      }
+    },
+    {
+      "id": "d69a8ea8-6e97-44ed-98fe-2ef1f19ae3e0",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Powers of a matrix",
+      "stem": "The matrix $A$ has rows $[1, 1]$ and $[1, 0]$. What is the entry in row 1, column 1 of $A^3$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "2*1+1*1",
+      "solution": "$A^2$ has rows $[2, 1]$ and $[1, 1]$ and $A^3 = A^2 A$ has rows $[3, 2]$ and $[2, 1]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A=[[1,1],[1,0]]; A^2=[[2,1],[1,1]]; A^3=A^2*A=[[3,2],[2,1]]. Row1 col1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.427Z"
+        }
+      }
+    },
+    {
+      "id": "30d1e2c4-2dd8-41be-bf0d-d58a417a30c3",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distributive property",
+      "stem": "The matrix $A$ has rows $[2, 5]$ and $[1, 4]$ and the matrix $B$ has rows $[7, 2]$ and $[3, 9]$. The matrix $3(A + B) - 3B$ equals $3A$. What is the entry in row 1, column 2 of $3(A + B) - 3B$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "3*(5+2)-3*2",
+      "solution": "Distribute: $3(A + B) - 3B = 3A + 3B - 3B = 3A$. Row 1, column 2 of $3A$ is $3 \\cdot 5 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3A row1 col2 = 3*5 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.469Z"
+        }
+      }
+    },
+    {
+      "id": "265607eb-7bcf-4b92-882d-289fd71357fc",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Associative property",
+      "stem": "The matrices $A$, $B$ and $C$ have sizes that allow the products. The product $(AB)C$ is always equal to which expression?",
+      "choices": [
+        "$A(CB)$",
+        "$(BA)C$",
+        "$(AC)B$",
+        "$A(BC)$"
+      ],
+      "answer": "$A(BC)$",
+      "compute": null,
+      "solution": "Associativity lets the grouping change but not the order of the matrices: $(AB)C = A(BC)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A(BC)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associativity: (AB)C = A(BC).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.474Z"
+        }
+      }
+    },
+    {
+      "id": "21a4570e-0164-4df4-b977-3db9127c5a77",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Scalar multiplication of matrices",
+      "stem": "Three times the matrix with rows $[x, 2]$ and $[y, -1]$ equals the matrix with rows $[12, 6]$ and $[-9, -3]$. What is $x - y$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "12/3-(-9/3)",
+      "solution": "Entry by entry: $3x = 12$ gives $x = 4$, and $3y = -9$ gives $y = -3$. So $x - y = 4 - (-3) = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x=12 so x=4; 3y=-9 so y=-3; other entries check (6, -3). x - y = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.499Z"
+        }
+      }
+    },
+    {
+      "id": "2e32314a-15fa-489d-b1ae-250c39c3d393",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply matrices",
+      "stem": "Find the product $AB$ when $A$ has rows $[2, -1]$ and $[3, 4]$ and $B$ has rows $[1, 0]$ and $[-2, 5]$. Which matrix is $AB$?",
+      "choices": [
+        "rows $[2, -1]$ and $[11, 22]$",
+        "rows $[2, 0]$ and $[-6, 20]$",
+        "rows $[0, -5]$ and $[-5, 20]$",
+        "rows $[4, -5]$ and $[-5, 20]$"
+      ],
+      "answer": "rows $[4, -5]$ and $[-5, 20]$",
+      "compute": null,
+      "solution": "Row 1 of $A$: $2 \\cdot 1 + (-1)(-2) = 4$ and $2 \\cdot 0 + (-1) \\cdot 5 = -5$. Row 2: $3 \\cdot 1 + 4(-2) = -5$ and $3 \\cdot 0 + 4 \\cdot 5 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[4, -5]$ and $[-5, 20]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1: 2·1+(-1)(-2)=4, 0+(-1)5=-5; Row2: 3+4(-2)=-5, 0+20=20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.518Z"
+        }
+      }
+    },
+    {
+      "id": "a1f8d682-4f1d-41b2-8d3f-0baba576406a",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The 2 by 3 matrix $A$ has rows $[1, 2, 3]$ and $[4, 5, 6]$ and the 3 by 2 matrix $B$ has rows $[1, 0]$, $[0, 1]$ and $[1, 1]$. What number is in the bottom left corner of $AB$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "4*1+5*0+6*1",
+      "solution": "Row 2 of $A$ with column 1 of $B$: $4 \\cdot 1 + 5 \\cdot 0 + 6 \\cdot 1 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2 of A [4,5,6] times column 1 of B [1,0,1]: 4 + 6 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.523Z"
+        }
+      }
+    },
+    {
+      "id": "1757bef2-7a79-4013-ae5c-17712e28e53b",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Identity and zero matrices",
+      "stem": "The matrix $I$ is the 2 by 2 identity matrix and $A$ has rows $[3, 1]$ and $[2, 5]$. Which matrix is $A^2 - AI$?",
+      "choices": [
+        "rows $[10, 8]$ and $[16, 26]$",
+        "rows $[14, 9]$ and $[18, 32]$",
+        "rows $[8, 7]$ and $[14, 22]$",
+        "rows $[6, 0]$ and $[2, 20]$"
+      ],
+      "answer": "rows $[8, 7]$ and $[14, 22]$",
+      "compute": null,
+      "solution": "$AI = A$, so the matrix is $A^2 - A$. $A^2$ has rows $[11, 8]$ and $[16, 27]$, and subtracting $A$ gives rows $[8, 7]$ and $[14, 22]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[8, 7]$ and $[14, 22]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A^2 = [[11,8],[16,27]]; AI = A; difference [[8,7],[14,22]].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.532Z"
+        }
+      }
+    },
+    {
+      "id": "2b3b32be-dcd4-435d-9448-4c84b9cfd593",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Sizes in matrix operations",
+      "stem": "The product $AB$ is a 3 by 5 matrix, and $A$ has 4 columns. How many rows does $B$ have?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The number of columns of $A$ must equal the number of rows of $B$, so $B$ has 4 rows.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A is 3x4, so B has 4 rows (B is 4x5).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.534Z"
+        }
+      }
+    },
+    {
+      "id": "33c25e21-45a1-4375-a540-00889ee6f1d8",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $A$ has rows $[4, -1]$ and $[0, 2]$ and the matrix $B$ has rows $[1, 2]$ and $[-3, 0]$. Which matrix is $2A - 3B$?",
+      "choices": [
+        "rows $[10, -7]$ and $[6, 6]$",
+        "rows $[11, 4]$ and $[-9, 4]$",
+        "rows $[-5, 8]$ and $[-9, -4]$",
+        "rows $[5, -8]$ and $[9, 4]$"
+      ],
+      "answer": "rows $[5, -8]$ and $[9, 4]$",
+      "compute": null,
+      "solution": "$2A$ has rows $[8, -2]$ and $[0, 4]$ and $3B$ has rows $[3, 6]$ and $[-9, 0]$. Subtracting gives rows $[5, -8]$ and $[9, 4]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[5, -8]$ and $[9, 4]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2A = [8,-2],[0,4]; 3B = [3,6],[-9,0]; 2A-3B = [5,-8],[9,4].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.567Z"
+        }
+      }
+    },
+    {
+      "id": "f56e7542-adde-4ee0-b89f-af89b56fd905",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Commutative property",
+      "stem": "The matrix $A$ has rows $[1, 1]$ and $[0, 1]$ and the matrix $B$ has rows $[1, 0]$ and $[1, 1]$. Which matrix is $AB - BA$?",
+      "choices": [
+        "rows $[-1, 0]$ and $[0, 1]$",
+        "rows $[1, 0]$ and $[0, -1]$",
+        "rows $[0, 0]$ and $[0, 0]$",
+        "rows $[3, 2]$ and $[2, 3]$"
+      ],
+      "answer": "rows $[1, 0]$ and $[0, -1]$",
+      "compute": null,
+      "solution": "$AB$ has rows $[2, 1]$ and $[1, 1]$ and $BA$ has rows $[1, 1]$ and $[1, 2]$. Subtracting gives rows $[1, 0]$ and $[0, -1]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[1, 0]$ and $[0, -1]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [1,1;0,1][1,0;1,1] = [2,1;1,1]. BA = [1,0;1,1][1,1;0,1] = [1,1;1,2]. AB-BA = [1,0;0,-1].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.576Z"
+        }
+      }
+    },
+    {
+      "id": "7918abde-93b7-4f4e-8dbc-df4fe897eb2b",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Powers of a matrix",
+      "stem": "A student squares the matrix with rows $[2, -1]$ and $[0, 3]$ by multiplying it by itself. Which matrix does the student get?",
+      "choices": [
+        "rows $[4, 1]$ and $[0, 9]$",
+        "rows $[4, -5]$ and $[0, 9]$",
+        "rows $[4, -2]$ and $[0, 6]$",
+        "rows $[4, 5]$ and $[0, 9]$"
+      ],
+      "answer": "rows $[4, -5]$ and $[0, 9]$",
+      "compute": null,
+      "solution": "$A^2 = AA$. Row 1: $2 \\cdot 2 + (-1) \\cdot 0 = 4$ and $2 \\cdot (-1) + (-1) \\cdot 3 = -5$. Row 2: $0$ and $3 \\cdot 3 = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[4, -5]$ and $[0, 9]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "[[2,-1],[0,3]]^2: r1=[4, -2-3]=[4,-5]; r2=[0,9].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.698Z"
+        }
+      }
+    },
+    {
+      "id": "28263038-14c3-4556-8693-c3e8a9c9ceb3",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Identity and zero matrices",
+      "stem": "The matrix $I$ is the 2 by 2 identity matrix and $M$ has rows $[2, -1]$ and $[4, 5]$. What is the sum of the four entries of $4I - M$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "(4-2)+(0+1)+(0-4)+(4-5)",
+      "solution": "$4I$ has rows $[4, 0]$ and $[0, 4]$, so $4I - M$ has rows $[2, 1]$ and $[-4, -1]$. The entries add to $2 + 1 - 4 - 1 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4I-M=[[2,1],[-4,-1]]; sum -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.703Z"
+        }
+      }
+    },
+    {
+      "id": "18effbf1-ac64-4ff8-b28a-49d1483cb588",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Distributive property",
+      "stem": "The matrix $F$ has rows $[3, 2]$ and $[1, 4]$ and shows the books and pens that Ann (row 1) and Bo (row 2) bought in the fall. The matrix $S$ has rows $[2, 5]$ and $[4, 1]$ and shows their purchases in the spring. The matrix $p$ has rows $[6]$ and $[2]$, the price in dollars of a book and of a pen. The matrix $(F + S)p$ shows what each person spent in both seasons. How many dollars did Bo spend?",
+      "choices": [],
+      "answer": "40",
+      "compute": "(1+4)*6+(4+1)*2",
+      "solution": "Row 2 of $F + S$ is $[5, 5]$. Then $5 \\cdot 6 + 5 \\cdot 2 = 40$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "40",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "F+S=[[5,7],[5,5]]; Bo: 5*6+5*2=40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.709Z"
+        }
+      }
+    },
+    {
+      "id": "889a1a89-34dc-45aa-9a9d-edf14d29b215",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Distributive property",
+      "stem": "The 2 by 2 matrices $A$ and $B$ may not commute. Which expression is equal to $(A + B)(A - B)$?",
+      "choices": [
+        "$A^2 - AB + BA - B^2$",
+        "$A^2 - B^2$",
+        "$A^2 - 2AB + B^2$",
+        "$A^2 + AB - BA - B^2$"
+      ],
+      "answer": "$A^2 - AB + BA - B^2$",
+      "compute": null,
+      "solution": "Distribute twice: $(A + B)(A - B) = A^2 - AB + BA - B^2$. The middle terms cancel only if $AB = BA$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$A^2 - AB + BA - B^2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(A+B)(A-B)=A^2-AB+BA-B^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.713Z"
+        }
+      }
+    },
+    {
+      "id": "09301525-801f-4c6e-b03f-7213f9013af8",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Sizes in matrix operations",
+      "stem": "The matrix $A$ is 2 by 3, $B$ is 3 by 4 and $C$ is 4 by 1. What size is the product $ABC$?",
+      "choices": [
+        "2 by 1",
+        "3 by 1",
+        "2 by 4",
+        "3 by 4"
+      ],
+      "answer": "2 by 1",
+      "compute": null,
+      "solution": "$AB$ is 2 by 4. Then $(AB)C$ is 2 by 4 times 4 by 1, which is 2 by 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2 by 1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x3)(3x4) = 2x4, then (2x4)(4x1) = 2x1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.734Z"
+        }
+      }
+    },
+    {
+      "id": "72d6906f-b02a-454c-a884-a337ed17abce",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The matrix $P$ has rows $[2, 1]$, $[0, 3]$ and $[4, 2]$. Its rows are three students and its columns are the apples and pears each bought. The matrix $Q$ has rows $[3]$ and $[5]$, the price in dollars of an apple and of a pear. The product $PQ$ gives what each student paid. How many dollars did the third student pay?",
+      "choices": [],
+      "answer": "22",
+      "compute": "4*3+2*5",
+      "solution": "Row 3 of $P$ with $Q$: $4 \\cdot 3 + 2 \\cdot 5 = 12 + 10 = 22$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "22",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Third student [4,2]: 4*3 + 2*5 = 22.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.767Z"
+        }
+      }
+    },
+    {
       "id": "b174cce2-0458-48af-a923-416125df9dc6",
       "topic_id": "NC17.PC.N.2",
       "difficulty": 3,
@@ -4071,6 +5520,684 @@
           "work": "AB = rows [2,4],[9,12]: r1c2 = 4. BA r1c2 = [1,2].[0,3] = 6. 4 - 6 = -2.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:57:19.754Z"
+        }
+      }
+    },
+    {
+      "id": "aa5c847f-7fad-4f33-9cc9-d1234c9d622e",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The matrix $A$ has rows $[2, 1]$ and $[3, 2]$. The matrix $B$ has rows $[2, -1]$ and $[p, 2]$. The product $AB$ is the identity matrix. What is $p$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-6/2",
+      "solution": "The entry in row 2, column 1 of $AB$ is $3 \\cdot 2 + 2p$, and it must be 0. So $p = -3$. Check row 1, column 1: $2 \\cdot 2 + 1 \\cdot (-3) = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = rows [4+p, 0] and [6+2p, 1]; identity needs 4+p = 1 and 6+2p = 0: p = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.313Z"
+        }
+      }
+    },
+    {
+      "id": "00f12b66-0daf-4324-975c-435bf98860ab",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distributive property",
+      "stem": "The matrices $A$, $B$, $C$ and $D$ have sizes that allow the operations. Which product is equal to $AB + AC + DB + DC$?",
+      "choices": [
+        "$(A + B)(C + D)$",
+        "$(B + C)(A + D)$",
+        "$(A + D)(B + C)$",
+        "$(A + C)(B + D)$"
+      ],
+      "answer": "$(A + D)(B + C)$",
+      "compute": null,
+      "solution": "Distribute $(A + D)(B + C) = AB + AC + DB + DC$. Changing the order of the factors changes the terms to $BA$, $BD$, $CA$ and $CD$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(A + D)(B + C)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(A+D)(B+C) = AB + AC + DB + DC.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.316Z"
+        }
+      }
+    },
+    {
+      "id": "192a05c7-1618-4091-99ca-b7153e22a9a9",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Commutative property",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[0, 1]$ and the matrix $B$ has rows $[3, 0]$ and $[1, 2]$. What is the sum of all four entries of $AB - BA$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "(5+4+1+2)-(3+6+1+4)",
+      "solution": "$AB$ has rows $[5, 4]$ and $[1, 2]$ and $BA$ has rows $[3, 6]$ and $[1, 4]$. The entries of $AB$ add to 12 and those of $BA$ add to 14, so the sum is $12 - 14 = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [5,4],[1,2]; BA = [3,6],[1,4]; AB-BA = [2,-2],[0,-2]; sum = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.332Z"
+        }
+      }
+    },
+    {
+      "id": "14ffe855-5f5d-490b-9524-de0fa50008c5",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply matrices",
+      "stem": "The 3 by 3 matrix $A$ has rows $[1, 0, 2]$, $[0, 1, 1]$ and $[1, 1, 0]$. The 3 by 3 matrix $B$ has rows $[2, 1, 0]$, $[0, 1, 3]$ and $[1, 0, 1]$. Which matrix is $AB$?",
+      "choices": [
+        "rows $[2, 1, 5]$, $[3, 4, 1]$ and $[2, 1, 2]$",
+        "rows $[4, 1, 2]$, $[1, 1, 2]$ and $[2, 4, 3]$",
+        "rows $[4, 1, 2]$, $[1, 1, 4]$ and $[2, 2, 3]$",
+        "rows $[3, 1, 2]$, $[0, 2, 4]$ and $[2, 1, 1]$"
+      ],
+      "answer": "rows $[4, 1, 2]$, $[1, 1, 4]$ and $[2, 2, 3]$",
+      "compute": null,
+      "solution": "Row 1 of $A$ with the columns of $B$: $2+0+2=4$, $1+0+0=1$, $0+0+2=2$. Row 2: $0+0+1=1$, $0+1+0=1$, $0+3+1=4$. Row 3: $2+0+0=2$, $1+1+0=2$, $0+3+0=3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[4, 1, 2]$, $[1, 1, 4]$ and $[2, 2, 3]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1 = 1*[2,1,0] + 2*[1,0,1] = [4,1,2]; Row2 = [0,1,3]+[1,0,1] = [1,1,4]; Row3 = [2,1,0]+[0,1,3] = [2,2,3].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.338Z"
+        }
+      }
+    },
+    {
+      "id": "dcf98d6e-47bf-4f28-8575-9bd02228b5f6",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Powers of a matrix",
+      "stem": "The matrix $D$ has rows $[2, 0]$ and $[0, 3]$. What is the sum of the four entries of $D^4$?",
+      "choices": [],
+      "answer": "97",
+      "compute": "2^4+3^4",
+      "solution": "The powers of a diagonal matrix are found by raising each diagonal entry to the power: $D^4$ has rows $[16, 0]$ and $[0, 81]$. The sum is 97.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "97",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "D^4 = diag(2^4, 3^4) = diag(16, 81); sum 97.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.369Z"
+        }
+      }
+    },
+    {
+      "id": "26fae5e5-958f-4ace-b3fb-31f2dcc9e467",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The 3 by 2 matrix $A$ has rows $[1, 2]$, $[0, -1]$ and $[3, 1]$ and the 2 by 3 matrix $B$ has rows $[2, 0, 1]$ and $[1, -2, 3]$. The product $AB$ is 3 by 3. What is its entry in row 2, column 3?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "0*1+(-1)*3",
+      "solution": "Row 2 of $A$, $[0, -1]$, with column 3 of $B$, $[1, 3]$: $0 \\cdot 1 + (-1) \\cdot 3 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2 of A = [0,-1], column 3 of B = [1,3]: 0*1+(-1)*3 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.383Z"
+        }
+      }
+    },
+    {
+      "id": "e38122cb-38d4-4f9d-bdbc-b51b9052fcb1",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine matrix operations",
+      "stem": "The matrices $X$ and $Y$ satisfy $X + Y = A$ and $X - Y = B$, where $A$ has rows $[6, 4]$ and $[2, 10]$ and $B$ has rows $[2, 0]$ and $[-2, 4]$. What is the sum of the four entries of $Y$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(4+4+4+6)/2",
+      "solution": "Subtract the equations: $2Y = A - B$, which has rows $[4, 4]$ and $[4, 6]$. So $Y$ has rows $[2, 2]$ and $[2, 3]$, and its entries add to 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Y=(A-B)/2 = [[4,4],[4,6]]/2 = [[2,2],[2,3]]. Sum 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.443Z"
+        }
+      }
+    },
+    {
+      "id": "88cd1727-ea1b-4c5a-9367-d4275feb193d",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Scalar multiplication of matrices",
+      "stem": "The matrices $A$ and $B$ are 2 by 2, and the product $AB$ has rows $[1, 2]$ and $[3, 4]$. What is the entry in row 2, column 1 of $(2A)(-3B)$?",
+      "choices": [],
+      "answer": "-18",
+      "compute": "-6*3",
+      "solution": "Scalars move out of the product: $(2A)(-3B) = -6(AB)$. The entry is $-6 \\cdot 3 = -18$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2A)(-3B) = -6AB. Row2 col1 of AB is 3, so -18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.451Z"
+        }
+      }
+    },
+    {
+      "id": "1de75820-475d-4289-9cb9-f997d4927d05",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "Matrix $W$ shows the hours two employees worked on Monday, Tuesday and Wednesday: rows $[4, 5, 6]$ and $[3, 8, 2]$, with employees as rows. Matrix $R$ has rows $[10]$, $[12]$ and $[15]$, the hourly pay in dollars on those three days. The product $WR$ gives each employee's pay. How many dollars does the second employee earn?",
+      "choices": [],
+      "answer": "156",
+      "compute": "3*10+8*12+2*15",
+      "solution": "Row 2 of $W$ with $R$: $3 \\cdot 10 + 8 \\cdot 12 + 2 \\cdot 15 = 30 + 96 + 30 = 156$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "156",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second employee: 3*10 + 8*12 + 2*15 = 30+96+30 = 156.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.459Z"
+        }
+      }
+    },
+    {
+      "id": "4422ae30-eda9-4831-b6b3-c806bdac9cb9",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[3, 4]$, and $I$ is the 2 by 2 identity matrix. The matrix $B$ is $2A - I$. What is the entry in row 1, column 2 of $B^2$?",
+      "choices": [],
+      "answer": "32",
+      "compute": "1*4+4*7",
+      "solution": "$B$ has rows $[1, 4]$ and $[6, 7]$. Row 1 of $B$ with column 2 of $B$: $1 \\cdot 4 + 4 \\cdot 7 = 32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "B=2A-I=[[1,4],[6,7]]. B^2 row1 col2 = 1*4+4*7 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.477Z"
+        }
+      }
+    },
+    {
+      "id": "65ca9775-70b2-49b1-bd73-363582383e81",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Associative property",
+      "stem": "$A$ is 2 by 3 with rows $[1, 2, 0]$ and $[0, 1, 1]$, $B$ is 3 by 3 with rows $[1, 0, 0]$, $[2, 1, 0]$ and $[0, 3, 1]$, and $C$ is 3 by 1 with rows $[1]$, $[1]$ and $[2]$. The product $ABC$ has two rows. What is the number in row 2?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3+5",
+      "solution": "Group as $A(BC)$ to keep the numbers small. $BC$ has rows $[1]$, $[3]$ and $[5]$. Row 2 of $A$, $[0, 1, 1]$, with $BC$ gives $3 + 5 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "BC: [1,0,0]·[1,1,2]=1, [2,1,0]·=3, [0,3,1]·=5 -> [1,3,5]. Row 2 of A [0,1,1]: 3+5 = 8. (Row 1: 1+6=7.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.494Z"
+        }
+      }
+    },
+    {
+      "id": "2156b247-2166-4ab5-9468-2c132562f129",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Sizes in matrix operations",
+      "stem": "The matrix $A$ is 3 by 2, $B$ is 2 by 4 and $C$ is 4 by 3. Which of these products cannot be found?",
+      "choices": [
+        "$AB$",
+        "$AC$",
+        "$BC$",
+        "$CA$"
+      ],
+      "answer": "$AC$",
+      "compute": null,
+      "solution": "$AB$ is 3 by 4, $BC$ is 2 by 3 and $CA$ is 4 by 2. For $AC$, the columns of $A$ (2) do not equal the rows of $C$ (4).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$AC$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "CA: 4x3·3x2 ok; BC: 2x4·4x3 ok; AB: 3x2·2x4 ok; AC: 3x2·4x3 inner 2≠4, not defined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.524Z"
+        }
+      }
+    },
+    {
+      "id": "2ace9705-0c08-4eae-8419-eeaa51f47761",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply matrices",
+      "stem": "The matrix $A$ has rows $[1, k]$ and $[2, 3]$ and the matrix $B$ has rows $[3, 1]$ and $[1, 2]$. In the product $AB$, the entry in row 1, column 1 equals the entry in row 2, column 2. What is $k$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "8-3",
+      "solution": "The entry in row 1, column 1 is $1 \\cdot 3 + k \\cdot 1 = 3 + k$. The entry in row 2, column 2 is $2 \\cdot 1 + 3 \\cdot 2 = 8$. So $3 + k = 8$ and $k = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(AB)11 = 3 + k; (AB)22 = 2·1 + 3·2 = 8; k = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.555Z"
+        }
+      }
+    },
+    {
+      "id": "f093ee8a-7657-4dbf-8ece-564d8dc67af3",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Powers of a matrix",
+      "stem": "The matrix $M$ has rows $[0, -1]$ and $[1, 0]$. Its powers repeat in a cycle: $M^2$ has rows $[-1, 0]$ and $[0, -1]$ and $M^4$ is the identity matrix. What is the entry in row 1, column 1 of $M^{10}$?",
+      "choices": [],
+      "answer": "-1",
+      "compute": "-1",
+      "solution": "$M^{10} = (M^4)^2 \\cdot M^2 = I \\cdot M^2 = M^2$, whose entry in row 1, column 1 is $-1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "M^10 = (M^4)^2 * M^2 = M^2 = [-1,0],[0,-1]. Row 1 col 1: -1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.618Z"
+        }
+      }
+    },
+    {
+      "id": "c0e57d3f-133f-4796-9364-e4a101e5e8e8",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $A$ has rows $[2, 1]$ and $[1, 2]$, and $I$ is the 2 by 2 identity matrix. The matrix $A^2$ equals $4A - kI$ for some number $k$. What is $k$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "8-5",
+      "solution": "$A^2$ has rows $[5, 4]$ and $[4, 5]$ and $4A$ has rows $[8, 4]$ and $[4, 8]$. Their difference $4A - A^2$ has rows $[3, 0]$ and $[0, 3]$, which is $3I$, so $k = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A^2 = [5,4],[4,5]. 4A - kI = [8-k,4],[4,8-k]. 8-k = 5 -> k = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.624Z"
+        }
+      }
+    },
+    {
+      "id": "51dcad01-3a91-4bb3-96f7-063af21e2a70",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Distributive property",
+      "stem": "The matrices $A$, $B$ and $C$ are 2 by 2. Which expression is equal to $A(B + C) - A(B - C)$?",
+      "choices": [
+        "$2AC$",
+        "$2CA$",
+        "$2AB$",
+        "$2A(B + C)$"
+      ],
+      "answer": "$2AC$",
+      "compute": null,
+      "solution": "Distribute: $AB + AC - AB + AC = 2AC$. The order $AC$ matters, since $CA$ may be different.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2AC$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB+AC-AB+AC=2AC. 2CA differs in general.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.657Z"
+        }
+      }
+    },
+    {
+      "id": "4a469d8d-e3e6-4dba-b3a7-d6f76a01e2ce",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Distributive property",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[0, 1]$ and the matrix $B$ has rows $[1, 0]$ and $[3, 1]$. A student uses $A^2 + 2AB + B^2$ for $(A + B)^2$. What is the entry in row 1, column 1 of $(A + B)^2 - (A^2 + 2AB + B^2)$?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "1-7",
+      "solution": "$(A + B)^2 = A^2 + AB + BA + B^2$, so the difference is $BA - AB$. Here $AB$ has rows $[7, 2]$ and $[3, 1]$ and $BA$ has rows $[1, 2]$ and $[3, 7]$, and the entry in row 1, column 1 is $1 - 7 = -6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference = BA - AB. AB = [7,2; 3,1]; BA = [1,2; 3,7]. Entry (1,1): 1 - 7 = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.755Z"
+        }
+      }
+    },
+    {
+      "id": "bd030db6-c49f-4941-a10c-bf254d4f7cec",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Sizes in matrix operations",
+      "stem": "The matrix $A$ is 3 by 4 and the matrix $B$ is 4 by 2. Each entry of $AB$ takes 4 multiplications of two numbers. How many such multiplications are needed to find the whole product $AB$?",
+      "choices": [],
+      "answer": "24",
+      "compute": "3*2*4",
+      "solution": "$AB$ is 3 by 2, so it has 6 entries. Each needs 4 multiplications: $6 \\cdot 4 = 24$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB is 3x2: 6 entries * 4 = 24.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.756Z"
+        }
+      }
+    },
+    {
+      "id": "128cda80-ad17-4ead-a0c3-9db0c94206af",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[0, 1]$ and the matrix $B$ has rows $[2, 0]$ and $[1, 1]$. Which matrix is $AB - 2A + B$?",
+      "choices": [
+        "rows $[2, 0]$ and $[2, 2]$",
+        "rows $[0, -2]$ and $[0, -2]$",
+        "rows $[9, 2]$ and $[3, 2]$",
+        "rows $[4, -2]$ and $[2, 0]$"
+      ],
+      "answer": "rows $[4, -2]$ and $[2, 0]$",
+      "compute": null,
+      "solution": "$AB$ has rows $[4, 2]$ and $[1, 1]$. Subtract $2A$, which has rows $[2, 4]$ and $[0, 2]$, and add $B$ to get rows $[4, -2]$ and $[2, 0]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[4, -2]$ and $[2, 0]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [4,2; 1,1]; -2A = [-2,-4; 0,-2]; +B = [2,0;1,1]. Sum: [4,-2; 2,0].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.792Z"
+        }
+      }
+    },
+    {
+      "id": "c5e149a3-493e-4a32-8e81-1c4f7c7e016d",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Identity and zero matrices",
+      "stem": "The matrix $A$ has rows $[1, 2]$ and $[2, 4]$. Which matrix $B$, that is not the zero matrix, makes $AB$ the zero matrix?",
+      "choices": [
+        "rows $[2, 0]$ and $[1, 0]$",
+        "rows $[-2, 0]$ and $[-1, 0]$",
+        "rows $[2, 0]$ and $[-1, 0]$",
+        "rows $[1, 0]$ and $[0, 1]$"
+      ],
+      "answer": "rows $[2, 0]$ and $[-1, 0]$",
+      "compute": null,
+      "solution": "For $B$ with rows $[2, 0]$ and $[-1, 0]$, row 1 of $AB$ is $[1 \\cdot 2 + 2 \\cdot (-1), 0] = [0, 0]$ and row 2 is $[2 \\cdot 2 + 4 \\cdot (-1), 0] = [0, 0]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[2, 0]$ and $[-1, 0]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Need columns of B with x + 2y = 0. Option [2,0;-1,0]: column (2,-1): 2-2 = 0 and 4-4 = 0. Others: (-2,-1) gives -4; (2,1) gives 4; identity gives A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.813Z"
+        }
+      }
+    },
+    {
+      "id": "0e48fc6d-9032-4f2c-8682-737ae16b9410",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Identity and zero matrices",
+      "stem": "Which statement about the product of two matrices is true?",
+      "choices": [
+        "Two matrices that are not zero can have a product that is the zero matrix.",
+        "If $AB$ is the zero matrix, then $A$ or $B$ must be the zero matrix.",
+        "If $AB = AC$, then $B = C$ for every matrix $A$.",
+        "If $AB$ is the zero matrix, then $BA$ must be the zero matrix too."
+      ],
+      "answer": "Two matrices that are not zero can have a product that is the zero matrix.",
+      "compute": null,
+      "solution": "For example, $A$ with rows $[0, 1]$ and $[0, 0]$ and $B$ with rows $[1, 0]$ and $[0, 0]$ are not zero, and $AB$ is the zero matrix while $BA$ is not. So the second and fourth statements fail, and the third fails when $A$ is the zero matrix.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Two matrices that are not zero can have a product that is the zero matrix.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "E.g. A = [1,0;0,0], B = [0,0;0,1], AB = 0. So statement 3 true; 0, 1, 2 false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.817Z"
+        }
+      }
+    },
+    {
+      "id": "b2294f10-5137-4ac4-8e98-4c846761ae9c",
+      "topic_id": "NC17.PC.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Commutative property",
+      "stem": "The matrix $A$ has rows $[1, 0]$ and $[0, 2]$. For which matrix $B$ is $AB = BA$?",
+      "choices": [
+        "rows $[0, 1]$ and $[1, 0]$",
+        "rows $[1, 1]$ and $[0, 1]$",
+        "rows $[1, 0]$ and $[1, 1]$",
+        "rows $[3, 0]$ and $[0, 5]$"
+      ],
+      "answer": "rows $[3, 0]$ and $[0, 5]$",
+      "compute": null,
+      "solution": "A diagonal matrix commutes with another diagonal matrix. For the others, $AB$ and $BA$ differ: for example with $B$ having rows $[0, 1]$ and $[1, 0]$, $AB$ has rows $[0, 1]$ and $[2, 0]$ but $BA$ has rows $[0, 2]$ and $[1, 0]$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows $[3, 0]$ and $[0, 5]$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A diagonal with distinct entries; commuting B must be diagonal. diag(3,5) works; checked others: products differ.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.821Z"
         }
       }
     },
@@ -7152,6 +9279,40 @@
       }
     },
     {
+      "id": "64c57049-3090-483c-9536-c4ec54f8fc40",
+      "topic_id": "NC17.PC.N.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Add vectors in a real situation",
+      "stem": "One force of 30 newtons pulls east and another force of 40 newtons pulls north on the same object. Which describes the total force?",
+      "choices": [
+        "About 50 newtons, at about $37^\\circ$ north of east",
+        "About 70 newtons, at about $45^\\circ$ north of east",
+        "About 50 newtons, at about $53^\\circ$ north of east",
+        "About 10 newtons, at about $53^\\circ$ north of east"
+      ],
+      "answer": "About 50 newtons, at about $53^\\circ$ north of east",
+      "compute": null,
+      "solution": "The magnitude is $\\sqrt{30^2 + 40^2} = 50$. The angle north of east has $\\tan = \\frac{40}{30} = \\frac{4}{3}$, which is about $53^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "About 50 newtons, at about $53^\\circ$ north of east",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perpendicular forces: magnitude sqrt(30^2+40^2)=50; angle arctan(40/30)=53.13 deg north of east.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.429Z"
+        }
+      }
+    },
+    {
       "id": "89b36248-bb08-4fef-85ad-a6b1b6bb6df7",
       "topic_id": "NC17.PC.A.1",
       "difficulty": 1,
@@ -7463,6 +9624,733 @@
           "work": "Critical points x = 4 (zero) and x = -2 (excluded). Sign: x < -2 positive, -2 < x < 4 negative, x >= 4 nonnegative. Solution x < -2 or x >= 4. Smallest positive integer is 4.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:47:25.559Z"
+        }
+      }
+    },
+    {
+      "id": "8ca32266-ae76-4bbb-a74a-bde959c000b5",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Excluded values and endpoints",
+      "stem": "How many of the numbers $-2$, $-1$, $0$ and $4$ are solutions of $\\frac{x+1}{x-4} \\le 0$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$x = -2$: $\\frac{-1}{-6} = \\frac{1}{6} > 0$, no. $x = -1$: $0 \\le 0$, yes. $x = 0$: $\\frac{1}{-4} < 0$, yes. $x = 4$: undefined, no. Two of them work.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros/undefined at -1 and 4; solution -1 <= x < 4. -2: (-1)/(-6) > 0 no; -1: 0 yes; 0: 1/(-4) < 0 yes; 4: undefined no. Count 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.277Z"
+        }
+      }
+    },
+    {
+      "id": "f0c7ef79-809a-456e-aa94-977053b063d7",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Zoe tests values in $(x-1)(x-6) > 0$. Which test value makes the inequality true?",
+      "choices": [
+        "$x = 3$",
+        "$x = 1$",
+        "$x = 6$",
+        "$x = 8$"
+      ],
+      "answer": "$x = 8$",
+      "compute": null,
+      "solution": "At $x = 8$: $(7)(2) = 14 > 0$. At $x = 3$: $(2)(-3) = -6$. At $x = 1$ and $x = 6$ the product is 0, which is not greater than 0.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x=8: 7*2 = 14 > 0 true. x=6 and x=1 give 0; x=3 gives 2*(-3) < 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.300Z"
+        }
+      }
+    },
+    {
+      "id": "7d407a7e-7d14-4743-b634-45ef3985e7a2",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "Which inequality is equivalent to $x^2 + 3x - 10 < 0$ after factoring?",
+      "choices": [
+        "$(x-5)(x+2) < 0$",
+        "$(x+5)(x-2) < 0$",
+        "$(x+5)(x-2) > 0$",
+        "$(x+10)(x-1) < 0$"
+      ],
+      "answer": "$(x+5)(x-2) < 0$",
+      "compute": null,
+      "solution": "$(x+5)(x-2) = x^2 + 3x - 10$, and the inequality sign stays the same.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x+5)(x-2) < 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + 3x - 10 = (x+5)(x-2); < 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.314Z"
+        }
+      }
+    },
+    {
+      "id": "eb93191d-3399-4c5c-b114-2c906197794d",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "The solution of $(x+5)(x-2) > 0$ is $x < a$ or $x > b$. What is $a + b$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-5+2",
+      "solution": "The zeros are $-5$ and $2$, and the product is positive outside them: $x < -5$ or $x > 2$. So $a + b = -5 + 2 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Product positive outside roots -5 and 2: x < -5 or x > 2. a+b = -5+2 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.341Z"
+        }
+      }
+    },
+    {
+      "id": "123a9ac9-d4c2-4551-9e50-71ff5719791f",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solving inequalities from a graph",
+      "stem": "A smooth curve $y = f(x)$ crosses the x-axis only at $x = -1$ and $x = 4$. It lies above the axis for $x < -1$ and for $x > 4$, and below it between them. For which $x$ is $f(x) \\le 0$?",
+      "choices": [
+        "$-1 < x < 4$",
+        "$-1 \\le x \\le 4$",
+        "$x \\le -1$ or $x \\ge 4$",
+        "$x < -1$ or $x > 4$"
+      ],
+      "answer": "$-1 \\le x \\le 4$",
+      "compute": null,
+      "solution": "The curve is below the axis for $-1 < x < 4$ and equals 0 at the two crossings, which $\\le$ includes: $-1 \\le x \\le 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1 \\le x \\le 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f <= 0 where below or on the axis: between and at the zeros, -1 <= x <= 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.344Z"
+        }
+      }
+    },
+    {
+      "id": "6b8248e9-555d-472c-baf1-18ca04e854f3",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "To solve $\\frac{x+1}{x-3} < 0$ with a sign chart, a student tests $x = -2$. What is the value of the fraction at $x = -2$?",
+      "choices": [],
+      "answer": "1/5",
+      "compute": "(-2+1)/(-2-3)",
+      "solution": "$\\frac{-2+1}{-2-3} = \\frac{-1}{-5} = \\frac{1}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-2+1)/(-2-3) = -1/-5 = 1/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.346Z"
+        }
+      }
+    },
+    {
+      "id": "323925ce-c0aa-4f79-aa06-ffd9d40d94ac",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "What is the largest integer $x$ for which $\\frac{x-3}{x+2} < 0$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "The critical numbers are $-2$ and $3$, and the quotient is negative for $-2 < x < 3$. The largest integer in that interval is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros/undefined at 3 and -2. Negative between: -2<x<3. Largest integer 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.376Z"
+        }
+      }
+    },
+    {
+      "id": "e088c5cd-f0a7-4195-97eb-facd5e2c02f6",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "What is the largest integer $x$ that makes $x^2 - 7x + 10 < 0$ true?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$(x-2)(x-5) < 0$ gives $2 < x < 5$. The integers are 3 and 4, so the largest is 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)(x-5)<0 -> 2<x<5; largest integer 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.392Z"
+        }
+      }
+    },
+    {
+      "id": "8e436340-7b72-4404-ad04-b9a145e69b82",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Use a sign chart to solve $\\frac{x-5}{x+1} > 0$.",
+      "choices": [
+        "$-1 < x < 5$",
+        "$x < -5$ or $x > 1$",
+        "$x < -1$ or $x > 5$",
+        "$x \\le -1$ or $x \\ge 5$"
+      ],
+      "answer": "$x < -1$ or $x > 5$",
+      "compute": null,
+      "solution": "The critical numbers are $-1$ and $5$. For $x > 5$ both parts are positive; for $-1 < x < 5$ the top is negative and the bottom positive; for $x < -1$ both are negative. The quotient is positive on $x < -1$ and $x > 5$, and $-1$ is never allowed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -1$ or $x > 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical points -1, 5. Positive outside: x<-1 or x>5 (x=-1 undefined, x=5 gives 0, not >0).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.404Z"
+        }
+      }
+    },
+    {
+      "id": "eec576dd-9d9c-4ade-b334-5586fa6ad960",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Which set of values makes $(x+1)(x-5) < 0$ true?",
+      "choices": [
+        "$x < -1$ or $x > 5$",
+        "$-5 < x < 1$",
+        "$-1 < x < 5$",
+        "$1 < x < 5$"
+      ],
+      "answer": "$-1 < x < 5$",
+      "compute": null,
+      "solution": "The zeros are $-1$ and $5$. An upward-opening product of two factors is negative between its zeros, so $-1 < x < 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1 < x < 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Roots -1 and 5, upward parabola, negative between: -1<x<5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.413Z"
+        }
+      }
+    },
+    {
+      "id": "779d118f-24cf-425a-8cd7-682d32f1e79a",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graph of a quadratic function $g$ opens downward and crosses the x-axis at $x = -3$ and $x = 2$. For which $x$ is $g(x) > 0$?",
+      "choices": [
+        "$-3 < x < 2$",
+        "$x < -3$ or $x > 2$",
+        "$-2 < x < 3$",
+        "$-3 \\le x \\le 2$"
+      ],
+      "answer": "$-3 < x < 2$",
+      "compute": null,
+      "solution": "A downward parabola is above the x-axis between its two zeros: $-3 < x < 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3 < x < 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Downward parabola is above the axis between its roots: -3<x<2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.466Z"
+        }
+      }
+    },
+    {
+      "id": "3cbc5f7a-a81e-4774-84c4-c5f0802a3915",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graph of a quadratic $f$ is a parabola opening upward with x-intercepts at $x = -1$ and $x = 3$. How many integers $x$ satisfy $f(x) < 0$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The parabola is below the axis for $-1 < x < 3$. The integers are 0, 1 and 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Upward, negative between roots: -1<x<3, integers 0,1,2: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.471Z"
+        }
+      }
+    },
+    {
+      "id": "0e49551d-7aab-464c-8aa1-f95d9f3bd395",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Excluded values and endpoints",
+      "stem": "Solve $\\frac{x+3}{x-6} \\le 0$ and write the answer with inequality signs. Which endpoint is included?",
+      "choices": [
+        "Only $6$",
+        "Only $-3$",
+        "Both $-3$ and $6$",
+        "Neither $-3$ nor $6$"
+      ],
+      "answer": "Only $-3$",
+      "compute": null,
+      "solution": "The answer is $-3 \\le x < 6$. At $x = -3$ the fraction is 0, which satisfies $\\le 0$; at $x = 6$ it is undefined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only $-3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solution -3 <= x < 6: -3 makes it 0 (included), 6 undefined.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.535Z"
+        }
+      }
+    },
+    {
+      "id": "14890b43-162d-45cc-9658-c81954cb679b",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Excluded values and endpoints",
+      "stem": "In $\\frac{x-3}{x+7} \\ge 0$, which value of $x$ makes the fraction undefined?",
+      "choices": [
+        "$x = -7$",
+        "$x = 3$",
+        "$x = 7$",
+        "$x = -3$"
+      ],
+      "answer": "$x = -7$",
+      "compute": null,
+      "solution": "The fraction is undefined when its bottom is 0: $x + 7 = 0$, so $x = -7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Denominator x + 7 = 0 at x = -7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.543Z"
+        }
+      }
+    },
+    {
+      "id": "5dddd4c8-6ffd-4e3e-9201-feb39c793118",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Count every integer $x$ for which $(x+2)(x-3) \\le 0$. How many are there?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The product is at most 0 for $-2 \\le x \\le 3$ (the zeros count). The integers are $-2, -1, 0, 1, 2, 3$: 6 of them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2 <= x <= 3: -2,-1,0,1,2,3 -> 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.553Z"
+        }
+      }
+    },
+    {
+      "id": "5746fbeb-98f5-45eb-a31d-eeceb585f52b",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "Solve $x^2 - 9 \\ge 0$.",
+      "choices": [
+        "$x \\le -3$ or $x \\ge 3$",
+        "$-3 \\le x \\le 3$",
+        "$x \\le -9$ or $x \\ge 9$",
+        "$x < -3$ or $x > 3$"
+      ],
+      "answer": "$x \\le -3$ or $x \\ge 3$",
+      "compute": null,
+      "solution": "Factor: $(x-3)(x+3) \\ge 0$. The product is positive or zero outside the zeros, so $x \\le -3$ or $x \\ge 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le -3$ or $x \\ge 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x+3) >= 0: x <= -3 or x >= 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.579Z"
+        }
+      }
+    },
+    {
+      "id": "6734eb58-41ac-4c45-888f-7e6d3eb4ac4a",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "A student starts $\\frac{3}{x-1} < 2$. Which is a correct first step?",
+      "choices": [
+        "Multiply both sides by $x - 1$ and keep the sign",
+        "Flip both fractions and keep the sign",
+        "Subtract 2 from both sides to get 0 on the right",
+        "Cross out the $x - 1$ and solve $3 < 2$"
+      ],
+      "answer": "Subtract 2 from both sides to get 0 on the right",
+      "compute": null,
+      "solution": "The sign of $x - 1$ is not known, so do not multiply by it. Move everything to one side, $\\frac{3}{x-1} - 2 < 0$, then combine into one fraction.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Subtract 2 from both sides to get 0 on the right",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Multiplying by x-1 is unsafe (sign unknown); correct approach is 3/(x-1) - 2 < 0 then combine and do sign analysis.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.603Z"
+        }
+      }
+    },
+    {
+      "id": "3ec96be9-0980-4711-b72d-7f05cf00e579",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "Moving $1$ to the left of $\\frac{5}{x+2} \\ge 1$ gives $\\frac{a - x}{x+2} \\ge 0$. What is $a$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5-2",
+      "solution": "$\\frac{5}{x+2} - 1 = \\frac{5 - (x+2)}{x+2} = \\frac{3 - x}{x+2}$, so $a = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5/(x+2)-1=(5-(x+2))/(x+2)=(3-x)/(x+2). a=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.665Z"
+        }
+      }
+    },
+    {
+      "id": "856c15db-40c1-4330-a5b2-824a36bc328d",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "How many positive integers $x$ satisfy $\\frac{12}{x} > 2$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "For positive $x$ we may multiply by $x$: $12 > 2x$, so $x < 6$. The positive integers are 1, 2, 3, 4 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x positive, so 12 > 2x, x < 6: x = 1,2,3,4,5 -> 5 integers.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.718Z"
+        }
+      }
+    },
+    {
+      "id": "a6195cca-5279-4669-bd42-bc171d9db945",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Which list gives every critical number (a zero of the top or of the bottom) of $\\frac{x-3}{(x+5)(x-1)}$?",
+      "choices": [
+        "$-3$, $-1$ and $5$",
+        "$-5$ and $1$ only",
+        "$1$, $3$ and $5$",
+        "$-5$, $1$ and $3$"
+      ],
+      "answer": "$-5$, $1$ and $3$",
+      "compute": null,
+      "solution": "The top is 0 at $x = 3$. The bottom is 0 at $x = -5$ and $x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5$, $1$ and $3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Top zero 3, bottom zeros -5 and 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.769Z"
+        }
+      }
+    },
+    {
+      "id": "1d78a5e2-bb47-489b-84d0-5b3b25ab34af",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "After moving every term to the left and combining into one fraction, which inequality is equivalent to $\\frac{x}{x-3} \\ge 2$?",
+      "choices": [
+        "$\\frac{x-2}{x-3} \\ge 0$",
+        "$\\frac{x-6}{x-3} \\ge 0$",
+        "$\\frac{x+6}{x-3} \\ge 0$",
+        "$\\frac{6-x}{x-3} \\ge 0$"
+      ],
+      "answer": "$\\frac{6-x}{x-3} \\ge 0$",
+      "compute": null,
+      "solution": "$\\frac{x}{x-3} - 2 = \\frac{x - 2(x-3)}{x-3} = \\frac{6-x}{x-3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\frac{6-x}{x-3} \\ge 0$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x/(x-3) - 2 = (x - 2x + 6)/(x-3) = (6 - x)/(x-3) >= 0.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.788Z"
+        }
+      }
+    },
+    {
+      "id": "d608298a-46ef-401a-8d89-9ec30ae6b37c",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graph of $f$ is a straight line that rises from left to right and crosses the x-axis at $x = 4$. The solution of $f(x) < 0$ is $x < c$. What is $c$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The rising line is below the x-axis to the left of its zero, so $f(x) < 0$ for $x < 4$ and $c = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Increasing line through (4,0): f < 0 for x < 4. c = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.795Z"
+        }
+      }
+    },
+    {
+      "id": "e9de9cf2-8284-483c-b3f9-0e86048d3c21",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "Factor and solve $x^2 - 6x + 8 \\le 0$. How many integers satisfy it?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$(x-2)(x-4) \\le 0$ gives $2 \\le x \\le 4$. The integers are 2, 3 and 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)(x-4) <= 0 -> 2 <= x <= 4: integers 2,3,4 -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.815Z"
         }
       }
     },
@@ -7787,6 +10675,733 @@
       }
     },
     {
+      "id": "aea9c846-50b1-4191-b1f8-9ad5916da574",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "How many integers $x$ make $2x^2 - 5x - 3 < 0$ true?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$2x^2 - 5x - 3 = (2x+1)(x-3)$, which is negative for $-\\frac{1}{2} < x < 3$. The integers are 0, 1 and 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2-5x-3 = (2x+1)(x-3) < 0 for -1/2 < x < 3; integers 0,1,2: 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.292Z"
+        }
+      }
+    },
+    {
+      "id": "156ee0b4-19c3-40d3-9e23-69482bb1f7d8",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "Factor first, then solve $x^3 - 9x \\le 0$.",
+      "choices": [
+        "$-3 \\le x \\le 0$ or $x \\ge 3$",
+        "$x \\le -3$ or $0 \\le x \\le 3$",
+        "$x \\le -3$ or $x \\ge 3$",
+        "$-3 \\le x \\le 3$"
+      ],
+      "answer": "$x \\le -3$ or $0 \\le x \\le 3$",
+      "compute": null,
+      "solution": "$x^3 - 9x = x(x-3)(x+3)$ with zeros $-3$, $0$, $3$. For large $x$ it is positive, so it is negative for $0 < x < 3$ and for $x < -3$. Adding the zeros gives $x \\le -3$ or $0 \\le x \\le 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le -3$ or $0 \\le x \\le 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x-3)(x+3) <= 0. Signs: x<-3 neg, (-3,0) pos, (0,3) neg, >3 pos. So x <= -3 or 0 <= x <= 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.311Z"
+        }
+      }
+    },
+    {
+      "id": "1f6db865-d785-4137-965d-0af5e7cf56e2",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graph of a quadratic $f$ opens downward and crosses the horizontal line $y = 3$ at $x = -2$ and $x = 5$. What is the sum of all integers $x$ with $f(x) \\ge 3$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "-2-1+0+1+2+3+4+5",
+      "solution": "A downward parabola is on or above the line $y = 3$ between the crossings, so $-2 \\le x \\le 5$. The integers $-2$ through $5$ add to 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Downward parabola is at or above y=3 between its crossings: -2 <= x <= 5. Integers -2..5 sum: -2-1+0+1+2+3+4+5 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.331Z"
+        }
+      }
+    },
+    {
+      "id": "9f7d24d0-97da-423d-a163-b0ae3e0109d8",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Among the integers from $-5$ to $5$ inclusive, how many satisfy $\\frac{(x-2)(x+3)}{x-1} \\ge 0$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "The critical numbers are $-3$, $1$ and $2$. The quotient is $\\ge 0$ on $-3 \\le x < 1$ and $x \\ge 2$ ($x = 1$ is not allowed). That gives $-3, -2, -1, 0$ and $2, 3, 4, 5$: 8 integers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical points -3, 1 (excluded), 2. Signs: x<-3 neg; -3<x<1 pos; 1<x<2 neg; x>2 pos. Solution [-3,1) U [2,inf). Integers -5..5: -3,-2,-1,0,2,3,4,5 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.344Z"
+        }
+      }
+    },
+    {
+      "id": "80db6b9c-49b0-4173-a8fd-27cfe1c65df4",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "A student multiplies both sides of $\\frac{2x}{x-3} \\ge 1$ by $x - 3$ and keeps the $\\ge$ sign. What is the error?",
+      "choices": [
+        "The sign should be reversed every time both sides are multiplied",
+        "A fraction cannot be multiplied by the expression in its bottom",
+        "Both sides should have been squared before multiplying",
+        "$x - 3$ may be negative, which would reverse the inequality"
+      ],
+      "answer": "$x - 3$ may be negative, which would reverse the inequality",
+      "compute": null,
+      "solution": "When $x - 3 < 0$, multiplying by it reverses the inequality; when $x - 3 > 0$ it does not. The sign of $x - 3$ is unknown, so the safe method is to move everything to one side and use a sign chart.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 3$ may be negative, which would reverse the inequality",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-3 can be negative, flipping the inequality when multiplying.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.355Z"
+        }
+      }
+    },
+    {
+      "id": "da6be2d2-2263-4241-a22e-6d572f728a1e",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Find the sum of the integers $x$ that satisfy $\\frac{x+3}{x-4} < 0$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "-2-1+0+1+2+3",
+      "solution": "The quotient is negative for $-3 < x < 4$. The integers are $-2, -1, 0, 1, 2, 3$, and they add to 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3<x<4: integers -2..3, sum 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.425Z"
+        }
+      }
+    },
+    {
+      "id": "30d44c5c-fe62-4512-b613-cce4a89007b4",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "For $\\frac{(x-2)(x+1)}{x-5}$, which list gives the signs of the expression on the intervals $x < -1$, $-1 < x < 2$, $2 < x < 5$ and $x > 5$, in that order?",
+      "choices": [
+        "Positive, negative, positive, negative",
+        "Negative, negative, positive, positive",
+        "Positive, positive, negative, positive",
+        "Negative, positive, negative, positive"
+      ],
+      "answer": "Negative, positive, negative, positive",
+      "compute": null,
+      "solution": "Test one value in each interval. At $x = -2$: $\\frac{(-4)(-1)}{-7} < 0$. At $x = 0$: $\\frac{(-2)(1)}{-5} > 0$. At $x = 3$: $\\frac{(1)(4)}{-2} < 0$. At $x = 6$: $\\frac{(4)(7)}{1} > 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Negative, positive, negative, positive",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x<-1: (-)(-)/(-) neg; (-1,2): (-)(+)/(-) pos; (2,5): (+)(+)/(-) neg; >5 pos.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.426Z"
+        }
+      }
+    },
+    {
+      "id": "64e466a6-a119-460f-bdb7-f6db39d3871f",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "What is the largest integer $x$ that satisfies $\\frac{8}{x-1} \\ge 2$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$\\frac{8}{x-1} - 2 = \\frac{10 - 2x}{x-1} \\ge 0$ gives $1 < x \\le 5$. The largest integer is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "If x>1: 8>=2(x-1) -> x<=5. If x<1: denominator negative, LHS negative, impossible. So 1<x<=5, largest integer 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.437Z"
+        }
+      }
+    },
+    {
+      "id": "b238c3fc-f013-4bfc-a90d-dcd8a0fd7886",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Build a sign chart to solve $\\frac{x+3}{(x-1)(x-4)} > 0$.",
+      "choices": [
+        "$x < -3$ or $1 < x < 4$",
+        "$-3 < x < 4$",
+        "$-3 < x < 1$ or $x > 4$",
+        "$x < -3$ or $x > 4$"
+      ],
+      "answer": "$-3 < x < 1$ or $x > 4$",
+      "compute": null,
+      "solution": "The critical numbers are $-3$, $1$ and $4$. The quotient is positive for $x > 4$, negative for $1 < x < 4$, positive for $-3 < x < 1$ and negative for $x < -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3 < x < 1$ or $x > 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical -3,1,4. x<-3: -/(+)= -; (-3,1): +/(+) = +; (1,4): +/(-) = -; x>4 +. Solution -3<x<1 or x>4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.447Z"
+        }
+      }
+    },
+    {
+      "id": "8dbf1210-a77e-4f15-b693-8f7fc5d3f02f",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Excluded values and endpoints",
+      "stem": "Among the integers from $-8$ to $8$ inclusive, how many satisfy $\\frac{x-4}{x+2} \\ge 0$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "11",
+      "solution": "The solution is $x < -2$ or $x \\ge 4$ ($-2$ is excluded, $4$ is included). In the range that gives $-8, \\dots, -3$ (6 integers) and $4, \\dots, 8$ (5 integers): 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-4)/(x+2)>=0: x<-2 or x>=4. Integers -8..-3: 6; 4..8: 5. Total 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.472Z"
+        }
+      }
+    },
+    {
+      "id": "c35833b0-1586-44cb-87ef-97e1dcd6e059",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Excluded values and endpoints",
+      "stem": "Which value of $x$ is NOT in the solution set of $\\frac{x-1}{x+3} \\le 0$?",
+      "choices": [
+        "$x = 1$",
+        "$x = -3$",
+        "$x = 0$",
+        "$x = -2$"
+      ],
+      "answer": "$x = -3$",
+      "compute": null,
+      "solution": "The solution is $-3 < x \\le 1$. The values 1, 0 and $-2$ are inside it. At $x = -3$ the fraction is undefined.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-1)/(x+3) <= 0: critical points -3 (excluded, undefined) and 1 (included). Sign negative on (-3,1]. Solution -3 < x <= 1. x=1 gives 0 (in), x=0 gives -1/3 (in), x=-2 gives -3 (in), x=-3 undefined (not in).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.562Z"
+        }
+      }
+    },
+    {
+      "id": "7ba9193f-8492-4665-8a09-6f6f4ca0d170",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graph of a rational function $f$ has a vertical asymptote at $x = 2$ and crosses the x-axis only at $x = -3$. The graph changes sides of the x-axis at both $x = -3$ and $x = 2$, and $f(5) = 2$. For which $x$ is $f(x) \\ge 0$?",
+      "choices": [
+        "$x < -3$ or $x > 2$",
+        "$x \\le -3$ or $x > 2$",
+        "$-3 \\le x < 2$",
+        "$x \\le -3$ or $x \\ge 2$"
+      ],
+      "answer": "$x \\le -3$ or $x > 2$",
+      "compute": null,
+      "solution": "Since $f(5) > 0$, the graph is above the axis for $x > 2$, below it for $-3 < x < 2$, and above it for $x < -3$. The zero at $-3$ counts for $\\ge$, while $x = 2$ is not in the domain.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le -3$ or $x > 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sign changes at -3 (zero) and 2 (asymptote); f(5)=2>0 so f>0 for x>2, f<0 on (-3,2), f>0 for x<-3. f>=0 includes the zero x=-3 but not x=2: x <= -3 or x > 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.563Z"
+        }
+      }
+    },
+    {
+      "id": "b91e99ba-1f3b-4892-b9e2-65b43278c45d",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Solve $(x-2)^2(x+1) \\le 0$.",
+      "choices": [
+        "$x \\le -1$",
+        "$x \\le 2$",
+        "$-1 \\le x \\le 2$",
+        "$x \\le -1$ or $x = 2$"
+      ],
+      "answer": "$x \\le -1$ or $x = 2$",
+      "compute": null,
+      "solution": "The square $(x-2)^2$ is never negative, so the product is at most 0 when $x + 1 \\le 0$, or when the square is 0 (at $x = 2$). So $x \\le -1$ or $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le -1$ or $x = 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)^2 >= 0, zero at x=2. Product <= 0 when x+1 <= 0 or when x=2. Solution x <= -1 or x = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.564Z"
+        }
+      }
+    },
+    {
+      "id": "dae0943b-d198-4862-9287-524b77d47050",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Among the integers from $-6$ to $6$ inclusive, how many satisfy $(x+4)(x-1)(x-3) \\ge 0$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The zeros are $-4$, $1$ and $3$. The product is $\\ge 0$ on $-4 \\le x \\le 1$ and on $x \\ge 3$. In the range that gives $-4, \\dots, 1$ (6 integers) and $3, \\dots, 6$ (4 integers): 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Roots -4, 1, 3. Signs: x<-4 negative; -4<x<1 positive; 1<x<3 negative; x>3 positive. Solution [-4,1] U [3,inf). Integers in -6..6: -4,-3,-2,-1,0,1 (6) and 3,4,5,6 (4). Total 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.569Z"
+        }
+      }
+    },
+    {
+      "id": "1c6d58ef-2aec-4ef0-9c3d-81b098cf1463",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The parabola $f(x) = x^2$ and the line $g(x) = 2x + 8$ cross at $x = -2$ and $x = 4$. How many integers $x$ satisfy $f(x) \\le g(x)$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The parabola is on or below the line between the crossings: $-2 \\le x \\le 4$. The integers are $-2, -1, 0, 1, 2, 3, 4$: 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 <= 2x + 8 -> (x-4)(x+2) <= 0 -> -2 <= x <= 4: integers -2..4, 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.637Z"
+        }
+      }
+    },
+    {
+      "id": "c1ef4db1-be45-40b8-8918-c6be51632d67",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "Solve the quadratic inequality $x^2 - 2x - 15 \\ge 0$.",
+      "choices": [
+        "$x \\le -3$ or $x \\ge 5$",
+        "$-3 \\le x \\le 5$",
+        "$x \\le -5$ or $x \\ge 3$",
+        "$x < -3$ or $x > 5$"
+      ],
+      "answer": "$x \\le -3$ or $x \\ge 5$",
+      "compute": null,
+      "solution": "Factor: $(x-5)(x+3) \\ge 0$. The upward parabola is at or above the axis outside its zeros: $x \\le -3$ or $x \\ge 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le -3$ or $x \\ge 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-5)(x+3) >= 0 -> x <= -3 or x >= 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.639Z"
+        }
+      }
+    },
+    {
+      "id": "a4fafff9-e8d3-45db-b8fe-aad451cc2353",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Add up all the integers $x$ that make $(2x-1)(x+4)$ negative. What is the sum?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-3-2-1+0",
+      "solution": "The zeros are $\\frac{1}{2}$ and $-4$, and the product is negative for $-4 < x < \\frac{1}{2}$. The integers are $-3, -2, -1, 0$, with sum $-6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x-1)(x+4)<0 for -4<x<1/2. Integers -3,-2,-1,0; sum -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.646Z"
+        }
+      }
+    },
+    {
+      "id": "87e884d8-513d-4d19-a590-fa9ec6de042b",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "Solve $\\frac{6}{x+1} \\le 3$.",
+      "choices": [
+        "$-1 < x \\le 1$",
+        "$x < -1$ or $x > 1$",
+        "$x < -1$ or $x \\ge 1$",
+        "$x \\le -1$ or $x \\ge 1$"
+      ],
+      "answer": "$x < -1$ or $x \\ge 1$",
+      "compute": null,
+      "solution": "$\\frac{6}{x+1} - 3 = \\frac{3 - 3x}{x+1} \\le 0$, which is the same as $\\frac{x-1}{x+1} \\ge 0$. The critical numbers are $-1$ (excluded) and $1$ (included), giving $x < -1$ or $x \\ge 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -1$ or $x \\ge 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6/(x+1)-3<=0 gives (3-3x)/(x+1)<=0, i.e. (1-x)/(x+1)<=0. Critical -1 (excluded), 1 (included). x>1: neg; -1<x<1: pos; x<-1: neg. So x<-1 or x>=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.677Z"
+        }
+      }
+    },
+    {
+      "id": "7b827830-b19a-434b-adfe-1fc6962c7b47",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solving inequalities from a graph",
+      "stem": "A smooth curve $y = h(x)$ crosses the x-axis at $x = -2$, $x = 0$ and $x = 3$, and nowhere else. It rises toward the upper right and falls toward the lower left. For which $x$ is $h(x) < 0$?",
+      "choices": [
+        "$x < -2$ or $0 < x < 3$",
+        "$-2 < x < 0$ or $x > 3$",
+        "$x < -2$ or $x > 3$",
+        "$-2 < x < 3$"
+      ],
+      "answer": "$x < -2$ or $0 < x < 3$",
+      "compute": null,
+      "solution": "Far right the curve is above the axis, and it changes side at each crossing: above for $x > 3$, below for $0 < x < 3$, above for $-2 < x < 0$, below for $x < -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -2$ or $0 < x < 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Three simple crossings (sign changes). Rises to upper right: h>0 for x>3, h<0 on (0,3), h>0 on (-2,0), h<0 for x<-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.715Z"
+        }
+      }
+    },
+    {
+      "id": "87cf8ab1-97bc-4ddd-b660-c3fb0f98deaa",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "The integers that satisfy $x^2 + 2x - 8 < 0$ are added together. What is their sum?",
+      "choices": [],
+      "answer": "-5",
+      "compute": "-3-2-1+0+1",
+      "solution": "$(x+4)(x-2) < 0$ gives $-4 < x < 2$. The integers are $-3, -2, -1, 0, 1$ and their sum is $-5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+4)(x-2) < 0 -> -4 < x < 2: integers -3,-2,-1,0,1 sum -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.745Z"
+        }
+      }
+    },
+    {
+      "id": "dc6e06c5-4f46-433b-a42c-3e9be9e782c9",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Excluded values and endpoints",
+      "stem": "The solution of $\\frac{x-6}{x+1} \\ge 0$ is $x < a$ or $x \\ge b$. What is $a + b$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "-1+6",
+      "solution": "The critical numbers are $-1$ (excluded, the bottom is 0) and $6$ (included, the top is 0). The solution is $x < -1$ or $x \\ge 6$, so $a + b = -1 + 6 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical -1 (excluded) and 6. Sign: x < -1 positive, -1<x<6 negative, x>6 positive. x < -1 or x >= 6: a+b = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.764Z"
+        }
+      }
+    },
+    {
+      "id": "8154cad0-8fb4-4f7b-93a6-ab6e945c8922",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "For which values of $x$ is $(x+1)(x-3)(x-5) < 0$?",
+      "choices": [
+        "$-1 < x < 3$ or $x > 5$",
+        "$x < -1$ or $x > 5$",
+        "$x < -1$ or $3 < x < 5$",
+        "$-1 < x < 5$"
+      ],
+      "answer": "$x < -1$ or $3 < x < 5$",
+      "compute": null,
+      "solution": "The zeros are $-1$, $3$ and $5$. For large $x$ the product is positive, and the sign flips at each zero: positive for $x > 5$, negative for $3 < x < 5$, positive for $-1 < x < 3$, negative for $x < -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -1$ or $3 < x < 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Roots -1,3,5, cubic leading +: negative for x < -1 and 3 < x < 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.798Z"
+        }
+      }
+    },
+    {
+      "id": "5dd779f7-5e39-4911-a424-861a57376dc0",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Excluded values and endpoints",
+      "stem": "Solve $\\frac{x^2 - 25}{x + 5} \\le 0$.",
+      "choices": [
+        "$x \\le 5$ and $x \\ne -5$",
+        "$x \\le 5$",
+        "$-5 < x \\le 5$",
+        "$x < 5$ and $x \\ne -5$"
+      ],
+      "answer": "$x \\le 5$ and $x \\ne -5$",
+      "compute": null,
+      "solution": "For $x \\ne -5$ the fraction equals $\\frac{(x-5)(x+5)}{x+5} = x - 5$, which is $\\le 0$ when $x \\le 5$. But $x = -5$ makes the original fraction undefined, so it must be left out.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le 5$ and $x \\ne -5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "For x != -5, (x-5)(x+5)/(x+5) = x - 5 <= 0 -> x <= 5, excluding -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.820Z"
+        }
+      }
+    },
+    {
       "id": "ee641c6d-16dd-4a85-b522-1dbe627ddcd3",
       "topic_id": "NC17.PC.A.1",
       "difficulty": 3,
@@ -8103,6 +11718,733 @@
           "work": "x<-1: f(-2)=5 and no zero there, so positive. Between -1 and 3: f(0) = -3, negative. Crosses at 3, so positive for x>3. f<=0 on -1 < x <= 3 (asymptote excluded, zero at 3 included).",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:34.042Z"
+        }
+      }
+    },
+    {
+      "id": "3abd0c8d-c615-45c5-bc5f-d24ea4e4f2dd",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "How many positive integers $x$ satisfy $\\frac{10}{x} \\ge x - 3$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "For $x > 0$ multiply by $x$: $10 \\ge x^2 - 3x$, so $x^2 - 3x - 10 \\le 0$, that is $(x-5)(x+2) \\le 0$. With $x > 0$ this gives $0 < x \\le 5$: the integers 1 to 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "For x > 0: 10 >= x^2 - 3x, so (x-5)(x+2) <= 0, x <= 5. x = 1..5 (x=5: 2 >= 2). Count 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.305Z"
+        }
+      }
+    },
+    {
+      "id": "7a864643-bb3a-4cdd-8664-391fe0692c1b",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Among the integers from $-10$ to $10$ inclusive, how many satisfy $\\frac{x-4}{(x+1)(x-6)} < 0$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The critical numbers are $-1$, $4$, $6$. The quotient is negative for $x < -1$ and for $4 < x < 6$. The integers $-10$ to $-2$ are 9 numbers, and $5$ adds one more: 10.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical -1, 4, 6. x < -1: (-)/((-)(-)) negative, true. -1<x<4: (-)/((+)(-)) positive. 4<x<6: (+)/((+)(-)) negative, true. x>6 positive. x=4 gives 0. Integers -10..-2 (9) and 5 (1): 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.309Z"
+        }
+      }
+    },
+    {
+      "id": "a1d36358-5d40-4ed0-8b22-d8a0a3783f67",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "How many integers $x$ satisfy $6x^2 - 5x - 6 \\le 0$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$6x^2 - 5x - 6 = (3x+2)(2x-3)$, which is $\\le 0$ for $-\\frac{2}{3} \\le x \\le \\frac{3}{2}$. The integers in that interval are 0 and 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x^2-5x-6 = (3x+2)(2x-3) <= 0 for -2/3 <= x <= 3/2; integers 0, 1. Count 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.339Z"
+        }
+      }
+    },
+    {
+      "id": "e0ae0415-c3bd-41fc-a540-8bf0a17e9e8a",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Excluded values and endpoints",
+      "stem": "Solve $\\frac{x^2 - x - 6}{x^2 - 9} \\ge 0$.",
+      "choices": [
+        "$x < -3$ or $x \\ge -2$",
+        "$x \\le -3$ or $x \\ge -2$, with $x \\ne 3$",
+        "$-3 < x \\le -2$",
+        "$x < -3$ or $x \\ge -2$, with $x \\ne 3$"
+      ],
+      "answer": "$x < -3$ or $x \\ge -2$, with $x \\ne 3$",
+      "compute": null,
+      "solution": "Factor: $\\frac{(x-3)(x+2)}{(x-3)(x+3)}$. For $x \\ne 3$ it equals $\\frac{x+2}{x+3}$, which is $\\ge 0$ for $x < -3$ or $x \\ge -2$. The value $x = 3$ makes the original bottom 0, so it is removed from that solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -3$ or $x \\ge -2$, with $x \\ne 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-3)(x+2)/((x-3)(x+3)); x≠±3. Equivalent (x+2)/(x+3)≥0 -> x<-3 or x≥-2, but exclude 3. x=-2 gives 0, included.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.407Z"
+        }
+      }
+    },
+    {
+      "id": "d1593471-be41-4db8-af0c-d43fde6583fd",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "Factor completely, then solve $x^3 - 4x^2 - 5x \\ge 0$.",
+      "choices": [
+        "$-1 \\le x \\le 0$ or $x \\ge 5$",
+        "$x \\le -1$ or $0 \\le x \\le 5$",
+        "$-1 \\le x \\le 5$",
+        "$x \\le -1$ or $x \\ge 5$"
+      ],
+      "answer": "$-1 \\le x \\le 0$ or $x \\ge 5$",
+      "compute": null,
+      "solution": "$x^3 - 4x^2 - 5x = x(x-5)(x+1)$, with zeros $-1, 0, 5$. It is positive for $x > 5$, negative on $0 < x < 5$, positive on $-1 < x < 0$ and negative for $x < -1$. Including the zeros: $-1 \\le x \\le 0$ or $x \\ge 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-1 \\le x \\le 0$ or $x \\ge 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x(x-5)(x+1) ≥ 0. Roots -1,0,5. Signs: x<-1 neg, (-1,0) pos, (0,5) neg, >5 pos. So -1≤x≤0 or x≥5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.409Z"
+        }
+      }
+    },
+    {
+      "id": "768085e5-4244-4d08-a09c-7d60d803e4e1",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "Solve $\\frac{x+1}{x-2} \\ge \\frac{x}{x+3}$.",
+      "choices": [
+        "$-3 < x < -\\frac{1}{2}$ or $x > 2$",
+        "$x < -3$ or $-\\frac{1}{2} \\le x < 2$",
+        "$-3 < x \\le -\\frac{1}{2}$ or $x > 2$",
+        "$-3 \\le x \\le -\\frac{1}{2}$ or $x \\ge 2$"
+      ],
+      "answer": "$-3 < x \\le -\\frac{1}{2}$ or $x > 2$",
+      "compute": null,
+      "solution": "Subtract and combine: $\\frac{(x+1)(x+3) - x(x-2)}{(x-2)(x+3)} = \\frac{6x+3}{(x-2)(x+3)} \\ge 0$. The critical numbers are $-3, -\\frac{1}{2}, 2$. The quotient is positive on $-3 < x < -\\frac{1}{2}$ and for $x > 2$, and zero at $-\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3 < x \\le -\\frac{1}{2}$ or $x > 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Move over: [(x+1)(x+3)-x(x-2)]/((x-2)(x+3)) = (6x+3)/((x-2)(x+3)) ≥ 0. Critical -3, -1/2, 2. Signs: x<-3 neg, (-3,-1/2) pos, (-1/2,2) neg, >2 pos. Include -1/2, exclude -3 and 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.410Z"
+        }
+      }
+    },
+    {
+      "id": "a7e5cd1f-a4ad-49ed-a72b-0f158a483a4f",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Excluded values and endpoints",
+      "stem": "Among the integers from $-8$ to $8$ inclusive, how many satisfy $\\frac{(x-2)^2}{x+3} \\le 0$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "The top is never negative. The quotient is negative when $x + 3 < 0$, which gives $-8, \\dots, -4$ (5 integers), and it is 0 at $x = 2$ (1 more). The value $-3$ is undefined. Total: 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Numerator (x-2)^2 >= 0. Fraction <= 0 when x+3<0 (x<-3) or numerator 0 (x=2, denominator 5). x=-3 undefined. Integers -8..-4: 5, plus x=2: total 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.432Z"
+        }
+      }
+    },
+    {
+      "id": "e376afad-377a-43ed-90cb-d5f7b10766b2",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "Solve $\\frac{2x-1}{x+4} \\le 3$.",
+      "choices": [
+        "$-13 \\le x < -4$",
+        "$x < -13$ or $x > -4$",
+        "$x \\le -4$ or $x \\ge 13$",
+        "$x \\le -13$ or $x > -4$"
+      ],
+      "answer": "$x \\le -13$ or $x > -4$",
+      "compute": null,
+      "solution": "$\\frac{2x-1}{x+4} - 3 = \\frac{-x-13}{x+4} \\le 0$, which is $\\frac{x+13}{x+4} \\ge 0$. The critical numbers are $-13$ (included) and $-4$ (excluded): $x \\le -13$ or $x > -4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\le -13$ or $x > -4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x-1)/(x+4)-3<=0 -> (-x-13)/(x+4)<=0 -> (x+13)/(x+4)>=0. Critical -13 (included), -4 (excluded). Solution x<=-13 or x>-4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.434Z"
+        }
+      }
+    },
+    {
+      "id": "359f2c7b-eaf4-430d-a39c-54988f42b1bb",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graphs of $f(x) = x^2 - 5$ and $g(x) = x + 1$ cross at $x = -2$ and $x = 3$. How many integers $x$ from $-6$ to $6$ inclusive satisfy $f(x) > g(x)$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The parabola is above the line outside the crossings: $x < -2$ or $x > 3$. In the range these are $-6, -5, -4, -3$ (4 integers) and $4, 5, 6$ (3 integers): 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-5>x+1 -> (x-3)(x+2)>0 -> x<-2 or x>3. Integers -6..-3: 4; 4..6: 3. Total 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.437Z"
+        }
+      }
+    },
+    {
+      "id": "7839b3cf-53e9-4c72-89f5-1bcbd95c7afd",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Solve $\\frac{(x-1)(x+3)}{(x-2)(x+5)} \\ge 0$.",
+      "choices": [
+        "$x \\le -5$ or $-3 \\le x \\le 1$ or $x \\ge 2$",
+        "$x < -5$ or $-3 \\le x \\le 1$ or $x > 2$",
+        "$-5 < x \\le -3$ or $1 \\le x < 2$",
+        "$x < -5$ or $-3 < x < 1$ or $x > 2$"
+      ],
+      "answer": "$x < -5$ or $-3 \\le x \\le 1$ or $x > 2$",
+      "compute": null,
+      "solution": "The critical numbers are $-5, -3, 1, 2$. Testing intervals gives positive for $x < -5$, negative on $-5 < x < -3$, positive on $-3 < x < 1$, negative on $1 < x < 2$, positive for $x > 2$. The zeros $-3$ and $1$ are included; the bottom's zeros $-5$ and $2$ are not.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -5$ or $-3 \\le x \\le 1$ or $x > 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical: -5,-3,1,2. Signs: x<-5 +; (-5,-3) -; (-3,1) +; (1,2) -; x>2 +. Zeros -3, 1 included; -5, 2 excluded. x<-5 or -3<=x<=1 or x>2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.442Z"
+        }
+      }
+    },
+    {
+      "id": "4b26ddda-1c94-4cde-b7ba-043a65e04a45",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Excluded values and endpoints",
+      "stem": "Of the integers from $-5$ through $5$, count those that make the fraction $\\frac{x^2 - 4}{x^2 - 1}$ positive.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The critical numbers are $-2, -1, 1, 2$. The quotient is positive for $x < -2$, for $-1 < x < 1$ and for $x > 2$. The integers are $-5, -4, -3$, then $0$, then $3, 4, 5$: 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Positive when |x|>2 (both factors positive): +-3,+-4,+-5 = 6; or |x|<1: x=0 gives -4/-1=4>0: 1. x=+-2 gives 0, x=+-1 undefined. Total 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.455Z"
+        }
+      }
+    },
+    {
+      "id": "236f4b4f-54bc-455d-a2fd-3f84cccb1d8b",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The graph of a rational function $f$ has vertical asymptotes at $x = -1$ and $x = 4$ and crosses the x-axis only at $x = 2$. It changes sides of the axis at each of those three values, and $f(5) = 3$. For which $x$ is $f(x) < 0$?",
+      "choices": [
+        "$-1 < x < 2$ or $x > 4$",
+        "$x < -1$ or $2 < x < 4$",
+        "$x \\le -1$ or $2 \\le x < 4$",
+        "$-1 < x < 4$"
+      ],
+      "answer": "$x < -1$ or $2 < x < 4$",
+      "compute": null,
+      "solution": "Since $f(5) > 0$, the graph is above the axis for $x > 4$, below for $2 < x < 4$, above for $-1 < x < 2$, and below for $x < -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x < -1$ or $2 < x < 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(5)>0 so positive for x>4; sign changes: (2,4) negative, (-1,2) positive, x<-1 negative. f(2)=0 not <0; asymptotes excluded. x<-1 or 2<x<4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.476Z"
+        }
+      }
+    },
+    {
+      "id": "eac99194-c6ca-45a1-b6d8-67e7714804ae",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Excluded values and endpoints",
+      "stem": "Find every $x$ for which the fraction $\\frac{x+4}{(x-1)^2}$ is zero or positive.",
+      "choices": [
+        "$x \\ge -4$ and $x \\ne 1$",
+        "$x \\ge -4$ and $x \\ne -1$",
+        "$-4 \\le x < 1$",
+        "$x > -4$ and $x \\ne 1$"
+      ],
+      "answer": "$x \\ge -4$ and $x \\ne 1$",
+      "compute": null,
+      "solution": "The bottom $(x-1)^2$ is positive whenever $x \\ne 1$, so the sign is the sign of $x + 4$. That gives $x \\ge -4$ (the zero is included), and $x = 1$ is removed.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x \\ge -4$ and $x \\ne 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Denominator (x-1)^2>0 for x!=1; need x+4>=0. x>=-4, x!=1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.482Z"
+        }
+      }
+    },
+    {
+      "id": "6ac7c278-d235-48e2-830d-f517f10f6c5f",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "Which set is the solution of $\\frac{x}{x^2 - 4} \\ge 0$?",
+      "choices": [
+        "$-2 \\le x \\le 0$ or $x \\ge 2$",
+        "$x < -2$ or $0 \\le x < 2$",
+        "$-2 < x \\le 0$ or $x > 2$",
+        "$-2 < x < 0$ or $x > 2$"
+      ],
+      "answer": "$-2 < x \\le 0$ or $x > 2$",
+      "compute": null,
+      "solution": "The bottom is $(x-2)(x+2)$, so the critical numbers are $-2, 0, 2$. The quotient is positive for $x > 2$, negative on $0 < x < 2$, positive on $-2 < x < 0$, negative for $x < -2$. The zero at $x = 0$ is included; $\\pm 2$ are not.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2 < x \\le 0$ or $x > 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Critical points -2, 0, 2. Signs: x<-2 neg; -2<x<0 pos; 0<x<2 neg; x>2 pos. Zero at x=0 included; ±2 excluded (undefined). So -2<x<=0 or x>2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.490Z"
+        }
+      }
+    },
+    {
+      "id": "e7a31c26-33df-41d3-a6f7-db32f9eda32d",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rational inequality with a sign chart",
+      "stem": "A teacher lists the whole numbers from $-4$ through $5$ and keeps those that make $\\frac{(x+2)^2(x-3)}{x-1} \\le 0$ true. How many are kept?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The square is $\\ge 0$. Where it is positive, the sign is that of $\\frac{x-3}{x-1}$, which is $\\le 0$ for $1 < x \\le 3$: the integers 2 and 3. The square itself is 0 at $x = -2$, which also works. Total: 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Test -4..5: -4: 4·(-7)/(-5)>0 no; -3: (-6)/(-4)>0 no; -2: 0 yes; -1: (-4)/(-2)>0 no; 0: 4(-3)/(-1)>0 no; 1 undefined; 2: 16(-1)/1<0 yes; 3: 0 yes; 4, 5 positive. Kept: -2, 2, 3 -> 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.508Z"
+        }
+      }
+    },
+    {
+      "id": "920a2210-8185-4ab0-85fe-18f037930422",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Solve $(x+2)^2(x-1)(x-4) \\le 0$.",
+      "choices": [
+        "$x = 2$ or $1 \\le x \\le 4$",
+        "$-2 \\le x \\le 4$",
+        "$x = -2$ or $1 \\le x \\le 4$",
+        "$x \\le 1$ or $x \\ge 4$"
+      ],
+      "answer": "$x = -2$ or $1 \\le x \\le 4$",
+      "compute": null,
+      "solution": "The square is never negative. Where it is positive, the sign comes from $(x-1)(x-4)$, which is $\\le 0$ for $1 \\le x \\le 4$. The square is 0 at $x = -2$, so that single value also works.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -2$ or $1 \\le x \\le 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)^2 >= 0; product <= 0 when (x-1)(x-4) <= 0, i.e. 1<=x<=4, or when x = -2 (zero).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.511Z"
+        }
+      }
+    },
+    {
+      "id": "53a1f1e7-d7b1-4774-a24c-2bc8554dc1c1",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomial inequality after factoring",
+      "stem": "How many integers $x$ make $x^4 - 10x^2 + 9 < 0$ true?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$x^4 - 10x^2 + 9 = (x^2-1)(x^2-9)$, which is negative when $1 < x^2 < 9$. The integers with that property are $-2$ and $2$ (the values $\\pm1$ and $\\pm3$ give 0, not less than 0).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2-1)(x^2-9) < 0 when 1 < x^2 < 9: integers ±2. Count 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.549Z"
+        }
+      }
+    },
+    {
+      "id": "95637a43-c692-43d3-b2e7-1f3a05e985c0",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Solve $(x^2 - 4)(x^2 - 9) < 0$.",
+      "choices": [
+        "$-3 < x < 3$",
+        "$x < -3$ or $x > 3$",
+        "$-2 < x < 2$",
+        "$-3 < x < -2$ or $2 < x < 3$"
+      ],
+      "answer": "$-3 < x < -2$ or $2 < x < 3$",
+      "compute": null,
+      "solution": "Factor: $(x-2)(x+2)(x-3)(x+3) < 0$ with zeros $-3, -2, 2, 3$. It is positive for $x > 3$ and the sign changes at each zero: negative on $2 < x < 3$, positive on $-2 < x < 2$, negative on $-3 < x < -2$, positive for $x < -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3 < x < -2$ or $2 < x < 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Negative when exactly one factor negative: 4 < x^2 < 9, i.e. -3<x<-2 or 2<x<3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.577Z"
+        }
+      }
+    },
+    {
+      "id": "994e7103-e355-47ac-988c-63414bdbeeab",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solving inequalities from a graph",
+      "stem": "A smooth curve $y = f(x)$ touches the x-axis at $x = -1$ and stays above it on both sides there. It crosses the axis at $x = 2$ and $x = 5$, and it is above the axis for $x > 5$. For which $x$ is $f(x) \\le 0$?",
+      "choices": [
+        "$x = -1$ or $2 \\le x \\le 5$",
+        "$2 \\le x \\le 5$",
+        "$-1 \\le x \\le 5$",
+        "$x \\le -1$ or $2 \\le x \\le 5$"
+      ],
+      "answer": "$x = -1$ or $2 \\le x \\le 5$",
+      "compute": null,
+      "solution": "The curve is above the axis for $x > 5$, below it for $2 < x < 5$, and above it for $x < 2$ except at $x = -1$, where it touches the axis. So $f(x) \\le 0$ at the zero $x = -1$ and on $2 \\le x \\le 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x = -1$ or $2 \\le x \\le 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zero at -1 (touch, above on both sides), crossings at 2 and 5, above for x>5, so below on (2,5), above on (-1,2) and x<-1. f<=0: x=-1 or 2<=x<=5. Options A (misses -1), C (includes points just right of -1), D (includes points just left of -1) are each contradicted by the stated facts.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.587Z"
+        }
+      }
+    },
+    {
+      "id": "161b3f77-f597-4304-87ef-4bc821a83aee",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "Solve $\\frac{x}{x+3} \\ge 2$.",
+      "choices": [
+        "$x \\le -6$ or $x > -3$",
+        "$-6 \\le x < -3$",
+        "$-6 < x < -3$",
+        "$-3 < x \\le 6$"
+      ],
+      "answer": "$-6 \\le x < -3$",
+      "compute": null,
+      "solution": "$\\frac{x}{x+3} - 2 = \\frac{-x-6}{x+3} \\ge 0$, which is $\\frac{x+6}{x+3} \\le 0$. The critical numbers are $-6$ (included) and $-3$ (excluded), and the quotient is negative between them: $-6 \\le x < -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6 \\le x < -3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x/(x+3) - 2 >= 0 -> (-x-6)/(x+3) >= 0 -> (x+6)/(x+3) <= 0 -> -6 <= x < -3. Check x=-5: -5/-2 = 2.5 >= 2. x=-6: -6/-3 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.602Z"
+        }
+      }
+    },
+    {
+      "id": "124b9a91-0ca5-4dfb-8428-456d1aebd6c7",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solving inequalities from a graph",
+      "stem": "The parabola $f(x) = -x^2 + 4x + 5$ and the line $g(x) = 2x + 2$ cross at $x = -1$ and $x = 3$. For how many integers $x$ is $f(x) \\ge g(x)$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Since $f - g = -x^2 + 2x + 3 = -(x-3)(x+1)$, the parabola is on or above the line for $-1 \\le x \\le 3$. The integers are $-1, 0, 1, 2, 3$: 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f-g=-x^2+2x+3=-(x-3)(x+1)>=0 for -1<=x<=3. Integers -1,0,1,2,3: 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.692Z"
+        }
+      }
+    },
+    {
+      "id": "48a5e8ab-bc00-4abd-b25f-0475198d407d",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rational inequality: one fraction first",
+      "stem": "What is the largest integer $x$ for which $\\frac{2x+1}{x-3} < 1$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$\\frac{2x+1}{x-3} - 1 = \\frac{x+4}{x-3} < 0$, which holds for $-4 < x < 3$. The largest integer is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+1)/(x-3)-1=(x+4)/(x-3)<0 for -4<x<3. Largest integer 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.700Z"
+        }
+      }
+    },
+    {
+      "id": "1b48d262-2eb6-4b24-a278-700c3a9bb5f3",
+      "topic_id": "NC17.PC.A.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomial inequality in factored form",
+      "stem": "Find the sum of all integers $x$ that satisfy $x(x-3)(x+5)(x-8) \\le 0$.",
+      "choices": [],
+      "answer": "18",
+      "compute": "-15+33",
+      "solution": "The zeros are $-5, 0, 3, 8$ and the product is positive for large $|x|$ in both directions. It is $\\le 0$ on $-5 \\le x \\le 0$ and $3 \\le x \\le 8$. The integers $-5$ to $0$ add to $-15$ and $3$ to $8$ add to $33$, so the sum is 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Roots -5,0,3,8, degree 4 leading +. <= 0 on [-5,0] and [3,8]. Sums: -5..0 = -15; 3..8 = 33; total 18.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.766Z"
         }
       }
     },

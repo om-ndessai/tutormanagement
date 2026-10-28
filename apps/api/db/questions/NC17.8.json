@@ -9670,6 +9670,728 @@
       }
     },
     {
+      "id": "00a05bd0-7b46-40cb-ab86-2edc994b3675",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Which equation has $x = \\sqrt{7}$ as a solution?",
+      "choices": [
+        "$x^2 = 49$",
+        "$x^3 = 7$",
+        "$2x = 7$",
+        "$x^2 = 7$"
+      ],
+      "answer": "$x^2 = 7$",
+      "compute": null,
+      "solution": "The square root of 7 is the number that gives 7 when squared: $(\\sqrt{7})^2 = 7$. So $x^2 = 7$ has $\\sqrt{7}$ as a solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 = 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(sqrt7)^2 = 7, so x^2 = 7. Others: (sqrt7)^3 = 7sqrt7, x^2=49 needs 7, 2x=7 needs 3.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.237Z"
+        }
+      }
+    },
+    {
+      "id": "c27c18a7-fa79-4866-b6c9-4bfae0dffaae",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "Which expression has a value of 3?",
+      "choices": [
+        "the cube root of 27",
+        "the cube root of 12",
+        "$\\frac{27}{3}$",
+        "$\\sqrt{27}$"
+      ],
+      "answer": "the cube root of 27",
+      "compute": null,
+      "solution": "$3 \\times 3 \\times 3 = 27$, so the cube root of 27 is 3. The cube root of 12 is less than 3, $\\frac{27}{3} = 9$ and $\\sqrt{27}$ is more than 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the cube root of 27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cube root of 27 = 3; sqrt27 = 3sqrt3, 27/3 = 9, cube root of 12 is not 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.237Z"
+        }
+      }
+    },
+    {
+      "id": "b218b487-6b8e-458b-a774-e83b86f47611",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Roots undo squaring and cubing",
+      "stem": "The cube root of a number is 3. What is the number?",
+      "choices": [],
+      "answer": "27",
+      "compute": "3*3*3",
+      "solution": "Cubing undoes the cube root: $3 \\times 3 \\times 3 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3^3 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.259Z"
+        }
+      }
+    },
+    {
+      "id": "ae52baa9-7f94-4434-ae7f-180336675bb7",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Evaluate $\\sqrt{144}$.",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "Since $12 \\times 12 = 144$, the square root of 144 is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12^2 = 144.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.276Z"
+        }
+      }
+    },
+    {
+      "id": "f4c6df53-d8ba-4653-9af1-ecdd523d667a",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Add the two roots: $\\sqrt{9} + \\sqrt{16}$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "3+4",
+      "solution": "$\\sqrt{9} = 3$ and $\\sqrt{16} = 4$, so the sum is $3 + 4 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3 + 4 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.287Z"
+        }
+      }
+    },
+    {
+      "id": "8208a3ea-f38f-4233-8977-93b73a607efd",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Solve $x^3 = 216$.",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$6 \\times 6 \\times 6 = 216$, so $x = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6^3 = 216, x = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.288Z"
+        }
+      }
+    },
+    {
+      "id": "538e4474-f254-476d-9a20-00848ab2642f",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "What is the negative solution of $x^2 = 9$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "-3",
+      "solution": "Both $3 \\times 3 = 9$ and $(-3) \\times (-3) = 9$, so the solutions are 3 and $-3$. The negative one is $-3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = +-3; negative is -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.305Z"
+        }
+      }
+    },
+    {
+      "id": "b73a08f8-6bb7-4b4e-8bc6-9d8afde03222",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A cube-shaped tank holds 343 cubic feet of water when it is full. How long is each edge of the tank, in feet?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The volume of a cube is edge $\\times$ edge $\\times$ edge. Since $7 \\times 7 \\times 7 = 343$, each edge is 7 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cube root of 343 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.356Z"
+        }
+      }
+    },
+    {
+      "id": "07aeefaa-9dde-4e64-a7ae-b1f7d95c735f",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square has an area of 36 square units. Which expression gives the length of one side?",
+      "choices": [
+        "$36^2$",
+        "$36 \\div 2$",
+        "$36 \\div 4$",
+        "$\\sqrt{36}$"
+      ],
+      "answer": "$\\sqrt{36}$",
+      "compute": null,
+      "solution": "The side length is the number that gives 36 when multiplied by itself, which is $\\sqrt{36} = 6$. Dividing 36 by 2 or by 4 does not undo a multiplication of the side by itself.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{36}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side s with s^2 = 36: s = sqrt36 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.359Z"
+        }
+      }
+    },
+    {
+      "id": "052eac79-b825-4feb-9acd-a23891cc10fa",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Find the positive value of $x$ that solves $x^2 = 400$.",
+      "choices": [],
+      "answer": "20",
+      "compute": "20",
+      "solution": "$20 \\times 20 = 400$, so the positive solution is $x = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = sqrt400 = 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.363Z"
+        }
+      }
+    },
+    {
+      "id": "2da2806f-7ee3-4e5a-af2a-2ec17fc60be6",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Roots undo squaring and cubing",
+      "stem": "Evaluate $(\\sqrt{49})^2$.",
+      "choices": [],
+      "answer": "49",
+      "compute": "49",
+      "solution": "$\\sqrt{49} = 7$, and $7^2 = 49$. Squaring undoes the square root.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt49=7, squared 49.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.399Z"
+        }
+      }
+    },
+    {
+      "id": "3ef52342-e42b-41db-856c-f99753f9dd7e",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "Which list has only perfect squares?",
+      "choices": [
+        "4, 9, 27",
+        "8, 16, 25",
+        "1, 4, 10",
+        "4, 9, 25"
+      ],
+      "answer": "4, 9, 25",
+      "compute": null,
+      "solution": "$4 = 2^2$, $9 = 3^2$ and $25 = 5^2$. In the other lists, 27, 8 and 10 are not squares of whole numbers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4, 9, 25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4,9,25 are 2^2,3^2,5^2. 27, 8, 10 not squares.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.405Z"
+        }
+      }
+    },
+    {
+      "id": "a32584da-4443-4344-924a-fe63f766d291",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "How many of the numbers 4, 8, 9, 12, 16, 27 are perfect squares?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "$4 = 2 \\times 2$, $9 = 3 \\times 3$ and $16 = 4 \\times 4$ are perfect squares. 8, 12 and 27 are not. That makes 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perfect squares: 4, 9, 16. Count 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.443Z"
+        }
+      }
+    },
+    {
+      "id": "ef57d343-1a44-446f-b726-c27ef1d0affc",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Both $x = 5$ and $x = -5$ are solutions of $x^2 = p$. What is $p$?",
+      "choices": [],
+      "answer": "25",
+      "compute": "5^2",
+      "solution": "Squaring either solution gives the same value: $5^2 = 25$ and $(-5)^2 = 25$. So $p = 25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p = 5^2 = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.462Z"
+        }
+      }
+    },
+    {
+      "id": "50541543-eac6-4eb0-9a93-e5d92c0fa8bd",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Which is the positive solution of $x^2 = 11$?",
+      "choices": [
+        "$\\frac{11}{2}$",
+        "$121$",
+        "$\\sqrt{11}$",
+        "$11$"
+      ],
+      "answer": "$\\sqrt{11}$",
+      "compute": null,
+      "solution": "The positive number whose square is 11 is $\\sqrt{11}$. Since 11 is not a perfect square, we leave it as $\\sqrt{11}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{11}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = sqrt(11).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.475Z"
+        }
+      }
+    },
+    {
+      "id": "1e042e92-8ff8-4aa0-a1bd-417cca6b4690",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Which value equals $\\sqrt{256}$?",
+      "choices": [
+        "8",
+        "16",
+        "32",
+        "128"
+      ],
+      "answer": "16",
+      "compute": "16",
+      "solution": "$16 \\times 16 = 256$, so $\\sqrt{256} = 16$. Half of 16 is 8, double 16 is 32 and half of 256 is 128, but none of those multiplies by itself to make 256.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "16^2=256.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.486Z"
+        }
+      }
+    },
+    {
+      "id": "76985e1d-9e6d-4472-b2cd-368600a9f0bc",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square floor has an area of 169 square feet. How long is one side of the floor, in feet?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "The side length times itself is the area: $13 \\times 13 = 169$. Each side is 13 feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(169) = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.584Z"
+        }
+      }
+    },
+    {
+      "id": "245d20bb-d3a2-483b-ab3f-ac813f40bd26",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Which equation has the solution $x = 4$?",
+      "choices": [
+        "$x^3 = 12$",
+        "$x^3 = 16$",
+        "$x^3 = 64$",
+        "$x^2 = 64$"
+      ],
+      "answer": "$x^3 = 64$",
+      "compute": null,
+      "solution": "Cube 4: $4 \\times 4 \\times 4 = 64$, so $x = 4$ solves $x^3 = 64$. Squaring 4 gives 16, not 64.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 = 64$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^3 = 64, so x^3 = 64 has solution 4. 4^2 = 16 not 64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.613Z"
+        }
+      }
+    },
+    {
+      "id": "6e137d43-d961-49da-8f29-6078516e2a09",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "Which number multiplied by itself three times gives 64?",
+      "choices": [
+        "4",
+        "8",
+        "12",
+        "16"
+      ],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$4 \\times 4 \\times 4 = 64$, so the number is 4. The number 8 is the square root of 64, 16 is 4 squared and 12 is 4 times 3; none of them gives 64 when multiplied by itself three times.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^3=64.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.650Z"
+        }
+      }
+    },
+    {
+      "id": "a54ed6e3-9da3-4a88-91d9-76edf1fe9760",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Which number sentence is true?",
+      "choices": [
+        "$\\sqrt{64} = 4$",
+        "$\\sqrt{64} = 8$",
+        "$\\sqrt{64} = 32$",
+        "$\\sqrt{64} = 4096$"
+      ],
+      "answer": "$\\sqrt{64} = 8$",
+      "compute": null,
+      "solution": "$8 \\times 8 = 64$, so $\\sqrt{64} = 8$. The others halve 8, halve 64 or square 64.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{64} = 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt64=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.651Z"
+        }
+      }
+    },
+    {
+      "id": "d014903c-79ec-4962-9a60-53901bd7239a",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Lena solves $x^3 = 9$ by undoing the cube on both sides. Which operation does she use?",
+      "choices": [
+        "taking the square root",
+        "taking the cube root",
+        "squaring",
+        "dividing by 3"
+      ],
+      "answer": "taking the cube root",
+      "compute": null,
+      "solution": "The variable is cubed, so the cube root undoes it. This gives $x = $ the cube root of 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "taking the cube root",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Undo a cube with the cube root: x = cube root of 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.658Z"
+        }
+      }
+    },
+    {
+      "id": "de258f44-1986-4aeb-8328-ca8c7fe29ff2",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "What is the cube root of 125?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "$5 \\times 5 \\times 5 = 125$, so the cube root of 125 is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5^3=125.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.704Z"
+        }
+      }
+    },
+    {
+      "id": "b9ab7322-cce7-4ace-8fbe-7287889ab686",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "Which of these numbers is a perfect square?",
+      "choices": [
+        "81",
+        "18",
+        "27",
+        "45"
+      ],
+      "answer": "81",
+      "compute": "81",
+      "solution": "$9 \\times 9 = 81$, so 81 is a perfect square. 18, 27 and 45 are not the square of any whole number.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "81",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "81 = 9^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.806Z"
+        }
+      }
+    },
+    {
       "id": "b54fa051-f340-4e07-95c0-637cec6e6e2a",
       "topic_id": "NC17.8.EE.2",
       "difficulty": 2,
@@ -9990,6 +10712,733 @@
       }
     },
     {
+      "id": "0e4c6ea4-36ae-48fb-b024-035becba3bc1",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Maya solves $x^2 = 13$. Which statement describes her solutions?",
+      "choices": [
+        "Two solutions, $\\sqrt{13}$ and $-\\sqrt{13}$",
+        "Only one solution, $\\sqrt{13}$",
+        "Two solutions, $\\frac{13}{2}$ and $-\\frac{13}{2}$",
+        "Two solutions, $169$ and $-169$"
+      ],
+      "answer": "Two solutions, $\\sqrt{13}$ and $-\\sqrt{13}$",
+      "compute": null,
+      "solution": "Both $\\sqrt{13}$ and $-\\sqrt{13}$ give 13 when squared, and 13 is not a perfect square, so the exact solutions are $\\sqrt{13}$ and $-\\sqrt{13}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Two solutions, $\\sqrt{13}$ and $-\\sqrt{13}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 13 gives x = sqrt(13) or x = -sqrt(13).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.209Z"
+        }
+      }
+    },
+    {
+      "id": "21fa8e01-ea4b-4e37-b316-63982c36e617",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Evaluate $\\sqrt{289}$.",
+      "choices": [],
+      "answer": "17",
+      "compute": "17",
+      "solution": "$17 \\times 17 = 289$, so $\\sqrt{289} = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "17^2 = 289, so sqrt289 = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.253Z"
+        }
+      }
+    },
+    {
+      "id": "8117d957-2362-4529-b6c9-4e1dbd43f3da",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Solve $x^3 + 9 = 36$.",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "Subtract 9 from both sides: $x^3 = 27$. Since $3 \\times 3 \\times 3 = 27$, $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3 = 27, x = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.267Z"
+        }
+      }
+    },
+    {
+      "id": "7a2a1455-9c41-40f9-8fb8-b88e915c9eb2",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square rug has an area of 225 square inches. A second square rug has sides twice as long as the first. How long is one side of the second rug, in inches?",
+      "choices": [],
+      "answer": "30",
+      "compute": "2*15",
+      "solution": "The first rug has a side of $\\sqrt{225} = 15$ inches. The second rug has sides twice as long: $2 \\times 15 = 30$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "First side sqrt225 = 15; second side 2*15 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.275Z"
+        }
+      }
+    },
+    {
+      "id": "d443a9a8-201c-42eb-9a12-074912ed8baa",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "Each face of a cube has an area of 49 square centimeters. How long is one edge of the cube, in centimeters?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Each face is a square, so its side is $\\sqrt{49} = 7$ centimeters. That is the length of an edge.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Face is a square of area 49, edge 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.315Z"
+        }
+      }
+    },
+    {
+      "id": "fb5a0cab-4b1f-4fee-8293-57ed5b70ea21",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Roots undo squaring and cubing",
+      "stem": "Which expression is NOT equal to 6?",
+      "choices": [
+        "$\\sqrt{36}$",
+        "the cube root of 216",
+        "$\\sqrt{18}$",
+        "$\\sqrt{9} + \\sqrt{9}$"
+      ],
+      "answer": "$\\sqrt{18}$",
+      "compute": null,
+      "solution": "$\\sqrt{36} = 6$, the cube root of 216 is 6 and $\\sqrt{9} + \\sqrt{9} = 3 + 3 = 6$. But $\\sqrt{18}$ is about 4.24, since $6 \\times 6 = 36$ and not 18.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{18}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Cube root 216 = 6, sqrt36 = 6, 3+3 = 6, sqrt18 = 3sqrt2 ~ 4.24, not 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.363Z"
+        }
+      }
+    },
+    {
+      "id": "8991d67f-a81a-44ba-a2ca-bb21c59008b4",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Roots undo squaring and cubing",
+      "stem": "A positive number $n$ has $\\sqrt{n} = 13$. What is $n$?",
+      "choices": [],
+      "answer": "169",
+      "compute": "13^2",
+      "solution": "Squaring undoes the square root: $n = 13^2 = 169$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "169",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "n = 13^2 = 169.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.366Z"
+        }
+      }
+    },
+    {
+      "id": "8d76644c-80b0-4e22-bcc0-7a5e663259e3",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Which equation has exactly the two solutions $\\sqrt{11}$ and $-\\sqrt{11}$?",
+      "choices": [
+        "$x^2 = 11$",
+        "$x^3 = 11$",
+        "$x^2 = 121$",
+        "$2x = 11$"
+      ],
+      "answer": "$x^2 = 11$",
+      "compute": null,
+      "solution": "Squaring either $\\sqrt{11}$ or $-\\sqrt{11}$ gives 11, so both solve $x^2 = 11$. The equation $x^3 = 11$ has only one solution.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 = 11$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2=11 has x=±sqrt11. x^2=121 gives ±11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.407Z"
+        }
+      }
+    },
+    {
+      "id": "b98a661b-94e1-4b23-aeeb-5a488df7178f",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Solve $5x^3 = 40$.",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Divide both sides by 5: $x^3 = 8$. Since $2 \\times 2 \\times 2 = 8$, $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^3=40 so x^3=8, x=cube root of 8=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.428Z"
+        }
+      }
+    },
+    {
+      "id": "a9970009-de7d-443b-ad9f-4bb036d946ab",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "What is the cube root of 216 divided by the cube root of 27?",
+      "choices": [],
+      "answer": "2",
+      "compute": "6/3",
+      "solution": "The cube root of 216 is 6 and the cube root of 27 is 3. Then $6 \\div 3 = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cube root 216 = 6, cube root 27 = 3; 6/3 = 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.456Z"
+        }
+      }
+    },
+    {
+      "id": "e210a4e5-8533-4d5a-8917-f88b3bad228d",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Which value is equal to $\\sqrt{324}$?",
+      "choices": [
+        "17",
+        "162",
+        "18",
+        "19"
+      ],
+      "answer": "18",
+      "compute": "18",
+      "solution": "$18 \\times 18 = 324$, so $\\sqrt{324} = 18$. Half of 324 is 162, but that is not a number whose square is 324.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "18",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "18^2=324.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.473Z"
+        }
+      }
+    },
+    {
+      "id": "7a3a893a-58e6-4dcc-883f-143c0ac1c628",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Which list shows the numbers in order from least to greatest?",
+      "choices": [
+        "$\\sqrt{100}$, $\\sqrt{49}$, 8, 11",
+        "8, $\\sqrt{49}$, 11, $\\sqrt{100}$",
+        "$\\sqrt{49}$, $\\sqrt{100}$, 8, 11",
+        "$\\sqrt{49}$, 8, $\\sqrt{100}$, 11"
+      ],
+      "answer": "$\\sqrt{49}$, 8, $\\sqrt{100}$, 11",
+      "compute": null,
+      "solution": "$\\sqrt{49} = 7$ and $\\sqrt{100} = 10$. The numbers are 7, 8, 10 and 11, so the order is $\\sqrt{49}$, 8, $\\sqrt{100}$, 11.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{49}$, 8, $\\sqrt{100}$, 11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt49=7, 8, sqrt100=10, 11: increasing.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.473Z"
+        }
+      }
+    },
+    {
+      "id": "818871c9-c20d-443c-849f-53754c88b424",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "The cube root of 100 is between which two whole numbers?",
+      "choices": [
+        "4 and 5",
+        "3 and 4",
+        "9 and 10",
+        "33 and 34"
+      ],
+      "answer": "4 and 5",
+      "compute": null,
+      "solution": "$4^3 = 64$ and $5^3 = 125$. Since 100 is between 64 and 125, its cube root is between 4 and 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4 and 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4^3 = 64 < 100 < 125 = 5^3, so between 4 and 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.508Z"
+        }
+      }
+    },
+    {
+      "id": "fe21a643-e38d-42c2-a2e5-4c0bf927f0c1",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "What is the product of the cube root of 27 and $\\sqrt{16}$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "3*4",
+      "solution": "The cube root of 27 is 3 and $\\sqrt{16} = 4$. The product is $3 \\times 4 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cube root 27 = 3, √16 = 4, product 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.519Z"
+        }
+      }
+    },
+    {
+      "id": "d09a2fe7-daf5-49b4-a0d8-e8de2526005b",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "Which number is both a perfect square and a perfect cube?",
+      "choices": [
+        "16",
+        "27",
+        "100",
+        "64"
+      ],
+      "answer": "64",
+      "compute": "64",
+      "solution": "$64 = 8 \\times 8$ and $64 = 4 \\times 4 \\times 4$. The number 16 is only a square, 27 is only a cube and 100 is only a square.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "64",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "64 = 8^2 = 4^3. 100, 16 not cubes; 27 not a square.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.522Z"
+        }
+      }
+    },
+    {
+      "id": "e4e3f8ac-5014-466c-bc9a-b5dc57875502",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Solve $3x^2 = 75$. Which choice gives all the solutions?",
+      "choices": [
+        "$5$ only",
+        "$25$ and $-25$",
+        "$\\sqrt{72}$ and $-\\sqrt{72}$",
+        "$5$ and $-5$"
+      ],
+      "answer": "$5$ and $-5$",
+      "compute": null,
+      "solution": "Divide both sides by 3 to get $x^2 = 25$. The solutions are $5$ and $-5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5$ and $-5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 25, x = ±5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.526Z"
+        }
+      }
+    },
+    {
+      "id": "2dfefbf0-fd8a-4b71-8ac5-460b60697093",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "The cube root of 10 is a solution of which equation?",
+      "choices": [
+        "$x^2 = 10$",
+        "$3x = 10$",
+        "$x^3 = 10$",
+        "$x^3 = 100$"
+      ],
+      "answer": "$x^3 = 10$",
+      "compute": null,
+      "solution": "The cube root of 10 is the number that gives 10 when it is cubed. So it solves $x^3 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^3 = 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(∛10)^3 = 10, so x^3 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.548Z"
+        }
+      }
+    },
+    {
+      "id": "d07d413f-4fc9-45d2-b205-0e6425ed8507",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Dana writes $\\sqrt{25} = \\pm 5$. Which statement is correct?",
+      "choices": [
+        "$\\sqrt{25}$ is $\\pm 5$, and $x^2 = 25$ has the solution $5$ only",
+        "$\\sqrt{25}$ is $5$, while $x^2 = 25$ has two solutions, $5$ and $-5$",
+        "$\\sqrt{25}$ is $5$, and $x^2 = 25$ has the solution $5$ only",
+        "$\\sqrt{25}$ is $-5$, while $x^2 = 25$ has two solutions, $5$ and $-5$"
+      ],
+      "answer": "$\\sqrt{25}$ is $5$, while $x^2 = 25$ has two solutions, $5$ and $-5$",
+      "compute": null,
+      "solution": "The square root symbol means the positive square root, so $\\sqrt{25} = 5$. The equation $x^2 = 25$ is different: both $5$ and $-5$ square to 25, so it has two solutions.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{25}$ is $5$, while $x^2 = 25$ has two solutions, $5$ and $-5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "The radical sign means the principal (nonnegative) root: sqrt(25)=5. x^2=25 has x=5 and x=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.571Z"
+        }
+      }
+    },
+    {
+      "id": "6d5b8360-edd7-4bce-99a3-b1722cb22889",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "How many of the whole numbers from 1 to 100, including both 1 and 100, are perfect squares?",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "The perfect squares are $1^2, 2^2, 3^2, \\dots, 10^2$. That is 10 numbers, ending with $10^2 = 100$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,4,9,...,100 = 1^2..10^2: 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.580Z"
+        }
+      }
+    },
+    {
+      "id": "54b6fbb7-2060-418e-954f-6a4e664fcff5",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Find the value of $\\sqrt{361} - \\sqrt{81}$.",
+      "choices": [],
+      "answer": "10",
+      "compute": "19-9",
+      "solution": "$\\sqrt{361} = 19$ because $19 \\times 19 = 361$, and $\\sqrt{81} = 9$. So the difference is $19 - 9 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "19 - 9 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.589Z"
+        }
+      }
+    },
+    {
+      "id": "592de33a-dbcf-4d65-b4a8-b9722162aafb",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "What is the cube root of 343 minus the cube root of 8?",
+      "choices": [
+        "3",
+        "5",
+        "9",
+        "335"
+      ],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The cube root of 343 is 7 because $7 \\times 7 \\times 7 = 343$, and the cube root of 8 is 2. So the difference is $7 - 2 = 5$. The number 335 is $343 - 8$, which subtracts before taking roots.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cube root 343 = 7, cube root 8 = 2; 7-2=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.641Z"
+        }
+      }
+    },
+    {
+      "id": "c626258f-d1e6-4f4a-bcd2-fd65a46f6095",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Solve $x^2 - 5 = 44$. What is the positive solution?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Add 5 to both sides: $x^2 = 49$. The positive solution is $x = \\sqrt{49} = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 49, x = +-7; positive 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.720Z"
+        }
+      }
+    },
+    {
+      "id": "94195790-f555-4999-9a55-6747bbf5edc3",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square patio has an area of 50 square meters. Which is the exact length of one side of the patio?",
+      "choices": [
+        "25 meters",
+        "$\\sqrt{50}$ meters",
+        "$\\frac{50}{4}$ meters",
+        "$50^2$ meters"
+      ],
+      "answer": "$\\sqrt{50}$ meters",
+      "compute": null,
+      "solution": "The side length is the number that gives 50 when multiplied by itself, so it is $\\sqrt{50}$ meters, about 7.07 meters. Half of 50 is 25 and 50 divided by 4 is 12.5, but neither number multiplied by itself gives 50.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{50}$ meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "side^2 = 50, side = sqrt(50) m exactly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.726Z"
+        }
+      }
+    },
+    {
       "id": "575c7065-d879-4aa2-9bfd-da65d0e4a5aa",
       "topic_id": "NC17.8.EE.2",
       "difficulty": 3,
@@ -10301,6 +11750,733 @@
           "work": "x^3 = 125, x = 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:56:51.485Z"
+        }
+      }
+    },
+    {
+      "id": "6b31d472-c3fa-4ed3-bf9b-74e3d7db5474",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Which equation has two solutions that are both integers?",
+      "choices": [
+        "$x^2 = 196$",
+        "$x^3 = 216$",
+        "$x^2 = 150$",
+        "$x^2 = 80$"
+      ],
+      "answer": "$x^2 = 196$",
+      "compute": null,
+      "solution": "$x^2 = 196$ has the solutions 14 and $-14$. The equation $x^3 = 216$ has only one solution, and 150 and 80 are not perfect squares, so their solutions are not integers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 = 196$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 196: x = 14 or -14. x^3 = 216 has one real solution 6; 150 and 80 are not perfect squares.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.324Z"
+        }
+      }
+    },
+    {
+      "id": "9b51bdf3-6e98-4025-a8ee-f3f202bf4d24",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A cube with a volume of 8 cubic inches and a cube with a volume of 27 cubic inches are set next to each other with their edges in one straight line. How long is the line they make, in inches?",
+      "choices": [],
+      "answer": "5",
+      "compute": "2+3",
+      "solution": "The edges are the cube roots of the volumes: the cube root of 8 is 2 and the cube root of 27 is 3. The line is $2 + 3 = 5$ inches long.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Edges: cube root 8 = 2, cube root 27 = 3; side by side 2 + 3 = 5 inches.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.340Z"
+        }
+      }
+    },
+    {
+      "id": "8467227d-a1ed-4f20-8929-01af496d60c9",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "The equation $x^2 = 144$ has two solutions. What is their product?",
+      "choices": [],
+      "answer": "-144",
+      "compute": "12*(-12)",
+      "solution": "The solutions are 12 and $-12$. Their product is $12 \\times (-12) = -144$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-144",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Solutions 12 and -12; product -144.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.348Z"
+        }
+      }
+    },
+    {
+      "id": "65d9dad2-7e2c-4eb4-8172-a777287fa165",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Solve $x^3 - 1 = 342$.",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "Add 1 to both sides: $x^3 = 343$. Since $7 \\times 7 \\times 7 = 343$, $x = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3 = 343, x = 7 (only real cube root).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.365Z"
+        }
+      }
+    },
+    {
+      "id": "0411ab68-33e3-4d7a-83fb-5485020e02f4",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "A student estimates $\\sqrt{200}$ by comparing 200 with nearby perfect squares. Which whole number is the best estimate?",
+      "choices": [
+        "14",
+        "15",
+        "20",
+        "100"
+      ],
+      "answer": "14",
+      "compute": null,
+      "solution": "$14^2 = 196$ and $15^2 = 225$. Since 200 is much closer to 196, $\\sqrt{200}$ is about 14.1, which rounds to 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14^2=196, 15^2=225; 200 is closer to 196, sqrt200≈14.14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.383Z"
+        }
+      }
+    },
+    {
+      "id": "034879a3-f12b-4222-84dd-ceca625a0cbb",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Roots undo squaring and cubing",
+      "stem": "Which equation is true for every positive number $a$?",
+      "choices": [
+        "$\\sqrt{a} = a^2$",
+        "$\\sqrt{a^2} = 2a$",
+        "$\\sqrt{a} = \\frac{a}{2}$",
+        "$(\\sqrt{a})^2 = a$"
+      ],
+      "answer": "$(\\sqrt{a})^2 = a$",
+      "compute": null,
+      "solution": "The square root of $a$ is the number that gives $a$ when squared, so $(\\sqrt{a})^2 = a$. Try $a = 9$ in the others: $\\sqrt{9} = 3$ is not $9^2$, and $\\sqrt{9^2} = 9$ is not 18, and $\\frac{9}{2}$ is not 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(\\sqrt{a})^2 = a$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(sqrt a)^2 = a for a>0. Others fail e.g. a=4: sqrt4=2≠16; sqrt16=4≠8; 2≠2? a=4: sqrt4=2=4/2 holds but fails for a=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.390Z"
+        }
+      }
+    },
+    {
+      "id": "2b96fca0-8357-4b9c-a6d7-0164581f272c",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square garden has an area of 64 square feet. A fence goes around all four sides and costs 6 dollars per foot. How many dollars does the fence cost?",
+      "choices": [],
+      "answer": "192",
+      "compute": "8*4*6",
+      "solution": "Each side is $\\sqrt{64} = 8$ feet, so the distance around is $4 \\times 8 = 32$ feet. The cost is $32 \\times 6 = 192$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "192",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Side = sqrt(64)=8 ft; perimeter 32 ft; 32*6 = 192 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.457Z"
+        }
+      }
+    },
+    {
+      "id": "1f2c68eb-54d8-4082-b01f-e5b32d051b95",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Which choice gives the exact solution of $x^3 - 4 = 5$?",
+      "choices": [
+        "3",
+        "the cube root of 9",
+        "the cube root of 1",
+        "the cube root of 20"
+      ],
+      "answer": "the cube root of 9",
+      "compute": null,
+      "solution": "Add 4 to both sides: $x^3 = 9$. Since 9 is not a perfect cube, the exact solution is the cube root of 9. The number 3 would give $3^3 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the cube root of 9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3=9, so x = cube root of 9 (3^3=27, not 9).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.458Z"
+        }
+      }
+    },
+    {
+      "id": "778b3e31-4567-47cf-aab3-b7444a45dbba",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Solve $x^3 = \\frac{27}{64}$. Write the answer as a fraction.",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "3/4",
+      "solution": "Take the cube root of the top and bottom: the cube root of 27 is 3 and the cube root of 64 is 4. So $x = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x = cube root(27/64) = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.483Z"
+        }
+      }
+    },
+    {
+      "id": "2a16b1ec-7f6c-42d3-9028-1681d27ba947",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square has the same area as a rectangle that is 9 centimeters wide and 16 centimeters long. How long is one side of the square, in centimeters?",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "The rectangle has area $9 \\times 16 = 144$ square centimeters. The square has side $\\sqrt{144} = 12$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Area 9*16=144; side sqrt144=12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.486Z"
+        }
+      }
+    },
+    {
+      "id": "e4f44fac-f830-4a06-8d3b-d62c75df341c",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "Which choice gives all the solutions of $2x^2 = 38$?",
+      "choices": [
+        "$\\pm\\sqrt{38}$",
+        "$\\pm\\sqrt{76}$",
+        "$\\pm\\sqrt{19}$",
+        "$\\pm 19$"
+      ],
+      "answer": "$\\pm\\sqrt{19}$",
+      "compute": null,
+      "solution": "Divide both sides by 2: $x^2 = 19$. The solutions are $x = \\sqrt{19}$ and $x = -\\sqrt{19}$, written $\\pm\\sqrt{19}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\pm\\sqrt{19}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 19 -> x = +/- sqrt(19).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.624Z"
+        }
+      }
+    },
+    {
+      "id": "6d4423c0-2386-455c-a0b3-e0b6f20d793b",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "Mia sorts the numbers 5, the cube root of 100 and $\\sqrt{30}$, starting with the least. Which list is her sorted list?",
+      "choices": [
+        "5, the cube root of 100, $\\sqrt{30}$",
+        "$\\sqrt{30}$, 5, the cube root of 100",
+        "the cube root of 100, $\\sqrt{30}$, 5",
+        "the cube root of 100, 5, $\\sqrt{30}$"
+      ],
+      "answer": "the cube root of 100, 5, $\\sqrt{30}$",
+      "compute": null,
+      "solution": "$4^3 = 64$ and $5^3 = 125$, so the cube root of 100 is between 4 and 5 (about 4.6). $5^2 = 25$ and $6^2 = 36$, so $\\sqrt{30}$ is between 5 and 6 (about 5.5). The order is the cube root of 100, then 5, then $\\sqrt{30}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the cube root of 100, 5, $\\sqrt{30}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cube root 100 is about 4.64 (4.6^3=97.3), 5, sqrt30 about 5.48.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.669Z"
+        }
+      }
+    },
+    {
+      "id": "354000c4-a998-4bd6-a16a-769e2bba1d79",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Roots undo squaring and cubing",
+      "stem": "The cube root of a number is equal to $\\sqrt{36}$. What is the number?",
+      "choices": [],
+      "answer": "216",
+      "compute": "6^3",
+      "solution": "$\\sqrt{36} = 6$, so the number has cube root 6. Cubing undoes it: $6^3 = 216$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "216",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt36=6; number = 6^3=216.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.673Z"
+        }
+      }
+    },
+    {
+      "id": "8d9e3bbf-c58f-48ee-b487-d79be246e5e3",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Which statement is true about the solution of $x^3 = 50$?",
+      "choices": [
+        "It is between 7 and 8, because $7^2 = 49$ and $8^2 = 64$",
+        "It is between 3 and 4, because $3^3 = 27$ and $4^3 = 64$",
+        "It is between 16 and 17, because $50 \\div 3$ is about 16.7",
+        "It is between 25 and 26, because half of 50 is 25"
+      ],
+      "answer": "It is between 3 and 4, because $3^3 = 27$ and $4^3 = 64$",
+      "compute": null,
+      "solution": "Cubing 3 gives 27 and cubing 4 gives 64, and 50 lies between 27 and 64. So the solution is between 3 and 4. The other statements divide, halve or square instead of cubing.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is between 3 and 4, because $3^3 = 27$ and $4^3 = 64$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27<50<64 so the cube root of 50 is between 3 and 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.691Z"
+        }
+      }
+    },
+    {
+      "id": "5a55d514-1a28-4121-843b-02627dfebc0a",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A square has an area of 40 square centimeters. Which is closest to the distance around the square, in centimeters?",
+      "choices": [
+        "10",
+        "20",
+        "25",
+        "160"
+      ],
+      "answer": "25",
+      "compute": null,
+      "solution": "The side is $\\sqrt{40}$, which is a little more than 6 (since $6^2 = 36$). Four sides give a distance a little more than 24, about 25.3. Dividing 40 by 4 gives 10, and $4 \\times 40 = 160$ does not use the side length.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "side sqrt40 about 6.32; perimeter about 25.3; closest 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.705Z"
+        }
+      }
+    },
+    {
+      "id": "8ad5053f-c257-4352-9612-9a0fb51830cd",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Use square and cube roots in a context",
+      "stem": "A cube-shaped box has a volume of 100 cubic inches. Which is the exact length of one edge?",
+      "choices": [
+        "the cube root of 100 inches",
+        "the square root of 100 inches",
+        "the cube root of 600 inches",
+        "100 divided by 3 inches"
+      ],
+      "answer": "the cube root of 100 inches",
+      "compute": null,
+      "solution": "The volume of a cube is edge $\\times$ edge $\\times$ edge, so the edge is the cube root of the volume: the cube root of 100 inches. It is not a whole number because 100 is not a perfect cube.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the cube root of 100 inches",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "edge^3=100, edge = cube root of 100.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.706Z"
+        }
+      }
+    },
+    {
+      "id": "3db70f21-efeb-4ec0-bc3c-370ce1b58791",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Recognize perfect squares and perfect cubes",
+      "stem": "How many perfect cubes are there from 1 to 400, including 1?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The cubes are $1^3 = 1$, $2^3 = 8$, $3^3 = 27$, $4^3 = 64$, $5^3 = 125$, $6^3 = 216$ and $7^3 = 343$. The next, $8^3 = 512$, is over 400. That makes 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1,8,27,64,125,216,343 (512>400): 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.707Z"
+        }
+      }
+    },
+    {
+      "id": "4b086731-7d34-4606-a091-cc800d3a6164",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "To solve $x^2 - 7 = 18$, Leo adds 7 to both sides to get $x^2 = 25$, and then writes $x = 5$. Which statement is true?",
+      "choices": [
+        "Leo is correct, because the square root of 25 is 5",
+        "Leo missed a solution, since $-5$ also makes it true",
+        "Leo should have subtracted 7 from both sides to get $x^2 = 11$",
+        "Leo should have divided by 2 and written $x = 12.5$"
+      ],
+      "answer": "Leo missed a solution, since $-5$ also makes it true",
+      "compute": null,
+      "solution": "Adding 7 is correct and gives $x^2 = 25$. But both $5^2 = 25$ and $(-5)^2 = 25$, so the solutions are 5 and $-5$. Leo gave only one.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Leo missed a solution, since $-5$ also makes it true",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 = 25 gives x = 5 or x = -5; Leo missed -5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.721Z"
+        }
+      }
+    },
+    {
+      "id": "7d5e2b3e-1a0b-4baa-a633-c36483695161",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Evaluate the cube root of a perfect cube",
+      "stem": "Take the cube root of 343 and square it. Then subtract the square root of 49. What is the result?",
+      "choices": [],
+      "answer": "42",
+      "compute": "7^2-7",
+      "solution": "The cube root of 343 is 7, and its square is 49. The square root of 49 is 7. So the result is $49 - 7 = 42$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cbrt(343) = 7, 7^2 = 49, sqrt(49) = 7, 49 - 7 = 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.733Z"
+        }
+      }
+    },
+    {
+      "id": "158dbc07-580c-4200-8f08-83d9233480a0",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Use square and cube roots in a context",
+      "stem": "The surface of a cube is made of 6 equal square faces and has a total area of 150 square inches. How long is one edge of the cube, in inches?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "Each face has area $150 \\div 6 = 25$ square inches, so each edge is $\\sqrt{25} = 5$ inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Face area 150/6 = 25, edge = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.740Z"
+        }
+      }
+    },
+    {
+      "id": "15b886b5-1174-415f-9716-11e74465d580",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Solve x^3 = p using a cube root",
+      "stem": "Solve $\\frac{x^3}{2} = 32$.",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "Multiply both sides by 2: $x^3 = 64$. Since $4 \\times 4 \\times 4 = 64$, $x = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^3 = 64, x = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.747Z"
+        }
+      }
+    },
+    {
+      "id": "fd66a916-c206-45fa-a5f7-a88a14974eac",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Evaluate the square root of a perfect square",
+      "stem": "Which expression has the greatest value?",
+      "choices": [
+        "$\\sqrt{144} + \\sqrt{16}$",
+        "$\\sqrt{81} + \\sqrt{81}$",
+        "$\\sqrt{256} + 3$",
+        "$\\sqrt{225} + \\sqrt{25}$"
+      ],
+      "answer": "$\\sqrt{225} + \\sqrt{25}$",
+      "compute": null,
+      "solution": "$\\sqrt{225} + \\sqrt{25} = 15 + 5 = 20$. The others are $12 + 4 = 16$, $9 + 9 = 18$ and $16 + 3 = 19$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sqrt{225} + \\sqrt{25}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12+4 = 16, 9+9 = 18, 15+5 = 20, 16+3 = 19: greatest 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.753Z"
+        }
+      }
+    },
+    {
+      "id": "a55db09a-74e2-4980-80f7-866272a09902",
+      "topic_id": "NC17.8.EE.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Solve x^2 = p using a square root symbol",
+      "stem": "What is the positive solution of $x^2 = 75$, to the nearest tenth?",
+      "choices": [
+        "8.6",
+        "25",
+        "8.7",
+        "37.5"
+      ],
+      "answer": "8.7",
+      "compute": null,
+      "solution": "$x = \\sqrt{75}$. Since $8.6^2 = 73.96$ and $8.7^2 = 75.69$, the value is between 8.6 and 8.7. It is about 8.66, which rounds to 8.7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8.7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sqrt(75) = 8.660... -> 8.7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.757Z"
         }
       }
     },

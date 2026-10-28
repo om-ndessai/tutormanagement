@@ -9674,6 +9674,728 @@
       }
     },
     {
+      "id": "800a37dc-0304-4f6e-b25e-570f1bbc3bbf",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "The sum $(3x + a) + (2x + 5)$ equals $5x + 9$. What is $a$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "9-5",
+      "solution": "The numbers must add to 9: $a + 5 = 9$, so $a = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x+2x = 5x; a + 5 = 9, a = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.219Z"
+        }
+      }
+    },
+    {
+      "id": "ccb07793-1c70-4c3a-8a4e-774e31ced09c",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract linear expressions",
+      "stem": "The difference $(10x + 7) - (4x + 2)$ is written $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "6+5",
+      "solution": "Subtract like terms: $10x - 4x = 6x$ and $7 - 2 = 5$. The difference is $6x + 5$, so $a + b = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10x+7-4x-2 = 6x + 5; a+b = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.257Z"
+        }
+      }
+    },
+    {
+      "id": "7f68fb91-f9e1-443f-a5d9-07845c07c446",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract linear expressions",
+      "stem": "Which expression equals $(x + 5) - (x + 2)$?",
+      "choices": [
+        "3",
+        "7",
+        "$2x + 3$",
+        "$2x + 7$"
+      ],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The $x$ terms cancel: $x - x = 0$. Then $5 - 2 = 3$. The result is the number 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x + 5 - x - 2 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.286Z"
+        }
+      }
+    },
+    {
+      "id": "92467d03-e6a0-440d-bab8-89e06f29c062",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A triangle has sides of $x + 2$, $x + 5$ and $2x + 1$ centimeters. Its perimeter is $ax + b$ centimeters. What is $a + b$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4+8",
+      "solution": "Add the three sides: $x + x + 2x = 4x$ and $2 + 5 + 1 = 8$. The perimeter is $4x + 8$, so $a + b = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)+(x+5)+(2x+1) = 4x + 8; a+b = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.299Z"
+        }
+      }
+    },
+    {
+      "id": "8a239a94-989c-43f9-a7d9-5b235989a75a",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "When $-2(x + 7)$ is multiplied out, what is the constant term?",
+      "choices": [],
+      "answer": "-14",
+      "compute": "-2*7",
+      "solution": "Multiply each term by $-2$: $-2 \\cdot x = -2x$ and $-2 \\cdot 7 = -14$. The constant term is $-14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2x - 14; constant -14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.345Z"
+        }
+      }
+    },
+    {
+      "id": "a57aec58-ccd4-4d3c-bdc0-9985f6df79f9",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract linear expressions",
+      "stem": "Add: $(6x - 2) + (x + 9)$.",
+      "choices": [
+        "$7x + 7$",
+        "$7x - 11$",
+        "$7x + 11$",
+        "$6x + 7$"
+      ],
+      "answer": "$7x + 7$",
+      "compute": null,
+      "solution": "Add like terms: $6x + x = 7x$ and $-2 + 9 = 7$. The sum is $7x + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7x + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x + x - 2 + 9 = 7x + 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.371Z"
+        }
+      }
+    },
+    {
+      "id": "d4ef5f66-5b79-4b55-87d1-5eee2f26d8a9",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A rectangle is $x + 4$ units long and $x + 2$ units wide. Which expression gives its area?",
+      "choices": [
+        "$x^2 + 8$",
+        "$x^2 + 6x + 8$",
+        "$4x + 12$",
+        "$x^2 + 6x + 6$"
+      ],
+      "answer": "$x^2 + 6x + 8$",
+      "compute": null,
+      "solution": "Area is length times width: $(x + 4)(x + 2) = x^2 + 2x + 4x + 8 = x^2 + 6x + 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 6x + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+4)(x+2)=x^2+6x+8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.382Z"
+        }
+      }
+    },
+    {
+      "id": "b695de27-45f1-4800-930b-30f06aa506ae",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add quadratic expressions",
+      "stem": "Add $(4x^2 + 3x)$ and $(x^2 + 6x)$. What is the coefficient of $x$ in the sum?",
+      "choices": [],
+      "answer": "9",
+      "compute": "3+6",
+      "solution": "The sum is $5x^2 + 9x$, because $3x + 6x = 9x$. The coefficient of $x$ is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2+9x; coefficient 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.392Z"
+        }
+      }
+    },
+    {
+      "id": "cdb547b6-c84f-45cf-abb5-3b9dd16383ec",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "$(7x + k) - (3x + 2) = 4x + 6$. What is $k$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "6+2",
+      "solution": "Subtracting gives $4x + (k - 2)$. So $k - 2 = 6$ and $k = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x + (k-2) = 4x+6 -> k=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.398Z"
+        }
+      }
+    },
+    {
+      "id": "0232e297-b801-4c50-8c8d-e5d650f9efea",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A square has sides of length $x + 3$. Which expression gives the distance around the square?",
+      "choices": [
+        "$4x + 3$",
+        "$2x + 6$",
+        "$x^2 + 6x + 9$",
+        "$4x + 12$"
+      ],
+      "answer": "$4x + 12$",
+      "compute": null,
+      "solution": "The distance around is 4 sides: $4(x + 3) = 4x + 12$. Doing $4 \\cdot x$ but not $4 \\cdot 3$ gives the wrong constant, and $x^2 + 6x + 9$ is the area.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter 4(x+3) = 4x+12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.399Z"
+        }
+      }
+    },
+    {
+      "id": "12965996-b6d2-4eaa-b9b7-891b66ecf31b",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Subtract: $(7x^2 + 4x) - (3x^2 + x)$.",
+      "choices": [
+        "$4x^2 + 5x$",
+        "$10x^2 + 5x$",
+        "$4x^2 + 4x$",
+        "$4x^2 + 3x$"
+      ],
+      "answer": "$4x^2 + 3x$",
+      "compute": null,
+      "solution": "Subtract like terms: $7x^2 - 3x^2 = 4x^2$ and $4x - x = 3x$. The result is $4x^2 + 3x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x^2 + 3x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7x^2-3x^2=4x^2; 4x-x=3x. Result 4x^2+3x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.433Z"
+        }
+      }
+    },
+    {
+      "id": "47c6f627-1482-4d09-924f-0a39681cba92",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract linear expressions",
+      "stem": "Subtract: $(9x + 4) - (5x + 1)$.",
+      "choices": [
+        "$14x + 5$",
+        "$4x + 3$",
+        "$4x - 3$",
+        "$4x + 5$"
+      ],
+      "answer": "$4x + 3$",
+      "compute": null,
+      "solution": "Subtract the $x$ terms: $9x - 5x = 4x$. Subtract the numbers: $4 - 1 = 3$. The result is $4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9x-5x=4x; 4-1=3. 4x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.457Z"
+        }
+      }
+    },
+    {
+      "id": "5343de7b-c603-4e77-bd56-bd047a94c1e6",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Subtract: $(5x^2 + 8) - (2x^2 + 3)$. What is the coefficient of $x^2$ in the result?",
+      "choices": [],
+      "answer": "3",
+      "compute": "5-2",
+      "solution": "The $x^2$ terms give $5x^2 - 2x^2 = 3x^2$. The result is $3x^2 + 5$, and the coefficient of $x^2$ is 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2-2x^2 = 3x^2; coefficient 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.471Z"
+        }
+      }
+    },
+    {
+      "id": "b15798dc-c1dc-4256-a45f-079f548d6787",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Multiply: $3x(x + 4)$.",
+      "choices": [
+        "$3x^2 + 4$",
+        "$3x^2 + 4x$",
+        "$12x^2 + 3x$",
+        "$3x^2 + 12x$"
+      ],
+      "answer": "$3x^2 + 12x$",
+      "compute": null,
+      "solution": "The $3x$ multiplies each term: $3x \\cdot x = 3x^2$ and $3x \\cdot 4 = 12x$. The product is $3x^2 + 12x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^2 + 12x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x*x + 3x*4 = 3x^2 + 12x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.566Z"
+        }
+      }
+    },
+    {
+      "id": "dda75d13-9081-4cc5-b0d1-d176e4a16b91",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "What is the degree of the product $(x + 1)(x + 2)$ once it is multiplied out?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "$(x + 1)(x + 2) = x^2 + 3x + 2$. The highest power of $x$ is 2, so the degree is 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + 3x + 2, degree 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.579Z"
+        }
+      }
+    },
+    {
+      "id": "8cc5662e-ec07-4514-8887-f897ee829dc2",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Subtract: $(4x^2 + 9x + 2) - (x^2 + 9x)$.",
+      "choices": [
+        "$3x^2 - 2$",
+        "$3x^2 + 18x + 2$",
+        "$3x^2 + 2$",
+        "$5x^2 + 18x + 2$"
+      ],
+      "answer": "$3x^2 + 2$",
+      "compute": null,
+      "solution": "Subtract like terms: $4x^2 - x^2 = 3x^2$ and $9x - 9x = 0$. The constant 2 stays. The result is $3x^2 + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^2 + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2 - x^2 + 9x - 9x + 2 = 3x^2 + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.608Z"
+        }
+      }
+    },
+    {
+      "id": "4d3d80b3-5aab-469c-8c8a-8b0177dfda5e",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "When $4(3x + 2)$ is multiplied out, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4*3",
+      "solution": "The 4 multiplies both terms: $4 \\cdot 3x + 4 \\cdot 2 = 12x + 8$. The coefficient of $x$ is 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "12x + 8: coefficient 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.612Z"
+        }
+      }
+    },
+    {
+      "id": "df128e37-0f8e-46d8-909e-4ee328dd3e78",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add quadratic expressions",
+      "stem": "Add: $(2x^2 + 5) + (6x^2 + 1)$.",
+      "choices": [
+        "$8x^2 + 6$",
+        "$8x^4 + 6$",
+        "$14x^2$",
+        "$12x^2 + 5$"
+      ],
+      "answer": "$8x^2 + 6$",
+      "compute": null,
+      "solution": "Add the $x^2$ terms: $2x^2 + 6x^2 = 8x^2$. Add the numbers: $5 + 1 = 6$. The result is $8x^2 + 6$. The exponent stays 2 when like terms are added.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$8x^2 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2+6x^2=8x^2; 5+1=6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.643Z"
+        }
+      }
+    },
+    {
+      "id": "2756d1d6-c8d9-4404-8647-f6f21c957d41",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add quadratic expressions",
+      "stem": "Add $(2x^2 + 3x + 1)$ and $(x^2 + 4x + 6)$. The sum is written $ax^2 + bx + c$. What is $a + b + c$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "3+7+7",
+      "solution": "The sum is $3x^2 + 7x + 7$, so $a + b + c = 3 + 7 + 7 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum 3x^2+7x+7; 3+7+7=17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.653Z"
+        }
+      }
+    },
+    {
+      "id": "6df6ccba-28c8-4843-a52d-8e58e5148d18",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add quadratic expressions",
+      "stem": "Add $(3x^2 + x)$ and $(-3x^2 + 5)$. What is the degree of the sum?",
+      "choices": [],
+      "answer": "1",
+      "compute": "1",
+      "solution": "The $x^2$ terms cancel: $3x^2 - 3x^2 = 0$. The sum is $x + 5$, whose highest power of $x$ is 1. The degree is 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Sum x+5; degree 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.685Z"
+        }
+      }
+    },
+    {
+      "id": "0a050245-e8e9-4441-aafc-fc895a12d137",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "When $x = 10$, the expression $2x + 5$ stands for 25 and $x + 3$ stands for 13. Which expression stands for $25 + 13$?",
+      "choices": [
+        "$2x + 8$",
+        "$3x + 8$",
+        "$3x + 15$",
+        "$3x + 53$"
+      ],
+      "answer": "$3x + 8$",
+      "compute": null,
+      "solution": "Add like terms: $2x + x = 3x$ and $5 + 3 = 8$, so the sum is $3x + 8$. Check at $x = 10$: $3(10) + 8 = 38$, and $25 + 13 = 38$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x + 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+5)+(x+3)=3x+8; at x=10, 38=25+13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.702Z"
+        }
+      }
+    },
+    {
+      "id": "1551ab67-0933-4e66-89d0-a3e14f4772f9",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract linear expressions",
+      "stem": "The sum $(x + 7) + (4x - 2)$ is written $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+5",
+      "solution": "Combine the $x$ terms: $x + 4x = 5x$. Combine the numbers: $7 - 2 = 5$. The sum is $5x + 5$, so $a + b = 5 + 5 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x + 5, a = 5, b = 5, a+b = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.725Z"
+        }
+      }
+    },
+    {
+      "id": "17ca2892-d71f-42d0-a62c-d3cb41ed914b",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two linear expressions",
+      "stem": "Multiply: $(x + 3)(x + 5)$.",
+      "choices": [
+        "$x^2 + 15$",
+        "$x^2 + 8x + 8$",
+        "$x^2 + 8x + 15$",
+        "$x^2 + 15x + 8$"
+      ],
+      "answer": "$x^2 + 8x + 15$",
+      "compute": null,
+      "solution": "Multiply each term of the first by each term of the second: $x \\cdot x = x^2$, $x \\cdot 5 = 5x$, $3 \\cdot x = 3x$ and $3 \\cdot 5 = 15$. Adding gives $x^2 + 8x + 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 8x + 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2 + 5x + 3x + 15 = x^2 + 8x + 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.727Z"
+        }
+      }
+    },
+    {
       "id": "dc334969-190c-48cd-8a1f-beab0650320d",
       "topic_id": "NC17.M1.A-APR.1",
       "difficulty": 2,
@@ -9989,6 +10711,733 @@
       }
     },
     {
+      "id": "e2f276fe-1dda-4a82-a550-dd15085121b6",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Subtract $(3x^2 - x + 4)$ from $(7x^2 + 2x - 5)$.",
+      "choices": [
+        "$4x^2 + x - 1$",
+        "$4x^2 + 3x - 9$",
+        "$4x^2 + 3x - 1$",
+        "$4x^2 + x - 9$"
+      ],
+      "answer": "$4x^2 + 3x - 9$",
+      "compute": null,
+      "solution": "Write $(7x^2 + 2x - 5) - (3x^2 - x + 4)$ and subtract each term: $7x^2 - 3x^2 = 4x^2$, $2x - (-x) = 3x$ and $-5 - 4 = -9$. The result is $4x^2 + 3x - 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4x^2 + 3x - 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(7x^2+2x-5) - (3x^2-x+4) = 4x^2 + 3x - 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.238Z"
+        }
+      }
+    },
+    {
+      "id": "2dac2caa-47a8-4a68-b18c-8fd471fc2e05",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "When $-x(4x - 9)$ is multiplied out, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "$-x \\cdot 4x = -4x^2$ and $-x \\cdot (-9) = 9x$. The result is $-4x^2 + 9x$, so the coefficient of $x$ is 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-x(4x-9) = -4x^2 + 9x; coefficient of x is 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.239Z"
+        }
+      }
+    },
+    {
+      "id": "42016ea7-33be-4182-a107-00a473326512",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "Which expression must be subtracted from $8x^2 + 5x$ to leave $3x^2 - 2x + 1$?",
+      "choices": [
+        "$5x^2 + 3x - 1$",
+        "$5x^2 + 7x + 1$",
+        "$11x^2 + 3x + 1$",
+        "$5x^2 + 7x - 1$"
+      ],
+      "answer": "$5x^2 + 7x - 1$",
+      "compute": null,
+      "solution": "The missing expression is the first minus the result: $(8x^2 + 5x) - (3x^2 - 2x + 1) = 5x^2 + 7x - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x^2 + 7x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(8x^2+5x) - (3x^2-2x+1) = 5x^2 + 7x - 1. Check: 8x^2+5x - (5x^2+7x-1) = 3x^2 - 2x + 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.255Z"
+        }
+      }
+    },
+    {
+      "id": "7fe40618-c18e-439a-845f-ad5e0a8c3142",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A rectangular garden has length $3x + 4$ and width $x - 1$. Its perimeter is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "8+6",
+      "solution": "Perimeter is twice the sum of length and width. The sum is $(3x + 4) + (x - 1) = 4x + 3$, so the perimeter is $2(4x + 3) = 8x + 6$. Then $a + b = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P = 2(3x+4 + x-1) = 2(4x+3) = 8x + 6; a+b = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.257Z"
+        }
+      }
+    },
+    {
+      "id": "e467b9a4-c19c-4203-a9c7-7541c5119429",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two linear expressions",
+      "stem": "Multiply: $(3x + 1)(2x + 5)$.",
+      "choices": [
+        "$6x^2 + 5$",
+        "$6x^2 + 13x + 5$",
+        "$6x^2 + 17x + 5$",
+        "$5x^2 + 17x + 5$"
+      ],
+      "answer": "$6x^2 + 17x + 5$",
+      "compute": null,
+      "solution": "$3x \\cdot 2x = 6x^2$, $3x \\cdot 5 = 15x$, $1 \\cdot 2x = 2x$ and $1 \\cdot 5 = 5$. Combine: $6x^2 + 17x + 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x^2 + 17x + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x^2 + 15x + 2x + 5 = 6x^2 + 17x + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.264Z"
+        }
+      }
+    },
+    {
+      "id": "8df94947-5744-49ac-b6f5-0c4729071f9a",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two linear expressions",
+      "stem": "Multiply out $(2x + 5)(2x - 5)$ and write the result as $4x^2 + bx + c$. What is $b + c$?",
+      "choices": [],
+      "answer": "-25",
+      "compute": "0-25",
+      "solution": "$(2x + 5)(2x - 5) = 4x^2 - 10x + 10x - 25 = 4x^2 - 25$. So $b = 0$ and $c = -25$, and $b + c = -25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2 - 25; b = 0, c = -25; b + c = -25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.297Z"
+        }
+      }
+    },
+    {
+      "id": "d6aa0d60-e577-4ab4-aefe-3368e77d97a9",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Which expression is equal to $2x(x - 4) + 3x$?",
+      "choices": [
+        "$2x^2 - 11x$",
+        "$2x^2 - x$",
+        "$2x^2 - 5$",
+        "$2x^2 - 5x$"
+      ],
+      "answer": "$2x^2 - 5x$",
+      "compute": null,
+      "solution": "$2x(x - 4) = 2x^2 - 8x$. Adding $3x$ gives $2x^2 - 8x + 3x = 2x^2 - 5x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 - 5x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x^2 - 8x + 3x = 2x^2 - 5x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.298Z"
+        }
+      }
+    },
+    {
+      "id": "026cfd44-6f45-4b70-acc2-e7d33fc5aaf0",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract linear expressions",
+      "stem": "The sum $(3x + 5) + (-3x + 8)$ is a constant. What is that constant?",
+      "choices": [],
+      "answer": "13",
+      "compute": "5+8",
+      "solution": "The $x$ terms cancel: $3x - 3x = 0$. What is left is $5 + 8 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3x - 3x + 5 + 8 = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.312Z"
+        }
+      }
+    },
+    {
+      "id": "c9d4d6d8-96ec-4d72-a6ec-b054fc1cb1af",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Which line shows the correct first step in finding $(3x^2 - 2x + 5) - (x^2 + 4x - 3)$?",
+      "choices": [
+        "$3x^2 - 2x + 5 - x^2 - 4x + 3$",
+        "$3x^2 - 2x + 5 - x^2 + 4x - 3$",
+        "$3x^2 - 2x + 5 - x^2 - 4x - 3$",
+        "$3x^2 - 2x + 5 + x^2 + 4x - 3$"
+      ],
+      "answer": "$3x^2 - 2x + 5 - x^2 - 4x + 3$",
+      "compute": null,
+      "solution": "Subtracting a group changes the sign of every term in it: $-(x^2 + 4x - 3) = -x^2 - 4x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x^2 - 2x + 5 - x^2 - 4x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Distribute the minus: -x^2 - 4x + 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.326Z"
+        }
+      }
+    },
+    {
+      "id": "9013da4f-c9fe-41fc-9c2a-673f99a01028",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract linear expressions",
+      "stem": "Simplify: $(2x - 4) + 3(x + 1)$.",
+      "choices": [
+        "$5x - 3$",
+        "$5x - 1$",
+        "$5x + 7$",
+        "$-x - 7$"
+      ],
+      "answer": "$5x - 1$",
+      "compute": null,
+      "solution": "Multiply first: $3(x + 1) = 3x + 3$. Then add: $2x + 3x = 5x$ and $-4 + 3 = -1$. The result is $5x - 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x - 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2x - 4 + 3x + 3 = 5x - 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.327Z"
+        }
+      }
+    },
+    {
+      "id": "3771de03-f7e9-4778-b201-c3a683ed7a67",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two linear expressions",
+      "stem": "The product $(4x - 3)(x + 2)$ is written $ax^2 + bx + c$. What is $a + b + c$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "4+5-6",
+      "solution": "$4x \\cdot x = 4x^2$, $4x \\cdot 2 = 8x$, $-3 \\cdot x = -3x$ and $-3 \\cdot 2 = -6$. The product is $4x^2 + 5x - 6$, so $a + b + c = 4 + 5 - 6 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2 + 8x - 3x - 6 = 4x^2 + 5x - 6; a+b+c = 3 (also the value at x=1: 1*3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.334Z"
+        }
+      }
+    },
+    {
+      "id": "686a51d1-3683-4161-af6a-2c178b04234f",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract linear expressions",
+      "stem": "Subtract: $(4x - 7) - (-2x + 3)$.",
+      "choices": [
+        "$6x - 10$",
+        "$2x - 10$",
+        "$6x - 4$",
+        "$2x - 4$"
+      ],
+      "answer": "$6x - 10$",
+      "compute": null,
+      "solution": "Subtracting $-2x$ adds $2x$, and subtracting $3$ takes away 3: $4x + 2x = 6x$ and $-7 - 3 = -10$. The result is $6x - 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x - 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x - 7 + 2x - 3 = 6x - 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.359Z"
+        }
+      }
+    },
+    {
+      "id": "466882e6-5168-4932-95dc-94541847f0be",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two linear expressions",
+      "stem": "Multiply: $(x - 3)(x + 7)$.",
+      "choices": [
+        "$x^2 + 4x + 21$",
+        "$x^2 - 4x - 21$",
+        "$x^2 + 10x - 21$",
+        "$x^2 + 4x - 21$"
+      ],
+      "answer": "$x^2 + 4x - 21$",
+      "compute": null,
+      "solution": "Multiply each pair: $x \\cdot x = x^2$, $x \\cdot 7 = 7x$, $-3 \\cdot x = -3x$ and $-3 \\cdot 7 = -21$. Combine: $x^2 + 4x - 21$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 4x - 21$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+7x-3x-21 = x^2+4x-21.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.386Z"
+        }
+      }
+    },
+    {
+      "id": "b43a57af-acc6-4aeb-856e-a9b55068fd06",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "Dana sees that $(2x + 3) + (x + 4)$ and $(x + 4) + (2x + 3)$ are equal, just as $5 + 8$ and $8 + 5$ are equal. Which property is this?",
+      "choices": [
+        "associative property of addition",
+        "identity property of addition",
+        "commutative property of addition",
+        "distributive property of multiplication over addition"
+      ],
+      "answer": "commutative property of addition",
+      "compute": null,
+      "solution": "Changing the order of the two things being added does not change the sum. That is the commutative property of addition, and it holds for polynomials as it does for integers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "commutative property of addition",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Changing the order of addends: commutative property of addition.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.447Z"
+        }
+      }
+    },
+    {
+      "id": "b89b6d70-b74f-439b-a947-cfe1b18b4375",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add quadratic expressions",
+      "stem": "Add: $(5x^2 - 2x + 8) + (-3x^2 + 7x - 1)$.",
+      "choices": [
+        "$2x^2 + 9x + 7$",
+        "$8x^2 + 5x + 7$",
+        "$2x^2 + 5x + 7$",
+        "$2x^2 + 5x + 9$"
+      ],
+      "answer": "$2x^2 + 5x + 7$",
+      "compute": null,
+      "solution": "Add like terms: $5x^2 - 3x^2 = 2x^2$, $-2x + 7x = 5x$ and $8 - 1 = 7$. The sum is $2x^2 + 5x + 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 + 5x + 7$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2-3x^2=2x^2; -2x+7x=5x; 8-1=7. 2x^2+5x+7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.456Z"
+        }
+      }
+    },
+    {
+      "id": "51f5c772-aa2d-4157-8f71-7532df01bdd1",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Subtract quadratic expressions",
+      "stem": "The difference $(6x^2 - 4x + 9) - (2x^2 - 4x + 1)$ is written $ax^2 + bx + c$. What is $a + b + c$?",
+      "choices": [],
+      "answer": "12",
+      "compute": "4+0+8",
+      "solution": "Subtract like terms: $6x^2 - 2x^2 = 4x^2$, $-4x - (-4x) = 0$ and $9 - 1 = 8$. So $a + b + c = 4 + 0 + 8 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x^2 + 0x + 8; a+b+c = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.525Z"
+        }
+      }
+    },
+    {
+      "id": "2bae7f6d-3849-4439-b3c1-ebe27b63738b",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add quadratic expressions",
+      "stem": "The sum of $(x^2 + 6x - 4)$ and $(4x^2 - 6x + 9)$ is written $ax^2 + bx + c$. What is $a + b + c$?",
+      "choices": [],
+      "answer": "10",
+      "compute": "5+0+5",
+      "solution": "The $x^2$ terms give $5x^2$, the $x$ terms cancel ($6x - 6x = 0$) and $-4 + 9 = 5$. The sum is $5x^2 + 0x + 5$, so $a + b + c = 5 + 0 + 5 = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2 + 0x + 5; a+b+c = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.546Z"
+        }
+      }
+    },
+    {
+      "id": "404dda46-601d-4572-803e-2b363342a8be",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "$(x - 2)(x + m) = x^2 + 3x - 10$. What is $m$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "Multiplying gives $x^2 + (m - 2)x - 2m$. The $x$ term gives $m - 2 = 3$, so $m = 5$. Check the constant: $-2 \\cdot 5 = -10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-2)(x+m)=x^2+(m-2)x-2m. -2m=-10 gives m=5; check m-2=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.642Z"
+        }
+      }
+    },
+    {
+      "id": "4dacca2c-111c-4165-89f7-cfaa467da5b0",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A rectangle has width $x + 2$ and length $2x + 5$. Which expression gives its area?",
+      "choices": [
+        "$2x^2 + 9x + 10$",
+        "$2x^2 + 10$",
+        "$2x^2 + 7x + 10$",
+        "$3x^2 + 9x + 10$"
+      ],
+      "answer": "$2x^2 + 9x + 10$",
+      "compute": null,
+      "solution": "Area is length times width: $(x + 2)(2x + 5) = 2x^2 + 5x + 4x + 10 = 2x^2 + 9x + 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 + 9x + 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+2)(2x+5)=2x^2+5x+4x+10=2x^2+9x+10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.672Z"
+        }
+      }
+    },
+    {
+      "id": "7022a0ab-3d2c-4721-b593-3afcda445f77",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two linear expressions",
+      "stem": "When $(x - 5)(x - 6)$ is multiplied out, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "-11",
+      "compute": "-6-5",
+      "solution": "$(x - 5)(x - 6) = x^2 - 6x - 5x + 30 = x^2 - 11x + 30$. The coefficient of $x$ is $-11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-6x-5x+30 = x^2-11x+30; coefficient -11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.681Z"
+        }
+      }
+    },
+    {
+      "id": "40094707-1e26-4e61-b720-13787acfb50a",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Simplify $4(x + 2) - (3x - 5)$. What is the constant term of the result?",
+      "choices": [],
+      "answer": "13",
+      "compute": "8+5",
+      "solution": "$4(x + 2) = 4x + 8$. Subtracting $(3x - 5)$ gives $4x + 8 - 3x + 5 = x + 13$. The constant term is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x + 8 - 3x + 5 = x + 13; constant 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.728Z"
+        }
+      }
+    },
+    {
+      "id": "1a674673-407a-46ea-98a8-81f7693d7524",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Multiply: $-3(2x - 5)$.",
+      "choices": [
+        "$-6x - 15$",
+        "$-6x + 15$",
+        "$6x + 15$",
+        "$-6x - 5$"
+      ],
+      "answer": "$-6x + 15$",
+      "compute": null,
+      "solution": "The $-3$ multiplies both terms: $-3 \\cdot 2x = -6x$ and $-3 \\cdot (-5) = +15$. The product is $-6x + 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-6x + 15$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-6x + 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.748Z"
+        }
+      }
+    },
+    {
+      "id": "ec0ba4d9-6393-4cb7-a9b5-3e6f2145e551",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "Write 12 as $x + 2$ and 13 as $x + 3$. Multiplying gives $(x + 2)(x + 3) = x^2 + 5x + 6$. What is the value of $x^2 + 5x + 6$ when $x = 10$?",
+      "choices": [],
+      "answer": "156",
+      "compute": "100+50+6",
+      "solution": "At $x = 10$: $100 + 50 + 6 = 156$. This matches $12 \\times 13 = 156$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "156",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "100 + 50 + 6 = 156 (= 12*13).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.751Z"
+        }
+      }
+    },
+    {
       "id": "fef6532e-a66d-4f78-baa3-07021fcb1312",
       "topic_id": "NC17.M1.A-APR.1",
       "difficulty": 3,
@@ -10295,6 +11744,728 @@
           "work": "Square: (2x+1)^2=4x^2+4x+1. Rectangle: (x+3)(x+1)=x^2+4x+3. Difference 3x^2+0x-2; a+b+c=1.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:33.866Z"
+        }
+      }
+    },
+    {
+      "id": "cbdb0fad-80c2-4c17-af1f-25551e123e6d",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Simplify $(5x^2 - x + 3) - 2(x^2 + x - 4)$ and write it as $ax^2 + bx + c$. What is $a + b + c$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "3-3+11",
+      "solution": "$2(x^2 + x - 4) = 2x^2 + 2x - 8$. Subtracting: $5x^2 - 2x^2 = 3x^2$, $-x - 2x = -3x$ and $3 + 8 = 11$. So $a + b + c = 3 - 3 + 11 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5x^2 - x + 3 - 2x^2 - 2x + 8 = 3x^2 - 3x + 11; 3 - 3 + 11 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.258Z"
+        }
+      }
+    },
+    {
+      "id": "16212bf3-0d6f-4f4f-9764-fe704c17067e",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two linear expressions",
+      "stem": "Which product has no term in $x$ when it is multiplied out?",
+      "choices": [
+        "$(x + 6)(x - 3)$",
+        "$(x + 6)(x + 6)$",
+        "$(x - 6)(x - 6)$",
+        "$(x + 6)(x - 6)$"
+      ],
+      "answer": "$(x + 6)(x - 6)$",
+      "compute": null,
+      "solution": "$(x + 6)(x - 6) = x^2 - 6x + 6x - 36 = x^2 - 36$, so the $x$ terms cancel. The others give $x^2 + 3x - 18$, $x^2 + 12x + 36$ and $x^2 - 12x + 36$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x + 6)(x - 6)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+6)(x-6) = x^2 - 36, no x term. Others: x^2+3x-18, x^2+12x+36, x^2-12x+36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.260Z"
+        }
+      }
+    },
+    {
+      "id": "9a723cbb-4581-4ca5-89be-740b2eee9599",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "$(3x^2 + ax - 2) + (bx^2 - 4x + 5) = 5x^2 + 2x + 3$. Which values of $a$ and $b$ make this true?",
+      "choices": [
+        "$a = -2$ and $b = 2$",
+        "$a = 6$ and $b = 2$",
+        "$a = 6$ and $b = 8$",
+        "$a = 2$ and $b = 6$"
+      ],
+      "answer": "$a = 6$ and $b = 2$",
+      "compute": null,
+      "solution": "Match the $x^2$ terms: $3 + b = 5$, so $b = 2$. Match the $x$ terms: $a - 4 = 2$, so $a = 6$. The numbers already match: $-2 + 5 = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$a = 6$ and $b = 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2: 3 + b = 5, b = 2; x: a - 4 = 2, a = 6; constant -2+5 = 3 checks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.262Z"
+        }
+      }
+    },
+    {
+      "id": "7e52c6c3-98f6-43cc-a60f-27f4893178b7",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "The expression $A$ minus $(x^2 - 3x + 2)$ equals $4x^2 + x - 5$. Which expression is $A$?",
+      "choices": [
+        "$3x^2 + 4x - 7$",
+        "$5x^2 - 2x - 3$",
+        "$5x^2 - 2x - 7$",
+        "$5x^2 + 4x - 3$"
+      ],
+      "answer": "$5x^2 - 2x - 3$",
+      "compute": null,
+      "solution": "Subtraction is undone by addition: $A = (4x^2 + x - 5) + (x^2 - 3x + 2) = 5x^2 - 2x - 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$5x^2 - 2x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A = (4x^2+x-5) + (x^2-3x+2) = 5x^2 - 2x - 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.262Z"
+        }
+      }
+    },
+    {
+      "id": "568cc473-c360-491f-874d-5b4031d5c6ef",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "$(2x + m)(3x + 5) = 6x^2 + 19x + 15$. What is $m$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(19-10)/3",
+      "solution": "The $x$ term of the product is $2x \\cdot 5 + m \\cdot 3x = (10 + 3m)x$. So $10 + 3m = 19$ and $m = 3$. Check: $3 \\cdot 5 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+m)(3x+5) = 6x^2 + (10+3m)x + 5m; 5m = 15 gives m = 3; 10 + 9 = 19 checks.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.289Z"
+        }
+      }
+    },
+    {
+      "id": "e0037fa3-d5a9-4966-9c4c-a5e8071f0a6b",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add and subtract linear expressions",
+      "stem": "Simplify $(4x + 6) - 2(x - 3) + (x - 1)$. The result is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "14",
+      "compute": "3+11",
+      "solution": "$4x + 6 - 2x + 6 + x - 1$. The $x$ terms: $4x - 2x + x = 3x$. The numbers: $6 + 6 - 1 = 11$. So the result is $3x + 11$ and $a + b = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x + 6 - 2x + 6 + x - 1 = 3x + 11; a+b = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.292Z"
+        }
+      }
+    },
+    {
+      "id": "54c29819-de0e-48c1-b6c4-b206b91de1e0",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find a missing coefficient or constant",
+      "stem": "For a positive number $a$, $(2x + a)(2x - a) = 4x^2 - 81$. What is $a$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "The $x$ terms cancel, and the constant term is $-a^2$. So $a^2 = 81$ and, since $a$ is positive, $a = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+a)(2x-a) = 4x^2 - a^2; a^2 = 81, a = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.296Z"
+        }
+      }
+    },
+    {
+      "id": "c90ddf11-d778-4e76-8936-7f0496cdf1d0",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Let $P = 4x^2 - 3x + 1$ and $Q = x^2 + 2x - 6$. What is the coefficient of $x$ in $2P - Q$?",
+      "choices": [],
+      "answer": "-8",
+      "compute": "-6-2",
+      "solution": "$2P = 8x^2 - 6x + 2$. Subtracting $Q$ gives $7x^2 - 8x + 8$. The coefficient of $x$ is $-8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2P = 8x^2 - 6x + 2; 2P - Q = 7x^2 - 8x + 8; coefficient -8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.311Z"
+        }
+      }
+    },
+    {
+      "id": "cc848dbf-f4d6-4442-bd27-83f16f5fd5a8",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Add quadratic expressions",
+      "stem": "Add $(4x^2 - x + 6)$, $(-x^2 + 2x - 9)$ and $(x^2 - 7x + 3)$. The sum is written $ax^2 + bx + c$. What is $b$?",
+      "choices": [],
+      "answer": "-6",
+      "compute": "-1+2-7",
+      "solution": "Add the $x$ terms: $-x + 2x - 7x = -6x$. So $b = -6$. (The full sum is $4x^2 - 6x + 0$.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x terms: -x + 2x - 7x = -6x, so b = -6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.330Z"
+        }
+      }
+    },
+    {
+      "id": "853233d0-341e-45c5-abf3-8756047d8696",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Subtract quadratic expressions",
+      "stem": "The difference $(kx^2 + 5x - 2) - (3x^2 - x + 4)$ is a linear expression. What is $k$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "3",
+      "solution": "The $x^2$ term of the difference is $(k - 3)x^2$. For the difference to be linear it must be zero, so $k = 3$. The difference is then $6x - 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Difference = (k-3)x^2 + 6x - 6; linear needs k-3 = 0, k = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.339Z"
+        }
+      }
+    },
+    {
+      "id": "c1331a36-9140-4d2d-83fb-c90c470c169c",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A square has sides of $3x - 2$. A rectangle has the same perimeter and is $4x + 1$ long. Its width is $ax + b$. What is $a + b$?",
+      "choices": [],
+      "answer": "-3",
+      "compute": "2-5",
+      "solution": "The square's perimeter is $4(3x - 2) = 12x - 8$. Half of it is $6x - 4$, which is length plus width. Width $= 6x - 4 - (4x + 1) = 2x - 5$, so $a + b = 2 - 5 = -3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perimeter 4(3x-2) = 12x-8. 2(4x+1) + 2w = 12x-8, 2w = 4x-10, w = 2x-5. a+b = 2-5 = -3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.341Z"
+        }
+      }
+    },
+    {
+      "id": "19de9c8f-379a-4944-b20c-6c14ea1aaa97",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "Which claim about polynomial arithmetic is correct?",
+      "choices": [
+        "Multiplying two linear expressions always gives a linear one",
+        "Subtracting two quadratic expressions can give a linear one",
+        "Adding two quadratic expressions always gives a quadratic one",
+        "Adding two linear expressions can never give a constant"
+      ],
+      "answer": "Subtracting two quadratic expressions can give a linear one",
+      "compute": null,
+      "solution": "For example $(x^2 + x) - (x^2 + 2)$ is $x - 2$, which is linear. The others fail: $(x + 1)(x + 1)$ is quadratic, $x^2 + (-x^2 + 1) = 1$ is not quadratic, and $x + (-x + 3) = 3$ is a constant.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Subtracting two quadratic expressions can give a linear one",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x^2+x)-(x^2) = x: linear, true. Product of two linears is quadratic; (x+1)+(-x)=1 constant; x^2+(-x^2+x) is linear. Only first true.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.394Z"
+        }
+      }
+    },
+    {
+      "id": "cfd61eda-0ee5-49e2-ae94-276de28162cd",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Simplify: $4(x - 3) - 2(3x - 5)$.",
+      "choices": [
+        "$-2x - 2$",
+        "$-2x - 22$",
+        "$10x - 22$",
+        "$10x - 2$"
+      ],
+      "answer": "$-2x - 2$",
+      "compute": null,
+      "solution": "Multiply out: $4x - 12$ and $6x - 10$. Subtract: $4x - 12 - 6x + 10 = -2x - 2$. The $+10$ comes from subtracting $-10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2x - 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4x-12-6x+10 = -2x-2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.434Z"
+        }
+      }
+    },
+    {
+      "id": "ea68fc36-9312-4d8c-a0ae-358d0f5d1604",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "Rectangle A is $x + 9$ units long and $x + 2$ units wide. Rectangle B is $x + 5$ units long and $x + 3$ units wide. Which expression gives how much greater the area of A is than the area of B?",
+      "choices": [
+        "$3x + 33$",
+        "$19x + 33$",
+        "$3x - 3$",
+        "$3x + 3$"
+      ],
+      "answer": "$3x + 3$",
+      "compute": null,
+      "solution": "Area of A: $(x + 9)(x + 2) = x^2 + 11x + 18$. Area of B: $(x + 5)(x + 3) = x^2 + 8x + 15$. Subtract: the $x^2$ terms cancel, leaving $3x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A: (x+9)(x+2)=x^2+11x+18. B: (x+5)(x+3)=x^2+8x+15. Difference 3x+3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.475Z"
+        }
+      }
+    },
+    {
+      "id": "c72bb051-8410-4470-a627-d79a5f90c166",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A rectangle has width $x + 3$ and length $2x - 1$. Its perimeter is 58 units. What is $x$?",
+      "choices": [],
+      "answer": "9",
+      "compute": "(58-4)/6",
+      "solution": "The perimeter is $2[(x + 3) + (2x - 1)] = 2(3x + 2) = 6x + 4$. Set $6x + 4 = 58$, so $6x = 54$ and $x = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P = 2[(x+3)+(2x-1)] = 2(3x+2) = 6x+4 = 58 -> x = 9. Width 12, length 17, perimeter 58.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.585Z"
+        }
+      }
+    },
+    {
+      "id": "f081fca6-2b31-4e98-89ab-c08317740406",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a constant or a monomial by a linear expression",
+      "stem": "Simplify $3x(2x - 1) - 2x(x + 4)$ and write it as $ax^2 + bx$. What is $b$?",
+      "choices": [],
+      "answer": "-11",
+      "compute": "-3-8",
+      "solution": "$3x(2x - 1) = 6x^2 - 3x$ and $2x(x + 4) = 2x^2 + 8x$. Subtracting: $6x^2 - 2x^2 = 4x^2$ and $-3x - 8x = -11x$. So $b = -11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x^2 - 3x - 2x^2 - 8x = 4x^2 - 11x. b = -11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.631Z"
+        }
+      }
+    },
+    {
+      "id": "ba7a72ef-0e04-49c6-83df-dc4e9dd98025",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Subtract quadratic expressions",
+      "stem": "Simplify: $(3x^2 - 5x + 2) + (x^2 + 4x - 7) - (2x^2 - x + 3)$.",
+      "choices": [
+        "$2x^2 - 2x - 8$",
+        "$2x^2 + 8$",
+        "$2x^2 - 8$",
+        "$6x^2 - 8$"
+      ],
+      "answer": "$2x^2 - 8$",
+      "compute": null,
+      "solution": "First add the two groups: $4x^2 - x - 5$. Then subtract $(2x^2 - x + 3)$: $4x^2 - 2x^2 = 2x^2$, $-x - (-x) = 0$ and $-5 - 3 = -8$. The result is $2x^2 - 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2x^2 - 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2: 3+1-2=2; x: -5+4+1=0; const: 2-7-3=-8. Result 2x^2-8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.653Z"
+        }
+      }
+    },
+    {
+      "id": "0c1b93e8-2009-43a0-a1a0-2c025339cb53",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "Which expression, added to $x^2 + 3x - 2$, gives 0?",
+      "choices": [
+        "$-x^2 + 3x + 2$",
+        "$x^2 - 3x + 2$",
+        "$-x^2 - 3x + 2$",
+        "$-x^2 - 3x - 2$"
+      ],
+      "answer": "$-x^2 - 3x + 2$",
+      "compute": null,
+      "solution": "Like an integer and its opposite, a polynomial and the polynomial with every sign changed add to 0: $-(x^2 + 3x - 2) = -x^2 - 3x + 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-x^2 - 3x + 2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Additive inverse: -(x^2+3x-2) = -x^2 - 3x + 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.735Z"
+        }
+      }
+    },
+    {
+      "id": "59b2499d-b25b-4555-b9a6-f1cbfbf92b25",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two linear expressions",
+      "stem": "When $(5x - 2)(2x - 7)$ is multiplied out, what is the coefficient of $x$?",
+      "choices": [],
+      "answer": "-39",
+      "compute": "5*(-7)+(-2)*2",
+      "solution": "The $x$ terms come from $5x \\cdot (-7) = -35x$ and $-2 \\cdot 2x = -4x$. Together they give $-39x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-39",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10x^2 - 35x - 4x + 14: coefficient of x is -39.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.747Z"
+        }
+      }
+    },
+    {
+      "id": "2584434e-c467-485c-aff7-1e066fe64bec",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Polynomial arithmetic in a geometry context",
+      "stem": "A rectangle is $2x + 1$ units long and $x + 5$ units wide. A square with sides of $x + 1$ units is cut out of it. Which expression gives the area that is left?",
+      "choices": [
+        "$x^2 + 13x + 6$",
+        "$x^2 + 9x + 6$",
+        "$x^2 + 9x + 4$",
+        "$x^2 + 11x + 4$"
+      ],
+      "answer": "$x^2 + 9x + 4$",
+      "compute": null,
+      "solution": "The rectangle has area $(2x + 1)(x + 5) = 2x^2 + 11x + 5$. The square has area $(x + 1)(x + 1) = x^2 + 2x + 1$. Subtract: $x^2 + 9x + 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 9x + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2x+1)(x+5) = 2x^2+11x+5; minus (x+1)^2 = x^2+2x+1: x^2 + 9x + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.754Z"
+        }
+      }
+    },
+    {
+      "id": "5c5d53cf-56ce-482f-8d30-3cc5540c6afa",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two linear expressions",
+      "stem": "Which product equals $x^2 - 4x - 12$?",
+      "choices": [
+        "$(x - 6)(x + 2)$",
+        "$(x + 6)(x - 2)$",
+        "$(x - 6)(x - 2)$",
+        "$(x + 4)(x - 3)$"
+      ],
+      "answer": "$(x - 6)(x + 2)$",
+      "compute": null,
+      "solution": "$(x - 6)(x + 2) = x^2 + 2x - 6x - 12 = x^2 - 4x - 12$. The others give $x^2 + 4x - 12$, $x^2 - 8x + 12$ and $x^2 + x - 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(x - 6)(x + 2)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x-6)(x+2) = x^2 + 2x - 6x - 12 = x^2 - 4x - 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.758Z"
+        }
+      }
+    },
+    {
+      "id": "19c454b7-b3c0-4e2a-b521-9cf8f4429b99",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Multiply two linear expressions",
+      "stem": "Multiply: $(2x - 3)(3x + 4)$.",
+      "choices": [
+        "$6x^2 - x - 12$",
+        "$6x^2 + x - 12$",
+        "$6x^2 - x + 12$",
+        "$6x^2 - 12$"
+      ],
+      "answer": "$6x^2 - x - 12$",
+      "compute": null,
+      "solution": "$2x \\cdot 3x = 6x^2$, $2x \\cdot 4 = 8x$, $-3 \\cdot 3x = -9x$ and $-3 \\cdot 4 = -12$. Combine $8x - 9x = -x$ to get $6x^2 - x - 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6x^2 - x - 12$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6x^2 + 8x - 9x - 12 = 6x^2 - x - 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.774Z"
+        }
+      }
+    },
+    {
+      "id": "b5b24452-6393-4a04-8d90-b796bbc2eb5c",
+      "topic_id": "NC17.M1.A-APR.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Polynomial arithmetic compared with integer arithmetic",
+      "stem": "Maya multiplies $32 \\times 14$ by writing 32 as $3x + 2$ and 14 as $x + 4$ with $x = 10$. The product $(3x + 2)(x + 4)$ is $ax^2 + bx + c$. What is $a + b + c$?",
+      "choices": [],
+      "answer": "25",
+      "compute": "3+14+8",
+      "solution": "$(3x + 2)(x + 4) = 3x^2 + 12x + 2x + 8 = 3x^2 + 14x + 8$, so $a + b + c = 25$. Check at $x = 10$: $300 + 140 + 8 = 448 = 32 \\times 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x+2)(x+4) = 3x^2 + 14x + 8; a+b+c = 25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.801Z"
         }
       }
     },

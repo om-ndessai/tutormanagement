@@ -2,9 +2,9 @@
   "level_id": "NC17.M4",
   "source": "Written 2026-10-23/24 by Claude Sonnet from our own summaries of the NC 2017 standards, and solved blind by Claude Opus (Claude Code agents, not runAi: no ai_runs rows), code-checked by lintQuestion; \"checked\" questions await a platform admin.",
   "notes": {
-    "NC17.M4.N.2": "Matrices and vectors are written by their rows and components; a matrix answer is a choice question with every option written the same way. Matrix-times-vector and determinants are not in the standard summary and were left out. Vectors are given as components, never as drawn arrows.",
+    "NC17.M4.N.2": "Matrices and vectors are written by their rows and components; a matrix answer is a choice question with every option written the same way. Matrix-times-vector and determinants are not in the standard summary and were left out. Vectors are given as components, never as drawn arrows. 69 written (23 per difficulty). No transposes, determinants or inverses (not in the summary). Matrices are written by rows, vectors by components.",
     "NC17.M4.AF.1": "Domains are not tested. Difficulty-3 compositions stay within sums, products, powers, reciprocals, roots and logs.",
-    "NC17.M4.AF.2": "Exact answers only: Law of Sines and Law of Cosines items use special angles or given sine values so numeric keys are rational; radical answers are choice questions. No technology needed.",
+    "NC17.M4.AF.2": "Exact answers only: Law of Sines and Law of Cosines items use special angles or given sine values so numeric keys are rational; radical answers are choice questions. No technology needed. Text-only; models are described by their equations or features.",
     "NC17.M4.AF.5": "The standard says regression with technology; every question gives the fitted model or data and asks for a prediction, residual or interpretation by hand.",
     "NC17.M4.SP.2": "Everything is asked by hand: standard errors are chosen to be exact (for example 0.02 or 0.025), z* values are given in the question, and the p-value of a two-sided test is built from a given tail area. The symbol for the sample proportion (p-hat) is not in the converter, so it is written in words.",
     "NC17.M4.SP.3": "Normal-probability and binomial questions are done by hand (empirical rule, symmetry, or a table value given in the stem). Skills: missing probability 2, expected value 3, expected value in games 2, meaning of E(X) 2, binomial conditions 1, binomial mean 2, binomial probability 4, binomial sd 1, sampling-distribution mean 1, sd of sample mean 3, sd of sample proportion 2, normal conditions 1, z-scores 2, empirical rule / normal approximation 2, table values 2."
@@ -3457,6 +3457,738 @@
       }
     },
     {
+      "id": "ededc2f4-7c30-446b-9b10-743f2a59a401",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of matrix operations",
+      "stem": "Which statement about adding two matrices is true?",
+      "choices": [
+        "They must have the same number of rows, but not columns.",
+        "They must have the same number of rows and columns.",
+        "The columns of the first must equal the rows of the second.",
+        "They must both be square matrices."
+      ],
+      "answer": "They must have the same number of rows and columns.",
+      "compute": null,
+      "solution": "Matrices are added entry by entry, so each position must exist in both: the sizes must match.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They must have the same number of rows and columns.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Matrix addition is entrywise, so both need the same dimensions.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.290Z"
+        }
+      }
+    },
+    {
+      "id": "578e0395-aba1-4489-8245-6b4826230bbb",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two matrices",
+      "stem": "Find the matrix product $PQ$, with $P$ on the left. Here $P$ has rows [2, 0] and [0, 3] and $Q$ has rows [4, 1] and [5, 2]. Which matrix is $PQ$?",
+      "choices": [
+        "rows [8, 2] and [15, 6]",
+        "rows [8, 3] and [10, 6]",
+        "rows [8, 0] and [0, 6]",
+        "rows [8, 2] and [10, 6]"
+      ],
+      "answer": "rows [8, 2] and [15, 6]",
+      "compute": null,
+      "solution": "Row 1 of $P$ is [2, 0], so row 1 of $PQ$ is 2 times row 1 of $Q$: [8, 2]. Row 2 of $P$ is [0, 3], so row 2 of $PQ$ is 3 times row 2 of $Q$: [15, 6].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [8, 2] and [15, 6]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1: [2*4+0, 2*1+0] = [8,2]; Row2: [0+3*5, 0+3*2] = [15,6].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.294Z"
+        }
+      }
+    },
+    {
+      "id": "140a3353-198b-4d19-8bbe-39691ece6755",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "The matrix $A$ has rows [3, -2] and [0, 5]. What is the entry in row 1, column 2 of $-A$, the matrix $(-1)A$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "-1*-2",
+      "solution": "Multiplying by $-1$ changes the sign of every entry, so $-2$ becomes $2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-A row1 = [-3, 2]; entry 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.310Z"
+        }
+      }
+    },
+    {
+      "id": "7ec498a2-8a0b-4bde-aaf6-bd7fd8423667",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract vectors",
+      "stem": "The vector $u$ has components (6, 2) and the vector $v$ has components (1, 9). What is the second component of $v - u$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "9-2",
+      "solution": "Subtract the second components: $9 - 2 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "v - u = (1-6, 9-2) = (-5, 7). Second component 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.328Z"
+        }
+      }
+    },
+    {
+      "id": "fbbd5802-e25e-4cad-81ff-e58b97fc7312",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "The matrix $C$ has rows [8, 6] and [4, 10]. Matrix $D$ is $\\frac{1}{2}C$. What is the entry in row 2, column 2 of $D$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "1/2*10",
+      "solution": "Half of 10 is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "D = (1/2)C; row 2 column 2 = 10/2 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.341Z"
+        }
+      }
+    },
+    {
+      "id": "6ac5cfb6-539d-4963-b68f-e4dd33679813",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "The matrix $A$ has rows [2, 1] and [3, 4]. The matrix $B$ has rows [1, 4] and [5, 2]. What is the entry in row 2, column 1 of the product $AB$?",
+      "choices": [],
+      "answer": "23",
+      "compute": "3*1+4*5",
+      "solution": "Use row 2 of $A$ and column 1 of $B$: $3 \\cdot 1 + 4 \\cdot 5 = 23$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2 of A [3,4] dot column 1 of B [1,5] = 3 + 20 = 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.343Z"
+        }
+      }
+    },
+    {
+      "id": "eeef2035-22dc-4825-a1bd-8dfe3925ce65",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Size of a matrix product",
+      "stem": "The matrix $A$ has 4 rows and 2 columns. The matrix $B$ has 2 rows and 6 columns. How many entries does the product $AB$ have?",
+      "choices": [],
+      "answer": "24",
+      "compute": "4*6",
+      "solution": "The product $AB$ has 4 rows and 6 columns, so it has $4 \\cdot 6 = 24$ entries.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "24",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB is 4 by 6, 24 entries.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.343Z"
+        }
+      }
+    },
+    {
+      "id": "922e9b2e-0ef9-46ed-8376-d6af5161592d",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of matrix operations",
+      "stem": "A square matrix has 1 in every position of its main diagonal (top left to bottom right) and 0 everywhere else. What is this matrix called?",
+      "choices": [
+        "the zero matrix",
+        "the identity matrix",
+        "a matrix with 1 in every position",
+        "the transpose matrix"
+      ],
+      "answer": "the identity matrix",
+      "compute": null,
+      "solution": "Multiplying any matrix of a fitting size by it leaves that matrix unchanged, so it is the identity matrix.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the identity matrix",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1s on the main diagonal, 0 elsewhere: the identity matrix.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.345Z"
+        }
+      }
+    },
+    {
+      "id": "43e8b607-44f7-4ab1-8e07-20a170b1784a",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Size of a matrix product",
+      "stem": "The matrix $A$ has 3 rows and 2 columns. The matrix $B$ has 4 rows and 3 columns. Which statement is true?",
+      "choices": [
+        "Only $AB$ can be found.",
+        "Both $AB$ and $BA$ can be found.",
+        "Only $BA$ can be found.",
+        "Neither $AB$ nor $BA$ can be found."
+      ],
+      "answer": "Only $BA$ can be found.",
+      "compute": null,
+      "solution": "$AB$ needs the columns of $A$ (2) to equal the rows of $B$ (4), which fails. $BA$ needs the columns of $B$ (3) to equal the rows of $A$ (3), which works.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Only $BA$ can be found.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB: A is 3x2, B 4x3, inner 2 vs 4, no. BA: 4x3 times 3x2, inner 3=3, yes (4x2). Only BA.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.347Z"
+        }
+      }
+    },
+    {
+      "id": "c151ef00-312d-4b55-9f88-4400f9e75d92",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract vectors",
+      "stem": "Add the vectors $u$ = (2, -1, 4) and $v$ = (-3, 5, -2). Which vector is the sum $u + v$?",
+      "choices": [
+        "(-1, 4, 2)",
+        "(5, -6, 6)",
+        "(-6, -5, -8)",
+        "(-5, 6, -6)"
+      ],
+      "answer": "(-1, 4, 2)",
+      "compute": null,
+      "solution": "Add the components that are in the same position: $(2+(-3), -1+5, 4+(-2)) = (-1, 4, 2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(-1, 4, 2)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2-3, -1+5, 4-2) = (-1,4,2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.388Z"
+        }
+      }
+    },
+    {
+      "id": "b09dc8d4-1534-4034-9989-3cc360eed3b4",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract matrices",
+      "stem": "Matrix $S$ shows the muffins two bakeries sold on Saturday. Its rows are the bakeries and its columns are plain, blueberry and bran: rows [10, 4, 6] and [7, 5, 9]. Matrix $U$ shows Sunday: rows [3, 1, 2] and [2, 6, 4]. How many bran muffins did the second bakery sell on the two days together?",
+      "choices": [],
+      "answer": "13",
+      "compute": "9+4",
+      "solution": "Add the entries in row 2, column 3 of the two matrices: $9 + 4 = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second bakery bran: Saturday 9, Sunday 4; total 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.397Z"
+        }
+      }
+    },
+    {
+      "id": "6e953f95-578e-4c90-807e-9e7b5e4ae7af",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $A$ has rows [5, 2, 8] and [1, 0, 3]. The matrix $B$ has rows [2, 2, 9] and [4, 1, 3]. Which matrix is $A - B$?",
+      "choices": [
+        "rows [-3, 0, 1] and [3, 1, 0]",
+        "rows [7, 4, 17] and [5, 1, 6]",
+        "rows [3, 0, -1] and [-3, -1, 0]",
+        "rows [3, 0, -1] and [3, 1, 0]"
+      ],
+      "answer": "rows [3, 0, -1] and [-3, -1, 0]",
+      "compute": null,
+      "solution": "Subtract the entries in the same position, in the order $A - B$. Row 1 gives $5-2, 2-2, 8-9 = 3, 0, -1$ and row 2 gives $1-4, 0-1, 3-3 = -3, -1, 0$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [3, 0, -1] and [-3, -1, 0]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "[5-2, 2-2, 8-9] = [3,0,-1]; [1-4, 0-1, 3-3] = [-3,-1,0].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.412Z"
+        }
+      }
+    },
+    {
+      "id": "b9d7f83a-d38b-4056-b429-1d68b158de67",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Properties of matrix operations",
+      "stem": "For any matrix $A$, what is the matrix you get by multiplying $A$ by the number 0?",
+      "choices": [
+        "the single number 0",
+        "the matrix $A$ unchanged",
+        "the identity matrix of the same size",
+        "the zero matrix of the same size"
+      ],
+      "answer": "the zero matrix of the same size",
+      "compute": null,
+      "solution": "Every entry of $A$ is multiplied by 0, so every entry of the result is 0: the zero matrix of the same size.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "the zero matrix of the same size",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "0*A has every entry 0: zero matrix of the same size.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.454Z"
+        }
+      }
+    },
+    {
+      "id": "bcb2ec95-5a8b-4f47-ade1-f2b8034f6851",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "Multiply the matrix $P$ with rows [3, 2] and [1, 4] on the right by the matrix $Q$ with rows [2, 0] and [1, 5], giving $PQ$. Which number is in the top left corner of $PQ$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "3*2+2*1",
+      "solution": "Row 1 of $P$ times column 1 of $Q$: $3 \\cdot 2 + 2 \\cdot 1 = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Top left: 3·2 + 2·1 = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.510Z"
+        }
+      }
+    },
+    {
+      "id": "32276ba2-98e7-4acb-a5a8-e89573ef7926",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a vector by a scalar",
+      "stem": "The vector $w$ has components (3, -4, 5). What is the third component of $-2w$?",
+      "choices": [],
+      "answer": "-10",
+      "compute": "-2*5",
+      "solution": "Multiply 5 by $-2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2w = (-6, 8, -10). Third component -10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.562Z"
+        }
+      }
+    },
+    {
+      "id": "50a3b778-fee0-4e8f-856c-87bd6c51bf8f",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $A$ has rows [1, 0, 4] and [2, 3, 1]. The matrix $B$ has rows [3, 2, 0] and [1, 1, 5]. Which matrix is $A + B$?",
+      "choices": [
+        "rows [-2, -2, 4] and [1, 2, -4]",
+        "rows [4, 2, 4] and [3, 4, 6]",
+        "rows [3, 0, 0] and [2, 3, 5]",
+        "rows [4, 3], [2, 4] and [4, 6]"
+      ],
+      "answer": "rows [4, 2, 4] and [3, 4, 6]",
+      "compute": null,
+      "solution": "Add the entries that are in the same position: rows [4, 2, 4] and [3, 4, 6].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [4, 2, 4] and [3, 4, 6]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Add entrywise: [1+3,0+2,4+0]=[4,2,4]; [2+1,3+1,1+5]=[3,4,6].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.570Z"
+        }
+      }
+    },
+    {
+      "id": "8b7ec67a-6149-4eec-8673-6c50e68ceb0b",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "The matrix $B$ has rows [2, -3, 0] and [5, 1, -4]. Which matrix is $4B$?",
+      "choices": [
+        "rows [8, -3, 0] and [5, 1, -4]",
+        "rows [6, 1, 4] and [9, 5, 0]",
+        "rows [-8, 12, 0] and [-20, -4, 16]",
+        "rows [8, -12, 0] and [20, 4, -16]"
+      ],
+      "answer": "rows [8, -12, 0] and [20, 4, -16]",
+      "compute": null,
+      "solution": "Multiply every entry by 4: rows [8, -12, 0] and [20, 4, -16].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [8, -12, 0] and [20, 4, -16]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4B = [8,-12,0],[20,4,-16].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.625Z"
+        }
+      }
+    },
+    {
+      "id": "b989ec58-ef15-4cd8-88df-e16c78aa5daf",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "The matrix $A$ has rows [4, -2] and [-1, 5]. What is the entry in row 2, column 1 of $-3A$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "-3*-1",
+      "solution": "The entry of $A$ is $-1$, and $-3 \\cdot (-1) = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2 col 1 of A is -1; -3*(-1)=3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.688Z"
+        }
+      }
+    },
+    {
+      "id": "937fd6b4-6a10-49cd-9d89-258c4a30fe8a",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply two matrices",
+      "stem": "The matrix $A$ has rows [1, 2] and [3, 4]. The matrix $X$ has rows [5] and [6]. Which matrix is $AX$?",
+      "choices": [
+        "rows [17] and [39]",
+        "rows [23] and [34]",
+        "rows [16] and [38]",
+        "rows [17] and [35]"
+      ],
+      "answer": "rows [17] and [39]",
+      "compute": null,
+      "solution": "Multiply each row of $A$ by the column of $X$: $1 \\cdot 5 + 2 \\cdot 6 = 17$ and $3 \\cdot 5 + 4 \\cdot 6 = 39$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [17] and [39]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "[1*5+2*6, 3*5+4*6]=[17,39].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.704Z"
+        }
+      }
+    },
+    {
+      "id": "71cee448-6330-4acb-a4bb-2f523b865fbb",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $A$ has rows [5, 8, 1] and [2, 6, 9]. The matrix $B$ has rows [1, 3, 4] and [7, 2, 5]. Find the entry in row 2, column 1 of $A - B$.",
+      "choices": [],
+      "answer": "-5",
+      "compute": "2-7",
+      "solution": "Subtract the entries in row 2, column 1: $2 - 7 = -5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2-7=-5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.709Z"
+        }
+      }
+    },
+    {
+      "id": "5afdab76-4205-4b6d-ab07-61b30b7cea09",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply a vector by a scalar",
+      "stem": "The vector $v$ has components (-2, 5). Which vector is $3v$?",
+      "choices": [
+        "(1, 8)",
+        "(-6, 5)",
+        "(-6, 15)",
+        "(6, -15)"
+      ],
+      "answer": "(-6, 15)",
+      "compute": null,
+      "solution": "Multiply each component by 3: $(3 \\cdot (-2), 3 \\cdot 5) = (-6, 15)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(-6, 15)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(-2,5) = (-6,15).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.719Z"
+        }
+      }
+    },
+    {
+      "id": "999a3ab0-b39e-4c34-b009-acaf913eb4be",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract vectors",
+      "stem": "A hiker walks a displacement of (3, 4) kilometers (east, north), then a displacement of (2, -1). Which vector is the total displacement?",
+      "choices": [
+        "(1, 5)",
+        "(5, 3)",
+        "(6, -4)",
+        "(5, 5)"
+      ],
+      "answer": "(5, 3)",
+      "compute": null,
+      "solution": "Add the two displacements part by part: $(3+2, 4+(-1)) = (5, 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(5, 3)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3+2, 4-1) = (5,3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.740Z"
+        }
+      }
+    },
+    {
+      "id": "5c096e95-2029-4c70-aed1-998d60b26b64",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Add and subtract vectors",
+      "stem": "The vector $u$ has components (4, -2). Which vector $v$ makes $u + v$ equal to the zero vector (0, 0)?",
+      "choices": [
+        "(4, 2)",
+        "(-4, -2)",
+        "(2, -4)",
+        "(-4, 2)"
+      ],
+      "answer": "(-4, 2)",
+      "compute": null,
+      "solution": "Each component of $v$ must cancel the matching component of $u$, so $v = (-4, 2)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(-4, 2)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "v = -u = (-4, 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.778Z"
+        }
+      }
+    },
+    {
       "id": "aa9a405d-fa9b-4c57-9274-54ea7239cecd",
       "topic_id": "NC17.M4.N.2",
       "difficulty": 2,
@@ -3763,6 +4495,723 @@
           "work": "3k = -9 and -2k = 6 give k = -3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:02.031Z"
+        }
+      }
+    },
+    {
+      "id": "7a1c04d2-b316-4ab8-9b9d-8a6114ac5e44",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine vector operations",
+      "stem": "Find $2u + 3v$ when $u = (1, -2, 3)$ and $v = (0, 4, -1)$. Which vector is it?",
+      "choices": [
+        "(3, 2, 7)",
+        "(2, -16, 9)",
+        "(2, 8, 3)",
+        "(5, 10, 10)"
+      ],
+      "answer": "(2, 8, 3)",
+      "compute": null,
+      "solution": "$2u = (2, -4, 6)$ and $3v = (0, 12, -3)$. Adding gives $(2, 8, 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(2, 8, 3)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2u = (2,-4,6), 3v = (0,12,-3); sum (2,8,3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.317Z"
+        }
+      }
+    },
+    {
+      "id": "15ef2d1d-7689-4ffb-af05-6d88ff04dec6",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "The matrix $A$ has rows [4, -6] and [10, 2]. The matrix $B$ has rows [10, -15] and [25, 5]. The number $k$ satisfies $kA = B$. What is $k$?",
+      "choices": [],
+      "answer": "5/2",
+      "compute": "10/4",
+      "solution": "Compare the entries in the first position: $4k = 10$, so $k = \\frac{5}{2}$. The other entries agree, for example $2 \\cdot \\frac{5}{2} = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10/4 = -15/-6 = 25/10 = 5/2 = 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.318Z"
+        }
+      }
+    },
+    {
+      "id": "51374f6c-8137-4f5d-b5e8-82b60382e4b6",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "In two games a team scored two-point and three-point baskets. The matrix $S$ has rows [5, 3] and [4, 6]: its rows are game 1 and game 2, and its columns are two-point and three-point baskets. The matrix $V$ has rows [2] and [3], the points each kind of basket is worth. The product $SV$ gives each game's points. How many points did the team score in game 2?",
+      "choices": [],
+      "answer": "26",
+      "compute": "4*2+6*3",
+      "solution": "Row 2 of $S$ times $V$: $4 \\cdot 2 + 6 \\cdot 3 = 8 + 18 = 26$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "26",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Game 2: 4*2 + 6*3 = 26.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.324Z"
+        }
+      }
+    },
+    {
+      "id": "bb51ca44-c4d8-451e-919b-3dcc6cb664fb",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Combine matrix operations",
+      "stem": "Let $A$ have rows [2, 0] and [-1, 3] and $B$ have rows [1, 4] and [0, -2]. Which matrix is $3A - 2B$?",
+      "choices": [
+        "rows [4, -8] and [-3, 13]",
+        "rows [1, -12] and [-2, 12]",
+        "rows [8, 8] and [-3, 5]",
+        "rows [5, -4] and [-3, 11]"
+      ],
+      "answer": "rows [4, -8] and [-3, 13]",
+      "compute": null,
+      "solution": "$3A$ has rows [6, 0] and [-3, 9] and $2B$ has rows [2, 8] and [0, -4]. Subtracting gives rows [4, -8] and [-3, 13].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [4, -8] and [-3, 13]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3A = [6,0],[-3,9]; 2B = [2,8],[0,-4]; 3A-2B = [4,-8],[-3,13].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.330Z"
+        }
+      }
+    },
+    {
+      "id": "427451ca-b1ac-410e-9d59-679c7c6a0e93",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Properties of matrix operations",
+      "stem": "The matrices $A$, $B$ and $C$ have sizes that allow the products to be found. Which equation states that matrix multiplication is associative?",
+      "choices": [
+        "$AB = BA$",
+        "$A(BC) = (AB)(AC)$",
+        "$(AB)C = (AC)B$",
+        "$(AB)C = A(BC)$"
+      ],
+      "answer": "$(AB)C = A(BC)$",
+      "compute": null,
+      "solution": "Associativity says the grouping does not change the product: $(AB)C = A(BC)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$(AB)C = A(BC)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Associative: (AB)C = A(BC).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.354Z"
+        }
+      }
+    },
+    {
+      "id": "cb54792a-605c-420b-9a07-e9f12c008d34",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Combine vector operations",
+      "stem": "The vector $u$ has components (5, -2, 7) and the vector $v$ has components (1, 4, -3). What is the third component of $2u - v$?",
+      "choices": [],
+      "answer": "17",
+      "compute": "2*7-(-3)",
+      "solution": "Third component: $2 \\cdot 7 - (-3) = 14 + 3 = 17$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Third: 2*7 - (-3) = 17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.369Z"
+        }
+      }
+    },
+    {
+      "id": "812c408e-5899-4074-a73d-fc4827356675",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract vectors",
+      "stem": "The vectors $u$ and $v$ satisfy $u + v = (9, 3)$ and $u - v = (3, 7)$. What is the second component of $u$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(3+7)/2",
+      "solution": "Adding the two equations gives $2u = (12, 10)$, so $u = (6, 5)$ and its second component is 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Add: 2u=(12,10), u=(6,5). Second component 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.395Z"
+        }
+      }
+    },
+    {
+      "id": "6f1427eb-ccc5-4fbf-8a90-ed82cf11ffa8",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two matrices",
+      "stem": "Multiply the matrices in the order $AB$. $A$ has rows [3, -2] and [1, 4] and $B$ has rows [0, 5] and [-1, 2]. Which matrix is the product?",
+      "choices": [
+        "rows [2, 11] and [-4, 13]",
+        "rows [5, 20] and [-1, 10]",
+        "rows [0, -10] and [-1, 8]",
+        "rows [-2, 11] and [-4, 13]"
+      ],
+      "answer": "rows [2, 11] and [-4, 13]",
+      "compute": null,
+      "solution": "Row 1 of $A$ with the columns of $B$: $3 \\cdot 0 + (-2)(-1) = 2$ and $3 \\cdot 5 + (-2)(2) = 11$. Row 2: $1 \\cdot 0 + 4(-1) = -4$ and $1 \\cdot 5 + 4 \\cdot 2 = 13$. The product is rows [2, 11] and [-4, 13].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [2, 11] and [-4, 13]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1: 3·0+(-2)(-1)=2, 3·5+(-2)(2)=11; Row2: 0+4(-1)=-4, 5+8=13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.514Z"
+        }
+      }
+    },
+    {
+      "id": "b71c69b1-f97e-4bac-8155-21254eea6338",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply a vector by a scalar",
+      "stem": "The vectors $u$ and $v$ are any vectors with the same number of components, and $a$ is any number. Which equation is always true?",
+      "choices": [
+        "$a(u + v) = au + v$",
+        "$a(u + v) = (a + 1)(u + v)$",
+        "$a(u + v) = au \\cdot av$",
+        "$a(u + v) = au + av$"
+      ],
+      "answer": "$a(u + v) = au + av$",
+      "compute": null,
+      "solution": "Multiplying a sum by a number multiplies each part: this is the distributive property.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$a(u + v) = au + av$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Scalar distributes over vector addition: a(u+v) = au + av.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.525Z"
+        }
+      }
+    },
+    {
+      "id": "69987305-3b68-4137-9b14-9f6573b7c85b",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "A 2 by 3 matrix $A$ has rows [1, 2, 0] and [3, -1, 4], and a 3 by 2 matrix $B$ has rows [2, 1], [0, 5] and [1, -2]. Find the number in the bottom right corner of the product $AB$.",
+      "choices": [],
+      "answer": "-10",
+      "compute": "3*1+(-1)*5+4*(-2)",
+      "solution": "Use row 2 of $A$ and column 2 of $B$: $3 \\cdot 1 + (-1) \\cdot 5 + 4 \\cdot (-2) = 3 - 5 - 8 = -10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Bottom right of AB = row 2 of A [3,-1,4] dot column 2 of B [1,5,-2] = 3 - 5 - 8 = -10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.594Z"
+        }
+      }
+    },
+    {
+      "id": "d4b2eea3-8003-4127-b98b-ef9280833fcd",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Size of a matrix product",
+      "stem": "The matrix $A$ has 2 rows and 3 columns. The matrix $B$ is such that both $AB$ and $BA$ can be found. What size is $B$?",
+      "choices": [
+        "2 by 3",
+        "3 by 2",
+        "3 by 3",
+        "2 by 2"
+      ],
+      "answer": "3 by 2",
+      "compute": null,
+      "solution": "$AB$ requires $B$ to have 3 rows (the columns of $A$). $BA$ requires $B$ to have 2 columns (the rows of $A$). So $B$ is 3 by 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 by 2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB needs B to have 3 rows; BA needs B to have 2 columns. B is 3 by 2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.646Z"
+        }
+      }
+    },
+    {
+      "id": "9665eb46-ad4b-42b2-b6eb-4074bd21eef8",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a vector by a scalar",
+      "stem": "The vector $v$ has components (6, -15). The vector $kv$ has components (4, -10). What is $k$?",
+      "choices": [],
+      "answer": "2/3",
+      "compute": "4/6",
+      "solution": "Compare first components: $6k = 4$, so $k = \\frac{2}{3}$. Check: $-15 \\cdot \\frac{2}{3} = -10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "6k=4 gives k=2/3; -15k=-10 also gives 2/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.659Z"
+        }
+      }
+    },
+    {
+      "id": "af3a67c5-8c45-495d-96f7-2f31bb4cf48a",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "A recipe card is the matrix $C$ with rows [4, 6] and [10, 2]. To feed more people, every amount is multiplied by $\\frac{3}{2}$. What is the sum of the four entries of $\\frac{3}{2}C$?",
+      "choices": [],
+      "answer": "33",
+      "compute": "3/2*22",
+      "solution": "The entries of $C$ add to $4 + 6 + 10 + 2 = 22$, and each is multiplied by $\\frac{3}{2}$, so the sum is $\\frac{3}{2} \\cdot 22 = 33$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Entries sum 4+6+10+2=22; times 3/2 gives 33.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.667Z"
+        }
+      }
+    },
+    {
+      "id": "26fc788a-8279-4332-afdd-47b92c16142f",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract vectors",
+      "stem": "A drone flies three legs with displacements (4, 1), (-3, 5) and (2, -7) kilometers. Which vector is its total displacement?",
+      "choices": [
+        "(9, 13)",
+        "(3, -1)",
+        "(9, -11)",
+        "(9, -1)"
+      ],
+      "answer": "(3, -1)",
+      "compute": null,
+      "solution": "Add the first components: $4 - 3 + 2 = 3$. Add the second components: $1 + 5 - 7 = -1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(3, -1)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x: 4-3+2=3; y: 1+5-7=-1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.670Z"
+        }
+      }
+    },
+    {
+      "id": "2b42b0ef-2290-4089-82bb-692143a3fe17",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Size of a matrix product",
+      "stem": "The matrix $A$ has 3 rows and 4 columns, $B$ has 4 rows and 2 columns, and $C$ has 2 rows and 5 columns. What size is the product $ABC$?",
+      "choices": [
+        "4 by 5",
+        "3 by 2",
+        "3 by 5",
+        "4 by 4"
+      ],
+      "answer": "3 by 5",
+      "compute": null,
+      "solution": "$AB$ is 3 by 2. Multiplying that by $C$ (2 by 5) gives a matrix with 3 rows and 5 columns.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3 by 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(3x4)(4x2)=3x2; (3x2)(2x5)=3x5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.691Z"
+        }
+      }
+    },
+    {
+      "id": "757b7eef-8a1c-431d-b53d-262ba1c057d4",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $A$ has rows [$x$, 3] and [2, $y$]. The matrix $B$ has rows [1, $z$] and [$w$, 4]. The difference $A - B$ has rows [5, 1] and [-3, 6]. What is $x + y + z + w$?",
+      "choices": [],
+      "answer": "23",
+      "compute": "(5+1)+(6+4)+(3-1)+(2+3)",
+      "solution": "Entry by entry: $x - 1 = 5$ gives $x = 6$; $3 - z = 1$ gives $z = 2$; $2 - w = -3$ gives $w = 5$; $y - 4 = 6$ gives $y = 10$. The sum is $6 + 10 + 2 + 5 = 23$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "23",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x-1=5: x=6; 3-z=1: z=2; 2-w=-3: w=5; y-4=6: y=10. Sum 23.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.694Z"
+        }
+      }
+    },
+    {
+      "id": "3986ae95-97d5-4cd8-88a4-d702167518b8",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract matrices",
+      "stem": "Matrix $S$ shows the sales of two items in three stores, with items as rows: rows [30, 12, 25] and [18, 20, 9]. Matrix $R$ shows the returns in the same layout: rows [2, 1, 4] and [3, 0, 2]. The net sales matrix is $S - R$. What are the total net sales of the second item over all three stores?",
+      "choices": [],
+      "answer": "42",
+      "compute": "(18-3)+(20-0)+(9-2)",
+      "solution": "Row 2 of $S - R$ is $[15, 20, 7]$, and $15 + 20 + 7 = 42$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "42",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second item: 18-3=15, 20-0=20, 9-2=7; total 42.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.701Z"
+        }
+      }
+    },
+    {
+      "id": "d784c1cc-b854-475f-9e66-840d958c8965",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract matrices",
+      "stem": "The matrix $X$ satisfies $A + X = B$, where $A$ has rows [3, -1] and [4, 2] and $B$ has rows [5, 2] and [1, 6]. Which matrix is $X$?",
+      "choices": [
+        "rows [-2, -3] and [3, -4]",
+        "rows [8, 1] and [5, 8]",
+        "rows [2, 3] and [3, 4]",
+        "rows [2, 3] and [-3, 4]"
+      ],
+      "answer": "rows [2, 3] and [-3, 4]",
+      "compute": null,
+      "solution": "Subtract $A$ from both sides: $X = B - A$. The entries are $5-3, 2-(-1), 1-4, 6-2$, which give rows [2, 3] and [-3, 4].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [2, 3] and [-3, 4]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "X = B - A = [5-3, 2+1; 1-4, 6-2] = [2,3; -3,4].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.716Z"
+        }
+      }
+    },
+    {
+      "id": "8b19767e-6970-4dd0-a13c-2cc5e1d5c6ad",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiply two matrices",
+      "stem": "The matrix $A$ has rows [1, 0, 2] and [0, 1, 1]. The matrix $B$ has rows [1, 2], [3, 0] and [0, 4]. Which matrix is $AB$?",
+      "choices": [
+        "rows [1, 10] and [3, 4]",
+        "rows [1, 3] and [10, 4]",
+        "rows [10, 1] and [4, 3]",
+        "rows [1, 2] and [3, 0]"
+      ],
+      "answer": "rows [1, 10] and [3, 4]",
+      "compute": null,
+      "solution": "$A$ is 2 by 3 and $B$ is 3 by 2, so $AB$ is 2 by 2. Row 1: $1 + 0 + 0 = 1$ and $2 + 0 + 8 = 10$. Row 2: $0 + 3 + 0 = 3$ and $0 + 0 + 4 = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [1, 10] and [3, 4]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1: [1*1+0*3+2*0, 1*2+0*0+2*4] = [1,10]; Row2: [0+3+0, 0+0+4] = [3,4].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.724Z"
+        }
+      }
+    },
+    {
+      "id": "5a4df99e-30b5-4c66-a845-797496d724e9",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Properties of matrix operations",
+      "stem": "The matrices $A$ and $B$ are 2 by 2, and the entry in row 1, column 1 of the product $AB$ is 5. What is the entry in row 1, column 1 of $(2A)(3B)$?",
+      "choices": [],
+      "answer": "30",
+      "compute": "6*5",
+      "solution": "Scalars can be moved out of a product: $(2A)(3B) = 6(AB)$, so the entry is $6 \\cdot 5 = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(2A)(3B) = 6AB; entry 6*5 = 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.742Z"
+        }
+      }
+    },
+    {
+      "id": "9fe4a33b-21cf-43ef-b013-68997894c98f",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add and subtract matrices",
+      "stem": "Matrices $M$, $T$ and $W$ show how many students attended a club on Monday, Tuesday and Wednesday. In each, the rows are two classes and the columns are boys and girls. $M$ has rows [12, 14] and [9, 11]. $T$ has rows [10, 13] and [8, 12]. $W$ has rows [11, 12] and [10, 9]. Over the three days together, how many girls from the second class attended?",
+      "choices": [],
+      "answer": "32",
+      "compute": "11+12+9",
+      "solution": "Add the entries in row 2, column 2 of the three matrices: $11 + 12 + 9 = 32$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "32",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Girls column, second class row: 11 + 12 + 9 = 32.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.763Z"
+        }
+      }
+    },
+    {
+      "id": "fb62b9a9-e4a9-4a69-a5a9-2b4c0bf7db56",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Properties of matrix operations",
+      "stem": "The matrix $AC$ has rows [4, 7] and [1, 3]. The matrix $BC$ has rows [2, 5] and [6, 0]. Matrices $A$, $B$ and $C$ have sizes that allow all products. What is the entry in row 2, column 1 of $(A + B)C$?",
+      "choices": [],
+      "answer": "7",
+      "compute": "1+6",
+      "solution": "By the distributive property $(A + B)C = AC + BC$, so add the entries in row 2, column 1: $1 + 6 = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(A+B)C = AC + BC; entry (2,1): 1 + 6 = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.776Z"
+        }
+      }
+    },
+    {
+      "id": "b4f183a2-2235-42c9-ab08-c843fe0c7110",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "The matrix $A$ has rows [1, $x$] and [2, 3]. The matrix $B$ has rows [4, 1] and [2, 0]. The entry in row 1, column 1 of $AB$ is 10. What is $x$?",
+      "choices": [],
+      "answer": "3",
+      "compute": "(10-4)/2",
+      "solution": "The entry is $1 \\cdot 4 + x \\cdot 2 = 4 + 2x$. Setting $4 + 2x = 10$ gives $x = 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1*4 + x*2 = 10 -> x = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.823Z"
         }
       }
     },
@@ -4083,6 +5532,689 @@
           "work": "A + B = [1,3; 4,1]; row1 [1,3] dot col1 of C [2,1] = 2 + 3 = 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:02.031Z"
+        }
+      }
+    },
+    {
+      "id": "4063b501-bb82-4e01-bb19-6e26ec85bada",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "Two factories make three products. Matrix $P$ shows how many of each product they made in a day: rows [10, 20, 5] and [8, 15, 12], with factories as rows. Matrix $C$ has rows [4], [3] and [10], the cost in dollars to make one unit of each product. The product $PC$ gives each factory's daily cost. How many dollars does the second factory spend?",
+      "choices": [],
+      "answer": "197",
+      "compute": "8*4+15*3+12*10",
+      "solution": "Row 2 of $P$ times $C$: $8 \\cdot 4 + 15 \\cdot 3 + 12 \\cdot 10 = 32 + 45 + 120 = 197$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "197",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Second factory: 8*4 + 15*3 + 12*10 = 32 + 45 + 120 = 197.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.289Z"
+        }
+      }
+    },
+    {
+      "id": "766f75c4-91a2-43dd-a8a8-7d8b28493732",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "The 3 by 3 matrix $A$ has rows [1, 2, 0], [0, 1, 3] and [2, 0, 1]. The 3 by 3 matrix $B$ has rows [1, 0, 2], [3, 1, 0] and [0, 2, 1]. What is the sum of the entries in row 2 of $AB$?",
+      "choices": [],
+      "answer": "13",
+      "compute": "3+7+3",
+      "solution": "Row 2 of $A$ is [0, 1, 3]. Multiplying it by the columns of $B$ gives $3$, $7$ and $3$. Their sum is 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2 of A = [0,1,3]. Times B columns: col1 0+3+0 = 3; col2 0+1+6 = 7; col3 0+0+3 = 3. Sum 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.294Z"
+        }
+      }
+    },
+    {
+      "id": "94c07590-7241-4b02-9d99-836fadac6191",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply a matrix by a scalar",
+      "stem": "The matrix $P$ has rows [12, 18] and [24, 6], the prices in dollars of two items at two shops. Both shops raise every price by 50 percent, so the new prices form the matrix $\\frac{3}{2}P$. What is the sum of the entries in row 2 of $\\frac{3}{2}P$?",
+      "choices": [],
+      "answer": "45",
+      "compute": "3/2*(24+6)",
+      "solution": "Row 2 of $\\frac{3}{2}P$ is [36, 9], and $36 + 9 = 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "45",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 2: 1.5*24 = 36, 1.5*6 = 9; sum 45.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.308Z"
+        }
+      }
+    },
+    {
+      "id": "4a3aa477-a8bb-4109-a4dd-300834220239",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine vector operations",
+      "stem": "The vector $u$ has components (4, -1, 2) and the vector $w$ has components (8, -3, 0). The vector $v$ satisfies $3u - 2v = w$. Which vector is $v$?",
+      "choices": [
+        "(-2, 0, -3)",
+        "(2, 0, 3)",
+        "(4, 0, 6)",
+        "(10, -3, 3)"
+      ],
+      "answer": "(2, 0, 3)",
+      "compute": null,
+      "solution": "$3u = (12, -3, 6)$. Then $2v = 3u - w = (4, 0, 6)$, so $v = (2, 0, 3)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(2, 0, 3)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2v = 3u - w = (12-8, -3+3, 6-0) = (4,0,6), so v = (2,0,3).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.334Z"
+        }
+      }
+    },
+    {
+      "id": "e78d06e0-aec5-42fe-a695-ff890c111a73",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $A$ has rows [1, 2] and [0, 1], and the matrix $B$ has rows [2, 0] and [1, 1]. For numbers $s$ and $t$, the matrix $sA + tB$ has rows [1, 6] and [-1, 2]. What is $s - t$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "3-(-1)",
+      "solution": "Look at row 1, column 2: $2s + 0 = 6$ gives $s = 3$. Row 2, column 1: $0 + t = -1$ gives $t = -1$. Check row 1, column 1: $3 \\cdot 1 + (-1) \\cdot 2 = 1$. So $s - t = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sA+tB = [s+2t, 2s],[t, s+t] = [1,6],[-1,2]. s=3, t=-1; checks s+2t=1, s+t=2. s-t = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.346Z"
+        }
+      }
+    },
+    {
+      "id": "3de7cf2d-3b35-4329-9739-0107e8cd6274",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Size of a matrix product",
+      "stem": "The matrix $A$ is 2 by 3, $B$ is 3 by 4, $C$ is 4 by 2 and $D$ is 2 by 2. Which expression can be found?",
+      "choices": [
+        "$ABC + D$",
+        "$BCA + D$",
+        "$AB + C$",
+        "$CA + B$"
+      ],
+      "answer": "$ABC + D$",
+      "compute": null,
+      "solution": "$ABC$ is 2 by 2, the same size as $D$, so they can be added. $BCA$ is 3 by 3, and $AB$ (2 by 4) and $C$ (4 by 2) differ in size, as do $CA$ (4 by 3) and $B$ (3 by 4).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$ABC + D$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "BCA: 3x4*4x2=3x2, *2x3 = 3x3, cannot add 2x2. ABC: 2x4*4x2 = 2x2, +D(2x2) ok. AB(2x4)+C(4x2) no. CA(4x3)+B(3x4) no.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.380Z"
+        }
+      }
+    },
+    {
+      "id": "7d8b99f7-763c-496e-9a1a-7ccc7f21122c",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine vector operations",
+      "stem": "The vector $u$ has components (6, -12). The vector $v$ satisfies $u + 2v = 3u - v$. Which vector is $v$?",
+      "choices": [
+        "(9, -18)",
+        "(2, -4)",
+        "(12, -24)",
+        "(4, -8)"
+      ],
+      "answer": "(4, -8)",
+      "compute": null,
+      "solution": "Collect the $v$ terms: $3v = 2u = (12, -24)$, so $v = (4, -8)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "(4, -8)",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "u+2v=3u-v -> 3v=2u -> v=(2/3)(6,-12)=(4,-8).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.381Z"
+        }
+      }
+    },
+    {
+      "id": "bf3dd6b9-5ae3-4113-9e66-20cc5423735a",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine matrix operations",
+      "stem": "The matrix $X$ satisfies $3X - A = B$, where $A$ has rows [3, 6] and [-3, 9] and $B$ has rows [0, 3] and [6, 3]. Which matrix is $X$?",
+      "choices": [
+        "rows [-1, -1] and [3, -2]",
+        "rows [3, 9] and [3, 12]",
+        "rows [9, 27] and [9, 36]",
+        "rows [1, 3] and [1, 4]"
+      ],
+      "answer": "rows [1, 3] and [1, 4]",
+      "compute": null,
+      "solution": "Add $A$ to both sides: $3X = A + B$, which has rows [3, 9] and [3, 12]. Divide every entry by 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [1, 3] and [1, 4]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3X = A+B = [3,9],[3,12]; X = [1,3],[1,4].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.414Z"
+        }
+      }
+    },
+    {
+      "id": "2597696b-f81a-42bc-9719-aa55e2a4bc67",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Products of several matrices and powers",
+      "stem": "The matrix $A$ has the single row [1, 2], the matrix $B$ has rows [3, 0] and [1, 1], and the matrix $C$ has rows [2] and [1]. The product $ABC$ has exactly one entry. What is it?",
+      "choices": [],
+      "answer": "12",
+      "compute": "1*6+2*3",
+      "solution": "Find $BC$ first: rows [6] and [3]. Then $A(BC) = 1 \\cdot 6 + 2 \\cdot 3 = 12$. (Finding $AB = [5, 2]$ first gives $5 \\cdot 2 + 2 \\cdot 1 = 12$ as well.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [1·3+2·1, 1·0+2·1] = [5, 2]; times C: 5·2 + 2·1 = 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.497Z"
+        }
+      }
+    },
+    {
+      "id": "d79ab47c-f03e-401f-9e10-0933fbe68b66",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Properties of matrix operations",
+      "stem": "The matrix $A$ has rows [1, 1] and [0, 1] and the matrix $B$ has rows [2, 0] and [1, 3]. What is the sum of all four entries of the matrix $AB - BA$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(3+3+1+3)-(2+2+1+4)",
+      "solution": "$AB$ has rows [3, 3] and [1, 3] and $BA$ has rows [2, 2] and [1, 4]. Their difference has rows [1, 1] and [0, -1], and its entries add to 1.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [[3,3],[1,3]], BA = [[2,2],[1,4]]; AB - BA = [[1,1],[0,-1]]; sum = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.507Z"
+        }
+      }
+    },
+    {
+      "id": "95a2008f-9fb1-43d8-a0bd-896589c89447",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of matrix operations",
+      "stem": "The matrix $E$ has rows [1, 0] and [0, 1]. The matrix $F$ has rows [3, -2] and [5, 4]. Which matrix is $2EF - FE$?",
+      "choices": [
+        "rows [6, -4] and [10, 8]",
+        "rows [0, 0] and [0, 0]",
+        "rows [3, -2] and [5, 4]",
+        "rows [1, 0] and [0, 1]"
+      ],
+      "answer": "rows [3, -2] and [5, 4]",
+      "compute": null,
+      "solution": "$E$ is the identity matrix, so $EF = F$ and $FE = F$. Then $2EF - FE = 2F - F = F$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [3, -2] and [5, 4]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "E is identity: EF = FE = F; 2F - F = F.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.516Z"
+        }
+      }
+    },
+    {
+      "id": "8c71e07c-c0d5-4d91-a435-d22be97b5fd2",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Products of several matrices and powers",
+      "stem": "The matrix $A$ has rows [1, 1] and [0, 1]. Compute $A^2$ and $A^3$, look for the pattern, and use it to find the entry in row 1, column 2 of $A^{10}$.",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "$A^2$ has rows [1, 2] and [0, 1], and $A^3$ has rows [1, 3] and [0, 1]. Each extra factor of $A$ adds 1 to the top right entry, so $A^{10}$ has 10 there.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A^n = [[1,n],[0,1]] (A^2 has 2, A^3 has 3), so entry is 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.530Z"
+        }
+      }
+    },
+    {
+      "id": "28c4b07c-636a-4855-932a-097a8851ddaa",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine matrix operations",
+      "stem": "Let $A$ have rows [1, 2] and [0, 1], $B$ have rows [3, 1] and [2, 0] and $C$ have rows [1, -1] and [4, 2]. Which matrix is $2AB + C$?",
+      "choices": [
+        "rows [23, 5] and [8, 2]",
+        "rows [15, 1] and [8, 2]",
+        "rows [16, 0] and [12, 4]",
+        "rows [8, 0] and [6, 2]"
+      ],
+      "answer": "rows [15, 1] and [8, 2]",
+      "compute": null,
+      "solution": "$AB$ has rows [7, 1] and [2, 0], so $2AB$ has rows [14, 2] and [4, 0]. Adding $C$ gives rows [15, 1] and [8, 2].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [15, 1] and [8, 2]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB = [[7,1],[2,0]]; 2AB = [[14,2],[4,0]]; + C = [[15,1],[8,2]].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.554Z"
+        }
+      }
+    },
+    {
+      "id": "68cad077-0efd-4d6e-900c-607b2b46cdee",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine vector operations",
+      "stem": "A plane flies with velocity (240, 70) kilometers per hour (east, north) relative to the air, and the wind has velocity (-30, 20). The plane's velocity over the ground is the sum of the two. Flying steadily, how many kilometers east of its start is the plane after 3 hours?",
+      "choices": [],
+      "answer": "630",
+      "compute": "3*(240-30)",
+      "solution": "Ground velocity is $(240 - 30, 70 + 20) = (210, 90)$. After 3 hours the displacement is $3 \\cdot (210, 90) = (630, 270)$, so it is 630 km east.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "630",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ground velocity = (240-30, 70+20) = (210, 90). East after 3 h: 210*3 = 630.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.567Z"
+        }
+      }
+    },
+    {
+      "id": "3d6ddb14-4a1f-4c0d-ac0e-003b624e8e17",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Properties of matrix operations",
+      "stem": "A student expands $(A + B)^2$ as $A^2 + 2AB + B^2$ for 2 by 2 matrices $A$ and $B$. Why is this not correct in general?",
+      "choices": [
+        "Because $AB$ and $BA$ may differ, $AB + BA$ need not equal $2AB$.",
+        "Because the distributive property fails for matrices, the product cannot be expanded.",
+        "Because $A + B$ and $B + A$ may differ, the sum must be reordered first.",
+        "Because squaring a matrix always squares each entry, not multiplies it."
+      ],
+      "answer": "Because $AB$ and $BA$ may differ, $AB + BA$ need not equal $2AB$.",
+      "compute": null,
+      "solution": "$(A + B)(A + B) = A^2 + AB + BA + B^2$ by the distributive property. This equals $A^2 + 2AB + B^2$ only when $AB = BA$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Because $AB$ and $BA$ may differ, $AB + BA$ need not equal $2AB$.",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(A+B)^2 = A^2 + AB + BA + B^2; matrix multiplication is not commutative, so AB+BA need not equal 2AB. Distributivity and addition commutativity hold.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.570Z"
+        }
+      }
+    },
+    {
+      "id": "f56de4d6-8487-4148-b2b2-3c2e062b7600",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Combine vector operations",
+      "stem": "The vectors $u = (2, -1)$, $v = (-3, 4)$ and $w = (0, 5)$ satisfy $au + bv = w$ for numbers $a$ and $b$. What is $a + b$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "3+2",
+      "solution": "First components: $2a - 3b = 0$. Second components: $-a + 4b = 5$. From the first, $a = \\frac{3b}{2}$; substituting gives $\\frac{5b}{2} = 5$, so $b = 2$ and $a = 3$. Then $a + b = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a(2,-1)+b(-3,4) = (0,5): 2a-3b=0, -a+4b=5. a=3b/2 -> -3b/2+4b = 5b/2 = 5 -> b=2, a=3. a+b=5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.574Z"
+        }
+      }
+    },
+    {
+      "id": "ab23873f-0123-443b-b3c7-73b6e4674b21",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Properties of matrix operations",
+      "stem": "The matrices $A$ and $B$ are such that $AB$ has rows [1, 2] and [3, 4]. What is the entry in row 2, column 2 of the matrix $A(2B) + (3A)B$?",
+      "choices": [],
+      "answer": "20",
+      "compute": "5*4",
+      "solution": "Scalars can be moved out: $A(2B) = 2AB$ and $(3A)B = 3AB$, so the sum is $5AB$. The entry is $5 \\cdot 4 = 20$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "A(2B) + (3A)B = 2AB + 3AB = 5AB = [5,10],[15,20]. Row 2 col 2: 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.635Z"
+        }
+      }
+    },
+    {
+      "id": "bec48055-1cb7-48a2-ab43-1e6a4d05a50e",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Size of a matrix product",
+      "stem": "The matrix $A$ has 5 rows and 3 columns, and the matrix $B$ has 3 rows and 7 columns. Finding each entry of $AB$ takes 3 multiplications of two numbers. How many such multiplications are needed to find the whole product $AB$?",
+      "choices": [],
+      "answer": "105",
+      "compute": "5*7*3",
+      "solution": "$AB$ has $5 \\cdot 7 = 35$ entries, and each takes 3 multiplications: $35 \\cdot 3 = 105$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "105",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB is 5x7=35 entries, each 3 multiplications: 105.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.693Z"
+        }
+      }
+    },
+    {
+      "id": "11da37ee-80c7-4457-b64d-3d09d1ba6acc",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Products of several matrices and powers",
+      "stem": "The matrix $A$ has rows [0, 1] and [-1, 0]. Which matrix is $A^2$, the product $AA$?",
+      "choices": [
+        "rows [0, 1] and [1, 0]",
+        "rows [0, 1] and [-1, 0]",
+        "rows [-1, 0] and [0, -1]",
+        "rows [1, 0] and [0, 1]"
+      ],
+      "answer": "rows [-1, 0] and [0, -1]",
+      "compute": null,
+      "solution": "Row 1 of $A$ with the columns of $A$: $0 \\cdot 0 + 1 \\cdot (-1) = -1$ and $0 \\cdot 1 + 1 \\cdot 0 = 0$. Row 2: $-1 \\cdot 0 + 0 \\cdot (-1) = 0$ and $-1 \\cdot 1 + 0 = -1$. So $A^2$ has rows [-1, 0] and [0, -1].",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "rows [-1, 0] and [0, -1]",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row1: [0*0+1*(-1), 0*1+1*0] = [-1,0]; Row2: [-1*0+0*(-1), -1*1+0*0] = [0,-1].",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.732Z"
+        }
+      }
+    },
+    {
+      "id": "5814ad78-8223-40ec-8a4a-b87ce2457e33",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "The matrix $A$ has rows [2, $x$] and [1, 3]. The matrix $B$ has rows [1, 4] and [$y$, 2]. The product $AB$ has rows [8, 14] and [7, 10]. What is $x + y$?",
+      "choices": [],
+      "answer": "5",
+      "compute": "(14-8)/2+6/((14-8)/2)",
+      "solution": "The entry in row 1, column 2 of $AB$ is $2 \\cdot 4 + 2x = 14$, so $x = 3$. The entry in row 1, column 1 is $2 \\cdot 1 + xy = 8$, so $xy = 6$ and $y = 2$. Then $x + y = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "AB row1: [2 + xy, 8 + 2x] = [8,14] -> x = 3, 2 + 3y = 8 -> y = 2. Row2: [1+3y, 4+6] = [7,10] checks y = 2. x+y = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.799Z"
+        }
+      }
+    },
+    {
+      "id": "92dc716a-8366-4d8a-8d86-b10bff8cb7eb",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Multiply two matrices",
+      "stem": "In week 1 two shops sold shirts and hats: $P_1$ has rows [4, 2] and [1, 3]. In week 2, $P_2$ has rows [2, 5] and [6, 0]. In both, the rows are the shops and the columns are shirts and hats. The matrix $Q$ has rows [5] and [2], the price in dollars of a shirt and of a hat. The matrix $(P_1 + P_2)Q$ gives each shop's sales over the two weeks. How many dollars did the second shop take in?",
+      "choices": [],
+      "answer": "41",
+      "compute": "(1+6)*5+(3+0)*2",
+      "solution": "$P_1 + P_2$ has row 2 equal to [7, 3]. Then $7 \\cdot 5 + 3 \\cdot 2 = 41$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "41",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "P1+P2 = [6,7; 7,3]. Second shop: 7*5 + 3*2 = 41.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.805Z"
+        }
+      }
+    },
+    {
+      "id": "99b3376f-cff4-4eda-a1bb-bcd51d656e5e",
+      "topic_id": "NC17.M4.N.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Combine vector operations",
+      "stem": "Which vector expression is equal to $2(u - v) + 3v$ for any vectors $u$ and $v$ with the same number of components?",
+      "choices": [
+        "$2u - v$",
+        "$2u + 5v$",
+        "$2u + v$",
+        "$5u - 2v$"
+      ],
+      "answer": "$2u + v$",
+      "compute": null,
+      "solution": "Distribute: $2u - 2v + 3v = 2u + v$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2u + v$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2u - 2v + 3v = 2u + v.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.816Z"
         }
       }
     },
@@ -7513,6 +9645,723 @@
       }
     },
     {
+      "id": "02344b1a-5465-4454-8de8-215740af5e69",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Features of sine and cosine models",
+      "stem": "For the model $y = 3\\cos(2x) + 8$, which pair gives the maximum and minimum values?",
+      "choices": [
+        "Maximum 14, minimum 2",
+        "Maximum 3, minimum -3",
+        "Maximum 11, minimum 5",
+        "Maximum 8, minimum 5"
+      ],
+      "answer": "Maximum 11, minimum 5",
+      "compute": null,
+      "solution": "The cosine swings 3 above and 3 below the midline 8, so the maximum is $8 + 3 = 11$ and the minimum is $8 - 3 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Maximum 11, minimum 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos ranges -1..1: max 3+8 = 11, min -3+8 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.287Z"
+        }
+      }
+    },
+    {
+      "id": "900a02cd-4d62-4c3f-9d6b-5677b01bf343",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "In triangle $ABC$, $a = 6$, $b = 8$ and $C = 90^\\circ$. Use the Law of Cosines to find $c$.",
+      "choices": [],
+      "answer": "10",
+      "compute": "10",
+      "solution": "$c^2 = 6^2 + 8^2 - 2(6)(8)\\cos 90^\\circ = 36 + 64 - 0 = 100$, so $c = 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c^2 = 36 + 64 - 2*6*8*cos90 = 100; c = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.314Z"
+        }
+      }
+    },
+    {
+      "id": "93a7180d-eac6-4fc9-882f-c85bf00f470d",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Features of sine and cosine models",
+      "stem": "The height of a swing seat above its resting point is modeled by $y = 7\\sin\\left(\\frac{\\pi}{3}t\\right)$ feet, where $t$ is in seconds. What is the amplitude, in feet?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "In $y = A\\sin(Bt)$ the amplitude is $|A| = 7$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Amplitude |7| = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.366Z"
+        }
+      }
+    },
+    {
+      "id": "0b29f5d3-bc09-40e1-8dba-743975fb6cb4",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choosing the Law of Sines or the Law of Cosines",
+      "stem": "You know two sides of a triangle and the angle between them, and you want the third side. Which is the best first step?",
+      "choices": [
+        "Use the Law of Sines",
+        "Use the Pythagorean theorem",
+        "Use a reciprocal identity",
+        "Use the Law of Cosines"
+      ],
+      "answer": "Use the Law of Cosines",
+      "compute": null,
+      "solution": "With two sides and the included angle (SAS), no side-and-opposite-angle pair is known, so the Law of Sines cannot start. The Law of Cosines gives the third side.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Use the Law of Cosines",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "SAS: the Law of Cosines gives the third side.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.372Z"
+        }
+      }
+    },
+    {
+      "id": "49ef8b77-f0d4-4b26-a38a-034bf20e284d",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choosing the Law of Sines or the Law of Cosines",
+      "stem": "A surveyor wants a missing side of a triangle and will start with the Law of Sines. What must she already know?",
+      "choices": [
+        "Two angles and one side",
+        "Three sides",
+        "Two sides and the angle between them",
+        "Only the three angles"
+      ],
+      "answer": "Two angles and one side",
+      "compute": null,
+      "solution": "With two angles, the third angle follows from the angle sum, so a side with its opposite angle gives a ratio to build on. The other sets have no side paired with its opposite angle.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Two angles and one side",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Law of Sines needs a side and its opposite angle: AAS/ASA (two angles and a side). Three sides or SAS need Law of Cosines; angles alone fix no size.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.378Z"
+        }
+      }
+    },
+    {
+      "id": "e0de7eab-c87b-4ad2-83f2-031f6e2dd10f",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $A = 40^\\circ$, $B = 60^\\circ$ and $C = 80^\\circ$. Which side is the longest?",
+      "choices": [
+        "Side $c$, opposite angle $C$",
+        "Side $a$, opposite angle $A$",
+        "Side $b$, opposite angle $B$",
+        "Cannot be compared without the lengths"
+      ],
+      "answer": "Side $c$, opposite angle $C$",
+      "compute": null,
+      "solution": "By the Law of Sines each side is proportional to the sine of its opposite angle, so the largest angle ($80^\\circ$) is opposite the longest side, which is side $c$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Side $c$, opposite angle $C$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest side opposite largest angle C = 80°: side c.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.534Z"
+        }
+      }
+    },
+    {
+      "id": "c41f47ad-f8d5-448d-a42e-6f70f6bca4c0",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "Two sides of a triangle are both 4 inches long, and the angle between them is $60^\\circ$. How long, in inches, is the third side?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "$c^2 = 4^2 + 4^2 - 2(4)(4)\\cos 60^\\circ = 16 + 16 - 16 = 16$, so $c = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Law of Cosines: c^2 = 16+16-2*4*4*cos60 = 32-16 = 16, c = 4 (equilateral).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.594Z"
+        }
+      }
+    },
+    {
+      "id": "507938d7-3782-4b7e-9bc9-14c803cc3a44",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Features of sine and cosine models",
+      "stem": "In the model $y = 5\\sin(2t) + 9$, what does the number 9 tell you?",
+      "choices": [
+        "The amplitude",
+        "The period",
+        "The midline value",
+        "The maximum value"
+      ],
+      "answer": "The midline value",
+      "compute": null,
+      "solution": "The added constant shifts the whole wave up: 9 is the midline value. The amplitude is 5 and the maximum is $9 + 5 = 14$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The midline value",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "y = 5sin(2t) + 9: amplitude 5, period pi, midline y = 9 (max is 14).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.610Z"
+        }
+      }
+    },
+    {
+      "id": "9783a21d-5df6-42d1-96dd-f7a878b13ce5",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Law of Sines",
+      "stem": "A triangular lot has angles of $30^\\circ$, $60^\\circ$ and $90^\\circ$. The side opposite the $30^\\circ$ angle is 15 meters long. How long, in meters, is the side opposite the $90^\\circ$ angle?",
+      "choices": [],
+      "answer": "30",
+      "compute": "15/(1/2)",
+      "solution": "By the Law of Sines, $\\frac{15}{\\sin 30^\\circ} = \\frac{x}{\\sin 90^\\circ}$. So $x = \\frac{15 \\cdot 1}{1/2} = 30$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "30-60-90: hypotenuse is twice the short leg: 30.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.661Z"
+        }
+      }
+    },
+    {
+      "id": "6419207e-4484-4b4c-93d2-b1a94e734af9",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "If $\\cos^2 x = \\frac{9}{25}$, what is $\\sin^2 x$?",
+      "choices": [],
+      "answer": "16/25",
+      "compute": "1-9/25",
+      "solution": "Since $\\sin^2 x + \\cos^2 x = 1$, we get $\\sin^2 x = 1 - \\frac{9}{25} = \\frac{16}{25}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "16/25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin^2=1-9/25=16/25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.662Z"
+        }
+      }
+    },
+    {
+      "id": "0544387b-26b6-4706-8ef1-7849d277fd98",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Pythagorean identities",
+      "stem": "Which equation is the Pythagorean identity that connects $\\tan x$ and $\\sec x$?",
+      "choices": [
+        "$\\tan^2 x + \\sec^2 x = 1$",
+        "$1 + \\sec^2 x = \\tan^2 x$",
+        "$\\tan^2 x - 1 = \\sec^2 x$",
+        "$1 + \\tan^2 x = \\sec^2 x$"
+      ],
+      "answer": "$1 + \\tan^2 x = \\sec^2 x$",
+      "compute": null,
+      "solution": "Divide $\\sin^2 x + \\cos^2 x = 1$ by $\\cos^2 x$ to get $\\tan^2 x + 1 = \\sec^2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 + \\tan^2 x = \\sec^2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Divide sin^2+cos^2=1 by cos^2: tan^2+1=sec^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.678Z"
+        }
+      }
+    },
+    {
+      "id": "cbcac1d1-92e8-4c4d-96e1-874125b85ec8",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Law of Cosines",
+      "stem": "All three sides of triangle $ABC$ are known. Which equation gives $\\cos A$?",
+      "choices": [
+        "$\\cos A = \\frac{a^2 + b^2 - c^2}{2bc}$",
+        "$\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}$",
+        "$\\cos A = \\frac{b^2 + c^2 + a^2}{2bc}$",
+        "$\\cos A = \\frac{b^2 + c^2 - a^2}{2ab}$"
+      ],
+      "answer": "$\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}$",
+      "compute": null,
+      "solution": "Solve $a^2 = b^2 + c^2 - 2bc\\cos A$ for $\\cos A$. The side $a$ opposite angle $A$ is subtracted, and the divisor is $2bc$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\cos A = \\frac{b^2 + c^2 - a^2}{2bc}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a^2=b^2+c^2-2bc cos A gives cos A=(b^2+c^2-a^2)/(2bc).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.679Z"
+        }
+      }
+    },
+    {
+      "id": "13d372d9-465b-4b56-a4cd-3e9e50b13a0d",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reciprocal and quotient identities",
+      "stem": "What is the exact value of $\\sec 60^\\circ$?",
+      "choices": [],
+      "answer": "2",
+      "compute": "1/(1/2)",
+      "solution": "Secant is the reciprocal of cosine. $\\cos 60^\\circ = \\frac{1}{2}$, so $\\sec 60^\\circ = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos60=1/2; sec=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.700Z"
+        }
+      }
+    },
+    {
+      "id": "0f20a087-a6b8-4c75-a62a-d42758650f02",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Reciprocal and quotient identities",
+      "stem": "Which expression is equal to $\\frac{\\sin x}{\\cos x}$?",
+      "choices": [
+        "$\\cot x$",
+        "$\\tan x$",
+        "$\\sec x$",
+        "$\\csc x$"
+      ],
+      "answer": "$\\tan x$",
+      "compute": null,
+      "solution": "The quotient of sine over cosine is the tangent: $\\tan x = \\frac{\\sin x}{\\cos x}$. The cotangent is the flipped fraction.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\tan x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin/cos = tan.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.706Z"
+        }
+      }
+    },
+    {
+      "id": "411b20e1-462a-4c17-a3c6-960d2e070b6d",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $a = 7$, $b = 7$ and $A = 50^\\circ$. What is the measure of angle $B$, in degrees?",
+      "choices": [],
+      "answer": "50",
+      "compute": "50",
+      "solution": "By the Law of Sines, $\\sin B = \\frac{b \\sin A}{a} = \\sin 50^\\circ$. Angle $B$ cannot be $130^\\circ$ because $50^\\circ + 130^\\circ = 180^\\circ$ leaves no room for angle $C$, so $B = 50^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "50",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a = b so A = B. Law of Sines: sin B = 7 sin50/7 = sin50, B = 50 or 130; 130+50 = 180 is impossible, so B = 50.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.717Z"
+        }
+      }
+    },
+    {
+      "id": "4e80b953-ac33-4d4f-b9ac-5b8596eab196",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Reciprocal and quotient identities",
+      "stem": "The cosecant of an angle $\\theta$ is $\\frac{13}{5}$. What is $\\sin \\theta$?",
+      "choices": [],
+      "answer": "5/13",
+      "compute": "5/13",
+      "solution": "Cosecant is the reciprocal of sine, so $\\sin \\theta = \\frac{1}{\\csc \\theta} = \\frac{5}{13}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin = 1/csc = 5/13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.741Z"
+        }
+      }
+    },
+    {
+      "id": "1b8aa824-da18-42c7-bbba-0d8473a182dd",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Pythagorean identities",
+      "stem": "Which expression is equal to $1 - \\cos^2 x$?",
+      "choices": [
+        "$\\cos^2 x$",
+        "$\\tan^2 x$",
+        "$\\sin^2 x$",
+        "$-\\sin^2 x$"
+      ],
+      "answer": "$\\sin^2 x$",
+      "compute": null,
+      "solution": "Subtract $\\cos^2 x$ from both sides of $\\sin^2 x + \\cos^2 x = 1$ to get $1 - \\cos^2 x = \\sin^2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin^2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Pythagorean identity: 1 - cos^2 x = sin^2 x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.746Z"
+        }
+      }
+    },
+    {
+      "id": "38fea2fe-2e7c-4cf1-a8da-2658481853d0",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "A student multiplies the cosecant of an angle by the sine of the same angle, writing $\\csc x \\cdot \\sin x$. What does the product simplify to?",
+      "choices": [
+        "$0$",
+        "$1$",
+        "$\\sin^2 x$",
+        "$\\csc^2 x$"
+      ],
+      "answer": "$1$",
+      "compute": null,
+      "solution": "Cosecant and sine are reciprocals, so their product is $\\frac{1}{\\sin x} \\cdot \\sin x = 1$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc x * sin x = (1/sin x) sin x = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.752Z"
+        }
+      }
+    },
+    {
+      "id": "208a273a-6839-4833-a7c3-84f81d24358b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "A student finds $\\sin \\theta = \\frac{3}{5}$ and $\\cos \\theta = \\frac{4}{5}$ for the same angle. What is $\\sin^2 \\theta + \\cos^2 \\theta$?",
+      "choices": [],
+      "answer": "1",
+      "compute": "(3/5)^2+(4/5)^2",
+      "solution": "$\\left(\\frac{3}{5}\\right)^2 + \\left(\\frac{4}{5}\\right)^2 = \\frac{9}{25} + \\frac{16}{25} = 1$, as the Pythagorean identity says.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9/25 + 16/25 = 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.761Z"
+        }
+      }
+    },
+    {
+      "id": "2b4eb986-b029-479d-bb92-af243e22ffda",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Features of sine and cosine models",
+      "stem": "A model for the height of a rider is $h(t) = 4\\cos\\left(\\frac{2\\pi}{5}t\\right)$, where $t$ is in seconds. What is the period, in seconds?",
+      "choices": [],
+      "answer": "5",
+      "compute": "5",
+      "solution": "The period is $\\frac{2\\pi}{B}$ with $B = \\frac{2\\pi}{5}$, so it is $2\\pi \\cdot \\frac{5}{2\\pi} = 5$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 2pi/(2pi/5) = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.779Z"
+        }
+      }
+    },
+    {
+      "id": "c5401825-8d1d-4f88-8243-35cacf715975",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "In triangle $ABC$, $a^2 + b^2 - c^2 = 30$ and $ab = 20$. What is $\\cos C$?",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "30/(2*20)",
+      "solution": "The Law of Cosines gives $\\cos C = \\frac{a^2 + b^2 - c^2}{2ab} = \\frac{30}{40} = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos C = (a^2+b^2-c^2)/(2ab) = 30/40 = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.790Z"
+        }
+      }
+    },
+    {
+      "id": "3f66c17e-bab8-4602-b5e6-3574e5cf9ec8",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "The number of people in a park is modeled by $P(t) = 30\\cos\\left(\\frac{\\pi}{12}t\\right) + 50$, where $t$ is the number of hours after 6 a.m. How many people are in the park at 6 a.m.?",
+      "choices": [],
+      "answer": "80",
+      "compute": "30+50",
+      "solution": "At $t = 0$, $\\cos 0 = 1$, so $P(0) = 30 + 50 = 80$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "t = 0: 30 cos0 + 50 = 80.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.802Z"
+        }
+      }
+    },
+    {
+      "id": "2849bf6a-422d-4deb-b510-4824cc891ee8",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Features of sine and cosine models",
+      "stem": "The depth of water in a harbor is at most 14 feet and at least 6 feet. A sine model is fit to the depth. What is the amplitude of the model, in feet?",
+      "choices": [],
+      "answer": "4",
+      "compute": "(14-6)/2",
+      "solution": "The amplitude is half the distance from minimum to maximum: $\\frac{14 - 6}{2} = 4$ feet.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(14 - 6)/2 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.818Z"
+        }
+      }
+    },
+    {
       "id": "d202cf8b-b8f3-4220-9b82-62a780df1b4f",
       "topic_id": "NC17.M4.AF.2",
       "difficulty": 2,
@@ -7814,6 +10663,723 @@
           "work": "h(0) = 25 - 20cos0 = 5, the minimum (range 5 to 45). Lowest point, 5 ft.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:34.003Z"
+        }
+      }
+    },
+    {
+      "id": "71c507ad-c1a2-418b-98ca-0c34900472ec",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Reciprocal and quotient identities",
+      "stem": "A student needs the exact value of $\\sec 135^\\circ$. Which value is correct?",
+      "choices": [
+        "$-\\sqrt{2}$",
+        "$\\sqrt{2}$",
+        "$-\\frac{\\sqrt{2}}{2}$",
+        "$-\\frac{1}{2}$"
+      ],
+      "answer": "$-\\sqrt{2}$",
+      "compute": null,
+      "solution": "$\\cos 135^\\circ = -\\frac{\\sqrt{2}}{2}$, so $\\sec 135^\\circ = \\frac{1}{-\\sqrt{2}/2} = -\\frac{2}{\\sqrt{2}} = -\\sqrt{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\sqrt{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos135 = -sqrt2/2, sec = -2/sqrt2 = -sqrt2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.281Z"
+        }
+      }
+    },
+    {
+      "id": "facc84df-66cc-40a6-9586-32b00222f2e2",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "An isosceles triangle has two sides of length 5, and the cosine of the angle between them is $\\frac{7}{25}$. How long is the third side?",
+      "choices": [],
+      "answer": "6",
+      "compute": "6",
+      "solution": "$c^2 = 5^2 + 5^2 - 2(5)(5)\\cdot\\frac{7}{25} = 50 - 14 = 36$, so $c = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c^2 = 25 + 25 - 2*5*5*(7/25) = 50 - 14 = 36; c = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.284Z"
+        }
+      }
+    },
+    {
+      "id": "e66688d9-581d-4ae8-9e20-99037b7c0f70",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "In a tidal pool the water depth is at its maximum of 11 inches when $t = 0$ hours, at its minimum of 5 inches 6 hours later, and the pattern repeats every 12 hours. Using a cosine model, what is the depth in inches 3 hours after the maximum?",
+      "choices": [],
+      "answer": "8",
+      "compute": "(11+5)/2",
+      "solution": "The model is $d(t) = 3\\cos\\left(\\frac{\\pi}{6}t\\right) + 8$. At $t = 3$, $\\cos\\frac{\\pi}{2} = 0$, so the depth is the midline value, 8 inches.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midline 8, amplitude 3, period 12: d = 3cos(pi t/6) + 8; t = 3: cos(pi/2) = 0, d = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.327Z"
+        }
+      }
+    },
+    {
+      "id": "69aff545-f417-4b5b-9911-60eab6845811",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "A triangle has sides 5, 6 and 7. What is the cosine of its smallest angle?",
+      "choices": [],
+      "answer": "5/7",
+      "compute": "60/84",
+      "solution": "The smallest angle is opposite the side 5. $\\cos = \\frac{6^2 + 7^2 - 5^2}{2 \\cdot 6 \\cdot 7} = \\frac{60}{84} = \\frac{5}{7}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Smallest angle opposite side 5: cos = (6^2+7^2-5^2)/(2*6*7) = 60/84 = 5/7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.338Z"
+        }
+      }
+    },
+    {
+      "id": "9d765791-21c1-4fd5-90bd-aaca726c0b46",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "Which expression equals $\\sin^2 x + \\cos^2 x + \\tan^2 x$ at every $x$ where it is defined?",
+      "choices": [
+        "$1$",
+        "$\\csc^2 x$",
+        "$\\sec^2 x$",
+        "$2\\tan^2 x$"
+      ],
+      "answer": "$\\sec^2 x$",
+      "compute": null,
+      "solution": "The first two terms add to 1, so the sum is $1 + \\tan^2 x = \\sec^2 x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sec^2 x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin^2 + cos^2 = 1; 1 + tan^2 = sec^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.367Z"
+        }
+      }
+    },
+    {
+      "id": "2259b090-679b-42da-beb3-a84a3c6d2541",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "A Ferris wheel has radius 15 feet, its center is 20 feet above the ground, and it makes one full turn every 30 seconds. A rider starts at the lowest point when $t = 0$. Which equation gives the rider's height $h$ in feet after $t$ seconds?",
+      "choices": [
+        "$h(t) = 20 + 15\\cos\\left(\\frac{\\pi}{15}t\\right)$",
+        "$h(t) = 20 - 15\\cos\\left(\\frac{\\pi}{30}t\\right)$",
+        "$h(t) = 20 - 15\\cos\\left(\\frac{\\pi}{15}t\\right)$",
+        "$h(t) = 15 - 20\\cos\\left(\\frac{\\pi}{15}t\\right)$"
+      ],
+      "answer": "$h(t) = 20 - 15\\cos\\left(\\frac{\\pi}{15}t\\right)$",
+      "compute": null,
+      "solution": "The midline is 20 and the amplitude is 15. Starting at the bottom means a negative cosine ($h(0) = 5$). The period is 30, so $B = \\frac{2\\pi}{30} = \\frac{\\pi}{15}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$h(t) = 20 - 15\\cos\\left(\\frac{\\pi}{15}t\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Midline 20, amplitude 15, period 30 so B = 2pi/30 = pi/15. Starts at lowest point: h = 20 - 15cos(pi t/15). Check h(0)=5, h(15)=35.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.565Z"
+        }
+      }
+    },
+    {
+      "id": "e988f31e-39fb-4638-bcee-b51a9a2fa18a",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $A = 30^\\circ$, $a = 5$ and $b = 10$. Use the Law of Sines to find angle $B$, in degrees.",
+      "choices": [],
+      "answer": "90",
+      "compute": "90",
+      "solution": "$\\sin B = \\frac{b \\sin A}{a} = \\frac{10 \\cdot \\frac{1}{2}}{5} = 1$, so $B = 90^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin B = b sin A / a = 10*(1/2)/5 = 1, so B = 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.575Z"
+        }
+      }
+    },
+    {
+      "id": "0c65e501-35d0-48eb-8caa-8331fbe2f1e4",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Features of sine and cosine models",
+      "stem": "A lighthouse beam's brightness is modeled by $B(t) = 7\\sin\\left(\\frac{\\pi}{10}t\\right) + 9$, where $t$ is in minutes. How many complete cycles does the model go through in 60 minutes?",
+      "choices": [],
+      "answer": "3",
+      "compute": "60/20",
+      "solution": "The period is $\\frac{2\\pi}{\\pi/10} = 20$ minutes, so 60 minutes hold $\\frac{60}{20} = 3$ cycles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period = 2pi/(pi/10) = 20 minutes. 60/20 = 3 cycles.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.591Z"
+        }
+      }
+    },
+    {
+      "id": "8b9d11f1-c66b-41e6-a2ee-541247d8c7f2",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "The surface temperature of a lake is modeled by $W(t) = 3\\sin\\left(\\frac{\\pi}{6}(t-3)\\right) + 12$ degrees, where $t$ is the number of months after January 1. What temperature does the model give when $t = 6$?",
+      "choices": [],
+      "answer": "15",
+      "compute": "3+12",
+      "solution": "$W(6) = 3\\sin\\left(\\frac{\\pi}{6} \\cdot 3\\right) + 12 = 3\\sin\\left(\\frac{\\pi}{2}\\right) + 12 = 3 + 12 = 15$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "W(6) = 3 sin(pi/6 * 3) + 12 = 3 sin(pi/2) + 12 = 15.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.611Z"
+        }
+      }
+    },
+    {
+      "id": "e7cba948-33f4-404e-9446-54dc383870aa",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "An acute angle $\\theta$ has $\\tan \\theta = 2$. Use a Pythagorean identity to find $\\sec^2 \\theta$.",
+      "choices": [],
+      "answer": "5",
+      "compute": "1+2^2",
+      "solution": "$\\sec^2 \\theta = 1 + \\tan^2 \\theta = 1 + 4 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sec^2 = 1 + tan^2 = 1 + 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.615Z"
+        }
+      }
+    },
+    {
+      "id": "6ca16048-9a14-453d-97f4-9a7435a3ea1e",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Features of sine and cosine models",
+      "stem": "A point on a vibrating string is modeled by $y = 4\\cos(2\\pi t)$ centimeters, with $t$ in seconds. Which statement about the model is true?",
+      "choices": [
+        "It repeats every 2 seconds",
+        "It repeats every $2\\pi$ seconds",
+        "It repeats every $\\pi$ seconds",
+        "It repeats every 1 second"
+      ],
+      "answer": "It repeats every 1 second",
+      "compute": null,
+      "solution": "The period is $\\frac{2\\pi}{B} = \\frac{2\\pi}{2\\pi} = 1$ second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It repeats every 1 second",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period = 2pi/(2pi) = 1 second.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.619Z"
+        }
+      }
+    },
+    {
+      "id": "606e9061-0407-4368-a552-2dac3126b545",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "Two fences of a triangular park, 8 meters and 15 meters long, meet at a $60^\\circ$ angle. How long, in meters, is the third side?",
+      "choices": [],
+      "answer": "13",
+      "compute": "13",
+      "solution": "$c^2 = 8^2 + 15^2 - 2(8)(15)\\cos 60^\\circ = 64 + 225 - 120 = 169$, so $c = 13$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c^2 = 64 + 225 - 2*8*15*cos60 = 289 - 120 = 169, c = 13.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.638Z"
+        }
+      }
+    },
+    {
+      "id": "26dad983-63fc-424f-ab86-004a3cdabe47",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, side $a$ and angles $A$ and $B$ are known. Which expression gives side $b$?",
+      "choices": [
+        "$b = \\frac{a \\sin B}{\\sin A}$",
+        "$b = \\frac{a \\sin A}{\\sin B}$",
+        "$b = \\frac{\\sin B}{a \\sin A}$",
+        "$b = a \\sin A \\sin B$"
+      ],
+      "answer": "$b = \\frac{a \\sin B}{\\sin A}$",
+      "compute": null,
+      "solution": "The Law of Sines says $\\frac{a}{\\sin A} = \\frac{b}{\\sin B}$. Multiply both sides by $\\sin B$ to get $b = \\frac{a \\sin B}{\\sin A}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$b = \\frac{a \\sin B}{\\sin A}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Law of Sines: a/sin A = b/sin B, so b = a sin B / sin A.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.640Z"
+        }
+      }
+    },
+    {
+      "id": "21e8182e-16dd-422e-b9b6-8123a3190f2a",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Law of Cosines",
+      "stem": "A triangle has $a = 6$, $b = 10$ and $C = 60^\\circ$. Which equation is the correct first line of the Law of Cosines for side $c$?",
+      "choices": [
+        "$c^2 = 6^2 + 10^2 + 2(6)(10)\\cos 60^\\circ$",
+        "$c^2 = 6^2 + 10^2 - 2(6)(10)\\cos 60^\\circ$",
+        "$c^2 = 6^2 + 10^2 - (6)(10)\\cos 60^\\circ$",
+        "$c^2 = 6^2 + 10^2$"
+      ],
+      "answer": "$c^2 = 6^2 + 10^2 - 2(6)(10)\\cos 60^\\circ$",
+      "compute": null,
+      "solution": "The Law of Cosines is $c^2 = a^2 + b^2 - 2ab\\cos C$: subtract twice the product of the two sides times the cosine of the angle between them.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$c^2 = 6^2 + 10^2 - 2(6)(10)\\cos 60^\\circ$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "c^2=a^2+b^2-2ab cos C.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.660Z"
+        }
+      }
+    },
+    {
+      "id": "077c037c-4115-43fa-b8ad-c8cedb145058",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choosing the Law of Sines or the Law of Cosines",
+      "stem": "Triangle $ABC$ has known sides $a$ and $b$ and a known angle $A$ opposite side $a$. Which tool gives $\\sin B$ directly?",
+      "choices": [
+        "The Law of Sines",
+        "The Law of Cosines",
+        "A reciprocal identity",
+        "The Pythagorean theorem"
+      ],
+      "answer": "The Law of Sines",
+      "compute": null,
+      "solution": "The known side $a$ and its opposite angle $A$ form a pair, so $\\frac{\\sin B}{b} = \\frac{\\sin A}{a}$ gives $\\sin B$ at once.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "The Law of Sines",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a/sin A = b/sin B gives sin B = b sin A / a directly.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.671Z"
+        }
+      }
+    },
+    {
+      "id": "2d81e535-12f1-4291-9b55-83112be5e76e",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Reciprocal and quotient identities",
+      "stem": "An angle in Quadrant II has a secant equal to $-\\frac{13}{5}$. Find the cosine of the angle.",
+      "choices": [],
+      "answer": "-5/13",
+      "compute": "-5/13",
+      "solution": "Cosine is the reciprocal of secant: $\\cos \\theta = \\frac{1}{-13/5} = -\\frac{5}{13}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-5/13",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos=1/sec=-5/13 (negative in QII, consistent).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.685Z"
+        }
+      }
+    },
+    {
+      "id": "8ac85feb-438f-47f5-b3d7-d8269679a8da",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Law of Sines",
+      "stem": "Two stakes, $A$ and $B$, are 60 meters apart on a straight shore. A rock $C$ is sighted so that angle $A$ is $45^\\circ$ and angle $B$ is $45^\\circ$. How far is the rock from stake $A$?",
+      "choices": [
+        "$30\\sqrt{3}$ meters",
+        "30 meters",
+        "60 meters",
+        "$30\\sqrt{2}$ meters"
+      ],
+      "answer": "$30\\sqrt{2}$ meters",
+      "compute": null,
+      "solution": "Angle $C = 90^\\circ$ and the side opposite it is $AB = 60$. The distance $AC$ is opposite angle $B = 45^\\circ$: $AC = \\frac{60 \\sin 45^\\circ}{\\sin 90^\\circ} = 30\\sqrt{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$30\\sqrt{2}$ meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Angles 45,45 so C=90, AB=60 is hypotenuse; AC=60/sqrt2=30sqrt2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.695Z"
+        }
+      }
+    },
+    {
+      "id": "9f9aead2-5feb-4f58-8bd6-4d77a46b8f7b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $A = 30^\\circ$, $B = 60^\\circ$ and $b = 9\\sqrt{3}$ centimeters. Find the length of side $a$, in centimeters.",
+      "choices": [],
+      "answer": "9",
+      "compute": "9",
+      "solution": "$\\frac{a}{\\sin 30^\\circ} = \\frac{9\\sqrt{3}}{\\sin 60^\\circ}$, so $a = \\frac{9\\sqrt{3} \\cdot \\frac{1}{2}}{\\frac{\\sqrt{3}}{2}} = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a=b sinA/sinB=9sqrt3*(1/2)/(sqrt3/2)=9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.710Z"
+        }
+      }
+    },
+    {
+      "id": "e92178df-da77-4f2c-ba00-feead8471952",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "Which expression is equivalent to $\\sin x \\cdot \\cot x$ for every $x$ where both are defined?",
+      "choices": [
+        "$\\tan x$",
+        "$\\sec x$",
+        "$1$",
+        "$\\cos x$"
+      ],
+      "answer": "$\\cos x$",
+      "compute": null,
+      "solution": "Write the cotangent as a quotient: $\\sin x \\cdot \\frac{\\cos x}{\\sin x} = \\cos x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\cos x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin x * cos x/sin x = cos x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.739Z"
+        }
+      }
+    },
+    {
+      "id": "5c1006bf-b90f-453f-b513-7167cc62720b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "The temperature in a greenhouse is modeled by $T(t) = 18\\sin\\left(\\frac{\\pi}{12}(t-8)\\right) + 62$ degrees, where $t$ is hours after midnight. At what time $t$, with $0 \\le t < 24$, is the temperature highest?",
+      "choices": [],
+      "answer": "14",
+      "compute": "8+6",
+      "solution": "The sine is largest when $\\frac{\\pi}{12}(t-8) = \\frac{\\pi}{2}$, so $t - 8 = 6$ and $t = 14$ (2 p.m.).",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Max when pi/12 (t-8) = pi/2 -> t - 8 = 6 -> t = 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.770Z"
+        }
+      }
+    },
+    {
+      "id": "04c6b514-979e-4b4d-9c9a-44c7fe8d9b85",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "An acute angle $\\theta$ has $\\csc \\theta = \\frac{5}{4}$. Find $\\cot \\theta$.",
+      "choices": [],
+      "answer": "3/4",
+      "compute": "3/4",
+      "solution": "$\\sin \\theta = \\frac{4}{5}$, so $\\cos^2 \\theta = 1 - \\frac{16}{25} = \\frac{9}{25}$ and $\\cos \\theta = \\frac{3}{5}$ (acute). Then $\\cot \\theta = \\frac{3/5}{4/5} = \\frac{3}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "csc = 5/4 -> sin = 4/5, cos = 3/5 (acute), cot = 3/4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.773Z"
+        }
+      }
+    },
+    {
+      "id": "df1ee6bf-dc36-45e8-bcdc-eefab68dd893",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "The angle $\\theta$ lies in Quadrant III and $\\sin \\theta = -\\frac{8}{17}$. Find $\\cos \\theta$.",
+      "choices": [],
+      "answer": "-15/17",
+      "compute": "-15/17",
+      "solution": "$\\cos^2 \\theta = 1 - \\frac{64}{289} = \\frac{225}{289}$, so $\\cos \\theta = \\pm\\frac{15}{17}$. Cosine is negative in Quadrant III, so $\\cos \\theta = -\\frac{15}{17}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-15/17",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos^2 = 1 - 64/289 = 225/289; QIII cos negative: -15/17.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.783Z"
+        }
+      }
+    },
+    {
+      "id": "0312c40c-b4ed-466e-a218-4b9fc152b9a3",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "Simplify $\\frac{1 - \\cos^2 x}{\\sin x}$. Which expression is equivalent for every $x$ where it is defined?",
+      "choices": [
+        "$\\cos x$",
+        "$\\sin x$",
+        "$\\csc x$",
+        "$\\tan x$"
+      ],
+      "answer": "$\\sin x$",
+      "compute": null,
+      "solution": "The numerator $1 - \\cos^2 x$ equals $\\sin^2 x$, so the fraction is $\\frac{\\sin^2 x}{\\sin x} = \\sin x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(1 - cos^2 x)/sin x = sin^2 x/sin x = sin x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.786Z"
         }
       }
     },
@@ -8129,6 +11695,718 @@
           "work": "5 sin(pi t/6) + 12 = 17 gives sin(pi t/6) = 1, pi t/6 = pi/2, t = 3.",
           "run_id": "claude-code",
           "at": "2026-10-24T02:59:34.003Z"
+        }
+      }
+    },
+    {
+      "id": "2bc19732-4fb0-4126-9365-e84ebedc58b6",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $A = 45^\\circ$, $a = 10\\sqrt{2}$ and $\\sin B = \\frac{3}{5}$. Find the length of side $b$.",
+      "choices": [],
+      "answer": "12",
+      "compute": "12",
+      "solution": "$b = \\frac{a \\sin B}{\\sin A} = \\frac{10\\sqrt{2} \\cdot \\frac{3}{5}}{\\frac{\\sqrt{2}}{2}} = 10 \\cdot \\frac{3}{5} \\cdot 2 = 12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Law of Sines: a/sinA = 10sqrt2/(sqrt2/2) = 20; b = 20*(3/5) = 12. (Obtuse B would make A+B>180, but b is 12 either way.)",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.333Z"
+        }
+      }
+    },
+    {
+      "id": "1a24d400-ee84-4730-afed-36c9fdbe8aa7",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "A model for the number of customers in a shop is $y = 3\\sin\\left(\\frac{\\pi}{6}t\\right) + 5$, where $t$ is hours after opening and $0 \\le t < 12$. For how many values of $t$ does the model equal 6?",
+      "choices": [],
+      "answer": "2",
+      "compute": "2",
+      "solution": "Set $3\\sin\\left(\\frac{\\pi}{6}t\\right) + 5 = 6$, so $\\sin\\left(\\frac{\\pi}{6}t\\right) = \\frac{1}{3}$. As $t$ runs from 0 to 12 the angle makes one full turn, and a sine value of $\\frac{1}{3}$ occurs once on the way up and once on the way down: 2 values.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin(πt/6) = 1/3, with πt/6 in [0, 2π): sin = 1/3 has two solutions (t≈0.65, t≈5.35).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.513Z"
+        }
+      }
+    },
+    {
+      "id": "9f3886a1-851e-4ee0-a581-7a95311a3c1b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "For one angle $x$, $\\sin x + \\cos x = \\frac{7}{5}$. Square both sides and use a Pythagorean identity to find $\\sin x \\cos x$.",
+      "choices": [],
+      "answer": "12/25",
+      "compute": "(49/25-1)/2",
+      "solution": "$(\\sin x + \\cos x)^2 = \\sin^2 x + 2\\sin x\\cos x + \\cos^2 x = 1 + 2\\sin x\\cos x = \\frac{49}{25}$. So $2\\sin x\\cos x = \\frac{24}{25}$ and $\\sin x\\cos x = \\frac{12}{25}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "12/25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 2 sin x cos x = 49/25, so sin x cos x = 12/25 (7/5 <= √2, so possible).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.545Z"
+        }
+      }
+    },
+    {
+      "id": "6a64def2-74b6-4462-bc4f-888551232f24",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $A = 30^\\circ$, $a = 5$ and $b = 8$. These measurements fit two different triangles. What is the sum, in degrees, of the two possible values of angle $B$?",
+      "choices": [],
+      "answer": "180",
+      "compute": "180",
+      "solution": "$\\sin B = \\frac{8 \\cdot \\frac{1}{2}}{5} = \\frac{4}{5}$. The two angles with this sine are an acute $B$ and its supplement $180^\\circ - B$, so they add to $180^\\circ$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin B = 8*(1/2)/5 = 0.8. B = 53.13 or 126.87 (both valid since 126.87+30 < 180). The two are supplementary: sum 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.589Z"
+        }
+      }
+    },
+    {
+      "id": "61a82fc8-c3f0-4a45-a5af-96300cde31aa",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "Which expression is equivalent to $\\frac{\\sin x}{1 + \\cos x} + \\frac{1 + \\cos x}{\\sin x}$ wherever it is defined?",
+      "choices": [
+        "$2\\sec x$",
+        "$2\\sin x$",
+        "$2\\csc x$",
+        "$\\csc x$"
+      ],
+      "answer": "$2\\csc x$",
+      "compute": null,
+      "solution": "Use the common denominator $\\sin x(1 + \\cos x)$. The numerator is $\\sin^2 x + (1 + \\cos x)^2 = 2 + 2\\cos x = 2(1 + \\cos x)$. Cancelling gives $\\frac{2}{\\sin x} = 2\\csc x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2\\csc x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Common denominator sin x(1+cos x): numerator sin^2 + 1 + 2cos + cos^2 = 2 + 2cos = 2(1+cos). Result 2/sin x = 2csc x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.591Z"
+        }
+      }
+    },
+    {
+      "id": "493620e3-b8e6-48a6-9567-43ad42349cb0",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Reciprocal and quotient identities",
+      "stem": "The tangent of an angle is $-\\frac{3}{4}$ and its sine is positive. Find the cosecant of the angle.",
+      "choices": [],
+      "answer": "5/3",
+      "compute": "5/3",
+      "solution": "A negative tangent with a positive sine puts the angle in Quadrant II. Then $\\sec^2 = 1 + \\frac{9}{16} = \\frac{25}{16}$, so $\\cos = -\\frac{4}{5}$, and $\\sin = \\tan \\cdot \\cos = \\frac{3}{5}$. So $\\csc = \\frac{5}{3}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5/3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "tan negative, sin positive -> Quadrant II. Reference triangle 3-4-5: sin = 3/5, csc = 5/3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.597Z"
+        }
+      }
+    },
+    {
+      "id": "47a406b7-df9b-4637-b7dd-752fe0c71645",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Law of Cosines",
+      "stem": "A triangle has sides 6, 8 and 11. Use the Law of Cosines on its largest angle to decide: is the triangle acute, right or obtuse?",
+      "choices": [
+        "Obtuse",
+        "Acute",
+        "Right",
+        "Cannot be decided"
+      ],
+      "answer": "Obtuse",
+      "compute": null,
+      "solution": "The largest angle is opposite 11: $\\cos = \\frac{6^2 + 8^2 - 11^2}{2 \\cdot 6 \\cdot 8} = \\frac{-21}{96}$. The cosine is negative, so that angle is obtuse.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Obtuse",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest side 11: cos C = (36+64-121)/(2*6*8) = -21/96 < 0, so the largest angle is obtuse.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.600Z"
+        }
+      }
+    },
+    {
+      "id": "5dd5739e-5091-4acb-93d3-58aa66ecf5d1",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "A student rewrites $\\frac{\\cos^2 x}{1 - \\sin x}$ using $\\cos^2 x = 1 - \\sin^2 x$ and then cancels a common factor. What is the simplified form, for $\\sin x \\ne 1$?",
+      "choices": [
+        "$1 - \\sin x$",
+        "$\\cos x$",
+        "$1 + \\cos x$",
+        "$1 + \\sin x$"
+      ],
+      "answer": "$1 + \\sin x$",
+      "compute": null,
+      "solution": "$\\frac{1 - \\sin^2 x}{1 - \\sin x} = \\frac{(1 - \\sin x)(1 + \\sin x)}{1 - \\sin x} = 1 + \\sin x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1 + \\sin x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cos^2 x = (1-sin x)(1+sin x); cancel 1 - sin x -> 1 + sin x.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.608Z"
+        }
+      }
+    },
+    {
+      "id": "5ebe13bd-5a34-4cef-91da-8b2a7167ccfa",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "A triangle has sides 9, 10 and 17. Find the cosine of its largest angle.",
+      "choices": [],
+      "answer": "-3/5",
+      "compute": "-108/180",
+      "solution": "The largest angle is opposite 17. $\\cos = \\frac{9^2 + 10^2 - 17^2}{2 \\cdot 9 \\cdot 10} = \\frac{-108}{180} = -\\frac{3}{5}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-3/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Largest angle opposite 17: cos = (81+100-289)/(2*9*10) = -108/180 = -3/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.621Z"
+        }
+      }
+    },
+    {
+      "id": "6ed6cd2b-15df-46e5-896c-3556b37c6968",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "In a triangular plot, the sides $b$ and $c$ measure 10 meters and 12 meters, and the cosine of the angle $A$ between them is $\\frac{3}{4}$. Find the length in meters of side $a$, opposite angle $A$.",
+      "choices": [],
+      "answer": "8",
+      "compute": "8",
+      "solution": "$a^2 = 10^2 + 12^2 - 2(10)(12)\\cdot\\frac{3}{4} = 244 - 180 = 64$, so $a = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "a^2=100+144-2*10*12*(3/4)=244-180=64; a=8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.658Z"
+        }
+      }
+    },
+    {
+      "id": "485d8c77-25ab-4726-aad4-2fffb53ce3be",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "A ship sails 10 km, turns through $60^\\circ$ (so the angle between the two legs of its path is $120^\\circ$), and then sails 6 km. How far is the ship from where it started, in kilometers?",
+      "choices": [],
+      "answer": "14",
+      "compute": "14",
+      "solution": "$d^2 = 10^2 + 6^2 - 2(10)(6)\\cos 120^\\circ = 136 + 60 = 196$, so $d = 14$ km.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "d^2=100+36-2*10*6*cos120=136+60=196; d=14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.679Z"
+        }
+      }
+    },
+    {
+      "id": "ff4ce83f-897c-4d69-8003-a4c39550740b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Features of sine and cosine models",
+      "stem": "A blood-pressure model is $P(t) = 80 + 20\\sin(120\\pi t)$, where $t$ is in minutes and each cycle is one heartbeat. How many heartbeats per minute does the model show?",
+      "choices": [],
+      "answer": "60",
+      "compute": "120/2",
+      "solution": "The period is $\\frac{2\\pi}{120\\pi} = \\frac{1}{60}$ minute, so there are 60 cycles (heartbeats) in one minute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 2pi/(120pi)=1/60 min, so 60 cycles per minute.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.690Z"
+        }
+      }
+    },
+    {
+      "id": "250956a7-8c6f-448f-b59f-84499e8c088b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "Which expression is equivalent to $\\tan x + \\cot x$ at every $x$ where both terms are defined?",
+      "choices": [
+        "$\\sec x + \\csc x$",
+        "$\\sec x \\csc x$",
+        "$\\sin x \\cos x$",
+        "$1$"
+      ],
+      "answer": "$\\sec x \\csc x$",
+      "compute": null,
+      "solution": "Write both terms with sine and cosine: $\\frac{\\sin x}{\\cos x} + \\frac{\\cos x}{\\sin x} = \\frac{\\sin^2 x + \\cos^2 x}{\\sin x \\cos x} = \\frac{1}{\\sin x \\cos x} = \\sec x \\csc x$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sec x \\csc x$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "sin/cos+cos/sin=(sin^2+cos^2)/(sin cos)=1/(sin cos)=sec csc.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.699Z"
+        }
+      }
+    },
+    {
+      "id": "dd0829f9-b381-449c-a120-f01b87e80d35",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Choosing the Law of Sines or the Law of Cosines",
+      "stem": "A triangle has sides 13, 14 and 15, and angle $A$ is opposite the side of length 13. Find $\\sin A$.",
+      "choices": [],
+      "answer": "4/5",
+      "compute": "4/5",
+      "solution": "By the Law of Cosines, $\\cos A = \\frac{14^2 + 15^2 - 13^2}{2 \\cdot 14 \\cdot 15} = \\frac{252}{420} = \\frac{3}{5}$. Then $\\sin A = \\sqrt{1 - \\frac{9}{25}} = \\frac{4}{5}$, since $A$ is acute.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4/5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "cosA=(196+225-169)/(2*14*15)=252/420=3/5; sinA=4/5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.712Z"
+        }
+      }
+    },
+    {
+      "id": "2d84c25a-b783-4718-833d-6949f2124c01",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "A mass on a spring moves up and down from its resting position, where its displacement is 0. The amplitude is 6 cm, the period is 4 seconds, and at $t = 0$ the mass is passing through the resting position moving upward. Which equation gives its displacement $y$, in cm, after $t$ seconds?",
+      "choices": [
+        "$y = 6\\cos\\left(\\frac{\\pi}{2}t\\right)$",
+        "$y = 6\\sin\\left(\\frac{\\pi}{2}t\\right)$",
+        "$y = 6\\sin\\left(\\frac{\\pi}{4}t\\right)$",
+        "$y = 6\\sin(4t)$"
+      ],
+      "answer": "$y = 6\\sin\\left(\\frac{\\pi}{2}t\\right)$",
+      "compute": null,
+      "solution": "Starting at the midline and rising is a sine curve. The period 4 gives $B = \\frac{2\\pi}{4} = \\frac{\\pi}{2}$, and the amplitude is 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$y = 6\\sin\\left(\\frac{\\pi}{2}t\\right)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Starts at 0 moving up: sine, amplitude 6; period 4 -> B = 2pi/4 = pi/2. y = 6 sin(pi t/2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.743Z"
+        }
+      }
+    },
+    {
+      "id": "7afd93f8-4e7e-4e15-b992-fddc0ab7e12d",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Simplifying expressions with identities",
+      "stem": "Which of these equations is NOT an identity, meaning it is false for some angle where both sides are defined?",
+      "choices": [
+        "$\\sin x + \\cos x = 1$",
+        "$\\cot^2 x + 1 = \\csc^2 x$",
+        "$\\sin x \\csc x = 1$",
+        "$\\tan x \\cot x = 1$"
+      ],
+      "answer": "$\\sin x + \\cos x = 1$",
+      "compute": null,
+      "solution": "At $x = 45^\\circ$ the left side of $\\sin x + \\cos x = 1$ is $\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2} = \\sqrt{2} \\ne 1$. The other three are reciprocal or Pythagorean identities.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$\\sin x + \\cos x = 1$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "At x = 45 deg, sin+cos = sqrt2 != 1, so sin x + cos x = 1 is not an identity; the others are.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.749Z"
+        }
+      }
+    },
+    {
+      "id": "c0f18f5c-80c9-427b-9f19-9004ab8d38c0",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Law of Sines",
+      "stem": "A triangular sail $ABC$ has $A = 30^\\circ$ and $B = 30^\\circ$, and the side opposite angle $A$ is 7 meters long. How long is side $c$?",
+      "choices": [
+        "7 meters",
+        "14 meters",
+        "$\\frac{7\\sqrt{3}}{2}$ meters",
+        "$7\\sqrt{3}$ meters"
+      ],
+      "answer": "$7\\sqrt{3}$ meters",
+      "compute": null,
+      "solution": "The third angle is $C = 180^\\circ - 60^\\circ = 120^\\circ$. Then $c = \\frac{7 \\sin 120^\\circ}{\\sin 30^\\circ} = \\frac{7 \\cdot \\frac{\\sqrt{3}}{2}}{\\frac{1}{2}} = 7\\sqrt{3}$ meters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$7\\sqrt{3}$ meters",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "C = 120, a = b = 7. c = 7 sin120/sin30 = 7(sqrt3/2)/(1/2) = 7 sqrt3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.781Z"
+        }
+      }
+    },
+    {
+      "id": "f9eced6c-70e7-4b59-9117-687d99d9050c",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Law of Sines",
+      "stem": "A surveyor is told that $A = 30^\\circ$, $a = 3$ and $b = 10$ for a triangle $ABC$. How many triangles fit these measurements?",
+      "choices": [
+        "Exactly one triangle",
+        "No triangles",
+        "Exactly two triangles",
+        "More than two triangles"
+      ],
+      "answer": "No triangles",
+      "compute": null,
+      "solution": "$\\sin B = \\frac{b \\sin A}{a} = \\frac{10 \\cdot \\frac{1}{2}}{3} = \\frac{5}{3}$, which is greater than 1. No angle has that sine, so no triangle exists.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "No triangles",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Height b sinA = 10*0.5 = 5 > a = 3: no triangle.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.782Z"
+        }
+      }
+    },
+    {
+      "id": "a626341a-5f1e-454b-a63e-eca31452c47e",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Pythagorean identities",
+      "stem": "The angle $\\theta$ is in Quadrant IV and $\\cot \\theta = -\\frac{7}{24}$. Find $\\sin \\theta$.",
+      "choices": [],
+      "answer": "-24/25",
+      "compute": "-24/25",
+      "solution": "$\\csc^2 \\theta = 1 + \\cot^2 \\theta = 1 + \\frac{49}{576} = \\frac{625}{576}$, so $\\csc \\theta = \\pm\\frac{25}{24}$. Sine is negative in Quadrant IV, so $\\sin \\theta = -\\frac{24}{25}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-24/25",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "QIV: cos > 0, sin < 0. cot = -7/24 -> cos = 7/25, sin = -24/25 (hyp 25).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.796Z"
+        }
+      }
+    },
+    {
+      "id": "5cc77025-8dca-4087-a474-033b09ab0d2b",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "The height of a water-wheel bucket above the ground is $h(t) = 10 + 8\\sin\\left(\\frac{\\pi}{15}t\\right)$ feet, where $t$ is in seconds. At what time, in seconds, does the bucket first reach a height of 14 feet?",
+      "choices": [],
+      "answer": "5/2",
+      "compute": "15/6",
+      "solution": "Solve $10 + 8\\sin\\left(\\frac{\\pi}{15}t\\right) = 14$: $\\sin\\left(\\frac{\\pi}{15}t\\right) = \\frac{1}{2}$. The smallest positive angle is $\\frac{\\pi}{6}$, so $\\frac{\\pi}{15}t = \\frac{\\pi}{6}$ and $t = 2.5$ seconds.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 + 8 sin(pi t/15) = 14 -> sin = 1/2 -> pi t/15 = pi/6 -> t = 2.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.804Z"
+        }
+      }
+    },
+    {
+      "id": "17cdd5ba-7afb-4eca-be05-15cd18dd550f",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Law of Sines",
+      "stem": "In triangle $ABC$, $A = 60^\\circ$, $B = 45^\\circ$ and $a = 12$. What is the length of side $b$?",
+      "choices": [
+        "$6\\sqrt{6}$",
+        "$6\\sqrt{2}$",
+        "$4\\sqrt{6}$",
+        "$4\\sqrt{3}$"
+      ],
+      "answer": "$4\\sqrt{6}$",
+      "compute": null,
+      "solution": "$b = \\frac{a \\sin B}{\\sin A} = \\frac{12 \\cdot \\frac{\\sqrt{2}}{2}}{\\frac{\\sqrt{3}}{2}} = \\frac{12\\sqrt{2}}{\\sqrt{3}} = \\frac{12\\sqrt{6}}{3} = 4\\sqrt{6}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4\\sqrt{6}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "b = 12 sin45/sin60 = 12(sqrt2/2)/(sqrt3/2) = 12 sqrt2/sqrt3 = 4 sqrt6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.808Z"
+        }
+      }
+    },
+    {
+      "id": "d1fa2b43-41a3-4716-94f3-5c7705056115",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Using a sine or cosine model in context",
+      "stem": "The water depth at a pier is $d(t) = 4\\cos\\left(\\frac{\\pi}{6}t\\right) + 6$ feet, with $t$ in hours. During each 12-hour cycle, for how many hours is the depth at least 8 feet?",
+      "choices": [],
+      "answer": "4",
+      "compute": "4",
+      "solution": "The depth is at least 8 when $4\\cos\\left(\\frac{\\pi}{6}t\\right) \\ge 2$, that is $\\cos\\left(\\frac{\\pi}{6}t\\right) \\ge \\frac{1}{2}$. This holds for $-\\frac{\\pi}{3} \\le \\frac{\\pi}{6}t \\le \\frac{\\pi}{3}$, so $-2 \\le t \\le 2$: a stretch of 4 hours around each high tide.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Period 12. 4cos(pi t/6) + 6 >= 8 -> cos >= 1/2 -> pi t/6 in [-pi/3, pi/3] -> t in [-2,2]: 4 hours per cycle.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.809Z"
+        }
+      }
+    },
+    {
+      "id": "39644849-6694-41dc-9e06-905f23e9baf7",
+      "topic_id": "NC17.M4.AF.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Law of Cosines",
+      "stem": "A parallelogram has sides of length 3 and 5, and one of its angles measures $60^\\circ$. How long is its longer diagonal?",
+      "choices": [],
+      "answer": "7",
+      "compute": "7",
+      "solution": "The longer diagonal cuts off a triangle with sides 3 and 5 and the angle $120^\\circ$ between them (the other angle of the parallelogram). $d^2 = 9 + 25 - 2(3)(5)\\cos 120^\\circ = 34 + 15 = 49$, so $d = 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Longer diagonal is opposite the 120 deg angle: d^2 = 9 + 25 - 30 cos120 = 34 + 15 = 49, d = 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:20:44.812Z"
         }
       }
     },
