@@ -7,7 +7,7 @@
     "NC17.3.OA.3": "All one-step problems with factors and divisors up to 10 (products to 90). Two-step problems (3.OA.8) are deliberately left out.",
     "NC17.3.OA.6": "Whole-number quotients only, products within 100; stories and written-out sentences only.",
     "NC17.3.OA.8": "Only addition, subtraction and multiplication (multiplication facts within 100, sums and differences within 1000), as the summary names; no division. Letters stand for the unknown in the equation questions. Skills: multiply then add (3), multiply then subtract (6), add and subtract (4), add then multiply (3), two products combined (4), write an equation (6), work backward (4). Two-step stories with addition, subtraction and multiplication only (no division); products within 100, sums and differences within 1000.",
-    "NC17.3.OA.9": "Hundreds board and multiplication table patterns are described in words, not shown; the explaining questions are choice questions about reasons.",
+    "NC17.3.OA.9": "Hundreds board and multiplication table patterns are described in words, not shown; the explaining questions are choice questions about reasons. The hundreds board and the multiplication table are described in words (rows of 10; rows and columns 1 to 10), as no picture can be shown.",
     "NC17.3.NBT.2": "Sums and minuends are within 1,000 (one answer is exactly 1,000-based, a missing part). Estimates always say how to round.",
     "NC17.3.NF.1": "All models (area strips, number lines, ribbons) are described in words. Answers that are fractions are written a/b.",
     "NC17.3.NF.2": "Kept within the wholes 0 to 1 and denominators 2, 3, 4, 6, 8; pictures are written out as equal parts, shaded parts and marks on a number line from 0 to 1.",
@@ -18934,6 +18934,161 @@
       }
     },
     {
+      "id": "5c1c9999-e922-4315-a43a-0390ac5a9511",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Count by 2s from 2: 2, 4, 6, 8, and so on. What is the 7th number you say?",
+      "choices": [],
+      "answer": "14",
+      "compute": "2*7",
+      "solution": "The 7th number counting by 2s is 7 groups of 2, which is 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2,4,6,8,10,12,14: the 7th is 14 (= 7 x 2).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.304Z"
+        }
+      }
+    },
+    {
+      "id": "c00145b3-6942-4144-93a9-5a6e4b13bb00",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Skip counting on a hundreds board",
+      "stem": "A frog jumps 4 squares each time on a hundreds board. It starts on 4 and lands on 4, 8, 12 and 16. On which number does it land next?",
+      "choices": [],
+      "answer": "20",
+      "compute": "16+4",
+      "solution": "16 + 4 = 20.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "20",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4, 8, 12, 16, then 20.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.358Z"
+        }
+      }
+    },
+    {
+      "id": "500a4723-ff20-4add-8c1a-cc69e0e4ebb8",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "The diagonal of the multiplication table",
+      "stem": "On the diagonal of a multiplication table, the row number and the column number are the same. Which fact is on the diagonal?",
+      "choices": [
+        "$6 \\times 7$",
+        "$6 \\times 6$",
+        "$5 \\times 8$",
+        "$3 \\times 8$"
+      ],
+      "answer": "$6 \\times 6$",
+      "compute": null,
+      "solution": "Only 6 x 6 uses the same number twice, so it is the only one on the diagonal.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$6 \\times 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same row and column number: 6 x 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.363Z"
+        }
+      }
+    },
+    {
+      "id": "70b19d22-1bd4-4b6f-ab19-dbe004c14ecb",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "A hundreds board has the numbers 1 to 100 in rows of 10. The multiples of 10 are in the last column. What number is in the last column of the 6th row?",
+      "choices": [],
+      "answer": "60",
+      "compute": "6*10",
+      "solution": "The last number in each row is a multiple of 10. The 6th row ends with 6 x 10 = 60.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "60",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Row 6 is 51 to 60; last column is 60.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.367Z"
+        }
+      }
+    },
+    {
+      "id": "4d052ac7-3924-473f-bf60-f2b7433a9edf",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "On a hundreds board with rows of 10, the numbers 7, 17, 27 and 37 are in the same column. What do they have in common?",
+      "choices": [
+        "They all end in 1",
+        "They are all multiples of 7",
+        "They all have a 7 in the tens place",
+        "They all end in 7"
+      ],
+      "answer": "They all end in 7",
+      "compute": null,
+      "solution": "Going down a column adds 10, which changes the tens digit and leaves the ones digit the same. Every number here ends in 7. They are not all multiples of 7 (17 is not), and their tens digits are 0, 1, 2 and 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "They all end in 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Same column on a 1-100 board: same ones digit, 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.376Z"
+        }
+      }
+    },
+    {
       "id": "a3873cd6-a826-4071-8a32-2087f4c6dd47",
       "topic_id": "NC17.3.OA.9",
       "difficulty": 2,
@@ -19240,6 +19395,132 @@
           "work": "9th number is 6 x 9 = 54.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:24.243Z"
+        }
+      }
+    },
+    {
+      "id": "254a6c71-ceca-46cd-9b36-a3939ff79e65",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Symmetry of the multiplication table",
+      "stem": "A multiplication table has rows and columns numbered 1 to 10. The product $7 \\times 4 = 28$ is in row 7 and column 4. In which row and column does 28 show up again?",
+      "choices": [
+        "row 4 and column 7",
+        "row 7 and column 7",
+        "row 4 and column 4",
+        "row 2 and column 14"
+      ],
+      "answer": "row 4 and column 7",
+      "compute": null,
+      "solution": "Swapping the factors gives the same product: 4 x 7 = 28. That is row 4 and column 7. A table up to 10 has no column 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "row 4 and column 7",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 x 7 = 28 by commutativity: row 4, column 7. Row 4 column 4 is 16; 7x7=49; column 14 does not exist.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.288Z"
+        }
+      }
+    },
+    {
+      "id": "7e86d0df-e21a-4f69-8258-e9319d419971",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Missing numbers in a row or column of the multiplication table",
+      "stem": "The 9s row of a multiplication table is ?, 18, 27, 36. What number goes in place of the ?",
+      "choices": [],
+      "answer": "9",
+      "compute": "18-9",
+      "solution": "Each product is 9 more than the one before it, so the first is 18 - 9 = 9.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 x 1 = 9, then 18, 27, 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.353Z"
+        }
+      }
+    },
+    {
+      "id": "5072f8c6-ac48-4401-a579-e823d73d1369",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiples of 2, 5 and 10 and their ones digits",
+      "stem": "Which list shows only multiples of 5?",
+      "choices": [
+        "15, 35, 50, 65",
+        "5, 10, 17, 20",
+        "25, 30, 36, 40",
+        "10, 20, 25, 32"
+      ],
+      "answer": "15, 35, 50, 65",
+      "compute": null,
+      "solution": "Multiples of 5 end in 0 or 5. Every number in this list does. Each other list has a number that ends in 2, 6 or 7.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "15, 35, 50, 65",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "15, 35, 50, 65 all end in 0 or 5. Others contain 17, 32, 36.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.364Z"
+        }
+      }
+    },
+    {
+      "id": "05af737f-a109-4e52-9efb-e0c1ebba591a",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Skip counting on a hundreds board",
+      "stem": "Count by 3s from 3: 3, 6, 9, and so on. What is the first number you say that is in the row from 31 to 40 of a hundreds board?",
+      "choices": [],
+      "answer": "33",
+      "compute": "33",
+      "solution": "The pattern says 30, 33, 36, 39 ... The first one from 31 to 40 is 33.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "33",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3, 6, ..., 27, 30, 33. 30 is in the row 21-30; 33 is the first in 31-40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.371Z"
         }
       }
     },
@@ -19560,6 +19841,103 @@
           "work": "Row 8: 24, row 9: 27 (= 3 x 9).",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:24.243Z"
+        }
+      }
+    },
+    {
+      "id": "3b56e422-f99c-4b2d-8c82-c7ac0a4f1311",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Diagonal patterns on a hundreds board",
+      "stem": "A player on a hundreds board moves down 1 row and 1 square to the right, and does not go past the edge of the board. How does the new number compare with the old one?",
+      "choices": [
+        "It is 9 more",
+        "It is 11 more",
+        "It is 10 more",
+        "It is 1 more"
+      ],
+      "answer": "It is 11 more",
+      "compute": null,
+      "solution": "Down 1 row adds 10 and 1 square right adds 1, so the new number is 11 more.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is 11 more",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Down one row adds 10, right one square adds 1: 11 more.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.318Z"
+        }
+      }
+    },
+    {
+      "id": "d5c74e57-5178-4876-acd3-d4e7b41468b8",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Rows and columns of a hundreds board",
+      "stem": "A hundreds board has rows of 10. The number 83 is in the same column as one number in the first row. What is that number?",
+      "choices": [],
+      "answer": "3",
+      "compute": "83-80",
+      "solution": "Each row up takes away 10. 83 up 8 rows is 3, which is in the first row.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Columns hold numbers with the same ones digit (1-100 board): 83 is under 3 in the first row.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.352Z"
+        }
+      }
+    },
+    {
+      "id": "5ff53e06-f229-4bef-93af-bb57b9b509ef",
+      "topic_id": "NC17.3.OA.9",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Patterns in the 9s",
+      "stem": "Kit finds $9 \\times 9$ by thinking \"ten 9s, take away one 9\". Which number sentence shows her idea?",
+      "choices": [
+        "$10 \\times 9 - 10 = 81$",
+        "$10 \\times 8 - 9 = 81$",
+        "$10 \\times 9 - 9 = 81$",
+        "$9 \\times 9 - 9 = 81$"
+      ],
+      "answer": "$10 \\times 9 - 9 = 81$",
+      "compute": null,
+      "solution": "Ten 9s is 90. Taking away one 9 leaves 81. The other number sentences are not true.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$10 \\times 9 - 9 = 81$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Ten 9s = 10 x 9, take away one 9: 10 x 9 - 9 = 90 - 9 = 81.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.371Z"
         }
       }
     },

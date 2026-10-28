@@ -7,7 +7,7 @@
     "NC17.2.OA.3": "Odd/even answers are words, so those are choice questions; numeric ones ask for pairs, leftovers, group sizes or the number in a doubles equation. All numbers stay within 20.",
     "NC17.2.OA.4": "Arrays are described in words (rows and columns) and total at most 25 (5 by 5). Where a sum is asked, options never include the column-wise sum of the same array, so exactly one option is correct. Arrays kept within 5 by 5; sums of arrays put together may total more than 25. All stems are stories or written-out arrays.",
     "NC17.2.NBT.2": "Whole numbers within 1000 only; no counting back by 5s, 10s or 100s (the standard names skip-counting forward). Skills: count on by ones (3), count back by ones (3), skip-count by 10s (6), by 5s (5), by 100s (6), missing number in a pattern (4), rule of a pattern (3). Written in three steps; counting stays within 1000 (1000 itself is used as an end point).",
-    "NC17.2.NBT.3": "All numbers are below 1000 (a few two-digit ones at difficulty 1). Number words are written with hyphens, e.g. forty-six. Numerals and expanded forms are asked both ways; a words answer is a choice question. Expanded-form distractors never include a valid sum (e.g. 400 + 18 for 418) so only one option is correct.",
+    "NC17.2.NBT.3": "All numbers are below 1000 (a few two-digit ones at difficulty 1). Number words are written with hyphens, e.g. forty-six. Numerals and expanded forms are asked both ways; a words answer is a choice question. Expanded-form distractors never include a valid sum (e.g. 400 + 18 for 418) so only one option is correct. No pictures needed. Place-value blocks are described in words (hundreds, tens, ones).",
     "NC17.2.NBT.4": "Statements of comparison are written with the symbols in $...$. Answers are whole numbers or a digit; a symbol alone is never an option (only three symbols exist), so the symbol is chosen inside a full statement.",
     "NC17.2.NBT.6": "Sums stay under 300 (three two-digit numbers at most). Missing-addend questions are solved by counting up or knowing the sum, not by formal subtraction rules. Place-value drawings are replaced by tens-and-ones sentences.",
     "NC17.2.NBT.7": "Within 1000, whole numbers only. Written methods are described in words rather than shown as columns.",
@@ -18931,6 +18931,302 @@
       }
     },
     {
+      "id": "99ec88a6-29f3-4e0b-ac1d-3d6a75838581",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number from its hundreds, tens and ones",
+      "stem": "A number has 5 hundreds, 2 tens and 9 ones. Write the number with digits.",
+      "choices": [],
+      "answer": "529",
+      "compute": "500+20+9",
+      "solution": "500 + 20 + 9 = 529.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "529",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 hundreds + 2 tens + 9 ones = 500+20+9 = 529.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.256Z"
+        }
+      }
+    },
+    {
+      "id": "8ab3ddbc-5d77-4c5a-995e-2b2f8533f33b",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "Which words name the number 215?",
+      "choices": [
+        "two hundred fifty",
+        "two hundred five",
+        "two hundred fifteen",
+        "two hundred fifty-one"
+      ],
+      "answer": "two hundred fifteen",
+      "compute": null,
+      "solution": "215 is 2 hundreds, 1 ten and 5 ones. The 15 at the end is said fifteen, so the words are two hundred fifteen.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "two hundred fifteen",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "215 = two hundred fifteen.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.271Z"
+        }
+      }
+    },
+    {
+      "id": "14f385f6-57c7-4f13-9f83-86f25c0bf3d1",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a numeral in expanded form",
+      "stem": "Rosa writes 274 in expanded form. What does she write?",
+      "choices": [
+        "$200 + 40 + 7$",
+        "$200 + 70 + 4$",
+        "$20 + 70 + 4$",
+        "$2 + 7 + 4$"
+      ],
+      "answer": "$200 + 70 + 4$",
+      "compute": null,
+      "solution": "The 2 is in the hundreds place, so it is worth 200. The 7 is worth 70 and the 4 is worth 4: 200 + 70 + 4.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$200 + 70 + 4$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "274 = 200 + 70 + 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.287Z"
+        }
+      }
+    },
+    {
+      "id": "31f07c6c-e8f2-4cb3-8336-c3f8a9741670",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "Mark reads the number 830 out loud. Which words does he say?",
+      "choices": [
+        "eight hundred thirty",
+        "eighty-three",
+        "eight hundred three",
+        "three hundred eighty"
+      ],
+      "answer": "eight hundred thirty",
+      "compute": null,
+      "solution": "830 has 8 hundreds, 3 tens and 0 ones: eight hundred thirty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "eight hundred thirty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "830 = eight hundred thirty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.305Z"
+        }
+      }
+    },
+    {
+      "id": "5ec4552c-12d9-4b9f-9d54-e9d9b9eb0173",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Write a number from its hundreds, tens and ones",
+      "stem": "A number has 4 hundreds, 3 tens and 5 ones. What is the number?",
+      "choices": [],
+      "answer": "435",
+      "compute": "400+30+5",
+      "solution": "4 hundreds is 400, 3 tens is 30 and 5 ones is 5. 400 + 30 + 5 = 435.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "435",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "400+30+5 = 435.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.346Z"
+        }
+      }
+    },
+    {
+      "id": "556c2998-9812-4777-a888-baf8887a0f56",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a number from its hundreds, tens and ones",
+      "stem": "A number has 3 hundreds, 6 tens and 1 one. Which numeral is it?",
+      "choices": [
+        "316",
+        "631",
+        "361",
+        "3061"
+      ],
+      "answer": "361",
+      "compute": "361",
+      "solution": "3 hundreds is 300, 6 tens is 60 and 1 one is 1. 300 + 60 + 1 = 361.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "361",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "300 + 60 + 1 = 361.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.350Z"
+        }
+      }
+    },
+    {
+      "id": "9656060a-da53-4a6e-8c08-fb905edbe69d",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match expanded form to number words",
+      "stem": "Which choice is the same number as the words nine hundred forty?",
+      "choices": [
+        "$900 + 40$",
+        "$900 + 4$",
+        "$90 + 40$",
+        "$900 + 400$"
+      ],
+      "answer": "$900 + 40$",
+      "compute": null,
+      "solution": "Nine hundred is 900 and forty is 40, so the number is 900 + 40.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$900 + 40$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "nine hundred forty = 940 = 900 + 40.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.351Z"
+        }
+      }
+    },
+    {
+      "id": "150a2b96-f7e6-43f9-a791-881f56d47890",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "Which choice is 47 written in words?",
+      "choices": [
+        "seventy-four",
+        "forty",
+        "four hundred seven",
+        "forty-seven"
+      ],
+      "answer": "forty-seven",
+      "compute": null,
+      "solution": "47 is 4 tens and 7 ones: forty-seven.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "forty-seven",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "47 = forty-seven.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.364Z"
+        }
+      }
+    },
+    {
+      "id": "9dff308f-2f01-4db0-a3a7-4967b204e272",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Write a numeral in expanded form",
+      "stem": "Which choice is 95 in expanded form?",
+      "choices": [
+        "$9 + 5$",
+        "$50 + 9$",
+        "$900 + 50$",
+        "$90 + 5$"
+      ],
+      "answer": "$90 + 5$",
+      "compute": null,
+      "solution": "The 9 is in the tens place, so it is worth 90. The 5 is worth 5: 90 + 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$90 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "95 = 90 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.370Z"
+        }
+      }
+    },
+    {
       "id": "5a805282-03c2-42d3-a8de-6407214e25c0",
       "topic_id": "NC17.2.NBT.3",
       "difficulty": 2,
@@ -19242,6 +19538,263 @@
           "work": "40 + 600 + 2 = 642.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:18.267Z"
+        }
+      }
+    },
+    {
+      "id": "4826495e-6bab-492f-ba6d-96205540a420",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number from its hundreds, tens and ones",
+      "stem": "A number has 5 hundreds, 0 tens and 3 ones. What is the number?",
+      "choices": [],
+      "answer": "503",
+      "compute": "500+0+3",
+      "solution": "500 + 0 + 3 = 503.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "503",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "500 + 0 + 3 = 503.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.345Z"
+        }
+      }
+    },
+    {
+      "id": "7c993617-ee3f-40a4-a885-b8d5f8b45a49",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a number from its hundreds, tens and ones",
+      "stem": "A number has 7 tens and 4 hundreds. It has no ones. What is the number?",
+      "choices": [],
+      "answer": "470",
+      "compute": "400+70",
+      "solution": "4 hundreds is 400 and 7 tens is 70. 400 + 70 = 470.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "470",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 hundreds + 7 tens + 0 ones = 470.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.352Z"
+        }
+      }
+    },
+    {
+      "id": "0c34a5f2-8750-40f2-b990-9b161f757ed6",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Fix a mistake in writing a number",
+      "stem": "Ava wrote 305 as $300 + 50$. Which sum shows 305 in expanded form?",
+      "choices": [
+        "$300 + 50$",
+        "$30 + 5$",
+        "$300 + 5$",
+        "$300 + 0 + 50$"
+      ],
+      "answer": "$300 + 5$",
+      "compute": null,
+      "solution": "305 has 3 hundreds, 0 tens and 5 ones. So 305 = 300 + 5. Ava put the 5 in the tens place by mistake.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$300 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "305 = 3 hundreds, 0 tens, 5 ones = 300 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.355Z"
+        }
+      }
+    },
+    {
+      "id": "4f846652-0cbb-4b70-87b6-53b9e40f640c",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a numeral in expanded form",
+      "stem": "Which sum shows 406 in expanded form?",
+      "choices": [
+        "$400 + 60$",
+        "$40 + 6$",
+        "$400 + 6$",
+        "$400 + 10 + 6$"
+      ],
+      "answer": "$400 + 6$",
+      "compute": null,
+      "solution": "There are 4 hundreds and 6 ones, and no tens. So 406 = 400 + 6.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$400 + 6$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "406 = 400 + 0 + 6 = 400 + 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.363Z"
+        }
+      }
+    },
+    {
+      "id": "3306ee17-267b-44a7-9fb1-e47e2fc599d2",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "The number of pages in a book is 360. Which words name 360?",
+      "choices": [
+        "three hundred six",
+        "three hundred sixteen",
+        "six hundred thirty",
+        "three hundred sixty"
+      ],
+      "answer": "three hundred sixty",
+      "compute": null,
+      "solution": "360 is 3 hundreds, 6 tens and 0 ones: three hundred sixty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "three hundred sixty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360 = three hundred sixty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.367Z"
+        }
+      }
+    },
+    {
+      "id": "53cc9597-3645-4475-ab07-cac1c848c4b8",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a number from its hundreds, tens and ones",
+      "stem": "Which numeral has 8 hundreds, 1 ten and 6 ones?",
+      "choices": [
+        "861",
+        "816",
+        "618",
+        "8016"
+      ],
+      "answer": "816",
+      "compute": "816",
+      "solution": "8 hundreds is 800, 1 ten is 10 and 6 ones is 6. 800 + 10 + 6 = 816.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "816",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "800 + 10 + 6 = 816.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.369Z"
+        }
+      }
+    },
+    {
+      "id": "65a9a1c3-d6d7-4d43-ad32-b77d1949dd89",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the missing part of an expanded form",
+      "stem": "Fill in the ?: $835 = 800 + ? + 5$. What number goes in place of the ?",
+      "choices": [],
+      "answer": "30",
+      "compute": "835-800-5",
+      "solution": "The 3 in 835 is in the tens place, so it is worth 30.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "30",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "835 = 800 + 30 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.371Z"
+        }
+      }
+    },
+    {
+      "id": "a57f1d9a-80ef-4149-90f9-7b314ea5026e",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "A ticket has the number 119. Which words name 119?",
+      "choices": [
+        "one hundred ninety",
+        "one hundred nine",
+        "one hundred nineteen",
+        "nine hundred eleven"
+      ],
+      "answer": "one hundred nineteen",
+      "compute": null,
+      "solution": "119 is 1 hundred and 19, so it is one hundred nineteen.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "one hundred nineteen",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "119 = one hundred nineteen.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.374Z"
         }
       }
     },
@@ -19562,6 +20115,137 @@
           "work": "seven hundred seventy = 770 = 700 + 70. Others: 777, 707, 140.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:04:18.267Z"
+        }
+      }
+    },
+    {
+      "id": "1b19ec05-1d46-4bfa-9354-9cb43f854f34",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "Which choice shows 140 in words, spelled correctly?",
+      "choices": [
+        "one hundred fourty",
+        "one hundred forty",
+        "one hundred four",
+        "one hundred fourteen"
+      ],
+      "answer": "one hundred forty",
+      "compute": null,
+      "solution": "140 is 1 hundred and 4 tens. Four tens is spelled forty, with no u.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "one hundred forty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "140 = one hundred forty (\"fourty\" is misspelled).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.348Z"
+        }
+      }
+    },
+    {
+      "id": "2a435353-550f-4fbb-aedd-f848b25ac2c2",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a numeral in words",
+      "stem": "Which choice is 960 written in words?",
+      "choices": [
+        "nine hundred six",
+        "nine hundred sixteen",
+        "six hundred ninety",
+        "nine hundred sixty"
+      ],
+      "answer": "nine hundred sixty",
+      "compute": null,
+      "solution": "960 is 9 hundreds, 6 tens and 0 ones: nine hundred sixty.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "nine hundred sixty",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "960 = nine hundred sixty.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.351Z"
+        }
+      }
+    },
+    {
+      "id": "f0f8f37a-ed74-43cb-948e-597f7ad11019",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing part of an expanded form",
+      "stem": "Four hundred eighty-one is written $400 + ? + 1$. What number goes in place of the ?",
+      "choices": [],
+      "answer": "80",
+      "compute": "481-400-1",
+      "solution": "Eighty is 80, so the missing number is 80.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "80",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "481 = 400 + 80 + 1.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.355Z"
+        }
+      }
+    },
+    {
+      "id": "bda9d624-75e4-4727-9064-037c8229537e",
+      "topic_id": "NC17.2.NBT.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Write a numeral in expanded form",
+      "stem": "Which sum shows 905 in expanded form?",
+      "choices": [
+        "$90 + 5$",
+        "$900 + 50$",
+        "$9 + 0 + 5$",
+        "$900 + 5$"
+      ],
+      "answer": "$900 + 5$",
+      "compute": null,
+      "solution": "905 has 9 hundreds, 0 tens and 5 ones, so 905 = 900 + 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$900 + 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "905 = 900 + 0 + 5 = 900 + 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.377Z"
         }
       }
     },

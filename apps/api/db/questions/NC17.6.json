@@ -15902,6 +15902,103 @@
       }
     },
     {
+      "id": "299f2c9e-fecc-4257-85ec-987b543d3ac2",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A coach has $2{,}160$ stickers. She gives each of $25$ swimmers the same number of stickers, as many as she can. How many stickers does she have left over?",
+      "choices": [],
+      "answer": "10",
+      "compute": "2160-25*86",
+      "solution": "$2{,}160 \\div 25 = 86$ R $10$. Each swimmer gets 86 stickers and 10 are left over.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "25 x 86 = 2,150; 2,160 - 2,150 = 10 left over.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.348Z"
+        }
+      }
+    },
+    {
+      "id": "2efb37f3-8332-4868-ab10-10eb57f5acaf",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Divide with long division",
+      "stem": "Which is the quotient when $9{,}072$ is divided by $14$?",
+      "choices": [
+        "$648$",
+        "$684$",
+        "$638$",
+        "$6{,}480$"
+      ],
+      "answer": "$648$",
+      "compute": "9072/14",
+      "solution": "Long division gives $9{,}072 \\div 14 = 648$. Check: $14 \\times 648 = 9{,}072$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$648$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14 x 648 = 14x600 + 14x48 = 8,400 + 672 = 9,072. Quotient 648.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.350Z"
+        }
+      }
+    },
+    {
+      "id": "66a8b32b-56d1-40b1-8f19-fe0b3e1d8ce9",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a division word problem",
+      "stem": "Which story matches the division $3{,}600 \\div 45$?",
+      "choices": [
+        "A school has 45 rows of chairs with 3,600 chairs in each row and wants to know the total",
+        "A school has 3,600 chairs and buys 45 more and wants to know the total",
+        "A school puts 3,600 chairs in rows of 45 chairs each and wants to know the number of rows",
+        "A school has 3,600 chairs and 45 are broken and wants to know how many are left"
+      ],
+      "answer": "A school puts 3,600 chairs in rows of 45 chairs each and wants to know the number of rows",
+      "compute": null,
+      "solution": "Putting 3,600 chairs into rows of 45 asks how many groups of 45 there are: $3{,}600 \\div 45$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "A school puts 3,600 chairs in rows of 45 chairs each and wants to know the number of rows",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Division as how many groups of 45 in 3,600: rows of 45 chairs, number of rows (80). Others are subtraction, addition, multiplication.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.373Z"
+        }
+      }
+    },
+    {
       "id": "e2b44fd9-4682-48d0-b5c5-c4f85e4efde5",
       "topic_id": "NC17.6.NS.2",
       "difficulty": 2,
@@ -16217,6 +16314,166 @@
       }
     },
     {
+      "id": "6feda6d2-0c8f-4047-ba74-15224809f00e",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a remainder as a fraction",
+      "stem": "A ribbon $1{,}250$ centimeters long is cut into $8$ equal pieces, with none left over. Since $1{,}250 \\div 8 = 156$ R $2$, which shows the length of each piece in centimeters?",
+      "choices": [
+        "$156\\frac{1}{8}$",
+        "$156\\frac{1}{2}$",
+        "$156\\frac{1}{4}$",
+        "$156\\frac{2}{156}$"
+      ],
+      "answer": "$156\\frac{1}{4}$",
+      "compute": null,
+      "solution": "The remainder 2 is shared among 8 pieces, so each piece gets $\\frac{2}{8} = \\frac{1}{4}$ more: $156\\frac{1}{4}$ centimeters.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$156\\frac{1}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "156 R 2: the remainder 2 cm is shared among 8 pieces, 2/8 = 1/4, so 156 1/4 cm. Check 8 x 156.25 = 1250.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.352Z"
+        }
+      }
+    },
+    {
+      "id": "d38ae729-e41d-46e1-9e60-97a3fdb47275",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Use division to find a rate",
+      "stem": "A river carries $14{,}400$ liters of water past a bridge in $80$ seconds. How many liters pass each second?",
+      "choices": [],
+      "answer": "180",
+      "compute": "14400/80",
+      "solution": "$14{,}400 \\div 80 = 180$ liters each second.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "180",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "14,400 / 80 = 180.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.360Z"
+        }
+      }
+    },
+    {
+      "id": "f9067a59-5733-496e-beca-83278daac04a",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Estimate a quotient",
+      "stem": "Which division has an answer closest to $300$?",
+      "choices": [
+        "$9{,}100 \\div 300$",
+        "$9{,}100 \\div 30$",
+        "$910 \\div 30$",
+        "$91{,}000 \\div 30$"
+      ],
+      "answer": "$9{,}100 \\div 30$",
+      "compute": null,
+      "solution": "$9{,}100 \\div 30$ is about 303. The others are about 30, 30 and 3,033.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9{,}100 \\div 30$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9,100 / 30 = 303.3 (closest). 91,000/30 = 3,033; 910/30 = 30.3; 9,100/300 = 30.3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.372Z"
+        }
+      }
+    },
+    {
+      "id": "df992b23-85c2-405e-9e4d-d7745bfdc1d8",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the quotient and the remainder",
+      "stem": "Use long division on $6{,}413 \\div 27$. Which shows the quotient and the remainder?",
+      "choices": [
+        "237 R 14",
+        "14 R 237",
+        "238 R 14",
+        "227 R 14"
+      ],
+      "answer": "237 R 14",
+      "compute": null,
+      "solution": "$27 \\times 237 = 6{,}399$ and $6{,}413 - 6{,}399 = 14$. So the answer is 237 R 14.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "237 R 14",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "27 x 237 = 6,399; 6,413 - 6,399 = 14. 237 R 14.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.375Z"
+        }
+      }
+    },
+    {
+      "id": "4ce73b2d-aea8-48ee-88ac-7402bf286381",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "What remainder is left when $9{,}999$ is divided by $44$?",
+      "choices": [],
+      "answer": "11",
+      "compute": "9999-44*227",
+      "solution": "$44 \\times 227 = 9{,}988$ and $9{,}999 - 9{,}988 = 11$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "11",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "44 x 227 = 9,988; 9,999 - 9,988 = 11.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.377Z"
+        }
+      }
+    },
+    {
       "id": "39fb4467-75ce-4d47-b48e-e0567f78b749",
       "topic_id": "NC17.6.NS.2",
       "difficulty": 3,
@@ -16523,6 +16780,127 @@
           "work": "57 necklaces use 1,995 beads, 5 left over.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:34.619Z"
+        }
+      }
+    },
+    {
+      "id": "059df9e3-7e8e-4eed-a37f-f3d77dbf31ae",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "What is the remainder when $77{,}777$ is divided by $250$?",
+      "choices": [],
+      "answer": "27",
+      "compute": "77777-250*311",
+      "solution": "$250 \\times 311 = 77{,}750$ and $77{,}777 - 77{,}750 = 27$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "27",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "250 x 311 = 77,750; 77,777 - 77,750 = 27.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.327Z"
+        }
+      }
+    },
+    {
+      "id": "379a983c-2b95-4ff1-8e12-1c9bdc6dcf59",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the remainder",
+      "stem": "What is the remainder when $25{,}000$ is divided by $360$?",
+      "choices": [],
+      "answer": "160",
+      "compute": "25000-360*69",
+      "solution": "$360 \\times 69 = 24{,}840$ and $25{,}000 - 24{,}840 = 160$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "160",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "360 x 69 = 24,840; 25,000 - 24,840 = 160 (360 x 70 = 25,200 too big).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.354Z"
+        }
+      }
+    },
+    {
+      "id": "e0f08994-434c-4c33-b756-03e1ac8cc43f",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Interpret the quotient and remainder",
+      "stem": "A farm has $8{,}630$ apples. It packs them in crates of $75$ apples and sells only full crates, each for $12$ dollars. How many dollars does it earn?",
+      "choices": [],
+      "answer": "1380",
+      "compute": "115*12",
+      "solution": "$8{,}630 \\div 75 = 115$ R $5$, so 115 crates are full. $115 \\times 12 = 1{,}380$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "1380",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "75 x 115 = 8,625, remainder 5, so 115 full crates; 115 x 12 = 1,380 dollars.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.359Z"
+        }
+      }
+    },
+    {
+      "id": "1c97c706-84ac-4486-b657-1f11eb492f6a",
+      "topic_id": "NC17.6.NS.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Divide when the quotient has zeros",
+      "stem": "A cinema sold $42{,}168$ dollars of tickets from $42$ equal showings. How many dollars did each showing bring in?",
+      "choices": [
+        "$1{,}004$",
+        "$104$",
+        "$1{,}040$",
+        "$1{,}400$"
+      ],
+      "answer": "$1{,}004$",
+      "compute": null,
+      "solution": "$42 \\times 1{,}004 = 42{,}168$, so each showing brought in $1{,}004$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$1{,}004$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "42 x 1,004 = 42,000 + 168 = 42,168.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.369Z"
         }
       }
     },

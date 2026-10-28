@@ -15875,6 +15875,200 @@
       }
     },
     {
+      "id": "69d2e2ca-2280-4540-a097-6144cac495a0",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Multiply and divide rational numbers",
+      "stem": "Multiply $-\\frac{3}{4}$ by $\\frac{2}{3}$. What is the product?",
+      "choices": [
+        "$\\frac{1}{2}$",
+        "$-\\frac{9}{8}$",
+        "$-\\frac{1}{2}$",
+        "$-\\frac{5}{12}$"
+      ],
+      "answer": "$-\\frac{1}{2}$",
+      "compute": null,
+      "solution": "Multiply the numerators and the denominators: $\\frac{-6}{12} = -\\frac{1}{2}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{1}{2}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(-3/4)(2/3) = -6/12 = -1/2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.264Z"
+        }
+      }
+    },
+    {
+      "id": "1fa4fe09-21dc-45f6-96c9-72122ab09930",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "The temperature went from $8$ degrees to $-5$ degrees. Which expression gives the change in temperature?",
+      "choices": [
+        "$8 - (-5)$",
+        "$-5 + 8$",
+        "$-5 - 8$",
+        "$8 - 5$"
+      ],
+      "answer": "$-5 - 8$",
+      "compute": null,
+      "solution": "Change = new value minus old value: $-5 - 8 = -13$. The other expressions use the wrong order or the wrong sign.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-5 - 8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Change = final - initial = -5 - 8 = -13. 8-(-5)=13 has the wrong sign; the others are 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.317Z"
+        }
+      }
+    },
+    {
+      "id": "fb84d43d-5f7a-44e3-8c48-a982b4685122",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add and subtract rational numbers",
+      "stem": "Find the sum of $-4.6$ and $9.1$.",
+      "choices": [],
+      "answer": "4.5",
+      "compute": "9.1-4.6",
+      "solution": "$9.1 - 4.6 = 4.5$, and the larger number is positive, so the sum is $4.5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4.5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-4.6 + 9.1 = 4.5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.359Z"
+        }
+      }
+    },
+    {
+      "id": "3f60e98b-e81d-4547-a9c0-bf8cac311549",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find a missing number in an equation",
+      "stem": "What number makes this true? $? - 8 = -3$",
+      "choices": [],
+      "answer": "5",
+      "compute": "-3+8",
+      "solution": "Add 8 to both sides: $? = -3 + 8 = 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = -3 + 8 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.372Z"
+        }
+      }
+    },
+    {
+      "id": "323fd047-d2c5-43ea-a9a4-223666c6df83",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "Zoe's account balance is $-18$ dollars. She deposits 25 dollars and then pays 4 dollars. What is her balance now, in dollars?",
+      "choices": [
+        "$-3$",
+        "$3$",
+        "$11$",
+        "$-47$"
+      ],
+      "answer": "$3$",
+      "compute": "-18+25-4",
+      "solution": "$-18 + 25 = 7$, and $7 - 4 = 3$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-18 + 25 - 4 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.373Z"
+        }
+      }
+    },
+    {
+      "id": "0de3eb4c-b863-419d-adf2-7d05a6b2103f",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Find an equal expression or true statement",
+      "stem": "Which expression is equal to $-9 + 4$?",
+      "choices": [
+        "$9 - 4$",
+        "$4 - 9$",
+        "$-9 - 4$",
+        "$9 + 4$"
+      ],
+      "answer": "$4 - 9$",
+      "compute": null,
+      "solution": "$-9 + 4 = -5$ and $4 - 9 = -5$. The others equal 5, $-13$ and 13.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$4 - 9$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-9 + 4 = -5 = 4 - 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.377Z"
+        }
+      }
+    },
+    {
       "id": "a6be89df-7595-4549-8749-346355ec1280",
       "topic_id": "NC17.7.NS.3",
       "difficulty": 2,
@@ -16190,6 +16384,103 @@
       }
     },
     {
+      "id": "8ef89498-8b7f-41a2-82bd-908483a4fbce",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find a missing number in an equation",
+      "stem": "What number makes this true? $? \\times \\left(-\\frac{3}{4}\\right) = 6$",
+      "choices": [],
+      "answer": "-8",
+      "compute": "6/(-3/4)",
+      "solution": "Divide both sides by $-\\frac{3}{4}$: $6 \\div \\left(-\\frac{3}{4}\\right) = 6 \\times \\left(-\\frac{4}{3}\\right) = -8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = 6 / (-3/4) = 6 x (-4/3) = -8. Check -8 x -3/4 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.356Z"
+        }
+      }
+    },
+    {
+      "id": "e279741a-9d15-4b05-b534-eb98c2981925",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Solve a problem with positive and negative numbers",
+      "stem": "Nia's account balance is $-35.50$ dollars. She deposits 60 dollars. Then a fee of 4.25 dollars is taken out each month for 2 months. What is her balance now, in dollars?",
+      "choices": [
+        "$20.25$",
+        "$33$",
+        "$24.5$",
+        "$16$"
+      ],
+      "answer": "$16$",
+      "compute": "-35.5+60-2*4.25",
+      "solution": "Fees: $2 \\times 4.25 = 8.50$. Balance: $-35.50 + 60 - 8.50 = 16$ dollars.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$16$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-35.50 + 60 = 24.50; 2 x 4.25 = 8.50; 24.50 - 8.50 = 16.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.356Z"
+        }
+      }
+    },
+    {
+      "id": "69a875d6-c4b0-4fa0-aac3-33518c32a466",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Add and subtract rational numbers",
+      "stem": "What is $-3.75 - (-1.5) + 2$?",
+      "choices": [
+        "$-3.25$",
+        "$0.25$",
+        "$-4.25$",
+        "$-0.25$"
+      ],
+      "answer": "$-0.25$",
+      "compute": null,
+      "solution": "$-3.75 + 1.5 = -2.25$, and $-2.25 + 2 = -0.25$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-0.25$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-3.75 + 1.5 = -2.25; -2.25 + 2 = -0.25.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.366Z"
+        }
+      }
+    },
+    {
       "id": "b0a3ac43-66e2-468a-ad39-dcee1d1a4b7b",
       "topic_id": "NC17.7.NS.3",
       "difficulty": 3,
@@ -16501,6 +16792,40 @@
           "work": "Change -12 - 3 = -15 over 5 hours: -15 / 5 = -3.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:05:34.658Z"
+        }
+      }
+    },
+    {
+      "id": "a944988b-2849-4e35-b84d-a22259c74620",
+      "topic_id": "NC17.7.NS.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find a missing number in an equation",
+      "stem": "What number makes this true? $-\\frac{2}{3} \\times ? = \\frac{5}{6}$",
+      "choices": [
+        "$-\\frac{5}{4}$",
+        "$\\frac{5}{4}$",
+        "$-\\frac{5}{9}$",
+        "$-\\frac{4}{5}$"
+      ],
+      "answer": "$-\\frac{5}{4}$",
+      "compute": null,
+      "solution": "Divide both sides by $-\\frac{2}{3}$: $\\frac{5}{6} \\times \\left(-\\frac{3}{2}\\right) = -\\frac{15}{12} = -\\frac{5}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-\\frac{5}{4}$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "? = (5/6) / (-2/3) = (5/6)(-3/2) = -15/12 = -5/4. Check: (-2/3)(-5/4)=10/12=5/6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.348Z"
         }
       }
     },

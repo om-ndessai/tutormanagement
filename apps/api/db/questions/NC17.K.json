@@ -9,7 +9,7 @@
     "NC17.K.CC.6": "Pictures are written out as rows of O. Kindergarten compares only (more, fewer, same), never how much more; matching questions are one step. Text only: groups are shown as lists of marks, as numbers in a story or as real-world counts (legs, wheels). No question asks how many more or fewer. Counts stay within 10, never chain two comparisons, and three-group comparisons are left out.",
     "NC17.K.CC.7": "Only two written numerals are compared at a time, all within 1 to 10; no question asks how much more or less, and none chains comparisons. Comparison words are greater than, less than and equal to; the symbols are left to Grade 1. Kindergarten comparison of two written numerals to 10, text only: numerals are given in the stem. Never asks how much more; no chains of comparisons.",
     "NC17.K.OA.1": "Representations (fingers, drawings, acting out) are written as short stories; everything within 10. Pictures and drawings are written as words; fingers, objects, acting out, words and expressions are all tested as text. Sums and differences stay within 10. Two difficulty-3 questions ask which item does NOT match.",
-    "NC17.K.OA.2": "Everything is one step and inside 10. Skills: add to (6), take from (6), put together (6), take apart / one part unknown (6), matching a story and a number sentence (6). The change-unknown and start-unknown problems are Grade 1 (OA.1), so they are left out. Objects and drawings are written as a story (blocks, circles Zoe draws).",
+    "NC17.K.OA.2": "Everything is one step and inside 10. Skills: add to (6), take from (6), put together (6), take apart / one part unknown (6), matching a story and a number sentence (6). The change-unknown and start-unknown problems are Grade 1 (OA.1), so they are left out. Objects and drawings are written as a story (blocks, circles Zoe draws). Every question is a story. Result unknown for add-to and take-from, total unknown and one part unknown for put-together and take-apart, as Kindergarten asks; no compare problems, no change-unknown. Pictures and objects are replaced by the story in words.",
     "NC17.K.OA.3": "Zero is left out as a part (Kindergarten pairs here use 1 or more in each part). Drawings are replaced by number sentences and short stories. Order of a pair (3 and 4 versus 4 and 3) is never asked, since it is ambiguous at this age.",
     "NC17.K.OA.4": "Written for Kindergarten: one step, numbers 0 to 10, ten-frames and objects described in words. Skills: story 7, number sentence 4 (+ missing start 3), ten-frame 3, pairs 6, zero and ten 3.",
     "NC17.K.OA.6": "Total up to 5, one step. \"Without counting one by one\" (subitizing) cannot be tested in text, so groups are written as numbers and the questions test combining small groups and their partners.",
@@ -25207,6 +25207,219 @@
       }
     },
     {
+      "id": "4fc48718-4722-4983-8f4a-1b2e8f18267f",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Jada has 4 shells in one pail and 1 shell in another pail. How many shells does Jada have in all?",
+      "choices": [],
+      "answer": "5",
+      "compute": "4+1",
+      "solution": "Put the shells together: 4 + 1 = 5 shells.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "4 + 1 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.296Z"
+        }
+      }
+    },
+    {
+      "id": "754a560c-46bd-4f91-a9a4-7988be098175",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "A pot has 5 flowers. 3 flowers are pink. The rest are white. How many flowers are white?",
+      "choices": [],
+      "answer": "2",
+      "compute": "5-3",
+      "solution": "Take the pink flowers away from all 5. 5 - 3 = 2 white flowers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 - 3 = 2 white.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.326Z"
+        }
+      }
+    },
+    {
+      "id": "00a96058-1d94-43f4-b9e2-192e5b37700e",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Put together: total unknown",
+      "stem": "In a garden there are 2 roses and 4 daisies. How many flowers are in the garden?",
+      "choices": [
+        "2",
+        "6",
+        "4",
+        "8"
+      ],
+      "answer": "6",
+      "compute": "2+4",
+      "solution": "Put the flowers together: 2 + 4 = 6 flowers.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 4 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.347Z"
+        }
+      }
+    },
+    {
+      "id": "e57156fb-513c-486b-9301-f471431e85da",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Ali has 2 red hats and 1 blue hat. How many hats does Ali have in all?",
+      "choices": [],
+      "answer": "3",
+      "compute": "2+1",
+      "solution": "Put the hats together: 2 + 1 = 3 hats.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 + 1 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.361Z"
+        }
+      }
+    },
+    {
+      "id": "9f8773b7-f96f-4721-9986-4a578184972a",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Ben has 1 toy bear and 3 toy dogs. How many toys does Ben have in all?",
+      "choices": [],
+      "answer": "4",
+      "compute": "1+3",
+      "solution": "Put the toys together: 1 + 3 = 4 toys.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 3 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.375Z"
+        }
+      }
+    },
+    {
+      "id": "083897ff-6793-47a7-a08f-ded87ec76700",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "Nora has 1 kite. Dad gives her 2 more kites. How many kites does Nora have now?",
+      "choices": [],
+      "answer": "3",
+      "compute": "1+2",
+      "solution": "1 kite and 2 more kites is 1 + 2 = 3 kites.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "1 + 2 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.378Z"
+        }
+      }
+    },
+    {
+      "id": "6e0d61d8-0c91-4bae-a08e-a3978beb89af",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "2 ants are on a leaf. 3 more ants come. Which number sentence matches the story?",
+      "choices": [
+        "$3 - 2 = 1$",
+        "$2 + 3 = 5$",
+        "$5 - 3 = 2$",
+        "$2 + 5 = 7$"
+      ],
+      "answer": "$2 + 3 = 5$",
+      "compute": null,
+      "solution": "More ants come, so we add: 2 + 3 = 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$2 + 3 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2 ants and 3 more: 2 + 3 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.380Z"
+        }
+      }
+    },
+    {
       "id": "398c29fb-a5e4-4fdc-a5d9-f8e47257acc3",
       "topic_id": "NC17.K.OA.2",
       "difficulty": 2,
@@ -25522,6 +25735,161 @@
       }
     },
     {
+      "id": "8cf42d14-9d0a-41a1-9e4a-41b7c93ce6a7",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose adding or taking away for a story",
+      "stem": "Lu has 5 toy frogs. 3 frogs hop away. To find how many frogs Lu has now, what do you do?",
+      "choices": [
+        "Take 3 away from 5",
+        "Add 3 to 5",
+        "Take 5 away from 3",
+        "Add 5 and 5"
+      ],
+      "answer": "Take 3 away from 5",
+      "compute": null,
+      "solution": "Frogs hop away, so there are fewer. We take 3 away from 5: 5 - 3 = 2.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Take 3 away from 5",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 frogs, 3 hop away: 5 - 3, take 3 away from 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.338Z"
+        }
+      }
+    },
+    {
+      "id": "f69de281-8e3c-4a6a-b83f-d2758b433c77",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "There are 10 kids on a team. 6 kids wear hats. The rest do not wear hats. How many kids do not wear hats?",
+      "choices": [],
+      "answer": "4",
+      "compute": "10-6",
+      "solution": "Take the kids with hats away from all 10. 10 - 6 = 4 kids.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 6 = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.358Z"
+        }
+      }
+    },
+    {
+      "id": "eadbda97-f1a2-4722-bfa2-0d3da11391f2",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Add to: result unknown",
+      "stem": "Eli has 8 marbles in a jar. He puts in 2 more marbles. How many marbles are in the jar now?",
+      "choices": [],
+      "answer": "10",
+      "compute": "8+2",
+      "solution": "8 marbles and 2 more marbles is 8 + 2 = 10 marbles.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "10",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "8 + 2 = 10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.361Z"
+        }
+      }
+    },
+    {
+      "id": "6392d487-a48a-48c4-975b-08299d483ebf",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose adding or taking away for a story",
+      "stem": "Joy has 4 stickers. She gets 4 more stickers. To find how many stickers Joy has now, what do you do?",
+      "choices": [
+        "Take 4 away from 4",
+        "Put 4 and 4 together",
+        "Take 4 away from 8",
+        "Put 4 and 8 together"
+      ],
+      "answer": "Put 4 and 4 together",
+      "compute": null,
+      "solution": "She gets more stickers, so we put them together: 4 + 4 = 8.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Put 4 and 4 together",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Joining 4 and 4: put 4 and 4 together.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.366Z"
+        }
+      }
+    },
+    {
+      "id": "a0e27f72-bb60-45c1-a190-5618100cc8ff",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Take apart: one part unknown",
+      "stem": "A basket has 7 fruits. 4 fruits are pears. The rest are plums. How many fruits are plums?",
+      "choices": [],
+      "answer": "3",
+      "compute": "7-4",
+      "solution": "Take the pears away from all 7 fruits. 7 - 4 = 3 plums.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "7 - 4 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.366Z"
+        }
+      }
+    },
+    {
       "id": "2eac6e7b-208f-43bd-9d1a-5fdaaf050dfa",
       "topic_id": "NC17.K.OA.2",
       "difficulty": 3,
@@ -25833,6 +26201,132 @@
           "work": "Yellow = total - red = 7 - 3 = 4.",
           "run_id": "claude-code",
           "at": "2026-10-24T08:47:21.369Z"
+        }
+      }
+    },
+    {
+      "id": "1377f10c-966f-40a5-a5ee-0fb5b60fa0d8",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Match a story to a number sentence",
+      "stem": "Ed has 9 toys. 4 toys are cars. The rest are blocks. Which number sentence shows how to find the number of blocks?",
+      "choices": [
+        "$9 + 4 = 13$",
+        "$9 - 5 = 4$",
+        "$9 - 4 = 5$",
+        "$5 - 4 = 1$"
+      ],
+      "answer": "$9 - 4 = 5$",
+      "compute": null,
+      "solution": "Take the cars away from all 9 toys: 9 - 4 = 5 blocks.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$9 - 4 = 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Blocks = 9 - 4 = 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.349Z"
+        }
+      }
+    },
+    {
+      "id": "76601778-97e3-4751-b00e-41da0190e505",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Take from: result unknown",
+      "stem": "A class has 10 chairs. 7 chairs are carried to another room. How many chairs are left in the class?",
+      "choices": [],
+      "answer": "3",
+      "compute": "10-7",
+      "solution": "Take 7 chairs away from 10. 10 - 7 = 3 chairs.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "10 - 7 = 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.350Z"
+        }
+      }
+    },
+    {
+      "id": "87c1d940-406c-4d3f-a954-2b12ae2f6cab",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Put together: total unknown",
+      "stem": "Tomas has 5 crayons in a box and 4 crayons in his bag. How many crayons does Tomas have in all?",
+      "choices": [],
+      "answer": "9",
+      "compute": "5+4",
+      "solution": "Put the crayons together: 5 + 4 = 9 crayons.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5 + 4 = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.355Z"
+        }
+      }
+    },
+    {
+      "id": "11aec79f-d9e9-4ca4-902b-98c82c9143a1",
+      "topic_id": "NC17.K.OA.2",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Take apart: one part unknown",
+      "stem": "There are 9 bugs on a leaf. 7 bugs are ladybugs. The rest are ants. How many bugs are ants?",
+      "choices": [
+        "16",
+        "7",
+        "2",
+        "3"
+      ],
+      "answer": "2",
+      "compute": "9-7",
+      "solution": "Take the ladybugs away from all 9 bugs. 9 - 7 = 2 ants.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "9 - 7 = 2 ants.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.358Z"
         }
       }
     },

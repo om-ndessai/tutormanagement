@@ -7,6 +7,7 @@
     "NC17.M3.A-SSE.2": "Full 69 written (23 per difficulty). Choice stems that ask for a complete factorization say so; rounded numeric answers have no compute.",
     "NC17.M3.A-SSE.3": "The standard is often taught with a calculator (for example 1.15^t written as about 1.012^(12t)). These are written to be exact by hand: bases are perfect powers (4, 8, 9, 16, 27, 1.21, 1.44, 0.81) or the rewritten form is left as a power. Only one question needs rounding-free decimal arithmetic (600 times 1.0404). Only exact, hand-computable questions; no approximations needed except the one question that says to round.",
     "NC17.M3.A-APR.2": "All questions are answerable by hand with the Remainder Theorem (evaluating p(a), including a = -a for x + a and a = b/a for ax - b). Skills are spread over seven kinds: remainder by evaluating, factor test, unknown coefficient, divisors x + a and ax - b, the division statement, interpreting a remainder, and finding other zeros from a known factor.",
+    "NC17.M3.A-APR.3": "Questions stay on the link between factors, zeros and solutions; the remainder theorem and polynomial division as such (neighbouring standards) are avoided. Graphs are described by their zeros only.",
     "NC17.M3.A-APR.6": "Divisors are linear (leading coefficient 1 or 2) or quadratic, as a \"simple rational expression\"; the quotients always have integer coefficients. The remainder theorem appears only as a shortcut for a remainder value (3 questions).",
     "NC17.M3.A-CED.1": "Covers absolute value, polynomial, exponential and rational equations and inequalities, written from situations and solved algebraically; graphical solving is asked through where graphs cross and a table of values, since a graph cannot be shown.",
     "NC17.M3.A-CED.2": "Graphs are described by features and equations, never shown. 16 choice (writing an equation is a choice), 14 numeric. Skills: absolute value write (3) and read (4), polynomial write (4), evaluate and read (3) and end behavior (1), exponential write (4) and evaluate and read (4), rational write (3) and read asymptotes and intercepts (4).",
@@ -15838,6 +15839,171 @@
       }
     },
     {
+      "id": "61396641-48d5-495b-b4e9-6cb06808dad1",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor theorem: factors and values",
+      "stem": "The polynomial $p$ has $p(-3) = 0$. Which expression must be a factor of $p(x)$?",
+      "choices": [
+        "$x + 3$",
+        "$x - 3$",
+        "$-3x$",
+        "$x^2 - 3$"
+      ],
+      "answer": "$x + 3$",
+      "compute": null,
+      "solution": "A zero at $x = -3$ gives the factor $x - (-3) = x + 3$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x + 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor theorem: p(-3)=0 means x - (-3) = x + 3 is a factor.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.354Z"
+        }
+      }
+    },
+    {
+      "id": "fc23d4dd-118d-43ea-8898-b0dda65c6f96",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "Find all zeros of $g(x) = (x + 3)(x - 8)$.",
+      "choices": [
+        "$-3$ and $8$",
+        "$3$ and $-8$",
+        "$3$ and $8$",
+        "$-3$ and $-8$"
+      ],
+      "answer": "$-3$ and $8$",
+      "compute": null,
+      "solution": "A product is 0 when a factor is 0. $x + 3 = 0$ gives $x = -3$, and $x - 8 = 0$ gives $x = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-3$ and $8$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+3)(x-8)=0 gives x = -3 or x = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.360Z"
+        }
+      }
+    },
+    {
+      "id": "38bed28a-289f-4446-9c93-4fa5fcb49b14",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Find an unknown coefficient or solution from a factor or zero",
+      "stem": "The polynomial $p(x) = x^2 - 5x + k$ has 2 as a zero. What is $k$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "10-4",
+      "solution": "$p(2) = 4 - 10 + k = 0$, so $k = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "p(2) = 4 - 10 + k = 0, k = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.374Z"
+        }
+      }
+    },
+    {
+      "id": "3467bd1b-bd0b-47ce-b16e-cfd808f802c5",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Factor theorem: factors and values",
+      "stem": "Let $f(x) = x^2 + 2x - 8$. Since $f(2) = 0$, which statement is true?",
+      "choices": [
+        "$x + 2$ is a factor of $f(x)$",
+        "$x - 8$ is a factor of $f(x)$",
+        "$f(x)$ has no real zeros",
+        "$x - 2$ is a factor of $f(x)$"
+      ],
+      "answer": "$x - 2$ is a factor of $f(x)$",
+      "compute": null,
+      "solution": "If $f(2) = 0$ then 2 is a zero, so $x - 2$ is a factor. Indeed $f(x) = (x - 2)(x + 4)$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 2$ is a factor of $f(x)$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Factor theorem: f(2) = 0 so x - 2 is a factor (f = (x-2)(x+4)).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.376Z"
+        }
+      }
+    },
+    {
+      "id": "9a85b741-63d8-47fc-be9c-5c33c05fa8f8",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Read zeros from a factored polynomial",
+      "stem": "Which number is a zero of $f(x) = (x - 9)(x + 2)$?",
+      "choices": [
+        "$2$",
+        "$-2$",
+        "$-9$",
+        "$-18$"
+      ],
+      "answer": "$-2$",
+      "compute": "-2",
+      "solution": "$x + 2 = 0$ gives $x = -2$, so $-2$ is a zero. (The other zero is 9.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$-2$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 9 and -2; only -2 is listed.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.378Z"
+        }
+      }
+    },
+    {
       "id": "24d7787e-1d8f-4e2c-93c8-d5ed80d6bfc0",
       "topic_id": "NC17.M3.A-APR.3",
       "difficulty": 2,
@@ -16153,6 +16319,137 @@
       }
     },
     {
+      "id": "26e15327-8467-42ee-a4ed-2781f9674ef6",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "Which polynomial has zeros at $2$ and $-5$?",
+      "choices": [
+        "$x^2 - 3x - 10$",
+        "$x^2 - 7x + 10$",
+        "$x^2 + 3x + 10$",
+        "$x^2 + 3x - 10$"
+      ],
+      "answer": "$x^2 + 3x - 10$",
+      "compute": null,
+      "solution": "$(x - 2)(x + 5) = x^2 + 5x - 2x - 10 = x^2 + 3x - 10$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x^2 + 3x - 10$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Zeros 2 and -5 give (x-2)(x+5) = x^2+3x-10.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.305Z"
+        }
+      }
+    },
+    {
+      "id": "93cbecd3-c603-4631-8894-2cbcdb98765b",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Factor theorem: factors and values",
+      "stem": "Which expression is a factor of $f(x) = x^3 - 4x^2 + x + 6$?",
+      "choices": [
+        "$x + 3$",
+        "$x - 3$",
+        "$x - 1$",
+        "$x + 4$"
+      ],
+      "answer": "$x - 3$",
+      "compute": null,
+      "solution": "$f(3) = 27 - 36 + 3 + 6 = 0$, so $x - 3$ is a factor. The others fail: $f(-3) = -60$, $f(1) = 4$ and $f(-4) = -126$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$x - 3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(3) = 27 - 36 + 3 + 6 = 0, so x - 3 is a factor. f(-3) = -60, f(1) = 4, f(-4) = -130.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.353Z"
+        }
+      }
+    },
+    {
+      "id": "dc0b2450-7549-406f-adc5-2bb4fdaac878",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Write a polynomial from its zeros",
+      "stem": "A cubic function $f$ has a leading coefficient of 1 and zeros at 1, 2 and 3. What is $f(4)$?",
+      "choices": [],
+      "answer": "6",
+      "compute": "3*2*1",
+      "solution": "$f(x) = (x - 1)(x - 2)(x - 3)$, so $f(4) = 3 \\times 2 \\times 1 = 6$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "6",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f(x) = (x-1)(x-2)(x-3); f(4) = 3 x 2 x 1 = 6.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.357Z"
+        }
+      }
+    },
+    {
+      "id": "4e0eaaf2-72ee-4486-a3c7-4487e9052e64",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Multiplicity and the graph at a zero",
+      "stem": "How does the graph of $f(x) = (x + 1)^4(x - 3)$ behave at its zeros $-1$ and $3$?",
+      "choices": [
+        "It crosses the $x$-axis at $-1$ and touches it at $3$",
+        "It crosses the $x$-axis at both $-1$ and $3$",
+        "It touches the $x$-axis at $-1$ and crosses it at $3$",
+        "It touches the $x$-axis at both $-1$ and $3$"
+      ],
+      "answer": "It touches the $x$-axis at $-1$ and crosses it at $3$",
+      "compute": null,
+      "solution": "The zero $-1$ has even multiplicity 4, so the graph touches and turns. The zero 3 has multiplicity 1, so the graph crosses.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It touches the $x$-axis at $-1$ and crosses it at $3$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "(x+1)^4 even multiplicity: touches at -1; (x-3) odd: crosses at 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.365Z"
+        }
+      }
+    },
+    {
       "id": "c11f71ec-b9e2-4763-9789-eeaea7123da5",
       "topic_id": "NC17.M3.A-APR.3",
       "difficulty": 3,
@@ -16459,6 +16756,40 @@
           "work": "Cubic with touch at 3, cross at -1: p=a(x-3)^2(x+1). p(0)=9a=18, a=2. p(1)=2(4)(2)=16.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:27.841Z"
+        }
+      }
+    },
+    {
+      "id": "61449fc0-5c73-49e2-a91e-e62ff7c6f9ad",
+      "topic_id": "NC17.M3.A-APR.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Zeros, x-intercepts and solutions",
+      "stem": "Which statement is true about $f(x) = x^2 - 4x + 5$?",
+      "choices": [
+        "$f(x) = 0$ has solutions $1$ and $5$, so the graph meets the $x$-axis twice",
+        "$f(x) = 0$ has one real solution, so the graph touches the $x$-axis once",
+        "$f(x) = 0$ has no real solutions, so the graph never meets the $x$-axis",
+        "$f(x) = 0$ has no real solutions, so the graph meets the $x$-axis at $(0, 5)$"
+      ],
+      "answer": "$f(x) = 0$ has no real solutions, so the graph never meets the $x$-axis",
+      "compute": null,
+      "solution": "$x^2 - 4x + 5 = (x - 2)^2 + 1 \\ge 1$, so $f(x)$ is never 0. There are no real zeros and no $x$-intercepts. (The point $(0, 5)$ is the $y$-intercept.)",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) = 0$ has no real solutions, so the graph never meets the $x$-axis",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Discriminant 16 - 20 = -4 < 0: no real solutions, no x-intercepts. (0,5) is the y-intercept, so D is false.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.353Z"
         }
       }
     },

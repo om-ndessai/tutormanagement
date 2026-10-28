@@ -9,7 +9,7 @@
     "NC17.1.OA.6": "Number lines are described in words (start at, jump right or left). Subtraction signs are written as plain hyphens, so no LaTeX is used. Text only: number lines are described by where a child stands and jumps. Everything stays within 20. Strategy questions give the strategy in the stem so only the strategy named is needed.",
     "NC17.1.OA.7": "Every sum and difference stays within 20. A single equation cannot be a numeric question with a true/false answer, so \"is it true\" is asked as which-is-true, which-is-not-true and how-many-are-true; missing numbers and stories are numeric. Mostly truth of equations and meaning of the equal sign; a few \"number that makes it true\" items (about 10 of 69) for the balance idea.",
     "NC17.1.OA.8": "All numbers within 20, plus tens within 100. Skills (counts below in reply). Everything stays within 20, as Grade 1 does. Unknown positions covered: a + ? = c, ? + a = c, c - ? = a, ? - a = b, c = a + ?, c = ? - a, and stories with the change, part or start unknown.",
-    "NC17.1.NBT.1": "Counts by ones forward only, with starts below 150 and ends up to 150 (the standard reaches 150, so numbers past 120 are used). Skills: say the next number (7), find the missing number (6), count on a few numbers from a start (6), choose the correct counting list (6), count up to 150 (5). Counting by tens and counting back are other standards.",
+    "NC17.1.NBT.1": "Counts by ones forward only, with starts below 150 and ends up to 150 (the standard reaches 150, so numbers past 120 are used). Skills: say the next number (7), find the missing number (6), count on a few numbers from a start (6), choose the correct counting list (6), count up to 150 (5). Counting by tens and counting back are other standards. All numbers and options stay within 150 except a few distractors just past it. \"Say the next N numbers after X\" is used throughout so nobody wonders whether X itself counts; counting backwards is not part of this standard and is not asked.",
     "NC17.1.NBT.7": "Numbers stay within 100 as the standard says. Pictures of objects are replaced by bundles, boxes and rows of ten described in words. Number names are only ever given as text, in choice or numeric stems.",
     "NC17.1.NBT.2": "Grade 1 only: numbers kept within 100, whole-number answers. Digits and tens/ones picture work are written out in words; place value of numbers above 99 is left to other standards.",
     "NC17.1.NBT.3": "Numbers stay within two digits; the symbol is recorded in number sentences because a symbol cannot be chosen in a four-option list without a fourth meaningless option.",
@@ -25138,6 +25138,171 @@
       }
     },
     {
+      "id": "155e63e8-1a52-4829-933a-cc1617d37f25",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the correct counting list",
+      "stem": "Joy starts at 55 and counts up by ones. Which list shows what Joy says?",
+      "choices": [
+        "55, 65, 75, 85",
+        "55, 54, 53, 52",
+        "55, 56, 57, 58",
+        "55, 57, 59, 61"
+      ],
+      "answer": "55, 56, 57, 58",
+      "compute": null,
+      "solution": "Counting up by ones goes 55, 56, 57, 58.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "55, 56, 57, 58",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting up by ones from 55: 55, 56, 57, 58.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.271Z"
+        }
+      }
+    },
+    {
+      "id": "0dffa028-a124-437c-beec-1174c76630b5",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Count on a given number of numbers",
+      "stem": "Count on from 88. Say the next 2 numbers after 88. Which number do you say last?",
+      "choices": [
+        "89",
+        "91",
+        "80",
+        "90"
+      ],
+      "answer": "90",
+      "compute": "88+2",
+      "solution": "The next 2 numbers are 89 and 90. The last one is 90.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "90",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "88 -> 89, 90. Last said is 90.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.344Z"
+        }
+      }
+    },
+    {
+      "id": "484b52a6-8b6c-4234-9a28-6f0a6b3f0567",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Say the next number",
+      "stem": "Kai counts the steps up a staircase. He says 52. What number does he say right after 52?",
+      "choices": [
+        "53",
+        "51",
+        "62",
+        "54"
+      ],
+      "answer": "53",
+      "compute": "52+1",
+      "solution": "The number after 52 is 53.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "53",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 52 comes 53.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.347Z"
+        }
+      }
+    },
+    {
+      "id": "37a62bd9-49e4-4d84-9bcc-cb6f6d77ec3a",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 1,
+      "kind": "choice",
+      "skill": "Choose the correct counting list",
+      "stem": "Max counts up from 9. Which list shows what he says?",
+      "choices": [
+        "9, 10, 11, 12",
+        "9, 10, 20, 21",
+        "9, 10, 11, 21",
+        "9, 11, 12, 13"
+      ],
+      "answer": "9, 10, 11, 12",
+      "compute": null,
+      "solution": "After 9 comes 10, then 11, then 12.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9, 10, 11, 12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Counting up from 9: 9, 10, 11, 12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.354Z"
+        }
+      }
+    },
+    {
+      "id": "7f3bbd56-016e-4ad2-a358-9d9bf06a2d55",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 1,
+      "kind": "numeric",
+      "skill": "Say the next number",
+      "stem": "Tess is counting her jumps. She says 76. What does she say next?",
+      "choices": [],
+      "answer": "77",
+      "compute": "76+1",
+      "solution": "The number after 76 is 77.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "77",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 76 comes 77.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.357Z"
+        }
+      }
+    },
+    {
       "id": "b5e739f4-1b46-4921-a4dd-db9f5e6af835",
       "topic_id": "NC17.1.NBT.1",
       "difficulty": 2,
@@ -25453,6 +25618,137 @@
       }
     },
     {
+      "id": "e97b9d91-fa21-4030-a2af-1c93e477cbff",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Count on a given number of numbers",
+      "stem": "Count on from 126. Say the next 5 numbers after 126. What is the last one you say?",
+      "choices": [],
+      "answer": "131",
+      "compute": "126+5",
+      "solution": "The next 5 numbers are 127, 128, 129, 130 and 131. The last one is 131.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "131",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "127, 128, 129, 130, 131: last is 131.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.349Z"
+        }
+      }
+    },
+    {
+      "id": "8c27cb38-6c20-4be2-bd45-f19438a37b8e",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Tali counts: 120, 121, 122, ?, 124. Which number is missing?",
+      "choices": [
+        "133",
+        "125",
+        "123",
+        "112"
+      ],
+      "answer": "123",
+      "compute": "122+1",
+      "solution": "The number between 122 and 124 is 123.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "123",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "120, 121, 122, 123, 124: missing 123.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.360Z"
+        }
+      }
+    },
+    {
+      "id": "3bb9ab71-0df6-4f8c-ade0-b7015bba8cfc",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Say the next number",
+      "stem": "Pete has just said 136. Which number does he say after that?",
+      "choices": [
+        "135",
+        "146",
+        "137",
+        "138"
+      ],
+      "answer": "137",
+      "compute": "136+1",
+      "solution": "The number after 136 is 137.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "137",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 136 comes 137.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.365Z"
+        }
+      }
+    },
+    {
+      "id": "faa16e67-e481-45e7-ab68-2d64abae8a67",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Choose the correct counting list",
+      "stem": "Which list shows the next 4 numbers after 135?",
+      "choices": [
+        "135, 136, 137, 138",
+        "136, 137, 138, 139",
+        "137, 138, 139, 140",
+        "136, 137, 138, 140"
+      ],
+      "answer": "136, 137, 138, 139",
+      "compute": null,
+      "solution": "After 135 the next 4 numbers are 136, 137, 138 and 139.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "136, 137, 138, 139",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 135: 136, 137, 138, 139.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.374Z"
+        }
+      }
+    },
+    {
       "id": "25f3ee63-1d9f-40f4-b7db-88f8a7563688",
       "topic_id": "NC17.1.NBT.1",
       "difficulty": 3,
@@ -25764,6 +26060,316 @@
           "work": "117, 118, 119, 120.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:07:46.511Z"
+        }
+      }
+    },
+    {
+      "id": "36b54acf-8572-4936-9c05-eb35bd125b6d",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find the missing number in a count",
+      "stem": "Wade counts: 109, 110, ?, 112. Which number is missing?",
+      "choices": [
+        "101",
+        "121",
+        "113",
+        "111"
+      ],
+      "answer": "111",
+      "compute": "110+1",
+      "solution": "The number between 110 and 112 is 111.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "111",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "109, 110, 111, 112: missing 111.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.318Z"
+        }
+      }
+    },
+    {
+      "id": "8c6343a2-ff6f-4355-a6c0-0d1399fde824",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count up to 150",
+      "stem": "Pam counts by ones and says 145, 146, 147, 148, 149, 150. Then she stops. What is the fourth number she says?",
+      "choices": [],
+      "answer": "148",
+      "compute": "145+3",
+      "solution": "The numbers in order are 145, 146, 147, 148. The fourth is 148.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "148",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "145 (1st), 146 (2nd), 147 (3rd), 148 (4th).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.345Z"
+        }
+      }
+    },
+    {
+      "id": "e82140b5-f583-43a4-a617-3ad8888f3651",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "Sia counts: 128, 129, ?, 131, 132. What number is the ?",
+      "choices": [],
+      "answer": "130",
+      "compute": "129+1",
+      "solution": "After 129 comes the next ten, 130.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "130",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "128, 129, 130, 131, 132: missing 130.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.349Z"
+        }
+      }
+    },
+    {
+      "id": "1f3fbcd2-f424-4b40-a752-b3eeb7d4bb2a",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count across a tens or hundreds number",
+      "stem": "Ona says 99. What is the third number she says after 99, counting up by ones?",
+      "choices": [],
+      "answer": "102",
+      "compute": "99+3",
+      "solution": "After 99 she says 100, then 101, then 102. The third number is 102.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "102",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 99: 100, 101, 102. Third is 102.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.351Z"
+        }
+      }
+    },
+    {
+      "id": "7c340358-fd9a-4baa-96bc-bb05edd0f81a",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the correct counting list",
+      "stem": "Which list shows counting up by ones from 108 to 112?",
+      "choices": [
+        "108, 109, 110, 111, 121",
+        "108, 109, 110, 111, 112",
+        "108, 109, 110, 112",
+        "108, 109, 100, 111, 112"
+      ],
+      "answer": "108, 109, 110, 111, 112",
+      "compute": null,
+      "solution": "Counting up by ones from 108 to 112 goes 108, 109, 110, 111, 112.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "108, 109, 110, 111, 112",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "108, 109, 110, 111, 112.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.359Z"
+        }
+      }
+    },
+    {
+      "id": "f41084f9-5cfc-4958-8473-fdeccdefa4df",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Say the next number",
+      "stem": "A counting game stops when someone says 150. Jen says 148. What number does the next player say?",
+      "choices": [
+        "150",
+        "147",
+        "158",
+        "149"
+      ],
+      "answer": "149",
+      "compute": "148+1",
+      "solution": "The number after 148 is 149.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "149",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 148 comes 149 (the game stops at 150, later).",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.361Z"
+        }
+      }
+    },
+    {
+      "id": "5dbafcca-0fa3-4482-87a2-fb84942ea20b",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Say the next number",
+      "stem": "Hal counts: 146, 147, 148. What is the next number he says?",
+      "choices": [],
+      "answer": "149",
+      "compute": "148+1",
+      "solution": "The number after 148 is 149.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "149",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "After 148 comes 149.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.362Z"
+        }
+      }
+    },
+    {
+      "id": "5ae858ff-0589-4d93-90f5-2f8125ac36c8",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Count on a given number of numbers",
+      "stem": "Oli starts at 134. He says the next 6 numbers after 134. What is the last number he says?",
+      "choices": [],
+      "answer": "140",
+      "compute": "134+6",
+      "solution": "The next 6 numbers are 135, 136, 137, 138, 139 and 140. The last one is 140.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "140",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "135, 136, 137, 138, 139, 140: the 6th is 140.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.364Z"
+        }
+      }
+    },
+    {
+      "id": "35b8fce7-7e23-4082-97cf-738d320008b7",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the missing number in a count",
+      "stem": "A count goes: 99, 100, ?, 102. What number is the ?",
+      "choices": [],
+      "answer": "101",
+      "compute": "100+1",
+      "solution": "The number between 100 and 102 is 101.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "101",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "99, 100, 101, 102: missing 101.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.375Z"
+        }
+      }
+    },
+    {
+      "id": "3201f401-ff6e-45ee-ad44-601efebf5c8f",
+      "topic_id": "NC17.1.NBT.1",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Choose the correct counting list",
+      "stem": "Dru counts up by ones. He starts at 138 and stops at 141. Which list shows what he says?",
+      "choices": [
+        "138, 139, 130, 131",
+        "138, 139, 140, 150",
+        "138, 139, 140, 141",
+        "138, 139, 141, 142"
+      ],
+      "answer": "138, 139, 140, 141",
+      "compute": null,
+      "solution": "After 139 comes 140, then 141.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "138, 139, 140, 141",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "138, 139, 140, 141.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.379Z"
         }
       }
     },

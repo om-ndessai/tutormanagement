@@ -7,7 +7,7 @@
     "NC17.M2.N-RN.3": "Mostly choice questions (explanations and proofs cannot be typed as numbers). A few D3 items go slightly beyond the four stated rules (sum/product of two irrationals can be rational) as the natural counter-cases; the zero exception to rational-times-irrational is tested on purpose. Full 69 written (23 per difficulty). Two-irrational sums/products (5) go slightly beyond the summary but are the natural contrast; every irrational used is named as irrational in the stem or is pi or a non-square root.",
     "NC17.M2.N-CN.1": "Kept to what the summary names: i squared, powers of i, a + bi form, real and imaginary parts, equality, square roots of negatives. Arithmetic with two complex numbers (adding, multiplying a + bi forms, conjugates) is left for the standards that cover it. Questions on square roots of negatives use only the principal root; \"which number squares to -25\" never lists -5i among the options. Operations on complex numbers (addition, products of two complex numbers, conjugates) belong to later standards and are not asked; products such as 3i*2i appear only to show i squared is -1.",
     "NC17.M2.A-SSE.1": "Interpretation is asked in words (what a term, factor, coefficient or whole bracket means) and by short calculations that need that reading; no graphs are referred to. Skills spread about evenly over quadratic terms, vertex form, factored form, square roots, inverse variation, right-triangle trigonometry and multi-part expressions.",
-    "NC17.M2.A-SSE.3": "Covers rewriting by completing the square and reading the minimum or maximum (and where it occurs); solving a quadratic equation by completing the square is a different standard and is not asked. Expressions as answers are choice questions; numeric answers are values.",
+    "NC17.M2.A-SSE.3": "Covers rewriting by completing the square and reading the minimum or maximum (and where it occurs); solving a quadratic equation by completing the square is a different standard and is not asked. Expressions as answers are choice questions; numeric answers are values. All questions are by hand-checkable completing the square; none refer to a graph or tool.",
     "NC17.M2.A-APR.1": "Division of polynomials is not part of this standard (only add, subtract, multiply), so it appears only as a factoring check. Closure is asked as a statement and through place-value checks at x = 10.",
     "NC17.M2.A-CED.2": "Graphs are described in words (shape, vertex, start point, direction) or by table or point; answers needing irrational numbers or a drawn graph were not asked.",
     "NC17.M2.A-CED.3": "Stated in text only: situations are written out, systems are written as pairs of equations. 16 choice (writing a system is naturally a choice), 14 numeric (solving a modeled system). Skills: write a linear system (2), solve a linear system from a story (5), write a linear-quadratic system (4), solve a linear-quadratic system (4), inverse variation write (4) and solve (4), square root write (2) and solve (2), interpret a solution (2), check a solution (1).",
@@ -16098,6 +16098,156 @@
       }
     },
     {
+      "id": "f444ccf8-13d4-4a80-a7e2-65b35b244a8f",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find the number that completes the square",
+      "stem": "Complete the square for $x^2 + 7x$. What number is added? Give the answer as a fraction.",
+      "choices": [],
+      "answer": "49/4",
+      "compute": "(7/2)^2",
+      "solution": "Half of 7 is $\\frac{7}{2}$, and $\\left(\\frac{7}{2}\\right)^2 = \\frac{49}{4}$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "49/4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Add (7/2)^2 = 49/4: x^2+7x+49/4 = (x+7/2)^2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.304Z"
+        }
+      }
+    },
+    {
+      "id": "ff8107ed-c21d-4230-baef-2acd134b86c9",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "At what value of $x$ does $f(x) = x^2 - 18x + 90$ reach its minimum?",
+      "choices": [],
+      "answer": "9",
+      "compute": "18/2",
+      "solution": "$x^2 - 18x + 90 = (x - 9)^2 + 9$. The minimum is at $x = 9$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "9",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-18x+90 = (x-9)^2 + 9; minimum at x = 9.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.344Z"
+        }
+      }
+    },
+    {
+      "id": "611d1de3-042c-4540-a080-601802fcbcd4",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Work backward from the minimum or maximum value",
+      "stem": "The function $f(x) = x^2 + bx + 16$ has a minimum value of 0, and $b$ is positive. What is $b$?",
+      "choices": [],
+      "answer": "8",
+      "compute": "2*4",
+      "solution": "A minimum of 0 means $f(x)$ is a perfect square: $x^2 + bx + 16 = (x + 4)^2$, so $b = 8$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "8",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Min of x^2+bx+16 is 16 - b^2/4 = 0, b^2 = 64, b positive: b = 8.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.345Z"
+        }
+      }
+    },
+    {
+      "id": "63fc7a0e-ccf6-4a9d-947b-e750fdf67c38",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "choice",
+      "skill": "Find and fix an error in completing the square",
+      "stem": "Sam completes the square on $x^2 - 6x + 2$ and writes $(x - 3)^2 + 2$. What mistake did Sam make?",
+      "choices": [
+        "He should have added 6 instead of 9",
+        "He should have written $(x + 3)^2$",
+        "He should have written $(x - 6)^2$",
+        "He did not subtract the 9 he added"
+      ],
+      "answer": "He did not subtract the 9 he added",
+      "compute": null,
+      "solution": "Adding 9 to complete the square changes the expression, so 9 must be subtracted too: $x^2 - 6x + 2 = (x - 3)^2 - 9 + 2 = (x - 3)^2 - 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "He did not subtract the 9 he added",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2-6x+9-9+2 = (x-3)^2 - 7. Sam added 9 without subtracting it.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.368Z"
+        }
+      }
+    },
+    {
+      "id": "dfba357f-f6aa-47b8-81b3-704b393ffa20",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 2,
+      "kind": "numeric",
+      "skill": "Rewrite a quadratic in vertex form (leading coefficient 1)",
+      "stem": "Rewrite $y = x^2 + 18x + 70$ as $y = (x + h)^2 + k$. What is $h + k$?",
+      "choices": [],
+      "answer": "-2",
+      "compute": "9+(70-81)",
+      "solution": "Half of 18 is 9 and $9^2 = 81$, so $y = (x + 9)^2 + (70 - 81) = (x + 9)^2 - 11$. Then $h = 9$, $k = -11$ and $h + k = -2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "x^2+18x+81-81+70 = (x+9)^2 - 11; h = 9, k = -11, h + k = -2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.379Z"
+        }
+      }
+    },
+    {
       "id": "2fc9a60d-bd9a-46c0-afd1-21e6d37c26cb",
       "topic_id": "NC17.M2.A-SSE.3",
       "difficulty": 3,
@@ -16404,6 +16554,229 @@
           "work": "x^2 + (10-x)^2 = 2x^2 - 20x + 100 = 2(x-5)^2 + 50. Min 50 at 5 and 5.",
           "run_id": "claude-code",
           "at": "2026-10-24T03:06:49.040Z"
+        }
+      }
+    },
+    {
+      "id": "49031ee5-2560-418e-ab94-b4ffecfdb078",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find where the minimum or maximum occurs",
+      "stem": "At what value of $x$ does $f(x) = 5x^2 - 20x + 27$ reach its minimum?",
+      "choices": [],
+      "answer": "2",
+      "compute": "20/(2*5)",
+      "solution": "$5x^2 - 20x + 27 = 5(x^2 - 4x + 4) - 20 + 27 = 5(x - 2)^2 + 7$. The minimum is at $x = 2$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "2",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "5(x^2-4x)+27 = 5(x-2)^2 - 20 + 27 = 5(x-2)^2 + 7; a>0 so minimum at x=2.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.240Z"
+        }
+      }
+    },
+    {
+      "id": "ac00b21b-1e30-4cf1-b345-fb285afd4050",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find and fix an error in completing the square",
+      "stem": "Priya writes $2x^2 + 8x + 3 = 2(x + 2)^2 + 3$. Which statement is true?",
+      "choices": [
+        "It is correct",
+        "It is wrong, and it should be $2(x + 2)^2 - 5$",
+        "It is wrong, and it should be $2(x + 2)^2 - 1$",
+        "It is wrong, and it should be $2(x + 4)^2 - 29$"
+      ],
+      "answer": "It is wrong, and it should be $2(x + 2)^2 - 5$",
+      "compute": null,
+      "solution": "$2(x + 2)^2 = 2x^2 + 8x + 8$, which is 5 more than $2x^2 + 8x + 3$. So the correct form is $2(x + 2)^2 - 5$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "It is wrong, and it should be $2(x + 2)^2 - 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "2(x+2)^2 = 2x^2+8x+8; to get +3 need 8-5, so 2(x+2)^2 - 5. Priya is wrong.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.287Z"
+        }
+      }
+    },
+    {
+      "id": "b0e4e3a2-a28a-4474-ab2b-0a275cb8d844",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Compare the extreme values of two quadratics",
+      "stem": "Let $f(x) = x^2 - 6x + 14$ and $g(x) = x^2 + 4x + 7$. Which function has the lower minimum value, and what is that value?",
+      "choices": [
+        "$f$, with a minimum value of 5",
+        "$g$, with a minimum value of 7",
+        "$f$, with a minimum value of 14",
+        "$g$, with a minimum value of 3"
+      ],
+      "answer": "$g$, with a minimum value of 3",
+      "compute": null,
+      "solution": "$f(x) = (x - 3)^2 + 5$ has minimum 5. $g(x) = (x + 2)^2 + 3$ has minimum 3. So $g$ has the lower minimum, 3.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$g$, with a minimum value of 3",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "f = (x-3)^2 + 5, min 5; g = (x+2)^2 + 3, min 3. Lower is g with 3.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.343Z"
+        }
+      }
+    },
+    {
+      "id": "7469d1fe-3516-4da7-9024-e3ede8241f03",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Describe the outputs of a quadratic",
+      "stem": "Which describes all the outputs of $f(x) = -2x^2 + 12x - 13$?",
+      "choices": [
+        "$f(x) \\le 5$",
+        "$f(x) \\ge 5$",
+        "$f(x) \\le -13$",
+        "$f(x) \\le 3$"
+      ],
+      "answer": "$f(x) \\le 5$",
+      "compute": null,
+      "solution": "$-2x^2 + 12x - 13 = -2(x^2 - 6x + 9) + 18 - 13 = -2(x - 3)^2 + 5$. Every output is at most 5.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "$f(x) \\le 5$",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-2(x^2-6x) - 13 = -2(x-3)^2 + 18 - 13 = -2(x-3)^2 + 5; opens down, max 5, so f(x) <= 5.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.346Z"
+        }
+      }
+    },
+    {
+      "id": "b9ebfa60-d1d0-4f88-a8d4-e167a35e2203",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Find the number that completes the square",
+      "stem": "The trinomial $x^2 + bx + 36$ is a perfect square, and $b$ is negative. What is $b$?",
+      "choices": [],
+      "answer": "-12",
+      "compute": "-2*6",
+      "solution": "A perfect square $(x + n)^2$ has constant term $n^2 = 36$, so $n = \\pm 6$. The middle term is $2n$, and it is negative, so $n = -6$ and $b = -12$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "-12",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "Perfect square (x + m)^2 with m^2 = 36, b = 2m; negative so m = -6, b = -12.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.362Z"
+        }
+      }
+    },
+    {
+      "id": "1d2b67f4-4642-493a-a83a-d2761a95ed79",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "choice",
+      "skill": "Find and fix an error in completing the square",
+      "stem": "Lee wants to complete the square on $3x^2 - 12x + 5$. He writes $3(x^2 - 4x + 4) + 5$. What must Lee do to keep the expression equal to the original?",
+      "choices": [
+        "Subtract 4 from the result",
+        "Add 12 to the result",
+        "Subtract 12 from the result",
+        "Subtract 3 from the result"
+      ],
+      "answer": "Subtract 12 from the result",
+      "compute": null,
+      "solution": "Adding 4 inside the parentheses adds $3 \\times 4 = 12$ to the expression, so 12 must be subtracted: $3(x - 2)^2 + 5 - 12 = 3(x - 2)^2 - 7$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "Subtract 12 from the result",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "3(x^2-4x+4) + 5 = 3x^2 - 12x + 12 + 5; added 12, so subtract 12: 3(x-2)^2 - 7.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.368Z"
+        }
+      }
+    },
+    {
+      "id": "444ca28b-aa88-4da8-9b40-0fc04c9ad39d",
+      "topic_id": "NC17.M2.A-SSE.3",
+      "difficulty": 3,
+      "kind": "numeric",
+      "skill": "Work backward from the minimum or maximum value",
+      "stem": "The function $f(x) = -x^2 + 8x + k$ has a maximum value of 20. What is $k$?",
+      "choices": [],
+      "answer": "4",
+      "compute": "20-16",
+      "solution": "$-x^2 + 8x + k = -(x - 4)^2 + 16 + k$. The maximum is $16 + k = 20$, so $k = 4$.",
+      "status": "checked",
+      "source": "ai",
+      "checks": {
+        "lint": [],
+        "solve": {
+          "answer": "4",
+          "agreed": true,
+          "single_answer": true,
+          "aligned": true,
+          "grade_appropriate": true,
+          "error_free": true,
+          "issues": "",
+          "work": "-(x^2 - 8x) + k = -(x-4)^2 + 16 + k; max 16 + k = 20, k = 4.",
+          "run_id": "claude-code",
+          "at": "2026-10-28T19:32:34.372Z"
         }
       }
     },
