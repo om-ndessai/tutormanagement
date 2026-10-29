@@ -436,6 +436,18 @@ questions a standard, released 2026-10-25 on 340 of its 361 standards (10,440 qu
 pass to about 99 a standard begun. Its 14 levels reach only organizations that offer NC 2017, in the
 Assessment menu, Quest and Quest Games. Plan and results: `docs/question-bank-nc-2017.md`.
 
+Math Kangaroo followed (owner, 2026-10-27: "create question bank for math kangaroo competitions"): a new
+curriculum, `mk`, with the contest's six levels (grades 1-2 to 11-12, 48 topics) and 240 original questions
+a level, written from a review of ten years of past papers and checked the same way. Like NC 2017, its
+levels reach only an organization whose admins offer it. Plan and results: `docs/question-bank-kangaroo.md`.
+
+Released 2026-10-29 together (tag `release-20261029-qb`; production backed up to
+`~/tmi-portal-backups/tutoring-db-20261029-112316-pre-qb-20261029.sql`, no schema change): the Math Kangaroo
+curriculum and its 1,440 questions, NC 2017's second part (7,902 more; 18,342 on all 361 standards), and two
+worked solutions repaired, all `checked`, for a platform admin to approve. The bank in production is 50,068
+questions. Both Workers deployed, the demo refreshed (catalog and sample). Gates: typecheck, web smoke
+18/18, the app's smoke 7/7 on iOS and Android, `test:compat` against `release-20261029`.
+
 Phases 42, 44 and 45: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
 day; Phase 42 released 2026-10-20, web and the app; 44 and 45 not started -- renumbered from 43 and 44
 when the owner put the tutor's Home first, 2026-10-20)
@@ -570,6 +582,11 @@ then an unknown Google account is refused as before; existing members may make a
 codes, and everything else in both phases is live. Rate limits use a Durable Object per key (the
 rate-limiting binding's free-plan availability is undocumented) and are twenty times looser away from
 production. The app shows its phase ("Phase 52").
+
+Terms and privacy, version 2026-10-29, approved by the owner on 2026-10-29 (`LEGAL_DRAFT` false; no
+lawyer's review): they now cover the sign-in providers, share links and Turnstile, the Handwriting lab's use
+of Claude, dictation, cookies, organizations' tax details, deleting a space, North Carolina law. Sign-up
+stays closed (`SIGNUP_OPEN` "false") until the owner opens it, `docs/stable-release-checklist.md` G.
 
 Phase 53: (requested 2026-10-25 by the owner, decisions the same day: email or Google id with wildcards, a script and direct SQL, a test-only automation key, the test app on the owner's devices too; building)
 A test environment that behaves like production. Plan: `docs/test-environment-plan.md`. `tutoring-test`

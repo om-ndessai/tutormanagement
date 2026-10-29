@@ -51,6 +51,7 @@ import {
 import { QuestPoints } from './quest-points';
 import { QuestWelcome } from './quest-welcome';
 import { burstText, welcomeDecision } from './quest-welcome-model';
+import { numberAnswerKeyboard } from './number-keyboard';
 
 export function QuestPlayScreen() {
   const state = useQuestState();
@@ -263,7 +264,7 @@ function QuestionCard({
             placeholder="A number, like 12, 3/4 or 2.5"
             // A keypad with the minus sign and the fraction bar as well as the digits and the point:
             // iOS's decimal pad has neither, and an answer may be -3 or 3/4.
-            keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'phone-pad'}
+            keyboardType={numberAnswerKeyboard(Platform.OS)}
             autoCapitalize="none"
             autoCorrect={false}
             spellCheck={false}

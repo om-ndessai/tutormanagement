@@ -725,6 +725,13 @@ npx wrangler d1 execute tutoring-db --remote --command="SELECT status, COUNT(*),
 `ON CONFLICT (id) DO NOTHING` leaves a question already there alone, so running it twice adds
 nothing.
 
+**Since round 6 (Math Kangaroo, 2026-10-27) one command does this**, from a clean checkout of `main`:
+`npm run questions:seed:production` backs production up, runs `db/catalog.sql` (so new curricula and topics
+exist before any question names them), loads the chosen levels' checked questions (`--levels=MK*` by
+default, through `generate-questions.mjs --production --levels`, under a 60,000-row write budget) and
+prints the read-only count above for those levels. `--dry-run` sends nothing. It never deploys: run
+`npm run deploy` after it. See `docs/question-bank-kangaroo.md`, "Release".
+
 Phase 38 (the Assessment menu, in beta; 2026-10, `docs/canvas-assessment-plan.md`) is additive: two
 columns on `organizations` (the menu and the unreviewed-questions trial, both off everywhere) and two new tables with their indexes and triggers. The
 handwriting and the PDFs are BLOBs in `canvas_assessment_files` for now; moving them to R2 replaces

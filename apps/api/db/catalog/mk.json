@@ -1,0 +1,455 @@
+{
+  "id": "mk",
+  "name": "Math Kangaroo",
+  "source": "Math Kangaroo (the international Kangaroo contest, Kangourou sans Frontières)",
+  "edition": null,
+  "source_url": null,
+  "description": "Practice in the style of the Math Kangaroo contest, one level per pair of grades as the contest has them. Each topic is a kind of contest problem; the questions are original, written for the bank after a review of the 2016-2025 papers, and the contest's 3-, 4- and 5-point questions are the bank's three difficulties.",
+  "sort": 4,
+  "levels": [
+    {
+      "id": "MK12",
+      "code": null,
+      "name": "Math Kangaroo Grades 1-2",
+      "stage": 3001,
+      "grade_band": "Grades 1-2",
+      "description": "The contest's youngest level (Felix, or Pre-Ecolier).",
+      "topics": [
+        {
+          "id": "MK12.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Counting and Numbers",
+          "description": "Counting things described in words, how many whole numbers are in a range (house numbers 15 to 47), cuts and pieces of a rope, digits and two-digit numbers, and comparing numbers."
+        },
+        {
+          "id": "MK12.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Number Puzzles",
+          "description": "Missing numbers in sums and differences, shapes standing for numbers, equal sums in rows, circles or boxes, sharing cards into groups with equal sums, and small number grids written row by row."
+        },
+        {
+          "id": "MK12.03",
+          "code": null,
+          "number": 3,
+          "unit": "Reasoning",
+          "name": "Patterns and Sequences",
+          "description": "Repeating patterns of objects or colours (the 14th or the 27th item), alternating beads, two counts that move together (one climbs 3 steps while another goes down 2), and growing patterns."
+        },
+        {
+          "id": "MK12.04",
+          "code": null,
+          "number": 4,
+          "unit": "Reasoning",
+          "name": "Logic and Order",
+          "description": "Ordering by clues (taller, older, on a higher shelf), places in a line (7th from the front, 2nd from the back), places in a race, who has which, and what must be true."
+        },
+        {
+          "id": "MK12.05",
+          "code": null,
+          "number": 5,
+          "unit": "Geometry",
+          "name": "Shapes and Space in Words",
+          "description": "Shapes by their sides and corners, cubes glued in a row or a tower (drops of glue, faces that touch), the faces of a die, folding and cutting paper, turning left and right on a walk, and mirror letters, all described in words."
+        },
+        {
+          "id": "MK12.06",
+          "code": null,
+          "number": 6,
+          "unit": "Number",
+          "name": "Measuring, Time and Money",
+          "description": "Weights from two weighings, lengths of sticks laid end to end or overlapping, prices from two purchases, days of the week and ages, and how long an activity with breaks takes."
+        },
+        {
+          "id": "MK12.07",
+          "code": null,
+          "number": 7,
+          "unit": "Reasoning",
+          "name": "Story Problems",
+          "description": "Legs, wheels or humps of mixed animals and things, rooms and windows, points won and lost in a game, turns taken over several nights, working backwards, and guess and check."
+        },
+        {
+          "id": "MK12.08",
+          "code": null,
+          "number": 8,
+          "unit": "Combinatorics",
+          "name": "Counting Ways",
+          "description": "Making numbers from given digits, pairs and dances, the sums possible when two numbers are chosen, paths on a small grid described in words, the most or fewest possible, and how many to take to be sure."
+        }
+      ]
+    },
+    {
+      "id": "MK34",
+      "code": null,
+      "name": "Math Kangaroo Grades 3-4",
+      "stage": 3002,
+      "grade_band": "Grades 3-4",
+      "description": "The contest's Ecolier level.",
+      "topics": [
+        {
+          "id": "MK34.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Digits and Number Puzzles",
+          "description": "Digits and place value in numbers up to four digits, digit sums of a year or a page number, the largest or smallest number from given digits, a missing digit in an addition written in a line, numbers filling a ring or a short chain so that sums match, and sorting numbers by a rule."
+        },
+        {
+          "id": "MK34.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Everyday Arithmetic Stories",
+          "description": "Shopping, packages of several sizes and the fewest needed, leftovers and sharing with remainders, halves, thirds and quarters of a small group, change after buying, totals gathered over several days, and \"how many more are needed\" questions."
+        },
+        {
+          "id": "MK34.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Balances, Weights and Ages",
+          "description": "Items that weigh the same, what balances on a scale described in words, two kinds of object with a known total, sharing a total so one share is twice or three times another, ages that differ by fixed amounts, and finding the one unknown by guess-and-check or working backwards."
+        },
+        {
+          "id": "MK34.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Patterns, Cycles and Calendars",
+          "description": "Sequences that step by a constant or follow a repeating rule, a pattern that repeats every few places and which place falls where, days of the week from \"yesterday\" and \"the day after tomorrow\", weeks and days, timetables and clocks, and a bouncing back-and-forth journey between two ends."
+        },
+        {
+          "id": "MK34.05",
+          "code": null,
+          "number": 5,
+          "unit": "Reasoning",
+          "name": "Logic and Deduction",
+          "description": "Who-is-who from clues, one child lying among several statements, ordering people or things by height, weight or rank, a small table where each row and column uses each symbol once, matching people to objects, and finding what must be true when some cases are excluded."
+        },
+        {
+          "id": "MK34.06",
+          "code": null,
+          "number": 6,
+          "unit": "Combinatorics",
+          "name": "Counting Ways and Orders",
+          "description": "How many orders for a few people to line up, how many ordered pairs from a short list, ways to build a tower from some of the discs, ways to colour with restrictions, different figures from a small set of parts, and listing all cases systematically."
+        },
+        {
+          "id": "MK34.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Shapes, Folds and Moves",
+          "description": "Naming and counting plane shapes in a described figure, symmetry and mirror lines of a shape, turning by quarter and half turns, folding a strip or a sheet once or twice and punching a hole (where do the holes land), and a path on a grid given as a list of direction moves."
+        },
+        {
+          "id": "MK34.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Solids, Lengths and Areas",
+          "description": "Cubes in stacks and layers described in words, faces that are painted or hidden, dice with opposite faces adding to seven, perimeter and area by counting unit squares, a border of squares around a rectangle, and lengths of a fence or path made of equal pieces."
+        }
+      ]
+    },
+    {
+      "id": "MK56",
+      "code": null,
+      "name": "Math Kangaroo Grades 5-6",
+      "stage": 3003,
+      "grade_band": "Grades 5-6",
+      "description": "The contest's Benjamin level.",
+      "topics": [
+        {
+          "id": "MK56.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Digits and Number Puzzles",
+          "description": "Forming the largest or smallest number from given digits or by deleting digits, cutting a long digit string into parts and adding them, letters standing for digits in a sum, divisibility by 2, 3, 5, 9 and 18, place value and digit sums, and the numbers in a patterned product."
+        },
+        {
+          "id": "MK56.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Fractions and Parts of a Whole",
+          "description": "Fractions of a quantity, a length or a group in words, cutting a rope or a cake into equal pieces and then cutting again, ratios and mixtures (parts of one to parts of another), chance as a fraction of equal parts, and comparing which part is bigger or which mixture is strongest."
+        },
+        {
+          "id": "MK56.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Word Problems with Totals",
+          "description": "Ages and their sums, money and prices, packages and change-free payments, a total split into unequal parts, speeds and times, \"twice as many\" and \"half as many\", two situations of chairs short and chairs left over, and unknowns found by guess-and-check or reasoning."
+        },
+        {
+          "id": "MK56.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Sums and Patterns of Numbers",
+          "description": "Numbers placed on a ring or a shape so every line has the same sum, an arithmetic sequence (a distance growing by the same amount), the middle value as a mean, balance scales and equal weights, chain calculations with hidden steps, and which numbers can sit where."
+        },
+        {
+          "id": "MK56.05",
+          "code": null,
+          "number": 5,
+          "unit": "Reasoning",
+          "name": "Truth-tellers and Clues",
+          "description": "Knights and liars, who may say which statement, exactly one true note or exactly one lie, people lying only on certain days, ranking people from clues about who is ahead of whom, seating at a table, and what must be true whatever happens."
+        },
+        {
+          "id": "MK56.06",
+          "code": null,
+          "number": 6,
+          "unit": "Combinatorics",
+          "name": "Counting Ways",
+          "description": "How many whole numbers or numbers with a property, arrangements of digits larger than a given number, ways to choose 3 of 7, colouring a row so neighbours differ, ordering cards or discs, bouquets of a fixed total from three prices, and counting with overlap or on both sides."
+        },
+        {
+          "id": "MK56.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Geometry in Words",
+          "description": "Rectangles and squares with stated sides, area and perimeter, a square joined at midpoints, a rectangle cut at fractions, cubes made of unit cubes and how many faces are painted, a box and the height of water in it, a cube's opposite faces, a sheet folded and cut into pieces, and a clock seen in a mirror or a figure turned a quarter."
+        },
+        {
+          "id": "MK56.08",
+          "code": null,
+          "number": 8,
+          "unit": "Reasoning",
+          "name": "Moves, Games and Extremes",
+          "description": "Smallest number of swaps or moves, a game where the one who takes the last wins or loses, working backward from the end, \"how many must you take to be sure\" (pigeonhole), a walk that visits every place once, lines or regions that need different colours, a repeated process with a pattern, and time, clock and calendar steps."
+        }
+      ]
+    },
+    {
+      "id": "MK78",
+      "code": null,
+      "name": "Math Kangaroo Grades 7-8",
+      "stage": 3004,
+      "grade_band": "Grades 7-8",
+      "description": "The contest's Kadett level.",
+      "topics": [
+        {
+          "id": "MK78.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Whole Numbers and Digits",
+          "description": "Place value and digits written in words (the largest or smallest number from given digit cards, last digit of a sum or product, digit sums), primes and divisibility rules, order of operations with brackets and negative numbers, consecutive integers, and number puzzles in which each letter or hidden digit stands for one digit."
+        },
+        {
+          "id": "MK78.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Fractions, Percents, Ratios",
+          "description": "Fractions and percentages of a quantity, percentage increase and decrease and the reversal of a percentage change, fraction of a fraction, ratios of two amounts before and after a change, mixtures and concentrations (water in fresh and dried fruit, a paint blend), and comparing fractions by size."
+        },
+        {
+          "id": "MK78.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Equations in Stories",
+          "description": "Ages, money and shares described in words, totals and differences of two unknowns, working backwards from a final amount, equal sharing and transfers between people, the same quantity said in two ways (a jar part full and nearly full), and grids or rows of numbers where neighbours obey a sum rule given in words."
+        },
+        {
+          "id": "MK78.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Speed, Time and Averages",
+          "description": "Constant speed with distance, time and meeting or catching up (including the second meeting), laps on a circular track, clocks that run fast or slow, journeys on foot and by bike compared, and the mean of a list and how adding or removing a value changes it."
+        },
+        {
+          "id": "MK78.05",
+          "code": null,
+          "number": 5,
+          "unit": "Combinatorics",
+          "name": "Counting and Arrangements",
+          "description": "Counting things described in words, how many whole numbers are in a range, numbers with only certain digits, lists of ways to arrange three to five objects with a restriction, routes on a grid moving only right or down, pairs and handshakes in a group, tournament matches, and the fewest picks that guarantee a result."
+        },
+        {
+          "id": "MK78.06",
+          "code": null,
+          "number": 6,
+          "unit": "Reasoning",
+          "name": "Logic and Patterns",
+          "description": "Liars and truth-tellers, ordering people from comparisons, eliminating cases from clues, deducing a hidden code or an unknown from true-or-false statements, parity and remainder arguments, repeating patterns and cycles (a digit sequence, a clock, jumps along a line), and the position of an item in a very long sequence."
+        },
+        {
+          "id": "MK78.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Geometry in Words",
+          "description": "Areas and perimeters of rectangles, squares and triangles built up or cut apart as described in words, composite shapes made of equal rectangles, fractions of a shape, angles in triangles and polygons (isosceles, equilateral, straight line, right angle), circles touching sides or each other, midpoints, and paper folded in two."
+        },
+        {
+          "id": "MK78.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Solids and Symmetry",
+          "description": "Cubes and cuboids built from unit cubes (how many remain, are painted, are hidden), dice with opposite faces summing to 7, faces, edges and vertices of solids, surface area and volume of a cuboid, nets in words, and axes and rotational symmetry of letters, digits, polygons and simple figures given in text."
+        }
+      ]
+    },
+    {
+      "id": "MK910",
+      "code": null,
+      "name": "Math Kangaroo Grades 9-10",
+      "stage": 3005,
+      "grade_band": "Grades 9-10",
+      "description": "The contest's Junior level.",
+      "topics": [
+        {
+          "id": "MK910.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Percentages, Ratios and Rates",
+          "description": "Percentages and percentage change, ratios and proportion, means of a list and how they move when a value is added or removed, fractions of a quantity in a story (a share of a journey or a recipe), unit conversion, and speed, time, work and mixing with constant rates (two walkers on a track, a boat with and without a current)."
+        },
+        {
+          "id": "MK910.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Divisibility, Primes and Digits",
+          "description": "Divisibility rules and remainders, primes and prime factors, gcd and lcm, parity, digit sums and products, numbers built from digits with a condition (a palindrome, a number divisible by 6 or 9, a digit deleted), how many digits a number has, and the day of the week after a long time."
+        },
+        {
+          "id": "MK910.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Equations, Sequences and Patterns",
+          "description": "Setting up and solving equations from words (ages, money, consecutive numbers), sums of squares and of consecutive numbers, a rule that builds a sequence and the term far along, a repeating cycle, the equation of a line and where it meets the axes, and expressions whose value can be found without finding each unknown."
+        },
+        {
+          "id": "MK910.04",
+          "code": null,
+          "number": 4,
+          "unit": "Combinatorics",
+          "name": "Counting and Probability",
+          "description": "Counting arrangements, paths, routes, passwords and codes, choosing a few from many, dice sums and tickets, counting with a forbidden item, complementary counting, tilings and fills of a small table described in words, and a probability of equally likely outcomes."
+        },
+        {
+          "id": "MK910.05",
+          "code": null,
+          "number": 5,
+          "unit": "Reasoning",
+          "name": "Logic and Extremal Puzzles",
+          "description": "Truth-tellers and liars, who-is-who from clues, seating and rankings, handshakes and tournaments, the pigeonhole (\"how many must be taken to be sure of three alike\"), smallest and largest possible under a rule, and number-placement puzzles where sums or products must agree."
+        },
+        {
+          "id": "MK910.06",
+          "code": null,
+          "number": 6,
+          "unit": "Geometry",
+          "name": "Areas, Lengths and Ratios of Figures",
+          "description": "Areas and perimeters of rectangles, triangles, trapezia and circles given in words, a figure cut by midpoints or by lines into parts and the fraction of the whole, similar figures and scaling of area, the length of a segment through Pythagoras, and a square or rectangle with stated sides."
+        },
+        {
+          "id": "MK910.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Angles, Circles and Coordinates in Words",
+          "description": "Angles in triangles, polygons and parallel lines, isosceles and equilateral triangles, the inscribed angle and the angle in a semicircle, tangents and chords with a stated radius, the triangle inequality, and points and lines given by coordinates (distance, a square on the grid, the triangle a line cuts off the axes)."
+        },
+        {
+          "id": "MK910.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Cubes, Solids and Nets in Words",
+          "description": "A cube cut from small cubes and painted (how many faces painted), dice and opposite faces, vertices, edges and faces of solids, surface area and volume of cuboids, the shortest route on a box, the way a net folds (with the net described by its squares), and flat figures folded or mirrored described in words."
+        }
+      ]
+    },
+    {
+      "id": "MK1112",
+      "code": null,
+      "name": "Math Kangaroo Grades 11-12",
+      "stage": 3006,
+      "grade_band": "Grades 11-12",
+      "description": "The contest's Student level.",
+      "topics": [
+        {
+          "id": "MK1112.01",
+          "code": null,
+          "number": 1,
+          "unit": "Number",
+          "name": "Digits and Divisibility",
+          "description": "Questions about the digits of numbers: last digits of long products and powers, digit sums and what they tell about divisibility by 3, 9 and 11, numbers with a stated digit property (reversed digits, digit product, a digit deleted), counting multiples in a range, smallest or largest number with a given digit sum, and divisibility of a sum or difference that can be reasoned about without a calculator."
+        },
+        {
+          "id": "MK1112.02",
+          "code": null,
+          "number": 2,
+          "unit": "Number",
+          "name": "Factors, Primes and Powers",
+          "description": "Divisors of a number (how many, their sum or product, which are odd or square), prime factorisation and gcd of large numbers written as powers, the highest power of a prime that divides a product, factorial or sum of powers, numbers with exactly a given number of divisors, comparing sizes of numbers written as powers, and when a root or an expression is a whole number."
+        },
+        {
+          "id": "MK1112.03",
+          "code": null,
+          "number": 3,
+          "unit": "Algebra",
+          "name": "Equations and Roots",
+          "description": "Solving or reasoning about equations without a calculator: quadratics with sum and product of roots, expressions like x plus its reciprocal, absolute-value equations (how many solutions), exponent equations with a variable exponent, systems of two or three equations from a story, and a parameter that decides how many solutions an equation has."
+        },
+        {
+          "id": "MK1112.04",
+          "code": null,
+          "number": 4,
+          "unit": "Algebra",
+          "name": "Functions, Sequences and Rates",
+          "description": "Linear and quadratic functions described in words (intercepts, signs, intersections, the largest value on an interval), recursive sequences and number patterns of dots or squares, functional rules such as f(x+y) = f(x)f(y), and word problems on percent change, averages, scale, speed, work and mixing that reduce to one or two equations."
+        },
+        {
+          "id": "MK1112.05",
+          "code": null,
+          "number": 5,
+          "unit": "Combinatorics",
+          "name": "Counting and Probability",
+          "description": "Counting arrangements, selections, colourings, digit strings and paths described in words, \"at least one\" by complement, dice, coins, balls and boxes, tournaments with random pairings, a winning probability in a repeated game, and the pigeonhole idea of how many draws make a result certain."
+        },
+        {
+          "id": "MK1112.06",
+          "code": null,
+          "number": 6,
+          "unit": "Reasoning",
+          "name": "Logic, Games and Puzzles",
+          "description": "Knights and liars on a line, in a circle or at a table, statements of which a stated number are true, who-has-the-prize deduction, games where players alternately remove or add numbers, flipping a fixed number of coins or cells per move and asking which end states are possible, invariants (parity, remainders), and number placements in a row, ring or table with equal sums or a stated rule on neighbours."
+        },
+        {
+          "id": "MK1112.07",
+          "code": null,
+          "number": 7,
+          "unit": "Geometry",
+          "name": "Plane Geometry in Words",
+          "description": "Triangles, rectangles, squares and circles described in words: areas of a figure made of squares and circle parts, angles with tangents, chords and inscribed angles, right triangles with bisectors or an incircle, similar triangles and ratios of areas, regular hexagons and octagons, coordinates and midpoints, folding a strip of paper, a shortest route through a point on a line, and lattice points on a circle."
+        },
+        {
+          "id": "MK1112.08",
+          "code": null,
+          "number": 8,
+          "unit": "Geometry",
+          "name": "Solids and Measurement",
+          "description": "Cubes, cuboids, cylinders, pyramids and tetrahedra in words: surface area and volume, a cuboid painted and cut into unit cubes, a cylinder made by rolling a sheet, cutting corners off a solid, equal-volume solids with different dimensions, the shortest path on a surface by unfolding, and counting faces, edges and vertices of a polyhedron."
+        }
+      ]
+    }
+  ]
+}

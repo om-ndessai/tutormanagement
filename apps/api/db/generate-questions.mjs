@@ -33,6 +33,11 @@
  *   node db/generate-questions.mjs           write db/questions.sql and db/questions-sample.sql
  *   node db/generate-questions.mjs --check   fail if either is stale (npm run typecheck)
  *   node db/generate-questions.mjs --production=<file>
+ *   node db/generate-questions.mjs --production=<file> --levels=MK12,MK34   only these levels
+ *   node db/generate-questions.mjs --production=<file> --levels=MK*         every level starting MK
+ *
+ * `npm run questions:seed:production` (scripts/seed-production-questions.mjs) runs the
+ * production path end to end: backup, catalog, these INSERTs, and a read-only count.
  */
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -59,11 +64,21 @@ const LEVELS = new Set([
   ...['NC17.K', 'NC17.1', 'NC17.2', 'NC17.3', 'NC17.4', 'NC17.5', 'NC17.6', 'NC17.7', 'NC17.8'],
   ...['NC17.M1', 'NC17.M2', 'NC17.M3', 'NC17.M4', 'NC17.PC'],
   ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
+  ...['MK12', 'MK34', 'MK56', 'MK78', 'MK910', 'MK1112'],
 ]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const checkOnly = process.argv.includes('--check');
 const production = process.argv.find((arg) => arg.startsWith('--production='))?.slice('--production='.length);
+/** `--levels=MK12,MK34` or `--levels=MK*`: only these levels (production files only). */
+const levelsArg = process.argv.find((arg) => arg.startsWith('--levels='))?.slice('--levels='.length);
+const levelPatterns = levelsArg ? levelsArg.split(',').map((p) => p.trim()).filter(Boolean) : null;
+const wantLevel = (level) =>
+  !levelPatterns || levelPatterns.some((p) => (p.endsWith('*') ? level.startsWith(p.slice(0, -1)) : level === p));
+if (levelPatterns && !production) {
+  console.error('generate-questions: --levels works only with --production (the local files always hold the whole bank).');
+  process.exit(1);
+}
 const problems = [];
 const seen = new Set();
 
@@ -90,6 +105,7 @@ for (const file of files) {
     }
     const approved = q.status === 'approved';
     if (production && approved) continue;
+    if (production && !wantLevel(source.level_id)) continue;
     const statement =
       `INSERT INTO questions (id, topic_id, difficulty, kind, skill, stem, choices, answer, compute, solution, status, checks, source, reviewed_by, reviewed_at)
 VALUES (${[
@@ -175,6 +191,10 @@ if (production) {
 ${statements.join('\n')}
 `,
   );
+  if (levelPatterns && statements.length === 0) {
+    console.error(`generate-questions: no checked questions at ${levelPatterns.join(', ')}.`);
+    process.exit(1);
+  }
   console.log(`generate-questions: wrote ${statements.length} checked questions to ${production}.`);
 } else if (checkOnly) {
   const current = existsSync(OUTPUT) ? readFileSync(OUTPUT, 'utf8') : '';

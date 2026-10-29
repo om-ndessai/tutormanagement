@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { ORGS, expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
-import { BA, NC17, NC26, topicsOf } from '../support/catalog.js';
+import { BA, MK, NC17, NC26, topicsOf } from '../support/catalog.js';
 import { PEOPLE } from '../support/people.js';
 
 /**
@@ -220,7 +220,7 @@ test.describe('curricula', () => {
     // It starts on Beast Academy, and may offer every platform curriculum.
     const start = await unwrap<any[]>(await cora.request.get('/api/organization/curricula', inOrg), 'offerings');
     // In the catalog's display order (each source file's `sort`).
-    const bySort = [BA, NC17, NC26].sort((a, b) => a.sort - b.sort || a.id.localeCompare(b.id));
+    const bySort = [BA, NC17, NC26, MK].sort((a, b) => a.sort - b.sort || a.id.localeCompare(b.id));
     expect(start.map((row) => [row.id, row.offered, row.is_default, row.retired])).toEqual(
       bySort.map((curriculum) => [curriculum.id, curriculum.id === 'ba', curriculum.id === 'ba', false]),
     );

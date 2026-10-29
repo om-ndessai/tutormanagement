@@ -48,6 +48,7 @@ import { QuestChoices } from './quest-choices';
 import { questStemHtml, questStemSpeech, questStemText } from './quest-html';
 import { questResponse, questWide } from './quest-model';
 import { useQuestNotice } from './quest-notice';
+import { numberAnswerKeyboard } from './number-keyboard';
 
 const message = (caught: unknown, fallback: string) =>
   caught instanceof ApiRequestError ? caught.message : fallback;
@@ -284,7 +285,7 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
           onChangeText={(text) => setDraft({ ...current, number: text })}
           placeholder="A number, like 12, 3/4 or 2.5"
           // Quest's keypad: the minus sign and the fraction bar as well as the digits and the point.
-          keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'phone-pad'}
+          keyboardType={numberAnswerKeyboard(Platform.OS)}
           autoCapitalize="none"
           autoCorrect={false}
           spellCheck={false}

@@ -4,8 +4,8 @@ tags:
   - smoke
 ---
 - runFlow: ../../subflows/launch.yaml
-# The link waits for the app to be up: on a cold start of the Android Release build a link sent at
-# once was dropped (Phase 50's note), leaving the sign-in screen.
+# The app must be up before the link: on Android's release build a link sent mid-start-up was lost
+# to the redirect to sign-in (2026-10-29).
 - extendedWaitUntil:
     visible:
       id: screen-sign-in

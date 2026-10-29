@@ -199,8 +199,14 @@ function QuestionCard({ question, answered }: { question: QuestQuestion; answere
             <Input
               value={number}
               onChange={(event) => setNumber(event.target.value)}
-              inputMode="decimal"
+              // The full keyboard: iOS's decimal pad has no fraction bar and no minus sign, and an
+              // answer may be 3/4 or -3. Nothing a phone corrects or capitalises.
+              inputMode="text"
               autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              enterKeyHint="done"
               placeholder="A number, like 12, 3/4 or 2.5"
               className="h-14 text-lg"
               data-testid="quest-number"
