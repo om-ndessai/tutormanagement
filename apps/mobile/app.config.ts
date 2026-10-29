@@ -272,7 +272,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // iOS 27 requires the scene life cycle; see the plugin.
     './plugins/with-scene-lifecycle.js',
     ...(variant === 'development' ? ['./plugins/with-quiet-dev-menu.js'] : []),
-    ...(APPLE_SIGN_IN ? ['expo-apple-authentication'] : []),
+    // Off, the entitlement Expo adds by itself for the installed package is taken out again.
+    ...(APPLE_SIGN_IN ? ['expo-apple-authentication'] : ['./plugins/without-apple-sign-in.js']),
     ...(googleIosClientId
       ? [
           [
