@@ -631,3 +631,9 @@ passed, the app's Jest 1,038, smoke 7/7 on iOS and Android and the phases' eight
 Apple Developer account (owner, 2026-10-29); Microsoft and Facebook are switched on one at a time once
 set up.
 
+Released 2026-10-29 (tag `release-20261029-p56`; production backed up first, the phase-54, -55 and -56 blocks
+applied, both Workers deployed), web and the app. Every existing space has an organization of its own and
+works as before. Google is the only sign-in until Microsoft and Facebook are set up
+(`docs/sign-in-providers-setup.md`); public answers to a shared question wait on Turnstile. The app shows
+"Phase 56".
+

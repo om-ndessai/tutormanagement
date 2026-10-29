@@ -49,12 +49,19 @@ Decisions already made (2026-10-29):
 
 ## C. Phases 54-56 into production
 
-- [ ] C1. Back up `tutoring-db`.
-- [ ] C2. Apply the `release=phase-54`, `-55` and `-56` blocks from `docs/database.md`; read-only checks of the
+- [x] C1. Back up `tutoring-db`.
+- [x] C2. Apply the `release=phase-54`, `-55` and `-56` blocks from `docs/database.md`; read-only checks of the
       new queries.
-- [ ] C3. `npm run deploy` (both Workers), `AUTH_PROVIDERS` "google"; smoke both addresses. Public answers to a
+- [x] C3. `npm run deploy` (both Workers), `AUTH_PROVIDERS` "google"; smoke both addresses. Public answers to a
       shared question are refused until Turnstile is set up (E5).
-- [ ] C4. The demo: `npm run deploy:test` and the same SQL there. Tag `release-YYYYMMDD`.
+- [x] C4. The demo: `npm run deploy:test` and the same SQL there. Tag `release-YYYYMMDD`.
+
+  Released 2026-10-29, tag `release-20261029-p56`: backup
+  `~/tmi-portal-backups/tutoring-db-20261029-144747-pre-phase54-56.sql` (52 MB); none of the new objects existed
+  beforehand; the three blocks applied in one file (57 rows written: 3 spaces each given their own organization,
+  6 Google sign-ins carried into `user_identities`, 5 triggers); both Workers deployed (`tmi-portal` a07341db,
+  `tutoring` e5005c3a); both addresses answer health, the SPA and `/privacy`, 401 on data routes without a
+  session, `/s/<unknown>` "no longer available"; providers `google` only, sign-up closed.
 
   The demo went first, on 2026-10-29, so the providers can be tried there (E): the phase-54-56 SQL and
   `db/test-only.sql` applied (3 spaces, 3 organizations linked; 5 triggers), then deployed. Wrangler reported
