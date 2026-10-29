@@ -94,6 +94,12 @@ Step by step (2026-10-29), at https://developers.facebook.com → My Apps → **
    - **Terms of Service URL:** `https://tutoring.om-ndessai.workers.dev/terms`
    - **User data deletion:** the privacy URL (it says how to delete an account).
    Facebook will not let the app go Live without them.
+   - **Add platform → iOS:** bundle IDs `com.aimtrue.app` and `com.aimtrue.app.test`. Without it Facebook
+     refuses the app's `fb<APP_ID>://authorize` return ("URL is not allowed by the application
+     configuration", 2026-10-29): the redirect list only covers the web. **Add platform → Android** too
+     (package `com.aimtrue.app`, `com.aimtrue.app.test`) before trying the Android app.
+   - **App domains:** `tutoring-test.tmi-api.workers.dev`, `tutoring.om-ndessai.workers.dev`,
+     `tmi-portal.om-ndessai.workers.dev`.
 4. **App roles → Testers:** add yourself (and anyone trying it). Until the `email` permission has
    **Advanced Access** (App Review), only these people can sign in.
 5. On each Worker: the **App ID** into `FACEBOOK_APP_ID` in vars; the **App Secret** as a secret, typed by the
