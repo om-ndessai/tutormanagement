@@ -583,6 +583,11 @@ codes, and everything else in both phases is live. Rate limits use a Durable Obj
 rate-limiting binding's free-plan availability is undocumented) and are twenty times looser away from
 production. The app shows its phase ("Phase 52").
 
+Terms and privacy, version 2026-10-29, approved by the owner on 2026-10-29 (`LEGAL_DRAFT` false; no
+lawyer's review): they now cover the sign-in providers, share links and Turnstile, the Handwriting lab's use
+of Claude, dictation, cookies, organizations' tax details, deleting a space, North Carolina law. Sign-up
+stays closed (`SIGNUP_OPEN` "false") until the owner opens it, `docs/stable-release-checklist.md` G.
+
 Phase 53: (requested 2026-10-25 by the owner, decisions the same day: email or Google id with wildcards, a script and direct SQL, a test-only automation key, the test app on the owner's devices too; building)
 A test environment that behaves like production. Plan: `docs/test-environment-plan.md`. `tutoring-test`
 turns Google sign-in on, with the same sign-in experience as production, and lets in only the people on
