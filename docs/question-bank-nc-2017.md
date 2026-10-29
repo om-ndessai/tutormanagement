@@ -210,8 +210,12 @@ a new curriculum (Math Kangaroo, six levels, `catalog/mk.json`), its 1,440 check
 7,902 new checked questions, and `main`'s app and web fixes. The bank goes from 40,738 to 50,080.
 
 Done in the cloud session (no Cloudflare login there): the merge, `questions.sql` and the sample
-regenerated, `npm run typecheck`, the lint over all 50,080 questions, the local web suite, and the app's
-typecheck and jest. Not run there: `npm run smoke -- mobile` (no simulator on Linux) and `npm run test:compat`.
+regenerated, `npm run typecheck` (the app's included), the lint over all 50,080 questions, the app's jest
+(984/984, after one test learned that Math Kangaroo's levels need the `mk` curriculum offered), and the
+local web suite: 266 of 267. The one failure, `responsive.spec.ts` "/select-organization does not scroll
+sideways at 360px" (7px), is on a page this release does not touch (no `apps/web` change against `main`)
+and most likely the cloud's Linux fonts measuring "Chapel Hill Math Institute" wider; check it on the Mac.
+Not run there: `npm run smoke -- mobile` (no simulator on Linux) and `npm run test:compat`.
 
 **On the Mac, from a clean checkout of `main`** (wrangler logged in to both accounts):
 
