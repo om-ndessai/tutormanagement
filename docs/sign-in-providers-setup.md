@@ -46,6 +46,10 @@ The callback for a provider is `<base>/api/auth/<provider>/callback`, for exampl
 
 ## Apple (waits for the paid Apple Developer Program)
 
+**Off, and untested (owner, 2026-10-29).** The code is merged and released switched off: `apple` is in no
+Worker's `AUTH_PROVIDERS`, and the app is built without `EXPO_PUBLIC_APPLE_SIGN_IN`. Nothing of it has run
+against Apple yet; the first real test comes with the paid account. Expect fixes then.
+
 1. Certificates, Identifiers & Profiles:
    - on the App ID (`com.aimtrue.app`, and the test app's), enable **Sign in with Apple**;
    - make a **Services ID** for the web (e.g. `com.aimtrue.web`), enable Sign in with Apple on it,

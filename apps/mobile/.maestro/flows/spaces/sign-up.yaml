@@ -70,7 +70,10 @@ tags:
 - tapOn:
     id: signup-year-search
 - inputText: '2020'
-- hideKeyboard
+# The year search's keyboard has a Search key, and hiding it sometimes fails on iOS; the year is
+# shown above the keyboard either way (2026-10-29).
+- hideKeyboard:
+    optional: true
 - tapOn:
     id: signup-year-2020
 # The year's list closes: let the form settle before the tick is tapped.
@@ -147,7 +150,10 @@ tags:
 - tapOn:
     id: signup-year-search
 - inputText: '1990'
-- hideKeyboard
+# The year search's keyboard has a Search key, and hiding it sometimes fails on iOS; the year is
+# shown above the keyboard either way (2026-10-29).
+- hideKeyboard:
+    optional: true
 - tapOn:
     id: signup-year-1990
 # The year's list closes: let the form settle before the tick is tapped.

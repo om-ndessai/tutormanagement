@@ -625,3 +625,9 @@ Microsoft, Apple and Facebook sign-in built and switched off (`AUTH_PROVIDERS` "
 sets each up, `docs/sign-in-providers-setup.md`); sharing Quest (public `/s/<id>` cards, Turnstile and
 `TURNSTILE_SECRET` owed before production takes challenge answers). Not yet released to production.
 
+Merged with `main` on 2026-10-29 for release (`docs/stable-release-checklist.md`, B-C): local web suite 291
+passed, the app's Jest 1,038, smoke 7/7 on iOS and Android and the phases' eight flows on both,
+`test:compat` against `release-20261029-qb`. Apple sign-in stays off and untested until the owner has the paid
+Apple Developer account (owner, 2026-10-29); Microsoft and Facebook are switched on one at a time once
+set up.
+

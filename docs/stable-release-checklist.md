@@ -33,12 +33,18 @@ Decisions already made (2026-10-29):
 ## B. Phases 54-56 (`sharing`) onto main
 
 - [x] B1. `sharing` pushed to GitHub (2026-10-29; it existed only on the Mac).
-- [ ] B2. Merge `main` into `sharing` (33 commits behind): `docs/plan.md`, `docs/database.md`, `CLAUDE.md`,
+- [x] B2. Merge `main` into `sharing` (33 commits behind): `docs/plan.md`, `docs/database.md`, `CLAUDE.md`,
       the shared package and the app's routes are the likely conflicts. `RELEASE_PHASE` to 56.
-- [ ] B3. Gates: `npm run typecheck`; the full local web suite; the app's Jest; the app's new flows and
+- [x] B3. Gates: `npm run typecheck`; the full local web suite; the app's Jest; the app's new flows and
       `npm run smoke -- mobile` on iOS and Android (release builds); `npm run test:compat` against
       `release-20261029-qb`.
-- [ ] B4. Apple off and recorded as untested in `docs/plan.md` and `docs/sign-in-providers-setup.md`.
+- [x] B4. Apple off and recorded as untested in `docs/plan.md` and `docs/sign-in-providers-setup.md`.
+
+  Done 2026-10-29: the merge conflicted only in two app flows, which both sides had fixed the same way
+  (main's kept). Gates: web 291 passed; Jest 1,038 (after the terms' new date reached `spaces.js`); smoke
+  and the eight new flows on iOS and Android; `test:compat` green. Two iOS flows were fixed for
+  flakiness, with no check loosened: `assess-home` closes its sheet by the backdrop, not a swipe; `sign-up`
+  no longer fails when iOS will not hide the year search's keyboard.
 - [ ] B5. Merged into `main`, pushed.
 
 ## C. Phases 54-56 into production
