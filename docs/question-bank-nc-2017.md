@@ -202,58 +202,93 @@ worked solutions with the fault, fixed here:
 - `83cc96af-54ea-4b18-b472-e4fa91041f7e` (NC17.M2.G-CO.3): "180^circ".
 - `9d90b256-e008-4550-ac6d-54a1053ed04e` (NC26.M1): a form feed where `\frac` began.
 
-## Loading this branch into the database (for the owner, after merging the branches)
+## Release 2026-10-29: NC 2017's second part with Math Kangaroo
 
-This branch changes only `apps/api/db/questions/NC17.*.json` (plus one solution line in `NC26.M1.json`),
-the two generated SQL files, `db/release-questions.mjs` and docs. No schema change, and no code change.
+Merged into `main` on 2026-10-29 together with Math Kangaroo (`claude/awesome-faraday-gvx4rt`,
+`docs/question-bank-kangaroo.md`), tagged `release-20261029`. No schema change. Since `release-20261025`:
+a new curriculum (Math Kangaroo, six levels, `catalog/mk.json`), its 1,440 checked questions, NC 2017's
+7,902 new checked questions, and `main`'s app and web fixes. The bank goes from 40,738 to 50,080.
 
-1. **Merge.** `apps/api/db/questions.sql` and `questions-sample.sql` are generated, so every question
-   branch conflicts there. Do not resolve them by hand: take either side, then regenerate once every
-   branch is in (the other branches' new levels must be in `LEVELS` in `db/generate-questions.mjs` first):
+Done in the cloud session (no Cloudflare login there): the merge, `questions.sql` and the sample
+regenerated, `npm run typecheck`, the lint over all 50,080 questions, the local web suite, and the app's
+typecheck and jest. Not run there: `npm run smoke -- mobile` (no simulator on Linux) and `npm run test:compat`.
 
-   ```bash
-   npm run db:questions:generate --workspace @tmi/api
-   ```
+**On the Mac, from a clean checkout of `main`** (wrangler logged in to both accounts):
 
-   `npm run typecheck` then confirms the files are current.
-2. **Check locally**, as for any release (CLAUDE.md): `npm run db:reset`, `npm run dev`, the local suite
-   (`e2e/tests/question-bank.spec.ts` lints every question in the repository).
-3. **Write production's INSERTs** for the questions new since the last release tag. This covers every
-   merged branch at once; a question already in production is skipped (`ON CONFLICT (id) DO NOTHING`):
+```bash
+git checkout main && git pull && npm ci && npm run mobile:install
+```
 
-   ```bash
-   node apps/api/db/release-questions.mjs --since=release-20261025 --out=$HOME/aimtrue-question-bank/release
-   ```
-
-   It writes `questions-01.sql`, `questions-02.sql`, … of at most 12,000 questions each. **Load one file a
-   day:** a question is about five rows written (the row, its key and three indexes), and the free plan
-   writes 100,000 rows a day for the whole account, real use included.
-4. **Back up, then load** (from `apps/api`), checking first that a file holds only INSERTs:
+1. **The app's smoke**, the one gate the cloud could not run (the release changes the shared contract:
+   six new level ids):
 
    ```bash
-   npx wrangler d1 export tutoring-db --remote --output ~/tmi-portal-backups/tutoring-db-$(date +%F)-pre-questions.sql
+   npm run smoke -- mobile
+   ```
+2. **Math Kangaroo: backup, curriculum, questions.** Its loader backs production up to
+   `~/tmi-portal-backups/`, runs `db/catalog.sql` (the new curriculum and its topics, before any question
+   names them), loads the `MK*` levels' 1,440 checked questions and prints their count. It asks you to
+   type `tutoring-db`:
+
+   ```bash
+   npm run questions:seed:production
+   ```
+3. **NC 2017's new questions.** Its loader would also resend the 10,440 already there and refuse on its
+   write budget, so write only what is new since the last release (Math Kangaroo's, now loaded, are in the
+   file too and are skipped by `ON CONFLICT`):
+
+   ```bash
+   node apps/api/db/release-questions.mjs --since=release-20261025 --out=$HOME/aimtrue-question-bank/release-20261029
    ```
 
    ```bash
-   grep -cE '^(UPDATE|DELETE|DROP|ALTER)' $HOME/aimtrue-question-bank/release/questions-01.sql
+   grep -cE '^(UPDATE|DELETE|DROP|ALTER)' $HOME/aimtrue-question-bank/release-20261029/questions-01.sql
+   ```
+
+   That must print 0. Then, from `apps/api`:
+
+   ```bash
+   npx wrangler d1 execute tutoring-db --remote --yes --file=$HOME/aimtrue-question-bank/release-20261029/questions-01.sql
+   ```
+
+   Steps 2 and 3 together write about 47,000 rows (a question is about five), inside the free plan's
+   100,000 a day. Run nothing else heavy on production that day.
+4. **The two worked-solution fixes**, only where nobody has edited or approved the row (from `apps/api`):
+
+   ```bash
+   npx wrangler d1 execute tutoring-db --remote --yes --command="UPDATE questions SET solution = replace(solution, '180^circ', '180^\circ') WHERE id = '83cc96af-54ea-4b18-b472-e4fa91041f7e' AND status = 'checked'; UPDATE questions SET solution = replace(solution, char(12), '\f') WHERE id = '9d90b256-e008-4550-ac6d-54a1053ed04e' AND status = 'checked';"
+   ```
+5. **Count** (read-only). NC 2017 should show 18,342 `checked` (fewer if some were approved meanwhile:
+   approved plus checked is 18,342), and the bank 50,080 in all:
+
+   ```bash
+   npx wrangler d1 execute tutoring-db --remote --command="SELECT substr(topic_id, 1, instr(topic_id, '.') - 1) AS family, status, COUNT(*) FROM questions GROUP BY family, status ORDER BY family, status"
+   ```
+6. **Deploy both production Workers** (the code that knows the Math Kangaroo levels), then check both
+   addresses answer `/api/health`:
+
+   ```bash
+   npm run deploy
+   ```
+7. **Refresh the demo**: deploy it, then its curriculum and the bank's sample (inserts only; about 1,150 new questions,
+   some 6,000 rows, inside its 40,000 budget). From `apps/api`:
+
+   ```bash
+   npm run deploy:test
    ```
 
    ```bash
-   npx wrangler d1 execute tutoring-db --remote --file $HOME/aimtrue-question-bank/release/questions-01.sql -y
+   npx wrangler d1 execute tutoring-test-db --remote --env tutoring-test --yes --file=./db/catalog.sql
    ```
-5. **The two solution fixes**, applied only where nobody has edited or approved the row:
 
-   ```sql
-   UPDATE questions SET solution = replace(solution, '180^circ', '180^\circ')
-   WHERE id = '83cc96af-54ea-4b18-b472-e4fa91041f7e' AND status = 'checked';
-   UPDATE questions SET solution = replace(solution, char(12), '\f')
-   WHERE id = '9d90b256-e008-4550-ac6d-54a1053ed04e' AND status = 'checked';
+   ```bash
+   npx wrangler d1 execute tutoring-test-db --remote --env tutoring-test --yes --file=./db/questions-sample.sql
    ```
-6. **Then tag the release** (`release-YYYYMMDD`), so the next `--since` starts there.
 
-**Do not run `npm run questions:export` before the load.** It rewrites `db/questions/*.json` from
-production, which would drop every question not yet loaded.
+An organization sees Math Kangaroo's levels only once its admins offer the curriculum (Organization page,
+Curricula card), as with NC 2017. **Do not run `npm run questions:export` before step 3**: it rewrites
+`db/questions/*.json` from production and would drop every question not yet loaded.
 
-**Size.** `questions.sql` is about 41 MB at 48,640 questions (about 0.85 KB each). GitHub refuses a file
+**Size.** `questions.sql` is about 43 MB at 50,080 questions (about 0.85 KB each). GitHub refuses a file
 over 100 MB, which this file reaches at roughly 115,000 questions; if the merged banks approach that,
 split `questions.sql` by curriculum before committing it.
