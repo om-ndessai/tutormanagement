@@ -4,6 +4,12 @@ tags:
   - smoke
 ---
 - runFlow: ../../subflows/launch.yaml
+# The app must be up before the link: on Android's release build a link sent mid-start-up was lost
+# to the redirect to sign-in (2026-10-29).
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:
