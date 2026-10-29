@@ -45,7 +45,7 @@ Decisions already made (2026-10-29):
   and the eight new flows on iOS and Android; `test:compat` green. Two iOS flows were fixed for
   flakiness, with no check loosened: `assess-home` closes its sheet by the backdrop, not a swipe; `sign-up`
   no longer fails when iOS will not hide the year search's keyboard.
-- [ ] B5. Merged into `main`, pushed.
+- [x] B5. Merged into `main`, pushed (2026-10-29, a8a6441).
 
 ## C. Phases 54-56 into production
 
@@ -55,6 +55,10 @@ Decisions already made (2026-10-29):
 - [ ] C3. `npm run deploy` (both Workers), `AUTH_PROVIDERS` "google"; smoke both addresses. Public answers to a
       shared question are refused until Turnstile is set up (E5).
 - [ ] C4. The demo: `npm run deploy:test` and the same SQL there. Tag `release-YYYYMMDD`.
+
+  The demo went first, on 2026-10-29, so the providers can be tried there (E): the phase-54-56 SQL and
+  `db/test-only.sql` applied (3 spaces, 3 organizations linked; 5 triggers), then deployed. Wrangler reported
+  the SQL import as failed while it had in fact applied: check what exists before re-running a block.
 
 ## D. The Handwriting lab as Phase 57
 
