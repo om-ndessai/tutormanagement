@@ -139,7 +139,7 @@
 		"APPLE_BUNDLE_IDS": "",
 		"APPLE_TEAM_ID": "",
 		"APPLE_KEY_ID": "",
-		"FACEBOOK_APP_ID": "",
+		"FACEBOOK_APP_ID": "2103586157027324",
 		// Phase 56: Cloudflare Turnstile's site key for the public "Can you solve this?" page (its
 		// secret: `wrangler secret put TURNSTILE_SECRET`). Production refuses answers until both exist.
 		"TURNSTILE_SITE_KEY": "",
@@ -247,7 +247,7 @@
 				"APPLE_BUNDLE_IDS": "",
 				"APPLE_TEAM_ID": "",
 				"APPLE_KEY_ID": "",
-				"FACEBOOK_APP_ID": "",
+				"FACEBOOK_APP_ID": "2103586157027324",
 				"TURNSTILE_SITE_KEY": "",
 				"EMAIL_FROM": "no-reply@tutoring.om-ndessai.workers.dev",
 				"PUBLIC_URL": "https://tutoring.om-ndessai.workers.dev",
@@ -307,13 +307,13 @@
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "true",
 				// Phase 55: restated. The test portal may switch a provider on before production does.
-				"AUTH_PROVIDERS": "google",
+				"AUTH_PROVIDERS": "google,facebook",
 				"MICROSOFT_CLIENT_ID": "",
 				"APPLE_SERVICES_ID": "",
 				"APPLE_BUNDLE_IDS": "",
 				"APPLE_TEAM_ID": "",
 				"APPLE_KEY_ID": "",
-				"FACEBOOK_APP_ID": "",
+				"FACEBOOK_APP_ID": "2103586157027324",
 				"TURNSTILE_SITE_KEY": "",
 				// No mail binding here (`send_email` is empty below): the demo never
 				// emails anyone, and logs each notification as skipped.

@@ -83,6 +83,11 @@ For each: the setup in `docs/sign-in-providers-setup.md` → the ids on the demo
 - [x] E1. Google (on since Phase 1).
 - [ ] E2. Microsoft (personal and work or school accounts).
 - [ ] E3. Facebook, including App Review for the `email` permission before the public can use it.
+  - 2026-10-29: Meta app made (App ID `2103586157027324`, in `FACEBOOK_APP_ID` on all three Workers; the
+    App Secret set on all three by the owner). **On the demo** (`AUTH_PROVIDERS` "google,facebook",
+    version 374c98e5): `/api/auth/config` offers it, `/api/auth/facebook/start` redirects to Facebook with
+    the demo's callback. Still owed: a tester's sign-in on the web, the AimTrue-Test app (built with
+    `EXPO_PUBLIC_FACEBOOK_APP_ID`, waiting on Xcode's account), then the production pair, then App Review.
 - [ ] E4. Apple: **later**, with the paid Apple Developer account. Off until then.
 - [ ] E5. Turnstile (Phase 56): a site in Cloudflare, `TURNSTILE_SITE_KEY` in vars and `TURNSTILE_SECRET` as a
       secret, on the demo, then production.
