@@ -163,7 +163,7 @@ describe('words', () => {
 
 describe('the level picker', () => {
   it('offers Not set, then every level of the bank in order, by its short name', () => {
-    const options = levelOptions(new Set(['ba', 'nc-2017']));
+    const options = levelOptions(new Set(['ba', 'nc-2017', 'mk']));
     expect(options[0]).toEqual({ id: NOT_SET, label: 'Not set' });
     expect(options.slice(1).map((option) => option.id)).toEqual([...QUESTION_BANK_LEVEL_IDS]);
     expect(options.find((option) => option.id === 'NC26.4')?.label).toBe('G4');
