@@ -35,6 +35,7 @@ function read(file: string): CatalogCurriculum {
 export const BA = read('ba.json');
 export const NC17 = read('nc-2017.json');
 export const NC26 = read('nc-2026.json');
+export const MK = read('mk.json');
 
 export const topicsOf = (curriculum: CatalogCurriculum) => curriculum.levels.flatMap((level) => level.topics);
 

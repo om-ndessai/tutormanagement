@@ -70,6 +70,12 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
   PRE: 'AoPS Prealgebra',
   ALG: 'AoPS Algebra',
   GEO: 'AoPS Geometry',
+  MK12: 'Kangaroo 1-2',
+  MK34: 'Kangaroo 3-4',
+  MK56: 'Kangaroo 5-6',
+  MK78: 'Kangaroo 7-8',
+  MK910: 'Kangaroo 9-10',
+  MK1112: 'Kangaroo 11-12',
 };
 
 /**
@@ -79,6 +85,7 @@ export const QUESTION_BANK_LEVEL_LABELS: Record<CanvasAssessmentLevelId, string>
 export function assessmentLevelCurriculum(levelId: string): string | null {
   if (levelId.startsWith('NC26.')) return null;
   if (levelId.startsWith('NC17.')) return 'nc-2017';
+  if (levelId.startsWith('MK')) return 'mk';
   return 'ba';
 }
 

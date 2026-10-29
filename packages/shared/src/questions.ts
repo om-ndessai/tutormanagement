@@ -14,8 +14,9 @@ import { containsSsn, refuseSsn } from './tax.js';
  * 2026-10-17) and, since 2026-10-22, the rest of it -- Kindergarten to grade 2, Math 2 and the
  * three fourth-year courses -- then, since 2026-10-23, NC 2017 from Kindergarten to Precalculus
  * (docs/question-bank-nc-2017.md), then Beast Academy's Levels 1-5 and the three AoPS books its
- * catalog carries, one chapter a topic (owner, 2026-10-18). The Assessment menu draws on all of
- * them (CANVAS_ASSESSMENT_LEVEL_IDS).
+ * catalog carries, one chapter a topic (owner, 2026-10-18), then, since 2026-10-27, Math Kangaroo's
+ * levels, one kind of contest problem a topic (docs/question-bank-kangaroo.md). The Assessment menu
+ * draws on all of them (CANVAS_ASSESSMENT_LEVEL_IDS).
  */
 export const QUESTION_BANK_LEVEL_IDS = [
   'NC26.K',
@@ -54,6 +55,12 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'PRE',
   'ALG',
   'GEO',
+  'MK12',
+  'MK34',
+  'MK56',
+  'MK78',
+  'MK910',
+  'MK1112',
 ] as const;
 
 /**

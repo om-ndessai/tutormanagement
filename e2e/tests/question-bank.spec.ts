@@ -152,6 +152,7 @@ test.describe('the question bank’s rules', () => {
       ...NC_LEVELS,
       ...NC17_LEVELS,
       ...['BA1', 'BA2', 'BA3', 'BA4', 'BA5', 'PRE', 'ALG', 'GEO'],
+      ...['MK12', 'MK34', 'MK56', 'MK78', 'MK910', 'MK1112'],
     ]);
     expect(levels.find((l) => l.level_id === 'BA3')?.topics.map((t) => t.topic_id)).toContain('BA3.06');
     // A chapter is a standard the console can write for, like any other.
@@ -172,8 +173,10 @@ test.describe('the question bank’s rules', () => {
         await admin.request.get('/api/canvas-assessments/levels'),
         'assessment levels',
       );
-      // A offers Beast Academy, not NC 2017: every level but NC 2017's.
-      expect(offered.map((l) => l.level_id)).toEqual(levels.map((l) => l.level_id).filter((id) => !id.startsWith('NC17.')));
+      // A offers Beast Academy, not NC 2017 or Math Kangaroo: every level but theirs.
+      expect(offered.map((l) => l.level_id)).toEqual(
+        levels.map((l) => l.level_id).filter((id) => !id.startsWith('NC17.') && !id.startsWith('MK')),
+      );
       const ba3 = offered.find((l) => l.level_id === 'BA3')!;
       expect(ba3.label).toBe('BA3');
       expect(ba3.available).toBeGreaterThan(0);
