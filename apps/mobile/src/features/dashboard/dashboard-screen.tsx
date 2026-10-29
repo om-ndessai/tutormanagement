@@ -32,7 +32,7 @@ import { AdminTutoring, TutorTutoring } from './tutoring-views';
 import { onSubjectChosen } from './view-as';
 import { ViewAsBanner } from './view-as-banner';
 
-function asRole(value: string | undefined): UserRole | undefined {
+export function asRole(value: string | undefined): UserRole | undefined {
   return USER_ROLES.find((role) => role === value);
 }
 
@@ -199,11 +199,12 @@ function ScopedToday({ scope }: { scope: TodayScope }) {
   return <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />;
 }
 
-function RoleDashboard({
+export function RoleDashboard({
   query,
   subjectId,
   mine,
   tutors,
+  full = false,
 }: {
   query: ReturnType<typeof useDashboard>;
   /** The person being viewed, when it is not the reader. */
@@ -212,6 +213,8 @@ function RoleDashboard({
   mine: boolean;
   /** The reader tutors here and is on their own Home: the Now card and brief lead Tutoring. */
   tutors: boolean;
+  /** The Dashboard page: Home's sections plus Analytics and Recent Activity, as the web's dashboard. */
+  full?: boolean;
 }) {
   const { data, isPending, isError, error, refetch } = query;
   const response = data?.data;
@@ -223,7 +226,7 @@ function RoleDashboard({
   // Phase 43 (the owner, 2026-10-20): Analytics left Home for the Dashboard screen (More →
   // Dashboard), and the Now card with the next lesson's brief leads the Tutoring tab of anyone who
   // tutors -- an admin too, for their own pairings.
-  const lead = mine && tutors ? <TutorNow /> : null;
+  const lead = mine && tutors && !full ? <TutorNow /> : null;
   let body: ReactNode;
   switch (view.kind) {
     case 'admin':
@@ -231,7 +234,7 @@ function RoleDashboard({
         <>
           <ScopedToday scope={{ who: 'both' }} />
           <TutoringFinanceTabs
-            tutoring={<AdminTutoring data={view} lead={lead} />}
+            tutoring={<AdminTutoring data={view} lead={lead} full={full} />}
             finance={<AdminFinance data={view} />}
           />
         </>
@@ -243,7 +246,7 @@ function RoleDashboard({
           {/* Their own teaching only, even for a tutor who also parents (as the carousel). */}
           <ScopedToday scope={{ who: 'student', tutorUserId: view.earnings.user_id }} />
           <TutoringFinanceTabs
-            tutoring={<TutorTutoring data={view} mine={mine} lead={lead} />}
+            tutoring={<TutorTutoring data={view} mine={mine} lead={lead} full={full} />}
             finance={<TutorFinance data={view} subjectId={subjectId} />}
           />
         </>

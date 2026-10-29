@@ -34,6 +34,24 @@ call(ADMIN, 'PUT', '/quest/students/' + SOFIA_ID + '/level', {
   level_id: typeof LEVEL === 'undefined' ? 'BA3' : LEVEL,
 });
 
+// With env NUMBER_LEVELS ("NC26.5:G5,NC26.6:G6,..."): the first of those levels whose next question
+// asks for a number, read from the server -- which level starts with one changes with the bank's
+// sample. Outputs questLevel, the level's short name as the screen shows it.
+if (typeof NUMBER_LEVELS !== 'undefined') {
+  var found = false;
+  var candidates = NUMBER_LEVELS.split(',');
+  for (var c = 0; c < candidates.length && !found; c++) {
+    var pair = candidates[c].split(':');
+    call(ADMIN, 'PUT', '/quest/students/' + SOFIA_ID + '/level', { level_id: pair[0] });
+    var next = call(SOFIA, 'GET', '/quest/me').data;
+    if (next.question && next.question.kind !== 'choice') {
+      output.questLevel = pair[1];
+      found = true;
+    }
+  }
+  if (!found) throw new Error('None of ' + NUMBER_LEVELS + ' starts with a number question');
+}
+
 var answers = typeof ANSWERS === 'undefined' ? 0 : Number(ANSWERS);
 for (var i = 0; i < answers; i++) {
   var now = call(SOFIA, 'GET', '/quest/me').data;

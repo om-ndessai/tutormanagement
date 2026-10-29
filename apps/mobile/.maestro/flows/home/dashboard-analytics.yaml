@@ -1,6 +1,6 @@
 # Phase 43 (the owner, 2026-10-20): Analytics left Home for the Dashboard page under More, and
 # Recent Activity left every Home (the Activity page stays under More). Priya (admin and tutor in
-# chmi): Home has neither; More → Dashboard has the office's counts and her own teaching's; Search
+# chmi): Home has neither; More → Dashboard is the whole dashboard (since 2026-10-28), the office's or, by its Tutor chip, her own teaching's; Search
 # finds the page too.
 appId: ${APP_ID}
 tags:
@@ -62,14 +62,27 @@ tags:
     id: stat-sessions-running
 - assertVisible:
     id: dashboard-section-analytics
-- extendedWaitUntil:
-    visible:
-      id: dashboard-section-your-teaching
-    timeout: 20000
 - assertVisible:
-    id: stat-sessions
+    id: dashboard-section-tutoring-sessions
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-recent-activity
+    direction: DOWN
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: dashboard-analytics-admin
+# Her own teaching: the Tutor chip, as the web's role picker.
+- scrollUntilVisible:
+    element:
+      id: dashboard-role-tutor
+    direction: UP
+- tapOn:
+    id: dashboard-role-tutor
+- extendedWaitUntil:
+    visible:
+      id: stat-sessions
+    timeout: 20000
+- assertNotVisible:
+    id: stat-tutors
 - runFlow: ../../subflows/go-back.yaml
 - extendedWaitUntil:
     visible:
