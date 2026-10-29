@@ -11,7 +11,7 @@ import { useAuth } from '@/providers/auth-provider';
 
 /**
  * Every page of the portal, as the web sidebar lists them. On the phone the first four are
- * reached from the tab bar (Home, Sessions and Progress are tabs; Schedule is inside Sessions --
+ * reached from the tab bar (Home, Sessions and Progress are tabs; Schedule is inside Sessions, and listed under More too --
  * the same for everyone, so the bar never reshapes under someone); the rest are reached from More
  * and the search screen. The server decides what each page shows the
  * reader -- the menu only leaves out what their roles cannot open at all (Locations, Organization).
@@ -26,8 +26,8 @@ export interface NavItem {
   /** Only for readers holding one of these roles here. */
   roles?: readonly string[];
   /**
-   * Reached from the tab bar, so not listed under More: one of the tabs, or inside one (Schedule,
-   * inside Sessions since the bar was revised on 2026-10-15).
+   * One of the tab bar's tabs, so not listed under More. (Schedule, inside Sessions, is listed under
+   * More as well, since 2026-10-28.)
    */
   tab?: boolean;
   /** The feature tour points at this (the web's data-tour="nav-…"). */
@@ -58,12 +58,13 @@ export const NAV_ITEMS: NavItem[] = [
     tourId: 'nav-sessions',
   },
   {
+    // Reached from Sessions (the Lessons | Schedule switch), and listed under More as well, so it
+    // is in the menu as it is in the web sidebar (the owner, 2026-10-28).
     href: '/schedule',
     set: 'tutoring',
     label: 'Schedule',
     icon: 'calendar-month-outline',
     keywords: ['calendar', 'cancel', 'weekly'],
-    tab: true,
     tourId: 'nav-schedule',
   },
   {

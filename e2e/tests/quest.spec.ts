@@ -204,6 +204,46 @@ test.describe('Question Quest (Phase 42)', () => {
     });
   });
 
+  test('a number answer takes a fraction: the full keyboard, never a digits-only pad (2026-10-29)', async ({ as }) => {
+    const admin = await as('admin');
+    await withQuest(admin, async () => {
+      const tutor = await as('tutor');
+      const students = await unwrap<any[]>(await tutor.request.get('/api/quest/students'), 'students');
+      const sofia = students.find((s) => s.full_name === 'Sofia Okafor');
+      const student = await as('student');
+      // A level whose next question asks for a number: which one does changes with the bank's sample.
+      let found = false;
+      for (const level of ['NC26.5', 'NC26.6', 'NC26.3', 'NC26.8', 'NC26.4', 'NC26.7', 'BA4']) {
+        await unwrap(await tutor.request.put(`/api/quest/students/${sofia.user_id}/level`, { data: { level_id: level } }), level);
+        const me = await unwrap<any>(await student.request.get('/api/quest/me'), 'me');
+        if (me.question && me.question.kind !== 'choice') {
+          found = true;
+          break;
+        }
+      }
+      expect(found, 'a level that starts with a number question').toBe(true);
+
+      await student.goto('/quest/play');
+      const field = student.getByTestId('quest-number');
+      await expect(field).toBeVisible();
+      await expect(student.getByTestId('quest-welcome')).toHaveCount(0, { timeout: 7_000 });
+      // iOS's decimal and numeric pads have no "/" and no "-": the field must not ask for one.
+      const mode = await field.getAttribute('inputmode');
+      expect(['decimal', 'numeric', 'tel']).not.toContain(mode);
+      expect([null, 'text']).toContain(await field.getAttribute('type'));
+      await expect(field).toHaveAttribute('autocapitalize', 'off');
+      await expect(field).toHaveAttribute('autocorrect', 'off');
+
+      const points = Number((await student.getByTestId('quest-points').innerText()).match(/\d+/)![0]);
+      await field.fill('-3/4');
+      await expect(field).toHaveValue('-3/4');
+      await student.getByTestId('quest-submit').click();
+      await expect(student.getByTestId('quest-points')).toContainText(`${points + 1} point`);
+
+      await unwrap(await tutor.request.put(`/api/quest/students/${sofia.user_id}/level`, { data: { level_id: 'BA3' } }), 'back to BA3');
+    });
+  });
+
   test('two right answers approve a question; a third student waits; a flag takes it back (2026-10-24)', async ({ as }) => {
     const admin = await as('admin');
     const platform = await as('platformAdmin', { org: null });

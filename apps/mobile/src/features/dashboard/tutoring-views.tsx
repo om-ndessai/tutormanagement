@@ -6,6 +6,7 @@ import { View } from 'react-native';
 
 import { DashboardSection, Panel } from '@/components/section';
 import { FigureRow } from '@/components/figure-row';
+import { ActivityFeed } from '@/features/audit/activity-feed';
 import { ProgressSpotlight } from '@/features/progress/progress-spotlight';
 import { space } from '@/theme/tokens';
 import { FinishWriteUp } from './finish-write-up';
@@ -58,10 +59,24 @@ export function TutorFigures({ data }: { data: TutorDashboard }) {
  * `lead` is the Now card and brief when the admin also tutors; Analytics moved to the Dashboard
  * screen and Recent Activity left Home (the Activity page stays under More). No money at all.
  */
-export function AdminTutoring({ data, lead }: { data: AdminDashboard; lead?: ReactNode }) {
+export function AdminTutoring({
+  data,
+  lead,
+  full = false,
+}: {
+  data: AdminDashboard;
+  lead?: ReactNode;
+  /** The Dashboard page (More → Dashboard): Analytics first and Recent Activity last, as on the web. */
+  full?: boolean;
+}) {
   return (
     <View style={{ gap: space.xl }}>
       {lead}
+      {full ? (
+        <DashboardSection title="Analytics">
+          <AdminFigures data={data} />
+        </DashboardSection>
+      ) : null}
       <DashboardSection
         tourId="dash-sessions"
         title="Tutoring Sessions"
@@ -77,6 +92,14 @@ export function AdminTutoring({ data, lead }: { data: AdminDashboard; lead?: Rea
       >
         <ProgressSpotlight students={data.progress_spotlight} empty="No students yet." />
       </DashboardSection>
+
+      {full ? (
+        <DashboardSection tourId="dash-activity" title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+          <Panel>
+            <ActivityFeed events={data.recent_activity} />
+          </Panel>
+        </DashboardSection>
+      ) : null}
     </View>
   );
 }
@@ -91,15 +114,23 @@ export function TutorTutoring({
   data,
   mine = true,
   lead,
+  full = false,
 }: {
   data: TutorDashboard;
   mine?: boolean;
   /** Phase 43: the Now card and the next lesson's brief, first (the reader's own Home only). */
   lead?: ReactNode;
+  /** The Dashboard page (More → Dashboard): Analytics first and Recent Activity last, as on the web. */
+  full?: boolean;
 }) {
   return (
     <View style={{ gap: space.xl }}>
       {lead}
+      {full ? (
+        <DashboardSection title="Analytics">
+          <TutorFigures data={data} />
+        </DashboardSection>
+      ) : null}
       <DashboardSection
         tourId="dash-sessions"
         title="Tutoring Sessions"
@@ -129,6 +160,14 @@ export function TutorTutoring({
       >
         <ProgressSpotlight students={data.progress_spotlight} empty="No students assigned to you yet." />
       </DashboardSection>
+
+      {full ? (
+        <DashboardSection tourId="dash-activity" title="Recent Activity" action={{ label: 'Full log', to: '/activity' }}>
+          <Panel>
+            <ActivityFeed events={data.recent_activity} showActor={false} />
+          </Panel>
+        </DashboardSection>
+      ) : null}
     </View>
   );
 }
