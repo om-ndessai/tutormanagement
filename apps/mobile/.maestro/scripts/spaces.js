@@ -14,8 +14,8 @@
 var API = 'http://localhost:8787/api';
 // The versions a newcomer accepts: equal to TERMS_VERSION / PRIVACY_VERSION in packages/shared
 // (src/test/maestro-scripts.test.ts checks it, so a new wording date fails in Jest, not here).
-var TERMS_VERSION = '2026-10-24';
-var PRIVACY_VERSION = '2026-10-24';
+var TERMS_VERSION = '2026-10-29';
+var PRIVACY_VERSION = '2026-10-29';
 var PLATFORM_ADMIN = 'ndessai@gmail.com';
 
 function call(as, method, path, body, org) {
