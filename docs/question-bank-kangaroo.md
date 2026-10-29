@@ -176,8 +176,12 @@ The contest has five options; the bank has four, as every question in it does.
 
 ## Release
 
-Not released. The work is on its branch; production and the demo are untouched. After the branch is merged
-into `main`:
+**Released 2026-10-29** with NC 2017's second part (tag `release-20261029-qb`; the steps as run are in
+`docs/question-bank-nc-2017.md`, "Release 2026-10-29"). Production holds the `mk` curriculum (6 levels, 48
+topics) and its 1,440 questions as `checked`, 240 a level; the demo has the catalog and the bank's sample.
+An organization sees the levels once its admins offer Math Kangaroo on the Curricula card.
+
+The steps, as written before the merge:
 
 1. The local suite and `npm run smoke` green.
 2. From a clean checkout of `main`, with `npx wrangler login` on the production account:

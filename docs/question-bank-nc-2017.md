@@ -205,7 +205,8 @@ worked solutions with the fault, fixed here:
 ## Release 2026-10-29: NC 2017's second part with Math Kangaroo
 
 Merged into `main` on 2026-10-29 together with Math Kangaroo (`claude/awesome-faraday-gvx4rt`,
-`docs/question-bank-kangaroo.md`), tagged `release-20261029`. No schema change. Since `release-20261025`:
+`docs/question-bank-kangaroo.md`), tagged `release-20261029-qb` (`release-20261029` was already that
+morning's app and web release). No schema change. Since `release-20261025`:
 a new curriculum (Math Kangaroo, six levels, `catalog/mk.json`), its 1,440 checked questions, NC 2017's
 7,902 new checked questions, and `main`'s app and web fixes. The bank goes from 40,738 to 50,080.
 
@@ -296,3 +297,26 @@ Curricula card), as with NC 2017. **Do not run `npm run questions:export` before
 **Size.** `questions.sql` is about 43 MB at 50,080 questions (about 0.85 KB each). GitHub refuses a file
 over 100 MB, which this file reaches at roughly 115,000 questions; if the merged banks approach that,
 split `questions.sql` by curriculum before committing it.
+
+### Done on the Mac, 2026-10-29
+
+Run from `main` at `release-20261029-qb`, by the steps above:
+1. **Gates.** `npm run typecheck` clean; `npm run smoke -- web` 18/18; the app's smoke on release builds
+   7/7 on the iOS simulator and 7/7 on the Android emulator, after one fix to the test: `diagnostics`
+   opened its link while Android's release build was still starting, and the link was lost to the
+   redirect to sign-in (the screen itself was right when opened by hand); the flow now waits for the
+   sign-in screen first. `npm run test:compat` passed against `release-20261029` (21/21). The 360px
+   `/select-organization` failure seen in the cloud was not looked at again: this release has no web change.
+2. **Backup:** `~/tmi-portal-backups/tutoring-db-20261029-112316-pre-qb-20261029.sql` (43 MB). The
+   loader's own export failed once with a Cloudflare authentication error (code 10000); a direct
+   `wrangler d1 export` a minute later succeeded, and the loader then ran with `--skip-backup`.
+   Catalog 1,615 rows written; Math Kangaroo 1,440 `checked` (240 a level), 7,200 rows.
+3. **NC 2017:** 9,342 INSERTs (7,902 new; Math Kangaroo's skipped), 39,510 rows written.
+4. **Both worked-solution fixes** applied (one row each).
+5. **Count:** NC 2017 18,342 `checked`; the bank 50,068. The runbook's 50,080 assumed production held
+   40,738; it held 40,726, and 40,726 + 1,440 + 7,902 = 50,068.
+6. **Both production Workers deployed** (`tmi-portal` cbd48d40, `tutoring` 07d3b93a); both answer
+   `/api/health`, serve the SPA, refuse `/api/users` without a session (401), sign-in on, sign-up closed.
+7. **The demo:** deployed; catalog loaded; the sample added 5,732 questions (5,755 rows).
+
+About 48,300 rows written to production that day, inside the 100,000.

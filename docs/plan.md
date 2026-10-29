@@ -436,6 +436,18 @@ questions a standard, released 2026-10-25 on 340 of its 361 standards (10,440 qu
 pass to about 99 a standard begun. Its 14 levels reach only organizations that offer NC 2017, in the
 Assessment menu, Quest and Quest Games. Plan and results: `docs/question-bank-nc-2017.md`.
 
+Math Kangaroo followed (owner, 2026-10-27: "create question bank for math kangaroo competitions"): a new
+curriculum, `mk`, with the contest's six levels (grades 1-2 to 11-12, 48 topics) and 240 original questions
+a level, written from a review of ten years of past papers and checked the same way. Like NC 2017, its
+levels reach only an organization whose admins offer it. Plan and results: `docs/question-bank-kangaroo.md`.
+
+Released 2026-10-29 together (tag `release-20261029-qb`; production backed up to
+`~/tmi-portal-backups/tutoring-db-20261029-112316-pre-qb-20261029.sql`, no schema change): the Math Kangaroo
+curriculum and its 1,440 questions, NC 2017's second part (7,902 more; 18,342 on all 361 standards), and two
+worked solutions repaired, all `checked`, for a platform admin to approve. The bank in production is 50,068
+questions. Both Workers deployed, the demo refreshed (catalog and sample). Gates: typecheck, web smoke
+18/18, the app's smoke 7/7 on iOS and Android, `test:compat` against `release-20261029`.
+
 Phases 42, 44 and 45: (requested 2026-10-20 by the owner, `docs/gamification.md`; decisions settled the same
 day; Phase 42 released 2026-10-20, web and the app; 44 and 45 not started -- renumbered from 43 and 44
 when the owner put the tutor's Home first, 2026-10-20)
