@@ -30,7 +30,7 @@ import { getLiveUserById } from '../repositories/users.js';
 import { listOrganizationCurricula } from '../repositories/curricula.js';
 import { getLogo } from '../repositories/organizations.js';
 import { catalogLabels, listReportSessions } from '../repositories/progress-report.js';
-import { buildProgressReportPdf } from '../lib/progress-report-pdf.js';
+import { buildProgressReportPdf, calendarMarks } from '../lib/progress-report-pdf.js';
 import { pngToPdfImage, type PdfImage } from '../lib/pdf.js';
 import {
   buildStudentProgress,
@@ -491,6 +491,13 @@ export const progressRoutes = new Hono<AppEnv>()
         totalMinutes: lessons.total_minutes,
         labels,
         original,
+        calendar: calendarMarks(
+          lessons.scheduled_days.map((row) => row.occurs_on),
+          lessons.cancelled_days,
+          lessons.held_days,
+          from,
+          to,
+        ),
       });
 
       const name = `progress-${fileSlug(progress.student.full_name)}-${to}.pdf`;

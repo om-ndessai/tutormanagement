@@ -83,6 +83,33 @@ export interface ProgressReportInput {
   labels: Map<string, CatalogLabel>;
   /** undefined: not asked for; null: asked for, but the student has none. */
   original?: Assessment | null;
+  /** The calendar's marks, by date (YYYY-MM-DD), within the range. */
+  calendar: Map<string, CalendarMark>;
+}
+
+/**
+ * What the calendar shows on a day: a lesson held there; a scheduled date cancelled (and not then held);
+ * or a scheduled date with nothing recorded (yet).
+ */
+export type CalendarMark = 'held' | 'cancelled' | 'scheduled';
+
+/**
+ * The calendar's marks from the schedules' dates, the cancellations and the lessons held, within the
+ * range. A recorded lesson outranks a cancellation, as everywhere.
+ */
+export function calendarMarks(
+  scheduled: readonly string[],
+  cancelled: readonly string[],
+  held: readonly string[],
+  from: string,
+  to: string,
+): Map<string, CalendarMark> {
+  const marks = new Map<string, CalendarMark>();
+  const inRange = (day: string) => day >= from && day <= to;
+  for (const day of scheduled) if (inRange(day)) marks.set(day, 'scheduled');
+  for (const day of cancelled) if (inRange(day)) marks.set(day, 'cancelled');
+  for (const day of held) if (inRange(day)) marks.set(day, 'held');
+  return marks;
 }
 
 // ---------------------------------------------------------------------------
@@ -606,6 +633,99 @@ function drawPlanTopics(flow: Flow, input: ProgressReportInput, brand: Rgb): voi
   flow.y -= 20;
 }
 
+// ---------------------------------------------------------------------------
+// The calendar: every month of the range, its days marked from the schedules
+// ---------------------------------------------------------------------------
+
+const CANCELLED_INK: Rgb = [0.75, 0.2, 0.18];
+const CANCELLED_FILL: Rgb = [0.99, 0.91, 0.9];
+const CAL_COLUMNS = 3;
+const CAL_GAP = 18;
+const CAL_CELL_HEIGHT = 17;
+const CAL_MONTH_HEIGHT = 16 + 13 + 6 * CAL_CELL_HEIGHT;
+
+function daysInMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
+function drawCalendarDay(page: PdfPage, cx: number, cy: number, day: number, mark: CalendarMark | undefined, inRange: boolean, brand: Rgb): void {
+  const label = String(day);
+  const baseline = cy - 2.6;
+  if (mark === 'held') {
+    page.circle(cx, cy, 7.4, { fill: brand });
+    page.textCentered(cx, baseline, label, 7.5, 'bold', WHITE);
+  } else if (mark === 'cancelled') {
+    page.circle(cx, cy, 7.4, { fill: CANCELLED_FILL, stroke: CANCELLED_INK, lineWidth: 0.8 });
+    page.textCentered(cx, baseline, label, 7.5, 'bold', CANCELLED_INK);
+    page.line(cx - 5.2, cy - 5.2, cx + 5.2, cy + 5.2, CANCELLED_INK, 0.9);
+  } else if (mark === 'scheduled') {
+    page.circle(cx, cy, 7.4, { fill: WHITE, stroke: brand, lineWidth: 1 });
+    page.textCentered(cx, baseline, label, 7.5, 'bold', INK);
+  } else {
+    page.textCentered(cx, baseline, label, 7.5, 'regular', inRange ? INK : UNSCORED);
+  }
+}
+
+function drawCalendar(flow: Flow, input: ProgressReportInput, brand: Rgb): void {
+  const marks = [...input.calendar.values()];
+  const count = (kind: CalendarMark) => marks.filter((mark) => mark === kind).length;
+  const today = input.generatedOn;
+  const held = count('held');
+  const cancelled = count('cancelled');
+  const scheduled = count('scheduled');
+  flow.heading('Calendar', brand, CAL_MONTH_HEIGHT + 30, `${held} held  ·  ${cancelled} cancelled  ·  ${scheduled} scheduled, not recorded`);
+
+  // The legend, under the heading.
+  let lx = MARGIN;
+  const ly = flow.y + 2;
+  const legend = (mark: CalendarMark, label: string) => {
+    drawCalendarDay(flow.page, lx + 7.4, ly, 8, mark, true, brand);
+    flow.page.text(lx + 19, ly - 2.6, label, 7.5, 'regular', MUTED);
+    lx += 19 + textWidth(label, 7.5) + 18;
+  };
+  legend('held', 'Lesson held');
+  legend('cancelled', 'Cancelled');
+  legend('scheduled', today < input.to ? 'Scheduled, not recorded or still to come' : 'Scheduled, not recorded');
+  flow.y -= 20;
+
+  const [fromYear, fromMonth] = input.from.split('-').map(Number) as [number, number];
+  const [toYear, toMonth] = input.to.split('-').map(Number) as [number, number];
+  const months: { year: number; month: number }[] = [];
+  for (let year = fromYear, month = fromMonth; year < toYear || (year === toYear && month <= toMonth); ) {
+    months.push({ year, month });
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+  }
+
+  const monthWidth = (CONTENT_WIDTH - CAL_GAP * (CAL_COLUMNS - 1)) / CAL_COLUMNS;
+  const cellWidth = monthWidth / 7;
+  for (let row = 0; row < months.length; row += CAL_COLUMNS) {
+    flow.ensure(CAL_MONTH_HEIGHT + 8);
+    const top = flow.y;
+    months.slice(row, row + CAL_COLUMNS).forEach(({ year, month }, column) => {
+      const left = MARGIN + column * (monthWidth + CAL_GAP);
+      const page = flow.page;
+      page.text(left + 3, top, `${MONTHS[month - 1]} ${year}`, 9, 'bold', INK);
+      WEEKDAYS.forEach((name, index) =>
+        page.textCentered(left + cellWidth * (index + 0.5), top - 15, name.slice(0, 2), 6.5, 'regular', MUTED),
+      );
+      page.line(left, top - 19, left + monthWidth, top - 19, RULE, 0.5);
+      const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+      for (let day = 1; day <= daysInMonth(year, month); day += 1) {
+        const slot = firstWeekday + day - 1;
+        const cx = left + cellWidth * ((slot % 7) + 0.5);
+        const cy = top - 29 - Math.floor(slot / 7) * CAL_CELL_HEIGHT;
+        const iso = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        drawCalendarDay(page, cx, cy, day, input.calendar.get(iso), iso >= input.from && iso <= input.to, brand);
+      }
+    });
+    flow.y = top - CAL_MONTH_HEIGHT - 8;
+  }
+}
+
 const PART_LABEL_WIDTH = 118;
 
 function drawSessions(flow: Flow, input: ProgressReportInput, brand: Rgb): void {
@@ -753,6 +873,7 @@ export async function buildProgressReportPdf(input: ProgressReportInput): Promis
   if (input.progress.plan) flow.newPage();
   drawRecommendation(flow, input, brand);
   drawPlanTopics(flow, input, brand);
+  drawCalendar(flow, input, brand);
   drawSessions(flow, input, brand);
   drawOriginal(flow, input, brand);
   drawFooters(doc, input);

@@ -5,7 +5,7 @@
 // No money: the SELECT below names no `*_cents` column, and nothing here
 // imports a money scope. The report has no use for a price, so it never holds one.
 
-import type { HomeworkStatus, User } from '@tmi/shared';
+import { addDays, firstOccurrence, isOccurrenceOf, type HomeworkStatus, type User } from '@tmi/shared';
 
 import type { OrgId } from '../lib/org.js';
 import { teachingScopeSql } from '../lib/scope.js';
@@ -31,7 +31,10 @@ export interface ReportSession {
   homework_review: string | null;
   homework_status: HomeworkStatus | null;
   homework_assigned: string | null;
-  /** The pairing's one location of this lesson's kind, by name -- never its address or link. */
+  /**
+   * Where the lesson was, by name -- never its address or link: the place of its kind on the schedule it
+   * fell on (same pairing, its weekday, within the series' dates), else the pairing's one place of that kind.
+   */
   location_name: string | null;
 }
 
@@ -40,6 +43,15 @@ export interface ReportSessions {
   /** Every lesson in the range this reader may list, even past REPORT_SESSION_LIMIT. */
   count: number;
   total_minutes: number;
+  /** Every date in the range a listed lesson was held on, ascending. */
+  held_days: string[];
+  /**
+   * Every date in the range one of the reader's active schedules for this student falls on, with its
+   * series, ascending: what the calendar marks as scheduled (or cancelled, or held).
+   */
+  scheduled_days: { schedule_id: string; occurs_on: string }[];
+  /** Every date in the range one of those series (active or not) was cancelled on, ascending. */
+  cancelled_days: string[];
 }
 
 /**
@@ -56,13 +68,14 @@ export async function listReportSessions(
   to: string,
 ): Promise<ReportSessions> {
   const scope = teachingScopeSql(viewer, 's', org);
+  const seriesScope = teachingScopeSql(viewer, 'ss', org);
   // The sessions list's own scope (filter.sql carries the organization).
   const filter = {
     sql: `WHERE s.student_user_id = ? AND s.occurred_on >= ? AND s.occurred_on <= ? AND ${scope.sql}`,
     values: [studentId, from, to, ...scope.values],
   };
 
-  const [totals, rows, places] = await db.batch<Record<string, unknown>>([
+  const [totals, rows, places, heldRows, scheduleRows, cancelledRows] = await db.batch<Record<string, unknown>>([
     db
       .prepare(
         `SELECT COUNT(*) AS count, COALESCE(SUM(s.duration_minutes), 0) AS total_minutes
@@ -83,40 +96,118 @@ export async function listReportSessions(
          LIMIT ?`,
       )
       .bind(...filter.values, REPORT_SESSION_LIMIT),
-    // The places the student's schedules name, per tutor and kind. Names only.
+    // The places the student's schedules name, per schedule and kind. Names only.
     db
       .prepare(
-        `SELECT DISTINCT ss.tutor_user_id, sl.kind, l.id AS location_id, l.name
+        `SELECT ss.id AS schedule_id, ss.tutor_user_id, ss.day_of_week, ss.start_time, ss.starts_on,
+                ss.ends_on, sl.kind, l.id AS location_id, l.name
          FROM scheduled_sessions ss
          JOIN schedule_locations sl ON sl.schedule_id = ss.id AND sl.organization_id = ss.organization_id
          JOIN locations l ON l.id = sl.location_id AND l.organization_id = sl.organization_id
          WHERE ss.organization_id = ? AND ss.student_user_id = ?`,
       )
       .bind(org, studentId),
+    // The calendar: the dates lessons were held, through the same scope as the list.
+    db
+      .prepare(`SELECT DISTINCT s.occurred_on FROM sessions s ${filter.sql} ORDER BY s.occurred_on`)
+      .bind(...filter.values),
+    // And the reader's active series for this student, through the schedules list's own scope.
+    db
+      .prepare(
+        `SELECT ss.id, ss.day_of_week, ss.starts_on, ss.ends_on
+         FROM scheduled_sessions ss
+         WHERE ss.organization_id = ? AND ss.student_user_id = ? AND ss.is_active = 1 AND ss.starts_on <= ?
+           AND (ss.ends_on IS NULL OR ss.ends_on >= ?) AND ${seriesScope.sql}`,
+      )
+      .bind(org, studentId, to, from, ...seriesScope.values),
+    // The dates called off on the reader's series for this student (active or not: it still happened).
+    db
+      .prepare(
+        `SELECT DISTINCT c.occurs_on
+         FROM schedule_cancellations c
+         JOIN scheduled_sessions ss ON ss.id = c.schedule_id
+         WHERE ss.organization_id = ? AND ss.student_user_id = ? AND c.occurs_on >= ? AND c.occurs_on <= ?
+           AND ${seriesScope.sql}
+         ORDER BY c.occurs_on`,
+      )
+      .bind(org, studentId, from, to, ...seriesScope.values),
   ]);
 
-  // A pairing whose schedules name exactly one place of a kind: that place.
-  // Two or more (or none) is ambiguous, and the lesson shows its mode alone.
+  type PlaceRow = {
+    schedule_id: string;
+    tutor_user_id: string;
+    day_of_week: number;
+    start_time: string;
+    starts_on: string;
+    ends_on: string | null;
+    kind: string;
+    location_id: string;
+    name: string;
+  };
+  const placeRows = (places?.results ?? []) as unknown as PlaceRow[];
+  const kindOf = (mode: string) => (mode === 'in_person' ? 'physical' : 'virtual');
+  const minutesOf = (clock: string) => {
+    const [h, m] = clock.split(':').map(Number);
+    return (h ?? 0) * 60 + (m ?? 0);
+  };
+
+  // A pairing whose schedules name exactly one place of a kind: that place, for a lesson no schedule
+  // explains. Two or more (or none) is ambiguous, and the lesson shows its mode alone.
   const named = new Map<string, Map<string, string>>();
-  for (const row of (places?.results ?? []) as { tutor_user_id: string; kind: string; location_id: string; name: string }[]) {
+  for (const row of placeRows) {
     const key = `${row.tutor_user_id}:${row.kind}`;
     const byId = named.get(key) ?? new Map<string, string>();
     byId.set(row.location_id, row.name);
     named.set(key, byId);
   }
-  const placeFor = (tutorId: string, mode: string): string | null => {
-    const byId = named.get(`${tutorId}:${mode === 'in_person' ? 'physical' : 'virtual'}`);
+  const placeFor = (row: { tutor_user_id: string; mode: string; occurred_on: string; started_at: string }): string | null => {
+    const kind = kindOf(row.mode);
+    // The schedule this lesson fell on: the pairing's, on its weekday and within its dates, with a place
+    // of the lesson's kind; of two such series, the one starting nearest the lesson's own start.
+    const fits = placeRows.filter(
+      (p) =>
+        p.tutor_user_id === row.tutor_user_id &&
+        p.kind === kind &&
+        isOccurrenceOf({ day_of_week: Number(p.day_of_week), starts_on: p.starts_on, ends_on: p.ends_on }, row.occurred_on),
+    );
+    if (fits.length > 0) {
+      const at = minutesOf(row.started_at);
+      fits.sort((a, b) => Math.abs(minutesOf(a.start_time) - at) - Math.abs(minutesOf(b.start_time) - at));
+      return fits[0]!.name;
+    }
+    const byId = named.get(`${row.tutor_user_id}:${kind}`);
     return byId && byId.size === 1 ? [...byId.values()][0]! : null;
   };
 
   const sessions = ((rows?.results ?? []) as unknown as Omit<ReportSession, 'location_name'>[]).map((row) => ({
     ...row,
     duration_minutes: Number(row.duration_minutes),
-    location_name: placeFor(row.tutor_user_id, row.mode),
+    location_name: placeFor(row),
   }));
   const total = (totals?.results?.[0] ?? {}) as { count?: number; total_minutes?: number };
 
-  return { sessions, count: Number(total.count ?? 0), total_minutes: Number(total.total_minutes ?? 0) };
+  const held_days = ((heldRows?.results ?? []) as { occurred_on: string }[]).map((row) => row.occurred_on);
+  const scheduled_days: ReportSessions['scheduled_days'] = [];
+  for (const series of (scheduleRows?.results ?? []) as { id: string; day_of_week: number; starts_on: string; ends_on: string | null }[]) {
+    const last = series.ends_on && series.ends_on < to ? series.ends_on : to;
+    for (
+      let day = firstOccurrence(series.starts_on > from ? series.starts_on : from, Number(series.day_of_week));
+      day <= last;
+      day = addDays(day, 7)
+    ) {
+      scheduled_days.push({ schedule_id: series.id, occurs_on: day });
+    }
+  }
+  scheduled_days.sort((a, b) => a.occurs_on.localeCompare(b.occurs_on));
+
+  return {
+    sessions,
+    count: Number(total.count ?? 0),
+    total_minutes: Number(total.total_minutes ?? 0),
+    held_days,
+    scheduled_days,
+    cancelled_days: ((cancelledRows?.results ?? []) as { occurs_on: string }[]).map((row) => row.occurs_on),
+  };
 }
 
 /** A topic or level as the report names it: its code and name, from this organization's curricula. */

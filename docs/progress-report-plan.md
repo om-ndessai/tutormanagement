@@ -76,9 +76,29 @@ Every page carries a footer with the organization's name, "Progress report", and
 
 ### Location of a lesson
 
-A lesson row has no location. The report shows the lesson's **mode** (in person / online). Where the
-pairing's schedule names exactly one location of that kind, it adds that location's **name**, never its
-address or link. Where that is ambiguous it shows the mode alone. Nothing new is stored.
+A lesson row has no location. The report shows the lesson's **mode** (in person / online) and, where it can
+tell, the location's **name**, never its address or link:
+1. **The schedule it fell on** (owner, 2026-10-30): a schedule of the same pairing whose weekday and dates
+   take in the lesson's date (`isOccurrenceOf`, the match the upcoming list uses), with a location of the
+   lesson's kind. Of two such series, the one starting nearest the lesson's start wins.
+2. Otherwise, the pairing's one location of that kind across its schedules.
+3. Otherwise, the mode alone.
+
+Nothing new is stored.
+
+### Calendar (owner, 2026-10-30)
+
+A **Calendar** section between the plan topics and the sessions: one small month grid per month of the
+range, three across, each day marked:
+- **Lesson held:** filled in the organization's colour, wherever a lesson the reader can list took place.
+- **Cancelled:** red, struck through, wherever one of the reader's series for this student was called off
+  (`schedule_cancellations`; a series switched off since still counts).
+- **Scheduled:** an outline, wherever one of the reader's active series falls (`firstOccurrence`, weekly
+  within its dates) with nothing recorded, whether missed or still to come.
+
+A recorded lesson outranks a cancellation, as everywhere. The series are read through the schedules list's
+own scope (`teachingScopeSql` on `ss`), so a tutor's calendar shows their own series. The heading counts
+held, cancelled and scheduled-but-not-recorded days. Notes and who cancelled stay out.
 
 ### Hours
 

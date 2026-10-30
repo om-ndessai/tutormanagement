@@ -105,4 +105,94 @@ test.describe('the progress report', () => {
     expect(strings).not.toContain('Timeline towards the goal');
     expect(strings).toContain('Sessions');
   });
+
+  test('a lesson names the place of the schedule it fell on, and the calendar marks the schedules', async ({ as }) => {
+    const admin = await as('admin');
+    const tutorId = await idOf(admin, PEOPLE.tutor.email);
+    const stamp = Date.now();
+    const parent = await unwrap<any>(
+      await admin.request.post('/api/users', {
+        data: { email: `place.parent.${stamp}@example.com`, full_name: `Place Parent ${stamp}`, roles: ['parent'] },
+      }),
+      'a parent',
+    );
+    const student = await unwrap<any>(
+      await admin.request.post('/api/users', {
+        data: {
+          full_name: `Place Student ${stamp}`,
+          roles: ['student'],
+          student_profile: { charge_rate_in_person_cents: 6000 },
+          guardians: [{ guardian_user_id: parent.id, relationship: 'mother', is_primary: true }],
+        },
+      }),
+      'a student',
+    );
+    const room = async (name: string) =>
+      unwrap<any>(
+        await admin.request.post('/api/locations', {
+          data: { owner_user_id: tutorId, name, kind: 'physical', address: '1 Main St, Durham NC' },
+        }),
+        name,
+      );
+    const tuesdays = await room(`Library ${stamp}`);
+    const thursdays = await room(`Studio ${stamp}`);
+    const pairing = await unwrap<any>(
+      await admin.request.post('/api/assignments', { data: { tutor_user_id: tutorId, student_user_id: student.id, is_active: true } }),
+      'the pairing',
+    );
+    await unwrap(
+      await admin.request.put(`/api/assignments/${pairing.id}/locations`, { data: { location_ids: [tuesdays.id, thursdays.id] } }),
+      'allowing both',
+    );
+    // 2026-09-01 is a Tuesday.
+    const series = async (day_of_week: number, location: string) =>
+      unwrap<any>(
+        await admin.request.post('/api/schedules', {
+          data: {
+            tutor_user_id: tutorId,
+            student_user_id: student.id,
+            day_of_week,
+            start_time: '16:00',
+            duration_minutes: 60,
+            starts_on: '2026-09-01',
+            ends_on: '2026-09-30',
+            location_ids: [location],
+          },
+        }),
+        'a series',
+      );
+    const schedules = [await series(2, tuesdays.id), await series(4, thursdays.id)];
+    const lesson = async (occurred_on: string) =>
+      unwrap<any>(
+        await admin.request.post('/api/sessions', {
+          data: { tutor_user_id: tutorId, student_user_id: student.id, occurred_on, started_at: '16:00', ended_at: '17:00', mode: 'in_person' },
+        }),
+        occurred_on,
+      );
+    const lessons = [await lesson('2026-09-08'), await lesson('2026-09-10')];
+    // Tuesday the 15th is called off.
+    await unwrap(
+      await admin.request.post(`/api/schedules/${schedules[0].id}/cancellations`, { data: { occurs_on: '2026-09-15' } }),
+      'a cancellation',
+    );
+
+    try {
+      const strings = pdfStrings(await (await admin.request.get(`/api/progress/${student.id}/report.pdf?${RANGE}`)).body());
+      expect(strings.filter((text) => text.endsWith(`${PEOPLE.tutor.name}  ·  In person, Library ${stamp}`))).toHaveLength(1);
+      expect(strings.filter((text) => text.endsWith(`${PEOPLE.tutor.name}  ·  In person, Studio ${stamp}`))).toHaveLength(1);
+      // September's nine scheduled dates (Tuesdays 1-29, Thursdays 3-24): two held, one cancelled, six left.
+      expect(strings).toContain('Calendar');
+      expect(strings).toContain('September 2026');
+      expect(strings).toContain('2 held  ·  1 cancelled  ·  6 scheduled, not recorded');
+    } finally {
+      await admin.request.delete(`/api/schedules/${schedules[0].id}/cancellations/2026-09-15`);
+      for (const row of lessons) await admin.request.delete(`/api/sessions/${row.id}`);
+      for (const row of schedules) await admin.request.delete(`/api/schedules/${row.id}`);
+      await admin.request.put(`/api/assignments/${pairing.id}/locations`, { data: { location_ids: [] } });
+      for (const row of [tuesdays, thursdays]) await admin.request.delete(`/api/locations/${row.id}`);
+      await admin.request.patch(`/api/assignments/${pairing.id}`, { data: { is_active: false } });
+      await admin.request.delete(`/api/users/${student.id}`);
+      await admin.request.delete(`/api/users/${parent.id}`);
+    }
+  });
 });
