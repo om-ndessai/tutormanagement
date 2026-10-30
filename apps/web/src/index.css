@@ -1058,3 +1058,33 @@
     clip-path: circle(var(--reveal-r, 150vmax) at var(--reveal-x, 50%) var(--reveal-y, 0%));
   }
 }
+
+/*
+ * Sign-in buttons in each provider's own colours (their branding guidelines), not the palette's:
+ * Google draws its own; Microsoft's light and dark themes; Facebook's blue with a white "f";
+ * Apple's black (white in dark). The same in every organization's palette.
+ */
+:root {
+  --provider-microsoft-bg: #ffffff;
+  --provider-microsoft-border: #8c8c8c;
+  --provider-microsoft-text: #5e5e5e;
+  --provider-microsoft-red: #f25022;
+  --provider-microsoft-green: #7fba00;
+  --provider-microsoft-blue: #00a4ef;
+  --provider-microsoft-yellow: #ffb900;
+  --provider-facebook-bg: #1877f2;
+  --provider-facebook-border: #1877f2;
+  --provider-facebook-text: #ffffff;
+  --provider-apple-bg: #000000;
+  --provider-apple-border: #000000;
+  --provider-apple-text: #ffffff;
+}
+
+.dark {
+  --provider-microsoft-bg: #2f2f2f;
+  --provider-microsoft-border: #2f2f2f;
+  --provider-microsoft-text: #ffffff;
+  --provider-apple-bg: #ffffff;
+  --provider-apple-border: #ffffff;
+  --provider-apple-text: #000000;
+}

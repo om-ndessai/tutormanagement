@@ -3,15 +3,30 @@ import type { AuthProvider, AuthProviderInfo } from '@tmi/shared';
 import { cn } from '@/lib/utils';
 
 /**
- * Phase 55: a provider's glyph, in the page's own colour (`currentColor`), so
- * it follows the theme like every other icon. Simple marks, not the providers'
- * full-colour logos.
+ * Phase 55: a provider's glyph. `brand` draws the provider's own logo in its own colours (the
+ * sign-in buttons); otherwise a simple mark in the page's colour (`currentColor`), like every other
+ * icon (My profile's "Ways to sign in").
  */
-export function ProviderGlyph({ provider, className }: { provider: AuthProvider; className?: string }) {
+export function ProviderGlyph({
+  provider,
+  className,
+  brand = false,
+}: {
+  provider: AuthProvider;
+  className?: string;
+  brand?: boolean;
+}) {
   const common = { className: cn('size-4 shrink-0', className), 'aria-hidden': true, focusable: false } as const;
   switch (provider) {
     case 'microsoft':
-      return (
+      return brand ? (
+        <svg viewBox="0 0 21 21" {...common}>
+          <rect x="1" y="1" width="9" height="9" fill="var(--provider-microsoft-red)" />
+          <rect x="11" y="1" width="9" height="9" fill="var(--provider-microsoft-green)" />
+          <rect x="1" y="11" width="9" height="9" fill="var(--provider-microsoft-blue)" />
+          <rect x="11" y="11" width="9" height="9" fill="var(--provider-microsoft-yellow)" />
+        </svg>
+      ) : (
         <svg viewBox="0 0 16 16" fill="currentColor" {...common}>
           <rect x="1" y="1" width="6.5" height="6.5" />
           <rect x="8.5" y="1" width="6.5" height="6.5" />
@@ -27,8 +42,8 @@ export function ProviderGlyph({ provider, className }: { provider: AuthProvider;
       );
     case 'facebook':
       return (
-        <svg viewBox="0 0 16 16" fill="currentColor" {...common}>
-          <path d="M16 8a8 8 0 1 0-9.25 7.9v-5.59H4.72V8h2.03V6.24c0-2 1.2-3.11 3.02-3.11.88 0 1.8.16 1.8.16v1.97h-1.01c-1 0-1.31.62-1.31 1.26V8h2.22l-.35 2.31H9.25v5.59A8 8 0 0 0 16 8Z" />
+        <svg viewBox="0 0 24 24" fill="currentColor" {...common}>
+          <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07Z" />
         </svg>
       );
     default:
@@ -42,6 +57,15 @@ export function ProviderGlyph({ provider, className }: { provider: AuthProvider;
       );
   }
 }
+
+/** Each provider's button colours: CSS variables in index.css, so they switch with the theme. */
+const BRAND_CLASSES: Record<Exclude<AuthProvider, 'google'>, string> = {
+  microsoft:
+    'bg-[var(--provider-microsoft-bg)] border-[var(--provider-microsoft-border)] text-[var(--provider-microsoft-text)]',
+  facebook:
+    'bg-[var(--provider-facebook-bg)] border-[var(--provider-facebook-border)] text-[var(--provider-facebook-text)]',
+  apple: 'bg-[var(--provider-apple-bg)] border-[var(--provider-apple-border)] text-[var(--provider-apple-text)]',
+};
 
 /** Where a provider's redirect flow starts: a full navigation, so the cookie it sets is the browser's. */
 export function providerStartHref(
@@ -77,10 +101,14 @@ export function ProviderButtons({
         <a
           key={provider.id}
           href={providerStartHref(provider.id, { signup, returnTo })}
-          className="border-input bg-background hover:bg-accent focus-visible:ring-ring inline-flex h-10 w-80 max-w-full items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          className={cn(
+            // Google's own button's size and shape (320 x 40, a pill), its logo at the left and the words centred.
+            'focus-visible:ring-ring relative inline-flex h-10 w-80 max-w-full items-center justify-center rounded-full border px-11 text-sm font-medium transition-[filter] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+            BRAND_CLASSES[provider.id as Exclude<AuthProvider, 'google'>],
+          )}
         >
-          <ProviderGlyph provider={provider.id} />
-          Continue with {provider.label}
+          <ProviderGlyph provider={provider.id} brand className="absolute left-3 size-[18px]" />
+          <span className="truncate">Continue with {provider.label}</span>
         </a>
       ))}
     </div>

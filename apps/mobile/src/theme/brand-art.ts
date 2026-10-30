@@ -19,6 +19,33 @@ export const GOOGLE_G = {
 } as const;
 
 /**
+ * The sign-in buttons' own colours, as each provider's branding asks: Google's white (or dark)
+ * button, Microsoft's light and dark themes with its four squares, Facebook's blue with a white "f".
+ * They are the providers' identities, so they do not follow the organization's palette.
+ */
+export const PROVIDER_BUTTONS = {
+  google: {
+    light: { background: '#FFFFFF', border: '#747775', text: '#1F1F1F' },
+    dark: { background: '#131314', border: '#8E918F', text: '#E3E3E3' },
+  },
+  microsoft: {
+    light: { background: '#FFFFFF', border: '#8C8C8C', text: '#5E5E5E' },
+    dark: { background: '#2F2F2F', border: '#2F2F2F', text: '#FFFFFF' },
+  },
+  facebook: {
+    light: { background: '#1877F2', border: '#1877F2', text: '#FFFFFF' },
+    dark: { background: '#1877F2', border: '#1877F2', text: '#FFFFFF' },
+  },
+  apple: {
+    light: { background: '#000000', border: '#000000', text: '#FFFFFF' },
+    dark: { background: '#FFFFFF', border: '#FFFFFF', text: '#000000' },
+  },
+} as const;
+
+/** Microsoft's four squares, in its own colours. */
+export const MICROSOFT_SQUARES = { red: '#F25022', green: '#7FBA00', blue: '#00A4EF', yellow: '#FFB900' } as const;
+
+/**
  * Phase 56: the share card's picture (apps/web/src/features/sharing/card-image.ts). An image, not the
  * app: its colours are the picture's own, fixed so it reads the same wherever it is posted.
  */

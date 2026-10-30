@@ -1,14 +1,15 @@
 import type { ReactNode } from 'react';
 import { Linking, Pressable, View } from 'react-native';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import Svg, { Circle, Defs, G, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { AIM_AMBER, AIM_AMBER_INK, AIM_AMBER_TEXT, GOOGLE_G } from '@/theme/brand-art';
-import { radius, space } from '@/theme/tokens';
+import { AIM_AMBER, AIM_AMBER_TEXT } from '@/theme/brand-art';
+import { space } from '@/theme/tokens';
 
 import { LegalLine } from './legal-links';
+import { ProviderSignInButton } from './provider-buttons';
 import {
   WORDMARK_AIM,
   WORDMARK_ARROW_HEAD,
@@ -21,31 +22,6 @@ import {
 
 /** Where "Contact us" writes to: the developer's address, by the owner's choice (2026-10-13). */
 const CONTACT_URL = 'mailto:om.ndessai@gmail.com';
-
-/** Google's "G", in its own colours, on the white plate its branding asks for on a coloured button. */
-function GoogleG({ size = 20 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="-6 -6 60 60">
-      <Circle cx={24} cy={24} r={30} fill={GOOGLE_G.plate} />
-      <Path
-        fill={GOOGLE_G.red}
-        d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.7 17.7 9.5 24 9.5z"
-      />
-      <Path
-        fill={GOOGLE_G.blue}
-        d="M46.9 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.9c-.6 3-2.2 5.5-4.7 7.2l7.3 5.7c4.3-4 6.8-9.8 7.4-17.4z"
-      />
-      <Path
-        fill={GOOGLE_G.yellow}
-        d="M10.5 28.7c-.5-1.5-.8-3.1-.8-4.700s.3-3.200.8-4.700l-7.900-6.100C1 16.400 0 20.100 0 24s1 7.600 2.600 10.800l7.900-6.100z"
-      />
-      <Path
-        fill={GOOGLE_G.green}
-        d="M24 48c6.500 0 11.900-2.100 15.900-5.800l-7.300-5.700c-2.100 1.400-4.900 2.300-8.600 2.300-6.300 0-11.600-4.200-13.500-10l-7.900 6.100C6.500 42.600 14.600 48 24 48z"
-      />
-    </Svg>
-  );
-}
 
 /** The platform's mark on its tile, with the amber centre the app icon has, inside a soft glow. */
 function HaloMark({ size = 132 }: { size?: number }) {
@@ -186,30 +162,7 @@ export function Welcome({
 
       <View style={{ alignItems: 'center', gap: space.sm, paddingTop: space.lg, paddingBottom: space.xl }}>
         {google ? (
-        <Pressable
-          testID="sign-in-google"
-          accessibilityRole="button"
-          accessibilityLabel="Sign in with Google"
-          accessibilityState={{ disabled: busy, busy }}
-          disabled={busy}
-          onPress={onSignIn}
-          style={({ pressed }) => ({
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: space.sm,
-            minHeight: 48,
-            paddingHorizontal: space.lg,
-            borderRadius: radius.pill,
-            // Amber, so the button does not repeat the slate tile above it.
-            backgroundColor: AIM_AMBER,
-            opacity: pressed || busy ? 0.7 : 1,
-          })}
-        >
-          {busy ? <ActivityIndicator size={20} color={AIM_AMBER_INK} /> : <GoogleG />}
-          <Text variant="titleMedium" style={{ color: AIM_AMBER_INK, fontWeight: '600' }}>
-            Sign in with Google
-          </Text>
-        </Pressable>
+          <ProviderSignInButton provider="google" label="Google" testID="sign-in-google" busy={busy} onPress={onSignIn} />
         ) : null}
         {others}
         {/* Phase 51: anyone may sign in now; continuing accepts the terms. */}

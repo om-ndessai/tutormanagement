@@ -42,14 +42,15 @@ const BUTTON_WIDTH = 320;
 
 /**
  * Google draws this button inside its own iframe, so it cannot be styled with
- * our tokens -- only their documented options apply. `filled_blue` would fight
- * the brand purple, so the button stays neutral and lets the page carry the
- * colour: a black pill on light backgrounds, a white one on dark.
+ * our tokens -- only their documented options apply. It wears Google's own
+ * colours like the Microsoft and Facebook buttons beside it wear theirs: the
+ * white "outline" button on light pages, the dark one on dark.
  */
 function renderInto(container: HTMLElement, theme: 'light' | 'dark') {
   window.google?.accounts.id.renderButton(container, {
     type: 'standard',
-    theme: theme === 'dark' ? 'outline' : 'filled_black',
+    // Google's own white button on light pages, its dark one on dark: beside Microsoft's and Facebook's.
+    theme: theme === 'dark' ? 'filled_black' : 'outline',
     size: 'large',
     text: 'continue_with',
     shape: 'pill',

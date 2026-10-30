@@ -9,7 +9,7 @@ import { Screen } from '@/components/screen';
 import { ReleasePhase } from '@/components/release-phase';
 import { PERSONAS } from '@/dev/personas';
 import { LegalLine } from '@/features/auth/legal-links';
-import { ProviderButtons } from '@/features/auth/provider-buttons';
+import { ProviderButtons, ProviderSignInButton } from '@/features/auth/provider-buttons';
 import { offersGoogle, signInHow, type UsableProvider } from '@/features/auth/provider-model';
 import { SignInError } from '@/features/auth/sign-in-error';
 import { Welcome } from '@/features/auth/welcome';
@@ -212,19 +212,18 @@ export default function SignInScreen() {
                 ? 'Sign in the way your administrator set you up, or with an account you have added.'
                 : 'Sign in with the Google account your administrator added.'}
           </Text>
-          {/* Google's own button: its "G" mark and "Sign in with Google", as its branding asks. */}
+          {/* Google's button, drawn like the others (its "G" in Google's colours, as its branding asks). */}
           {googleAvailable && GoogleButton ? (
-          <View style={{ alignItems: 'center' }}>
-            <GoogleButton
-              testID="sign-in-google"
-              accessibilityLabel="Sign in with Google"
-              size={GoogleButton.Size.Wide}
-              color={theme.dark ? GoogleButton.Color.Light : GoogleButton.Color.Dark}
-              disabled={busy !== null}
-              onPress={() => void signInGoogle()}
-              style={{ width: 312, height: 48 }}
-            />
-          </View>
+            <View style={{ alignItems: 'center' }}>
+              <ProviderSignInButton
+                provider="google"
+                label="Google"
+                testID="sign-in-google"
+                busy={busy === 'google'}
+                disabled={busy !== null}
+                onPress={() => void signInGoogle()}
+              />
+            </View>
           ) : null}
           {providerButtons}
           <View style={{ minHeight: 20, alignItems: 'center' }}>
