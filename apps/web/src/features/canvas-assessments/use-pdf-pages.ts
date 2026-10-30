@@ -20,8 +20,8 @@ export function usePdfPageImages(url: string, width = 1000) {
     setPages([]);
     (async () => {
       const [pdfjs, worker] = await Promise.all([
-        import('pdfjs-dist'),
-        import('pdfjs-dist/build/pdf.worker.min.mjs?url'),
+        import('pdfjs-dist/legacy/build/pdf.mjs'),
+        import('pdfjs-dist/legacy/build/pdf.worker.min.mjs?url'),
       ]);
       pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
       const response = await fetch(url, { credentials: 'same-origin' });
