@@ -86,8 +86,12 @@ For each: the setup in `docs/sign-in-providers-setup.md` → the ids on the demo
   - 2026-10-29: Meta app made (App ID `2103586157027324`, in `FACEBOOK_APP_ID` on all three Workers; the
     App Secret set on all three by the owner). **On the demo** (`AUTH_PROVIDERS` "google,facebook",
     version 374c98e5): `/api/auth/config` offers it, `/api/auth/facebook/start` redirects to Facebook with
-    the demo's callback. Still owed: a tester's sign-in on the web, the AimTrue-Test app (built with
-    `EXPO_PUBLIC_FACEBOOK_APP_ID`, waiting on Xcode's account), then the production pair, then App Review.
+    the demo's callback. The AimTrue-Test app (built with `EXPO_PUBLIC_FACEBOOK_APP_ID`) is on the iPad and Nav's iPhone.
+    **First Facebook sign-in, 2026-10-29 22:01 UTC, in the app:** `POST /api/auth/facebook` 200, a
+    `facebook` row in `user_identities` joined by email to the owner's existing account (beside Google),
+    audit "Nav Dessai signed in with Facebook". Meta needed three fixes on the way: the iOS platform with the
+    bundle ids, the redirect list, and the `email` permission added to the use case. Still owed: a sign-in
+    on the web, then the production pair, then App Review.
 - [ ] E4. Apple: **later**, with the paid Apple Developer account. Off until then.
 - [ ] E5. Turnstile (Phase 56): a site in Cloudflare, `TURNSTILE_SITE_KEY` in vars and `TURNSTILE_SECRET` as a
       secret, on the demo, then production.

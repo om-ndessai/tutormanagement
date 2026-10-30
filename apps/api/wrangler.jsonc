@@ -134,7 +134,7 @@
 		// (its secrets with `wrangler secret put`: APPLE_PRIVATE_KEY, FACEBOOK_APP_SECRET). Google
 		// alone until the owner sets each one up; Apple waits for the paid Apple Developer account.
 		"AUTH_PROVIDERS": "google",
-		"MICROSOFT_CLIENT_ID": "",
+		"MICROSOFT_CLIENT_ID": "58cbca0a-7c76-4734-ae71-7fd76fd85e67",
 		"APPLE_SERVICES_ID": "",
 		"APPLE_BUNDLE_IDS": "",
 		"APPLE_TEAM_ID": "",
@@ -242,7 +242,7 @@
 				"SIGNUP_OPEN": "false",
 				// Phase 55: restated; see the top-level block.
 				"AUTH_PROVIDERS": "google",
-				"MICROSOFT_CLIENT_ID": "",
+				"MICROSOFT_CLIENT_ID": "58cbca0a-7c76-4734-ae71-7fd76fd85e67",
 				"APPLE_SERVICES_ID": "",
 				"APPLE_BUNDLE_IDS": "",
 				"APPLE_TEAM_ID": "",
@@ -308,7 +308,7 @@
 				"SIGNUP_OPEN": "true",
 				// Phase 55: restated. The test portal may switch a provider on before production does.
 				"AUTH_PROVIDERS": "google,facebook",
-				"MICROSOFT_CLIENT_ID": "",
+				"MICROSOFT_CLIENT_ID": "58cbca0a-7c76-4734-ae71-7fd76fd85e67",
 				"APPLE_SERVICES_ID": "",
 				"APPLE_BUNDLE_IDS": "",
 				"APPLE_TEAM_ID": "",
