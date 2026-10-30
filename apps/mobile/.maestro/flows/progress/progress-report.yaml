@@ -67,6 +67,8 @@ tags:
 - assertNotVisible:
     id: progress-report-pdf-error
 - assertNotVisible: 'Download'
-- assertNotVisible: 'Share'
+# Shared through the system sheet on asking (owner, 2026-10-30); the sheet itself is the system's.
+- assertVisible:
+    id: progress-report-share
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: progress-report-pdf

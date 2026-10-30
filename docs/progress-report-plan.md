@@ -111,8 +111,10 @@ request and never stored.
   To date fields, the checkbox and **Generate Progress**. It opens the PDF in the portal's viewer
   (pdf.js), with its download link, as the assessment PDFs do.
 - **App:** the same panel at the bottom of `student-progress-screen.tsx`. It fetches the bytes and shows
-  them in the existing pdf.js viewer. It is never written to disk, and `printToFileAsync` stays banned.
-  The share sheet is not offered, the same as the assessment PDF.
+  them in the existing pdf.js viewer, from memory, and `printToFileAsync` stays banned. **Share report**
+  (owner, 2026-10-30) is the app's form of the web's Download link: the report is fetched again, written
+  to the cache, handed to the system share sheet and deleted when the sheet closes (`downloadAndShare`),
+  as CSV exports are. The assessment PDF still has neither.
 - The shared contract is a `progressReportQuerySchema` (from, to, original) in `packages/shared`.
 
 ## Tests

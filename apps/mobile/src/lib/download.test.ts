@@ -4,11 +4,11 @@ import { setActiveOrg } from '@/lib/organization';
 const mockShare = jest.fn(() => Promise.resolve());
 jest.mock('expo-sharing', () => ({ shareAsync: (...args: unknown[]) => mockShare(...(args as [])) }));
 
-const mockFiles: { name: string; text?: string; deleted: boolean }[] = [];
+const mockFiles: { name: string; text?: string | Uint8Array; deleted: boolean }[] = [];
 jest.mock('expo-file-system', () => ({
   Paths: { cache: 'cache' },
   File: class {
-    record: { name: string; text?: string; deleted: boolean };
+    record: { name: string; text?: string | Uint8Array; deleted: boolean };
     constructor(_dir: string, name: string) {
       this.record = { name, deleted: false };
       mockFiles.push(this.record);
@@ -20,7 +20,7 @@ jest.mock('expo-file-system', () => ({
       return !this.record.deleted;
     }
     create() {}
-    write(text: string) {
+    write(text: string | Uint8Array) {
       this.record.text = text;
     }
     delete() {
@@ -67,6 +67,22 @@ describe('downloads', () => {
       expect.objectContaining({ mimeType: 'text/csv' }),
     );
     expect(mockFiles[0]).toMatchObject({ name: 'sessions.csv', text: 'date,student\n', deleted: true });
+  });
+
+  it('shares a PDF as bytes, then deletes it (the progress report)', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      arrayBuffer: () => Promise.resolve(new Uint8Array([37, 80, 68, 70]).buffer),
+      headers: { get: () => 'inline; filename="progress-sofia-okafor-2026-10-30.pdf"' },
+    });
+    await downloadAndShare('/progress/s1/report.pdf', 'progress-report.pdf');
+    expect(mockShare).toHaveBeenCalledWith(
+      'file:///cache/progress-sofia-okafor-2026-10-30.pdf',
+      expect.objectContaining({ mimeType: 'application/pdf', UTI: 'com.adobe.pdf' }),
+    );
+    expect(mockFiles[0]).toMatchObject({ name: 'progress-sofia-okafor-2026-10-30.pdf', deleted: true });
+    expect(Array.from(mockFiles[0]!.text as Uint8Array)).toEqual([37, 80, 68, 70]);
   });
 
   it('deletes the file even when sharing fails', async () => {

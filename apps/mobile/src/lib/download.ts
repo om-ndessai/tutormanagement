@@ -3,7 +3,8 @@
 // request carries (the organization, and the developer identity while sign-in is off), written to
 // the cache, handed to the share sheet, and deleted once the sheet closes -- nothing is left on
 // the device. The only place outside api-client.ts that calls fetch. `fetchBytes` fetches the same
-// way for a file the app shows itself (an assessment's PDF), and keeps it in memory only.
+// way for a file the app shows itself (an assessment's PDF), and keeps it in memory only. The
+// progress report (Phase 58) is shown that way and, on the reader's asking, shared this way.
 import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
@@ -21,6 +22,7 @@ export function filenameFrom(disposition: string | null, fallback: string): stri
 const MIME_TYPES: Record<string, { mimeType: string; UTI: string }> = {
   csv: { mimeType: 'text/csv', UTI: 'public.comma-separated-values-text' },
   ics: { mimeType: 'text/calendar', UTI: 'public.calendar-event' },
+  pdf: { mimeType: 'application/pdf', UTI: 'com.adobe.pdf' },
 };
 
 /** The request every download makes: the active organization, the identity, the session cookie. */
@@ -63,13 +65,14 @@ export async function fetchBytes(path: string, accept = '*/*'): Promise<Uint8Arr
  */
 export async function downloadAndShare(path: string, fallbackName: string): Promise<void> {
   const response = await request(path, '*/*');
-  const text = await response.text();
   const name = filenameFrom(response.headers.get('Content-Disposition'), fallbackName);
+  const extension = name.split('.').pop()?.toLowerCase() ?? '';
+  // A PDF (the progress report, Phase 58) is bytes; a CSV or a calendar file is text.
+  const content = extension === 'pdf' ? new Uint8Array(await response.arrayBuffer()) : await response.text();
   const file = new File(Paths.cache, name);
   try {
     file.create({ overwrite: true });
-    file.write(text);
-    const extension = name.split('.').pop()?.toLowerCase() ?? '';
+    file.write(content);
     await Sharing.shareAsync(file.uri, { ...MIME_TYPES[extension], dialogTitle: name });
   } finally {
     if (file.exists) file.delete();
