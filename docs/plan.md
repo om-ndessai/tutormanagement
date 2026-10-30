@@ -649,3 +649,9 @@ Phase 58 built 2026-10-29 (local web suite green, 298 with the sign-in specs; th
 Android and the progress and assessment-PDF flows on both; `test:compat` against `release-20261029-p56`). No
 schema change. Released with the sign-in buttons in each provider's own colours and logo, one size for all
 three (web 320 x 40, the app 312 x 48).
+
+Released 2026-10-30 (tag `release-20261029-p58`; production backed up first,
+`~/tmi-portal-backups/tutoring-db-20261030-005954-pre-phase58.sql`; no SQL; tmi-portal 505614e2, tutoring
+d2c77961), web and the app; the demo first. Both addresses: health ok, the SPA and /privacy 200, the
+report's PDF 401 without a session; production still offers Google alone and sign-up stays closed. The app
+shows "Phase 58".
