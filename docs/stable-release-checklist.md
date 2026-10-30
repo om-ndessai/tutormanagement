@@ -82,6 +82,11 @@ For each: the setup in `docs/sign-in-providers-setup.md` → the ids on the demo
 
 - [x] E1. Google (on since Phase 1).
 - [ ] E2. Microsoft (personal and work or school accounts).
+  - 2026-10-29: Entra app registered (client ID `58cbca0a-7c76-4734-ae71-7fd76fd85e67`, in `MICROSOFT_CLIENT_ID`
+    on all three Workers). **On the demo** (`AUTH_PROVIDERS` "google,microsoft,facebook", version ccf71d5e):
+    `/api/auth/config` offers it, `/api/auth/microsoft/start` redirects to Microsoft with the demo's callback.
+    The app needs no rebuild for it (its client ID comes from the server, its `aimtrue-test://auth/microsoft`
+    return is the scheme it already has). Still owed: a sign-in on the web and in the app, then production.
 - [ ] E3. Facebook, including App Review for the `email` permission before the public can use it.
   - 2026-10-29: Meta app made (App ID `2103586157027324`, in `FACEBOOK_APP_ID` on all three Workers; the
     App Secret set on all three by the owner). **On the demo** (`AUTH_PROVIDERS` "google,facebook",

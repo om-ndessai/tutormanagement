@@ -307,7 +307,7 @@
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "true",
 				// Phase 55: restated. The test portal may switch a provider on before production does.
-				"AUTH_PROVIDERS": "google,facebook",
+				"AUTH_PROVIDERS": "google,microsoft,facebook",
 				"MICROSOFT_CLIENT_ID": "58cbca0a-7c76-4734-ae71-7fd76fd85e67",
 				"APPLE_SERVICES_ID": "",
 				"APPLE_BUNDLE_IDS": "",
