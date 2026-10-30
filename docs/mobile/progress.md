@@ -426,6 +426,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   `react-native-view-shot` -- the development, e2e, personal and test builds are rebuilt. Built 2026-10-26
   (build note under design 65).
 
+## Portal Phase 58 — the progress report (parity: the web half is built by the lead)
+
+- [x] 66. Mobile: the "Progress report" panel last on a student's progress page (From, To, Include original
+  assessment, Generate Progress; `progressReportRangeProblem` inline, the button disabled while it holds)
+  and `/progress/report/[studentId]`, the Worker's PDF in the assessment PDF's pdf.js viewer (bytes in memory,
+  never on disk, no share sheet; the server's message for a 400 or 404) (`docs/progress-report-plan.md`).
+  Built 2026-10-29: typecheck, lint (0 errors), Jest 146 suites / 1046 tests green; `progress/progress-report`
+  written, not yet run on either platform.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

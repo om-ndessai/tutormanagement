@@ -13,10 +13,11 @@ import type {
   ProgressOverview,
   StudentProgress,
 } from '@tmi/shared';
-import { indexCurriculum } from '@tmi/shared';
+import { indexCurriculum, progressReportPath } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
 import { auditKeys } from '@/features/audit/api';
+import { withOrg } from '@/lib/organization';
 
 export const progressKeys = {
   all: ['progress'] as const,
@@ -137,4 +138,15 @@ export function useDeletePlan() {
     mutationFn: (id: string) => apiClient.delete<undefined>(`/progress/plans/${id}`),
     onSuccess: invalidate,
   });
+}
+
+/**
+ * Phase 58: the progress report's PDF, a plain link the portal's pdf.js viewer
+ * (and the Download link) opens, with the organization riding along as `?org=`.
+ */
+export function progressReportUrl(
+  studentId: string,
+  options: { from?: string; to?: string; original?: boolean },
+): string {
+  return withOrg(`/api${progressReportPath(studentId, options)}`);
 }

@@ -13,6 +13,7 @@ export default function ProgressStack() {
     <Stack screenOptions={options}>
       <Stack.Screen name="index" options={{ title: 'Progress', headerRight: () => <HeaderButtons /> }} />
       <Stack.Screen name="[studentId]" options={{ ...detail, title: 'Progress' }} />
+      <Stack.Screen name="report/[studentId]" options={{ ...detail, title: 'Progress report' }} />
     </Stack>
   );
 }

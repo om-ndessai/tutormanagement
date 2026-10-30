@@ -1,11 +1,15 @@
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import { z } from 'zod';
 import {
   assessmentInputSchema,
   assessmentUpdateSchema,
   planInputSchema,
   planUpdateSchema,
+  ORG_PALETTE_HEX,
   PLAN_STATUS_LABELS,
+  progressReportQuerySchema,
+  progressReportRangeProblem,
+  zonedClockParts,
   type ApiOk,
   type Assessment,
   type Curriculum,
@@ -24,6 +28,10 @@ import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
 import { getLiveUserById } from '../repositories/users.js';
 import { listOrganizationCurricula } from '../repositories/curricula.js';
+import { getLogo } from '../repositories/organizations.js';
+import { catalogLabels, listReportSessions } from '../repositories/progress-report.js';
+import { buildProgressReportPdf } from '../lib/progress-report-pdf.js';
+import { pngToPdfImage, type PdfImage } from '../lib/pdf.js';
 import {
   buildStudentProgress,
   progressReader,
@@ -65,6 +73,52 @@ export const curriculaRoutes = new Hono<AppEnv>().get('/', async (c) => {
   const body: ApiOk<Curriculum[]> = { data: await listOrganizationCurricula(c.env.DB, c.get('org').id) };
   return c.json(body);
 });
+
+/** A file name's part: "Sofia Okafor" -> "sofia-okafor". */
+function fileSlug(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'student';
+}
+
+/** YYYY-MM-DD, `days` before another. */
+function daysBefore(iso: string, days: number): string {
+  return new Date(Date.parse(`${iso}T00:00:00Z`) - days * 86_400_000).toISOString().slice(0, 10);
+}
+
+/**
+ * Logos as PDF images, per isolate, by the logo's hash: splitting a PNG's
+ * alpha into a soft mask is the one costly step of a report, so it is done
+ * once per logo rather than on every press. Small, and keyed by content, so
+ * a new upload is a new entry.
+ */
+const logoCache = new Map<string, PdfImage | null>();
+
+async function reportLogo(c: Context<AppEnv>): Promise<PdfImage | null> {
+  const org = c.get('org');
+  let key: string;
+  let bytes: () => Promise<ArrayBuffer | null>;
+  const uploaded = await getLogo(c.env.DB, org.slug, 'mark');
+  if (uploaded) {
+    // A WebP cannot go into a PDF without decoding it: the name stands in.
+    if (uploaded.content_type !== 'image/png') return null;
+    key = uploaded.sha256;
+    bytes = async () => uploaded.bytes;
+  } else if (org.builtin_logo === 'institute') {
+    key = 'builtin:institute';
+    bytes = async () => {
+      const response = await c.env.ASSETS.fetch(new URL('/logo-mark.png', c.req.url));
+      return response.ok ? response.arrayBuffer() : null;
+    };
+  } else {
+    return null;
+  }
+
+  if (logoCache.has(key)) return logoCache.get(key)!;
+  const raw = await bytes();
+  const image = raw ? await pngToPdfImage(raw) : null;
+  if (logoCache.size >= 32) logoCache.clear();
+  logoCache.set(key, image);
+  return image;
+}
 
 /** The person being assessed must be a live student. */
 async function requireStudent(db: D1Database, org: OrgId, studentId: string) {
@@ -370,6 +424,86 @@ export const progressRoutes = new Hono<AppEnv>()
   })
 
   // --- one student ---------------------------------------------------------
+
+  /**
+   * Phase 58: the progress report, a PDF built on request and never stored
+   * (docs/progress-report-plan.md). Exactly the progress page's audience; the
+   * lessons it lists are the ones this reader's sessions page lists. No money,
+   * and no audit line: like an export, it changes nothing.
+   */
+  .get(
+    '/:studentId/report.pdf',
+    zValidator('param', studentParamSchema),
+    zValidator('query', progressReportQuerySchema),
+    async (c) => {
+      const { studentId } = c.req.valid('param');
+      const query = c.req.valid('query');
+      const org = c.get('org');
+      const viewer = c.get('user');
+
+      if (!(await canViewStudentProgress(c.env.DB, org.id, viewer, studentId))) {
+        throw ApiError.notFound('That student does not exist.');
+      }
+
+      const progress = await buildStudentProgress(
+        c.env.DB,
+        studentId,
+        await progressReader(c.env.DB, org, viewer),
+      );
+      if (!progress) throw ApiError.notFound('That student does not exist.');
+
+      // From defaults to the plan's start (else 90 days back), To to today on the organization's clock.
+      const today = zonedClockParts(new Date().toISOString(), org.time_zone).day;
+      const to = query.to ?? today;
+      const from = query.from ?? progress.plan?.starts_on ?? daysBefore(to, 90);
+      const problem = progressReportRangeProblem(from, to);
+      if (problem) throw ApiError.validation('Please correct the highlighted fields.', { to: [problem] });
+
+      const plan = progress.plan;
+      // The original assessment: the plan's own baseline, else the student's first.
+      const original = query.original
+        ? ((plan?.assessment_id && progress.assessments.find((a) => a.id === plan.assessment_id)) ||
+            progress.assessments.at(-1) ||
+            null)
+        : undefined;
+
+      const [lessons, labels, logo] = await Promise.all([
+        listReportSessions(c.env.DB, org.id, viewer, studentId, from, to),
+        catalogLabels(
+          c.env.DB,
+          org.id,
+          [plan?.target_level_id, original?.recommended_level_id].filter((id): id is string => Boolean(id)),
+          [...progress.topics.map((t) => t.topic_id), ...(original?.ratings.map((r) => r.topic_id) ?? [])],
+        ),
+        reportLogo(c),
+      ]);
+
+      const pdf = await buildProgressReportPdf({
+        organizationName: org.name,
+        paletteHex: ORG_PALETTE_HEX[org.palette],
+        logo,
+        progress,
+        from,
+        to,
+        generatedOn: today,
+        sessions: lessons.sessions,
+        sessionCount: lessons.count,
+        totalMinutes: lessons.total_minutes,
+        labels,
+        original,
+      });
+
+      const name = `progress-${fileSlug(progress.student.full_name)}-${to}.pdf`;
+      return new Response(pdf, {
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `inline; filename="${name}"`,
+          'Cache-Control': 'private, no-store',
+          'X-Content-Type-Options': 'nosniff',
+        },
+      });
+    },
+  )
 
   /**
    * Assessment, plan and progress for one student. A student the viewer may

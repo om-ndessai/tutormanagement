@@ -57,6 +57,7 @@ import { AssessmentDialog } from './assessment-dialog';
 import { PlanDialog } from './plan-dialog';
 import { ProgressChart } from './progress-chart';
 import { ProgressMeter } from './progress-list';
+import { ProgressReportPanel } from './progress-report-panel';
 import { ProgressStatusBadge, RatingChip, RatingLegend, TopicName } from './rating';
 
 /**
@@ -468,6 +469,15 @@ export function StudentProgressPage() {
             </ul>
           </Panel>
         )}
+
+        {/* Phase 58: last on the page, for every reader of it. */}
+        <ProgressReportPanel
+          key={student.user_id}
+          index={10}
+          studentId={student.user_id}
+          planStartsOn={plan?.starts_on ?? null}
+          today={progress.today}
+        />
       </div>
 
       {isAdmin && (

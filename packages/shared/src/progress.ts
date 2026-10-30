@@ -755,3 +755,68 @@ export function formatCadence(sessionsPerWeek: number, sessionMinutes: number): 
 
   return `${times} a week, ${length}`;
 }
+
+// ---------------------------------------------------------------------------
+// The progress report (Phase 58, docs/progress-report-plan.md)
+// ---------------------------------------------------------------------------
+
+/** The longest range a report may cover, in days (about two years). */
+export const PROGRESS_REPORT_MAX_DAYS = 731;
+
+/** Whole days from one YYYY-MM-DD to another (negative when `to` is earlier). */
+function daysBetween(from: string, to: string): number {
+  return Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000);
+}
+
+/**
+ * What "Generate Progress" asks for: the lessons' range (both ends inclusive, on the organization's
+ * clock) and whether the original assessment goes in. Either end may be left out: From then defaults
+ * to the plan's start, To to today (the Worker decides, as it knows both).
+ */
+export const progressReportQuerySchema = z
+  .object({
+    from: isoDate.optional(),
+    to: isoDate.optional(),
+    /** "1" or "true" adds the original assessment (a query string carries no booleans). */
+    original: z
+      .enum(['0', '1', 'true', 'false'])
+      .optional()
+      .transform((value) => value === '1' || value === 'true'),
+  })
+  .superRefine((query, ctx) => {
+    const problem = progressReportRangeProblem(query.from, query.to);
+    if (problem) ctx.addIssue({ code: 'custom', path: ['to'], message: problem });
+  });
+
+export type ProgressReportQuery = z.output<typeof progressReportQuerySchema>;
+
+/** Why a report's range is refused, or null: To before From, or longer than two years. Both clients use it. */
+export function progressReportRangeProblem(from: string | undefined, to: string | undefined): string | null {
+  if (!from || !to) return null;
+  const days = daysBetween(from, to);
+  if (days < 0) return 'The "To" date is before the "From" date.';
+  if (days > PROGRESS_REPORT_MAX_DAYS) return 'A report covers at most two years.';
+  return null;
+}
+
+/** The report's link: a plain URL the PDF viewer opens (the organization rides along as `?org=` on the web). */
+export function progressReportPath(
+  studentId: string,
+  options: { from?: string; to?: string; original?: boolean },
+): string {
+  // Built by hand: the shared package is compiled without the DOM's URLSearchParams.
+  const parts: string[] = [];
+  if (options.from) parts.push(`from=${options.from}`);
+  if (options.to) parts.push(`to=${options.to}`);
+  if (options.original) parts.push('original=1');
+  const query = parts.join('&');
+  return `/progress/${studentId}/report.pdf${query ? `?${query}` : ''}`;
+}
+
+/** Minutes as "12 h 30 min" (the report's total hours; never rounded to a price). */
+export function formatHoursMinutes(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (hours === 0) return `${rest} min`;
+  return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
+}

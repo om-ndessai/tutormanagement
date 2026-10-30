@@ -208,4 +208,88 @@ test.describe('progress tracking', () => {
     await expect(dialog.getByText('Progress towards the goal')).toBeVisible();
     await expect(dialog.getByRole('radiogroup', { name: 'Progress towards the goal' })).toBeVisible();
   });
+  // Phase 58: the progress report, at the bottom of the student's page.
+  test('the progress report: dates checked in the panel, the PDF opened in the viewer', async ({ as }) => {
+    const admin = await as('admin');
+    const sofiaId = await idOf(admin, PEOPLE.student.email);
+    const progress = await unwrap<any>(await admin.request.get(`/api/progress/${sofiaId}`), 'progress');
+
+    await admin.goto(`/progress/${sofiaId}`);
+    const panel = admin.getByTestId('progress-report');
+    await panel.scrollIntoViewIfNeeded();
+    await expect(panel).toBeVisible();
+
+    // Defaults: the plan's start to today, on the organization's clock; no original assessment.
+    const from = panel.getByTestId('progress-report-from');
+    const to = panel.getByTestId('progress-report-to');
+    const original = panel.getByTestId('progress-report-original');
+    const generate = panel.getByTestId('progress-report-generate');
+    await expect(from).toHaveValue(progress.plan.starts_on);
+    await expect(to).toHaveValue(progress.today);
+    await expect(original).not.toBeChecked();
+    await expect(generate).toBeEnabled();
+
+    // A reversed range is refused before it is sent.
+    await from.fill('2026-09-30');
+    await to.fill('2026-09-01');
+    await expect(panel.getByText('The "To" date is before the "From" date.')).toBeVisible();
+    await expect(generate).toBeDisabled();
+
+    // More than two years is refused too.
+    await from.fill('2023-01-01');
+    await to.fill('2026-09-01');
+    await expect(panel.getByText('A report covers at most two years.')).toBeVisible();
+    await expect(generate).toBeDisabled();
+
+    // A valid range, with the original assessment: the report opens in the portal's viewer.
+    await from.fill(progress.plan.starts_on);
+    await to.fill(progress.today);
+    await expect(panel.getByTestId('progress-report-problem')).toHaveCount(0);
+    await original.check();
+    await generate.click();
+
+    await expect(admin).toHaveURL(new RegExp(`/progress/${sofiaId}/report\\?.*original=1`));
+    await expect(admin.getByRole('heading', { name: /Progress report/ })).toBeVisible();
+    await expect(admin.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'ready', { timeout: 20_000 });
+    expect(await admin.getByTestId('pdf-page').count()).toBeGreaterThanOrEqual(1);
+    await expect(admin.getByTestId('progress-report-download')).toHaveAttribute(
+      'href',
+      new RegExp(`/api/progress/${sofiaId}/report\\.pdf\\?from=${progress.plan.starts_on}&to=${progress.today}&original=1`),
+    );
+
+    // Back to the student's progress.
+    await admin.getByRole('link', { name: progress.student.full_name + "'s progress" }).click();
+    await expect(admin).toHaveURL(new RegExp(`/progress/${sofiaId}$`));
+  });
+
+  test('a tutor makes a progress report for their own student', async ({ as }) => {
+    const tutor = await as('tutor');
+    const sofiaId = await idOf(await as('admin'), PEOPLE.student.email);
+
+    await tutor.goto(`/progress/${sofiaId}`);
+    const panel = tutor.getByTestId('progress-report');
+    await panel.scrollIntoViewIfNeeded();
+    await panel.getByTestId('progress-report-generate').click();
+
+    await expect(tutor).toHaveURL(new RegExp(`/progress/${sofiaId}/report\\?`));
+    await expect(tutor.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'ready', { timeout: 20_000 });
+    expect(await tutor.getByTestId('pdf-page').count()).toBeGreaterThanOrEqual(1);
+  });
+
+  test('a refused report says so in the viewer', async ({ as }) => {
+    const admin = await as('admin');
+    const sofiaId = await idOf(admin, PEOPLE.student.email);
+
+    // A reversed range typed into the address: the Worker answers 422 (validation_failed), and the page says why.
+    await admin.goto(`/progress/${sofiaId}/report?from=2026-09-30&to=2026-09-01`);
+    await expect(admin.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'error', { timeout: 20_000 });
+    await expect(admin.getByTestId('pdf-viewer-error')).toBeVisible();
+    await expect(admin.getByTestId('pdf-page')).toHaveCount(0);
+
+    // Another family's parent is told the student does not exist (404), never shown a report.
+    const parent = await as('parent');
+    await parent.goto(`/progress/${sofiaId}/report`);
+    await expect(parent.getByTestId('pdf-viewer')).toHaveAttribute('data-state', 'error', { timeout: 20_000 });
+    await expect(parent.getByTestId('pdf-page')).toHaveCount(0);
+  });
 });

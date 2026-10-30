@@ -1,0 +1,72 @@
+# The progress report (Phase 58, docs/progress-report-plan.md). Alex, a tutor, opens Sofia's
+# progress page, scrolls to the "Progress report" panel at the very bottom, ticks "Include original
+# assessment" and presses "Generate Progress": the report opens in the app's own pdf.js viewer (the
+# assessment PDF's), drawn page by page, with no download or share anywhere. No money on either
+# screen.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress/00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: progress-goal
+    timeout: 20000
+# Not centred: the panel is the last thing on the page, so the button can never reach the middle
+# (Android then scrolls on until it gives up). Wholly visible, above the tab bar, is the test.
+- scrollUntilVisible:
+    element:
+      id: progress-report-generate
+    direction: DOWN
+    visibilityPercentage: 100
+    timeout: 30000
+- assertVisible:
+    id: progress-report
+- assertVisible:
+    id: progress-report-from
+- assertVisible:
+    id: progress-report-to
+- assertVisible: 'Include original assessment'
+# The defaults (the plan's start to today) are a range: no problem line.
+- assertNotVisible:
+    id: progress-report-problem
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-report-panel
+- tapOn:
+    id: progress-report-original
+- tapOn:
+    id: progress-report-generate
+- extendedWaitUntil:
+    visible:
+      id: screen-progress-report
+    timeout: 15000
+- assertVisible:
+    id: progress-report-title
+    text: 'Sofia Okafor · Progress report'
+- assertVisible:
+    id: progress-report-range
+    text: '.*with the original assessment'
+# pdf.js has drawn the report.
+- extendedWaitUntil:
+    visible:
+      id: progress-report-pdf-pages
+      text: '\d+ pages?'
+    timeout: 45000
+- assertNotVisible:
+    id: progress-report-pdf-error
+- assertNotVisible: 'Download'
+- assertNotVisible: 'Share'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: progress-report-pdf

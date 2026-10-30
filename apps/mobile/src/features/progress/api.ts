@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import {
   indexCurriculum,
+  progressReportPath,
   type ApiOk,
   type Assessment,
   type AssessmentPayload,
@@ -17,6 +18,7 @@ import {
 } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
+import { fetchBytes } from '@/lib/download';
 import { auditKeys } from '@/features/audit/api';
 
 export const progressKeys = {
@@ -138,4 +140,17 @@ export function useDeletePlan() {
     mutationFn: (id: string) => apiClient.delete<undefined>(`/progress/plans/${id}`),
     onSuccess: invalidate,
   });
+}
+
+/**
+ * Phase 58: the progress report's bytes, for the in-app pdf.js viewer. The web's `progressReportUrl`
+ * (a plain link) becomes a fetch with the session and the organization, kept in memory only: never
+ * written to the device or offered to the share sheet. A refused range answers 400, a student the
+ * reader cannot follow 404; both arrive as an ApiRequestError carrying the server's message.
+ */
+export function fetchProgressReportPdf(
+  studentId: string,
+  options: { from?: string; to?: string; original?: boolean },
+): Promise<Uint8Array> {
+  return fetchBytes(progressReportPath(studentId, options), 'application/pdf');
 }

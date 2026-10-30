@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/canvas-assessments/pdf-viewer.tsx @ 37bdad1 (with Phase 40's
 // `kind`: the submitted PDF, or the reviewed one).
 //
-// An assessment's PDF, shown in the app rather than downloaded: it carries the answer key and the
+// A PDF shown in the app rather than downloaded -- an assessment's, or since Phase 58 a student's
+// progress report (`load`, `loadKey` and `testIDPrefix`, so the one viewer serves both). An assessment's: it carries the answer key and the
 // worked solutions, so it is never written to the device or offered to the share sheet. pdf.js
 // draws each page in a react-native-webview (pdf-viewer-html.ts); the app fetches the bytes with the
 // session and the organization (src/lib/download.ts), turns them into base64 on Hermes, and hands
@@ -16,6 +17,7 @@ import { bytesToBase64 } from '@/lib/base64';
 import { APP_VARIANT } from '@/lib/variant';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { ApiRequestError } from '@/lib/api-client';
 import { fetchCanvasAssessmentPdf, type CanvasAssessmentPdfKind } from './api';
 import { PDF_VIEWER_BASE_URL, pdfViewerHtml, readViewerMessage, renderCall } from './pdf-viewer-html';
 
@@ -58,20 +60,38 @@ export const LOCKED_WEBVIEW_PROPS = {
 
 type ViewerState = 'loading' | 'ready' | 'error';
 
+/** What the viewer shows: an assessment's PDF, or any other PDF's bytes (the progress report). */
+type PdfSource =
+  | { assessmentId: string; kind?: CanvasAssessmentPdfKind; load?: undefined; loadKey?: undefined }
+  | {
+      assessmentId?: undefined;
+      kind?: undefined;
+      /** Fetches the bytes, in memory only (`fetchBytes`). */
+      load: () => Promise<Uint8Array>;
+      /** Changes whenever `load` would fetch something else. */
+      loadKey: string;
+    };
+
 export function PdfViewer({
-  assessmentId,
   label,
-  kind = 'submitted',
-}: {
-  assessmentId: string;
+  testIDPrefix = 'assessment-pdf',
+  showServerError = false,
+  ...pdfSource
+}: PdfSource & {
   label: string;
-  kind?: CanvasAssessmentPdfKind;
+  /** `<prefix>-viewer`, `<prefix>-pages`, `<prefix>-error`. */
+  testIDPrefix?: string;
+  /** Show the server's own words (a refused range, "Not found") instead of the plain sentence. */
+  showServerError?: boolean;
 }) {
+  const kind = pdfSource.kind ?? 'submitted';
+  const fetchKey = pdfSource.load ? pdfSource.loadKey : `${pdfSource.assessmentId}:${kind}`;
   const theme = useAppTheme();
   const webview = useRef<WebView>(null);
   const [state, setState] = useState<ViewerState>('loading');
   const [pages, setPages] = useState(0);
   const [generation, setGeneration] = useState(0);
+  const [errorText, setErrorText] = useState<string | null>(null);
   // The PDF, as base64, once fetched; and whether the page has said it is ready for it.
   const pdf = useRef<string | null>(null);
   const pageReady = useRef(false);
@@ -94,21 +114,31 @@ export function PdfViewer({
   useEffect(() => {
     let cancelled = false;
     pdf.current = null;
-    fetchCanvasAssessmentPdf(assessmentId, kind)
+    handedOver.current = false;
+    let load: () => Promise<Uint8Array>;
+    if (pdfSource.load === undefined) {
+      const id = pdfSource.assessmentId;
+      load = () => fetchCanvasAssessmentPdf(id, kind);
+    } else {
+      load = pdfSource.load;
+    }
+    load()
       .then((bytes) => {
         if (cancelled) return;
         pdf.current = bytesToBase64(bytes);
         handOver();
       })
-      .catch(() => {
-        if (!cancelled) setState('error');
+      .catch((error: unknown) => {
+        if (cancelled) return;
+        if (showServerError && error instanceof ApiRequestError) setErrorText(error.message);
+        setState('error');
       });
     return () => {
       cancelled = true;
     };
-    // handOver reads refs only.
+    // handOver reads refs only; fetchKey names what `load` fetches.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assessmentId, kind]);
+  }, [fetchKey]);
 
   // A page that never finishes drawing is reported, not left spinning.
   useEffect(() => {
@@ -142,15 +172,15 @@ export function PdfViewer({
   }
 
   return (
-    <View testID="assessment-pdf-viewer" style={{ flex: 1, gap: space.sm }}>
+    <View testID={`${testIDPrefix}-viewer`} style={{ flex: 1, gap: space.sm }}>
       {state === 'ready' ? (
-        <Text testID="assessment-pdf-pages" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+        <Text testID={`${testIDPrefix}-pages`} variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
           {`${pages} page${pages === 1 ? '' : 's'}`}
         </Text>
       ) : null}
       {state === 'error' ? (
-        <Text testID="assessment-pdf-error" variant="bodyMedium" style={{ color: theme.colors.error }}>
-          The PDF could not be shown.
+        <Text testID={`${testIDPrefix}-error`} variant="bodyMedium" style={{ color: theme.colors.error }}>
+          {errorText ?? 'The PDF could not be shown.'}
         </Text>
       ) : null}
       <View style={{ flex: 1, borderRadius: radius.md, overflow: 'hidden' }}>

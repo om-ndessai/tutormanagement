@@ -637,3 +637,15 @@ works as before. Google is the only sign-in until Microsoft and Facebook are set
 (`docs/sign-in-providers-setup.md`); public answers to a shared question wait on Turnstile. The app shows
 "Phase 56".
 
+
+- **Phase 58 — the progress report (approved 2026-10-29).** Plan:
+  `docs/progress-report-plan.md`. "Generate Progress" at the bottom of a student's progress page (From, To,
+  "Include original assessment"): a PDF in the organization's name, logo and colours with the goal and its
+  status, the four figures (hours in place of recent lessons' rating), the timeline chart, the
+  recommendation, the plan topics and the lessons with their whole write-up, times and location, newest first. No
+  money. Built by the Worker, nothing stored; web and the app.
+
+Phase 58 built 2026-10-29 (local web suite green, 298 with the sign-in specs; the app's smoke 7/7 on iOS and
+Android and the progress and assessment-PDF flows on both; `test:compat` against `release-20261029-p56`). No
+schema change. Released with the sign-in buttons in each provider's own colours and logo, one size for all
+three (web 320 x 40, the app 312 x 48).

@@ -67,6 +67,7 @@ lessons as a student, in one list.
 | Dashboard, parent tab | n/a | Only their children's lessons (not ones they taught) and family payments. | n/a |
 | Dashboard, student tab | n/a | n/a | Only their own lessons. |
 | Progress (Phase 16) | Students currently assigned to them. Cancelled lessons on another tutor's schedule show without the note or who cancelled (R11). | Their children. | Themselves. |
+| Progress report (Phase 58), `GET /progress/:studentId/report.pdf` | The same students as Progress (anyone else: 404). Its lessons are only the ones they taught, as on their sessions list (`teachingScopeSql`), with each lesson's notes and write-up parts; its counts and hours are of those lessons. The goal, plan, topics, chart and recommendation are the progress page's. A lesson's place is a location's name, never its address or link. No money anywhere, no reflection or lesson assessment, no audit line; built on request, never stored. | Their children's: every lesson of theirs, the same parts. | Their own. |
 | Curricula (Phase 35), `GET /curricula` and the catalog, `GET /curriculum` | The curricula their organization offers or has retired, and their levels and topics: reference data, no people. | Same. | Same. |
 | Choosing curricula, `GET`/`PUT /organization/curricula` | 403: the organization's admins choose. | 403. | 403. |
 | Activity log | Events they acted in or were the subject of, with no amounts. | Same. | Same. |
@@ -132,7 +133,8 @@ every read endpoint:
 - lists
 - records by id, for every person the reader can see
 - each dashboard role
-- progress
+- progress, and each followed student's progress report (Phase 58): 200 with no `$` or `cents` in its
+  pages, and 404 for every student the admin follows and the reader does not
 - the activity log
 - comments
 - balances

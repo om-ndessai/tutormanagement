@@ -11,6 +11,7 @@ export function PdfViewer({ url, label }: { url: string; label: string }) {
   const container = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
   const [pages, setPages] = useState(0);
+  const [problem, setProblem] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -18,6 +19,7 @@ export function PdfViewer({ url, label }: { url: string; label: string }) {
     if (!host) return;
     host.replaceChildren();
     setState('loading');
+    setProblem(null);
 
     (async () => {
       const [pdfjs, worker] = await Promise.all([
@@ -26,7 +28,12 @@ export function PdfViewer({ url, label }: { url: string; label: string }) {
       ]);
       pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
       const response = await fetch(url, { credentials: 'same-origin' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) {
+        // The Worker's refusal is the shared envelope; say why when it does (Phase 58).
+        const body = (await response.json().catch(() => null)) as { error?: { message?: string } } | null;
+        if (!cancelled && body?.error?.message) setProblem(body.error.message);
+        throw new Error(`HTTP ${response.status}`);
+      }
       const data = new Uint8Array(await response.arrayBuffer());
       // Our own PDFs, from our own Worker: standard fonts, no scripts, no forms.
       const doc = await pdfjs.getDocument({ data }).promise;
@@ -63,7 +70,11 @@ export function PdfViewer({ url, label }: { url: string; label: string }) {
   return (
     <div className="grid gap-3" data-testid="pdf-viewer" data-state={state} data-pages={pages}>
       {state === 'loading' && <Skeleton className="mx-auto h-[70vh] w-full max-w-[900px]" />}
-      {state === 'error' && <p className="text-destructive text-sm">The PDF could not be shown.</p>}
+      {state === 'error' && (
+        <p className="text-destructive text-sm" data-testid="pdf-viewer-error">
+          {problem ?? 'The PDF could not be shown.'}
+        </p>
+      )}
       <div ref={container} className="grid gap-4" />
     </div>
   );

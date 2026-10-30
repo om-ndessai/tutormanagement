@@ -31,6 +31,7 @@ import { AssessmentPanel } from './assessment-panel';
 import { LessonList } from './lesson-list';
 import { ProgressChart } from './progress-chart';
 import { ProgressMeter } from './progress-meter';
+import { ProgressReportPanel } from './progress-report-panel';
 import { longDate } from './progress-model';
 import { ProgressStatusBadge, RatingChip, RatingLegend, TopicName } from './rating';
 import { useConfirmDelete } from './use-confirm-delete';
@@ -386,6 +387,13 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
           ))}
         </Panel>
       ) : null}
+
+      {/* Phase 58: last on the page, as on the web. */}
+      <ProgressReportPanel
+        studentId={student.user_id}
+        planStartsOn={plan?.starts_on ?? null}
+        today={progress.today}
+      />
     </>
   );
 }

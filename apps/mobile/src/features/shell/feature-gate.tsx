@@ -107,6 +107,7 @@ export const GATED_ROUTES: Record<string, { set: FeatureSet; presentation: GateP
   '(tabs)/schedule/index.tsx': { set: 'tutoring', presentation: 'screen' },
   '(tabs)/progress/index.tsx': { set: 'tutoring', presentation: 'screen' },
   '(tabs)/progress/[studentId].tsx': { set: 'tutoring', presentation: 'screen' },
+  '(tabs)/progress/report/[studentId].tsx': { set: 'tutoring', presentation: 'screen' },
   'analytics.tsx': { set: 'tutoring', presentation: 'screen' },
   'billing.tsx': { set: 'tutoring', presentation: 'screen' },
   'pairings.tsx': { set: 'tutoring', presentation: 'screen' },

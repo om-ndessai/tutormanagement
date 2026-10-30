@@ -211,10 +211,13 @@ tags:
 - extendedWaitUntil:
     visible: 'Plan deleted.'
     timeout: 15000
-- extendedWaitUntil:
-    visible:
+# The page keeps its place, near the bottom since the progress report's panel (Phase 58) sits
+# there: scroll back up to the "Learning plan" note that replaces the plan.
+- scrollUntilVisible:
+    element:
       id: progress-no-plan
-    timeout: 10000
+    direction: UP
+    timeout: 15000
 - scrollUntilVisible:
     element:
       id: progress-assessment-delete

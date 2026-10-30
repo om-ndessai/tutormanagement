@@ -1,5 +1,7 @@
 // A small PDF writer: pages of text in the standard Helvetica fonts, lines,
-// boxes and vector strokes. Phase 38's assessment PDF is its first use.
+// boxes and vector strokes. Phase 38's assessment PDF is its first use; Phase
+// 58's progress report adds rounded cards, paths, dots and one PNG image (the
+// organization's logo), whose compressed data is passed straight through.
 //
 // Written by hand rather than taken from a library: a Worker on the free plan
 // has 10 ms of CPU per request, and a document of text and paths needs no font
@@ -123,6 +125,20 @@ function n(value: number): string {
 
 export type Rgb = readonly [number, number, number];
 
+function rgb(color: Rgb, operator: 'rg' | 'RG'): string {
+  return `${n(color[0])} ${n(color[1])} ${n(color[2])} ${operator}`;
+}
+
+/** A closed path filled and/or stroked. */
+function paintPath(path: string, options: { fill?: Rgb; stroke?: Rgb; lineWidth?: number }): string {
+  const parts = ['q'];
+  if (options.fill) parts.push(rgb(options.fill, 'rg'));
+  if (options.stroke) parts.push(`${rgb(options.stroke, 'RG')} ${n(options.lineWidth ?? 0.75)} w`);
+  const paint = options.fill && options.stroke ? 'B' : options.fill ? 'f' : 'S';
+  parts.push(path, paint, 'Q');
+  return parts.join(' ');
+}
+
 /** One page's drawing operators. Coordinates are points from the bottom left. */
 export class PdfPage {
   readonly ops: string[] = [];
@@ -149,6 +165,86 @@ export class PdfPage {
     this.ops.push(
       `q ${n(color[0])} ${n(color[1])} ${n(color[2])} RG ${n(lineWidth)} w ${n(x1)} ${n(y1)} m ${n(x2)} ${n(y2)} l S Q`,
     );
+  }
+
+  /** A path through points, stroked: a chart's line. `dash` is [on, off] in points. */
+  polyline(
+    points: readonly (readonly [number, number])[],
+    color: Rgb,
+    lineWidth = 1,
+    options: { dash?: readonly [number, number]; closeFill?: Rgb } = {},
+  ): void {
+    if (points.length < 2) return;
+    const path = points.map(([x, y], index) => `${n(x)} ${n(y)} ${index === 0 ? 'm' : 'l'}`).join(' ');
+    if (options.closeFill) {
+      this.ops.push(`q ${rgb(options.closeFill, 'rg')} ${path} h f Q`);
+      return;
+    }
+    const dash = options.dash ? `[${n(options.dash[0])} ${n(options.dash[1])}] 0 d ` : '';
+    this.ops.push(`q ${rgb(color, 'RG')} ${n(lineWidth)} w 1 J 1 j ${dash}${path} S Q`);
+  }
+
+  /** A dashed straight line. */
+  dashedLine(x1: number, y1: number, x2: number, y2: number, color: Rgb, lineWidth = 0.75, dash: readonly [number, number] = [3, 3]): void {
+    this.polyline([[x1, y1], [x2, y2]], color, lineWidth, { dash });
+  }
+
+  /** A rectangle with rounded corners (Bezier quarter circles); (x, y) is its bottom-left corner. */
+  roundedRect(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+    options: { fill?: Rgb; stroke?: Rgb; lineWidth?: number },
+  ): void {
+    const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+    const k = r * 0.5523; // the control distance that makes a Bezier a quarter circle
+    const right = x + width;
+    const top = y + height;
+    const path = [
+      `${n(x + r)} ${n(y)} m`,
+      `${n(right - r)} ${n(y)} l`,
+      `${n(right - r + k)} ${n(y)} ${n(right)} ${n(y + r - k)} ${n(right)} ${n(y + r)} c`,
+      `${n(right)} ${n(top - r)} l`,
+      `${n(right)} ${n(top - r + k)} ${n(right - r + k)} ${n(top)} ${n(right - r)} ${n(top)} c`,
+      `${n(x + r)} ${n(top)} l`,
+      `${n(x + r - k)} ${n(top)} ${n(x)} ${n(top - r + k)} ${n(x)} ${n(top - r)} c`,
+      `${n(x)} ${n(y + r)} l`,
+      `${n(x)} ${n(y + r - k)} ${n(x + r - k)} ${n(y)} ${n(x + r)} ${n(y)} c`,
+      'h',
+    ].join(' ');
+    this.ops.push(paintPath(path, options));
+  }
+
+  /** A circle: a chart's dot. */
+  circle(cx: number, cy: number, radius: number, options: { fill?: Rgb; stroke?: Rgb; lineWidth?: number }): void {
+    const r = radius;
+    const k = r * 0.5523;
+    const path = [
+      `${n(cx + r)} ${n(cy)} m`,
+      `${n(cx + r)} ${n(cy + k)} ${n(cx + k)} ${n(cy + r)} ${n(cx)} ${n(cy + r)} c`,
+      `${n(cx - k)} ${n(cy + r)} ${n(cx - r)} ${n(cy + k)} ${n(cx - r)} ${n(cy)} c`,
+      `${n(cx - r)} ${n(cy - k)} ${n(cx - k)} ${n(cy - r)} ${n(cx)} ${n(cy - r)} c`,
+      `${n(cx + k)} ${n(cy - r)} ${n(cx + r)} ${n(cy - k)} ${n(cx + r)} ${n(cy)} c`,
+      'h',
+    ].join(' ');
+    this.ops.push(paintPath(path, options));
+  }
+
+  /** Text whose right edge is at `x`. */
+  textRight(x: number, y: number, text: string, size: number, font: PdfFont = 'regular', color: Rgb = [0, 0, 0]): void {
+    this.text(x - textWidth(text, size, font), y, text, size, font, color);
+  }
+
+  /** Text centred on `x`. */
+  textCentered(x: number, y: number, text: string, size: number, font: PdfFont = 'regular', color: Rgb = [0, 0, 0]): void {
+    this.text(x - textWidth(text, size, font) / 2, y, text, size, font, color);
+  }
+
+  /** An image added to the document (`PdfDocument.addImage`), drawn into the box with (x, y) its bottom-left corner. */
+  image(name: string, x: number, y: number, width: number, height: number): void {
+    this.ops.push(`q ${n(width)} 0 0 ${n(height)} ${n(x)} ${n(y)} cm /${name} Do Q`);
   }
 
   /**
@@ -185,9 +281,208 @@ async function deflate(bytes: Uint8Array): Promise<Uint8Array> {
   return new Uint8Array(await new Response(stream).arrayBuffer());
 }
 
+async function inflate(bytes: Uint8Array): Promise<Uint8Array> {
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+// ---------------------------------------------------------------------------
+// Images: a PNG, for an organization's logo (Phase 58)
+// ---------------------------------------------------------------------------
+// A PNG's IDAT is a zlib stream of filtered scanlines, which is exactly what
+// PDF's FlateDecode with the PNG predictor (15) reads -- so an opaque PNG goes
+// in untouched. Transparency is the one thing PDF keeps apart: an alpha
+// channel becomes a soft mask, which means inflating, undoing the scanline
+// filters and splitting colour from alpha once. Interlaced and 16-bit PNGs are
+// refused (null): the caller draws the organization's name instead.
+
+/** An image ready to be written as an XObject. */
+export interface PdfImage {
+  width: number;
+  height: number;
+  /** A PDF colour space: `/DeviceRGB`, `/DeviceGray` or an `[/Indexed ...]` array. */
+  colorSpace: string;
+  bitsPerComponent: number;
+  /** The stream's bytes, FlateDecode-compressed. */
+  data: Uint8Array;
+  /** `/DecodeParms` for a PNG-predicted stream, or undefined for raw samples. */
+  decodeParms?: string;
+  /** The alpha channel as an 8-bit gray soft mask, deflated, raw samples. */
+  smask?: Uint8Array;
+}
+
+const PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];
+
+function uint32(bytes: Uint8Array, at: number): number {
+  return ((bytes[at]! << 24) | (bytes[at + 1]! << 16) | (bytes[at + 2]! << 8) | bytes[at + 3]!) >>> 0;
+}
+
+/** Undoes PNG's five scanline filters in place, returning the unfiltered rows without their filter bytes. */
+function unfilter(raw: Uint8Array, rowBytes: number, height: number, bpp: number): Uint8Array | null {
+  if (raw.length < (rowBytes + 1) * height) return null;
+  const out = new Uint8Array(rowBytes * height);
+  for (let row = 0; row < height; row += 1) {
+    const filter = raw[row * (rowBytes + 1)]!;
+    const src = row * (rowBytes + 1) + 1;
+    const dst = row * rowBytes;
+    const prev = dst - rowBytes; // the row above, already unfiltered
+    for (let i = 0; i < rowBytes; i += 1) {
+      const x = raw[src + i]!;
+      const a = i >= bpp ? out[dst + i - bpp]! : 0;
+      const b = row > 0 ? out[prev + i]! : 0;
+      let value: number;
+      switch (filter) {
+        case 0: value = x; break;
+        case 1: value = x + a; break;
+        case 2: value = x + b; break;
+        case 3: value = x + ((a + b) >> 1); break;
+        case 4: {
+          const c = row > 0 && i >= bpp ? out[prev + i - bpp]! : 0;
+          const p = a + b - c;
+          const pa = Math.abs(p - a);
+          const pb = Math.abs(p - b);
+          const pc = Math.abs(p - c);
+          value = x + (pa <= pb && pa <= pc ? a : pb <= pc ? b : c);
+          break;
+        }
+        default:
+          return null;
+      }
+      out[dst + i] = value & 0xff;
+    }
+  }
+  return out;
+}
+
+/**
+ * A PNG as a PDF image, or null when it is not one this writer takes
+ * (not a PNG, interlaced, 16-bit, or damaged). Never throws.
+ */
+export async function pngToPdfImage(input: ArrayBuffer | Uint8Array): Promise<PdfImage | null> {
+  try {
+    const bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
+    if (bytes.length < 33 || PNG_SIGNATURE.some((value, index) => bytes[index] !== value)) return null;
+
+    let width = 0;
+    let height = 0;
+    let bitDepth = 0;
+    let colorType = -1;
+    let interlace = 0;
+    let palette: Uint8Array | null = null;
+    let transparency: Uint8Array | null = null;
+    const idat: Uint8Array[] = [];
+    let idatLength = 0;
+
+    for (let at = 8; at + 8 <= bytes.length; ) {
+      const length = uint32(bytes, at);
+      const type = String.fromCharCode(bytes[at + 4]!, bytes[at + 5]!, bytes[at + 6]!, bytes[at + 7]!);
+      const data = bytes.subarray(at + 8, at + 8 + length);
+      if (data.length !== length) return null;
+      if (type === 'IHDR') {
+        width = uint32(data, 0);
+        height = uint32(data, 4);
+        bitDepth = data[8]!;
+        colorType = data[9]!;
+        interlace = data[12]!;
+      } else if (type === 'PLTE') palette = data;
+      else if (type === 'tRNS') transparency = data;
+      else if (type === 'IDAT') {
+        idat.push(data);
+        idatLength += data.length;
+      } else if (type === 'IEND') break;
+      at += 12 + length;
+    }
+
+    if (!width || !height || width > 4096 || height > 4096 || interlace !== 0 || idat.length === 0) return null;
+    if (bitDepth === 16 || ![0, 2, 3, 4, 6].includes(colorType)) return null;
+    if ((colorType === 4 || colorType === 6) && bitDepth !== 8) return null;
+    if (colorType === 3 && !palette) return null;
+
+    const stream = new Uint8Array(idatLength);
+    let offset = 0;
+    for (const chunk of idat) {
+      stream.set(chunk, offset);
+      offset += chunk.length;
+    }
+
+    const channels = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[colorType as 0 | 2 | 3 | 4 | 6];
+    const colorChannels = colorType === 0 || colorType === 4 ? 1 : colorType === 3 ? 1 : 3;
+    const device = colorType === 0 || colorType === 4 ? '/DeviceGray' : '/DeviceRGB';
+    const colorSpace =
+      colorType === 3
+        ? `[/Indexed /DeviceRGB ${palette!.length / 3 - 1} <${[...palette!].map((b) => b.toString(16).padStart(2, '0')).join('')}>]`
+        : device;
+    const predictor = (colors: number, bits: number) =>
+      `<< /Predictor 15 /Colors ${colors} /BitsPerComponent ${bits} /Columns ${width} >>`;
+
+    const needsMask = colorType === 4 || colorType === 6 || (colorType === 3 && transparency !== null);
+    if (!needsMask) {
+      // Opaque (a gray or RGB colour-key tRNS is ignored: a logo's background shows).
+      return {
+        width,
+        height,
+        colorSpace,
+        bitsPerComponent: bitDepth,
+        data: stream,
+        decodeParms: predictor(colorChannels, bitDepth),
+      };
+    }
+
+    const rowBytes = Math.ceil((width * channels * bitDepth) / 8);
+    const bpp = Math.max(1, (channels * bitDepth) >> 3);
+    const pixels = unfilter(await inflate(stream), rowBytes, height, bpp);
+    if (!pixels) return null;
+
+    const alpha = new Uint8Array(width * height);
+    if (colorType === 3) {
+      // The palette's colours pass through as they were; the alpha comes from tRNS by index.
+      const perByte = 8 / bitDepth;
+      const mask = (1 << bitDepth) - 1;
+      for (let y = 0; y < height; y += 1) {
+        for (let x = 0; x < width; x += 1) {
+          const byte = pixels[y * rowBytes + Math.floor(x / perByte)]!;
+          const index = (byte >> ((perByte - 1 - (x % perByte)) * bitDepth)) & mask;
+          alpha[y * width + x] = index < transparency!.length ? transparency![index]! : 255;
+        }
+      }
+      return {
+        width,
+        height,
+        colorSpace,
+        bitsPerComponent: bitDepth,
+        data: stream,
+        decodeParms: predictor(1, bitDepth),
+        smask: await deflate(alpha),
+      };
+    }
+
+    const color = new Uint8Array(width * height * colorChannels);
+    const count = width * height;
+    if (colorType === 6) {
+      for (let i = 0, c = 0; i < count; i += 1, c += 3) {
+        const p = i * 4;
+        color[c] = pixels[p]!;
+        color[c + 1] = pixels[p + 1]!;
+        color[c + 2] = pixels[p + 2]!;
+        alpha[i] = pixels[p + 3]!;
+      }
+    } else {
+      for (let i = 0; i < count; i += 1) {
+        color[i] = pixels[i * 2]!;
+        alpha[i] = pixels[i * 2 + 1]!;
+      }
+    }
+    const [colorData, alphaData] = await Promise.all([deflate(color), deflate(alpha)]);
+    return { width, height, colorSpace: device, bitsPerComponent: 8, data: colorData, smask: alphaData };
+  } catch {
+    return null;
+  }
+}
+
 /** A whole document: pages in order, then `save()`. */
 export class PdfDocument {
   private readonly pages: PdfPage[] = [];
+  private readonly images: PdfImage[] = [];
 
   constructor(private readonly title: string) {}
 
@@ -197,8 +492,19 @@ export class PdfDocument {
     return page;
   }
 
+  /** Adds an image once, returning the name a page draws it by (`page.image(name, ...)`). */
+  addImage(image: PdfImage): string {
+    this.images.push(image);
+    return `Im${this.images.length}`;
+  }
+
   get pageCount(): number {
     return this.pages.length;
+  }
+
+  /** The pages so far, in order: for drawing a footer that counts them once the last exists. */
+  get allPages(): readonly PdfPage[] {
+    return this.pages;
   }
 
   async save(): Promise<Uint8Array> {
@@ -214,10 +520,26 @@ export class PdfDocument {
       offsets[id] = length;
       push(`${id} 0 obj\n${body}\nendobj\n`);
     };
+    const streamObject = (id: number, dictionary: string, data: Uint8Array) => {
+      offsets[id] = length;
+      push(`${id} 0 obj\n<< ${dictionary ? `${dictionary} ` : ''}/Length ${data.length} /Filter /FlateDecode >>\nstream\n`);
+      push(data);
+      push('\nendstream\nendobj\n');
+    };
 
-    // 1 catalog, 2 page tree, 3-5 fonts, 6 info; then each page and its contents.
+    // 1 catalog, 2 page tree, 3-5 fonts, 6 info; then each page and its
+    // contents; then each image (and its soft mask, when it has one).
     const firstPage = 7;
     const pageIds = this.pages.map((_, index) => firstPage + index * 2);
+    let nextId = firstPage + this.pages.length * 2;
+    const imageIds = this.images.map((image) => {
+      const id = nextId;
+      nextId += image.smask ? 2 : 1;
+      return id;
+    });
+    const xObjects = this.images.length
+      ? ` /XObject << ${imageIds.map((id, index) => `/Im${index + 1} ${id} 0 R`).join(' ')} >>`
+      : '';
 
     // The header's second line carries bytes above 127, as the format asks of a
     // file with binary streams (these letters' UTF-8 is all high bytes).
@@ -235,16 +557,25 @@ export class PdfDocument {
       object(
         pageId,
         `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}] ` +
-          `/Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents ${contentId} 0 R >>`,
+          `/Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >>${xObjects} >> /Contents ${contentId} 0 R >>`,
       );
-      const content = await deflate(encoder.encode(page.ops.join('\n')));
-      offsets[contentId] = length;
-      push(`${contentId} 0 obj\n<< /Length ${content.length} /Filter /FlateDecode >>\nstream\n`);
-      push(content);
-      push('\nendstream\nendobj\n');
+      streamObject(contentId, '', await deflate(encoder.encode(page.ops.join('\n'))));
     }
 
-    const count = firstPage + this.pages.length * 2;
+    for (const [index, image] of this.images.entries()) {
+      const id = imageIds[index]!;
+      const common = `/Type /XObject /Subtype /Image /Width ${image.width} /Height ${image.height}`;
+      streamObject(
+        id,
+        `${common} /ColorSpace ${image.colorSpace} /BitsPerComponent ${image.bitsPerComponent}` +
+          (image.decodeParms ? ` /DecodeParms ${image.decodeParms}` : '') +
+          (image.smask ? ` /SMask ${id + 1} 0 R` : ''),
+        image.data,
+      );
+      if (image.smask) streamObject(id + 1, `${common} /ColorSpace /DeviceGray /BitsPerComponent 8`, image.smask);
+    }
+
+    const count = nextId;
     const xref = length;
     push(`xref\n0 ${count}\n0000000000 65535 f \n`);
     for (let id = 1; id < count; id += 1) push(`${String(offsets[id] ?? 0).padStart(10, '0')} 00000 n \n`);

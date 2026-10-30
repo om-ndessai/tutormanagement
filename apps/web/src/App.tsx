@@ -16,6 +16,7 @@ import { LocationsPage } from '@/features/locations/locations-page';
 import { BillingPage } from '@/features/payments/billing-page';
 import { UsersPage } from '@/features/users/users-page';
 import { ProgressPage } from '@/features/progress/progress-page';
+import { ProgressReportPage } from '@/features/progress/progress-report-page';
 import { StudentProgressPage } from '@/features/progress/student-progress-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { NotFoundPage } from '@/pages/not-found-page';
@@ -101,6 +102,7 @@ export function App() {
             <Route path="sessions" element={<SessionsPage />} />
             <Route path="progress" element={<ProgressPage />} />
             <Route path="progress/:studentId" element={<StudentProgressPage />} />
+            <Route path="progress/:studentId/report" element={<ProgressReportPage />} />
             <Route path="schedule" element={<SchedulesPage />} />
             <Route path="locations" element={<LocationsPage />} />
             <Route path="billing" element={<BillingPage />} />

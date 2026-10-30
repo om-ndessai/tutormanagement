@@ -3,6 +3,7 @@ import type { Page } from '@playwright/test';
 import { expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
 import { PEOPLE, type PersonKey } from '../support/people.js';
+import { pdfPageText } from '../support/pdf.js';
 
 /**
  * Phase 18: what a non-admin may see, checked by crawling rather than by
@@ -248,6 +249,21 @@ test.describe('what each non-admin can see', () => {
 
       const followed = (await get(page, '/api/progress')) as { student_user_id: string }[];
       for (const row of followed) await read(`/api/progress/${row.student_user_id}`);
+
+      // Phase 58: the progress report is a PDF, not JSON, so it is not walked
+      // by `check`. It reaches exactly the students this reader follows, and
+      // carries no money; which lessons it lists is progress-report.spec.ts.
+      const followedIds = new Set(followed.map((row) => row.student_user_id));
+      for (const row of followed) {
+        const report = await page.request.get(`/api/progress/${row.student_user_id}/report.pdf`);
+        if (report.status() !== 200) problems.push(`report on ${row.student_user_id} answered ${report.status()}`);
+        else if (/\$|cents/i.test(pdfPageText(await report.body()))) problems.push(`report on ${row.student_user_id} carries money`);
+      }
+      for (const row of (await get(admin, '/api/progress')) as { student_user_id: string }[]) {
+        if (followedIds.has(row.student_user_id)) continue;
+        const report = await page.request.get(`/api/progress/${row.student_user_id}/report.pdf`);
+        if (report.status() !== 404) problems.push(`report on unfollowed ${row.student_user_id} answered ${report.status()}`);
+      }
 
       // R9: every lesson and payment the admin can see, fetched by id, is
       // either one this reader lists or "not found".
