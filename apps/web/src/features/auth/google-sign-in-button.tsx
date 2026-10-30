@@ -162,10 +162,13 @@ export function GoogleSignInButton({
   }
 
   return (
-    <div className="flex min-h-11 justify-center">
-      {state === 'loading' && <Skeleton className="h-11 w-[320px] rounded-full" />}
+    <div className="flex min-h-10 justify-center">
+      {state === 'loading' && <Skeleton className="h-10 w-[320px] rounded-full" />}
       <div
         ref={containerRef}
+        // Google's iframe is a light page: inside a dark page the browser paints it an opaque white
+        // backdrop unless its frame says light too, which showed as a white box around the dark button.
+        style={{ colorScheme: 'light' }}
         // Google's iframe ignores pointer-events styling, so a pending sign-in
         // is blocked by covering it rather than by disabling it.
         className={disabled ? 'pointer-events-none opacity-60' : undefined}

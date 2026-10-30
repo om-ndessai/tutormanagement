@@ -149,7 +149,7 @@ export function LoginPage() {
                   />
                 )}
                 {others.length > 0 && (
-                  <div className="mt-3">
+                  <div className="mt-2">
                     <ProviderButtons providers={providers} signup={Boolean(config?.signup_open)} returnTo={from} />
                   </div>
                 )}
