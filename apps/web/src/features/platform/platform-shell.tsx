@@ -11,7 +11,6 @@ import { usePlatformBrand } from '@/providers/brand-provider';
 
 const TABS = [
   { to: '/platform', label: 'Spaces', end: true },
-  { to: '/platform/organizations', label: 'Organizations', end: false },
   { to: '/platform/admins', label: 'Platform admins', end: false },
   { to: '/platform/people', label: 'People', end: false },
   { to: '/platform/questions', label: 'Question bank', end: false },
@@ -20,7 +19,7 @@ const TABS = [
 ];
 
 /**
- * The platform console: organizations, their look and their admins. It wears
+ * The platform console: spaces, their look and their admins. It wears
  * the platform's own identity and runs outside every organization -- nothing
  * here reads an organization's students, lessons or money.
  */
@@ -41,7 +40,7 @@ export function PlatformShell() {
         </span>
         <div className="ml-auto flex items-center gap-1">
           {hasOrganizations && (
-            <Button variant="ghost" size="sm" onClick={() => window.location.assign('/select-organization')}>
+            <Button variant="ghost" size="sm" onClick={() => window.location.assign('/spaces')}>
               <ArrowLeftRightIcon />
               <span className="hidden sm:inline">My spaces</span>
             </Button>

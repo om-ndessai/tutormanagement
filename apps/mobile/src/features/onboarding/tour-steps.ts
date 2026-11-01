@@ -34,7 +34,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     {
       // Phase 43: the figures left Home for the Dashboard page, under More.
       target: 'nav-analytics',
-      title: 'The institute at a glance',
+      title: 'Your space at a glance',
       body: 'Students, tutors, parents and lessons, counted. Each card opens the list behind it.',
     },
     {

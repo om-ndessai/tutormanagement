@@ -1,5 +1,5 @@
 # Phase 50: the console shows and toggles each organization's feature sets. Nav (a platform admin):
-# riverside's row names "Tutoring, Assessment" (then, since Phase 54, who runs its money); its detail shows the three switches, Quest off;
+# riverside's row names "Tutoring, Assessment" (then, since Phase 59, who families pay); its detail shows the three switches, Quest off;
 # allowing Quest saves at once, disallowing asks first. The create form ticks all three (not saved:
 # platform/organizations.yaml owns creating). reset-features.js puts riverside back.
 appId: ${APP_ID}
@@ -36,6 +36,8 @@ tags:
     centerElement: true
 - assertVisible:
     id: platform-org-features
+# Phase 59 (S3): the space's words.
+- assertVisible: 'This space may use'
 - takeScreenshot: features-console
 - tapOn:
     id: platform-org-feature-quest

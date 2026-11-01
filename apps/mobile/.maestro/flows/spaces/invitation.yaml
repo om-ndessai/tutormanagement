@@ -1,0 +1,330 @@
+# Phase 60 (S6, docs/spaces-plan.md): an invitation is accepted by hand, then entered.
+#  1. A new tutor the institute (a console space) invites signs in for the first time: straight in,
+#     no Accept.
+#  2. A newcomer invited to a self-serve space signs in for the first time: the selector, with the
+#     invitation and nothing entered; Accept lands them there, and the welcome wizard opens.
+#  3. Someone in Riverside who has signed in before, invited by the institute, signs in: Riverside
+#     (their last space), with the banner on Home; the Account screen counts it and Spaces lists it;
+#     Not now hides it for this app session only; Accept enters the institute.
+#  4. Decline: gone from the person's selector (and, with one space left, the landing rule enters
+#     it), and the institute's admins no longer find the person among its people.
+# "Signing in for the first time" is the real path: the suite's fake Google token through
+# POST /api/auth/google (AUTH_FAKE_PROVIDERS, local only), where a console space's invitations are
+# accepted; the app then signs in as the person through the developer link, as every flow does.
+# Builds its own people and space on every run (addresses carry the run's stamp), so the order of
+# runs does not matter; the self-serve space goes with its owner afterwards.
+appId: ${APP_ID}
+onFlowStart:
+  - evalScript: ${output.run = Date.now().toString(36)}
+  # --- 2: a self-serve space, and a brand-new address invited to it, signed in once -------------
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: 's6app.owner.${output.run}@example.com', NAME: 'Owen Owner' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: 's6app.owner.${output.run}@example.com', NAME: 'Owen family ${output.run}' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: 's6app.newcomer.${output.run}@example.com', NAME: 'Nell Newcomer', ROLES: parent, ACTOR: 's6app.owner.${output.run}@example.com', ORG: '${output.slug}', STATUS: invited }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: google-sign-in, EMAIL: 's6app.newcomer.${output.run}@example.com', SUBJECT: 's6app-newcomer-${output.run}' }
+  # --- 1: a new tutor invited by the institute, signed in once (which accepts it by itself) ------
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: 's6app.tutor.${output.run}@example.com', NAME: 'Tara Tutor', ROLES: tutor, ACTOR: priya.raghavan@gmail.com, ORG: chmi, STATUS: invited }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: google-sign-in, EMAIL: 's6app.tutor.${output.run}@example.com', SUBJECT: 's6app-tutor-${output.run}' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: tour-done, EMAIL: 's6app.tutor.${output.run}@example.com', ORG: chmi }
+  # --- 3: in Riverside, signed in before, then invited by the institute; Riverside is the last space
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: 's6app.banner.${output.run}@example.com', NAME: 'Bea Banner', ROLES: parent, ACTOR: rosa.delgado.tutoring@gmail.com, ORG: riverside, STATUS: active }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: google-sign-in, EMAIL: 's6app.banner.${output.run}@example.com', SUBJECT: 's6app-banner-${output.run}' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: tour-done, EMAIL: 's6app.banner.${output.run}@example.com', ORG: riverside }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: 's6app.banner.${output.run}@example.com', NAME: 'Typed by CHMI', ROLES: parent, ACTOR: priya.raghavan@gmail.com, ORG: chmi }
+  # A later sign-in: it accepts nothing by itself.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: google-sign-in, EMAIL: 's6app.banner.${output.run}@example.com', SUBJECT: 's6app-banner-${output.run}' }
+  - runScript:
+      file: ../../scripts/local-api.js
+      env:
+        METHOD: POST
+        API_PATH: /auth/enter
+        AS: 's6app.banner.${output.run}@example.com'
+        ORG: riverside
+        BODY: '{}'
+  # --- 4: the same, for the one who declines (no last space: the selector) -----------------------
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: 's6app.decline.${output.run}@example.com', NAME: 'Dee Decliner', ROLES: parent, ACTOR: rosa.delgado.tutoring@gmail.com, ORG: riverside, STATUS: active }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: google-sign-in, EMAIL: 's6app.decline.${output.run}@example.com', SUBJECT: 's6app-decline-${output.run}' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: tour-done, EMAIL: 's6app.decline.${output.run}@example.com', ORG: riverside }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: 's6app.decline.${output.run}@example.com', NAME: 'S6 Decliner ${output.run}', ROLES: parent, ACTOR: priya.raghavan@gmail.com, ORG: chmi }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: 's6app.owner.${output.run}@example.com' }
+tags:
+  - feature
+---
+# 1. The institute's new tutor: straight in, no Accept, nothing waiting.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: s6app.tutor.${output.run}@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: screen-spaces
+- assertNotVisible:
+    id: invitation-banner
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-org-chmi
+- assertNotVisible:
+    id: account-invitations
+
+# 2. The newcomer invited to a self-serve space: the selector, the invitation, nothing entered.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: s6app.newcomer.${output.run}@example.com
+      ORG: ''
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
+- assertVisible: 'Choose a space'
+- assertVisible: 'INVITATIONS'
+- assertVisible:
+    id: invitation-${output.slug}
+- assertVisible: 'Owen family ${output.run}'
+- assertNotVisible: 'YOUR SPACES'
+- takeScreenshot: spaces-invitation-selector
+- tapOn:
+    id: invitation-accept-${output.slug}
+- extendedWaitUntil:
+    visible: 'You have joined Owen family ${output.run}.'
+    timeout: 15000
+# In at once, and the welcome wizard opens as for any first visit.
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 30000
+- assertVisible:
+    id: onboarding-title
+
+# 3. In Riverside, invited by the institute: Riverside, with the banner.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: s6app.banner.${output.run}@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: screen-spaces
+- extendedWaitUntil:
+    visible:
+      id: invitation-banner
+    timeout: 15000
+- assertVisible:
+    id: invitation-banner-text
+    text: 'Chapel Hill Math Institute invited you'
+- assertVisible:
+    id: invitation-banner-accept
+- assertVisible:
+    id: invitation-banner-not-now
+- takeScreenshot: spaces-invitation-banner
+# Not now: hidden, and still waiting -- counted on the Account screen, listed on Spaces.
+- tapOn:
+    id: invitation-banner-not-now
+- extendedWaitUntil:
+    notVisible:
+      id: invitation-banner
+    timeout: 5000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-invitations
+- assertVisible:
+    id: account-invitations
+    text: '.*1 invitation waiting.*'
+- tapOn:
+    id: account-invitations
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: invitation-chmi
+- assertVisible:
+    id: invitation-accept-chmi
+- assertVisible:
+    id: invitation-decline-chmi
+# A new app session: the banner is back. Accept enters the institute.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: s6app.banner.${output.run}@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: invitation-banner
+    timeout: 30000
+- tapOn:
+    id: invitation-banner-accept
+- extendedWaitUntil:
+    visible: 'You have joined Chapel Hill Math Institute.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- assertNotVisible:
+    id: invitation-banner
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-org-chmi
+- assertVisible:
+    id: account-org-chmi
+    text: '.*You are here.*'
+- assertNotVisible:
+    id: account-invitations
+
+# 4. Decline. First, the institute's admins see the invitation, under the name they typed.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: people-search
+    timeout: 20000
+- tapOn:
+    id: people-search
+- inputText: 'Decliner ${output.run}'
+- extendedWaitUntil:
+    visible: '.*S6 Decliner ${output.run}.*'
+    timeout: 15000
+# The person: no last space, an invitation pending -- the selector.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: s6app.decline.${output.run}@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
+- assertVisible: 'Choose a space'
+- assertVisible:
+    id: invitation-chmi
+- tapOn:
+    id: invitation-decline-chmi
+- extendedWaitUntil:
+    visible: 'Invitation to Chapel Hill Math Institute declined.'
+    timeout: 15000
+# Gone; with one space left and nothing pending, the landing rule enters Riverside.
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- assertNotVisible:
+    id: invitation-chmi
+- assertNotVisible:
+    id: invitation-banner
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertNotVisible:
+    id: account-invitations
+- assertNotVisible:
+    id: account-org-chmi
+# The institute's admins: withdrawn, no longer among its people.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: people-search
+    timeout: 20000
+- tapOn:
+    id: people-search
+- inputText: 'Decliner ${output.run}'
+- extendedWaitUntil:
+    visible:
+      id: people-empty
+    timeout: 15000
+- assertNotVisible: '.*S6 Decliner ${output.run}.*'
+# Masking (S6, R21): the decline is logged under the name the institute typed, never their own.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://activity
+- extendedWaitUntil:
+    visible: '.*S6 Decliner ${output.run} declined the invitation.*'
+    timeout: 20000
+- assertNotVisible: '.*Dee Decliner.*'

@@ -1,19 +1,18 @@
-// The web's user menu and organization switcher, as one sheet.
+// The web's user menu and space switcher, as one sheet (Phase 60: no star; "Spaces" opens the
+// person's own console, apps/web/src/features/organizations/{org-switcher,spaces-page}.tsx).
 import { USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { View } from 'react-native';
 import { Divider, List, Text } from 'react-native-paper';
 
 import { ListItem } from '@/components/list-item';
-import { IconButton } from '@/components/icon-button';
 import { ReleasePhase } from '@/components/release-phase';
 import { Screen } from '@/components/screen';
-import { useToast } from '@/components/toast';
 import { chooseHomeRole, useHomeRole } from '@/features/dashboard/home-role';
 import { RoleSelector } from '@/features/dashboard/role-selector';
-import { useSetDefaultOrganization } from '@/features/organizations/api';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
+import { invitationsWaiting } from '@/features/organizations/spaces-model';
 import { AppearanceControl } from '@/features/shell/appearance-control';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
@@ -28,12 +27,9 @@ export default function AccountSheet() {
     invitations,
     platformAdmin,
     chooseOrganization,
-    leaveOrganization,
     signOut,
   } = useAuth();
   const theme = useAppTheme();
-  const toast = useToast();
-  const setDefault = useSetDefaultOrganization();
   const { openWizard } = useOnboarding();
   const homeRole = useHomeRole();
   if (!user) return null;
@@ -41,25 +37,17 @@ export default function AccountSheet() {
   const others = memberships.filter((m) => m.status === 'active' && m.slug !== organization?.slug);
   const active = memberships.filter((m) => m.status === 'active');
 
+  function openSpaces() {
+    haptics.selection();
+    router.dismissAll();
+    router.push('/spaces');
+  }
+
   async function switchTo(slug: string) {
     haptics.selection();
     router.dismissAll();
     await chooseOrganization(slug);
     router.replace('/dashboard');
-  }
-
-  async function toggleDefault(slug: string, name: string, isDefault: boolean) {
-    haptics.selection();
-    try {
-      await setDefault.mutateAsync(isDefault ? null : slug);
-      toast.success(
-        isDefault
-          ? 'You will choose where to go when you sign in.'
-          : `You will land in ${name} when you sign in.`,
-      );
-    } catch {
-      toast.error('Your default space could not be changed. Try again.');
-    }
   }
 
   return (
@@ -86,7 +74,7 @@ export default function AccountSheet() {
         </View>
       ) : null}
 
-      {organization && active.length > 0 ? (
+      {organization ? (
         <View>
           <List.Subheader style={{ paddingHorizontal: 0 }}>Spaces</List.Subheader>
           {[organization.slug, ...others.map((o) => o.slug)].map((slug) => {
@@ -101,48 +89,28 @@ export default function AccountSheet() {
                 description={current ? 'You are here' : m.roles.map((r) => USER_ROLE_LABELS[r]).join(' · ')}
                 left={() => <OrgAvatar org={m} size={36} />}
                 onPress={current ? undefined : () => void switchTo(slug)}
-                right={() =>
-                  active.length > 1 ? (
-                    <IconButton
-                      icon={m.is_default ? 'star' : 'star-outline'}
-                      iconColor={m.is_default ? theme.colors.primary : theme.colors.onSurfaceVariant}
-                      onPress={() => void toggleDefault(slug, m.name, m.is_default)}
-                      testID={`account-default-${slug}`}
-                      accessibilityLabel={
-                        m.is_default ? `Stop landing in ${m.name} on sign-in` : `Land in ${m.name} on sign-in`
-                      }
-                    />
-                  ) : null
-                }
                 style={{ paddingHorizontal: 0 }}
               />
             );
           })}
-          {invitations.length > 0 || others.length > 0 ? (
+          {/* Phase 60 (S6, S7): invitations waiting, and the person's own console -- always. */}
+          {invitations.length > 0 ? (
             <ListItem
-              testID="account-all-organizations"
-              title="All spaces…"
-              left={(props) => <List.Icon {...props} icon="swap-horizontal" />}
-              onPress={() => {
-                router.dismissAll();
-                leaveOrganization();
-                router.replace('/select-organization');
-              }}
+              testID="account-invitations"
+              title={invitationsWaiting(invitations.length)}
+              left={(props) => <List.Icon {...props} icon="email-outline" />}
+              onPress={openSpaces}
               style={{ paddingHorizontal: 0 }}
             />
           ) : null}
-          {!platformAdmin ? (
-            <ListItem
-              testID="account-join-space"
-              title="Join or make another space"
-              left={(props) => <List.Icon {...props} icon="key-plus" />}
-              onPress={() => {
-                router.back();
-                router.push('/join-space');
-              }}
-              style={{ paddingHorizontal: 0 }}
-            />
-          ) : null}
+          <ListItem
+            testID="account-spaces"
+            title="All spaces"
+            description="Invitations, codes, starting or leaving a space"
+            left={(props) => <List.Icon {...props} icon="view-grid-outline" />}
+            onPress={openSpaces}
+            style={{ paddingHorizontal: 0 }}
+          />
         </View>
       ) : null}
 

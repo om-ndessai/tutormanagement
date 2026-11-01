@@ -14,7 +14,9 @@ are `docs/multi-organization.md`; in short:
   identity and how to reach someone (name, email, phone, `google_sub`) -- nothing an organization
   decides. `org_members` is belonging (`status`, `removed_at`, `first_entered_at`,
   `last_entered_at`, `details_confirmed_at`, and `is_default` -- the one organization a person
-  lands in on signing in, at most one per person by a partial unique index), `user_roles` is what they do there, and
+  lands in on signing in, at most one per person by a partial unique index; since Phase 60 it is the
+  LAST space they opened on any device, moved by `POST /api/auth/enter` and cleared when they leave
+  that space, no longer a star), `user_roles` is what they do there, and
   `tutor_profiles`, `student_profiles`, `guardianships`, `payment_handles` and
   `availability_slots` are each keyed `(organization_id, user_id, ...)` with a composite foreign
   key to `org_members`. Removing someone from an organization sets `org_members.removed_at`,
@@ -30,7 +32,11 @@ are `docs/multi-organization.md`; in short:
   plan and one primary guardian per student per organization. `active_sessions` stays keyed on
   the tutor: nobody teaches two lessons at once anywhere.
 - **The organization's own data** -- identity, palette, logo, payer TIN and address, clock -- is
-  `organizations` (and `organization_logos`). `admin_profiles` is gone: the TIN was always the
+  `organizations` (and `organization_logos`). Since Phase 61 (S10) every space MADE -- by a newcomer
+  (`createSpace`) or in the console (`createOrganization`) -- is written with `canvas_assessments = 1`
+  and `gamify_question_quest = 1`, so Assessment and Quest are on wherever they are allowed (a
+  newcomer's: Assessment and Quest allowed, Tutoring not). The column defaults stay 0, so no
+  existing space changed. `admin_profiles` is gone: the TIN was always the
   organization's.
 - **The guardian rule is per organization**: a student needs at least one guardian who is a
   member of the same organization. The audit query becomes:
@@ -146,8 +152,11 @@ One row per person. `Full Name, Email, Phone, Active` from the plan, plus what s
 
 `status` is three-state rather than a bare `active` boolean, because the portal needs to tell
 "added by an admin, has never signed in" (`invited`) apart from "access revoked" (`suspended`).
-Sign-in flips `invited` → `active` automatically, which is the moment the distinction stops
-being true. `deleted_at` is separate again: suspension keeps someone in the directory, soft
+A first sign-in flips `invited` → `active` automatically only in a console space (Phase 51,
+`created_via`); a self-serve space's invitation, and any invitation reaching someone who has signed
+in before, waits for the person's own Accept. Since Phase 61 (`docs/spaces-plan.md` S12) "Invite
+people", straight after starting a space, adds each row as `invited` -- a new address too -- so in a
+self-serve space `invited` means "asked, not yet accepted", whether or not they have ever signed in. `deleted_at` is separate again: suspension keeps someone in the directory, soft
 delete retires them.
 
 Email is unique **among live rows only** (`WHERE deleted_at IS NULL`) and compared lowercased,
@@ -722,8 +731,8 @@ The headline totals sum only *positive* balances, so one overpaid tutor cannot m
 unpaid one.
 
 **Phase 54: a space paid directly** (`docs/tutor-spaces-plan.md`). A space whose
-`organizations.business_id` is NULL has no organization running its money: families pay each
-lesson's tutor. A lesson recorded then carries `sessions.paid_directly = 1` and ONE price (its two
+`organizations.business_id` is NULL is paid directly -- since Phase 59 the console's "Who families
+pay: Each tutor, directly": families pay each lesson's tutor. A lesson recorded then carries `sessions.paid_directly = 1` and ONE price (its two
 rates equal, from the pairing; a trigger keeps them equal), and a family's payment names the tutor
 who received it (`payments.payee_user_id`). Those rows form a third ledger, kept per family and
 tutor and left out of the two above:
@@ -732,17 +741,28 @@ tutor and left out of the two above:
 direct balance (student, tutor) = sum(their paid-directly lessons) - sum(payments from_parent for the student to that payee)
 ```
 
-Both flags are frozen when a row is written, so a space that gains or loses its organization
+Both flags are frozen when a row is written, so a space that starts or stops collecting its payments
 changes only what is recorded next.
 
-### `businesses` (Phase 54)
+### `businesses` (Phase 54; one per space since Phase 59)
 
-"Organization" on screen: who families pay and who files the 1099s -- a name, a TIN (never an SSN:
-`optionalText`'s guard) and a payer address. Platform-level reference data, not an organization's
-own row (it has no `organization_id`): several spaces may point at one through
-`organizations.business_id`. Platform admins create, edit, link and archive them; the admins of a
-linked space edit the payer details from its Space page, which is why a change is logged in the log
-of every space it runs. One that runs a space cannot be archived. The six payer columns on
+A space's payer details: the name on its 1099s, a TIN (never an SSN: `optionalText`'s guard) and a
+payer address. Phase 54 showed them on screen as a separate "Organization" that several spaces could
+share; Phase 59 (`docs/spaces-plan.md`, S2, decision 5) withdrew that. On screen there is no separate
+record any more: a space has a **payment model**, "The space" (it collects payments, pays its tutors
+and files their 1099s: `business_id` set) or "Each tutor, directly" (`business_id` NULL), and while it
+collects, its own payer details.
+
+Underneath, `businesses` stays as the storage, **one row per space, keyed by the space's id** (the
+Phase 54 backfill and the seed already are). `PUT /api/platform/organizations/:id/payment-model`
+links the space's own row ("The space": made, named after the space, if missing; restored if
+archived) or unlinks it ("Each tutor, directly"; the row is kept for a switch back). The payer details
+travel on the space: the console's `POST` / `PATCH /api/platform/organizations` (`payer_name`, `tin`,
+`payer_*`), and the space's own admins' `PATCH /api/organization/settings`, both written to the row
+the space points at. **Rule the database cannot express:** no two spaces point at one row -- the API
+refuses it (409 `shared_payer`) on Phase 54's routes, which stay for app builds already on phones
+(`/api/platform/businesses`, `PUT .../business`, a create naming `business_id`), and on a payer edit
+of a row that is somehow shared. One a space uses cannot be archived. The six payer columns on
 `organizations` are kept (additive) but no longer read.
 
 ### `comments`

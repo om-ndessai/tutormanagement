@@ -711,7 +711,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       throw new ApiError(
         409,
         'conflict',
-        'You have a session running for another organization. Stop it there first.',
+        'You have a session running in another space. Stop it there first.',
       );
     }
 
@@ -848,7 +848,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
         // the organization's.
         if (mode !== existing.mode && !existing.paid_directly && priced.paidDirectly) {
           throw new ApiError(409, 'model_changed',
-            'This lesson was recorded while an organization ran the space; its mode cannot be changed now.');
+            'This lesson was recorded while the space collected payments; its mode cannot be changed now.');
         }
         const tutorRate = mode === existing.mode ? existing.tutor_rate_cents : priced.tutorRateCents;
         const chargeRate = existing.paid_directly

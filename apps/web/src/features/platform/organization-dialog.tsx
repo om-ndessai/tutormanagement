@@ -17,7 +17,12 @@ import {
   FEATURE_SET_DESCRIPTIONS,
   FEATURE_SET_LABELS,
   featureAllowed,
-  PAID_DIRECTLY_LABEL,
+  SPACE_PAYMENT_MODELS,
+  SPACE_PAYMENT_MODEL_DESCRIPTIONS,
+  SPACE_PAYMENT_MODEL_LABELS,
+  spacePaymentModel,
+  type SpacePayer,
+  type SpacePaymentModel,
 } from '@tmi/shared';
 
 import { Badge } from '@/components/ui/badge';
@@ -51,8 +56,7 @@ import {
   useRemoveOrganizationAdmin,
   useUpdateOrganization,
   useUpdateOrganizationFeatures,
-  useBusinesses,
-  useSetSpaceBusiness,
+  useSetPaymentModel,
   useUploadLogo,
 } from './api';
 import { FormField } from './form-field';
@@ -72,14 +76,45 @@ interface FormState {
   feature_tutoring: boolean;
   feature_assessment: boolean;
   feature_quest: boolean;
-  /** Phase 51: whether its Quest reviews approve bank questions for every organization. */
+  /** Phase 51: whether its Quest reviews approve bank questions for every space. */
   quest_trusted: boolean;
-  /** Phase 54: the organization that runs its money, or DIRECT (paid directly). */
-  business_id: string;
+  /** Phase 59: who families pay -- the space, or each tutor directly. */
+  payment_model: SpacePaymentModel;
+  /** Its payer details, while the space collects payments. */
+  payer: PayerForm;
 }
 
-/** The select's value for "no organization": Radix gives an empty value no item. */
-const DIRECT = 'direct';
+/** The payer details as the form holds them: '' for an empty field. */
+type PayerForm = Record<keyof SpacePayer, string>;
+
+const PAYER_KEYS = [
+  'name',
+  'tin',
+  'payer_address_line1',
+  'payer_address_line2',
+  'payer_city',
+  'payer_state',
+  'payer_postal_code',
+] as const satisfies readonly (keyof SpacePayer)[];
+
+const EMPTY_PAYER: PayerForm = Object.fromEntries(PAYER_KEYS.map((key) => [key, ''])) as PayerForm;
+
+function payerForm(payer: SpacePayer | null): PayerForm {
+  if (!payer) return EMPTY_PAYER;
+  return Object.fromEntries(PAYER_KEYS.map((key) => [key, payer[key] ?? ''])) as PayerForm;
+}
+
+/** The request's names for the payer fields: the name on the 1099 travels as `payer_name`. */
+function payerRequestKey(key: keyof SpacePayer): string {
+  return key === 'name' ? 'payer_name' : key;
+}
+
+/** The payer fields that differ from what was loaded, in the request's names. */
+function changedPayer(form: PayerForm, loaded: PayerForm): Record<string, string> {
+  return Object.fromEntries(
+    PAYER_KEYS.filter((key) => form[key] !== loaded[key]).map((key) => [payerRequestKey(key), form[key]]),
+  );
+}
 
 const EMPTY: FormState = {
   name: '',
@@ -96,7 +131,8 @@ const EMPTY: FormState = {
   feature_assessment: true,
   feature_quest: true,
   quest_trusted: true,
-  business_id: DIRECT,
+  payment_model: 'direct',
+  payer: EMPTY_PAYER,
 };
 
 /** "Riverside Tutoring" -> "riverside-tutoring", as a first suggestion. */
@@ -110,7 +146,7 @@ function slugFrom(name: string): string {
 }
 
 /**
- * Creating or editing an organization: its name and address name, its look
+ * Creating or editing a space: its name and address name, its look
  * (palette, logos), its clock, and -- once it exists -- its admins.
  */
 export function OrganizationDialog({
@@ -128,8 +164,7 @@ export function OrganizationDialog({
   const create = useCreateOrganization();
   const update = useUpdateOrganization();
   const updateFeatures = useUpdateOrganizationFeatures();
-  const businesses = useBusinesses();
-  const setBusiness = useSetSpaceBusiness();
+  const setPaymentModel = useSetPaymentModel();
 
   useEffect(() => {
     if (!open) return;
@@ -152,7 +187,8 @@ export function OrganizationDialog({
             feature_assessment: featureAllowed(existing, 'assessment'),
             feature_quest: featureAllowed(existing, 'quest'),
             quest_trusted: existing.quest_trusted !== false,
-            business_id: existing.business?.id ?? DIRECT,
+            payment_model: spacePaymentModel(existing),
+            payer: payerForm(existing.payer ?? null),
           }
         : EMPTY,
     );
@@ -161,6 +197,8 @@ export function OrganizationDialog({
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((previous) => ({ ...previous, [key]: value }));
   const set_ = set;
+  const setPayer = (key: keyof SpacePayer, value: string) =>
+    setForm((previous) => ({ ...previous, payer: { ...previous.payer, [key]: value } }));
 
   async function save(event: React.FormEvent) {
     event.preventDefault();
@@ -184,21 +222,25 @@ export function OrganizationDialog({
         feature_quest: form.feature_quest,
       };
       if (existing) {
-        await update.mutateAsync({ id: existing.id, input });
+        // Who families pay first: a space that starts collecting gets its own payer record,
+        // which the PATCH below then fills in.
+        if (spacePaymentModel(existing) !== form.payment_model) {
+          await setPaymentModel.mutateAsync({ id: existing.id, model: form.payment_model });
+        }
+        const payer =
+          form.payment_model === 'space' ? changedPayer(form.payer, payerForm(existing.payer ?? null)) : {};
+        await update.mutateAsync({ id: existing.id, input: { ...input, ...payer } });
         const trustChanged = (existing.quest_trusted !== false) !== form.quest_trusted;
         if (trustChanged || FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])) {
           await updateFeatures.mutateAsync({ id: existing.id, input: { ...features, quest_trusted: form.quest_trusted } });
-        }
-        const businessId = form.business_id === DIRECT ? null : form.business_id;
-        if ((existing.business?.id ?? null) !== businessId) {
-          await setBusiness.mutateAsync({ id: existing.id, business_id: businessId });
         }
         toast.success(`${form.name} saved.`);
       } else {
         await create.mutateAsync({
           ...input,
           ...features,
-          business_id: form.business_id === DIRECT ? null : form.business_id,
+          payment_model: form.payment_model,
+          ...(form.payment_model === 'space' ? changedPayer(form.payer, EMPTY_PAYER) : {}),
         });
         toast.success(`${form.name} created. Add its first admin next.`);
       }
@@ -206,7 +248,7 @@ export function OrganizationDialog({
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
-        if (caught.status === 409) setErrors({ slug: caught.message });
+        if (caught.status === 409 && caught.code === 'conflict') setErrors({ slug: caught.message });
         toast.error(caught.message);
       }
     }
@@ -219,8 +261,8 @@ export function OrganizationDialog({
           <DialogTitle>{existing ? existing.name : 'New space'}</DialogTitle>
           <DialogDescription>
             {existing
-              ? 'Its identity and look. Its own admins keep its payer details.'
-              : 'Its name and look. Its admins come next, once it exists.'}
+              ? 'Its identity, look and who families pay. Its own admins can keep its payer details too.'
+              : 'Its name, look and who families pay. Its admins come next, once it exists.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -278,35 +320,81 @@ export function OrganizationDialog({
             </FormField>
           </div>
 
-          {/* Phase 54: who families pay. An organization (its TIN, its 1099s, its cut), or nobody:
-              paid directly, each family paying the tutor of each lesson. Applies going forward. */}
-          <FormField id="org-business" label="Organization" error={errors.business_id}>
-            <Select value={form.business_id} onValueChange={(value) => set('business_id', value)}>
-              <SelectTrigger id="org-business" className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={DIRECT}>{PAID_DIRECTLY_LABEL}</SelectItem>
-                {(businesses.data?.data ?? [])
-                  .filter((b) => !b.archived_at || b.id === existing?.business?.id)
-                  .map((b) => (
-                    <SelectItem key={b.id} value={b.id}>
-                      {b.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-            <p className="text-muted-foreground text-xs">
-              {form.business_id === DIRECT
-                ? 'Families pay each tutor directly: one price per lesson, nobody’s cut, no 1099s from the space.'
-                : 'Families pay the organization, which pays the tutors and files their 1099s.'}
-              {existing ? ' A change applies from now on; recorded lessons and payments keep theirs.' : ''}
-            </p>
-          </FormField>
+          {/* Phase 59 (S2): who families pay -- the space (its own payer details, its 1099s, its
+              cut), or each lesson's tutor directly. A change applies going forward. */}
+          <fieldset className="grid gap-3 rounded-lg border p-3" data-testid="org-payment-model">
+            <legend className="px-1 text-sm font-medium">Who families pay</legend>
+            <div className="grid gap-2" role="radiogroup" aria-label="Who families pay">
+              {SPACE_PAYMENT_MODELS.map((model) => (
+                <label key={model} className="flex items-start gap-2 text-sm">
+                  <input
+                    type="radio"
+                    name="payment_model"
+                    className="accent-primary mt-0.5 size-4"
+                    checked={form.payment_model === model}
+                    onChange={() => set('payment_model', model)}
+                  />
+                  <span className="grid gap-0.5">
+                    <span>{SPACE_PAYMENT_MODEL_LABELS[model]}</span>
+                    <span className="text-muted-foreground text-xs">{SPACE_PAYMENT_MODEL_DESCRIPTIONS[model]}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            {existing && (
+              <p className="text-muted-foreground text-xs">
+                A change applies from now on; recorded lessons and payments keep theirs.
+              </p>
+            )}
+            {form.payment_model === 'space' && (
+              <div className="grid gap-4 border-t pt-3 sm:grid-cols-2" data-testid="org-payer">
+                <FormField
+                  id="org-payer-name"
+                  label="Name on the 1099"
+                  optional
+                  error={errors.payer_name}
+                  hint="The space’s own name when left blank."
+                >
+                  <Input
+                    id="org-payer-name"
+                    value={form.payer.name}
+                    onChange={(event) => setPayer('name', event.target.value)}
+                    placeholder={form.name}
+                  />
+                </FormField>
+                <FormField
+                  id="org-payer-tin"
+                  label="Payer TIN"
+                  optional
+                  error={errors.tin}
+                  hint="The space’s EIN -- never a Social Security number, which the portal refuses to store."
+                >
+                  <Input id="org-payer-tin" value={form.payer.tin} onChange={(event) => setPayer('tin', event.target.value)} placeholder="12-3456789" />
+                </FormField>
+                <FormField id="org-payer-line1" label="Address" optional error={errors.payer_address_line1}>
+                  <Input id="org-payer-line1" value={form.payer.payer_address_line1} onChange={(event) => setPayer('payer_address_line1', event.target.value)} />
+                </FormField>
+                <FormField id="org-payer-line2" label="Address line 2" optional error={errors.payer_address_line2}>
+                  <Input id="org-payer-line2" value={form.payer.payer_address_line2} onChange={(event) => setPayer('payer_address_line2', event.target.value)} />
+                </FormField>
+                <FormField id="org-payer-city" label="City" optional error={errors.payer_city}>
+                  <Input id="org-payer-city" value={form.payer.payer_city} onChange={(event) => setPayer('payer_city', event.target.value)} />
+                </FormField>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField id="org-payer-state" label="State" optional error={errors.payer_state}>
+                    <Input id="org-payer-state" value={form.payer.payer_state} onChange={(event) => setPayer('payer_state', event.target.value)} placeholder="NC" />
+                  </FormField>
+                  <FormField id="org-payer-zip" label="ZIP" optional error={errors.payer_postal_code}>
+                    <Input id="org-payer-zip" value={form.payer.payer_postal_code} onChange={(event) => setPayer('payer_postal_code', event.target.value)} placeholder="27514" />
+                  </FormField>
+                </div>
+              </div>
+            )}
+          </fieldset>
 
-          {/* Phase 50: what the organization may use. Its own admins switch Assessment and Quest on. */}
+          {/* Phase 50: what the space may use. Its own admins switch Assessment and Quest on (S3). */}
           <fieldset className="grid gap-2 rounded-lg border p-3" data-testid="org-feature-sets">
-            <legend className="px-1 text-sm font-medium">Feature sets</legend>
+            <legend className="px-1 text-sm font-medium">This space may use</legend>
             {FEATURE_SETS.map((set) => (
               <div key={set} className="flex items-start gap-3">
                 <div className="grid flex-1 gap-0.5">

@@ -28,7 +28,7 @@ const optionalMaxSessionMinutesField = z
     z
       .number()
       .int('Use a whole number of minutes.')
-      .min(QUARTER_HOUR, 'The shortest session the institute records is 15 minutes.')
+      .min(QUARTER_HOUR, 'The shortest session a space records is 15 minutes.')
       .max(MAX_SESSION_MINUTES_LIMIT, 'A single session cannot run longer than eight hours.')
       .refine((value) => value % QUARTER_HOUR === 0, 'Use a multiple of 15 minutes.'),
     z.literal(''),

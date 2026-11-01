@@ -1,0 +1,516 @@
+# Phase 60 (S7, docs/spaces-plan.md): Spaces, the person's own console, in the app. Pia is in ONE
+# space of her own and reaches Spaces from the account sheet ("All spaces"); every section works:
+# Join with a code (asked, under Requests sent, withdrawn), Leave (her own space refused as its last
+# admin, the reason on screen), Invitations (one declined, one accepted, which enters it), Open, Leave
+# another space while inside her own, and Start a space (then the invite step). The Platform console
+# link is a platform admin's only; Delete my account is offered to someone who belongs nowhere.
+# Self-cleaning: Pia, Quinn, Zara and Ari are made fresh before, and removed with their spaces after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.pia@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.quinn@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.zara@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.page.pia@example.com, NAME: Pia Page }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.page.quinn@example.com, NAME: Quinn Host }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.page.zara@example.com, NAME: Zara Nowhere }
+  # Ari's one space is archived by the platform admin: she belongs nowhere, and may delete.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Ari Archived space, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.ari@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.page.ari@example.com, NAME: Ari Archived }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.page.ari@example.com, NAME: Ari Archived space }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Ari Archived space, ON: 'true' }
+  # Pia's one space, its tour already been through.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.page.pia@example.com, NAME: Pia Page space }
+  - evalScript: ${output.piaSlug = output.slug}
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: tour-done, EMAIL: spaces.page.pia@example.com, ORG: '${output.piaSlug}' }
+  # Quinn's two: one to join by code and then be invited to, one to be invited to and decline.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.page.quinn@example.com, NAME: Quinn Host space }
+  - evalScript: ${output.hostSlug = output.slug; output.hostCode = output.code}
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.page.quinn@example.com, NAME: Quinn Other space }
+  - evalScript: ${output.otherSlug = output.slug}
+  - runScript:
+      file: ../../scripts/local-api.js
+      env:
+        METHOD: PUT
+        API_PATH: /organization/code
+        AS: spaces.page.quinn@example.com
+        ORG: '${output.hostSlug}'
+        BODY: '{"join_by_code":true}'
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Ari Archived space, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.ari@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.pia@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.quinn@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.page.zara@example.com }
+tags:
+  - feature
+---
+# --- Reachable from inside a space with one membership ----------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.page.pia@example.com
+      ORG: ${output.piaSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+# In the frame (pushed over the space, no Sign out of its own), her one space marked as here.
+- assertVisible: 'YOUR SPACES'
+- assertVisible:
+    id: org-here-${output.piaSlug}
+- assertNotVisible:
+    id: spaces-sign-out
+- assertNotVisible: 'INVITATIONS'
+- assertNotVisible:
+    id: spaces-platform-console
+- takeScreenshot: spaces-page-one-space
+
+# --- Join with a code: asked, listed under Requests sent, withdrawn ---------------------------
+- scrollUntilVisible:
+    element:
+      id: welcome-code
+- tapOn:
+    id: welcome-code
+- inputText: ${output.hostCode}
+- hideKeyboard
+- tapOn:
+    id: welcome-find
+- extendedWaitUntil:
+    visible:
+      id: welcome-found-name
+      text: 'Quinn Host space'
+    timeout: 10000
+- tapOn:
+    id: welcome-ask
+- extendedWaitUntil:
+    visible:
+      id: welcome-request-${output.hostSlug}
+    timeout: 10000
+- assertVisible: 'REQUESTS SENT'
+- assertVisible: '.*Its administrators will let you in\..*'
+- tapOn:
+    id: welcome-withdraw-${output.hostSlug}
+- extendedWaitUntil:
+    visible: 'Request to Quinn Host space withdrawn.'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible:
+      id: welcome-request-${output.hostSlug}
+    timeout: 10000
+
+# --- Start a space is offered; Delete my account is not (she belongs somewhere) ----------------
+- scrollUntilVisible:
+    element:
+      id: welcome-make
+- assertNotVisible:
+    id: welcome-delete-account
+
+# --- Leave: the last admin of her own space is refused, with the reason on screen -------------
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.piaSlug}
+    direction: UP
+- tapOn:
+    id: space-leave-${output.piaSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-confirm-${output.piaSlug}
+    timeout: 5000
+- tapOn:
+    id: space-leave-yes-${output.piaSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-problem-${output.piaSlug}
+    timeout: 10000
+- takeScreenshot: spaces-page-last-admin
+- tapOn:
+    id: space-leave-stay-${output.piaSlug}
+- assertVisible:
+    id: org-here-${output.piaSlug}
+
+# --- Invitations: Quinn invites her to both of his spaces ----------------------------------------
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /users
+      AS: spaces.page.quinn@example.com
+      ORG: '${output.hostSlug}'
+      BODY: '{"full_name":"Pia Page","email":"spaces.page.pia@example.com","roles":["parent"],"status":"active"}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /users
+      AS: spaces.page.quinn@example.com
+      ORG: '${output.otherSlug}'
+      BODY: '{"full_name":"Pia Page","email":"spaces.page.pia@example.com","roles":["parent"],"status":"active"}'
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.page.pia@example.com
+      ORG: ${output.piaSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-invitations
+- tapOn:
+    id: account-invitations
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible: 'INVITATIONS'
+- assertVisible:
+    id: invitation-${output.hostSlug}
+- assertVisible:
+    id: invitation-${output.otherSlug}
+- assertVisible: '.*Invited as Parent.*'
+- takeScreenshot: spaces-page-invitations
+# Decline one: gone, and nothing entered.
+- tapOn:
+    id: invitation-decline-${output.otherSlug}
+- extendedWaitUntil:
+    visible: 'Invitation to Quinn Other space declined.'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible:
+      id: invitation-${output.otherSlug}
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.piaSlug}
+- assertNotVisible:
+    id: org-${output.otherSlug}
+# Accept the other: it enters that space at once.
+- tapOn:
+    id: invitation-accept-${output.hostSlug}
+- extendedWaitUntil:
+    visible: 'You have joined Quinn Host space.'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+# A first visit there may open the welcome tour (S6's business): close it if so.
+- runFlow:
+    when:
+      visible:
+        id: screen-onboarding
+    commands:
+      - tapOn:
+          id: onboarding-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+
+# --- Your spaces: Open, then Leave another space from inside her own -------------------------
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Quinn Host space'
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.hostSlug}
+- assertNotVisible:
+    id: org-here-${output.piaSlug}
+- assertNotVisible: 'INVITATIONS'
+# A third space of Quinn's, where Pia is a second admin and then suspended (Quinn is still active):
+# she may leave it from here (it is not her last admin's seat).
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: spaces.page.quinn@example.com, NAME: Quinn Third space }
+- evalScript: ${output.thirdSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env:
+      ACTION: add-person
+      ACTOR: spaces.page.quinn@example.com
+      ORG: '${output.thirdSlug}'
+      EMAIL: spaces.page.pia@example.com
+      NAME: Pia Page
+      ROLES: admin
+      STATUS: active
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /auth/invitations/${output.thirdSlug}/accept
+      AS: spaces.page.pia@example.com
+      ORG: ''
+      BODY: '{}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: PATCH
+      API_PATH: /users/${output.userId}
+      AS: spaces.page.quinn@example.com
+      ORG: '${output.thirdSlug}'
+      BODY: '{"status":"suspended"}'
+# Open her own space.
+- tapOn:
+    id: org-${output.piaSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Pia Page space'
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.piaSlug}
+- tapOn:
+    id: space-leave-${output.hostSlug}
+- assertVisible: 'You stop being a member of Quinn Host space. Its records of you stay.'
+- tapOn:
+    id: space-leave-yes-${output.hostSlug}
+- extendedWaitUntil:
+    visible: 'You have left Quinn Host space.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: org-${output.hostSlug}
+    timeout: 10000
+# She carries on where she is.
+- assertVisible:
+    id: screen-spaces
+- assertVisible:
+    id: org-here-${output.piaSlug}
+# The suspended admin's seat: Leave goes through, no last-admin refusal.
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.thirdSlug}
+- assertVisible: 'Your access here is suspended.'
+- tapOn:
+    id: space-leave-${output.thirdSlug}
+- tapOn:
+    id: space-leave-yes-${output.thirdSlug}
+- extendedWaitUntil:
+    visible: 'You have left Quinn Third space.'
+    timeout: 15000
+- assertNotVisible:
+    id: space-leave-problem-${output.thirdSlug}
+- extendedWaitUntil:
+    notVisible:
+      id: org-${output.thirdSlug}
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.piaSlug}
+
+# --- Start a space, from here: made, entered, the invite step, then the space ----------------
+- scrollUntilVisible:
+    element:
+      id: welcome-space-name
+- tapOn:
+    id: welcome-space-name
+- inputText: 'Pia Second space'
+- hideKeyboard
+- tapOn:
+    id: welcome-make-submit
+- extendedWaitUntil:
+    visible: 'Pia Second space is ready.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-invite
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: invite-skip
+- tapOn:
+    id: invite-skip
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Pia Second space'
+
+# --- Platform console: a platform admin's link on Spaces ------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: spaces-platform-console
+- tapOn:
+    id: spaces-platform-console
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+
+# --- Delete my account: for someone who belongs nowhere ---------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.page.zara@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertNotVisible: 'YOUR SPACES'
+- assertNotVisible:
+    id: spaces-platform-console
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+
+# --- Delete my account: also for someone whose only space was archived, and it works ----------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.page.ari@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertNotVisible: 'YOUR SPACES'
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

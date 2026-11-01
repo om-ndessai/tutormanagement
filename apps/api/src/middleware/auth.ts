@@ -148,7 +148,7 @@ async function resolveBypassPerson(env: AppEnv['Bindings'], requestedEmail?: str
     (await createOrganization(
       env.DB,
       {
-        name: 'Local Organization',
+        name: 'Local Space',
         short_name: 'Local',
         slug: 'local',
         tagline: null,

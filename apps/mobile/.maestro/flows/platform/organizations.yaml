@@ -1,7 +1,7 @@
-# The platform console's organizations: Nav (a platform admin in no organization) lands on the
-# console, creates an organization with a palette, edits it, adds and removes one of its admins,
+# The platform console's spaces: Nav (a platform admin in no space) lands on the
+# console, creates a space with a palette, edits it, adds and removes one of its admins,
 # then archives and restores it -- each behind a confirm. clean-platform.js moves the test
-# organization out of the way before and after (the API has no delete).
+# space out of the way before and after (the API has no delete).
 appId: ${APP_ID}
 tags:
   - feature

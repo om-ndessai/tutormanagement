@@ -1,0 +1,131 @@
+# Phase 59 (S3, docs/spaces-plan.md): the feature sets are the space's, and the console's toggles say
+# so. Nav (a platform admin) makes a space of its own with Quest unticked ("This space may use" on the
+# create form), so its row lists Tutoring and Assessment; on its screen, "This space may use" holds the
+# three switches: allowing Quest saves at once, disallowing Tutoring asks first, and cancelling that
+# question for Assessment leaves it allowed. Its row then lists Assessment and Quest. The space is
+# named "Mobile Console Academy Sets", which clean-platform.js retires before and after (the API has
+# no delete), so the flow can make it again on every run, in any order.
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+# Make the space, with Quest unticked.
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- tapOn:
+    id: org-form-name
+- inputText: 'Mobile Console Academy Sets'
+- tapOn:
+    id: org-form-short
+- inputText: 'MCAS'
+- assertVisible: 'mobile-console-academy-sets'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-form-feature-quest
+    centerElement: true
+- assertVisible: 'This space may use'
+- assertVisible:
+    id: org-form-feature-tutoring
+- assertVisible:
+    id: org-form-feature-assessment
+- tapOn:
+    id: org-form-feature-quest
+- takeScreenshot: platform-sets-create
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy Sets created. Add its first admin next.'
+    timeout: 10000
+# Its row lists what it may use.
+- scrollUntilVisible:
+    element:
+      id: platform-org-mobile-console-academy-sets
+    centerElement: true
+- assertVisible: '.*mobile-console-academy-sets · .* · Tutoring, Assessment · families pay each tutor.*'
+- tapOn:
+    id: platform-org-mobile-console-academy-sets
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-feature-quest
+    centerElement: true
+- assertVisible:
+    id: platform-org-features
+- assertVisible: 'This space may use'
+- assertVisible: 'What MCAS may use. Its own admins switch Assessment and Quest on.'
+- assertVisible:
+    id: platform-org-feature-tutoring
+- assertVisible:
+    id: platform-org-feature-assessment
+- assertNotVisible: '.*[Oo]rganization.*'
+- takeScreenshot: platform-sets-detail
+# Allowing saves at once.
+- tapOn:
+    id: platform-org-feature-quest
+- extendedWaitUntil:
+    visible: 'Allowed Quest.'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible: 'Allowed Quest.'
+    timeout: 15000
+# Disallowing asks first, in the space's words.
+- tapOn:
+    id: platform-org-feature-tutoring
+- extendedWaitUntil:
+    visible: 'Disallow Tutoring in MCAS\?'
+    timeout: 5000
+- assertVisible: 'Everyone there stops seeing it, admins included.*'
+- takeScreenshot: platform-sets-confirm
+- tapOn: 'Disallow|DISALLOW'
+- extendedWaitUntil:
+    visible: 'Disallowed Tutoring.'
+    timeout: 10000
+- extendedWaitUntil:
+    notVisible: 'Disallowed Tutoring.'
+    timeout: 15000
+# Cancelling the question leaves the set allowed: nothing is saved.
+- tapOn:
+    id: platform-org-feature-assessment
+- extendedWaitUntil:
+    visible: 'Disallow Assessment in MCAS\?'
+    timeout: 5000
+- tapOn: 'Cancel|CANCEL'
+- assertNotVisible: 'Disallowed Assessment.'
+# Back on the list: the row follows.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-mobile-console-academy-sets
+    centerElement: true
+- extendedWaitUntil:
+    visible: '.*mobile-console-academy-sets · .* · Assessment, Quest · families pay each tutor.*'
+    timeout: 10000
+- takeScreenshot: platform-sets-row

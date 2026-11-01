@@ -1,0 +1,510 @@
+# Phase 60 (S8, docs/spaces-plan.md): leaving a space, from anywhere (POST /api/spaces/:slug/leave,
+# outside requireOrg). On the Spaces screen:
+#   - Lena, inside her own space, leaves Hugo's: she stays where she is, and Hugo's is gone from the
+#     Spaces screen and the account sheet's switcher;
+#   - Lena is her own space's only admin: refused, with the reason on screen;
+#   - Kit, inside Hugo's, leaves it: the landing rule takes the app to his other space;
+#   - Kit, an admin of Lena's whom Lena suspended there, leaves it: allowed, as Lena is still its
+#     admin, and the Suspended row goes;
+#   - Sol, whose only space is Hugo's, leaves it: Welcome, where he deletes his account.
+# Its own people and spaces: four newcomers sign up, three make a space, Hugo invites the other
+# three to his and they accept. Self-cleaning: every one of them is put back to nothing (their
+# spaces deleted, their accounts too) before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.lena@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.hugo@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.kit@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.sol@example.com }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.lena@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.hugo@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.kit@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: leave.sol@example.com }
+tags:
+  - feature
+---
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: leave.lena@example.com, NAME: Lena Leaver }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: leave.hugo@example.com, NAME: Hugo Host }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: leave.kit@example.com, NAME: Kit Current }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: leave.sol@example.com, NAME: Sol Single }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: leave.lena@example.com, NAME: Lena home }
+- evalScript: ${output.lenaSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: leave.kit@example.com, NAME: Kit home }
+- evalScript: ${output.kitSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: leave.hugo@example.com, NAME: Hugo club }
+- evalScript: ${output.hugoSlug = output.slug}
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /users
+      AS: leave.hugo@example.com
+      ORG: ${output.hugoSlug}
+      BODY: '{"full_name":"Lena Leaver","email":"leave.lena@example.com","roles":["parent"],"status":"active"}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /auth/invitations/${output.hugoSlug}/accept
+      AS: leave.lena@example.com
+      ORG: ''
+      BODY: '{}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /users
+      AS: leave.hugo@example.com
+      ORG: ${output.hugoSlug}
+      BODY: '{"full_name":"Kit Current","email":"leave.kit@example.com","roles":["parent"],"status":"active"}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /auth/invitations/${output.hugoSlug}/accept
+      AS: leave.kit@example.com
+      ORG: ''
+      BODY: '{}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /users
+      AS: leave.hugo@example.com
+      ORG: ${output.hugoSlug}
+      BODY: '{"full_name":"Sol Single","email":"leave.sol@example.com","roles":["parent"],"status":"active"}'
+- runScript:
+    file: ../../scripts/local-api.js
+    env:
+      METHOD: POST
+      API_PATH: /auth/invitations/${output.hugoSlug}/accept
+      AS: leave.sol@example.com
+      ORG: ''
+      BODY: '{}'
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: leave.lena@example.com, ORG: '${output.lenaSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: leave.lena@example.com, ORG: '${output.hugoSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: leave.kit@example.com, ORG: '${output.kitSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: leave.kit@example.com, ORG: '${output.hugoSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: leave.sol@example.com, ORG: '${output.hugoSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: leave.hugo@example.com, ORG: '${output.hugoSlug}' }
+
+# 1. Lena, inside Lena home, leaves Hugo club from the Spaces screen.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: leave.lena@example.com
+      ORG: ${output.lenaSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# A first visit to a space offers the tour, floating over the tabs: not now.
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 10000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Lena.*'
+- assertVisible:
+    id: account-org-${output.hugoSlug}
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.lenaSlug}
+- assertVisible:
+    id: org-${output.hugoSlug}
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.hugoSlug}
+- tapOn:
+    id: space-leave-${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-confirm-${output.hugoSlug}
+    timeout: 5000
+- assertVisible: 'You stop being a member of Hugo club. Its records of you stay.'
+- tapOn:
+    id: space-leave-yes-${output.hugoSlug}
+- extendedWaitUntil:
+    visible: 'You have left Hugo club.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: org-${output.hugoSlug}
+    timeout: 10000
+# Still here: the same space, still "Here now".
+- assertVisible:
+    id: screen-spaces
+- assertVisible:
+    id: org-here-${output.lenaSlug}
+- takeScreenshot: spaces-leave-other
+
+# 2. Lena is Lena home's only admin: refused, and the reason is on the screen.
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.lenaSlug}
+- tapOn:
+    id: space-leave-${output.lenaSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-confirm-${output.lenaSlug}
+    timeout: 5000
+- assertVisible: 'You stop being a member of Lena home. Its records of you stay.'
+- tapOn:
+    id: space-leave-yes-${output.lenaSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-problem-${output.lenaSlug}
+      text: '.*only administrator\. Make someone else an administrator first, or delete the space\..*'
+    timeout: 15000
+- assertVisible:
+    id: org-here-${output.lenaSlug}
+- takeScreenshot: spaces-leave-last-admin
+- tapOn:
+    id: space-leave-stay-${output.lenaSlug}
+# Back (Spaces was pushed over Home) and the account sheet again: Hugo club is gone from the
+# switcher, and she is still in Lena home.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-org-${output.lenaSlug}
+- assertNotVisible:
+    id: account-org-${output.hugoSlug}
+- assertVisible:
+    id: account-roles
+    text: '.* at Lena.*'
+# A new arrival: one space and nothing pending, so straight into it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: leave.lena@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# A first visit to a space offers the tour, floating over the tabs: not now.
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 10000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Lena.*'
+- assertNotVisible:
+    id: account-org-${output.hugoSlug}
+
+# 3. Kit, inside Hugo club, leaves it: the landing rule takes the app to Kit home.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: leave.kit@example.com
+      ORG: ${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# A first visit to a space offers the tour, floating over the tabs: not now.
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 10000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Hugo.*'
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.hugoSlug}
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.hugoSlug}
+- tapOn:
+    id: space-leave-${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-confirm-${output.hugoSlug}
+    timeout: 5000
+- assertVisible: 'You stop being a member of Hugo club. Its records of you stay.'
+- tapOn:
+    id: space-leave-yes-${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: screen-spaces
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Kit.*'
+- assertNotVisible:
+    id: account-org-${output.hugoSlug}
+- takeScreenshot: spaces-leave-current
+
+# 3b. Lena makes Kit a second admin of Lena home, then suspends him there. He is not among its
+# live admins, so leaving cannot take its last one away: allowed, and the Suspended row goes.
+- runScript:
+    file: ../../scripts/landing.js
+    env:
+      ACTION: invite
+      OWNER: leave.lena@example.com
+      MEMBER: leave.kit@example.com
+      SLUG: ${output.lenaSlug}
+      ROLE: admin
+- runScript:
+    file: ../../scripts/landing.js
+    env:
+      ACTION: suspend
+      OWNER: leave.lena@example.com
+      SLUG: ${output.lenaSlug}
+      ID: ${output.memberId}
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: leave.kit@example.com
+      ORG: ${output.kitSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 10000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-${output.lenaSlug}
+- assertVisible: 'Your access here is suspended.'
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.lenaSlug}
+- tapOn:
+    id: space-leave-${output.lenaSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-confirm-${output.lenaSlug}
+    timeout: 5000
+- tapOn:
+    id: space-leave-yes-${output.lenaSlug}
+- extendedWaitUntil:
+    visible: 'You have left Lena home.'
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: org-${output.lenaSlug}
+    timeout: 10000
+- assertNotVisible:
+    id: space-leave-problem-${output.lenaSlug}
+- assertVisible:
+    id: org-here-${output.kitSlug}
+- takeScreenshot: spaces-leave-suspended-admin
+
+# 4. Sol leaves his only space: Welcome, where he can delete his account.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: leave.sol@example.com
+      ORG: ${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# A first visit to a space offers the tour, floating over the tabs: not now.
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 10000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: space-leave-${output.hugoSlug}
+- tapOn:
+    id: space-leave-${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: space-leave-confirm-${output.hugoSlug}
+    timeout: 5000
+- assertVisible: 'You stop being a member of Hugo club. Its records of you stay.'
+- tapOn:
+    id: space-leave-yes-${output.hugoSlug}
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertVisible:
+    id: welcome-join
+- assertNotVisible:
+    id: org-${output.hugoSlug}
+- takeScreenshot: spaces-leave-only
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

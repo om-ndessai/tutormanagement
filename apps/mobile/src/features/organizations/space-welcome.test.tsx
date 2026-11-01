@@ -5,6 +5,7 @@ import { Alert, Pressable } from 'react-native';
 
 import { ApiRequestError } from '@/lib/api-client';
 import { renderWithProviders } from '@/test/render';
+import { clearInviteStep, hasInviteStep } from './invite-step';
 import { SpaceWelcome } from './space-welcome';
 
 const mockToast = { success: jest.fn(), error: jest.fn(), info: jest.fn() };
@@ -47,7 +48,15 @@ const request = (slug: string, outcome: MyJoinRequest['outcome']): MyJoinRequest
 const chooseOrganization = jest.fn(async () => undefined);
 const signOut = jest.fn(async () => undefined);
 function as(over: Record<string, unknown> = {}) {
-  mockAuth.mockReturnValue({ joinRequests: [], account: { age_band: 'adult' }, chooseOrganization, signOut, ...over });
+  mockAuth.mockReturnValue({
+    joinRequests: [],
+    memberships: [],
+    invitations: [],
+    account: { age_band: 'adult' },
+    chooseOrganization,
+    signOut,
+    ...over,
+  });
 }
 const FOUND = { name: 'Ferreira Family Practice', short_name: 'Ferreira', palette: 'teal', logo_mark_url: null, standing: null };
 
@@ -119,7 +128,28 @@ describe('SpaceWelcome (Phase 52)', () => {
     as({ account: { age_band: '13-17' } });
     await renderWithProviders(<SpaceWelcome firstTime />);
     expect(screen.queryByTestId('welcome-make')).toBeNull();
-    expect(screen.getByTestId('welcome-make-adults')).toBeTruthy();
+    expect(screen.getByTestId('welcome-adults-only')).toHaveTextContent('To start a space of your own you need to be 18 or older.');
+    expect(screen.getByTestId('welcome-join')).toBeTruthy();
+  });
+
+  it('offers a student a space added, with no age given, no space of their own; nor anyone in no space (S11)', async () => {
+    as({ account: null, memberships: [{ slug: 'chmi', name: 'Chapel Hill Math Institute', roles: ['student'], status: 'active' }] });
+    await renderWithProviders(<SpaceWelcome firstTime={false} />);
+    expect(screen.queryByTestId('welcome-make')).toBeNull();
+    expect(screen.getByTestId('welcome-adults-only')).toBeTruthy();
+    expect(screen.getByTestId('welcome-join')).toBeTruthy();
+    await screen.unmount();
+    as({ account: null, memberships: [] });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.queryByTestId('welcome-make')).toBeNull();
+    expect(screen.getByTestId('welcome-adults-only')).toBeTruthy();
+  });
+
+  it('offers a parent a space added the form (their role vouches)', async () => {
+    as({ account: null, memberships: [{ slug: 'chmi', name: 'Chapel Hill Math Institute', roles: ['parent'], status: 'active' }] });
+    await renderWithProviders(<SpaceWelcome firstTime={false} />);
+    expect(screen.getByTestId('welcome-make')).toBeTruthy();
+    expect(screen.queryByTestId('welcome-adults-only')).toBeNull();
   });
 
   it('refuses a reserved word before sending; makes a space on the device’s clock and enters it', async () => {
@@ -137,6 +167,20 @@ describe('SpaceWelcome (Phase 52)', () => {
     expect(mockMake).toHaveBeenCalledWith({ name: 'The Creator family', time_zone: 'America/New_York' });
     expect(chooseOrganization).toHaveBeenCalledWith('s-abcd2345');
     expect(mockToast.success).toHaveBeenCalledWith('The Creator family is ready.');
+    // Phase 61 (S12): the new space opens on "Invite people".
+    expect(hasInviteStep('s-abcd2345')).toBe(true);
+    clearInviteStep();
+  });
+
+  it('offers an adult the two choices, in the Phase 61 words (S11)', async () => {
+    as();
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.getByTestId('welcome-choices')).toBeTruthy();
+    expect(screen.getByText('Join with a code')).toBeTruthy();
+    expect(screen.getByText('Start a space')).toBeTruthy();
+    expect(screen.getByTestId('welcome-make-submit')).toHaveTextContent('Start the space');
+    expect(screen.getByText(/and Quest\..*invite people next\./s)).toBeTruthy();
+    expect(screen.queryByTestId('welcome-adults-only')).toBeNull();
   });
 
   it('has no Delete my account from the picker or the account sheet', async () => {
@@ -157,5 +201,23 @@ describe('SpaceWelcome (Phase 52)', () => {
     mockDelete.mock.calls[0][1].onSuccess();
     expect(signOut).toHaveBeenCalled();
     alert.mockRestore();
+  });
+
+  it('has no Delete my account for a platform admin in no space (the API refuses one)', async () => {
+    as({ platformAdmin: true });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.getByTestId('welcome-choices')).toBeTruthy();
+    expect(screen.queryByTestId('welcome-delete-account')).toBeNull();
+  });
+
+  it('keeps Delete my account away while anything is open: a request sent or an invitation (Phase 60)', async () => {
+    as({ joinRequests: [request('assess', null)] });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.getByText('REQUESTS SENT')).toBeTruthy();
+    expect(screen.queryByTestId('welcome-delete-account')).toBeNull();
+    await screen.unmount();
+    as({ invitations: [{ slug: 'chmi' }] });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.queryByTestId('welcome-delete-account')).toBeNull();
   });
 });

@@ -6,14 +6,24 @@
 // accepted, so a change of wording is a new version, never an edit in place.
 
 /** The version a newcomer accepts (Phase 52 records it). A wording change gets a new date. */
-export const TERMS_VERSION = '2026-10-29';
-export const PRIVACY_VERSION = '2026-10-29';
+export const TERMS_VERSION = '2026-10-31';
+export const PRIVACY_VERSION = '2026-10-31';
+
+/**
+ * Earlier versions a sign-up may still accept, recorded as sent: an app build already on a phone
+ * shows and sends the version it was built with. 2026-10-31 only reworded "organization" as
+ * "space" (Phase 59), so 2026-10-29 is still a fair thing to have agreed to.
+ */
+export const ACCEPTED_LEGAL_VERSIONS: readonly string[] = ['2026-10-31', '2026-10-29'];
 
 /**
  * While true, both pages say they are a draft. The owner approved version 2026-10-29 on 2026-10-29
- * (docs/stable-release-checklist.md, A3), without a lawyer's review.
+ * (docs/stable-release-checklist.md, A3), without a lawyer's review, and version 2026-10-31 on 2026-11-01.
  */
 export const LEGAL_DRAFT = false;
+
+/** Phase 59's draft version, approved by the owner on 2026-11-01: now TERMS_VERSION. */
+export const LEGAL_NEXT_VERSION = '2026-10-31';
 
 export interface LegalSection {
   heading: string;
@@ -33,13 +43,13 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
       'About you: your name, your email address and, if you give it, your phone number; when you last signed in; and, for each account you sign in with -- Google and, where offered, Microsoft, Facebook or Apple -- its permanent id and the email it reports. Never your password. You may link more than one of these to yourself.',
       'If you signed up yourself: whether you are 13 to 17 or an adult, and which version of these terms you accepted. Never your date of birth.',
       'What a space records: its people and their roles; for tutoring, lessons, notes, schedules, payments and progress; for assessments, the questions asked, the answers written on the canvas, the PDF made from them and a tutor’s review; for Quest, answers, points and games.',
-      'Where a space is run by an organization, that organization’s name, tax id and payer address; a tutor’s mailing address, for their 1099. Only the space’s office and that tutor see the address and the tax arrangements.',
+      'Where a space collects its families’ payments, the name, tax id and payer address it files 1099s under; a tutor’s mailing address, for their 1099. Only the space’s office and that tutor see the address and the tax arrangements.',
     ],
   },
   {
     heading: 'Children',
     paragraphs: [
-      'Nobody under 13 may create an account. A child takes part only as a student added to a space by a parent or guardian, or by the organization they learn with, who confirms they are the parent or guardian or have their permission.',
+      'Nobody under 13 may create an account. A child takes part only as a student added to a space by a parent or guardian, or by the administrators of the space they learn in, who confirm they are the parent or guardian or have their permission.',
       'A child’s answers are kept for their parents, their tutors and the space’s administrators. They are never sold, never used for advertising and never sent to an AI provider.',
       'A parent may ask a space’s administrators to see or delete their child’s records.',
     ],
@@ -131,3 +141,10 @@ export const TERMS_SECTIONS: LegalSection[] = [
     ],
   },
 ];
+
+/**
+ * Phase 59 kept the next version apart while it waited for approval; it is the published one now.
+ * Older callers of these names read the published text.
+ */
+export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS;
+export const TERMS_SECTIONS_NEXT: LegalSection[] = TERMS_SECTIONS;

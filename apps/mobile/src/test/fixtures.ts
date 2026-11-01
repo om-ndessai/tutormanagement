@@ -41,7 +41,7 @@ export function anOrganization<T extends object = object>(
     feature_quest: true,
     created_via: 'console',
     quest_trusted: true,
-    business: { id: 'b-1', name: 'Fixture Organization' },
+    business: { id: 'b-1', name: 'Fixture Payer' },
     calendar_domain: 'chmi.invalid',
     archived_at: null,
     created_at: '2026-10-01T00:00:00Z',

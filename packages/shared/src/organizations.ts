@@ -1,7 +1,13 @@
 import { z } from 'zod';
 import { refuseSsn } from './tax.js';
 import { USER_ROLES, type UserRole, optionalText } from './users.js';
-import { businessIdSchema, type SpaceBusiness } from './businesses.js';
+import {
+  SPACE_PAYMENT_MODELS,
+  businessIdSchema,
+  spacePayerSchema,
+  type SpaceBusiness,
+  type SpacePayer,
+} from './businesses.js';
 
 // ---------------------------------------------------------------------------
 // Organizations (docs/multi-organization.md)
@@ -133,7 +139,13 @@ export function paidDirectly(org: { business: SpaceBusiness | null }): boolean {
 }
 
 export const createOrganizationSchema = organizationFieldsSchema.extend({
-  /** Phase 54: the organization that runs its money; null (the default) is paid directly. */
+  /**
+   * Phase 59: who families pay -- 'space' makes the space its own payer record from the payer
+   * fields below; 'direct' is paid directly. Omitted (an older app), `business_id` decides as in
+   * Phase 54: a business to link, or null (the default), paid directly.
+   */
+  payment_model: z.enum(SPACE_PAYMENT_MODELS).optional(),
+  ...spacePayerSchema.partial().shape,
   business_id: businessIdSchema.nullable().default(null),
   palette: z.enum(ORG_PALETTES).default('platform'),
   builtin_logo: z.enum(BUILTIN_LOGOS).nullable().default(null),
@@ -149,8 +161,12 @@ export const createOrganizationSchema = organizationFieldsSchema.extend({
 export type CreateOrganizationInput = z.input<typeof createOrganizationSchema>;
 export type CreateOrganizationPayload = z.output<typeof createOrganizationSchema>;
 
-/** PATCH: no defaults survive `.partial()`, so an omitted key is left alone. */
+/**
+ * PATCH: no defaults survive `.partial()`, so an omitted key is left alone. Phase 59: the payer
+ * details travel here too, for a space that collects its payments.
+ */
 export const updateOrganizationSchema = organizationFieldsSchema
+  .extend(spacePayerSchema.shape)
   .partial()
   .refine((value) => Object.keys(value).length > 0, {
     message: 'Provide at least one field to update.',
@@ -180,7 +196,7 @@ export const organizationSettingsSchema = z.object({
   ),
   /** Its own admins may switch notifications too, as may platform admins. */
   email_notifications: z.boolean(),
-  /** Phase 38: the Assessment menu (beta). Its own admins only; off until they choose. */
+  /** Phase 38: the Assessment menu (beta). Its own admins only; on in a space made since Phase 61 (S10). */
   canvas_assessments: z.boolean(),
   /**
    * Phase 38: let assessments draw on questions the bank has checked but no
@@ -194,7 +210,7 @@ export const organizationSettingsSchema = z.object({
     .int('Use a whole number.')
     .min(1, 'At least 1 question.')
     .max(25, 'At most 25 questions.'),
-  /** Phase 42: Question Quest, the first gamification flag. Its own admins only; off until they choose. */
+  /** Phase 42: Question Quest, the first gamification flag. Its own admins only; on in a space made since Phase 61 (S10). */
   gamify_question_quest: z.boolean(),
 });
 export const updateOrganizationSettingsSchema = organizationSettingsSchema
@@ -294,7 +310,7 @@ export const NOTIFICATION_KINDS = [
 export type NotificationKind = (typeof NOTIFICATION_KINDS)[number];
 
 export const NOTIFICATION_KIND_LABELS: Record<NotificationKind, string> = {
-  user_added: 'Added to the organization',
+  user_added: 'Added to the space',
   plan_added: 'Learning plan added',
   assessment_added: 'Assessment added',
   schedule_added: 'Lesson scheduled',
@@ -328,18 +344,36 @@ export interface NotificationLogEntry {
 export interface Membership extends OrganizationBrand {
   roles: UserRole[];
   status: 'active' | 'suspended';
-  /** The organization the person lands in on signing in. At most one is. */
+  /**
+   * Phase 60 (S4): the space the person last opened, on any device -- where an arriving tab or
+   * the app lands. At most one is. (Before Phase 60 it was the starred one; an older app's star
+   * still sets it, through PUT /api/auth/default-organization.)
+   */
   is_default: boolean;
 }
 
 /**
  * Choosing where to land on signing in, for someone in several organizations.
- * `null` clears it: they land wherever they were last, or choose.
+ * `null` clears it. Phase 60: the star is gone from both clients and opening a space moves
+ * the choice (POST /api/auth/enter); this stays for older apps, whose star still means "land here".
  */
 export const defaultOrganizationSchema = z.object({
   slug: orgSlugSchema.nullable(),
 });
 export type DefaultOrganizationInput = z.input<typeof defaultOrganizationSchema>;
+
+/**
+ * `POST /api/auth/enter` (Phase 60, S4/S9). `opened: false` says the tab was already in this space
+ * and has only reloaded or navigated: it is logged and answered as ever, but the person's last
+ * choice is not moved, so a second tab's choice holds. Absent (an older client, the app) or true
+ * means the space was just opened -- the selector, the switcher, the Spaces page, a link, an arrival.
+ */
+export const enterSpaceSchema = z
+  .object({
+    opened: z.boolean().optional(),
+  })
+  .strict();
+export type EnterSpaceInput = z.input<typeof enterSpaceSchema>;
 
 /** An organization that has invited the signed-in person, pending their answer. */
 export interface Invitation extends OrganizationBrand {
@@ -347,10 +381,15 @@ export interface Invitation extends OrganizationBrand {
   invited_at: string;
 }
 
-/** A row on the platform console's organizations list. */
+/** A row on the platform console's spaces list. */
 export interface OrganizationListItem extends Organization {
   admin_count: number;
   member_count: number;
+  /**
+   * Phase 59: its payer details while the space collects payments; null when families pay each
+   * tutor. Absent from a Worker before Phase 59.
+   */
+  payer?: SpacePayer | null;
 }
 
 /** An organization's admin, as the platform console shows them. */

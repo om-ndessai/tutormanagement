@@ -1,5 +1,5 @@
 # The console's people: Nav adds a platform admin by email (they are listed), then looks a person
-# up by email and corrects their shared phone -- Alex, who belongs to two organizations, which is
+# up by email and corrects their shared phone -- Alex, who belongs to two spaces, which is
 # exactly whose shared details only the platform may change. clean-platform.js puts Alex's phone
 # back before and after; the added platform admin stays until the database is reset (no API removes
 # one).

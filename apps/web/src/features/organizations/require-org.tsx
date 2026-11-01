@@ -4,7 +4,7 @@ import { useAuth } from '@/providers/auth-provider';
 
 /**
  * The portal itself runs inside one organization. Without one chosen in this
- * tab, send the person to choose -- or, for a platform admin who belongs to
+ * tab, send the person to choose (the Spaces page, without the portal's frame) -- or, for a platform admin who belongs to
  * none, to the console. The API enforces the same rule on every request.
  */
 export function RequireOrg() {
@@ -19,6 +19,6 @@ export function RequireOrg() {
   }
 
   return (
-    <Navigate to="/select-organization" replace state={{ from: location.pathname + location.search }} />
+    <Navigate to="/spaces" replace state={{ from: location.pathname + location.search }} />
   );
 }

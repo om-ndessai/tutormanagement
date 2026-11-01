@@ -31,6 +31,7 @@ import {
   type PaletteDestination,
 } from '@/components/layout/command-palette';
 import { OrgSwitcher } from '@/features/organizations/org-switcher';
+import { InvitationBanner } from '@/features/organizations/invitation-banner';
 import { useAuth } from '@/providers/auth-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -118,7 +119,7 @@ function SidebarContents({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex h-full flex-col gap-4 p-4">
-      {/* The lockup, or -- for someone in several organizations -- the switcher. */}
+      {/* The lockup, which is always the space switcher (Phase 60). */}
       <OrgSwitcher className="px-1 py-2" />
       <Separator className="bg-sidebar-border" />
       <NavItems onNavigate={onNavigate} />
@@ -216,6 +217,8 @@ function Shell() {
         {/* A running lesson follows the tutor wherever they navigate, so it
             cannot be left ticking on a screen they have moved away from. */}
         {featureOn(organization, 'tutoring') && <LiveSessionBar />}
+        {/* Phase 60 (S6): an invitation to another space waits here until answered or put off. */}
+        <InvitationBanner />
 
         <main className="flex-1 px-4 py-6 lg:px-8 lg:py-8">
           {/* Each page arrives, rather than appearing: a short rise and fade,

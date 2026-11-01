@@ -234,8 +234,9 @@ export function PersonForm({
                 padding: space.md,
               }}
             >
-              This person belongs to another space too, so their name, email and phone are shared. A
-              platform administrator changes them.
+              {detail?.status === 'invited'
+                ? 'This person has not accepted their invitation yet, so their name, email and phone stay as invited. To change them, remove them and invite them again.'
+                : 'This person belongs to another space too, so their name, email and phone are shared. A platform administrator changes them.'}
             </Text>
           ) : null}
           <FormTextField

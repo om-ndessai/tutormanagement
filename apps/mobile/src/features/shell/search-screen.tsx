@@ -136,7 +136,7 @@ export function SearchScreen() {
             key: 'platform',
             testID: 'search-action-platform',
             label: 'Platform console',
-            value: 'platform console spaces organizations',
+            value: 'platform console spaces',
             icon: 'shield-check-outline',
             run: () => {
               haptics.selection();

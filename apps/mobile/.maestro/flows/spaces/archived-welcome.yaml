@@ -1,0 +1,126 @@
+# Phase 61 (S11, with S7 and S8, docs/spaces-plan.md): someone whose only tie is to a space since
+# archived. The session lists live spaces only, and an archived space cannot be left, so they land on
+# the Welcome as a newcomer would, and its "Delete my account" works (the API does not count an
+# archived space as belonging). Two of them: Ada, who started her space herself, and Ivy, who was
+# only invited to Hal's. The web's half is spaces-welcome.spec.ts.
+# Self-cleaning: the spaces are restored (so reset-newcomer can delete them), then everyone reset.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Ada Archived family, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Hal Archived inviter, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.archived.ada@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.archived.hal@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.archived.ivy@example.com }
+  # Ada starts her own space; it is archived.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.archived.ada@example.com, NAME: Ada Archived }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.archived.ada@example.com, NAME: Ada Archived family }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Ada Archived family, ON: 'true' }
+  # Hal invites Ivy, a new address, as a parent (S12's row); then his space is archived.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.archived.hal@example.com, NAME: Hal Host }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.archived.hal@example.com, NAME: Hal Archived inviter }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env:
+        ACTION: add-person
+        EMAIL: spaces.archived.ivy@example.com
+        NAME: Ivy Invitee
+        ROLES: parent
+        ACTOR: spaces.archived.hal@example.com
+        ORG: ${output.slug}
+        STATUS: invited
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Hal Archived inviter, ON: 'true' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Ada Archived family, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Hal Archived inviter, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.archived.ada@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.archived.ivy@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.archived.hal@example.com }
+tags:
+  - feature
+---
+# --- Ada: her own space archived -----------------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.archived.ada@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertVisible:
+    id: welcome-title
+    text: 'Welcome to Aimtrue'
+- assertNotVisible: 'Ada Archived family'
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+# --- Ivy: only an invitation, to a space since archived ---------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.archived.ivy@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertVisible:
+    id: welcome-title
+    text: 'Welcome to Aimtrue'
+- assertNotVisible: 'Hal Archived inviter'
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

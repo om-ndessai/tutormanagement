@@ -63,16 +63,18 @@ DELETE FROM users;
 -- C (Assessment only) and D (a tutor space) have no organization: D is paid directly.
 INSERT INTO businesses (id, name, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code) VALUES
   ('0a000000-0000-4000-8000-000000000001', 'Chapel Hill Math Institute', '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514'),
-  ('0b000000-0000-4000-8000-000000000001', 'Riverside Tutoring', '56-7788990', NULL, NULL, NULL, NULL, NULL);
+  ('0b000000-0000-4000-8000-000000000001', 'Riverside Tutoring', '56-7788990', NULL, NULL, NULL, NULL, NULL),
+  ('0f000000-0000-4000-8000-000000000001', 'Newfield Math Circle', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest, created_via, quest_trusted, join_code, join_by_code, business_id) VALUES
-  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'CHMX2345', 0, '0a000000-0000-4000-8000-000000000001'),
-  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'RVRS2345', 1, '0b000000-0000-4000-8000-000000000001'),
-  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0, 'self_serve', 0, 'FMXY2345', 1, NULL),
-  ('0e000000-0000-4000-8000-000000000001', 'solo', 'Brooks & Ramos Tutoring', 'Brooks & Ramos', NULL, NULL, 'Raleigh, North Carolina', 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'solo.tutor-portal.invalid', 1, 1, 0, 'console', 1, 'SQRT2345', 0, NULL);
+INSERT INTO organizations (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code, time_zone, email_notifications, canvas_assessments, canvas_assessments_unreviewed, calendar_domain, feature_tutoring, feature_assessment, feature_quest, created_via, quest_trusted, join_code, join_by_code, business_id, gamify_question_quest) VALUES
+  ('0a000000-0000-4000-8000-000000000001', 'chmi', 'Chapel Hill Math Institute', 'CHMI', 'Where numbers click', 'One tutor, one student, one plan at a time — lessons tracked from the first assessment to the goal they were set against.', 'Chapel Hill, North Carolina', 'indigo', NULL, '47-2019388', '100 Franklin Street', NULL, 'Chapel Hill', 'NC', '27514', 'America/New_York', 1, 1, 0, 'chmi.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'CHMX2345', 0, '0a000000-0000-4000-8000-000000000001', 0),
+  ('0b000000-0000-4000-8000-000000000001', 'riverside', 'Riverside Tutoring', 'Riverside', 'Small groups, big steps', 'Neighbourhood tutoring along the river, for families who want a tutor who knows the school.', 'Durham, North Carolina', 'teal', NULL, '56-7788990', NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'riverside.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'RVRS2345', 1, '0b000000-0000-4000-8000-000000000001', 0),
+  ('0d000000-0000-4000-8000-000000000001', 'assess', 'Ferreira Family Practice', 'Ferreira', NULL, NULL, NULL, 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'assess.tutor-portal.invalid', 0, 1, 0, 'self_serve', 0, 'FMXY2345', 1, NULL, 0),
+  ('0e000000-0000-4000-8000-000000000001', 'solo', 'Brooks & Ramos Tutoring', 'Brooks & Ramos', NULL, NULL, 'Raleigh, North Carolina', 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 0, 0, 'solo.tutor-portal.invalid', 1, 1, 0, 'console', 1, 'SQRT2345', 0, NULL, 0),
+  ('0f000000-0000-4000-8000-000000000001', 'newfield', 'Newfield Math Circle', 'Newfield', NULL, NULL, 'Cary, North Carolina', 'platform', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'America/New_York', 0, 1, 0, 'newfield.tutor-portal.invalid', 1, 1, 1, 'console', 1, 'NWFD2345', 0, '0f000000-0000-4000-8000-000000000001', 1);
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
@@ -84,7 +86,8 @@ INSERT INTO organization_curricula (organization_id, curriculum_id, is_default, 
   ('0b000000-0000-4000-8000-000000000001', 'nc-2026', 0, NULL),
   ('0b000000-0000-4000-8000-000000000001', 'ba', 0, '2026-09-15T12:00:00.000Z'),
   ('0d000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL),
-  ('0e000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL);
+  ('0e000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL),
+  ('0f000000-0000-4000-8000-000000000001', 'nc-2026', 1, NULL);
 
 -- --- people ----------------------------------------------------------------
 INSERT INTO users (id, email, full_name, phone) VALUES

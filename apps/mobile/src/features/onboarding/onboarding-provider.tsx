@@ -9,7 +9,7 @@
 // The wizard is a route (`(org)/onboarding/*`, a full-screen modal) so that the app's own form
 // sheets can open over it; the tour is an overlay over the dashboard, drawn here.
 import type { TourOutcome, UserRole } from '@tmi/shared';
-import { router } from 'expo-router';
+import { router, useSegments } from 'expo-router';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Surface, Text } from 'react-native-paper';
@@ -20,15 +20,17 @@ import { readPref, STORAGE_KEYS, writePref } from '@/lib/storage';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { clearInviteStep, hasInviteStep } from '@/features/organizations/invite-step';
 import { useFinishTour } from './api';
 import { decideOnboarding, primaryRole, screenAfterTour } from './onboarding-model';
 import { Tour } from './tour';
 import { TourTargetsProvider } from './tour-targets';
 import { tourStepsFor } from './tour-steps';
 
-export type WizardScreen = 'welcome' | 'student' | 'tutor' | 'confirm' | 'done';
+export type WizardScreen = 'invite' | 'welcome' | 'student' | 'tutor' | 'confirm' | 'done';
 
 const WIZARD_HREF = {
+  invite: '/onboarding/invite',
   welcome: '/onboarding',
   student: '/onboarding/student',
   tutor: '/onboarding/tutor',
@@ -120,10 +122,16 @@ function OnboardingHost({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (decided.current || !user || !onboarding || deviceSeen === null || !dashboard) return;
     decided.current = true;
+    // Phase 61 (S12): a space this run has just started opens on "Invite people" first, whether or
+    // not its maker has been through the wizard elsewhere.
+    if (hasInviteStep(organization?.slug) && user.roles.includes('admin')) {
+      openWizard('invite');
+      return;
+    }
     const decision = decideOnboarding({ onboarding, deviceSeen, viewingAs: dashboard.viewingAs });
     if (decision === 'wizard') openWizard('welcome');
     else if (decision === 'offer') setOffer(true);
-  }, [user, onboarding, deviceSeen, dashboard, openWizard]);
+  }, [user, onboarding, deviceSeen, dashboard, openWizard, organization?.slug]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
@@ -140,6 +148,7 @@ function OnboardingHost({ children }: { children: ReactNode }) {
    */
   const wizardClosed = useCallback(() => {
     wizardOpen.current = false;
+    clearInviteStep();
     if (leavingForTour.current) return;
     markDeviceSeen();
     if (onboardingRef.current && !onboardingRef.current.tour_finished_at) {
@@ -200,12 +209,18 @@ function OnboardingHost({ children }: { children: ReactNode }) {
     [openWizard, beginTour, wizardClosed, reportDashboard, tourDone],
   );
 
+  // The offer floats over the tabs only. On Android a sheet (Account, a form) renders beneath this
+  // overlay, so an offer shown there covered the sheet and took its taps (Account -> Spaces, S7); it
+  // waits instead, and is back when the person returns to a tab.
+  const segments = useSegments() as string[];
+  const onTabs = segments.includes('(tabs)');
+
   return (
     <OnboardingContext value={value}>
       <View style={{ flex: 1 }}>
         {children}
         {touring ? <Tour steps={steps} onDone={endTour} /> : null}
-        {offer && !touring ? (
+        {offer && !touring && onTabs ? (
           <TourOffer
             title={offerTitle}
             onTake={() => beginTour('offer')}

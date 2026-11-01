@@ -20,7 +20,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   admin: [
     {
       target: 'dash-analytics',
-      title: 'The institute at a glance',
+      title: 'Your space at a glance',
       body: 'Students, tutors, parents and lessons, counted. Each card opens the list behind it.',
     },
     {

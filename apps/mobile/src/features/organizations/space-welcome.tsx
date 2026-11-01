@@ -1,4 +1,6 @@
-// Ported from apps/web/src/features/organizations/welcome.tsx @ 9485a8e
+// Ported from apps/web/src/features/organizations/welcome.tsx @ 9485a8e (Phase 60's "Requests sent" and
+// Delete my account's condition from the working tree on f96b984; Phase 61's two choices and the
+// invite step's mark likewise)
 import { formatRelativeTime, type SpaceLookup } from '@tmi/shared';
 import { getCalendars } from 'expo-localization';
 import { router } from 'expo-router';
@@ -23,6 +25,7 @@ import {
   useMarkDeclinesSeen,
   useWithdrawRequest,
 } from './api';
+import { markInviteStep } from './invite-step';
 import { OrgAvatar } from './org-avatar';
 import { canMake, codeReady, deviceTimeZone, makeProblem, splitRequests, standingLine } from './space-model';
 
@@ -31,10 +34,20 @@ import { canMake, codeReady, deviceTimeZone, makeProblem, splitRequests, standin
  * space with its code (by asking; its admins let you in), or make your own (adults). Requests
  * waiting for an answer are listed, and may be withdrawn; a decline is shown once.
  * `firstTime` adds "Delete my account" (the person is in no space).
+ *
+ * Phase 61 (S11): two choices, Join with a code and Start a space (adults only; a 13-17 sees only
+ * the first). A phone has no room side by side, so they stack, in that order. Starting one goes on
+ * to "Invite people" (S12) inside the new space.
  */
 export function SpaceWelcome({ firstTime }: { firstTime: boolean }) {
-  const { joinRequests, account } = useAuth();
+  const { joinRequests, account, memberships, invitations, platformAdmin } = useAuth();
+  const mayMake = canMake(account, memberships, platformAdmin);
   const markSeen = useMarkDeclinesSeen();
+  // Held here, not on the request's row: withdrawing refreshes the session, which unmounts the row
+  // (and Requests sent with it) before a per-call onSuccess there would run, and TanStack drops the
+  // callbacks of an unmounted observer -- so the toast would never show.
+  const withdraw = useWithdrawRequest();
+  const toast = useToast();
   const { open, declined } = splitRequests(joinRequests);
   const theme = useAppTheme();
 
@@ -59,30 +72,47 @@ export function SpaceWelcome({ firstTime }: { firstTime: boolean }) {
           <Text variant="bodyMedium">{`${r.name} didn’t accept your request to join.`}</Text>
         </View>
       ))}
-      {open.length > 0 ? <OpenRequests /> : null}
-      <JoinWithCode />
-      {canMake(account) ? (
-        <MakeSpace />
-      ) : (
-        <Text testID="welcome-make-adults" variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-          To make a space of your own you need to be 18 or older.
+      {open.length > 0 ? (
+        <OpenRequests
+          pending={withdraw.isPending}
+          onWithdraw={(slug, name) =>
+            withdraw.mutate(slug, {
+              onSuccess: () => toast.success(`Request to ${name} withdrawn.`),
+              onError: (e) => showProblem(toast, e, 'Could not withdraw the request.'),
+            })
+          }
+        />
+      ) : null}
+      <View style={{ gap: space.lg }} testID="welcome-choices">
+        <JoinWithCode />
+        {mayMake ? <MakeSpace /> : null}
+      </View>
+      {mayMake ? null : (
+        <Text testID="welcome-adults-only" variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+          To start a space of your own you need to be 18 or older.
         </Text>
       )}
-      {firstTime ? <DeleteAccount /> : null}
+      {/* Only for someone who belongs nowhere and has nothing open (the API checks the same). */}
+      {/* Not for a platform admin, whose account the API never deletes. */}
+      {firstTime && !platformAdmin && memberships.length === 0 && invitations.length === 0 && open.length === 0 ? <DeleteAccount /> : null}
     </View>
   );
 }
 
-function OpenRequests() {
+function OpenRequests({
+  pending,
+  onWithdraw,
+}: {
+  pending: boolean;
+  onWithdraw: (slug: string, name: string) => void;
+}) {
   const { joinRequests } = useAuth();
-  const withdraw = useWithdrawRequest();
-  const toast = useToast();
   const theme = useAppTheme();
   const { open } = splitRequests(joinRequests);
   return (
-    <View style={{ gap: space.sm }} accessibilityLabel="Waiting to join">
+    <View style={{ gap: space.sm }} accessibilityLabel="Requests sent">
       <Text variant="labelLarge" accessibilityRole="header" style={{ color: theme.colors.onSurfaceVariant }}>
-        WAITING TO BE LET IN
+        REQUESTS SENT
       </Text>
       {open.map((r) => (
         <OutlinedCard key={r.slug} testID={`welcome-request-${r.slug}`} style={{ borderRadius: radius.lg }}>
@@ -98,14 +128,9 @@ function OpenRequests() {
               testID={`welcome-withdraw-${r.slug}`}
               mode="text"
               compact
-              disabled={withdraw.isPending}
+              disabled={pending}
               accessibilityLabel={`Withdraw the request to ${r.name}`}
-              onPress={() =>
-                withdraw.mutate(r.slug, {
-                  onSuccess: () => toast.success(`Request to ${r.name} withdrawn.`),
-                  onError: (e) => showProblem(toast, e, 'Could not withdraw the request.'),
-                })
-              }
+              onPress={() => onWithdraw(r.slug, r.name)}
             >
               Withdraw
             </Button>
@@ -157,7 +182,7 @@ function JoinWithCode() {
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
           <Icon source="key-outline" size={18} color={theme.colors.onSurfaceVariant} />
           <Text variant="titleMedium" accessibilityRole="header">
-            Have a space code?
+            Join with a code
           </Text>
         </View>
         <TextInput
@@ -247,6 +272,8 @@ function MakeSpace() {
     try {
       const made = await make.mutateAsync({ name: name.trim(), ...(zone ? { time_zone: zone } : {}) });
       toast.success(`${made.data.name} is ready.`);
+      // S12: the new space opens on "Invite people", then the welcome wizard's start.
+      markInviteStep(made.data.slug);
       await chooseOrganization(made.data.slug);
       // From the "Join or make a space" modal, the stack goes first; then the space's home, where
       // the welcome wizard opens on its own (a new person has not been through it).
@@ -272,12 +299,12 @@ function MakeSpace() {
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
           <Icon source="plus" size={18} color={theme.colors.onSurfaceVariant} />
           <Text variant="titleMedium" accessibilityRole="header">
-            No code? Make your own space
+            Start a space
           </Text>
         </View>
         <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-          For your family or your students: assessments answered by hand, with a PDF for you. It gets its own code, so
-          others can ask to join.
+          For your family or your students: assessments answered by hand, with a PDF for you, and Quest. It gets its own
+          code, so others can ask to join, and you can invite people next.
         </Text>
         <TextInput
           testID="welcome-space-name"
@@ -303,7 +330,7 @@ function MakeSpace() {
           loading={make.isPending}
           style={{ alignSelf: 'flex-start' }}
         >
-          Make the space
+          Start the space
         </Button>
         {problem ? (
           <Text testID="welcome-make-error" variant="bodyMedium" style={{ color: theme.colors.error }}>

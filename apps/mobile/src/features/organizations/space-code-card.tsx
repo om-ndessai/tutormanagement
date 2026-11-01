@@ -175,7 +175,7 @@ export function SpaceDangerPanel({ testID = 'space-danger', leaveOnly = false }:
         text: 'Leave',
         style: 'destructive',
         onPress: () =>
-          leave.mutate(undefined, {
+          leave.mutate(org.slug, {
             onSuccess: () => void land(),
             onError: (e) => showProblem(toast, e, 'Could not leave.'),
           }),

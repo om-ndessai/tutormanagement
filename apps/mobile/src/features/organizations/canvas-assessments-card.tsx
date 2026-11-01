@@ -108,7 +108,7 @@ export function CanvasAssessmentsCard({
   }
 
   return (
-    <Panel title="Assessment" testID="org-assessments">
+    <Panel title="Assessment in this space" testID="org-assessments">
       <View style={{ gap: space.lg }}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
           <View style={{ flex: 1, gap: space.xs }}>

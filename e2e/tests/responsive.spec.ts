@@ -39,7 +39,7 @@ for (const width of WIDTHS) {
 // Choosing an organization, and the platform console, are outside any one
 // organization: the picker for someone in two, the console for its admin.
 const OUTSIDE: { who: 'admin' | 'platformAdmin'; path: string }[] = [
-  { who: 'admin', path: '/select-organization' },
+  { who: 'admin', path: '/spaces' },
   { who: 'platformAdmin', path: '/platform' },
   { who: 'platformAdmin', path: '/platform/admins' },
   { who: 'platformAdmin', path: '/platform/people' },

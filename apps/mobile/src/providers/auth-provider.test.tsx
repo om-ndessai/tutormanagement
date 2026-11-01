@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 import { apiClient } from '@/lib/api-client';
 import { emit } from '@/lib/events';
-import { clearActiveOrg, getActiveOrg } from '@/lib/organization';
+import { clearActiveOrg, forgetLastOrg, getActiveOrg, setActiveOrg } from '@/lib/organization';
 import { setDevUser } from '@/lib/server';
 
 import { AuthProvider, useAuth } from './auth-provider';
@@ -66,6 +66,8 @@ const server = {
   known: new Set<string>(),
   signupRefusal: null as null | { status: number; code: string; message: string },
   withRequest: false,
+  /** Phase 60: the person's memberships, when a test needs more than the one space. */
+  memberships: null as null | { slug: string; name: string; status: 'active' | 'suspended'; is_default: boolean }[],
   calls: [] as { method: string; path: string; init: RequestInit }[],
 };
 
@@ -131,14 +133,18 @@ function fakeFetch(url: string, init: RequestInit = {}) {
       return json(404, { error: { code: 'not_found', message: 'No such person.' } });
   } else if (!server.cookie) return unauthenticated();
   if (path === '/auth/session') {
-    const inOrg = headers['X-Organization'] === 'chmi';
+    const memberships = server.memberships ?? [
+      { slug: 'chmi', name: 'Org', status: 'active', is_default: false },
+    ];
+    const named = headers['X-Organization'];
+    const inOrg = memberships.some((m) => m.slug === named && m.status === 'active');
     return json(200, {
       data: {
         user: PERSON,
         impersonated: false,
         onboarding: null,
-        organization: inOrg ? ORG : null,
-        memberships: [{ slug: 'chmi', name: 'Org', status: 'active', is_default: false }],
+        organization: inOrg ? { ...ORG, slug: named } : null,
+        memberships,
         invitations: [],
         platform_admin: false,
         account: { age_band: 'adult' },
@@ -196,11 +202,13 @@ beforeEach(async () => {
   server.known = new Set();
   server.signupRefusal = null;
   server.withRequest = false;
+  server.memberships = null;
   server.calls = [];
   globalThis.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
   Object.values(GoogleSignin).forEach((mock) => mock.mockClear());
   GoogleSignin.hasPreviousSignIn.mockReturnValue(false);
   clearActiveOrg();
+  await forgetLastOrg();
   await setDevUser(null);
 });
 
@@ -466,5 +474,70 @@ describe('auth provider: signing up (Phase 52)', () => {
       await apiClient.get('/dashboard');
     });
     expect(JSON.parse(calls('/auth/google')[0]!.init.body as string)).toEqual({ credential: 'id-token-2' });
+  });
+});
+
+describe('Phase 60: landing in the last space chosen (S4)', () => {
+  const sessionOrgs = () =>
+    calls('/auth/session').map((call) => (call.init.headers as Record<string, string>)['X-Organization'] ?? null);
+
+  it('lands in the server’s last choice, not the space this device remembers, and enters it', async () => {
+    server.cookie = true;
+    server.memberships = [
+      { slug: 'chmi', name: 'Org', status: 'active', is_default: true },
+      { slug: 'riverside', name: 'River', status: 'active', is_default: false },
+    ];
+    // The device last used riverside (the web's tmi_last_org).
+    await setActiveOrg('riverside');
+    clearActiveOrg();
+    await mount();
+    await waitFor(() => expect(auth.organization?.slug).toBe('chmi'));
+    expect(sessionOrgs()).toEqual(['riverside', 'chmi']);
+    await waitFor(() => expect(calls('/auth/enter')).toHaveLength(1));
+  });
+
+  it('asks (the selector) with two spaces and no last choice, whatever the device remembers', async () => {
+    server.cookie = true;
+    server.memberships = [
+      { slug: 'chmi', name: 'Org', status: 'active', is_default: false },
+      { slug: 'riverside', name: 'River', status: 'active', is_default: false },
+    ];
+    await setActiveOrg('riverside');
+    clearActiveOrg();
+    await mount();
+    expect(auth.status).toBe('authenticated');
+    expect(auth.organization).toBeNull();
+    expect(getActiveOrg()).toBeNull();
+  });
+
+  it('keeps a space chosen this run on a refresh, and lands again by the rule after leaving it', async () => {
+    server.cookie = true;
+    server.memberships = [
+      { slug: 'chmi', name: 'Org', status: 'active', is_default: true },
+      { slug: 'riverside', name: 'River', status: 'active', is_default: false },
+    ];
+    await mount();
+    await waitFor(() => expect(auth.organization?.slug).toBe('chmi'));
+    await act(async () => auth.chooseOrganization('riverside'));
+    await act(async () => auth.refreshSession());
+    expect(auth.organization?.slug).toBe('riverside');
+    // Left riverside: the server's last choice is chmi again.
+    server.memberships = [{ slug: 'chmi', name: 'Org', status: 'active', is_default: true }];
+    await act(async () => auth.reland());
+    await waitFor(() => expect(auth.organization?.slug).toBe('chmi'));
+  });
+
+  it('choosing the space the app is already in opens it again: POST /auth/enter, so it is the last choice', async () => {
+    server.cookie = true;
+    server.memberships = [
+      { slug: 'chmi', name: 'Org', status: 'active', is_default: true },
+      { slug: 'riverside', name: 'River', status: 'active', is_default: false },
+    ];
+    await mount();
+    await waitFor(() => expect(auth.organization?.slug).toBe('chmi'));
+    await waitFor(() => expect(calls('/auth/enter')).toHaveLength(1));
+    await act(async () => auth.chooseOrganization('chmi'));
+    await waitFor(() => expect(calls('/auth/enter')).toHaveLength(2));
+    expect((calls('/auth/enter')[1]!.init.headers as Record<string, string>)['X-Organization']).toBe('chmi');
   });
 });

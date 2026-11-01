@@ -22,7 +22,7 @@ export function ConsoleHeaderButtons() {
           accessibilityLabel="My spaces"
           onPress={() => {
             haptics.selection();
-            router.replace('/select-organization');
+            router.replace('/spaces');
           }}
         />
       ) : null}

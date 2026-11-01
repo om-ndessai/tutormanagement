@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { DEFAULT_ORG_TIME_ZONE } from '@tmi/shared';
+import { DEFAULT_ORG_TIME_ZONE, decideLanding } from '@tmi/shared';
 import type {
   MyJoinRequest,
   PlatformAccount,
@@ -30,7 +30,15 @@ import {
   UNAUTHENTICATED_EVENT,
   apiClient,
 } from '@/lib/api-client';
-import { clearActiveOrg, getActiveOrg, hasTabOrg, setActiveOrg, takeLinkedOrg } from '@/lib/organization';
+import {
+  clearActiveOrg,
+  forgetTabOrgEntered,
+  getTabOrg,
+  isOpeningTabOrg,
+  markTabOrgEntered,
+  setActiveOrg,
+  takeLinkedOrg,
+} from '@/lib/organization';
 
 /** The organization this tab is in, with its payer details for its admins. */
 export type ActiveOrganization = NonNullable<SessionResponse['organization']>;
@@ -62,6 +70,11 @@ interface AuthContextValue {
   completeSignup: (input: Omit<SignupInput, 'token'>) => Promise<void>;
   /** True the first time this person has ever opened this organization. */
   firstVisit: boolean;
+  /**
+   * The space a link named (`?org=`) that this tab has not entered yet. The sign-in page carries it
+   * through a redirect provider's round trip, which reloads the page and would otherwise lose it (S4).
+   */
+  pendingLink: string | null;
   /** Enters an organization in this tab: everything reloads in it. */
   chooseOrganization: (slug: string) => void;
   /** Re-reads the session, e.g. after answering an invitation. */
@@ -131,28 +144,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [firstVisit, setFirstVisit] = useState(false);
 
   /**
-   * Takes in what the server says about the session, and decides which
-   * organization this tab is in: the one it named, if the person may still
-   * enter it; otherwise, if there is exactly one place to go, that one. With
-   * several, nothing is chosen and the picker asks.
+   * Takes in what the server says about the session, and decides which space this tab is in.
    *
-   * A tab that is only arriving (no organization of its own yet: just signed
-   * in, or newly opened) lands in the person's default organization when they
-   * have chosen one and may still enter it -- ahead of the browser's last
-   * one and the address's own. Once in, the tab keeps its own choice.
+   * A tab with a space of its own (chosen, switched to, or entered, in sessionStorage) stays in
+   * it while the person may still enter it -- two tabs may sit in two spaces. A tab ARRIVING with
+   * none (just signed in, freshly opened, or back from a space it could no longer enter) lands by
+   * the Phase 60 rule (`decideLanding`, docs/spaces-plan.md S4): a link naming a space, then the
+   * last space the person chose on any device (the server's, ahead of the browser's own cookie),
+   * then their only space when nothing is pending; otherwise nothing is chosen and the selector
+   * asks. Answers false when it chose a space and the session must be read again inside it.
    */
-  // Whether this tab is arriving, decided once when it opens (and again on
-  // signing out) -- not when a response comes back, by which time another
-  // load may already have written the tab's organization and the two would
-  // disagree about where to land.
-  // A link that names an organization (a notification email's) enters it,
-  // ahead of the person's default: they followed a link about that one.
-  const arrivingRef = useRef<boolean | null>(null);
-  if (arrivingRef.current === null) {
-    const linked = takeLinkedOrg();
-    if (linked) setActiveOrg(linked);
-    arrivingRef.current = !hasTabOrg();
-  }
+  // A link that names a space (a notification email's, a calendar or share link) is read once,
+  // when the tab opens, and enters that space if the person may.
+  const linkedRef = useRef<string | null | undefined>(undefined);
+  if (linkedRef.current === undefined) linkedRef.current = takeLinkedOrg();
+  const [pendingLink, setPendingLink] = useState<string | null>(() => linkedRef.current ?? null);
+  const consumeLink = useCallback(() => {
+    linkedRef.current = null;
+    setPendingLink(null);
+  }, []);
 
   const applySession = useCallback((session: SessionResponse): boolean => {
     setImpersonated(session.impersonated);
@@ -163,24 +173,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(session.account ?? null);
     setJoinRequests(session.join_requests ?? []);
 
-    const preferred = session.memberships.find((m) => m.is_default && m.status === 'active');
-    if (arrivingRef.current && preferred && session.organization?.slug !== preferred.slug) {
-      setActiveOrg(preferred.slug);
-      return false;
-    }
-    arrivingRef.current = false;
+    // The link is kept until the tab is in its space (or it cannot be entered): two loads racing
+    // at boot must both honour it.
+    const linked = linkedRef.current;
+    const own = getTabOrg();
+    const here = session.organization?.slug ?? null;
 
-    if (session.organization) {
-      setActiveOrg(session.organization.slug);
+    let target: string | null;
+    if (linked && session.memberships.some((m) => m.slug === linked && m.status === 'active')) {
+      target = linked;
+      // A link opens its space, even the one this tab is in: it becomes the last choice (S4).
+      forgetTabOrgEntered();
+      if (here === linked) consumeLink();
+    } else if (own && own === here) {
+      consumeLink();
+      target = own;
+    } else {
+      consumeLink();
+      // Arriving, or the tab's own space can no longer be entered: the landing rule.
+      target = decideLanding(session);
+    }
+
+    if (target && target === here) {
+      setActiveOrg(target);
       setOrganization(session.organization);
       setUser(session.user);
       return true;
     }
-
-    const active = session.memberships.filter((m) => m.status === 'active');
-    if (active.length === 1 && session.invitations.length === 0 && !session.platform_admin) {
-      // One organization and nothing else: no picker, just go in.
-      setActiveOrg(active[0]!.slug);
+    if (target) {
+      setActiveOrg(target);
       return false;
     }
 
@@ -188,7 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setOrganization(null);
     setUser(session.user);
     return true;
-  }, []);
+  }, [consumeLink]);
 
   const loadSession = useCallback(async () => {
     let session = (await apiClient.get<ApiOk<SessionResponse>>('/auth/session')).data;
@@ -262,13 +283,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Once a tab is inside an organization, say so -- once per load. The API
   // logs it there once per sign-in, and answers whether this is the person's
-  // first visit ever, which offers them the tour.
+  // first visit ever, which offers them the tour. Only an OPENING (an arrival, a
+  // switch, a choice, a link) moves the person's last choice; a reload or a full
+  // navigation of a tab already in it says `opened: false` (Phase 60, S9), so it
+  // never takes back what another tab chose since.
   const enteredSlug = organization?.slug ?? null;
   useEffect(() => {
     if (!enteredSlug) return;
+    const opened = isOpeningTabOrg(enteredSlug);
     apiClient
-      .post<ApiOk<{ first_visit: boolean }>>('/auth/enter')
-      .then((response) => setFirstVisit(response.data.first_visit))
+      .post<ApiOk<{ first_visit: boolean }>>('/auth/enter', { opened })
+      .then((response) => {
+        markTabOrgEntered(enteredSlug);
+        setFirstVisit(response.data.first_visit);
+      })
       .catch(() => undefined);
   }, [enteredSlug]);
 
@@ -276,11 +304,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // the person was removed): back to choosing.
   useEffect(() => {
     function handleOrganizationRequired() {
-      if (!getActiveOrg()) return;
+      if (!getTabOrg()) return;
       clearActiveOrg();
       queryClient.clear();
       setOrganization(null);
-      window.location.assign('/select-organization');
+      // Back to the landing rule: their other space, or the selector.
+      window.location.assign('/');
     }
 
     window.addEventListener(ORGANIZATION_REQUIRED_EVENT, handleOrganizationRequired);
@@ -290,6 +319,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const chooseOrganization = useCallback(
     (slug: string) => {
       setActiveOrg(slug);
+      // A choice opens the space, even the one this tab is in: it becomes the last choice.
+      forgetTabOrgEntered();
       // A full reload: the brand, every cached query, the onboarding state and
       // the dashboards all start clean, in the new organization.
       queryClient.clear();
@@ -305,6 +336,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Any 401 from anywhere in the app drops us back to signed-out.
   useEffect(() => {
     function handleUnauthenticated() {
+      // The session ended (signed out in another tab, or expired): this tab's space goes with it,
+      // so the next sign-in here arrives afresh and lands by the rule, as after signOut (S4).
+      clearActiveOrg();
+      setOrganization(null);
       setUser(null);
       setImpersonated(false);
       setStatus('unauthenticated');
@@ -365,9 +400,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       // Server data was fetched as the previous user; none of it should survive.
       queryClient.clear();
+      // The next sign-in arrives afresh, and lands by the rule (their last space, on any device).
       clearActiveOrg();
-      // The next sign-in arrives afresh, and lands in their default.
-      arrivingRef.current = true;
       setUser(null);
       setOrganization(null);
       setMemberships([]);
@@ -394,6 +428,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       pendingSignup,
       completeSignup,
       firstVisit,
+      pendingLink,
       chooseOrganization,
       refreshSession,
       config,
@@ -418,6 +453,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       pendingSignup,
       completeSignup,
       firstVisit,
+      pendingLink,
       chooseOrganization,
       refreshSession,
       config,

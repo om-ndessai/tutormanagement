@@ -1,0 +1,338 @@
+# Phase 60 (S5, docs/spaces-plan.md): the selector. When the landing rule finds nowhere to go,
+# "Choose a space" fills the screen (no tabs, no frame): the spaces the person may enter, invitations
+# waiting and requests sent. Choosing one enters it and it becomes the last choice; there is no star.
+# Checks: shown with two or more spaces and no last choice; never shown with one space and nothing
+# pending (and shown again once an invitation waits) -- a declined request is answered, not pending;
+# shown for a person with only an invitation; a request to a space since archived is not pending, and
+# is not listed.
+# Self-cleaning: seven newcomers of its own, put back to nothing before and after (the host first, so
+# its spaces, with their invitations and requests, go before the others' accounts; the archived
+# space is restored first, so its maker's reset can delete it).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Selector Archived, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.archhost@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.archasker@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.host@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.two@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.solo@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.invitee@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.declined@example.com }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: archive, NAME: Selector Archived, ON: 'false' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.archhost@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.archasker@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.host@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.two@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.solo@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.invitee@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: selector.declined@example.com }
+tags:
+  - feature
+---
+# --- the cast: a host with two spaces (one invites, one is asked to join), and three newcomers ---
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.host@example.com, NAME: Hal Host }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.two@example.com, NAME: Tia Two }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.solo@example.com, NAME: Sol Solo }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.invitee@example.com, NAME: Ivy Invitee }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.host@example.com, NAME: Selector Inviting }
+- evalScript: ${output.hostSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.host@example.com, NAME: Selector Asked }
+- evalScript: ${output.askedSlug = output.slug; output.askedCode = output.code}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.two@example.com, NAME: Selector First }
+- evalScript: ${output.firstSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.two@example.com, NAME: Selector Second }
+- evalScript: ${output.secondSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.solo@example.com, NAME: Selector Solo }
+- evalScript: ${output.soloSlug = output.slug; output.soloCode = output.code}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.declined@example.com, NAME: Dee Declined }
+# The host invites Tia and Ivy as parents (the invite step's request); Tia asks to join the other space.
+- evalScript: "${(function () { ['selector.two@example.com', 'selector.invitee@example.com'].forEach(function (email) { var r = http.post('http://localhost:8787/api/users', { headers: { 'Content-Type': 'application/json', 'X-Dev-User': 'selector.host@example.com', 'X-Organization': output.hostSlug }, body: JSON.stringify({ email: email, full_name: 'Invited Person', roles: ['parent'], status: 'invited' }) }); if (r.status >= 300) throw new Error('inviting ' + email + ' answered ' + r.status + ' ' + r.body); }); return true; })()}"
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: ask, EMAIL: selector.two@example.com, CODE: '${output.askedCode}' }
+# Each has been through the welcome wizard in their own spaces, so entering one shows Home (the
+# wizard on a first visit is not what S5 checks).
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: selector.two@example.com, ORG: '${output.firstSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: selector.two@example.com, ORG: '${output.secondSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: selector.solo@example.com, ORG: '${output.soloSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: selector.two@example.com }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: selector.solo@example.com }
+
+# --- two spaces and no last choice: the selector, with the invitation and the request -----------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.two@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
+- assertVisible:
+    id: spaces-title
+    text: 'Choose a space'
+- assertNotVisible:
+    id: welcome-title
+# Full screen: no tabs, no account button.
+- assertNotVisible:
+    id: account-button
+- assertNotVisible: 'Default'
+- assertNotVisible: '.*on sign-in.*'
+- assertVisible:
+    id: invitation-${output.hostSlug}
+- assertVisible:
+    id: invitation-accept-${output.hostSlug}
+- assertVisible:
+    id: invitation-decline-${output.hostSlug}
+- scrollUntilVisible:
+    element:
+      id: org-${output.firstSlug}
+- assertVisible:
+    id: org-${output.firstSlug}
+- assertVisible:
+    id: org-${output.secondSlug}
+# The invitation is not a space to open yet.
+- assertNotVisible:
+    id: org-${output.hostSlug}
+- scrollUntilVisible:
+    element:
+      id: welcome-request-${output.askedSlug}
+- takeScreenshot: spaces-selector-full
+# Choosing a space enters it, and it becomes the last choice.
+- scrollUntilVisible:
+    element:
+      id: org-${output.secondSlug}
+    direction: UP
+- tapOn:
+    id: org-${output.secondSlug}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- evalScript: "${(function () { var r = http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'selector.two@example.com' } }); var last = json(r.body).data.memberships.filter(function (m) { return m.is_default; }).map(function (m) { return m.slug; }); if (last.length !== 1 || last[0] !== output.secondSlug) throw new Error('last choice is ' + JSON.stringify(last) + ', not ' + output.secondSlug); return true; })()}"
+# The next arrival skips the selector.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.two@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: spaces-title
+
+# --- one space let in, another request declined: nothing pending, so straight in -----------------
+# Dee asks Sol's space and the host's asked space; Sol lets her in, the host declines. The decline is
+# kept in her session until seen, but it has been answered: one space and nothing pending.
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: ask, EMAIL: selector.declined@example.com, CODE: '${output.soloCode}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: ask, EMAIL: selector.declined@example.com, CODE: '${output.askedCode}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: let-in, EMAIL: selector.declined@example.com, ACTOR: selector.solo@example.com, ORG: '${output.soloSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: decline, EMAIL: selector.declined@example.com, ACTOR: selector.host@example.com, ORG: '${output.askedSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: selector.declined@example.com, ORG: '${output.soloSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: selector.declined@example.com }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.declined@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: screen-spaces
+- assertNotVisible:
+    id: spaces-title
+- evalScript: "${(function () { var r = http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'selector.declined@example.com' } }); var last = json(r.body).data.memberships.filter(function (m) { return m.is_default; }).map(function (m) { return m.slug; }); if (last.length !== 1 || last[0] !== output.soloSlug) throw new Error('last choice is ' + JSON.stringify(last) + ', not ' + output.soloSlug); return true; })()}"
+
+# --- one space and a request to a space since archived: nothing pending, so straight in ----------
+# Ari makes a space and asks Arch's; a platform admin archives Arch's space. It can no longer be
+# entered, joined or answered, so it is not pending and the request is not listed.
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.archhost@example.com, NAME: Arch Host }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: signup, EMAIL: selector.archasker@example.com, NAME: Ari Asker }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.archhost@example.com, NAME: Selector Archived }
+- evalScript: ${output.archivedSlug = output.slug; output.archivedCode = output.code}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: make-space, EMAIL: selector.archasker@example.com, NAME: Selector Stays }
+- evalScript: ${output.staysSlug = output.slug}
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: ask, EMAIL: selector.archasker@example.com, CODE: '${output.archivedCode}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: archive, NAME: Selector Archived, ON: 'true' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: selector.archasker@example.com, ORG: '${output.staysSlug}' }
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: selector.archasker@example.com }
+- evalScript: "${(function () { var r = http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'selector.archasker@example.com' } }); var listed = (json(r.body).data.join_requests || []).filter(function (j) { return j.slug === output.archivedSlug; }); if (listed.length) throw new Error('the archived space is still a request: ' + JSON.stringify(listed)); return true; })()}"
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.archasker@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: spaces-title
+- assertNotVisible:
+    id: welcome-request-${output.archivedSlug}
+- evalScript: "${(function () { var r = http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'selector.archasker@example.com' } }); var last = json(r.body).data.memberships.filter(function (m) { return m.is_default; }).map(function (m) { return m.slug; }); if (last.length !== 1 || last[0] !== output.staysSlug) throw new Error('last choice is ' + JSON.stringify(last) + ', not ' + output.staysSlug); return true; })()}"
+
+# --- one space and nothing pending: never the selector ---------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.solo@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: spaces-title
+# Once an invitation waits, one space is no longer the whole answer: the selector.
+- evalScript: "${(function () { var r = http.post('http://localhost:8787/api/users', { headers: { 'Content-Type': 'application/json', 'X-Dev-User': 'selector.host@example.com', 'X-Organization': output.hostSlug }, body: JSON.stringify({ email: 'selector.solo@example.com', full_name: 'Invited Person', roles: ['parent'], status: 'invited' }) }); if (r.status >= 300) throw new Error('inviting Sol answered ' + r.status + ' ' + r.body); return true; })()}"
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: selector.solo@example.com }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.solo@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
+- assertVisible:
+    id: spaces-title
+    text: 'Choose a space'
+- assertVisible:
+    id: invitation-${output.hostSlug}
+- scrollUntilVisible:
+    element:
+      id: org-${output.soloSlug}
+
+# --- only an invitation: the selector, not the Welcome, nothing entered; Accept enters it -----
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: selector.invitee@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
+- assertVisible:
+    id: spaces-title
+    text: 'Choose a space'
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: account-button
+- assertVisible:
+    id: invitation-${output.hostSlug}
+- assertNotVisible:
+    id: 'org-row-.*'
+- takeScreenshot: spaces-selector-invitation
+- tapOn:
+    id: invitation-accept-${output.hostSlug}
+- extendedWaitUntil:
+    visible: 'You have joined Selector Inviting.'
+    timeout: 15000
+# In at once, and the welcome wizard opens as for any first visit (S6).
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 30000
+- assertVisible:
+    id: onboarding-title

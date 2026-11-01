@@ -1,8 +1,9 @@
 // Ported from apps/web/src/features/platform/organization-dialog.tsx @ 1132322 (the form).
-// Creating or editing an organization: its name and address name, its look (palette, the built-in
-// logo), its clock and its email notifications. Logos and admins live on the organization's screen
-// (they need it to exist). Phase 50: creating also picks its feature sets. Phase 54 (@ 24066d9, working
-// tree): the Organization that runs its money, or Paid directly; a change applies from now on. The swatch colours are each palette's own (ORG_PALETTE_HEX), as data.
+// Creating or editing a space: its name and address name, its look (palette, the built-in logo), its
+// clock and its email notifications. Logos and admins live on the space's screen (they need it to
+// exist). Phase 50: creating also picks what it may use. Phase 59 (@ f96b984, working tree,
+// docs/spaces-plan.md S2): "Who families pay" -- the space, with its payer details, or each tutor
+// directly; a change applies from now on. The swatch colours are each palette's own (ORG_PALETTE_HEX), as data.
 import {
   FEATURE_SETS,
   FEATURE_SET_LABELS,
@@ -10,15 +11,17 @@ import {
   ORG_PALETTE_LABELS,
   ORG_TIME_ZONES,
   ORG_TIME_ZONE_LABELS,
-  PAID_DIRECTLY_LABEL,
+  SPACE_PAYMENT_MODELS,
+  SPACE_PAYMENT_MODEL_DESCRIPTIONS,
+  SPACE_PAYMENT_MODEL_LABELS,
   type OrgPalette,
   type OrgTimeZone,
   type OrganizationListItem,
 } from '@tmi/shared';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { Keyboard, Pressable, View } from 'react-native';
-import { Button, Checkbox, Switch, Text } from 'react-native-paper';
+import { Button, Checkbox, RadioButton, Switch, Text } from 'react-native-paper';
 
 import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { Field } from '@/components/form-choice';
@@ -34,22 +37,23 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import {
-  useBusinesses,
   useCreateOrganization,
   useOrganizations,
-  useSetSpaceBusiness,
+  useSetPaymentModel,
   useUpdateOrganization,
   useUpdateOrganizationFeatures,
 } from './api';
 import {
-  DIRECT,
-  businessChange,
+  EMPTY_PAYER,
   formFromOrganization,
+  payerForm,
+  paymentModelChange,
   palettesOnOffer,
   slugFrom,
   trustBody,
   validateOrgForm,
   type OrgFormState,
+  type PayerFormState,
 } from './org-form';
 
 function close() {
@@ -85,8 +89,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   const create = useCreateOrganization();
   const update = useUpdateOrganization();
   const updateFeatures = useUpdateOrganizationFeatures();
-  const businesses = useBusinesses();
-  const setBusiness = useSetSpaceBusiness();
+  const setPaymentModel = useSetPaymentModel();
   const [form, setForm] = useState<OrgFormState>(() => formFromOrganization(existing));
   const [slugTouched, setSlugTouched] = useState(Boolean(existing));
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -94,7 +97,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   // What was typed is not lost to a swipe or Back (ux-audit F-3).
   const dirty = useDirty(form);
   const { leave } = useUnsavedChangesGuard(dirty);
-  const pending = create.isPending || update.isPending || updateFeatures.isPending || setBusiness.isPending;
+  const pending = create.isPending || update.isPending || updateFeatures.isPending || setPaymentModel.isPending;
 
   function set<K extends keyof OrgFormState>(key: K, value: OrgFormState[K]) {
     setForm((previous) => ({ ...previous, [key]: value }));
@@ -104,7 +107,9 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
   async function save() {
     Keyboard.dismiss();
     setErrors({});
-    const verdict = validateOrgForm(form, !existing);
+    // On an edit, only the payer fields that changed travel, as on the web.
+    const loaded = existing ? payerForm(existing.payer) : EMPTY_PAYER;
+    const verdict = validateOrgForm(form, !existing, loaded);
     if (!verdict.ok) {
       setErrors(verdict.errors);
       haptics.error();
@@ -112,11 +117,13 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
     }
     try {
       if (existing) {
+        // Who families pay first: a space that starts collecting gets its own payer record, which
+        // the PATCH below then fills in.
+        const model = paymentModelChange(existing, form);
+        if (model) await setPaymentModel.mutateAsync({ id: existing.id, ...model });
         await update.mutateAsync({ id: existing.id, input: verdict.input });
         const trust = trustBody(existing, form.quest_trusted);
         if (trust) await updateFeatures.mutateAsync({ id: existing.id, input: trust });
-        const business = businessChange(existing, form);
-        if (business) await setBusiness.mutateAsync({ id: existing.id, ...business });
         toast.success(`${form.name} saved.`);
       } else {
         await create.mutateAsync(verdict.input);
@@ -125,7 +132,9 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
       leave(close);
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
-        setErrors(caught.status === 409 ? { slug: caught.message } : caught.fieldErrors);
+        setErrors(
+          caught.status === 409 && caught.code === 'conflict' ? { slug: caught.message } : caught.fieldErrors,
+        );
         toast.error(caught.message);
       } else {
         toast.error('Could not save the space.');
@@ -164,8 +173,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {existing
-            ? 'Its identity and look. Its own admins keep its payer details.'
-            : 'Its name and look. Its admins come next, once it exists.'}
+            ? 'Its identity, look and who families pay. Its own admins can keep its payer details too.'
+            : 'Its name, look and who families pay. Its admins come next, once it exists.'}
         </Text>
       </View>
 
@@ -193,31 +202,67 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         error={errors.time_zone}
       />
 
-      {/* Phase 54: who families pay. An organization (its TIN, its 1099s, its cut), or nobody: paid
-          directly, each family paying the tutor of each lesson. Applies going forward. */}
-      <View style={{ gap: space.xs }}>
-        <OptionPicker
-          testID="org-form-business"
-          label="Organization"
-          placeholder={PAID_DIRECTLY_LABEL}
-          options={[
-            { id: DIRECT, label: PAID_DIRECTLY_LABEL },
-            ...(businesses.data?.data ?? [])
-              .filter((b) => !b.archived_at || b.id === existing?.business?.id)
-              .map((b) => ({ id: b.id, label: b.name })),
-          ]}
-          value={form.business_id}
-          onChange={(value) => set('business_id', value)}
-          error={errors.business_id}
-          defaultOpen={false}
-          scroll
-        />
-        <Text testID="org-form-business-hint" variant="bodySmall" style={{ color: muted }}>
-          {form.business_id === DIRECT
-            ? 'Families pay each tutor directly: one price per lesson, nobody’s cut, no 1099s from the space.'
-            : 'Families pay the organization, which pays the tutors and files their 1099s.'}
-          {existing ? ' A change applies from now on; recorded lessons and payments keep theirs.' : ''}
+      {/* Phase 59 (S2): who families pay -- the space (its own payer details, its 1099s, its cut), or
+          each lesson's tutor directly. A change applies going forward. */}
+      <View
+        testID="org-form-payment-model"
+        style={{
+          gap: space.sm,
+          borderWidth: 1,
+          borderColor: theme.colors.outlineVariant,
+          borderRadius: radius.md,
+          padding: space.md,
+        }}
+      >
+        <Text variant="bodyMedium" accessibilityRole="header">
+          Who families pay
         </Text>
+        <RadioButton.Group
+          value={form.payment_model}
+          onValueChange={(value) => {
+            haptics.selection();
+            set('payment_model', value as OrgFormState['payment_model']);
+          }}
+        >
+          {SPACE_PAYMENT_MODELS.map((model) => (
+            <Pressable
+              key={model}
+              testID={`org-form-payment-${model}`}
+              accessibilityRole="radio"
+              accessibilityLabel={SPACE_PAYMENT_MODEL_LABELS[model]}
+              accessibilityState={{ checked: form.payment_model === model }}
+              onPress={() => {
+                haptics.selection();
+                set('payment_model', model);
+              }}
+              style={{ minHeight: MIN_TARGET, flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}
+            >
+              <RadioButton.Android value={model} />
+              <View style={{ flex: 1, gap: 2, paddingTop: space.sm }}>
+                <Text variant="bodyMedium">{SPACE_PAYMENT_MODEL_LABELS[model]}</Text>
+                <Text variant="bodySmall" style={{ color: muted }}>
+                  {SPACE_PAYMENT_MODEL_DESCRIPTIONS[model]}
+                </Text>
+              </View>
+            </Pressable>
+          ))}
+        </RadioButton.Group>
+        {existing ? (
+          <Text testID="org-form-payment-hint" variant="bodySmall" style={{ color: muted }}>
+            A change applies from now on; recorded lessons and payments keep theirs.
+          </Text>
+        ) : null}
+        {form.payment_model === 'space' ? (
+          <PayerFields
+            payer={form.payer}
+            errors={errors}
+            spaceName={form.name}
+            onChange={(key, value) => {
+              set('payer', { ...form.payer, [key]: value });
+              if (errors[key]) setErrors(({ [key]: _gone, ...rest }) => rest);
+            }}
+          />
+        ) : null}
       </View>
 
       <View
@@ -279,9 +324,9 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
           />
         </View>
       ) : (
-        // Phase 50: what it may use, all ticked unless unticked. Editing leaves them to the
-        // organization screen's Feature sets section.
-        <Field label="Feature sets">
+        // Phase 50: what it may use, all ticked unless unticked. Editing leaves them to the space
+        // screen's "This space may use" section (S3).
+        <Field label="This space may use">
           <View>
             {FEATURE_SETS.map((feature) => (
               <Checkbox.Item
@@ -313,7 +358,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
 
       <Checkbox.Item
         testID="org-form-builtin"
-        label="Wear the institute’s built-in logo"
+        label="Wear the built-in logo"
         status={form.builtin_institute ? 'checked' : 'unchecked'}
         onPress={() => {
           haptics.selection();
@@ -357,6 +402,70 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         >
           {existing ? 'Save' : 'Create space'}
         </Button>
+      </View>
+    </View>
+  );
+}
+
+/** Phase 59: the space's payer details, shown while "The space" is who families pay. */
+function PayerFields({
+  payer,
+  errors,
+  spaceName,
+  onChange,
+}: {
+  payer: PayerFormState;
+  errors: Record<string, string>;
+  spaceName: string;
+  onChange: (key: keyof PayerFormState, value: string) => void;
+}) {
+  const field = (
+    key: keyof PayerFormState,
+    testID: string,
+    label: string,
+    extra: Partial<ComponentProps<typeof FormTextField>> = {},
+  ) => (
+    <FormTextField
+      testID={testID}
+      label={label}
+      optional
+      value={payer[key]}
+      error={errors[key]}
+      autoComplete="off"
+      onChangeText={(value) => onChange(key, value)}
+      {...extra}
+    />
+  );
+  return (
+    <View testID="org-form-payer" style={{ gap: space.md }}>
+      {field('payer_name', 'org-form-payer-name', 'Name on the 1099', {
+        hint: 'The space’s own name when left blank.',
+        placeholder: spaceName || undefined,
+        autoCapitalize: 'words',
+      })}
+      {field('tin', 'org-form-payer-tin', 'Payer TIN', {
+        hint: 'The space’s EIN -- never a Social Security number, which the portal refuses to store.',
+        placeholder: '12-3456789',
+        autoCapitalize: 'none',
+      })}
+      {field('payer_address_line1', 'org-form-payer-line1', 'Address', { autoCapitalize: 'words' })}
+      {field('payer_address_line2', 'org-form-payer-line2', 'Address line 2', { autoCapitalize: 'words' })}
+      {field('payer_city', 'org-form-payer-city', 'City', { autoCapitalize: 'words' })}
+      <View style={{ flexDirection: 'row', gap: space.md }}>
+        <View style={{ flex: 1 }}>
+          {field('payer_state', 'org-form-payer-state', 'State', {
+            placeholder: 'NC',
+            autoCapitalize: 'characters',
+            maxLength: 2,
+          })}
+        </View>
+        <View style={{ flex: 1 }}>
+          {field('payer_postal_code', 'org-form-payer-zip', 'ZIP', {
+            placeholder: '27514',
+            keyboardType: 'number-pad',
+            maxLength: 10,
+          })}
+        </View>
       </View>
     </View>
   );

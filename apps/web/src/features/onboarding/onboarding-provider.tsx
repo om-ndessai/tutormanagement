@@ -14,6 +14,7 @@ import type { TourOutcome, UserRole } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/providers/auth-provider';
+import { clearInviteStep, hasInviteStep } from '@/features/organizations/invite-step';
 import { useFinishTour } from './api';
 import { hasTourCookie, setTourCookie } from './cookie';
 import { OnboardingWizard, type WizardScreen } from './onboarding-wizard';
@@ -72,13 +73,20 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
     if (new URLSearchParams(location.search).has('as')) return;
 
+    // Phase 61 (S12): a space this tab has just started opens on "Invite people" first.
+    if (hasInviteStep(organization?.slug) && user.roles.includes('admin')) {
+      setScreen('invite');
+      setWizardOpen(true);
+      return;
+    }
+
     if (!onboarding.tour_finished_at) {
       setScreen('welcome');
       setWizardOpen(true);
     } else if (!hasTourCookie()) {
       setOffer(true);
     }
-  }, [user, onboarding, location.search]);
+  }, [user, onboarding, organization?.slug, location.search]);
 
   useEffect(() => {
     if (!firstVisit || !onboarding?.tour_finished_at || !organization) return;
@@ -99,6 +107,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
    */
   const closeWizard = useCallback(() => {
     setWizardOpen(false);
+    clearInviteStep();
     setTourCookie();
     if (onboarding && !onboarding.tour_finished_at) {
       finishTour.mutate(tourDone ? 'completed' : 'skipped');

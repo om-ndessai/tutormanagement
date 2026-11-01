@@ -1,16 +1,30 @@
 # Phase 52 (design 63): signing up with developer sign-in. The legal line on sign-in; an address the
 # server does not know offers "Sign up as"; About you refuses a child (nothing kept, so the same
 # address still offers sign-up), then an adult lands on the Welcome and deletes the account.
-# Self-cleaning: the address is put back to nothing before and after.
+# Phase 61 (S11, docs/spaces-plan.md): the same address signs up once more as a 13-17, whose Welcome
+# offers only "Join with a code"; then an adult (Stella) starts a space from the Welcome -- the
+# two choices, the name, "Invite people" skipped -- and lands in it. The app signs in through
+# developer sign-in only (the providers' native SDKs cannot be driven here); each provider's path
+# to the same Welcome is the web's spaces-welcome.spec.ts.
+# Self-cleaning: both addresses are put back to nothing before and after (Stella's space goes with her).
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: reset-newcomer, EMAIL: spaces.signup@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.starter@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.starter@example.com, NAME: Stella Starter }
 onFlowComplete:
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: reset-newcomer, EMAIL: spaces.signup@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.starter@example.com }
 tags:
   - feature
   - smoke
@@ -188,7 +202,7 @@ tags:
 # In no space: the Welcome.
 - extendedWaitUntil:
     visible:
-      id: screen-select-organization
+      id: screen-spaces
     timeout: 20000
 - assertVisible:
     id: welcome-title
@@ -197,6 +211,10 @@ tags:
     id: welcome-join
 - assertVisible:
     id: welcome-make
+# Phase 61 (S11): the two choices, and what Welcome says.
+- assertVisible: '.*Join a space with its code, or start your own\..*'
+- assertVisible: 'Join with a code'
+- assertVisible: 'Start a space'
 - takeScreenshot: spaces-welcome
 - scrollUntilVisible:
     element:
@@ -211,3 +229,154 @@ tags:
     visible:
       id: screen-sign-in
     timeout: 15000
+# Phase 61 (S11): the same address, now a 13-17 (January 2011). About you as before; Welcome offers
+# only "Join with a code" -- starting a space is for adults.
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+- tapOn:
+    id: sign-in-email
+- eraseText: 40
+- inputText: 'spaces.signup@example.com'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: sign-in-signup
+    timeout: 20000
+- tapOn:
+    id: sign-in-signup
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 15000
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Tam Teen'
+- hideKeyboard
+- assertVisible: 'Welcome, Tam'
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-1
+- tapOn:
+    id: signup-year
+- tapOn:
+    id: signup-year-search
+- inputText: '2011'
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: signup-year-2011
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: signup-accept
+- tapOn:
+    id: signup-accept
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- assertVisible:
+    id: signup-submit
+    enabled: true
+- scrollUntilVisible:
+    element:
+      id: signup-submit
+- tapOn:
+    id: signup-submit
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 20000
+- assertVisible:
+    id: welcome-title
+    text: 'Welcome to Aimtrue'
+- assertVisible:
+    id: welcome-join
+- assertVisible: 'Join with a code'
+- assertNotVisible:
+    id: welcome-make
+- assertNotVisible:
+    id: welcome-space-name
+- scrollUntilVisible:
+    element:
+      id: welcome-adults-only
+- assertVisible: 'To start a space of your own you need to be 18 or older.'
+- takeScreenshot: spaces-welcome-teen
+# Phase 61 (S11): an adult who has just signed up (Stella, made by the script) starts a space from
+# the Welcome and lands in it. A fresh device, so the welcome wizard is not pre-empted.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.starter@example.com
+      ORG: ''
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertVisible:
+    id: welcome-join
+- assertVisible:
+    id: welcome-make
+- assertVisible: 'Start a space'
+- scrollUntilVisible:
+    element:
+      id: welcome-space-name
+- tapOn:
+    id: welcome-space-name
+- inputText: 'The Starter family'
+- hideKeyboard
+- tapOn:
+    id: welcome-make-submit
+- extendedWaitUntil:
+    visible: 'The Starter family is ready.'
+    timeout: 15000
+# S12's step comes first; skipping it goes on to the wizard, then the space's Home.
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-invite
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: invite-skip
+- tapOn:
+    id: invite-skip
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
+- assertNotVisible:
+    id: welcome-title
+- takeScreenshot: spaces-started
+# Launched again, Stella lands in her space, not on the Welcome.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.starter@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: welcome-title

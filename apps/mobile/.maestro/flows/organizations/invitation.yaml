@@ -1,5 +1,7 @@
-# An invitation: Dana has been invited (as admin and parent) and belongs nowhere yet. Accepting
-# joins the organization. Changes the database: the runner resets it before every run.
+# Phase 60 (S6, S8): an invitation, accepted by hand. Dana has been invited (as admin and parent) and
+# belongs nowhere yet: she arrives at the selector with the invitation and nothing entered. Accept
+# enters the space at once. Then she leaves it from Spaces, and with nowhere left lands on the Welcome.
+# Changes the database: the runner resets it before every run.
 appId: ${APP_ID}
 tags:
   - feature
@@ -11,8 +13,9 @@ tags:
       ORG: ''
 - extendedWaitUntil:
     visible:
-      id: screen-select-organization
+      id: screen-spaces
     timeout: 20000
+- assertVisible: 'Choose a space'
 - assertVisible: 'INVITATIONS'
 - assertVisible:
     id: invitation-chmi
@@ -21,3 +24,39 @@ tags:
 - extendedWaitUntil:
     visible: 'You have joined Chapel Hill Math Institute.'
     timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+# Leave it from Spaces (the account sheet's All spaces).
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- tapOn:
+    id: space-leave-chmi
+- assertVisible: 'You stop being a member of Chapel Hill Math Institute. Its records of you stay.'
+- tapOn:
+    id: space-leave-yes-chmi
+- extendedWaitUntil:
+    visible: 'You have left Chapel Hill Math Institute.'
+    timeout: 15000
+# Nowhere left: the Welcome, where she may delete her account.
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: welcome-delete-account

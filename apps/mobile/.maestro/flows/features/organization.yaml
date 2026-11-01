@@ -1,5 +1,5 @@
-# Phase 50: the Organization screen shows only the allowed sets' cards. Ines (`assess`, Assessment
-# alone): the Assessment card, no Gamification and no 1099 payer form, and "Feature sets" reads
+# Phase 50: the Space screen shows only the allowed sets' cards. Ines (`assess`, Assessment
+# alone): the Assessment card, no Quest card and no 1099 payer form, and "This space may use" reads
 # Assessment. Rosa (riverside, Tutoring and Assessment): the payer form and the Assessment card, no
 # Gamification, and More has no Quest.
 appId: ${APP_ID}
@@ -32,6 +32,8 @@ tags:
       id: org-features
     timeout: 15000
 - assertVisible: 'Assessment'
+# Phase 59 (S3): the space's words.
+- assertVisible: 'This space may use'
 - assertNotVisible:
     id: org-payer
 - scrollUntilVisible:
@@ -39,6 +41,7 @@ tags:
       id: org-assessments-switch
     direction: DOWN
     centerElement: true
+- assertVisible: 'Assessment in this space'
 - takeScreenshot: features-organization-assess
 - assertNotVisible:
     id: org-gamification

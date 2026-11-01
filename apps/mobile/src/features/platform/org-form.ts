@@ -2,11 +2,15 @@
 // apps/web/src/features/platform/organization-dialog.tsx @ 1132322 (FormState, EMPTY, slugFrom, save).
 // Validated with the shared schemas, as the server will. Phase 50 @ 2471d84 (working tree): the
 // feature sets an organization is allowed, chosen when it is created (the detail screen's Feature
-// sets section changes them after that). Phase 54 @ 24066d9 (working tree): the organization that runs
-// its money, or "paid directly" (DIRECT); sent on create, and on edit by its own PUT (`businessChange`).
+// sets section changes them after that). Phase 59 @ f96b984 (working tree, docs/spaces-plan.md S2): who
+// families pay -- the space (its own payer details) or each tutor directly -- replaces choosing a
+// business: sent on create as `payment_model` with the payer fields, and on edit by its own PUT
+// (`paymentModelChange`) before the PATCH carries the payer fields that changed (`payerChanges`).
 import {
   ORG_PALETTES,
+  SPACE_PAYER_FIELDS,
   createOrganizationSchema,
+  spacePaymentModel,
   updateOrganizationSchema,
   featureAllowed,
   type CreateOrganizationInput,
@@ -15,6 +19,9 @@ import {
   type OrgPalette,
   type OrgTimeZone,
   type OrganizationListItem,
+  type SpacePayer,
+  type SpacePayerField,
+  type SpacePaymentModel,
   type UpdateOrganizationInput,
 } from '@tmi/shared';
 
@@ -35,12 +42,33 @@ export interface OrgFormState {
   features: Record<FeatureSet, boolean>;
   /** Phase 51: whether its Quest reviews approve bank questions for everybody (edit only). */
   quest_trusted: boolean;
-  /** Phase 54: the organization (a business) that runs its money, or DIRECT: paid directly. */
-  business_id: string;
+  /** Phase 59: who families pay -- the space, or each tutor directly. */
+  payment_model: SpacePaymentModel;
+  /** Its payer details while the space collects payments, in the request's names; '' when empty. */
+  payer: PayerFormState;
 }
 
-/** The form's value for "no organization": the space is paid directly. */
-export const DIRECT = 'direct';
+/** The payer fields as the form holds them, keyed as the request sends them (`payer_name`, `tin`, …). */
+export type PayerFormState = Record<SpacePayerField, string>;
+
+export const EMPTY_PAYER: PayerFormState = Object.fromEntries(
+  SPACE_PAYER_FIELDS.map((key) => [key, '']),
+) as PayerFormState;
+
+/** A space's payer details (the console's `payer`, the name as `name`) into the form's fields. */
+export function payerForm(payer: SpacePayer | null | undefined): PayerFormState {
+  if (!payer) return EMPTY_PAYER;
+  return Object.fromEntries(
+    SPACE_PAYER_FIELDS.map((key) => [key, (key === 'payer_name' ? payer.name : payer[key]) ?? '']),
+  ) as PayerFormState;
+}
+
+/** The payer fields that differ from what was loaded, to send. */
+export function payerChanges(form: PayerFormState, loaded: PayerFormState): Partial<PayerFormState> {
+  return Object.fromEntries(
+    SPACE_PAYER_FIELDS.filter((key) => form[key] !== loaded[key]).map((key) => [key, form[key]]),
+  ) as Partial<PayerFormState>;
+}
 
 const ALL_FEATURES: Record<FeatureSet, boolean> = { tutoring: true, assessment: true, quest: true };
 
@@ -57,7 +85,8 @@ export const EMPTY_ORG_FORM: OrgFormState = {
   email_notifications: false,
   features: ALL_FEATURES,
   quest_trusted: true,
-  business_id: DIRECT,
+  payment_model: 'direct',
+  payer: EMPTY_PAYER,
 };
 
 /** "Lakeside Learning" -> "lakeside-learning", as a first suggestion. */
@@ -85,41 +114,40 @@ export function formFromOrganization(org: OrganizationListItem | null): OrgFormS
     email_notifications: org.email_notifications,
     features: ALL_FEATURES,
     quest_trusted: org.quest_trusted !== false,
-    business_id: org.business?.id ?? DIRECT,
+    payment_model: spacePaymentModel(org),
+    payer: payerForm(org.payer),
   };
 }
 
-/** Phase 54: the business id to send, null for paid directly. */
-export function businessIdOf(form: Pick<OrgFormState, 'business_id'>): string | null {
-  return form.business_id === DIRECT ? null : form.business_id;
-}
-
-/** Phase 54: after an edit, the `PUT …/business` body when the organization changed, else null. */
-export function businessChange(
+/** Phase 59: after an edit, the `PUT …/payment-model` body when who families pay changed, else null. */
+export function paymentModelChange(
   org: Pick<OrganizationListItem, 'business'>,
-  form: Pick<OrgFormState, 'business_id'>,
-): { business_id: string | null } | null {
-  const next = businessIdOf(form);
-  return (org.business?.id ?? null) === next ? null : { business_id: next };
+  form: Pick<OrgFormState, 'payment_model'>,
+): { model: SpacePaymentModel } | null {
+  return spacePaymentModel(org) === form.payment_model ? null : { model: form.payment_model };
 }
 
 /**
  * The body both create and update send: every field, as the web dialog does. Creating also sends
- * the three feature sets; editing leaves them to the Feature sets section.
+ * the three feature sets and who families pay; editing leaves the sets to the "This space may use"
+ * section. While the space collects payments, the payer fields go too: on create those filled in,
+ * on edit those changed from `loaded` (the space's payer as it was read).
  */
 export function formToInput(
   form: OrgFormState,
   creating = false,
+  loaded: PayerFormState = EMPTY_PAYER,
 ): CreateOrganizationInput & UpdateOrganizationInput {
   const features = creating
     ? {
         feature_tutoring: form.features.tutoring,
         feature_assessment: form.features.assessment,
         feature_quest: form.features.quest,
-        // Phase 54: who families pay; null is paid directly.
-        business_id: businessIdOf(form),
+        // Phase 59: who families pay.
+        payment_model: form.payment_model,
       }
     : {};
+  const payer = form.payment_model === 'space' ? payerChanges(form.payer, loaded) : {};
   return {
     ...features,
     name: form.name,
@@ -132,12 +160,13 @@ export function formToInput(
     time_zone: form.time_zone,
     email_notifications: form.email_notifications,
     builtin_logo: form.builtin_institute ? 'institute' : null,
+    ...payer,
   };
 }
 
 /**
  * The palettes on offer. Plum is the institute's own and goes with its built-in logo: shown only
- * when that logo is worn, or when the organization already wears plum.
+ * when that logo is worn, or when the space already wears plum.
  */
 export function palettesOnOffer(form: Pick<OrgFormState, 'palette' | 'builtin_institute'>): OrgPalette[] {
   return ORG_PALETTES.filter(
@@ -150,8 +179,12 @@ export type OrgFormVerdict =
   | { ok: false; errors: Record<string, string> };
 
 /** The shared schema's verdict on the form, field by field. */
-export function validateOrgForm(form: OrgFormState, creating: boolean): OrgFormVerdict {
-  const input = formToInput(form, creating);
+export function validateOrgForm(
+  form: OrgFormState,
+  creating: boolean,
+  loaded: PayerFormState = EMPTY_PAYER,
+): OrgFormVerdict {
+  const input = formToInput(form, creating, loaded);
   const result = (creating ? createOrganizationSchema : updateOrganizationSchema).safeParse(input);
   if (result.success) return { ok: true, input };
   return { ok: false, errors: firstErrors(result.error.issues) };

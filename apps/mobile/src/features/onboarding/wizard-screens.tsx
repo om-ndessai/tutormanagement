@@ -13,6 +13,8 @@ import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { InvitePeople } from '@/features/organizations/invite-people';
+import { clearInviteStep } from '@/features/organizations/invite-step';
 import { useOnboarding } from './onboarding-provider';
 import { useWizardFrame } from './wizard-layout';
 
@@ -115,6 +117,31 @@ export function WelcomeScreen() {
           {isAdmin ? 'I’m done' : 'Skip for now'}
         </Button>
       </View>
+    </Screen>
+  );
+}
+
+/**
+ * Phase 61 (S12, onboarding-wizard.tsx's 'invite' screen, working tree on f96b984): straight after
+ * starting a space, before the wizard's start. Skip or Continue goes on to the start.
+ */
+export function InviteScreen() {
+  const { organization } = useAuth();
+  return (
+    <Screen testID="screen-onboarding-invite" edges={['bottom']}>
+      <Stack.Screen options={{ title: 'Invite people' }} />
+      <WizardHeading
+        title="Invite people"
+        description={`Ask the adults who will use ${organization?.name ?? 'your space'} to join you. They accept when they sign in.`}
+      />
+      <InvitePeople
+        onDone={() => {
+          clearInviteStep();
+          // Opened straight on this screen, the wizard's stack holds it alone: going back would
+          // close the wizard, so the start replaces it.
+          router.replace('/onboarding');
+        }}
+      />
     </Screen>
   );
 }

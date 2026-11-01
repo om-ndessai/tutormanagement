@@ -13,6 +13,7 @@ import { Button, Text } from 'react-native-paper';
 import { Screen } from '@/components/screen';
 import { Panel } from '@/components/section';
 import { EmptyState } from '@/components/state-views';
+import { InvitationBanner } from '@/features/organizations/invitation-banner';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { primaryRole } from '@/features/onboarding/onboarding-model';
 import { useTourScroller } from '@/features/onboarding/tour-targets';
@@ -75,6 +76,8 @@ export function SpaceHomeScreen() {
     <Screen testID="screen-home" scrollRef={tourScroller} refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ headerRight: () => <HeaderActions /> }} />
       <Greeting />
+      {/* Phase 60 (S6): an invitation to another space, while the reader is here. */}
+      <InvitationBanner />
       <View testID="space-home" style={{ gap: space.lg }}>
         {assessmentOn ? <AssessmentHome /> : null}
         {assessmentAllowed && !assessmentOn ? <AssessmentOffCard isAdmin={isAdmin} /> : null}

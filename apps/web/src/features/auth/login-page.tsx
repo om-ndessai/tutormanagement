@@ -6,6 +6,7 @@ import { AUTH_ERROR_CODES } from '@tmi/shared';
 import { LogoFull, LogoMark } from '@/components/brand/logo';
 import { DeveloperCredit } from '@/components/layout/developer-credit';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
+import { withLinkedOrg } from '@/lib/organization';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand, useBrandReady } from '@/providers/brand-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
@@ -24,11 +25,13 @@ function isPlaceholderClientId(clientId: string | null): boolean {
 export function LoginPage() {
   const brand = useBrand();
   const brandReady = useBrandReady();
-  const { status, config, error, signInWithGoogle, clearError, pendingSignup } = useAuth();
+  const { status, config, error, signInWithGoogle, clearError, pendingSignup, pendingLink } = useAuth();
   const location = useLocation();
   const [submitting, setSubmitting] = useState(false);
 
   const from = (location.state as LocationState | null)?.from;
+  // A redirect provider reloads the page at its return address, so a link's space travels in it (S4).
+  const returnTo = pendingLink ? withLinkedOrg(from ?? '/', pendingLink) : from;
 
   if (status === 'authenticated') {
     return <Navigate to={from ?? '/profile'} replace />;
@@ -150,7 +153,7 @@ export function LoginPage() {
                 )}
                 {others.length > 0 && (
                   <div className="mt-2">
-                    <ProviderButtons providers={providers} signup={Boolean(config?.signup_open)} returnTo={from} />
+                    <ProviderButtons providers={providers} signup={Boolean(config?.signup_open)} returnTo={returnTo} />
                   </div>
                 )}
 

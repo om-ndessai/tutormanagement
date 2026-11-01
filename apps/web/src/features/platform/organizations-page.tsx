@@ -12,7 +12,7 @@ import { OrgAvatar } from '@/features/organizations/org-avatar';
 import { useArchiveOrganization, useOrganizations } from './api';
 import { OrganizationDialog } from './organization-dialog';
 
-/** Every organization on the platform, and the way in to creating the next. */
+/** Every space on the platform, and the way in to creating the next. */
 export function OrganizationsPage() {
   const organizations = useOrganizations();
   const archive = useArchiveOrganization();
@@ -74,8 +74,8 @@ export function OrganizationsPage() {
                       {org.slug} · {ORG_PALETTE_LABELS[org.palette]} · {org.admin_count}{' '}
                       {org.admin_count === 1 ? 'admin' : 'admins'} · {org.member_count}{' '}
                       {org.member_count === 1 ? 'member' : 'members'} ·{' '}
-                      {/* Phase 54: who families pay. */}
-                      {org.business ? `run by ${org.business.name}` : 'paid directly'}
+                      {/* Phase 59: who families pay. */}
+                      {org.business ? 'families pay the space' : 'families pay each tutor'}
                     </p>
                   </div>
                   <div className="flex gap-1">

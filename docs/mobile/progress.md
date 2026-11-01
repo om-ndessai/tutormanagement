@@ -435,6 +435,30 @@ native rebuild of both dev builds, so build only while the devices are free.
   Built 2026-10-29: typecheck, lint (0 errors), Jest 146 suites / 1046 tests green; `progress/progress-report`
   written, not yet run on either platform.
 
+## Portal Phase 59 — one word, spaces (parity: the web half is built by the lead)
+
+- [x] 67. Mobile: S1-S3 of `docs/spaces-plan.md` — no screen says "organization" (`wording.test.ts` with no
+  exceptions left, and `apps/mobile/src` in `scripts/check-ui-words.mjs`); the console's Organizations gone,
+  a space's form choosing **Who families pay** ("The space" with its payer details, or "Each tutor,
+  directly"; `PUT …/payment-model`); the list rows "families pay the space" / "families pay each tutor";
+  "This space may use", "Assessment in this space", "Quest in this space", and the Space screen's payer
+  sentence. Built 2026-10-31 (build note under design 67): typecheck (root, with `ui-words` now over `apps/mobile/src`), lint (0 errors), Jest 145 suites / 1047 tests, export green; on the development build through Metro, local Worker and seed only: `tutor-spaces/console-payment`, `features/organization`, `platform/organizations`, `organization/*`, `tutor-spaces/admin-finance` green on the iOS simulator and the Android emulator; `features/console` green on Android, and on iOS red once then green (the known Phase 54 iOS issue: after a native alert the next form sheet may not present), `quest/menu` green on Android and red on iOS three times at its second `scrollUntilVisible org-quest-switch` -- also red with this phase's title reverted, so it predates this change (reported); `organization/notifications` red once on Android (a "just now" timing assertion), green on rerun.
+
+## Portal Phase 60 — arriving and choosing (parity: the web half is built by the lead)
+
+- [x] 68. Mobile: S4-S9 of `docs/spaces-plan.md` — the landing rule (`landingFor` on the shared `decideLanding`;
+  the server's last choice over `tmi.lastOrg`), Spaces (`app/spaces.tsx`: the selector and the in-frame page,
+  Invitations, Your spaces with Here now and Leave, the console link, the Welcome with "Requests sent"), no
+  star anywhere, Home's invitation banner, the account sheet's "All spaces" and invitation count, leaving
+  through `POST /spaces/:slug/leave`. Built 2026-10-31 (build note under design 68): typecheck, lint, Jest 146 / 1070, export green; the changed flows and `spaces/*`, `shell/navigation` green on iOS and Android.
+
+## Portal Phase 61 — new spaces and newcomers (parity: the web half is built by the lead)
+
+- [x] 69. Mobile: S11-S12 of `docs/spaces-plan.md` (S10, S13 are the server's) — the Welcome's "Join with a code" and
+  "Start a space" (a 13-17 sees only the first), and the new space's "Invite people" step before the wizard's start
+  (`app/(org)/onboarding/invite.tsx`, `InvitePeople`: rows on the shared `spaceInviteRowSchema` / `inviteRowRequest`,
+  Share with `invitationText`, the code card, Skip / Continue). Built 2026-10-31 (build note under design 69): typecheck, lint (0 errors), Jest 148 suites / 1076 tests, export green; `spaces/{make-space,sign-up,decline}` green on iOS and Android (development build through Metro).
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

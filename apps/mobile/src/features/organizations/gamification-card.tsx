@@ -39,7 +39,7 @@ export function GamificationCard({ questQuest }: { questQuest: boolean }) {
   }
 
   return (
-    <Panel title="Gamification" testID="org-gamification">
+    <Panel title="Quest in this space" testID="org-gamification">
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
         <View style={{ flex: 1, gap: space.xs }}>
           <Text variant="labelLarge">Question Quest</Text>

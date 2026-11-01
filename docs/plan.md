@@ -655,3 +655,21 @@ Released 2026-10-30 (tag `release-20261029-p58`; production backed up first,
 d2c77961), web and the app; the demo first. Both addresses: health ok, the SPA and /privacy 200, the
 report's PDF 401 without a session; production still offers Google alone and sign-up stays closed. The app
 shows "Phase 58".
+
+Phases 59-61: (requested 2026-10-30 by the owner, as the clean-up before the AI work; approved 2026-10-31 to build and test
+locally; **released 2026-11-01** with the reworded terms and privacy, version 2026-10-31, approved by the owner that day; web and the app; no schema change) Plan: `docs/spaces-plan.md`, requirements S1-S13, built and
+tested by the workflow `.claude/workflows/spaces-phases.js`.
+- **Phase 59 — one word, spaces.** "Organization" leaves every screen (web, app, API messages, audit labels,
+  tour), guarded by a check in `npm run typecheck`. A space's payer details become its own: the console's
+  Organizations tab goes; a space chooses "Who families pay" (the space, or each tutor directly), with its
+  TIN and payer address on the space. `businesses` stays underneath, one per space.
+- **Phase 60 — arriving and choosing.** A person lands in the last space they chose, on any device (the
+  server's `is_default`, now "last opened"; the star goes); with several spaces and no choice yet, the
+  selector. A console space's invitations are still accepted on a first sign-in; every other one by hand,
+  then entered; a banner offers it to someone already in a space. The Spaces page (`/spaces`, the app's Spaces)
+  is each person's own console: their spaces, invitations, join with a code, start a space, requests, and
+  leaving any space from outside it (`POST /api/spaces/:slug/leave`).
+- **Phase 61 — new spaces and newcomers.** Every new space starts with Assessment and Quest allowed and on.
+  A first sign-in with sign-up open, by any provider, lands on Welcome: join with a code or start a space;
+  starting one is followed by "Invite people" (email and role, with a copyable invitation, since self-serve
+  spaces send no email). The terms and privacy are reworded to "space", a new version the owner approves.

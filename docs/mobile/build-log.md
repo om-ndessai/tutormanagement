@@ -4029,3 +4029,189 @@ failed once on `create-sheet is not visible`, green on three reruns; its screen 
 suites / 1036 tests; root typecheck, lint (0 errors), export green. Screenshots reviewed in light (the
 share dialog, the picture in the iOS share sheet, Your shares). Not run: provider sign-in and Ways to sign
 in on a device (sign-in is off locally), the Apple button, the level-finished Share.
+
+
+## 67. Phase 59: one word, spaces, in the app — design and build (2026-10-31)
+
+**Asked for:** the app half of Phase 59 (`docs/spaces-plan.md`, S1, S2, S3), at parity with the web half
+the lead built in the working tree on top of f96b984.
+**Web sources:** `features/platform/{api,organization-dialog,organizations-page,platform-shell}.ts(x)`
+(`businesses-page.tsx` deleted), `features/organizations/organization-settings-page.tsx`,
+`features/dashboard/form-1099-dialog.tsx`, `features/users/user-detail-view.tsx`,
+`features/onboarding/tour-steps.ts`, `components/layout/command-palette.tsx`.
+**Endpoints:** `PUT /api/platform/organizations/:id/payment-model {model}` (new; replaces
+`PUT …/business`, which the app no longer calls); `POST /api/platform/organizations` with `payment_model`
+and `payer_name`, `tin`, `payer_address_line1/2`, `payer_city`, `payer_state`, `payer_postal_code`;
+`PATCH /api/platform/organizations/:id` with the same payer fields; `GET /api/platform/organizations`'
+rows' `payer`. `/api/platform/businesses` is no longer called (it stays on the server for builds already
+on phones). `PATCH /api/organization/settings` may now answer 409 `shared_payer`: shown in the server's
+words through the existing toast.
+
+**Design:**
+- **S1, the words.** The app was already worded "space" in Phase 52; what was left was Phase 54's
+  "Organization" (the console's Organizations, the form's Organization choice, the Space screen's "Run
+  by", "the organization’s EIN") and three "institute"s ("(institute default)", the tour's "The
+  institute at a glance", the built-in logo's checkbox). The shared labels and the API's messages change
+  under the app by themselves. `src/test/wording.test.ts` keeps scanning every source file, now with no
+  allowed exceptions; `scripts/check-ui-words.mjs` (run by the root `npm run typecheck`) covers
+  `apps/mobile/src` too. Search keywords keep "organization" (never shown; both words find it), as the
+  web's nav does.
+- **S2, the console.** The Spaces tab's "Organizations" button, its screen, its form sheet and their
+  routes go. The space form gains a bordered "Who families pay" group: two radio rows
+  (`org-form-payment-space`, `org-form-payment-direct`; `SPACE_PAYMENT_MODEL_LABELS` and
+  `_DESCRIPTIONS`), "A change applies from now on; recorded lessons and payments keep theirs." on an
+  edit, and, while "The space" is chosen, the payer fields (`org-form-payer-*`; "Name on the 1099" with
+  the space's name as its placeholder, "The space’s own name when left blank."). Create sends
+  `payment_model` and the payer fields filled in; an edit PUTs the model first when it changed (a space
+  that starts collecting gets its record), then PATCHes only the payer fields that changed from the
+  loaded `payer`, as the web does. A 409 marks the address name only when its code is `conflict`.
+  `orgSummary` ends "families pay the space" / "families pay each tutor".
+- **S2, the Space screen.** "Families pay the space, and it files the 1099s as <name> (the name on the
+  1099, set by the platform)."; the TIN's hint "The EIN the space files under…"; the paid-directly card
+  ends "To have the space collect payments, ask the platform administrator."
+- **S3.** "This space may use" on the console's section and create form and on the Space screen's facts
+  ("To change the name, logo, palette, clock, who families pay or what this space may use, ask the
+  platform administrator."); the cards "Assessment in this space" and "Quest in this space".
+- **Mobile difference:** the built-in logo's checkbox reads "Wear the built-in logo"; the web writes the
+  institute's name, which the app's rules forbid in code.
+- **Tests.** Jest: `platform-model.test.ts` (the model and payer into the form, create and edit bodies,
+  only-changed payer fields, the model PUT only on a change, an SSN refused as a TIN),
+  `platform-views.test.tsx` (the two choices, the payer fields shown and hidden, the PUT before the
+  PATCH), `organization-views.test.tsx` (the new sentences and headings; "Not a curriculum this space can
+  offer"); `business-form.test.ts` removed with its module. Maestro: `tutor-spaces/console-payment`
+  (replaces `console-organizations`: the rows' words, a space made collecting with a TIN, then switched
+  to each tutor and saved), and the changed `features/{console,organization}`, `quest/menu`.
+
+**Verified (2026-10-31):** typecheck (root, with `ui-words` now over `apps/mobile/src`), lint (0 errors), Jest 145 suites / 1047 tests, export green; on the development build through Metro, local Worker and seed only: `tutor-spaces/console-payment`, `features/organization`, `platform/organizations`, `organization/*`, `tutor-spaces/admin-finance` green on the iOS simulator and the Android emulator; `features/console` green on Android, and on iOS red once then green (the known Phase 54 iOS issue: after a native alert the next form sheet may not present), `quest/menu` green on Android and red on iOS three times at its second `scrollUntilVisible org-quest-switch` -- also red with this phase's title reverted, so it predates this change (reported); `organization/notifications` red once on Android (a "just now" timing assertion), green on rerun. Not done here: `npm run smoke` (this half changed only `apps/mobile` and `scripts/check-ui-words.mjs`, not the API, the schema or shared); the S1 crawl `spaces/words.yaml` and S2's `spaces/console-payment.yaml`, which the plan gives to the test-writing step. Ops: the Worker on :8787 was the orphaned `wrangler dev` the web half reported (it serves the working tree's code); the stale Metro on :8081 was stopped first and the runner started a fresh one.
+
+
+## 68. Phase 60: arriving and choosing, in the app — design and build (2026-10-31)
+
+**Asked for:** the app half of Phase 60 (`docs/spaces-plan.md`, S4-S9), at parity with the web half the
+lead built in the working tree on top of f96b984.
+**Web sources:** `providers/auth-provider.tsx` (`applySession` on `decideLanding`), `lib/organization.ts`,
+`features/organizations/{spaces-page,invitation-banner,org-switcher,welcome,space-code-card,api}.tsx`
+(`select-organization-page.tsx` deleted), `components/layout/user-menu.tsx`.
+**Endpoints:** `GET /api/auth/session` (memberships, invitations, requests: the screen's only read);
+`POST /api/auth/enter` (now also moves `is_default`, the last space opened -- the app already posted it
+on every entry, so no separate call); `POST /api/spaces/:slug/leave` (new; no `X-Organization`; 409
+`last_admin`, 404 `not_found`); `POST /api/auth/invitations/:slug/accept|decline` (unchanged).
+`PUT /api/auth/default-organization` is no longer called by the app (it stays for older builds' star).
+
+**Design:**
+- **S4, landing.** `features/auth/landing.ts` becomes `landingFor(session, { own, linked })`, the web's
+  `applySession` order on the shared `decideLanding`: a linked space (the developer link's `org`) if
+  enterable; else the space this run chose while it still reads inside it; else the rule (the last
+  space opened on any device, then the only space with nothing pending -- platform admins included now
+  --, else the selector). The provider's `arrivingRef` becomes `ownRef` (null while arriving) and
+  `linkedRef`. The device's `tmi.lastOrg` still names the first request's space (saving a round trip
+  when it is also the last choice) but never decides. New `reland()`: forget the space and land again
+  by the rule (after leaving the current space, or on `organization-required`, which used to drop to
+  the picker).
+- **S5/S7, Spaces.** `src/features/organizations/spaces-screen.tsx` (route `app/spaces.tsx`, root
+  stack): with no space it is the selector, full screen, "Choose a space" (or "Welcome to Aimtrue"),
+  logo and Sign out; pushed over a space from the account sheet it has the header "Spaces" and no Sign
+  out. Subtitle "You land in the space you opened last. Each tab can be in a different one."; sections
+  INVITATIONS (Accept / Decline), YOUR SPACES (Open; "Here now" on the current one; suspended rows
+  without Open), Platform console (platform admins), then the Welcome (Requests sent, the code, Make a
+  space, and Delete my account only when the person belongs nowhere and has nothing open).
+  `select-organization` redirects to `/spaces`; `join-space` is gone (Spaces holds it). The star, its
+  toasts and "Default" are removed from the selector and the account sheet.
+- **S6, invitations.** Accept enters the space at once (`chooseOrganization`, so `/enter` makes it the
+  last choice) and goes Home; Decline re-reads the session. Home (both `dashboard-screen` and
+  `space-home-screen`, not while viewing someone else) carries `InvitationBanner`: "<space> invited you",
+  "and N more" (to Spaces), Accept and Not now -- hidden for this app session (in memory; reset on sign-out).
+- **S7, the account sheet** (the web's switcher and user menu as one): the spaces list (always, even
+  with one), "1 invitation waiting" / "N invitations waiting" when any, and "All spaces" (`account-spaces`),
+  which opens Spaces.
+- **S8, leaving.** Each row of Your spaces has a Leave icon (`space-leave-<slug>`) opening an inline
+  confirm (`space-leave-confirm-<slug>`: "You stop being a member of <name>. Its records of you stay.",
+  "Leave <short>" `space-leave-yes-<slug>`, "Stay" `space-leave-stay-<slug>`), the server's refusal under
+  it (`space-leave-problem-<slug>`) and in a toast. Toast "You have left <name>."; leaving the current
+  space relands (another space, the selector, or the Welcome). The Space screen's and My profile's
+  Leave (`SpaceDangerPanel`) now call `/spaces/:slug/leave` too.
+- **Mobile differences:** the web's per-tab sessionStorage for "Not now" is the app session (memory);
+  the inline confirm keeps the web's words, while the Space screen's own Leave keeps its native alert.
+- **Tests.** Jest: `landing.test.ts` (rewritten for the rule: the server's choice over the device's,
+  links, own space, single space for a platform admin, invitations and requests), `auth-provider.test.tsx`
+  (three Phase 60 cases: the server's choice over `tmi.lastOrg` with `/enter` posted, the selector with
+  two spaces and no choice, `reland` after leaving), `spaces-screen.test.tsx` (the selector and in-frame
+  titles, no star, Here now, Open, Accept/Decline, Leave with Stay, the current space relanding, the
+  `last_admin` refusal, the console link, the banner and Not now), `space-welcome.test.tsx` (Requests sent,
+  no Delete my account while anything is open), `space-code-card.test.tsx` (the slug, `last_admin`).
+  Maestro: `organizations/picker.yaml` rewritten (the selector without a star; opening a space makes it
+  the landing; switching in the sheet moves it; Spaces from the sheet with Here now), `organizations/invitation.yaml`
+  (Accept lands Home; leave from Spaces; the Welcome), `spaces/sign-up.yaml` (the screen's new id);
+  `spaces.js` gains `clear-last` (other flows entering a space as Priya move her last choice).
+
+**Verified (2026-10-31):** mobile typecheck (tsc, rules, palettes, contrast), root `npm run typecheck` (with
+`ui-words`), lint (0 errors), Jest 146 suites / 1070 tests, `mobile:export` green. On the development
+build through Metro, local Worker and seed only (the stale Metro on :8081 stopped first; no e2e build was
+installed on either device): `organizations/picker`, `organizations/invitation`, `spaces/{sign-up,let-in,join,decline,make-space}`
+and `shell/navigation` green on the Android emulator and the iOS simulator -- `picker` red once on iOS at its
+first version's `childOf` assertion (iOS folds a list row's texts into one label; the flow now reads
+`account-roles`, "… at Riverside"), then green on both. Not run: `npm run smoke` (this half changed only
+`apps/mobile` and the docs, not the API, the schema or shared); the plan's new `spaces/*` flows, which belong
+to the test-writing step; the banner on a device (the seed has nobody in a space with an invitation to
+another -- Jest only).
+
+## 69. Phase 61: new spaces and newcomers, in the app — design and build (2026-10-31)
+
+**Asked for:** the app half of Phase 61 (`docs/spaces-plan.md`, S10-S13), at parity with the web half the
+lead built in the working tree on top of f96b984.
+**Web sources:** `features/organizations/{welcome,invite-people,invite-step,spaces-page,api}.ts(x)`,
+`features/onboarding/{onboarding-provider,onboarding-wizard}.tsx`.
+**Endpoints:** `POST /api/spaces` (unchanged for the app: the server now starts it with Assessment and
+Quest on, S10); `POST /api/users` (one per invite row, the body from the shared `inviteRowRequest`:
+`{ email, full_name, roles: [role], status: 'invited' }`; 409 = already in the space, the per-minute limit
+and the daily cap apply). No new route; S13 (exposure, older clients) is the server's.
+
+**Design:**
+- **S11, Welcome.** `SpaceWelcome`: the cards are titled "Join with a code" and "Start a space" inside
+  `welcome-choices` (stacked: a phone has no room side by side), the button "Start the space", the
+  description "For your family or your students: assessments answered by hand, with a PDF for you, and
+  Quest. It gets its own code, so others can ask to join, and you can invite people next."; a 13-17 sees
+  only Join and `welcome-adults-only` ("To start a space of your own you need to be 18 or older.", the web's
+  id; `welcome-make-adults` is gone). Spaces' subtitle: "Join a space with its code, or start your own."
+- **S12, Invite people.** Starting a space marks it (`invite-step.ts`, in memory: the app run is the web's
+  tab). In the space, `OnboardingHost`'s one-off decision opens the wizard on `/onboarding/invite` (a new
+  route, `InviteScreen` in `wizard-screens.tsx`) before anything else, for an admin of the marked space,
+  whether or not they have been through the tour. Heading "Invite people" / "Ask the adults who will use
+  <space> to join you. They accept when they sign in." `InvitePeople` (`invite-people.tsx`): rows
+  (`invite-row-N`) of Email (`invite-email-N`), Name (optional) (`invite-name-N`), Role -- a segmented
+  control of `inviteRolesFor(org)` (`invite-role-N-<role>`: Admin, Parent, Tutor only where Tutoring is
+  allowed), a remove icon from the second row (`invite-remove-N`); "Another person" (`invite-add-row`),
+  "Invite" (`invite-send`, disabled until something is typed); each row `safeParse`d on
+  `spaceInviteRowSchema`, then sent; a refused row stays with its reason (`invite-problem-N`: the schema's
+  message, "Already in this space." on 409, else `fieldErrors.email` / `roles` / the message); toasts
+  "Invitation made." / "<n> invitations made."; the hint "Children are added as students next, with Add a
+  student. You can invite more people any time from People."; INVITED with "No email is sent from this
+  space. Copy each invitation, or share it, so they know to sign in.", each row (`invite-sent-<email>`) with
+  the invitation's words (`invite-text-<email>`, selectable) and Share (`invite-share-<email>`, the system
+  share sheet with `invitationText({ inviter, space, address: serverOrigin(), email })`); the space code
+  card (`SpaceCodePanel`); Skip (`invite-skip`) before anything is sent, Continue (`invite-continue`) after.
+  Both clear the mark and go back to the wizard's start; closing the wizard clears it too.
+- **Mobile differences:** no "Copy invitation" button -- the app has no clipboard module (adding one is a
+  native rebuild) and the code card already settled on the share sheet's own Copy (2026-10-24); the words
+  are shown selectable instead, so the "Copy each invitation" sentence still holds. The email is trimmed
+  before the shared schema, which checks the address before its own `.trim()` (a phone keyboard leaves a
+  space after a suggested address; reported for the shared schema).
+- **Tests.** Jest: `invite-people.test.tsx` (the roles with and without Tutoring, the code card, a bad
+  email refused on the device, two rows -- one sent as `inviteRowRequest`'s body with the name from the
+  email, one refused 409 --, INVITED's words and Share, Continue; `inviteProblem`'s field errors),
+  `invite-step.test.ts`, `space-welcome.test.tsx` (the two choices' words, the adults-only line, the mark
+  set on starting), `spaces-screen.test.tsx` (the subtitle). Maestro: `spaces/make-space.yaml` (the invite
+  step first: heading, Admin and Parent but no Tutor, a bad email's problem, the code card, Skip to the
+  wizard), `spaces/sign-up.yaml` (the subtitle and the two titles), `spaces/decline.yaml` (the
+  adults-only line by its new id and words).
+
+**Verified (2026-10-31):** mobile typecheck (tsc, rules, palettes, contrast), root `npm run typecheck` (with `ui-words`),
+lint (0 errors), Jest 148 suites / 1076 tests, `mobile:export` green. On the development build through the
+running Metro (an hour-old Metro on :8081 could not be stopped from this session and was reused: it serves
+this working tree), local Worker and seed only; `com.aimtrue.app.e2e` was installed on neither device:
+`spaces/{make-space,sign-up,decline}` 3/3 green on the iOS simulator and 3/3 on the Android emulator. The
+first iOS run of `make-space` was red: the wizard, opened straight on `/onboarding/invite`, holds that screen
+alone, so Skip's `router.back()` closed it -- now `router.replace('/onboarding')`. Not run: `npm run smoke`
+(this half changed only `apps/mobile` and the docs, not the API, the schema or shared); the plan's
+`spaces/{new-space-quest,join,invite}` flows (the test-writing step's); an actual invite sent on a device
+(Jest only: an invitee would outlive the flow's clean-up).

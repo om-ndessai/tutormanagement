@@ -1,0 +1,329 @@
+# Phase 61 (S12, docs/spaces-plan.md): start a space, then invite people. Ivo, a newcomer, starts
+# "The Inviter family"; "Invite people" opens before the wizard, with Admin and Parent and never
+# Tutor (a newcomer's space has no Tutoring). He invites a new address as Admin, and Rhea -- who
+# already has a space of her own -- as Parent under a name he types. Each sent row shows the words to
+# hand over (no email is sent from a self-serve space) and Share opens the system sheet; the space's
+# code is there too. Continue goes on to the wizard.
+# Then Vera (the new address) signs in: no About you, no Welcome, the selector with the invitation;
+# she accepts and lands in the space as its admin, where Rhea still reads as the typed name. Then Rhea
+# accepts from the selector and lands there too.
+# (Skip on the same step is walked by make-space.yaml; the web spec covers it end to end.)
+# Self-cleaning: Ivo's space is deleted (taking the invitations with it), then each account.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.inviter@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.elsewhere@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.invited-admin@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.inviter@example.com, NAME: Ivo Inviter }
+  # Rhea exists elsewhere: signed up, with a space of her own.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.elsewhere@example.com, NAME: Rhea Elsewhere }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.elsewhere@example.com, NAME: Rhea own place }
+  # No last choice: one space and an invitation waiting is the selector (S4).
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: clear-last, EMAIL: spaces.elsewhere@example.com }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.inviter@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.elsewhere@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.invited-admin@example.com }
+tags:
+  - feature
+  - smoke
+---
+# --- Ivo starts a space -------------------------------------------------------------------------
+# A fresh device, so the wizard (and its first step, Invite people) is not pre-empted.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.inviter@example.com
+      ORG: ''
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: welcome-space-name
+- tapOn:
+    id: welcome-space-name
+- inputText: 'The Inviter family'
+- hideKeyboard
+- tapOn:
+    id: welcome-make-submit
+- extendedWaitUntil:
+    visible: 'The Inviter family is ready.'
+    timeout: 15000
+
+# --- Invite people, before the wizard ----------------------------------------------------------
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-invite
+    timeout: 30000
+- assertVisible:
+    id: onboarding-title
+    text: 'Invite people'
+# Admin and Parent; Tutor only where Tutoring is allowed -- never in a newcomer's space.
+- assertVisible:
+    id: invite-role-0-admin
+- assertVisible:
+    id: invite-role-0-parent
+- assertNotVisible:
+    id: invite-role-0-tutor
+# Nobody invited yet: Skip, not Continue.
+- scrollUntilVisible:
+    element:
+      id: invite-skip
+- assertNotVisible:
+    id: invite-continue
+- scrollUntilVisible:
+    element:
+      id: invite-email-0
+    direction: UP
+# Row 1: a new address, as Admin. Return closes the keyboard: on iOS, hideKeyboard taps the middle of
+# the screen, which here is Invite or the next row's Email (docs/mobile/build-log.md).
+- tapOn:
+    id: invite-email-0
+- inputText: 'spaces.invited-admin@example.com'
+- pressKey: Enter
+- tapOn:
+    id: invite-name-0
+- inputText: 'Vera Invited'
+- pressKey: Enter
+- tapOn:
+    id: invite-role-0-admin
+# Row 2: Rhea, who exists elsewhere, as Parent (the default), under a name Ivo types.
+- tapOn:
+    id: invite-add-row
+- scrollUntilVisible:
+    element:
+      id: invite-email-1
+- tapOn:
+    id: invite-email-1
+- inputText: 'spaces.elsewhere@example.com'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: invite-name-1
+- tapOn:
+    id: invite-name-1
+- inputText: 'Auntie Typed'
+- pressKey: Enter
+- assertNotVisible:
+    id: invite-role-1-tutor
+- scrollUntilVisible:
+    element:
+      id: invite-send
+- tapOn:
+    id: invite-send
+- extendedWaitUntil:
+    visible: '2 invitations made.'
+    timeout: 15000
+
+# --- Telling them: the words, Share, and the space's code --------------------------------------
+- scrollUntilVisible:
+    element:
+      id: invite-sent-spaces.invited-admin@example.com
+- assertVisible:
+    id: invite-sent-line-spaces.invited-admin@example.com
+    text: '.*spaces\.invited-admin@example\.com.*Admin.*'
+- assertVisible: 'No email is sent from this space. Copy each invitation, or share it, so they know to sign in.'
+- assertVisible:
+    id: invite-text-spaces.invited-admin@example.com
+    text: 'Ivo Inviter invited you to The Inviter family on Aimtrue\. Sign in at .+ with spaces\.invited-admin@example\.com\.'
+- scrollUntilVisible:
+    element:
+      id: invite-text-spaces.elsewhere@example.com
+- assertVisible:
+    id: invite-text-spaces.elsewhere@example.com
+    text: 'Ivo Inviter invited you to The Inviter family on Aimtrue\. Sign in at .+ with spaces\.elsewhere@example\.com\.'
+- assertVisible:
+    id: invite-sent-line-spaces.elsewhere@example.com
+    text: '.*spaces\.elsewhere@example\.com.*Parent.*'
+- takeScreenshot: spaces-invite-sent
+# The toast sits over the last row's Share on a phone: wait for it to go before tapping.
+- extendedWaitUntil:
+    notVisible: '2 invitations made.'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: invite-share-spaces.elsewhere@example.com
+- tapOn:
+    id: invite-share-spaces.elsewhere@example.com
+- takeScreenshot: spaces-invite-share-sheet
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      # Outside the sheet, above it: the sheet closes.
+      - tapOn:
+          point: '50%,12%'
+- scrollUntilVisible:
+    element:
+      id: space-code
+- scrollUntilVisible:
+    element:
+      id: invite-continue
+- assertNotVisible:
+    id: invite-skip
+- tapOn:
+    id: invite-continue
+# On to the wizard; closed, Ivo is home in his space.
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
+# Rhea is the typed name in Ivo's space until she accepts -- never her own.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 20000
+- extendedWaitUntil:
+    visible: '.*Auntie Typed.*'
+    timeout: 15000
+- assertNotVisible: '.*Rhea Elsewhere.*'
+
+# --- Vera, a new address: signs in, accepts, lands as an admin ---------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.invited-admin@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 20000
+# Not a newcomer: no About you, no Welcome -- the selector with the invitation.
+- assertVisible: 'Choose a space'
+- assertNotVisible:
+    id: welcome-title
+# (The selector is the Spaces page without its frame (S5), so its own Start a space is there.)
+- assertVisible: 'INVITATIONS'
+- assertVisible: '.*The Inviter family.*'
+- assertVisible: '.*Invited as Admin.*'
+- tapOn:
+    id: 'invitation-accept-.*'
+- extendedWaitUntil:
+    visible: 'You have joined The Inviter family.'
+    timeout: 15000
+# In the space; a first visit opens the welcome wizard over Home (Phase 26, as in invitation.yaml).
+- extendedWaitUntil:
+    visible:
+      id: '(screen-onboarding|screen-home)'
+    timeout: 30000
+- runFlow:
+    when:
+      visible:
+        id: screen-onboarding
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 3000
+      - retry:
+          maxRetries: 1
+          commands:
+            - tapOn:
+                id: onboarding-close
+            - extendedWaitUntil:
+                visible:
+                  id: screen-home
+                timeout: 8000
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+# Her role there: an admin's People, with Ivo, and Rhea still under the typed name.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 20000
+- extendedWaitUntil:
+    visible: '.*Ivo Inviter.*'
+    timeout: 15000
+- assertVisible: '.*Auntie Typed.*'
+- assertNotVisible: '.*Rhea Elsewhere.*'
+
+# --- Rhea, who exists elsewhere: the selector offers it; she accepts --------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.elsewhere@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 20000
+- assertVisible: 'INVITATIONS'
+- assertVisible: '.*Invited as Parent.*'
+- assertVisible: '.*Rhea own place.*'
+- tapOn:
+    id: 'invitation-accept-.*'
+- extendedWaitUntil:
+    visible: 'You have joined The Inviter family.'
+    timeout: 15000
+# In the space; a first visit opens the welcome wizard over Home (Phase 26, as in invitation.yaml).
+- extendedWaitUntil:
+    visible:
+      id: '(screen-onboarding|screen-home)'
+    timeout: 30000
+- runFlow:
+    when:
+      visible:
+        id: screen-onboarding
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 3000
+      - retry:
+          maxRetries: 1
+          commands:
+            - tapOn:
+                id: onboarding-close
+            - extendedWaitUntil:
+                visible:
+                  id: screen-home
+                timeout: 8000
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000

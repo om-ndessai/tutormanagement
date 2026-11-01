@@ -188,7 +188,7 @@ export function CommandPaletteProvider({
             {otherOrganizations.map((membership) => (
               <CommandItem
                 key={membership.slug}
-                value={`switch organization ${membership.name}`}
+                value={`switch space ${membership.name}`}
                 onSelect={() => run(() => chooseOrganization(membership.slug))}
               >
                 <ArrowLeftRightIcon />
@@ -197,7 +197,7 @@ export function CommandPaletteProvider({
             ))}
             {platformAdmin && (
               <CommandItem
-                value="platform console organizations"
+                value="platform console spaces"
                 onSelect={() => run(() => window.location.assign('/platform'))}
               >
                 <ShieldCheckIcon />

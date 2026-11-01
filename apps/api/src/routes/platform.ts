@@ -9,6 +9,9 @@ import {
   createOrganizationSchema,
   describeFeatureChange,
   setSpaceBusinessSchema,
+  spacePaymentModelSchema,
+  SPACE_PAYER_FIELDS,
+  type SpacePayerField,
   updateBusinessSchema,
   type Business,
   type BusinessListItem,
@@ -37,7 +40,11 @@ import {
   getBusiness,
   listBusinesses,
   setSpaceBusiness,
+  linkOwnPayer,
+  otherSpacesOfPayer,
+  spacesOfBusiness,
   updateBusiness,
+  updateSpacePayer,
   ensureMembershipWithRoles,
   getOrganizationById,
   listOrganizationAdmins,
@@ -60,24 +67,27 @@ import {
   updatePersonFields,
 } from '../repositories/people.js';
 
-const orgParamSchema = z.object({ id: z.uuid({ message: 'Not a valid organization id.' }) });
+const orgParamSchema = z.object({ id: z.uuid({ message: 'Not a valid space id.' }) });
 const adminParamSchema = z.object({
-  id: z.uuid({ message: 'Not a valid organization id.' }),
+  id: z.uuid({ message: 'Not a valid space id.' }),
   userId: z.uuid({ message: 'Not a valid user id.' }),
 });
 const logoParamSchema = z.object({
-  id: z.uuid({ message: 'Not a valid organization id.' }),
+  id: z.uuid({ message: 'Not a valid space id.' }),
   kind: z.enum(LOGO_KINDS),
 });
 const personParamSchema = z.object({ id: z.uuid({ message: 'Not a valid user id.' }) });
 const businessParamSchema = z.object({ id: z.string().min(1).max(64) });
 
-/** Phase 54: a business a space may be linked to -- it exists and is not archived. */
-async function requireLinkableBusiness(env: Env, id: string): Promise<Business> {
+/**
+ * Phase 54: a business a space may be linked to -- it exists, is not archived, and (Phase 59,
+ * decision 5) is no other space's payer: a payer record is never shared by two spaces.
+ */
+async function requireLinkableBusiness(env: Env, id: string, spaceId: string | null): Promise<Business> {
   const business = await getBusiness(env.DB, id);
   if (!business) {
     throw ApiError.validation('Please correct the highlighted fields.', {
-      business_id: ['That organization does not exist.'],
+      business_id: ['That payer record does not exist.'],
     });
   }
   if (business.archived_at) {
@@ -85,10 +95,13 @@ async function requireLinkableBusiness(env: Env, id: string): Promise<Business> 
       business_id: [`${business.name} is archived.`],
     });
   }
+  if ((await otherSpacesOfPayer(env.DB, id, spaceId)).length > 0) {
+    throw new ApiError(409, 'shared_payer', 'That payer record is another space’s. Each space has its own.');
+  }
   return business;
 }
 
-const SLUG_TAKEN = 'Another organization already uses that address name.';
+const SLUG_TAKEN = 'Another space already uses that address name.';
 
 /**
  * Every calendar UID an organization ever issues carries this domain, so it is
@@ -123,7 +136,9 @@ async function sha256Hex(bytes: ArrayBuffer): Promise<string> {
 /** "TIN, city": the payer fields a change touched, never their values. */
 function describeBusinessFields(keys: string[]): string {
   return keys
-    .map((key) => (key === 'tin' ? 'TIN' : key.replace(/^payer_/, '').replace(/_/g, ' ')))
+    .map((key) =>
+      key === 'tin' ? 'TIN' : key === 'payer_name' || key === 'name' ? 'name on the 1099' : key.replace(/^payer_/, '').replace(/_/g, ' '),
+    )
     .join(', ');
 }
 
@@ -146,7 +161,7 @@ async function logBusinessChange(
 
 async function requireOrganization(env: Env, id: string): Promise<Organization> {
   const org = await getOrganizationById(env.DB, id);
-  if (!org) throw ApiError.notFound('That organization does not exist.');
+  if (!org) throw ApiError.notFound('That space does not exist.');
   return org;
 }
 
@@ -172,7 +187,11 @@ export const platformRoutes = new Hono<AppEnv>()
   .post('/organizations', zValidator('json', createOrganizationSchema), async (c) => {
     const input = c.req.valid('json');
     let org: Organization;
-    if (input.business_id) await requireLinkableBusiness(c.env, input.business_id);
+    // Phase 59: `payment_model` decides; an older app's `business_id` still links, but never a
+    // payer record another space already has.
+    if (input.payment_model === undefined && input.business_id) {
+      await requireLinkableBusiness(c.env, input.business_id, null);
+    }
 
     try {
       org = await createOrganization(c.env.DB, input, calendarDomainFor(input.slug, c.req.url));
@@ -184,8 +203,8 @@ export const platformRoutes = new Hono<AppEnv>()
     await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(org.id), {
       action: 'organization.created',
       description: org.business
-        ? `Created the organization ${org.name}, run by ${org.business.name}`
-        : `Created the organization ${org.name}, paid directly`,
+        ? `Created the space ${org.name}; it collects its families’ payments`
+        : `Created the space ${org.name}; families pay each tutor directly`,
       entity_type: 'organization',
       entity_id: org.id,
     });
@@ -201,21 +220,45 @@ export const platformRoutes = new Hono<AppEnv>()
     async (c) => {
       const { id } = c.req.valid('param');
       const before = await requireOrganization(c.env, id);
-      const input = c.req.valid('json');
+      const body_ = c.req.valid('json');
+      // Phase 59: the payer details travel on the space, and are written to its own payer record.
+      const payer: Partial<Record<SpacePayerField, string | null>> = {};
+      const input: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(body_)) {
+        if (value === undefined) continue;
+        if ((SPACE_PAYER_FIELDS as readonly string[]).includes(key)) payer[key as SpacePayerField] = value as string | null;
+        else input[key] = value;
+      }
+      const payerKeys = Object.keys(payer);
+      if (payerKeys.length > 0) {
+        if (!before.business) {
+          throw new ApiError(409, 'paid_directly',
+            'Families pay each tutor directly in this space, so it has no payer details to edit.');
+        }
+        if ((await spacesOfBusiness(c.env.DB, before.business.id)).length > 1) {
+          throw new ApiError(409, 'shared_payer', 'This space’s payer record is shared with another space.');
+        }
+      }
       let org: Organization | null;
 
       try {
-        org = await updateOrganization(c.env.DB, id, input);
+        org = Object.keys(input).length > 0
+          ? await updateOrganization(c.env.DB, id, input as typeof body_)
+          : before;
+        if (payerKeys.length > 0) await updateSpacePayer(c.env.DB, id, payer, before.name);
       } catch (error) {
         if (isUniqueConstraintError(error)) throw ApiError.conflict(SLUG_TAKEN);
         throw error;
       }
-      if (!org) throw ApiError.notFound('That organization does not exist.');
+      if (!org) throw ApiError.notFound('That space does not exist.');
+      org = (await getOrganizationById(c.env.DB, id)) ?? org;
 
       await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
         action: 'organization.updated',
         description:
-          `Updated the organization ${before.name}` +
+          `Updated the space ${before.name}` +
+          // Names the payer fields changed, never their values: the log is read widely.
+          (payerKeys.length > 0 ? `; its payer ${describeBusinessFields(payerKeys)}` : '') +
           (input.email_notifications !== undefined && input.email_notifications !== before.email_notifications
             ? `; turned its email notifications ${input.email_notifications ? 'on' : 'off'}`
             : ''),
@@ -242,7 +285,7 @@ export const platformRoutes = new Hono<AppEnv>()
       const before = await requireOrganization(c.env, id);
       const input = c.req.valid('json');
       const org = await updateOrganizationFeatures(c.env.DB, id, input);
-      if (!org) throw ApiError.notFound('That organization does not exist.');
+      if (!org) throw ApiError.notFound('That space does not exist.');
       await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
         action: 'organization.features_updated',
         description:
@@ -261,9 +304,51 @@ export const platformRoutes = new Hono<AppEnv>()
   )
 
   /**
-   * Phase 54: the organization that runs a space's money from now on, or none
-   * (paid directly). Recorded lessons and payments keep the model they were
-   * recorded under; only what is recorded next follows the change.
+   * Phase 59: who families pay, from now on. 'space' links the space's OWN payer record (keyed
+   * by its id; made if missing, restored if archived); 'direct' unlinks it, and families pay each
+   * lesson's tutor. Recorded lessons and payments keep the model they were recorded under; only
+   * what is recorded next follows the change. The payer record is kept, for a switch back.
+   */
+  .put(
+    '/organizations/:id/payment-model',
+    zValidator('param', orgParamSchema),
+    zValidator('json', spacePaymentModelSchema),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      const { model } = c.req.valid('json');
+      const before = await requireOrganization(c.env, id);
+
+      if (model === 'space' && !before.business) {
+        // The space's own record, keyed by its id, is never another space's payer as well.
+        if ((await spacesOfBusiness(c.env.DB, id)).some((space) => space !== id)) {
+          throw new ApiError(409, 'shared_payer', 'That payer record is another space’s. Each space has its own.');
+        }
+        await linkOwnPayer(c.env.DB, before);
+        await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
+          action: 'organization.business_set',
+          description: `Set ${before.name} to collect its families’ payments from now on`,
+          entity_type: 'organization',
+          entity_id: id,
+        });
+      } else if (model === 'direct' && before.business) {
+        await setSpaceBusiness(c.env.DB, id, null);
+        await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
+          action: 'organization.business_cleared',
+          description: `Set ${before.name} so families pay each tutor directly from now on`,
+          entity_type: 'organization',
+          entity_id: id,
+        });
+      }
+
+      const body: ApiOk<Organization> = { data: (await getOrganizationById(c.env.DB, id))! };
+      return c.json(body);
+    },
+  )
+
+  /**
+   * Phase 54: the business that collects a space's payments from now on, or none (paid
+   * directly). Kept for app builds already on phones; the console no longer calls it
+   * (Phase 59), and it never links a payer record another space has (409 shared_payer).
    */
   .put(
     '/organizations/:id/business',
@@ -273,20 +358,20 @@ export const platformRoutes = new Hono<AppEnv>()
       const { id } = c.req.valid('param');
       const { business_id } = c.req.valid('json');
       const before = await requireOrganization(c.env, id);
-      const business = business_id ? await requireLinkableBusiness(c.env, business_id) : null;
+      const business = business_id ? await requireLinkableBusiness(c.env, business_id, id) : null;
 
       if ((before.business?.id ?? null) !== (business?.id ?? null)) {
         await setSpaceBusiness(c.env.DB, id, business?.id ?? null);
         await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), business
           ? {
               action: 'organization.business_set',
-              description: `Set ${before.name} to be run by ${business.name} from now on`,
+              description: `Set ${before.name} to collect its families’ payments from now on, as ${business.name}`,
               entity_type: 'organization',
               entity_id: id,
             }
           : {
               action: 'organization.business_cleared',
-              description: `Set ${before.name} to be paid directly from now on: families pay each tutor`,
+              description: `Set ${before.name} so families pay each tutor directly from now on`,
               entity_type: 'organization',
               entity_id: id,
             });
@@ -297,6 +382,7 @@ export const platformRoutes = new Hono<AppEnv>()
     },
   )
 
+  // Phase 54's payer records, by themselves: kept for app builds already on phones (Phase 59).
   .get('/businesses', async (c) => {
     const body: ApiOk<BusinessListItem[]> = { data: await listBusinesses(c.env.DB) };
     return c.json(body);
@@ -307,7 +393,7 @@ export const platformRoutes = new Hono<AppEnv>()
     // Names the business, never its TIN: the log is read widely.
     await recordAudit(c.env.DB, c.get('person'), 'platform', {
       action: 'business.created',
-      description: `Created the organization ${business.name}`,
+      description: `Created the payer record ${business.name}`,
       entity_type: 'business',
       entity_id: business.id,
     });
@@ -323,7 +409,7 @@ export const platformRoutes = new Hono<AppEnv>()
       const { id } = c.req.valid('param');
       const input = c.req.valid('json');
       const updated = await updateBusiness(c.env.DB, id, input);
-      if (!updated) throw ApiError.notFound('That organization does not exist.');
+      if (!updated) throw ApiError.notFound('That payer record does not exist.');
       await logBusinessChange(c.env.DB, c.get('person'), updated, 'business.updated',
         `Updated ${updated.name}'s ${describeBusinessFields(Object.keys(input))}`);
       const body: ApiOk<Business> = { data: updated };
@@ -334,17 +420,17 @@ export const platformRoutes = new Hono<AppEnv>()
   .post('/businesses/:id/archive', zValidator('param', businessParamSchema), async (c) => {
     const { id } = c.req.valid('param');
     const before = await getBusiness(c.env.DB, id);
-    if (!before) throw ApiError.notFound('That organization does not exist.');
-    // An organization still running a space cannot be archived: the space would
-    // be run by nobody, which is "paid directly" -- a choice made on the space.
+    if (!before) throw ApiError.notFound('That payer record does not exist.');
+    // A payer record a space still uses cannot be archived: the space would have
+    // no payer, which is "paid directly" -- a choice made on the space.
     const runs = (await listBusinesses(c.env.DB)).find((b) => b.id === id)?.spaces ?? [];
     if (runs.length > 0) {
       throw ApiError.conflict(
-        `${before.name} still runs ${runs.map((space) => space.name).join(', ')}. Choose another organization for it first.`,
+        `${before.name} is still the payer of ${runs.map((space) => space.name).join(', ')}. Set it so families pay each tutor first.`,
       );
     }
     const updated = await updateBusiness(c.env.DB, id, { archived_at: new Date().toISOString() });
-    await logBusinessChange(c.env.DB, c.get('person'), updated!, 'business.archived', `Archived the organization ${before.name}`);
+    await logBusinessChange(c.env.DB, c.get('person'), updated!, 'business.archived', `Archived the payer record ${before.name}`);
     const body: ApiOk<Business> = { data: updated! };
     return c.json(body);
   })
@@ -352,8 +438,8 @@ export const platformRoutes = new Hono<AppEnv>()
   .post('/businesses/:id/restore', zValidator('param', businessParamSchema), async (c) => {
     const { id } = c.req.valid('param');
     const updated = await updateBusiness(c.env.DB, id, { archived_at: null });
-    if (!updated) throw ApiError.notFound('That organization does not exist.');
-    await logBusinessChange(c.env.DB, c.get('person'), updated, 'business.restored', `Restored the organization ${updated.name}`);
+    if (!updated) throw ApiError.notFound('That payer record does not exist.');
+    await logBusinessChange(c.env.DB, c.get('person'), updated, 'business.restored', `Restored the payer record ${updated.name}`);
     const body: ApiOk<Business> = { data: updated };
     return c.json(body);
   })
@@ -365,7 +451,7 @@ export const platformRoutes = new Hono<AppEnv>()
 
     await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
       action: 'organization.archived',
-      description: `Archived the organization ${before.name}`,
+      description: `Archived the space ${before.name}`,
       entity_type: 'organization',
       entity_id: id,
     });
@@ -381,7 +467,7 @@ export const platformRoutes = new Hono<AppEnv>()
 
     await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {
       action: 'organization.restored',
-      description: `Restored the organization ${before.name}`,
+      description: `Restored the space ${before.name}`,
       entity_type: 'organization',
       entity_id: id,
     });
@@ -496,7 +582,7 @@ export const platformRoutes = new Hono<AppEnv>()
       const person = await getPersonById(c.env.DB, userId);
 
       if (!person || !(await removeRole(c.env.DB, id, userId, 'admin'))) {
-        throw ApiError.notFound('That person is not an admin of this organization.');
+        throw ApiError.notFound('That person is not an admin of this space.');
       }
 
       await recordAudit(c.env.DB, c.get('person'), orgIdFromRow(id), {

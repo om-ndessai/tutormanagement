@@ -1,9 +1,14 @@
-# The organization picker: someone in two organizations chooses, stars a default (and clears
-# it), and enters one -- which then wears that organization's brand.
+# Phase 60 (S4, S5): the selector and the landing rule. Priya is in two spaces; with no last choice
+# she arrives at "Choose a space" (no star any more). Opening Riverside makes it her last choice, so
+# her next sign-in lands there by itself; switching to CHMI in the account sheet moves it again.
+# Other flows enter spaces as Priya, which moves her last choice: it is cleared first.
 appId: ${APP_ID}
 tags:
   - feature
 ---
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: priya.raghavan@gmail.com }
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -11,33 +16,96 @@ tags:
       ORG: ''
 - extendedWaitUntil:
     visible:
-      id: screen-select-organization
+      id: screen-spaces
     timeout: 20000
-# Phase 52: on screen it is a space, and there is a way to join or make another.
 - assertVisible: 'Choose a space'
-- assertVisible:
-    id: select-join-space
+- assertVisible: '.*You land in the space you opened last\. Each tab can be in a different one\..*'
 - assertVisible:
     id: org-chmi
 - assertVisible:
     id: org-riverside
-- assertVisible: 'Star one to land in it whenever you sign in.'
-# Star a default, then clear it again (the seed has none).
+- assertNotVisible: 'Default'
+- assertNotVisible: '.*on sign-in.*'
+- assertVisible:
+    id: welcome-join
+- takeScreenshot: spaces-selector
+# Open Riverside: it becomes the last choice.
 - tapOn:
-    id: org-default-riverside
-- extendedWaitUntil:
-    visible: 'You will land in Riverside Tutoring when you sign in.'
-    timeout: 10000
-- assertVisible: 'Default'
-- tapOn:
-    id: org-default-riverside
-- extendedWaitUntil:
-    visible: 'You will choose where to go when you sign in.'
-    timeout: 10000
-# Enter one.
-- tapOn:
-    id: org-chmi
+    id: org-riverside
 - extendedWaitUntil:
     visible:
       id: screen-home
     timeout: 20000
+# Arriving again (a fresh launch and sign-in, no space named): Riverside, without the selector.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Riverside'
+- assertNotVisible:
+    id: account-default-chmi
+# Switch to CHMI from the sheet: the last choice moves with it.
+- tapOn:
+    id: account-org-chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at CHMI'
+# Spaces, from the account sheet: the current one is "Here now".
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-here-chmi
+- assertNotVisible:
+    id: org-here-riverside
+- assertNotVisible:
+    id: spaces-sign-out
+- takeScreenshot: spaces-page
+# Open Riverside from here.
+- tapOn:
+    id: org-riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: clear-last, EMAIL: priya.raghavan@gmail.com }

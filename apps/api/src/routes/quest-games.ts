@@ -142,7 +142,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const input = c.req.valid('json');
     const levels = await playableLevels(c.env.DB, org);
     if (!levels.some((level) => level.level_id === input.level_id)) {
-      throw ApiError.badRequest('This organization does not offer that level.');
+      throw ApiError.badRequest('This space does not offer that level.');
     }
     // Random draws from the level and those above it that have questions here.
     const playable = levels.filter((level) => level.available > 0).map((level) => level.level_id);

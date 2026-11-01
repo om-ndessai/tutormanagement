@@ -139,8 +139,8 @@ export function OrganizationSettingsPage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
-        {/* Phase 50: the 1099 payer belongs to Tutoring (payments and tax). Phase 54: it is the
-            space's organization's; a space paid directly has none. */}
+        {/* Phase 50: the 1099 payer belongs to Tutoring (payments and tax). Phase 59: the payer
+            details are the space's own; a space where families pay each tutor has none. */}
         {featureAllowed(organization, 'tutoring') && !organization.business && (
           <Card className="py-0" data-testid="paid-directly-card">
             <CardContent className="grid gap-2 p-5 text-sm">
@@ -149,10 +149,9 @@ export function OrganizationSettingsPage() {
               </h2>
               <p className="font-medium">Families pay each tutor directly</p>
               <p className="text-muted-foreground">
-                No organization runs this space’s money: a lesson has one price, the family pays the
-                tutor who taught it, and nobody takes a cut. Tutors record the payments they receive, and
-                each gets a year-end summary of them; the space files no 1099s. To have an organization
-                run it, ask the platform administrator.
+                A lesson has one price, the family pays the tutor who taught it, and nobody takes a cut.
+                Tutors record the payments they receive, and each gets a year-end summary of them; the
+                space files no 1099s. To have the space collect payments, ask the platform administrator.
               </p>
             </CardContent>
           </Card>
@@ -165,15 +164,14 @@ export function OrganizationSettingsPage() {
                 1099 payer
               </h2>
               <p className="text-sm" data-testid="space-business-name">
-                Run by <span className="font-medium">{organization.business.name}</span>
-                <span className="text-muted-foreground">
-                  {' '}— families pay it, and it files the 1099s. Its details are shared by every space it runs.
-                </span>
+                Families pay the space, and it files the 1099s as{' '}
+                <span className="font-medium">{organization.business.name}</span>
+                <span className="text-muted-foreground"> (the name on the 1099, set by the platform).</span>
               </p>
               {field(
                 'tin',
                 'Payer TIN',
-                'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+                'The EIN the space files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
                 '12-3456789',
               )}
               <div className="grid gap-4 sm:grid-cols-2">
@@ -215,14 +213,15 @@ export function OrganizationSettingsPage() {
                 <dd>{ORG_TIME_ZONE_LABELS[organization.time_zone]} time</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground text-xs">Feature sets</dt>
+                <dt className="text-muted-foreground text-xs">This space may use</dt>
                 <dd data-testid="org-feature-sets">
                   {allowedFeatureSets(organization).map((set) => FEATURE_SET_LABELS[set]).join(', ') || 'None yet'}
                 </dd>
               </div>
             </dl>
             <p className="text-muted-foreground text-xs">
-              To change the name, logo, palette, clock or feature sets, ask the platform administrator.
+              To change the name, logo, palette, clock, who families pay or what this space may use, ask the
+              platform administrator.
             </p>
           </CardContent>
         </Card>
@@ -289,7 +288,7 @@ function CanvasAssessmentsCard({
         <div className="flex items-start gap-4">
           <div className="grid flex-1 gap-1">
             <h2 className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-              Assessment
+              Assessment in this space
               <Badge variant="secondary" className="px-1.5 py-0 text-[10px] tracking-normal normal-case">
                 Beta
               </Badge>
@@ -392,7 +391,7 @@ function GamificationCard({ questQuest }: { questQuest: boolean }) {
       <CardContent className="grid gap-4 p-5 text-sm">
         <div className="flex items-start gap-4">
           <div className="grid flex-1 gap-1">
-            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Gamification</h2>
+            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Quest in this space</h2>
             <h3 className="text-xs font-medium">Question Quest</h3>
             <p className="text-muted-foreground text-xs">
               When on, a student who signs in answers the question bank’s questions that no person has approved yet,

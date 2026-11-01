@@ -118,7 +118,7 @@ export function SpaceDangerCard() {
               size="sm"
               variant="outline"
               disabled={leave.isPending}
-              onClick={() => leave.mutate(undefined, { onSuccess: () => window.location.assign('/'), onError: (e) => fail(e, 'Could not leave.') })}
+              onClick={() => leave.mutate(organization.slug, { onSuccess: () => window.location.assign('/'), onError: (e) => fail(e, 'Could not leave.') })}
               data-testid="space-leave"
             >
               Leave {organization.short_name}

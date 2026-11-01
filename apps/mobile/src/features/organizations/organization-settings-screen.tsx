@@ -2,8 +2,9 @@
 // Assessment card, Phase 38, @ 22b9701; the Gamification card, Phase 42, @ 82397b8; Phase 50's
 // feature sets @ 2471d84, working tree: each card shows only where its set is allowed, and the
 // platform's facts name the allowed sets; Phase 52's space code, danger panel and words @ 9485a8e;
-// Phase 54 @ 24066d9, working tree: the payer is the space's organization's, "Run by <name>" above
-// it, and a space paid directly has none -- "Families pay each tutor directly").
+// Phase 54 @ 24066d9, working tree: a space paid directly has no payer -- "Families pay each tutor
+// directly"; Phase 59 @ f96b984, working tree (docs/spaces-plan.md S2, S3): the payer details are the
+// space's own, "Families pay the space, and it files the 1099s as <name>", and "This space may use").
 //
 // The organization's own settings, for its admins: the payer box on every 1099 it issues. Its name,
 // look and clock are set by the platform, and shown here for reference. The organization's name on
@@ -109,11 +110,11 @@ export function OrganizationSettingsScreen() {
       ) : settings.isError || !settings.data ? (
         <ErrorState error={settings.error} onRetry={() => void settings.refetch()} />
       ) : tutoring && !organization.business ? (
-        // Phase 54: no organization runs this space's money, so there is no payer to edit.
+        // Phase 54: families pay each tutor, so there is no payer to edit.
         <PaidDirectlyCard />
       ) : tutoring && organization.business ? (
         // Keyed on the load, so the form starts from the server's values once. The 1099 payer
-        // belongs to Tutoring (payments and tax), Phase 50; since Phase 54 it is the organization's.
+        // belongs to Tutoring (payments and tax), Phase 50; since Phase 59 it is the space's own.
         <PayerForm
           key={settings.dataUpdatedAt}
           businessName={organization.business.name}
@@ -136,10 +137,11 @@ export function OrganizationSettingsScreen() {
             value={`${ORG_TIME_ZONE_LABELS[organization.time_zone]} time`}
           />
           <View testID="org-features">
-            <Fact label="Feature sets" value={featureSetsLabel(allowedFeatureSets(organization))} />
+            <Fact label="This space may use" value={featureSetsLabel(allowedFeatureSets(organization))} />
           </View>
           <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-            To change the name, logo, palette, clock or feature sets, ask the platform administrator.
+            To change the name, logo, palette, clock, who families pay or what this space may use, ask the
+            platform administrator.
           </Text>
         </View>
       </Panel>
@@ -188,7 +190,7 @@ function Fact({ label, value }: { label: string; value: string }) {
   );
 }
 
-/** Phase 54: a space with no organization -- what that means, in place of the payer form. */
+/** Phase 54: a space paid directly -- what that means, in place of the payer form. */
 function PaidDirectlyCard() {
   const theme = useAppTheme();
   return (
@@ -198,10 +200,9 @@ function PaidDirectlyCard() {
           Families pay each tutor directly
         </Text>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-          No organization runs this space’s money: a lesson has one price, the family pays the tutor who
-          taught it, and nobody takes a cut. Tutors record the payments they receive, and each gets a year-end
-          summary of them; the space files no 1099s. To have an organization run it, ask the platform
-          administrator.
+          A lesson has one price, the family pays the tutor who taught it, and nobody takes a cut. Tutors
+          record the payments they receive, and each gets a year-end summary of them; the space files no
+          1099s. To have the space collect payments, ask the platform administrator.
         </Text>
       </View>
     </Panel>
@@ -259,14 +260,12 @@ function PayerForm({ initial, businessName }: { initial: SettingsForm; businessN
     <Panel title="1099 payer" testID="org-payer">
       <View style={{ gap: space.md }}>
         <Text testID="org-business-name" variant="bodyMedium">
-          Run by <Text style={{ fontWeight: '600' }}>{businessName}</Text>
-          <Text style={{ color: theme.tokens.mutedForeground }}>
-            {' '}
-            — families pay it, and it files the 1099s. Its details are shared by every space it runs.
-          </Text>
+          Families pay the space, and it files the 1099s as{' '}
+          <Text style={{ fontWeight: '600' }}>{businessName}</Text>
+          <Text style={{ color: theme.tokens.mutedForeground }}> (the name on the 1099, set by the platform).</Text>
         </Text>
         {field('tin', 'Payer TIN', {
-          hint: 'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
+          hint: 'The EIN the space files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
           placeholder: '12-3456789',
           autoComplete: 'off',
           autoCapitalize: 'none',

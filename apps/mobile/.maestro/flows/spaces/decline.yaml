@@ -66,7 +66,8 @@ tags:
     timeout: 30000
 - assertVisible: 'Riverside Tutoring didn’t accept your request to join.'
 - assertVisible:
-    id: welcome-make-adults
+    id: welcome-adults-only
+    text: 'To start a space of your own you need to be 18 or older.'
 - assertNotVisible:
     id: welcome-make
 - runFlow:

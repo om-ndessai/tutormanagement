@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { PLATFORM_BRAND } from './brand.js';
+import { featureAllowed, type FeatureState } from './features.js';
 import { ORG_TIME_ZONES, type OrgPalette } from './organizations.js';
 import { refuseSsn } from './tax.js';
 
@@ -56,7 +58,7 @@ export function spaceNameProblem(name: string, taken: readonly string[] = []): s
   const plain = name.trim().toLowerCase();
   const word = RESERVED_SPACE_WORDS.find((w) => new RegExp(`\\b${w}\\b`).test(plain));
   if (word) return `A space’s name cannot use the word “${word}”.`;
-  if (taken.some((t) => t.trim().toLowerCase() === plain)) return 'That name belongs to an organization on the platform.';
+  if (taken.some((t) => t.trim().toLowerCase() === plain)) return 'That name belongs to another space on the platform.';
   return null;
 }
 
@@ -104,6 +106,23 @@ export interface PlatformAccount {
   age_band: AgeBand;
 }
 
+/**
+ * Whether a person may start a space (adults only, S11). A self-registered person's age band
+ * decides. Someone a space added gave no age: a space vouches for an adult only by giving them a
+ * role a child does not hold there (admin, tutor, parent), and only while they belong to it -- a
+ * student alone, or someone in no space, is not known to be an adult. Platform admins may.
+ * The API and both clients call it, so the form and the refusal agree.
+ */
+export function mayMakeSpace(standing: {
+  account: PlatformAccount | null;
+  memberships: readonly { roles: readonly string[] }[];
+  platform_admin?: boolean;
+}): boolean {
+  if (standing.account) return standing.account.age_band === 'adult';
+  if (standing.platform_admin) return true;
+  return standing.memberships.some((m) => m.roles.some((role) => role !== 'student'));
+}
+
 // --- joining ------------------------------------------------------------------
 
 /** What a code shows before asking to join: the space's face, never its people. */
@@ -146,3 +165,102 @@ export interface SpaceCode {
 /** Deleting a space: its admin types its name to confirm. */
 export const deleteSpaceSchema = z.object({ confirm_name: z.string().trim().min(1).max(120) });
 export type DeleteSpaceInput = z.input<typeof deleteSpaceSchema>;
+
+/**
+ * Phase 60 (S4, docs/spaces-plan.md): where a tab or the app ARRIVING with no space of its own
+ * lands, from the person's own session. In order:
+ * 1. a link naming a space (`?org=`, a calendar or share link), if they may enter it;
+ * 2. the last space they chose (`is_default`, kept on the server, so every device agrees), if they
+ *    may still enter it;
+ * 3. exactly one space they may enter, and nothing pending (no invitation, no OPEN request to join:
+ *    a declined one, shown until seen, has been answered);
+ * 4. otherwise null: the selector ("Choose a space", or Welcome with nowhere to go).
+ * Both clients call it, so the web and the app land alike.
+ */
+export function decideLanding(
+  session: {
+    memberships: readonly { slug: string; status: 'active' | 'suspended'; is_default: boolean }[];
+    invitations: readonly unknown[];
+    join_requests?: readonly { outcome?: string | null }[] | null;
+  },
+  linked?: string | null,
+): string | null {
+  const active = session.memberships.filter((m) => m.status === 'active');
+  if (linked) {
+    const named = active.find((m) => m.slug === linked.trim().toLowerCase());
+    if (named) return named.slug;
+  }
+  const last = active.find((m) => m.is_default);
+  if (last) return last.slug;
+  // A declined request (kept until seen) has been answered: only an open one is pending.
+  const open = (session.join_requests ?? []).filter((r) => r.outcome == null).length;
+  const pending = session.invitations.length + open;
+  if (active.length === 1 && pending === 0) return active[0]!.slug;
+  return null;
+}
+
+// --- inviting people, after starting a space (Phase 61, S12) ------------------
+
+/**
+ * The roles the "Invite people" step offers, in order. Students are not here: they are added in
+ * the welcome wizard's "Add a student", which keeps the guardian and consent rules (Phase 52).
+ */
+export const SPACE_INVITE_ROLES = ['admin', 'parent', 'tutor'] as const;
+export type SpaceInviteRole = (typeof SPACE_INVITE_ROLES)[number];
+
+/** The roles a space's invite rows may offer: Tutor only where Tutoring is allowed (never a newcomer's). */
+export function inviteRolesFor(org: Partial<FeatureState> | null | undefined): SpaceInviteRole[] {
+  return SPACE_INVITE_ROLES.filter((role) => role !== 'tutor' || featureAllowed(org, 'tutoring'));
+}
+
+/** One row of the step: an email and a role, and the name to show until they accept (optional). */
+export const spaceInviteRowSchema = z.object({
+  // Trimmed BEFORE the format check: z.email() checks the raw text, so a chained .trim() came too
+  // late and refused an address pasted with a space around it.
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email({ message: 'Enter a valid email address.' }).max(254)),
+  full_name: refuseSsn(z.string().trim().max(120, 'Name must be 120 characters or fewer.')).optional(),
+  role: z.enum(SPACE_INVITE_ROLES),
+});
+export type SpaceInviteRowInput = z.input<typeof spaceInviteRowSchema>;
+export type SpaceInviteRow = z.output<typeof spaceInviteRowSchema>;
+
+/** "maria.lopez@example.com" -> "Maria Lopez": the name a row without one is sent with. */
+export function nameFromEmail(email: string): string {
+  const local = email.split('@')[0] ?? '';
+  const words = local.split(/[._+-]+/).filter(Boolean);
+  const name = words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  return name || email;
+}
+
+/**
+ * The ordinary add-person request (`POST /api/users`) a row becomes. The person is INVITED: an
+ * existing account gets an invitation it accepts (S6), and a new email makes the person, invited,
+ * who signs in later and finds it waiting -- a self-serve space's invitation is never accepted for
+ * them (Phase 51). Both clients send exactly this.
+ */
+export function inviteRowRequest(row: SpaceInviteRow): {
+  email: string;
+  full_name: string;
+  roles: [SpaceInviteRole];
+  status: 'invited';
+} {
+  return {
+    email: row.email,
+    full_name: row.full_name?.trim() ? row.full_name.trim() : nameFromEmail(row.email),
+    roles: [row.role],
+    status: 'invited',
+  };
+}
+
+/**
+ * The words "Copy invitation" and "Share" hand over: a self-serve space sends no email (Phase 51),
+ * so the inviter tells them. Names only the inviter, the space, the address and the invitee's own
+ * email -- never a code, a role or anything else about the space.
+ */
+export function invitationText(input: { inviter: string; space: string; address: string; email: string }): string {
+  return `${input.inviter} invited you to ${input.space} on ${PLATFORM_BRAND.name}. Sign in at ${input.address} with ${input.email}.`;
+}

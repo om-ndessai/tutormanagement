@@ -62,10 +62,17 @@ describe('space model (Phase 52)', () => {
     expect(declined.map((r) => r.slug)).toEqual(['b']);
   });
 
-  it('lets adults (and anyone a space added) make a space', () => {
-    expect(canMake(null)).toBe(true);
+  it('lets adults make a space, and those a space added only through an adult’s role (S11)', () => {
     expect(canMake({ age_band: 'adult' })).toBe(true);
     expect(canMake({ age_band: '13-17' })).toBe(false);
+    expect(canMake({ age_band: '13-17' }, [{ roles: ['parent'] }])).toBe(false);
+    // Added by a space, no age given: a role a child does not hold vouches; a student's does not.
+    expect(canMake(null, [{ roles: ['parent'] }])).toBe(true);
+    expect(canMake(null, [{ roles: ['student'] }, { roles: ['tutor', 'student'] }])).toBe(true);
+    expect(canMake(null, [{ roles: ['student'] }])).toBe(false);
+    expect(canMake(null, [])).toBe(false);
+    expect(canMake(null)).toBe(false);
+    expect(canMake(null, [], true)).toBe(true);
   });
 
   it('says why a found space cannot be asked', () => {

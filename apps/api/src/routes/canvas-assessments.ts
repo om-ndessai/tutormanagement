@@ -155,7 +155,7 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     }
     if (!bankLevelOffered(input.level_id, await offeredCurricula(c.env.DB, org.id))) {
       throw ApiError.validation('That level is not offered here.', {
-        level_id: ['A level needs its curriculum on the organization’s curriculum list.'],
+        level_id: ['A level needs its curriculum on the space’s curriculum list.'],
       });
     }
     const drawn = await drawQuestionIds(

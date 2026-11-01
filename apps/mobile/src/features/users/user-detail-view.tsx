@@ -69,7 +69,7 @@ export function UserDetailView({
     minutes != null ? (
       formatDuration(minutes)
     ) : (
-      <Muted>{`${formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)`}</Muted>
+      <Muted>{`${formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (space default)`}</Muted>
     );
 
   const sections = recordSections(user, viewer, { compact, tutoring });

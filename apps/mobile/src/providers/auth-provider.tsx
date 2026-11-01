@@ -1,4 +1,5 @@
-// Ported from apps/web/src/providers/auth-provider.tsx @ 1132322 (Phase 52's sign-up @ 9485a8e)
+// Ported from apps/web/src/providers/auth-provider.tsx @ 1132322 (Phase 52's sign-up @ 9485a8e;
+// Phase 60's landing @ f96b984 plus the working tree)
 import { useQueryClient } from '@tanstack/react-query';
 import {
   DEFAULT_ORG_TIME_ZONE,
@@ -15,7 +16,8 @@ import {
 } from '@tmi/shared';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
-import { decideLanding } from '@/features/auth/landing';
+import { landingFor } from '@/features/auth/landing';
+import { resetInvitationBanner } from '@/features/organizations/spaces-model';
 import { offersGoogle, signInProviders, type UsableProvider } from '@/features/auth/provider-model';
 import { signupRequest, type PendingSignup, type SignupForm } from '@/features/auth/sign-up-model';
 import { ApiRequestError, apiClient, setReauthenticator } from '@/lib/api-client';
@@ -71,6 +73,11 @@ interface AuthContextValue {
   chooseOrganization: (slug: string) => Promise<void>;
   /** Leaves the organization for the picker (or the console). */
   leaveOrganization: () => void;
+  /**
+   * Phase 60: forgets the space the app is in and lands again by the rule (the person's last
+   * space, their only one, or the selector) -- after leaving the space they were in.
+   */
+  reland: () => Promise<void>;
   refreshSession: () => Promise<void>;
   config: AuthConfig | null;
   /** True when the API is running with sign-in switched off. */
@@ -169,8 +176,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Arriving: a fresh launch or a fresh sign-in, when a default organization decides.
-  const arrivingRef = useRef(true);
+  // The space this run chose (switched to, entered or landed in); null while ARRIVING (a fresh
+  // launch or sign-in), when the landing rule decides -- never the device's remembered last space.
+  const ownRef = useRef<string | null>(null);
+  // A link naming a space (the developer link's `org`): kept until the app is in it, or it cannot be entered.
+  const linkedRef = useRef<string | null>(null);
 
   const applySession = useCallback(async (session: SessionResponse): Promise<boolean> => {
     setImpersonated(session.impersonated);
@@ -181,20 +191,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(session.account ?? null);
     setJoinRequests(session.join_requests ?? []);
 
-    const landing = decideLanding(session, arrivingRef.current);
+    const landing = landingFor(session, { own: ownRef.current, linked: linkedRef.current });
+    if (landing.kind !== 'enter' || landing.slug !== linkedRef.current) linkedRef.current = null;
     if (landing.kind === 'enter') {
       await setActiveOrg(landing.slug);
-      // A default is honoured once, on arrival; a single membership is simply entered.
-      arrivingRef.current = false;
+      ownRef.current = landing.slug;
       return false;
     }
-    arrivingRef.current = false;
     if (landing.kind === 'in') {
+      ownRef.current = landing.slug;
       await setActiveOrg(landing.slug);
       setOrganization(session.organization);
       setUser(session.user);
       return true;
     }
+    ownRef.current = null;
     clearActiveOrg();
     setOrganization(null);
     setUser(session.user);
@@ -213,7 +224,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resetSignedOut = useCallback(() => {
     queryClient.clear();
     clearActiveOrg();
-    arrivingRef.current = true;
+    ownRef.current = null;
+    linkedRef.current = null;
+    resetInvitationBanner();
     setUser(null);
     setOrganization(null);
     setMemberships([]);
@@ -227,9 +240,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const boot = useCallback(async () => {
     await loadServerPrefs();
-    // The last organization this device used is where an arriving run starts looking (the
-    // web app's tmi_last_org cookie); a default membership still outranks it.
+    // The last space this device used names the first request's space (the web app's
+    // tmi_last_org cookie), which saves a round trip when it is also the person's last choice.
+    // It never decides: an arriving run lands by the rule, on the server's choice (Phase 60).
     clearActiveOrg();
+    ownRef.current = null;
     const last = await lastOrg();
     if (last) await setActiveOrg(last);
 
@@ -285,8 +300,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [boot]);
 
   // Once inside an organization, say so -- once per entry. The API answers whether this is
-  // the person's first visit ever, which offers them the tour.
+  // the person's first visit ever, which offers them the tour. Phase 60: it also makes this space
+  // the person's last choice, where they land next on any device.
   const enteredSlug = organization?.slug ?? null;
+  // The space the app is in, for chooseOrganization (which must not close over a stale one).
+  const enteredRef = useRef<string | null>(null);
+  useEffect(() => {
+    enteredRef.current = enteredSlug;
+  }, [enteredSlug]);
   useEffect(() => {
     if (!enteredSlug) return;
     apiClient
@@ -297,19 +318,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const leaveOrganization = useCallback(() => {
     clearActiveOrg();
+    ownRef.current = null;
     queryClient.clear();
     setOrganization(null);
     setFirstVisit(false);
   }, [queryClient]);
 
-  // The organization may not be entered any more (archived, or the person was removed).
+  const reland = useCallback(async () => {
+    leaveOrganization();
+    await loadSession();
+  }, [leaveOrganization, loadSession]);
+
+  // The organization may not be entered any more (archived, or the person was removed): back to
+  // the landing rule -- their other space, or the selector.
   useEffect(
     () =>
       on('organization-required', () => {
         if (!getActiveOrg()) return;
-        leaveOrganization();
+        void reland().catch(() => undefined);
       }),
-    [leaveOrganization],
+    [reland],
   );
 
   // Phase 50: a feature set switched off while the app is open answers 403 feature_unavailable. The
@@ -345,9 +373,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Everything starts clean in the new organization: no cached row from the old one survives.
       queryClient.clear();
       setFirstVisit(false);
+      const already = enteredRef.current === slug;
       await setActiveOrg(slug);
-      arrivingRef.current = false;
+      ownRef.current = slug;
       await loadSession();
+      // A choice opens the space, even the one the app is in: it becomes the last choice, as on the
+      // web (S4, S7). The entering effect above only runs when the space changes, so say it here.
+      if (already) {
+        await apiClient
+          .post<ApiOk<{ first_visit: boolean }>>('/auth/enter')
+          .then((response) => setFirstVisit(response.data.first_visit))
+          .catch(() => undefined);
+      }
     },
     [loadSession, queryClient],
   );
@@ -373,9 +410,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setStatus('unauthenticated');
         return;
       }
-      // Arriving: the person's default organization decides where they land, as on the web.
+      // Arriving: the landing rule decides (their last space, on any device), as on the web.
       queryClient.clear();
-      arrivingRef.current = true;
+      ownRef.current = null;
       await loadSession();
       setStatus('authenticated');
     } catch (caught) {
@@ -403,7 +440,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return;
         }
         queryClient.clear();
-        arrivingRef.current = true;
+        ownRef.current = null;
         await loadSession();
         setStatus('authenticated');
       } catch (caught) {
@@ -421,12 +458,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (APP_VARIANT === 'production') return;
       await setDevUser(email);
       queryClient.clear();
-      if (org) {
-        await setActiveOrg(org);
-        arrivingRef.current = false;
-      } else {
-        arrivingRef.current = true;
-      }
+      // Arriving; a linked space is entered ahead of the person's last one (as a web link is).
+      ownRef.current = null;
+      linkedRef.current = org || null;
+      if (org) await setActiveOrg(org);
       try {
         await loadSession();
         setStatus('authenticated');
@@ -455,7 +490,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (pendingSignup.dev) await setDevUser(pendingSignup.email);
       setPendingSignup(null);
       queryClient.clear();
-      arrivingRef.current = true;
+      ownRef.current = null;
       await loadSession();
       setStatus('authenticated');
     },
@@ -502,6 +537,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       firstVisit,
       chooseOrganization,
       leaveOrganization,
+      reland,
       refreshSession,
       config,
       impersonated,
@@ -534,6 +570,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       firstVisit,
       chooseOrganization,
       leaveOrganization,
+      reland,
       refreshSession,
       config,
       impersonated,

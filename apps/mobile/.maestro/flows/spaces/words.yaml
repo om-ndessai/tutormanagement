@@ -1,0 +1,1289 @@
+# Phase 59, S1 (docs/spaces-plan.md): "Organization" leaves every screen, in the app. Every screen
+# as each kind of reader -- the sign-in screen, an admin, a tutor, a parent and a student in chmi;
+# the admin of an Assessment-only space (assess) and of a space paid directly (solo); the platform
+# console -- and the admin's tour and the person form, says neither "organization" nor "institute"
+# as a generic word. Proper names stay: "Chapel Hill Math Institute", the "Mathematics Institute of
+# the Triangle", and the seed's lesson places ("Institute, room 2"). BAD is that rule as one regex,
+# matched against every element's text and accessibility label, before and after scrolling.
+# Reads only: nothing is saved (the tour is finished by an admin who had finished it already).
+appId: ${APP_ID}
+tags:
+  - feature
+env:
+  BAD: '(?is).*(organi[sz]ation|\binstitute(?<!chapel hill math institute)(?<!mathematics institute)(?!, room)).*'
+---
+# Signed out: the sign-in screen, with the platform's blurb.
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# ---- Priya: admin and tutor in chmi ------------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: 'chmi'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-home'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://sessions
+- extendedWaitUntil:
+    visible:
+      id: 'screen-sessions'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://schedule
+- extendedWaitUntil:
+    visible:
+      id: 'screen-schedule'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress/00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress-student'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: 'screen-more'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://analytics
+- extendedWaitUntil:
+    visible:
+      id: 'screen-dashboard-analytics'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: 'screen-people'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people/00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: 'screen-person'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://pairings
+- extendedWaitUntil:
+    visible:
+      id: 'screen-pairings'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://locations
+- extendedWaitUntil:
+    visible:
+      id: 'screen-locations'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://billing
+- extendedWaitUntil:
+    visible:
+      id: 'screen-billing'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://comments
+- extendedWaitUntil:
+    visible:
+      id: 'screen-comments'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://activity
+- extendedWaitUntil:
+    visible:
+      id: 'screen-activity'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://profile
+- extendedWaitUntil:
+    visible:
+      id: 'screen-profile'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: 'screen-organization'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: '(screen-assessments|screen-feature-unavailable)'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://quest
+- extendedWaitUntil:
+    visible:
+      id: '(screen-quest|screen-feature-unavailable)'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://search
+- extendedWaitUntil:
+    visible:
+      id: 'screen-search'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://spaces
+- extendedWaitUntil:
+    visible:
+      id: 'screen-spaces'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# The account sheet: the space switcher, the Spaces page, the tour.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# The person form: the role hints ("Runs the space", never "Owns the institute"). Unsaved.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: create-button
+    timeout: 20000
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-sheet
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- tapOn:
+    id: create-action-add-person
+- extendedWaitUntil:
+    visible:
+      id: person-role-student
+    timeout: 15000
+- assertVisible: '(?s).*Runs the space\. Only admins can add people\..*'
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- takeScreenshot: spaces-words-person-form
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-person-form
+- runFlow:
+    when:
+      visible: 'Discard changes\?'
+    commands:
+      - tapOn: 'Discard'
+# The tour, from the account sheet: "Your space at a glance", and every step after it.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-tour
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: account-tour
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- tapOn:
+    id: onboarding-choice-tour
+- extendedWaitUntil:
+    visible:
+      id: tour-card
+    timeout: 15000
+- assertVisible:
+    id: tour-title
+    text: 'Your space at a glance'
+- assertNotVisible: ${BAD}
+- takeScreenshot: spaces-words-tour
+- repeat:
+    times: 30
+    while:
+      visible:
+        id: tour-next
+    commands:
+      - tapOn:
+          id: tour-next
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - assertNotVisible: ${BAD}
+- tapOn:
+    id: tour-finish
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- retry:
+    maxRetries: 1
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: onboarding-close
+          commands:
+            - tapOn:
+                id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
+# ---- Alex: a tutor in chmi ----------------------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: 'chmi'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-home'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://sessions
+- extendedWaitUntil:
+    visible:
+      id: 'screen-sessions'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://schedule
+- extendedWaitUntil:
+    visible:
+      id: 'screen-schedule'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress/00000000-0000-4000-8000-000000000008
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress-student'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: 'screen-more'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://profile
+- extendedWaitUntil:
+    visible:
+      id: 'screen-profile'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://spaces
+- extendedWaitUntil:
+    visible:
+      id: 'screen-spaces'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# The account sheet: the space switcher, the Spaces page, the tour.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# ---- Anita: a parent, in chmi (and riverside) ----------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: 'chmi'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-home'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://sessions
+- extendedWaitUntil:
+    visible:
+      id: 'screen-sessions'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress/00000000-0000-4000-8000-000000000006
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress-student'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://billing
+- extendedWaitUntil:
+    visible:
+      id: 'screen-billing'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: 'screen-more'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://profile
+- extendedWaitUntil:
+    visible:
+      id: 'screen-profile'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://spaces
+- extendedWaitUntil:
+    visible:
+      id: 'screen-spaces'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# The account sheet: the space switcher, the Spaces page, the tour.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# ---- Sofia: a student in chmi ---------------------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: 'chmi'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-home'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://sessions
+- extendedWaitUntil:
+    visible:
+      id: 'screen-sessions'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://progress
+- extendedWaitUntil:
+    visible:
+      id: 'screen-progress'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: 'screen-more'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://profile
+- extendedWaitUntil:
+    visible:
+      id: 'screen-profile'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# The account sheet: the space switcher, the Spaces page, the tour.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# ---- Ines: the admin of an Assessment-only space -------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: 'assess'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-home'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: 'screen-assessments'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://quest
+- extendedWaitUntil:
+    visible:
+      id: '(screen-quest|screen-feature-unavailable)'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: 'screen-people'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: 'screen-more'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://activity
+- extendedWaitUntil:
+    visible:
+      id: 'screen-activity'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: 'screen-organization'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://spaces
+- extendedWaitUntil:
+    visible:
+      id: 'screen-spaces'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# The account sheet: the space switcher, the Spaces page, the tour.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# ---- Hannah: the admin of a space paid directly ("Families pay each tutor directly") --------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: hannah.brooks.tutor@gmail.com
+      ORG: 'solo'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-home'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://sessions
+- extendedWaitUntil:
+    visible:
+      id: 'screen-sessions'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://billing
+- extendedWaitUntil:
+    visible:
+      id: 'screen-billing'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://more
+- extendedWaitUntil:
+    visible:
+      id: 'screen-more'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: 'screen-organization'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# The account sheet: the space switcher, the Spaces page, the tour.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://dashboard
+- extendedWaitUntil:
+    visible:
+      id: account-button
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# ---- Nav: the platform console, in no space ------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: 'platform-org-chmi'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- tapOn:
+    id: platform-org-riverside
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+# Editing a space: "Who families pay", the payer details, the feature sets.
+- scrollUntilVisible:
+    element:
+      id: platform-org-edit
+    direction: UP
+- tapOn:
+    id: platform-org-edit
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- takeScreenshot: spaces-words-console-form
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-organization-form
+- runFlow:
+    when:
+      visible: 'Discard changes\?'
+    commands:
+      - tapOn: 'Discard'
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform/admins
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform-admins'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform/people
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform-people'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform/activity
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform-activity'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform/questions
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform-questions'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://platform
+- extendedWaitUntil:
+    visible:
+      id: 'screen-platform'
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+- scroll
+- assertNotVisible: ${BAD}
+

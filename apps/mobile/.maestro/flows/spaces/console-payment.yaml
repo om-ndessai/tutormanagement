@@ -1,0 +1,250 @@
+# Phase 59 (docs/spaces-plan.md, S2): a space's payer details are its own. Nav (platform admin) makes a
+# space as the form opens -- "Each tutor, directly", no payer fields -- and its row says "families pay
+# each tutor"; edited to "The space" with a TIN, its row says "families pay the space" and the form
+# reads the TIN back. No Organizations anywhere. Then the Space page, as each kind of space's admin:
+# Priya (chmi, collects) reads the space's own payer details under its own name, Hannah (solo, paid
+# directly) reads "Families pay each tutor directly" and no payer form; neither says "organization".
+# The test space is named "Mobile Console Academy …" so clean-platform.js retires it before and after
+# (the API has no delete). tutor-spaces/console-payment.yaml makes one the other way round.
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- assertNotVisible:
+    id: platform-businesses
+- assertNotVisible: '.*[Oo]rganization.*'
+# A new space, as the form opens: families pay each tutor.
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- tapOn:
+    id: org-form-name
+- inputText: 'Mobile Console Academy Tutors'
+- tapOn:
+    id: org-form-short
+- inputText: 'MCAT'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-form-payment-direct
+    centerElement: true
+- assertVisible: 'Who families pay'
+# Maestro's iOS driver reads no `checked` off a Pressable radio; iOS says it in the element's text.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: org-form-payment-direct
+          checked: true
+      - assertVisible:
+          id: org-form-payment-space
+          checked: false
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: org-form-payment-direct
+          text: 'radio button, checked'
+      - assertVisible:
+          id: org-form-payment-space
+          text: 'radio button, unchecked'
+- assertNotVisible:
+    id: org-form-payer
+- assertNotVisible: '.*[Oo]rganization.*'
+- takeScreenshot: spaces-console-payment-direct
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy Tutors created\..*'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: platform-org-mobile-console-academy-tutors
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-mobile-console-academy-tutors
+    centerElement: true
+- assertVisible:
+    id: platform-org-mobile-console-academy-tutors
+    text: '.*families pay each tutor'
+# Switched to the space, with its own payer details.
+- tapOn:
+    id: platform-org-mobile-console-academy-tutors
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- tapOn:
+    id: platform-org-edit
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: org-form-payment-space
+    centerElement: true
+- assertVisible: 'A change applies from now on; recorded lessons and payments keep theirs\.'
+- tapOn:
+    id: org-form-payment-space
+- scrollUntilVisible:
+    element:
+      id: org-form-payer-tin
+    centerElement: true
+- assertVisible:
+    id: org-form-payer
+- tapOn:
+    id: org-form-payer-tin
+- inputText: '98-7654321'
+- pressKey: Enter
+- assertNotVisible: '.*[Oo]rganization.*'
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy Tutors saved.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+# Reopened, the form reads the space's own TIN back.
+- tapOn:
+    id: platform-org-edit
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: org-form-payer-tin
+    centerElement: true
+- assertVisible: '98-7654321'
+# Back up to the choice, which the TIN's scroll may have left above the screen.
+- scrollUntilVisible:
+    element:
+      id: org-form-payment-space
+    direction: UP
+    centerElement: true
+# Maestro's iOS driver reads no `checked` off a Pressable radio; iOS says it in the element's text.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: org-form-payment-space
+          checked: true
+      - assertVisible:
+          id: org-form-payment-direct
+          checked: false
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: org-form-payment-space
+          text: 'radio button, checked'
+      - assertVisible:
+          id: org-form-payment-direct
+          text: 'radio button, unchecked'
+- takeScreenshot: spaces-console-payment-space
+# The form is a sheet: closed unchanged (a swipe on iOS, Back on Android).
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-organization-form
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-mobile-console-academy-tutors
+    centerElement: true
+- assertVisible:
+    id: platform-org-mobile-console-academy-tutors
+    text: '.*families pay the space'
+# The Space page of a space that collects: its own payer details, under its own name.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: org-tin
+    timeout: 20000
+- assertVisible:
+    id: org-business-name
+    text: 'Families pay the space, and it files the 1099s as Chapel Hill Math Institute.*'
+- assertVisible: '47-2019388'
+- assertNotVisible:
+    id: org-paid-directly
+- assertNotVisible: '.*[Oo]rganization.*'
+- takeScreenshot: spaces-console-payment-space-page
+# The Space page of a space paid directly: no payer details at all.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: hannah.brooks.tutor@gmail.com
+      ORG: solo
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://organization
+- extendedWaitUntil:
+    visible:
+      id: screen-organization
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: org-paid-directly
+    direction: DOWN
+    timeout: 30000
+- assertVisible: 'Families pay each tutor directly'
+- assertNotVisible:
+    id: org-tin
+- assertNotVisible:
+    id: org-business-name
+- assertNotVisible: '.*[Oo]rganization.*'

@@ -22,9 +22,8 @@ import { DashboardPage } from '@/pages/dashboard-page';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { OrganizationSettingsPage } from '@/features/organizations/organization-settings-page';
 import { RequireOrg } from '@/features/organizations/require-org';
-import { SelectOrganizationPage } from '@/features/organizations/select-organization-page';
+import { SpacesFrame, SpacesPage } from '@/features/organizations/spaces-page';
 import { OrganizationsPage } from '@/features/platform/organizations-page';
-import { BusinessesPage } from '@/features/platform/businesses-page';
 import { PlatformActivityPage } from '@/features/platform/platform-activity-page';
 import { PlatformAdminsPage } from '@/features/platform/platform-admins-page';
 import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
@@ -61,10 +60,16 @@ export function App() {
       <Route element={<RequireAuth />}>
         {/* Choosing where to go, and the platform console: signed in, but not
             inside any one organization. */}
-        <Route path="select-organization" element={<SelectOrganizationPage />} />
+        {/* Phase 60 (S7): the person's Spaces page -- in the portal's frame inside a space, the
+            full-screen selector outside one. The old picker's address leads to it. */}
+        <Route path="select-organization" element={<Navigate to="/spaces" replace />} />
+        <Route path="spaces" element={<SpacesFrame />}>
+          <Route index element={<SpacesPage />} />
+        </Route>
         <Route path="platform" element={<PlatformShell />}>
           <Route index element={<OrganizationsPage />} />
-          <Route path="organizations" element={<BusinessesPage />} />
+          {/* Phase 59: no separate payer records on screen; a space's dialog holds its own. */}
+          <Route path="organizations" element={<Navigate to="/platform" replace />} />
           <Route path="admins" element={<PlatformAdminsPage />} />
           <Route path="people" element={<PlatformPeoplePage />} />
           <Route path="activity" element={<PlatformActivityPage />} />

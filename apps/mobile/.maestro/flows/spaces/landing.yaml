@@ -1,0 +1,326 @@
+# Phase 60 (S4, docs/spaces-plan.md): the app lands in the last space chosen, which is the server's,
+# so it holds across devices and clients. Its own people: Olga Owner makes three self-serve spaces
+# (Alder, Birch, Cedar Landing) and invites Lena Lander to each as a parent, who accepts by API
+# (accepting alone never moves the choice). Lena starts with no last choice. Each sign-in-as is a
+# fresh launch and sign-in, so it is "sign out; sign in".
+#   1. the same as the web: choose Birch at the selector; sign in again: Birch. Switch to Alder in the
+#      account sheet; sign in again: Alder;
+#   2. across clients: Cedar opened on the web (POST /auth/enter, as the web sends it); the app: Cedar.
+#      Then Alder opened on the web, and the app chooses Cedar (the space it is in) on the Spaces page:
+#      Cedar is the last choice again, and the next sign-in lands there;
+#   3. a link (the developer link's org) to Birch while the last is Cedar: Birch, and it becomes the last;
+#   4. the last space removed: the selector, without it. Then the last suspended: straight into the
+#      single remaining space, which becomes the last choice.
+# Self-cleaning: both people (and Olga's spaces) are put back to nothing before and after.
+# The setup and the server-side checks are scripts/landing.js; spaces.js signs up and makes spaces.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: landing.owner@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: landing.member@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: landing.owner@example.com, NAME: Olga Owner }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: landing.member@example.com, NAME: Lena Lander }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: landing.owner@example.com, NAME: Alder Landing }
+  - evalScript: ${output.alder = output.slug}
+  - runScript:
+      file: ../../scripts/landing.js
+      env: { ACTION: invite, OWNER: landing.owner@example.com, MEMBER: landing.member@example.com, SLUG: "${output.alder}" }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: landing.owner@example.com, NAME: Birch Landing }
+  - evalScript: ${output.birch = output.slug}
+  - runScript:
+      file: ../../scripts/landing.js
+      env: { ACTION: invite, OWNER: landing.owner@example.com, MEMBER: landing.member@example.com, SLUG: "${output.birch}" }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: landing.owner@example.com, NAME: Cedar Landing }
+  - evalScript: ${output.cedar = output.slug}
+  - runScript:
+      file: ../../scripts/landing.js
+      env: { ACTION: invite, OWNER: landing.owner@example.com, MEMBER: landing.member@example.com, SLUG: "${output.cedar}" }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: tour-done, EMAIL: landing.member@example.com, ORG: "${output.alder}" }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: clear-last, EMAIL: landing.member@example.com }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: landing.owner@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: landing.member@example.com }
+tags:
+  - feature
+---
+# 1. No last choice and three spaces: the selector. Choose Birch.
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: '' }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 20000
+- assertVisible:
+    id: spaces-title
+    text: 'Choose a space'
+- assertVisible:
+    id: org-${output.alder}
+- assertVisible:
+    id: org-${output.birch}
+- assertVisible:
+    id: org-${output.cedar}
+- takeScreenshot: spaces-landing-selector
+- tapOn:
+    id: org-${output.birch}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.birch}" }
+# Signed out and in again: Birch, with no selector.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Birch Landing'
+# Switch to Alder from the account sheet: the last choice moves with it.
+- tapOn:
+    id: account-org-${output.alder}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.alder}" }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Alder Landing'
+
+# 2. Across clients: Cedar is opened on the web; the app, signing in, lands in Cedar.
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: enter, MEMBER: landing.member@example.com, SLUG: "${output.cedar}" }
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.cedar}" }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Cedar Landing'
+# Meanwhile Alder is opened on the web. In the app, choosing Cedar on the Spaces page -- the space it
+# is in, "Here now" -- still opens it: Cedar becomes the last choice again, as the web's choice does.
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: enter, MEMBER: landing.member@example.com, SLUG: "${output.alder}" }
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.alder}" }
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: org-here-${output.cedar}
+- tapOn:
+    id: org-${output.cedar}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.cedar}" }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Cedar Landing'
+
+# 3. A link naming Birch while the last choice is Cedar: Birch, and Birch becomes the last choice.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: "${output.birch}"
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Birch Landing'
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.birch}" }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Birch Landing'
+- takeScreenshot: spaces-landing-linked
+
+# 4a. The last space (Birch) removed: arriving, the selector, without Birch.
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: remove, OWNER: landing.owner@example.com, SLUG: "${output.birch}", ID: "${output.memberId}" }
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: '' }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 20000
+- assertVisible:
+    id: spaces-title
+    text: 'Choose a space'
+- assertVisible:
+    id: org-${output.alder}
+- assertVisible:
+    id: org-${output.cedar}
+- assertNotVisible:
+    id: org-${output.birch}
+# Choosing Cedar makes it the last choice...
+- tapOn:
+    id: org-${output.cedar}
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.cedar}" }
+
+# 4b. ...then Cedar is suspended: one space left to enter and nothing pending, so straight into Alder,
+# which becomes the last choice.
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: suspend, OWNER: landing.owner@example.com, SLUG: "${output.cedar}", ID: "${output.memberId}" }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: landing.member@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at Alder Landing'
+- runScript:
+    file: ../../scripts/landing.js
+    env: { ACTION: last, MEMBER: landing.member@example.com, EXPECT: "${output.alder}" }
+- assertNotVisible:
+    id: account-org-${output.cedar}

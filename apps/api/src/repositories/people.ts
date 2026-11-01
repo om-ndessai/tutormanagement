@@ -413,13 +413,16 @@ export async function createSignedUpPerson(
 
 /**
  * Whether the person may delete their account themselves: they belong to no space (removed from
- * every one), have no open request, and are not a platform admin.
+ * every one), have no open request, and are not a platform admin. A space that is archived does not
+ * count: it is gone from their session and cannot be left (POST /api/spaces/:slug/leave answers 404),
+ * so it would hold them forever; deleting the account closes that membership (`deleteOwnAccount`).
  */
 export async function accountDeletable(db: D1Database, userId: string): Promise<boolean> {
   const row = await db
     .prepare(
       // org-scope: a person's own memberships and requests across spaces, as counts.
-      `SELECT (SELECT COUNT(*) FROM org_members WHERE user_id = ?1 AND removed_at IS NULL)
+      `SELECT (SELECT COUNT(*) FROM org_members m JOIN organizations o ON o.id = m.organization_id
+               WHERE m.user_id = ?1 AND m.removed_at IS NULL AND o.archived_at IS NULL)
             + (SELECT COUNT(*) FROM join_requests WHERE user_id = ?1 AND outcome IS NULL)
             + (SELECT COUNT(*) FROM platform_admins WHERE user_id = ?1) AS n`,
     )
@@ -444,6 +447,16 @@ export async function deleteOwnAccount(db: D1Database, userId: string): Promise<
     // org-scope: a person's own shares, in every space, as their account goes.
     db.prepare(`UPDATE shares SET withdrawn_at = COALESCE(withdrawn_at, ${NOW}) WHERE user_id = ?`).bind(userId),
     db.prepare('DELETE FROM platform_accounts WHERE user_id = ?').bind(userId),
+    // Memberships of archived spaces (the only ones `accountDeletable` lets remain) end, as leaving
+    // does: restored, such a space has no deleted account among its members.
+    db
+      .prepare(
+        // org-scope: the person's own memberships of archived spaces, as their account goes.
+        `UPDATE org_members SET removed_at = ${NOW}, updated_at = ${NOW}
+         WHERE user_id = ? AND removed_at IS NULL
+           AND organization_id IN (SELECT id FROM organizations WHERE archived_at IS NOT NULL)`,
+      )
+      .bind(userId),
   ]);
 }
 

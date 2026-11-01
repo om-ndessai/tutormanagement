@@ -5,11 +5,14 @@ import { LAST_ORG_COOKIE, ORG_QUERY_PARAM } from '@tmi/shared';
  *
  * Kept per tab (sessionStorage), so two tabs can sit in two organizations and
  * neither can act in the other's. The last choice is also remembered for the
- * whole browser in a cookie, which picks the organization on the next visit
- * and brands the sign-in page. Neither is a secret: the API checks the
- * person's membership on every request.
+ * whole browser in a cookie (with sign-in off, the API reads it in place of the
+ * header). Since Phase 60 neither decides where an arriving tab lands: the
+ * person's last choice, kept on the server, does. Neither is a secret: the API
+ * checks the person's membership on every request.
  */
 const TAB_KEY = 'tmi_org';
+/** The space this tab last told the server it OPENED (Phase 60, S9): a reload of it is not an opening. */
+const ENTERED_KEY = 'tmi_org_entered';
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
 function readCookie(name: string): string | null {
@@ -28,23 +31,29 @@ export function getActiveOrg(): string | null {
 }
 
 /**
- * True once this tab has an organization of its own -- chosen, switched to, or
- * entered. A tab without one is arriving: just signed in, or freshly opened,
- * and that is when a person's default organization decides where they land.
+ * The space THIS TAB chose -- switched to, entered, or landed in -- or null for a tab that is
+ * arriving (just signed in, or freshly opened). An arriving tab lands by the Phase 60 rule
+ * (`decideLanding`): the browser's cookie never decides it, the person's last choice on the
+ * server does.
  */
-export function hasTabOrg(): boolean {
+export function getTabOrg(): string | null {
   try {
-    return Boolean(sessionStorage.getItem(TAB_KEY));
+    return sessionStorage.getItem(TAB_KEY) || null;
   } catch {
-    return false;
+    return null;
   }
+}
+
+/** True once this tab has a space of its own (see getTabOrg). */
+export function hasTabOrg(): boolean {
+  return getTabOrg() !== null;
 }
 
 /**
  * The organization a link names (`?org=<slug>`, as in every notification
  * email), taken off the address so a reload or a copied URL does not keep
  * re-choosing it. Only names a choice: the API still checks membership, and a
- * slug the person cannot enter simply lands them at the picker.
+ * slug the person cannot enter is passed over for the landing rule.
  */
 export function takeLinkedOrg(): string | null {
   try {
@@ -59,6 +68,13 @@ export function takeLinkedOrg(): string | null {
   }
 }
 
+/** `path` with `?org=<slug>` added (replacing any): a link that names the space, for a sign-in round trip. */
+export function withLinkedOrg(path: string, slug: string): string {
+  const url = new URL(path, 'http://link.invalid');
+  url.searchParams.set(ORG_QUERY_PARAM, slug);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
 export function setActiveOrg(slug: string): void {
   try {
     sessionStorage.setItem(TAB_KEY, slug);
@@ -71,6 +87,7 @@ export function setActiveOrg(slug: string): void {
 export function clearActiveOrg(): void {
   try {
     sessionStorage.removeItem(TAB_KEY);
+    sessionStorage.removeItem(ENTERED_KEY);
   } catch {
     // See getActiveOrg.
   }
@@ -85,4 +102,36 @@ export function withOrg(url: string): string {
   const slug = getActiveOrg();
   if (!slug) return url;
   return `${url}${url.includes('?') ? '&' : '?'}${ORG_QUERY_PARAM}=${encodeURIComponent(slug)}`;
+}
+
+/**
+ * Whether this load OPENS the tab's space (Phase 60, S4/S9): true for an arriving tab, a switch, a
+ * choice on the Spaces page or a link -- every case where the tab was not already in it -- and false
+ * for a reload or a full navigation of a tab that was. Only an opening moves the person's last choice,
+ * so one tab's reload never takes back another tab's switch.
+ */
+export function isOpeningTabOrg(slug: string): boolean {
+  try {
+    return sessionStorage.getItem(ENTERED_KEY) !== slug;
+  } catch {
+    return true;
+  }
+}
+
+/** Notes that this tab has opened `slug` (see isOpeningTabOrg). */
+export function markTabOrgEntered(slug: string): void {
+  try {
+    sessionStorage.setItem(ENTERED_KEY, slug);
+  } catch {
+    // See getActiveOrg.
+  }
+}
+
+/** Forgets the tab's opening, so the next load opens its space again (a choice, even of the same one). */
+export function forgetTabOrgEntered(): void {
+  try {
+    sessionStorage.removeItem(ENTERED_KEY);
+  } catch {
+    // See getActiveOrg.
+  }
 }

@@ -37,8 +37,8 @@ export const PLATFORM_BRAND: Brand = {
   short: 'Aimtrue',
   tagline: 'Set the goal. Aim true.',
   blurb:
-    'Plans, lessons, progress and payments for organizations that teach — each ' +
-    'with its own people, its own records and its own look.',
+    'Plans, lessons, progress and payments for tutors, families and schools — each ' +
+    'space with its own people, its own records and its own look.',
   palette: 'platform',
   builtin_logo: null,
   logo_mark_url: null,

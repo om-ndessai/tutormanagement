@@ -57,7 +57,7 @@ export function requestedOrgSlug(c: Context<AppEnv>): string {
 export const requireOrg = createMiddleware<AppEnv>(async (c, next) => {
   const slug = requestedOrgSlug(c);
   const refuse = () =>
-    new ApiError(403, 'organization_required', 'Choose an organization to continue.');
+    new ApiError(403, 'organization_required', 'Choose a space to continue.');
 
   if (!slug) throw refuse();
 

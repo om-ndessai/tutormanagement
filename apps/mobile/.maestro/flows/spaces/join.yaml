@@ -1,16 +1,57 @@
 # Phase 52 (design 63): a newcomer joins with a code. The institute's code (joining off) opens
 # nothing, in the same words as no code at all; the self-serve space's code, typed any old way, finds
 # it; asking shows the request waiting, and withdrawing takes it away.
-# Self-cleaning: Nina's request to the self-serve space is withdrawn before and after.
+# Phase 61 (S11, docs/spaces-plan.md): an invited person is not unknown. Hugo makes a space (the
+# script) and invites a new address as a parent, with the ordinary add-person request the "Invite
+# people" step sends; Ivy signs in and never sees About you or the Welcome: the selector, with her
+# invitation, which she accepts, and she is in the space.
+# A person a space added gave no age: once they belong nowhere, nobody vouches that they are an
+# adult, so Welcome offers them Join with a code alone (S11, as a 13-17), and the API refuses too.
+# Self-cleaning: Vera is put back to nothing before and after; Nina's request to the self-serve space is withdrawn before and after; Hugo (and his
+# space) and Ivy are put back to nothing before and after.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: withdraw, EMAIL: nina.newcomer@example.com, SLUG: assess }
+  # The host first: deleting his old space takes any old invitation of Ivy's with it.
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.host@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.invitee@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.unvouched@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.host@example.com, NAME: Hugo Host }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: make-space, EMAIL: spaces.host@example.com, NAME: The Host family }
+  # inviteRowRequest in packages/shared: the person is INVITED, as a parent.
+  - runScript:
+      file: ../../scripts/local-api.js
+      env:
+        METHOD: POST
+        API_PATH: /users
+        AS: spaces.host@example.com
+        ORG: ${output.slug}
+        BODY: '{"email":"spaces.invitee@example.com","full_name":"Ivy Invitee","roles":["parent"],"status":"invited"}'
 onFlowComplete:
   - runScript:
       file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.unvouched@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
       env: { ACTION: withdraw, EMAIL: nina.newcomer@example.com, SLUG: assess }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.host@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.invitee@example.com }
 tags:
   - feature
   - smoke
@@ -55,6 +96,36 @@ tags:
       id: welcome-request-assess
     timeout: 15000
 - takeScreenshot: spaces-welcome-request
+# Phase 60 (S9): a code does not let anyone in by itself -- the space's admins answer. Signing in
+# again, Nina still lands on Welcome with her request waiting, and in no space.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: nina.newcomer@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: welcome-request-assess
+    timeout: 15000
+- assertNotVisible:
+    id: screen-home
+# Finding the space again opens nothing either: the code only finds it.
+- tapOn:
+    id: welcome-code
+- eraseText: 20
+- inputText: 'FMXY2345'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: welcome-found-name
+      text: 'Ferreira Family Practice'
+    timeout: 15000
+- assertNotVisible:
+    id: screen-home
 - tapOn:
     id: welcome-withdraw-assess
 - extendedWaitUntil:
@@ -62,3 +133,67 @@ tags:
       id: welcome-request-assess
     timeout: 15000
 - assertVisible: 'Request to Ferreira Family Practice withdrawn.'
+# Phase 61 (S11): the invited person. Signing in, she meets neither About you nor the Welcome: the
+# selector, "Choose a space", with the invitation.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.invitee@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
+- assertVisible:
+    id: spaces-title
+    text: 'Choose a space'
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-sign-up
+- assertNotVisible: '.*Join a space with its code, or start your own\..*'
+- assertVisible:
+    id: invitation-${output.slug}
+- assertVisible: '.*The Host family.*'
+- assertVisible: '.*Invited as Parent.*'
+- takeScreenshot: spaces-invited-selector
+- tapOn:
+    id: invitation-accept-${output.slug}
+# Accepted: she is in the space, the selector gone.
+- extendedWaitUntil:
+    notVisible:
+      id: screen-spaces
+    timeout: 20000
+- assertNotVisible:
+    id: invitation-${output.slug}
+- assertNotVisible:
+    id: welcome-title
+# Vera: the institute added her (no age given), and she left. In no space, she may not start one.
+- runScript:
+    file: ../../scripts/spaces.js
+    env:
+      ACTION: add-person
+      EMAIL: spaces.unvouched@example.com
+      NAME: Vera Unvouched
+      ROLES: parent
+      ACTOR: priya.raghavan@gmail.com
+      ORG: chmi
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: leave, EMAIL: spaces.unvouched@example.com, SLUG: chmi }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.unvouched@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- assertVisible:
+    id: welcome-join
+- assertVisible:
+    id: welcome-adults-only
+- assertNotVisible:
+    id: welcome-make
+- assertNotVisible: 'Start a space'

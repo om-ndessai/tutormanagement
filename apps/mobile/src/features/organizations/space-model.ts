@@ -2,6 +2,7 @@
 // apps/web/src/features/organizations/{welcome.tsx, space-code-card.tsx} @ 9485a8e.
 import {
   createSpaceSchema,
+  mayMakeSpace,
   normalizeSpaceCode,
   ORG_TIME_ZONES,
   PLATFORM_BRAND,
@@ -55,9 +56,16 @@ export function splitRequests(requests: readonly MyJoinRequest[]): {
   };
 }
 
-/** Only an adult may make a space; someone a space added has no band and is not asked. */
-export function canMake(account: PlatformAccount | null): boolean {
-  return !account || account.age_band === 'adult';
+/**
+ * Only an adult may make a space (shared `mayMakeSpace`): someone a space added has no band, and
+ * counts as an adult only while they hold a role other than student in one of their spaces.
+ */
+export function canMake(
+  account: PlatformAccount | null,
+  memberships: readonly { roles: readonly string[] }[] = [],
+  platformAdmin = false,
+): boolean {
+  return mayMakeSpace({ account, memberships, platform_admin: platformAdmin });
 }
 
 /** What a found space says when the person may not ask (again). */

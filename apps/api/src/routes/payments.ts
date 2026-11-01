@@ -104,7 +104,7 @@ async function assertPaymentModel(
     }
     if (input.payee_user_id) {
       throw ApiError.validation('Please correct the highlighted fields.', {
-        payee_user_id: ['Families pay the organization here, not a tutor.'],
+        payee_user_id: ['Families pay the space here, not a tutor.'],
       });
     }
     return;

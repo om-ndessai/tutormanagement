@@ -10,6 +10,7 @@ import {
   type BusinessListItem,
   type CreateBusinessPayload,
   type UpdateBusinessPayload,
+  type SpacePayer,
   type CreateOrganizationPayload,
   type Invitation,
   type LogoContentType,
@@ -166,19 +167,24 @@ export async function getMembership(
   db: D1Database,
   org: OrgId,
   userId: string,
-): Promise<{ status: 'active' | 'invited' | 'suspended'; removed: boolean; roles: UserRole[] } | null> {
+): Promise<{ status: 'active' | 'invited' | 'suspended'; removed: boolean; roles: UserRole[]; is_default: boolean } | null> {
   const row = await db
     .prepare(
-      `SELECT m.status, m.removed_at,
+      `SELECT m.status, m.removed_at, m.is_default,
               (SELECT GROUP_CONCAT(r.role) FROM user_roles r
                WHERE r.organization_id = m.organization_id AND r.user_id = m.user_id) AS roles_csv
        FROM org_members m
        WHERE m.organization_id = ? AND m.user_id = ?`,
     )
     .bind(org, userId)
-    .first<{ status: 'active' | 'invited' | 'suspended'; removed_at: string | null; roles_csv: string | null }>();
+    .first<{ status: 'active' | 'invited' | 'suspended'; removed_at: string | null; is_default: number; roles_csv: string | null }>();
   if (!row) return null;
-  return { status: row.status, removed: row.removed_at !== null, roles: parseRoles(row.roles_csv) };
+  return {
+    status: row.status,
+    removed: row.removed_at !== null,
+    roles: parseRoles(row.roles_csv),
+    is_default: row.is_default === 1,
+  };
 }
 
 /** Every live organization the person may enter (active, or suspended so they can be told). */
@@ -212,8 +218,8 @@ export async function listMemberships(db: D1Database, userId: string): Promise<M
 }
 
 /**
- * Makes `org` the organization the person lands in on signing in, or clears
- * the choice (`null`). One batch, so there is never a moment with two -- the
+ * Makes `org` the organization the person lands in on signing in -- since Phase 60 the last
+ * one they opened (`POST /api/auth/enter`) -- or clears the choice (`null`). One batch, so there is never a moment with two -- the
  * partial unique index would refuse one anyway. The caller has checked the
  * person may enter `org`.
  */
@@ -238,6 +244,14 @@ export async function setDefaultOrganization(
       .prepare('UPDATE org_members SET is_default = 1 WHERE organization_id = ? AND user_id = ?')
       .bind(org, userId),
   ]);
+}
+
+/** Phase 60: a space the person has left is no longer their last choice. */
+export async function forgetLastChoice(db: D1Database, org: OrgId, userId: string): Promise<void> {
+  await db
+    .prepare('UPDATE org_members SET is_default = 0 WHERE organization_id = ? AND user_id = ? AND is_default = 1')
+    .bind(org, userId)
+    .run();
 }
 
 /** Organizations waiting for the person's answer. */
@@ -265,13 +279,25 @@ export async function listInvitations(db: D1Database, userId: string): Promise<I
   }));
 }
 
-/** Accepts or declines an invitation. Returns false when there was none. */
+/**
+ * Accepts or declines an invitation. Returns null when there was none; otherwise the name the
+ * inviting organization typed (`invited_name`, null when it typed none) -- which is all it may
+ * know of them until they accept, so a decline is logged under it (S6, R21).
+ */
 export async function answerInvitation(
   db: D1Database,
   org: OrgId,
   userId: string,
   accept: boolean,
-): Promise<boolean> {
+): Promise<{ invited_name: string | null } | null> {
+  const before = await db
+    .prepare(
+      `SELECT invited_name FROM org_members
+       WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`,
+    )
+    .bind(org, userId)
+    .first<{ invited_name: string | null }>();
+  if (!before) return null;
   const result = await db
     .prepare(
       accept
@@ -282,7 +308,7 @@ export async function answerInvitation(
     )
     .bind(org, userId)
     .run();
-  return Boolean(result.meta.changes);
+  return result.meta.changes ? { invited_name: before.invited_name } : null;
 }
 
 /**
@@ -504,11 +530,80 @@ export async function updateBusiness(
   return getBusiness(db, id);
 }
 
-/** Phase 54: the organization that runs a space's money from now on, or null (paid directly). */
+/** Phase 54: the business that collects a space's payments from now on, or null (paid directly). */
 export async function setSpaceBusiness(db: D1Database, orgId: string, businessId: string | null): Promise<void> {
   await db
     .prepare(`UPDATE organizations SET business_id = ?, updated_at = ${NOW} WHERE id = ?`)
     .bind(businessId, orgId)
+    .run();
+}
+
+/** The spaces a business is the payer of: one, or none (decision 5: never two). */
+export async function spacesOfBusiness(db: D1Database, businessId: string): Promise<string[]> {
+  const result = await db
+    // org-scope: whether a payer record is any other space's, which is what makes it shared.
+    .prepare('SELECT o.id FROM organizations o WHERE o.business_id = ?')
+    .bind(businessId)
+    .all<{ id: string }>();
+  return (result.results ?? []).map((row) => row.id);
+}
+
+/**
+ * The spaces other than `spaceId` a payer record belongs to: any space linked to it now, and the
+ * space it is keyed by (its own record, decision 5), even while that space is paid directly and
+ * the record sits unlinked. Linking a record this returns anything for would share it.
+ */
+export async function otherSpacesOfPayer(db: D1Database, businessId: string, spaceId: string | null): Promise<string[]> {
+  const result = await db
+    // org-scope: whether a payer record is any other space's, linked or keyed by its id.
+    .prepare('SELECT o.id FROM organizations o WHERE (o.business_id = ?1 OR o.id = ?1) AND o.id IS NOT ?2')
+    .bind(businessId, spaceId)
+    .all<{ id: string }>();
+  return (result.results ?? []).map((row) => row.id);
+}
+
+/**
+ * Phase 59: "The space" collects payments -- link the space's OWN payer record, keyed by its id:
+ * made (named after the space) if missing, restored if archived.
+ */
+export async function linkOwnPayer(db: D1Database, org: Organization): Promise<void> {
+  await db.batch([
+    db
+      .prepare(
+        `INSERT INTO businesses (id, name) VALUES (?, ?)
+         ON CONFLICT (id) DO UPDATE SET archived_at = NULL, updated_at = ${NOW}`,
+      )
+      .bind(org.id, org.name),
+    db.prepare(`UPDATE organizations SET business_id = ?, updated_at = ${NOW} WHERE id = ?`).bind(org.id, org.id),
+  ]);
+}
+
+/**
+ * Phase 59: the console's PATCH of a space's payer details, written to the business it points at.
+ * The caller has checked there is one, and that it is this space's alone.
+ */
+export async function updateSpacePayer(
+  db: D1Database,
+  orgId: string,
+  input: Partial<Record<'payer_name' | 'tin' | 'payer_address_line1' | 'payer_address_line2' | 'payer_city' | 'payer_state' | 'payer_postal_code', string | null>>,
+  spaceName: string,
+): Promise<void> {
+  const sets: string[] = [];
+  const values: unknown[] = [];
+  for (const [key, value] of Object.entries(input)) {
+    if (value === undefined) continue;
+    // Keys come from a Zod object; the name on the 1099 is the business's own `name`, never empty.
+    sets.push(`${key === 'payer_name' ? 'name' : key} = ?`);
+    values.push(key === 'payer_name' ? (value ?? spaceName) : (value ?? null));
+  }
+  if (sets.length === 0) return;
+  sets.push(`updated_at = ${NOW}`);
+  await db
+    .prepare(
+      `UPDATE businesses SET ${sets.join(', ')}
+       WHERE id = (SELECT business_id FROM organizations WHERE id = ?)`,
+    )
+    .bind(...values, orgId)
     .run();
 }
 
@@ -525,18 +620,47 @@ export async function listOrganizations(db: D1Database): Promise<OrganizationLis
               ON m.organization_id = r.organization_id AND m.user_id = r.user_id
             WHERE r.organization_id = o.id AND r.role = 'admin' AND m.removed_at IS NULL) AS admin_count,
            (SELECT COUNT(*) FROM org_members m
-            WHERE m.organization_id = o.id AND m.removed_at IS NULL) AS member_count
-         FROM organizations o`,
+            WHERE m.organization_id = o.id AND m.removed_at IS NULL) AS member_count,
+           pb.name AS payer_name, pb.tin AS payer_tin, pb.payer_address_line1 AS payer_line1,
+           pb.payer_address_line2 AS payer_line2, pb.payer_city AS payer_city_, pb.payer_state AS payer_state_,
+           pb.payer_postal_code AS payer_postal_code_
+         FROM organizations o LEFT JOIN businesses pb ON pb.id = o.business_id`,
       )}
        ORDER BY o.archived_at IS NOT NULL, o.name COLLATE NOCASE`,
     )
-    .all<OrgRow & { admin_count: number; member_count: number }>();
+    .all<OrgRow & { admin_count: number; member_count: number } & PayerColumns>();
 
   return (result.results ?? []).map((row) => ({
     ...toOrganization(row),
     admin_count: Number(row.admin_count ?? 0),
     member_count: Number(row.member_count ?? 0),
+    payer: toPayer(row),
   }));
+}
+
+/** The payer columns the console's list reads, aliased apart from the organization's own. */
+interface PayerColumns {
+  business_id: string | null;
+  payer_name: string | null;
+  payer_tin: string | null;
+  payer_line1: string | null;
+  payer_line2: string | null;
+  payer_city_: string | null;
+  payer_state_: string | null;
+  payer_postal_code_: string | null;
+}
+
+function toPayer(row: PayerColumns): SpacePayer | null {
+  if (!row.business_id) return null;
+  return {
+    name: row.payer_name ?? '',
+    tin: row.payer_tin,
+    payer_address_line1: row.payer_line1,
+    payer_address_line2: row.payer_line2,
+    payer_city: row.payer_city_,
+    payer_state: row.payer_state_,
+    payer_postal_code: row.payer_postal_code_,
+  };
 }
 
 export async function createOrganization(
@@ -545,17 +669,43 @@ export async function createOrganization(
   calendarDomain: string,
 ): Promise<Organization> {
   const id = crypto.randomUUID();
+  // Phase 59: a space that collects its payments is its own payer: a business row with the
+  // space's id, made in the same batch, before the space that points at it.
+  const ownPayer = input.payment_model === 'space';
+  const businessId = ownPayer ? id : input.payment_model === 'direct' ? null : (input.business_id ?? null);
+  // Phase 61 (S10): every space made from now on starts with its admins' Assessment and Quest
+  // switches on, so each set is on wherever it is allowed (`featureOn`). Existing spaces keep
+  // theirs; nothing is restated.
   // One batch: an organization never exists without its default curriculum,
   // which every catalog read goes through (Phase 34). This is the only path
   // that creates one -- the console and the sign-in-off fallback both use it.
   await db.batch([
+    ...(ownPayer
+      ? [
+          db
+            .prepare(
+              `INSERT INTO businesses (id, name, tin, payer_address_line1, payer_address_line2, payer_city, payer_state, payer_postal_code)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            )
+            .bind(
+              id,
+              input.payer_name ?? input.name,
+              input.tin ?? null,
+              input.payer_address_line1 ?? null,
+              input.payer_address_line2 ?? null,
+              input.payer_city ?? null,
+              input.payer_state ?? null,
+              input.payer_postal_code ?? null,
+            ),
+        ]
+      : []),
     db
       .prepare(
         `INSERT INTO organizations
            (id, slug, name, short_name, tagline, blurb, place, palette, builtin_logo, time_zone,
             email_notifications, calendar_domain, feature_tutoring, feature_assessment, feature_quest,
-            business_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            canvas_assessments, gamify_question_quest, business_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, ?)`,
       )
       .bind(
         id,
@@ -573,7 +723,7 @@ export async function createOrganization(
         input.feature_tutoring ? 1 : 0,
         input.feature_assessment ? 1 : 0,
         input.feature_quest ? 1 : 0,
-        input.business_id ?? null,
+        businessId,
       ),
     db
       .prepare(
@@ -583,7 +733,7 @@ export async function createOrganization(
       .bind(id, DEFAULT_CURRICULUM_ID),
   ]);
   const org = await getOrganizationById(db, id);
-  if (!org) throw new Error('Insert into organizations returned no row.');
+  if (!org) throw new Error('Creating the space returned no row.');
   return org;
 }
 
@@ -875,13 +1025,17 @@ export async function createJoinRequest(db: D1Database, org: OrgId, userId: stri
   await db.prepare('INSERT INTO join_requests (organization_id, user_id) VALUES (?, ?)').bind(org, userId).run();
 }
 
-/** The person's own requests: open ones, and declined ones not yet seen. */
+/**
+ * The person's own requests: open ones, and declined ones not yet seen -- never an archived space's,
+ * which can be neither entered nor answered (S4, S5), as listMemberships and listInvitations hide them.
+ */
 export async function listMyJoinRequests(db: D1Database, userId: string): Promise<MyJoinRequest[]> {
   const result = await db
     .prepare(
       // org-scope: the person's own requests across spaces, with each space's public face.
       `${SELECT_ORG.replace('FROM organizations o', ', j.requested_at, j.outcome FROM organizations o JOIN join_requests j ON j.organization_id = o.id')}
-       WHERE j.user_id = ? AND (j.outcome IS NULL OR (j.outcome = 'declined' AND j.seen_at IS NULL))
+       WHERE j.user_id = ? AND o.archived_at IS NULL
+         AND (j.outcome IS NULL OR (j.outcome = 'declined' AND j.seen_at IS NULL))
        ORDER BY j.requested_at DESC`,
     )
     .bind(userId)
@@ -976,9 +1130,9 @@ export async function consoleOrganizationNames(db: D1Database): Promise<string[]
 }
 
 /**
- * Makes a self-serve space in one batch: the organization (Assessment alone, on, approved
- * questions only; untrusted for Quest; no email), its default curriculum, its code with joining
- * on, and its maker as its active admin.
+ * Makes a self-serve space in one batch: the organization (Phase 61, S10: Assessment and Quest
+ * allowed and switched on, approved questions only; no Tutoring; untrusted for Quest; no email),
+ * its default curriculum, its code with joining on, and its maker as its active admin.
  */
 export async function createSpace(
   db: D1Database,
@@ -995,10 +1149,10 @@ export async function createSpace(
           .prepare(
             `INSERT INTO organizations
                (id, slug, name, short_name, palette, time_zone, email_notifications, calendar_domain,
-                canvas_assessments, canvas_assessments_unreviewed,
+                canvas_assessments, canvas_assessments_unreviewed, gamify_question_quest,
                 feature_tutoring, feature_assessment, feature_quest,
                 created_via, quest_trusted, join_code, join_by_code, created_by_user_id)
-             VALUES (?, ?, ?, ?, 'platform', ?, 0, ?, 1, 0, 0, 1, 0, 'self_serve', 0, ?, 1, ?)`,
+             VALUES (?, ?, ?, ?, 'platform', ?, 0, ?, 1, 0, 1, 0, 1, 1, 'self_serve', 0, ?, 1, ?)`,
           )
           .bind(id, slug, input.name, shortName, input.timeZone, `${slug}.${input.requestHost}`, code, input.makerId),
         db
@@ -1013,7 +1167,7 @@ export async function createSpace(
         db.prepare("INSERT INTO user_roles (organization_id, user_id, role) VALUES (?, ?, 'admin')").bind(id, input.makerId),
       ]);
       const org = await getOrganizationById(db, id);
-      if (!org) throw new Error('Insert into organizations returned no row.');
+      if (!org) throw new Error('Creating the space returned no row.');
       return org;
     } catch (error) {
       // A clash of code or slug (one in a few hundred billion) tries again; anything else is real.

@@ -1,6 +1,6 @@
 // The shared package (packages/shared, the API contract) loads and behaves under the app's
 // toolchain: its './x.js' imports resolve, its zod is this app's, its formatting is stable.
-import { containsSsn, formatCents, PLATFORM_BRAND, zonedClockParts } from '@tmi/shared';
+import { containsSsn, formatCents, PLATFORM_BRAND, spaceInviteRowSchema, zonedClockParts } from '@tmi/shared';
 
 describe('@tmi/shared in the mobile toolchain', () => {
   it('loads the platform brand', () => {
@@ -22,5 +22,12 @@ describe('@tmi/shared in the mobile toolchain', () => {
   it('refuses SSN-shaped text', () => {
     expect(containsSsn('123-45-6789')).toBe(true);
     expect(containsSsn('call 919-555-0100')).toBe(false);
+  });
+
+  it('takes an invite row’s address with spaces around it, trimmed and lowercased (S12)', () => {
+    const parsed = spaceInviteRowSchema.safeParse({ email: ' Cora@Example.com ', role: 'parent' });
+    expect(parsed.success).toBe(true);
+    expect(parsed.data?.email).toBe('cora@example.com');
+    expect(spaceInviteRowSchema.safeParse({ email: ' not-an-email ', role: 'parent' }).success).toBe(false);
   });
 });

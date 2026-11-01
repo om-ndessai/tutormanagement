@@ -486,8 +486,9 @@ export function UserFormDialog({
                   which stops one organization taking over another's member. */}
               {sharedLocked && (
                 <p className="bg-muted text-muted-foreground rounded-md px-3 py-2 text-xs" data-testid="shared-fields-locked">
-                  This person belongs to another space too, so their name, email and phone are
-                  shared. A platform administrator changes them.
+                  {detail?.data.status === 'invited'
+                    ? 'This person has not accepted their invitation yet, so their name, email and phone stay as invited. To change them, remove them and invite them again.'
+                    : 'This person belongs to another space too, so their name, email and phone are shared. A platform administrator changes them.'}
                 </p>
               )}
               <Field id="full_name" label="Full name" error={errors.full_name}>

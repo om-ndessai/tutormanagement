@@ -8,8 +8,8 @@ import {
   type AuthConfig,
   type SessionResponse,
   defaultOrganizationSchema,
-  PRIVACY_VERSION,
-  TERMS_VERSION,
+  enterSpaceSchema,
+  ACCEPTED_LEGAL_VERSIONS,
   ageBandFor,
   signupSchema,
   type SignupStart,
@@ -369,7 +369,7 @@ async function completeSignIn(
   if (!platformAdmin && memberships.length === 0 && invitations.length === 0 && !canSignUp) {
     await recordAudit(env.DB, null, 'platform', {
       action: 'auth.denied',
-      description: `Sign-in refused for ${identity.email}: no organization`,
+      description: `Sign-in refused for ${identity.email}: in no space`,
     });
     throw new ApiError(403, 'no_account', 'You are not authorized to access this portal. Please reach out to the administrator.');
   }
@@ -682,9 +682,30 @@ export const authRoutes = new Hono<AppEnv>()
 
   /**
    * Notes that the person opened the organization this tab names, and logs it
-   * there -- once per sign-in, not on every reload.
+   * there -- once per sign-in, not on every reload. Phase 60: it also becomes their last
+   * choice (`org_members.is_default`), where they land on signing in.
    */
   .post('/enter', requireAuth, async (c) => {
+    // The body is optional: older clients (and the app) send none, which means "just opened".
+    const text = await c.req.text();
+    let raw: unknown = {};
+    if (text.trim()) {
+      try {
+        raw = JSON.parse(text);
+      } catch {
+        throw ApiError.badRequest('The request body is not valid JSON.');
+      }
+    }
+    const parsed = enterSpaceSchema.safeParse(raw);
+    if (!parsed.success) {
+      const details: Record<string, string[]> = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path.length > 0 ? issue.path.join('.') : '_';
+        (details[key] ??= []).push(issue.message);
+      }
+      throw ApiError.validation('Please correct the highlighted fields.', details);
+    }
+    const opened = parsed.data.opened !== false;
     const slug = requestedOrgSlug(c);
     const person = c.get('person');
     const org = slug ? await getOrganizationBySlug(c.env.DB, slug) : null;
@@ -692,12 +713,18 @@ export const authRoutes = new Hono<AppEnv>()
     const membership = orgId ? await getMembership(c.env.DB, orgId, person.id) : null;
 
     if (!org || !orgId || !membership || membership.removed || membership.status !== 'active') {
-      throw new ApiError(403, 'organization_required', 'Choose an organization to continue.');
+      throw new ApiError(403, 'organization_required', 'Choose a space to continue.');
     }
 
     const token = getCookie(c, SESSION_COOKIE);
     const issuedAt = token ? await sessionIssuedAt(token, c.env.SESSION_SECRET) : null;
     const entry = await recordEntry(c.env.DB, orgId, person.id, issuedAt);
+    // Phase 60 (S4): the space opened last is where the person lands next, on any device. Two
+    // writes when it moves, none when it doesn't; no log line of its own -- the opening is logged
+    // below, once per sign-in, and the move is part of that act.
+    // S9: a tab that was already in this space and only reloaded (`opened: false`) moves nothing,
+    // so another tab's later choice is not taken back by a page load here.
+    if (opened && !membership.is_default) await setDefaultOrganization(c.env.DB, person.id, orgId);
 
     if (entry.firstSinceSignIn) {
       await recordAudit(c.env.DB, person, orgId, {
@@ -716,6 +743,9 @@ export const authRoutes = new Hono<AppEnv>()
    * Chooses the organization the person lands in on signing in, or clears
    * the choice. Only one the person may enter now, and only their own: the
    * route takes no person. Logged in that organization's own log.
+   *
+   * Phase 60: neither client offers the star any more -- opening a space moves the choice
+   * (`/enter`). Kept for older apps, whose star sets the same column.
    */
   .put('/default-organization', requireAuth, zValidator('json', defaultOrganizationSchema), async (c) => {
     const { slug } = c.req.valid('json');
@@ -737,13 +767,13 @@ export const authRoutes = new Hono<AppEnv>()
     } else {
       // An organization they cannot enter now is reported as missing.
       const chosen = memberships.find((m) => m.slug === slug && m.status === 'active');
-      if (!chosen) throw ApiError.notFound('Organization not found.');
+      if (!chosen) throw ApiError.notFound('Space not found.');
 
       if (previous?.slug !== chosen.slug) {
         await setDefaultOrganization(c.env.DB, person.id, orgIdFromRow(chosen.id));
         await recordAudit(c.env.DB, person, orgIdFromRow(chosen.id), {
           action: 'membership.default_set',
-          description: `${person.full_name} made ${chosen.name} their default organization`,
+          description: `${person.full_name} made ${chosen.name} their default space`,
           subject: { id: person.id, full_name: person.full_name },
           entity_type: 'user',
           entity_id: person.id,
@@ -767,16 +797,20 @@ export const authRoutes = new Hono<AppEnv>()
     const orgId = org && !org.archived_at ? orgIdFromRow(org.id) : null;
     const answered = orgId
       ? await answerInvitation(c.env.DB, orgId, person.id, answer === 'accept')
-      : false;
+      : null;
     if (!org || !orgId || !answered) throw ApiError.notFound('Invitation not found.');
 
-    await recordAudit(c.env.DB, person, orgId, {
+    // Masking (S6, R21): until they accept, the inviting space knows them only by the name it
+    // typed. A decline is never an acceptance, so its log line names them by that name alone.
+    const shown =
+      answer === 'accept' ? person : { id: person.id, full_name: answered.invited_name ?? person.full_name };
+    await recordAudit(c.env.DB, shown, orgId, {
       action: answer === 'accept' ? 'membership.accepted' : 'membership.declined',
       description:
         answer === 'accept'
-          ? `${person.full_name} accepted the invitation to ${org.name}`
-          : `${person.full_name} declined the invitation to ${org.name}`,
-      subject: { id: person.id, full_name: person.full_name },
+          ? `${shown.full_name} accepted the invitation to ${org.name}`
+          : `${shown.full_name} declined the invitation to ${org.name}`,
+      subject: { id: person.id, full_name: shown.full_name },
       entity_type: 'user',
       entity_id: person.id,
     });
@@ -821,7 +855,9 @@ export const authRoutes = new Hono<AppEnv>()
     if (band === 'under13') {
       throw new ApiError(403, 'too_young', 'You need to be 13 or older to have an account. Ask a parent to add you to their space.');
     }
-    if (input.terms_version !== TERMS_VERSION || input.privacy_version !== PRIVACY_VERSION) {
+    // The current version, or an earlier one an app build on a phone still shows (ACCEPTED_LEGAL_VERSIONS);
+    // the version sent is what is recorded.
+    if (!ACCEPTED_LEGAL_VERSIONS.includes(input.terms_version) || !ACCEPTED_LEGAL_VERSIONS.includes(input.privacy_version)) {
       throw ApiError.validation('Please correct the highlighted fields.', { terms_version: ['Read and accept the current terms.'] });
     }
     if (await getPersonByEmail(c.env.DB, claims.email)) {

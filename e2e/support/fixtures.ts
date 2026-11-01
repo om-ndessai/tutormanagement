@@ -33,6 +33,15 @@ function markQuestLanded() {
   }
 }
 
+/** The tab's own space (sessionStorage `tmi_org`), set once per tab so a switch is kept. */
+function markTabOrg(slug: string) {
+  try {
+    if (!sessionStorage.getItem('tmi_org')) sessionStorage.setItem('tmi_org', slug);
+  } catch {
+    // Storage blocked: the tab arrives, and lands by the rule.
+  }
+}
+
 export interface AsOptions {
   /** A browser that has never shown the wizard: no tour cookie. */
   fresh?: boolean;
@@ -71,6 +80,11 @@ export const test = base.extend<{
         await context.addCookies([
           { name: 'tmi_last_org', value: org, url: test.info().project.use.baseURL! },
         ]);
+        // Phase 60: a tab ARRIVING with no space of its own lands by the person's last choice on
+        // the server, which every spec's entering moves. A tab already in a space keeps it, so
+        // each new tab here starts in `org` as its own (until it switches); `org: null` is the
+        // arriving tab, which lands by the rule.
+        await context.addInitScript(markTabOrg, org);
       }
       const page = await context.newPage();
       pages.push(page);

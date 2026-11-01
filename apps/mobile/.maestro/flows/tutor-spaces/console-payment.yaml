@@ -1,0 +1,140 @@
+# Phase 59 (docs/spaces-plan.md, S2), the console's "Who families pay", replacing Phase 54's
+# Organizations (Nav, a platform admin). The Spaces list says who families pay in each space: `solo`
+# "families pay each tutor", `chmi` "families pay the space". A new space chooses "The space", which
+# shows its payer details (the name on the 1099, the TIN, the address); it is made with a TIN and its
+# row says "families pay the space". Edited to "Each tutor, directly", the payer fields go, and once
+# saved (PUT .../payment-model) its row says "families pay each tutor". clean-platform.js moves the
+# test space out of the way before and after (the API has no delete).
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+# No Organizations any more.
+- assertNotVisible:
+    id: platform-businesses
+- scrollUntilVisible:
+    element:
+      id: platform-org-solo
+    centerElement: true
+- assertVisible:
+    id: platform-org-solo
+    text: '.*families pay each tutor'
+- assertVisible:
+    id: platform-org-chmi
+    text: '.*families pay the space'
+- scrollUntilVisible:
+    element:
+      id: platform-org-new
+    direction: UP
+# A new space that collects its families' payments.
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- tapOn:
+    id: org-form-name
+- inputText: 'Mobile Console Academy'
+- tapOn:
+    id: org-form-short
+- inputText: 'MCA'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-form-payment-space
+    centerElement: true
+- assertVisible: 'Who families pay'
+- assertVisible: 'Each tutor, directly'
+- assertNotVisible:
+    id: org-form-payer
+- tapOn:
+    id: org-form-payment-space
+- scrollUntilVisible:
+    element:
+      id: org-form-payer-tin
+    centerElement: true
+- assertVisible: 'Name on the 1099.*'
+- tapOn:
+    id: org-form-payer-tin
+- inputText: '12-3456789'
+- pressKey: Enter
+- takeScreenshot: tutor-spaces-console-payment-create
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy created. Add its first admin next.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: platform-org-mobile-console-academy
+    timeout: 10000
+- assertVisible:
+    id: platform-org-mobile-console-academy
+    text: '.*families pay the space'
+# Families pay each tutor from now on.
+- tapOn:
+    id: platform-org-mobile-console-academy
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- assertVisible: 'This space may use'
+- tapOn:
+    id: platform-org-edit
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: org-form-payment-direct
+    centerElement: true
+- assertVisible:
+    id: org-form-payer
+- assertVisible: 'A change applies from now on; recorded lessons and payments keep theirs\.'
+- tapOn:
+    id: org-form-payment-direct
+- assertNotVisible:
+    id: org-form-payer
+- takeScreenshot: tutor-spaces-console-payment-direct
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy saved.'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-mobile-console-academy
+    centerElement: true
+- assertVisible:
+    id: platform-org-mobile-console-academy
+    text: '.*families pay each tutor'

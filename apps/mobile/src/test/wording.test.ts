@@ -1,4 +1,4 @@
-// Phase 52 (docs/mobile/build-log.md entry 63): on screen an organization is a "space". Routes,
+// Phase 52 (docs/mobile/build-log.md entry 63), Phase 59 (entry 67): on screen an organization is a "space". Routes,
 // query keys, error codes, testIDs and API paths keep `organization`; the words a person reads do
 // not. This scans every source file (not tests) for the word inside string literals, template
 // text and JSX text, so a new screen cannot bring it back. Comments are not scanned.
@@ -10,28 +10,15 @@ import ts from 'typescript';
 const SRC = path.join(__dirname, '..');
 const WORD = /\b[Oo]rganizations?\b/;
 
-/** Exact on-screen strings that keep the word on purpose. */
-const ALLOWED_TEXT = new Set([
-  // The payer on a 1099 is an organization, as on the web.
-  'The organization’s EIN',
-  // Phase 54 (docs/tutor-spaces-plan.md): "Organization" is the word on screen for the record that
-  // runs a space's money (a business in the code) -- the owner's choice, as on the web.
-  'Families pay the organization, which pays the tutors and files their 1099s.',
-  'The EIN the organization files under. Prefills the payer box — never a Social Security number, which the portal refuses to store.',
-  'No organization runs this space’s money: a lesson has one price, the family pays the tutor who taught it, and nobody takes a cut. Tutors record the payments they receive, and each gets a year-end summary of them; the space files no 1099s. To have an organization run it, ask the platform administrator.',
-]);
-
-/** Phase 54: the console's Organizations (businesses), where the word is the record itself. */
-const ALLOWED_FILES = new Set([
-  'features/platform/business-form-sheet.tsx',
-  'features/platform/businesses-screen.tsx',
-]);
-/** Phase 54: the record's name alone, where a file shows it (`<file>:<text>`). */
-const ALLOWED_AT = new Set([
-  'app/(platform)/platform/(organizations)/_layout.tsx:Organizations',
-  'features/platform/organizations-screen.tsx:Organizations',
-  'features/platform/organization-form-sheet.tsx:Organization',
-]);
+/**
+ * Exact on-screen strings that keep the word on purpose. Since Phase 59 (docs/spaces-plan.md, S1)
+ * there are none: the payer is the space's own, and the console has no Organizations screen.
+ */
+const ALLOWED_TEXT = new Set<string>([]);
+/** Files where the word is the record itself (Phase 54's Organizations; gone since Phase 59). */
+const ALLOWED_FILES = new Set<string>([]);
+/** A record's name alone, where a file shows it (`<file>:<text>`); none since Phase 59. */
+const ALLOWED_AT = new Set<string>([]);
 
 /** Props and keys whose strings are never shown as words. */
 const NON_TEXT_PROPS = new Set([

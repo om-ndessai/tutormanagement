@@ -18,13 +18,15 @@ import {
 } from '@/components/ui/dialog';
 import { useBrand } from '@/providers/brand-provider';
 import { useAuth } from '@/providers/auth-provider';
+import { InvitePeople } from '@/features/organizations/invite-people';
+import { clearInviteStep } from '@/features/organizations/invite-step';
 import { ConfirmDetails } from './confirm-details';
 import { StudentFlow } from './student-flow';
 import { TutorFlow } from './tutor-flow';
 
-export type WizardScreen = 'welcome' | 'student' | 'tutor' | 'confirm' | 'done';
+export type WizardScreen = 'invite' | 'welcome' | 'student' | 'tutor' | 'confirm' | 'done';
 
-const HEADINGS: Record<Exclude<WizardScreen, 'welcome'>, { title: string; description: string }> = {
+const HEADINGS: Record<Exclude<WizardScreen, 'welcome' | 'invite'>, { title: string; description: string }> = {
   student: {
     title: 'Add a student',
     description: 'The family first, then the student, their assessment, their plan and a tutor.',
@@ -80,7 +82,13 @@ export function OnboardingWizard({
               : 'A quick tour of the portal, and guided setup for a new student.'
             : 'A quick tour of the portal, then a check that the office has your details right.',
         }
-      : HEADINGS[screen];
+      : screen === 'invite'
+        ? {
+            // Phase 61 (S12): straight after starting a space, before the tour.
+            title: 'Invite people',
+            description: `Ask the adults who will use ${organization?.name ?? 'your space'} to join you. They accept when they sign in.`,
+          }
+        : HEADINGS[screen];
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
@@ -90,12 +98,19 @@ export function OnboardingWizard({
           <DialogDescription>{heading.description}</DialogDescription>
         </DialogHeader>
 
-        {screen !== 'welcome' && screen !== 'done' && (
+        {screen !== 'welcome' && screen !== 'done' && screen !== 'invite' && (
           <Button variant="ghost" size="sm" className="-mt-2 justify-self-start" onClick={() => onScreen('welcome')}>
             <ArrowLeftIcon />
             Back to the start
           </Button>
         )}
+
+        {screen === 'invite' && isAdmin && <InvitePeople
+            onDone={() => {
+              clearInviteStep();
+              onScreen('welcome');
+            }}
+          />}
 
         {screen === 'welcome' && (
           <div className="grid gap-3">

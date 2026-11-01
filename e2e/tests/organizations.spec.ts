@@ -1,5 +1,6 @@
 import { ORGS, PEOPLE, expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
+import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
 
 /**
  * Belonging to several organizations (docs/multi-organization.md): choosing
@@ -9,9 +10,11 @@ import { idOf, unwrap } from '../support/api.js';
 test.describe('people in several organizations', () => {
   test('somebody in two organizations chooses, and each wears its own look', async ({ as }) => {
     const priya = await as('admin', { org: null });
+    // Phase 60: an arriving tab lands in the last space opened; with none, the selector.
+    await priya.request.put('/api/auth/default-organization', { data: { slug: null } });
     await priya.goto('/');
 
-    await expect(priya).toHaveURL(/\/select-organization$/);
+    await expect(priya).toHaveURL(/\/spaces$/);
     await expect(priya.getByRole('heading', { name: 'Choose a space' })).toBeVisible();
     await expect(priya.getByRole('button', { name: /^Chapel Hill Math Institute.*Admin · Tutor/ })).toBeVisible();
     await expect(priya.getByRole('button', { name: /^Riverside Tutoring.*Tutor/ })).toBeVisible();
@@ -40,7 +43,10 @@ test.describe('people in several organizations', () => {
 
     // Signed in but not yet in one: still the platform's look.
     const choosing = await as('admin', { org: null });
+    await choosing.request.put('/api/auth/default-organization', { data: { slug: null } });
+    // The old picker's address leads to the Spaces page, shown as the selector.
     await choosing.goto('/select-organization');
+    await expect(choosing).toHaveURL(/\/spaces$/);
     await expect(choosing.getByRole('heading', { name: 'Choose a space' })).toBeVisible();
     await expect(choosing.locator('html')).toHaveAttribute('data-palette', 'platform');
   });
@@ -103,9 +109,12 @@ test.describe('people in several organizations', () => {
       (await grace.request.get('/api/users', { headers: { 'X-Organization': ORGS.b.slug } })).status(),
     ).toBe(403);
 
+    // Phase 60 (S6): accepting enters the space at once, and it becomes her last choice.
     await grace.getByRole('button', { name: 'Accept' }).click();
-    await expect(grace.getByText('You have joined Riverside Tutoring.')).toBeVisible();
-    await expect(grace.getByRole('button', { name: /^Riverside Tutoring/ })).toBeVisible();
+    await expect(grace.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText(ORGS.b.short);
+    await expect(grace.locator('html')).toHaveAttribute('data-palette', 'teal');
+    const after = await unwrap<any>(await grace.request.get('/api/auth/session'), 'Grace after');
+    expect(after.memberships.filter((m: any) => m.is_default).map((m: any) => m.slug)).toEqual([ORGS.b.slug]);
     expect(
       (await grace.request.get('/api/dashboard', { headers: { 'X-Organization': ORGS.b.slug } })).status(),
     ).toBe(200);
@@ -170,5 +179,89 @@ test.describe('people in several organizations', () => {
       headers: { 'X-Organization': ORGS.a.slug },
     }), 'Alex in A');
     expect(session.user.status).toBe('active');
+  });
+});
+
+/**
+ * Phase 60, S9 (docs/spaces-plan.md): what the phase does not change on the web. Two tabs may still
+ * sit in two spaces; the landing rule decides only an ARRIVING tab; the remembered-space cookie,
+ * the X-Organization header and requireOrg's membership check behave as before. The person and
+ * both spaces are made here.
+ */
+test.describe('per-tab spaces are unchanged (S9)', () => {
+  test('two tabs in two spaces; an arrival lands by the rule and moves neither', async ({ page, as }) => {
+    const run = `${Date.now()}`;
+    const email = `s9.tabs.${run}@example.com`;
+    const first = `Heron House ${run}`;
+    const second = `Kestrel House ${run}`;
+    await unwrap(
+      await page.request.post('/api/auth/signup', {
+        data: {
+          dev_email: email,
+          dev_name: 'Tamsin Tabs',
+          birth_month: 4,
+          birth_year: 1982,
+          terms_version: TERMS_VERSION,
+          privacy_version: PRIVACY_VERSION,
+        },
+      }),
+      'sign up',
+    );
+    const maker = await as('admin', { email, org: null });
+    const a = await unwrap<any>(await maker.request.post('/api/spaces', { data: { name: first } }), 'space one');
+    const b = await unwrap<any>(await maker.request.post('/api/spaces', { data: { name: second } }), 'space two');
+    // The welcome wizard is not this test's subject.
+    for (const slug of [a.slug, b.slug]) {
+      await unwrap(
+        await maker.request.post('/api/onboarding/tour', { data: { outcome: 'skipped' }, headers: { 'X-Organization': slug } }),
+        `wizard in ${slug}`,
+      );
+    }
+    const switcher = (tab: typeof page) => tab.getByTestId('org-switcher').filter({ visible: true }).first();
+
+    // Tab one in the first space; a second tab of the same browser switches to the second.
+    const tabA = await as('admin', { email, org: a.slug });
+    await tabA.goto('/');
+    await expect(switcher(tabA)).toContainText(first);
+    const tabB = await tabA.context().newPage();
+    await tabB.goto('/');
+    await expect(switcher(tabB)).toContainText(first);
+    await switcher(tabB).click();
+    await tabB.getByRole('menuitem', { name: new RegExp(second) }).click();
+    await expect(switcher(tabB)).toContainText(second);
+
+    // Tab one stays in the first, and its own requests still name it.
+    const named = tabA.waitForRequest((r) => r.url().includes('/api/') && !!r.headers()['x-organization']);
+    await tabA.goto('/users');
+    expect((await named).headers()['x-organization']).toBe(a.slug);
+    await expect(switcher(tabA)).toContainText(first);
+    expect(await tabA.evaluate(() => sessionStorage.getItem('tmi_org'))).toBe(a.slug);
+    expect(await tabB.evaluate(() => sessionStorage.getItem('tmi_org'))).toBe(b.slug);
+
+    // An arriving tab lands by the rule: the last space chosen, the second. Neither open tab moves.
+    const arriving = await as('admin', { email, org: null });
+    await arriving.goto('/');
+    await expect(arriving).not.toHaveURL(/\/spaces/);
+    await expect(switcher(arriving)).toContainText(second);
+    await tabA.reload();
+    await expect(switcher(tabA)).toContainText(first);
+    await tabB.reload();
+    await expect(switcher(tabB)).toContainText(second);
+
+    // The cookie still remembers the browser's last choice and, with sign-in off, stands in for
+    // the header; the header still wins; requireOrg still re-checks the membership.
+    const cookies = await tabA.context().cookies();
+    expect(cookies.find((c) => c.name === 'tmi_last_org')?.value).toBe(b.slug);
+    const byCookie = await unwrap<any>(await tabA.request.get('/api/auth/session'), 'session by cookie');
+    expect(byCookie.organization?.slug).toBe(b.slug);
+    const byHeader = await unwrap<any>(
+      await tabA.request.get('/api/auth/session', { headers: { 'X-Organization': a.slug } }),
+      'session by header',
+    );
+    expect(byHeader.organization?.slug).toBe(a.slug);
+    expect(byHeader.user.roles).toEqual(['admin']);
+    const elsewhere = await tabA.request.get('/api/users', { headers: { 'X-Organization': ORGS.a.slug } });
+    expect(elsewhere.status()).toBe(403);
+    expect((await elsewhere.json()).error.code).toBe('organization_required');
   });
 });

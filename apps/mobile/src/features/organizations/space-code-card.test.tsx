@@ -34,7 +34,7 @@ const leaveOrganization = jest.fn();
 const refreshSession = jest.fn(async () => undefined);
 function as(createdVia: 'console' | 'self_serve', roles: string[], code: string | null = 'FMXY-2345') {
   mockAuth.mockReturnValue({
-    organization: { name: 'Maker Test Space', short_name: 'Maker', created_via: createdVia },
+    organization: { slug: 'maker', name: 'Maker Test Space', short_name: 'Maker', created_via: createdVia },
     user: { roles },
     leaveOrganization,
     refreshSession,
@@ -106,7 +106,8 @@ describe('SpaceDangerPanel (Phase 52)', () => {
     expect(mockLeave).not.toHaveBeenCalled();
     await pressAlertButton(alert, 'Leave');
     expect(mockLeave).toHaveBeenCalled();
-    mockLeave.mock.calls[0][1].onError(new ApiRequestError(409, 'conflict', 'You are the only administrator.'));
+    expect(mockLeave.mock.calls[0][0]).toBe('maker');
+    mockLeave.mock.calls[0][1].onError(new ApiRequestError(409, 'last_admin', 'You are the only administrator.'));
     expect(mockToast.error).toHaveBeenCalledWith('You are the only administrator.');
     expect(mockRouter.replace).not.toHaveBeenCalled();
     await act(async () => mockLeave.mock.calls[0][1].onSuccess());

@@ -1,0 +1,390 @@
+# Phase 61 (S10, docs/spaces-plan.md): a new space has Assessment and Quest on from the start.
+# 1. A newcomer (Quinn) starts a space from Welcome, skips "Invite people", and adds their child Kit
+#    (with an address, so Kit signs in) through the welcome wizard, with the parent's consent. More
+#    lists Assessment AND Quest, and nothing of Tutoring's. On the Quest page Quinn, its admin, sets
+#    Kit's level to BA3; Kit (past the welcome wizard) signs in, lands in Quest at BA3 and answers:
+#    "Saved. +1 point".
+# 2. The console's create form ticks all three sets; a space made with the defaults has Assessment
+#    and Quest allowed, and its admins' own switches on (read back from the local API).
+#    The seed's Newfield Math Circle, a console space made after the change, shows the same.
+# 3. An existing space is unchanged: Ines's `assess` still has Assessment and no Quest.
+# Self-cleaning: both newcomers are put back to nothing before and after (Quinn's space goes with
+# them), and clean-platform.js moves the console space ("Mobile Console Academy Quest") away.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.questmaker@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.questkid@example.com }
+  - runScript: ../../scripts/clean-platform.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.questmaker@example.com, NAME: Quinn Questmaker }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.questmaker@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.questkid@example.com }
+  - runScript: ../../scripts/clean-platform.js
+tags:
+  - feature
+---
+# --- 1. A newcomer's space -------------------------------------------------------------------
+# A fresh device, so the wizard opens by itself in the new space.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.questmaker@example.com
+      ORG: ''
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: welcome-title
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: welcome-space-name
+- tapOn:
+    id: welcome-space-name
+- inputText: 'The Questmaker family'
+- hideKeyboard
+- tapOn:
+    id: welcome-make-submit
+- extendedWaitUntil:
+    visible: 'The Questmaker family is ready.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-invite
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: invite-skip
+# On iOS a tap while the sheet is still sliding in can be swallowed: let it settle, and tap again if
+# the wizard has not come up.
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: invite-skip
+      - extendedWaitUntil:
+          visible:
+            id: screen-onboarding
+          timeout: 15000
+# Kit, their child, with an address of his own so he can sign in and play.
+- tapOn:
+    id: onboarding-choice-student
+- extendedWaitUntil:
+    visible:
+      id: student-flow-student
+    timeout: 10000
+- tapOn:
+    id: student-flow-my-child
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
+    timeout: 15000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the student\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-name
+- inputText: 'Kit Questmaker'
+- hideKeyboard
+- tapOn:
+    id: add-student-email
+- inputText: 'spaces.questkid@example.com'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- scrollUntilVisible:
+    element:
+      id: add-student-consent
+- tapOn:
+    id: add-student-consent
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: student-flow-start
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: onboarding-close
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 8000
+# More: Assessment and Quest, from the start; nothing of Tutoring's.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-assessments
+- assertNotVisible:
+    id: more-nav-assignments
+- assertNotVisible:
+    id: more-nav-billing
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- takeScreenshot: spaces-new-space-more
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: screen-quest
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: quest-review-card
+- scrollUntilVisible:
+    element: 'Set where each student starts\..*'
+    timeout: 30000
+# Kit is the space's one student: his level field (its options' ids carry a suffix).
+- scrollUntilVisible:
+    element:
+      id: 'quest-level-[0-9a-f-]{36}'
+    centerElement: true
+    timeout: 30000
+- assertVisible:
+    id: 'quest-level-[0-9a-f-]{36}'
+    text: 'Kit Questmaker’s level: Not set\. Change'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'quest-level-[0-9a-f-]{36}'
+- extendedWaitUntil:
+    visible:
+      id: 'quest-level-[0-9a-f-]{36}-none'
+    timeout: 5000
+- scrollUntilVisible:
+    element:
+      id: 'quest-level-[0-9a-f-]{36}-BA3'
+- tapOn:
+    id: 'quest-level-[0-9a-f-]{36}-BA3'
+- extendedWaitUntil:
+    visible: 'Kit Questmaker starts at BA3\.'
+    timeout: 10000
+# Kit has never been through the welcome wizard, which opens before Quest's landing (QuestLanding
+# gives way to it, as on the web); that is not this flow's subject, so it is skipped for him there.
+- evalScript: "${output.kitSpace = json(http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'spaces.questkid@example.com' } }).body).data.memberships[0].slug}"
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: tour-done, EMAIL: spaces.questkid@example.com, ORG: '${output.kitSpace}' }
+# Kit signs in (one space: he lands in it) and Quest takes over.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.questkid@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-play
+    timeout: 30000
+- extendedWaitUntil:
+    notVisible:
+      id: quest-welcome
+    timeout: 7000
+- extendedWaitUntil:
+    visible:
+      id: quest-question
+    timeout: 15000
+- assertVisible:
+    id: quest-level
+    text: 'BA3'
+- runFlow:
+    when:
+      visible:
+        id: quest-choice-A
+    commands:
+      - tapOn:
+          id: quest-choice-A
+- runFlow:
+    when:
+      visible:
+        id: quest-number
+    commands:
+      - tapOn:
+          id: quest-number
+      - inputText: '7'
+      - pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: quest-submit
+    centerElement: true
+- tapOn:
+    id: quest-submit
+- extendedWaitUntil:
+    visible: 'Saved\. \+1 point'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: quest-points
+      text: '1 point'
+    timeout: 10000
+- takeScreenshot: spaces-new-space-quest-play
+# --- 2. A console space made with the defaults ------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- tapOn:
+    id: platform-org-new
+- extendedWaitUntil:
+    visible:
+      id: screen-organization-form
+    timeout: 10000
+- tapOn:
+    id: org-form-name
+- inputText: 'Mobile Console Academy Quest'
+- tapOn:
+    id: org-form-short
+- inputText: 'MCAQ'
+- assertVisible: 'mobile-console-academy-quest'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: org-form-feature-quest
+    centerElement: true
+# A ticked box: Android reports it as checked; iOS gives a checkbox its state as its value
+# ("checkbox, checked"), which Maestro does not read as checked there.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: org-form-feature-assessment
+          checked: true
+      - assertVisible:
+          id: org-form-feature-quest
+          checked: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: org-form-feature-assessment
+          text: 'checkbox, checked'
+      - assertVisible:
+          id: org-form-feature-quest
+          text: 'checkbox, checked'
+- scrollUntilVisible:
+    element:
+      id: org-form-save
+- tapOn:
+    id: org-form-save
+- extendedWaitUntil:
+    visible: 'Mobile Console Academy Quest created\..*'
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: platform-org-mobile-console-academy-quest
+    timeout: 10000
+- tapOn:
+    id: platform-org-mobile-console-academy-quest
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-feature-quest
+    centerElement: true
+- assertVisible:
+    id: platform-org-feature-assessment
+    checked: true
+- assertVisible:
+    id: platform-org-feature-quest
+    checked: true
+# Its admins' own switches are on too: read from the local API (the console never shows them).
+- evalScript: "${output.consoleDefaults = json(http.get('http://localhost:8787/api/platform/organizations', { headers: { 'X-Dev-User': 'ndessai@gmail.com' } }).body).data.filter(function (o) { return o.slug === 'mobile-console-academy-quest'; }).map(function (o) { return [o.feature_assessment, o.feature_quest, o.canvas_assessments, o.gamify_question_quest].join(','); })[0]}"
+- assertTrue: ${output.consoleDefaults === 'true,true,true,true'}
+# --- 2b. The seed's console space made after the change (Seed, docs/spaces-plan.md) -----------
+# Newfield Math Circle: made by the console with the defaults, so the demo shows S10's state as is.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: platform-org-newfield
+    centerElement: true
+- tapOn:
+    id: platform-org-newfield
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-organization
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-org-feature-quest
+    centerElement: true
+- assertVisible:
+    id: platform-org-feature-assessment
+    checked: true
+- assertVisible:
+    id: platform-org-feature-quest
+    checked: true
+- evalScript: "${output.seededDefaults = json(http.get('http://localhost:8787/api/platform/organizations', { headers: { 'X-Dev-User': 'ndessai@gmail.com' } }).body).data.filter(function (o) { return o.slug === 'newfield'; }).map(function (o) { return [o.created_via, o.feature_assessment, o.feature_quest, o.canvas_assessments, o.gamify_question_quest].join(','); })[0]}"
+- assertTrue: ${output.seededDefaults === 'console,true,true,true,true'}
+# --- 3. An existing space is unchanged --------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-assessments
+- assertNotVisible:
+    id: more-nav-quest

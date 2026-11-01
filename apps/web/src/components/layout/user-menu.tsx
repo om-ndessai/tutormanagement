@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeftRightIcon, CompassIcon, LogOutIcon, ShieldCheckIcon, UserIcon } from 'lucide-react';
+import { CompassIcon, LayoutGridIcon, LogOutIcon, ShieldCheckIcon, UserIcon } from 'lucide-react';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/providers/auth-provider';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
-import { useHasOtherPlaces } from '@/features/organizations/org-switcher';
 
 function initials(name: string) {
   return name
@@ -26,7 +25,6 @@ function initials(name: string) {
 
 export function UserMenu() {
   const { user, impersonated, signOut, organization, platformAdmin } = useAuth();
-  const hasOtherPlaces = useHasOtherPlaces();
   const { openWizard } = useOnboarding();
   const navigate = useNavigate();
 
@@ -72,12 +70,11 @@ export function UserMenu() {
           Take the tour
         </DropdownMenuItem>
 
-        {hasOtherPlaces && (
-          <DropdownMenuItem onSelect={() => window.location.assign('/select-organization')}>
-            <ArrowLeftRightIcon className="size-4" />
-            Switch space
-          </DropdownMenuItem>
-        )}
+        {/* Phase 60 (S7): the person's own spaces, invitations, codes and leaving -- always. */}
+        <DropdownMenuItem onSelect={() => navigate('/spaces')}>
+          <LayoutGridIcon className="size-4" />
+          Spaces
+        </DropdownMenuItem>
         {platformAdmin && (
           <DropdownMenuItem onSelect={() => window.location.assign('/platform')}>
             <ShieldCheckIcon className="size-4" />

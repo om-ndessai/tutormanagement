@@ -9,13 +9,26 @@
 //   withdraw EMAIL SLUG          DELETE /spaces/join-requests/:slug (none: fine)
 //   tour-done EMAIL ORG          the person has been through the welcome wizard there (skipped)
 //   trust ORG_SLUG ON            as the platform admin, the space's Quest trust ('true' / 'false')
+//   archive NAME ON              as the platform admin, archives ('true') or restores ('false') every
+//                                space named NAME (restoring first lets reset-newcomer delete it)
+//   clear-last EMAIL             Phase 60: forgets the person's last space (is_default), so their next
+//                                arrival lands by the rest of the rule -- other flows entering a space move it
+//   add-person EMAIL NAME ROLES ACTOR ORG [STATUS]
+//                                Phase 60: ACTOR adds the person to ORG (POST /users; ROLES comma-separated)
+//   let-in EMAIL ACTOR ORG       Phase 60: ACTOR (an admin of ORG) lets in EMAIL's open request as a
+//                                parent, through the ordinary user form (POST /users, join_request_user_id)
+//   decline EMAIL ACTOR ORG      Phase 60: ACTOR declines EMAIL's open request to join ORG
+//   leave EMAIL SLUG             Phase 61: the person leaves that space (POST /spaces/:slug/leave)
+//   google-sign-in EMAIL SUBJECT Phase 60: a real first (or later) sign-in, the suite's fake Google token
+//                                through POST /auth/google (AUTH_FAKE_PROVIDERS, local only)
+// (The JSON bodies are built here: Maestro misreads a YAML value mixing JSON braces with ${...}.)
 // Errors are tolerated where it cleans. The server loosens its rate limits twenty times away from
 // production, so a 429 should not happen; signing up still waits one out, as a fallback.
 var API = 'http://localhost:8787/api';
 // The versions a newcomer accepts: equal to TERMS_VERSION / PRIVACY_VERSION in packages/shared
 // (src/test/maestro-scripts.test.ts checks it, so a new wording date fails in Jest, not here).
-var TERMS_VERSION = '2026-10-29';
-var PRIVACY_VERSION = '2026-10-29';
+var TERMS_VERSION = '2026-10-31';
+var PRIVACY_VERSION = '2026-10-31';
 var PLATFORM_ADMIN = 'ndessai@gmail.com';
 
 function call(as, method, path, body, org) {
@@ -100,6 +113,39 @@ if (ACTION === 'reset-newcomer') {
   call(email, 'DELETE', '/spaces/join-requests/' + SLUG);
 } else if (ACTION === 'tour-done') {
   must(call(email, 'POST', '/onboarding/tour', { outcome: 'skipped' }, ORG), 'the wizard');
+} else if (ACTION === 'clear-last') {
+  must(call(email, 'PUT', '/auth/default-organization', { slug: null }), 'clearing the last space');
+} else if (ACTION === 'add-person') {
+  var person = { full_name: NAME, email: email, roles: String(ROLES).split(',') };
+  if (typeof STATUS !== 'undefined' && STATUS) person.status = STATUS;
+  output.userId = must(call(ACTOR, 'POST', '/users', person, ORG), 'adding ' + email + ' to ' + ORG).body.data.id;
+} else if (ACTION === 'let-in' || ACTION === 'decline') {
+  var open = must(call(ACTOR, 'GET', '/organization/join-requests', undefined, ORG), 'the requests').body.data;
+  var request = open.filter(function (r) {
+    return String(r.email).toLowerCase() === email;
+  })[0];
+  if (!request) throw new Error('no open request from ' + email + ' to ' + ORG);
+  if (ACTION === 'let-in') {
+    must(
+      call(
+        ACTOR,
+        'POST',
+        '/users',
+        { full_name: request.full_name, email: email, roles: ['parent'], status: 'active', join_request_user_id: request.user_id },
+        ORG,
+      ),
+      'letting ' + email + ' in to ' + ORG,
+    );
+  } else {
+    must(call(ACTOR, 'POST', '/organization/join-requests/' + request.user_id + '/decline', undefined, ORG), 'declining ' + email);
+  }
+} else if (ACTION === 'leave') {
+  must(call(email, 'POST', '/spaces/' + SLUG + '/leave'), email + ' leaving ' + SLUG);
+} else if (ACTION === 'google-sign-in') {
+  must(
+    call(email, 'POST', '/auth/google', { credential: 'fake:google:' + SUBJECT + ':' + email + ':1' }),
+    'signing in ' + email,
+  );
 } else if (ACTION === 'trust') {
   var list = must(call(PLATFORM_ADMIN, 'GET', '/platform/organizations'), 'the console').body.data;
   var target = list.filter(function (o) {
@@ -115,6 +161,18 @@ if (ACTION === 'reset-newcomer') {
     }),
     'the trust',
   );
+} else if (ACTION === 'archive') {
+  var archiving = String(ON) === 'true';
+  must(call(PLATFORM_ADMIN, 'GET', '/platform/organizations'), 'the console')
+    .body.data.filter(function (o) {
+      return o.name === NAME && Boolean(o.archived_at) !== archiving;
+    })
+    .forEach(function (o) {
+      must(
+        call(PLATFORM_ADMIN, 'POST', '/platform/organizations/' + o.id + (archiving ? '/archive' : '/restore')),
+        (archiving ? 'archiving ' : 'restoring ') + NAME,
+      );
+    });
 } else {
   throw new Error('spaces.js: unknown ACTION ' + ACTION);
 }

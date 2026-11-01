@@ -1,8 +1,8 @@
-import { CheckIcon, ChevronsUpDownIcon, ShieldCheckIcon, StarIcon, StarOffIcon } from 'lucide-react';
-import { toast } from 'sonner';
+import { CheckIcon, ChevronsUpDownIcon, LayoutGridIcon, MailIcon, ShieldCheckIcon } from 'lucide-react';
 import { USER_ROLE_LABELS } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,44 +13,22 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
-import { useSetDefaultOrganization } from './api';
 import { OrgAvatar } from './org-avatar';
 
-/** Whether the person has anywhere else to go: another organization, or the console. */
-export function useHasOtherPlaces(): boolean {
-  const { memberships, invitations, platformAdmin } = useAuth();
-  const active = memberships.filter((m) => m.status === 'active');
-  return active.length + (platformAdmin ? 1 : 0) > 1 || invitations.length > 0;
+/** "1 invitation waiting", "2 invitations waiting". */
+export function invitationsWaiting(count: number): string {
+  return count === 1 ? '1 invitation waiting' : `${count} invitations waiting`;
 }
 
 /**
- * The sidebar's lockup, which becomes a switcher when the person belongs to
- * more than one organization (the platform console counts as one). Switching
- * reloads this tab in the other organization; other tabs stay where they are.
+ * The sidebar's lockup, which is always the space switcher (Phase 60, S7): the person's spaces,
+ * a count of invitations waiting, "All spaces" (the Spaces page), and the console for its admins.
+ * Switching reloads this tab in the other space, which becomes the person's last choice; other
+ * tabs stay where they are. There is no star: the last space opened is where they land.
  */
 export function OrgSwitcher({ className }: { className?: string }) {
   const { organization, memberships, invitations, platformAdmin, chooseOrganization } = useAuth();
-  const hasOthers = useHasOtherPlaces();
-  const setDefault = useSetDefaultOrganization();
-
-  if (!hasOthers) return <LogoLockup className={className} />;
-
   const active = memberships.filter((m) => m.status === 'active');
-  const current = active.find((m) => m.slug === organization?.slug);
-
-  /** Where they land on signing in: this organization, or nowhere in particular. */
-  function toggleDefault() {
-    if (!current) return;
-    setDefault.mutate(current.is_default ? null : current.slug, {
-      onSuccess: () =>
-        toast.success(
-          current.is_default
-            ? 'You will choose where to go when you sign in.'
-            : `You will land in ${current.name} when you sign in.`,
-        ),
-      onError: () => toast.error('Your default space could not be changed. Try again.'),
-    });
-  }
 
   return (
     <DropdownMenu>
@@ -63,6 +41,15 @@ export function OrgSwitcher({ className }: { className?: string }) {
         data-testid="org-switcher"
       >
         <LogoLockup className="min-w-0 flex-1" />
+        {invitations.length > 0 && (
+          <Badge
+            className="shrink-0 px-1.5 py-0 text-[10px] font-semibold"
+            aria-label={invitationsWaiting(invitations.length)}
+            data-testid="org-switcher-invitations"
+          >
+            {invitations.length}
+          </Badge>
+        )}
         <ChevronsUpDownIcon className="text-sidebar-muted-foreground size-4 shrink-0" />
       </DropdownMenuTrigger>
 
@@ -72,12 +59,7 @@ export function OrgSwitcher({ className }: { className?: string }) {
           <DropdownMenuItem key={org.slug} onSelect={() => org.slug !== organization?.slug && chooseOrganization(org.slug)}>
             <OrgAvatar org={org} className="size-7" />
             <span className="min-w-0 flex-1">
-              <span className="flex items-center gap-1.5 text-sm">
-                <span className="truncate">{org.name}</span>
-                {org.is_default && (
-                  <StarIcon className="fill-primary text-primary size-3 shrink-0" aria-label="Your default" />
-                )}
-              </span>
+              <span className="block truncate text-sm">{org.name}</span>
               <span className="text-muted-foreground block truncate text-xs">
                 {org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
               </span>
@@ -86,24 +68,17 @@ export function OrgSwitcher({ className }: { className?: string }) {
           </DropdownMenuItem>
         ))}
 
-        {current && active.length > 1 && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={toggleDefault} disabled={setDefault.isPending}>
-              {current.is_default ? <StarOffIcon className="size-4" /> : <StarIcon className="size-4" />}
-              {current.is_default
-                ? `Stop landing in ${current.short_name} on sign-in`
-                : `Land in ${current.short_name} on sign-in`}
-            </DropdownMenuItem>
-          </>
-        )}
-
-        {(platformAdmin || invitations.length > 0) && <DropdownMenuSeparator />}
+        <DropdownMenuSeparator />
         {invitations.length > 0 && (
-          <DropdownMenuItem onSelect={() => window.location.assign('/select-organization')}>
-            {invitations.length === 1 ? '1 invitation waiting' : `${invitations.length} invitations waiting`}
+          <DropdownMenuItem onSelect={() => window.location.assign('/spaces')}>
+            <MailIcon className="size-4" />
+            {invitationsWaiting(invitations.length)}
           </DropdownMenuItem>
         )}
+        <DropdownMenuItem onSelect={() => window.location.assign('/spaces')} data-testid="org-switcher-all">
+          <LayoutGridIcon className="size-4" />
+          All spaces
+        </DropdownMenuItem>
         {platformAdmin && (
           <DropdownMenuItem onSelect={() => window.location.assign('/platform')}>
             <ShieldCheckIcon className="size-4" />

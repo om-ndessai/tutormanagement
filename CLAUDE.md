@@ -237,13 +237,24 @@ organizations (the cron's sweep, sign-in) says so with an `org-scope:` comment. 
 backs it up: every root table's `BEFORE INSERT` trigger refuses a person who is not a member of
 the row's organization, and `BEFORE UPDATE OF organization_id` refuses any move.
 
-**Someone in several organizations may choose a default, where they land on signing in.**
-`org_members.is_default`, at most one per person (`org_members_one_default`), set by
-`PUT /api/auth/default-organization` (the person's own; only an organization they may enter now;
-logged there as `membership.default_set` / `default_cleared`) from a star on the picker or the
-switcher. It decides only where an ARRIVING tab lands -- one with no organization of its own in
-`sessionStorage` (`hasTabOrg`) -- ahead of the `tmi_last_org` cookie and `DEFAULT_ORGANIZATION`;
-it never moves a tab that has chosen.
+**A person lands in the last space they opened** (Phase 60, `docs/spaces-plan.md` S4-S8).
+`org_members.is_default`, at most one per person (`org_members_one_default`), is the last space
+opened on any device: `POST /api/auth/enter` moves it (two writes when it moves, none when not, no
+log line of its own) and leaving clears it. An ARRIVING tab or app (no space of its own in
+`sessionStorage`, `getTabOrg`) lands by `decideLanding` in shared: a link's space (`?org=`), else
+that last choice, else their only space when nothing is pending (no invitation, no request), else
+the selector -- never by the `tmi_last_org` cookie or `DEFAULT_ORGANIZATION` (which brands the
+sign-in page only); a tab that has chosen keeps its space. There is no star: `PUT
+/api/auth/default-organization` stays for older apps and sets the same column. `/spaces` is the
+person's own console (in the frame inside a space; the full-screen selector outside one;
+`/select-organization` redirects there): their spaces with Open and Leave, invitations (Accept
+enters at once), join with a code, start a space, the console link for platform admins, and
+Delete my account while they belong nowhere -- all from `GET /api/auth/session`. Inside a space an
+invitation is also a banner (Not now hides it for the tab) and a count on the switcher, which is
+always shown with "All spaces". `POST /api/spaces/:slug/leave` (outside `requireOrg`) leaves from
+anywhere, the last admin refused 409 `last_admin`; `POST /api/organization/leave` stays for older
+apps (`lib/leave-space.ts` is both). The e2e fixture gives every tab its `org` as its own
+(`sessionStorage`), so only `org: null` arrives.
 
 **An email says what happened, to whom it concerns, and nothing more** (Phase 32, R15). While an
 organization's `email_notifications` is on, four actions call `notify` (`lib/email.ts`): a person
@@ -302,8 +313,15 @@ older apps keep the 403); `POST /api/auth/signup` takes the birth month and year
 -- under 13 is refused and nothing is stored; only the band is kept (`platform_accounts`). A newcomer
 joins a space by asking with its code (`POST /api/spaces/join-requests`; the space's admins let them in
 through the ordinary user form, `join_request_user_id`, or decline), or an adult makes one
-(`POST /api/spaces`): self-serve, Assessment alone and on, untrusted, no email, its maker its admin, its
-slug from its code. Codes are 8 characters of `SPACE_CODE_ALPHABET`, unique, found only while joining by
+(`POST /api/spaces`): self-serve, Assessment and Quest allowed and on (Phase 61, S10), no Tutoring,
+untrusted, no email, its maker its admin, its slug from its code. Since Phase 61 (`docs/spaces-plan.md`
+S10-S13) every space made -- in the console too -- starts with its admins' Assessment and Quest switches
+on (existing spaces keep theirs); a newcomer's Welcome puts **Join with a code** and **Start a space**
+(adults) side by side; and starting one opens the new space on **Invite people** (the wizard's `invite`
+screen, `InvitePeople`, before the tour): rows of email and role (`inviteRolesFor`: Admin, Parent, Tutor
+only where Tutoring is allowed), each the ordinary `POST /api/users` built by `inviteRowRequest`
+(status `invited`, so even a new address accepts by hand), told by **Copy invitation** / **Share**
+(`invitationText`) since such a space sends no email, with its code card; **Skip** goes on to the tour. Codes are 8 characters of `SPACE_CODE_ALPHABET`, unique, found only while joining by
 code is on. A student added in a self-serve space needs the adult's consent (`parent_consent`, a
 `consents` row). A self-serve space's admin may delete it -- `purgeSpace` removes every row it holds
 (`scripts/check-purge.mjs` fails on a table the purge misses) -- and a person in no space may delete their
@@ -312,6 +330,17 @@ account. Routes before a space sit outside `requireOrg` (`routes/spaces.ts`), li
 until the owner approves the terms and privacy wording (then `LEGAL_DRAFT` goes false too), "true" on
 the demo and in `.dev.vars`. Closed, an unknown Google account is refused as before and
 `POST /api/auth/signup` answers 403; `/api/auth/config` reports `signup_open`.
+
+**One word on screen: space** (Phase 59, `docs/spaces-plan.md`, S1). What a person reads -- the web,
+the app, the API's error messages, audit labels and new audit descriptions, notification labels, the
+brand blurb, the tour -- says "space", never "organization" (nor "institute" as a generic word). The
+CODE keeps `organization` (`organizations`, `OrgId`, `X-Organization`, `/organization`, audit keys
+such as `organization.created`); old audit lines are never rewritten; proper names stay.
+`scripts/check-ui-words.mjs`, run by `npm run typecheck`, fails on the word in JSX text, in prose
+strings, and in strings given to labels, titles, messages, toasts, `ApiError`s, Zod messages and
+`*_LABELS` tables; a `ui-words:` comment marks a deliberate exception. The terms and privacy reworded
+the same way are version 2026-10-31, approved by the owner on 2026-11-01 and published; a sign-up still
+accepts 2026-10-29, which app builds on phones send (`ACCEPTED_LEGAL_VERSIONS`), and records the version sent.
 
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
@@ -483,27 +512,32 @@ sections above until its half follows.
 silently grows by 48px. Stat grids use `items-start`: a grid row sizes every card to the
 tallest, so one card with a hint line lifts empty space into all the others.
 
-**A space's TIN is its organization's -- a `businesses` row -- and is not an SSN** (Phase 54). With
-its payer address, edited by a linked space's admins on the Space page (`/organization`,
-`routes/organization.ts`, written to the business) and by platform admins in the console's
-Organizations, and prefilled into the 1099's payer box. It runs through `optionalText`, so the SSN
-guard applies — a sole proprietor filing under their own number is exactly the case that must still be
-refused. The six payer columns left on `organizations` are no longer read.
+**A space's TIN is the space's own -- its `businesses` row -- and is not an SSN** (Phase 54, Phase 59).
+With its payer address and the name on its 1099s, edited by the space's admins on the Space page
+(`/organization`, `routes/organization.ts`, written to the business) and by platform admins in the
+space's dialog in the console (`PATCH /api/platform/organizations/:id`, `payer_name`/`tin`/`payer_*`),
+and prefilled into the 1099's payer box. It runs through `optionalText`, so the SSN guard applies — a
+sole proprietor filing under their own number is exactly the case that must still be refused. The six
+payer columns left on `organizations` are no longer read.
 
-**A space is run by an organization, or paid directly** (Phase 54, `docs/tutor-spaces-plan.md`, R24).
-"Organization" on screen is `businesses` in the code (name, TIN, payer address; several spaces may
-share one), linked by `organizations.business_id`; platform admins make, link and archive them
-(`/api/platform/businesses`, `PUT /api/platform/organizations/:id/business`, logged
-`organization.business_set` / `business_cleared` in the space). With one, everything is as before.
-With none (`paidDirectly(org)`), families pay each lesson's tutor: a lesson is recorded with ONE price
--- the pairing's rate on both columns (`resolveSessionRates`; the student's price is not read) -- and
-`sessions.paid_directly = 1`; a family's payment names the tutor it went to (`payments.payee_user_id`),
-a tutor records the payments made to them (admins any, a family none), and there are no `to_tutor`
-payments, advances, top-ups, margins or 1099s (409 `paid_directly`); the tutor's year-end summary is
-`GET /payments/direct-summary.csv`. Both flags are frozen when written, so a switch applies going
-forward -- never restate a recorded row. Balances keep a third ledger per family and tutor
-(`BalancesResponse.direct`), out of the organization's two. Triggers keep a direct lesson one price and
-refuse a payment that does not fit the space's model at insert. Newcomer spaces have no organization.
+**Families pay the space, or each tutor directly** (Phase 54, `docs/tutor-spaces-plan.md`, R24; Phase 59,
+`docs/spaces-plan.md`, S2). On screen a space has a payment model, "Who families pay": **The space** (it
+collects payments, pays its tutors and files their 1099s) or **Each tutor, directly**. Underneath,
+"the space" is a `businesses` row -- ONE PER SPACE, keyed by the space's id, never shared (409
+`shared_payer`) -- linked by `organizations.business_id`; platform admins choose the model with
+`PUT /api/platform/organizations/:id/payment-model { model }` (logged `organization.business_set` /
+`business_cleared` in the space; the row is made if missing, restored if archived, and kept on a switch
+back). The console has no Organizations tab; Phase 54's `/api/platform/businesses` routes and
+`PUT .../business` stay for app builds already on phones, answer as before, and are no longer called.
+With a payer, everything is as before. With none (`paidDirectly(org)`), families pay each lesson's tutor:
+a lesson is recorded with ONE price -- the pairing's rate on both columns (`resolveSessionRates`; the
+student's price is not read) -- and `sessions.paid_directly = 1`; a family's payment names the tutor it
+went to (`payments.payee_user_id`), a tutor records the payments made to them (admins any, a family
+none), and there are no `to_tutor` payments, advances, top-ups, margins or 1099s (409 `paid_directly`);
+the tutor's year-end summary is `GET /payments/direct-summary.csv`. Both flags are frozen when written,
+so a switch applies going forward -- never restate a recorded row. Balances keep a third ledger per
+family and tutor (`BalancesResponse.direct`), out of the space's two. Triggers keep a direct lesson one
+price and refuse a payment that does not fit the space's model at insert. Newcomer spaces have no payer.
 
 **A tutor's mailing address is for their 1099, and only they and the office see it.** Five
 columns on `tutor_profiles` (`address_line1` … `postal_code`), formatted by
@@ -695,7 +729,7 @@ the queue pages by `questions_status_idx` -- refetching after each approval woul
 account's daily reads in one session (`docs/ai-platform-plan.md`, "Reads").
 
 **An Assessment (Phase 38, beta) is written by hand, and its PDF is the tutor's.** While an
-organization's `canvas_assessments` is on (its admins' switch, off by default), the Assessment menu
+organization's `canvas_assessments` is on (its admins' switch; on in a space made since Phase 61), the Assessment menu
 lets anyone who may follow a student's progress start one for them: up to 10 approved bank questions
 of a level (an NC grade, or -- where the organization offers Beast Academy -- a Beast Academy or AoPS
 level, Phase 41), one page each, answered on a canvas with nothing marked (`docs/canvas-assessment-plan.md`); a
@@ -715,7 +749,7 @@ many questions an assessment draws (`canvas_assessment_questions`, 1-25). Phase 
 (delayed) needs consent first: it reads a child's handwriting.
 
 **Question Quest (Phase 42) is gamification on the question bank, and its approvals are real.** While
-an organization's `gamify_question_quest` is on (its admins' switch, off by default), a signed-in student
+an organization's `gamify_question_quest` is on (its admins' switch; on in a space made since Phase 61), a signed-in student
 answers the bank's `checked` questions one at a time from their level (`student_profiles.quest_level_id`,
 set by their tutor or an admin), with no going back; code marks each answer (`checkAnswer`); their
 current tutor (or an admin) reviews it, and "Question is right" approves the question **for every

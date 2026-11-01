@@ -188,7 +188,7 @@ export const USER_ROLE_LABELS: Record<UserRole, string> = {
 
 /** One-line explanation of each role, for form hints. */
 export const USER_ROLE_DESCRIPTIONS: Record<UserRole, string> = {
-  admin: 'Owns the institute or has admin access. Only admins can add users.',
+  admin: 'Runs the space. Only admins can add people.',
   tutor: 'Offers tutoring services.',
   student: 'Enrolled for tutoring. Must have at least one parent.',
   parent: 'Responsible for costs, communication and monitoring.',

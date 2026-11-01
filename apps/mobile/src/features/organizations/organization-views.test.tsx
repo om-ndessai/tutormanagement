@@ -204,7 +204,7 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.getByText('Not sent here')).toBeTruthy();
     expect(screen.getByText('Not delivered')).toBeTruthy();
     // The subject is not repeated when the email went to them.
-    expect(screen.queryByText(/Added to the organization · Ben Whitfield/)).toBeNull();
+    expect(screen.queryByText(/Added to the space · Ben Whitfield/)).toBeNull();
   });
 
   it('shows every card, and every set, where all three are allowed', async () => {
@@ -214,6 +214,10 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.getByTestId('org-assessments')).toBeTruthy();
     expect(screen.getByTestId('org-gamification')).toBeTruthy();
     expect(within(screen.getByTestId('org-features')).getByText('Tutoring, Assessment and Quest')).toBeTruthy();
+    // Phase 59 (S3): the space's words.
+    expect(screen.getByText('This space may use')).toBeTruthy();
+    expect(screen.getByText('Assessment in this space')).toBeTruthy();
+    expect(screen.getByText('Quest in this space')).toBeTruthy();
   });
 
   it('shows only the allowed sets’ cards: Assessment alone has no payer and no money', async () => {
@@ -239,11 +243,13 @@ describe('OrganizationSettingsScreen', () => {
   });
 });
 
-describe('OrganizationSettingsScreen: who runs the money (Phase 54)', () => {
-  it('names the organization above the payer form', async () => {
+describe('OrganizationSettingsScreen: who families pay (Phase 54, Phase 59)', () => {
+  it('says families pay the space, under the name on the 1099, above the payer form', async () => {
     asAdmin();
     await renderWithProviders(<OrganizationSettingsScreen />);
-    expect(screen.getByTestId('org-business-name')).toHaveTextContent(/Run by Chapel Hill Math LLC/);
+    expect(screen.getByTestId('org-business-name')).toHaveTextContent(
+      /Families pay the space, and it files the 1099s as Chapel Hill Math LLC \(the name on the 1099, set by the platform\)\./,
+    );
     expect(screen.getByTestId('org-tin')).toBeTruthy();
     expect(screen.queryByTestId('org-paid-directly')).toBeNull();
   });
@@ -253,6 +259,7 @@ describe('OrganizationSettingsScreen: who runs the money (Phase 54)', () => {
     await renderWithProviders(<OrganizationSettingsScreen />);
     expect(screen.getByTestId('org-paid-directly')).toBeTruthy();
     expect(screen.getByText('Families pay each tutor directly')).toBeTruthy();
+    expect(screen.getByText(/To have the space collect payments, ask the platform administrator\./)).toBeTruthy();
     expect(screen.queryByTestId('org-tin')).toBeNull();
     expect(screen.queryByTestId('org-payer')).toBeNull();
   });
@@ -287,13 +294,13 @@ describe('CurriculaCard', () => {
     asAdmin();
     mockPut.mockRejectedValue(
       new ApiRequestError(422, 'validation_failed', 'Please correct the highlighted fields.', {
-        offered: ['Not a curriculum this organization can offer: x.'],
+        offered: ['Not a curriculum this space can offer: x.'],
       }),
     );
     await renderWithProviders(<OrganizationSettingsScreen />);
     await fireEvent(screen.getByTestId('org-curriculum-offer-nc-2026'), 'valueChange', true);
     await fireEvent.press(screen.getByTestId('org-curricula-save'));
-    expect(await screen.findByText('Not a curriculum this organization can offer: x.')).toBeTruthy();
+    expect(await screen.findByText('Not a curriculum this space can offer: x.')).toBeTruthy();
   });
 });
 

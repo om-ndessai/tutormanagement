@@ -53,11 +53,47 @@ tags:
 - extendedWaitUntil:
     visible: 'The Creator family is ready.'
     timeout: 15000
-# In it, the welcome wizard opens by itself.
+# In it, "Invite people" opens first (Phase 61, S12): Admin and Parent, never Tutor in a newcomer's
+# space; a row is checked on the device; the space's code is there too. Skip goes on to the wizard,
+# which opens by itself.
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-invite
+    timeout: 30000
+- assertVisible:
+    id: onboarding-title
+    text: 'Invite people'
+- assertVisible: 'Ask the adults who will use The Creator family to join you. They accept when they sign in.'
+- assertVisible:
+    id: invite-role-0-admin
+- assertVisible:
+    id: invite-role-0-parent
+- assertNotVisible:
+    id: invite-role-0-tutor
+- tapOn:
+    id: invite-email-0
+- inputText: 'not-an-email'
+- hideKeyboard
+- tapOn:
+    id: invite-send
+- extendedWaitUntil:
+    visible:
+      id: invite-problem-0
+      text: 'Enter a valid email address.'
+    timeout: 5000
+- takeScreenshot: spaces-invite-step
+- scrollUntilVisible:
+    element:
+      id: space-code
+- scrollUntilVisible:
+    element:
+      id: invite-skip
+- tapOn:
+    id: invite-skip
 - extendedWaitUntil:
     visible:
       id: screen-onboarding
-    timeout: 30000
+    timeout: 15000
 - tapOn:
     id: onboarding-choice-student
 - extendedWaitUntil:

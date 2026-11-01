@@ -37,14 +37,21 @@ import type { OrgId } from '../lib/org.js';
  */
 const INVITED = "m.status = 'invited' AND m.invited_name IS NOT NULL";
 
+/** The name this organization reads: searched and sorted on too, so the account's own never shows through. */
+const SHOWN_NAME = `CASE WHEN ${INVITED} THEN m.invited_name ELSE u.full_name END`;
+
 const COLUMNS = [
   'u.id',
   'u.email',
-  `CASE WHEN ${INVITED} THEN m.invited_name ELSE u.full_name END AS full_name`,
+  `${SHOWN_NAME} AS full_name`,
   `CASE WHEN ${INVITED} THEN NULL ELSE u.phone END AS phone`,
   'm.status',
   'm.created_at',
-  'u.updated_at',
+  // A space's own time, never the account's (`users.updated_at` moves on every sign-in anywhere,
+  // R6/R13): until they accept, the invitation's date, so an invited row reads the same whether or
+  // not the address had an account (R21); after, the latest of this membership's own moments.
+  `CASE WHEN m.status = 'invited' THEN m.created_at
+        ELSE MAX(m.created_at, COALESCE(m.last_entered_at, ''), COALESCE(m.details_confirmed_at, '')) END AS updated_at`,
   'm.last_entered_at AS last_login_at',
   'm.removed_at AS deleted_at',
 ].join(', ');
@@ -66,7 +73,7 @@ const SELECT_USER = `SELECT ${COLUMNS}, ${ROLES_CSV}
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
 
 const SORT_SQL: Record<UserSortField, string> = {
-  full_name: 'u.full_name COLLATE NOCASE',
+  full_name: `${SHOWN_NAME} COLLATE NOCASE`,
   email: 'u.email COLLATE NOCASE',
   status: 'm.status',
   created_at: 'm.created_at',
@@ -130,7 +137,7 @@ export async function listUsers(
 
   if (params.search) {
     const term = `%${params.search.toLowerCase()}%`;
-    where.push('(lower(u.full_name) LIKE ? OR lower(u.email) LIKE ?)');
+    where.push(`(lower(${SHOWN_NAME}) LIKE ? OR lower(u.email) LIKE ?)`);
     values.push(term, term);
   }
 
@@ -347,7 +354,9 @@ export async function getUserDetail(
   const member = toUser(userRow);
   return {
     ...member,
-    shared_fields_locked: elsewhere > 0,
+    // Locked for every invitation not yet accepted, so the lock does not tell an inviting space
+    // whether the address had an account elsewhere (R21); after accepting, by their memberships.
+    shared_fields_locked: member.status === 'invited' || elsewhere > 0,
     last_entered_at: member.last_login_at,
     tutor_profile: rawTutor
       ? ({
@@ -502,10 +511,41 @@ export async function createUser(
 
     if (existing) {
       const membership = await db
-        .prepare('SELECT 1 AS ok FROM org_members WHERE organization_id = ? AND user_id = ?')
+        .prepare('SELECT removed_at FROM org_members WHERE organization_id = ? AND user_id = ?')
         .bind(org, existing.id)
-        .first<{ ok: number }>();
-      if (membership) return { kind: 'already_member' };
+        .first<{ removed_at: string | null }>();
+      if (membership && membership.removed_at === null) return { kind: 'already_member' };
+
+      // Phase 61 (S12): someone who left this space, declined its invitation or was removed from
+      // it is not "already here". Their membership comes back as a fresh invitation (or, for a
+      // join request let in, active), with exactly the roles asked for now -- as the console's
+      // ensureMembershipWithRoles revives one.
+      if (membership) {
+        await db.batch([
+          options.acceptRequest
+            ? db
+                .prepare(
+                  `UPDATE org_members SET status = 'active', invited_name = NULL, removed_at = NULL,
+                     created_at = ${NOW}, updated_at = ${NOW}
+                   WHERE organization_id = ? AND user_id = ? AND removed_at IS NOT NULL`,
+                )
+                .bind(org, existing.id)
+            : db
+                .prepare(
+                  `UPDATE org_members SET status = 'invited', invited_name = ?, removed_at = NULL,
+                     created_at = ${NOW}, updated_at = ${NOW}
+                   WHERE organization_id = ? AND user_id = ? AND removed_at IS NOT NULL`,
+                )
+                .bind(input.full_name, org, existing.id),
+          db.prepare('DELETE FROM user_roles WHERE organization_id = ? AND user_id = ?').bind(org, existing.id),
+          ...roleStatements(db, org, existing.id, input.roles),
+          ...profileCleanupStatements(db, org, existing.id, input.roles),
+        ]);
+
+        const user = await getUserById(db, org, existing.id);
+        if (!user) throw new Error('Membership revival returned no row.');
+        return { kind: 'invited', user };
+      }
 
       // Their shared fields are theirs: the name and phone typed here do not
       // overwrite what they already have.
@@ -1071,15 +1111,19 @@ export async function countPeopleAddedToday(db: D1Database, org: OrgId): Promise
   return row?.n ?? 0;
 }
 
-/** Phase 52: how many live admins an organization has (its last cannot leave). */
-export async function countAdmins(db: D1Database, org: OrgId): Promise<number> {
+/**
+ * Phase 52: how many live admins an organization has (its last cannot leave), not counting
+ * `except` -- the person leaving, who may be a suspended admin and so not among them.
+ */
+export async function countAdmins(db: D1Database, org: OrgId, except?: string): Promise<number> {
   const row = await db
     .prepare(
       `SELECT COUNT(*) AS n FROM user_roles r
        JOIN org_members m ON m.organization_id = r.organization_id AND m.user_id = r.user_id
-       WHERE r.organization_id = ? AND r.role = 'admin' AND m.removed_at IS NULL AND m.status = 'active'`,
+       WHERE r.organization_id = ? AND r.role = 'admin' AND m.removed_at IS NULL AND m.status = 'active'
+         AND r.user_id <> ?`,
     )
-    .bind(org)
+    .bind(org, except ?? '')
     .first<{ n: number }>();
   return row?.n ?? 0;
 }

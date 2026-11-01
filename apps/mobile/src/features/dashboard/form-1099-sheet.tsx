@@ -245,7 +245,7 @@ export function Form1099Body({ tutor, year }: { tutor: TutorTaxStatus; year: num
           label={`Payer’s TIN ${settingsTin ? '(from the Space settings)' : '(optional)'}`}
           value={payerTin}
           onChangeText={setPayerTin}
-          placeholder="The organization’s EIN"
+          placeholder="The space’s EIN"
           autoComplete="off"
           autoCorrect={false}
           importantForAutofill="no"

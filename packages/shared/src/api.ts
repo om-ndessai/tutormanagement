@@ -73,7 +73,11 @@ export const ERROR_CODES = [
   // Phase 54: a space paid directly has no organization -- no payer, no
   // payments to tutors; and a lesson keeps the model it was recorded under.
   'paid_directly',
+  // Phase 59: a payer record is a single space's own, never shared by two.
+  'shared_payer',
   'model_changed',
+  // Phase 60: a space's only administrator cannot leave it (POST /api/spaces/:slug/leave).
+  'last_admin',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

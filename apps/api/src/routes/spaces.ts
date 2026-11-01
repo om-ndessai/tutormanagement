@@ -3,6 +3,7 @@ import {
   DAILY_CAPS,
   DEFAULT_ORG_TIME_ZONE,
   createSpaceSchema,
+  mayMakeSpace,
   spaceCodeSchema,
   spaceNameProblem,
   type ApiOk,
@@ -11,6 +12,7 @@ import {
 
 import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
+import { leaveSpace } from '../lib/leave-space.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { clientAddress, rateLimit } from '../lib/rate-limit.js';
 import { zValidator } from '../lib/validate.js';
@@ -22,11 +24,13 @@ import {
   createJoinRequest,
   createSpace,
   findSpaceByCode,
+  getMembership,
   getOrganizationBySlug,
+  listMemberships,
   markDeclinesSeen,
   spaceStanding,
 } from '../repositories/organizations.js';
-import { getPlatformAccount } from '../repositories/people.js';
+import { getPlatformAccount, isPlatformAdmin } from '../repositories/people.js';
 import type { AppEnv } from '../types.js';
 
 /**
@@ -106,15 +110,38 @@ export const spacesRoutes = new Hono<AppEnv>()
   })
 
   /**
-   * Makes a space: adults only, three per person. Assessment alone, its code made, joining by
-   * code on, and its maker as its admin. Its name may repeat; its code and address never do.
+   * Phase 60 (S8): leaves a space from anywhere -- the Spaces page, inside another space, or the
+   * app -- acting on the person's own membership only. Not a member there (never, invited, or
+   * already gone): 404, as for a space that does not exist. The last admin is refused (409
+   * `last_admin`); otherwise as `POST /api/organization/leave`, logged in the space left. The
+   * answer carries nothing about it.
+   */
+  .post('/:slug/leave', async (c) => {
+    const person = c.get('person');
+    const org = await getOrganizationBySlug(c.env.DB, c.req.param('slug'));
+    const orgId = org && !org.archived_at ? orgIdFromRow(org.id) : null;
+    const membership = orgId ? await getMembership(c.env.DB, orgId, person.id) : null;
+    if (!org || !orgId || !membership || membership.removed || membership.status === 'invited') {
+      throw ApiError.notFound('Space not found.');
+    }
+    await leaveSpace(c.env.DB, { id: orgId, name: org.name }, person, membership);
+    return c.json({ data: { left: true } });
+  })
+
+  /**
+   * Makes a space: adults only, three per person. Assessment and Quest on (Phase 61, S10), no
+   * Tutoring, its code made, joining by code on, and its maker as its admin. Its name may repeat; its code and address never do.
    */
   .post('/', zValidator('json', createSpaceSchema), async (c) => {
     const person = c.get('person');
     await rateLimit(c, 'space_write', person.id);
-    const account = await getPlatformAccount(c.env.DB, person.id);
-    // A person a space added has no age band: their space vouched for them.
-    if (account && account.age_band !== 'adult') {
+    const [account, memberships, platformAdmin] = await Promise.all([
+      getPlatformAccount(c.env.DB, person.id),
+      listMemberships(c.env.DB, person.id),
+      isPlatformAdmin(c.env.DB, person.id),
+    ]);
+    // A person a space added has no age band: only an adult's role there vouches for them (S11).
+    if (!mayMakeSpace({ account, memberships, platform_admin: platformAdmin })) {
       throw new ApiError(403, 'forbidden', 'You need to be 18 or older to make a space. Ask a parent or teacher to make one.');
     }
     if ((await countSpacesMadeBy(c.env.DB, person.id)) >= DAILY_CAPS.spaces_per_person) {

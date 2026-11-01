@@ -66,7 +66,7 @@ const SUBMITTED: CanvasAssessment = {
 };
 
 function signIn(roles: string[], organization: Record<string, unknown> = ASSESS) {
-  mockAuth.mockReturnValue({ user: { id: 'me', full_name: 'Ines Ferreira', roles }, organization });
+  mockAuth.mockReturnValue({ user: { id: 'me', full_name: 'Ines Ferreira', roles }, organization, invitations: [] });
 }
 
 function serve(rows: CanvasAssessment[]) {

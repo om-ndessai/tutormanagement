@@ -164,7 +164,7 @@ export function UserDetailView({
               {tutor.max_session_minutes != null ? (
                 formatDuration(tutor.max_session_minutes)
               ) : (
-                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)</Muted>
+                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (space default)</Muted>
               )}
             </Detail>
             {/* Between the tutor and the office: the API blanks it for anyone
@@ -225,7 +225,7 @@ export function UserDetailView({
               {student.max_session_minutes != null ? (
                 formatDuration(student.max_session_minutes)
               ) : (
-                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (institute default)</Muted>
+                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (space default)</Muted>
               )}
             </Detail>
           </dl>

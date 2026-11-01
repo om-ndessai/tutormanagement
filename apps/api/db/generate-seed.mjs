@@ -898,6 +898,11 @@ const B = q(ORG_B);
 const C = q(ORG_C);
 const ORG_D = '0e000000-0000-4000-8000-000000000001';
 const D = q(ORG_D);
+// E (Phase 61, S10): a space the console made after new spaces started with Assessment and Quest
+// allowed AND switched on. No members: it shows the new-space state in the console and on the demo
+// without changing who can see whom.
+const ORG_E = '0f000000-0000-4000-8000-000000000001';
+const E = q(ORG_E);
 const ENTERED_C = q('2026-09-01T12:00:00.000Z');
 const inOrg = (org, rows) => rows.map((row) => [org, ...row]);
 
@@ -932,13 +937,23 @@ const organizations = [
    'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
    q('America/New_York'), '0', '0', '0', q('solo.tutor-portal.invalid'), 1, 1, 0,
    q('console'), 1, q('SQRT2345'), 0, 'NULL'],
+  // E (Phase 61): made in the console with the defaults -- all three sets allowed, Assessment and
+  // Quest switched on, and its own payer (Phase 59: a business with the space's id).
+  [E, q('newfield'), q('Newfield Math Circle'), q('Newfield'), 'NULL', 'NULL', q('Cary, North Carolina'), q('platform'), 'NULL', 'NULL',
+   'NULL', 'NULL', 'NULL', 'NULL', 'NULL',
+   q('America/New_York'), '0', '1', '0', q('newfield.tutor-portal.invalid'), 1, 1, 1,
+   q('console'), 1, q('NWFD2345'), 0, E],
 ];
+// Quest switched on (`gamify_question_quest`): only E, made after Phase 61; the four before keep theirs.
+const questOn = new Set([E]);
+const organizationRows = organizations.map((row) => [...row, questOn.has(row[0]) ? '1' : '0']);
 
 // Phase 54: the organizations in the money sense. A and B each have their own, with the space's
-// id, as production's backfill gives every space that existed before; C and D have none.
+// id, as production's backfill gives every space that existed before; C and D have none; E (Phase 61) is its own payer, as the console makes one now.
 const businesses = [
   [A, q('Chapel Hill Math Institute'), q('47-2019388'), q('100 Franklin Street'), 'NULL', q('Chapel Hill'), q('NC'), q('27514')],
   [B, q('Riverside Tutoring'), q('56-7788990'), 'NULL', 'NULL', 'NULL', 'NULL', 'NULL'],
+  [E, q('Newfield Math Circle'), 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL'],
 ];
 
 // The people only C has: an admin who is also the parent, a second parent, and their child.
@@ -1276,13 +1291,13 @@ ${insert('businesses', ['id', 'name', 'tin', 'payer_address_line1', 'payer_addre
 -- --- the organizations -----------------------------------------------------
 -- A's payer TIN is the number every one of its 1099s carries. Not a person's,
 -- and not an SSN: the API refuses one here as firmly as anywhere else.
-${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest', 'created_via', 'quest_trusted', 'join_code', 'join_by_code', 'business_id'], organizations)}
+${insert('organizations', ['id', 'slug', 'name', 'short_name', 'tagline', 'blurb', 'place', 'palette', 'builtin_logo', 'tin', 'payer_address_line1', 'payer_address_line2', 'payer_city', 'payer_state', 'payer_postal_code', 'time_zone', 'email_notifications', 'canvas_assessments', 'canvas_assessments_unreviewed', 'calendar_domain', 'feature_tutoring', 'feature_assessment', 'feature_quest', 'created_via', 'quest_trusted', 'join_code', 'join_by_code', 'business_id', 'gamify_question_quest'], organizationRows)}
 
 -- What each teaches from (Phase 34; the API reads the catalog only through
 -- this list). A, like the institute, offers Beast Academy alone. B offers
 -- North Carolina's standards, 2017 by default, and has retired Beast Academy.
 -- The catalog itself is db/catalog.sql, loaded before this file.
-${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB, [C, q('nc-2026'), 1, 'NULL'], ...curriculaD])}
+${insert('organization_curricula', ['organization_id', 'curriculum_id', 'is_default', 'retired_at'], [[A, q('ba'), 1, 'NULL'], ...curriculaB, [C, q('nc-2026'), 1, 'NULL'], ...curriculaD, [E, q('nc-2026'), 1, 'NULL']])}
 
 -- --- people ----------------------------------------------------------------
 ${insert('users', ['id', 'email', 'full_name', 'phone'], [...users.map((row) => row.slice(0, 4)), ...bUsers, ...cUsers, ...dUsers, ...newcomerUsers])}

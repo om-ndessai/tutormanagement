@@ -1,6 +1,6 @@
-// Ported from apps/web/src/features/platform/organizations-page.tsx @ 1132322 (Phase 54's "run by" /
-// "paid directly" and the way to Organizations @ 24066d9, working tree).
-// Every organization on the platform, and the way in to creating the next. Archiving moved to the
+// Ported from apps/web/src/features/platform/organizations-page.tsx @ 1132322 (Phase 59's "families
+// pay the space" / "families pay each tutor" @ f96b984, working tree; the Organizations screen is gone).
+// Every space on the platform, and the way in to creating the next. Archiving moved to the
 // organization's own screen, behind a confirm: a list row is too easy to tap by accident.
 import {
   FEATURE_SET_LABELS,
@@ -35,8 +35,8 @@ export function orgSummary(org: OrganizationListItem): string {
     (allowedFeatureSets(org)
       .map((set) => FEATURE_SET_LABELS[set])
       .join(', ') || 'No feature sets') +
-    // Phase 54: who families pay.
-    ` · ${org.business ? `run by ${org.business.name}` : 'paid directly'}`
+    // Phase 59: who families pay.
+    ` · ${org.business ? 'families pay the space' : 'families pay each tutor'}`
   );
 }
 
@@ -76,20 +76,6 @@ export function OrganizationsScreen() {
       >
         New space
       </Button>
-      {/* Phase 54: organizations in the money sense; the console's tab bar holds five already. */}
-      <Button
-        testID="platform-businesses"
-        mode="outlined"
-        icon="domain"
-        onPress={() => {
-          haptics.selection();
-          router.push('/platform/businesses');
-        }}
-        style={{ alignSelf: 'flex-start' }}
-      >
-        Organizations
-      </Button>
-
       {organizations.isPending ? (
         <ListSkeleton label="Loading spaces…" count={3} height={72} />
       ) : organizations.isError ? (

@@ -213,7 +213,7 @@ export const questRoutes = new Hono<AppEnv>()
       const live = (await listOrganizationCurricula(c.env.DB, orgId)).filter((cur) => !cur.retired).map((cur) => cur.id);
       if (!bankLevelOffered(levelId, new Set(live))) {
         throw ApiError.validation('That level is not offered here.', {
-          level_id: ['A level needs its curriculum on the organization’s curriculum list.'],
+          level_id: ['A level needs its curriculum on the space’s curriculum list.'],
         });
       }
     }

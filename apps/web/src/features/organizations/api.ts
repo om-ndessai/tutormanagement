@@ -6,11 +6,15 @@ import type {
   JoinRequest,
   SpaceCode,
   SpaceLookup,
+  SpaceInviteRow,
+  UserDetail,
   CurriculumOfferingInput,
   NotificationLogEntry,
   OrganizationSettings,
   UpdateOrganizationSettingsInput,
 } from '@tmi/shared';
+
+import { inviteRowRequest } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
@@ -83,19 +87,6 @@ export function useAnswerInvitation() {
   });
 }
 
-/**
- * Chooses the organization the person lands in on signing in (`null`
- * clears it). The session is re-read afterwards, so every menu shows it.
- */
-export function useSetDefaultOrganization() {
-  const { refreshSession } = useAuth();
-  return useMutation({
-    mutationFn: (slug: string | null) =>
-      apiClient.put<ApiOk<{ default_organization: string | null }>>('/auth/default-organization', { slug }),
-    onSuccess: () => refreshSession(),
-  });
-}
-
 // ---------------------------------------------------------------------------
 // Phase 52: spaces -- joining with a code, making one, and its admins' side
 // ---------------------------------------------------------------------------
@@ -132,6 +123,18 @@ export function useMakeSpace() {
   return useMutation({
     mutationFn: (input: CreateSpaceInput) => apiClient.post<ApiOk<{ slug: string; name: string }>>('/spaces', input),
     onSuccess: () => refreshSession(),
+  });
+}
+
+/**
+ * Phase 61 (S12): one row of "Invite people" -- the ordinary add-person request (POST /api/users),
+ * as `inviteRowRequest` builds it: the person is invited, and accepts.
+ */
+export function useInvitePerson() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (row: SpaceInviteRow) => apiClient.post<ApiOk<UserDetail>>('/users', inviteRowRequest(row)),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
   });
 }
 
@@ -190,8 +193,11 @@ export function useRefreshJoinRequests() {
   return () => queryClient.invalidateQueries({ queryKey: requestsKey });
 }
 
+/** Phase 60 (S8): leaves a space from anywhere -- the person's own membership in it only. */
 export function useLeaveSpace() {
-  return useMutation({ mutationFn: () => apiClient.post('/organization/leave') });
+  return useMutation({
+    mutationFn: (slug: string) => apiClient.post<ApiOk<{ left: true }>>(`/spaces/${encodeURIComponent(slug)}/leave`),
+  });
 }
 
 export function useDeleteSpace() {

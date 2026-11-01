@@ -4,9 +4,10 @@ import { firstErrors } from './form-errors';
 import { logoAttempts, logoContentType, logoProblem } from './logo-bytes';
 import {
   EMPTY_ORG_FORM,
-  DIRECT,
-  businessChange,
+  EMPTY_PAYER,
   formFromOrganization,
+  payerForm,
+  paymentModelChange,
   featuresBody,
   formToInput,
   palettesOnOffer,
@@ -76,7 +77,7 @@ const ORG: OrganizationListItem = {
   feature_quest: false,
   created_via: 'console',
   quest_trusted: true,
-  business: { id: 'b-1', name: 'Fixture Organization' },
+  business: { id: 'b-1', name: 'Fixture Payer' },
   calendar_domain: 'lakeside.invalid',
   archived_at: null,
   created_at: '2026-10-01T00:00:00Z',
@@ -150,11 +151,11 @@ describe('organization form', () => {
 describe('feature sets (Phase 50)', () => {
   it('names the allowed sets at the end of the console row', () => {
     expect(orgSummary(ORG)).toBe(
-      'lakeside · Plum · 1 admin · 3 members · Tutoring, Assessment · run by Fixture Organization',
+      'lakeside · Plum · 1 admin · 3 members · Tutoring, Assessment · families pay the space',
     );
     expect(
       orgSummary({ ...ORG, feature_tutoring: false, feature_assessment: false, feature_quest: false }),
-    ).toMatch(/· No feature sets · run by/);
+    ).toMatch(/· No feature sets · families pay the space$/);
   });
 
   it('sends all three, with the one switched changed', () => {
@@ -193,27 +194,78 @@ describe('Quest trust (Phase 51)', () => {
   });
 });
 
-describe('the organization that runs a space (Phase 54)', () => {
+describe('who families pay (Phase 59, S2)', () => {
+  const PAYER = {
+    name: 'Lakeside Payer LLC',
+    tin: '12-3456789',
+    payer_address_line1: '1 Main St',
+    payer_address_line2: null,
+    payer_city: 'Durham',
+    payer_state: 'NC',
+    payer_postal_code: '27701',
+  };
+
   it('says who families pay at the end of the row', () => {
-    expect(orgSummary({ ...ORG, business: null })).toMatch(/· paid directly$/);
+    expect(orgSummary({ ...ORG, business: null })).toMatch(/· families pay each tutor$/);
+    expect(orgSummary(ORG)).toMatch(/· families pay the space$/);
   });
 
-  it('reads the organization into the form, or paid directly', () => {
-    expect(formFromOrganization(ORG).business_id).toBe('b-1');
-    expect(formFromOrganization({ ...ORG, business: null }).business_id).toBe(DIRECT);
-    expect(formFromOrganization(null).business_id).toBe(DIRECT);
+  it('reads the model and the payer details into the form', () => {
+    expect(formFromOrganization(ORG).payment_model).toBe('space');
+    expect(formFromOrganization({ ...ORG, business: null }).payment_model).toBe('direct');
+    expect(formFromOrganization(null).payment_model).toBe('direct');
+    expect(formFromOrganization({ ...ORG, payer: PAYER }).payer).toEqual({
+      payer_name: 'Lakeside Payer LLC',
+      tin: '12-3456789',
+      payer_address_line1: '1 Main St',
+      payer_address_line2: '',
+      payer_city: 'Durham',
+      payer_state: 'NC',
+      payer_postal_code: '27701',
+    });
+    // A Worker before Phase 59 sends no payer.
+    expect(formFromOrganization(ORG).payer).toEqual(EMPTY_PAYER);
   });
 
-  it('sends business_id on create, null for paid directly, and never in the edit body', () => {
+  it('creates with the model, and the payer fields filled in only for "The space"', () => {
     const fresh = { ...formFromOrganization(null), name: 'New', short_name: 'New', slug: 'new' };
-    expect(formToInput(fresh, true)).toMatchObject({ business_id: null });
-    expect(formToInput({ ...fresh, business_id: 'b-2' }, true)).toMatchObject({ business_id: 'b-2' });
-    expect(formToInput(formFromOrganization(ORG))).not.toHaveProperty('business_id');
+    const direct = formToInput({ ...fresh, payer: { ...EMPTY_PAYER, tin: '12-3456789' } }, true);
+    expect(direct).toMatchObject({ payment_model: 'direct' });
+    expect(direct).not.toHaveProperty('tin');
+    expect(direct).not.toHaveProperty('business_id');
+    const collecting = formToInput(
+      { ...fresh, payment_model: 'space', payer: { ...EMPTY_PAYER, payer_name: 'New LLC', tin: '12-3456789' } },
+      true,
+    );
+    expect(collecting).toMatchObject({ payment_model: 'space', payer_name: 'New LLC', tin: '12-3456789' });
+    expect(collecting).not.toHaveProperty('payer_city');
   });
 
-  it('puts the new organization only when it changed', () => {
-    expect(businessChange(ORG, { business_id: 'b-1' })).toBeNull();
-    expect(businessChange(ORG, { business_id: DIRECT })).toEqual({ business_id: null });
-    expect(businessChange({ business: null }, { business_id: 'b-2' })).toEqual({ business_id: 'b-2' });
+  it('edits send only the payer fields that changed, and never the model', () => {
+    const org = { ...ORG, payer: PAYER };
+    const loaded = payerForm(org.payer);
+    const form = formFromOrganization(org);
+    expect(formToInput(form, false, loaded)).not.toHaveProperty('tin');
+    expect(formToInput(form, false, loaded)).not.toHaveProperty('payment_model');
+    const changed = formToInput({ ...form, payer: { ...form.payer, payer_city: 'Cary' } }, false, loaded);
+    expect(changed).toMatchObject({ payer_city: 'Cary' });
+    expect(changed).not.toHaveProperty('tin');
+    // Families pay each tutor: no payer field travels, whatever the form holds.
+    expect(formToInput({ ...form, payment_model: 'direct', payer: EMPTY_PAYER }, false, loaded)).not.toHaveProperty(
+      'tin',
+    );
+  });
+
+  it('puts the model only when it changed', () => {
+    expect(paymentModelChange(ORG, { payment_model: 'space' })).toBeNull();
+    expect(paymentModelChange(ORG, { payment_model: 'direct' })).toEqual({ model: 'direct' });
+    expect(paymentModelChange({ business: null }, { payment_model: 'space' })).toEqual({ model: 'space' });
+  });
+
+  it('validates the payer fields with the shared schema: no SSN as a TIN', () => {
+    const form = { ...formFromOrganization(ORG), payer: { ...EMPTY_PAYER, tin: '123-45-6789' } };
+    const verdict = validateOrgForm(form, false, EMPTY_PAYER);
+    expect(verdict.ok).toBe(false);
+    if (!verdict.ok) expect(verdict.errors.tin).toBeTruthy();
   });
 });

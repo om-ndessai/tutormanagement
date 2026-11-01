@@ -1,11 +1,16 @@
 import { test, expect, ORGS } from '../support/fixtures.js';
 import { unwrap } from '../support/api.js';
+import { visible } from '../support/ui.js';
+import type { AsOptions } from '../support/fixtures.js';
+import type { PersonKey } from '../support/people.js';
+import type { Page } from '@playwright/test';
 
 /**
  * Feature sets (Phase 50, docs/open-signup-plan.md): Tutoring, Assessment and Quest, which
  * platform admins allow per space. A set that is off is invisible there, admins included, and its
  * routes answer 403 feature_unavailable (R23). The seed's organization C (`assess`) is allowed
- * Assessment alone, as every self-serve space will be (Phase 52).
+ * Assessment alone, as self-serve spaces were before Phase 61; a space made since has Assessment
+ * and Quest on (S10, `spaces-defaults.spec.ts`), and existing ones keep their switches.
  */
 
 test.describe.configure({ mode: 'serial' });
@@ -44,6 +49,10 @@ test.describe('feature sets (Phase 50) @smoke', () => {
     await expect(ines.getByRole('form', { name: '1099 payer details' })).toHaveCount(0);
     await expect(ines.getByTestId('gamification-setting')).toHaveCount(0);
     await expect(ines.getByTestId('canvas-assessments-setting')).toBeVisible();
+    // Phase 59 (S3): the sets are the space's, in the space's words.
+    await expect(ines.getByText('This space may use', { exact: true })).toBeVisible();
+    await expect(ines.getByTestId('canvas-assessments-setting')).toContainText('Assessment in this space');
+    await expect(ines.getByText(/organization/i)).toHaveCount(0);
     const questOn = await ines.request.patch('/api/organization/settings', { data: { gamify_question_quest: true } });
     expect(questOn.status()).toBe(403);
   });
@@ -102,6 +111,17 @@ test.describe('feature sets (Phase 50) @smoke', () => {
     } finally {
       await unwrap(await put({ feature_tutoring: true, feature_assessment: true, feature_quest: true }), 'allow again');
     }
+    // The console says what this space may use (Phase 59, S3).
+    await platform.goto('/platform');
+    await platform.getByRole('button', { name: `Edit ${ORGS.b.name}` }).click();
+    const sets = platform.getByRole('dialog').getByTestId('org-feature-sets');
+    await expect(sets).toContainText('This space may use');
+    for (const name of ['Tutoring', 'Assessment', 'Quest']) {
+      await expect(sets.getByRole('switch', { name, exact: true })).toBeVisible();
+    }
+    // Riverside has Quest allowed: its admins' card says so in the space's words.
+    await rosa.goto('/organization');
+    await expect(rosa.getByTestId('gamification-setting')).toContainText('Quest in this space');
     // Allowed again: everything kept is back.
     expect((await rosa.request.get('/api/sessions')).status()).toBe(200);
     const log = await unwrap<any[]>(await rosa.request.get('/api/audit?limit=20'), 'audit');
@@ -123,6 +143,158 @@ test.describe('feature sets on rows from before Phase 50 @compat', () => {
       expect(orgs.find((o) => o.slug === slug), slug).toMatchObject({ feature_tutoring: true, feature_assessment: true, feature_quest: true });
     }
     const admin = await as('admin');
+    expect((await admin.request.get('/api/sessions')).status()).toBe(200);
+  });
+});
+
+/**
+ * Phase 59 (S3, docs/spaces-plan.md): the feature sets are the space's. No change of model, only of
+ * words: platform admins allow each set per space ("This space may use: Tutoring, Assessment, Quest"),
+ * and the space's own admins switch Assessment and Quest on and off ("Assessment in this space",
+ * "Quest in this space"). Each test makes its own space and admin, so it runs in any order.
+ */
+test.describe('feature sets are the space’s (Phase 59, S3)', () => {
+  type As = (who: PersonKey, options?: AsOptions) => Promise<Page>;
+
+  async function makeSpace(as: As, label: string) {
+    const tag = `${Date.now().toString(36)}${Math.floor(Math.random() * 1e4).toString(36)}`;
+    const name = `${label} ${tag}`;
+    const slug = `s3-${label.toLowerCase().replace(/[^a-z]+/g, '-')}-${tag}`.slice(0, 40).replace(/-+$/, '');
+    const email = `s3.${tag}@example.com`;
+    const platform = await as('platformAdmin', { org: null });
+    const space = await unwrap<any>(
+      await platform.request.post('/api/platform/organizations', {
+        data: { name, short_name: label, slug },
+      }),
+      'make the space',
+    );
+    // Made by the console: every set allowed.
+    expect(space).toMatchObject({ feature_tutoring: true, feature_assessment: true, feature_quest: true });
+    await unwrap(
+      await platform.request.post(`/api/platform/organizations/${space.id}/admins`, {
+        data: { email, full_name: `Sasha ${tag}` },
+      }),
+      'add its admin',
+    );
+    // Invited by the console, then accepted: an active admin of the new space.
+    const admin = await as('admin', { email, org: slug });
+    expect((await admin.request.post(`/api/auth/invitations/${slug}/accept`)).ok()).toBe(true);
+    return { platform, admin, space, name, slug };
+  }
+
+  test('the console’s dialog says what this space may use, and its switches allow and disallow', async ({ as }) => {
+    const { platform, admin, space, name } = await makeSpace(as, 'Sets Console');
+
+    await platform.goto('/platform');
+    await visible(platform, name).first().waitFor();
+    await platform.getByRole('button', { name: `Edit ${name}` }).click();
+    const dialog = platform.getByRole('dialog');
+    const sets = dialog.getByTestId('org-feature-sets');
+    await expect(sets.locator('legend')).toHaveText('This space may use');
+    for (const set of ['Tutoring', 'Assessment', 'Quest']) {
+      await expect(sets.getByRole('switch', { name: set, exact: true })).toHaveAttribute('aria-checked', 'true');
+    }
+    await expect(sets.getByText(/organization/i)).toHaveCount(0);
+
+    // Disallow Quest and save: the space follows at once.
+    await sets.getByRole('switch', { name: 'Quest', exact: true }).click();
+    await expect(sets.getByRole('switch', { name: 'Quest', exact: true })).toHaveAttribute('aria-checked', 'false');
+    await dialog.getByRole('button', { name: 'Save', exact: true }).click();
+    await expect(visible(platform, `${name} saved.`)).toBeVisible();
+    const after = (await unwrap<any[]>(await platform.request.get('/api/platform/organizations'), 'list')).find(
+      (o) => o.id === space.id,
+    );
+    expect(after).toMatchObject({ feature_tutoring: true, feature_assessment: true, feature_quest: false });
+
+    // The reopened dialog keeps it.
+    await platform.getByRole('button', { name: `Edit ${name}` }).click();
+    await expect(
+      platform.getByRole('dialog').getByTestId('org-feature-sets').getByRole('switch', { name: 'Quest', exact: true }),
+    ).toHaveAttribute('aria-checked', 'false');
+
+    // Quest's routes answer the space's words, for its own admin too.
+    for (const path of ['/api/quest/me', '/api/quest/games']) {
+      const refused = await admin.request.get(path);
+      expect(refused.status(), path).toBe(403);
+      const error = (await refused.json()).error;
+      expect(error.code, path).toBe('feature_unavailable');
+      expect(error.message, path).toBe('Quest is not part of this space.');
+    }
+    expect((await admin.request.get('/api/sessions')).status()).toBe(200);
+
+    // The space's log names the change, in a finished sentence.
+    const log = await unwrap<any[]>(await admin.request.get('/api/audit?limit=20'), 'audit');
+    expect(log.filter((e) => e.action === 'organization.features_updated').map((e) => e.description)).toContain(
+      `Feature sets of ${name}: disallowed Quest`,
+    );
+
+    // The space's own admin cannot allow a set, nor switch on what is not allowed.
+    expect(
+      (
+        await admin.request.put(`/api/platform/organizations/${space.id}/features`, {
+          data: { feature_tutoring: true, feature_assessment: true, feature_quest: true },
+        })
+      ).status(),
+    ).toBe(403);
+    expect((await admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: true } })).status()).toBe(403);
+  });
+
+  test('the Space page lists what this space may use, with a card per set its admins switch', async ({ as }) => {
+    const { platform, admin, space } = await makeSpace(as, 'Sets Page');
+    const put = async (data: Record<string, boolean>) =>
+      unwrap(await platform.request.put(`/api/platform/organizations/${space.id}/features`, { data }), 'features');
+    // A known start: both of its admins' switches on.
+    await unwrap(
+      await admin.request.patch('/api/organization/settings', { data: { canvas_assessments: true, gamify_question_quest: true } }),
+      'switches on',
+    );
+    // A new admin meets the welcome wizard (Phase 26); past it, the page is the subject here.
+    await unwrap(await admin.request.post('/api/onboarding/tour', { data: { outcome: 'skipped' } }), 'past the wizard');
+
+    await admin.goto('/organization');
+    await expect(admin.getByText('This space may use', { exact: true })).toBeVisible();
+    await expect(admin.getByTestId('org-feature-sets')).toHaveText('Tutoring, Assessment, Quest');
+    const assessment = admin.getByTestId('canvas-assessments-setting');
+    const quest = admin.getByTestId('gamification-setting');
+    await expect(assessment).toContainText('Assessment in this space');
+    await expect(quest).toContainText('Quest in this space');
+    await expect(admin.getByText(/organization/i)).toHaveCount(0);
+
+    // Its admins switch Assessment off and on, from its card; the routes follow.
+    await assessment.getByRole('switch', { name: 'Assessment menu' }).click();
+    await expect(visible(admin, 'The Assessment menu is off.')).toBeVisible();
+    const off = await admin.request.get('/api/canvas-assessments');
+    expect(off.status()).toBe(403);
+    expect((await off.json()).error.message).toBe('Assessment is not part of this space.');
+    await assessment.getByRole('switch', { name: 'Assessment menu' }).click();
+    await expect(visible(admin, 'The Assessment menu is on.')).toBeVisible();
+    expect((await admin.request.get('/api/canvas-assessments')).status()).toBe(200);
+
+    // And Quest, from its card.
+    await quest.getByRole('switch', { name: 'Question Quest' }).click();
+    await expect(visible(admin, 'Question Quest is off.')).toBeVisible();
+    expect((await admin.request.get('/api/quest/games')).status()).toBe(403);
+    await quest.getByRole('switch', { name: 'Question Quest' }).click();
+    await expect(visible(admin, 'Question Quest is on.')).toBeVisible();
+    expect((await admin.request.get('/api/quest/games')).status()).toBe(200);
+
+    // The console disallows Quest and Tutoring: the page lists Assessment alone, and Quest's card goes.
+    await put({ feature_tutoring: false, feature_assessment: true, feature_quest: false });
+    await admin.goto('/organization');
+    await expect(admin.getByTestId('org-feature-sets')).toHaveText('Assessment');
+    await expect(admin.getByTestId('gamification-setting')).toHaveCount(0);
+    await expect(admin.getByTestId('canvas-assessments-setting')).toContainText('Assessment in this space');
+    await admin.goto('/sessions');
+    await expect(admin.getByTestId('feature-unavailable')).toContainText('Not part of this space');
+
+    // Allowed again: its admins' Quest switch is as they left it (on), and the card is back.
+    await put({ feature_tutoring: true, feature_assessment: true, feature_quest: true });
+    await admin.goto('/organization');
+    await expect(admin.getByTestId('org-feature-sets')).toHaveText('Tutoring, Assessment, Quest');
+    await expect(admin.getByTestId('gamification-setting')).toContainText('Quest in this space');
+    await expect(
+      admin.getByTestId('gamification-setting').getByRole('switch', { name: 'Question Quest' }),
+    ).toHaveAttribute('aria-checked', 'true');
     expect((await admin.request.get('/api/sessions')).status()).toBe(200);
   });
 });

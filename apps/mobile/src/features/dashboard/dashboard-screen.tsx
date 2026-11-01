@@ -15,6 +15,7 @@ import { DashboardSkeleton } from '@/components/skeletons';
 import { TutoringFinanceTabs, useTutoringFinanceTab } from '@/components/tutoring-finance-tabs';
 import { TutorNow, useNowState } from '@/features/home/tutor-now';
 import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
+import { InvitationBanner } from '@/features/organizations/invitation-banner';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useTourScroller } from '@/features/onboarding/tour-targets';
 import { AccountButton } from '@/features/shell/account-button';
@@ -174,6 +175,8 @@ export function DashboardScreen() {
       ) : nowGreets ? null : (
         <Greeting />
       )}
+      {/* Phase 60 (S6): an invitation to another space, while the reader is here. */}
+      {viewingOther ? null : <InvitationBanner />}
       {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
       {/* The reader's own roles are chosen in the account sheet (UI upgrades U6); while viewing
           somebody else, their roles stay here, under whose they are. */}

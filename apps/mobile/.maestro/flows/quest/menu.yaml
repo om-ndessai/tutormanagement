@@ -60,12 +60,12 @@ tags:
     visible:
       id: org-tin
     timeout: 20000
-# The Gamification card is the page's last: scrolled into view, never centred.
+# The Quest card ("Quest in this space", Phase 59) is the page's last: scrolled into view, never centred.
 - scrollUntilVisible:
     element:
       id: org-quest-switch
     direction: DOWN
-- assertVisible: 'Gamification'
+- assertVisible: 'Quest in this space'
 - tapOn:
     id: org-quest-switch
 - extendedWaitUntil:

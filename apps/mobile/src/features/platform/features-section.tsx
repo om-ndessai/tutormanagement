@@ -63,7 +63,7 @@ export function FeaturesSection({ organization }: { organization: OrganizationLi
   }
 
   return (
-    <Panel title="Feature sets" testID="platform-org-features">
+    <Panel title="This space may use" testID="platform-org-features">
       <View style={{ gap: space.md }}>
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
           What {organization.short_name} may use. Its own admins switch Assessment and Quest on.

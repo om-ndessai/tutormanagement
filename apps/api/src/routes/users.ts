@@ -66,7 +66,7 @@ const deleteQuerySchema = z.object({
     .transform((value) => value === 'true'),
 });
 
-const EMAIL_TAKEN = 'Someone in this organization already has that email address.';
+const EMAIL_TAKEN = 'Someone in this space already has that email address.';
 
 /**
  * The shared fields of a person who belongs to another organization as well.
@@ -75,8 +75,13 @@ const EMAIL_TAKEN = 'Someone in this organization already has that email address
  */
 const SHARED_FIELDS = ['full_name', 'email', 'phone'] as const;
 const SHARED_FIELDS_LOCKED =
-  'This person belongs to another organization too, so their name, email and phone are ' +
+  'This person belongs to another space too, so their name, email and phone are ' +
   'shared. A platform administrator changes them.';
+
+/** Phase 61 (S12): the same for every invitation not yet accepted, whoever it is for (R21). */
+const INVITATION_FIELDS_LOCKED =
+  'This person has not accepted their invitation yet, so their name, email and phone stay as ' +
+  'invited. To change them, remove them and invite them again.';
 
 /**
  * "A student must have atleast one parent relationship." -- docs/plan.md.
@@ -276,13 +281,14 @@ export const usersRoutes = new Hono<AppEnv>()
 
     // Someone who already had an account is INVITED: they accept when they
     // next sign in. The answer to the caller is the same either way, so it
-    // says nothing about whether the address had an account.
+    // says nothing about whether the address had an account -- and nor does the
+    // log (R21, S13): the line follows the membership's status, never `outcome.kind`.
+    const invitedLine = created.status === 'invited';
     await recordAudit(c.env.DB, c.get('user'), org, {
-      action: outcome.kind === 'invited' ? 'membership.invited' : 'user.created',
-      description:
-        outcome.kind === 'invited'
-          ? `Invited ${created.full_name} as ${created.roles.join(' and ')}`
-          : `Added ${created.full_name} as ${created.roles.join(' and ')}`,
+      action: invitedLine ? 'membership.invited' : 'user.created',
+      description: invitedLine
+        ? `Invited ${created.full_name} as ${created.roles.join(' and ')}`
+        : `Added ${created.full_name} as ${created.roles.join(' and ')}`,
       subject: created,
       entity_type: 'user',
       entity_id: created.id,
@@ -403,6 +409,11 @@ export const usersRoutes = new Hono<AppEnv>()
         if (key in fields && fields[key] === existing[key]) delete fields[key];
       }
       const editsShared = SHARED_FIELDS.some((key) => key in fields);
+      // An invitation not yet accepted is locked too, whoever it is for: the answer must not say
+      // whether the address had an account (R21, S12).
+      if (editsShared && existing.status === 'invited') {
+        throw new ApiError(409, 'shared_fields_locked', INVITATION_FIELDS_LOCKED);
+      }
       if (editsShared && (await belongsElsewhere(c.env.DB, org, id))) {
         throw new ApiError(409, 'shared_fields_locked', SHARED_FIELDS_LOCKED);
       }

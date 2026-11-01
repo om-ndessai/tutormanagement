@@ -17,6 +17,7 @@ import { z } from 'zod';
 
 import type { AppEnv } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
+import { leaveSpace } from '../lib/leave-space.js';
 import { ApiError } from '../lib/errors.js';
 import { zValidator } from '../lib/validate.js';
 import { requireAdmin } from '../middleware/require-admin.js';
@@ -32,10 +33,10 @@ import {
   openJoinRequest,
   renewSpaceCode,
   setJoinByCode,
+  spacesOfBusiness,
 } from '../repositories/organizations.js';
 import { listNotifications } from '../repositories/notifications.js';
 import { purgeSpace } from '../repositories/purge.js';
-import { countAdmins, deactivateUser } from '../repositories/users.js';
 import { listCurriculumOfferings, setCurriculumOffering } from '../repositories/curricula.js';
 
 /** "A", "A and B", "A, B and C". */
@@ -98,11 +99,16 @@ export const organizationRoutes = new Hono<AppEnv>()
       if (!featureAllowed(org, 'quest') && input.gamify_question_quest !== undefined) {
         throw new ApiError(403, 'feature_unavailable', 'Quest is not part of this space.');
       }
-      // Phase 54: the payer details are the space's organization's. A space paid
+      // Phase 54/59: the payer details are the space's own payer record. A space paid
       // directly has none to edit -- families pay each tutor, and nobody files a 1099.
-      if (PAYER_FIELDS.some((key) => input[key] !== undefined) && !org.business) {
-        throw new ApiError(409, 'paid_directly',
-          'This space is paid directly: it has no organization, so there is no payer to edit.');
+      if (PAYER_FIELDS.some((key) => input[key] !== undefined)) {
+        if (!org.business) {
+          throw new ApiError(409, 'paid_directly',
+            'Families pay each tutor directly in this space, so it has no payer details to edit.');
+        }
+        if ((await spacesOfBusiness(c.env.DB, org.business.id)).length > 1) {
+          throw new ApiError(409, 'shared_payer', 'This space’s payer record is shared with another space.');
+        }
       }
       const settings = await updateOrganizationSettings(c.env.DB, org.id, input);
 
@@ -121,7 +127,7 @@ export const organizationRoutes = new Hono<AppEnv>()
       await recordAudit(c.env.DB, c.get('user'), org.id, {
         action: 'organization.settings_updated',
         description: [
-          // Phase 54: the payer details are the space's organization's, so name it.
+          // Phase 54: the payer details are the space's payer record's, so name it.
           changes.length > 0 ? `Updated ${org.business?.name ?? org.name}'s ${changes.join(', ')}` : null,
           notifications === undefined
             ? null
@@ -177,7 +183,7 @@ export const organizationRoutes = new Hono<AppEnv>()
     const unknown = input.offered.filter((id) => !known.has(id));
     if (unknown.length > 0) {
       throw ApiError.validation('Please correct the highlighted fields.', {
-        offered: [`Not a curriculum this organization can offer: ${unknown.join(', ')}.`],
+        offered: [`Not a curriculum this space can offer: ${unknown.join(', ')}.`],
       });
     }
 
@@ -278,21 +284,11 @@ export const organizationRoutes = new Hono<AppEnv>()
     return c.json({ data: { declined: true } });
   })
 
-  /** A member leaves the space. Its last admin cannot (delete the space, or make another admin first). */
+  /** A member leaves the space they are in (kept for older apps; Phase 60 leaves from anywhere, routes/spaces.ts). */
   .post('/leave', async (c) => {
-    const org = c.get('org');
     const user = c.get('user');
-    if (user.roles.includes('admin') && (await countAdmins(c.env.DB, org.id)) <= 1) {
-      throw ApiError.conflict(`You are ${org.name}'s only administrator. Make someone else an administrator first, or delete the space.`);
-    }
-    await deactivateUser(c.env.DB, org.id, user.id);
-    await recordAudit(c.env.DB, user, org.id, {
-      action: 'membership.left',
-      description: `${user.full_name} left ${org.name}`,
-      subject: { id: user.id, full_name: user.full_name },
-      entity_type: 'user',
-      entity_id: user.id,
-    });
+    // requireOrg lets only an active member in.
+    await leaveSpace(c.env.DB, c.get('org'), user, { roles: user.roles, status: 'active' });
     return c.json({ data: { left: true } });
   })
 

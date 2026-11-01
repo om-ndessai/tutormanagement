@@ -22,12 +22,7 @@ const mockUpdate = jest.fn();
 const mockFeatures = jest.fn();
 const mockSave = jest.fn();
 let mockOrganizations: OrganizationListItem[] = [];
-const mockSetBusiness = jest.fn();
-const mockBusinesses = [
-  { id: 'b-1', name: 'Fixture Organization', archived_at: null, tin: '12-3456789', spaces: [] },
-  { id: 'b-2', name: 'Second Organization', archived_at: null, tin: null, spaces: [] },
-  { id: 'b-old', name: 'Gone Organization', archived_at: '2026-10-01T00:00:00Z', tin: null, spaces: [] },
-];
+const mockSetModel = jest.fn();
 jest.mock('./api', () => ({
   useLookupPerson: () => ({ mutateAsync: mockLookup, isPending: false }),
   useUpdatePerson: () => ({ mutateAsync: mockUpdate, isPending: false }),
@@ -36,9 +31,7 @@ jest.mock('./api', () => ({
   useCreateOrganization: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useUpdateOrganization: () => ({ mutateAsync: mockSave, isPending: false }),
   useUpdateOrganizationFeatures: () => ({ mutateAsync: mockFeatures, isPending: false }),
-  useBusinesses: () => ({ data: { data: mockBusinesses }, isPending: false }),
-  useSetSpaceBusiness: () => ({ mutateAsync: mockSetBusiness, isPending: false }),
-  useArchiveBusiness: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useSetPaymentModel: () => ({ mutateAsync: mockSetModel, isPending: false }),
 }));
 
 const ALEX = {
@@ -208,34 +201,75 @@ describe('OrganizationFormSheet (Phase 50)', () => {
   });
 });
 
-describe('the organization that runs a space (Phase 54)', () => {
-  it('offers paid directly and the live organizations, and puts a change after an edit', async () => {
-    const run = { ...RIVERSIDE, business: { id: 'b-1', name: 'Fixture Organization' } };
+describe('who families pay (Phase 59, S2)', () => {
+  const PAYER = {
+    name: 'Fixture Payer',
+    tin: '12-3456789',
+    payer_address_line1: null,
+    payer_address_line2: null,
+    payer_city: null,
+    payer_state: null,
+    payer_postal_code: null,
+  };
+
+  it('offers the two choices, shows the payer fields for "The space" only, and puts a change first', async () => {
+    const run = { ...RIVERSIDE, business: { id: 'b-1', name: 'Fixture Payer' }, payer: PAYER };
     mockOrganizations = [run];
-    mockSave.mockResolvedValue({ data: run });
-    mockSetBusiness.mockReset();
-    mockSetBusiness.mockResolvedValue({ data: run });
+    const order: string[] = [];
+    mockSave.mockReset();
+    mockSave.mockImplementation(async () => {
+      order.push('patch');
+      return { data: run };
+    });
+    mockSetModel.mockReset();
+    mockSetModel.mockImplementation(async () => {
+      order.push('model');
+      return { data: run };
+    });
     await renderWithProviders(<OrganizationFormSheet id={run.id} />);
-    await fireEvent.press(screen.getByTestId('org-form-business'));
-    expect(screen.getByTestId('org-form-business-direct')).toBeTruthy();
-    expect(screen.getByTestId('org-form-business-b-2')).toBeTruthy();
-    expect(screen.queryByTestId('org-form-business-b-old')).toBeNull();
-    await fireEvent.press(screen.getByTestId('org-form-business-direct'));
-    expect(screen.getByText(/Families pay each tutor directly/)).toBeTruthy();
+    expect(screen.getByText('Who families pay')).toBeTruthy();
+    expect(screen.getByText('The space')).toBeTruthy();
+    expect(screen.getByText('Each tutor, directly')).toBeTruthy();
+    expect(screen.getByTestId('org-form-payer')).toBeTruthy();
+    expect(screen.getByTestId('org-form-payer-tin')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('org-form-payment-direct'));
+    expect(screen.queryByTestId('org-form-payer')).toBeNull();
     await fireEvent.press(screen.getByTestId('org-form-save'));
-    await waitFor(() => expect(mockSetBusiness).toHaveBeenCalledWith({ id: run.id, business_id: null }));
+    await waitFor(() => expect(mockSetModel).toHaveBeenCalledWith({ id: run.id, model: 'direct' }));
+    await waitFor(() => expect(mockSave).toHaveBeenCalled());
+    expect(order).toEqual(['model', 'patch']);
+    expect(mockSave.mock.calls[0][0].input).not.toHaveProperty('tin');
     mockOrganizations = [];
   });
 
-  it('puts nothing when the organization did not change', async () => {
-    const run = { ...RIVERSIDE, business: { id: 'b-1', name: 'Fixture Organization' } };
+  it('starting to collect puts the model, then patches the payer details typed', async () => {
+    const direct = { ...RIVERSIDE, business: null, payer: null };
+    mockOrganizations = [direct];
+    mockSave.mockReset();
+    mockSave.mockResolvedValue({ data: direct });
+    mockSetModel.mockReset();
+    mockSetModel.mockResolvedValue({ data: direct });
+    await renderWithProviders(<OrganizationFormSheet id={direct.id} />);
+    expect(screen.queryByTestId('org-form-payer')).toBeNull();
+    await fireEvent.press(screen.getByTestId('org-form-payment-space'));
+    await fireEvent.changeText(screen.getByTestId('org-form-payer-tin'), '12-3456789');
+    await fireEvent.press(screen.getByTestId('org-form-save'));
+    await waitFor(() => expect(mockSetModel).toHaveBeenCalledWith({ id: direct.id, model: 'space' }));
+    await waitFor(() => expect(mockSave).toHaveBeenCalled());
+    expect(mockSave.mock.calls[0][0].input).toMatchObject({ tin: '12-3456789' });
+    mockOrganizations = [];
+  });
+
+  it('puts nothing when who families pay did not change', async () => {
+    const run = { ...RIVERSIDE, business: { id: 'b-1', name: 'Fixture Payer' }, payer: PAYER };
     mockOrganizations = [run];
+    mockSave.mockReset();
     mockSave.mockResolvedValue({ data: run });
-    mockSetBusiness.mockReset();
+    mockSetModel.mockReset();
     await renderWithProviders(<OrganizationFormSheet id={run.id} />);
     await fireEvent.press(screen.getByTestId('org-form-save'));
     await waitFor(() => expect(mockSave).toHaveBeenCalled());
-    expect(mockSetBusiness).not.toHaveBeenCalled();
+    expect(mockSetModel).not.toHaveBeenCalled();
     mockOrganizations = [];
   });
 });
