@@ -1,6 +1,8 @@
 # Phase 63 (P10, P12, P14; docs/stickiness-plan.md): guest play. With guest play on (the script; Grade 4's
-# free questions from the console's suggestion), a fresh app opens on the guest Play home, not sign-in:
-# the home bar, Grade 4's open tiles, a locked tile that offers an account, and Sign in one tap away.
+# free questions from the console's suggestion), a fresh app opens on the guest Play home, not sign-in --
+# the Quest board since 2026-11-02 (docs/landing-page-proposal.md): the band (the headline, the home bar,
+# Sign in), the grade row on Grade 4, its cards named for a guest (never a code), a locked card that
+# offers an account, the grown-ups' panels and the footer.
 # G4Q5 plays on the phone: after question 1 the offer shows (Sign up free / Keep playing); Keep playing
 # goes on, it does not come back in the same quest, and the results show the score and each question.
 # Play again serves the other five (unseen first) and says the free questions are played. Exit is back
@@ -29,9 +31,15 @@ tags:
 - assertVisible:
     id: guest-home-bar
     text: 'Playing as a guest.*'
-- assertVisible: 'Math practice that feels like a game'
+- assertVisible: 'Math quests. Hit the target.'
+- assertVisible: 'Free for grades 1–8. No account to start, no ads ever.'
 - assertVisible:
     id: guest-sign-in
+- assertVisible:
+    id: guest-today
+- assertVisible:
+    id: guest-grade-4
+    selected: true
 - takeScreenshot: guest-home
 # The tiles sit under the grade chips: on a shorter phone (iPhone 17e) below the fold.
 - scrollUntilVisible:
@@ -46,7 +54,7 @@ tags:
 - tapOn:
     id: guest-locked-G4T10
 - extendedWaitUntil:
-    visible: 'G4T10 is free with an account'
+    visible: '10-minute challenge is free with an account'
     timeout: 5000
 - assertVisible: '.*more Grade 4 questions, never repeated'
 - assertVisible:
@@ -72,6 +80,9 @@ tags:
 - assertVisible:
     id: guest-progress
     text: '1 of 5'
+# Named for a guest: the quest's title and grade, never its code.
+- assertVisible: 'Quick 5, Grade 4'
+- assertNotVisible: 'G4Q5'
 - takeScreenshot: guest-question
 # After question 1: the offer, its two buttons equally visible.
 - runFlow:
@@ -183,6 +194,31 @@ tags:
     visible:
       id: screen-guest-home
     timeout: 10000
+# The grown-ups' panels, an answer opened, and the footer.
+- scrollUntilVisible:
+    element:
+      id: guest-parents
+# The panel's button sits at its foot: on a shorter screen (Android) below the fold when the panel's top shows.
+- scrollUntilVisible:
+    element:
+      id: guest-parents-start
+    centerElement: true
+- assertVisible:
+    id: guest-parents-start
+    text: 'Create a free family space'
+- scrollUntilVisible:
+    element:
+      id: guest-answer-0
+- tapOn:
+    id: guest-answer-0
+- assertVisible:
+    id: guest-answer-0-text
+- scrollUntilVisible:
+    element:
+      id: guest-contact
+- assertVisible:
+    id: guest-privacy
+- takeScreenshot: guest-home-foot
 # Sign in is one tap away, and the Play home one tap back. The home kept its scroll (down by the tiles),
 # so its header's Sign in is brought back into view first.
 - scrollUntilVisible:

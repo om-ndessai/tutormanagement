@@ -2,7 +2,7 @@
 // `/play/<code>` -- a tile in one tap, from the Play home or a link (`aimtrue://play/G4Q5`, which
 // expo-router maps here). A guest plays it on the phone while it is open to guests; a member's tap
 // starts it as a single player's game in their space; anything else lands on the home.
-import { parseTileCode, tileCode, tileGameRequest, tileWords } from '@tmi/shared';
+import { parseTileCode, tileCode, tileGameRequest, tileWords, type QuestionBankLevelId } from '@tmi/shared';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -18,6 +18,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { GuestAssessment } from './guest-assessment';
 import { GuestQuest } from './guest-quest';
+import { todayTile } from './guest-model';
 import { loadGuestMemory, readQuestState } from './guest-store';
 
 /** Waits for the phone's guest memory (read once per run) before anything that reads it draws. */
@@ -57,6 +58,21 @@ export function PlayLink() {
   // P11: an assessment tile is the guest Assessment, on the phone.
   if (tile.kind === 'assessment') return <GuestAssessment key={tile.code} tile={tile} />;
   return <GuestQuest key={tile.code} tile={tile} />;
+}
+
+/**
+ * `/play/today?level=NC26.4`: the landing's Today's 5, the guest quest of that day's five. Only for a
+ * level with a quest open to guests (the card's own); anything else lands on the home.
+ */
+export function TodayLink() {
+  const { level = '' } = useLocalSearchParams<{ level: string }>();
+  const { config } = useAuth();
+  const ready = useGuestMemoryReady();
+  if (!ready) return <LoadingState />;
+  const open = config?.guest?.tiles.some((t) => !t.locked && t.kind === 'quest' && t.level_id === level);
+  if (!open) return <Redirect href="/" />;
+  const tile = todayTile(level as QuestionBankLevelId);
+  return <GuestQuest key={tile.code} tile={tile} today />;
 }
 
 /** A member arriving from a tile link: the tile starts as a single player's game in their space. */

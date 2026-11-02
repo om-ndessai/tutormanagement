@@ -107,6 +107,8 @@ function RootNavigator() {
             outside both guards, so signing up over a quest never unmounts it. */}
         <Stack.Screen name="play/index" />
         <Stack.Screen name="play/[code]" options={{ gestureEnabled: false }} />
+        {/* The landing's Today's 5 (aimtrue://play/today?level=NC26.4), played as a guest quest. */}
+        <Stack.Screen name="play/today" options={{ gestureEnabled: false }} />
         <Stack.Screen
           name="sign-up-sheet"
           options={{ presentation: 'formSheet', sheetAllowedDetents: [0.92], sheetGrabberVisible: true }}

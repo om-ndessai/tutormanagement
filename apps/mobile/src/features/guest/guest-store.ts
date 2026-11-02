@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/guest/guest-store.ts @ 0e3ec7a (working tree). Phase 63 (P10):
 // what a guest's phone remembers -- their grade, the free questions it has played, best scores, the
-// tiles played, and when the sign-up offer was last closed -- and a quest in progress.
+// tiles played, when the sign-up offer was last closed and Today's 5 as played -- and a quest in progress.
 //
 // Mobile: the memory is read once from AsyncStorage (`loadGuestMemory`, before the Play home draws) and
 // then read synchronously from this module, as the web reads localStorage; every change is written
@@ -20,6 +20,14 @@ export interface GuestMemory {
   /** Played tiles already made a member's favorites on this phone (P13), so each is carried once. */
   carried?: string[];
   nudgeDismissedAt?: number;
+  /** Today's 5 as played on this phone: the day, the level, and which questions hit. */
+  today?: GuestToday;
+}
+
+export interface GuestToday {
+  day: string;
+  level: QuestionBankLevelId;
+  hits: boolean[];
 }
 
 let memory: GuestMemory = {};
@@ -50,6 +58,8 @@ export const guestMemory = {
   addSeen: (level: string, ids: readonly string[]) =>
     write((m) => ({ ...m, seen: { ...m.seen, [level]: [...new Set([...(m.seen?.[level] ?? []), ...ids])] } })),
   best: (code: string): number | undefined => memory.best?.[code],
+  /** Every tile's best on this phone, for a screen that keeps a copy in its state. */
+  bests: (): Record<string, number> => ({ ...memory.best }),
   setBest: (code: string, score: number) =>
     write((m) => ({ ...m, best: { ...m.best, [code]: Math.max(score, m.best?.[code] ?? 0) } })),
   played: (): string[] => memory.played ?? [],
@@ -61,6 +71,15 @@ export const guestMemory = {
     write((m) => ({ ...m, carried: [...new Set([...(m.carried ?? []), ...codes])].slice(-50) })),
   nudgeDismissedAt: (): number | undefined => memory.nudgeDismissedAt,
   dismissNudge: (now = Date.now()) => write((m) => ({ ...m, nudgeDismissedAt: now })),
+  /** Today's 5 for this day and level, if played on this phone. */
+  today: (day: string, level: string): GuestToday | undefined => {
+    const today = memory.today;
+    return today && today.day === day && today.level === level ? today : undefined;
+  },
+  /** Today's 5 as played this day, whatever its level. */
+  todayOn: (day: string): GuestToday | undefined => (memory.today?.day === day ? memory.today : undefined),
+  /** Kept apart from the played tiles (never carried into favorites) and from the best scores. */
+  setToday: (today: GuestToday) => write((m) => ({ ...m, today })),
 };
 
 /**

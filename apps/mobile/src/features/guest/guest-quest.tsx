@@ -9,7 +9,7 @@
 // clock stays paused while the sign-up sheet is over the quest and runs again when it closes (the web
 // resumes it as the sheet opens); the results show one question at a time (guest-results.tsx); once
 // signed up, the results offer "Go to my space" in place of "Save this score".
-import { guestPoolUsedUp, type GuestQuestion, type GuestTile } from '@tmi/shared';
+import { guestDay, guestPoolUsedUp, type GuestQuestion, type GuestTile } from '@tmi/shared';
 import { useIsFocused } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Share, View } from 'react-native';
@@ -33,12 +33,14 @@ import {
   benefitsFor,
   challengeText,
   clockText,
+  guestQuestName,
   guestScore,
   limitMsOf,
   playLink,
   questDone,
   resumeQuest,
   startQuest,
+  startTodayQuest,
   timeLeftMs,
   usedUpText,
   type GuestQuestState,
@@ -48,7 +50,11 @@ import { GuestResultPager, type GuestResultItem } from './guest-results';
 import { guestMemory, readQuestState, writeQuestState } from './guest-store';
 import { NudgeSheet } from './nudge-sheet';
 
-export function GuestQuest({ tile }: { tile: GuestTile }) {
+/**
+ * `today`: Today's 5 (the landing's daily card) -- the day's five of the level's pool, kept on the phone
+ * as the day's hits, never as a played tile or a best score.
+ */
+export function GuestQuest({ tile, today = false }: { tile: GuestTile; today?: boolean }) {
   const theme = useAppTheme();
   const { config, status } = useAuth();
   const guest = config?.guest;
@@ -69,16 +75,25 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
   const questions = useMemo(() => pool.data?.questions ?? [], [pool.data]);
   const byId = useMemo(() => new Map(questions.map((q) => [q.id, q])), [questions]);
   const limitMs = limitMsOf(tile);
+  const [day] = useState(() => guestDay());
+  const name = guestQuestName(tile, today);
+  // Challenge a friend and Ask a grown-up: the tile's own link, or the Play home for Today's 5.
+  const link = playLink(serverOrigin(), today ? undefined : tile.code);
 
   // Start (or resume) once the pool is here.
   useEffect(() => {
     if (state || questions.length === 0) return;
     // Set from the pool's arrival, once: not a render-time derivation.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setState(startQuest(tile, questions, guestMemory.seen(tile.level_id), Date.now()));
-    guestMemory.addPlayed(tile.code);
+    setState(
+      today
+        ? startTodayQuest(tile, questions, day, tile.level_id, Date.now())
+        : startQuest(tile, questions, guestMemory.seen(tile.level_id), Date.now()),
+    );
+    // Today's 5 is not a tile: it is never carried into a member's favorites.
+    if (!today) guestMemory.addPlayed(tile.code);
     countEvent({ name: 'tile_started', tile: tile.code, source: 'guest' });
-  }, [state, questions, tile]);
+  }, [state, questions, tile, today, day]);
 
   useEffect(() => writeQuestState(state), [state]);
 
@@ -105,30 +120,35 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
   useEffect(() => {
     if (!state || !done || state.finished) return;
     const score = guestScore(state.answers);
-    guestMemory.addSeen(tile.level_id, state.answers.map((a) => a.id));
-    guestMemory.setBest(tile.code, score);
     countEvent({ name: 'quest_finished', tile: tile.code, value: score });
-    const usedUp = guestPoolUsedUp(questions, guestMemory.seen(tile.level_id));
-    if (usedUp) countEvent({ name: 'pool_used_up', tile: tile.code });
+    let usedUp = false;
+    if (today) {
+      guestMemory.setToday({ day, level: tile.level_id, hits: state.answers.map((a) => a.correct) });
+    } else {
+      guestMemory.addSeen(tile.level_id, state.answers.map((a) => a.id));
+      guestMemory.setBest(tile.code, score);
+      usedUp = guestPoolUsedUp(questions, guestMemory.seen(tile.level_id));
+      if (usedUp) countEvent({ name: 'pool_used_up', tile: tile.code });
+    }
     flushEvents();
     // Kept on the quest: the phone's memory is a module, not state, so a render reading it would be
     // memoised by the React Compiler on the tile alone and say "not used up" after the last round.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState({ ...state, finished: true, usedUp });
-  }, [done, state, tile, questions]);
+  }, [done, state, tile, questions, today, day]);
 
   const exit = () => exitGuestPlay(signedIn);
 
   if (!guest) {
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-quest" onExit={exit}>
+      <QuestFrame title={name} testID="screen-guest-quest" onExit={exit}>
         <Text variant="bodyMedium">This quest is not available just now.</Text>
       </QuestFrame>
     );
   }
   if (pool.isPending || (!state && questions.length > 0)) {
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-quest" onExit={exit}>
+      <QuestFrame title={name} testID="screen-guest-quest" onExit={exit}>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
           Getting your quest ready…
         </Text>
@@ -137,7 +157,7 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
   }
   if (pool.isError || questions.length === 0 || !state) {
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-quest" onExit={exit}>
+      <QuestFrame title={name} testID="screen-guest-quest" onExit={exit}>
         <Text testID="guest-unavailable" variant="bodyMedium">
           This quest is not available just now.
         </Text>
@@ -157,9 +177,11 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
   if (done) {
     const usedUp = state.usedUp === true;
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-quest" onExit={exit}>
+      <QuestFrame title={name} testID="screen-guest-quest" onExit={exit}>
         <Results
           tile={tile}
+          name={name}
+          link={link}
           state={state}
           byId={byId}
           usedUp={usedUp}
@@ -223,7 +245,7 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
 
   return (
     <QuestFrame
-      title={tile.code}
+      title={name}
       testID="screen-guest-quest"
       onExit={exit}
       status={
@@ -245,7 +267,7 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
                   variant="labelMedium"
                   style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
                 >
-                  {tile.code}
+                  {name}
                 </Text>
                 {current.beta ? <BadgePill testID="guest-question-beta" /> : null}
               </View>
@@ -308,7 +330,7 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
         benefits={benefits}
         onSignUp={() => closeNudge(true)}
         onClose={() => closeNudge(false)}
-        shareLink={playLink(serverOrigin(), tile.code)}
+        shareLink={link}
       />
     </QuestFrame>
   );
@@ -317,6 +339,8 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
 /** The results: the main moment to offer an account (P12), with the worked solutions. */
 function Results({
   tile,
+  name,
+  link,
   state,
   byId,
   usedUp,
@@ -327,6 +351,8 @@ function Results({
   onAgain,
 }: {
   tile: GuestTile;
+  name: string;
+  link: string;
   state: GuestQuestState;
   byId: Map<string, GuestQuestion>;
   usedUp: boolean;
@@ -348,7 +374,7 @@ function Results({
   async function challenge() {
     try {
       await Share.share({
-        message: `${challengeText(score, state.answers.length, tile.code)} ${playLink(serverOrigin(), tile.code)}`,
+        message: `${challengeText(score, state.answers.length, name)} ${link}`,
       });
     } catch {
       // Dismissed.
@@ -363,7 +389,7 @@ function Results({
             {`${score} of ${state.answers.length} right`}
           </Text>
           <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-            {`${tile.code} · ${tile.words}`}
+            {name}
           </Text>
           {usedUp ? (
             <Text testID="guest-used-up" variant="bodyMedium">

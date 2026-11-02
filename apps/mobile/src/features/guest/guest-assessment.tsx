@@ -10,7 +10,7 @@
 // inside its scroll view (a touch on the page writes rather than scrolls). The results show one page at
 // a time (guest-results.tsx) with that page's working drawn beneath, read-only.
 import type { CanvasStroke, GuestTile } from '@tmi/shared';
-import { guestSeries } from '@tmi/shared';
+import { guestSeries, guestTileName } from '@tmi/shared';
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
@@ -96,7 +96,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
 
   if (!guest || pool.isPending) {
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-assessment" onExit={exit}>
+      <QuestFrame title={guestTileName(tile)} testID="screen-guest-assessment" onExit={exit}>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
           Getting your assessment ready…
         </Text>
@@ -105,7 +105,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
   }
   if (!question) {
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-assessment" onExit={exit}>
+      <QuestFrame title={guestTileName(tile)} testID="screen-guest-assessment" onExit={exit}>
         <Text testID="guest-unavailable" variant="bodyMedium">
           This assessment is not available just now.
         </Text>
@@ -153,7 +153,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
       skipped: m.given === null,
     }));
     return (
-      <QuestFrame title={tile.code} testID="screen-guest-assessment" onExit={exit} scrollRef={scroller}>
+      <QuestFrame title={guestTileName(tile)} testID="screen-guest-assessment" onExit={exit} scrollRef={scroller}>
         <OutlinedCard testID="guest-assessment-results" style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg, gap: space.md }}>
             <Text
@@ -165,7 +165,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
               {`${score} of ${questions.length} right`}
             </Text>
             <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-              {`${tile.code} · ${tile.words}`}
+              {guestTileName(tile)}
             </Text>
             {signedIn ? (
               <Button testID="guest-to-space" mode="contained" icon="home-outline" onPress={toSpace}>
@@ -218,7 +218,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
 
   return (
     <QuestFrame
-      title={tile.code}
+      title={guestTileName(tile)}
       testID="screen-guest-assessment"
       onExit={exit}
       scrollRef={scroller}
@@ -231,7 +231,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
               variant="labelMedium"
               style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
             >
-              {tile.code}
+              {guestTileName(tile)}
             </Text>
             {question.beta ? <BadgePill testID="guest-assessment-beta" /> : null}
           </View>

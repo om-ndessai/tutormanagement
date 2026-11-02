@@ -1,0 +1,90 @@
+# The guest Quest board's Today's 5 (2026-11-02, docs/landing-page-proposal.md, "The owner's decisions"):
+# with guest play on (the script), the home's Today's 5 card offers Grade 4's five of the day. It plays as
+# a guest quest on the phone (five questions, untimed, the offer after question 1), named "Today's 5,
+# Grade 4" and never by a code; its results show the score; back on the home the card shows the day's
+# hits ("You hit 0 of 5 today. A new five tomorrow.") and "Play again". Kept on the phone only.
+# Self-cleaning: guest play off and the pools emptied before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'on' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+tags:
+  - feature
+---
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 30000
+- assertVisible:
+    id: guest-today
+- assertVisible: 'Five questions. Can you hit all five?'
+- assertVisible:
+    id: guest-today-play
+    text: '.*Play today.s 5.*'
+- tapOn:
+    id: guest-today-play
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 15000
+- assertVisible:
+    id: guest-progress
+    text: '1 of 5'
+- assertVisible: 'Today.s 5, Grade 4'
+- takeScreenshot: guest-today-question
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'nudge'
+- tapOn:
+    id: guest-nudge-close
+- extendedWaitUntil:
+    visible:
+      id: guest-progress
+      text: '2 of 5'
+    timeout: 5000
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '3 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '4 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '5 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'results'
+- assertVisible:
+    id: guest-score
+    text: '0 of 5 right'
+# Today's 5 is not a tile: no "free questions are played" line.
+- assertNotVisible:
+    id: guest-used-up
+- takeScreenshot: guest-today-results
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 10000
+- extendedWaitUntil:
+    visible: 'You hit 0 of 5 today. A new five tomorrow.'
+    timeout: 5000
+- assertVisible:
+    id: guest-today-play
+    text: '.*Play again.*'
+- takeScreenshot: guest-today-done

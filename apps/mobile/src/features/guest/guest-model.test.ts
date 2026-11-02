@@ -7,12 +7,13 @@ import {
   assessmentBenefits,
   assessmentCount,
   benefitsFor,
+  boardGrade,
   challengeText,
-  chosenLevel,
   clockText,
   elapsedMs,
+  gradeLevel,
+  guestQuestName,
   guestScore,
-  homeLevels,
   markAssessment,
   nudgeDue,
   pauseQuest,
@@ -21,7 +22,9 @@ import {
   resumeQuest,
   roundedCount,
   startQuest,
+  startTodayQuest,
   timeLeftMs,
+  todayTile,
   usedUpText,
 } from './guest-model';
 
@@ -150,7 +153,10 @@ describe('the offer’s words (P12)', () => {
     expect(usedUpText(COUNT, ['1,200+ more Grade 4 questions, never repeated'])).toBe(
       'You’ve played all the free Grade 4 questions. 1,200+ more Grade 4 questions, never repeated with a free account.',
     );
-    expect(challengeText(8, 10, 'G4T10')).toBe('I got 8/10 on G4T10 on Aimtrue. Can you beat it?');
+    expect(challengeText(8, 10, '10 in a row, Grade 4')).toBe('I got 8/10 on 10 in a row, Grade 4 on Aimtrue. Can you beat it?');
+    // An advanced level is masked: never its curriculum's name.
+    expect(usedUpText({ level_id: 'BA2' }, ['x'])).toBe('You’ve played all the free Adv G2 questions. x with a free account.');
+    expect(benefitsFor('MK34', { MK34: 40 })[0]).toBe('40+ more Adv G3–4 questions, never repeated');
     expect(playLink('https://tutoring.example.dev/', 'G4Q5')).toBe('https://tutoring.example.dev/play/G4Q5');
     expect(playLink('http://localhost:8787')).toBe('http://localhost:8787/');
   });
@@ -160,19 +166,42 @@ describe('the offer’s words (P12)', () => {
   });
 });
 
-describe('the Play home (P10)', () => {
-  const tiles = [
-    { level_id: 'NC26.3' as const },
-    { level_id: 'NC26.4' as const },
-    { level_id: 'NC26.3' as const },
-  ];
-  it('offers each level once, and remembers the grade chosen on this phone', () => {
-    const levels = homeLevels(tiles);
-    expect(levels).toEqual(['NC26.3', 'NC26.4']);
-    expect(chosenLevel(levels, undefined)).toBe('NC26.4');
-    expect(chosenLevel(levels, 'NC26.3')).toBe('NC26.3');
-    expect(chosenLevel(levels, 'NC26.7')).toBe('NC26.4');
-    expect(chosenLevel(['NC26.3'], undefined)).toBe('NC26.3');
+describe('the Quest board (landing, direction C)', () => {
+  const tile = (code: string, level: GuestTile['level_id']): GuestTile => ({
+    code,
+    kind: 'quest',
+    level_id: level,
+    mode: 'count',
+    value: 5,
+    words: '',
+    locked: false,
+  });
+  it('opens on the remembered grade, an older level mapped, else Grade 4', () => {
+    expect(boardGrade(undefined)).toBe(4);
+    expect(boardGrade('NC26.3')).toBe(3);
+    expect(boardGrade('NC17.6')).toBe(6);
+    expect(boardGrade('BA2')).toBe(2);
+    expect(boardGrade('NC26.M1')).toBe(4);
+  });
+  it('remembers a grade as its own level, so a member’s Play home can lead with it', () => {
+    const tiles = [tile('BA3Q5', 'BA3'), tile('G3Q5', 'NC26.3')];
+    expect(gradeLevel(tiles, 3)).toBe('NC26.3');
+    expect(gradeLevel([tile('BA3Q5', 'BA3')], 3)).toBe('BA3');
+    expect(gradeLevel([], 7)).toBe('NC26.7');
+  });
+  it('plays Today’s 5 as a pseudo tile: five, untimed, named for a guest, counted as G4D5', () => {
+    const today = todayTile('NC26.4');
+    expect(today).toMatchObject({ code: 'G4D5', kind: 'quest', mode: 'count', value: 5, locked: false });
+    expect(guestQuestName(today, true)).toBe('Today’s 5, Grade 4');
+    expect(guestQuestName(tile('BA2Q5', 'BA2'))).toBe('Quick 5, Adv G2');
+  });
+  it('serves the same five that day, whatever the phone has seen', () => {
+    const pool = [...POOL, q('g', 1), q('h', 2)];
+    const one = startTodayQuest(todayTile('NC26.4'), pool, '2026-11-02', 'NC26.4', 0);
+    const two = startTodayQuest(todayTile('NC26.4'), [...pool].reverse(), '2026-11-02', 'NC26.4', 5);
+    expect(one.questionIds).toHaveLength(5);
+    expect(two.questionIds).toEqual(one.questionIds);
+    expect(one.code).toBe('G4D5');
   });
 });
 

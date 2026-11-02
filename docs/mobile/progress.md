@@ -503,6 +503,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   (18) green on iOS and Android, `guest/*` (3) green on both (Android `guest-signup`'s one-second splash missed
   by Maestro once in four runs); `npm run smoke -- mobile` 9/9 on both.
 
+## The guest home redesign — direction C, Quest board (parity: the web half is built by the lead)
+
+- [x] 75. Mobile: the signed-out Play home as the Quest board (`docs/landing-page-proposal.md`, "The owner's
+  decisions (2026-11-02)"): the band, Today's 5 (`app/play/today.tsx`, kept on the phone as the day's hits), the
+  grade row 1-8, game cards from `guestBoard` with Advanced, the grown-ups' panels, three answers and the footer
+  (Contact us from `PLATFORM_CONTACT_EMAIL`, welcome.tsx too); every level and tile a guest reads masked
+  (`guestTileName` / `guestLevelWords`). Built 2026-11-02: typecheck, lint (0 errors), Jest 165 suites / 1213 tests;
+  `guest/*` (4, `guest-today` new) on the iOS simulator and the Android emulator (see parity.md).
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

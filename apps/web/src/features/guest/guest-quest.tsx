@@ -129,11 +129,14 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
 
   function record(final: GuestQuestState) {
     const score = final.answers.filter((a) => a.correct).length;
-    guestMemory.addSeen(tile.level_id, final.answers.map((a) => a.id));
+    // Today's 5 leaves the tiles' unseen-first order and the used-up offer alone (as in the app).
     if (today) guestMemory.setToday({ day: today.day, level: tile.level_id, hits: final.answers.map((a) => a.correct) });
-    else guestMemory.setBest(tile.code, score);
+    else {
+      guestMemory.addSeen(tile.level_id, final.answers.map((a) => a.id));
+      guestMemory.setBest(tile.code, score);
+    }
     countEvent({ name: 'quest_finished', tile: tile.code, value: score });
-    if (guestPoolUsedUp(questions, guestMemory.seen(tile.level_id))) countEvent({ name: 'pool_used_up', tile: tile.code });
+    if (!today && guestPoolUsedUp(questions, guestMemory.seen(tile.level_id))) countEvent({ name: 'pool_used_up', tile: tile.code });
     flushEvents();
   }
 
@@ -157,7 +160,7 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
         name={guestQuestName(tile, Boolean(today))}
         state={state}
         byId={byId}
-        usedUp={guestPoolUsedUp(questions, guestMemory.seen(tile.level_id))}
+        usedUp={!today && guestPoolUsedUp(questions, guestMemory.seen(tile.level_id))}
         benefits={benefitsFor(tile.level_id, guest.member_counts)}
         onSignUp={signUp}
         onAgain={() => {

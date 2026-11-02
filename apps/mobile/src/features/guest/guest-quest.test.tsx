@@ -3,10 +3,11 @@
 // clock and Keep playing runs it again; the offer does not come back in the same quest; the results
 // show the score and each question with its key.
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
-import type { GuestConfig, GuestQuestion, GuestTile } from '@tmi/shared';
+import { guestDay, type GuestConfig, type GuestQuestion, type GuestTile } from '@tmi/shared';
 
 import { renderWithProviders } from '@/test/render';
 import { forgetGuestPoolsForTests } from './guest-api';
+import { todayTile } from './guest-model';
 import { GuestQuest } from './guest-quest';
 import { guestMemory, resetGuestMemoryForTests } from './guest-store';
 
@@ -90,6 +91,9 @@ describe('GuestQuest (Phase 63)', () => {
     await waitFor(() => expect(screen.getByTestId('guest-question')).toBeTruthy());
     expect(mockGet).toHaveBeenCalledWith('/public/guest/v1/NC26.4');
     expect(screen.getByTestId('guest-progress')).toHaveTextContent('1 of 3');
+    // A guest reads the quest's name, never its code.
+    expect(screen.getAllByText('Quick 3, Grade 4').length).toBeGreaterThan(0);
+    expect(screen.queryByText('G4Q5')).toBeNull();
 
     await answerNumber('4');
     expect(screen.getByTestId('guest-nudge')).toBeTruthy();
@@ -140,5 +144,25 @@ describe('GuestQuest (Phase 63)', () => {
     await fireEvent.press(screen.getByTestId('guest-skip'));
     await fireEvent.press(screen.getByTestId('guest-skip'));
     await waitFor(() => expect(screen.getByTestId('guest-save-score')).toHaveTextContent('Sign in'));
+  });
+
+  it('plays Today’s 5: the day’s questions, kept as the day’s hits, never a played tile or a best', async () => {
+    await renderWithProviders(<GuestQuest tile={todayTile('NC26.4')} today />);
+    await waitFor(() => expect(screen.getByTestId('guest-question')).toBeTruthy());
+    expect(screen.getAllByText('Today’s 5, Grade 4').length).toBeGreaterThan(0);
+    // The pool holds four: Today's 5 gives what it has.
+    expect(screen.getByTestId('guest-progress')).toHaveTextContent('1 of 4');
+    await answerNumber('4');
+    await fireEvent.press(screen.getByTestId('guest-nudge-close'));
+    for (let i = 0; i < 3; i++) await fireEvent.press(screen.getByTestId('guest-skip'));
+    await waitFor(() => expect(screen.getByTestId('guest-results')).toBeTruthy());
+    expect(screen.getByTestId('guest-score')).toHaveTextContent('1 of 4 right');
+    expect(guestMemory.todayOn(guestDay())).toEqual({ day: guestDay(), level: 'NC26.4', hits: [true, false, false, false] });
+    expect(guestMemory.played()).toEqual([]);
+    expect(guestMemory.best('G4D5')).toBeUndefined();
+    expect([...guestMemory.seen('NC26.4')]).toEqual([]);
+    expect(screen.queryByTestId('guest-used-up')).toBeNull();
+    const counted = mockPost.mock.calls.flatMap(([, body]) => (body as { events?: { name: string; tile?: string }[] })?.events ?? []);
+    expect(counted.filter((e) => e.name === 'tile_started' || e.name === 'quest_finished').map((e) => e.tile)).toEqual(['G4D5', 'G4D5']);
   });
 });

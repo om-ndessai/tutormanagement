@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { PLATFORM_CONTACT_EMAIL } from '@tmi/shared';
 import { Linking, Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Svg, { Circle, Defs, G, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
@@ -21,7 +22,7 @@ import {
 } from './wordmark-paths.generated';
 
 /** Where "Contact us" writes to: the developer's address, by the owner's choice (2026-10-13). */
-const CONTACT_URL = 'mailto:om.ndessai@gmail.com';
+const CONTACT_URL = `mailto:${PLATFORM_CONTACT_EMAIL}`;
 
 /** The platform's mark on its tile, with the amber centre the app icon has, inside a soft glow. */
 function HaloMark({ size = 132 }: { size?: number }) {
