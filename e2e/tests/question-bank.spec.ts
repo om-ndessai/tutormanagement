@@ -11,6 +11,7 @@ import {
 } from '@tmi/shared';
 
 import { expect, test } from '../support/fixtures.js';
+import { setCheckedQuestions } from '../support/checked-questions.js';
 import { unwrap } from '../support/api.js';
 
 /**
@@ -167,7 +168,8 @@ test.describe('the question bank’s rules', () => {
     // while the organization includes questions not yet reviewed.
     const admin = await as('admin');
     const setA = (data: Record<string, boolean>) => admin.request.patch('/api/organization/settings', { data });
-    expect((await setA({ canvas_assessments_unreviewed: true })).status()).toBe(200);
+    // Phase 62: checked questions are the platform's per-space switch, on by default.
+    await setCheckedQuestions(platform, 'chmi', true);
     try {
       const offered = await unwrap<{ level_id: string; label: string; available: number }[]>(
         await admin.request.get('/api/canvas-assessments/levels'),
@@ -195,7 +197,7 @@ test.describe('the question bank’s rules', () => {
       expect(started.unreviewed_questions).toBeGreaterThanOrEqual(started.question_count - approvedBa3.length);
       await unwrap(await admin.request.post(`/api/canvas-assessments/${started.id}/discard`, { data: {} }), 'discarding');
     } finally {
-      await setA({ canvas_assessments_unreviewed: false });
+      void setA;
     }
 
     // B offers NC's standards only, both editions: no Beast Academy level, and asking for one is refused.

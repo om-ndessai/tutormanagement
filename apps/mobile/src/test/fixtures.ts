@@ -34,6 +34,8 @@ export function anOrganization<T extends object = object>(
     email_notifications: false,
     canvas_assessments: false,
     canvas_assessments_unreviewed: false,
+    checked_questions: false,
+    personal: false,
     canvas_assessment_questions: 10,
     gamify_question_quest: false,
     feature_tutoring: true,

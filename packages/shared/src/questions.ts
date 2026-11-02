@@ -63,6 +63,9 @@ export const QUESTION_BANK_LEVEL_IDS = [
   'MK1112',
 ] as const;
 
+/** Phase 62: one bank level ('NC26.4', 'BA3', 'MK34'...). */
+export type QuestionBankLevelId = (typeof QUESTION_BANK_LEVEL_IDS)[number];
+
 /**
  * How a question came to be approved: 'console' (a platform admin), 'quest' (a tutor confirming a
  * student's answer, Phase 42) or 'quest_consensus' (2026-10-24: two or more different people answered

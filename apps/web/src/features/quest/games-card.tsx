@@ -164,7 +164,7 @@ export function Toggle<T extends string>({
   );
 }
 
-function JoinDialog({ lookup, onClose }: { lookup: GameLookup | null; onClose: () => void }) {
+export function JoinDialog({ lookup, onClose }: { lookup: GameLookup | null; onClose: () => void }) {
   return (
     <Dialog open={lookup !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent data-testid="game-join-dialog">

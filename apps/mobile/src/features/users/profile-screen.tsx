@@ -14,6 +14,7 @@ import { LegalLine } from '@/features/auth/legal-links';
 import { SignInMethodsCard } from '@/features/auth/sign-in-methods-card';
 import { DictationControl } from '@/features/dictation/dictation-control';
 import { SpaceDangerPanel } from '@/features/organizations/space-code-card';
+import { DeleteAccount } from '@/features/organizations/space-welcome';
 import { AppearanceControl } from '@/features/shell/appearance-control';
 import { HapticsControl } from '@/features/shell/haptics-control';
 import { useAuth } from '@/providers/auth-provider';
@@ -25,7 +26,7 @@ import { DevSignInNotice } from './dev-sign-in-notice';
 import { UserDetailView } from './user-detail-view';
 
 export function ProfileScreen() {
-  const { user } = useAuth();
+  const { user, accountDeletable } = useAuth();
   const brand = useBrand();
   const theme = useAppTheme();
   const { data, isPending, error, refetch } = useUserDetail(user?.id ?? null);
@@ -76,22 +77,30 @@ export function ProfileScreen() {
       </OutlinedCard>
       {/* Phase 52: a member leaves here; an admin leaves from the Space screen. */}
       {!isAdmin ? <SpaceDangerPanel testID="profile-danger" leaveOnly /> : null}
-      {/* Apple asks for account deletion to be findable in the app: this says how it is done. */}
-      <Button
-        testID="profile-delete-account"
-        mode="text"
-        textColor={muted}
-        style={{ alignSelf: 'center' }}
-        onPress={() =>
-          Alert.alert(
-            'Delete my account',
-            'First leave every space you are in — or, if you made a space and run it, delete it from its Space screen. Then Delete my account is on the Welcome screen you land on.',
-            [{ text: 'OK' }],
-          )
-        }
-      >
-        Delete my account
-      </Button>
+      {/* Phase 63 (P13): a newcomer whose only space is their own may delete the account here (the
+          space goes with it), as on the web's profile page. Otherwise -- Apple asks for account deletion
+          to be findable in the app -- this says how it is done. */}
+      {accountDeletable ? (
+        <View testID="profile-delete-account" style={{ alignItems: 'center' }}>
+          <DeleteAccount note="Your own space goes with it." />
+        </View>
+      ) : (
+        <Button
+          testID="profile-delete-account-how"
+          mode="text"
+          textColor={muted}
+          style={{ alignSelf: 'center' }}
+          onPress={() =>
+            Alert.alert(
+              'Delete my account',
+              'First leave every space you are in — or, if you made a space and run it, delete it from its Space screen. Then Delete my account is on the Welcome screen you land on.',
+              [{ text: 'OK' }],
+            )
+          }
+        >
+          Delete my account
+        </Button>
+      )}
       <LegalLine
         testID="profile-legal"
         prefix={null}

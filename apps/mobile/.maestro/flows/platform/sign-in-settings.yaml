@@ -1,0 +1,95 @@
+# Phase 62, P0 (docs/stickiness-plan.md): the console's sign-in switches. Nav (a platform admin) opens
+# Settings from the gear in the console's header and, on the App card, offers Facebook (Microsoft and
+# Apple off) with sign-up open for 1 hour; the card then says so in words. Back to defaults asks, and
+# the card returns to this address's defaults (locally: every provider, sign-up open). Only the App's
+# setting is touched; clean-platform.js returns it to the defaults before and after.
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript: ../../scripts/clean-platform.js
+onFlowComplete:
+  - runScript: ../../scripts/clean-platform.js
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- tapOn:
+    id: platform-settings
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-settings
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: platform-sign-in-app
+    timeout: 10000
+- assertVisible:
+    id: platform-sign-in-web-in-force
+    text: "This address's defaults: .*"
+# The App: Facebook only, sign-up open, for 1 hour.
+- scrollUntilVisible:
+    element:
+      id: platform-sign-in-app-microsoft
+    centerElement: true
+- tapOn:
+    id: platform-sign-in-app-microsoft
+- tapOn:
+    id: platform-sign-in-app-apple
+- scrollUntilVisible:
+    element:
+      id: platform-sign-in-app-hours-1
+    centerElement: true
+- tapOn:
+    id: platform-sign-in-app-hours-1
+- scrollUntilVisible:
+    element:
+      id: platform-sign-in-app-save
+    centerElement: true
+- tapOn:
+    id: platform-sign-in-app-save
+- extendedWaitUntil:
+    visible: 'Sign-in for the app saved.'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-sign-in-app-in-force
+    direction: UP
+    centerElement: true
+- assertVisible:
+    id: platform-sign-in-app-in-force
+    text: 'Google and Facebook · sign-up open · until .*'
+- takeScreenshot: platform-sign-in-app
+# Back to defaults, after the question.
+- extendedWaitUntil:
+    notVisible: 'Sign-in for the app saved.'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-sign-in-app-defaults
+    centerElement: true
+- tapOn:
+    id: platform-sign-in-app-defaults
+- extendedWaitUntil:
+    visible: 'Back to defaults for the app\?'
+    timeout: 5000
+- tapOn: 'Return to defaults'
+- extendedWaitUntil:
+    visible: "The app is back to this address's defaults."
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: platform-sign-in-app-in-force
+    direction: UP
+    centerElement: true
+- assertVisible:
+    id: platform-sign-in-app-in-force
+    text: "This address's defaults: .* · sign-up open"
+- assertNotVisible:
+    id: platform-sign-in-app-defaults

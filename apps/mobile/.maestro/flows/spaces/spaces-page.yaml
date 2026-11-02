@@ -5,6 +5,8 @@
 # another space while inside her own, and Start a space (then the invite step). The Platform console
 # link is a platform admin's only; Delete my account is offered to someone who belongs nowhere.
 # Self-cleaning: Pia, Quinn, Zara and Ari are made fresh before, and removed with their spaces after.
+# Phase 63 (P13): signing up now also makes a personal space; Pia, Zara and Ari drop theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -18,13 +20,13 @@ onFlowStart:
       env: { ACTION: reset-newcomer, EMAIL: spaces.page.zara@example.com }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: spaces.page.pia@example.com, NAME: Pia Page }
+      env: { ACTION: signup, EMAIL: spaces.page.pia@example.com, NAME: Pia Page, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: signup, EMAIL: spaces.page.quinn@example.com, NAME: Quinn Host }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: spaces.page.zara@example.com, NAME: Zara Nowhere }
+      env: { ACTION: signup, EMAIL: spaces.page.zara@example.com, NAME: Zara Nowhere, PERSONAL: drop }
   # Ari's one space is archived by the platform admin: she belongs nowhere, and may delete.
   - runScript:
       file: ../../scripts/spaces.js
@@ -34,7 +36,7 @@ onFlowStart:
       env: { ACTION: reset-newcomer, EMAIL: spaces.page.ari@example.com }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: spaces.page.ari@example.com, NAME: Ari Archived }
+      env: { ACTION: signup, EMAIL: spaces.page.ari@example.com, NAME: Ari Archived, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: make-space, EMAIL: spaces.page.ari@example.com, NAME: Ari Archived space }

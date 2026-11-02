@@ -70,6 +70,8 @@ const ORG: OrganizationListItem = {
   email_notifications: true,
   canvas_assessments: false,
   canvas_assessments_unreviewed: false,
+  checked_questions: false,
+  personal: false,
   canvas_assessment_questions: 10,
   gamify_question_quest: false,
   feature_tutoring: true,
@@ -191,6 +193,30 @@ describe('Quest trust (Phase 51)', () => {
 
   it('never sends the trust in the identity body', () => {
     expect(formToInput(formFromOrganization(ORG))).not.toHaveProperty('quest_trusted');
+  });
+});
+
+describe('checked questions (Phase 62, P1)', () => {
+  it('reads the switch into the form, on unless switched off', () => {
+    expect(formFromOrganization({ ...ORG, checked_questions: true }).checked_questions).toBe(true);
+    expect(formFromOrganization(ORG).checked_questions).toBe(false);
+    expect(EMPTY_ORG_FORM.checked_questions).toBe(true);
+  });
+
+  it('sends the features PUT with both switches when either changed, else nothing', () => {
+    expect(trustBody(ORG, true, false)).toBeNull();
+    expect(trustBody(ORG, true, true)).toEqual({
+      feature_tutoring: true,
+      feature_assessment: true,
+      feature_quest: false,
+      quest_trusted: true,
+      checked_questions: true,
+    });
+    expect(trustBody(ORG, false, false)).toMatchObject({ quest_trusted: false, checked_questions: false });
+  });
+
+  it('never sends the switch in the identity body', () => {
+    expect(formToInput(formFromOrganization(ORG))).not.toHaveProperty('checked_questions');
   });
 });
 

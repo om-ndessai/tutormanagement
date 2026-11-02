@@ -459,6 +459,50 @@ native rebuild of both dev builds, so build only while the devices are free.
   (`app/(org)/onboarding/invite.tsx`, `InvitePeople`: rows on the shared `spaceInviteRowSchema` / `inviteRowRequest`,
   Share with `invitationText`, the code card, Skip / Continue). Built 2026-10-31 (build note under design 69): typecheck, lint (0 errors), Jest 148 suites / 1076 tests, export green; `spaces/{make-space,sign-up,decline}` green on iOS and Android (development build through Metro).
 
+## Portal Phase 62, P0 — sign-in switches (parity: the web half is built by the lead)
+
+- [x] 70. Mobile: `X-Client: app` on every request; the console's Settings (gear in the header) with the Sign-in
+  section, one card per client on `GET`/`PUT /api/platform/sign-in`. Built 2026-11-01 (build-log 70): typecheck,
+  lint (0 errors), Jest 149 suites / 1091 tests, export green; `platform/sign-in-settings` green on iOS and Android.
+
+## Portal Phase 62, P1 — checked questions, per space (parity: the web half is built by the lead)
+
+- [ ] 71. Mobile: the console's space form gains "Checked questions (Beta)" (`checked_questions` in the features
+  PUT); the Space page's Assessment card shows a read-only note in place of "Include questions not yet reviewed".
+  Built 2026-11-01 (build-log 71): typecheck, lint (0 errors), Jest 149 suites / 1097 tests green; the console
+  flow (`spaces/console`) not yet run (waiting on the lead's web suite).
+
+## Portal Phase 62, P3-P8 — one tap (parity: the web half is built by the lead)
+
+- [x] 72. Mobile: P3's Beta chip test; P5's console Play section (Settings screen: Play home switch, depth, tiles
+  with guest state, members switch, order, add and remove, Default tiles; `GET`/`PUT /api/platform/play`,
+  `POST /api/platform/play/reset-tiles`); P6's Play home leading Home (space without Tutoring, students anywhere;
+  staff and parents in Tutoring spaces get the favorites row and Waiting for you); P7's one-tap favorites (a
+  multiplayer one with `host_plays`) and the lobby's QR code and Share; P8's roster dialog and Waiting for you;
+  the "Play <tile>" quick action. P4 needed nothing (`gameRefetchInterval`). Built 2026-11-01 (build-log 72):
+  typecheck, lint (0 errors), Jest 156 suites / 1140 tests, export green; `play/{play-home,favorites,family}`
+  green on the iOS simulator and the Android emulator (2026-11-01).
+
+## Portal Phase 63 — open door (parity: the web half is built by the lead)
+
+- [ ] 73. Mobile: P10-P16 of `docs/stickiness-plan.md` (P9 and P15's dataset are the Worker's) — the guest Play
+  home as the first screen while `config.guest` is present (outside both guards, with `play/[code]` and the
+  `sign-up-sheet` form sheet), a guest's quest and Assessment played and marked on the phone, the offer and its
+  paused clock, sign-up as a sheet landing in the personal space (no Welcome), `aimtrue://play/<CODE>` and a member's
+  tile start, anonymous counts, and the console's Guest play section. The spaces flows rewritten for sign-up's new
+  landing. Built 2026-11-01 (build-log 73): typecheck, lint, Jest and export green (see the report); the
+  `guest/*` and rewritten `spaces/*` flows written, not yet run (waiting on the lead's web suite).
+
+## Portal Phase 64 — habit (parity: the web half is built by the lead)
+
+- [x] 74. Mobile: P17-P20 of `docs/stickiness-plan.md` — My progress on the Play home (streak, today's ring, badges),
+  Today's Daily (`(org)/quest/daily/[level]`: five questions without keys, the answers posted once, the result with
+  the grid, the keys and Share), a tile's Best, New best! on a single player's results, and the console's Daily set
+  switch; and Phase 63's grade carry-over (P13), found missing by the gate. Built 2026-11-01, gate run 2026-11-02
+  (build-log 74): typecheck, lint (0 errors), Jest 165 suites / 1204 tests green; `play/*` (4) and `spaces/*`
+  (18) green on iOS and Android, `guest/*` (3) green on both (Android `guest-signup`'s one-second splash missed
+  by Maestro once in four runs); `npm run smoke -- mobile` 9/9 on both.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

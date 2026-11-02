@@ -90,6 +90,17 @@ export default function SignInScreen() {
     <ProviderButtons providers={providers} busy={busy} onSignIn={(provider) => void signInOther(provider)} />
   );
   const anyWayIn = googleAvailable || providers.length > 0;
+  // Phase 63 (P10): while guest play is on, the Play home is one tap back.
+  const playInstead = config?.guest ? (
+    <Button
+      testID="sign-in-play"
+      mode="text"
+      icon="gamepad-variant-outline"
+      onPress={() => (router.canGoBack() ? router.back() : router.replace('/play'))}
+    >
+      Play without an account
+    </Button>
+  ) : null;
 
   async function signIn(address: string) {
     setBusy(address);
@@ -110,6 +121,7 @@ export default function SignInScreen() {
           others={providerButtons}
         />
         {errorView}
+        {playInstead}
         <ReleasePhase />
       </Screen>
     );
@@ -272,6 +284,7 @@ export default function SignInScreen() {
       {devSignIn ? (
         <LegalLine testID="sign-in-legal" ids={{ terms: 'sign-in-terms', privacy: 'sign-in-privacy' }} />
       ) : null}
+      {playInstead}
       <ReleasePhase />
     </Screen>
   );

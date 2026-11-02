@@ -4215,3 +4215,334 @@ alone, so Skip's `router.back()` closed it -- now `router.replace('/onboarding')
 (this half changed only `apps/mobile` and the docs, not the API, the schema or shared); the plan's
 `spaces/{new-space-quest,join,invite}` flows (the test-writing step's); an actual invite sent on a device
 (Jest only: an invitee would outlive the flow's clean-up).
+
+## 70. Phase 62, P0: sign-in switches, in the app — design and build (2026-11-01)
+
+**Asked for:** the app half of P0 (`docs/stickiness-plan.md`; owner, 2026-11-01: "full set of social logins
+enabled for test app … configurable at the platform level", for a demo, then off again). The API and the
+shared contract were written by the lead (`packages/shared/src/sign-in-settings.ts`); the web half is the
+lead's, in parallel.
+**Endpoints:** `GET /api/platform/sign-in`, `PUT /api/platform/sign-in` (`UpdateSignInSetting`, null setting =
+back to the address's defaults); `/api/auth/config` now answers per client, by `X-Client`.
+
+**Design and build:**
+- **The header.** `requestHeaders` adds `X-Client: app` (`CLIENT_HEADER`) to every request and download.
+  Without it the Worker treats a caller as the web, so app builds from before this keep the web's buttons.
+- **Where.** A gear (`platform-settings`, "Settings") in `ConsoleHeaderButtons` pushes
+  `(platform)/platform-settings` (header shown, "Settings"), because the console's five tabs are full.
+  `features/platform/settings-screen.tsx` is the page, so Phase 62's "Play" section can join it later.
+  `sign-in-settings-section.tsx` is the Sign-in section.
+- **A card per client** (`platform-sign-in-<client>`). `…-in-force` says in words what is in force: the
+  providers offered (in force and set up here) joined by `describeProviders`, sign-up open/closed, then
+  "until <h:mm AM/PM>" on the device's clock (with the weekday when it is not today) or "until changed".
+  For the defaults it says "This address's defaults: …". "Google is always on." Then:
+  - switches `…-microsoft|apple|facebook`, off and disabled with "Not set up here" when not in `configured`;
+  - `…-signup` ("New people may sign up");
+  - For how long, as `Choice` radios `…-hours-1|3|12|24|until-changed` (3 by default);
+  - `…-save` (PUT with the switches and hours; toast "Sign-in for the <client> saved.");
+  - `…-defaults`, "Back to defaults", only while a setting is stored. It asks first; the confirm's button
+    is "Return to defaults", so Maestro and VoiceOver do not meet two controls with one name. Toast:
+    "The <client> is back to this address's defaults."
+  The switches start from the stored setting while it is in force, else from the defaults. The card is
+  keyed on the stored setting, so it starts afresh after a save. A save writes the reply into the cache
+  (the web's `setQueryData`) and re-reads nothing.
+- **Tests.** Jest `sign-in-settings-section.test.tsx`: the words per state, the unconfigured provider
+  disabled, the PUT bodies (3 hours by default, Until changed = `hours: null`), Back to defaults =
+  `setting: null`, a lapsed setting prefilled from the defaults, and `untilLabel`. `api-client.test.ts`
+  checks the header. Maestro `platform/sign-in-settings.yaml`: Nav opens Settings, gives the App Facebook
+  only, sign-up open, 1 hour, saves, sees "Google and Facebook · sign-up open · until …", then Back to
+  defaults. `clean-platform.js` returns the App's setting to the defaults before and after every
+  platform flow.
+
+**Verified (2026-11-01):** root `npm run typecheck` (with `ui-words`), mobile typecheck, lint (0 errors),
+Jest 149 suites / 1091 tests, `mobile:export` green. On the development build through the running Metro,
+against the lead's running local Worker (DB not reset by this work):
+- `platform/sign-in-settings` green on the iOS simulator (iPhone 17) and the Android emulator. It ran
+  with `maestro test` directly, not `npm run e2e:mobile`, because that script resets the local database
+  and the lead's web spec was running on it.
+- The first iOS run was red: `tapOn 'Back to defaults' index -1` hit the card's button under the alert.
+  That is why the confirm's button was renamed.
+- Not run by this work: `npm run smoke` (the lead's API/shared change; this half changed only
+  `apps/mobile` and docs).
+
+## 71. Phase 62, P1: checked questions, per space, in the app — design and build (2026-11-01)
+
+**Asked for:** the app half of P1 (`docs/stickiness-plan.md`, "Checked questions, per space"). The API, the
+shared contract and the web half are the lead's: `Organization.checked_questions` (and on
+`OrganizationListItem`), read through `checkedQuestionsOn`; `organizationFeaturesSchema` gains an optional
+`checked_questions`, left alone when absent; `canvas_assessments_unreviewed` now reports it, and the space
+admins' PATCH of it is accepted and no longer applied.
+**Endpoints:** `PUT /api/platform/organizations/:id/features` (with `checked_questions`); the Space page's
+`GET /api/organization/settings` as before.
+
+**Design and build:**
+- **Console.** `OrgFormState.checked_questions` (true on a new form; from `org.checked_questions !== false`).
+  The edit sheet shows a "Checked questions (Beta)" card under "Quest reviews approve questions", with the
+  web's sentence, switch `org-checked-questions-switch`. `trustBody(org, trusted, checked?)` is generalised:
+  given `checked`, the PUT goes when either changed and carries both; without it, as before (Phase 51's
+  tests unchanged). The sets themselves still change on the space screen's "This space may use".
+- **Space page.** `CanvasAssessmentsCard` drops the `org-assessments-unreviewed-switch` and its toasts; a
+  read-only note (`checked-questions-note`, "Questions not yet reviewed") says "Included: …" or "Not
+  included: …", each ending "The platform sets this.", word for word the web's.
+- **Tests.** `platform-model.test.ts`: the form's default and reading, `trustBody` with both switches, not in
+  the identity body. `platform-views.test.tsx`: the switch only when editing, on by default, sent in the PUT.
+  `organization-views.test.tsx`: the note in both states and no switch. Maestro `spaces/console.yaml` asserts
+  the switch is on in the edit sheet. No flow toggled the old switch.
+
+**Verified (2026-11-01):** root `npm run typecheck`, mobile typecheck, lint (0 errors), Jest 149 suites / 1097
+tests. Maestro not run yet: the lead's web suite was using the local Worker and database.
+
+
+## 72. Phase 62, P3-P8: one tap, in the app — design and build (2026-11-01)
+
+**Asked for:** the app half of P5-P8 (`docs/stickiness-plan.md`), mirroring the web half the lead built
+(`apps/web/src/features/play/{play-home,play-api}.tsx`, `pages/dashboard-page.tsx`, `quest/lobby-invite.tsx`,
+`platform/play-settings-section.tsx`), plus a Jest test for P3's Beta chip (the chip itself is the lead's, in
+`game-play.tsx`). P4 needs nothing: single-player games already use `gameRefetchInterval`. No change to the API,
+the shared contract, the web or e2e.
+**Endpoints:** `GET /api/quest/tiles`, `POST /api/quest/games` (with `host_plays`, `invite_user_ids`),
+`PUT /api/quest/games/favorites` (with `roster`), `GET /api/quest/games/waiting`, `GET /api/quest/games/members`,
+`POST /api/quest/games/lookup` (through the join sheet), `POST /api/spaces/join-requests`, `GET`/`PUT
+/api/platform/play`, `POST /api/platform/play/reset-tiles`.
+**Exposure kept:** the roster lists first names only (R27, the server's); Waiting for you shows the host's first
+name; the lobby's QR code and Share carry the code and a link, never a name; the quick action carries a tile's
+code only.
+
+**Design and build:**
+- **`features/play/`** (new, mirrors the web's). `play-api.ts`: the web's hooks and keys (`['quest','tiles']`,
+  `['quest','waiting']`, `['quest','members']`). The last quest is AsyncStorage `tmi.lastQuest.<space>`
+  (`readLastQuestRaw` in `lib/storage.ts`, listed in its header), read through a query (`['play','last-quest',
+  space]`) so Continue and the quick action follow a start at once. Waiting for you is enabled only while Home
+  is focused (`useIsFocused`), every 60 s, `refetchIntervalInBackground: false` (TanStack's focusManager follows
+  AppState). `play-model.ts` (pure): `groupOf` / `groupTiles` (the level last played first), `startRequest` (a
+  multiplayer favorite gains `host_plays: true` and, with a roster, `invite_user_ids`), `codeKind` / `tidyCode`
+  (6 = game, 8 = space), `gameInviteUrl(serverOrigin(), code)` (`<origin>/?code=`; the code alone when no
+  http(s) origin is known), `gameShareText` ("Join my Aimtrue game: code XXXXXX", from `PLATFORM_BRAND.name`).
+- **`play-home.tsx`**: `PlayHome` (nothing until the tiles are read, nothing with `play_home: false`), `PlayFavorites
+  ({compact})`, `WaitingForYou`, `HaveACode`, `RosterDialog` (a Paper dialog of `CheckRow`s, Save players / Cancel)
+  and `useStartQuest`. The web's copy and testIDs (`play-home`, `play-continue`, `play-favorites`,
+  `play-favorite-<name>`, `play-favorite-players-<name>`, `play-waiting`, `play-waiting-join-<code>`,
+  `play-tile-<code>`, `play-roster-dialog`, `play-favorites-row`), plus `play-tile-start-<code>`,
+  `play-tile-star-<code>`, `play-tile-beta-<code>`, `play-code`, `play-code-go`, `play-new`,
+  `play-roster-member-<id>`, `play-roster-save`. A game code and a waiting game's Join open the existing
+  `quest/join-game` sheet (lookup, then JoinChoices), so there is one join path.
+- **Home.** `space-home-screen.tsx`: the Play home leads where Quest is on (above the Assessment home and the
+  Quest card). `dashboard-screen.tsx`: where Quest is on and not viewing someone else, a student's Home leads with
+  the Play home; anyone else's has the compact favorites row and Waiting for you above the dashboard. Pull to
+  refresh also invalidates `['quest']` and the favorites.
+- **Lobby (P7).** `game-lobby.tsx` draws `QrCode` (`features/play/qr-code.tsx`: the pure-JS `qrcode` package's
+  `create()` matrix as rows of dark runs, one View per run, whole points per module, black on white from
+  `theme/brand-art.ts`'s `QR_CODE` so any camera reads it in dark mode too). No native module, so the dev client
+  needs no rebuild. Share's text is the web's, with the link when the origin is known (`game-model.shareText`
+  now delegates to `gameShareText`). `qrcode` and `@types/qrcode` added to `apps/mobile` (its own install).
+- **Quick action.** `quick-actions.ts` gains `play-last`: "Play <CODE>" while the last quest here was a tile and
+  Quest is on, for any role, after the lesson actions. A favorite's name is typed by a person and may carry a
+  name, so it never goes on the icon, and the top favorite is not offered. It opens `quest/play-last`
+  (`PlayLastScreen`, gated on Quest), which starts the last quest with Continue's request and replaces itself with
+  the game, or says "There is no quest to continue on this phone yet."
+- **Console (P5).** `platform/play-settings-section.tsx` on the Settings screen, under Sign-in: the web's section,
+  with radio chips for Guests and the kind, an inline level picker, up / down / remove icon buttons; Save checks
+  `updatePlaySchema` first. `platform/api.ts` gains `usePlayConsole` / `useSavePlay` / `useResetTiles` (`playKey`).
+
+**Tests.** Jest: `play-model.test.ts` (grouping, start requests incl. `host_plays` / `invite_user_ids`, code
+routing, invitation text), `qr-code.test.tsx` (every dark module drawn once, as runs; whole-point size),
+`play-home.test.tsx` (tiles and Beta, one-tap start and Continue, the star, `play_home: false`, the code box's
+two paths, favorites' requests, the roster dialog's body and save / clear, Waiting for you and its Join),
+`play-last-screen.test.tsx`, `platform/play-settings-section.test.tsx`, `quest/game-play-beta.test.tsx`, and
+`shell/quick-actions.test.ts` (Play <tile>). Maestro `flows/play/`: `play-home.yaml` (tagged `smoke`: Sofia's Home
+leads with Play, one tap on G6Q5 reaches "Question 1 of 5", Continue G6Q5 back on Home), `favorites.yaml` (star
+G6Q5, start it from Favorites), `family.yaml` (`scripts/play-family.js` saves Priya's "Family G6" with Sofia on
+its roster; Priya's roster dialog, one tap to the lobby with the QR code; Sofia's Waiting for you, Join with no
+code).
+
+**Verified (2026-11-01):** root `npm run typecheck`, `npm run mobile:typecheck`, `npm run mobile:lint` (0 errors),
+`npm run mobile:test`, `npm run mobile:export` (both platforms bundle, `qrcode` included). The `play/*` flows were
+not run: the lead's web suite was using the local Worker and database.
+
+**Fixes after the lead's first run (2026-11-01):** `play/play-home` and `play/family` failed on both platforms;
+`play/favorites` passed.
+- *Continue not shown:* Exit on a game went to the Quest hub (`exitQuest` → `dismissTo('/quest')`), not Home,
+  so Continue was never on screen. A game the Play home opens (and the quick action's) now carries
+  `from=home`, and its Exit goes back (`exitGame` in `quest-frame.tsx`; `QuestFrame` takes `onExit`). The lobby's
+  Leave, the results' "Back to Quest" and "game not found" still go to the hub, as labelled. The flow scrolls up
+  to Continue, since Home keeps its scroll position.
+- *Roster tick not found:* an admin's roster list is everyone in the space, so Sofia's row was below the
+  dialog's fold. The roster's players are now listed first (`rosterFirst`, by the saved roster so rows do not
+  jump). The flow checks `checked: true` on Android and the row's label on iOS, where a labelled `CheckRow` is
+  read as its label rather than Paper's "checkbox, checked".
+
+**Second round (2026-11-01, the lead's clean run):** `family` failed on both platforms at the waiting game's
+Join: the game was there ("Priya started a G6 game · 2 questions"), but `text: Join, childOf: play-waiting`
+matched nothing; the flow now taps `id: 'play-waiting-join-.*'`. On Android, `play-home` and `favorites` failed
+on `scrollUntilVisible … direction: UP, centerElement: true` for elements already on screen near the top (Continue,
+the favorite): an element at the top cannot be centred. The two upward scrolls no longer centre. The iOS
+screenshot also showed the tiles squeezed into four narrow columns (Paper's Card splits a `flexBasis` between its
+two views on iOS): each tile now sits in a plain View of a set width, two a row on a phone, three from 700 pt, four
+from 1000 pt.
+The end of the home ("Have a code?") is below every tile, a long scroll on a phone: the flow scrolls to its hint
+line (90 s) rather than centring the field. **Run (2026-11-01, fresh DB):** `npm run e2e:mobile -- both
+apps/mobile/.maestro/flows/play`: iOS simulator 3/3 (`play-home`, `family`, `favorites`), Android emulator 3/3.
+Jest 156 suites / 1140 tests, typecheck, lint (0 errors).
+
+## 73. Phase 63, P9-P16: open door, in the app — design and build (2026-11-01)
+
+**Asked for:** the app half of Phase 63 (`docs/stickiness-plan.md` P9-P16), mirroring the web half the lead built
+(`apps/web/src/features/guest/*`, `platform/guest-settings-section.tsx`), on the contract in
+`packages/shared/src/{guest,play-events}.ts`. P9 (the reserved pool) and P15's server side are the Worker's; the app
+reads the pool and sends counts. No change to the API, the shared contract, the web or e2e.
+**Endpoints:** `GET /api/auth/config` (`guest`), `GET /api/public/guest/<version>/<level>`, `POST /api/public/events`,
+`POST /api/auth/signup` (now lands the person in their personal space), `POST /api/quest/games` (a member's tile
+link), `GET`/`PUT /api/platform/guest`, `GET`/`PUT /api/platform/guest/pools/<level>`.
+**Exposure kept (R26):** a guest's answers, grade and scores stay on the phone; a count carries an event's name and
+at most a tile, a variant, a source and a number (`client: 'app'`), never an id or anything typed; Challenge a
+friend and Ask a grown-up name nobody and go through the system share sheet.
+
+**Placement.** Signed out with `config.guest` present, `app/index.tsx` sends the app to `/play` (the guest Play
+home) instead of `/sign-in`; without it, nothing changes. `play/index`, `play/[code]` and `sign-up-sheet` are in
+the root Stack OUTSIDE both `Stack.Protected` guards, so signing up over a quest never unmounts it. Sign in stays one
+tap away (the home's Sign in pushes `/sign-in`, which gains "Play without an account" while guest play is on).
+`aimtrue://play/<CODE>` works through expo-router's own path mapping to `play/[code]`; a member there (in a space)
+is redirected to `(org)/quest/tile/[code]`, which starts the tile as a single player's game (the web's
+`/quest/tile/:code`) and replaces itself with the game.
+
+**Build (`src/features/guest/`):**
+- `guest-model.ts` (pure, Jest): `startQuest` (the tile's count from `guestSeries`, or the whole pool for a timed
+  tile), the virtual clock (`elapsedMs`, `pauseQuest`, `resumeQuest`, `timeLeftMs`, `questDone`, `clockText`),
+  `answerQuest` (marks with `checkAnswer`; pauses the clock when `nudgeDue`: at `nudge_after`, once a quest, not on
+  the last answer, not within `nudge_cooldown_hours` of a dismissal), `markAssessment` (a choice by its text, a
+  number by what was typed), the offer's words (`roundedCount`, `benefitsFor`, `assessmentBenefits`, `usedUpText`),
+  `challengeText`, `ASK_ADULT_TEXT`, `playLink(serverOrigin(), code)`, `homeLevels` / `chosenLevel`.
+- `guest-events.ts` (pure, Jest): a queue sending batches of at most `PLAY_EVENTS_PER_BATCH`; `guest-api.ts` sends
+  them through the api client at a quest's or Assessment's end, on sign-up start and when the app leaves the
+  foreground (AppState: the web's "page hidden"). The pool: `useGuestPool` (key `['guest','pool',version,level]`,
+  `staleTime: Infinity`), held in the module for the run (sign-up clears the query cache mid-quest) and on the phone
+  by version (`tmi.guestPool.<level>`, the web's `immutable` response).
+- `guest-store.ts`: the phone's memory (`tmi.guest`: grade, seen ids, best scores, played tiles, last dismissal),
+  read once (`loadGuestMemory`, awaited by the routes) then synchronous; the quest in progress in module memory
+  for the run (the web's per-tab sessionStorage: the app never reloads for a sign-up).
+- `guest-home.tsx` (`screen-guest-home`): header with Sign in, the home bar, the grade chips (remembered), Play now
+  (large tiles, "Best: n"), More with a free account (locked tiles → the offer, "Not now"), For parents and tutors
+  ("Get started free" → the sheet), the trust line and the legal links. Signed in while in front → `router.replace('/')`.
+- `guest-quest.tsx` (`screen-guest-quest`, in the Quest frame): the stem (`MathBody`), QuestChoices
+  (`guest-choice-A`) or the number field, Answer, Skip; the offer after question N; the results (score, the used-up
+  line, Save this score / Sign in, Challenge a friend, Play again / Play these again) and `GuestResultPager`.
+- `guest-assessment.tsx` (`screen-guest-assessment`): QuestionView (`assessment-choice-A`) or "Your final answer",
+  pen / eraser / undo over `DrawingCanvas` with the take screen's reducer, Previous / Next page / Finish and mark;
+  the results with "Keep it: PDF and a tutor's review" (the offer) and each page's working drawn beneath, read-only.
+- `nudge-sheet.tsx`: a Paper dialog; "Sign up free" (or "Sign in" while `signup_open` is false) and the close
+  button both full width; "Under 13? Ask a grown-up" opens the share sheet.
+- `signup-sheet.tsx` (route `/sign-up-sheet`, a form sheet): the native Google button and the other providers (the
+  sign-in screen's); with sign-in off, the developer address (`signup-sheet-email`), then the app's SignUpScreen
+  (name, month, year, terms; it gained `onCancelled`); a 1.1 s splash ("You're in.", `signup-splash`), then back.
+  An existing account is simply signed in and the sheet closes.
+- `play-link.tsx`: `PlayLink` (guest quest or Assessment by the tile's kind; a person who signed up mid-quest
+  finishes it there) and `MemberTileStart`.
+- Console (P16): `features/platform/guest-settings-section.tsx` on the Settings screen under Play, with the web's
+  hooks in `platform/api.ts` (`guestKey`): the two switches, after which question, the cooldown, the three wordings,
+  Save guest play (checked with `guestSettingsSchema`), and per level the pool (Now, Suggested, Use the suggestion).
+
+**Mobile differences (decisions):**
+- A choice is chosen, then **Answer** (the members' quest on the phone does the same); the web answers on the tap.
+- The clock stays **paused while the sign-up sheet is over the quest** and runs again when the quest is back in
+  front; the web resumes it as the sheet opens.
+- Results show **one question at a time** in one web view (as a game's results), never a web view per question.
+- Once signed up, the quest's results offer **Go to my space** in place of Save this score.
+- The home's **Sign in** opens the sign-in screen (the app's developer personas live there); "Get started free" and
+  every offer open the sign-up sheet. The sheet's developer path asks the address first and the name on the next
+  step (the sign-up screen's own field), so the Maestro steps are the sign-up flow's.
+- A finished quest is not reopened by its link: the tile starts afresh.
+- `nudgeDue` treats "never dismissed" as cooled (the web computes `0 + cooldown < now`, true in practice).
+
+**Flows:** `guest/guest-home` (home, locked offer, G4Q5 with the offer after question 1, Keep playing, results, Play
+again and the used-up line, Exit, the `aimtrue://play/G4Q5` link, Sign in and back), `guest/guest-assessment`
+(G4A5: choose or type, working on the canvas, marked, the work beside the key, Keep it), `guest/guest-signup`
+(the sheet over the quest, the splash, back on question 2, Go to my space lands in the personal space with no
+Welcome). `scripts/guest-play.js` turns guest play (and the Assessment) on with Grade 4's pool from the console's
+suggestion, and puts the defaults back (the shared `DEFAULT_GUEST_SETTINGS`, checked in `maestro-scripts.test.ts`).
+The spaces flows that assumed the Welcome after sign-up were rewritten (`spaces.js` gained `drop-personal` and
+`signup … PERSONAL: drop`).
+
+**Follow-up (2026-11-01, the lead's deletion parity):** `SessionResponse.account_deletable` (true while the person is
+in no space but, perhaps, their own personal space where nobody else is) is kept by the auth provider
+(`accountDeletable`). My profile then shows the Welcome's own "Delete my account" (`DeleteAccount`, now exported from
+`space-welcome.tsx` with an optional `note`) in `profile-delete-account`, asking "Your own space goes with it. …";
+otherwise the old explainer stays, as `profile-delete-account-how`. Jest `users/profile-delete-account.test.tsx`;
+flow `spaces/delete-from-profile` (written, not yet run). The shared-fields lock no longer counts a sole-member
+personal space (the API's `belongsElsewhere`): no app test or flow assumed a newcomer's fields locked (the
+person-form tests set `shared_fields_locked` themselves; `people/edit` locks seeded Alex, in two real spaces).
+`LEGAL_NEXT_VERSION`: the app shows no draft of the terms, so nothing to do.
+
+## 74. Phase 64, P17-P20: habit, in the app — design and build (2026-11-01)
+
+**Asked for:** the app half of Phase 64 (`docs/stickiness-plan.md` P17-P20, with its "Built 2026-11-01" notes), at
+parity with the web half the lead built (`apps/web/src/features/habit/*`, `play/play-home.tsx`, `quest/game-page.tsx`,
+`platform/play-settings-section.tsx`), on the contract in `packages/shared/src/habit.ts` and `quest-tiles.ts` /
+`quest-games.ts`. No change to the API, the shared contract, the web or e2e.
+**Endpoints:** `GET /api/quest/me/habit`, `GET /api/quest/daily/:level`, `POST /api/quest/daily/:level/result`,
+`GET /api/quest/tiles` (`best`, `daily`), `GET /api/quest/games/:id/results` (`new_best`), `GET`/`PUT /api/platform/play`
+(`settings.daily`).
+**Exposure kept:** My progress is the reader's own (R28: no person parameter is sent); the Daily's keys come only with
+the result (R20), so the screen never has them before the answers are posted; the share text is the shared
+`dailyShareText`, which names nobody; no money anywhere.
+
+**Build (`src/features/habit/`):**
+- `api.ts`: the web's `useHabit` / `useDaily` / `useSaveDaily`, the same keys (`['quest','habit']`,
+  `['quest','daily',level]`) and the same invalidation (a saved Daily sets its set and reads the habit again).
+- `habit-model.ts` (pure, Jest): `streakLine`, `daysLine` (capped at `STREAK_DAYS_PER_WEEK`), `todayLabel`,
+  `NO_BADGE_TEXT`, `earnedOf`; `dailyTileFor` (the level last played, else the first tile), `dailyButtonLabel`,
+  `dailyHeading`, `dailyProgress`, `dailyGrid` / `dailyGridSpeech`, `giveAnswer`, `secondsSince`.
+- `daily-html.ts` (pure, Jest): the result's questions as ONE page for the KaTeX web view (mark, number, stem, key),
+  with the same in words (`speech`) and as plain text.
+- `my-progress-card.tsx` (`my-progress`): the ring (`my-progress-today`, labelled "Played today" / "Not played yet
+  today"), the streak (`my-progress-streak`) and the week, the badges earned (`badge-<id>`, the description as hint)
+  or "Your first badge is one quest away."
+- `daily-screen.tsx` (route `(org)/quest/daily/[level]`, a full-screen modal in Quest's frame, gated on Quest as
+  `GATED_ROUTES` requires): `daily-play` with `daily-progress`, the stem (persistent `MathBody`), QuestChoices with
+  `daily-choice-<i>` (it gained `testIDFor`) or `daily-number`, `daily-submit`, `daily-skip`; the answers posted once
+  at the end; `daily-result` with `daily-heading`, `daily-grid`, `daily-share` (`Share.share` with `dailyShareText`),
+  `daily-back`, and the questions with their keys (`daily-review`). 403 / 404 are the web's "There is no Daily for …
+  today." (`daily-none`); a refused save (409) reads the Daily again; another failure takes the last answer back.
+- Play home: My progress under Continue; `play-daily` ("Today's Daily · <tag>D") while `tiles.daily`; a tile's
+  `play-best-<code>` ("Best N"). Results: `game-new-best` ("New best!", `BadgePill tone="primary"`) on a single player's
+  game with `new_best`. Console: `play-settings-daily`, the "Daily set" switch, saved with the Play settings.
+
+**Mobile differences (decisions):**
+- A Daily choice is **chosen, then Submit**, as every quest on the phone (the web answers on the tap).
+- The result's five questions are **one web view**, never one per question.
+- **A game the reader played reads My progress and the tiles again** when its results open (`game-results.tsx`
+  invalidates `['quest','habit']` and `['quest','tiles']`). Found by the flow: the habit is cached for a minute, so
+  Home right after a quick quest still said "Not played yet today". The web has the same staleness for a game shorter
+  than its `staleTime` (reported to the lead; web code not changed here).
+- The grid's glyphs keep their own text; each mark is said in the hint (the heading already says the score).
+- **The Play home waits for My progress to settle** (loaded or failed) before it shows: arriving after the tiles,
+  the card pushed them down under a finger (and a test's tap).
+- The Play home is taller, so `play/{play-home,favorites,habit}` scroll to their tile slowly (`speed: 15`) and let
+  the momentum end (`waitForAnimationToEnd`): otherwise the tile drifted on under the translucent header and the tap
+  opened the account sheet (seen on iOS in `play/favorites`).
+
+**Flows:** `play/habit` (Sofia starts a tile from her Play home, answers the first question and skips the rest; Home:
+My progress "Played today" and First quest; Today's Daily of that level, skipped through: "<tag>D #n · 0 of 5" and
+✗✗✗✗✗; Back to Play; the tile's "Best N"). `scripts/habit.js` keeps the console's Daily on and picks a count tile whose
+level's Daily Sofia has not played today (one play a day per person and level).
+**Jest:** `habit/{habit-model,daily-screen}.test.ts(x)`, `quest/game-results-new-best.test.tsx`, Phase 64 cases in
+`play/play-home.test.tsx` and `platform/play-settings-section.test.tsx` (whose save expectation now carries `daily`).
+
+**Release gate fixes (2026-11-02), found running `guest/*` for the first time on both platforms:**
+- **Phase 63, "its grade becomes the default" (P13) was not built in the app** (nor on the web: reported to the
+  lead). Now the member's Play home leads, before any quest is started in that space on the phone, with the
+  guest's grade on the phone -- the grade chip chosen, else the level of the tile played last
+  (`guestLeadLevel` in `guest/guest-store.ts`, read through `useGuestLeadLevel` in `play/play-api.ts`, a
+  query so the memory is read once loaded): its tiles first and its Daily. A quest started here outranks it.
+  `guest/guest-signup` now asserts "Today's Daily · G4D" and G4Q5 on the new member's Home.
+- **"You've played all 10 free questions" never showed** (`guest-quest.tsx`): the React Compiler memoised the
+  render's read of the phone's memory (a module, not state) on the tile alone, so after the second round it
+  still said "not used up". The recording effect now computes it and keeps it on the quest (`usedUp`).
+- The Play home also waits for the last quest kept on the phone (`lastQuest.isLoading`) and the guest's
+  grade, so the lead level never changes under the reader.
+- Flows (no assertion loosened): `guest/guest-home` scrolls back up to the home's Sign in (the home keeps
+  its scroll); `guest/guest-signup` puts the iOS keyboard away with its return key (Maestro's hideKeyboard
+  tapped the Privacy link in the sheet) and taps Sign up without waiting to settle (Android's settle wait
+  outlasted the one-second splash); `guest/guest-assessment` puts the iOS keypad away with Done and swipes
+  in the side gutter to reach Next below a choice page's canvas (a swipe on the canvas draws).
+- `spaces/words` failed on iOS on names `scripts/clean-platform.js` gave earlier in the same run ("Retired
+  test organization …"): the script now names them "Retired test space …".

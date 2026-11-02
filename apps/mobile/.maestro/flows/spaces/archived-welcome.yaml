@@ -4,6 +4,8 @@
 # archived space as belonging). Two of them: Ada, who started her space herself, and Ivy, who was
 # only invited to Hal's. The web's half is spaces-welcome.spec.ts.
 # Self-cleaning: the spaces are restored (so reset-newcomer can delete them), then everyone reset.
+# Phase 63 (P13): signing up now also makes a personal space; Ada drops theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -24,7 +26,7 @@ onFlowStart:
   # Ada starts her own space; it is archived.
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: spaces.archived.ada@example.com, NAME: Ada Archived }
+      env: { ACTION: signup, EMAIL: spaces.archived.ada@example.com, NAME: Ada Archived, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: make-space, EMAIL: spaces.archived.ada@example.com, NAME: Ada Archived family }

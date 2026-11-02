@@ -16,6 +16,14 @@ A listed provider is offered only once it is also configured (its ids in `vars`,
 `wrangler secret put`). Turn one on for `tutoring-test` first, try it by hand there, then production.
 The two production Workers deploy together, so set both.
 
+**Defaults and the console's switches (Phase 62 P0).** `AUTH_PROVIDERS` is the default for the web
+portal; `AUTH_PROVIDERS_APP`, when set, is the app's own default (the test Worker: the web Google alone,
+the app Google, Microsoft and Facebook). A platform admin may replace either for a while in the console
+(**Settings > Sign-in**, the app's console header gear): providers besides Google, and whether sign-up is
+open, for 1-24 hours or until changed. The switch never offers a provider the Worker has not set up, so
+for a demo on production the provider's ids, secret (`FACEBOOK_APP_SECRET`) and the production app's
+bundle and redirect must be registered first, as below.
+
 Each Worker's callback address must be registered with the provider:
 
 | Worker | Callback base |

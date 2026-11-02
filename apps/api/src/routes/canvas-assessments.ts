@@ -17,6 +17,7 @@ import {
   type CanvasAssessmentDetail,
   type CanvasAssessmentLevel,
   type CanvasStroke,
+  checkedQuestionsOn,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -26,9 +27,9 @@ import { ApiError } from '../lib/errors.js';
 import type { OrgId } from '../lib/org.js';
 import { isAdmin } from '../lib/scope.js';
 import { listOrganizationCurricula } from '../repositories/curricula.js';
+import { cachedDrawableCounts } from '../repositories/level-counts.js';
 import { zValidator } from '../lib/validate.js';
 import {
-  countDrawableQuestions,
   discardCanvasAssessment,
   drawQuestionIds,
   finishReview,
@@ -130,7 +131,8 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     const org = c.get('org');
     const offered = await offeredCurricula(c.env.DB, org.id);
     const body: ApiOk<CanvasAssessmentLevel[]> = {
-      data: await countDrawableQuestions(c.env.DB, org.canvas_assessments_unreviewed, offered),
+      // Phase 62 (P4): the platform's cached counts.
+      data: await cachedDrawableCounts(c.env.DB, checkedQuestionsOn(org), offered),
     };
     return c.json(body);
   })
@@ -162,7 +164,7 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
       c.env.DB,
       input.level_id,
       org.canvas_assessment_questions,
-      org.canvas_assessments_unreviewed,
+      checkedQuestionsOn(org),
     );
     if (drawn.ids.length === 0) {
       throw ApiError.conflict(`There are no approved questions for ${levelLabel(input.level_id)} yet.`);

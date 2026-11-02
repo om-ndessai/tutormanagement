@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import type { Page } from '@playwright/test';
 
 import { expect, test, PEOPLE } from '../support/fixtures.js';
+import { setCheckedQuestions } from '../support/checked-questions.js';
 import { unwrap } from '../support/api.js';
 
 /**
@@ -36,8 +37,11 @@ async function questOn(admin: Page, on: boolean) {
 }
 
 test.describe('sharing Quest', () => {
+  // Phase 62: a challenge is made only from an approved question, so the game draws approved ones
+  // only -- the platform's per-space switch, put back on (its default) by the file's last test.
   test('a single-player game, played to the end: one right, one wrong, one skipped', async ({ as }) => {
     const admin = await as('admin');
+    await setCheckedQuestions(await as('platformAdmin', { org: null }), 'chmi', false);
     await questOn(admin, true);
     const made = await unwrap<any>(
       await admin.request.post('/api/quest/games', {
@@ -186,5 +190,9 @@ test.describe('sharing Quest', () => {
     const sofia = await as('student');
     expect((await sofia.request.post('/api/shares', { data: { kind: 'game_result', game_id: gameId } })).status()).toBe(403);
     await questOn(admin, false);
+  });
+
+  test('afterwards: the space draws checked questions again (its default)', async ({ as }) => {
+    await setCheckedQuestions(await as('platformAdmin', { org: null }), 'chmi', true);
   });
 });

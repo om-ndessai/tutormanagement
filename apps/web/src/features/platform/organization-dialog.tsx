@@ -78,6 +78,8 @@ interface FormState {
   feature_quest: boolean;
   /** Phase 51: whether its Quest reviews approve bank questions for every space. */
   quest_trusted: boolean;
+  /** Phase 62 (P1): whether its games, tiles and Assessments draw checked questions too. */
+  checked_questions: boolean;
   /** Phase 59: who families pay -- the space, or each tutor directly. */
   payment_model: SpacePaymentModel;
   /** Its payer details, while the space collects payments. */
@@ -131,6 +133,7 @@ const EMPTY: FormState = {
   feature_assessment: true,
   feature_quest: true,
   quest_trusted: true,
+  checked_questions: true,
   payment_model: 'direct',
   payer: EMPTY_PAYER,
 };
@@ -187,6 +190,7 @@ export function OrganizationDialog({
             feature_assessment: featureAllowed(existing, 'assessment'),
             feature_quest: featureAllowed(existing, 'quest'),
             quest_trusted: existing.quest_trusted !== false,
+            checked_questions: existing.checked_questions !== false,
             payment_model: spacePaymentModel(existing),
             payer: payerForm(existing.payer ?? null),
           }
@@ -231,8 +235,16 @@ export function OrganizationDialog({
           form.payment_model === 'space' ? changedPayer(form.payer, payerForm(existing.payer ?? null)) : {};
         await update.mutateAsync({ id: existing.id, input: { ...input, ...payer } });
         const trustChanged = (existing.quest_trusted !== false) !== form.quest_trusted;
-        if (trustChanged || FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])) {
-          await updateFeatures.mutateAsync({ id: existing.id, input: { ...features, quest_trusted: form.quest_trusted } });
+        const checkedChanged = (existing.checked_questions !== false) !== form.checked_questions;
+        if (
+          trustChanged ||
+          checkedChanged ||
+          FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])
+        ) {
+          await updateFeatures.mutateAsync({
+            id: existing.id,
+            input: { ...features, quest_trusted: form.quest_trusted, checked_questions: form.checked_questions },
+          });
         }
         toast.success(`${form.name} saved.`);
       } else {
@@ -426,6 +438,25 @@ export function OrganizationDialog({
                   id="org-quest-trusted"
                   checked={form.quest_trusted}
                   onCheckedChange={(checked) => set('quest_trusted', checked)}
+                />
+              </div>
+            )}
+            {existing && (
+              <div className="flex items-start gap-3 border-t pt-2">
+                <div className="grid flex-1 gap-0.5">
+                  <label htmlFor="org-checked-questions" className="text-sm">
+                    Checked questions (Beta)
+                  </label>
+                  <p className="text-muted-foreground text-xs">
+                    Games, tiles and assessments here also draw questions the bank has checked but no person has
+                    approved, each marked Beta. Off: approved questions only.
+                  </p>
+                </div>
+                <NotificationsSwitch
+                  label="Checked questions (Beta)"
+                  id="org-checked-questions"
+                  checked={form.checked_questions}
+                  onCheckedChange={(checked) => set('checked_questions', checked)}
                 />
               </div>
             )}

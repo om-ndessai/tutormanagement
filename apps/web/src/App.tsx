@@ -28,6 +28,8 @@ import { PlatformActivityPage } from '@/features/platform/platform-activity-page
 import { PlatformAdminsPage } from '@/features/platform/platform-admins-page';
 import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
 import { PlatformShell } from '@/features/platform/platform-shell';
+import { MemberTileStart, PlayLink } from '@/features/guest/play-link';
+import { PlatformSettingsPage } from '@/features/platform/platform-settings-page';
 import { AiPage } from '@/features/question-bank/ai-page';
 import { QuestionBankPage } from '@/features/question-bank/question-bank-page';
 import { ReviewPage } from '@/features/question-bank/review-page';
@@ -39,6 +41,7 @@ import { ReviewAssessmentPage } from '@/features/canvas-assessments/review-asses
 import { AssessmentPdfPage } from '@/features/canvas-assessments/assessment-pdf-page';
 import { QuestLanding, QuestPage } from '@/features/quest/quest-page';
 import { QuestPlayPage } from '@/features/quest/quest-play-page';
+import { DailyPage } from '@/features/habit/daily-page';
 import { QuestReviewPage } from '@/features/quest/quest-review-page';
 import { GamePage } from '@/features/quest/game-page';
 import { StartGamePage } from '@/features/quest/start-game-page';
@@ -51,6 +54,8 @@ export function App() {
       <Route path="/terms" element={<LegalPage kind="terms" />} />
       {/* Phase 56: a shared Quest card, open to anyone signed out. */}
       <Route path="/s/:id" element={<PublicSharePage />} />
+      {/* Phase 63 (P14): a tile from a link -- a guest plays it on the device, a member starts it. */}
+      <Route path="/play/:code" element={<PlayLink />} />
       <Route path="/privacy" element={<LegalPage kind="privacy" />} />
       {/* Phase 52: a newcomer's age question and the terms, before they have an account. */}
       <Route path="/signup" element={<SignupPage />} />
@@ -77,6 +82,7 @@ export function App() {
           <Route path="questions/review" element={<ReviewPage />} />
           <Route path="questions/:topicId" element={<StandardPage />} />
           <Route path="ai" element={<AiPage />} />
+          <Route path="settings" element={<PlatformSettingsPage />} />
         </Route>
 
         {/* The portal itself runs inside the organization this tab chose. */}
@@ -86,6 +92,8 @@ export function App() {
           <Route path="quest/play" element={<QuestPlayPage />} />
           <Route path="quest/review" element={<QuestReviewPage />} />
           <Route path="quest/games/new" element={<StartGamePage />} />
+          <Route path="quest/tile/:code" element={<MemberTileStart />} />
+          <Route path="quest/daily/:level" element={<DailyPage />} />
           <Route path="quest/games/:gameId" element={<GamePage />} />
         </Route>
         <Route element={<AppShell />}>

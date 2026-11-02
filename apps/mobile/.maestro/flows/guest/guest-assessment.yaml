@@ -1,0 +1,142 @@
+# Phase 63 (P11; docs/stickiness-plan.md): the guest Assessment. With guest play and the guest Assessment
+# on (the script), G4A5 opens from the Play home: one page each, the canvas for working, a choice question
+# answered by choosing and a number question by typing its final number. Finish and mark marks it on the
+# phone; the results show the score and each page beside its key and solution, with the working drawn
+# beneath; "Keep it" is the offer (a PDF and a tutor's review). Nothing is sent but counts (the Jest test
+# and the web's spec check the network; here, no PDF and no assessment row appear anywhere).
+# Self-cleaning: guest play off and Grade 4's pool emptied before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'on', ASSESSMENT: 'true' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+tags:
+  - feature
+---
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: guest-tile-G4A5
+    centerElement: true
+- tapOn:
+    id: guest-tile-G4A5
+- extendedWaitUntil:
+    visible:
+      id: guest-assessment-page
+    timeout: 15000
+- assertVisible:
+    id: guest-assessment-progress
+    text: 'Page 1 of 5'
+# Some working on the first page.
+- scrollUntilVisible:
+    element:
+      id: guest-assessment-canvas
+    centerElement: true
+- swipe:
+    from:
+      id: guest-assessment-canvas
+    direction: RIGHT
+    duration: 400
+- takeScreenshot: guest-assessment-page
+# Five pages: choose A, or type 7.
+- repeat:
+    times: 5
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: guest-assessment-page
+          direction: UP
+      - runFlow:
+          when:
+            visible:
+              id: assessment-choice-A
+          commands:
+            - tapOn:
+                id: assessment-choice-A
+      - runFlow:
+          when:
+            visible:
+              id: guest-assessment-number
+          commands:
+            - tapOn:
+                id: guest-assessment-number
+            - inputText: '7'
+            # iOS: the keypad's Done key puts it away (Maestro's hideKeyboard could not, and the
+            # keypad then covered Next); Android: hideKeyboard.
+            - runFlow:
+                when:
+                  platform: iOS
+                commands:
+                  - pressKey: Enter
+            - runFlow:
+                when:
+                  platform: Android
+                commands:
+                  - hideKeyboard:
+                      optional: true
+      # iOS: a choice page is taller than the screen, so Next sits below the canvas. Scrolled by a swipe
+      # in the side gutter: a swipe that starts on the canvas draws instead of scrolling.
+      - runFlow:
+          when:
+            platform: iOS
+          commands:
+            - swipe:
+                start: 2%, 80%
+                end: 2%, 35%
+                duration: 500
+      - runFlow:
+          when:
+            visible:
+              id: guest-assessment-next
+          commands:
+            - tapOn:
+                id: guest-assessment-next
+            - waitForAnimationToEnd:
+                timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: guest-assessment-finish
+- tapOn:
+    id: guest-assessment-finish
+- extendedWaitUntil:
+    visible:
+      id: guest-assessment-results
+    timeout: 10000
+- assertVisible:
+    id: guest-assessment-score
+    text: '\d of 5 right'
+- assertVisible:
+    id: guest-review-chip-5
+- scrollUntilVisible:
+    element:
+      text: 'Your working'
+- takeScreenshot: guest-assessment-results
+- scrollUntilVisible:
+    element:
+      id: guest-assessment-keep
+    direction: UP
+- tapOn:
+    id: guest-assessment-keep
+- extendedWaitUntil:
+    visible: 'A PDF of your work, kept for you'
+    timeout: 5000
+- assertVisible: 'Keep this assessment'
+- tapOn:
+    id: guest-nudge-close
+- tapOn:
+    id: guest-assessment-home
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 10000

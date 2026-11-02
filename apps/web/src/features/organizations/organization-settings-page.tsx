@@ -255,8 +255,9 @@ export function OrganizationSettingsPage() {
 }
 
 /**
- * Phase 38: the Assessment menu (beta) -- its switch, the trial of questions
- * not yet reviewed, and (Phase 40) how many questions an assessment draws.
+ * Phase 38: the Assessment menu (beta) -- its switch, whether questions not yet reviewed are drawn
+ * (since Phase 62 the platform's switch, shown here), and (Phase 40) how many questions an assessment
+ * draws.
  * Each saves at once and refreshes the session, so the menu and the start card
  * follow for the admin who changed them.
  */
@@ -313,26 +314,13 @@ function CanvasAssessmentsCard({
             label="Assessment menu"
           />
         </div>
-        <div className="flex items-start gap-4 border-t pt-4">
-          <div className="grid flex-1 gap-1">
-            <h3 className="text-xs font-medium">Include questions not yet reviewed</h3>
-            <p className="text-muted-foreground text-xs">
-              A trial: assessments also draw on questions that passed every automatic check in the question bank but
-              that no person has approved yet. The tutor’s PDF marks each one “not yet reviewed”.
-            </p>
-          </div>
-          <NotificationsSwitch
-            checked={unreviewed}
-            disabled={update.isPending}
-            onCheckedChange={(next) =>
-              void change(
-                { canvas_assessments_unreviewed: next },
-                next ? 'Assessments may now use questions not yet reviewed.' : 'Assessments use approved questions only.',
-                'Could not change the questions used.',
-              )
-            }
-            label="Include questions not yet reviewed"
-          />
+        <div className="grid gap-1 border-t pt-4" data-testid="checked-questions-note">
+          <h3 className="text-xs font-medium">Questions not yet reviewed</h3>
+          <p className="text-muted-foreground text-xs">
+            {unreviewed
+              ? 'Included: assessments and games here also draw questions that passed every automatic check but that no person has approved yet, each marked Beta (the tutor’s PDF marks it “not yet reviewed”). The platform sets this.'
+              : 'Not included: assessments and games here draw approved questions only. The platform sets this.'}
+          </p>
         </div>
         <div className="flex items-start gap-4 border-t pt-4">
           <div className="grid flex-1 gap-1">

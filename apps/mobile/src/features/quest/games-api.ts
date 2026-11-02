@@ -23,7 +23,7 @@ import type {
 } from '@tmi/shared';
 
 import { ApiRequestError, apiClient } from '@/lib/api-client';
-import { gamePollInterval } from './game-model';
+import { gameRefetchInterval } from './game-model';
 
 // Phase 46: Quest Games. docs/quest-games-plan.md. Phase 47 (the start
 // wizard's favorites): docs/quest-games-g2-plan.md.
@@ -129,7 +129,9 @@ export function useGame(id: string, active: boolean) {
     queryFn: () => apiClient.get<ApiOk<GameView>>(`/quest/games/${id}`),
     // A game not found (404) is not asked about again until the screen is opened again.
     refetchInterval: (query) =>
-      gameIsMissing(query.state.error) ? false : gamePollInterval(active, query.state.data?.data.status),
+      gameIsMissing(query.state.error)
+        ? false
+        : gameRefetchInterval(active, query.state.data?.data, query.state.dataUpdatedAt, Date.now()),
     refetchOnWindowFocus: true,
     // A game you are not in says so at once; a hiccup is tried again, a second apart.
     retry: (failures, error) => !gameIsMissing(error) && failures < 3,

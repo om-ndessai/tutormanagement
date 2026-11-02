@@ -32,7 +32,7 @@ void SplashScreen.preventAutoHideAsync();
 
 /**
  * Who may open what, decided once here (the web app's RequireAuth / RequireOrg):
- * signed out → sign-in only; signed in → the organization picker, the organization's
+ * signed out → sign-in only (or, while guest play is on, the guest Play home first: Phase 63); signed in → the organization picker, the organization's
  * screens once one is entered, and the console for platform admins. A route outside the
  * guards (the server picker, developer screens) is reachable from anywhere.
  */
@@ -103,6 +103,14 @@ function RootNavigator() {
             <Stack.Screen name="(platform)" />
           </Stack.Protected>
         </Stack.Protected>
+        {/* Phase 63 (P10-P14): guest play -- the Play home, a tile by its code and the sign-up sheet --
+            outside both guards, so signing up over a quest never unmounts it. */}
+        <Stack.Screen name="play/index" />
+        <Stack.Screen name="play/[code]" options={{ gestureEnabled: false }} />
+        <Stack.Screen
+          name="sign-up-sheet"
+          options={{ presentation: 'formSheet', sheetAllowedDetents: [0.92], sheetGrabberVisible: true }}
+        />
         <Stack.Screen
           name="server"
           options={{ presentation: 'formSheet', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }}

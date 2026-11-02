@@ -69,6 +69,9 @@ export const GAME_STALE_HAND_MS = 2 * 60 * 1000;
 /** How often the screens ask the game for the scoreboard and the clock. */
 export const GAME_POLL_MS = 2000;
 
+/** Phase 62 (P8): the most people one roster favorite may invite. */
+export const GAME_ROSTER_MAX = 20;
+
 /** Codes: six of these, none that can be misread (no 0/O, 1/I/L). */
 export const GAME_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 export const GAME_CODE_LENGTH = 6;
@@ -117,9 +120,20 @@ export const createGameSchema = z
     negative_marking: z.boolean().optional(),
     knockout: z.boolean().default(false),
     players: z.enum(GAME_PLAYER_MODES).default('multi'),
-    max_teams: z.number().int().min(GAME_LIMITS.minTeams).max(GAME_LIMITS.maxTeams).optional(),
+    // A single player's settings carry 1 (the transform's own value); a multiplayer game needs minTeams.
+    max_teams: z.number().int().min(1).max(GAME_LIMITS.maxTeams).optional(),
     max_team_size: z.number().int().min(GAME_LIMITS.minTeamSize).max(GAME_LIMITS.maxTeamSize),
     late_join: z.boolean().default(false),
+    /**
+     * Phase 62 (P7): the host plays in their own game of several teams from the start (one tap on a
+     * multiplayer favorite), rather than joining it from the lobby. Absent (older apps): false.
+     */
+    host_plays: z.boolean().optional(),
+    /**
+     * Phase 62 (P8): the members a roster favorite invites; each sees the game under "Waiting for you"
+     * and joins with no code. Members of this space only (the route drops anyone else).
+     */
+    invite_user_ids: z.array(z.string().min(1).max(64)).max(GAME_ROSTER_MAX).optional(),
   })
   .refine((value) => value.mode !== 'count' || value.question_count !== undefined, {
     message: `Choose how many questions (${GAME_LIMITS.minQuestions}-${GAME_LIMITS.maxQuestions}).`,
@@ -129,6 +143,10 @@ export const createGameSchema = z
     message: `Choose how many minutes (${GAME_LIMITS.minMinutes}-${GAME_LIMITS.maxMinutes}).`,
     path: ['duration_minutes'],
   })
+  .refine(
+    (value) => value.players === 'single' || value.max_teams === undefined || value.max_teams >= GAME_LIMITS.minTeams,
+    { message: `A game of several teams allows at least ${GAME_LIMITS.minTeams}.`, path: ['max_teams'] },
+  )
   .transform((value) => {
     const single = value.players === 'single';
     return {
@@ -145,6 +163,8 @@ export const createGameSchema = z
       max_teams: single ? 1 : (value.max_teams ?? GAME_LIMITS.maxTeams),
       max_team_size: single ? 1 : value.max_team_size,
       late_join: single ? false : value.late_join,
+      host_plays: single ? false : value.host_plays === true,
+      invite_user_ids: single ? [] : [...new Set(value.invite_user_ids ?? [])],
     };
   });
 /** What a client sends: the wizard's settings (the defaults are filled in by the schema). */
@@ -156,6 +176,11 @@ export type CreateGameInput = z.output<typeof createGameSchema>;
 export const gameFavoriteSchema = z.object({
   name: refuseSsn(z.string().trim().min(1, 'Name the favorite.').max(40, 'Keep the name under 40 characters.')),
   config: createGameSchema,
+  /**
+   * Phase 62 (P8): a family's players, members of this space (user ids); one tap invites them. Absent
+   * (an older app): the favorite's roster is left as it is; null clears it.
+   */
+  roster: z.array(z.string().min(1).max(64)).max(GAME_ROSTER_MAX).nullable().optional(),
 });
 export type GameFavoriteRequest = z.input<typeof gameFavoriteSchema>;
 
@@ -163,7 +188,28 @@ export interface GameFavorite {
   id: string;
   name: string;
   config: CreateGameInput;
+  /** Phase 62 (P8): the players it invites, or null (anyone with the code). */
+  roster: string[] | null;
   updated_at: string;
+}
+
+/** Phase 62 (P8): a game someone's roster favorite invited the reader to, not yet joined. */
+export interface WaitingGame {
+  game_id: string;
+  code: string;
+  host_first_name: string;
+  level_id: string;
+  mode: GameMode;
+  question_count: number | null;
+  duration_seconds: number | null;
+  status: GameStatus;
+  created_at: string;
+}
+
+/** Phase 62 (P8): a member of this space, as a roster lists them: first name only (R27). */
+export interface QuestMember {
+  id: string;
+  first_name: string;
 }
 
 const teamName = refuseSsn(z.string().trim().min(1, 'Name your team.').max(30, 'Keep the name under 30 characters.'));
@@ -235,6 +281,8 @@ export interface GameQuestion {
   choices: string[];
   /** Its place in the series, from 1. */
   number: number;
+  /** Phase 62 (P3): a checked question no person has approved yet, shown with a "Beta" chip. */
+  beta?: boolean;
 }
 
 /** A game's settings, as every reply carries them (Phase 47's on top of Phase 46's). */
@@ -287,6 +335,40 @@ export interface GameView extends GameSettings {
   };
 }
 
+/**
+ * Phase 62 (P4): a single player's game is still read now and then, so a dropped connection or a
+ * game ended elsewhere is noticed: about 20 reads for a 10-minute game instead of about 300.
+ */
+export const GAME_SOLO_CHECK_MS = 30_000;
+
+/**
+ * Phase 62 (P4): when a client should next read a game it holds, in ms, or false for "not until
+ * something happens". A game of several teams is polled every GAME_POLL_MS (the lobby, the others'
+ * scores). A single player's game changes only by their own answers -- each reply carries the new
+ * view -- and by the clock, so it is read when the countdown ends, when a timed game's time is up,
+ * and every GAME_SOLO_CHECK_MS besides: about 20 requests for a 10-minute game instead of about 300.
+ * `fetchedAtMs` is when the view arrived (device clock), `nowMs` the device's now.
+ */
+export function gameRefetchDelay(
+  game: Pick<GameView, 'status' | 'players' | 'mode' | 'started_at' | 'duration_seconds' | 'now'> | undefined,
+  fetchedAtMs: number,
+  nowMs: number,
+): number | false {
+  if (!game || game.status === 'finished') return false;
+  if (game.players !== 'single') return GAME_POLL_MS;
+  if (game.status !== 'running' || game.started_at === null) return GAME_POLL_MS;
+  // The server's now, as it stands at the device's now.
+  const serverNow = Date.parse(game.now) + (nowMs - fetchedAtMs);
+  const start = Date.parse(game.started_at);
+  if (serverNow < start) return Math.max(250, start - serverNow + 150);
+  if (game.mode === 'timed' && game.duration_seconds !== null) {
+    const end = start + game.duration_seconds * 1000;
+    return Math.min(GAME_SOLO_CHECK_MS, Math.max(250, end - serverNow + 250));
+  }
+  return GAME_SOLO_CHECK_MS;
+}
+
+
 /** Milliseconds until the first question (the doors' countdown), by the server's clock; 0 once it has begun. */
 export function gameCountdownLeft(game: Pick<GameView, 'status' | 'started_at' | 'now'>, deviceOffsetMs = 0): number {
   if (game.status !== 'running' || game.started_at === null) return 0;
@@ -310,7 +392,16 @@ export interface GameLookup extends GameSettings {
 /** One question of a team's series, after the game: the answer revealed. */
 export interface GameResultItem {
   number: number;
-  question: { id: string; kind: QuestionKind; stem: string; choices: string[]; answer: string; solution: string };
+  question: {
+    id: string;
+    kind: QuestionKind;
+    stem: string;
+    choices: string[];
+    answer: string;
+    solution: string;
+    /** Phase 62 (P3): still checked when drawn. */
+    beta?: boolean;
+  };
   /** Who on the team answered it, if anyone did. */
   answered_by: string | null;
   answer: string | null;
@@ -322,6 +413,8 @@ export interface GameResults {
   game: GameView;
   team_id: string | null;
   items: GameResultItem[];
+  /** Phase 64 (P20): a single player's game that beat every earlier one of its shape. Absent: no. */
+  new_best?: boolean;
 }
 
 /** A game in a person's list. */
@@ -362,6 +455,8 @@ export interface SeriesQuestion {
   /** The key: never leaves the Worker until the results. */
   answer: string;
   solution: string;
+  /** Phase 62 (P3): still `checked` when drawn (a "Beta" question). Older stored series: absent, false. */
+  beta?: boolean;
 }
 
 export interface EngineAnswer {

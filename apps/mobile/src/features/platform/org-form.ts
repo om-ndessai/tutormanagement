@@ -42,6 +42,8 @@ export interface OrgFormState {
   features: Record<FeatureSet, boolean>;
   /** Phase 51: whether its Quest reviews approve bank questions for everybody (edit only). */
   quest_trusted: boolean;
+  /** Phase 62 (P1): whether its games, tiles and Assessments also draw checked ("Beta") questions (edit only). */
+  checked_questions: boolean;
   /** Phase 59: who families pay -- the space, or each tutor directly. */
   payment_model: SpacePaymentModel;
   /** Its payer details while the space collects payments, in the request's names; '' when empty. */
@@ -85,6 +87,7 @@ export const EMPTY_ORG_FORM: OrgFormState = {
   email_notifications: false,
   features: ALL_FEATURES,
   quest_trusted: true,
+  checked_questions: true,
   payment_model: 'direct',
   payer: EMPTY_PAYER,
 };
@@ -114,6 +117,7 @@ export function formFromOrganization(org: OrganizationListItem | null): OrgFormS
     email_notifications: org.email_notifications,
     features: ALL_FEATURES,
     quest_trusted: org.quest_trusted !== false,
+    checked_questions: org.checked_questions !== false,
     payment_model: spacePaymentModel(org),
     payer: payerForm(org.payer),
   };
@@ -209,19 +213,28 @@ export function featuresBody(
  * Phase 51 (the web's organization-dialog.tsx @ 9485a8e): after an edit, the features PUT to send
  * when the Quest trust changed -- the three sets as they stand, with `quest_trusted` -- else null.
  * (The sets themselves change on the organization screen's Feature sets section.)
+ *
+ * Phase 62 (P1, docs/stickiness-plan.md; the web's organization-dialog.tsx, working tree): given
+ * `checked` too, the platform's "Checked questions (Beta)" switch travels in the same PUT, and the PUT
+ * is sent when either changed. Without it, as before: the server leaves `checked_questions` alone.
  */
 export function trustBody(
   org: Pick<
     OrganizationListItem,
     'feature_tutoring' | 'feature_assessment' | 'feature_quest' | 'quest_trusted'
-  >,
+  > &
+    Partial<Pick<OrganizationListItem, 'checked_questions'>>,
   trusted: boolean,
+  checked?: boolean,
 ): OrganizationFeaturesInput | null {
-  if ((org.quest_trusted !== false) === trusted) return null;
+  const trustChanged = (org.quest_trusted !== false) !== trusted;
+  const checkedChanged = checked !== undefined && (org.checked_questions !== false) !== checked;
+  if (!trustChanged && !checkedChanged) return null;
   return {
     feature_tutoring: featureAllowed(org, 'tutoring'),
     feature_assessment: featureAllowed(org, 'assessment'),
     feature_quest: featureAllowed(org, 'quest'),
     quest_trusted: trusted,
+    ...(checked === undefined ? {} : { checked_questions: checked }),
   };
 }

@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
 
 import { expect, ORGS, test } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { dropPersonalSpace, personalSpaceOf, unwrap } from '../support/api.js';
 import { visible } from '../support/ui.js';
 
 /**
@@ -12,7 +12,9 @@ import { visible } from '../support/ui.js';
  * tab is in sends it to the landing rule: the other space, the selector, or Welcome.
  *
  * Every test builds its own people and spaces (newcomers who sign up, make a space, and invite each
- * other), so nothing seeded changes and the order of runs does not matter.
+ * other), so nothing seeded changes and the order of runs does not matter. Since Phase 63 (P13) each
+ * newcomer starts with a space of their own, "<First name>'s space", made at sign-up: it is their
+ * "home" space below, and where they land when they leave the space they are in.
  */
 
 type Space = { slug: string; name: string; short_name: string };
@@ -70,11 +72,15 @@ async function inviteAndAccept(admin: Page, space: Space, person: Page, email: s
   await tourDone(person, space.slug);
 }
 
-/** A signed-up person, as a page in no space. */
+/** A signed-up person, as an arriving page, with the personal space sign-up made them (P13). */
 async function newcomer(page: Page, as: (who: 'admin', o: { email: string; org: string | null }) => Promise<Page>, who: string, name: string) {
   const email = address(who);
   await signUp(page, email, name);
-  return { email, name, page: await as('admin', { email, org: null }) };
+  const arriving = await as('admin', { email, org: null });
+  const mine = await personalSpaceOf(arriving);
+  expect(mine.name).toBe(`${name.split(' ')[0]}'s space`);
+  const own: Space = { slug: mine.slug, name: mine.name, short_name: mine.name };
+  return { email, name, page: arriving, own };
 }
 
 const switcher = (page: Page) => page.getByTestId('org-switcher').filter({ visible: true }).first();
@@ -96,7 +102,7 @@ test.describe('leaving a space, from anywhere (S8)', () => {
   test('leave B from the Spaces page while inside A: A carries on, and B is gone from the switcher', async ({ page, as }) => {
     const lena = await newcomer(page, as, 'lena', 'Lena Leaver');
     const hugo = await newcomer(page, as, 'hugo', 'Hugo Host');
-    const a = await makeSpace(lena.page, `Lena home ${run}`);
+    const a = lena.own;
     const b = await makeSpace(hugo.page, `Hugo club ${run}`);
     await inviteAndAccept(hugo.page, b, lena.page, lena.email, lena.name);
 
@@ -147,7 +153,7 @@ test.describe('leaving a space, from anywhere (S8)', () => {
   test('leave the space the tab is in: the landing rule takes it to the other space', async ({ page, as }) => {
     const kit = await newcomer(page, as, 'kit', 'Kit Current');
     const hugo = await newcomer(page, as, 'host', 'Hana Host');
-    const a = await makeSpace(kit.page, `Kit home ${run}`);
+    const a = kit.own;
     const b = await makeSpace(hugo.page, `Hana club ${run}`);
     await inviteAndAccept(hugo.page, b, kit.page, kit.email, kit.name);
 
@@ -172,7 +178,7 @@ test.describe('leaving a space, from anywhere (S8)', () => {
   test('leave the current space with two others left and no last choice: the selector', async ({ page, as }) => {
     const pia = await newcomer(page, as, 'pia', 'Pia Plenty');
     const host = await newcomer(page, as, 'twohost', 'Tom Twohost');
-    const a = await makeSpace(pia.page, `Pia home ${run}`);
+    const a = pia.own;
     const b = await makeSpace(host.page, `Tom one ${run}`);
     const c = await makeSpace(host.page, `Tom two ${run}`);
     await inviteAndAccept(host.page, b, pia.page, pia.email, pia.name);
@@ -195,7 +201,8 @@ test.describe('leaving a space, from anywhere (S8)', () => {
 
   test('the last admin is refused, with the reason on screen', async ({ page, as }) => {
     const ada = await newcomer(page, as, 'ada', 'Ada Alone');
-    const a = await makeSpace(ada.page, `Ada home ${run}`);
+    // Her own space, made at sign-up: she is its one admin, so she cannot leave it either.
+    const a = ada.own;
 
     const refused = await ada.page.request.post(`/api/spaces/${a.slug}/leave`);
     expect(refused.status()).toBe(409);
@@ -229,7 +236,7 @@ test.describe('leaving a space, from anywhere (S8)', () => {
     );
     await unwrap(await co.page.request.post(`/api/auth/invitations/${a.slug}/accept`), 'accepting');
     await unwrap(await co.page.request.post(`/api/spaces/${a.slug}/leave`), 'the second admin leaves');
-    expect(await slugs(co.page)).toEqual([]);
+    expect(await slugs(co.page)).toEqual([co.own.slug]);
     expect((await host.page.request.post(`/api/spaces/${a.slug}/leave`)).status()).toBe(409);
   });
 
@@ -258,16 +265,17 @@ test.describe('leaving a space, from anywhere (S8)', () => {
     const left = await co.page.request.post(`/api/spaces/${a.slug}/leave`);
     expect(left.status(), await left.text()).toBe(200);
     expect((await left.json()).data.left).toBe(true);
-    expect(await slugs(co.page)).toEqual([]);
+    expect(await slugs(co.page)).toEqual([co.own.slug]);
     const me = await session(host.page);
-    expect(me.memberships).toEqual([expect.objectContaining({ slug: a.slug, roles: ['admin'] })]);
+    expect(me.memberships.find((m: any) => m.slug === a.slug)).toMatchObject({ roles: ['admin'] });
+    expect(me.memberships).toHaveLength(2);
   });
 
   test('a suspended admin may leave while another admin remains', async ({ page, as }) => {
     const yan = await newcomer(page, as, 'yan', 'Yan Keeper');
     const xia = await newcomer(page, as, 'xia', 'Xia Paused');
     const b = await makeSpace(yan.page, `Yan club ${run}`);
-    const own = await makeSpace(xia.page, `Xia home ${run}`);
+    const own = xia.own;
     const added = await unwrap<{ id: string }>(
       await yan.page.request.post('/api/users', {
         headers: { 'X-Organization': b.slug },
@@ -303,12 +311,15 @@ test.describe('leaving a space, from anywhere (S8)', () => {
     await expect(inOwn.getByTestId(`org-${own.slug}`)).toBeVisible();
     await expect(inOwn.getByTestId(`org-${b.slug}`)).toHaveCount(0);
     expect(await slugs(xia.page)).toEqual([own.slug]);
-    // Y still runs B.
-    expect((await session(yan.page)).memberships).toEqual([expect.objectContaining({ slug: b.slug, roles: ['admin'] })]);
+    // Y still runs B (beside her own space).
+    expect((await session(yan.page)).memberships.map((m: any) => m.slug).sort()).toEqual([yan.own.slug, b.slug].sort());
+    expect((await session(yan.page)).memberships.find((m: any) => m.slug === b.slug)).toMatchObject({ roles: ['admin'] });
   });
 
   test('leave the only space: Welcome, where they can delete their account', async ({ page, as }) => {
     const sol = await newcomer(page, as, 'sol', 'Sol Single');
+    // Welcome is for someone in no space: Sol first deletes the space of her own (P13).
+    await dropPersonalSpace(sol.page);
     const hugo = await newcomer(page, as, 'solhost', 'Sid Host');
     const b = await makeSpace(hugo.page, `Sid club ${run}`);
     await inviteAndAccept(hugo.page, b, sol.page, sol.email, sol.name);
@@ -357,7 +368,7 @@ test.describe('leaving a space, from anywhere (S8)', () => {
     // The older app's route, inside the space: the same act.
     await inviteAndAccept(host.page, c, vic.page, vic.email, vic.name);
     await unwrap(await vic.page.request.post('/api/organization/leave', { headers: { 'X-Organization': c.slug } }), 'older route');
-    expect(await slugs(vic.page)).toEqual([]);
+    expect(await slugs(vic.page)).toEqual([vic.own.slug]);
     const log = await unwrap<any[]>(await host.page.request.get('/api/audit?limit=20', { headers: { 'X-Organization': c.slug } }), 'C’s log');
     expect(log.some((e) => e.action === 'membership.left' && e.description === `${vic.name} left ${c.name}`)).toBe(true);
   });

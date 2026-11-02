@@ -8,6 +8,8 @@
 # Self-cleaning: seven newcomers of its own, put back to nothing before and after (the host first, so
 # its spaces, with their invitations and requests, go before the others' accounts; the archived
 # space is restored first, so its maker's reset can delete it).
+# Phase 63 (P13): signing up now also makes a personal space; its newcomers (all but the hosts) drop theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -68,13 +70,13 @@ tags:
     env: { ACTION: signup, EMAIL: selector.host@example.com, NAME: Hal Host }
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: selector.two@example.com, NAME: Tia Two }
+    env: { ACTION: signup, EMAIL: selector.two@example.com, NAME: Tia Two, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: selector.solo@example.com, NAME: Sol Solo }
+    env: { ACTION: signup, EMAIL: selector.solo@example.com, NAME: Sol Solo, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: selector.invitee@example.com, NAME: Ivy Invitee }
+    env: { ACTION: signup, EMAIL: selector.invitee@example.com, NAME: Ivy Invitee, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
     env: { ACTION: make-space, EMAIL: selector.host@example.com, NAME: Selector Inviting }
@@ -97,7 +99,7 @@ tags:
 - evalScript: ${output.soloSlug = output.slug; output.soloCode = output.code}
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: selector.declined@example.com, NAME: Dee Declined }
+    env: { ACTION: signup, EMAIL: selector.declined@example.com, NAME: Dee Declined, PERSONAL: drop }
 # The host invites Tia and Ivy as parents (the invite step's request); Tia asks to join the other space.
 - evalScript: "${(function () { ['selector.two@example.com', 'selector.invitee@example.com'].forEach(function (email) { var r = http.post('http://localhost:8787/api/users', { headers: { 'Content-Type': 'application/json', 'X-Dev-User': 'selector.host@example.com', 'X-Organization': output.hostSlug }, body: JSON.stringify({ email: email, full_name: 'Invited Person', roles: ['parent'], status: 'invited' }) }); if (r.status >= 300) throw new Error('inviting ' + email + ' answered ' + r.status + ' ' + r.body); }); return true; })()}"
 - runScript:
@@ -230,7 +232,7 @@ tags:
     env: { ACTION: signup, EMAIL: selector.archhost@example.com, NAME: Arch Host }
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: selector.archasker@example.com, NAME: Ari Asker }
+    env: { ACTION: signup, EMAIL: selector.archasker@example.com, NAME: Ari Asker, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
     env: { ACTION: make-space, EMAIL: selector.archhost@example.com, NAME: Selector Archived }

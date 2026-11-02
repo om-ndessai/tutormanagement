@@ -57,3 +57,9 @@ export const SHARE_CARD = {
   wrong: '#e5484d',
   skipped: '#d0d4dc',
 } as const;
+
+/**
+ * Phase 62 (P7): the lobby's QR code. Dark modules on a light plate in both themes: a camera reads
+ * dark-on-light reliably, and not every scanner reads an inverted code.
+ */
+export const QR_CODE = { ink: '#000000', plate: '#FFFFFF' } as const;

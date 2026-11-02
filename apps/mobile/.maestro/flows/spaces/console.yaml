@@ -35,6 +35,13 @@ tags:
     checked: true
 - tapOn:
     id: org-form-quest-trusted
+# Phase 62 (P1): the platform's checked-questions switch, on by default (soft launch).
+- scrollUntilVisible:
+    element:
+      id: org-checked-questions-switch
+- assertVisible:
+    id: org-checked-questions-switch
+    checked: true
 - scrollUntilVisible:
     element:
       id: org-form-save

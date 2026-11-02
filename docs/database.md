@@ -1538,6 +1538,108 @@ BEGIN
 END;
 ```
 
+Phase 62 (the sign-in switches, P0 of `docs/stickiness-plan.md`, 2026-11-01) is additive: the
+`platform_settings` table, the platform's own key/value settings. No row means the defaults (for
+`sign_in`, each Worker's vars), so the old Worker and an empty table behave as before. Apply after the
+backup, before `npm run deploy`:
+
+```sql release=phase-62
+CREATE TABLE platform_settings (
+  key         TEXT PRIMARY KEY,
+  value       TEXT NOT NULL CHECK (json_valid(value)),
+  updated_by  TEXT REFERENCES users (id),
+  updated_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+-- P1: checked questions per space, a platform admin's switch. The default puts every existing space
+-- on (the soft launch); the old canvas_assessments_unreviewed column stays and is no longer read.
+ALTER TABLE organizations ADD COLUMN checked_questions INTEGER NOT NULL DEFAULT 1 CHECK (checked_questions IN (0, 1));
+-- P2: game answers feed the two-right-answers rule; who answered correctly, and its index.
+ALTER TABLE quest_game_seen ADD COLUMN correct INTEGER CHECK (correct IN (0, 1));
+CREATE INDEX quest_game_seen_correct_idx ON quest_game_seen (question_id) WHERE correct = 1;
+-- P8: a family's favorite names its players; one tap invites them to the game.
+ALTER TABLE quest_game_favorites ADD COLUMN roster TEXT CHECK (roster IS NULL OR json_valid(roster));
+-- the people a roster favorite invited to a game. Each sees it
+-- under "Waiting for you" and joins with no code to type; the host starts whenever they like. Members of
+-- the game's space only (the trigger), written when the game is made, never changed.
+CREATE TABLE quest_game_invites (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  game_id         TEXT NOT NULL REFERENCES quest_games (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (game_id, user_id)
+);
+
+-- "Waiting for you": a person's invitations here, newest first.
+CREATE INDEX quest_game_invites_user_idx ON quest_game_invites (organization_id, user_id, created_at);
+
+CREATE TRIGGER quest_game_invites_same_organization
+BEFORE INSERT ON quest_game_invites
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+  OR NOT EXISTS (SELECT 1 FROM quest_games g WHERE g.id = NEW.game_id AND g.organization_id = NEW.organization_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_invites_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_invites
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
+Phase 63 (guest play, `docs/stickiness-plan.md` P9-P16) is additive: the guest pool. Apply after the
+backup, before `npm run deploy`:
+
+```sql release=phase-63
+ALTER TABLE organizations ADD COLUMN personal INTEGER NOT NULL DEFAULT 0 CHECK (personal IN (0, 1));
+CREATE TABLE guest_questions (
+  question_id TEXT PRIMARY KEY REFERENCES questions (id),
+  level_id    TEXT NOT NULL,
+  position    INTEGER NOT NULL,
+  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+CREATE INDEX guest_questions_level_idx ON guest_questions (level_id, position);
+```
+
+Phase 64 (the habit layer, `docs/stickiness-plan.md` P17-P20) is additive: a day's game answers and the
+Daily results. Apply after the backup, before `npm run deploy`:
+
+```sql release=phase-64
+ALTER TABLE activity_days ADD COLUMN game_answers INTEGER NOT NULL DEFAULT 0;
+-- a person's Daily set result -- one play a day per level,
+-- the same five questions for everyone that day. Played and marked on the device; the result is
+-- written once, so the share grid and the badge can be read back.
+CREATE TABLE daily_results (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  day             TEXT NOT NULL,
+  level_id        TEXT NOT NULL,
+  right_count     INTEGER NOT NULL CHECK (right_count >= 0),
+  question_count  INTEGER NOT NULL CHECK (question_count > 0),
+  seconds         INTEGER NOT NULL CHECK (seconds >= 0),
+  marks           TEXT NOT NULL CHECK (json_valid(marks)),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (organization_id, user_id, day, level_id)
+);
+
+CREATE TRIGGER daily_results_same_organization
+BEFORE INSERT ON daily_results
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER daily_results_organization_fixed
+BEFORE UPDATE OF organization_id ON daily_results
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

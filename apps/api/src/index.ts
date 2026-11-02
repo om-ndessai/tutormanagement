@@ -1,4 +1,6 @@
 import { Hono } from 'hono';
+import { publicPlayRoutes } from './routes/public-play.js';
+import { refreshLevelCountsIfDue } from './repositories/level-counts.js';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
@@ -30,7 +32,7 @@ import { questRoutes } from './routes/quest.js';
 import { homeRoutes } from './routes/home.js';
 import { spacesRoutes } from './routes/spaces.js';
 import { publicShareRoutes, sharesRoutes } from './routes/shares.js';
-import { sharePage } from './lib/share-page.js';
+import { playPage, sharePage } from './lib/share-page.js';
 
 // Phase 46: each Quest game's Durable Object, bound as QUEST_GAMES in wrangler.jsonc.
 export { QuestGame } from './durable/quest-game.js';
@@ -64,7 +66,7 @@ app.use(
       if (isProduction(c.env)) return '';
       return DEV_ALLOWED_ORIGINS.includes(origin) ? origin : '';
     },
-    allowHeaders: ['Content-Type', 'X-Dev-User', 'X-Organization'],
+    allowHeaders: ['Content-Type', 'X-Dev-User', 'X-Organization', 'X-Client'],
     allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     maxAge: 600,
@@ -93,7 +95,9 @@ const publicRoutes = new Hono<AppEnv>()
   .route('/organizations', logoRoutes)
   // Phase 56: a share is a public link -- its card, and answering its challenge. Deliberately
   // signed out; nothing in them names an organization, a child or another player (R22).
-  .route('/public', publicShareRoutes);
+  .route('/public', publicShareRoutes)
+  // Phase 63 (P10, P15): guest play's pool and anonymous counts -- deliberately signed out (R26).
+  .route('/public', publicPlayRoutes);
 
 /**
  * The platform console: signed in and a platform admin, and NOT inside an
@@ -175,6 +179,8 @@ app.route('/api', api);
 // Phase 56: a share's public page -- the SPA, with its preview tags written in for the sites that
 // unfurl links. The one page outside /api the Worker answers (`run_worker_first` lists it).
 app.get('/s/:id', sharePage);
+// Phase 63 (P14): a tile's link, with its preview tags (run_worker_first lists it too).
+app.get('/play/:code', playPage);
 
 app.notFound(onNotFound);
 app.onError(onError);
@@ -205,5 +211,11 @@ export default {
       waitUntil: (work) => ctx.waitUntil(work),
     });
     if (closed > 0) console.log(`Auto-stopped ${closed} session(s) past their limit.`);
+    // Phase 62 (P4): the bank's playable counts, refreshed once a day.
+    try {
+      if (await refreshLevelCountsIfDue(env.DB)) console.log('Refreshed the question bank level counts.');
+    } catch (error) {
+      console.error('Level counts not refreshed', error);
+    }
   },
 } satisfies ExportedHandler<Env>;

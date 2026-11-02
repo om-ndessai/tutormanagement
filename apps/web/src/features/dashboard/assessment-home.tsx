@@ -15,7 +15,7 @@ import { useCanvasAssessments } from '@/features/canvas-assessments/api';
  * assessments, from the Assessment menu's own reads: no dashboard call, since
  * the dashboard is Tutoring's and answers 403 here.
  */
-export function AssessmentHome() {
+export function AssessmentHome({ lead }: { lead?: React.ReactNode } = {}) {
   const brand = useBrand();
   const { user, organization } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
@@ -34,6 +34,8 @@ export function AssessmentHome() {
             : brand.name
         }
       />
+      {/* Phase 62 (P6): the Play home leads, when Quest is on here. */}
+      {lead}
       {!on ? (
         <Card className="py-0" data-testid="assessment-home-off">
           <CardContent className="grid gap-3 p-6">

@@ -421,8 +421,11 @@ export async function accountDeletable(db: D1Database, userId: string): Promise<
   const row = await db
     .prepare(
       // org-scope: a person's own memberships and requests across spaces, as counts.
+      // Phase 63 (P13): a personal space where they are the only member goes with the account.
       `SELECT (SELECT COUNT(*) FROM org_members m JOIN organizations o ON o.id = m.organization_id
-               WHERE m.user_id = ?1 AND m.removed_at IS NULL AND o.archived_at IS NULL)
+               WHERE m.user_id = ?1 AND m.removed_at IS NULL AND o.archived_at IS NULL
+                 AND NOT (o.personal = 1 AND NOT EXISTS (SELECT 1 FROM org_members x
+                          WHERE x.organization_id = o.id AND x.user_id <> ?1 AND x.removed_at IS NULL)))
             + (SELECT COUNT(*) FROM join_requests WHERE user_id = ?1 AND outcome IS NULL)
             + (SELECT COUNT(*) FROM platform_admins WHERE user_id = ?1) AS n`,
     )
@@ -458,5 +461,19 @@ export async function deleteOwnAccount(db: D1Database, userId: string): Promise<
       )
       .bind(userId),
   ]);
+}
+
+/** Phase 63 (P13): the person's personal spaces where nobody else is a member: purged with their account. */
+export async function soleMemberPersonalSpaces(db: D1Database, userId: string): Promise<string[]> {
+  const result = await db
+    .prepare(
+      // org-scope: a person's own personal spaces, as their account goes.
+      `SELECT o.id FROM organizations o JOIN org_members m ON m.organization_id = o.id
+       WHERE o.personal = 1 AND m.user_id = ?1 AND m.removed_at IS NULL
+         AND NOT EXISTS (SELECT 1 FROM org_members x WHERE x.organization_id = o.id AND x.user_id <> ?1 AND x.removed_at IS NULL)`,
+    )
+    .bind(userId)
+    .all<{ id: string }>();
+  return (result.results ?? []).map((row) => row.id);
 }
 

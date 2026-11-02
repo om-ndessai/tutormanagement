@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import {
   GAME_LIMITS,
   createGameSchema,
@@ -20,6 +20,9 @@ import {
   type GameSummary,
   type GameView,
   type User,
+  checkedQuestionsOn,
+  type QuestMember,
+  type WaitingGame,
 } from '@tmi/shared';
 
 import type { AppEnv, Env } from '../types.js';
@@ -29,7 +32,8 @@ import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
 import { isAdmin } from '../lib/scope.js';
 import { zValidator } from '../lib/validate.js';
-import { countDrawableQuestions } from '../repositories/canvas-assessments.js';
+import { cachedDrawableCounts } from '../repositories/level-counts.js';
+import { isNewBest } from '../repositories/habit.js';
 import { listOrganizationCurricula } from '../repositories/curricula.js';
 import {
   codeInUse,
@@ -37,9 +41,12 @@ import {
   findGameByCode,
   firstNameOf,
   insertGame,
+  inviteToGame,
   listFavorites,
   listGames,
+  rosterMembers,
   saveFavorite,
+  waitingGames,
 } from '../repositories/quest-games.js';
 
 // Quest Games (Phase 46, docs/quest-games-plan.md), under Quest's switch: any
@@ -50,6 +57,12 @@ import {
 
 function gameStub(env: Env, org: OrgId, gameId: string) {
   return env.QUEST_GAMES.get(env.QUEST_GAMES.idFromName(`${org}:${gameId}`));
+}
+
+/** Phase 62 (P8): who is asking, for the roster rule (R27). */
+function readerOf(c: Context<AppEnv>): { id: string; admin: boolean; selfServe: boolean } {
+  const user = c.get('user');
+  return { id: user.id, admin: isAdmin(user), selfServe: c.get('org').created_via === 'self_serve' };
 }
 
 function viewerOf(user: User): GameViewer {
@@ -65,10 +78,11 @@ function unwrap<T>(reply: GameReply<T>): T {
 }
 
 /** The bank's levels this organization offers (its curricula), with how many questions each has to play. */
-async function playableLevels(db: D1Database, org: { id: OrgId; canvas_assessments_unreviewed: boolean }): Promise<GameLevel[]> {
+async function playableLevels(db: D1Database, org: { id: OrgId; checked_questions: boolean }): Promise<GameLevel[]> {
   const offered = await listOrganizationCurricula(db, org.id);
   const live = new Set(offered.filter((cur) => !cur.retired).map((cur) => cur.id));
-  const levels = await countDrawableQuestions(db, org.canvas_assessments_unreviewed, live);
+  // Phase 62 (P4): the platform's cached counts, not a count of the bank on every start.
+  const levels = await cachedDrawableCounts(db, checkedQuestionsOn(org), live);
   return levels.map((level) => ({ level_id: level.level_id, label: level.label, available: level.available }));
 }
 
@@ -82,6 +96,22 @@ export const questGameRoutes = new Hono<AppEnv>()
   // The bank's levels this organization offers, with how many questions each has to play.
   .get('/levels', async (c) => {
     const body: ApiOk<GameLevel[]> = { data: await playableLevels(c.env.DB, c.get('org')) };
+    return c.json(body);
+  })
+
+  /**
+   * Phase 62 (P8, R27): who the reader may put on a roster -- every member of a self-serve space; in
+   * any other, everyone for an admin and their own family for anyone else. First names only.
+   */
+  .get('/members', async (c) => {
+    const members = await rosterMembers(c.env.DB, c.get('org').id, readerOf(c));
+    const body: ApiOk<QuestMember[]> = { data: members.map((m) => ({ id: m.id, first_name: firstNameOf(m.full_name) })) };
+    return c.json(body);
+  })
+
+  /** Phase 62 (P8): games a roster invited the reader to, not yet joined: "Waiting for you". */
+  .get('/waiting', async (c) => {
+    const body: ApiOk<WaitingGame[]> = { data: await waitingGames(c.env.DB, c.get('org').id, c.get('user').id) };
     return c.json(body);
   })
 
@@ -101,7 +131,13 @@ export const questGameRoutes = new Hono<AppEnv>()
     if (!replacing && existing.length >= GAME_LIMITS.maxFavorites) {
       throw ApiError.conflict(`You can keep ${GAME_LIMITS.maxFavorites} favorites. Delete one to save another.`);
     }
-    const saved = await saveFavorite(c.env.DB, org.id, { userId: user.id, name: input.name, config: input.config });
+    // Phase 62 (P8): a roster names only people the reader may name (R27); anyone else is dropped.
+    let roster = input.roster;
+    if (roster) {
+      const allowed = new Set((await rosterMembers(c.env.DB, org.id, readerOf(c))).map((m) => m.id));
+      roster = roster.filter((id) => allowed.has(id));
+    }
+    const saved = await saveFavorite(c.env.DB, org.id, { userId: user.id, name: input.name, config: input.config, roster });
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_favorite_saved',
       description: saved.created
@@ -206,7 +242,7 @@ export const questGameRoutes = new Hono<AppEnv>()
       max_teams: input.max_teams,
       max_team_size: input.max_team_size,
       late_join: input.late_join,
-      include_unreviewed: org.canvas_assessments_unreviewed,
+      include_unreviewed: checkedQuestionsOn(org),
       status: 'lobby',
       created_at: now,
       started_at: null,
@@ -216,11 +252,20 @@ export const questGameRoutes = new Hono<AppEnv>()
       teams: [],
     };
     // A single player's game is begun as it is made (the object draws its series now).
-    const view = unwrap(await gameStub(c.env, org.id, id).create(game, org.canvas_assessments_unreviewed));
+    const view = unwrap(await gameStub(c.env, org.id, id).create(game, checkedQuestionsOn(org), input.host_plays));
+    // Phase 62 (P8): a roster favorite's people see it under "Waiting for you" (R27: only those the
+    // host may name).
+    let invited = 0;
+    if (input.invite_user_ids.length > 0) {
+      const allowed = new Set((await rosterMembers(c.env.DB, org.id, readerOf(c))).map((m) => m.id));
+      invited = await inviteToGame(c.env.DB, org.id, { gameId: id, hostId: user.id, userIds: input.invite_user_ids, allowed });
+    }
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_created',
       description:
-        input.players === 'single' ? `Started ${gameWords(input)}` : `Started ${gameWords(input)} (code ${code})`,
+        input.players === 'single'
+          ? `Started ${gameWords(input)}`
+          : `Started ${gameWords(input)} (code ${code})${invited > 0 ? `, inviting ${invited} ${invited === 1 ? 'person' : 'people'}` : ''}`,
       entity_type: 'quest_game',
       entity_id: id,
     });
@@ -294,7 +339,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const org = c.get('org');
     const user = c.get('user');
     const id = c.req.param('id');
-    const view = unwrap(await gameStub(c.env, org.id, id).start(viewerOf(user), org.canvas_assessments_unreviewed));
+    const view = unwrap(await gameStub(c.env, org.id, id).start(viewerOf(user), checkedQuestionsOn(org)));
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_started',
       description: `Began ${gameWords(view)} with ${view.teams.length} ${view.teams.length === 1 ? 'team' : 'teams'}`,
@@ -333,9 +378,13 @@ export const questGameRoutes = new Hono<AppEnv>()
   .get('/:id/results', async (c) => {
     const org = c.get('org');
     const team = c.req.query('team') ?? null;
-    const body: ApiOk<GameResults> = {
-      data: unwrap(await gameStub(c.env, org.id, c.req.param('id')).results(viewerOf(c.get('user')), team)),
-    };
+    const results = unwrap(await gameStub(c.env, org.id, c.req.param('id')).results(viewerOf(c.get('user')), team));
+    // Phase 64 (P20): a single player's own results say whether they beat their best.
+    const newBest =
+      results.game.players === 'single' && results.game.status === 'finished'
+        ? await isNewBest(c.env.DB, org.id, c.get('user').id, c.req.param('id'))
+        : false;
+    const body: ApiOk<GameResults> = { data: { ...results, new_best: newBest } };
     return c.json(body);
   });
 

@@ -6,6 +6,7 @@ import type { Invitation, Membership, Organization, OrganizationSettings } from 
 import type { OnboardingState } from './onboarding.js';
 import type { User } from './users.js';
 import type { AuthProviderInfo } from './identities.js';
+import type { GuestConfig } from './guest.js';
 
 /**
  * Public configuration the SPA needs before it can render a sign-in button.
@@ -24,6 +25,11 @@ export interface AuthConfig {
    * treat as Google alone. Empty while sign-in is off.
    */
   providers?: AuthProviderInfo[];
+  /**
+   * Phase 63 (P10): guest play -- the tiles a signed-out visitor sees and the settings of the nudges.
+   * Present only while guest play is on at this address; absent from older Workers.
+   */
+  guest?: GuestConfig;
   /**
    * The identity the sign-in page wears: the organization this browser last
    * chose (the tmi_last_org cookie), or the neutral platform brand.
@@ -60,6 +66,11 @@ export interface SessionResponse {
   account: PlatformAccount | null;
   /** Phase 52: their own requests to join a space, open or just declined. */
   join_requests: MyJoinRequest[];
+  /**
+   * Phase 63 (P13): whether the person may delete their account now -- in no space but, perhaps, their
+   * own personal one where nobody else is (which goes with it). Absent from older Workers: false.
+   */
+  account_deletable?: boolean;
 }
 
 /** Body of POST /api/auth/google — the ID token from Google Identity Services. */

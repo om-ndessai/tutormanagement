@@ -1,5 +1,5 @@
 import { test, expect, ORGS } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { personalSpaceOf, unwrap } from '../support/api.js';
 import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
 import type { Page } from '@playwright/test';
 
@@ -34,14 +34,17 @@ test.describe('signing up (Phase 52)', () => {
     await unwrap(await signup(page, { dev_email: teen, dev_name: 'Tess Teen', birth_year: new Date().getFullYear() - 15 }), 'teen signs up');
     const tess = await as('admin', { email: teen, org: null });
     const session = await unwrap<any>(await tess.request.get('/api/auth/session'), 'session');
-    expect(session).toMatchObject({ account: { age_band: '13-17' }, memberships: [], join_requests: [] });
+    // Phase 63 (P13): a space of her own, which takes nobody in (no code, joining off).
+    expect(session).toMatchObject({ account: { age_band: '13-17' }, join_requests: [] });
+    expect(session.memberships).toEqual([expect.objectContaining({ name: "Tess's space", roles: ['admin'] })]);
     expect((await tess.request.post('/api/spaces', { data: { name: 'Tess’s club' } })).status()).toBe(403);
     // Riverside's seeded code (the compatibility test runs this on an older seed, which has none).
     if ((await tess.request.post('/api/spaces/lookup', { data: { code: 'rvrs-2345' } })).ok()) {
       await unwrap(await tess.request.post('/api/spaces/join-requests', { data: { code: 'rvrs-2345' } }), 'asks to join');
     }
 
-    // An adult, through the pages: the age question, the terms, then the Welcome page.
+    // An adult, through the pages: the age question, the terms, then their own space (P13), and a
+    // second space started from the Spaces page.
     const adult = `adam.adult.${stamp}@example.com`;
     await page.goto(`/signup?dev_email=${encodeURIComponent(adult)}&dev_name=Adam%20Adult`);
     await page.getByTestId('signup-month').click();
@@ -51,9 +54,13 @@ test.describe('signing up (Phase 52)', () => {
     await page.getByTestId('signup-accept').check();
     await page.getByTestId('signup-submit').click();
     const adam = await as('admin', { email: adult, org: null });
+    await expect.poll(async () => (await adam.request.get('/api/auth/session')).status()).toBe(200);
     await adam.goto('/');
-    await expect(adam.getByTestId('welcome')).toBeVisible();
-    // Phase 61 (S11): the newcomer's two choices, side by side.
+    await expect(adam.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+    await expect(adam.getByTestId('welcome')).toHaveCount(0);
+    expect((await personalSpaceOf(adam)).name).toBe("Adam's space");
+    // Phase 61 (S11): joining and starting, on the Spaces page.
+    await adam.goto('/spaces');
     await expect(adam.getByTestId('welcome-join')).toBeVisible();
     await expect(adam.getByTestId('welcome-make')).toBeVisible();
     await adam.getByTestId('welcome-space-name').fill('The Adams family');
@@ -66,7 +73,8 @@ test.describe('signing up (Phase 52)', () => {
     // In the new space: the Assessment home.
     await expect(adam.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
     const me = await unwrap<any>(await adam.request.get('/api/auth/session'), 'session after');
-    const space = me.memberships[0];
+    expect(me.memberships).toHaveLength(2);
+    const space = me.memberships.find((m: any) => m.name === 'The Adams family');
     expect(space).toMatchObject({ name: 'The Adams family', roles: ['admin'] });
     expect(space.slug).toMatch(/^s-[a-z2-9]{8}$/);
   });
@@ -163,10 +171,11 @@ test.describe('signing up (Phase 52)', () => {
     await expect(wizard).toHaveCount(0);
     await inSpace.getByTestId('space-delete-name').fill('Olive’s practice');
     await inSpace.getByTestId('space-delete').click();
-    await expect(inSpace.getByTestId('welcome')).toBeVisible({ timeout: 15_000 });
+    // She is taken to the space she still has: her own, made at sign-up (P13).
+    await expect(inSpace.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText("Olive's space", { timeout: 15_000 });
     const after = await unwrap<any>(await olive.request.get('/api/auth/session'), 'after');
-    expect(after.memberships).toEqual([]);
-    // With no space left, she deletes her account.
+    expect(after.memberships).toEqual([expect.objectContaining({ name: "Olive's space" })]);
+    // Alone in her own space, she deletes her account, and it goes with her.
     expect((await olive.request.delete('/api/auth/account')).status()).toBe(204);
     expect((await olive.request.get('/api/auth/session')).status()).toBe(404);
   });
@@ -203,9 +212,12 @@ test.describe('join requests are still the admins’ to answer (S9)', () => {
     const code = await unwrap<any>(await admin.request.get('/api/organization/code'), 'the code');
     expect(code.join_by_code).toBe(true);
 
-    // The joiner asks through Welcome, with the code typed any old way.
+    // The joiner asks from the Spaces page (she is in her own space, made at sign-up: Phase 63, P13),
+    // with the code typed any old way.
     const joiner = await as('admin', { email: joinerEmail, org: null });
-    await joiner.goto('/');
+    const joinerOwn = await personalSpaceOf(joiner);
+    const otherOwn = await personalSpaceOf(await as('admin', { email: otherEmail, org: null }));
+    await joiner.goto('/spaces');
     await expect(joiner.getByTestId('welcome')).toBeVisible();
     await joiner.getByTestId('welcome-code').fill(code.code.replace('-', ' ').toLowerCase());
     await joiner.getByTestId('welcome-find').click();
@@ -213,9 +225,10 @@ test.describe('join requests are still the admins’ to answer (S9)', () => {
     await joiner.getByTestId('welcome-ask').click();
     await expect(joiner.getByTestId(`welcome-request-${made.slug}`)).toBeVisible();
 
-    // Asking let nobody in: no membership, the space refuses her, and an arriving tab is still on Welcome.
+    // Asking let nobody in: no membership there, the space refuses her, and an arriving tab is still
+    // in her own space, the request waiting on the Spaces page.
     const asked = await unwrap<any>(await joiner.request.get('/api/auth/session'), 'joiner after asking');
-    expect(asked.memberships).toEqual([]);
+    expect(asked.memberships.map((m: any) => m.slug)).toEqual([joinerOwn.slug]);
     expect(asked.join_requests).toEqual([expect.objectContaining({ slug: made.slug, outcome: null })]);
     const refused = await joiner.request.get('/api/users', { headers: { 'X-Organization': made.slug } });
     expect(refused.status()).toBe(403);
@@ -224,9 +237,10 @@ test.describe('join requests are still the admins’ to answer (S9)', () => {
     expect(lookup.standing).toBe('requested');
     const arriving = await as('admin', { email: joinerEmail, org: null });
     await arriving.goto('/');
-    await expect(arriving.getByTestId('welcome')).toBeVisible();
+    await expect(arriving.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText(joinerOwn.name);
+    await arriving.goto('/spaces');
     await expect(arriving.getByTestId(`welcome-request-${made.slug}`)).toBeVisible();
-    await expect(arriving.getByTestId('org-switcher')).toHaveCount(0);
+    await expect(arriving.getByTestId(`org-${made.slug}`)).toHaveCount(0);
 
     // The admin sees the request and lets her in, as a parent.
     const requests = await unwrap<any[]>(await admin.request.get('/api/organization/join-requests'), 'requests');
@@ -239,11 +253,11 @@ test.describe('join requests are still the admins’ to answer (S9)', () => {
       'let in',
     );
     const inside = await unwrap<any>(await joiner.request.get('/api/auth/session'), 'joiner let in');
-    expect(inside.memberships.map((m: any) => m.slug)).toEqual([made.slug]);
+    expect(inside.memberships.map((m: any) => m.slug).sort()).toEqual([joinerOwn.slug, made.slug].sort());
     expect(inside.join_requests).toEqual([]);
     const landed = await as('admin', { email: joinerEmail, org: null });
-    await landed.goto('/');
-    await expect(landed.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText(name);
+    await landed.goto('/spaces');
+    await expect(landed.getByTestId(`org-${made.slug}`)).toContainText(name);
 
     // A second newcomer asks. A member who is not an admin cannot see or answer the request.
     const other = await as('admin', { email: otherEmail, org: null });
@@ -258,12 +272,12 @@ test.describe('join requests are still the admins’ to answer (S9)', () => {
         data: { full_name: 'Odile Other', email: otherEmail, roles: ['parent'], status: 'active', join_request_user_id: otherId },
       })).status(),
     ).toBe(403);
-    expect((await unwrap<any>(await other.request.get('/api/auth/session'), 'other still waiting')).memberships).toEqual([]);
+    expect((await unwrap<any>(await other.request.get('/api/auth/session'), 'other still waiting')).memberships.map((m: any) => m.slug)).toEqual([otherOwn.slug]);
 
     // The admin declines: she is told once, and is still in no space.
     await unwrap(await admin.request.post(`/api/organization/join-requests/${otherId}/decline`), 'decline');
     const declined = await unwrap<any>(await other.request.get('/api/auth/session'), 'other declined');
-    expect(declined.memberships).toEqual([]);
+    expect(declined.memberships.map((m: any) => m.slug)).toEqual([otherOwn.slug]);
     expect(declined.join_requests).toEqual([expect.objectContaining({ slug: made.slug, outcome: 'declined' })]);
     expect((await other.request.get('/api/users', { headers: { 'X-Organization': made.slug } })).status()).toBe(403);
   });

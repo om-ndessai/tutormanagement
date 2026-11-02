@@ -44,6 +44,7 @@ const LEVELS = [
 const FRIDAY: GameFavorite = {
   id: 'f1',
   name: 'Friday G6',
+  roster: null,
   config: createGameSchema.parse({
     level_id: 'NC26.6',
     mode: 'count',

@@ -17,7 +17,7 @@ import {
 
 import { expect, ORGS, PEOPLE, test } from '../support/fixtures.js';
 import type { PersonKey } from '../support/people.js';
-import { unwrap } from '../support/api.js';
+import { dropPersonalSpace, unwrap } from '../support/api.js';
 
 /**
  * Phase 59, S1 (docs/spaces-plan.md): "Organization" leaves every screen.
@@ -311,7 +311,7 @@ test.describe('S1: "Organization" leaves every screen (Phase 59)', () => {
     }
   });
 
-  test("a newcomer's Welcome, before any space", async ({ as, page }) => {
+  test("a newcomer's own space, and Welcome once they belong to none", async ({ as, page }) => {
     const email = `words.newcomer.${Date.now()}@example.com`;
     await unwrap(
       await page.request.post('/api/auth/signup', {
@@ -327,8 +327,16 @@ test.describe('S1: "Organization" leaves every screen (Phase 59)', () => {
       'signing up',
     );
     const nell = await as('parent', { email, org: null });
+    // Phase 63 (P13): they land in the space sign-up made them, "Nell's space".
     await nell.goto('/');
-    await expect(nell.getByTestId('welcome')).toBeVisible();
+    await expect(nell.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+    await expect(nell.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText("Nell's space");
+    expect(await problemsOn(nell)).toEqual([]);
+    expect(await crawl(nell, ['/spaces'])).toEqual({});
+    // Deleting it leaves them in no space: Phase 61's Welcome, in the same words.
+    await dropPersonalSpace(nell);
+    await nell.goto('/');
+    await expect(nell.getByTestId('welcome')).toBeVisible({ timeout: 15_000 });
     expect(await problemsOn(nell)).toEqual([]);
     expect(await crawl(nell, ['/spaces'])).toEqual({});
   });

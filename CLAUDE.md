@@ -339,8 +339,9 @@ such as `organization.created`); old audit lines are never rewritten; proper nam
 `scripts/check-ui-words.mjs`, run by `npm run typecheck`, fails on the word in JSX text, in prose
 strings, and in strings given to labels, titles, messages, toasts, `ApiError`s, Zod messages and
 `*_LABELS` tables; a `ui-words:` comment marks a deliberate exception. The terms and privacy reworded
-the same way are version 2026-10-31, approved by the owner on 2026-11-01 and published; a sign-up still
-accepts 2026-10-29, which app builds on phones send (`ACCEPTED_LEGAL_VERSIONS`), and records the version sent.
+the same way are version 2026-10-31, approved by the owner on 2026-11-01; version 2026-11-01 (guest play and
+anonymous counts, Phase 63) was approved the same day and is the current one. A sign-up still accepts 2026-10-31
+and 2026-10-29, which app builds on phones send (`ACCEPTED_LEGAL_VERSIONS`), and records the version sent.
 
 **Platform admins run the platform, not organizations.** The console (`/platform`,
 `routes/platform.ts` behind `requirePlatformAdmin`) creates, brands and archives organizations and
@@ -476,6 +477,64 @@ Workers. The web uses Google's button and redirect flows for the rest (`/api/aut
 the provider's token to `POST /api/auth/<p>`. Locally `AUTH_FAKE_PROVIDERS` takes the suite's
 `fake:<provider>:<subject>:<email>:<verified>` tokens -- never in production. My profile's "Ways to
 sign in" adds and removes them (never the last); Apple's tokens are revoked when an account is deleted.
+
+**One tap is the members' way into Quest** (Phase 62, `docs/stickiness-plan.md` P1-P8). Tiles are quests
+named `<level tag><Q|T|A><n>` (`G4T10`, `BA3Q5`, `G4A5`; `TILE_LEVEL_TAGS`, `tileCode`/`parseTileCode` in
+shared `quest-tiles.ts`), kept by platform admins in the console's Settings > Play (`platform_settings`
+'tiles' and 'play'; no row is `DEFAULT_TILES`) and served to members by `GET /api/quest/tiles` (their space's
+curricula, levels at the console's minimum depth). The Play home (Continue on the device, favorites, Waiting
+for you, tiles, one code box) is the home of a space without Tutoring and of students anywhere; staff keep
+their dashboard with a favorites row. A tile or favorite is the existing one-request `POST /quest/games`; a
+multiplayer favorite sends `host_plays` (the host plays from the start) and its roster as `invite_user_ids`
+(`quest_game_invites`, R27). Checked questions are a PLATFORM admin's per-space switch
+(`organizations.checked_questions`, on everywhere for the soft launch; read through `checkedQuestionsOn`,
+never the column; `canvas_assessments_unreviewed` now only reports it), each served with `beta`. Game answers
+feed the two-right-answers rule: `quest_game_seen.correct` marks the answering player, and
+`approveManyByConsensus` counts them beside Quest's attempts -- same threshold, same trusted spaces. Playable
+counts are the platform's, cached (`platform_settings` 'level_counts', refreshed daily by the cron); a status
+change marks its level dirty (`markQuestionLevelsDirty`) for a one-level recount -- never count the bank per
+request. A single player's game is not polled (`gameRefetchDelay`: the countdown's end, a timed game's end,
+and every 30 s).
+
+**Anyone may play before signing up, and nothing about a guest is kept** (Phase 63, `docs/stickiness-plan.md`
+P9-P16, R26). While a Worker allows it (`GUEST_PLAY`, "true" on `tutoring` and the demo, never `tmi-portal`)
+AND platform admins switched it on (console Settings > Guest play, `platform_settings` 'guest'), a
+signed-out visitor's home is the guest Play home and `/api/auth/config` carries `guest` (tiles, settings,
+member counts, the pool version). A level's guest pool (`guest_questions`, a few per level, chosen in the
+console) is public by design -- served with keys at `GET /api/public/guest/<version>/<level>`, versioned
+and memoised, no D1 per play -- and RESERVED: every member draw (games, Assessments, Question Quest) and
+every count leaves it out (`guestIdsFor`). Play, the guest Assessment and marking happen on the device;
+the server gets only anonymous counts (`POST /api/public/events`, Analytics Engine, no id/cookie/IP). The
+sign-up offer pauses the guest's clock. Signing up is a sheet over the page, and POST /api/auth/signup makes
+the newcomer a personal space (`organizations.personal`; a teen's takes nobody by code and a teen adds
+nobody; hidden from the console's list; purged with the account when they are its only member; not counted
+in spaces_per_person; no wizard by itself) -- the Phase 61 Welcome remains only for someone in no space.
+What the device kept as a guest carries over on that device only, read from its own storage and never sent: its
+grade (else the level of the tile played last) leads the member's Play home until a quest starts there
+(`guestLeadLevel`), and the tiles it played become favorites, once each (`useCarryGuestTiles`, web and app).
+
+**The habit layer is derived, never stored as a total, and is the reader's own** (Phase 64, `docs/stickiness-plan.md`
+P17-P20, R28). The weekly streak counts weeks with `STREAK_DAYS_PER_WEEK` (3) days played (`weeklyStreak` in shared
+`habit.ts`), from `activity_days`: a game's end adds each answering player's `game_answers` for that day on the space's
+clock, in the results batch, guarded by membership (never `answers`, which Question Quest's totals sum); a Daily adds one
+too. Badges are `earnedBadges` over counts kept anyway -- no badge table. The Daily set (`GET /api/quest/daily/:level`)
+is `DAILY_SET_SIZE` questions of a level, the same for everyone that day (`dailySeed`; approved first, checked only where
+the space serves them, never the guest pool), memoised per isolate; its questions travel WITHOUT keys until the reader
+has played, the answers are posted once and marked by the server (`checkAnswer`), and `daily_results` keeps the marks,
+one play a day. It is the console's switch (Settings > Play, `PlaySettings.daily`). A tile's `best` and a single
+player's `new_best` are read from finished games (`bestScores`, `isNewBest`), never stored. Games still award no points.
+
+**Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
+`docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
+else is the web. Platform admins set, for the web portal and the app separately, which providers besides
+Google and whether sign-up is open, for 1-24 hours or until changed (console Settings; `PUT
+/api/platform/sign-in`, `platform_settings` key `sign_in`, logged `platform.sign_in_updated`). While a
+setting is in force it replaces the Worker's vars (`AUTH_PROVIDERS`, `AUTH_PROVIDERS_APP` -- the app's own
+default list -- and `SIGNUP_OPEN`); when it lapses they apply again (`effectiveSignIn` in shared,
+`signInFor` in `lib/sign-in.ts` -- never read the vars directly). A provider is still offered only while
+it is set up on that Worker. The redirect flows are the web's; a sign-up token carries its client, whose
+switch decides `POST /api/auth/signup`. The header picks buttons, not rights: providers verify every
+identity. The setting is memoised per isolate for 15 s, so `/api/auth/config` costs almost no reads.
 
 **The dashboard and the sessions page are two tabs: Tutoring and Finance.**
 `TutoringFinanceTabs` in `components/layout/tutoring-finance-tabs.tsx` holds both halves and

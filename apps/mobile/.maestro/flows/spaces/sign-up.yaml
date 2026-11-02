@@ -1,12 +1,15 @@
 # Phase 52 (design 63): signing up with developer sign-in. The legal line on sign-in; an address the
 # server does not know offers "Sign up as"; About you refuses a child (nothing kept, so the same
-# address still offers sign-up), then an adult lands on the Welcome and deletes the account.
-# Phase 61 (S11, docs/spaces-plan.md): the same address signs up once more as a 13-17, whose Welcome
-# offers only "Join with a code"; then an adult (Stella) starts a space from the Welcome -- the
-# two choices, the name, "Invite people" skipped -- and lands in it. The app signs in through
-# developer sign-in only (the providers' native SDKs cannot be driven here); each provider's path
-# to the same Welcome is the web's spaces-welcome.spec.ts.
-# Self-cleaning: both addresses are put back to nothing before and after (Stella's space goes with her).
+# address still offers sign-up).
+# Phase 63 (P13, docs/stickiness-plan.md): an adult who signs up lands in a space of their own, "Sam's
+# space", on its Play home -- no Welcome, no wizard. The Welcome is for someone who belongs nowhere:
+# once that space is gone (spaces.js drop-personal), it offers Join with a code and Start a space, and
+# deletes the account. The same address signs up once more as a 13-17 (Phase 61, S11): "Tam's space",
+# where Spaces offers no Start a space; with it gone, Welcome offers only "Join with a code". Then
+# an adult who has just signed up (Stella) starts a space from Spaces -- the name, "Invite people"
+# skipped -- and lands in it. The app signs in through developer sign-in only (the providers' native
+# SDKs cannot be driven here); each provider's path is the web's spaces-welcome.spec.ts.
+# Self-cleaning: both addresses are put back to nothing before and after (their spaces go with them).
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -199,11 +202,38 @@ tags:
       id: signup-submit
 - tapOn:
     id: signup-submit
-# In no space: the Welcome.
+# Phase 63 (P13): in a space of her own at once -- its Play home, no Welcome, no wizard.
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-onboarding
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".*Admin at Sam's space"
+- takeScreenshot: spaces-personal-space
+# Belonging nowhere (her own space gone): the Welcome.
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: drop-personal, EMAIL: spaces.signup@example.com }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.signup@example.com
+      ORG: ''
 - extendedWaitUntil:
     visible:
       id: screen-spaces
-    timeout: 20000
+    timeout: 30000
 - assertVisible:
     id: welcome-title
     text: 'Welcome to Aimtrue'
@@ -229,8 +259,9 @@ tags:
     visible:
       id: screen-sign-in
     timeout: 15000
-# Phase 61 (S11): the same address, now a 13-17 (January 2011). About you as before; Welcome offers
-# only "Join with a code" -- starting a space is for adults.
+# Phase 61 (S11): the same address, now a 13-17 (January 2011). About you as before; Phase 63: Tam's
+# own space, where Spaces offers no Start a space; with it gone, Welcome offers only "Join with a code"
+# -- starting a space is for adults.
 - scrollUntilVisible:
     element:
       id: sign-in-email
@@ -294,8 +325,50 @@ tags:
     id: signup-submit
 - extendedWaitUntil:
     visible:
-      id: screen-spaces
+      id: screen-home
     timeout: 20000
+- assertNotVisible:
+    id: welcome-title
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".*Admin at Tam's space"
+# Spaces (All spaces): Join with a code, and no Start a space for a 13-17.
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: welcome-join
+- scrollUntilVisible:
+    element:
+      id: welcome-adults-only
+- assertNotVisible:
+    id: welcome-make
+- takeScreenshot: spaces-personal-space-teen
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: drop-personal, EMAIL: spaces.signup@example.com }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.signup@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 30000
 - assertVisible:
     id: welcome-title
     text: 'Welcome to Aimtrue'
@@ -311,8 +384,9 @@ tags:
       id: welcome-adults-only
 - assertVisible: 'To start a space of your own you need to be 18 or older.'
 - takeScreenshot: spaces-welcome-teen
-# Phase 61 (S11): an adult who has just signed up (Stella, made by the script) starts a space from
-# the Welcome and lands in it. A fresh device, so the welcome wizard is not pre-empted.
+# Phase 61 (S11) and Phase 63 (P13): an adult who has just signed up (Stella, made by the script)
+# lands in her own space and starts another from Spaces, then lands in it. A fresh device, so the
+# welcome wizard is not pre-empted in the new space (her own never opens it).
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -321,12 +395,36 @@ tags:
       FRESH: '1'
 - extendedWaitUntil:
     visible:
-      id: welcome-title
+      id: screen-home
     timeout: 30000
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-onboarding
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
 - assertVisible:
-    id: welcome-join
-- assertVisible:
-    id: welcome-make
+    id: account-roles
+    text: ".* at Stella's space"
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: welcome-join
+- scrollUntilVisible:
+    element:
+      id: welcome-make
 - assertVisible: 'Start a space'
 - scrollUntilVisible:
     element:
@@ -368,7 +466,7 @@ tags:
 - assertNotVisible:
     id: welcome-title
 - takeScreenshot: spaces-started
-# Launched again, Stella lands in her space, not on the Welcome.
+# Launched again, Stella lands in the space she opened last -- the new one, not her own.
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -380,3 +478,12 @@ tags:
     timeout: 30000
 - assertNotVisible:
     id: welcome-title
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: '.* at The Starter family'

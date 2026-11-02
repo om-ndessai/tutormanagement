@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/platform/platform-shell.tsx @ 1132322 (the header's actions):
-// back to My spaces for a platform admin who belongs to any, and Sign out.
+// back to My spaces for a platform admin who belongs to any, and Sign out. Phase 62: the gear opens
+// the console's Settings (the sign-in switches), a pushed screen since the tabs are full.
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
@@ -26,6 +27,16 @@ export function ConsoleHeaderButtons() {
           }}
         />
       ) : null}
+      <IconButton
+        testID="platform-settings"
+        icon="cog-outline"
+        iconColor={theme.colors.primary}
+        accessibilityLabel="Settings"
+        onPress={() => {
+          haptics.selection();
+          router.push('/platform-settings');
+        }}
+      />
       <IconButton
         testID="platform-sign-out"
         icon="logout"

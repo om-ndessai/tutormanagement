@@ -4,6 +4,7 @@ import { Loader2Icon } from 'lucide-react';
 import { LogoMark } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/providers/auth-provider';
+import { GuestHome } from '@/features/guest/guest-home';
 
 /**
  * Route guard for everything inside the portal.
@@ -12,10 +13,12 @@ import { useAuth } from '@/providers/auth-provider';
  * unauthenticated API calls regardless of what the SPA renders.
  */
 export function RequireAuth() {
-  const { status, statusMessage } = useAuth();
+  const { status, statusMessage, config } = useAuth();
   const location = useLocation();
 
-  if (status === 'loading') {
+  // A 401 can land before the config does (the session's answer arrives first); wait for the config,
+  // which says whether a signed-out visitor gets the guest Play home (Phase 63) or the sign-in page.
+  if (status === 'loading' || (status === 'unauthenticated' && config === null)) {
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center gap-3">
         <LogoMark className="size-12 opacity-80" />
@@ -41,6 +44,8 @@ export function RequireAuth() {
   }
 
   if (status === 'unauthenticated') {
+    // Phase 63 (P10): while guest play is on here, the home is the guest Play home, not the sign-in page.
+    if (config?.guest && location.pathname === '/') return <GuestHome />;
     // Remember where they were headed so sign-in can return them there.
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
   }

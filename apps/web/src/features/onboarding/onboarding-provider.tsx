@@ -80,13 +80,17 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard
+    // (the tour stays one tap away in the menu).
+    if (organization?.personal) return;
+
     if (!onboarding.tour_finished_at) {
       setScreen('welcome');
       setWizardOpen(true);
     } else if (!hasTourCookie()) {
       setOffer(true);
     }
-  }, [user, onboarding, organization?.slug, location.search]);
+  }, [user, onboarding, organization?.slug, organization?.personal, location.search]);
 
   useEffect(() => {
     if (!firstVisit || !onboarding?.tour_finished_at || !organization) return;

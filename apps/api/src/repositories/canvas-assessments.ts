@@ -1,3 +1,4 @@
+import { guestIdsFor } from './guest.js';
 import {
   CANVAS_ASSESSMENT_LEVEL_IDS,
   QUESTION_BANK_LEVEL_LABELS,
@@ -210,6 +211,7 @@ export async function countDrawableQuestions(
      WHERE q.topic_id >= ? AND q.topic_id < ?
        AND q.status IN (${statuses.map(() => '?').join(', ')})
        AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
+       AND NOT EXISTS (SELECT 1 FROM guest_questions g WHERE g.question_id = q.id)
      GROUP BY q.topic_id, q.status`,
   );
   const results = await db.batch<{ topic_id: string; status: string; n: number }>(
@@ -244,16 +246,19 @@ export async function drawQuestionIds(
   includeUnreviewed: boolean,
 ): Promise<{ ids: string[]; unreviewed: number }> {
   const statuses = drawableStatuses(includeUnreviewed);
+  // Phase 63 (P9): the level's guest questions are reserved for guests.
+  const reserved = await guestIdsFor(db, [levelId]);
   const result = await db
     .prepare(
       `SELECT q.id, q.status FROM questions q
        WHERE q.topic_id >= ? AND q.topic_id < ? AND q.status IN (${statuses.map(() => '?').join(', ')})
          AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
+         AND q.id NOT IN (SELECT value FROM json_each(?))
        ORDER BY random()
        LIMIT ?`,
     )
     // Every topic of the level sorts between 'NC26.5.' and 'NC26.5/' ('/' follows '.').
-    .bind(`${levelId}.`, `${levelId}/`, ...statuses, count)
+    .bind(`${levelId}.`, `${levelId}/`, ...statuses, reserved, count)
     .all<{ id: string; status: string }>();
   const rows = result.results ?? [];
   return { ids: rows.map((row) => row.id), unreviewed: rows.filter((row) => row.status !== 'approved').length };

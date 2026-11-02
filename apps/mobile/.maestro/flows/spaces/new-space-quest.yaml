@@ -1,5 +1,6 @@
 # Phase 61 (S10, docs/spaces-plan.md): a new space has Assessment and Quest on from the start.
-# 1. A newcomer (Quinn) starts a space from Welcome, skips "Invite people", and adds their child Kit
+# 1. A newcomer (Quinn) lands in their own space (Phase 63, P13: "Quinn's space"), starts a space from
+#    Spaces, skips "Invite people", and adds their child Kit
 #    (with an address, so Kit signs in) through the welcome wizard, with the parent's consent. More
 #    lists Assessment AND Quest, and nothing of Tutoring's. On the Quest page Quinn, its admin, sets
 #    Kit's level to BA3; Kit (past the welcome wizard) signs in, lands in Quest at BA3 and answers:
@@ -43,8 +44,32 @@ tags:
       FRESH: '1'
 - extendedWaitUntil:
     visible:
-      id: welcome-title
+      id: screen-home
     timeout: 30000
+# Phase 63 (P13): a newcomer lands in a space of their own, "Quinn's space", on its Play home -- no
+# Welcome, no wizard. Start a space is on Spaces, from the account sheet's "All spaces".
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-onboarding
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".* at Quinn's space"
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
 - scrollUntilVisible:
     element:
       id: welcome-space-name

@@ -1,0 +1,36 @@
+# Skip the guest's question in front, and wait for what follows: NEXT is the progress it moves to
+# ("3 of 5"), "nudge" (the offer after question 1) or "results". On iOS the question's maths settles
+# after it is drawn and Skip can move under a tap aimed at it, so a tap that did not take -- nothing
+# followed -- is tried again; a tap that took is never repeated (the wait passes and the retry ends).
+appId: ${APP_ID}
+---
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: guest-skip
+      - runFlow:
+          when:
+            true: ${NEXT === 'results'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: guest-results
+                timeout: 6000
+      - runFlow:
+          when:
+            true: ${NEXT === 'nudge'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: guest-nudge-signup
+                timeout: 6000
+      - runFlow:
+          when:
+            true: ${NEXT !== 'results' && NEXT !== 'nudge'}
+          commands:
+            - extendedWaitUntil:
+                visible:
+                  id: guest-progress
+                  text: ${NEXT}
+                timeout: 6000

@@ -77,3 +77,36 @@ export async function scheduleLocationIds(
   );
   return [created.id];
 }
+
+/**
+ * Phase 63 (P13): signing up makes the newcomer a space of their own, "<First name>'s space"
+ * (`organizations.personal`), and it becomes their last-opened space. This finds it on the page's
+ * person: the one membership whose space reports `personal` (read through the session, in it).
+ */
+export async function personalSpaceOf(page: Page): Promise<{ slug: string; name: string }> {
+  const session = await unwrap<any>(await page.request.get('/api/auth/session'), 'the session');
+  const found: { slug: string; name: string }[] = [];
+  for (const m of session.memberships as { slug: string; name: string }[]) {
+    const inIt = await unwrap<any>(
+      await page.request.get('/api/auth/session', { headers: { 'X-Organization': m.slug } }),
+      `the session in ${m.slug}`,
+    );
+    if (inIt.organization?.personal === true) found.push({ slug: m.slug, name: m.name });
+  }
+  expect(found, 'exactly one personal space').toHaveLength(1);
+  return found[0]!;
+}
+
+/**
+ * Phase 63 (P13): deletes the person's personal space (its admin's own Delete, as on the Space page),
+ * so they belong nowhere -- how a newcomer reaches Phase 61's Welcome now. For tests whose subject is
+ * the person in no space; everything else keeps the personal space.
+ */
+export async function dropPersonalSpace(page: Page): Promise<void> {
+  const own = await personalSpaceOf(page);
+  const response = await page.request.delete('/api/organization', {
+    headers: { 'X-Organization': own.slug },
+    data: { confirm_name: own.name },
+  });
+  expect(response.status(), `deleting ${own.name}`).toBe(204);
+}

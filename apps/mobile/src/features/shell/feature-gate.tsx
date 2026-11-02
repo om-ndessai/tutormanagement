@@ -147,4 +147,9 @@ export const GATED_ROUTES: Record<string, { set: FeatureSet; presentation: GateP
   'quest/games/[gameId].tsx': { set: 'quest', presentation: 'modal' },
   'quest/new-game.tsx': { set: 'quest', presentation: 'screen' },
   'quest/join-game.tsx': { set: 'quest', presentation: 'sheet' },
+  'quest/play-last.tsx': { set: 'quest', presentation: 'modal' },
+  // Phase 63 (P14): a member's tile link, started as a game.
+  'quest/tile/[code].tsx': { set: 'quest', presentation: 'modal' },
+  // Phase 64 (P19): the Daily set.
+  'quest/daily/[level].tsx': { set: 'quest', presentation: 'modal' },
 };

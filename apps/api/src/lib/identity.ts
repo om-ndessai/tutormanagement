@@ -1,6 +1,6 @@
 import {
+  AUTH_PROVIDERS,
   AUTH_PROVIDER_LABELS,
-  parseAuthProviders,
   type AuthProvider,
   type AuthProviderInfo,
 } from '@tmi/shared';
@@ -30,16 +30,27 @@ export function fakeProvidersOn(env: Env): boolean {
   return env.AUTH_FAKE_PROVIDERS === 'true' && env.ENVIRONMENT !== 'production';
 }
 
-/** The providers this Worker offers: listed in AUTH_PROVIDERS (default "google") and configured. */
-export function offeredProviders(env: Env): AuthProvider[] {
-  return parseAuthProviders(env.AUTH_PROVIDERS).filter(
-    (provider) => configured(env, provider) || fakeProvidersOn(env),
-  );
+/** Whether this Worker can offer a provider at all: it is set up here (or, locally, faked). */
+export function isProviderReady(env: Env, provider: AuthProvider): boolean {
+  return configured(env, provider) || fakeProvidersOn(env);
+}
+
+/** The providers this Worker has set up, whatever any list or setting says. */
+export function configuredProviders(env: Env): AuthProvider[] {
+  return AUTH_PROVIDERS.filter((provider) => isProviderReady(env, provider));
+}
+
+/**
+ * The providers offered to one client: those in force for it (the console's setting, else the
+ * Worker's vars -- lib/sign-in.ts `signInFor`) that this Worker has set up.
+ */
+export function offeredProviders(env: Env, inForce: readonly AuthProvider[]): AuthProvider[] {
+  return inForce.filter((provider) => isProviderReady(env, provider));
 }
 
 /** What /api/auth/config tells clients: one entry per offered provider, ids only. */
-export function providerInfo(env: Env): AuthProviderInfo[] {
-  return offeredProviders(env).map((id) => ({
+export function providerInfo(env: Env, offered: readonly AuthProvider[]): AuthProviderInfo[] {
+  return offered.map((id) => ({
     id,
     label: AUTH_PROVIDER_LABELS[id],
     client_id:
@@ -54,9 +65,9 @@ export function providerInfo(env: Env): AuthProviderInfo[] {
   }));
 }
 
-/** Refuses a provider this Worker does not offer (404, as for a route that is not there). */
-export function assertOffered(env: Env, provider: AuthProvider): void {
-  if (!offeredProviders(env).includes(provider)) {
+/** Refuses a provider this client is not offered (404, as for a route that is not there). */
+export function assertOffered(offered: readonly AuthProvider[], provider: AuthProvider): void {
+  if (!offered.includes(provider)) {
     throw ApiError.notFound(`Signing in with ${AUTH_PROVIDER_LABELS[provider]} is not available here.`);
   }
 }

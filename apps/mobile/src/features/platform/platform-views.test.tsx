@@ -183,6 +183,34 @@ describe('OrganizationFormSheet (Phase 50)', () => {
           feature_assessment: RIVERSIDE.feature_assessment,
           feature_quest: RIVERSIDE.feature_quest,
           quest_trusted: false,
+          checked_questions: true,
+        },
+      }),
+    );
+    mockOrganizations = [];
+  });
+
+  it('offers checked questions only when editing, on unless off, and sends it in the features PUT (Phase 62)', async () => {
+    await renderWithProviders(<OrganizationFormSheet />);
+    expect(screen.queryByTestId('org-checked-questions-switch')).toBeNull();
+    mockOrganizations = [RIVERSIDE];
+    mockSave.mockResolvedValue({ data: RIVERSIDE });
+    mockFeatures.mockReset();
+    mockFeatures.mockResolvedValue({ data: RIVERSIDE });
+    await renderWithProviders(<OrganizationFormSheet id={RIVERSIDE.id} />);
+    expect(screen.getByTestId('org-checked-questions-switch').props.value).toBe(true);
+    expect(screen.getByText('Checked questions (Beta)')).toBeTruthy();
+    await fireEvent(screen.getByTestId('org-checked-questions-switch'), 'valueChange', false);
+    await fireEvent.press(screen.getByTestId('org-form-save'));
+    await waitFor(() =>
+      expect(mockFeatures).toHaveBeenCalledWith({
+        id: RIVERSIDE.id,
+        input: {
+          feature_tutoring: RIVERSIDE.feature_tutoring,
+          feature_assessment: RIVERSIDE.feature_assessment,
+          feature_quest: RIVERSIDE.feature_quest,
+          quest_trusted: true,
+          checked_questions: false,
         },
       }),
     );

@@ -1,5 +1,5 @@
 import { test, expect, ORGS, PEOPLE } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { personalSpaceOf, unwrap } from '../support/api.js';
 import { visible } from '../support/ui.js';
 import { PRIVACY_VERSION, TERMS_VERSION, decideLanding, inviteRowRequest } from '@tmi/shared';
 
@@ -45,10 +45,23 @@ const s13Session = async (page: import('@playwright/test').Page, slug?: string) 
 const ownLists = (s: any) => ({ memberships: s.memberships, invitations: s.invitations, join_requests: s.join_requests });
 
 test.describe('spaces: who sees what (R21)', () => {
-  test('a newcomer with no space reads nothing of any space', async ({ page, as }) => {
+  test('a newcomer, in only the space sign-up made them, reads nothing of any other space; nobody reads theirs', async ({ page, as }) => {
     // A newcomer of the test's own: the seed's (Nina) is let into a space by spaces.spec.ts.
     const newcomer = `newcomer.r21.${S13_STAMP}@example.com`;
     await s13SignUp(page, newcomer, 'Nadia Newcomer');
+    // Phase 63 (P13): their own space, and no other.
+    const own = await personalSpaceOf(await as('admin', { email: newcomer, org: null }));
+    expect(own.name).toBe("Nadia's space");
+    // Nobody else reads it: another newcomer, and an admin of another space, are not its members.
+    const other = `newcomer.r21.other.${S13_STAMP}@example.com`;
+    await s13SignUp(page, other, 'Otto Other');
+    for (const reader of [await as('admin', { email: other, org: own.slug }), await as('admin', { org: own.slug })]) {
+      for (const path of SPACE_READS) {
+        const response = await reader.request.get(path);
+        expect(response.status(), `${own.slug} ${path}`).toBe(403);
+        expect((await response.json()).error.code).toBe('organization_required');
+      }
+    }
     for (const org of [ORGS.a.slug, ORGS.b.slug, ORGS.c.slug]) {
       const nina = await as('admin', { email: newcomer, org });
       for (const path of SPACE_READS) {
@@ -164,17 +177,19 @@ test.describe('spaces page, banner and leaving: who sees what (S13)', () => {
     const benS = await s13Session(benHome);
     const caraS = await s13Session(caraHome);
 
-    expect(adaS.memberships.map((m: any) => m.slug)).toEqual([spaceA.slug]);
+    // Each also has the space of their own sign-up made (Phase 63, P13), and nobody else's.
+    const ownOf = async (home: typeof adaHome) => (await personalSpaceOf(home)).slug;
+    expect(adaS.memberships.map((m: any) => m.slug).sort()).toEqual([await ownOf(adaHome), spaceA.slug].sort());
     expect(adaS.invitations).toEqual([]);
     expect(adaS.join_requests).toEqual([]);
 
-    expect(benS.memberships.map((m: any) => m.slug)).toEqual([spaceB.slug]);
+    expect(benS.memberships.map((m: any) => m.slug).sort()).toEqual([await ownOf(benHome), spaceB.slug].sort());
     expect(benS.invitations.map((i: any) => i.slug)).toEqual([spaceA.slug]);
     expect(Object.keys(benS.invitations[0]).sort()).toEqual(INVITATION_KEYS);
     expect(benS.invitations[0].roles).toEqual(['parent']);
     expect(benS.join_requests).toEqual([]);
 
-    expect(caraS.memberships).toEqual([]);
+    expect(caraS.memberships.map((m: any) => m.slug)).toEqual([await ownOf(caraHome)]);
     expect(caraS.invitations).toEqual([]);
     expect(caraS.join_requests.map((r: any) => r.slug)).toEqual([spaceB.slug]);
     expect(Object.keys(caraS.join_requests[0]).sort()).toEqual(JOIN_REQUEST_KEYS);
@@ -385,7 +400,9 @@ test.describe('spaces page, banner and leaving: who sees what (S13)', () => {
     );
     const eveHome = await as('admin', { email: eve.email, org: null });
     await unwrap(await eveHome.request.post(`/api/auth/invitations/${space.slug}/accept`), 'Eve accepts');
-    expect((await s13Session(eveHome)).memberships.map((m: any) => m.slug)).toEqual([space.slug]);
+    // Beside the space of her own sign-up made (Phase 63, P13).
+    const eveOwn = await personalSpaceOf(eveHome);
+    expect((await s13Session(eveHome)).memberships.map((m: any) => m.slug).sort()).toEqual([eveOwn.slug, space.slug].sort());
 
     // An invitation that is not yet accepted is no membership to leave, and reads like no space at all.
     const strangerHome = await as('admin', { email: stranger.email, org: null });
@@ -411,7 +428,7 @@ test.describe('spaces page, banner and leaving: who sees what (S13)', () => {
 
     // Her own lists no longer carry it, in any form.
     const after = await s13Session(eveHome);
-    expect(after.memberships).toEqual([]);
+    expect(after.memberships.map((m: any) => m.slug)).toEqual([eveOwn.slug]);
     expect(after.invitations).toEqual([]);
     expect(after.join_requests).toEqual([]);
     const text = JSON.stringify(after);
@@ -525,7 +542,8 @@ test.describe('S13: what does not cross spaces', () => {
     const hostIn = await as('admin', { email: host.email, org: z.slug });
     const code = await unwrap<any>(await hostIn.request.get('/api/organization/code'), 'Z’s code');
     const askerHome = await as('admin', { email: asker.email, org: null });
-    const a = await unwrap<any>(await askerHome.request.post('/api/spaces', { data: { name: `Zeke Attic ${S13_STAMP}` } }), 'space A');
+    // The asker's one space: their own, made at sign-up (Phase 63, P13).
+    const a = await personalSpaceOf(askerHome);
     await unwrap(await askerHome.request.post('/api/spaces/join-requests', { data: { code: code.code } }), 'asking Z');
     expect((await s13Session(askerHome)).join_requests.map((r: any) => r.slug)).toEqual([z.slug]);
 

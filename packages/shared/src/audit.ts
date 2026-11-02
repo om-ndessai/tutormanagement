@@ -111,6 +111,14 @@ export const AUDIT_ACTIONS = [
   'share.withdrawn',
 
   'platform_admin.added',
+  // Phase 62 (P0): the console's sign-in switches, per client.
+  'platform.sign_in_updated',
+  // Phase 62 (P5): the tiles and the Play settings.
+  'platform.play_updated',
+  // Phase 63 (P16): guest play's settings and pools.
+  'platform.guest_updated',
+  // Phase 63 (P13): a newcomer's own space, made at sign-up.
+  'account.personal_space',
   'person.updated_by_platform',
   'person.sign_in_unpinned',
 
@@ -251,6 +259,10 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'share.created': 'Shared a Quest card',
   'share.withdrawn': 'Withdrew a Quest card',
   'platform_admin.added': 'Platform admin added',
+  'platform.sign_in_updated': 'Sign-in settings changed',
+  'platform.play_updated': 'Play settings changed',
+  'platform.guest_updated': 'Guest play changed',
+  'account.personal_space': 'Own space made at sign-up',
   'person.updated_by_platform': 'Shared details updated by the platform',
   'person.sign_in_unpinned': 'Google sign-in unpinned',
 

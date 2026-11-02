@@ -3,6 +3,8 @@
 // role="switch" button is Paper's Switch, as in the email notifications card; its 1-25 select is a
 // stepper here (an adjustable control for assistive tech), saved a moment after the last tap. Each
 // save refreshes the session, so the menu and the start card follow at once for the admin.
+// Phase 62 (P1, docs/stickiness-plan.md; the web @ 0e3ec7a working tree): "Include questions not yet
+// reviewed" is the platform's per-space switch now, so its switch here is a read-only note.
 import { CANVAS_LIMITS } from '@tmi/shared';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -20,15 +22,15 @@ import { space } from '@/theme/tokens';
 import { useUpdateOrganizationSettings } from './api';
 import { stepQuestionCount } from './settings-form';
 
-type Flag = 'canvas_assessments' | 'canvas_assessments_unreviewed';
+type Flag = 'canvas_assessments';
 
 /** How long after the last tap of the stepper the count is saved. */
 export const QUESTION_COUNT_SAVE_MS = 600;
 
 
 /**
- * Phase 38: the Assessment menu (beta), and its trial of questions not yet reviewed; Phase 40: how
- * many questions an assessment draws.
+ * Phase 38: the Assessment menu (beta); Phase 40: how many questions an assessment draws; Phase 62:
+ * whether questions not yet reviewed are included, as the platform set it (`unreviewed`, read-only).
  */
 export function CanvasAssessmentsCard({
   enabled,
@@ -47,7 +49,6 @@ export function CanvasAssessmentsCard({
   // Each switch moves at once; it settles on the server's answer, or back if it was refused.
   const [wanted, setWanted] = useState<Partial<Record<Flag, boolean>>>({});
   const shownEnabled = wanted.canvas_assessments ?? enabled;
-  const shownUnreviewed = wanted.canvas_assessments_unreviewed ?? unreviewed;
 
   async function toggle(flag: Flag, next: boolean) {
     haptics.selection();
@@ -55,20 +56,10 @@ export function CanvasAssessmentsCard({
     try {
       await update.mutateAsync({ [flag]: next });
       await refreshSession();
-      if (flag === 'canvas_assessments') {
-        toast.success(next ? 'The Assessment menu is on.' : 'The Assessment menu is off.');
-      } else {
-        toast.success(
-          next ? 'Assessments may now use questions not yet reviewed.' : 'Assessments use approved questions only.',
-        );
-      }
+      toast.success(next ? 'The Assessment menu is on.' : 'The Assessment menu is off.');
     } catch (caught) {
       toast.error(
-        caught instanceof ApiRequestError
-          ? caught.message
-          : flag === 'canvas_assessments'
-            ? 'Could not change the Assessment menu.'
-            : 'Could not change the questions used.',
+        caught instanceof ApiRequestError ? caught.message : 'Could not change the Assessment menu.',
       );
     } finally {
       setWanted(({ [flag]: _done, ...rest }) => rest);
@@ -133,31 +124,20 @@ export function CanvasAssessmentsCard({
           />
         </View>
         <View
+          testID="checked-questions-note"
           style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            gap: space.md,
+            gap: space.xs,
             borderTopWidth: 1,
             borderTopColor: theme.colors.outlineVariant,
             paddingTop: space.lg,
           }}
         >
-          <View style={{ flex: 1, gap: space.xs }}>
-            <Text variant="labelLarge">Include questions not yet reviewed</Text>
-            <Text variant="bodySmall" style={{ color: muted }}>
-              A trial: assessments also draw on questions that passed every automatic check in the question bank but
-              that no person has approved yet. The tutor’s PDF marks each one “not yet reviewed”.
-            </Text>
-          </View>
-          <Switch
-            testID="org-assessments-unreviewed-switch"
-            value={shownUnreviewed}
-            disabled={update.isPending}
-            onValueChange={(next) => void toggle('canvas_assessments_unreviewed', next)}
-            accessibilityLabel="Include questions not yet reviewed"
-            accessibilityRole="switch"
-            accessibilityState={{ checked: shownUnreviewed, disabled: update.isPending }}
-          />
+          <Text variant="labelLarge">Questions not yet reviewed</Text>
+          <Text variant="bodySmall" style={{ color: muted }}>
+            {unreviewed
+              ? 'Included: assessments and games here also draw questions that passed every automatic check but that no person has approved yet, each marked Beta (the tutor’s PDF marks it “not yet reviewed”). The platform sets this.'
+              : 'Not included: assessments and games here draw approved questions only. The platform sets this.'}
+          </Text>
         </View>
         <View
           style={{

@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
-import { AUTH_PROVIDERS, type AuthProvider } from '@tmi/shared';
+import { AUTH_PROVIDERS, type AuthProvider, type SignInClient } from '@tmi/shared';
 
 import { ApiError } from './errors.js';
 
@@ -17,6 +17,8 @@ export interface SignupClaims {
   name: string;
   /** Phase 55: which provider `sub` belongs to. A token from before names none: Google. */
   provider?: AuthProvider;
+  /** Phase 62: which client the sign-in came from, whose sign-up switch applies. Older tokens: none. */
+  client?: SignInClient;
 }
 
 function key(secret: string): Uint8Array {
@@ -25,7 +27,12 @@ function key(secret: string): Uint8Array {
 }
 
 export async function createSignupToken(claims: SignupClaims, secret: string): Promise<string> {
-  return new SignJWT({ email: claims.email, name: claims.name, provider: claims.provider ?? 'google' })
+  return new SignJWT({
+    email: claims.email,
+    name: claims.name,
+    provider: claims.provider ?? 'google',
+    ...(claims.client ? { client: claims.client } : {}),
+  })
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(claims.sub)
     .setIssuer(ISSUER)
@@ -47,6 +54,7 @@ export async function readSignupToken(token: string, secret: string): Promise<Si
       email: payload.email,
       name: typeof payload.name === 'string' ? payload.name : payload.email,
       provider,
+      ...(payload.client === 'app' || payload.client === 'web' ? { client: payload.client } : {}),
     };
   } catch {
     throw new ApiError(401, 'unauthenticated', 'That sign-up has expired. Sign in again.');

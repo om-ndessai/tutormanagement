@@ -1,4 +1,5 @@
 import { test, expect, ORGS } from '../support/fixtures.js';
+import { setCheckedQuestions } from '../support/checked-questions.js';
 import { unwrap } from '../support/api.js';
 import type { Page } from '@playwright/test';
 
@@ -20,7 +21,8 @@ const WRONG = 'not-an-answer';
 async function withGames(admin: Page, run: () => Promise<void>) {
   const set = (on: boolean) =>
     admin.request.patch('/api/organization/settings', {
-      data: { gamify_question_quest: on, canvas_assessments_unreviewed: on },
+      // Phase 62: checked questions are the platform's switch, on by default.
+      data: { gamify_question_quest: on },
     });
   expect((await set(true)).status()).toBe(200);
   try {
@@ -313,6 +315,8 @@ test.describe('Quest Games (Phase 46)', () => {
   });
 
   test('a single player starts at once, alone; Random draws upward', async ({ as }) => {
+    // Phase 62 (P4): the reconnect check waits for the solo game's 30-second read, twice.
+    test.setTimeout(150_000);
     const admin = await as('admin');
     const sofia = await as('student');
     const alex = await as('tutor');
@@ -350,13 +354,14 @@ test.describe('Quest Games (Phase 46)', () => {
 
       // The connection drops mid-game: the game stays on screen, says it is reconnecting -- never "not
       // found" -- and carries on once the connection is back.
+      // Phase 62 (P4): a single player's game is read only every GAME_SOLO_CHECK_MS (30 s), not polled.
       const poll = new RegExp(`/api/quest/games/${gameId}$`);
       await sofia.route(poll, (route) => route.abort('internetdisconnected'));
-      await expect(sofia.getByTestId('game-reconnecting')).toBeVisible({ timeout: 15_000 });
+      await expect(sofia.getByTestId('game-reconnecting')).toBeVisible({ timeout: 45_000 });
       await expect(sofia.getByTestId('game-question')).toBeVisible();
       await expect(sofia.getByTestId('game-missing')).toHaveCount(0);
       await sofia.unroute(poll);
-      await expect(sofia.getByTestId('game-reconnecting')).toHaveCount(0, { timeout: 15_000 });
+      await expect(sofia.getByTestId('game-reconnecting')).toHaveCount(0, { timeout: 45_000 });
 
       for (let i = 0; i < 3; i += 1) await sofia.getByTestId('game-skip').click();
       await expect(sofia.getByTestId('game-winner')).toHaveText('0 right, 0 points');
@@ -476,9 +481,11 @@ test.describe('Quest Games, curated (Phase 48)', () => {
     const sofia = await as('student');
     const platform = await as('platformAdmin', { org: null });
     // Approved questions only, so a level runs out: the seed approves 12 at G4 and none at G5.
+    // Phase 62: that is the platform's per-space switch, put back on (its default) after.
     const set = (on: boolean) =>
-      admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: on, canvas_assessments_unreviewed: false } });
+      admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: on } });
     expect((await set(true)).status()).toBe(200);
+    await setCheckedQuestions(platform, ORGS.a.slug, false);
     try {
       // G5, the level above, gets three approved questions for the climb.
       const approvedAt = async (level: string) =>
@@ -531,6 +538,7 @@ test.describe('Quest Games, curated (Phase 48)', () => {
       const sofiaNext = await playAlone(sofia, { level_id: 'NC26.4', question_count: 3 });
       expect(sofiaNext.some((id) => together.includes(id))).toBe(false);
     } finally {
+      await setCheckedQuestions(platform, ORGS.a.slug, true);
       await set(false);
     }
   });

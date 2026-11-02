@@ -42,4 +42,29 @@ describe('home-screen quick actions', () => {
     expect(quickActionRoute('start-lesson', ['tutor'], ASSESS_ONLY)).toBeNull();
     expect(quickActionRoute('record-session', ['tutor'], ASSESS_ONLY)).toBeNull();
   });
+
+  it('offer "Play <tile>" where Quest is on, only for a tile code (never a typed favorite name)', () => {
+    const QUEST = { feature_quest: true, gamify_question_quest: true };
+    expect(quickActionItems(['student'], QUEST, 'g4t10')).toEqual([
+      { id: 'play-last', title: 'Play G4T10', icon: 'symbol:play.fill' },
+    ]);
+    // A tutor in a Tutoring space with Quest on: the lesson actions, then Play.
+    expect(quickActionItems(['tutor'], QUEST, 'BA3Q5').map((item) => item.title)).toEqual([
+      'Start a lesson',
+      'Record a lesson',
+      'Play BA3Q5',
+    ]);
+    // A favorite's name may carry a person's name: never on a system surface.
+    expect(quickActionItems(['student'], QUEST, "Sofia's Friday")).toEqual([]);
+    expect(quickActionItems(['student'], QUEST, null)).toEqual([]);
+    expect(quickActionItems(['student'], { feature_quest: false }, 'G4T10')).toEqual([]);
+    expect(quickActionItems(undefined, QUEST, 'G4T10')).toEqual([]);
+  });
+
+  it('lead "Play" to the last-quest screen only while Quest is on', () => {
+    const QUEST = { feature_quest: true, gamify_question_quest: true };
+    expect(quickActionRoute('play-last', ['student'], QUEST)).toBe('/quest/play-last');
+    expect(quickActionRoute('play-last', ['student'], { feature_quest: false })).toBeNull();
+    expect(quickActionRoute('play-last', undefined, QUEST)).toBeNull();
+  });
 });

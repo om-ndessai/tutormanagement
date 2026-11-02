@@ -1,3 +1,4 @@
+import { getPlatformAccount } from '../repositories/people.js';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import {
@@ -168,6 +169,17 @@ async function assertGuardiansExist(
   }
 }
 
+/**
+ * Phase 63 (P13): a teen (13-17) admin of their own personal space may not bring people into it --
+ * adding people, letting a request in or opening joining by code is for adults.
+ */
+async function assertAdultMayAddPeople(db: D1Database, userId: string): Promise<void> {
+  const account = await getPlatformAccount(db, userId);
+  if (account?.age_band === '13-17') {
+    throw new ApiError(403, 'forbidden', 'Adding people to a space is for adults. Ask a parent to start a family space.');
+  }
+}
+
 export const usersRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listUsersQuerySchema), async (c) => {
@@ -200,6 +212,7 @@ export const usersRoutes = new Hono<AppEnv>()
    * briefly parentless -- see assertStudentHasGuardian.
    */
   .post('/', requireAdmin, zValidator('json', createUserRequestSchema), async (c) => {
+    await assertAdultMayAddPeople(c.env.DB, c.get('user').id);
     const {
       user: { join_request_user_id: requestUserId, parent_consent: parentConsent, ...fields },
       sections,

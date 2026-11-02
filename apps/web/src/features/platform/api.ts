@@ -11,6 +11,13 @@ import type {
   PlatformAdmin,
   PlatformPerson,
   PlatformPersonUpdateInput,
+  SignInSettingsResponse,
+  PlayConsoleResponse,
+  GuestConsoleResponse,
+  GuestPoolConsoleResponse,
+  GuestSettings,
+  UpdatePlayInput,
+  UpdateSignInSetting,
   SpacePaymentModel,
   UpdateOrganizationInput,
 } from '@tmi/shared';
@@ -184,5 +191,82 @@ export function usePlatformAudit() {
   return useQuery({
     queryKey: platformKeys.audit,
     queryFn: () => apiClient.get<ApiOk<PlatformAuditRow[]>>('/platform/audit'),
+  });
+}
+
+/**
+ * Phase 62 (P0): the sign-in switches -- which ways in, and whether newcomers may sign up, for the web
+ * portal and the app separately, for a while or until changed.
+ */
+export const signInSettingsKey = ['platform', 'sign-in'] as const;
+
+export function useSignInSettings() {
+  return useQuery({
+    queryKey: signInSettingsKey,
+    queryFn: () => apiClient.get<ApiOk<SignInSettingsResponse>>('/platform/sign-in'),
+  });
+}
+
+export function useUpdateSignInSetting() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: UpdateSignInSetting) =>
+      apiClient.put<ApiOk<SignInSettingsResponse>>('/platform/sign-in', input),
+    onSuccess: (result) => queryClient.setQueryData(signInSettingsKey, result),
+  });
+}
+
+/** Phase 62 (P5): the tiles and the Play settings. */
+export const playKey = ['platform', 'play'] as const;
+
+export function usePlayConsole() {
+  return useQuery({ queryKey: playKey, queryFn: () => apiClient.get<ApiOk<PlayConsoleResponse>>('/platform/play') });
+}
+
+export function useSavePlay() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: UpdatePlayInput) => apiClient.put<ApiOk<PlayConsoleResponse>>('/platform/play', input),
+    onSuccess: (result) => queryClient.setQueryData(playKey, result),
+  });
+}
+
+export function useResetTiles() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<ApiOk<PlayConsoleResponse>>('/platform/play/reset-tiles'),
+    onSuccess: (result) => queryClient.setQueryData(playKey, result),
+  });
+}
+
+/** Phase 63 (P16): guest play's settings and pools. */
+export const guestKey = ['platform', 'guest'] as const;
+
+export function useGuestConsole() {
+  return useQuery({ queryKey: guestKey, queryFn: () => apiClient.get<ApiOk<GuestConsoleResponse>>('/platform/guest') });
+}
+
+export function useSaveGuestSettings() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (settings: GuestSettings) => apiClient.put<ApiOk<GuestConsoleResponse>>('/platform/guest', settings),
+    onSuccess: (result) => queryClient.setQueryData(guestKey, result),
+  });
+}
+
+export function useGuestPoolConsole(level: string | null) {
+  return useQuery({
+    queryKey: ['platform', 'guest', 'pool', level] as const,
+    queryFn: () => apiClient.get<ApiOk<GuestPoolConsoleResponse>>(`/platform/guest/pools/${encodeURIComponent(level!)}`),
+    enabled: level !== null,
+  });
+}
+
+export function useSaveGuestPool() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { level_id: string; question_ids: string[] }) =>
+      apiClient.put<ApiOk<GuestPoolConsoleResponse>>(`/platform/guest/pools/${encodeURIComponent(input.level_id)}`, input),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: guestKey }),
   });
 }

@@ -1,0 +1,57 @@
+# Phase 62 (P6/P7): a tile kept as a favorite. Quest on in chmi; Sofia stars G6Q5 on her Play home: the
+# toast says so, the star is filled, and Favorites shows "G6Q5". One tap on the favorite starts the same
+# single player's game at once: the doors, then her first question. quest-games-end.js deletes the
+# favorite and turns the switches off again.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: play-home
+    timeout: 30000
+- assertNotVisible:
+    id: play-favorites
+- scrollUntilVisible:
+    element:
+      id: play-tile-star-G6Q5
+    centerElement: true
+    speed: 15
+# The Play home is long since Phase 64 (My progress, the Daily): a slow scroll, and its momentum let to
+# end, so the tile does not drift on under the header (where a tap lands on the account button).
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-tile-star-G6Q5
+- extendedWaitUntil:
+    visible: 'G6Q5 is in your favorites\.'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: play-favorite-G6Q5
+    direction: UP
+- takeScreenshot: play-favorites
+- tapOn:
+    id: play-favorite-G6Q5
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible:
+      id: game-countdown-number
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 5'
+    timeout: 20000
+- tapOn:
+    id: quest-exit

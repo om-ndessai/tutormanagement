@@ -1,5 +1,9 @@
+import { guestIdsFor } from './guest.js';
+import { approveManyByConsensus } from './quest.js';
 import {
   createGameSchema,
+  INSTITUTE_TIME_ZONE,
+  zonedClockParts,
   rankTeams,
   teamTotals,
   type CreateGameInput,
@@ -9,6 +13,7 @@ import {
   type GameMode,
   type GamePlayerMode,
   type GameStatus,
+  type WaitingGame,
   type GameSummary,
   type QuestionKind,
   type SeriesQuestion,
@@ -71,6 +76,8 @@ async function drawLevelQuestions(
   input: { levelIds: readonly string[]; players: string; seen: boolean; limit: number; includeUnreviewed: boolean },
 ): Promise<SeriesQuestion[]> {
   const statuses = input.includeUnreviewed ? ['approved', 'checked'] : ['approved'];
+  // Phase 63 (P9): the levels' guest questions are reserved for guests.
+  const reserved = await guestIdsFor(db, input.levelIds);
   // Every topic of a level sorts between 'NC26.5.' and 'NC26.5/' ('/' follows '.').
   const ranges = input.levelIds.map(() => '(q.topic_id >= ? AND q.topic_id < ?)').join(' OR ');
   const result = await db
@@ -78,20 +85,21 @@ async function drawLevelQuestions(
       // org-scope: the platform bank's questions, drawn for a game, against what this organization's
       // players have seen here (the subquery names the organization).
       `SELECT * FROM (
-         SELECT q.id, q.kind, q.stem, q.choices, q.answer, q.solution,
+         SELECT q.id, q.kind, q.stem, q.choices, q.answer, q.solution, q.status,
                 (SELECT MAX(s.seen_at) FROM quest_game_seen s
                   WHERE s.organization_id = ? AND s.question_id = q.id
                     AND s.user_id IN (SELECT value FROM json_each(?))) AS last_seen
          FROM questions q
          WHERE (${ranges}) AND q.status IN (${statuses.map(() => '?').join(', ')})
            AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
+           AND q.id NOT IN (SELECT value FROM json_each(?))
        )
        WHERE last_seen IS ${input.seen ? 'NOT NULL' : 'NULL'}
        ORDER BY ${input.seen ? 'last_seen, random()' : 'random()'}
        LIMIT ?`,
     )
-    .bind(org, input.players, ...input.levelIds.flatMap((id) => [`${id}.`, `${id}/`]), ...statuses, input.limit)
-    .all<{ id: string; kind: QuestionKind; stem: string; choices: string; answer: string; solution: string }>();
+    .bind(org, input.players, ...input.levelIds.flatMap((id) => [`${id}.`, `${id}/`]), ...statuses, reserved, input.limit)
+    .all<{ id: string; kind: QuestionKind; stem: string; choices: string; answer: string; solution: string; status: string }>();
   return (result.results ?? []).map((row) => ({
     id: row.id,
     kind: row.kind,
@@ -99,6 +107,7 @@ async function drawLevelQuestions(
     choices: JSON.parse(row.choices) as string[],
     answer: row.answer,
     solution: row.solution,
+    beta: row.status === 'checked',
   }));
 }
 
@@ -303,13 +312,73 @@ export async function writeGameResults(db: D1Database, org: OrgId, game: EngineG
           `INSERT INTO quest_game_seen (organization_id, user_id, question_id, game_id, seen_at)
            SELECT ?1, u.value, q.value, ?2, ?3
            FROM json_each(?4) AS t, json_each(t.value, '$.users') AS u, json_each(t.value, '$.questions') AS q
-           WHERE true
+           -- Only for players still in the space, and a game still on record: the table's trigger would
+           -- refuse either, fail the whole results batch and loop the object's alarm every minute.
+           WHERE EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = ?1 AND m.user_id = u.value)
+             AND EXISTS (SELECT 1 FROM quest_games g WHERE g.organization_id = ?1 AND g.id = ?2)
            ON CONFLICT (organization_id, user_id, question_id) DO UPDATE SET game_id = excluded.game_id, seen_at = excluded.seen_at`,
         )
         .bind(org, game.id, iso(game.ended_at ?? Date.now()), JSON.stringify(seenRows)),
     );
   }
+  // Phase 62 (P2): who answered what correctly -- the answering player alone, not their teammates --
+  // so game answers count toward the two-right-answers rule beside Question Quest's.
+  const right = correctGameAnswers(game);
+  if (right.length > 0 && seenRows.length > 0) {
+    statements.push(
+      db
+        .prepare(
+          `UPDATE quest_game_seen SET correct = 1
+           WHERE organization_id = ?1
+             AND EXISTS (SELECT 1 FROM json_each(?2) AS r
+                         WHERE json_extract(r.value, '$.u') = quest_game_seen.user_id
+                           AND json_extract(r.value, '$.q') = quest_game_seen.question_id)`,
+        )
+        .bind(org, JSON.stringify(right.map((pair) => ({ u: pair.userId, q: pair.questionId })))),
+    );
+  }
+  // Phase 64 (P17): the day each answering player played, on the space's clock, for the weekly streak.
+  // `game_answers`, apart from Question Quest's `answers`; only players who answered; a player who has
+  // since left is passed over (the EXISTS), so one departure cannot fail the batch and loop the alarm.
+  const answered = new Map<string, number>();
+  for (const answer of game.teams.flatMap((team) => team.answers)) {
+    if (!answer.skipped) answered.set(answer.user_id, (answered.get(answer.user_id) ?? 0) + 1);
+  }
+  if (answered.size > 0) {
+    const zone = await db.prepare('SELECT time_zone FROM organizations WHERE id = ?').bind(org).first<{ time_zone: string }>();
+    const day = zonedClockParts(new Date(game.ended_at ?? Date.now()).toISOString(), zone?.time_zone ?? INSTITUTE_TIME_ZONE).day;
+    statements.push(
+      db
+        .prepare(
+          `INSERT INTO activity_days (organization_id, user_id, day, game_answers)
+           SELECT ?1, json_extract(a.value, '$.u'), ?2, json_extract(a.value, '$.n')
+           FROM json_each(?3) AS a
+           WHERE EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = ?1 AND m.user_id = json_extract(a.value, '$.u'))
+           ON CONFLICT (organization_id, user_id, day) DO UPDATE SET game_answers = game_answers + excluded.game_answers`,
+        )
+        .bind(org, day, JSON.stringify([...answered].map(([u, n]) => ({ u, n })))),
+    );
+  }
   await db.batch(statements);
+  if (right.length === 0) return;
+  try {
+    // The latest correct answerer of each question, as reviewed_by.
+    const last = new Map<string, string>();
+    for (const pair of right) last.set(pair.questionId, pair.userId);
+    await approveManyByConsensus(db, last);
+  } catch (error) {
+    // The results are written either way; the count runs again at the next correct answer.
+    console.error('Quest consensus check after a game failed', error);
+  }
+}
+
+/** Each correct, unskipped answer of a game: who gave it, to which question, in the order given. */
+export function correctGameAnswers(game: EngineGame): { userId: string; questionId: string }[] {
+  return game.teams
+    .flatMap((team) => team.answers)
+    .filter((answer) => answer.correct && !answer.skipped)
+    .sort((a, b) => a.at - b.at)
+    .map((answer) => ({ userId: answer.user_id, questionId: answer.question_id }));
 }
 
 /** A person's games here, newest first: those they host or play -- an admin's, every one. */
@@ -382,24 +451,41 @@ interface FavoriteRow {
   id: string;
   name: string;
   config: string;
+  roster: string | null;
   updated_at: string;
+}
+
+function parseRoster(raw: string | null): string[] | null {
+  if (!raw) return null;
+  try {
+    const value = JSON.parse(raw) as unknown;
+    return Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : null;
+  } catch {
+    return null;
+  }
 }
 
 /** A stored favorite, its settings checked again by the shared schema; null when they no longer parse. */
 function toFavorite(row: FavoriteRow): GameFavorite | null {
   let parsed: ReturnType<typeof createGameSchema.safeParse>;
   try {
-    parsed = createGameSchema.safeParse(JSON.parse(row.config));
+    const raw = JSON.parse(row.config) as Record<string, unknown>;
+    // A single player's stored settings carry max_teams 1, which the schema's input refuses (it
+    // fills the single-player values itself): drop it, or every such favorite would read as none.
+    if (raw.players === 'single') delete raw.max_teams;
+    parsed = createGameSchema.safeParse(raw);
   } catch {
     return null;
   }
-  return parsed.success ? { id: row.id, name: row.name, config: parsed.data, updated_at: row.updated_at } : null;
+  return parsed.success
+    ? { id: row.id, name: row.name, config: parsed.data, roster: parseRoster(row.roster), updated_at: row.updated_at }
+    : null;
 }
 
 export async function listFavorites(db: D1Database, org: OrgId, userId: string): Promise<GameFavorite[]> {
   const result = await db
     .prepare(
-      `SELECT id, name, config, updated_at FROM quest_game_favorites
+      `SELECT id, name, config, roster, updated_at FROM quest_game_favorites
        WHERE organization_id = ? AND user_id = ?
        ORDER BY updated_at DESC`,
     )
@@ -412,8 +498,10 @@ export async function listFavorites(db: D1Database, org: OrgId, userId: string):
 export async function saveFavorite(
   db: D1Database,
   org: OrgId,
-  input: { userId: string; name: string; config: CreateGameInput },
+  input: { userId: string; name: string; config: CreateGameInput; roster?: string[] | null },
 ): Promise<{ favorite: GameFavorite; created: boolean }> {
+  // Phase 62 (P8): absent leaves the roster as it is (an older app never wipes it); null clears it.
+  const roster = input.roster === undefined ? undefined : input.roster === null || input.roster.length === 0 ? null : JSON.stringify(input.roster);
   const existing = await db
     .prepare('SELECT id FROM quest_game_favorites WHERE organization_id = ? AND user_id = ? AND name = ?')
     .bind(org, input.userId, input.name)
@@ -423,22 +511,23 @@ export async function saveFavorite(
   if (existing) {
     await db
       .prepare(
-        `UPDATE quest_game_favorites SET name = ?, config = ?, updated_at = ?
+        `UPDATE quest_game_favorites SET name = ?, config = ?, updated_at = ?,
+                roster = CASE WHEN ? = 1 THEN ? ELSE roster END
          WHERE organization_id = ? AND user_id = ? AND id = ?`,
       )
-      .bind(input.name, config, now, org, input.userId, existing.id)
+      .bind(input.name, config, now, roster === undefined ? 0 : 1, roster ?? null, org, input.userId, existing.id)
       .run();
   } else {
     await db
       .prepare(
-        `INSERT INTO quest_game_favorites (id, organization_id, user_id, name, config, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO quest_game_favorites (id, organization_id, user_id, name, config, roster, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       )
-      .bind(crypto.randomUUID(), org, input.userId, input.name, config, now, now)
+      .bind(crypto.randomUUID(), org, input.userId, input.name, config, roster ?? null, now, now)
       .run();
   }
   const row = await db
-    .prepare('SELECT id, name, config, updated_at FROM quest_game_favorites WHERE organization_id = ? AND user_id = ? AND name = ?')
+    .prepare('SELECT id, name, config, roster, updated_at FROM quest_game_favorites WHERE organization_id = ? AND user_id = ? AND name = ?')
     .bind(org, input.userId, input.name)
     .first<FavoriteRow>();
   return { favorite: toFavorite(row!)!, created: !existing };
@@ -452,3 +541,84 @@ export async function deleteFavorite(db: D1Database, org: OrgId, userId: string,
     .first<{ name: string }>();
   return row?.name ?? null;
 }
+
+// ---------------------------------------------------------------------------
+// Phase 62 (P8): rosters, invitations and "Waiting for you"
+// ---------------------------------------------------------------------------
+
+/**
+ * The members a reader may put on a roster (R27): in a self-serve space, every live member (a family's
+ * own space); in any other, an admin may name anyone and everyone else their own family -- the people
+ * they are a guardian of, and their own guardians. First names only. Never the reader themselves.
+ */
+export async function rosterMembers(
+  db: D1Database,
+  org: OrgId,
+  reader: { id: string; admin: boolean; selfServe: boolean },
+): Promise<{ id: string; full_name: string }[]> {
+  const everyone = reader.selfServe || reader.admin;
+  const result = await db
+    .prepare(
+      `SELECT u.id, u.full_name FROM org_members m JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+       WHERE m.organization_id = ?1 AND m.status = 'active' AND m.removed_at IS NULL AND m.user_id <> ?2
+         AND (?3 = 1 OR EXISTS (SELECT 1 FROM guardianships g WHERE g.organization_id = ?1
+                                 AND ((g.guardian_user_id = ?2 AND g.dependent_user_id = m.user_id)
+                                   OR (g.dependent_user_id = ?2 AND g.guardian_user_id = m.user_id))))
+       ORDER BY u.full_name`,
+    )
+    .bind(org, reader.id, everyone ? 1 : 0)
+    .all<{ id: string; full_name: string }>();
+  return result.results ?? [];
+}
+
+/** Invites a game's roster: the ids that are members the host may name (`allowed`), the host left out. */
+export async function inviteToGame(
+  db: D1Database,
+  org: OrgId,
+  input: { gameId: string; hostId: string; userIds: readonly string[]; allowed: ReadonlySet<string> },
+): Promise<number> {
+  const ids = input.userIds.filter((id) => id !== input.hostId && input.allowed.has(id));
+  if (ids.length === 0) return 0;
+  const insert = db.prepare(
+    `INSERT INTO quest_game_invites (organization_id, game_id, user_id) VALUES (?, ?, ?)
+     ON CONFLICT (game_id, user_id) DO NOTHING`,
+  );
+  await db.batch(ids.map((id) => insert.bind(org, input.gameId, id)));
+  return ids.length;
+}
+
+/**
+ * "Waiting for you": games a roster invited the reader to in the last day, in the lobby or running with
+ * joining open, that they have not joined. One indexed read of their invitations.
+ */
+export async function waitingGames(db: D1Database, org: OrgId, userId: string): Promise<WaitingGame[]> {
+  const since = new Date(Date.now() - 24 * 3_600_000).toISOString();
+  const result = await db
+    .prepare(
+      `SELECT g.id AS game_id, g.code, u.full_name AS host_name, g.level_id, g.mode, g.question_count,
+              g.duration_seconds, g.status, g.created_at
+       FROM quest_game_invites i
+       JOIN quest_games g ON g.organization_id = i.organization_id AND g.id = i.game_id
+       JOIN users u ON u.id = g.host_user_id
+       WHERE i.organization_id = ?1 AND i.user_id = ?2 AND i.created_at >= ?3
+         AND (g.status = 'lobby' OR (g.status = 'running' AND g.late_join = 1))
+         AND NOT EXISTS (SELECT 1 FROM quest_game_players p
+                         WHERE p.organization_id = g.organization_id AND p.game_id = g.id AND p.user_id = ?2)
+       ORDER BY i.created_at DESC
+       LIMIT 10`,
+    )
+    .bind(org, userId, since)
+    .all<{
+      game_id: string;
+      code: string;
+      host_name: string;
+      level_id: string;
+      mode: GameMode;
+      question_count: number | null;
+      duration_seconds: number | null;
+      status: GameStatus;
+      created_at: string;
+    }>();
+  return (result.results ?? []).map(({ host_name, ...row }) => ({ ...row, host_first_name: firstNameOf(host_name) }));
+}
+

@@ -25,6 +25,7 @@ export function QuestChoices({
   selected,
   onChoose,
   testIDPrefix = 'quest-choice',
+  testIDFor,
 }: {
   questionId: string;
   choices: string[];
@@ -32,6 +33,8 @@ export function QuestChoices({
   onChoose: (index: number) => void;
   /** Each choice is `<prefix>-A`…: Quest's `quest-choice`, a game's `game-choice` (Phase 46). */
   testIDPrefix?: string;
+  /** Phase 64: each choice's own testID (the Daily's `daily-choice-0`, the web's), in place of the prefix's. */
+  testIDFor?: (index: number) => string;
 }) {
   const theme = useAppTheme();
   const html = useMemo(
@@ -82,7 +85,7 @@ export function QuestChoices({
               return (
                 <Pressable
                   key={index}
-                  testID={`${testIDPrefix}-${LETTERS[index]}`}
+                  testID={testIDFor ? testIDFor(index) : `${testIDPrefix}-${LETTERS[index]}`}
                   accessibilityRole="radio"
                   accessibilityLabel={questChoiceSpeech(text, index)}
                   accessibilityState={{ checked: chosen }}
@@ -108,7 +111,7 @@ export function QuestChoices({
             return (
               <Pressable
                 key={index}
-                testID={`${testIDPrefix}-${LETTERS[index]}`}
+                testID={testIDFor ? testIDFor(index) : `${testIDPrefix}-${LETTERS[index]}`}
                 accessibilityRole="radio"
                 accessibilityLabel={questChoiceSpeech(text, index)}
                 accessibilityState={{ checked: chosen }}

@@ -82,6 +82,8 @@ test.describe('more ways to sign in', () => {
       'signing up',
     );
     expect(made.user.full_name).toBe('Riley Newcomer');
+    // Phase 63 (P13): with a space of their own, named for them, to land in.
+    expect(made.memberships).toEqual([expect.objectContaining({ name: "Riley's space", roles: ['admin'], is_default: true })]);
 
     const back = await unwrap<any>(
       await page.request.post('/api/auth/apple', {

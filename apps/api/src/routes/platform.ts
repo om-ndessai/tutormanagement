@@ -26,10 +26,52 @@ import {
   type OrganizationListItem,
   type PlatformAdmin,
   type PlatformPerson,
+  EMPTY_SIGN_IN_SETTINGS,
+  SIGN_IN_CLIENTS,
+  SIGN_IN_CLIENT_LABELS,
+  SWITCHABLE_PROVIDERS,
+  describeProviders,
+  effectiveSignIn,
+  updateSignInSettingSchema,
+  type SignInSettings,
+  type SignInSettingsResponse,
+  updatePlaySchema,
+  GUEST_POOL_DEFAULT,
+  GUEST_POOL_MAX,
+  GUEST_POOL_MIN,
+  QUESTION_BANK_LEVEL_IDS,
+  guestPoolUpdateSchema,
+  guestSettingsSchema,
+  levelLabel,
+  type GuestConsoleResponse,
+  type GuestPoolConsoleResponse,
+  type PlayConsoleResponse,
+  type QuestTile,
 } from '@tmi/shared';
 
 import type { AppEnv, Env } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
+import { configuredProviders } from '../lib/identity.js';
+import { signInDefaults } from '../lib/sign-in.js';
+import {
+  getGuestSettings,
+  getPlay,
+  getSignInSettings,
+  putGuestSettings,
+  putPlay,
+  putSignInSettings,
+  resetTiles,
+} from '../repositories/platform-settings.js';
+import {
+  bumpVersion,
+  guestPoolSizes,
+  guestVersion,
+  poolCandidates,
+  poolIds,
+  setGuestPool,
+  suggestPoolFor,
+} from '../repositories/guest.js';
+import { forgetGuestSizes } from '../lib/guest.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { zValidator } from '../lib/validate.js';
@@ -180,7 +222,10 @@ async function requireOrganization(env: Env, id: string): Promise<Organization> 
 export const platformRoutes = new Hono<AppEnv>()
 
   .get('/organizations', async (c) => {
-    const body: ApiOk<OrganizationListItem[]> = { data: await listOrganizations(c.env.DB) };
+    // Phase 63 (P13): newcomers' personal spaces only with ?personal=1.
+    const body: ApiOk<OrganizationListItem[]> = {
+      data: await listOrganizations(c.env.DB, { personal: c.req.query('personal') === '1' }),
+    };
     return c.json(body);
   })
 
@@ -294,7 +339,12 @@ export const platformRoutes = new Hono<AppEnv>()
             ? ''
             : input.quest_trusted
               ? '; its Quest reviews now approve questions'
-              : '; its Quest reviews now suggest approvals'),
+              : '; its Quest reviews now suggest approvals') +
+          (input.checked_questions === undefined || input.checked_questions === before.checked_questions
+            ? ''
+            : input.checked_questions
+              ? '; its games, tiles and assessments now draw checked questions'
+              : '; its games, tiles and assessments now draw approved questions only'),
         entity_type: 'organization',
         entity_id: id,
       });
@@ -708,4 +758,195 @@ export const platformRoutes = new Hono<AppEnv>()
   .get('/audit', async (c) => {
     const body: ApiOk<Record<string, unknown>[]> = { data: await listPlatformAudit(c.env.DB, 100) };
     return c.json(body);
+  })
+
+  /**
+   * Phase 62 (P0): the sign-in switches -- which ways in, and whether newcomers may sign up, for the
+   * web portal and for the app separately. Each client shows what is in force, the Worker's defaults
+   * (its vars) and the stored setting; `configured` lists the providers this Worker has set up.
+   */
+  .get('/sign-in', async (c) => {
+    const body: ApiOk<SignInSettingsResponse> = { data: await signInStatus(c.env) };
+    return c.json(body);
+  })
+
+  /**
+   * Phase 62 (P0): one client's switches, for a number of hours or until changed -- or `null`, back
+   * to the Worker's defaults. Google is always on, and a provider not set up here is never offered,
+   * whatever is stored. Logged as a platform line.
+   */
+  .put('/sign-in', zValidator('json', updateSignInSettingSchema), async (c) => {
+    const { client, setting } = c.req.valid('json');
+    const person = c.get('person');
+    const now = new Date();
+    const current = await getSignInSettings(c.env.DB, 0);
+    const next: SignInSettings = {
+      ...current,
+      [client]: setting
+        ? {
+            providers: SWITCHABLE_PROVIDERS.filter((provider) => setting.providers.includes(provider)),
+            signup_open: setting.signup_open,
+            until: setting.hours === null ? null : new Date(now.getTime() + setting.hours * 3_600_000).toISOString(),
+          }
+        : null,
+    };
+    await putSignInSettings(c.env.DB, next, person.id);
+    const where = SIGN_IN_CLIENT_LABELS[client].toLowerCase();
+    await recordAudit(c.env.DB, person, 'platform', {
+      action: 'platform.sign_in_updated',
+      description: setting
+        ? `Set sign-in for the ${where}: ${describeProviders(['google', ...setting.providers])}, ` +
+          `sign-up ${setting.signup_open ? 'open' : 'closed'}` +
+          (setting.hours === null ? ', until changed.' : `, for ${setting.hours} hour${setting.hours === 1 ? '' : 's'}.`)
+        : `Returned sign-in for the ${where} to this address's defaults.`,
+      entity_type: 'platform',
+      entity_id: `sign_in.${client}`,
+    });
+    const body: ApiOk<SignInSettingsResponse> = { data: await signInStatus(c.env) };
+    return c.json(body);
+  })
+
+  /**
+   * Phase 62 (P5): the tiles and the Play settings -- the Play home's switch, the members' minimum
+   * depth, and the ordered list (each tile's code derived from its shape). `reset_tiles` puts the
+   * default list back.
+   */
+  .get('/play', async (c) => {
+    const play = await getPlay(c.env.DB, 0);
+    const body: ApiOk<PlayConsoleResponse> = { data: play };
+    return c.json(body);
+  })
+  .put('/play', zValidator('json', updatePlaySchema), async (c) => {
+    const input = c.req.valid('json');
+    const before = await getPlay(c.env.DB, 0);
+    await putPlay(c.env.DB, input, c.get('person').id);
+    const after = await getPlay(c.env.DB, 0);
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.play_updated',
+      description: describePlayChange(before, after),
+      entity_type: 'platform',
+      entity_id: 'play',
+    });
+    const body: ApiOk<PlayConsoleResponse> = { data: after };
+    return c.json(body);
+  })
+  .post('/play/reset-tiles', async (c) => {
+    await resetTiles(c.env.DB);
+    const after = await getPlay(c.env.DB, 0);
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.play_updated',
+      description: `Put back the default tiles (${after.tiles.length}).`,
+      entity_type: 'platform',
+      entity_id: 'play',
+    });
+    const body: ApiOk<PlayConsoleResponse> = { data: after };
+    return c.json(body);
+  })
+
+  /** Phase 63 (P16): guest play -- its settings, each level's pool size and the version. */
+  .get('/guest', async (c) => {
+    const body: ApiOk<GuestConsoleResponse> = { data: await guestConsole(c.env) };
+    return c.json(body);
+  })
+  .put('/guest', zValidator('json', guestSettingsSchema), async (c) => {
+    const settings = c.req.valid('json');
+    const before = await getGuestSettings(c.env.DB, 0);
+    await putGuestSettings(c.env.DB, settings, c.get('person').id);
+    await c.env.DB.batch([bumpVersion(c.env.DB)]);
+    const changes: string[] = [];
+    if (before.enabled !== settings.enabled) changes.push(`guest play ${settings.enabled ? 'on' : 'off'}`);
+    if (before.assessment_enabled !== settings.assessment_enabled) changes.push(`guest assessment ${settings.assessment_enabled ? 'on' : 'off'}`);
+    if (before.nudge_after !== settings.nudge_after) changes.push(`the sign-up offer after question ${settings.nudge_after}`);
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.guest_updated',
+      description: changes.length ? `Guest play: ${changes.join('; ')}.` : 'Guest play: wording or timing changed.',
+      entity_type: 'platform',
+      entity_id: 'guest',
+    });
+    const body: ApiOk<GuestConsoleResponse> = { data: await guestConsole(c.env) };
+    return c.json(body);
+  })
+  .get('/guest/pools/:level', async (c) => {
+    const level = c.req.param('level');
+    if (!(QUESTION_BANK_LEVEL_IDS as readonly string[]).includes(level)) throw ApiError.notFound('No such level.');
+    const size = Number(c.req.query('size') ?? GUEST_POOL_DEFAULT);
+    const current = await poolCandidates(c.env.DB, await poolIds(c.env.DB, level));
+    const suggested = await suggestPoolFor(c.env.DB, level, Math.min(GUEST_POOL_MAX, Math.max(GUEST_POOL_MIN, size || GUEST_POOL_DEFAULT)));
+    const body: ApiOk<GuestPoolConsoleResponse> = {
+      data: { level_id: level, current, suggestion: await poolCandidates(c.env.DB, suggested.map((q) => q.id)) },
+    };
+    return c.json(body);
+  })
+  .put('/guest/pools/:level', zValidator('json', guestPoolUpdateSchema), async (c) => {
+    const level = c.req.param('level');
+    const input = c.req.valid('json');
+    if (input.level_id !== level || !(QUESTION_BANK_LEVEL_IDS as readonly string[]).includes(level)) {
+      throw ApiError.badRequest('The level does not match.');
+    }
+    await setGuestPool(c.env.DB, level, input.question_ids);
+    forgetGuestSizes();
+    const current = await poolCandidates(c.env.DB, await poolIds(c.env.DB, level));
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.guest_updated',
+      description: `Guest play: ${levelLabel(level)}'s free questions set (${current.length}).`,
+      entity_type: 'platform',
+      entity_id: `guest.${level}`,
+    });
+    const body: ApiOk<GuestPoolConsoleResponse> = { data: { level_id: level, current, suggestion: [] } };
+    return c.json(body);
   });
+
+/** Phase 63 (P16): what the console shows for guest play. */
+async function guestConsole(env: Env): Promise<GuestConsoleResponse> {
+  const [settings, sizes, version] = await Promise.all([getGuestSettings(env.DB, 0), guestPoolSizes(env.DB), guestVersion(env.DB)]);
+  return {
+    settings,
+    pools: QUESTION_BANK_LEVEL_IDS.map((level_id) => ({ level_id, size: sizes.get(level_id) ?? 0 })),
+    version,
+    address_allows: env.GUEST_PLAY === 'true',
+  };
+}
+
+/** "Play home on; members need 50 questions; tiles: added G4T15, removed BA5T10, 3 changed." */
+function describePlayChange(
+  before: { settings: { play_home: boolean; min_depth: number; daily: boolean }; tiles: QuestTile[] },
+  after: { settings: { play_home: boolean; min_depth: number; daily: boolean }; tiles: QuestTile[] },
+): string {
+  const parts: string[] = [];
+  if (before.settings.play_home !== after.settings.play_home) parts.push(`Play home ${after.settings.play_home ? 'on' : 'off'}`);
+  if (before.settings.daily !== after.settings.daily) parts.push(`the Daily set ${after.settings.daily ? 'on' : 'off'}`);
+  if (before.settings.min_depth !== after.settings.min_depth) parts.push(`members' tiles need ${after.settings.min_depth} questions`);
+  const was = new Map(before.tiles.map((tile) => [tile.code, tile]));
+  const now = new Map(after.tiles.map((tile) => [tile.code, tile]));
+  const added = after.tiles.filter((tile) => !was.has(tile.code)).map((tile) => tile.code);
+  const removed = before.tiles.filter((tile) => !now.has(tile.code)).map((tile) => tile.code);
+  const changed = after.tiles.filter((tile) => {
+    const old = was.get(tile.code);
+    return old && (old.guest !== tile.guest || old.members !== tile.members);
+  }).length;
+  const reordered = !added.length && !removed.length && before.tiles.map((t) => t.code).join() !== after.tiles.map((t) => t.code).join();
+  if (added.length) parts.push(`added ${added.slice(0, 5).join(', ')}${added.length > 5 ? ` and ${added.length - 5} more` : ''}`);
+  if (removed.length) parts.push(`removed ${removed.slice(0, 5).join(', ')}${removed.length > 5 ? ` and ${removed.length - 5} more` : ''}`);
+  if (changed) parts.push(`${changed} tile${changed === 1 ? '' : 's'} changed`);
+  if (reordered) parts.push('tiles reordered');
+  return parts.length ? `Play settings: ${parts.join('; ')}.` : 'Saved the Play settings unchanged.';
+}
+
+/** What the console shows for the sign-in switches, per client. */
+async function signInStatus(env: Env): Promise<SignInSettingsResponse> {
+  const now = new Date();
+  const settings = await getSignInSettings(env.DB, now.getTime());
+  const defaults = signInDefaults(env);
+  return {
+    configured: configuredProviders(env),
+    clients: SIGN_IN_CLIENTS.map((client) => {
+      const fallback = effectiveSignIn(defaults, EMPTY_SIGN_IN_SETTINGS, client, now);
+      return {
+        client,
+        effective: effectiveSignIn(defaults, settings, client, now),
+        defaults: { providers: fallback.providers, signup_open: fallback.signup_open },
+        setting: settings[client],
+      };
+    }),
+  };
+}

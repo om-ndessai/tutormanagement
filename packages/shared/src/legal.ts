@@ -6,31 +6,37 @@
 // accepted, so a change of wording is a new version, never an edit in place.
 
 /** The version a newcomer accepts (Phase 52 records it). A wording change gets a new date. */
-export const TERMS_VERSION = '2026-10-31';
-export const PRIVACY_VERSION = '2026-10-31';
+export const TERMS_VERSION: string = '2026-11-01';
+export const PRIVACY_VERSION: string = '2026-11-01';
 
 /**
  * Earlier versions a sign-up may still accept, recorded as sent: an app build already on a phone
  * shows and sends the version it was built with. 2026-10-31 only reworded "organization" as
- * "space" (Phase 59), so 2026-10-29 is still a fair thing to have agreed to.
+ * "space" (Phase 59), so 2026-10-29 is still a fair thing to have agreed to; 2026-11-01 only adds
+ * playing as a guest and anonymous counts (Phase 63), which take nothing more from an account.
  */
-export const ACCEPTED_LEGAL_VERSIONS: readonly string[] = ['2026-10-31', '2026-10-29'];
+export const ACCEPTED_LEGAL_VERSIONS: readonly string[] = ['2026-11-01', '2026-10-31', '2026-10-29'];
 
 /**
  * While true, both pages say they are a draft. The owner approved version 2026-10-29 on 2026-10-29
- * (docs/stable-release-checklist.md, A3), without a lawyer's review, and version 2026-10-31 on 2026-11-01.
+ * (docs/stable-release-checklist.md, A3), without a lawyer's review, version 2026-10-31 on 2026-11-01, and
+ * version 2026-11-01 (guest play and anonymous counts, Phase 63) on 2026-11-01.
  */
 export const LEGAL_DRAFT = false;
 
-/** Phase 59's draft version, approved by the owner on 2026-11-01: now TERMS_VERSION. */
-export const LEGAL_NEXT_VERSION = '2026-10-31';
+/**
+ * The next version, a DRAFT shown at /privacy?draft=1 and /terms?draft=1 until the owner approves it.
+ * While it equals TERMS_VERSION there is no draft: Phase 63's (2026-11-01) was approved and published.
+ */
+export const LEGAL_NEXT_VERSION: string = '2026-11-01';
 
 export interface LegalSection {
   heading: string;
   paragraphs: string[];
 }
 
-export const PRIVACY_SECTIONS: LegalSection[] = [
+/** Version 2026-10-31's privacy text, which 2026-11-01 builds on. */
+const PRIVACY_SECTIONS_2026_10_31: LegalSection[] = [
   {
     heading: 'Who we are',
     paragraphs: [
@@ -143,8 +149,34 @@ export const TERMS_SECTIONS: LegalSection[] = [
 ];
 
 /**
- * Phase 59 kept the next version apart while it waited for approval; it is the published one now.
- * Older callers of these names read the published text.
+ * The published privacy text, version 2026-11-01 (Phase 63, P15): 2026-10-31's with the cookies paragraph
+ * changed and a section on playing as a guest added after "What we keep". The terms are unchanged.
  */
+export const PRIVACY_SECTIONS: LegalSection[] = PRIVACY_SECTIONS_2026_10_31.flatMap((section) => {
+  if (section.heading === 'Cookies') {
+    return [
+      {
+        heading: 'Cookies and counts',
+        paragraphs: [
+          'Only what the platform needs: one cookie keeps you signed in, and others remember your space and whether you have seen the tour.',
+          'We count how Aimtrue is used, anonymously -- for example how many quests are started and how many people sign up -- to learn what helps. The counts carry no cookie, no identifier and no IP address, and no third-party analytics or advertising code is used.',
+        ],
+      },
+    ];
+  }
+  if (section.heading === 'What we keep') {
+    return [
+      section,
+      {
+        heading: 'Playing as a guest',
+        paragraphs: [
+          'You may play some quests and try an assessment without an account. Your answers are marked on your device and are never sent to us. Your device remembers your grade, the free questions it has played and your best scores; nothing about a guest is stored by us.',
+        ],
+      },
+    ];
+  }
+  return [section];
+});
+/** The draft's text: the published text while there is no draft. */
 export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS;
 export const TERMS_SECTIONS_NEXT: LegalSection[] = TERMS_SECTIONS;

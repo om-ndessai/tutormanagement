@@ -14,8 +14,15 @@ import {
   type QuestStudent,
   type QuestSummary,
   type User,
+  checkedQuestionsOn,
+  tileWords,
+  type CanvasAssessmentLevelId,
+  type MemberTile,
+  type MemberTilesResponse,
 } from '@tmi/shared';
 
+import { cachedDrawableCounts } from '../repositories/level-counts.js';
+import { getPlay } from '../repositories/platform-settings.js';
 import type { AppEnv } from '../types.js';
 import type { OrgId } from '../lib/org.js';
 import { recordAudit } from '../lib/audit.js';
@@ -38,6 +45,8 @@ import {
   setQuestLevel,
 } from '../repositories/quest.js';
 import { questGameRoutes } from './quest-games.js';
+import { habitRoutes } from './habit.js';
+import { bestScores } from '../repositories/habit.js';
 
 // Question Quest (Phase 42, docs/gamification-plan.md): signed-in students
 // answer the bank's unapproved questions; their tutors approve or flag them;
@@ -95,9 +104,41 @@ async function reviewQueue(db: D1Database, org: OrgId, reviewer: { id: string; a
 }
 
 export const questRoutes = new Hono<AppEnv>()
+  /**
+   * Phase 62 (P5): the tiles a member here may start in one tap -- those shown to members, in the
+   * curricula this space offers, at levels with at least the console's minimum of questions to play
+   * (the platform's cached counts, P4). Any member, not students only.
+   */
+  .get('/tiles', async (c) => {
+    const org = c.get('org');
+    const { settings, tiles } = await getPlay(c.env.DB);
+    const offered = await listOrganizationCurricula(c.env.DB, org.id);
+    const live = new Set(offered.filter((cur) => !cur.retired).map((cur) => cur.id));
+    const counts = new Map(
+      (await cachedDrawableCounts(c.env.DB, checkedQuestionsOn(org), live)).map((level) => [level.level_id, level]),
+    );
+    // Phase 64 (P20): the reader's best of each single-player shape, for the tile of that shape.
+    const bests = new Map(
+      (await bestScores(c.env.DB, org.id, c.get('user').id)).map((b) => [
+        `${b.level_id}|${b.mode}|${b.question_count ?? ''}|${b.duration_seconds ?? ''}`,
+        b.best,
+      ]),
+    );
+    const shown: MemberTile[] = tiles.flatMap((tile) => {
+      const count = counts.get(tile.level_id as CanvasAssessmentLevelId);
+      if (!tile.members || tile.kind !== 'quest' || !count || count.available < settings.min_depth) return [];
+      const shape = `${tile.level_id}|${tile.mode}|${tile.mode === 'count' ? tile.value : ''}|${tile.mode === 'timed' ? tile.value * 60 : ''}`;
+      return [{ ...tile, words: tileWords(tile), available: count.available, beta: count.unreviewed > 0, best: bests.get(shape) ?? null }];
+    });
+    const body: ApiOk<MemberTilesResponse> = { data: { play_home: settings.play_home, daily: settings.daily, tiles: shown } };
+    return c.json(body);
+  })
 
   // Phase 46: Quest Games, for every member (docs/quest-games-plan.md).
   .route('/games', questGameRoutes)
+
+  // Phase 64: the reader's streak and badges, and the Daily set.
+  .route('/', habitRoutes)
 
   // The student's Quest: their level, the next question, their points.
   .get('/me', async (c) => {

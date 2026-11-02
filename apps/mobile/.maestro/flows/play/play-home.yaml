@@ -1,0 +1,78 @@
+# Phase 62 (P6): the members' Play home. Quest on in chmi; Sofia, a student, opens the app and her Home
+# leads with Play: the tiles grouped by curriculum, "Have a code?" at the end. One tap on G6Q5 makes and
+# begins a single player's game: the doors count down and her first question follows ("Question 1 of 5").
+# Exit brings her back to Home, where Continue offers G6Q5 again. The switches are off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - smoke
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: play-home
+    timeout: 15000
+- assertVisible: 'NC standards'
+- scrollUntilVisible:
+    element:
+      id: play-tile-start-G6Q5
+    centerElement: true
+    speed: 15
+# The Play home is long since Phase 64 (My progress, the Daily): a slow scroll, and its momentum let to
+# end, so the tile does not drift on under the header (where a tap lands on the account button).
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: play-home-tiles
+- tapOn:
+    id: play-tile-start-G6Q5
+    waitToSettleTimeoutMs: 500
+# One tap: no wizard, no lobby -- the doors, then the first question.
+- extendedWaitUntil:
+    visible:
+      id: game-countdown-number
+    timeout: 15000
+- assertNotVisible:
+    id: game-lobby-code
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 5'
+    timeout: 20000
+- takeScreenshot: play-home-first-question
+- tapOn:
+    id: quest-exit
+# Exit goes back to Home, where the game was started (from=home); Continue remembers the tile, at the
+# top of the Play home (Home kept its scroll position, down by the tile).
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: play-continue
+    direction: UP
+    timeout: 15000
+- assertVisible:
+    id: play-continue
+    text: '.*Continue G6Q5.*'
+# "Have a code?" sits at the end of the home, under every tile (a long way down on a phone): scrolled to
+# its last line, which can be brought on screen but not centred.
+- scrollUntilVisible:
+    element:
+      text: 'Six characters join a game; eight ask to join a space\.'
+    timeout: 90000
+- assertVisible:
+    id: play-code

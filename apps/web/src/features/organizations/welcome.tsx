@@ -252,7 +252,7 @@ function MakeSpace() {
   );
 }
 
-function DeleteAccount() {
+export function DeleteAccount({ note }: { note?: string } = {}) {
   const remove = useDeleteAccount();
   const [asking, setAsking] = useState(false);
   if (!asking) {
@@ -267,7 +267,7 @@ function DeleteAccount() {
   return (
     <Card className="border-destructive/40 py-0">
       <CardContent className="grid gap-2 p-4 text-sm">
-        <p>Your name, address and sign-in are removed. This cannot be undone.</p>
+        <p>{note ? `${note} ` : ''}Your name, address and sign-in are removed. This cannot be undone.</p>
         <div className="flex gap-2">
           <Button
             variant="destructive"

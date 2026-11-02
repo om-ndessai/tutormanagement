@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 /**
  * Preferences kept on the device. Nothing sensitive: the server chosen, the theme, the last
  * organization (which only picks where a person lands -- the API checks membership on every
- * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), which finished lessons the Now card has thrown confetti for (schedule ids and dates only), and the developer sign-in persona. Never a lesson,
+ * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), which finished lessons the Now card has thrown confetti for (schedule ids and dates only), the last quest started in each space (its code and settings, `readLastQuestRaw`), the developer sign-in persona, and (Phase 63) a guest's memory and the guest pools it has fetched (public questions, kept by their version as the web's browser keeps them). Never a lesson,
  * a note, an amount or an SSN; and never the query cache.
  *
  * One exception, kept apart below (`canvasWork*`): an assessment's handwriting while it is being
@@ -27,6 +27,12 @@ export const STORAGE_KEYS = {
   celebrated: 'tmi.celebrated',
   /** The finished lessons the tutor's Now card has celebrated here (Phase 43): `<schedule id>:<date>` keys, the last 200. */
   lessonsCelebrated: 'tmi.lessonsCelebrated',
+  /**
+   * Phase 63 (P10): what a guest's phone remembers -- their grade, the free questions it has played
+   * (question ids), best scores and tiles played (tile codes), and when the sign-up offer was last
+   * closed. Never sent: nothing about a guest is stored on our side.
+   */
+  guest: 'tmi.guest',
 } as const;
 
 type Key = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
@@ -65,5 +71,50 @@ export async function writeCanvasWork(assessmentId: string, value: string | null
     else await AsyncStorage.setItem(CANVAS_WORK_PREFIX + assessmentId, value);
   } catch {
     // Full storage: the work is still in memory until it is submitted.
+  }
+}
+
+/**
+ * Phase 62 (P6): the last quest started in a space, for the Play home's Continue and the "Play <tile>"
+ * quick action -- its label (a tile's code or a favorite's name) and the game's settings, nothing about
+ * anyone. Kept on the device, as the web keeps it in the browser, so no game writes a server row for it.
+ */
+const LAST_QUEST_PREFIX = 'tmi.lastQuest.';
+
+export async function readLastQuestRaw(space: string): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(LAST_QUEST_PREFIX + space);
+  } catch {
+    return null;
+  }
+}
+
+export async function writeLastQuestRaw(space: string, value: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(LAST_QUEST_PREFIX + space, value);
+  } catch {
+    // Not remembered: Continue simply does not appear.
+  }
+}
+
+/**
+ * Phase 63 (P10): a level's guest pool, kept by its version (the web's `immutable` response): public
+ * questions with their keys, the same for every guest. One key per level; a new version replaces it.
+ */
+const GUEST_POOL_PREFIX = 'tmi.guestPool.';
+
+export async function readGuestPoolRaw(level: string): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(GUEST_POOL_PREFIX + level);
+  } catch {
+    return null;
+  }
+}
+
+export async function writeGuestPoolRaw(level: string, value: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(GUEST_POOL_PREFIX + level, value);
+  } catch {
+    // Not kept: the next quest fetches it again.
   }
 }

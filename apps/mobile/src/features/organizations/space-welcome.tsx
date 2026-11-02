@@ -342,7 +342,11 @@ function MakeSpace() {
   );
 }
 
-function DeleteAccount() {
+/**
+ * "Delete my account", asked first. On the Welcome (in no space), and (Phase 63, P13) on My profile while
+ * the person's only space is their own personal one, which goes with it (`note`).
+ */
+export function DeleteAccount({ note, testID = 'welcome-delete-account' }: { note?: string; testID?: string } = {}) {
   const remove = useDeleteAccount();
   const { signOut } = useAuth();
   const toast = useToast();
@@ -350,7 +354,7 @@ function DeleteAccount() {
 
   function confirm() {
     haptics.warning();
-    Alert.alert('Delete your account?', 'Your name, address and sign-in are removed. This cannot be undone.', [
+    Alert.alert('Delete your account?', `${note ? `${note} ` : ''}Your name, address and sign-in are removed. This cannot be undone.`, [
       { text: 'Keep', style: 'cancel' },
       {
         text: 'Delete',
@@ -367,7 +371,7 @@ function DeleteAccount() {
 
   return (
     <Button
-      testID="welcome-delete-account"
+      testID={testID}
       mode="text"
       onPress={confirm}
       disabled={remove.isPending}

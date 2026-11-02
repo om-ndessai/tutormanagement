@@ -45,6 +45,8 @@ interface OrgRow {
   email_notifications: number;
   canvas_assessments: number;
   canvas_assessments_unreviewed: number;
+  checked_questions: number;
+  personal: number;
   gamify_question_quest: number;
   canvas_assessment_questions: number;
   feature_tutoring: number;
@@ -64,7 +66,7 @@ interface OrgRow {
 
 /** Every organization column, plus the logo versions that make its URLs. */
 const SELECT_ORG = `SELECT o.id, o.slug, o.name, o.short_name, o.tagline, o.blurb, o.place,
-       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions, o.gamify_question_quest, o.feature_tutoring, o.feature_assessment, o.feature_quest, o.created_via, o.quest_trusted, o.calendar_domain, o.archived_at,
+       o.palette, o.builtin_logo, o.time_zone, o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.checked_questions, o.personal, o.canvas_assessment_questions, o.gamify_question_quest, o.feature_tutoring, o.feature_assessment, o.feature_quest, o.created_via, o.quest_trusted, o.calendar_domain, o.archived_at,
        o.created_at, o.updated_at, o.business_id,
        (SELECT b.name FROM businesses b WHERE b.id = o.business_id) AS business_name,
        (SELECT sha256 FROM organization_logos l WHERE l.organization_id = o.id AND l.kind = 'mark') AS mark_sha,
@@ -97,7 +99,10 @@ function toOrganization(row: OrgRow): Organization {
     time_zone: row.time_zone as OrgTimeZone,
     email_notifications: row.email_notifications === 1,
     canvas_assessments: row.canvas_assessments === 1,
-    canvas_assessments_unreviewed: row.canvas_assessments_unreviewed === 1,
+    // Phase 62: the old field reports the platform's switch, for app builds that still read it.
+    canvas_assessments_unreviewed: row.checked_questions === 1,
+    checked_questions: row.checked_questions === 1,
+    personal: row.personal === 1,
     gamify_question_quest: row.gamify_question_quest === 1,
     canvas_assessment_questions: row.canvas_assessment_questions,
     feature_tutoring: row.feature_tutoring === 1,
@@ -356,8 +361,8 @@ export async function getOrganizationSettings(
     .prepare(
       `SELECT o.business_id, b.name AS business_name,
               b.tin, b.payer_address_line1, b.payer_address_line2, b.payer_city, b.payer_state, b.payer_postal_code,
-              o.email_notifications, o.canvas_assessments, o.canvas_assessments_unreviewed, o.canvas_assessment_questions,
-              o.gamify_question_quest
+              o.email_notifications, o.canvas_assessments, o.checked_questions AS canvas_assessments_unreviewed,
+              o.canvas_assessment_questions, o.gamify_question_quest
        FROM organizations o LEFT JOIN businesses b ON b.id = o.business_id
        WHERE o.id = ?`,
     )
@@ -611,7 +616,7 @@ export async function updateSpacePayer(
 // The platform console
 // ---------------------------------------------------------------------------
 
-export async function listOrganizations(db: D1Database): Promise<OrganizationListItem[]> {
+export async function listOrganizations(db: D1Database, options: { personal?: boolean } = {}): Promise<OrganizationListItem[]> {
   const result = await db
     .prepare(
       `${SELECT_ORG.replace(
@@ -626,8 +631,11 @@ export async function listOrganizations(db: D1Database): Promise<OrganizationLis
            pb.payer_postal_code AS payer_postal_code_
          FROM organizations o LEFT JOIN businesses pb ON pb.id = o.business_id`,
       )}
+       -- Phase 63 (P13): newcomers' personal spaces only when asked for (one per sign-up).
+       WHERE (? = 1 OR o.personal = 0)
        ORDER BY o.archived_at IS NOT NULL, o.name COLLATE NOCASE`,
     )
+    .bind(options.personal ? 1 : 0)
     .all<OrgRow & { admin_count: number; member_count: number } & PayerColumns>();
 
   return (result.results ?? []).map((row) => ({
@@ -886,7 +894,7 @@ export async function listPlatformAudit(db: D1Database, limit: number) {
       `SELECT a.id, a.organization_id, o.name AS organization_name, a.actor_name, a.subject_name,
               a.action, a.description, a.created_at
        FROM audit_events a LEFT JOIN organizations o ON o.id = a.organization_id
-       WHERE a.action LIKE 'organization.%' OR a.action LIKE 'platform_admin.%'
+       WHERE a.action LIKE 'organization.%' OR a.action LIKE 'platform_admin.%' OR a.action LIKE 'platform.%'
           OR a.action LIKE 'person.%' OR a.action LIKE 'ai.%'
           OR a.action LIKE 'question.%' OR a.action LIKE 'question_bank.%'
           -- Phase 54: an organization's own line; its copies in the spaces it runs are theirs.
@@ -913,12 +921,13 @@ export async function getFirstOrganization(db: D1Database): Promise<Organization
 export async function updateOrganizationFeatures(
   db: D1Database,
   id: string,
-  input: { feature_tutoring: boolean; feature_assessment: boolean; feature_quest: boolean; quest_trusted?: boolean },
+  input: { feature_tutoring: boolean; feature_assessment: boolean; feature_quest: boolean; quest_trusted?: boolean; checked_questions?: boolean },
 ): Promise<Organization | null> {
   await db
     .prepare(
       `UPDATE organizations SET feature_tutoring = ?, feature_assessment = ?, feature_quest = ?,
               quest_trusted = COALESCE(?, quest_trusted),
+              checked_questions = COALESCE(?, checked_questions),
               updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
        WHERE id = ?`,
     )
@@ -927,6 +936,7 @@ export async function updateOrganizationFeatures(
       input.feature_assessment ? 1 : 0,
       input.feature_quest ? 1 : 0,
       input.quest_trusted === undefined ? null : input.quest_trusted ? 1 : 0,
+      input.checked_questions === undefined ? null : input.checked_questions ? 1 : 0,
       id,
     )
     .run();
@@ -1115,7 +1125,8 @@ export async function openJoinRequest(
 /** How many self-serve spaces the person made (their lifetime cap counts the live ones). */
 export async function countSpacesMadeBy(db: D1Database, userId: string): Promise<number> {
   const row = await db
-    .prepare('SELECT COUNT(*) AS n FROM organizations WHERE created_by_user_id = ? AND archived_at IS NULL')
+    // Phase 63 (P13): a personal space, made at sign-up, does not count.
+    .prepare('SELECT COUNT(*) AS n FROM organizations WHERE created_by_user_id = ? AND archived_at IS NULL AND personal = 0')
     .bind(userId)
     .first<{ n: number }>();
   return row?.n ?? 0;
@@ -1136,7 +1147,15 @@ export async function consoleOrganizationNames(db: D1Database): Promise<string[]
  */
 export async function createSpace(
   db: D1Database,
-  input: { name: string; timeZone: string; makerId: string; requestHost: string },
+  input: {
+    name: string;
+    timeZone: string;
+    makerId: string;
+    requestHost: string;
+    /** Phase 63 (P13): made at sign-up; a teen's has no join code in use. */
+    personal?: boolean;
+    teen?: boolean;
+  },
 ): Promise<Organization> {
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const id = crypto.randomUUID();
@@ -1151,10 +1170,22 @@ export async function createSpace(
                (id, slug, name, short_name, palette, time_zone, email_notifications, calendar_domain,
                 canvas_assessments, canvas_assessments_unreviewed, gamify_question_quest,
                 feature_tutoring, feature_assessment, feature_quest,
-                created_via, quest_trusted, join_code, join_by_code, created_by_user_id)
-             VALUES (?, ?, ?, ?, 'platform', ?, 0, ?, 1, 0, 1, 0, 1, 1, 'self_serve', 0, ?, 1, ?)`,
+                created_via, quest_trusted, join_code, join_by_code, created_by_user_id, personal)
+             VALUES (?, ?, ?, ?, 'platform', ?, 0, ?, 1, 0, 1, 0, 1, 1, 'self_serve', 0, ?, ?, ?, ?)`,
           )
-          .bind(id, slug, input.name, shortName, input.timeZone, `${slug}.${input.requestHost}`, code, input.makerId),
+          .bind(
+            id,
+            slug,
+            input.name,
+            shortName,
+            input.timeZone,
+            `${slug}.${input.requestHost}`,
+            // A teen's personal space has no code at all (P13), not merely joining off.
+            input.teen ? null : code,
+            input.teen ? 0 : 1,
+            input.makerId,
+            input.personal ? 1 : 0,
+          ),
         db
           .prepare('INSERT INTO organization_curricula (organization_id, curriculum_id, is_default) VALUES (?, ?, 1)')
           .bind(id, DEFAULT_CURRICULUM_ID),

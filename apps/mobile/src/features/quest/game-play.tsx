@@ -16,7 +16,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { gameAnswerSchema, type GameQuestion, type GameView } from '@tmi/shared';
 import { useMemo, useState } from 'react';
 import { Alert, Platform, View, useWindowDimensions } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { Button, Chip, Text, TextInput } from 'react-native-paper';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -251,13 +251,27 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
     <Animated.View style={[{ gap: space.lg }, slide]}>
       <OutlinedCard testID="game-question" style={{ borderRadius: radius.lg }}>
         <View style={{ padding: space.lg, gap: space.md }}>
-          <Text
-            testID="game-question-number"
-            variant="labelMedium"
-            style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
-          >
-            {questionHeading(question.number, total)}
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+            <Text
+              testID="game-question-number"
+              variant="labelMedium"
+              style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+            >
+              {questionHeading(question.number, total)}
+            </Text>
+            {/* Phase 62 (P3): a checked question no person has approved yet. */}
+            {question.beta ? (
+              <Chip
+                testID="game-question-beta"
+                compact
+                accessibilityLabel="Beta: a new question no person has approved yet"
+                textStyle={{ fontSize: 11, marginVertical: 0 }}
+                style={{ backgroundColor: theme.colors.secondaryContainer }}
+              >
+                Beta
+              </Chip>
+            ) : null}
+          </View>
           <MathBody
             testID="game-stem"
             html={stemHtml}

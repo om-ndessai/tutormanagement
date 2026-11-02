@@ -57,6 +57,11 @@ interface AuthContextValue {
   /** Phase 52: their own open (or just declined) requests to join a space. */
   joinRequests: MyJoinRequest[];
   /**
+   * Phase 63 (P13): the person may delete their account now -- in no space but, perhaps, their own
+   * personal one where nobody else is (it goes with the account). False from older Workers.
+   */
+  accountDeletable: boolean;
+  /**
    * Phase 52: a newcomer between their Google sign-in (or the developer's "Sign up as") and the
    * age question. Held in memory only -- never stored.
    */
@@ -157,6 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [platformAdmin, setPlatformAdmin] = useState(false);
   const [account, setAccount] = useState<PlatformAccount | null>(null);
   const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
+  const [accountDeletable, setAccountDeletable] = useState(false);
   const [pendingSignup, setPendingSignup] = useState<PendingSignup | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
   const [config, setConfig] = useState<AuthConfig | null>(null);
@@ -190,6 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setPlatformAdmin(session.platform_admin);
     setAccount(session.account ?? null);
     setJoinRequests(session.join_requests ?? []);
+    setAccountDeletable(session.account_deletable === true);
 
     const landing = landingFor(session, { own: ownRef.current, linked: linkedRef.current });
     if (landing.kind !== 'enter' || landing.slug !== linkedRef.current) linkedRef.current = null;
@@ -234,6 +241,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setPlatformAdmin(false);
     setAccount(null);
     setJoinRequests([]);
+    setAccountDeletable(false);
     setImpersonated(false);
     setStatus('unauthenticated');
   }, [queryClient]);
@@ -530,6 +538,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       platformAdmin,
       account,
       joinRequests,
+      accountDeletable,
       pendingSignup,
       startDevSignup,
       completeSignup,
@@ -563,6 +572,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       platformAdmin,
       account,
       joinRequests,
+      accountDeletable,
       pendingSignup,
       startDevSignup,
       completeSignup,

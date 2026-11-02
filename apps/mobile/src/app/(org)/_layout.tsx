@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 
 import { DictationProvider } from '@/features/dictation/dictation-provider';
 import { OnboardingProvider } from '@/features/onboarding/onboarding-provider';
+import { useLastQuest } from '@/features/play/play-api';
 import { useQuickActionHandler, useQuickActionItems } from '@/features/shell/quick-actions';
 import { useStackOptions } from '@/features/shell/stack-options';
 import { LiveSessionHost } from '@/features/teaching/live-session-banner';
@@ -37,7 +38,9 @@ export default function OrgLayout() {
   const options = useStackOptions({ large: false });
   // Home-screen quick actions follow the roles held in THIS organization (#43).
   // Phase 50: and the feature sets, so a space without Tutoring clears them.
-  useQuickActionItems(user?.roles, organization);
+  // Phase 62 (P6): and "Play <tile>", the last tile started here on this phone.
+  const lastQuest = useLastQuest(organization?.slug).data;
+  useQuickActionItems(user?.roles, organization, lastQuest?.label);
   useQuickActionHandler(user?.roles, organization);
   return (
     <LiveSessionHost key={organization?.slug ?? 'none'}>
@@ -71,6 +74,12 @@ export default function OrgLayout() {
                 toast (a favorite saved or deleted) stays reachable to VoiceOver. Its last action
                 replaces it with the game. */}
             <Stack.Screen name="quest/games/[gameId]" options={QUEST_OPTIONS} />
+            {/* Phase 62 (P6): the "Play <tile>" quick action starts the last tile, then gives way to the game. */}
+            <Stack.Screen name="quest/play-last" options={QUEST_OPTIONS} />
+            {/* Phase 63 (P14): a tile from a link, started as a game. */}
+            <Stack.Screen name="quest/tile/[code]" options={QUEST_OPTIONS} />
+            {/* Phase 64 (P19): the Daily set, full screen like a game; Exit and Back to Play go back Home. */}
+            <Stack.Screen name="quest/daily/[level]" options={QUEST_OPTIONS} />
             <Stack.Screen name="quest/new-game" options={STEP_FLOW_OPTIONS} />
             <Stack.Screen
               name="quest/join-game"

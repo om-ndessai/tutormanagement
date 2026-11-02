@@ -29,7 +29,10 @@ import {
   type GameSummary,
   type GameTeamView,
   type GameView,
+  gameRefetchDelay,
 } from '@tmi/shared';
+
+import { gameShareText } from '@/features/play/play-model';
 
 import { questChoiceText } from './quest-html';
 
@@ -38,6 +41,20 @@ import { questChoiceText } from './quest-html';
 /** How often the game is read: every GAME_POLL_MS while the screen is focused and the game not over. */
 export function gamePollInterval(active: boolean, status: GameStatus | undefined): number | false {
   return active && status !== 'finished' ? GAME_POLL_MS : false;
+}
+
+/**
+ * Phase 62 (P4): the next read of a game this screen holds, in ms, or false. While the screen is
+ * not active, none; otherwise shared `gameRefetchDelay`: several teams every GAME_POLL_MS, a single
+ * player's game only at the countdown's end and when its time is up.
+ */
+export function gameRefetchInterval(
+  active: boolean,
+  game: Parameters<typeof gameRefetchDelay>[0],
+  fetchedAtMs: number,
+  nowMs: number,
+): number | false {
+  return active ? gameRefetchDelay(game, fetchedAtMs, nowMs) : false;
 }
 
 // --- The hub ----------------------------------------------------------------------------------
@@ -75,9 +92,12 @@ export function gameRowTitle(
   return `${gameLevelLabel(game, levelLabel)} · ${gameLengthLabel(game)}`;
 }
 
-/** The share sheet's text: the code and nothing else (no name, no organization). */
+/**
+ * The share sheet's text: the code and nothing else (no name, no organization). Phase 62 (P7): the
+ * web's LobbyInvite words, "Join my Aimtrue game: code ABC234".
+ */
 export function shareText(code: string): string {
-  return `Join my Quest game with the code ${code}.`;
+  return gameShareText(code);
 }
 
 /** A code spelled out for a screen reader: "A B C 2 3 4". */

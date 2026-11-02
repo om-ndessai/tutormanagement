@@ -42,7 +42,7 @@
 		// fallback instead of reaching the Worker.
 		"run_worker_first": [
 			"/api/*",
-			"/s/*"
+			"/s/*", "/play/*"
 		]
 	},
 	// No sweep here: `tutoring` runs it against the same database. Two Workers
@@ -129,6 +129,10 @@
 		// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 		"SIGNUP_OPEN": "false",
 
+		// Phase 63 (P10): whether this address may offer guest play (the console switch must be on too).
+
+		"GUEST_PLAY": "false",
+
 		// Phase 55 (docs/social-login-plan.md): the ways to sign in, a comma list of google,
 		// microsoft, apple, facebook. A provider is offered only while listed AND configured below
 		// (its secrets with `wrangler secret put`: APPLE_PRIVATE_KEY, FACEBOOK_APP_SECRET). Google
@@ -176,7 +180,7 @@
 				"not_found_handling": "single-page-application",
 				"run_worker_first": [
 					"/api/*",
-					"/s/*"
+					"/s/*", "/play/*"
 				]
 			},
 			// The ONE sweep of tutoring-db. Ends lessons whose timer was left
@@ -240,6 +244,8 @@
 				"DEFAULT_ORGANIZATION": "",
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "false",
+				// Phase 63 (P10): whether this address may offer guest play (the console switch must be on too).
+				"GUEST_PLAY": "true",
 				// Phase 55: restated; see the top-level block.
 				"AUTH_PROVIDERS": "google",
 				"MICROSOFT_CLIENT_ID": "58cbca0a-7c76-4734-ae71-7fd76fd85e67",
@@ -277,7 +283,7 @@
 				"not_found_handling": "single-page-application",
 				"run_worker_first": [
 					"/api/*",
-					"/s/*"
+					"/s/*", "/play/*"
 				]
 			},
 			// The ONE sweep of tutoring-test-db.
@@ -306,8 +312,13 @@
 				"DEFAULT_ORGANIZATION": "",
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "true",
-				// Phase 55: restated. The test portal may switch a provider on before production does.
-				"AUTH_PROVIDERS": "google,microsoft,facebook",
+				// Phase 63 (P10): whether this address may offer guest play (the console switch must be on too).
+				"GUEST_PLAY": "true",
+				// Phase 55: restated. Phase 62 (owner, 2026-11-01): the web portal offers Google alone, and
+				// the app (AimTrue-Test) every provider set up here. The console's sign-in switches
+				// (Platform > Settings) replace either for a while.
+				"AUTH_PROVIDERS": "google",
+				"AUTH_PROVIDERS_APP": "google,microsoft,facebook",
 				"MICROSOFT_CLIENT_ID": "58cbca0a-7c76-4734-ae71-7fd76fd85e67",
 				"APPLE_SERVICES_ID": "",
 				"APPLE_BUNDLE_IDS": "",

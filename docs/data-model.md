@@ -1065,3 +1065,25 @@ npm run db:rebuild:remote # production: DESTROYS ALL DATA
 ```
 
 See [database.md](database.md) for the operational side.
+
+## Phase 62: one tap (docs/stickiness-plan.md)
+
+- `platform_settings (key, value JSON, updated_by, updated_at)`: the platform's own settings, no
+  organization, like `ai_task_settings`. Keys: `sign_in` (P0, per client), `play` and `tiles` (P5),
+  `level_counts` and `level_counts_dirty` (P4). No row means the defaults.
+- `organizations.checked_questions`: a platform admin's per-space switch (P1), default 1. The old
+  `canvas_assessments_unreviewed` column stays and is no longer read.
+- `quest_game_seen.correct`: 1 on the answering player's own row when they answered it correctly (P2),
+  read by the two-right-answers count through `quest_game_seen_correct_idx`.
+- `quest_game_favorites.roster`: a JSON array of member ids (P8); NULL is anyone with the code.
+- `quest_game_invites (organization_id, game_id, user_id, created_at)`: the people a roster invited (P8),
+  members of the game's space only (trigger), listed in the purge order.
+- `guest_questions (question_id, level_id, position)` (Phase 63, P9): the guest pool, platform reference
+  data; reserved from every member draw and count. `platform_settings` gains 'guest' and 'guest_version'.
+- `organizations.personal` (Phase 63, P13): a newcomer's own space, made at sign-up.
+- `activity_days.game_answers` (Phase 64, P17): game answers (and Daily plays) that day, apart from Question
+  Quest's `answers`; the weekly streak reads days with any activity.
+- `daily_results (organization_id, user_id, day, level_id, right_count, question_count, seconds, marks)`
+  (Phase 64, P19): one Daily play a day per person and level, the marks only (never the answers); members of
+  the space only (trigger), listed in the purge order.
+

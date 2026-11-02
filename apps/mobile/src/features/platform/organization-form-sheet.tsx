@@ -122,7 +122,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         const model = paymentModelChange(existing, form);
         if (model) await setPaymentModel.mutateAsync({ id: existing.id, ...model });
         await update.mutateAsync({ id: existing.id, input: verdict.input });
-        const trust = trustBody(existing, form.quest_trusted);
+        const trust = trustBody(existing, form.quest_trusted, form.checked_questions);
         if (trust) await updateFeatures.mutateAsync({ id: existing.id, input: trust });
         toast.success(`${form.name} saved.`);
       } else {
@@ -295,7 +295,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
       </View>
 
       {existing ? (
-        // Phase 51: a space whose Quest reviews only suggest approvals, for the console to decide.
+        <>
+        {/* Phase 51: a space whose Quest reviews only suggest approvals, for the console to decide. */}
         <View
           style={{
             flexDirection: 'row',
@@ -323,6 +324,36 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
             }}
           />
         </View>
+        {/* Phase 62 (P1): whether its games, tiles and Assessments also draw checked ("Beta") questions. */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            gap: space.md,
+            borderWidth: 1,
+            borderColor: theme.colors.outlineVariant,
+            borderRadius: radius.md,
+            padding: space.md,
+          }}
+        >
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text variant="bodyMedium">Checked questions (Beta)</Text>
+            <Text variant="bodySmall" style={{ color: muted }}>
+              Games, tiles and assessments here also draw questions the bank has checked but no person has
+              approved, each marked Beta. Off: approved questions only.
+            </Text>
+          </View>
+          <Switch
+            testID="org-checked-questions-switch"
+            accessibilityLabel="Checked questions (Beta)"
+            value={form.checked_questions}
+            onValueChange={(value) => {
+              haptics.selection();
+              set('checked_questions', value);
+            }}
+          />
+        </View>
+        </>
       ) : (
         // Phase 50: what it may use, all ticked unless unticked. Editing leaves them to the space
         // screen's "This space may use" section (S3).

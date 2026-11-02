@@ -17,12 +17,14 @@ export const PURGE_ORDER: { table: string; where: string }[] = [
   // Quest
   { table: 'shares', where: 'organization_id = ?' },
   { table: 'quest_game_seen', where: 'organization_id = ?' },
+  { table: 'quest_game_invites', where: 'organization_id = ?' },
   { table: 'quest_game_players', where: 'organization_id = ?' },
   { table: 'quest_game_teams', where: 'organization_id = ?' },
   { table: 'quest_games', where: 'organization_id = ?' },
   { table: 'quest_game_favorites', where: 'organization_id = ?' },
   { table: 'points_ledger', where: 'organization_id = ?' },
   { table: 'activity_days', where: 'organization_id = ?' },
+  { table: 'daily_results', where: 'organization_id = ?' },
   { table: 'question_suggestions', where: 'organization_id = ?' },
   { table: 'quest_attempts', where: 'organization_id = ?' },
   // Tutoring: what hangs off a lesson, a plan or an assessment, then those

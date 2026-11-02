@@ -248,7 +248,12 @@ export async function belongsElsewhere(db: D1Database, org: OrgId, id: string): 
   const row = await db
     // Phase 51: an invitation elsewhere locks nothing -- only a membership the person accepted.
     .prepare(
-      "SELECT 1 AS ok FROM org_members WHERE user_id = ? AND organization_id <> ? AND status <> 'invited' LIMIT 1",
+      // Phase 63 (P13): their own personal space, where nobody else is, holds nobody's say over them.
+      `SELECT 1 AS ok FROM org_members m JOIN organizations o ON o.id = m.organization_id
+       WHERE m.user_id = ?1 AND m.organization_id <> ?2 AND m.status <> 'invited'
+         AND NOT (o.personal = 1 AND NOT EXISTS (SELECT 1 FROM org_members x
+                  WHERE x.organization_id = o.id AND x.user_id <> ?1 AND x.removed_at IS NULL))
+       LIMIT 1`,
     )
     .bind(id, org)
     .first<{ ok: number }>();

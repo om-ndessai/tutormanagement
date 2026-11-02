@@ -1,7 +1,9 @@
-# Phase 52 (design 63): a newcomer makes a space of their own. A reserved word is refused on the
-# device; a good name makes the space and enters it, where the welcome wizard opens by itself;
+# Phase 52 (design 63): a newcomer makes a space of their own. Since Phase 63 (P13) sign-up lands her
+# in her personal space ("Mia's space"), and she starts another from Spaces. A reserved word is refused
+# on the device; a good name makes the space and enters it, where the welcome wizard opens by itself;
 # "This is my child" makes the maker the family, and adding the child in a self-serve space needs
-# the parent's consent. Then the space is deleted, and the account.
+# the parent's consent. Then the space is deleted (back to her own), her own space dropped by script,
+# and the account deleted from the Welcome.
 # Self-cleaning: Mia is put back to nothing before and after (her space goes with her).
 appId: ${APP_ID}
 onFlowStart:
@@ -27,8 +29,32 @@ tags:
       FRESH: '1'
 - extendedWaitUntil:
     visible:
-      id: welcome-title
+      id: screen-home
     timeout: 30000
+# Phase 63 (P13): signed up, Mia lands in a space of her own, "Mia's space", on its Play home -- no
+# Welcome, and no wizard there. Start a space is on Spaces, from the account sheet's "All spaces".
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-onboarding
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".* at Mia's space"
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
 - scrollUntilVisible:
     element:
       id: welcome-space-name
@@ -178,10 +204,47 @@ tags:
 - inputText: 'The Creator family'
 # Return deletes once the name matches (the button is under the keyboard on a phone).
 - pressKey: Enter
+# Phase 63 (P13): her own space is left, and nothing is pending, so the landing rule enters it.
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+# A fresh device, and she has met the wizard: the tour may be offered, floating over Home. Not now.
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 5000
+    optional: true
+- runFlow:
+    when:
+      visible:
+        id: tour-offer
+    commands:
+      - tapOn:
+          id: tour-offer-dismiss
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".* at Mia's space"
+# Her own space goes too (as typing its name on its Space page would), and she belongs nowhere: the
+# Welcome, where she deletes the account.
+- runScript:
+    file: ../../scripts/spaces.js
+    env: { ACTION: drop-personal, EMAIL: spaces.creator@example.com }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.creator@example.com
+      ORG: ''
 - extendedWaitUntil:
     visible:
       id: welcome-title
-    timeout: 20000
+    timeout: 30000
 - scrollUntilVisible:
     element:
       id: welcome-delete-account

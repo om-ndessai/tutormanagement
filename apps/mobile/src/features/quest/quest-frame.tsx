@@ -31,12 +31,22 @@ export function exitQuest() {
   router.dismissTo('/quest');
 }
 
+/**
+ * Phase 62 (P6): a game opened from Home's Play home (`from=home`) exits back to Home, where it was
+ * started -- Continue is there -- rather than to the Quest hub it never passed through.
+ */
+export function exitGame(from: string | undefined) {
+  if (from === 'home' && router.canGoBack()) router.back();
+  else exitQuest();
+}
+
 export function QuestFrame({
   title,
   status,
   children,
   testID,
   scrollRef,
+  onExit = exitQuest,
 }: {
   title: string;
   /** Points, a count, a level: the line under the title. */
@@ -45,6 +55,8 @@ export function QuestFrame({
   testID: string;
   /** The body's scroll view, for a screen that goes back to the top on its next item. */
   scrollRef?: RefObject<ScrollView | null>;
+  /** What Exit does: back to the Quest hub unless the screen says otherwise (a game opened from Home). */
+  onExit?: () => void;
 }) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -83,7 +95,7 @@ export function QuestFrame({
                 >
                   {title}
                 </Text>
-                <Button testID="quest-exit" mode="outlined" icon="close" compact onPress={exitQuest}>
+                <Button testID="quest-exit" mode="outlined" icon="close" compact onPress={onExit}>
                   Exit
                 </Button>
               </View>

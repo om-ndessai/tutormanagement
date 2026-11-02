@@ -48,6 +48,19 @@ export interface Env {
    * AND configured (lib/identity.ts `offeredProviders`).
    */
   AUTH_PROVIDERS?: string;
+  /**
+   * Phase 62 (P0): the app's own default list, in the same form; unset is AUTH_PROVIDERS. The test
+   * Worker offers the app every provider it has set up while its web portal offers Google alone. The
+   * console's sign-in switches (platform_settings 'sign_in') replace either until they lapse.
+   */
+  AUTH_PROVIDERS_APP?: string;
+  /**
+   * Phase 63 (P10): "true" where guest play may be offered (`tutoring`, the demo, local); the console's
+   * switch must be on as well. "false" or unset on `tmi-portal`.
+   */
+  GUEST_PLAY?: string;
+  /** Phase 63 (P15): anonymous play counts (Analytics Engine). Optional: absent, nothing is counted. */
+  PLAY_EVENTS?: AnalyticsEngineDataset;
   /** Phase 55: Microsoft's application (client) id: an Entra app for personal and work/school accounts. Public. */
   MICROSOFT_CLIENT_ID?: string;
   /** Phase 55: Apple's Services ID (the web's audience). Public. */

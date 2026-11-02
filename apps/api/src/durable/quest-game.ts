@@ -149,7 +149,7 @@ export class QuestGame extends DurableObject<Env> {
    * Opens a new game, already recorded in D1. A single player's game is begun
    * here too: the host is its one player, and the countdown starts at once.
    */
-  async create(game: EngineGame, includeUnreviewed: boolean): Promise<GameReply<GameView>> {
+  async create(game: EngineGame, includeUnreviewed: boolean, hostPlays = false): Promise<GameReply<GameView>> {
     if (this.game) return conflict('That game already exists.');
     this.game = normalizeEngineGame(game);
     await this.save();
@@ -159,6 +159,17 @@ export class QuestGame extends DurableObject<Env> {
       const solo = await this.addTeam(this.game, { id: game.host.user_id, first_name: game.host.first_name }, null, Date.now());
       if (!solo.ok) return solo;
       return this.begin(host, includeUnreviewed);
+    }
+    // Phase 62 (P7): one tap on a multiplayer favorite puts the host in their own game at once --
+    // on their own, or as "Team <first name>" when teams hold several.
+    if (hostPlays) {
+      const team = await this.addTeam(
+        this.game,
+        { id: game.host.user_id, first_name: game.host.first_name },
+        game.max_team_size === 1 ? null : `Team ${game.host.first_name}`,
+        Date.now(),
+      );
+      if (!team.ok) return team;
     }
     return ok(this.toView(this.game, host, Date.now()));
   }
@@ -447,7 +458,15 @@ export class QuestGame extends DurableObject<Env> {
         const q = this.series[a.index]!;
         return {
           number: a.index + 1,
-          question: { id: q.id, kind: q.kind, stem: q.stem, choices: q.choices, answer: q.answer, solution: q.solution },
+          question: {
+            id: q.id,
+            kind: q.kind,
+            stem: q.stem,
+            choices: q.choices,
+            answer: q.answer,
+            solution: q.solution,
+            beta: q.beta === true,
+          },
           answered_by: names.get(a.user_id) ?? null,
           answer: a.answer,
           correct: a.correct,
@@ -518,7 +537,14 @@ export class QuestGame extends DurableObject<Env> {
         team_id: mine?.id ?? null,
         question:
           hand && question
-            ? { id: question.id, kind: question.kind, stem: question.stem, choices: question.choices, number: hand.index + 1 }
+            ? {
+                id: question.id,
+                kind: question.kind,
+                stem: question.stem,
+                choices: question.choices,
+                number: hand.index + 1,
+                beta: question.beta === true,
+              }
             : null,
         last: mine?.last[viewer.id] ?? null,
         // Not while the doors count down: that is the countdown, not waiting.

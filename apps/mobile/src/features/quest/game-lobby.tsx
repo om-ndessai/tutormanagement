@@ -15,7 +15,10 @@ import { Button, Text } from 'react-native-paper';
 import { IconButton } from '@/components/icon-button';
 import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
+import { gameInviteUrl } from '@/features/play/play-model';
+import { QrCode } from '@/features/play/qr-code';
 import { ApiRequestError } from '@/lib/api-client';
+import { serverOrigin } from '@/lib/server';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
@@ -35,6 +38,12 @@ import { useGameAction } from './games-api';
 import { exitQuest } from './quest-frame';
 import { questWide } from './quest-model';
 import { useQuestNotice } from './quest-notice';
+
+/** The share sheet's words, and the link to the Play home with the code when the server's origin is known. */
+function inviteMessage(code: string): string {
+  const url = gameInviteUrl(serverOrigin(), code);
+  return url === code ? shareText(code) : `${shareText(code)} ${url}`;
+}
 
 const message = (caught: unknown, fallback: string) =>
   caught instanceof ApiRequestError ? caught.message : fallback;
@@ -108,10 +117,21 @@ export function GameLobby({ game }: { game: GameView }) {
               icon="share-variant-outline"
               accessibilityLabel="Share the code"
               mode="outlined"
-              onPress={() => void Share.share({ message: shareText(game.code) }).catch(() => undefined)}
+              onPress={() => void Share.share({ message: inviteMessage(game.code) }).catch(() => undefined)}
             />
           </View>
           <GameRules game={game} />
+          {/* Phase 62 (P7): a QR code a phone across the table can scan, to the Play home with the code. */}
+          {game.status === 'lobby' ? (
+            <View style={{ paddingTop: space.sm }}>
+              <QrCode
+                testID="game-lobby-qr"
+                text={gameInviteUrl(serverOrigin(), game.code)}
+                size={144}
+                accessibilityLabel={`QR code for game ${spelledCode(game.code)}`}
+              />
+            </View>
+          ) : null}
         </View>
 
         {mine?.code ? (

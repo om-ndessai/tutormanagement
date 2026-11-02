@@ -3,6 +3,8 @@
 # self-serve space would need the parent's consent. The last admin cannot leave. The person let in
 # lands straight in the space, leaves it from My profile, and deletes their account.
 # Self-cleaning: Jo is put back to nothing, signed up and asking, before; nothing, after.
+# Phase 63 (P13): signing up now also makes a personal space; Jo drops theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -10,7 +12,7 @@ onFlowStart:
       env: { ACTION: reset-newcomer, EMAIL: spaces.joiner@example.com }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: spaces.joiner@example.com, NAME: Jo Joiner }
+      env: { ACTION: signup, EMAIL: spaces.joiner@example.com, NAME: Jo Joiner, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: ask, EMAIL: spaces.joiner@example.com, CODE: FMXY2345 }

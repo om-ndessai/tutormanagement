@@ -1,0 +1,214 @@
+# Phase 63 (P10, P12, P14; docs/stickiness-plan.md): guest play. With guest play on (the script; Grade 4's
+# free questions from the console's suggestion), a fresh app opens on the guest Play home, not sign-in:
+# the home bar, Grade 4's open tiles, a locked tile that offers an account, and Sign in one tap away.
+# G4Q5 plays on the phone: after question 1 the offer shows (Sign up free / Keep playing); Keep playing
+# goes on, it does not come back in the same quest, and the results show the score and each question.
+# Play again serves the other five (unseen first) and says the free questions are played. Exit is back
+# on the Play home; a link (aimtrue://play/G4Q5) opens the tile itself.
+# Self-cleaning: guest play off and Grade 4's pool emptied before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'on' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+tags:
+  - feature
+---
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 30000
+- assertVisible:
+    id: guest-home-bar
+    text: 'Playing as a guest.*'
+- assertVisible: 'Math practice that feels like a game'
+- assertVisible:
+    id: guest-sign-in
+- takeScreenshot: guest-home
+# The tiles sit under the grade chips: on a shorter phone (iPhone 17e) below the fold.
+- scrollUntilVisible:
+    element:
+      id: guest-tile-G4Q5
+    direction: DOWN
+# A locked tile is the offer, every tap.
+- scrollUntilVisible:
+    element:
+      id: guest-locked-G4T10
+    centerElement: true
+- tapOn:
+    id: guest-locked-G4T10
+- extendedWaitUntil:
+    visible: 'G4T10 is free with an account'
+    timeout: 5000
+- assertVisible: '.*more Grade 4 questions, never repeated'
+- assertVisible:
+    id: guest-ask-adult
+- takeScreenshot: guest-locked-offer
+- tapOn:
+    id: guest-nudge-close
+- extendedWaitUntil:
+    notVisible:
+      id: guest-nudge-signup
+    timeout: 5000
+# One tap plays G4Q5 on the phone.
+- scrollUntilVisible:
+    element:
+      id: guest-tile-G4Q5
+    direction: UP
+- tapOn:
+    id: guest-tile-G4Q5
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 15000
+- assertVisible:
+    id: guest-progress
+    text: '1 of 5'
+- takeScreenshot: guest-question
+# After question 1: the offer, its two buttons equally visible.
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'nudge'
+- assertVisible:
+    id: guest-nudge-signup
+    text: 'Sign up free'
+- assertVisible:
+    id: guest-nudge-close
+    text: 'Keep playing'
+- assertVisible: 'Good try. Keep going!'
+- takeScreenshot: guest-offer
+- tapOn:
+    id: guest-nudge-close
+- extendedWaitUntil:
+    visible:
+      id: guest-progress
+      text: '2 of 5'
+    timeout: 5000
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '3 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '4 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '5 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'results'
+# The offer did not come back in this quest.
+- assertNotVisible:
+    id: guest-nudge-signup
+- assertVisible:
+    id: guest-score
+    text: '0 of 5 right'
+- assertVisible:
+    id: guest-save-score
+- assertVisible:
+    id: guest-review-chip-1
+- takeScreenshot: guest-results
+# Play again: the other five, and then every free question has been played.
+- tapOn:
+    id: guest-again
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: guest-progress
+      text: '1 of 5'
+    timeout: 10000
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '2 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '3 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '4 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '5 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'results'
+- assertNotVisible:
+    id: guest-nudge-signup
+- assertVisible:
+    id: guest-used-up
+- assertVisible:
+    id: guest-again
+    text: 'Play these again'
+- takeScreenshot: guest-used-up
+# Exit: back on the Play home, where G4Q5 shows its best score.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 10000
+- assertVisible: 'Best: 0'
+# A link opens the tile itself.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://play/G4Q5'
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 15000
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 10000
+# Sign in is one tap away, and the Play home one tap back. The home kept its scroll (down by the tiles),
+# so its header's Sign in is brought back into view first.
+- scrollUntilVisible:
+    element:
+      id: guest-sign-in
+    direction: UP
+# Then all the way to the top: "visible" can still be under Android's edge-to-edge status bar, where a
+# tap lands on the bar instead.
+- swipe:
+    start: 50%, 35%
+    end: 50%, 85%
+    duration: 400
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: guest-sign-in
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: sign-in-play
+- tapOn:
+    id: sign-in-play
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 10000

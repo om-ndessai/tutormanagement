@@ -129,9 +129,10 @@ function OnboardingHost({ children }: { children: ReactNode }) {
       return;
     }
     const decision = decideOnboarding({ onboarding, deviceSeen, viewingAs: dashboard.viewingAs });
-    if (decision === 'wizard') openWizard('welcome');
+    // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard.
+    if (decision === 'wizard' && !organization?.personal) openWizard('welcome');
     else if (decision === 'offer') setOffer(true);
-  }, [user, onboarding, deviceSeen, dashboard, openWizard, organization?.slug]);
+  }, [user, onboarding, deviceSeen, dashboard, openWizard, organization?.slug, organization?.personal]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {

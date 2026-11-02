@@ -2,6 +2,8 @@
 # made anew behind a confirm (the old one gone), joining switched off and on -- and no email card;
 # then the space deleted by typing its name, which lands on the Welcome.
 # Self-cleaning: Max is put back to nothing before and after; his own space, never a seeded code.
+# Phase 63 (P13): signing up now also makes a personal space; Max drops theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -9,7 +11,7 @@ onFlowStart:
       env: { ACTION: reset-newcomer, EMAIL: spaces.maker@example.com }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: spaces.maker@example.com, NAME: Max Maker }
+      env: { ACTION: signup, EMAIL: spaces.maker@example.com, NAME: Max Maker, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: make-space, EMAIL: spaces.maker@example.com, NAME: Maker Test Space }

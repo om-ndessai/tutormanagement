@@ -1,5 +1,5 @@
 // Ported from apps/web/src/lib/api-client.ts @ 1132322
-import { FEATURE_UNAVAILABLE, ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
+import { CLIENT_HEADER, FEATURE_UNAVAILABLE, ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
 
 import { emit } from './events';
 import { getActiveOrg } from './organization';
@@ -50,7 +50,8 @@ export function apiOrigin(): string {
 }
 
 /**
- * The headers every request carries: the organization (the API re-checks membership each
+ * The headers every request carries: that this is the app (Phase 62: `X-Client: app`, so the
+ * Worker answers the app's sign-in switches), the organization (the API re-checks membership each
  * time) and, on the developer sign-in path only (a server with sign-in off), who to act as.
  * Downloads use these too.
  */
@@ -59,6 +60,7 @@ export function requestHeaders(extra?: Record<string, string>): Record<string, s
   const user = devUser();
   return {
     Accept: 'application/json',
+    [CLIENT_HEADER]: 'app',
     ...(org ? { [ORG_HEADER]: org } : {}),
     ...(user ? { [DEV_USER_HEADER]: user } : {}),
     ...extra,

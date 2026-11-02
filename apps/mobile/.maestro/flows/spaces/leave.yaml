@@ -10,6 +10,8 @@
 # Its own people and spaces: four newcomers sign up, three make a space, Hugo invites the other
 # three to his and they accept. Self-cleaning: every one of them is put back to nothing (their
 # spaces deleted, their accounts too) before and after.
+# Phase 63 (P13): signing up now also makes a personal space; Lena, Kit and Sol drop theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -42,16 +44,16 @@ tags:
 ---
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: leave.lena@example.com, NAME: Lena Leaver }
+    env: { ACTION: signup, EMAIL: leave.lena@example.com, NAME: Lena Leaver, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
     env: { ACTION: signup, EMAIL: leave.hugo@example.com, NAME: Hugo Host }
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: leave.kit@example.com, NAME: Kit Current }
+    env: { ACTION: signup, EMAIL: leave.kit@example.com, NAME: Kit Current, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
-    env: { ACTION: signup, EMAIL: leave.sol@example.com, NAME: Sol Single }
+    env: { ACTION: signup, EMAIL: leave.sol@example.com, NAME: Sol Single, PERSONAL: drop }
 - runScript:
     file: ../../scripts/spaces.js
     env: { ACTION: make-space, EMAIL: leave.lena@example.com, NAME: Lena home }

@@ -1,14 +1,17 @@
 import type { Page } from '@playwright/test';
-import { PRIVACY_VERSION, TERMS_VERSION, inviteRowRequest, type AuthProvider } from '@tmi/shared';
+import { DAILY_CAPS, PRIVACY_VERSION, TERMS_VERSION, inviteRowRequest, type AuthProvider } from '@tmi/shared';
 
 import { ORGS, PEOPLE, expect, test } from '../support/fixtures.js';
-import { idOf, unwrap } from '../support/api.js';
+import { dropPersonalSpace, idOf, personalSpaceOf, unwrap } from '../support/api.js';
 
 /**
- * Phase 61, S11 (docs/spaces-plan.md): the first sign-in, join or start. An unknown person who
- * signs in with any offered provider goes through About you (age band, terms), then Welcome: Join
- * with a code, or Start a space (adults only). An invited person is not unknown: they skip both and
- * see the selector with their invitation. With sign-up closed, an unknown account is refused.
+ * Phase 61, S11 (docs/spaces-plan.md), as Phase 63 P13 (docs/stickiness-plan.md) leaves it. An
+ * unknown person who signs in with any offered provider goes through About you (age band, terms);
+ * sign-up then makes them a space of their own, "<First name>'s space", and they land IN it -- the
+ * Play home, no Welcome and no wizard. Join with a code and Start a space (adults only) stay on the
+ * Spaces page; Welcome itself is for someone who belongs to no space (here: after deleting their
+ * personal space). An invited person is not unknown: no About you, no personal space, the selector
+ * with their invitation. With sign-up closed, an unknown account is refused.
  *
  * The real providers cannot be reached unattended, so the local Worker takes the suite's fake
  * tokens (AUTH_FAKE_PROVIDERS): `fake:<provider>:<subject>:<email>:<verified>[:<name>]`. They pass
@@ -72,9 +75,21 @@ async function aboutYou(page: Page, signup: { token: string; email: string; name
 
 const session = async (page: Page) => unwrap<any>(await page.request.get('/api/auth/session'), 'the session');
 
-test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
+/** The welcome wizard does not open by itself (it would mount within a few seconds of the page). */
+async function wizardStaysShut(page: Page) {
+  const opened = await page
+    .getByTestId('onboarding-wizard')
+    .waitFor({ state: 'visible', timeout: 4_000 })
+    .then(() => true)
+    .catch(() => false);
+  expect(opened, 'the welcome wizard opened by itself').toBe(false);
+}
+
+const switcher = (page: Page) => page.getByTestId('org-switcher').filter({ visible: true }).first();
+
+test.describe('S11 after P13: the first sign-in lands in a space of one’s own (Phases 61, 63)', () => {
   for (const provider of PROVIDERS) {
-    test(`an adult signing in with ${provider} goes through About you and Welcome, starts a space, and lands in it`, async ({
+    test(`an adult signing in with ${provider} goes through About you, lands in their own space, and starts another from Spaces`, async ({
       page,
       as,
     }) => {
@@ -90,36 +105,55 @@ test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
       const nobody = await as('admin', { email, org: null });
       expect((await nobody.request.get('/api/auth/session')).status()).toBe(404);
 
-      // 1. About you, as today.
+      // 1. About you, as before.
       await aboutYou(page, started.signup, 'March', 1985);
       const robin = await as('admin', { email, org: null });
       await expect.poll(async () => (await robin.request.get('/api/auth/session')).status()).toBe(200);
       const fresh = await session(robin);
-      expect(fresh).toMatchObject({ account: { age_band: 'adult' }, memberships: [], invitations: [], join_requests: [] });
+      expect(fresh).toMatchObject({ account: { age_band: 'adult' }, invitations: [], join_requests: [] });
       expect(fresh.user.full_name).toBe(name);
+      // P13: a space of their own, named for their first name, theirs to run, and their last-opened one.
+      expect(fresh.memberships).toEqual([
+        expect.objectContaining({ name: "Robin's space", roles: ['admin'], status: 'active', is_default: true }),
+      ]);
+      const own = await personalSpaceOf(robin);
+      expect(own).toEqual({ slug: fresh.memberships[0].slug, name: "Robin's space" });
+      const inOwn = await unwrap<any>(
+        await robin.request.get('/api/auth/session', { headers: { 'X-Organization': own.slug } }),
+        'the session in it',
+      );
+      expect(inOwn.organization).toMatchObject({
+        personal: true,
+        created_via: 'self_serve',
+        feature_tutoring: false,
+        feature_assessment: true,
+        feature_quest: true,
+        canvas_assessments: true,
+        gamify_question_quest: true,
+      });
 
       // The provider's account is theirs from now on: signing in again is a session, not a sign-up.
       const back = await unwrap<any>(await signInWith(robin, provider, token, true), `${provider}: signing in again`);
       expect(back.signup).toBeUndefined();
       expect(back.user.email).toBe(email);
 
-      // 2. Welcome, with the two choices side by side.
+      // 2. Arriving: straight into their own space's home -- no Welcome, no selector, no wizard.
       await robin.goto('/');
-      await expect(robin).toHaveURL(/\/spaces$/);
-      await expect(robin.getByRole('heading', { name: 'Welcome to Aimtrue' })).toBeVisible();
-      await expect(robin.getByText('Join a space with its code, or start your own.')).toBeVisible();
-      const join = robin.getByTestId('welcome-join');
-      const make = robin.getByTestId('welcome-make');
-      await expect(join).toBeVisible();
-      await expect(make).toBeVisible();
-      await expect(join.getByText('Join with a code')).toBeVisible();
-      await expect(make.getByText('Start a space')).toBeVisible();
-      const [joinBox, makeBox] = [await join.boundingBox(), await make.boundingBox()];
-      expect(joinBox && makeBox).toBeTruthy();
-      expect(Math.abs(joinBox!.y - makeBox!.y)).toBeLessThan(2);
-      expect(makeBox!.x).toBeGreaterThan(joinBox!.x + joinBox!.width - 1);
+      await expect(robin.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+      await expect(robin.getByTestId('play-home')).toBeVisible();
+      await expect(robin).not.toHaveURL(/\/spaces/);
+      await expect(switcher(robin)).toContainText("Robin's space");
+      await expect(robin.getByRole('heading', { name: 'Welcome to Aimtrue' })).toHaveCount(0);
+      await expect(robin.getByTestId('welcome')).toHaveCount(0);
+      await wizardStaysShut(robin);
 
-      // Start a space: name it, then "Invite people" (S12), skipped, then the space itself.
+      // 3. Start a space from the Spaces page: Join with a code and Start a space are both there.
+      await robin.goto('/spaces');
+      await expect(robin.getByTestId(`org-${own.slug}`)).toContainText('Here now');
+      await expect(robin.getByTestId('welcome-join')).toBeVisible();
+      await expect(robin.getByTestId('welcome-make')).toBeVisible();
+      // Their own space is not one to delete the account from here (Welcome's offer is for no space).
+      await expect(robin.getByTestId('welcome-delete-account')).toHaveCount(0);
       const spaceName = `Robin household ${provider} ${run}`;
       await robin.getByTestId('welcome-space-name').fill(spaceName);
       await robin.getByTestId('welcome-make-submit').click();
@@ -127,24 +161,66 @@ test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
       await robin.getByTestId('invite-skip').click();
       await expect(robin.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
       await expect(robin).not.toHaveURL(/\/spaces/);
+      await expect(switcher(robin)).toContainText(spaceName);
 
       const after = await session(robin);
-      expect(after.memberships).toHaveLength(1);
-      expect(after.memberships[0]).toMatchObject({ name: spaceName, roles: ['admin'], status: 'active' });
-      const slug = after.memberships[0].slug as string;
+      expect(after.memberships).toHaveLength(2);
+      const made = after.memberships.find((m: any) => m.name === spaceName);
+      expect(made).toMatchObject({ roles: ['admin'], status: 'active' });
+      const slug = made.slug as string;
 
-      // Signing in again with the provider: the space is waiting, and the next arrival lands in it.
+      // Signing in again with the provider: both spaces are there, and the next arrival lands in the
+      // one opened last.
       const again = await unwrap<any>(await signInWith(robin, provider, token, true), `${provider}: back again`);
-      expect(again.memberships.map((m: any) => m.slug)).toEqual([slug]);
+      expect(again.memberships.map((m: any) => m.slug).sort()).toEqual([own.slug, slug].sort());
       const arriving = await as('admin', { email, org: null });
       await arriving.goto('/');
       await expect(arriving.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
       await expect(arriving).not.toHaveURL(/\/spaces/);
+      await expect(switcher(arriving)).toContainText(spaceName);
       await expect(arriving.getByRole('heading', { name: 'Welcome to Aimtrue' })).toHaveCount(0);
     });
   }
 
-  test('a 13-17 sees only “Join with a code”: types it, sees the space, asks, waits on Welcome, withdraws', async ({
+  test('an adult who deletes their own space belongs nowhere: Welcome, two choices side by side; starting one lands in it', async ({
+    page,
+    as,
+  }) => {
+    const email = `s11.nowhere.${run}@example.com`;
+    await adultViaApi(page, email, 'Noor Nowhere');
+    const noor = await as('admin', { email, org: null });
+    await dropPersonalSpace(noor);
+    expect(await session(noor)).toMatchObject({ memberships: [], invitations: [], join_requests: [] });
+
+    await noor.goto('/');
+    await expect(noor).toHaveURL(/\/spaces$/);
+    await expect(noor.getByRole('heading', { name: 'Welcome to Aimtrue' })).toBeVisible();
+    await expect(noor.getByText('Join a space with its code, or start your own.')).toBeVisible();
+    const join = noor.getByTestId('welcome-join');
+    const make = noor.getByTestId('welcome-make');
+    await expect(join).toBeVisible();
+    await expect(make).toBeVisible();
+    await expect(join.getByText('Join with a code')).toBeVisible();
+    await expect(make.getByText('Start a space')).toBeVisible();
+    const [joinBox, makeBox] = [await join.boundingBox(), await make.boundingBox()];
+    expect(joinBox && makeBox).toBeTruthy();
+    expect(Math.abs(joinBox!.y - makeBox!.y)).toBeLessThan(2);
+    expect(makeBox!.x).toBeGreaterThan(joinBox!.x + joinBox!.width - 1);
+    await expect(noor.getByTestId('welcome-delete-account')).toBeVisible();
+
+    const spaceName = `Noor household ${run}`;
+    await noor.getByTestId('welcome-space-name').fill(spaceName);
+    await noor.getByTestId('welcome-make-submit').click();
+    await expect(noor.getByTestId('invite-step')).toBeVisible({ timeout: 15_000 });
+    await noor.getByTestId('invite-skip').click();
+    await expect(noor.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+    await expect(noor).not.toHaveURL(/\/spaces/);
+    expect((await session(noor)).memberships).toEqual([
+      expect.objectContaining({ name: spaceName, roles: ['admin'], status: 'active' }),
+    ]);
+  });
+
+  test('a 13-17 lands in their own space, which takes nobody in; on Spaces only “Join with a code”: asks, waits, withdraws', async ({
     page,
     as,
   }) => {
@@ -169,9 +245,37 @@ test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
     await expect.poll(async () => (await tali.request.get('/api/auth/session')).status()).toBe(200);
     expect((await session(tali)).account).toMatchObject({ age_band: '13-17' });
 
-    // Welcome: Join with a code alone; starting a space is for adults, and the API agrees.
+    // P13: a space of their own too, which they land in -- no Welcome, no wizard.
+    const own = await personalSpaceOf(tali);
+    expect(own.name).toBe("Tali's space");
     await tali.goto('/');
-    await expect(tali.getByRole('heading', { name: 'Welcome to Aimtrue' })).toBeVisible();
+    await expect(tali.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+    await expect(switcher(tali)).toContainText("Tali's space");
+    await expect(tali.getByRole('heading', { name: 'Welcome to Aimtrue' })).toHaveCount(0);
+    await wizardStaysShut(tali);
+
+    // A teen's own space has no code and takes nobody: adding people and opening joining are for adults.
+    const inOwn = await as('admin', { email, org: own.slug });
+    expect(await unwrap<any>(await inOwn.request.get('/api/organization/code'), 'their code')).toEqual({
+      code: null,
+      join_by_code: false,
+    });
+    const opening = await inOwn.request.put('/api/organization/code', { data: { join_by_code: true } });
+    expect(opening.status()).toBe(403);
+    expect((await opening.json()).error.code).toBe('forbidden');
+    expect((await unwrap<any>(await inOwn.request.get('/api/organization/code'), 'still')).join_by_code).toBe(false);
+    for (const role of ['parent', 'admin'] as const) {
+      const adding = await inOwn.request.post('/api/users', {
+        data: inviteRowRequest({ email: `s11.teen${role}.${run}@example.com`, full_name: `Tali ${role}`, role }),
+      });
+      expect(adding.status(), `inviting a ${role}`).toBe(403);
+      expect((await adding.json()).error.code).toBe('forbidden');
+    }
+    expect((await unwrap<any[]>(await inOwn.request.get('/api/users'), 'their people')).map((p) => p.email)).toEqual([email]);
+
+    // Spaces: Join with a code alone; starting a space is for adults, and the API agrees.
+    await tali.goto('/spaces');
+    await expect(tali.getByTestId(`org-${own.slug}`)).toBeVisible({ timeout: 15_000 });
     await expect(tali.getByTestId('welcome-join')).toBeVisible();
     await expect(tali.getByTestId('welcome-make')).toHaveCount(0);
     await expect(tali.getByTestId('welcome-space-name')).toHaveCount(0);
@@ -187,11 +291,11 @@ test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
     await expect(found.locator('span[aria-hidden], img').first()).toBeAttached();
     await found.getByTestId('welcome-ask').click();
 
-    // They wait on Welcome, where they can withdraw -- still there after a reload.
+    // They wait on the Spaces page, where they can withdraw -- still there after a reload.
     const waiting = tali.getByTestId(`welcome-request-${made.slug}`);
     await expect(waiting).toBeVisible({ timeout: 15_000 });
     await tali.reload();
-    await expect(tali.getByRole('heading', { name: 'Welcome to Aimtrue' })).toBeVisible();
+    await expect(tali.getByTestId('spaces-page')).toBeVisible();
     await expect(waiting).toBeVisible();
     expect((await session(tali)).join_requests).toEqual([
       expect.objectContaining({ slug: made.slug, outcome: null }),
@@ -403,10 +507,12 @@ test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
     expect((await person.request.get('/api/auth/session')).status()).toBe(404);
   }
 
-  test('a newcomer whose only space was archived lands on Welcome and can delete the account', async ({ page, as }) => {
+  test('a person whose only space was archived lands on Welcome and can delete the account', async ({ page, as }) => {
     const email = `s11.archived.${run}@example.com`;
     await adultViaApi(page, email, 'Arlo Archived');
     const outside = await as('admin', { email, org: null });
+    // Their own space (P13) first: this is about a person whose ONLY space is archived.
+    await dropPersonalSpace(outside);
     const made = await unwrap<any>(
       await outside.request.post('/api/spaces', { data: { name: `Archived family ${run}` } }),
       'they start a space',
@@ -434,5 +540,84 @@ test.describe('S11: the first sign-in, join or start (Phase 61)', () => {
     expect(invited.status).toBe('invited');
     await archive(as, made.slug);
     await deletesFromWelcome(await as('admin', { email, org: null }));
+  });
+});
+
+/**
+ * Phase 63 (P13): the personal space's housekeeping -- the console hides it unless asked, it does not
+ * count toward the spaces one person may make, and it goes with the account when nobody else is in it.
+ */
+test.describe('P13: a personal space, kept out of the way (Phase 63)', () => {
+  const consoleList = async (as: (who: any, o?: any) => Promise<Page>, query = '') =>
+    unwrap<any[]>(await (await as('platformAdmin', { org: null })).request.get(`/api/platform/organizations${query}`), 'the console list');
+
+  test('the console lists personal spaces only when asked (?personal=1)', async ({ page, as }) => {
+    const email = `p13.console.${run}@example.com`;
+    await adultViaApi(page, email, 'Cleo Console');
+    const own = await personalSpaceOf(await as('admin', { email, org: null }));
+    expect((await consoleList(as)).some((o) => o.slug === own.slug)).toBe(false);
+    expect((await consoleList(as)).some((o) => o.personal)).toBe(false);
+    const all = await consoleList(as, '?personal=1');
+    expect(all.find((o) => o.slug === own.slug)).toMatchObject({ name: "Cleo's space", personal: true, created_via: 'self_serve' });
+    // A space they start is an ordinary one, listed as ever.
+    const made = await unwrap<any>(
+      await (await as('admin', { email, org: null })).request.post('/api/spaces', { data: { name: `Cleo club ${run}` } }),
+      'a second space',
+    );
+    expect((await consoleList(as)).find((o) => o.slug === made.slug)).toMatchObject({ personal: false });
+  });
+
+  test('a personal space does not count toward the spaces one person may make', async ({ page, as }) => {
+    const email = `p13.cap.${run}@example.com`;
+    await adultViaApi(page, email, 'Cass Cap');
+    const cass = await as('admin', { email, org: null });
+    await personalSpaceOf(cass);
+    for (const n of [1, 2, 3]) {
+      const made = await cass.request.post('/api/spaces', { data: { name: `Cass space ${n} ${run}` } });
+      expect(made.status(), `space ${n} of ${DAILY_CAPS.spaces_per_person}`).toBe(201);
+    }
+    expect(DAILY_CAPS.spaces_per_person).toBe(3);
+    const fourth = await cass.request.post('/api/spaces', { data: { name: `Cass space 4 ${run}` } });
+    expect(fourth.status()).toBe(429);
+    expect((await fourth.json()).error.code).toBe('rate_limited');
+    expect((await session(cass)).memberships).toHaveLength(4);
+  });
+
+  test('a newcomer with only their personal space deletes their account, and the space goes with it', async ({ page, as }) => {
+    const email = `p13.delete.${run}@example.com`;
+    await adultViaApi(page, email, 'Dara Delete');
+    const dara = await as('admin', { email, org: null });
+    const own = await personalSpaceOf(dara);
+    expect((await consoleList(as, '?personal=1')).some((o) => o.slug === own.slug)).toBe(true);
+
+    expect((await dara.request.delete('/api/auth/account')).status()).toBe(204);
+    expect((await dara.request.get('/api/auth/session')).status()).toBe(404);
+    expect((await consoleList(as, '?personal=1')).some((o) => o.slug === own.slug)).toBe(false);
+  });
+
+  test('a personal space someone else has joined is not purged: the account waits until they leave it', async ({ page, as }) => {
+    const email = `p13.shared.${run}@example.com`;
+    await adultViaApi(page, email, 'Sami Shared');
+    const sami = await as('admin', { email, org: null });
+    const own = await personalSpaceOf(sami);
+    // An adult may bring people into their own space: an invited parent, who accepts.
+    const guestEmail = `p13.sharedguest.${run}@example.com`;
+    const inOwn = await as('admin', { email, org: own.slug });
+    await unwrap(
+      await inOwn.request.post('/api/users', { data: inviteRowRequest({ email: guestEmail, full_name: 'Gus Guest', role: 'parent' }) }),
+      'inviting into the personal space',
+    );
+    const gus = await as('admin', { email: guestEmail, org: null });
+    await unwrap(await gus.request.post(`/api/auth/invitations/${own.slug}/accept`), 'accepting');
+
+    const refused = await sami.request.delete('/api/auth/account');
+    expect(refused.status()).toBe(409);
+    expect((await sami.request.get('/api/auth/session')).status()).toBe(200);
+    expect((await consoleList(as, '?personal=1')).some((o) => o.slug === own.slug)).toBe(true);
+
+    // Gus leaves: Sami is alone in it again, and the account (with the space) may go.
+    await unwrap(await gus.request.post(`/api/spaces/${own.slug}/leave`), 'gus leaves');
+    expect((await sami.request.delete('/api/auth/account')).status()).toBe(204);
+    expect((await consoleList(as, '?personal=1')).some((o) => o.slug === own.slug)).toBe(false);
   });
 });

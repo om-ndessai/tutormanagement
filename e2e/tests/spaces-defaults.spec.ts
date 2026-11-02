@@ -63,10 +63,14 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
     const spaceName = `Questmaker family ${stamp % 100000}`;
     await unwrap(await signup(page, makerEmail, 'Quinn Questmaker'), 'the maker signs up');
 
-    // The newcomer starts a space from the Welcome page.
+    // Phase 63 (P13): sign-up made them a space of their own, which they land in; they start a
+    // second one from the Spaces page.
     const quinn = await as('admin', { email: makerEmail, org: null });
     await quinn.goto('/');
-    await expect(quinn.getByTestId('welcome')).toBeVisible();
+    await expect(quinn.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+    await expect(quinn.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText("Quinn's space");
+    await quinn.goto('/spaces');
+    await expect(quinn.getByTestId('welcome-make')).toBeVisible({ timeout: 15_000 });
     await quinn.getByTestId('welcome-space-name').fill(spaceName);
     await quinn.getByTestId('welcome-make-submit').click();
     // S12's "Invite people" may open first; skipping goes on.
@@ -188,6 +192,7 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
       await inSpace.request.delete('/api/organization', { data: { confirm_name: spaceName } });
       const kitOut = await as('admin', { email: kidEmail, org: null });
       await kitOut.request.delete('/api/auth/account');
+      // Their personal space, alone in it, goes with the account (P13).
       await quinn.request.delete('/api/auth/account');
     }
   });

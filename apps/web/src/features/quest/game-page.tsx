@@ -19,6 +19,7 @@ import {
   type GameView,
 } from '@tmi/shared';
 
+import { LobbyInvite } from './lobby-invite';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -189,6 +190,8 @@ function Lobby({ game }: { game: GameView }) {
               <CopyButton text={game.code} />
             </div>
             <Rules game={game} />
+            {/* Phase 62 (P7): a QR code and Share, so the people at the table join in a tap. */}
+            {game.status === 'lobby' && <LobbyInvite code={game.code} title="Aimtrue Quest game" />}
           </div>
           {mine?.code && (
             <p className="bg-primary/10 rounded-lg px-4 py-3 text-sm">
@@ -437,10 +440,23 @@ function QuestionPanel({ gameId, question, total }: { gameId: string; question: 
     <div className="grid gap-4">
       <Card className="py-0" data-testid="game-question">
         <CardContent className="grid gap-3 p-6">
-          <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-            Question {question.number}
-            {total !== null ? ` of ${total}` : ''}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+              Question {question.number}
+              {total !== null ? ` of ${total}` : ''}
+            </p>
+            {/* Phase 62 (P3): a checked question no person has approved yet. */}
+            {question.beta && (
+              <Badge
+                variant="secondary"
+                className="px-1.5 py-0 text-[10px]"
+                data-testid="game-question-beta"
+                title="A new question: it passed every automatic check, and no person has approved it yet."
+              >
+                Beta
+              </Badge>
+            )}
+          </div>
           <MathText text={question.stem} className="text-lg leading-relaxed" />
         </CardContent>
       </Card>
@@ -548,6 +564,11 @@ function Results({ game }: { game: GameView }) {
               >
                 {ending}
               </p>
+            )}
+            {single && data?.new_best && (
+              <Badge className="w-fit" data-testid="game-new-best">
+                New best!
+              </Badge>
             )}
             <h2 className="text-2xl font-bold" data-testid="game-winner">
               {single && mine

@@ -15,18 +15,24 @@ import {
   type SignupStart,
   AUTH_PROVIDER_LABELS,
   AUTH_PROVIDERS,
+  DEFAULT_ORG_TIME_ZONE,
+  type GuestConfig,
   providerSignInSchema,
   type AuthProvider,
   type UserIdentity,
 } from '@tmi/shared';
 
+import { createSpace } from '../repositories/organizations.js';
+import { soleMemberPersonalSpaces } from '../repositories/people.js';
+import { purgeSpace } from '../repositories/purge.js';
+import { clientOf, signInFor } from '../lib/sign-in.js';
+import { guestConfigFor } from '../lib/guest.js';
 import { recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { verifyGoogleIdToken } from '../lib/google.js';
 import {
   assertOffered,
   fakeProvidersOn,
-  offeredProviders,
   providerInfo,
   verifyFakeToken,
   type VerifiedIdentity,
@@ -121,11 +127,12 @@ async function sessionPayload(
   impersonated: boolean,
   slug: string | undefined,
 ): Promise<SessionResponse> {
-  const [memberships, invitations, account, joinRequests] = await Promise.all([
+  const [memberships, invitations, account, joinRequests, deletable] = await Promise.all([
     listMemberships(env.DB, person.id),
     listInvitations(env.DB, person.id),
     getPlatformAccount(env.DB, person.id),
     listMyJoinRequests(env.DB, person.id),
+    accountDeletable(env.DB, person.id),
   ]);
 
   let organization: SessionResponse['organization'] = null;
@@ -173,6 +180,7 @@ async function sessionPayload(
     platform_admin: platformAdmin,
     account,
     join_requests: joinRequests,
+    account_deletable: deletable,
   };
 }
 
@@ -275,7 +283,9 @@ async function completeSignIn(
   const env = c.env;
   const label = AUTH_PROVIDER_LABELS[identity.provider];
   // Phase 52: sign-up is offered only to a client that can show it, and only while it is open.
-  const canSignUp = options.asked && env.SIGNUP_OPEN !== 'false';
+  // Phase 62 (P0): open or closed for this client, by the console's switch or else the Worker's vars.
+  const client = clientOf(c);
+  const canSignUp = options.asked && (await signInFor(env, client)).signup_open;
   // Phase 53: the test portal admits only invited people -- checked before the person is looked
   // up, before sign-up, and before any log line names them.
   if (allowlistOn(env)) {
@@ -332,7 +342,7 @@ async function completeSignIn(
       data: {
         signup: {
           token: await createSignupToken(
-            { sub: identity.subject, email: identity.email, name, provider: identity.provider },
+            { sub: identity.subject, email: identity.email, name, provider: identity.provider, client },
             env.SESSION_SECRET,
           ),
           email: identity.email,
@@ -444,13 +454,18 @@ export const authRoutes = new Hono<AppEnv>()
     const own = (c.env.DEFAULT_ORGANIZATION || '').trim().toLowerCase();
     const brandOrg = own ? await getPublicBrand(c.env.DB, own) : null;
 
+    // Phase 62 (P0): the web portal and the app each get their own switches.
+    const signIn = await signInFor(c.env, clientOf(c));
+
     const body: ApiOk<AuthConfig> = {
       data: {
         google_client_id: enabled ? c.env.GOOGLE_CLIENT_ID : null,
         auth_enabled: enabled,
-        signup_open: c.env.SIGNUP_OPEN !== 'false',
-        // Phase 55: Google first, then whichever others this Worker lists and has set up.
-        providers: enabled ? providerInfo(c.env) : [],
+        signup_open: signIn.signup_open,
+        // Phase 55: Google first, then whichever others are in force for this client and set up here.
+        providers: enabled ? providerInfo(c.env, signIn.offered) : [],
+        // Phase 63 (P10): guest play, while it is on at this address.
+        ...(await guestPart(c.env)),
         brand: brandOrg ? brandFromOrganization(brandOrg) : PLATFORM_BRAND,
       },
     };
@@ -481,7 +496,7 @@ export const authRoutes = new Hono<AppEnv>()
   .on('POST', ['/microsoft', '/apple', '/facebook'], zValidator('json', providerSignInSchema), async (c) => {
     const provider = providerIn(c.req.path);
     assertSignInAvailable(c.env);
-    assertOffered(c.env, provider);
+    assertOffered((await signInFor(c.env, clientOf(c))).offered, provider);
     await rateLimit(c, 'sign_in', clientAddress(c));
     const input = c.req.valid('json');
     const identity = await verifyProviderInput(c.env, provider, input);
@@ -500,7 +515,8 @@ export const authRoutes = new Hono<AppEnv>()
   .on('GET', ['/microsoft/start', '/apple/start', '/facebook/start'], async (c) => {
     const provider = providerIn(c.req.path);
     assertSignInAvailable(c.env);
-    assertOffered(c.env, provider);
+    // The redirect flows are the web portal's own.
+    assertOffered((await signInFor(c.env, 'web')).offered, provider);
     const linking = c.req.query('link') === '1';
     let linkUserId: string | null = null;
     if (linking) {
@@ -545,7 +561,7 @@ export const authRoutes = new Hono<AppEnv>()
     let returnTo = '/';
     try {
       assertSignInAvailable(c.env);
-      assertOffered(c.env, provider);
+      assertOffered((await signInFor(c.env, 'web')).offered, provider);
       const kept = await readState(getCookie(c, OAUTH_COOKIE), field('state'), provider, c.env.SESSION_SECRET);
       returnTo = kept.returnTo;
       c.header('Set-Cookie', clearedStateCookie(provider), { append: true });
@@ -579,7 +595,8 @@ export const authRoutes = new Hono<AppEnv>()
       const answer = await completeSignIn(c, identity, { asked: kept.signup, revokeToken });
       if ('signup' in answer.data) {
         const { token, email, name } = answer.data.signup;
-        return c.redirect(withHash('/', { signup: token, email, name }), 303);
+        // Phase 63 (P13): back to the page they signed up from (a guest's quest), where the sheet asks the rest.
+        return c.redirect(withHash(kept.returnTo, { signup: token, email, name }), 303);
       }
       return c.redirect(kept.returnTo, 303);
     } catch (error) {
@@ -593,7 +610,7 @@ export const authRoutes = new Hono<AppEnv>()
   /** Phase 55: the reader's own ways in, for My profile. */
   .get('/identities', requireAuth, async (c) => {
     const body: ApiOk<{ identities: UserIdentity[]; offered: AuthProvider[] }> = {
-      data: { identities: await listIdentities(c.env.DB, c.get('person').id), offered: offeredProviders(c.env) },
+      data: { identities: await listIdentities(c.env.DB, c.get('person').id), offered: (await signInFor(c.env, clientOf(c))).offered },
     };
     return c.json(body);
   })
@@ -605,7 +622,7 @@ export const authRoutes = new Hono<AppEnv>()
    */
   .post('/identities/:provider', requireAuth, zValidator('json', providerSignInSchema), async (c) => {
     const provider = knownProvider(c.req.param('provider'));
-    assertOffered(c.env, provider);
+    assertOffered((await signInFor(c.env, clientOf(c))).offered, provider);
     await rateLimit(c, 'sign_in', clientAddress(c));
     const input = c.req.valid('json');
     const identity =
@@ -833,14 +850,17 @@ export const authRoutes = new Hono<AppEnv>()
    * With sign-in off (local, the demo) a `dev_email` stands in for the token.
    */
   .post('/signup', zValidator('json', signupSchema), async (c) => {
-    if (c.env.SIGNUP_OPEN === 'false') {
+    // Phase 62 (P0): closed for this client, closed -- the client the sign-in came from (in the
+    // token), else the one asking. Checked before anything is read or counted.
+    const input = c.req.valid('json');
+    const tokenClient = input.token ? await readSignupToken(input.token, c.env.SESSION_SECRET) : null;
+    if (!(await signInFor(c.env, tokenClient?.client ?? clientOf(c))).signup_open) {
       throw new ApiError(403, 'forbidden', 'Sign-up is not open yet.');
     }
-    const input = c.req.valid('json');
     await rateLimit(c, 'space_write', clientAddress(c));
     let claims: { sub: string | null; email: string; name: string; provider: AuthProvider };
-    if (input.token) {
-      const read = await readSignupToken(input.token, c.env.SESSION_SECRET);
+    if (tokenClient) {
+      const read = tokenClient;
       claims = { sub: read.sub, email: read.email.toLowerCase(), name: read.name, provider: read.provider ?? 'google' };
       if (allowlistOn(c.env)) {
         await assertInvited(c.env, { email: claims.email, provider: claims.provider, subject: claims.sub });
@@ -886,6 +906,30 @@ export const authRoutes = new Hono<AppEnv>()
       entity_id: person.id,
     });
 
+    // Phase 63 (P13): a space of their own at once, so they land among tiles and favorites -- no
+    // Welcome screen. A teen's takes nobody by code and they may not add people (routes/users.ts).
+    // Best effort: without it they still have their account, and may start a space from Spaces.
+    try {
+      const firstName = person.full_name.trim().split(/\s+/)[0] || 'My';
+      const space = await createSpace(c.env.DB, {
+        name: `${firstName}'s space`,
+        timeZone: DEFAULT_ORG_TIME_ZONE,
+        makerId: person.id,
+        requestHost: new URL(c.req.url).hostname || 'aimtrue.invalid',
+        personal: true,
+        teen: band === '13-17',
+      });
+      await setDefaultOrganization(c.env.DB, person.id, orgIdFromRow(space.id));
+      await recordAudit(c.env.DB, person, orgIdFromRow(space.id), {
+        action: 'account.personal_space',
+        description: `${person.full_name}'s own space was made at sign-up`,
+        entity_type: 'organization',
+        entity_id: space.id,
+      });
+    } catch (error) {
+      console.error('Personal space not made at sign-up', error);
+    }
+
     if (isAuthEnabled(c.env)) {
       const token = await createSessionToken(person.id, c.env.SESSION_SECRET);
       c.header('Set-Cookie', sessionCookie(token, isProduction(c.env)));
@@ -905,6 +949,8 @@ export const authRoutes = new Hono<AppEnv>()
     }
     // Phase 55: Apple's rule -- its tokens are revoked when the account goes.
     for (const sealed of await appleRevokeTokens(c.env.DB, person.id)) await revokeKeptAppleToken(c.env, sealed);
+    // Phase 63 (P13): their personal space, where nobody else is, goes with them.
+    for (const space of await soleMemberPersonalSpaces(c.env.DB, person.id)) await purgeSpace(c.env.DB, orgIdFromRow(space));
     await deleteOwnAccount(c.env.DB, person.id);
     await recordAudit(c.env.DB, null, 'platform', {
       action: 'account.deleted',
@@ -951,3 +997,15 @@ async function sessionIssuedAt(token: string, secret: string): Promise<string | 
     return null;
   }
 }
+
+/** Phase 63 (P10): the guest part of the config, or nothing (and never fails the config). */
+async function guestPart(env: Env): Promise<{ guest?: GuestConfig }> {
+  try {
+    const guest = await guestConfigFor(env);
+    return guest ? { guest } : {};
+  } catch (error) {
+    console.error('Guest config not built', error);
+    return {};
+  }
+}
+

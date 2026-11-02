@@ -12,11 +12,15 @@
 // game per run of the app: on a knockout the K.O. stamp first, then -- for the winners (a single
 // player: any right answer) -- the confetti and the success haptic once it fades. Reopening a finished
 // game from the hub shows the words only.
+// Phase 64 (P17, P20): a single player's "New best!" (`new_best`), and a played game reads My progress
+// and the tiles' bests again.
+import { useQueryClient } from '@tanstack/react-query';
 import { gameEndLabel, type GameResultItem, type GameView } from '@tmi/shared';
 import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
 import { Button, Chip, Portal, Text } from 'react-native-paper';
 
+import { BadgePill } from '@/components/badge-pill';
 import { OutlinedCard } from '@/components/outlined-card';
 import { Panel } from '@/components/section';
 import { DetailSkeleton } from '@/components/skeletons';
@@ -76,6 +80,15 @@ export function GameResults({ game }: { game: GameView }) {
   useEffect(() => {
     celebrated.add(game.id);
   }, [game.id]);
+  // Phase 64 (P17, P20): a game the reader played counts today and may be a tile's new best, so the
+  // Play home's My progress and the tiles' bests are read again (each cached for a minute otherwise).
+  const queryClient = useQueryClient();
+  const played = Boolean(mine);
+  useEffect(() => {
+    if (!played) return;
+    void queryClient.invalidateQueries({ queryKey: ['quest', 'habit'] });
+    void queryClient.invalidateQueries({ queryKey: ['quest', 'tiles'] });
+  }, [game.id, played, queryClient]);
   useEffect(() => {
     if (party) haptics.success();
   }, [party]);
@@ -98,6 +111,10 @@ export function GameResults({ game }: { game: GameView }) {
             >
               {ending}
             </Text>
+          ) : null}
+          {/* Phase 64 (P20): a single player's game that beat every earlier one of its shape. */}
+          {game.players === 'single' && data?.new_best ? (
+            <BadgePill testID="game-new-best" label="New best!" tone="primary" />
           ) : null}
           <Text
             testID="game-winner"

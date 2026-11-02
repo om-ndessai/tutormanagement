@@ -3,6 +3,7 @@ import type { Page } from '@playwright/test';
 
 import { PEOPLE, expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
+import { setCheckedQuestions } from '../support/checked-questions.js';
 import { latexToPlain, mathTextToPlain, parseStroke } from '@tmi/shared';
 
 /**
@@ -193,15 +194,22 @@ test.describe('the Assessment menu (beta)', () => {
     expect((await admin.request.post(`/api/canvas-assessments/${id}/discard`, { data: {} })).status()).toBe(409);
   });
 
-  test('an organization may try questions not yet reviewed', async ({ as }) => {
+  test('a space may draw questions not yet reviewed (the platform switch since Phase 62)', async ({ as }) => {
     const admin = await as('orgBAdmin', { org: 'riverside' });
+    const platform = await as('platformAdmin', { org: null });
     const set = (data: Record<string, boolean>) => admin.request.patch('/api/organization/settings', { data });
     expect((await set({ canvas_assessments: true })).status()).toBe(200);
+    await setCheckedQuestions(platform, 'riverside', false);
     try {
       const approvedOnly = await unwrap<any[]>(await admin.request.get('/api/canvas-assessments/levels'), 'levels');
       expect(approvedOnly.find((l) => l.level_id === 'NC26.7').available).toBe(0);
 
+      // The space admins' old switch is accepted from an older app, and no longer applied.
       expect((await set({ canvas_assessments_unreviewed: true })).status()).toBe(200);
+      const still = await unwrap<any[]>(await admin.request.get('/api/canvas-assessments/levels'), 'levels');
+      expect(still.find((l) => l.level_id === 'NC26.7').available).toBe(0);
+
+      await setCheckedQuestions(platform, 'riverside', true);
       const levels = await unwrap<any[]>(await admin.request.get('/api/canvas-assessments/levels'), 'levels');
       const grade7 = levels.find((l) => l.level_id === 'NC26.7');
       expect(grade7.available).toBeGreaterThan(0);
@@ -222,11 +230,12 @@ test.describe('the Assessment menu (beta)', () => {
       expect(pdf.status()).toBe(200);
       expect(checkPdf(await pdf.body())).toBe(started.question_count + 1);
 
-      // The switch is on the Organization page, beside the menu's own.
+      // The Space page says so, and that the platform sets it.
       await admin.goto('/organization');
-      await expect(admin.getByRole('switch', { name: 'Include questions not yet reviewed' })).toHaveAttribute('aria-checked', 'true');
+      await expect(admin.getByTestId('checked-questions-note')).toContainText('Included');
+      await expect(admin.getByRole('switch', { name: 'Include questions not yet reviewed' })).toHaveCount(0);
     } finally {
-      await set({ canvas_assessments_unreviewed: false });
+      await setCheckedQuestions(platform, 'riverside', true);
       await set({ canvas_assessments: false });
     }
   });
@@ -242,8 +251,15 @@ test.describe('the Assessment menu (beta)', () => {
     // Alex teaches Sofia, not Sanjay: Sanjay is "not found" to him.
     expect((await start(tutor, sofiaId)).status()).toBe(201);
     expect((await start(tutor, sanjayId)).status()).toBe(404);
-    // A grade with no approved questions yet.
-    expect((await start(admin, sofiaId, 'NC26.7')).status()).toBe(409);
+    // A grade with no approved questions yet, while the space draws approved ones only (Phase 62:
+    // checked questions are the platform's switch, on by default).
+    const platform = await as('platformAdmin', { org: null });
+    await setCheckedQuestions(platform, 'chmi', false);
+    try {
+      expect((await start(admin, sofiaId, 'NC26.7')).status()).toBe(409);
+    } finally {
+      await setCheckedQuestions(platform, 'chmi', true);
+    }
     expect((await start(admin, sofiaId, 'NC99')).status()).toBe(422);
 
     // The questions go to whoever is taking it, never with the answer.

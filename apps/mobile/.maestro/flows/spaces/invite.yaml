@@ -1,5 +1,5 @@
-# Phase 61 (S12, docs/spaces-plan.md): start a space, then invite people. Ivo, a newcomer, starts
-# "The Inviter family"; "Invite people" opens before the wizard, with Admin and Parent and never
+# Phase 61 (S12, docs/spaces-plan.md): start a space, then invite people. Ivo, a newcomer, lands in
+# his own space (Phase 63, P13: "Ivo's space") and starts "The Inviter family" from Spaces; "Invite people" opens before the wizard, with Admin and Parent and never
 # Tutor (a newcomer's space has no Tutoring). He invites a new address as Admin, and Rhea -- who
 # already has a space of her own -- as Parent under a name he types. Each sent row shows the words to
 # hand over (no email is sent from a self-serve space) and Share opens the system sheet; the space's
@@ -49,7 +49,7 @@ tags:
   - smoke
 ---
 # --- Ivo starts a space -------------------------------------------------------------------------
-# A fresh device, so the wizard (and its first step, Invite people) is not pre-empted.
+# A fresh device, so the wizard (and its first step, Invite people) is not pre-empted in the new space.
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -58,8 +58,32 @@ tags:
       FRESH: '1'
 - extendedWaitUntil:
     visible:
-      id: welcome-title
+      id: screen-home
     timeout: 30000
+# Phase 63 (P13): a newcomer lands in a space of their own, "Ivo's space", on its Play home -- no
+# Welcome, no wizard. Start a space is on Spaces, from the account sheet's "All spaces".
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-onboarding
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".* at Ivo's space"
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
 - scrollUntilVisible:
     element:
       id: welcome-space-name

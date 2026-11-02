@@ -456,7 +456,7 @@ Gamification, starting with the question bank. Plan: `docs/gamification-plan.md`
   student answers the bank's unapproved questions one at a time, full screen (no going back), marked by
   code; their tutor reviews each in a full-screen queue and confirms the question (approved into the
   bank) or flags it; points to both, kept in an append-only ledger; daily activity kept for streaks.
-- **Phase 44 — Streaks, metrics and badges.**
+- **Phase 44 — Streaks, metrics and badges.** (Replaced by Phase 64, `docs/stickiness-plan.md`, 2026-10-31.)
 - **Phase 45 — Rewards** (an organization's own rewards shelf, certificates, an opt-in leaderboard).
 
 Phase 42 released 2026-10-20 (commit acfc8a2; production backed up to
@@ -673,3 +673,21 @@ tested by the workflow `.claude/workflows/spaces-phases.js`.
   A first sign-in with sign-up open, by any provider, lands on Welcome: join with a code or start a space;
   starting one is followed by "Invite people" (email and role, with a copyable invitation, since self-serve
   spaces send no email). The terms and privacy are reworded to "space", a new version the owner approves.
+
+Phases 62-64: (requested 2026-10-31 by the owner, `docs/UnauthPlan.md`; plan approved 2026-10-31; built
+2026-11-01/02; **released 2026-11-02** (tag `release-20261102`) with privacy version 2026-11-01, approved by the
+owner on 2026-11-01; web and the app; guest play, the guest Assessment and the Daily set are console switches,
+off until a platform admin turns them on) Play first, sign up second. Plan: `docs/stickiness-plan.md`,
+requirements P1-P20.
+- **Phase 62 — one tap.** Checked questions per space (a platform admin's switch, on everywhere for the soft
+  launch); game answers count toward the existing two-right-answers approval; a Beta chip; solo games stop
+  polling, counts are cached, the draw reads a window of the index. Tiles named like G4T10 and BA3Q5; the
+  members' Play home; one-tap favorites, the multiplayer lobby with the host playing, family rosters and
+  "Waiting for you" with no code to type.
+- **Phase 63 — open door.** Anyone plays without signing in: a guest Play home of tiles (some locked), 10
+  reserved guest questions per level played on the device with a pause, a guest Assessment, nudges to sign
+  up, a sign-up sheet with a personal space and no Welcome screen, `/play/<code>` links, anonymous counts
+  and a new privacy version. Guest play on `tutoring` and the demo, not `tmi-portal`.
+- **Phase 64 — habit.** A weekly streak, badges and My progress, the Daily set and its share grid, beat your
+  best.
+

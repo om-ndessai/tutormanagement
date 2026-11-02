@@ -1,0 +1,92 @@
+# Phase 62 (P7/P8): a family's favorite. Quest on in chmi; Priya keeps "Family G6" (everyone on their own,
+# joining open) with Sofia on its roster (play-family.js). On Priya's Home (an admin's dashboard) the
+# compact "Play a favorite" row holds it; its Players dialog shows Sofia ticked. One tap makes the game
+# with Priya already playing: the lobby, its code large, a QR code and Share. Then Sofia opens the app:
+# "Waiting for you" says Priya started a G6 game, and Join -- with no code typed -- opens the join sheet,
+# and "Join the game" puts her in the lobby. quest-games-end.js ends the game, deletes the favorite and
+# turns the switches off.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+  - runScript: ../../scripts/play-family.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-start.js
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: play-favorites-row
+    timeout: 30000
+- assertVisible: 'Play a favorite'
+- tapOn:
+    id: play-favorite-players-Family G6
+- extendedWaitUntil:
+    visible:
+      id: play-roster-dialog
+    timeout: 10000
+- assertVisible: 'Players for Family G6'
+# The favorite's players are listed first (an admin's list is everyone in the space), Sofia ticked.
+# Android reports the tick in `checked`; on iOS the row's label ("Sofia") is what Maestro reads.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: play-roster-member-${output.sofiaId}
+          checked: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: play-roster-member-${output.sofiaId}
+          text: 'Sofia'
+- takeScreenshot: play-family-roster
+- tapOn:
+    id: play-roster-cancel
+- tapOn:
+    id: play-favorite-Family G6
+    waitToSettleTimeoutMs: 500
+# The host is in the game from the start: the lobby, with its code, a QR code and Share.
+- extendedWaitUntil:
+    visible:
+      id: game-lobby-code
+    timeout: 15000
+- assertVisible:
+    id: game-lobby-qr
+- assertVisible:
+    id: game-share
+- takeScreenshot: play-family-lobby
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: play-waiting
+    timeout: 30000
+- assertVisible: '.*started a G6 game · 2 questions.*'
+- takeScreenshot: play-family-waiting
+# Join, by its testID (the code is the game's, unknown to the flow: `play-waiting-join-<code>`).
+- tapOn:
+    id: 'play-waiting-join-.*'
+- extendedWaitUntil:
+    visible:
+      id: game-join-solo
+    timeout: 15000
+- tapOn:
+    id: game-join-solo
+- extendedWaitUntil:
+    visible:
+      id: game-lobby-code
+    timeout: 15000

@@ -2,7 +2,14 @@
 // only (sign-in off, X-Dev-User). env: ACTION and its arguments:
 //   reset-newcomer EMAIL         every space the address made is deleted, any other left, its open
 //                                requests withdrawn, then the account deleted (nothing there: fine)
-//   signup EMAIL NAME [YEAR]     POST /auth/signup with dev_email (an adult unless YEAR says otherwise)
+//   signup EMAIL NAME [YEAR] [PERSONAL]
+//                                POST /auth/signup with dev_email (an adult unless YEAR says otherwise).
+//                                Phase 63 (P13): sign-up also makes "<First name>'s space" and lands
+//                                them in it; PERSONAL: drop deletes it again at once (drop-personal), for
+//                                a flow whose subject needs a newcomer who belongs nowhere -- the old cast
+//   drop-personal EMAIL          Phase 63 (P13): deletes every personal space the person is an admin of
+//                                (DELETE /organization, by its name), so they belong nowhere again and
+//                                reach the Welcome, as a person who deleted their own space would
 //   make-space EMAIL NAME        POST /spaces; outputs slug, code and codeShown (either way it reads)
 //   ask EMAIL CODE               POST /spaces/join-requests (already asked: fine)
 //   seen EMAIL                   POST /spaces/join-requests/seen
@@ -27,8 +34,8 @@
 var API = 'http://localhost:8787/api';
 // The versions a newcomer accepts: equal to TERMS_VERSION / PRIVACY_VERSION in packages/shared
 // (src/test/maestro-scripts.test.ts checks it, so a new wording date fails in Jest, not here).
-var TERMS_VERSION = '2026-10-31';
-var PRIVACY_VERSION = '2026-10-31';
+var TERMS_VERSION = '2026-11-01';
+var PRIVACY_VERSION = '2026-11-01';
 var PLATFORM_ADMIN = 'ndessai@gmail.com';
 
 function call(as, method, path, body, org) {
@@ -61,6 +68,20 @@ function waitAMinute() {
 }
 
 var email = typeof EMAIL === 'undefined' ? '' : String(EMAIL).toLowerCase();
+
+/** Phase 63 (P13): the person's own personal spaces (where they are an admin) are deleted. */
+function dropPersonal(who) {
+  var session = must(call(who, 'GET', '/auth/session'), 'the session of ' + who).body.data;
+  (session.memberships || []).forEach(function (m) {
+    if (m.status !== 'active') return;
+    var inside = call(who, 'GET', '/auth/session', undefined, m.slug);
+    var org = inside.body && inside.body.data && inside.body.data.organization;
+    var roles = (inside.body && inside.body.data && inside.body.data.user && inside.body.data.user.roles) || [];
+    if (org && org.personal && roles.indexOf('admin') >= 0) {
+      must(call(who, 'DELETE', '/organization', { confirm_name: org.name }, m.slug), 'deleting ' + org.name);
+    }
+  });
+}
 
 if (ACTION === 'reset-newcomer') {
   var session = call(email, 'GET', '/auth/session');
@@ -97,6 +118,9 @@ if (ACTION === 'reset-newcomer') {
     made = call(email, 'POST', '/auth/signup', body);
   }
   must(made, 'signing up ' + email);
+  if (typeof PERSONAL !== 'undefined' && String(PERSONAL) === 'drop') dropPersonal(email);
+} else if (ACTION === 'drop-personal') {
+  dropPersonal(email);
 } else if (ACTION === 'make-space') {
   var space = must(call(email, 'POST', '/spaces', { name: NAME }), 'making ' + NAME).body.data;
   output.slug = space.slug;

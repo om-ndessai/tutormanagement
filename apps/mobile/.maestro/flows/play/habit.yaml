@@ -1,0 +1,266 @@
+# Phase 64 (P17-P20): the habit layer. Quest on in chmi, the console's Daily set on; habit.js picks one of
+# Sofia's count tiles whose level's Daily she has not played today. She starts it from her Play home and
+# finishes the quest: the first question answered (a choice, or a number), the rest skipped, to the
+# results. Exit brings her Home, where My progress says she played today and shows the First quest badge.
+# "Today's Daily" is that level's (the level last played on this phone): five questions, one at a time,
+# skipped through -- the answers go to the server once, at the end -- and the result: "<tag>D #n · 0 of 5"
+# and the grid ✗✗✗✗✗, with Share and Back to Play; Home again, the tile shows her best. The switches are
+# off again at the end.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+  - runScript: ../../scripts/habit.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: play-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-tile-start-${output.habitTile}
+    centerElement: true
+    speed: 15
+    timeout: 60000
+# The Play home is long since Phase 64 (My progress, the Daily): a slow scroll, and its momentum let to
+# end, so the tile does not drift on under the header (where a tap lands on the account button).
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-tile-start-${output.habitTile}
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 5'
+    timeout: 25000
+# The first question answered (a day played counts only answers, not skips): a choice where there are
+# choices, else a number. The choices' native targets appear once the maths is drawn.
+- extendedWaitUntil:
+    visible:
+      id: game-choice-A
+    timeout: 5000
+    optional: true
+- evalScript: ${output.answered = false}
+- runFlow:
+    when:
+      visible:
+        id: game-choice-A
+    commands:
+      - tapOn:
+          id: game-choice-A
+      - scrollUntilVisible:
+          element:
+            id: game-submit
+          centerElement: true
+      - tapOn:
+          id: game-submit
+      - evalScript: ${output.answered = true}
+- runFlow:
+    when:
+      true: ${!output.answered}
+      visible:
+        id: game-number
+    commands:
+      - tapOn:
+          id: game-number
+      - inputText: '7'
+      - extendedWaitUntil:
+          visible:
+            id: game-submit
+            enabled: true
+          timeout: 5000
+      - pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 2 of 5'
+    timeout: 15000
+# The rest skipped. A tap that lands while the maths is still settling can miss: tried again only when
+# the next question has not come.
+- scrollUntilVisible:
+    element:
+      id: game-skip
+    centerElement: true
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: game-skip
+      - extendedWaitUntil:
+          visible:
+            id: game-question-number
+            text: '(?i)Question 3 of 5'
+          timeout: 6000
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: game-skip
+      - extendedWaitUntil:
+          visible:
+            id: game-question-number
+            text: '(?i)Question 4 of 5'
+          timeout: 6000
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: game-skip
+      - extendedWaitUntil:
+          visible:
+            id: game-question-number
+            text: '(?i)Question 5 of 5'
+          timeout: 6000
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn:
+          id: game-skip
+      - extendedWaitUntil:
+          visible:
+            id: game-winner
+          timeout: 8000
+- takeScreenshot: habit-quest-results
+- tapOn:
+    id: quest-exit
+# Home, where the quest was started: My progress under Continue says today is played.
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: my-progress
+    direction: UP
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: my-progress-today
+      text: 'Played today'
+    timeout: 15000
+- assertVisible:
+    id: badge-first_quest
+- assertVisible:
+    id: my-progress-streak
+- takeScreenshot: habit-my-progress
+# Today's Daily, of the level just played.
+- scrollUntilVisible:
+    element:
+      id: play-daily
+    centerElement: true
+- assertVisible:
+    id: play-daily
+    text: ".*Today's Daily · ${output.habitTag}D.*"
+- tapOn:
+    id: play-daily
+- extendedWaitUntil:
+    visible:
+      id: daily-play
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: daily-progress
+      text: '.*question 1 of 5'
+    timeout: 10000
+- takeScreenshot: habit-daily-question
+- retry:
+    maxRetries: 2
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: daily-skip
+          centerElement: true
+      - tapOn:
+          id: daily-skip
+      - extendedWaitUntil:
+          visible:
+            id: daily-progress
+            text: '.*question 2 of 5'
+          timeout: 6000
+- retry:
+    maxRetries: 2
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: daily-skip
+          centerElement: true
+      - tapOn:
+          id: daily-skip
+      - extendedWaitUntil:
+          visible:
+            id: daily-progress
+            text: '.*question 3 of 5'
+          timeout: 6000
+- retry:
+    maxRetries: 2
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: daily-skip
+          centerElement: true
+      - tapOn:
+          id: daily-skip
+      - extendedWaitUntil:
+          visible:
+            id: daily-progress
+            text: '.*question 4 of 5'
+          timeout: 6000
+- retry:
+    maxRetries: 2
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: daily-skip
+          centerElement: true
+      - tapOn:
+          id: daily-skip
+      - extendedWaitUntil:
+          visible:
+            id: daily-progress
+            text: '.*question 5 of 5'
+          timeout: 6000
+# The last skip sends the five answers at once; the server marks them and sends the keys.
+- scrollUntilVisible:
+    element:
+      id: daily-skip
+    centerElement: true
+- tapOn:
+    id: daily-skip
+- extendedWaitUntil:
+    visible:
+      id: daily-result
+    timeout: 15000
+- assertVisible:
+    id: daily-heading
+    text: '${output.habitTag}D #\d+ · 0 of 5'
+- assertVisible:
+    id: daily-grid
+    text: '✗✗✗✗✗'
+- assertVisible:
+    id: daily-share
+- takeScreenshot: habit-daily-result
+- tapOn:
+    id: daily-back
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+# P20: the tile just played carries Sofia's best.
+- scrollUntilVisible:
+    element:
+      id: play-best-${output.habitTile}
+    centerElement: true
+    timeout: 30000
+- assertVisible:
+    id: play-best-${output.habitTile}
+    text: 'Best \d+'

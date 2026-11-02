@@ -20,6 +20,7 @@ import { useTourScroller } from '@/features/onboarding/tour-targets';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
 import { haptics } from '@/lib/haptics';
+import { PlayHome } from '@/features/play/play-home';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -66,6 +67,8 @@ export function SpaceHomeScreen() {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['canvas-assessments'] }),
         queryClient.invalidateQueries({ queryKey: ['users'] }),
+        queryClient.invalidateQueries({ queryKey: ['quest'] }),
+        queryClient.invalidateQueries({ queryKey: ['quest-games', 'favorites'] }),
       ]);
     } finally {
       setRefreshing(false);
@@ -79,6 +82,8 @@ export function SpaceHomeScreen() {
       {/* Phase 60 (S6): an invitation to another space, while the reader is here. */}
       <InvitationBanner />
       <View testID="space-home" style={{ gap: space.lg }}>
+        {/* Phase 62 (P6): the Play home leads, when Quest is on here. */}
+        {questOn ? <PlayHome /> : null}
         {assessmentOn ? <AssessmentHome /> : null}
         {assessmentAllowed && !assessmentOn ? <AssessmentOffCard isAdmin={isAdmin} /> : null}
         {questOn ? <QuestCard /> : null}

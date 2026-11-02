@@ -199,9 +199,9 @@ export const organizationSettingsSchema = z.object({
   /** Phase 38: the Assessment menu (beta). Its own admins only; on in a space made since Phase 61 (S10). */
   canvas_assessments: z.boolean(),
   /**
-   * Phase 38: let assessments draw on questions the bank has checked but no
-   * person has approved yet -- a trial, off until its admins choose; the
-   * tutor's PDF marks each such question.
+   * Phase 38: let assessments draw on questions the bank has checked but no person has approved yet.
+   * Since Phase 62 the platform's per-space switch (`checked_questions`) decides; this field is still
+   * accepted from older app builds and is no longer applied.
    */
   canvas_assessments_unreviewed: z.boolean(),
   /** Phase 40: how many questions an assessment draws, 1-25 (default 10). */
@@ -247,8 +247,19 @@ export interface Organization extends OrganizationBrand {
   email_notifications: boolean;
   /** Phase 38: whether the Assessment menu (beta) is on. */
   canvas_assessments: boolean;
-  /** Phase 38: whether assessments may draw on checked-but-unreviewed questions. */
+  /**
+   * Phase 38: whether assessments may draw on checked-but-unreviewed questions. Since Phase 62 it
+   * reports `checked_questions` (the platform admins' switch), for app builds that still read it.
+   */
   canvas_assessments_unreviewed: boolean;
+  /**
+   * Phase 62 (P1): whether this space's games, tiles and Assessments draw checked questions as well
+   * as approved ones -- a platform admin's switch, on everywhere for the soft launch. Read it
+   * through `checkedQuestionsOn`.
+   */
+  checked_questions: boolean;
+  /** Phase 63 (P13): a newcomer's own space, made at sign-up. */
+  personal: boolean;
   /** Phase 40: how many questions an assessment draws. */
   canvas_assessment_questions: number;
   /** Phase 42: whether Question Quest (gamification) is on. */
@@ -445,3 +456,13 @@ export interface PlatformPerson {
 }
 
 export const ROLES_IN_ORG = USER_ROLES;
+
+/**
+ * Phase 62 (P1): whether a space draws checked questions (the "Beta" ones) as well as approved ones,
+ * in games, tiles and Assessments. One rule, so the counts and the draws always agree; never read the
+ * column directly.
+ */
+export function checkedQuestionsOn(org: { checked_questions?: boolean } | null | undefined): boolean {
+  return Boolean(org?.checked_questions);
+}
+

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  GAME_POLL_MS,
+  gameRefetchDelay,
   type ApiOk,
   type CreateGameRequest,
   type GameAnswerInput,
@@ -113,8 +113,12 @@ export function useGame(id: string) {
   return useQuery({
     queryKey: gameKeys.game(id),
     queryFn: () => apiClient.get<ApiOk<GameView>>(`/quest/games/${id}`),
+    // Phase 62 (P4): a game of several teams every GAME_POLL_MS; a single player's only at the
+    // countdown's end and when its time is up (each answer's reply carries the game).
     refetchInterval: (query) =>
-      query.state.data?.data.status === 'finished' || gameIsMissing(query.state.error) ? false : GAME_POLL_MS,
+      gameIsMissing(query.state.error)
+        ? false
+        : gameRefetchDelay(query.state.data?.data, query.state.dataUpdatedAt, Date.now()),
     refetchOnWindowFocus: true,
     // A game you are not in says so at once; a hiccup is tried again, a second apart.
     retry: (failures, error) => !gameIsMissing(error) && failures < 3,
@@ -141,10 +145,16 @@ export function useGameAction(id: string) {
 }
 
 export function useGameResults(id: string, team: string | null, enabled: boolean) {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: gameKeys.results(id, team),
-    queryFn: () =>
-      apiClient.get<ApiOk<GameResults>>(`/quest/games/${id}/results${team ? `?team=${encodeURIComponent(team)}` : ''}`),
+    queryFn: async () => {
+      const results = await apiClient.get<ApiOk<GameResults>>(`/quest/games/${id}/results${team ? `?team=${encodeURIComponent(team)}` : ''}`);
+      // Phase 64: a finished game moves My progress and a tile's best, so they are read again on the way home.
+      void queryClient.invalidateQueries({ queryKey: ['quest', 'habit'] });
+      void queryClient.invalidateQueries({ queryKey: ['quest', 'tiles'] });
+      return results;
+    },
     enabled,
     staleTime: Infinity,
   });

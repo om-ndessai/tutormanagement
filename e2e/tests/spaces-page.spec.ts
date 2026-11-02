@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
 
 import { expect, ORGS, PEOPLE, test } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { dropPersonalSpace, personalSpaceOf, unwrap } from '../support/api.js';
 import type { PersonKey } from '../support/people.js';
 
 /**
@@ -14,7 +14,9 @@ import type { PersonKey } from '../support/people.js';
  * someone who belongs nowhere). It reads only the person's own session.
  *
  * Every test that changes anything signs up its own people (with sign-in off, `dev_email` stands in
- * for Google) and makes its own spaces, so the order of runs does not matter.
+ * for Google) and makes its own spaces, so the order of runs does not matter. Since Phase 63 (P13)
+ * sign-up makes each of them a space of their own, "<First name>'s space": it is their "own" space
+ * below; a test about someone in no space deletes it first.
  */
 
 const stamp = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
@@ -80,12 +82,12 @@ test.describe('the Spaces page (S7)', () => {
   test('reachable from inside a space with one membership: switcher, user menu, and the old address @smoke', async ({ page, as }) => {
     const email = await newAdult(page, 'Una');
     const outside = await as('admin', { email, org: null });
-    const space = await makeSpace(outside, `Una’s family ${stamp}`);
+    const space = await personalSpaceOf(outside);
     await tourDone(outside, space.slug);
 
     const una = await as('admin', { email, org: space.slug });
     await una.goto('/');
-    await expect(switcher(una)).toContainText(space.name.slice(0, 10));
+    await expect(switcher(una)).toContainText("Una's space");
     expect((await sessionOf(una)).memberships).toHaveLength(1);
 
     // The switcher's "All spaces", shown with one space.
@@ -125,7 +127,7 @@ test.describe('the Spaces page (S7)', () => {
     const hEmail = await newAdult(page, 'Hal');
     const pOut = await as('admin', { email: pEmail, org: null });
     const hOut = await as('admin', { email: hEmail, org: null });
-    const own = await makeSpace(pOut, `Pia’s home ${stamp}`);
+    const own = await personalSpaceOf(pOut);
     const hosted = await makeSpace(hOut, `Hal’s club ${stamp}`);
     await tourDone(pOut, own.slug);
     await invite(hOut, hosted.slug, pEmail, 'Pia Pagetest');
@@ -196,7 +198,7 @@ test.describe('the Spaces page (S7)', () => {
     const yEmail = await newAdult(page, 'Yul');
     const xOut = await as('admin', { email: xEmail, org: null });
     const yOut = await as('admin', { email: yEmail, org: null });
-    const own = await makeSpace(xOut, `Xia’s home ${stamp}`);
+    const own = await personalSpaceOf(xOut);
     const shared = await makeSpace(yOut, `Yul’s club ${stamp}`);
     await tourDone(xOut, own.slug);
     // Yul makes Xia a second admin of his space; she accepts; then he suspends her.
@@ -239,7 +241,7 @@ test.describe('the Spaces page (S7)', () => {
     const hEmail = await newAdult(page, 'Hoa');
     const dOut = await as('admin', { email: dEmail, org: null });
     const hOut = await as('admin', { email: hEmail, org: null });
-    const own = await makeSpace(dOut, `Dev’s home ${stamp}`);
+    const own = await personalSpaceOf(dOut);
     const hosted = await makeSpace(hOut, `Hoa’s circle ${stamp}`);
     await tourDone(dOut, own.slug);
     await invite(hOut, hosted.slug, dEmail, 'Dev Pagetest');
@@ -263,7 +265,7 @@ test.describe('the Spaces page (S7)', () => {
     const hEmail = await newAdult(page, 'Hugo');
     const jOut = await as('admin', { email: jEmail, org: null });
     const hOut = await as('admin', { email: hEmail, org: null });
-    const own = await makeSpace(jOut, `Jo’s home ${stamp}`);
+    const own = await personalSpaceOf(jOut);
     const hosted = await makeSpace(hOut, `Hugo’s maths ${stamp}`);
     await tourDone(jOut, own.slug);
     const hugo = await as('admin', { email: hEmail, org: hosted.slug });
@@ -309,7 +311,7 @@ test.describe('the Spaces page (S7)', () => {
   test('Start a space from the Spaces page: made, entered, the invite step, then the space', async ({ page, as }) => {
     const email = await newAdult(page, 'Sol');
     const out = await as('admin', { email, org: null });
-    const own = await makeSpace(out, `Sol’s home ${stamp}`);
+    const own = await personalSpaceOf(out);
     await tourDone(out, own.slug);
 
     const sol = await as('admin', { email, org: own.slug });
@@ -361,6 +363,7 @@ test.describe('the Spaces page (S7)', () => {
   test('Delete my account: offered only to someone who belongs nowhere, and it deletes', async ({ page, as }) => {
     const email = await newAdult(page, 'Zed');
     const zed = await as('admin', { email, org: null });
+    await dropPersonalSpace(zed);
     await zed.goto('/spaces');
     await expect(zed.getByRole('heading', { name: 'Welcome to Aimtrue' })).toBeVisible();
     await expect(zed.getByRole('region', { name: 'Your spaces' })).toHaveCount(0);
@@ -382,6 +385,7 @@ test.describe('the Spaces page (S7)', () => {
     await unwrap(await hana.request.put('/api/organization/code', { data: { join_by_code: true } }), 'joining on');
     const { code } = await unwrap<any>(await hana.request.get('/api/organization/code'), 'the code');
     const yan = await as('admin', { email: email2, org: null });
+    await dropPersonalSpace(yan);
     await unwrap(await yan.request.post('/api/spaces/join-requests', { data: { code } }), 'Yan asks');
     await yan.goto('/spaces');
     await expect(yan.getByTestId(`welcome-request-${hosted.slug}`)).toBeVisible();
@@ -397,6 +401,7 @@ test.describe('the Spaces page (S7)', () => {
       'making Pam a platform admin',
     );
     const pam = await as('admin', { email, org: null });
+    await dropPersonalSpace(pam);
     const own = await sessionOf(pam);
     expect(own.memberships).toEqual([]);
     expect(own.platform_admin).toBe(true);
@@ -411,6 +416,8 @@ test.describe('the Spaces page (S7)', () => {
   test('Delete my account: a person whose only space was archived may delete, and it works', async ({ page, as }) => {
     const email = await newAdult(page, 'Ari');
     const out = await as('admin', { email, org: null });
+    // This is about a person whose ONLY space was archived: the space of her own (P13) goes first.
+    await dropPersonalSpace(out);
     const space = await makeSpace(out, `Ari’s archived ${stamp}`);
     const id = (await sessionOf(out, space.slug)).organization.id;
     const nav = await as('platformAdmin', { org: null });

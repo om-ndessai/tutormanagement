@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { PRIVACY_VERSION, TERMS_VERSION, invitationText } from '@tmi/shared';
 
 import { expect, test } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { personalSpaceOf, unwrap } from '../support/api.js';
 import { visible } from '../support/ui.js';
 
 /**
@@ -12,7 +12,7 @@ import { visible } from '../support/ui.js';
  * person INVITED. A self-serve space sends no email, so each invitation is copied or shared by hand,
  * and the space's code is shown. Skip goes on to the tour; the same rows stay on People.
  *
- * Every test signs up its own newcomer, who starts their own space through the Welcome page, and
+ * Every test signs up its own newcomer, who starts their own space from the Spaces page, and
  * invites addresses made for that test alone: nothing here depends on another spec or on run order.
  */
 
@@ -47,8 +47,8 @@ interface Started {
 }
 
 /**
- * A newcomer signs up, starts `space` on the Welcome page, and is left on "Invite people" in it --
- * the path S11 hands to S12.
+ * A newcomer signs up -- landing in the space of their own sign-up makes (Phase 63, P13) -- starts
+ * `space` from the Spaces page, and is left on "Invite people" in it: the path S11 hands to S12.
  */
 async function startSpace(as: any, page: Page, label: string): Promise<Started> {
   const email = freshEmail(label);
@@ -57,6 +57,9 @@ async function startSpace(as: any, page: Page, label: string): Promise<Started> 
   await signup(page, email, name);
   const maker: Page = await as('admin', { email, org: null });
   await maker.goto('/');
+  await expect(maker.getByTestId('assessment-home')).toBeVisible({ timeout: 15_000 });
+  await expect(maker.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText(`${name.split(' ')[0]}'s space`);
+  await maker.goto('/spaces');
   await expect(maker.getByTestId('welcome-make')).toBeVisible({ timeout: 15_000 });
   await maker.getByTestId('welcome-space-name').fill(space);
   await maker.getByTestId('welcome-make-submit').click();
@@ -214,12 +217,13 @@ test.describe('starting a space, then inviting people (S12)', () => {
   });
 
   test('inviting someone who exists elsewhere shows only the typed name, and no phone, until they accept', async ({ as, page }) => {
-    // Somebody already on the platform, in a space of their own, with a phone there.
+    // Somebody already on the platform, in a space of their own (the one sign-up made her, P13),
+    // with a phone there.
     const otherEmail = freshEmail('elsewhere');
     const realName = `Rhea Realname ${run.slice(-4)}`;
     await signup(page, otherEmail, realName);
     const rhea = await as('admin', { email: otherEmail, org: null });
-    const own = await unwrap<any>(await rhea.request.post('/api/spaces', { data: { name: `Rhea’s own ${run.slice(-5)}` } }), 'her own space');
+    const own = await personalSpaceOf(rhea);
     const inOwn = await as('admin', { email: otherEmail, org: own.slug });
     const rheaId = (await session(inOwn)).user.id;
     await unwrap(await inOwn.request.patch(`/api/users/${rheaId}`, { data: { phone: '(919) 555-0177' } }), 'her phone');

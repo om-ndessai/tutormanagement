@@ -35,6 +35,8 @@
 -- Dropped children-first so foreign keys never block the rebuild. Triggers go
 -- with their tables; the old single-organization names are listed so this file
 -- also clears a database that had the earlier schema.
+DROP TABLE IF EXISTS platform_settings;
+DROP TABLE IF EXISTS guest_questions;
 DROP TABLE IF EXISTS consents;
 DROP TABLE IF EXISTS join_requests;
 DROP TABLE IF EXISTS platform_accounts;
@@ -42,6 +44,8 @@ DROP TABLE IF EXISTS question_suggestions;
 DROP TABLE IF EXISTS shares;
 DROP TABLE IF EXISTS quest_game_seen;
 DROP TABLE IF EXISTS quest_game_favorites;
+DROP TABLE IF EXISTS quest_game_invites;
+DROP TABLE IF EXISTS daily_results;
 DROP TABLE IF EXISTS quest_game_players;
 DROP TABLE IF EXISTS quest_game_teams;
 DROP TABLE IF EXISTS quest_games;
@@ -247,6 +251,14 @@ CREATE TABLE organizations (
   -- checked but no person has approved yet. Off until its admins choose; the
   -- tutor's PDF marks each such question.
   canvas_assessments_unreviewed INTEGER NOT NULL DEFAULT 0 CHECK (canvas_assessments_unreviewed IN (0, 1)),
+  -- Phase 62 (P1): whether games, tiles and Assessments here draw checked questions too ("Beta"). A
+  -- platform admin's switch per space, on by default -- the soft launch. Replaces the column above,
+  -- which is kept and no longer read.
+  checked_questions INTEGER NOT NULL DEFAULT 1 CHECK (checked_questions IN (0, 1)),
+  -- Phase 63 (P13): a newcomer's own space, made at sign-up so they can play at once (no Welcome
+  -- screen). Hidden from the console's list by default; deleted with the account when its maker is its
+  -- only member; never counted towards spaces_per_person.
+  personal INTEGER NOT NULL DEFAULT 0 CHECK (personal IN (0, 1)),
   -- Phase 40: how many questions an assessment draws.
   canvas_assessment_questions INTEGER NOT NULL DEFAULT 10
     CHECK (canvas_assessment_questions BETWEEN 1 AND 25),
@@ -1977,6 +1989,28 @@ END;
 -- ---------------------------------------------------------------------------
 -- Every model call goes through the Worker's runAi (apps/api/src/lib/ai).
 
+-- Phase 62 (docs/stickiness-plan.md): the platform's own settings, one JSON value per key, set by
+-- platform admins in the console. No organization: these are the platform's, like ai_task_settings.
+-- No row: the defaults (for 'sign_in', the Worker's vars). Keys: 'sign_in' (P0, which ways in and
+-- whether sign-up is open, per client).
+CREATE TABLE platform_settings (
+  key         TEXT PRIMARY KEY,
+  value       TEXT NOT NULL CHECK (json_valid(value)),
+  updated_by  TEXT REFERENCES users (id),
+  updated_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- Phase 63 (P9, docs/stickiness-plan.md): the guest pool -- a few questions per level reserved for
+-- signed-out play on the device, never served to members (every member draw leaves these out). Platform
+-- reference data: no organization. Chosen by platform admins in the console.
+CREATE TABLE guest_questions (
+  question_id TEXT PRIMARY KEY REFERENCES questions (id),
+  level_id    TEXT NOT NULL,
+  position    INTEGER NOT NULL,
+  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+CREATE INDEX guest_questions_level_idx ON guest_questions (level_id, position);
+
 -- A platform admin's settings for a task in AI_TASKS (packages/shared/src/ai.ts).
 -- No row: the task's defaults. Caps are cents, checked before every call.
 CREATE TABLE ai_task_settings (
@@ -2313,6 +2347,8 @@ CREATE TABLE activity_days (
   answers         INTEGER NOT NULL DEFAULT 0,
   reviews         INTEGER NOT NULL DEFAULT 0,
   points          INTEGER NOT NULL DEFAULT 0,
+  -- Phase 64 (P17): game answers that day (a game's end), apart from Question Quest's `answers`.
+  game_answers    INTEGER NOT NULL DEFAULT 0,
 
   PRIMARY KEY (organization_id, user_id, day)
 );
@@ -2476,6 +2512,9 @@ CREATE TABLE quest_game_favorites (
   user_id         TEXT NOT NULL REFERENCES users (id),
   name            TEXT NOT NULL COLLATE NOCASE CHECK (length(name) BETWEEN 1 AND 40),
   config          TEXT NOT NULL,
+  -- Phase 62 (P8): a family's favorite names its players (members of this space, a JSON array of
+  -- user ids); one tap invites them. NULL: anyone with the code.
+  roster          TEXT CHECK (roster IS NULL OR json_valid(roster)),
   created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
@@ -2507,11 +2546,17 @@ CREATE TABLE quest_game_seen (
   question_id     TEXT NOT NULL REFERENCES questions (id),
   game_id         TEXT NOT NULL REFERENCES quest_games (id),
   seen_at         TEXT NOT NULL,
+  -- Phase 62 (P2): 1 when THIS person answered it correctly in a game (not a teammate), marked by
+  -- code. Game answers count toward the two-right-answers rule (approveByConsensus) beside Quest's.
+  correct         INTEGER CHECK (correct IN (0, 1)),
 
   -- The draw asks, per question, whether any of the game's players has seen it: one probe of this
   -- key per player, so no second index is needed.
   PRIMARY KEY (organization_id, user_id, question_id)
 );
+
+-- Phase 62 (P2): the two-right-answers count reads correct game answers by question.
+CREATE INDEX quest_game_seen_correct_idx ON quest_game_seen (question_id) WHERE correct = 1;
 
 CREATE TRIGGER quest_game_seen_same_organization
 BEFORE INSERT ON quest_game_seen
@@ -2528,6 +2573,67 @@ BEGIN
   SELECT RAISE(ABORT, 'organization_fixed');
 END;
 
+
+-- Phase 62 (P8, docs/stickiness-plan.md): the people a roster favorite invited to a game. Each sees it
+-- under "Waiting for you" and joins with no code to type; the host starts whenever they like. Members of
+-- the game's space only (the trigger), written when the game is made, never changed.
+CREATE TABLE quest_game_invites (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  game_id         TEXT NOT NULL REFERENCES quest_games (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (game_id, user_id)
+);
+
+-- "Waiting for you": a person's invitations here, newest first.
+CREATE INDEX quest_game_invites_user_idx ON quest_game_invites (organization_id, user_id, created_at);
+
+CREATE TRIGGER quest_game_invites_same_organization
+BEFORE INSERT ON quest_game_invites
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+  OR NOT EXISTS (SELECT 1 FROM quest_games g WHERE g.id = NEW.game_id AND g.organization_id = NEW.organization_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER quest_game_invites_organization_fixed
+BEFORE UPDATE OF organization_id ON quest_game_invites
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
+
+-- Phase 64 (P19, docs/stickiness-plan.md): a person's Daily set result -- one play a day per level,
+-- the same five questions for everyone that day. Played and marked on the device; the result is
+-- written once, so the share grid and the badge can be read back.
+CREATE TABLE daily_results (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id),
+  day             TEXT NOT NULL,
+  level_id        TEXT NOT NULL,
+  right_count     INTEGER NOT NULL CHECK (right_count >= 0),
+  question_count  INTEGER NOT NULL CHECK (question_count > 0),
+  seconds         INTEGER NOT NULL CHECK (seconds >= 0),
+  marks           TEXT NOT NULL CHECK (json_valid(marks)),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+
+  PRIMARY KEY (organization_id, user_id, day, level_id)
+);
+
+CREATE TRIGGER daily_results_same_organization
+BEFORE INSERT ON daily_results
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER daily_results_organization_fixed
+BEFORE UPDATE OF organization_id ON daily_results
+WHEN NEW.organization_id IS NOT OLD.organization_id
+BEGIN
+  SELECT RAISE(ABORT, 'organization_fixed');
+END;
 
 -- Phase 56 (docs/sharing-plan.md, R22): a public link to a card built on the server from the
 -- maker's own Quest result -- a game's result, a level finished, or "Can you solve this?" with one

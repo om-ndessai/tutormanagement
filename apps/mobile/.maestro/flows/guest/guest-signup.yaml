@@ -1,0 +1,184 @@
+# Phase 63 (P13; docs/stickiness-plan.md): signing up is a sheet over the quest, and no Welcome follows.
+# A guest plays G4Q5; after question 1 the offer's Sign up free opens the sheet (with sign-in off, the
+# developer path: the address here, the name, birth month and year and the terms on the sign-up step);
+# a short splash, and the person is back on the same question of the same quest, now a member. Finishing
+# it, "Go to my space" lands in their own space, "Gwen's space" -- no Welcome, no wizard.
+# Their Play home leads with Grade 4, the grade they played as a guest.
+# Self-cleaning: guest play off and Grade 4's pool emptied, and the address put back to nothing, before
+# and after (its personal space goes with it).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: guest.signup@example.com }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'on' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: guest.signup@example.com }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+tags:
+  - feature
+---
+- runFlow: ../../subflows/launch.yaml
+# The wizard is not this flow's subject (and does not open in a personal space anyway).
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://dev/link?tour=seen'
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 30000
+# The tiles sit under the grade chips: on a shorter phone below the fold.
+- scrollUntilVisible:
+    element:
+      id: guest-tile-G4Q5
+    direction: DOWN
+- tapOn:
+    id: guest-tile-G4Q5
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'nudge'
+- tapOn:
+    id: guest-nudge-signup
+# The sheet, over the quest.
+- extendedWaitUntil:
+    visible:
+      id: signup-sheet
+    timeout: 10000
+- assertVisible: 'Sign up free'
+- tapOn:
+    id: signup-sheet-email
+- inputText: 'guest.signup@example.com'
+- tapOn:
+    id: signup-sheet-continue
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 10000
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Gwen Guest'
+# The return key puts the keyboard away: in the sheet, Maestro's hideKeyboard on iOS taps the screen's
+# lower edge, where the Terms and Privacy links are, and opened Safari.
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - hideKeyboard
+- assertVisible: 'Welcome, Gwen'
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-6
+- tapOn:
+    id: signup-year
+- tapOn:
+    id: signup-year-search
+- inputText: '1990'
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: signup-year-1990
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: signup-accept
+- tapOn:
+    id: signup-accept
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- scrollUntilVisible:
+    element:
+      id: signup-submit
+# The splash lasts about a second: the tap does not wait for the screen to settle (on Android that wait
+# outlasted it), as the game flows' taps before the countdown do not.
+- tapOn:
+    id: signup-submit
+    waitToSettleTimeoutMs: 200
+# The splash, then back on the quest where it was: question 2 of 5.
+- extendedWaitUntil:
+    visible:
+      id: signup-splash
+    timeout: 15000
+- takeScreenshot: guest-signup-splash
+- extendedWaitUntil:
+    visible:
+      id: guest-progress
+      text: '2 of 5'
+    timeout: 10000
+- assertNotVisible:
+    id: welcome-title
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '3 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '4 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: '5 of 5'
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'results'
+# A member now: their space, not "Save this score".
+- assertNotVisible:
+    id: guest-save-score
+- tapOn:
+    id: guest-to-space
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+- assertNotVisible:
+    id: welcome-title
+- assertNotVisible:
+    id: screen-onboarding
+- takeScreenshot: guest-signup-home
+# Their grade carried over (P13): the Play home leads with Grade 4 -- the tile played here as a guest,
+# no grade chosen otherwise -- its tiles first and its Daily.
+- extendedWaitUntil:
+    visible:
+      id: play-home
+    timeout: 20000
+- assertVisible:
+    id: play-daily
+    text: ".*Today's Daily · G4D.*"
+# And the tile played here as a guest is one of their favorites now (P13).
+- extendedWaitUntil:
+    visible:
+      id: play-favorite-G4Q5
+    timeout: 15000
+- assertVisible:
+    id: play-tile-G4Q5

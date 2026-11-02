@@ -28,9 +28,9 @@ import { MISSING_TEXT, RECONNECTING_TEXT, UNREACHABLE_TEXT, gameTitle, scoreLabe
 import { GamePlay } from './game-play';
 import { GameResults } from './game-results';
 import { gameIsMissing, gameKeys, useGame } from './games-api';
-import { QuestFrame, QuestStatus, exitQuest } from './quest-frame';
+import { QuestFrame, QuestStatus, exitGame, exitQuest } from './quest-frame';
 
-export function GameScreen({ gameId }: { gameId: string }) {
+export function GameScreen({ gameId, from }: { gameId: string; from?: string }) {
   const theme = useAppTheme();
   const focused = useIsFocused();
   const query = useGame(gameId, focused);
@@ -52,6 +52,7 @@ export function GameScreen({ gameId }: { gameId: string }) {
   return (
     <QuestFrame
       title={gameTitle(game)}
+      onExit={() => exitGame(from)}
       testID="screen-quest-game"
       status={
         game ? (

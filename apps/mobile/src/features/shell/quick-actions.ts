@@ -3,13 +3,17 @@
 // (immersive-design.md §0.4). Set per organization from the roles held THERE, and cleared on
 // sign-out (§0.7). An action is only a route: the role is checked again on arrival, and the
 // server checks again after that. Phase 50: lessons are Tutoring's, so a space without it offers none.
-import { featureOn, type FeatureState, type UserRole as Role } from '@tmi/shared';
+//
+// Phase 62 (P6): "Play <tile>" -- the last quest started in this space, when it was a tile. A tile's
+// code ("G4T10") names no one; a favorite's name is typed by a person and may carry a name, so it is
+// never put on the icon. Only where Quest is on.
+import { featureOn, parseTileCode, type FeatureState, type UserRole as Role } from '@tmi/shared';
 import { router } from 'expo-router';
 import * as QuickActions from 'expo-quick-actions';
 import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 
-export type QuickActionId = 'start-lesson' | 'record-session';
+export type QuickActionId = 'start-lesson' | 'record-session' | 'play-last';
 
 export interface QuickActionItem {
   id: QuickActionId;
@@ -20,14 +24,31 @@ export interface QuickActionItem {
 const ITEMS: Record<QuickActionId, QuickActionItem> = {
   'start-lesson': { id: 'start-lesson', title: 'Start a lesson', icon: 'symbol:play.circle' },
   'record-session': { id: 'record-session', title: 'Record a lesson', icon: 'symbol:square.and.pencil' },
+  'play-last': { id: 'play-last', title: 'Play', icon: 'symbol:play.fill' },
 };
 
 type Org = Partial<FeatureState> | null | undefined;
 
-/** Only someone who teaches in this organization gets them, and only where Tutoring is on. */
-export function quickActionItems(roles: readonly Role[] | undefined, organization: Org): QuickActionItem[] {
-  if (!roles?.includes('tutor') || !featureOn(organization, 'tutoring')) return [];
-  return [ITEMS['start-lesson'], ITEMS['record-session']];
+/** "Play G4T10" while the last quest here was a tile and Quest is on; otherwise none. */
+function playItem(organization: Org, lastLabel: string | null | undefined): QuickActionItem[] {
+  if (!lastLabel || !featureOn(organization, 'quest') || parseTileCode(lastLabel) === null) return [];
+  return [{ ...ITEMS['play-last'], title: `Play ${lastLabel.toUpperCase()}` }];
+}
+
+/**
+ * The lesson actions only for someone who teaches in this organization, and only where Tutoring is
+ * on; "Play <tile>" for anyone, where Quest is on.
+ */
+export function quickActionItems(
+  roles: readonly Role[] | undefined,
+  organization: Org,
+  lastLabel?: string | null,
+): QuickActionItem[] {
+  const lessons =
+    roles?.includes('tutor') && featureOn(organization, 'tutoring')
+      ? [ITEMS['start-lesson'], ITEMS['record-session']]
+      : [];
+  return roles ? [...lessons, ...playItem(organization, lastLabel)] : [];
 }
 
 /** Where an action leads, or null when the reader may not take it here. */
@@ -35,7 +56,8 @@ export function quickActionRoute(
   id: string | undefined,
   roles: readonly Role[] | undefined,
   organization: Org,
-): '/start-lesson' | '/record-lesson' | null {
+): '/start-lesson' | '/record-lesson' | '/quest/play-last' | null {
+  if (id === 'play-last') return roles && featureOn(organization, 'quest') ? '/quest/play-last' : null;
   if (!roles?.includes('tutor') || !featureOn(organization, 'tutoring')) return null;
   if (id === 'start-lesson') return '/start-lesson';
   // The record step flow (UI upgrades U4); the action's id stays, as phones have it set.
@@ -61,9 +83,13 @@ export function clearQuickActions() {
 }
 
 /** In the organization's layout: the items follow the roles held in this organization. */
-export function useQuickActionItems(roles: readonly Role[] | undefined, organization: Org) {
-  const items = quickActionItems(roles, organization);
-  const key = items.map((item) => item.id).join(',');
+export function useQuickActionItems(
+  roles: readonly Role[] | undefined,
+  organization: Org,
+  lastLabel?: string | null,
+) {
+  const items = quickActionItems(roles, organization, lastLabel);
+  const key = items.map((item) => `${item.id}:${item.title}`).join(',');
   useEffect(() => {
     setItems(items);
     // `key` is what matters; the roles array is a new one on every session read.

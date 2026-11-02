@@ -1,9 +1,10 @@
 // Puts back what the platform/* flows change, before and after each (their onFlowStart /
 // onFlowComplete hooks), so a flow that fails part-way leaves nothing in the way of the next run:
 // - the test organization ("Mobile Console Academy"): the API has no delete, so its address name is
-//   moved out of the way (the flow can create it again), it is renamed and archived;
+//   moved out of the way (the flow can create it again), it is renamed ("Retired test space …") and archived;
 // - riverside's uploaded logos (platform/logo) are removed;
-// - Alex's shared phone (platform/admins-people) is put back as the seed has it.
+// - Alex's shared phone (platform/admins-people) is put back as the seed has it;
+// - the App's sign-in switches (platform/sign-in-settings) go back to this address's defaults.
 // The platform admin that flow adds stays (no API removes one) until `npm run db:reset`, which the
 // runner does after. Errors are tolerated. Never anything but localhost. One device at a time.
 var NAV = 'ndessai@gmail.com';
@@ -28,7 +29,8 @@ orgs.forEach(function (org) {
     var tag = org.id.slice(0, 8) + '-' + Math.floor(Math.random() * 1e6);
     call('PATCH', '/platform/organizations/' + org.id, {
       slug: 'retired-' + tag,
-      name: 'Retired test organization ' + tag,
+      // "space", not "organization": spaces/words reads every name in the console's list (Phase 59).
+      name: 'Retired test space ' + tag,
       short_name: 'Retired',
     });
     if (!org.archived_at) call('POST', '/platform/organizations/' + org.id + '/archive');
@@ -48,4 +50,9 @@ var alex = call('GET', '/platform/people?email=' + encodeURIComponent('alex.chen
 if (alex.body && alex.body.data && alex.body.data.phone !== '(984) 555-0113') {
   call('PATCH', '/platform/people/' + alex.body.data.id, { phone: '(984) 555-0113' });
 }
+var signIn = call('GET', '/platform/sign-in');
+var app = signIn.body && signIn.body.data
+  ? signIn.body.data.clients.filter(function (status) { return status.client === 'app'; })[0]
+  : null;
+if (app && app.setting) call('PUT', '/platform/sign-in', { client: 'app', setting: null });
 output.retiredOrganizations = retired;

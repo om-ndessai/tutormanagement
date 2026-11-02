@@ -30,7 +30,7 @@ const ORG_TABLES = [
   'locations', 'assignment_locations', 'schedule_locations',
   'canvas_assessments', 'canvas_assessment_files', 'canvas_assessment_reviews',
   'quest_attempts', 'points_ledger', 'activity_days',
-  'quest_games', 'quest_game_teams', 'quest_game_players', 'quest_game_favorites', 'quest_game_seen',
+  'quest_games', 'quest_game_teams', 'quest_game_players', 'quest_game_favorites', 'quest_game_seen', 'quest_game_invites', 'daily_results',
   // Phase 51: a space's suggested approvals of bank questions.
   'question_suggestions',
   // Phase 52: a space's join requests and parents' consents.

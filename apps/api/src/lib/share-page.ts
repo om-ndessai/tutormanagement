@@ -1,5 +1,5 @@
 import type { Context } from 'hono';
-import { PLATFORM_BRAND, shareHeadline } from '@tmi/shared';
+import { PLATFORM_BRAND, parseTileCode, shareHeadline, tileCode, tileWords } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
 import { readPublicShare } from '../repositories/shares.js';
@@ -62,4 +62,47 @@ export async function sharePage(c: Context<AppEnv>): Promise<Response> {
     .on('head', { element: (el) => void el.append(tags, { html: true }) })
     .transform(page);
   return new Response(rewritten.body, { status: share ? 200 : 404, headers });
+}
+
+/**
+ * Phase 63 (P14): `/play/<code>` -- a tile's link. The SPA's own page (the guest plays it, a member
+ * starts it), with `og:` tags built from the code alone, so an unfurler shows "G4T10 · Grade 4 · 10
+ * minutes". No D1 read; an unknown code still serves the page (the SPA sends it home).
+ */
+export async function playPage(c: Context<AppEnv>): Promise<Response> {
+  const code = (c.req.param('code') ?? '').slice(0, 16);
+  const shape = parseTileCode(code);
+  const origin = new URL(c.req.url).origin;
+  const title = shape ? `${tileCode(shape)} · ${tileWords(shape)}` : `${PLATFORM_BRAND.name} Quest`;
+  const description = 'Free maths practice. No sign-up to start: tap and play.';
+  const image = `${origin}/og/quest.png`;
+  const tags = [
+    ['og:title', title],
+    ['og:description', description],
+    ['og:image', image],
+    ['og:url', `${origin}/play/${shape ? tileCode(shape) : ''}`],
+    ['og:type', 'website'],
+    ['twitter:card', 'summary_large_image'],
+    ['twitter:title', title],
+    ['twitter:description', description],
+    ['twitter:image', image],
+  ]
+    .map(([name, content]) =>
+      name!.startsWith('og:')
+        ? `<meta property="${name}" content="${esc(content!)}">`
+        : `<meta name="${name}" content="${esc(content!)}">`,
+    )
+    .join('');
+  const page = c.env.ASSETS ? await c.env.ASSETS.fetch(new Request(new URL('/index.html', c.req.url))) : null;
+  const headers = { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=300' };
+  if (!page || !page.ok || !(page.headers.get('Content-Type') ?? '').includes('text/html')) {
+    return new Response(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>${tags}</head><body></body></html>`, {
+      headers,
+    });
+  }
+  const rewritten = new HTMLRewriter()
+    .on('title', { element: (el) => void el.setInnerContent(title) })
+    .on('head', { element: (el) => void el.append(tags, { html: true }) })
+    .transform(page);
+  return new Response(rewritten.body, { headers });
 }

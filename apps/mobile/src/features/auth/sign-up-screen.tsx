@@ -23,10 +23,17 @@ const MONTH_OPTIONS = MONTHS.map((name, i) => ({ id: String(i + 1), label: name 
 /**
  * Phase 52: a newcomer Google vouched for (or, with sign-in off, a typed address) says their
  * birth month and year -- only the band is kept, never the date; under 13, nothing at all -- and
- * accepts the terms. Then the Welcome screen. The month and year live in this screen's state only.
+ * accepts the terms. Then (Phase 63, P13) the app lands in the personal space the server made for
+ * them -- no Welcome screen. The month and year live in this screen's state only. It is also the
+ * sign-up sheet's second step (features/guest/signup-sheet.tsx), which hears a cancel through
+ * `onCancelled`.
  */
-export function SignUpScreen() {
-  const { pendingSignup, completeSignup, cancelSignup } = useAuth();
+export function SignUpScreen({ onCancelled }: { onCancelled?: () => void } = {}) {
+  const { pendingSignup, completeSignup, cancelSignup: cancelPending } = useAuth();
+  const cancelSignup = async () => {
+    await cancelPending();
+    onCancelled?.();
+  };
   const theme = useAppTheme();
   const large = useLargeText();
   const muted = { color: theme.colors.onSurfaceVariant };

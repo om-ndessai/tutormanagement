@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
 
 import { expect, ORGS, test } from '../support/fixtures.js';
-import { unwrap } from '../support/api.js';
+import { dropPersonalSpace, personalSpaceOf, unwrap } from '../support/api.js';
 // S4's own block (below): the landing rule is the shared one.
 import { decideLanding } from '@tmi/shared';
 import { visible } from '../support/ui.js';
@@ -119,13 +119,15 @@ test.describe('landing in the last space chosen (S4, S5)', () => {
  * the last choice; there is no star.
  *
  * Every test signs up its own newcomers and makes their own spaces, so the order of runs, and what
- * other specs do to the seeded cast, does not matter.
+ * other specs do to the seeded cast, does not matter. Since Phase 63 (P13) a newcomer starts with a
+ * space of their own, made at sign-up ("Sel's space"): it counts as one of their spaces below, and a
+ * test about someone with no space of their own deletes it first.
  */
 test.describe('selector', () => {
   const run = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
   let serial = 0;
 
-  /** An adult who signed up just now, in no space: their own page, arriving with no space chosen. */
+  /** An adult who signed up just now, in their own space alone: their page, arriving with no space chosen. */
   async function newcomer(as: (who: 'admin', o: { email: string; org: null }) => Promise<Page>, label: string) {
     const email = `selector.${label}.${run}.${++serial}@example.com`;
     const page = await as('admin', { email, org: null });
@@ -142,7 +144,9 @@ test.describe('selector', () => {
       }),
       `signing ${label} up`,
     );
-    return { page, email };
+    const own = await personalSpaceOf(page);
+    expect(own.name).toBe("Sel's space");
+    return { page, email, own };
   }
 
   async function makeSpace(page: Page, name: string): Promise<{ slug: string; name: string }> {
@@ -185,8 +189,9 @@ test.describe('selector', () => {
   const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
   test('two spaces and no last choice: "Choose a space", full screen, each space with its mark and roles; choosing enters it', async ({ as }) => {
-    const { page: maker, email } = await newcomer(as, 'two');
-    const first = await makeSpace(maker, `Selector First ${run}`);
+    const { page: maker, email, own } = await newcomer(as, 'two');
+    // Their own space, made at sign-up, is one of the two.
+    const first = own;
     const second = await makeSpace(maker, `Selector Second ${run}`);
     await unwrap(await clear(maker), 'no last choice');
     expect(await lastChoice(maker)).toEqual([]);
@@ -238,8 +243,8 @@ test.describe('selector', () => {
     const askedSpace = await makeSpace(host, `Selector Asked ${run}`);
     const code = await codeOf(host, askedSpace.slug);
 
-    const { page: person, email } = await newcomer(as, 'busy');
-    const a = await makeSpace(person, `Selector Busy A ${run}`);
+    const { page: person, email, own } = await newcomer(as, 'busy');
+    const a = own;
     const b = await makeSpace(person, `Selector Busy B ${run}`);
     await invite(host, invitingSpace.slug, email);
     await unwrap(await person.request.post('/api/spaces/join-requests', { data: { code } }), 'asking to join');
@@ -273,8 +278,9 @@ test.describe('selector', () => {
   });
 
   test('one space and nothing pending: never the selector; one space and an invitation waiting: the selector', async ({ as }) => {
-    const { page: solo, email } = await newcomer(as, 'solo');
-    const only = await makeSpace(solo, `Selector Solo ${run}`);
+    const { page: solo, email, own } = await newcomer(as, 'solo');
+    // Their one space: their own, made at sign-up.
+    const only = own;
     await unwrap(await clear(solo), 'no last choice');
 
     await solo.goto('/');
@@ -306,6 +312,8 @@ test.describe('selector', () => {
     const codeB = await codeOf(hostB, spaceB.slug);
 
     const { page: person, email } = await newcomer(as, 'asker');
+    // This is about someone whose ONE space is the one let in: the space of their own goes first.
+    await dropPersonalSpace(person);
     await unwrap(await person.request.post('/api/spaces/join-requests', { data: { code: codeA } }), 'asking A');
     await unwrap(await person.request.post('/api/spaces/join-requests', { data: { code: codeB } }), 'asking B');
 
@@ -353,8 +361,8 @@ test.describe('selector', () => {
     const spaceB = await makeSpace(host, `Selector Archived ${run}`);
     const codeB = await codeOf(host, spaceB.slug);
 
-    const { page: person, email } = await newcomer(as, 'archasker');
-    const spaceA = await makeSpace(person, `Selector Stays ${run}`);
+    const { page: person, email, own } = await newcomer(as, 'archasker');
+    const spaceA = own;
     await unwrap(await person.request.post('/api/spaces/join-requests', { data: { code: codeB } }), 'asking B');
 
     // A platform admin archives B: it can no longer be entered, joined or answered.
@@ -381,6 +389,8 @@ test.describe('selector', () => {
     const { page: host } = await newcomer(as, 'invhost');
     const space = await makeSpace(host, `Selector Invites ${run}`);
     const { page: invitee, email } = await newcomer(as, 'invitee');
+    // Only an invitation: no space of their own either.
+    await dropPersonalSpace(invitee);
     await invite(host, space.slug, email);
 
     await invitee.goto('/');
@@ -471,6 +481,8 @@ test.describe('S4: land in the last space chosen (own people)', () => {
     }
 
     const memberBare = await as('admin', { email: member, org: null });
+    // The member's own space (Phase 63, P13) goes: these checks are about the spaces made here.
+    await dropPersonalSpace(memberBare);
     for (const space of spaces) {
       await unwrap(await memberBare.request.post(`/api/auth/invitations/${space.slug}/accept`), `accepting ${space.name}`);
     }

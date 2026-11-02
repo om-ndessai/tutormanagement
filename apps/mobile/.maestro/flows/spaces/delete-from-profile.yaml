@@ -1,0 +1,65 @@
+# Phase 63 (P13): a newcomer whose only space is their own deletes the account from My profile -- the
+# session says it may go (`account_deletable`), and the space goes with it. Del signs up (the script; an
+# adult, landing in "Del's space"), opens My profile, and Delete my account asks first, saying the space
+# goes too; deleting signs her out. Someone in another space only sees how (profile-delete-account-how:
+# the other flows' seeded people).
+# Self-cleaning: the address is put back to nothing before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.deleter@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.deleter@example.com, NAME: Del Deleter }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.deleter@example.com }
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.deleter@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-profile
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: account-profile
+- extendedWaitUntil:
+    visible:
+      id: screen-profile
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: profile-delete-account
+    timeout: 10000
+- assertNotVisible:
+    id: profile-delete-account-how
+- tapOn:
+    id: welcome-delete-account
+- extendedWaitUntil:
+    visible: 'Delete your account?'
+    timeout: 5000
+- assertVisible: 'Your own space goes with it\..*'
+- takeScreenshot: profile-delete-account
+- tapOn: 'Delete'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000

@@ -3,6 +3,7 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react-nativ
 
 import { ApiRequestError } from '@/lib/api-client';
 import { renderWithProviders } from '@/test/render';
+import { CanvasAssessmentsCard } from './canvas-assessments-card';
 import { featureSetsLabel, OrganizationSettingsScreen } from './organization-settings-screen';
 import { validateForm } from './settings-form';
 
@@ -218,6 +219,22 @@ describe('OrganizationSettingsScreen', () => {
     expect(screen.getByText('This space may use')).toBeTruthy();
     expect(screen.getByText('Assessment in this space')).toBeTruthy();
     expect(screen.getByText('Quest in this space')).toBeTruthy();
+  });
+
+  it('reports the checked questions as the platform set them, with no switch (Phase 62, P1)', async () => {
+    asAdmin(true, { ...ORGANIZATION, feature_tutoring: true, feature_assessment: true, feature_quest: true });
+    await renderWithProviders(<OrganizationSettingsScreen />);
+    const note = screen.getByTestId('checked-questions-note');
+    expect(within(note).getByText(/^Not included: assessments and games here draw approved questions only/)).toBeTruthy();
+    expect(screen.queryByTestId('org-assessments-unreviewed-switch')).toBeNull();
+
+  });
+
+  it('says they are included when the platform includes them (Phase 62, P1)', async () => {
+    await renderWithProviders(<CanvasAssessmentsCard enabled unreviewed questions={10} />);
+    expect(
+      within(screen.getByTestId('checked-questions-note')).getByText(/^Included: .*each marked Beta.*The platform sets this\.$/),
+    ).toBeTruthy();
   });
 
   it('shows only the allowed sets’ cards: Assessment alone has no payer and no money', async () => {

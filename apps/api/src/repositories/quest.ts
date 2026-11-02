@@ -1,3 +1,5 @@
+import { guestIdsFor } from './guest.js';
+import { markQuestionLevelsDirty } from './level-counts.js';
 import {
   QUEST_CONSENSUS_CORRECT,
   QUEST_LEFT_CAP,
@@ -90,10 +92,13 @@ export async function nextQuestQuestion(
     .bind(org, studentId, levelId)
     .first<{ topic_id: string; difficulty: number; rid: number }>();
 
+  // Phase 63 (P9): the level's guest questions are reserved for guests.
+  const reserved = await guestIdsFor(db, [levelId]);
   const row = await db
     .prepare(
       `SELECT q.id, q.kind, q.stem, q.choices FROM questions q
        WHERE q.topic_id >= ?1 AND q.topic_id < ?2 AND q.status = 'checked'
+         AND q.id NOT IN (SELECT value FROM json_each(?9))
          AND (?3 IS NULL OR q.topic_id > ?3
               OR (q.topic_id = ?3 AND (q.difficulty > ?4 OR (q.difficulty = ?4 AND q.rowid > ?5))))
          AND NOT EXISTS (SELECT 1 FROM question_bank_topics b WHERE b.topic_id = q.topic_id AND b.needs_figure = 1)
@@ -113,6 +118,7 @@ export async function nextQuestQuestion(
       org,
       studentId,
       QUEST_CONSENSUS_CORRECT,
+      reserved,
     )
     .first<{ id: string; kind: QuestionKind; stem: string; choices: string }>();
   if (!row) return null;
@@ -198,28 +204,54 @@ export async function recordQuestAnswer(
 
 /** Approves a checked question once QUEST_CONSENSUS_CORRECT different people have answered it correctly. */
 async function approveByConsensus(db: D1Database, questionId: string, lastId: string): Promise<boolean> {
-  const row = await db
+  const approved = await approveManyByConsensus(db, new Map([[questionId, lastId]]));
+  return approved.includes(questionId);
+}
+
+/**
+ * The owner's two-right-answers rule (2026-10-24), for several questions at once: each one still
+ * `checked` that QUEST_CONSENSUS_CORRECT different people have answered correctly -- in Question
+ * Quest, or (Phase 62, P2) in a game, marked by code either way -- is approved for the whole platform
+ * (`approved_via = 'quest_consensus'`, reviewed_by the person whose answer made the count). Phase 51:
+ * only spaces the platform trusts for Quest count. Answers which ids it approved.
+ */
+export async function approveManyByConsensus(db: D1Database, lastAnswerer: ReadonlyMap<string, string>): Promise<string[]> {
+  const ids = [...lastAnswerer.keys()];
+  if (ids.length === 0) return [];
+  const list = JSON.stringify(ids);
+  const counted = await db
     .prepare(
-      // org-scope: counts correct answers to one platform question across organizations, by the
-      // owner's rule (2026-10-24); it returns a number, never an organization's row.
-      // Phase 51: only spaces the platform trusts for Quest count towards it.
-      `SELECT COUNT(DISTINCT a.student_user_id) AS n FROM quest_attempts a
-       JOIN organizations o ON o.id = a.organization_id AND o.quest_trusted = 1
-       WHERE a.question_id = ? AND a.correct = 1`,
+      // org-scope: counts correct answers to platform questions across organizations, by the owner's
+      // rule (2026-10-24); it returns numbers, never an organization's row. Phase 51: only spaces the
+      // platform trusts for Quest count towards it.
+      `SELECT c.question_id, COUNT(DISTINCT c.person) AS n FROM (
+         SELECT a.question_id, a.student_user_id AS person FROM quest_attempts a
+           JOIN organizations o ON o.id = a.organization_id AND o.quest_trusted = 1
+          WHERE a.question_id IN (SELECT value FROM json_each(?1)) AND a.correct = 1
+         UNION
+         SELECT s.question_id, s.user_id AS person FROM quest_game_seen s
+           JOIN organizations o ON o.id = s.organization_id AND o.quest_trusted = 1
+          WHERE s.question_id IN (SELECT value FROM json_each(?1)) AND s.correct = 1
+       ) AS c
+       JOIN questions q ON q.id = c.question_id AND q.status = 'checked'
+       GROUP BY c.question_id
+       HAVING COUNT(DISTINCT c.person) >= ?2`,
     )
-    .bind(questionId)
-    .first<{ n: number }>();
-  if ((row?.n ?? 0) < QUEST_CONSENSUS_CORRECT) return false;
-  const result = await db
-    .prepare(
-      // org-scope: approving a platform question, by the owner's two-correct-answers rule.
-      `UPDATE questions SET status = 'approved', reviewed_by = ?, reviewed_at = ${NOW},
-              approved_via = 'quest_consensus', updated_at = ${NOW}
-       WHERE id = ? AND status = 'checked'`,
-    )
-    .bind(lastId, questionId)
-    .run();
-  return (result.meta.changes ?? 0) > 0;
+    .bind(list, QUEST_CONSENSUS_CORRECT)
+    .all<{ question_id: string; n: number }>();
+  const ready = (counted.results ?? []).map((row) => row.question_id);
+  if (ready.length === 0) return [];
+  const approve = db.prepare(
+    // org-scope: approving a platform question, by the owner's two-correct-answers rule.
+    `UPDATE questions SET status = 'approved', reviewed_by = ?, reviewed_at = ${NOW},
+            approved_via = 'quest_consensus', updated_at = ${NOW}
+     WHERE id = ? AND status = 'checked'`,
+  );
+  const results = await db.batch(ready.map((id) => approve.bind(lastAnswerer.get(id)!, id)));
+  const approved = ready.filter((_, index) => (results[index]?.meta.changes ?? 0) > 0);
+  // Phase 62 (P4): the levels' cached playable counts are recounted at their next read.
+  await markQuestionLevelsDirty(db, approved);
+  return approved;
 }
 
 /** The key a student's answer is marked against: a checked question, never shown to them. */
@@ -416,6 +448,8 @@ export async function applyQuestReview(
     );
   }
   await db.batch(statements);
+  // Phase 62 (P4): an approval or a flag changes the level's cached playable count.
+  await markQuestionLevelsDirty(db, [attempt.question.id]);
   return true;
 }
 

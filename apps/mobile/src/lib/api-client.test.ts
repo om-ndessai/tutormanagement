@@ -36,6 +36,12 @@ describe('api client', () => {
     expect(init.credentials).toBe('include');
     expect(init.headers['X-Organization']).toBe('chmi');
     expect(init.headers['X-Dev-User']).toBe('alex.chen.math@gmail.com');
+    expect(init.headers['X-Client']).toBe('app');
+  });
+
+  it('says it is the app on every request and download, before an organization too (Phase 62)', () => {
+    expect(requestHeaders()['X-Client']).toBe('app');
+    expect(requestHeaders({ Accept: 'text/csv' })).toMatchObject({ 'X-Client': 'app', Accept: 'text/csv' });
   });
 
   it('carries the session cookie, and never the developer persona to a server with sign-in on', async () => {

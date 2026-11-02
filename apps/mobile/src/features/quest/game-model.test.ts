@@ -15,6 +15,7 @@ import {
   countdownLabel,
   countdownSpeech,
   gamePollInterval,
+  gameRefetchInterval,
   gameRowHost,
   gameRowStatus,
   gameRowTitle,
@@ -139,7 +140,7 @@ describe('the hub', () => {
   });
 
   it('shares the code and nothing else, and spells it out for a screen reader', () => {
-    expect(shareText('ABC234')).toBe('Join my Quest game with the code ABC234.');
+    expect(shareText('ABC234')).toBe('Join my Aimtrue game: code ABC234');
     expect(spelledCode('ABC234')).toBe('A B C 2 3 4');
   });
 
@@ -455,3 +456,40 @@ describe('the results', () => {
     expect(reviewHeading(undefined)).toBe('Questions');
   });
 });
+
+describe('gameRefetchInterval (Phase 62, P4)', () => {
+  const at = Date.parse('2026-11-01T12:00:00.000Z');
+  const base = {
+    status: 'running' as const,
+    mode: 'count' as const,
+    duration_seconds: null,
+    now: '2026-11-01T12:00:00.000Z',
+  };
+  it('polls a game of several teams, and nothing while the screen is away', () => {
+    expect(gameRefetchInterval(true, { ...base, players: 'multi', started_at: base.now }, at, at)).toBe(GAME_POLL_MS);
+    expect(gameRefetchInterval(false, { ...base, players: 'multi', started_at: base.now }, at, at)).toBe(false);
+  });
+  it("reads a single player's game at the countdown's end, then only every 30 seconds", () => {
+    const counting = { ...base, players: 'single' as const, started_at: '2026-11-01T12:00:05.000Z' };
+    expect(gameRefetchInterval(true, counting, at, at)).toBe(5150);
+    expect(gameRefetchInterval(true, counting, at, at + 2000)).toBe(3150);
+    const playing = { ...base, players: 'single' as const, started_at: '2026-11-01T11:59:00.000Z' };
+    // Then only the safety read, every 30 seconds.
+    expect(gameRefetchInterval(true, playing, at, at)).toBe(30_000);
+  });
+  it("reads a single player's timed game when its time is up", () => {
+    const timed = {
+      ...base,
+      players: 'single' as const,
+      mode: 'timed' as const,
+      duration_seconds: 120,
+      started_at: '2026-11-01T11:59:00.000Z',
+    };
+    expect(gameRefetchInterval(true, timed, at, at)).toBe(30_000);
+    expect(gameRefetchInterval(true, timed, at, at + 45_000)).toBe(15_250);
+  });
+  it('never reads a finished game', () => {
+    expect(gameRefetchInterval(true, { ...base, status: 'finished', players: 'single', started_at: base.now }, at, at)).toBe(false);
+  });
+});
+

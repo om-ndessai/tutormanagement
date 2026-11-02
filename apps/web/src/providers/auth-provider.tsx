@@ -61,6 +61,8 @@ interface AuthContextValue {
   account: PlatformAccount | null;
   /** Phase 52: their own open (or just declined) requests to join a space. */
   joinRequests: MyJoinRequest[];
+  /** Phase 63 (P13): the person may delete their account now (their own space goes with it). */
+  accountDeletable: boolean;
   /**
    * Phase 52: a newcomer between their Google sign-in and the age question -- who Google says they
    * are, and the short-lived token that stands for it. Held in memory only.
@@ -140,6 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [platformAdmin, setPlatformAdmin] = useState(false);
   const [account, setAccount] = useState<PlatformAccount | null>(null);
   const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
+  const [accountDeletable, setAccountDeletable] = useState(false);
   const [pendingSignup, setPendingSignup] = useState<SignupStart['signup'] | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
 
@@ -172,6 +175,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setPlatformAdmin(session.platform_admin);
     setAccount(session.account ?? null);
     setJoinRequests(session.join_requests ?? []);
+    setAccountDeletable(session.account_deletable === true);
 
     // The link is kept until the tab is in its space (or it cannot be entered): two loads racing
     // at boot must both honour it.
@@ -425,6 +429,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       platformAdmin,
       account,
       joinRequests,
+      accountDeletable,
       pendingSignup,
       completeSignup,
       firstVisit,
@@ -450,6 +455,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       platformAdmin,
       account,
       joinRequests,
+      accountDeletable,
       pendingSignup,
       completeSignup,
       firstVisit,

@@ -1,7 +1,7 @@
 // Ported from apps/web/src/pages/dashboard-page.tsx @ 1132322: one route, four dashboards, with the
 // role selector and the admin's "view as" kept in Home's params as the web keeps them in the URL.
 import { useQueryClient } from '@tanstack/react-query';
-import { USER_ROLES, type UserRole } from '@tmi/shared';
+import { USER_ROLES, featureOn, type UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
@@ -16,6 +16,7 @@ import { TutoringFinanceTabs, useTutoringFinanceTab } from '@/components/tutorin
 import { TutorNow, useNowState } from '@/features/home/tutor-now';
 import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { InvitationBanner } from '@/features/organizations/invitation-banner';
+import { PlayFavorites, PlayHome, WaitingForYou } from '@/features/play/play-home';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { useTourScroller } from '@/features/onboarding/tour-targets';
 import { AccountButton } from '@/features/shell/account-button';
@@ -69,7 +70,7 @@ function HeaderActions({ isAdmin, viewingId }: { isAdmin: boolean; viewingId: st
  * server for somebody else's dashboard on their behalf.
  */
 export function DashboardScreen() {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const theme = useAppTheme();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
@@ -143,6 +144,8 @@ export function DashboardScreen() {
         queryClient.invalidateQueries({ queryKey: ['finance'] }),
         queryClient.invalidateQueries({ queryKey: ['sessions'] }),
         queryClient.invalidateQueries({ queryKey: ['home'] }),
+        queryClient.invalidateQueries({ queryKey: ['quest'] }),
+        queryClient.invalidateQueries({ queryKey: ['quest-games', 'favorites'] }),
       ]);
     } finally {
       setRefreshing(false);
@@ -177,6 +180,17 @@ export function DashboardScreen() {
       )}
       {/* Phase 60 (S6): an invitation to another space, while the reader is here. */}
       {viewingOther ? null : <InvitationBanner />}
+      {/* Phase 62 (P6): where Quest is on, a student's Home leads with the Play home; staff and
+          parents keep their dashboard, with their favorites and Waiting for you above it. Never
+          while viewing somebody else. */}
+      {viewingId || !featureOn(organization, 'quest') ? null : user?.roles.includes('student') ? (
+        <PlayHome />
+      ) : (
+        <>
+          <PlayFavorites compact />
+          <WaitingForYou />
+        </>
+      )}
       {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
       {/* The reader's own roles are chosen in the account sheet (UI upgrades U6); while viewing
           somebody else, their roles stay here, under whose they are. */}

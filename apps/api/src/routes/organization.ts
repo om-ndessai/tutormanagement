@@ -13,6 +13,7 @@ import {
   type JoinRequest,
   type SpaceCode,
 } from '@tmi/shared';
+import { getPlatformAccount } from '../repositories/people.js';
 import { z } from 'zod';
 
 import type { AppEnv } from '../types.js';
@@ -110,17 +111,24 @@ export const organizationRoutes = new Hono<AppEnv>()
           throw new ApiError(409, 'shared_payer', 'This space’s payer record is shared with another space.');
         }
       }
-      const settings = await updateOrganizationSettings(c.env.DB, org.id, input);
+      // Phase 62: whether checked questions are drawn is the platform's switch now (checked_questions);
+      // an older app may still send the space admins' old one, which is accepted and not applied.
+      const { canvas_assessments_unreviewed: ignored, ...applied } = input;
+      void ignored;
+      if (Object.keys(applied).length === 0) {
+        const body: ApiOk<OrganizationSettings> = { data: await getOrganizationSettings(c.env.DB, org.id) };
+        return c.json(body);
+      }
+      const settings = await updateOrganizationSettings(c.env.DB, org.id, applied);
 
       // Names what changed, never the TIN itself: the log is read widely.
       const {
         email_notifications: notifications,
         canvas_assessments: assessments,
-        canvas_assessments_unreviewed: unreviewed,
         canvas_assessment_questions: questionCount,
         gamify_question_quest: quest,
         ...details
-      } = input;
+      } = applied;
       const changes = Object.keys(details).map((key) =>
         key === 'tin' ? 'TIN' : key.replace(/^payer_/, '').replace(/_/g, ' '),
       );
@@ -135,11 +143,6 @@ export const organizationRoutes = new Hono<AppEnv>()
           assessments === undefined
             ? null
             : `Turned ${org.name}'s Assessment menu (beta) ${assessments ? 'on' : 'off'}`,
-          unreviewed === undefined
-            ? null
-            : unreviewed
-              ? `Let ${org.name}'s assessments use questions not yet reviewed`
-              : `Limited ${org.name}'s assessments to approved questions`,
           questionCount === undefined
             ? null
             : `Set ${org.name}'s assessments to ${questionCount} question${questionCount === 1 ? '' : 's'}`,
@@ -245,6 +248,10 @@ export const organizationRoutes = new Hono<AppEnv>()
 
   /** Joining by code on or off. Off, the code opens nothing (a lookup is 404). */
   .put('/code', requireAdmin, zValidator('json', z.object({ join_by_code: z.boolean() })), async (c) => {
+    // Phase 63 (P13): a teen's personal space takes nobody by code.
+    if (c.req.valid('json').join_by_code && (await getPlatformAccount(c.env.DB, c.get('user').id))?.age_band === '13-17') {
+      throw new ApiError(403, 'forbidden', 'Letting people join by code is for adults.');
+    }
     const org = c.get('org');
     const { join_by_code: on } = c.req.valid('json');
     let code = (await getSpaceCode(c.env.DB, org.id)).code;

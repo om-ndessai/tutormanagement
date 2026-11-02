@@ -7,6 +7,7 @@ import { useUserDetail } from '@/features/users/api';
 import { UserDetailView } from '@/features/users/user-detail-view';
 import { SpaceDangerCard } from '@/features/organizations/space-code-card';
 import { SignInMethodsCard } from '@/features/auth/sign-in-methods-card';
+import { DeleteAccount } from '@/features/organizations/welcome';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 
@@ -17,7 +18,7 @@ import { useBrand } from '@/providers/brand-provider';
  */
 export function ProfilePage() {
   const brand = useBrand();
-  const { user, impersonated } = useAuth();
+  const { user, impersonated, accountDeletable } = useAuth();
   const { data, isPending, isError } = useUserDetail(user?.id ?? null);
 
   if (!user) return null;
@@ -61,6 +62,12 @@ export function ProfilePage() {
 
       {/* Phase 55: the accounts that sign this person in. */}
       <SignInMethodsCard />
+      {/* Phase 63 (P13): a newcomer whose only space is their own may delete the account here (it goes too). */}
+      {accountDeletable && (
+        <div className="mt-6" data-testid="profile-delete-account">
+          <DeleteAccount note="Your own space goes with it." />
+        </div>
+      )}
 
       <p className="text-muted-foreground mt-4 text-center text-xs">
         Something wrong here? Ask an administrator to update your record.

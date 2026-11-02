@@ -23,3 +23,5 @@ SIGNUP_OPEN=true
 # Phase 55: every provider offered locally, through the suite's fake tokens (never in production).
 AUTH_PROVIDERS=google,microsoft,apple,facebook
 AUTH_FAKE_PROVIDERS=true
+# Phase 63: guest play may be offered here (the console switch must be on too).
+GUEST_PLAY=true

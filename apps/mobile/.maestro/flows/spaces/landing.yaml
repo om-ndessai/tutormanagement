@@ -13,6 +13,8 @@
 #      single remaining space, which becomes the last choice.
 # Self-cleaning: both people (and Olga's spaces) are put back to nothing before and after.
 # The setup and the server-side checks are scripts/landing.js; spaces.js signs up and makes spaces.
+# Phase 63 (P13): signing up now also makes a personal space; Lena drops theirs at once
+# (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -26,7 +28,7 @@ onFlowStart:
       env: { ACTION: signup, EMAIL: landing.owner@example.com, NAME: Olga Owner }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: signup, EMAIL: landing.member@example.com, NAME: Lena Lander }
+      env: { ACTION: signup, EMAIL: landing.member@example.com, NAME: Lena Lander, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: make-space, EMAIL: landing.owner@example.com, NAME: Alder Landing }

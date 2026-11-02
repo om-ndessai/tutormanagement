@@ -1,3 +1,4 @@
+import { markQuestionLevelsDirty } from './level-counts.js';
 import {
   QUESTION_BANK_LEVEL_IDS,
   type Question,
@@ -255,7 +256,10 @@ export async function setChecks(
     )
     .bind(status, JSON.stringify(checks), id, checkedAt)
     .run();
-  return (result.meta.changes ?? 0) > 0;
+  const moved = (result.meta.changes ?? 0) > 0;
+  // Phase 62 (P4): the level's cached playable count is recounted at its next read.
+  if (moved) await markQuestionLevelsDirty(db, [id]);
+  return moved;
 }
 
 export async function setStatus(
@@ -273,6 +277,8 @@ export async function setStatus(
     )
     .bind(status, reviewer, id)
     .run();
+  // Phase 62 (P4): the level's cached playable count is recounted at its next read.
+  await markQuestionLevelsDirty(db, [id]);
 }
 
 export async function setNeedsFigure(db: D1Database, topicId: string, needsFigure: boolean): Promise<void> {
