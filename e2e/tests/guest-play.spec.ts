@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { APIRequestContext, Page } from '@playwright/test';
 import { expect, test } from '../support/fixtures.js';
 import { unwrap } from '../support/api.js';
 import { setCheckedQuestions } from '../support/checked-questions.js';
@@ -24,6 +24,18 @@ const DEFAULTS = {
   home_bar: 'Playing as a guest. Sign up free to save scores and unlock every quest.',
 };
 
+/** Guest play off, then every level's pool emptied: switching guest play on fills each open level's. */
+async function guestPlayOff(platform: { request: APIRequestContext }) {
+  await unwrap(await platform.request.put('/api/platform/guest', { data: DEFAULTS }), 'guest play off');
+  const now = await unwrap<any>(await platform.request.get('/api/platform/guest'), 'guest console');
+  for (const pool of now.pools.filter((p: any) => p.size > 0)) {
+    await unwrap(
+      await platform.request.put(`/api/platform/guest/pools/${pool.level_id}`, { data: { level_id: pool.level_id, question_ids: [] } }),
+      `clearing ${pool.level_id}`,
+    );
+  }
+}
+
 async function signedOut(page: Page) {
   await page.route('**/api/auth/session', (route) =>
     route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: { code: 'unauthenticated', message: 'Sign in to continue.' } }) }),
@@ -35,15 +47,24 @@ test.describe('guest play', () => {
     const platform = await as('platformAdmin', { org: null });
     const admin = await as('admin');
     // A clean start (a run that stopped early may have left guest play on).
-    await platform.request.put('/api/platform/guest/pools/NC26.4', { data: { level_id: 'NC26.4', question_ids: [] } });
-    await platform.request.put('/api/platform/guest', { data: DEFAULTS });
+    await guestPlayOff(platform);
     // Off: the public pool answers as a route that is not there.
     expect((await platform.request.get('/api/public/guest/0/NC26.4')).status()).toBe(404);
 
     const console0 = await unwrap<any>(await platform.request.get('/api/platform/guest'), 'guest console');
     expect(console0.settings.enabled).toBe(false);
     expect(console0.address_allows).toBe(true);
-    await unwrap(await platform.request.put('/api/platform/guest', { data: { ...DEFAULTS, enabled: true } }), 'guest play on');
+    expect(console0.pools.every((p: any) => p.size === 0)).toBe(true);
+    // Switching it on is all it takes: every level with a tile open to guests gets the suggestion
+    // (Grade 4, Grade 5, Beast Academy 3...), a level whose tiles are all locked (Pre-Algebra) none.
+    const on = await unwrap<any>(await platform.request.put('/api/platform/guest', { data: { ...DEFAULTS, enabled: true } }), 'guest play on');
+    const sizeOf = (level: string) => on.pools.find((p: any) => p.level_id === level).size;
+    expect(sizeOf('NC26.4')).toBe(10);
+    expect(sizeOf('NC26.5')).toBe(10);
+    expect(sizeOf('BA3')).toBeGreaterThanOrEqual(5);
+    expect(sizeOf('PRE')).toBe(0);
+    // Grade 4's pool is measured from empty below.
+    await unwrap(await platform.request.put('/api/platform/guest/pools/NC26.4', { data: { level_id: 'NC26.4', question_ids: [] } }), 'clearing Grade 4');
 
     // Members of a space drawing approved questions only: Grade 4's count before the pool.
     expect((await admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: true } })).status()).toBe(200);
@@ -72,7 +93,7 @@ test.describe('guest play', () => {
     const config = await unwrap<any>(await platform.request.get('/api/auth/config'), 'config');
     expect(config.guest.tiles.find((t: any) => t.code === 'G4Q5')).toMatchObject({ locked: false, words: 'Grade 4 · 5 questions' });
     expect(config.guest.tiles.find((t: any) => t.code === 'G4T10').locked).toBe(true);
-    expect(config.guest.tiles.find((t: any) => t.code === 'G5Q5').locked).toBe(true); // no pool at Grade 5
+    expect(config.guest.tiles.find((t: any) => t.code === 'G5Q5').locked).toBe(false); // filled when switched on
     const served = await unwrap<any>(await platform.request.get(`/api/public/guest/${config.guest.version}/NC26.4`), 'the pool');
     expect(served.questions.map((q: any) => q.id)).toEqual(ids);
     for (const q of served.questions) {
@@ -189,10 +210,9 @@ test.describe('guest play', () => {
     expect(listed.some((space) => space.personal)).toBe(false);
   });
 
-  test('afterwards: guest play off and Grade 4 has no free questions again', async ({ as }) => {
+  test('afterwards: guest play off and no level has free questions again', async ({ as }) => {
     const platform = await as('platformAdmin', { org: null });
-    await unwrap(await platform.request.put('/api/platform/guest/pools/NC26.4', { data: { level_id: 'NC26.4', question_ids: [] } }), 'clearing');
-    await unwrap(await platform.request.put('/api/platform/guest', { data: DEFAULTS }), 'guest play off');
+    await guestPlayOff(platform);
     const config = await unwrap<any>(await platform.request.get('/api/auth/config'), 'config');
     expect(config.guest).toBeUndefined();
   });

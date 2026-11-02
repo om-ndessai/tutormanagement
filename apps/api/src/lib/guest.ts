@@ -1,6 +1,6 @@
-import { tileWords, type GuestConfig, type GuestTile } from '@tmi/shared';
+import { tileWords, type GuestConfig, type GuestTile, type QuestTile } from '@tmi/shared';
 
-import { guestPoolSizes, guestVersion } from '../repositories/guest.js';
+import { fillEmptyGuestPools, guestPoolSizes, guestVersion } from '../repositories/guest.js';
 import { cachedDrawableCounts } from '../repositories/level-counts.js';
 import { getGuestSettings, getPlay } from '../repositories/platform-settings.js';
 import type { Env } from '../types.js';
@@ -60,3 +60,17 @@ export function forgetGuestSizes(): void {
   sizesMemo = null;
 }
 
+/**
+ * While the console's Guest play switch is on, every level with a tile open to guests gets free
+ * questions: an empty pool takes the console's suggestion (repositories/guest.ts). Called after the
+ * console saves guest play or the tiles, so switching it on is all it takes. Returns the levels filled.
+ */
+export async function fillOpenTilePools(db: D1Database, tiles: readonly QuestTile[], enabled: boolean): Promise<string[]> {
+  if (!enabled) return [];
+  const filled = await fillEmptyGuestPools(
+    db,
+    tiles.filter((tile) => tile.guest === 'open').map((tile) => tile.level_id),
+  );
+  if (filled.length > 0) forgetGuestSizes();
+  return filled;
+}

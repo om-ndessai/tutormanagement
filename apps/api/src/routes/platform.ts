@@ -71,7 +71,7 @@ import {
   setGuestPool,
   suggestPoolFor,
 } from '../repositories/guest.js';
-import { forgetGuestSizes } from '../lib/guest.js';
+import { fillOpenTilePools, forgetGuestSizes } from '../lib/guest.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { zValidator } from '../lib/validate.js';
@@ -827,6 +827,7 @@ export const platformRoutes = new Hono<AppEnv>()
       entity_type: 'platform',
       entity_id: 'play',
     });
+    await fillPoolsAndLog(c.env.DB, c.get('person'), after.tiles);
     const body: ApiOk<PlayConsoleResponse> = { data: after };
     return c.json(body);
   })
@@ -839,6 +840,7 @@ export const platformRoutes = new Hono<AppEnv>()
       entity_type: 'platform',
       entity_id: 'play',
     });
+    await fillPoolsAndLog(c.env.DB, c.get('person'), after.tiles);
     const body: ApiOk<PlayConsoleResponse> = { data: after };
     return c.json(body);
   })
@@ -853,8 +855,10 @@ export const platformRoutes = new Hono<AppEnv>()
     const before = await getGuestSettings(c.env.DB, 0);
     await putGuestSettings(c.env.DB, settings, c.get('person').id);
     await c.env.DB.batch([bumpVersion(c.env.DB)]);
+    const filled = await fillOpenTilePools(c.env.DB, (await getPlay(c.env.DB, 0)).tiles, settings.enabled);
     const changes: string[] = [];
     if (before.enabled !== settings.enabled) changes.push(`guest play ${settings.enabled ? 'on' : 'off'}`);
+    if (filled.length) changes.push(describeFilled(filled));
     if (before.assessment_enabled !== settings.assessment_enabled) changes.push(`guest assessment ${settings.assessment_enabled ? 'on' : 'off'}`);
     if (before.nudge_after !== settings.nudge_after) changes.push(`the sign-up offer after question ${settings.nudge_after}`);
     await recordAudit(c.env.DB, c.get('person'), 'platform', {
@@ -895,6 +899,24 @@ export const platformRoutes = new Hono<AppEnv>()
     const body: ApiOk<GuestPoolConsoleResponse> = { data: { level_id: level, current, suggestion: [] } };
     return c.json(body);
   });
+
+/** After the tiles change: while guest play is on, a level newly open to guests gets free questions. */
+async function fillPoolsAndLog(db: D1Database, person: Parameters<typeof recordAudit>[1], tiles: readonly QuestTile[]): Promise<void> {
+  const filled = await fillOpenTilePools(db, tiles, (await getGuestSettings(db, 0)).enabled);
+  if (filled.length === 0) return;
+  await recordAudit(db, person, 'platform', {
+    action: 'platform.guest_updated',
+    description: `Guest play: ${describeFilled(filled)}.`,
+    entity_type: 'platform',
+    entity_id: 'guest',
+  });
+}
+
+/** "free questions chosen for Grade 3, Grade 4, Grade 5 and 12 more" */
+function describeFilled(levels: readonly string[]): string {
+  const named = levels.slice(0, 3).map(levelLabel).join(', ');
+  return `free questions chosen for ${named}${levels.length > 3 ? ` and ${levels.length - 3} more` : ''}`;
+}
 
 /** Phase 63 (P16): what the console shows for guest play. */
 async function guestConsole(env: Env): Promise<GuestConsoleResponse> {

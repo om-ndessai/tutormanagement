@@ -3,8 +3,9 @@
 // calls as e2e/tests/guest-play.spec.ts. env: ACTION
 //   on [ASSESSMENT=true]   PUT /platform/guest (enabled, and the guest Assessment when asked), then
 //                          Grade 4's pool from GET /platform/guest/pools/NC26.4's `suggestion`
-//   off                    Grade 4's pool emptied, and the settings back to their defaults (guest play
-//                          off), so every other flow meets the sign-in screen as before
+//   off                    the settings back to their defaults (guest play off), then every pool
+//                          emptied (switching guest play on fills each open level's), so every other
+//                          flow meets the sign-in screen and the full bank as before
 // The Worker's GUEST_PLAY must allow it (".dev.vars"). Errors are thrown on `on`, tolerated on `off`.
 var API = 'http://localhost:8787/api';
 var PLATFORM_ADMIN = 'ndessai@gmail.com';
@@ -61,8 +62,14 @@ if (ACTION === 'on') {
   must(call('PUT', '/platform/guest/pools/' + LEVEL, { level_id: LEVEL, question_ids: ids }), 'the pool');
   output.poolSize = ids.length;
 } else if (ACTION === 'off') {
-  call('PUT', '/platform/guest/pools/' + LEVEL, { level_id: LEVEL, question_ids: [] });
   call('PUT', '/platform/guest', settings(false));
+  var consoleNow = call('GET', '/platform/guest').body;
+  var pools = consoleNow && consoleNow.data ? consoleNow.data.pools : [{ level_id: LEVEL, size: 1 }];
+  for (var i = 0; i < pools.length; i++) {
+    if (pools[i].size > 0) {
+      call('PUT', '/platform/guest/pools/' + pools[i].level_id, { level_id: pools[i].level_id, question_ids: [] });
+    }
+  }
 } else {
   throw new Error('guest-play.js: unknown ACTION ' + ACTION);
 }

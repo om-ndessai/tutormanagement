@@ -28,6 +28,16 @@ const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')";
  */
 const SETTINGS_TTL_MS = 15_000;
 
+/**
+ * Whether a memo read at `at` still serves a read at `now`. The console passes `now` 0 to read afresh:
+ * a memo is never younger than zero, so that always misses (it used to hit forever, so the console
+ * could show, and merge into, what another isolate had read long before).
+ */
+function memoServes(at: number, now: number): boolean {
+  const age = now - at;
+  return age >= 0 && age < SETTINGS_TTL_MS;
+}
+
 let signInMemo: { value: SignInSettings; at: number } | null = null;
 
 /** For tests: forget what this isolate read. */
@@ -37,7 +47,7 @@ export function forgetPlatformSettings(): void {
 
 /** The sign-in switches (P0). No row, or one that no longer parses: none, so the Worker's vars apply. */
 export async function getSignInSettings(db: D1Database, now = Date.now()): Promise<SignInSettings> {
-  if (signInMemo && now - signInMemo.at < SETTINGS_TTL_MS) return signInMemo.value;
+  if (signInMemo && memoServes(signInMemo.at, now)) return signInMemo.value;
   const row = await db
     .prepare("SELECT value FROM platform_settings WHERE key = 'sign_in'")
     .first<{ value: string }>();
@@ -75,7 +85,7 @@ export async function getPlay(
   db: D1Database,
   now = Date.now(),
 ): Promise<{ settings: PlaySettings; tiles: QuestTile[]; is_default: boolean }> {
-  if (playMemo && now - playMemo.at < SETTINGS_TTL_MS) return playMemo.value;
+  if (playMemo && memoServes(playMemo.at, now)) return playMemo.value;
   const rows = await db
     .prepare("SELECT key, value FROM platform_settings WHERE key IN ('play', 'tiles')")
     .all<{ key: string; value: string }>();
@@ -128,7 +138,7 @@ export async function resetTiles(db: D1Database): Promise<void> {
 let guestMemo: { value: GuestSettings; at: number } | null = null;
 
 export async function getGuestSettings(db: D1Database, now = Date.now()): Promise<GuestSettings> {
-  if (guestMemo && now - guestMemo.at < SETTINGS_TTL_MS) return guestMemo.value;
+  if (guestMemo && memoServes(guestMemo.at, now)) return guestMemo.value;
   const row = await db.prepare("SELECT value FROM platform_settings WHERE key = 'guest'").first<{ value: string }>();
   let value = DEFAULT_GUEST_SETTINGS;
   if (row) {

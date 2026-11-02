@@ -1,4 +1,6 @@
 import {
+  GUEST_POOL_DEFAULT,
+  GUEST_POOL_MIN,
   suggestGuestPool,
   type GuestPoolCandidate,
   type GuestQuestion,
@@ -64,6 +66,11 @@ export async function guestPoolSizes(db: D1Database): Promise<Map<string, number
  * hard. Reads one window of the level per difficulty, not the whole level.
  */
 export async function suggestPoolFor(db: D1Database, levelId: string, size: number) {
+  return (await suggestPoolsFor(db, [levelId], size)).get(levelId) ?? [];
+}
+
+/** The suggestion for several levels, in ONE batch (one query against the free plan's 50 a request). */
+async function suggestPoolsFor(db: D1Database, levelIds: readonly string[], size: number) {
   const window = db.prepare(
     `SELECT q.id, q.topic_id, q.difficulty, q.status FROM questions q
      WHERE q.topic_id >= ? AND q.topic_id < ? AND q.status IN ('approved', 'checked') AND q.difficulty = ?
@@ -72,13 +79,23 @@ export async function suggestPoolFor(db: D1Database, levelId: string, size: numb
      LIMIT ?`,
   );
   const results = await db.batch<{ id: string; topic_id: string; difficulty: number; status: string }>(
-    [1, 2, 3].map((difficulty) => window.bind(`${levelId}.`, `${levelId}/`, difficulty, size * 6)),
+    levelIds.flatMap((levelId) => [1, 2, 3].map((difficulty) => window.bind(`${levelId}.`, `${levelId}/`, difficulty, size * 6))),
   );
-  return suggestGuestPool(results.flatMap((r) => r.results ?? []), size);
+  return new Map(
+    levelIds.map((levelId, index) => [
+      levelId,
+      suggestGuestPool(results.slice(index * 3, index * 3 + 3).flatMap((r) => r.results ?? []), size),
+    ]),
+  );
 }
 
 /** Replaces a level's pool with these question ids, in order, and bumps the pool version. */
 export async function setGuestPool(db: D1Database, levelId: string, questionIds: readonly string[]): Promise<void> {
+  await setGuestPools(db, [[levelId, questionIds]]);
+}
+
+/** Replaces several levels' pools in one batch, bumps the version once, marks the levels for recount. */
+async function setGuestPools(db: D1Database, pools: ReadonlyArray<readonly [string, readonly string[]]>): Promise<void> {
   const insert = db.prepare(
     // The question must belong to the level and be drawable; anything else is skipped.
     `INSERT INTO guest_questions (question_id, level_id, position)
@@ -86,12 +103,34 @@ export async function setGuestPool(db: D1Database, levelId: string, questionIds:
      WHERE q.id = ?3 AND q.topic_id >= ?1 || '.' AND q.topic_id < ?1 || '/' AND q.status IN ('approved', 'checked')`,
   );
   await db.batch([
-    db.prepare('DELETE FROM guest_questions WHERE level_id = ?').bind(levelId),
-    ...questionIds.map((id, index) => insert.bind(levelId, index, id)),
+    ...pools.flatMap(([levelId, ids]) => [
+      db.prepare('DELETE FROM guest_questions WHERE level_id = ?').bind(levelId),
+      ...ids.map((id, index) => insert.bind(levelId, index, id)),
+    ]),
     bumpVersion(db),
   ]);
-  // Members' counts leave the pool out: the level is recounted at its next read.
-  await markLevelsDirty(db, [`${levelId}.x`]);
+  // Members' counts leave the pool out: the levels are recounted at their next read.
+  await markLevelsDirty(db, pools.map(([levelId]) => `${levelId}.x`));
+}
+
+/**
+ * Gives every one of these levels whose pool is EMPTY the console's suggestion (owner, 2026-11-02:
+ * guest play works as soon as it is switched on, without confirming each level first; the console
+ * still swaps or clears them). A level with fewer drawable questions than GUEST_POOL_MIN is left
+ * empty. Three queries however many levels. Returns the levels filled.
+ */
+export async function fillEmptyGuestPools(db: D1Database, levelIds: readonly string[]): Promise<string[]> {
+  const sizes = await guestPoolSizes(db);
+  const empty = [...new Set(levelIds)].filter((levelId) => (sizes.get(levelId) ?? 0) === 0);
+  if (empty.length === 0) return [];
+  const suggestions = await suggestPoolsFor(db, empty, GUEST_POOL_DEFAULT);
+  const pools = empty.flatMap((levelId) => {
+    const ids = (suggestions.get(levelId) ?? []).map((q) => q.id);
+    return ids.length >= GUEST_POOL_MIN ? [[levelId, ids] as const] : [];
+  });
+  if (pools.length === 0) return [];
+  await setGuestPools(db, pools);
+  return pools.map(([levelId]) => levelId);
 }
 
 /** Every console edit of the guest data moves the version, so devices fetch it afresh. */
