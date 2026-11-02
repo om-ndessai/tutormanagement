@@ -1,4 +1,4 @@
-import { tileWords, type GuestConfig, type GuestTile, type QuestTile } from '@tmi/shared';
+import { guestTileWords, type GuestConfig, type GuestTile, type QuestTile } from '@tmi/shared';
 
 import { fillEmptyGuestPools, guestPoolSizes, guestVersion } from '../repositories/guest.js';
 import { cachedDrawableCounts } from '../repositories/level-counts.js';
@@ -39,7 +39,7 @@ export async function guestConfigFor(env: Env): Promise<GuestConfig | undefined>
       level_id: tile.level_id,
       mode: tile.mode,
       value: tile.value,
-      words: tileWords(tile),
+      words: guestTileWords(tile),
       locked: tile.guest === 'locked' || (sizes.get(tile.level_id) ?? 0) === 0,
     }));
   const member_counts: Record<string, number> = {};

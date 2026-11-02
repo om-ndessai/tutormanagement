@@ -16,6 +16,14 @@ interface GuestMemory {
   /** Played tiles already made a member's favorites on this device (P13), so each is carried once. */
   carried?: string[];
   nudgeDismissedAt?: number;
+  /** Today's 5 as played on this device: the day, the level, and which questions hit. */
+  today?: GuestToday;
+}
+
+export interface GuestToday {
+  day: string;
+  level: QuestionBankLevelId;
+  hits: boolean[];
 }
 
 function read(): GuestMemory {
@@ -54,6 +62,12 @@ export const guestMemory = {
     write((m) => ({ ...m, carried: [...new Set([...(m.carried ?? []), ...codes])].slice(-50) })),
   nudgeDismissedAt: (): number | undefined => read().nudgeDismissedAt,
   dismissNudge: () => write((m) => ({ ...m, nudgeDismissedAt: Date.now() })),
+  /** Today's 5 for this day and level, if played here. */
+  today: (day: string, level: string): GuestToday | undefined => {
+    const today = read().today;
+    return today && today.day === day && today.level === level ? today : undefined;
+  },
+  setToday: (today: GuestToday) => write((m) => ({ ...m, today })),
 };
 
 /**

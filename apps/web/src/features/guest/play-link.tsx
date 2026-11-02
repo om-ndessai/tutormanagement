@@ -1,6 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { parseTileCode, tileCode, tileGameRequest, tileWords } from '@tmi/shared';
+import {
+  GUEST_TODAY_SIZE,
+  guestDay,
+  guestLevelWords,
+  guestTodayCode,
+  parseTileCode,
+  tileCode,
+  tileGameRequest,
+  tileWords,
+  type GuestTile,
+} from '@tmi/shared';
 
 import { useStartQuest } from '@/features/play/play-home';
 import { useAuth } from '@/providers/auth-provider';
@@ -30,6 +40,29 @@ export function PlayLink() {
   // P11: an assessment tile is the guest Assessment, on the device.
   if (tile.kind === 'assessment') return <GuestAssessment key={tile.code} tile={tile} />;
   return <GuestQuest key={tile.code} tile={tile} />;
+}
+
+/**
+ * `/play/today/<level>`: a guest's Today's 5 (docs/landing-page-proposal.md, direction C) -- the day's
+ * five questions of a level open to guests, played like a quest on the device. Anyone else goes home.
+ */
+export function GuestTodayLink() {
+  const { level = '' } = useParams();
+  const { status, config } = useAuth();
+  if (status === 'loading' || (status === 'unauthenticated' && config === null)) return null;
+  const open = config?.guest?.tiles.find((t) => t.level_id === level && !t.locked && t.kind === 'quest');
+  if (status !== 'unauthenticated' || !open) return <Navigate to="/" replace />;
+  const tile: GuestTile = {
+    code: guestTodayCode(open.level_id),
+    kind: 'quest',
+    level_id: open.level_id,
+    mode: 'count',
+    value: GUEST_TODAY_SIZE,
+    words: `${guestLevelWords(open.level_id)} · Today's ${GUEST_TODAY_SIZE}`,
+    locked: false,
+  };
+  const day = guestDay();
+  return <GuestQuest key={`${tile.code}-${day}`} tile={tile} today={{ day }} />;
 }
 
 /** A member arriving from a tile link: the tile starts as a single player's game in their space. */

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TILE_LEVEL_WORDS, type QuestionBankLevelId } from '@tmi/shared';
+import { guestLevelWords, type QuestionBankLevelId } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -17,7 +17,7 @@ export function roundedCount(n: number): string | null {
 export function benefitsFor(levelId: QuestionBankLevelId | undefined, memberCounts: Record<string, number>): string[] {
   const count = levelId ? roundedCount(memberCounts[levelId] ?? 0) : null;
   return [
-    count && levelId ? `${count} more ${TILE_LEVEL_WORDS[levelId]} questions, never repeated` : 'Many more questions, never repeated',
+    count && levelId ? `${count} more ${guestLevelWords(levelId)} questions, never repeated` : 'Many more questions, never repeated',
     'Every quest unlocked: longer, timed, and family games',
     'Family games: one tap, no codes',
     'Your scores saved',

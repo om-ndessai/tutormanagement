@@ -118,3 +118,52 @@ They are dropped today: Analytics Engine (`PLAY_EVENTS`) is not bound.
    Triangle")?
 4. The console's "home bar" text: drop it (recommended) or keep it as one small line?
 5. Which grades lead: K, 1-8 and Math 1, with Beast Academy, Math Kangaroo and AoPS under "More"?
+
+## The owner's decisions (2026-11-02) and the build
+
+1. **Direction C**, the Quest board.
+2. **Contact us** opens an email to the address the portal already shows (`PLATFORM_CONTACT_EMAIL` in
+   shared `guest-board.ts`, `om.ndessai@gmail.com`).
+3. **No credit** to anyone on the page. **Curricula are never named to a guest**: a level is "Grade 4";
+   Beast Academy, AoPS and Math Kangaroo levels are "Adv G<n>" (BA<n> is grade n; Prealgebra 6, Algebra 7,
+   Geometry 8; a Kangaroo pair "Adv G3–4"). Nothing else names a standard either.
+4. **The console's home bar stays**, as one small line under the headline (may go after seeing it live).
+5. **Grades 1-8** on the row (K and Math 1 tiles are not on the board).
+
+What both clients build (web `features/guest/guest-home.tsx`, app `features/guest/guest-home.tsx`), from
+the pure helpers in `packages/shared/src/guest-board.ts`:
+
+- **Band** (the brand's deepest blues, `brand-900` to `brand-800`, faint rings of the bullseye top right):
+  the mark and "Aimtrue" in white, "Sign in" a white text link; the headline "Math quests. *Hit the
+  target.*" (the second half in the play amber, the `warning` token), "Free for grades 1–8. No account to
+  start, no ads ever.", then the console's home bar line, small.
+- **Today's 5** card, overlapping the band's foot (beside the headline on a wide screen): "Today's 5 ·
+  Grade 4" (`guestLevelWords(guestTodayLevel(...))`), "Five questions. Can you hit all five?", five target
+  rings, an amber "Play today's 5". The same five questions for every visitor that day
+  (`guestTodaySet(pool, guestDay(), level)`), played like any guest quest, untimed, on the device. Once
+  played today, the rings show hits (filled) and misses, "You hit 4 of 5 today. A new five tomorrow.",
+  and "Play again". Kept on the device only (day, level, hits). Counted as tile `guestTodayCode(level)`
+  ("G4D5"); never added to the played tiles a sign-up carries into favorites.
+- **Grade row**: chips 1-8 ("Grade" read by screen readers), one row that scrolls; the chosen grade is
+  remembered on the device as a level id as before (the grade's own level, so `guestLeadLevel` still
+  works); an earlier remembered level maps through `guestGradeOf`, else Grade 4.
+- **Quest cards** for the grade (`guestBoard`): a coloured band with an icon (target for questions, timer
+  for timed, pencil for Show your work; blue, amber, blue), the title (`guestTileTitle`: Quick 5,
+  5-minute dash, 10 in a row, 20-minute marathon, Show your work) and the detail (`guestTileDetail`).
+  Locked cards: grey band, dimmed, "🔒 Free account" (no "Free" badge); a tap opens the sign-up offer,
+  headlined "<title> is free with an account". Then "Advanced" (only if the grade has any): the same
+  cards, the detail prefixed by the level's words ("Adv G4 · 5 questions"). Two columns on a phone, four
+  wide. A grade with nothing: "Quests for Grade N are on their way."
+- **Grown-ups**: two panels side by side when wide. "Play together · One code, everyone joins" with an
+  example code and three initials ("Family games with a free account. Example."); "For parents ·
+  example" with three progress bars (Place value 82%, Multiplication 66%, Fractions 41%) and the filled
+  button "Create a free family space" (the sign-up sheet; "Sign in" while sign-up is closed). Under them
+  three short answers (expandable): **Is it free?** "Yes. Anyone can play the free quests without an
+  account. A free account unlocks every quest, family games and progress." **Is it safe for my
+  child?** "Guests aren't tracked: no account, no ads, and answers stay on this device. Children under
+  13 join through a parent's account." **Which grades?** "Grades 1 to 8, with harder Adv quests for a
+  stretch."
+- **Footer**: Privacy · Terms · Contact us, body size, link colour, centred.
+- **Everywhere a guest reads a level or a tile**: masked words, never the code or the curriculum (the
+  quest's header, results, the offer's lines, Challenge a friend's text). The code stays in `/play/<code>`
+  links.

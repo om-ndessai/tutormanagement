@@ -1,3 +1,5 @@
+import { PLATFORM_CONTACT_EMAIL } from '@tmi/shared';
+
 import { cn } from '@/lib/utils';
 
 /**
@@ -17,7 +19,7 @@ export function DeveloperCredit({
   return (
     <p className={className}>
       Developed by:{' '}
-      <a href="mailto:om.ndessai@gmail.com" className={cn('hover:underline', linkClassName)}>
+      <a href={`mailto:${PLATFORM_CONTACT_EMAIL}`} className={cn('hover:underline', linkClassName)}>
         Om Dessai
       </a>
     </p>

@@ -3,8 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CheckIcon, XIcon } from 'lucide-react';
 import {
   checkAnswer,
+  guestLevelWords,
   guestPoolUsedUp,
   guestSeries,
+  guestTileName,
+  guestTodaySet,
   type GuestQuestion,
   type GuestTile,
 } from '@tmi/shared';
@@ -33,7 +36,12 @@ function elapsedMs(state: GuestQuestState, now: number): number {
  * first (`guestSeries`). Nothing is sent but anonymous counts. Kept in this tab's storage, so a sign-up
  * that reloads the page comes back to it.
  */
-export function GuestQuest({ tile }: { tile: GuestTile }) {
+/** What a guest reads for a quest: never its code or its curriculum. */
+export function guestQuestName(tile: GuestTile, today: boolean): string {
+  return today ? `Today's 5 · ${guestLevelWords(tile.level_id)}` : guestTileName(tile);
+}
+
+export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: string } }) {
   const { config } = useAuth();
   const guest = config!.guest!;
   const navigate = useNavigate();
@@ -55,13 +63,15 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
   // Start (or resume) once the pool is here: the series unseen first, as many as the tile asks.
   useEffect(() => {
     if (state || questions.length === 0) return;
-    const series = guestSeries(questions, guestMemory.seen(tile.level_id));
+    // Today's 5 is the day's own five, the same for every visitor; a tile is the unseen first.
+    const series = today ? guestTodaySet(questions, today.day, tile.level_id) : guestSeries(questions, guestMemory.seen(tile.level_id));
     const ids = (tile.mode === 'count' ? series.slice(0, tile.value) : series).map((q) => q.id);
     const fresh: GuestQuestState = { code: tile.code, questionIds: ids, answers: [], startedAt: Date.now(), pausedMs: 0, pausedAt: null, nudged: false };
     setState(fresh);
-    guestMemory.addPlayed(tile.code);
+    // Today's 5 is not a tile: it is never carried into a member's favorites.
+    if (!today) guestMemory.addPlayed(tile.code);
     countEvent({ name: 'tile_started', tile: tile.code, source: 'guest' });
-  }, [state, questions, tile]);
+  }, [state, questions, tile, today]);
 
   useEffect(() => writeQuestState(state), [state]);
 
@@ -120,7 +130,8 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
   function record(final: GuestQuestState) {
     const score = final.answers.filter((a) => a.correct).length;
     guestMemory.addSeen(tile.level_id, final.answers.map((a) => a.id));
-    guestMemory.setBest(tile.code, score);
+    if (today) guestMemory.setToday({ day: today.day, level: tile.level_id, hits: final.answers.map((a) => a.correct) });
+    else guestMemory.setBest(tile.code, score);
     countEvent({ name: 'quest_finished', tile: tile.code, value: score });
     if (guestPoolUsedUp(questions, guestMemory.seen(tile.level_id))) countEvent({ name: 'pool_used_up', tile: tile.code });
     flushEvents();
@@ -143,6 +154,7 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
       {sheet}
       <Results
         tile={tile}
+        name={guestQuestName(tile, Boolean(today))}
         state={state}
         byId={byId}
         usedUp={guestPoolUsedUp(questions, guestMemory.seen(tile.level_id))}
@@ -172,7 +184,9 @@ export function GuestQuest({ tile }: { tile: GuestTile }) {
         <Card className="py-0" data-testid="guest-question">
           <CardContent className="grid gap-4 p-6">
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{tile.code}</span>
+              <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase" data-testid="guest-quest-name">
+                {guestQuestName(tile, Boolean(today))}
+              </span>
               {current.beta && (
                 <Badge variant="secondary" className="px-1.5 py-0 text-[10px]" data-testid="guest-question-beta">
                   Beta
@@ -246,6 +260,7 @@ function Shell({ children, right }: { children: React.ReactNode; right?: React.R
 /** The results: the main moment to offer an account (P12), with the worked solutions. */
 function Results({
   tile,
+  name,
   state,
   byId,
   usedUp,
@@ -254,6 +269,7 @@ function Results({
   onAgain,
 }: {
   tile: GuestTile;
+  name: string;
   state: GuestQuestState;
   byId: Map<string, GuestQuestion>;
   usedUp: boolean;
@@ -265,7 +281,7 @@ function Results({
   const score = state.answers.filter((a) => a.correct).length;
   const link = `${window.location.origin}/play/${tile.code}`;
   async function challenge() {
-    const text = `I got ${score}/${state.answers.length} on ${tile.code} on Aimtrue. Can you beat it?`;
+    const text = `I got ${score}/${state.answers.length} on ${name} on Aimtrue. Can you beat it?`;
     try {
       if (navigator.share) await navigator.share({ title: 'Aimtrue', text, url: link });
       else await navigator.clipboard.writeText(`${text} ${link}`);
@@ -280,10 +296,10 @@ function Results({
           <h1 className="font-display text-2xl font-semibold" data-testid="guest-score">
             {score} of {state.answers.length} right
           </h1>
-          <p className="text-muted-foreground text-sm">{tile.code} · {tile.words}</p>
+          <p className="text-muted-foreground text-sm" data-testid="guest-results-name">{name}</p>
           {usedUp && (
             <p className="bg-primary/10 rounded-lg px-3 py-2 text-sm" data-testid="guest-used-up">
-              You&apos;ve played all the free {tile.words.split(' · ')[0]} questions. {benefits[0]} with a free account.
+              You&apos;ve played all the free {guestLevelWords(tile.level_id)} questions. {benefits[0]} with a free account.
             </p>
           )}
           <div className="flex flex-wrap gap-2">

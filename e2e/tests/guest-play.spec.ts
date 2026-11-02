@@ -111,7 +111,7 @@ test.describe('guest play', () => {
 
     // A locked tile offers an account.
     await home.getByTestId('guest-locked-G4T10').click();
-    await expect(page.getByTestId('guest-nudge')).toContainText('G4T10 is free with an account');
+    await expect(page.getByTestId('guest-nudge')).toContainText('10-minute challenge is free with an account');
     await page.getByTestId('guest-nudge-close').click();
 
     await home.getByTestId('guest-tile-G4Q5').click();
@@ -150,6 +150,42 @@ test.describe('guest play', () => {
     expect(tooMany.status()).toBe(422);
     const unknown = await page.request.post('/api/public/events', { data: { events: [{ name: 'who_is_this', tile: 'x@y' }] } });
     expect(unknown.status()).toBe(422);
+  });
+
+  test('Quest board: grades 1-8, curricula never named, and Today\'s 5 played on the device', async ({ as }) => {
+    const page = await as('student', { org: null });
+    await signedOut(page);
+    await page.goto('/');
+    const home = page.getByTestId('guest-home');
+    await expect(home).toBeVisible();
+    await expect(home.getByRole('radio')).toHaveCount(8);
+    await expect(home.getByRole('radio', { name: 'Grade 4' })).toHaveAttribute('aria-checked', 'true');
+
+    // Grade 2: its own quest, then the advanced track's, named by grade alone.
+    await home.getByRole('radio', { name: 'Grade 2' }).click();
+    await expect(home.getByTestId('guest-tile-G2Q5')).toContainText('Quick 5');
+    await expect(home.getByTestId('guest-tile-BA2Q5')).toContainText('Adv G2 · 5 questions');
+    for (const grade of ['Grade 2', 'Grade 6', 'Grade 4']) {
+      await home.getByRole('radio', { name: grade }).click();
+      const text = await home.innerText();
+      for (const name of ['Beast', 'AoPS', 'Prealgebra', 'Kangaroo', 'NC ', 'North Carolina', 'G4Q5', 'BA2']) expect(text).not.toContain(name);
+    }
+    await expect(page.getByTestId('guest-contact')).toHaveAttribute('href', 'mailto:om.ndessai@gmail.com');
+
+    // Today's 5: five questions, untimed, then the card shows how it went.
+    await expect(page.getByTestId('guest-today')).toContainText("Today's 5 · Grade 4");
+    await page.getByTestId('guest-today-play').click();
+    await expect(page).toHaveURL(/\/play\/today\/NC26\.4$/);
+    await expect(page.getByTestId('guest-quest-name')).toHaveText("Today's 5 · Grade 4");
+    await expect(page.getByTestId('guest-progress')).toHaveText('1 of 5');
+    await page.getByTestId('guest-skip').click();
+    if (await page.getByTestId('guest-nudge').isVisible()) await page.getByTestId('guest-nudge-close').click();
+    for (let i = 0; i < 4; i += 1) await page.getByTestId('guest-skip').click();
+    await expect(page.getByTestId('guest-score')).toHaveText('0 of 5 right');
+    await expect(page.getByTestId('guest-results-name')).toHaveText("Today's 5 · Grade 4");
+    await page.goto('/');
+    await expect(page.getByTestId('guest-today')).toContainText('You hit 0 of 5 today.');
+    await expect(page.getByTestId('guest-today-play')).toHaveText(/Play again/);
   });
 
   test('P11: a visitor takes G4A5 on the device: one page each, marked there, the work beside the key', async ({ as }) => {

@@ -23,6 +23,7 @@ export * from './quest.js';
 export * from './quest-games.js';
 export * from './quest-tiles.js';
 export * from './guest.js';
+export * from './guest-board.js';
 export * from './play-events.js';
 export * from './home.js';
 export * from './release.js';

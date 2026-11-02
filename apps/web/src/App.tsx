@@ -28,7 +28,7 @@ import { PlatformActivityPage } from '@/features/platform/platform-activity-page
 import { PlatformAdminsPage } from '@/features/platform/platform-admins-page';
 import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
 import { PlatformShell } from '@/features/platform/platform-shell';
-import { MemberTileStart, PlayLink } from '@/features/guest/play-link';
+import { GuestTodayLink, MemberTileStart, PlayLink } from '@/features/guest/play-link';
 import { PlatformSettingsPage } from '@/features/platform/platform-settings-page';
 import { AiPage } from '@/features/question-bank/ai-page';
 import { QuestionBankPage } from '@/features/question-bank/question-bank-page';
@@ -56,6 +56,7 @@ export function App() {
       <Route path="/s/:id" element={<PublicSharePage />} />
       {/* Phase 63 (P14): a tile from a link -- a guest plays it on the device, a member starts it. */}
       <Route path="/play/:code" element={<PlayLink />} />
+      <Route path="/play/today/:level" element={<GuestTodayLink />} />
       <Route path="/privacy" element={<LegalPage kind="privacy" />} />
       {/* Phase 52: a newcomer's age question and the terms, before they have an account. */}
       <Route path="/signup" element={<SignupPage />} />

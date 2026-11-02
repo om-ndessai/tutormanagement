@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckIcon, EraserIcon, PenLineIcon, XIcon } from 'lucide-react';
-import { checkAnswer, guestSeries, type CanvasStroke, type GuestTile } from '@tmi/shared';
+import { checkAnswer, guestSeries, guestTileName, type CanvasStroke, type GuestTile } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { Badge } from '@/components/ui/badge';
@@ -90,7 +90,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
             <h1 className="font-display text-2xl font-semibold" data-testid="guest-assessment-score">
               {score} of {questions.length} right
             </h1>
-            <p className="text-muted-foreground text-sm">{tile.code} · {tile.words}</p>
+            <p className="text-muted-foreground text-sm">{guestTileName(tile)}</p>
             <div className="flex flex-wrap gap-2">
               <Button onClick={() => setOffer(true)} data-testid="guest-assessment-keep">
                 Keep it: PDF and a tutor&apos;s review
@@ -132,7 +132,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
       <Card className="py-0" data-testid="guest-assessment-page">
         <CardContent className="grid gap-3 p-6">
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{tile.code}</span>
+            <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{guestTileName(tile)}</span>
             {question.beta && <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">Beta</Badge>}
           </div>
           <MathText text={question.stem} className="text-lg leading-relaxed" />
