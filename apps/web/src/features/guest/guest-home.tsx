@@ -355,9 +355,10 @@ function CardGrid({ tiles, onOpen, advanced = false }: { tiles: GuestTile[]; onO
 }
 
 function QuestCard({ tile, onOpen, advanced }: { tile: GuestTile; onOpen: (tile: GuestTile) => void; advanced: boolean }) {
-  const Icon = tile.kind === 'assessment' ? PencilLineIcon : tile.mode === 'timed' ? TimerIcon : TargetIcon;
+  // Locked: a big lock on a tinted band, so it reads at a glance and stands off the page.
+  const Icon = tile.locked ? LockIcon : tile.kind === 'assessment' ? PencilLineIcon : tile.mode === 'timed' ? TimerIcon : TargetIcon;
   const tone = tile.locked
-    ? 'bg-muted text-muted-foreground'
+    ? 'bg-primary/15 text-primary'
     : tile.mode === 'timed'
       ? 'bg-warning text-warning-foreground'
       : 'bg-primary text-primary-foreground';
@@ -370,12 +371,11 @@ function QuestCard({ tile, onOpen, advanced }: { tile: GuestTile; onOpen: (tile:
       aria-label={tile.locked ? `${guestTileName(tile)} is free with an account` : `Play ${guestTileName(tile)}`}
       data-testid={tile.locked ? `guest-locked-${tile.code}` : `guest-tile-${tile.code}`}
       className={cn(
-        'bg-card focus-visible:ring-ring grid grid-rows-[auto_1fr] overflow-hidden rounded-2xl border text-left transition-shadow hover:shadow-[var(--elevation-1)] focus-visible:ring-2 focus-visible:outline-none',
-        tile.locked && 'opacity-80',
+        'bg-card focus-visible:ring-ring border-foreground/15 grid grid-rows-[auto_1fr] overflow-hidden rounded-2xl border text-left shadow-[var(--elevation-1)] transition-shadow hover:shadow-[var(--elevation-2)] focus-visible:ring-2 focus-visible:outline-none',
       )}
     >
       <span className={cn('grid h-14 place-items-center', tone)}>
-        <Icon className="size-7" aria-hidden />
+        <Icon className={tile.locked ? 'size-9' : 'size-7'} aria-hidden />
       </span>
       <span className="grid content-start gap-0.5 px-3 pt-2.5 pb-3">
         <span className="font-display text-base leading-tight font-extrabold">{guestTileTitle(tile)}</span>

@@ -592,10 +592,21 @@ function QuestCard({
 }) {
   const theme = useAppTheme();
   const timed = tile.kind === 'quest' && tile.mode === 'timed';
-  const icon = tile.kind === 'assessment' ? 'pencil-outline' : timed ? 'timer-outline' : 'bullseye-arrow';
-  const band = tile.locked ? theme.tokens.muted : timed ? theme.tokens.warning : theme.tokens.primary;
+  // Locked: a big lock on a tinted band, so it reads at a glance and stands off the page.
+  const icon = tile.locked
+    ? 'lock'
+    : tile.kind === 'assessment'
+      ? 'pencil-outline'
+      : timed
+        ? 'timer-outline'
+        : 'bullseye-arrow';
+  const band = tile.locked
+    ? withAlpha(theme.tokens.primary, 0.15)
+    : timed
+      ? theme.tokens.warning
+      : theme.tokens.primary;
   const ink = tile.locked
-    ? theme.tokens.mutedForeground
+    ? theme.tokens.primary
     : timed
       ? theme.tokens.warningForeground
       : theme.tokens.primaryForeground;
@@ -617,22 +628,28 @@ function QuestCard({
         borderWidth: 1,
         borderRadius: radius.lg,
         overflow: 'hidden',
-        borderColor: pressed && !tile.locked ? theme.tokens.primary : theme.colors.outlineVariant,
+        borderColor: pressed ? theme.tokens.primary : theme.colors.outline,
         backgroundColor: theme.colors.surface,
-        opacity: tile.locked ? (pressed ? 0.6 : 0.75) : pressed ? 0.85 : 1,
+        opacity: pressed ? 0.85 : 1,
+        // Lift the card off the page: on a light page a card and the background are close.
+        shadowColor: theme.colors.shadow,
+        shadowOpacity: theme.dark ? 0 : 0.08,
+        shadowRadius: 6,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 2,
       })}
     >
       <View
         style={{ height: 56, backgroundColor: band, justifyContent: 'center', paddingHorizontal: space.md }}
       >
-        <Icon source={icon} size={28} color={ink} />
+        <Icon source={icon} size={tile.locked ? 34 : 28} color={ink} />
       </View>
       <View style={{ padding: space.md, gap: 2, minHeight: 84 }}>
         <Text
           variant="titleMedium"
           style={{
             fontWeight: '700',
-            color: tile.locked ? theme.tokens.mutedForeground : theme.colors.onSurface,
+            color: theme.colors.onSurface,
           }}
         >
           {title}
@@ -642,8 +659,8 @@ function QuestCard({
         </Text>
         {tile.locked ? (
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs, marginTop: space.xs }}>
-            <Icon source="lock-outline" size={14} color={theme.tokens.mutedForeground} />
-            <Text variant="labelMedium" style={{ color: theme.tokens.mutedForeground }}>
+            <Icon source="lock-outline" size={14} color={theme.tokens.primary} />
+            <Text variant="labelMedium" style={{ color: theme.tokens.primary, fontWeight: '700' }}>
               Free account
             </Text>
           </View>

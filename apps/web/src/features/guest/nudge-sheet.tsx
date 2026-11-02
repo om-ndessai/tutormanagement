@@ -83,7 +83,7 @@ export function NudgeSheet({
           ))}
         </ul>
         <DialogFooter className="flex-col gap-2 sm:flex-row">
-          <Button variant="outline" size="lg" onClick={onClose} data-testid="guest-nudge-close">
+          <Button variant="secondary" size="lg" className="border-foreground/15 border" onClick={onClose} data-testid="guest-nudge-close">
             {closeLabel}
           </Button>
           <Button size="lg" onClick={onSignUp} data-testid="guest-nudge-signup">
