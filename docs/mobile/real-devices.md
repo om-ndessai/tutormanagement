@@ -91,3 +91,24 @@ client (A4 below).
   ```sh
   cd apps/mobile && KEEP_PERSONAL=1 APPLE_TEAM_ID=<Personal Team ID> scripts/install-personal.sh <device UDID>
   ```
+
+## E. Every release: both apps on every device (owner, 2026-11-02)
+
+In a release (CLAUDE.md), each app goes out right after the Worker it talks to: the tutoring test Worker,
+**the test app** (step 4), the tutoring and tmi-portal prod Workers, then **the production app** (step 7).
+The same command is the weekly re-install:
+
+```sh
+npm run mobile:devices -- test       # step 4, after the test Worker
+npm run mobile:devices -- personal   # step 7, after both prod Workers
+npm run mobile:devices               # both (the weekly re-install)
+```
+
+`apps/mobile/scripts/install-devices.sh` builds each variant ONCE for any iOS device (the free team's
+profile carries every registered device): **Aimtrue** (`com.aimtrue.app.personal`, production) and
+**AimTrue-Test** (`com.aimtrue.app.test`, the demo). It then installs both on every physical device
+`xcrun devicectl list devices` knows, in parallel, each with a 300 s timeout and one retry, and prints
+one line per device and app. The Personal Team ID is read from `APPLE_TEAM_ID` in `.env.local`. A locked
+or unreachable device fails its line and the others carry on. Unlock it and re-run with only the app
+that failed, if needed.
+

@@ -172,17 +172,30 @@ asking —
    (Phase 49);
 2. commit and push to `main`, and tag the release `release-YYYYMMDD` (`git push --tags`): the
    compatibility test's next base. Raise `RELEASE_PHASE` (`packages/shared/src/release.ts`) with the
-   phase's code: the app prints it;
-3. refresh the demo: `npm run deploy:test`, and `npm run db:reset:test` when the schema changed.
-   `tutoring-test` is an open **feature demo** now, not a test target: `npm run e2e` (which wipes
-   it and reads ~2.3 M rows) runs only when the owner asks. `db:reset:test` refuses above a write
-   budget of 40,000 rows (`scripts/seed-budget.mjs`; the free plan writes 100,000 a day), then
-   `npm run seed:scenarios -- --base=https://tutoring-test.tmi-api.workers.dev --demo`;
-4. back up production (`wrangler d1 export tutoring-db --remote`), unless the owner waives it;
-5. apply the phase's additive schema block and check the new queries read-only against production.
-   Since Phase 49 every such block in `docs/database.md` is fenced ```` ```sql release=phase-NN ````:
-   that label is how `test:compat` finds what production still owes;
-6. `npm run deploy` (both production Workers), then smoke-test both addresses.
+   phase's code: the app prints it.
+
+Then deploy in this order (owner, 2026-11-02): **tutoring test Worker, test app, tutoring prod Worker,
+tmi-portal prod Worker, production app** -- each app goes out only after the Worker it talks to, so a
+new app never meets an old server:
+
+3. **the tutoring test Worker**, the demo: `npm run deploy:test`, and `npm run db:reset:test` when the
+   schema changed. `tutoring-test` is an open **feature demo** now, not a test target: `npm run e2e`
+   (which wipes it and reads ~2.3 M rows) runs only when the owner asks. `db:reset:test` refuses above a
+   write budget of 40,000 rows (`scripts/seed-budget.mjs`; the free plan writes 100,000 a day), then
+   `TEST_AUTOMATION_KEY="$(cat ~/.aimtrue/test-automation-key)" npm run seed:scenarios -- --base=https://tutoring-test.tmi-api.workers.dev --demo`;
+4. **the test app**, "AimTrue-Test" (pointed at the demo): `npm run mobile:devices -- test` builds it once
+   and installs it on every physical iPhone and iPad paired with this Mac, in parallel, one retry each.
+   Report per device; a device that is locked or off the network is reported, not waited for;
+5. back up production (`wrangler d1 export tutoring-db --remote`), unless the owner waives it, and apply
+   the phase's additive schema block, checking the new queries read-only against production. Since
+   Phase 49 every such block in `docs/database.md` is fenced ```` ```sql release=phase-NN ````: that
+   label is how `test:compat` finds what production still owes;
+6. **the tutoring prod Worker, then the tmi-portal prod Worker**: `npm run deploy` deploys `tutoring` and
+   then `tmi-portal`, back to back (never one alone, as they share a database); then smoke-test both
+   addresses;
+7. **the production app**, "Aimtrue" (the personal variant, pointed at `tutoring`):
+   `npm run mobile:devices -- personal`, the same way as step 4. Free-team installs expire after 7 days,
+   so `npm run mobile:devices` (both apps) is also the weekly re-install (`docs/mobile/real-devices.md`).
 
 Stop and report if any step fails. Outside an approved release, ask first.
 

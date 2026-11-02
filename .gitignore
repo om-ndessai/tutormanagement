@@ -26,3 +26,7 @@ scripts/migrate-tmi/out/
 
 # The backward-compatibility test's databases and logs (scripts/compat.sh).
 .compat/
+
+# Playwright run output
+e2e/test-results/
+e2e/playwright-report/
