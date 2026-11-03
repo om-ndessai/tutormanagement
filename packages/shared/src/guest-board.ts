@@ -144,3 +144,16 @@ export function guestTodaySet(pool: readonly GuestQuestion[], day: string, level
 
 /** Where Contact us goes (the address the portal already shows). */
 export const PLATFORM_CONTACT_EMAIL = 'om.ndessai@gmail.com';
+
+/** The band's checklist under the headline (owner, 2026-11-02). */
+export const GUEST_PROMISES = ['Free play', 'Grades 1–8', 'No account to start', 'No ads'] as const;
+
+/**
+ * The console's home bar beside the band's Sign up button: the words after "Sign up" ("free to save
+ * scores and unlock every quest."), or null when the line has no "Sign up" (then it is shown whole).
+ */
+export function homeBarAfterSignUp(line: string): string | null {
+  const at = line.search(/sign up/i);
+  if (at < 0) return null;
+  return line.slice(at + 'sign up'.length).trim() || null;
+}

@@ -11,6 +11,7 @@
 // cards on a phone, four (and the panels side by side) on a wide screen.
 import {
   GUEST_GRADES,
+  GUEST_PROMISES,
   GUEST_TODAY_SIZE,
   PLATFORM_CONTACT_EMAIL,
   guestBoard,
@@ -20,6 +21,7 @@ import {
   guestTileName,
   guestTileTitle,
   guestTodayLevel,
+  homeBarAfterSignUp,
   type GuestGrade,
   type GuestTile,
 } from '@tmi/shared';
@@ -62,13 +64,6 @@ export const GUEST_ANSWERS = [
       'Guests aren’t tracked: no account, no ads, and answers stay on this device. Children under 13 join through a parent’s account.',
   },
   { question: 'Which grades?', answer: 'Grades 1 to 8, with harder Adv quests for a stretch.' },
-] as const;
-
-/** The parents' panel's example: what a family space shows. Not anybody's figures. */
-const EXAMPLE_PROGRESS = [
-  { label: 'Place value', percent: 82 },
-  { label: 'Multiplication', percent: 66 },
-  { label: 'Fractions', percent: 41 },
 ] as const;
 
 /** What this phone remembers that the board shows, re-read whenever the board comes back into view. */
@@ -114,6 +109,7 @@ export function GuestHome() {
   const muted = { color: theme.tokens.mutedForeground };
   const gutter = { paddingHorizontal: space.lg };
   const onBand = theme.tokens.brand50;
+  const homeBar = homeBarAfterSignUp(guest.settings.home_bar);
 
   function chooseGrade(next: GuestGrade) {
     haptics.selection();
@@ -191,7 +187,10 @@ export function GuestHome() {
             </Svg>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-            <LogoMark size={36} />
+            {/* The mark on a light tile: on the band, the brand's own colour would vanish. */}
+            <View style={{ backgroundColor: onBand, borderRadius: radius.md, padding: 3 }}>
+              <LogoMark size={34} />
+            </View>
             <Text
               variant="titleMedium"
               style={{ flex: 1, fontWeight: '700', color: onBand }}
@@ -201,37 +200,78 @@ export function GuestHome() {
             </Text>
             <Pressable
               testID="guest-sign-in"
-              accessibilityRole="link"
+              accessibilityRole="button"
               onPress={() => router.push('/sign-in')}
-              style={{
-                minHeight: MIN_TARGET,
-                minWidth: MIN_TARGET,
+              hitSlop={4}
+              style={({ pressed }) => ({
+                minHeight: 40,
                 justifyContent: 'center',
-                paddingHorizontal: space.sm,
-              }}
+                paddingHorizontal: space.lg,
+                borderRadius: radius.pill,
+                borderWidth: 1.5,
+                borderColor: withAlpha(onBand, 0.7),
+                backgroundColor: pressed ? withAlpha(onBand, 0.12) : 'transparent',
+              })}
             >
               <Text variant="titleSmall" style={{ color: onBand, fontWeight: '600' }}>
                 Sign in
               </Text>
             </Pressable>
           </View>
-          <View style={{ gap: space.sm, marginTop: space.sm }}>
-            <Text
-              variant="headlineMedium"
-              accessibilityRole="header"
-              style={{ fontWeight: '800', color: onBand }}
-            >
-              {'Math quests. '}
-              <Text variant="headlineMedium" style={{ fontWeight: '800', color: theme.tokens.warning }}>
+          <View style={{ gap: space.md, marginTop: space.sm }}>
+            <View>
+              <Text variant="headlineLarge" accessibilityRole="header" style={{ fontWeight: '800', color: onBand }}>
+                Math quests.
+              </Text>
+              <Text variant="headlineLarge" style={{ fontWeight: '800', color: theme.tokens.warning }}>
                 Hit the target.
               </Text>
-            </Text>
-            <Text variant="bodyLarge" style={{ color: theme.tokens.brand200 }}>
-              Free for grades 1–8. No account to start, no ads ever.
-            </Text>
-            <Text testID="guest-home-bar" variant="bodySmall" style={{ color: theme.tokens.brand300 }}>
-              {guest.settings.home_bar}
-            </Text>
+            </View>
+            <View testID="guest-promises" style={{ flexDirection: 'row', flexWrap: 'wrap', rowGap: space.xs }}>
+              {GUEST_PROMISES.map((promise) => (
+                <View
+                  key={promise}
+                  style={{ width: '50%', flexDirection: 'row', alignItems: 'center', gap: space.xs }}
+                >
+                  <Icon source="check-bold" size={16} color={theme.tokens.warning} />
+                  <Text variant="bodyMedium" style={{ color: onBand, flexShrink: 1 }}>
+                    {promise}
+                  </Text>
+                </View>
+              ))}
+            </View>
+            <View
+              testID="guest-home-bar"
+              style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}
+            >
+              {homeBar !== null && signupOpen ? (
+                <>
+                  <Pressable
+                    testID="guest-band-signup"
+                    accessibilityRole="button"
+                    onPress={startAccount}
+                    style={({ pressed }) => ({
+                      minHeight: MIN_TARGET,
+                      justifyContent: 'center',
+                      paddingHorizontal: space.xl,
+                      borderRadius: radius.pill,
+                      backgroundColor: pressed ? withAlpha(onBand, 0.85) : onBand,
+                    })}
+                  >
+                    <Text variant="titleSmall" style={{ color: theme.tokens.brand900, fontWeight: '700' }}>
+                      Sign up
+                    </Text>
+                  </Pressable>
+                  <Text variant="bodyMedium" style={{ color: theme.tokens.brand200, flexShrink: 1 }}>
+                    {homeBar}
+                  </Text>
+                </>
+              ) : (
+                <Text variant="bodyMedium" style={{ color: theme.tokens.brand200 }}>
+                  {guest.settings.home_bar}
+                </Text>
+              )}
+            </View>
           </View>
         </View>
 
@@ -331,54 +371,7 @@ export function GuestHome() {
         </View>
 
         <View style={{ ...gutter, gap: space.md, flexDirection: wide ? 'row' : 'column' }}>
-          <PlayTogether />
-          <OutlinedCard
-            testID="guest-parents"
-            style={{ borderRadius: radius.lg, flex: wide ? 1 : undefined }}
-          >
-            <View style={{ padding: space.lg, gap: space.md }}>
-              <Text variant="titleSmall" accessibilityRole="header" style={{ fontWeight: '700' }}>
-                For parents · example
-              </Text>
-              {EXAMPLE_PROGRESS.map((row) => (
-                <View
-                  key={row.label}
-                  style={{ gap: space.xs }}
-                  accessible
-                  accessibilityLabel={`${row.label}, ${row.percent}%`}
-                >
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text variant="bodyMedium">{row.label}</Text>
-                    <Text variant="bodyMedium" style={muted}>{`${row.percent}%`}</Text>
-                  </View>
-                  <View
-                    style={{
-                      height: 8,
-                      borderRadius: radius.pill,
-                      backgroundColor: theme.tokens.muted,
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: `${row.percent}%`,
-                        height: '100%',
-                        backgroundColor: theme.tokens.primary,
-                      }}
-                    />
-                  </View>
-                </View>
-              ))}
-              <Button
-                testID="guest-parents-start"
-                mode="contained"
-                onPress={startAccount}
-                contentStyle={{ minHeight: 48 }}
-              >
-                {signupOpen ? 'Create a free family space' : 'Sign in'}
-              </Button>
-            </View>
-          </OutlinedCard>
+          <PlayTogether signupOpen={signupOpen} onStart={startAccount} />
         </View>
 
         <View style={{ ...gutter, gap: space.xs }}>
@@ -675,7 +668,7 @@ function QuestCard({
 }
 
 /** "Play together": what family games look like, an example. */
-function PlayTogether() {
+function PlayTogether({ signupOpen, onStart }: { signupOpen: boolean; onStart: () => void }) {
   const theme = useAppTheme();
   const { width } = useWindowDimensions();
   const people = [
@@ -685,7 +678,7 @@ function PlayTogether() {
   ];
   return (
     <OutlinedCard
-      testID="guest-together"
+      testID="guest-parents"
       style={{ borderRadius: radius.lg, flex: width >= 700 ? 1 : undefined }}
     >
       <View style={{ padding: space.lg, gap: space.md }}>
@@ -734,8 +727,11 @@ function PlayTogether() {
           </View>
         </View>
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          Family games with a free account. Example.
+          Family games with a free account. Example code.
         </Text>
+        <Button testID="guest-parents-start" mode="contained" onPress={onStart} contentStyle={{ minHeight: 48 }}>
+          {signupOpen ? 'Create a free family space' : 'Sign in'}
+        </Button>
       </View>
     </OutlinedCard>
   );

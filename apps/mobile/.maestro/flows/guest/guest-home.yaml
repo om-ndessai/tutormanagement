@@ -29,10 +29,12 @@ tags:
       id: screen-guest-home
     timeout: 30000
 - assertVisible:
-    id: guest-home-bar
-    text: 'Playing as a guest.*'
-- assertVisible: 'Math quests. Hit the target.'
-- assertVisible: 'Free for grades 1–8. No account to start, no ads ever.'
+    id: guest-band-signup
+    text: 'Sign up'
+- assertVisible: 'free to save scores and unlock every quest.'
+- assertVisible: 'Math quests.'
+- assertVisible: 'Hit the target.'
+- assertVisible: 'No account to start'
 - assertVisible:
     id: guest-sign-in
 - assertVisible:

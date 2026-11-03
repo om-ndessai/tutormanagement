@@ -73,9 +73,9 @@ beforeEach(() => {
 describe('GuestHome, the Quest board', () => {
   it('opens on Grade 4: the band, Today’s 5, its cards with masked words, the locked one the offer', async () => {
     await renderWithProviders(<GuestHome />);
-    expect(screen.getByTestId('guest-home-bar')).toHaveTextContent(mockGuest.settings.home_bar);
+    expect(screen.getByTestId('guest-home-bar')).toHaveTextContent(/Sign up.*free to save scores and unlock every quest\./);
     expect(screen.getByText('Hit the target.')).toBeTruthy();
-    expect(screen.getByText('Free for grades 1–8. No account to start, no ads ever.')).toBeTruthy();
+    for (const promise of ['Free play', 'Grades 1–8', 'No account to start', 'No ads']) expect(screen.getByText(promise)).toBeTruthy();
     expect(screen.getByTestId('guest-today')).toHaveTextContent(/Today’s 5 · Grade 4/);
     expect(screen.getByText('Five questions. Can you hit all five?')).toBeTruthy();
     expect(screen.getByTestId('guest-tile-G4Q5')).toHaveTextContent(/Quick 5/);
@@ -135,7 +135,8 @@ describe('GuestHome, the Quest board', () => {
   it('offers grown-ups a family space (Sign in while sign-up is closed), the answers and the footer', async () => {
     const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
     await renderWithProviders(<GuestHome />);
-    expect(screen.getByTestId('guest-parents')).toHaveTextContent(/Place value.*82%/);
+    expect(screen.getByTestId('guest-parents')).toHaveTextContent(/One code, everyone joins/);
+    expect(screen.queryByText(/Place value/)).toBeNull();
     await fireEvent.press(screen.getByTestId('guest-parents-start'));
     expect(mockPush).toHaveBeenCalledWith('/sign-up-sheet');
     expect(screen.queryByTestId('guest-answer-0-text')).toBeNull();

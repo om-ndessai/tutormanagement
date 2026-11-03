@@ -107,7 +107,8 @@ test.describe('guest play', () => {
     await page.goto('/');
     const home = page.getByTestId('guest-home');
     await expect(home).toBeVisible();
-    await expect(page.getByTestId('guest-home-bar')).toContainText('Playing as a guest');
+    await expect(page.getByTestId('guest-home-bar')).toContainText('free to save scores and unlock every quest');
+    await expect(page.getByTestId('guest-band-signup')).toHaveText('Sign up');
 
     // A locked tile offers an account.
     await home.getByTestId('guest-locked-G4T10').click();

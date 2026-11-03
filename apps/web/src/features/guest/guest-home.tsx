@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LockIcon, PencilLineIcon, PlayIcon, TargetIcon, TimerIcon } from 'lucide-react';
+import { CheckIcon, LockIcon, PencilLineIcon, PlayIcon, TargetIcon, TimerIcon } from 'lucide-react';
 import {
   GUEST_DEFAULT_GRADE,
   GUEST_GRADES,
+  GUEST_PROMISES,
   GUEST_TODAY_SIZE,
   PLATFORM_CONTACT_EMAIL,
   guestBoard,
@@ -14,6 +15,7 @@ import {
   guestTileName,
   guestTileTitle,
   guestTodayLevel,
+  homeBarAfterSignUp,
   type GuestTile,
   type QuestionBankLevelId,
 } from '@tmi/shared';
@@ -55,6 +57,7 @@ export function GuestHome() {
   const todayLevel = guestTodayLevel(tiles, grade);
   const signUp = () => setSigningUp(true);
   const signupOpen = config?.signup_open === true;
+  const homeBar = homeBarAfterSignUp(guest.settings.home_bar);
 
   function chooseGrade(next: number) {
     setGrade(next);
@@ -85,26 +88,51 @@ export function GuestHome() {
         </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-8">
           <header className="flex items-center gap-2.5 py-3 text-white">
-            <LogoMark onDark className="size-8" />
+            {/* The mark on a white tile: on the band, the brand's own colour would vanish. */}
+            <span className="text-brand-800 grid size-10 place-items-center rounded-xl bg-white shadow-sm">
+              <LogoMark onDark className="size-8" />
+            </span>
             <span className="font-display text-lg font-extrabold">{brand.short}</span>
             <button
               type="button"
               onClick={signUp}
-              className="ml-auto min-h-11 px-2 text-sm font-semibold underline-offset-4 hover:underline"
+              className="ml-auto inline-flex h-10 items-center rounded-full border border-white/70 px-4 text-sm font-semibold transition-colors hover:bg-white/10"
               data-testid="guest-sign-in"
             >
               Sign in
             </button>
           </header>
           <div className="grid gap-5 pt-3 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-10 lg:pt-6 lg:pb-12">
-            <div className="grid gap-3 text-white">
-              <h1 className="font-display text-[2rem] leading-[1.08] font-black sm:text-5xl">
-                Math quests. <span className="text-warning">Hit the target.</span>
+            <div className="grid gap-4 text-white">
+              <h1 className="font-display text-[2.25rem] leading-[1.05] font-black sm:text-5xl">
+                <span className="block">Math quests.</span>
+                <span className="text-warning block">Hit the target.</span>
               </h1>
-              <p className="text-white/85">Free for grades 1–8. No account to start, no ads ever.</p>
-              <p className="text-xs text-white/70" data-testid="guest-home-bar">
-                {guest.settings.home_bar}
-              </p>
+              <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[15px] sm:w-fit" aria-label="What you get">
+                {GUEST_PROMISES.map((promise) => (
+                  <li key={promise} className="flex items-center gap-2">
+                    <CheckIcon className="text-warning size-4 flex-none" strokeWidth={3} aria-hidden />
+                    {promise}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2" data-testid="guest-home-bar">
+                {homeBar !== null && signupOpen ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={signUp}
+                      className="text-brand-900 inline-flex h-10 items-center rounded-full bg-white px-5 text-sm font-bold shadow-sm transition-colors hover:bg-white/90"
+                      data-testid="guest-band-signup"
+                    >
+                      Sign up
+                    </button>
+                    <span className="text-sm text-white/85">{homeBar}</span>
+                  </>
+                ) : (
+                  <span className="text-sm text-white/85">{guest.settings.home_bar}</span>
+                )}
+              </div>
             </div>
             {todayLevel && (
               <TodayCard
@@ -165,10 +193,14 @@ export function GuestHome() {
           )}
         </section>
 
-        <section className="mt-4 grid gap-4 md:grid-cols-2" aria-label="For grown-ups">
-          <div className="bg-muted/60 grid content-start gap-2.5 rounded-2xl p-5">
+        <section
+          className="bg-muted/60 border-foreground/10 mt-4 grid gap-4 rounded-2xl border p-5 md:grid-cols-[1fr_auto] md:items-center"
+          aria-label="Play together"
+          data-testid="guest-parents"
+        >
+          <div className="grid gap-2.5">
             <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">Play together</span>
-            <h3 className="font-display text-xl font-black">One code, everyone joins</h3>
+            <h2 className="font-display text-xl font-black">One code, everyone joins</h2>
             <div className="flex items-center gap-3">
               <kbd className="font-display bg-card rounded-xl border px-3 py-2 text-2xl font-extrabold tracking-[0.12em]">QF7K2M</kbd>
               <span className="flex" aria-hidden>
@@ -190,31 +222,11 @@ export function GuestHome() {
                 ))}
               </span>
             </div>
-            <p className="text-muted-foreground text-sm">Family games with a free account. Example.</p>
+            <p className="text-muted-foreground text-sm">Family games with a free account. Example code.</p>
           </div>
-          <div className="bg-card grid content-start gap-3 rounded-2xl border p-5" data-testid="guest-parents">
-            <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">For parents · example</span>
-            <div className="grid gap-2">
-              {(
-                [
-                  ['Place value', 82],
-                  ['Multiplication', 66],
-                  ['Fractions', 41],
-                ] as const
-              ).map(([topic, percent]) => (
-                <div key={topic} className="grid grid-cols-[7rem_minmax(0,1fr)_2.5rem] items-center gap-2 text-sm">
-                  <span>{topic}</span>
-                  <span className="bg-muted h-2.5 overflow-hidden rounded-full">
-                    <span className="bg-primary block h-full rounded-full" style={{ width: `${percent}%` }} />
-                  </span>
-                  <span className="text-muted-foreground text-right tabular-nums">{percent}%</span>
-                </div>
-              ))}
-            </div>
-            <Button size="lg" className="mt-1 w-full sm:w-fit" onClick={signUp} data-testid="guest-family-space">
-              {signupOpen ? 'Create a free family space' : 'Sign in'}
-            </Button>
-          </div>
+          <Button size="lg" className="w-full md:w-fit" onClick={signUp} data-testid="guest-family-space">
+            {signupOpen ? 'Create a free family space' : 'Sign in'}
+          </Button>
         </section>
 
         <section className="grid gap-2" aria-labelledby="guest-faq">
