@@ -694,4 +694,16 @@ requirements P1-P20.
   admins keep, in both databases) or Post-approved (a sign-up waits for a platform admin's approval;
   pending and declined accounts are told so). Only self sign-ups are gated. The test Worker's own list moves
   into it. Plan: `docs/access-approval-plan.md`, requirements A1-A9.
+- **Phase 66 — one home, one Next up.** One member home for every role on the web and in the app, built from the
+  same blocks (a band with the week strip, ONE Next up card chosen by a fixed priority, quick actions, sections)
+  instead of five layouts; the tutor's Record it now on the web, prefilled from the schedule; lessons never
+  recorded flagged; one merged home for people with several roles. Plan: `docs/member-home-plan.md`, H1-H4, H9,
+  H11. Built on the branch `member-home-stickiness`; test deploys after each phase, production after the owner.
+- **Phase 67 — coloured tiles.** Level tiles in one hue per grade with human titles and icons, Today's 5 rings,
+  the grade row and week dots from the guest home; welcome back; personal spaces with NC 2026 and Beast Academy so
+  a guest's grade and tiles carry over. H5-H8.
+- **Phase 68 — focus and families.** "Make this my home", the home led by how a person arrived (Quest or
+  Assessment), the parent's per-child strip, Play with <child>, Practise before the lesson. H4, H10.
+- **Phase 69 — stickiness, measured.** One visit row per person a day and the console's Stickiness page (weekly
+  actives, days per week, cohort retention by role, space and arrival). H12.
 
