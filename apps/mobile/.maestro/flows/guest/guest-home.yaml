@@ -30,8 +30,10 @@ tags:
     timeout: 30000
 - assertVisible:
     id: guest-band-signup
-    text: 'Sign up'
-- assertVisible: 'free to save scores and unlock every quest.'
+    text: 'Sign up free'
+- assertVisible:
+    id: guest-home-bar
+    text: 'Save your scores and unlock every quest.'
 - assertVisible: 'Math quests.'
 - assertVisible: 'Hit the target.'
 - assertVisible: 'No account to start'

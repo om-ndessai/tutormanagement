@@ -21,7 +21,6 @@ import {
   guestTileName,
   guestTileTitle,
   guestTodayLevel,
-  homeBarAfterSignUp,
   type GuestGrade,
   type GuestTile,
 } from '@tmi/shared';
@@ -109,7 +108,6 @@ export function GuestHome() {
   const muted = { color: theme.tokens.mutedForeground };
   const gutter = { paddingHorizontal: space.lg };
   const onBand = theme.tokens.brand50;
-  const homeBar = homeBarAfterSignUp(guest.settings.home_bar);
 
   function chooseGrade(next: GuestGrade) {
     haptics.selection();
@@ -240,37 +238,27 @@ export function GuestHome() {
                 </View>
               ))}
             </View>
-            <View
-              testID="guest-home-bar"
-              style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}
-            >
-              {homeBar !== null && signupOpen ? (
-                <>
-                  <Pressable
-                    testID="guest-band-signup"
-                    accessibilityRole="button"
-                    onPress={startAccount}
-                    style={({ pressed }) => ({
-                      minHeight: MIN_TARGET,
-                      justifyContent: 'center',
-                      paddingHorizontal: space.xl,
-                      borderRadius: radius.pill,
-                      backgroundColor: pressed ? withAlpha(onBand, 0.85) : onBand,
-                    })}
-                  >
-                    <Text variant="titleSmall" style={{ color: theme.tokens.brand900, fontWeight: '700' }}>
-                      Sign up
-                    </Text>
-                  </Pressable>
-                  <Text variant="bodyMedium" style={{ color: theme.tokens.brand200, flexShrink: 1 }}>
-                    {homeBar}
-                  </Text>
-                </>
-              ) : (
-                <Text variant="bodyMedium" style={{ color: theme.tokens.brand200 }}>
-                  {guest.settings.home_bar}
+            {/* A whole button, then the console's home bar as its own line. */}
+            <View style={{ gap: space.sm, alignItems: 'flex-start' }}>
+              <Pressable
+                testID="guest-band-signup"
+                accessibilityRole="button"
+                onPress={startAccount}
+                style={({ pressed }) => ({
+                  minHeight: MIN_TARGET,
+                  justifyContent: 'center',
+                  paddingHorizontal: space.xl,
+                  borderRadius: radius.pill,
+                  backgroundColor: pressed ? withAlpha(onBand, 0.85) : onBand,
+                })}
+              >
+                <Text variant="titleSmall" style={{ color: theme.tokens.brand900, fontWeight: '700' }}>
+                  {signupOpen ? 'Sign up free' : 'Sign in'}
                 </Text>
-              )}
+              </Pressable>
+              <Text testID="guest-home-bar" variant="bodyMedium" style={{ color: theme.tokens.brand200 }}>
+                {guest.settings.home_bar}
+              </Text>
             </View>
           </View>
         </View>
@@ -447,6 +435,7 @@ function TodayCard({
   onPlay: () => void;
 }) {
   const theme = useAppTheme();
+  const { width } = useWindowDimensions();
   const hits = played?.hits.filter(Boolean).length ?? 0;
   return (
     <OutlinedCard testID="guest-today" style={{ borderRadius: radius.lg }}>
@@ -491,7 +480,9 @@ function TodayCard({
           textColor={theme.tokens.warningForeground}
           icon={played ? 'replay' : 'bullseye-arrow'}
           onPress={onPlay}
-          contentStyle={{ minHeight: 48 }}
+          // Full width on a phone; its own width on a tablet, where a full-width button reads as a bar.
+          style={{ alignSelf: width >= 700 ? 'flex-start' : 'stretch' }}
+          contentStyle={{ minHeight: 48, paddingHorizontal: width >= 700 ? space.lg : 0 }}
           labelStyle={{ fontWeight: '700' }}
         >
           {played ? 'Play again' : 'Play today’s 5'}
@@ -729,7 +720,13 @@ function PlayTogether({ signupOpen, onStart }: { signupOpen: boolean; onStart: (
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
           Family games with a free account. Example code.
         </Text>
-        <Button testID="guest-parents-start" mode="contained" onPress={onStart} contentStyle={{ minHeight: 48 }}>
+        <Button
+          testID="guest-parents-start"
+          mode="contained"
+          onPress={onStart}
+          style={{ alignSelf: width >= 700 ? 'flex-start' : 'stretch' }}
+          contentStyle={{ minHeight: 48, paddingHorizontal: width >= 700 ? space.lg : 0 }}
+        >
           {signupOpen ? 'Create a free family space' : 'Sign in'}
         </Button>
       </View>

@@ -21,7 +21,7 @@ const DEFAULTS = {
   nudge_cooldown_hours: 24,
   nudge_right: 'Nice! That one is right.',
   nudge_wrong: 'Good try. Keep going!',
-  home_bar: 'Playing as a guest. Sign up free to save scores and unlock every quest.',
+  home_bar: 'Save your scores and unlock every quest.',
 };
 
 /** Guest play off, then every level's pool emptied: switching guest play on fills each open level's. */
@@ -107,8 +107,8 @@ test.describe('guest play', () => {
     await page.goto('/');
     const home = page.getByTestId('guest-home');
     await expect(home).toBeVisible();
-    await expect(page.getByTestId('guest-home-bar')).toContainText('free to save scores and unlock every quest');
-    await expect(page.getByTestId('guest-band-signup')).toHaveText('Sign up');
+    await expect(page.getByTestId('guest-home-bar')).toHaveText('Save your scores and unlock every quest.');
+    await expect(page.getByTestId('guest-band-signup')).toHaveText('Sign up free');
 
     // A locked tile offers an account.
     await home.getByTestId('guest-locked-G4T10').click();

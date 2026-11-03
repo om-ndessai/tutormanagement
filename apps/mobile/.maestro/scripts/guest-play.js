@@ -19,7 +19,7 @@ var DEFAULTS = {
   nudge_cooldown_hours: 24,
   nudge_right: 'Nice! That one is right.',
   nudge_wrong: 'Good try. Keep going!',
-  home_bar: 'Playing as a guest. Sign up free to save scores and unlock every quest.',
+  home_bar: 'Save your scores and unlock every quest.',
 };
 
 function call(method, path, body) {

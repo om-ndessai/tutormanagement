@@ -45,7 +45,7 @@ const mockGuest: GuestConfig = {
     nudge_cooldown_hours: 24,
     nudge_right: 'Nice!',
     nudge_wrong: 'Good try.',
-    home_bar: 'Playing as a guest. Sign up free to save scores and unlock every quest.',
+    home_bar: 'Save your scores and unlock every quest.',
   },
   tiles: [
     tile('G3Q5', 'NC26.3', false, 'Grade 3 · 5 questions'),
@@ -73,7 +73,8 @@ beforeEach(() => {
 describe('GuestHome, the Quest board', () => {
   it('opens on Grade 4: the band, Today’s 5, its cards with masked words, the locked one the offer', async () => {
     await renderWithProviders(<GuestHome />);
-    expect(screen.getByTestId('guest-home-bar')).toHaveTextContent(/Sign up.*free to save scores and unlock every quest\./);
+    expect(screen.getByTestId('guest-home-bar')).toHaveTextContent('Save your scores and unlock every quest.');
+    expect(screen.getByTestId('guest-band-signup')).toHaveTextContent('Sign up free');
     expect(screen.getByText('Hit the target.')).toBeTruthy();
     for (const promise of ['Free play', 'Grades 1–8', 'No account to start', 'No ads']) expect(screen.getByText(promise)).toBeTruthy();
     expect(screen.getByTestId('guest-today')).toHaveTextContent(/Today’s 5 · Grade 4/);

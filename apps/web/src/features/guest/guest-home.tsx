@@ -15,7 +15,6 @@ import {
   guestTileName,
   guestTileTitle,
   guestTodayLevel,
-  homeBarAfterSignUp,
   type GuestTile,
   type QuestionBankLevelId,
 } from '@tmi/shared';
@@ -57,7 +56,6 @@ export function GuestHome() {
   const todayLevel = guestTodayLevel(tiles, grade);
   const signUp = () => setSigningUp(true);
   const signupOpen = config?.signup_open === true;
-  const homeBar = homeBarAfterSignUp(guest.settings.home_bar);
 
   function chooseGrade(next: number) {
     setGrade(next);
@@ -116,22 +114,19 @@ export function GuestHome() {
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2" data-testid="guest-home-bar">
-                {homeBar !== null && signupOpen ? (
-                  <>
-                    <button
-                      type="button"
-                      onClick={signUp}
-                      className="text-brand-900 inline-flex h-10 items-center rounded-full bg-white px-5 text-sm font-bold shadow-sm transition-colors hover:bg-white/90"
-                      data-testid="guest-band-signup"
-                    >
-                      Sign up
-                    </button>
-                    <span className="text-sm text-white/85">{homeBar}</span>
-                  </>
-                ) : (
-                  <span className="text-sm text-white/85">{guest.settings.home_bar}</span>
-                )}
+              {/* A whole button, then the console's home bar as its own line. */}
+              <div className="grid justify-items-start gap-2">
+                <button
+                  type="button"
+                  onClick={signUp}
+                  className="text-brand-900 inline-flex h-11 items-center rounded-full bg-white px-6 text-[15px] font-bold shadow-sm transition-colors hover:bg-white/90"
+                  data-testid="guest-band-signup"
+                >
+                  {signupOpen ? 'Sign up free' : 'Sign in'}
+                </button>
+                <p className="text-sm text-white/80" data-testid="guest-home-bar">
+                  {guest.settings.home_bar}
+                </p>
               </div>
             </div>
             {todayLevel && (
