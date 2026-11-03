@@ -128,9 +128,12 @@
 		"DEFAULT_ORGANIZATION": "tmi",
 		// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 		"SIGNUP_OPEN": "false",
+		// The institute's address never takes sign-ups, whatever the console says (owner, 2026-11-02);
+		// elsewhere "true", and the console's sign-in setting decides.
+		"SIGNUP_ALLOWED": "false",
 
 		// Phase 63 (P10): whether this address may offer guest play (the console switch must be on too).
-
+		// Never here (owner, 2026-11-02).
 		"GUEST_PLAY": "false",
 
 		// Phase 55 (docs/social-login-plan.md): the ways to sign in, a comma list of google,
@@ -244,6 +247,7 @@
 				"DEFAULT_ORGANIZATION": "",
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "false",
+				"SIGNUP_ALLOWED": "true",
 				// Phase 63 (P10): whether this address may offer guest play (the console switch must be on too).
 				"GUEST_PLAY": "true",
 				// Phase 55: restated; see the top-level block.
@@ -312,6 +316,7 @@
 				"DEFAULT_ORGANIZATION": "",
 				// Phase 52: whether a stranger may sign up. Off in production until the owner approves the terms.
 				"SIGNUP_OPEN": "true",
+				"SIGNUP_ALLOWED": "true",
 				// Phase 63 (P10): whether this address may offer guest play (the console switch must be on too).
 				"GUEST_PLAY": "true",
 				// Phase 55: restated. Phase 62 (owner, 2026-11-01): the web portal offers Google alone, and

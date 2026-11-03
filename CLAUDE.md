@@ -341,7 +341,9 @@ code is on. A student added in a self-serve space needs the adult's consent (`pa
 account. Routes before a space sit outside `requireOrg` (`routes/spaces.ts`), like the invitation routes (R21).
 **Sign-up is behind a switch:** `SIGNUP_OPEN` in each Worker's `vars` -- "false" on the production pair
 until the owner approves the terms and privacy wording (then `LEGAL_DRAFT` goes false too), "true" on
-the demo and in `.dev.vars`. Closed, an unknown Google account is refused as before and
+the demo and in `.dev.vars`. **`tmi-portal` never takes sign-ups and never offers guest play** (owner,
+2026-11-02): its `SIGNUP_ALLOWED` and `GUEST_PLAY` are "false", which no console setting overrides
+(`signInFor`, `guestPlayOn`). Everywhere else (`tutoring`, the demo, both apps) the console decides. Closed, an unknown Google account is refused as before and
 `POST /api/auth/signup` answers 403; `/api/auth/config` reports `signup_open`.
 
 **One word on screen: space** (Phase 59, `docs/spaces-plan.md`, S1). What a person reads -- the web,

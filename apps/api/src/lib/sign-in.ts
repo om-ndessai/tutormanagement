@@ -32,9 +32,14 @@ export interface ClientSignIn extends EffectiveSignIn {
   offered: AuthProvider[];
 }
 
-/** What one client is offered now: the console's setting while it is in force, else the vars. */
+/**
+ * What one client is offered now: the console's setting while it is in force, else the vars. An address
+ * that never takes sign-ups (SIGNUP_ALLOWED "false", `tmi-portal`) stays closed whatever the console says,
+ * as GUEST_PLAY keeps guest play off there: the console runs the platform, the deploy decides the address.
+ */
 export async function signInFor(env: Env, client: SignInClient, now = new Date()): Promise<ClientSignIn> {
   const settings = await getSignInSettings(env.DB, now.getTime());
   const effective = effectiveSignIn(signInDefaults(env), settings, client, now);
-  return { ...effective, offered: offeredProviders(env, effective.providers) };
+  const signup_open = effective.signup_open && env.SIGNUP_ALLOWED !== 'false';
+  return { ...effective, signup_open, offered: offeredProviders(env, effective.providers) };
 }

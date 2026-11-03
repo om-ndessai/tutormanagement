@@ -35,6 +35,11 @@ export interface Env {
   DEFAULT_ORGANIZATION?: string;
   /** Phase 52: "false" keeps sign-up closed (production, until the owner approves the terms). */
   SIGNUP_OPEN?: string;
+  /**
+   * "false" at an address that never takes sign-ups, whatever the console says (`tmi-portal`, owner
+   * 2026-11-02). Anything else: the console's setting, else SIGNUP_OPEN, decides.
+   */
+  SIGNUP_ALLOWED?: string;
   /** Phase 53: "true" on the test Worker only -- sign-in admits only the people on invited_users. */
   SIGNIN_ALLOWLIST?: string;
   /**

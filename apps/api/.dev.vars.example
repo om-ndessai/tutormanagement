@@ -20,6 +20,8 @@ AI_PROVIDER=fake
 
 # Phase 52: sign-up is open locally (production keeps it closed until the terms are approved).
 SIGNUP_OPEN=true
+# This address may take sign-ups (wrangler.jsonc's top level is tmi-portal's, which never does).
+SIGNUP_ALLOWED=true
 # Phase 55: every provider offered locally, through the suite's fake tokens (never in production).
 AUTH_PROVIDERS=google,microsoft,apple,facebook
 AUTH_FAKE_PROVIDERS=true
