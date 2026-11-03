@@ -12,7 +12,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { ChildCard } from './child-card';
 import { CHILD_HORIZON_DAYS, nextLessonFor } from './home-model';
-import { TodayCard, useToday } from './home-top';
+import { ScheduleTodayCard, useToday } from './home-top';
 import { ReflectionPrompts } from './reflections';
 import { SessionList } from './session-list';
 
@@ -70,7 +70,7 @@ export function StudentView({
   const today = useToday({ who: 'tutor', studentIds: [studentId], horizonDays: CHILD_HORIZON_DAYS });
   return (
     <View testID="dashboard-student" style={{ gap: space.lg }}>
-      <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />
+      <ScheduleTodayCard summary={today.summary} pending={today.pending} failed={today.failed} />
       <FigureRow
         tourId="dash-my-stats"
         figures={[

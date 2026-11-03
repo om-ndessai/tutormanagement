@@ -103,7 +103,7 @@ test.describe('landing in the last space chosen (S4, S5)', () => {
   test('one space and nothing pending: no selector, straight in; the switcher still offers All spaces', async ({ as }) => {
     const maria = await as('parentTutor', { org: null });
     await maria.goto('/');
-    await expect(maria.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(maria.getByTestId('member-home')).toBeVisible();
     await expect(maria).not.toHaveURL(/\/spaces/);
     await maria.getByTestId('org-switcher').filter({ visible: true }).first().click();
     await maria.getByRole('menuitem', { name: 'All spaces' }).click();

@@ -17,5 +17,5 @@ appId: ${APP_ID}
     id: feature-unavailable-home
 - extendedWaitUntil:
     visible:
-      id: space-home
+      id: home-band
     timeout: 15000

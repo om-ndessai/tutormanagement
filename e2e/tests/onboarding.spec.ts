@@ -56,11 +56,11 @@ test.describe('the welcome wizard', () => {
       const tour = page.getByTestId('tour');
       await expect(tour).toBeVisible();
       await expect(tour.getByRole('heading', { name: 'Your children' })).toBeVisible();
-      await expect(page.locator('[data-tour-active]')).toHaveAttribute('data-tour', 'dash-children');
+      await expect(page.locator('[data-tour-active]')).toHaveAttribute('data-tour', 'home-section-parent');
 
       // Through to the end; menu items are lit where they are.
       await tour.getByRole('button', { name: 'Next' }).click();
-      await expect(page.locator('[data-tour-active]')).toHaveAttribute('data-tour', /^(dash-|nav-)/);
+      await expect(page.locator('[data-tour-active]')).toHaveAttribute('data-tour', /^(home-|nav-)/);
       while (await tour.getByRole('button', { name: 'Next' }).count()) {
         await tour.getByRole('button', { name: 'Next' }).click();
       }
@@ -84,7 +84,7 @@ test.describe('the welcome wizard', () => {
 
       // It does not open again, and the person has been through it.
       await page.reload();
-      await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+      await expect(page.getByTestId('member-home')).toBeVisible();
       await expect(wizard(page)).toHaveCount(0);
       expect((await session(page)).onboarding.tour_finished_at).not.toBeNull();
     } finally {
@@ -116,7 +116,7 @@ test.describe('the welcome wizard', () => {
       expect(log.map((event) => event.description)).toContain('Confirmed their details are correct');
 
       await page.reload();
-      await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+      await expect(page.getByTestId('member-home')).toBeVisible();
       await expect(wizard(page)).toHaveCount(0);
     } finally {
       await admin.request.delete(`/api/users/${parent.id}?hard=true`);
@@ -133,7 +133,7 @@ test.describe('the welcome wizard', () => {
 
     await offer.getByRole('button', { name: 'No thanks' }).click();
     await alex.reload();
-    await expect(alex.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(alex.getByTestId('member-home')).toBeVisible();
     await expect(alex.getByRole('dialog', { name: 'New here on this device?' })).toHaveCount(0);
   });
 
@@ -285,9 +285,9 @@ test.describe('the welcome wizard', () => {
 
       await wizard(page).getByRole('button', { name: 'Take the tour' }).click();
       const tour = page.getByTestId('tour');
-      // Past the dashboard's own sections to the first menu item.
+      // Past the home's own blocks to the first menu item.
       const lit = page.locator('[data-tour-active]');
-      for (let current = await lit.getAttribute('data-tour'); current?.startsWith('dash-'); ) {
+      for (let current = await lit.getAttribute('data-tour'); current?.startsWith('home-'); ) {
         await tour.getByRole('button', { name: 'Next' }).click();
         await expect(lit).not.toHaveAttribute('data-tour', current);
         current = await lit.getAttribute('data-tour');

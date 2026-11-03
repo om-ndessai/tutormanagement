@@ -19,7 +19,7 @@ import { PaymentList } from './finance-views';
 import { ChildCard } from './child-card';
 import { DirectBalancesPanel, directTotals } from './direct-balances';
 import { CHILD_HORIZON_DAYS, nextLessonFor } from './home-model';
-import { TodayCard, useToday } from './home-top';
+import { ScheduleTodayCard, useToday } from './home-top';
 import { ReflectionPrompts } from './reflections';
 import { SessionList } from './session-list';
 
@@ -96,7 +96,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
     <View testID="dashboard-parent" style={{ gap: space.lg }}>
       {/* The family's balances, with no Tutoring/Finance split to keep them off screen (ux-audit F-1). */}
       <SecureMoney tag="parent-dashboard" />
-      <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />
+      <ScheduleTodayCard summary={today.summary} pending={today.pending} failed={today.failed} />
       <FigureRow
         figures={[
           { label: 'Children', value: data.children.length },

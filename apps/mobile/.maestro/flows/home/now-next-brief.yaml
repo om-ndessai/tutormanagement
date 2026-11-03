@@ -1,5 +1,5 @@
-# The tutor's Now card (Phase 43), the next lesson (mockups 1 and 2): Alex's next lesson is with
-# Sofia, at his room. The card greets him by the part of the day and says when it is ("Sofia's lesson
+# The tutor's Now card (Phase 43; Next up's card since Phase 66), the next lesson (mockups 1 and 2): Alex's
+# next lesson is with Sofia, at his room. The card says when it is ("Sofia's lesson
 # is today at …, in …" / "tomorrow at …"), with Directions to the place (it is not 15 minutes away,
 # so See the plan, not Start). Under it the brief: the homework set last time, where, the next topic
 # on the plan, and the last lesson's assessment notes -- hidden until he taps Tap to show. Directions
@@ -27,14 +27,17 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: home-now-next
+      id: home-band
     timeout: 30000
+# Phase 66: his next lesson is Next up, as the Now card (the band greets him; the card does not).
+- extendedWaitUntil:
+    visible:
+      id: next-up-lesson_next
+    timeout: 15000
 - assertVisible:
-    id: home-now-greeting
-    text: 'Good (morning|afternoon|evening), Alex'
-# The card's greeting stands in for the heading's: never twice on one screen.
+    id: home-now-next
 - assertNotVisible:
-    id: home-greeting
+    id: home-now-greeting
 - assertVisible:
     id: home-now-headline
     text: "Sofia's lesson is (today at .*, in .*|tomorrow at .*)"
@@ -47,10 +50,12 @@ tags:
     id: home-now-chip-homework
 - assertVisible:
     id: home-now-directions
+# Not 15 minutes away: See the plan is Next up's action, not Start (and no Later yet).
 - assertVisible:
-    id: home-now-plan
+    id: next-up-action
+    text: '.*See the plan.*'
 - assertNotVisible:
-    id: home-now-start
+    id: next-up-later
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: home-now-next
 # The brief.

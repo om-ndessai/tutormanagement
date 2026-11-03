@@ -19,9 +19,14 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
-# Phase 43: the Now card and the brief lead the Tutoring tab.
+# Phase 66: Finish write-up is on the dashboard's Tutoring tab (More → Dashboard).
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 20000
 - scrollUntilVisible:
     element:
       id: dashboard-section-tutoring-sessions

@@ -19,6 +19,7 @@ import { ProgressPage } from '@/features/progress/progress-page';
 import { ProgressReportPage } from '@/features/progress/progress-report-page';
 import { StudentProgressPage } from '@/features/progress/student-progress-page';
 import { DashboardPage } from '@/pages/dashboard-page';
+import { MemberHomePage } from '@/features/home/member-home';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { OrganizationSettingsPage } from '@/features/organizations/organization-settings-page';
 import { RequireOrg } from '@/features/organizations/require-org';
@@ -103,7 +104,7 @@ export function App() {
             element={
               <>
                 <QuestLanding />
-                <DashboardPage />
+                <MemberHomePage />
               </>
             }
           />

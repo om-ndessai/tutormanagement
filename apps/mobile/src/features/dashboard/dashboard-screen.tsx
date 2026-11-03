@@ -1,7 +1,8 @@
 // Ported from apps/web/src/pages/dashboard-page.tsx @ 1132322: one route, four dashboards, with the
-// role selector and the admin's "view as" kept in Home's params as the web keeps them in the URL.
+// role selector and the admin's "view as" kept in the screen's params as the web keeps them in the URL.
+// Phase 66: this is More → Dashboard (`/analytics`); Home is the member home (features/home).
 import { useQueryClient } from '@tanstack/react-query';
-import { USER_ROLES, featureOn, type UserRole } from '@tmi/shared';
+import { USER_ROLES, type UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
@@ -12,13 +13,7 @@ import { IconButton } from '@/components/icon-button';
 import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { DashboardSkeleton } from '@/components/skeletons';
-import { TutoringFinanceTabs, useTutoringFinanceTab } from '@/components/tutoring-finance-tabs';
-import { TutorNow, useNowState } from '@/features/home/tutor-now';
-import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
-import { InvitationBanner } from '@/features/organizations/invitation-banner';
-import { PlayFavorites, PlayHome, WaitingForYou } from '@/features/play/play-home';
-import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
-import { useTourScroller } from '@/features/onboarding/tour-targets';
+import { TutoringFinanceTabs } from '@/components/tutoring-finance-tabs';
 import { AccountButton } from '@/features/shell/account-button';
 import { SearchButton } from '@/features/shell/search-button';
 import { useAuth } from '@/providers/auth-provider';
@@ -26,8 +21,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { useDashboard } from './api';
 import { AdminFinance, TutorFinance } from './finance-views';
 import { ParentView } from './parent-balance-view';
-import { publishHomeRole, onHomeRoleChosen } from './home-role';
-import { Greeting, TodayCard, useToday, type TodayScope } from './home-top';
+import { ScheduleTodayCard, useToday, type TodayScope } from './home-top';
 import { RoleSelector } from './role-selector';
 import { StudentView } from './student-view';
 import { AdminTutoring, TutorTutoring } from './tutoring-views';
@@ -63,14 +57,15 @@ function HeaderActions({ isAdmin, viewingId }: { isAdmin: boolean; viewingId: st
 }
 
 /**
- * Home: whose dashboard, then the dashboard. Which role is the server's choice unless one is asked
- * for (`?role=`), made the same way as the web (`defaultDashboardRole`: admin, then tutor, then
- * parent, then student) -- so someone who tutors and parents lands on the tutor's. An admin may
- * look at anybody's (`?as=`); for anyone else the param is ignored, so the app never asks the
- * server for somebody else's dashboard on their behalf.
+ * The Dashboard page (More → Dashboard; Phase 66 moved it off Home): whose dashboard, then the dashboard,
+ * with Analytics first and Recent Activity last, and the Finance tab. Which role is the server's choice
+ * unless one is asked for (`?role=`), made the same way as the web (`defaultDashboardRole`: admin, then
+ * tutor, then parent, then student); the reader's roles are chips here, as the web's role picker. An
+ * admin may look at anybody's (`?as=`, the eye); for anyone else the param is ignored, so the app never
+ * asks the server for somebody else's dashboard on their behalf.
  */
 export function DashboardScreen() {
-  const { user, organization } = useAuth();
+  const { user } = useAuth();
   const theme = useAppTheme();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
@@ -100,41 +95,6 @@ export function DashboardScreen() {
   const subject = response?.subject;
   const viewingOther = Boolean(viewingId && subject?.viewing_as_other);
 
-  // The welcome wizard waits for this: never while viewing somebody else, and a tour that matches
-  // the dashboard on screen (#34).
-  const onboarding = useOptionalOnboarding();
-  const reportDashboard = onboarding?.reportDashboard;
-  const shownRole = response?.role ?? null;
-  useEffect(() => {
-    reportDashboard?.({ role: viewingId ? null : shownRole, viewingAs: Boolean(viewingId) });
-  }, [reportDashboard, shownRole, viewingId]);
-  const tourScroller = useTourScroller();
-
-  // The account sheet's role chips (U6): what Home shows of the reader's own, and their choice.
-  const ownRoles = viewingId ? null : (subject?.roles ?? null);
-  const ownKey = ownRoles?.join(',');
-  useEffect(() => {
-    publishHomeRole(
-      ownKey && shownRole ? { roles: ownKey.split(',') as UserRole[], current: shownRole } : null,
-    );
-  }, [ownKey, shownRole]);
-  useEffect(() => () => publishHomeRole(null), []);
-  useEffect(
-    () => onHomeRoleChosen((role) => navigation.setParams({ role, tab: undefined } as never)),
-    [navigation],
-  );
-
-  // Phase 43: the Now card greets the reader by name when it is about their next lesson, so the
-  // heading's greeting gives way to it on the Tutoring tab (never twice on one screen).
-  const tutors = !viewingId && (user?.roles.includes('tutor') ?? false);
-  const now = useNowState(tutors);
-  const [tab] = useTutoringFinanceTab();
-  const nowGreets =
-    tutors &&
-    tab === 'tutoring' &&
-    (shownRole === 'tutor' || shownRole === 'admin') &&
-    now.state.kind === 'next';
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -143,9 +103,6 @@ export function DashboardScreen() {
         queryClient.invalidateQueries({ queryKey: ['schedules', 'upcoming'] }),
         queryClient.invalidateQueries({ queryKey: ['finance'] }),
         queryClient.invalidateQueries({ queryKey: ['sessions'] }),
-        queryClient.invalidateQueries({ queryKey: ['home'] }),
-        queryClient.invalidateQueries({ queryKey: ['quest'] }),
-        queryClient.invalidateQueries({ queryKey: ['quest-games', 'favorites'] }),
       ]);
     } finally {
       setRefreshing(false);
@@ -156,13 +113,12 @@ export function DashboardScreen() {
     <Screen
       // A new subject starts at the top, not wherever the last one was scrolled to.
       key={viewingId ?? 'me'}
-      testID="screen-home"
-      scrollRef={tourScroller}
+      testID="screen-dashboard-analytics"
       refreshing={refreshing}
       onRefresh={() => void onRefresh()}
     >
       <Stack.Screen
-        options={{ headerRight: () => <HeaderActions isAdmin={isAdmin} viewingId={viewingId} /> }}
+        options={{ title: 'Dashboard', headerRight: () => <HeaderActions isAdmin={isAdmin} viewingId={viewingId} /> }}
       />
       {viewingOther && subject ? (
         <View style={{ gap: 2 }}>
@@ -175,37 +131,18 @@ export function DashboardScreen() {
             </Text>
           )}
         </View>
-      ) : nowGreets ? null : (
-        <Greeting />
-      )}
-      {/* Phase 60 (S6): an invitation to another space, while the reader is here. */}
-      {viewingOther ? null : <InvitationBanner />}
-      {/* Phase 62 (P6): where Quest is on, a student's Home leads with the Play home; staff and
-          parents keep their dashboard, with their favorites and Waiting for you above it. Never
-          while viewing somebody else. */}
-      {viewingId || !featureOn(organization, 'quest') ? null : user?.roles.includes('student') ? (
-        <PlayHome />
-      ) : (
-        <>
-          <PlayFavorites compact />
-          <WaitingForYou />
-        </>
-      )}
-      {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
-      {/* The reader's own roles are chosen in the account sheet (UI upgrades U6); while viewing
-          somebody else, their roles stay here, under whose they are. */}
-      {viewingOther && subject && response ? (
-        <RoleSelector roles={subject.roles} current={response.role} />
       ) : null}
-      <RoleDashboard
-        query={query}
-        subjectId={viewingOther ? subject?.user_id : undefined}
-        mine={!viewingId}
-        tutors={tutors}
-      />
-      {/* Phase 33: a lesson about to start, where its locations ask for a reminder. Never while
-          viewing someone else. */}
-      {!viewingId ? <LessonReminderSheet /> : null}
+      {viewingOther && subject && response ? <ViewAsBanner subject={subject} role={response.role} /> : null}
+      {/* The roles of whoever is shown: the reader's own, or the person being viewed. */}
+      {subject && response ? (
+        <RoleSelector
+          roles={subject.roles}
+          current={response.role}
+          // This screen's own params (a new role starts on its Tutoring tab), as the people sheet's choice.
+          onChoose={(role) => navigation.setParams({ role, tab: undefined } as never)}
+        />
+      ) : null}
+      <RoleDashboard query={query} subjectId={viewingOther ? subject?.user_id : undefined} mine={!viewingId} />
     </Screen>
   );
 }
@@ -213,25 +150,19 @@ export function DashboardScreen() {
 /** Today for the office or a tutor: above the tabs, no money. */
 function ScopedToday({ scope }: { scope: TodayScope }) {
   const today = useToday(scope);
-  return <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />;
+  return <ScheduleTodayCard summary={today.summary} pending={today.pending} failed={today.failed} />;
 }
 
 export function RoleDashboard({
   query,
   subjectId,
   mine,
-  tutors,
-  full = false,
 }: {
   query: ReturnType<typeof useDashboard>;
   /** The person being viewed, when it is not the reader. */
   subjectId: string | undefined;
   /** The reader's own dashboard (not an admin's "view as"). */
   mine: boolean;
-  /** The reader tutors here and is on their own Home: the Now card and brief lead Tutoring. */
-  tutors: boolean;
-  /** The Dashboard page: Home's sections plus Analytics and Recent Activity, as the web's dashboard. */
-  full?: boolean;
 }) {
   const { data, isPending, isError, error, refetch } = query;
   const response = data?.data;
@@ -240,10 +171,10 @@ export function RoleDashboard({
   if (isError || !response) return <ErrorState error={error} onRetry={() => void refetch()} />;
 
   const view = response.data;
-  // Phase 43 (the owner, 2026-10-20): Analytics left Home for the Dashboard screen (More →
-  // Dashboard), and the Now card with the next lesson's brief leads the Tutoring tab of anyone who
-  // tutors -- an admin too, for their own pairings.
-  const lead = mine && tutors && !full ? <TutorNow /> : null;
+  // The whole dashboard, as the web's: Analytics first, Recent Activity last (Phase 66: the Now card
+  // and the brief are Home's).
+  const lead = null;
+  const full = true as const;
   let body: ReactNode;
   switch (view.kind) {
     case 'admin':

@@ -14,7 +14,7 @@ test.describe('command palette', () => {
   test('the shortcut opens it, and a page is a few letters away', async ({ as }) => {
     const admin = await as('admin');
     await admin.goto('/');
-    await expect(admin.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(admin.getByTestId('member-home')).toBeVisible();
 
     await admin.keyboard.press('ControlOrMeta+k');
     await expect(palette(admin)).toBeVisible();
@@ -38,7 +38,7 @@ test.describe('command palette', () => {
   test('switching the theme from it changes the theme', async ({ as }) => {
     const admin = await as('admin');
     await admin.goto('/');
-    await expect(admin.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(admin.getByTestId('member-home')).toBeVisible();
     await admin.keyboard.press('ControlOrMeta+k');
     await palette(admin).getByRole('combobox').fill('dark theme');
     await admin.keyboard.press('Enter');
@@ -48,7 +48,7 @@ test.describe('command palette', () => {
   test('a tutor is not offered the organization settings', async ({ as }) => {
     const tutor = await as('tutor');
     await tutor.goto('/');
-    await expect(tutor.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(tutor.getByTestId('member-home')).toBeVisible();
     await tutor.keyboard.press('ControlOrMeta+k');
     await expect(palette(tutor).getByRole('option', { name: 'Sessions', exact: true })).toBeVisible();
     await expect(palette(tutor).getByRole('option', { name: 'Space', exact: true })).toHaveCount(0);

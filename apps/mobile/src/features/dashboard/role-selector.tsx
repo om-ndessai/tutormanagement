@@ -11,9 +11,9 @@ import { CHIP_HIT_SLOP } from '@/theme/tokens';
 
 /**
  * The roles as chips, the shown one selected. Renders nothing for someone with one role. Choosing
- * sets Home's `?role=` (by default from Home itself; the account sheet passes `onChoose`), and the
- * server answers with that role's dashboard. Since UI upgrades U6 the reader's own roles are chosen
- * in the account sheet; Home keeps the chips only while an admin views somebody else's.
+ * sets the dashboard's `?role=`, and the server answers with that role's dashboard. Since Phase 66 the
+ * chips are on the Dashboard page (More → Dashboard), for the reader's own roles and for somebody an
+ * admin views; Home has none.
  */
 export function RoleSelector({
   roles,

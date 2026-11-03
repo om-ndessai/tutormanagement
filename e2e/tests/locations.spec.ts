@@ -241,7 +241,7 @@ test.describe('tutoring locations', () => {
       await sheet.getByRole('button', { name: 'Dismiss reminder' }).click();
       await expect(sheet).toHaveCount(0);
       await tutor.reload();
-      await expect(tutor.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+      await expect(tutor.getByTestId('member-home')).toBeVisible();
       await expect(tutor.getByTestId('lesson-reminder')).toHaveCount(0);
     } finally {
       await admin.request.delete(`/api/schedules/${slot.id}`);

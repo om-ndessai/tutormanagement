@@ -12,36 +12,26 @@ export interface TourStep {
 }
 
 /**
- * The tour for each dashboard, in the order a newcomer needs it: the
- * dashboard's own sections first, then the menu. Copy speaks of "the office"
+ * The tour for each role, in the order a newcomer needs it: the home's own
+ * blocks first (Phase 66), then the menu. Copy speaks of "the office"
  * and never names the institute -- the same build serves the demo too.
  */
 export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   admin: [
     {
-      target: 'dash-analytics',
+      target: 'home-band',
       title: 'Your space at a glance',
-      body: 'Students, tutors, parents and lessons, counted. Each card opens the list behind it.',
+      body: 'Your day here: lessons not yet recorded, invitations waiting and today’s lessons.',
     },
     {
-      target: 'dash-sessions',
-      title: 'Lessons, past and coming',
-      body: 'The last five lessons, then what the schedules say is next. A cancelled date shows here too.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'The one thing to do now. Later puts it off for the day.',
     },
     {
-      target: 'dash-progress',
-      title: 'Progress towards each goal',
-      body: 'A few students with their timeline against the plan. All Progress has everyone.',
-    },
-    {
-      target: 'dash-activity',
-      title: 'Recent activity',
-      body: 'The latest things people did in the portal. The full log is under Activity.',
-    },
-    {
-      target: 'tabs',
-      title: 'Tutoring and Finance',
-      body: 'Teaching lives on Tutoring, which shows no money. Charges, pay, balances and year-end are on Finance.',
+      target: 'nav-dashboard',
+      title: 'Dashboard',
+      body: 'Counts, lessons, progress and recent activity on Tutoring, which shows no money. Charges, pay, balances and year-end are on Finance.',
     },
     {
       target: 'nav-users',
@@ -91,29 +81,24 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   tutor: [
     {
-      target: 'dash-analytics',
+      target: 'home-band',
       title: 'Your teaching at a glance',
-      body: 'Your students, your lessons, and whether one is running now.',
+      body: 'Today’s lessons and what is still to record.',
     },
     {
-      target: 'dash-sessions',
-      title: 'Your lessons',
-      body: 'Your last five lessons, then your next ones from the schedule — cancelled dates included.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'A lesson just finished: record it in one tap, already filled in from the schedule. One about to start: start it from here.',
     },
     {
-      target: 'dash-reflections',
-      title: 'What your students said',
-      body: 'Each student’s reflection on a lesson, with a flag when it was too fast, too hard or not new.',
+      target: 'home-to-record',
+      title: 'To record',
+      body: 'Lessons of the last week that were never written up. Record each one from here.',
     },
     {
-      target: 'dash-progress',
-      title: 'Progress',
-      body: 'A few of your students against their learning plans.',
-    },
-    {
-      target: 'tabs',
-      title: 'Tutoring and Finance',
-      body: 'Tutoring shows no money, so it is safe with a student beside you. Your pay is on Finance.',
+      target: 'nav-dashboard',
+      title: 'Dashboard',
+      body: 'Your lessons, what your students said and their progress. Your pay is on Finance.',
     },
     {
       target: 'nav-sessions',
@@ -143,24 +128,19 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   parent: [
     {
-      target: 'dash-children',
+      target: 'home-section-parent',
       title: 'Your children',
-      body: 'Each child, their lessons and their balance.',
+      body: 'Each child’s next lesson, any change to it, and the homework from last time.',
     },
     {
-      target: 'dash-reflect',
-      title: 'Reflect together',
-      body: 'After a lesson, a few quick questions answered with your child. Their tutor reads them.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'What matters now, such as a cancelled lesson or the next one coming.',
     },
     {
-      target: 'dash-child-progress',
-      title: 'Progress',
-      body: 'Where your child is against their goal, lesson by lesson.',
-    },
-    {
-      target: 'dash-recent-sessions',
-      title: 'Recent lessons',
-      body: 'The latest lessons. The Sessions page has the notes and the homework.',
+      target: 'nav-dashboard',
+      title: 'Dashboard',
+      body: 'Reflections, progress, recent lessons and what you owe.',
     },
     {
       target: 'nav-sessions',
@@ -190,24 +170,19 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   student: [
     {
-      target: 'dash-my-stats',
+      target: 'home-band',
       title: 'Your lessons at a glance',
-      body: 'How many lessons you have had, and with whom.',
+      body: 'When your next lesson is, and how your week is going.',
     },
     {
-      target: 'dash-reflect',
-      title: 'How did it go?',
-      body: 'After each lesson, a few quick questions. Your tutor reads your answers.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'The one thing to do now: an assessment to finish, today’s 5, or your next lesson.',
     },
     {
-      target: 'dash-my-progress',
-      title: 'Your progress',
-      body: 'Where you are against your goal, lesson by lesson.',
-    },
-    {
-      target: 'dash-my-sessions',
-      title: 'Your lessons',
-      body: 'Your recent lessons. The Sessions page has the notes and the homework.',
+      target: 'nav-dashboard',
+      title: 'Dashboard',
+      body: 'Your lessons, your reflections and your progress.',
     },
     {
       target: 'nav-sessions',

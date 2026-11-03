@@ -6,6 +6,7 @@ import {
   BookOpenIcon,
   Building2Icon,
   CalendarDaysIcon,
+  HouseIcon,
   LayoutDashboardIcon,
   LinkIcon,
   WalletIcon,
@@ -47,7 +48,9 @@ const NAV_ITEMS: (PaletteDestination & {
   /** A small label beside it, such as "Beta". */
   badge?: string;
 })[] = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboardIcon, end: true, keywords: ['home', 'overview'] },
+  // Phase 66: the member home first; the role dashboards (with Finance) where Tutoring is on.
+  { to: '/', label: 'Home', icon: HouseIcon, end: true, keywords: ['home', 'next', 'today'] },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboardIcon, end: false, set: 'tutoring', keywords: ['overview', 'analytics', 'finance'] },
   { to: '/users', label: 'Users', icon: UsersIcon, end: false, keywords: ['people', 'students', 'tutors', 'parents', 'family'] },
   { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, set: 'tutoring', keywords: ['assignments', 'tutor', 'student'] },
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, set: 'tutoring', keywords: ['lessons', 'record', 'notes', 'drafts'] },
@@ -88,7 +91,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
           end={end}
           onClick={onNavigate}
           // What the feature tour (Phase 26) points at: nav-sessions, nav-billing…
-          data-tour={to === '/' ? 'nav-dashboard' : `nav-${to.slice(1)}`}
+          data-tour={to === '/' ? 'nav-home' : `nav-${to.slice(1)}`}
           className={({ isActive }) =>
             cn(
               'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200',

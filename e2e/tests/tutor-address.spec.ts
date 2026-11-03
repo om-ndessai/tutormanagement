@@ -35,7 +35,7 @@ test.describe('a tutor’s mailing address', () => {
     expect(csv).toContain('Street address');
     expect(csv).toContain(ALEX_STREET);
 
-    await admin.goto('/?tab=finance');
+    await admin.goto('/dashboard?tab=finance');
     const row = admin
       .locator('li')
       .filter({ hasText: PEOPLE.tutor.name })

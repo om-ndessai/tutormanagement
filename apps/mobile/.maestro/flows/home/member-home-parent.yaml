@@ -1,0 +1,45 @@
+# Phase 66 (H3): Anita, a parent in chmi. Home is about Sanjay: Next up names his next lesson, and his
+# card under "Your children" has it in words, the homework from his last lesson and this month's
+# lessons. No money anywhere on Home (balances are under More → Dashboard).
+appId: ${APP_ID}
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: anita.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Anita'
+- assertVisible:
+    id: home-strip
+    text: 'Sanjay: .*'
+- assertVisible:
+    id: 'next-up-(child_change|child_next_lesson|none)'
+- scrollUntilVisible:
+    element:
+      id: home-child-00000000-0000-4000-8000-000000000006
+    centerElement: true
+- assertVisible:
+    id: home-child-next-00000000-0000-4000-8000-000000000006
+    text: '(Next: .* with .*|No lessons scheduled)'
+- assertVisible:
+    id: home-child-month-00000000-0000-4000-8000-000000000006
+    text: '[0-9]+ lessons? this month'
+- assertNotVisible: '.*\$[0-9].*'
+- assertNotVisible: 'Outstanding'
+- assertNotVisible: 'Charged'
+- takeScreenshot: member-home-parent
+# The card opens his progress.
+- tapOn:
+    id: home-child-00000000-0000-4000-8000-000000000006
+- extendedWaitUntil:
+    visible: 'Sanjay Patel.*'
+    timeout: 15000

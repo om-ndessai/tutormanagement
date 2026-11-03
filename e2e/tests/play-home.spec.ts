@@ -105,7 +105,7 @@ test.describe('P6: the Play home', () => {
     const shape = ({ kind, level_id, mode, value, guest, members }: any) => ({ kind, level_id, mode, value, guest, members });
     try {
       await tutor.goto('/');
-      await expect(tutor.getByRole('heading', { name: /Dashboard|Home/ }).first()).toBeVisible();
+      await expect(tutor.getByTestId('member-home')).toBeVisible();
       await expect(tutor.getByTestId('play-home')).toHaveCount(0);
 
       await unwrap(

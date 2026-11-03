@@ -14,7 +14,6 @@ import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { markLessonCelebrated } from './celebrated-lessons';
 import { Confetti } from './confetti';
-import { putOff } from './later';
 import {
   briefSentence,
   canStartNow,
@@ -76,8 +75,23 @@ function CardFrame({
   );
 }
 
-/** Mockup 3: "Yay! You completed one more lesson with Sofia", once with confetti. */
-export function CelebrateCard({ lesson, today }: { lesson: UnrecordedLesson; today: string }) {
+/**
+ * Mockup 3: "Yay! You completed one more lesson with Sofia", once with confetti. Since Phase 66 it is
+ * Next up's card for a finished lesson: its buttons carry Next up's ids, and Later is Next up's.
+ */
+export function CelebrateCard({
+  lesson,
+  today,
+  onLater,
+  recordTestID = 'next-up-action',
+  laterTestID = 'next-up-later',
+}: {
+  lesson: UnrecordedLesson;
+  today: string;
+  onLater: () => void;
+  recordTestID?: string;
+  laterTestID?: string;
+}) {
   const theme = useAppTheme();
   const { user } = useAuth();
   const ink = theme.tokens.successForeground;
@@ -123,7 +137,7 @@ export function CelebrateCard({ lesson, today }: { lesson: UnrecordedLesson; tod
       </View>
       <View style={{ flexDirection: 'row', gap: space.sm }}>
         <Button
-          testID="home-now-record"
+          testID={recordTestID}
           mode="contained"
           buttonColor={ink}
           textColor={theme.tokens.success}
@@ -137,7 +151,7 @@ export function CelebrateCard({ lesson, today }: { lesson: UnrecordedLesson; tod
           Record it now
         </Button>
         <Button
-          testID="home-now-later"
+          testID={laterTestID}
           mode="contained"
           buttonColor={withAlpha(ink, 0.18)}
           textColor={ink}
@@ -145,7 +159,7 @@ export function CelebrateCard({ lesson, today }: { lesson: UnrecordedLesson; tod
           contentStyle={{ minHeight: 48 }}
           onPress={() => {
             haptics.selection();
-            putOff(key);
+            onLater();
           }}
         >
           Later
@@ -185,12 +199,21 @@ export function NextCard({
   part,
   today,
   nowMinutes,
+  greet = true,
+  actionTestID,
+  onLater,
 }: {
   lesson: TutorHomeLesson;
   brief: TutorHomeBrief | null;
   part: PartOfDay;
   today: string;
   nowMinutes: number;
+  /** Phase 66: false under Home's band, which greets already (never twice on one screen). */
+  greet?: boolean;
+  /** Phase 66: as Next up's card, its primary button (Start, else See the plan) is `next-up-action`. */
+  actionTestID?: string;
+  /** Phase 66: Next up's Later (`next-up-later`), for a lesson about to start. */
+  onLater?: () => void;
 }) {
   const theme = useAppTheme();
   const { user } = useAuth();
@@ -204,9 +227,11 @@ export function NextCard({
   return (
     <CardFrame testID="home-now-next" background={theme.colors.primary}>
       <View style={{ gap: space.xs }}>
-        <Text testID="home-now-greeting" variant="labelLarge" style={{ color: ink, letterSpacing: 0.6, opacity: 0.9 }}>
-          {nowGreeting(part, user?.full_name)}
-        </Text>
+        {greet ? (
+          <Text testID="home-now-greeting" variant="labelLarge" style={{ color: ink, letterSpacing: 0.6, opacity: 0.9 }}>
+            {nowGreeting(part, user?.full_name)}
+          </Text>
+        ) : null}
         <Text testID="home-now-headline" variant="titleLarge" accessibilityRole="header" style={{ color: ink }}>
           {nextHeadline(lesson, today, nowMinutes)}
         </Text>
@@ -265,7 +290,7 @@ export function NextCard({
         ) : null}
         {startable ? (
           <Button
-            testID="home-now-start"
+            testID={actionTestID ?? 'home-now-start'}
             mode="contained"
             icon="play"
             buttonColor={withAlpha(ink, 0.2)}
@@ -284,7 +309,7 @@ export function NextCard({
           </Button>
         ) : (
           <Button
-            testID="home-now-plan"
+            testID={actionTestID ?? 'home-now-plan'}
             mode="contained"
             buttonColor={withAlpha(ink, 0.2)}
             textColor={ink}
@@ -301,6 +326,21 @@ export function NextCard({
           </Button>
         )}
       </View>
+      {onLater ? (
+        <Button
+          testID="next-up-later"
+          mode="text"
+          textColor={ink}
+          style={{ alignSelf: 'flex-end' }}
+          contentStyle={{ minHeight: 44 }}
+          onPress={() => {
+            haptics.selection();
+            onLater();
+          }}
+        >
+          Later
+        </Button>
+      ) : null}
     </CardFrame>
   );
 }

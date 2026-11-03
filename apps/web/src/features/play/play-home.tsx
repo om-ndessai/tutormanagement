@@ -98,7 +98,7 @@ function useCarryGuestTiles(list: MemberTile[], favorites: GameFavorite[] | unde
  * Phase 62 (P6): the members' Play home -- Continue, favorites, the tiles and a code box, every one a
  * quest in one tap. The home of a space without Tutoring, and of a student anywhere.
  */
-export function PlayHome() {
+export function PlayHome({ hideWaiting = false }: { hideWaiting?: boolean } = {}) {
   const { organization } = useAuth();
   const tiles = useMemberTiles();
   const favorites = useGameFavorites();
@@ -171,7 +171,8 @@ export function PlayHome() {
 
       <PlayFavorites />
 
-      <WaitingForYou />
+      {/* Phase 66: shown in the home's Next up instead, when a game is waiting. */}
+      {!hideWaiting && <WaitingForYou />}
 
       {groups.map(([group, groupTiles]) => (
         <div key={group} className="grid gap-2">

@@ -7,6 +7,7 @@ import {
   googleMapsUrl,
   parseClockTime,
   type PartOfDay,
+  START_LEAD_MINUTES,
   type TutorHome,
   type TutorHomeBrief,
   type TutorHomeLesson,
@@ -14,37 +15,11 @@ import {
 
 import { firstName } from '@/features/dashboard/home-model';
 
-/** How long before its start a lesson may be started from the Now card. */
-export const NOW_START_LEAD_MINUTES = 15;
-
 export type UnrecordedLesson = TutorHome['unrecorded'][number];
-
-export type NowState =
-  | { kind: 'celebrate'; lesson: UnrecordedLesson }
-  | { kind: 'running' }
-  | { kind: 'next'; lesson: TutorHomeLesson }
-  | { kind: 'none' };
 
 /** One lesson of a series, on one date: what "Later" and the confetti remember. */
 export function lessonKey(lesson: Pick<TutorHomeLesson, 'schedule_id' | 'occurs_on'>): string {
   return `${lesson.schedule_id}:${lesson.occurs_on}`;
-}
-
-/**
- * The first state that applies: a finished lesson not yet recorded (the first one not put off with
- * "Later"), else a lesson running (the live-lesson bar already says so), else the next lesson, else
- * nothing.
- */
-export function nowState(
-  home: Pick<TutorHome, 'unrecorded' | 'next'> | null | undefined,
-  { running, later }: { running: boolean; later: ReadonlySet<string> },
-): NowState {
-  if (!home) return { kind: 'none' };
-  const unrecorded = home.unrecorded.find((lesson) => !later.has(lessonKey(lesson)));
-  if (unrecorded) return { kind: 'celebrate', lesson: unrecorded };
-  if (running) return { kind: 'running' };
-  if (home.next) return { kind: 'next', lesson: home.next };
-  return { kind: 'none' };
 }
 
 // ---------------------------------------------------------------------------
@@ -188,7 +163,7 @@ export function briefSentence(
   return parts.join(' ') || null;
 }
 
-/** True from 15 minutes before the start until the end, on the lesson's own day. */
+/** True from START_LEAD_MINUTES (shared, 15) before the start until the end, on the lesson's own day. */
 export function canStartNow(
   lesson: Pick<TutorHomeLesson, 'occurs_on' | 'start_time' | 'end_time'>,
   today: string,
@@ -198,7 +173,7 @@ export function canStartNow(
   const start = parseClockTime(lesson.start_time);
   const end = parseClockTime(lesson.end_time);
   if (start === null || end === null) return false;
-  return nowMinutes >= start - NOW_START_LEAD_MINUTES && nowMinutes < end;
+  return nowMinutes >= start - START_LEAD_MINUTES && nowMinutes < end;
 }
 
 // ---------------------------------------------------------------------------

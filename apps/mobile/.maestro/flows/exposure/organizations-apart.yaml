@@ -20,7 +20,7 @@ env:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
 # Shown in chmi.
 - runFlow:
@@ -53,7 +53,7 @@ env:
     id: account-org-riverside
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
 # Home names the organization by its short name, under the greeting (UI upgrades U6).
 - assertVisible:
@@ -171,7 +171,7 @@ env:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml

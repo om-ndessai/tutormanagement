@@ -1,0 +1,34 @@
+# Phase 66 (H1: a hat exists only with content): Maria holds the tutor role in chmi but teaches nobody,
+# and is Sofia's parent. Her Home is "Your children" alone -- no empty "Your teaching".
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- assertVisible:
+    id: home-strip
+    text: 'Sofia: .*'
+- scrollUntilVisible:
+    element:
+      id: home-section-parent
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: home-child-00000000-0000-4000-8000-000000000008
+    centerElement: true
+- assertVisible:
+    id: home-child-next-00000000-0000-4000-8000-000000000008
+    text: '(Next: .* with Alex|No lessons scheduled)'
+- assertNotVisible:
+    id: home-section-tutor
+- assertNotVisible: 'Your teaching'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: member-home-multirole

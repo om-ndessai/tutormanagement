@@ -1,5 +1,5 @@
 # Phase 50: a space allowed every set looks as it did. Priya (chmi) still has Sessions and Progress
-# in the bar, and Home is the dashboard, not the space home.
+# in the bar, and (Phase 66) the member home has her teaching and the way to the dashboards.
 appId: ${APP_ID}
 tags:
   - feature
@@ -18,6 +18,9 @@ tags:
 - assertVisible:
     id: tab-progress
 - assertNotVisible:
-    id: space-home
+    id: space-home-empty
+- scrollUntilVisible:
+    element:
+      id: home-dashboard-link
 - assertVisible:
     id: create-button

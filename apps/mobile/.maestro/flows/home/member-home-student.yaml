@@ -1,0 +1,40 @@
+# Phase 66 (H3): Sofia, a student in chmi. Her Home is "Practice": Next up and her section name her
+# next lesson with Alex, in words.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Sofia'
+- assertVisible:
+    id: home-strip
+    text: '(Next lesson: .* with Alex|.*in a row|Start a streak|Ready when you are)'
+- assertVisible:
+    id: next-up
+- scrollUntilVisible:
+    element:
+      id: home-section-learner
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: home-learner-next
+    centerElement: true
+- assertVisible:
+    id: home-learner-next
+    text: '.*with Alex.*'
+- assertNotVisible:
+    id: home-section-tutor
+- assertNotVisible:
+    id: home-section-parent
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: member-home-student

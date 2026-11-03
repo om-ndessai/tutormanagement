@@ -252,7 +252,7 @@ test.describe('tutor advances', () => {
       await setLevel(300_00);
       expect(await row()).toMatchObject({ next_topup_on: null, urgency: 'past_due' });
 
-      await admin.goto('/?tab=finance');
+      await admin.goto('/dashboard?tab=finance');
       const line = admin.getByRole('row', { name: /Tess Projection/ });
       await expect(line.getByText('Past due')).toBeVisible();
       await expect(line.getByText('$80.00 below')).toBeVisible();

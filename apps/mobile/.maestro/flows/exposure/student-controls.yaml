@@ -17,7 +17,7 @@ env:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-student
+      id: home-band
     timeout: 30000
 # Sessions.
 - runFlow:

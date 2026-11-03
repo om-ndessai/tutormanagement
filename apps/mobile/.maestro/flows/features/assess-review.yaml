@@ -40,7 +40,7 @@ tags:
 - runFlow: ../../subflows/go-back.yaml
 - extendedWaitUntil:
     visible:
-      id: space-home
+      id: home-band
     timeout: 15000
 - scrollUntilVisible:
     element:

@@ -13,6 +13,12 @@ tags:
       ORG: solo
 - extendedWaitUntil:
     visible:
+      id: home-band
+    timeout: 30000
+# Phase 66: the role dashboards are More → Dashboard.
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
       id: tabs-tutoring
     timeout: 30000
 - tapOn:

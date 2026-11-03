@@ -4546,3 +4546,42 @@ level's Daily Sofia has not played today (one play a day per person and level).
   in the side gutter to reach Next below a choice page's canvas (a swipe on the canvas draws).
 - `spaces/words` failed on iOS on names `scripts/clean-platform.js` gave earlier in the same run ("Retired
   test organization …"): the script now names them "Retired test space …".
+
+## 75. Phase 66, H1-H4/H9/H11: one home, one Next up, in the app — design and build (2026-11-03)
+
+**Source:** `docs/member-home-plan.md` (H1-H4, H9, H11), the shared contract `packages/shared/src/home.ts`
+(`MemberHome`, `orderHats`, `nextUpCandidates`/`chooseNextUp`/`nextUpKey`, `quickActionsFor`, `homeGreeting`,
+`lessonWhen`, `startsInWords`, `START_LEAD_MINUTES`), `GET /api/home`. Built beside the web's half (the lead),
+with the same testIDs.
+
+**Home is one screen for every space** (`features/home/member-home-screen.tsx`, rendered by
+`(tabs)/dashboard/index.tsx` after `QuestLanding`, which stays until Phase 67):
+- **Band** `home-band`: `home-greeting` (`homeGreeting`), the space's short name, and `home-strip` for the first
+  hat of `orderHats` (tutor "Today: N lessons · M to record"; office the non-zero of "N to record · N invitations ·
+  N asking to join", else "All caught up"; parent the first child's next lesson or "No lessons scheduled";
+  learner the next lesson, else the streak where Quest is on, else "Ready when you are"). The guest band's deep
+  gradient and faint rings, slimmer.
+- **Next up** `next-up` (`next-up-<kind>`, `next-up-action`, `next-up-later`): `chooseNextUp(nextUpCandidates(home,
+  extras), putOff)`. Extras are the device's: the waiting poll (`game_invite`, its code kept in a map by game id),
+  the last quest here (`continue_quest`, its label as the code), today's Daily (`daily`). The finished lesson is
+  Phase 43's CelebrateCard. "Later" puts the item off for the rest of the day on this phone (`tmi.homeLater`,
+  per space and date). Nothing → "You're all caught up."
+- **Quick actions** `quick-<action>` (`quickActionsFor`, at most 3, tonal buttons); `join_code` opens the
+  "Have a code?" box in a dialog.
+- **Sections** `home-section-<hat>` in `orderHats` order, titled `HOME_HAT_LABELS`: tutor (Phase 43's Now card
+  and brief from `home.tutor.now` — not `/home/tutor` — unless Next up shows that lesson; `home-to-record` rows
+  `home-to-record-<schedule>-<date>` with Record; reviews; this week), office (`home-office-to-record`,
+  `home-office-invitations`, `home-office-requests`, the first three to-record lines, `home-dashboard-link`),
+  parent (`home-child-<id>`: next lesson, a cancellation, homework, lessons this month; opens the child's
+  progress), learner (next lesson, the Play home where Quest is on, the Assessment home where Assessment is on).
+  Without a learner hat, where Quest is on: favorites and Waiting for you at the end.
+- **No money on Home** (R29): no balances, no prices.
+
+**The role dashboards move to More → Dashboard** (`/analytics`, now `DashboardScreen` in full: the view-as eye,
+role chips on the screen, Tutoring and Finance), open to every role where Tutoring is on (parents' balances,
+students' figures). `AnalyticsScreen` and `SpaceHomeScreen` are gone. Home publishes no role chips. `TodayCard`
+is `ScheduleTodayCard` (the name is Phase 67's). One start lead: shared `START_LEAD_MINUTES` (15).
+
+**Flows:** `home/member-home-{tutor (smoke),parent,student,space,multirole}`; flows that read the dashboard on
+Home open it through `subflows/open-dashboard.yaml`.
+**Jest:** `home/member-home-model.test.ts`, `home/member-home-screen.test.tsx`.

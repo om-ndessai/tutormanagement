@@ -8,7 +8,7 @@ import { studentProgress, upcoming } from '@/test/fixtures';
 import { renderWithProviders } from '@/test/render';
 import { resetCelebratedCache } from './celebrations';
 import { ChildCard } from './child-card';
-import { TodayCard, useToday } from './home-top';
+import { ScheduleTodayCard, useToday } from './home-top';
 import { ParentView } from './parent-balance-view';
 
 const TODAY = '2026-10-15';
@@ -66,7 +66,7 @@ beforeEach(async () => {
 
 function Today(props: Parameters<typeof useToday>[0]) {
   const today = useToday(props);
-  return <TodayCard summary={today.summary} pending={today.pending} failed={today.failed} />;
+  return <ScheduleTodayCard summary={today.summary} pending={today.pending} failed={today.failed} />;
 }
 
 describe('Today', () => {

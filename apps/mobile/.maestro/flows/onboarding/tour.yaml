@@ -14,7 +14,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
 - assertNotVisible:
     id: tour-offer

@@ -227,7 +227,7 @@ onFlowComplete:
       ORG: solo
 - extendedWaitUntil:
     visible:
-      id: tabs-tutoring
+      id: home-band
     timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml

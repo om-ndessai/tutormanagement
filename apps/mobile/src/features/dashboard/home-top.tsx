@@ -102,7 +102,7 @@ export function useToday({ who, tutorUserId, studentIds, horizonDays = 0 }: Toda
 }
 
 /** "2 lessons today" / "Next at 4:00 PM with Sofia". Opens the schedule. */
-export function TodayCard({
+export function ScheduleTodayCard({
   summary,
   pending,
   failed,

@@ -17,7 +17,7 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-parent
+      id: home-band
     timeout: 30000
 - runFlow:
     file: ../../subflows/open-link.yaml

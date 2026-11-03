@@ -55,6 +55,11 @@ if (response.status !== 201 && response.status !== 200) {
   throw new Error('Could not seed the lesson: ' + response.status + ' ' + response.body);
 }
 output.scheduleId = json(response.body).data.id;
+// Alex's own seeded weekly lessons (Sofia Tue 16:00, Ben Sat 10:00, an hour each). While one of them
+// is at hand (an hour's lead, to its end), it is the strip's next card with Start once the seeded
+// lesson is cancelled, so a flow must not assert that no Start is offered.
+var own = [SOFIA.day === weekday ? 16 * 60 : -1, BEN.day === weekday ? 10 * 60 : -1];
+output.otherAtHand = own.some(function (m) { return m >= 0 && minutes >= m - 60 && minutes < m + 60; });
 output.studentId = student.id;
 output.studentName = student.name;
 var hour12 = Math.floor(start / 60) % 12 === 0 ? 12 : Math.floor(start / 60) % 12;

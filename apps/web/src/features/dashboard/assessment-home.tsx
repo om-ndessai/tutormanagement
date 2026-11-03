@@ -17,15 +17,10 @@ import { useCanvasAssessments } from '@/features/canvas-assessments/api';
  */
 export function AssessmentHome({ lead }: { lead?: React.ReactNode } = {}) {
   const brand = useBrand();
-  const { user, organization } = useAuth();
-  const isAdmin = user?.roles.includes('admin') ?? false;
+  const { organization } = useAuth();
   const on = featureOn(organization, 'assessment');
-  const list = useCanvasAssessments({ enabled: on });
-  const rows = list.data?.data ?? [];
-  const waiting = rows.filter((row) => row.status === 'submitted' && !row.reviewed_at && row.can_review).length;
-
   return (
-    <div className="mx-auto grid max-w-6xl gap-6" data-testid="assessment-home">
+    <div className="mx-auto grid max-w-6xl gap-6">
       <PageHeader
         title="Home"
         description={
@@ -36,6 +31,22 @@ export function AssessmentHome({ lead }: { lead?: React.ReactNode } = {}) {
       />
       {/* Phase 62 (P6): the Play home leads, when Quest is on here. */}
       {lead}
+      <AssessmentSection />
+    </div>
+  );
+}
+
+/** Phase 66: the same, as a section of the member home -- waiting reviews, Start, the list. */
+export function AssessmentSection() {
+  const { user, organization } = useAuth();
+  const isAdmin = user?.roles.includes('admin') ?? false;
+  const on = featureOn(organization, 'assessment');
+  const list = useCanvasAssessments({ enabled: on });
+  const rows = list.data?.data ?? [];
+  const waiting = rows.filter((row) => row.status === 'submitted' && !row.reviewed_at && row.can_review).length;
+
+  return (
+    <div className="grid gap-6" data-testid="assessment-home">
       {!on ? (
         <Card className="py-0" data-testid="assessment-home-off">
           <CardContent className="grid gap-3 p-6">

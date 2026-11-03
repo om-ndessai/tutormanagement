@@ -20,8 +20,14 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-student
+      id: home-band
     timeout: 30000
+# Phase 66: the role dashboards are More → Dashboard.
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 20000
 - scrollUntilVisible:
     element:
       id: reflect-${output.sessionId}

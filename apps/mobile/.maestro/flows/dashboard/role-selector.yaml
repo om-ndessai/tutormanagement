@@ -1,6 +1,6 @@
 # Someone with two roles (Maria: tutor and Sofia's parent) lands on her tutor dashboard, as on the
-# web, and switches to her parent dashboard and back. Since UI upgrades U6 the choice is in the
-# account sheet ("Home shows"), not on Home. Not an admin: no "view as".
+# web, and switches to her parent dashboard and back. Since Phase 66 the dashboards are More →
+# Dashboard, with the role chips on the page. Not an admin: no "view as".
 appId: ${APP_ID}
 tags:
   - feature
@@ -13,41 +13,37 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
-# Home opens on the greeting and Today: no role chips there. (The heading's greeting, or her Now
-# card's when it is about her next lesson -- Phase 43.)
+# Phase 66: Home is the member home -- no role chips there, nor in the account sheet. The role
+# dashboards are More → Dashboard, with her roles as chips on the page (as the web's role picker).
 - assertVisible: 'Good (morning|afternoon|evening), Maria'
 - assertNotVisible:
     id: dashboard-role-tutor
 - assertNotVisible:
     id: dashboard-view-as
-- assertNotVisible:
-    id: view-as-banner
-- takeScreenshot: role-tutor
-- tapOn:
-    id: account-button
+- runFlow: ../../subflows/open-dashboard.yaml
 - extendedWaitUntil:
     visible:
-      id: account-home-role
-    timeout: 10000
-- assertVisible: 'Home shows'
-- assertVisible:
-    id: dashboard-role-tutor
+      id: dashboard-role-tutor
+    timeout: 15000
 - assertVisible:
     id: dashboard-role-parent
-- takeScreenshot: role-account-sheet
-# The sheet takes taps once it has risen (iOS).
-- waitForAnimationToEnd:
-    timeout: 3000
+- assertNotVisible:
+    id: dashboard-view-as
+- assertNotVisible:
+    id: view-as-banner
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 15000
+- takeScreenshot: role-tutor
 - tapOn:
     id: dashboard-role-parent
 - extendedWaitUntil:
     visible:
       id: dashboard-parent
     timeout: 15000
-- assertNotVisible:
-    id: screen-account
 - assertNotVisible:
     id: tabs-finance
 # Her child's card: Sofia, with no tutor's pay anywhere.
@@ -63,17 +59,9 @@ tags:
 - assertVisible: "Sofia Okafor's progress"
 - scrollUntilVisible:
     element:
-      id: account-button
+      id: dashboard-role-tutor
     direction: UP
     timeout: 30000
-- tapOn:
-    id: account-button
-- extendedWaitUntil:
-    visible:
-      id: dashboard-role-tutor
-    timeout: 10000
-- waitForAnimationToEnd:
-    timeout: 3000
 - tapOn:
     id: dashboard-role-tutor
 - extendedWaitUntil:

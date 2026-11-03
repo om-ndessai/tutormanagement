@@ -1,0 +1,19 @@
+# Phase 66: the role dashboards (Tutoring and Finance, the role chips, the admin's "view as") left Home
+# for More → Dashboard. Opens it from wherever the tabs are, and waits for the page.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-analytics
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: screen-dashboard-analytics
+    timeout: 15000

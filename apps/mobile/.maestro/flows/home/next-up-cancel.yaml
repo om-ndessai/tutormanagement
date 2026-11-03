@@ -22,7 +22,8 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# Phase 43: the Now card and the brief lead the Tutoring tab, so the carousel may be below them.
+# Phase 66: the sessions carousel is on the dashboard (More → Dashboard), no longer on Home.
+- runFlow: ../../subflows/open-dashboard.yaml
 - scrollUntilVisible:
     element:
       id: carousel-next-cancel
@@ -49,12 +50,16 @@ tags:
     timeout: 15000
 - takeScreenshot: next-up-cancelled
 # The date stays on the strip, flagged; the card no longer offers Start for it.
-# Phase 43: the Now card and the brief lead the Tutoring tab, so the carousel may be below them.
 - scrollUntilVisible:
     element:
       id: carousel-cancelled-${output.scheduleId}-.*
     direction: DOWN
     centerElement: true
     timeout: 15000
-- assertNotVisible:
-    id: carousel-next-start
+# Unless another of Alex's seeded lessons is at hand now (Sofia's Tuesday 4 PM): then it offers Start.
+- runFlow:
+    when:
+      true: ${output.otherAtHand === false}
+    commands:
+      - assertNotVisible:
+          id: carousel-next-start

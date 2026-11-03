@@ -1,22 +1,19 @@
-// The tutor's Home (Phase 43): one read for the "Now" card and the next lesson's brief,
-// `GET /api/home/tutor`. App-first by the owner's word (2026-10-20); the web's copy is owed and will
-// keep this query key. Only the reader's own pairings; no money.
+// Ported from apps/web/src/features/home/api.ts @ working tree (Phase 66, H11): the member home in one
+// read, `GET /api/home`. Under ['home'], so recording, starting or stopping a lesson, a schedule change
+// and a cancellation refresh it (`useTeachingInvalidation`). Only the reader's own; no money.
+// (Phase 43's `GET /home/tutor` is Tutoring's only now; the tutor block's `now` carries the same.)
 import { useQuery } from '@tanstack/react-query';
-import type { ApiOk, TutorHome } from '@tmi/shared';
+import type { ApiOk, MemberHome } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
 
-export const tutorHomeKey = ['home', 'tutor'] as const;
+export const memberHomeKey = ['home', 'member'] as const;
 
-/**
- * Read on every focus of Home (the screen refetches it) and on a pull; a recorded, started or
- * stopped lesson invalidates `['home']` with the dashboard (`useTeachingInvalidation`), and so do a
- * schedule change and a cancellation.
- */
-export function useTutorHome(enabled = true) {
+export function useMemberHome() {
   return useQuery({
-    queryKey: tutorHomeKey,
-    queryFn: () => apiClient.get<ApiOk<TutorHome>>('/home/tutor'),
-    enabled,
+    queryKey: memberHomeKey,
+    queryFn: () => apiClient.get<ApiOk<MemberHome>>('/home'),
+    staleTime: 30_000,
+    refetchOnWindowFocus: true,
   });
 }

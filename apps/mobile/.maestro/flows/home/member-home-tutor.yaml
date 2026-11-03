@@ -1,0 +1,53 @@
+# Phase 66 (H1-H4, H9): one Home. Alex, a tutor in chmi: the band greets him with today's line, ONE Next
+# up card, his quick actions (Record a lesson, Start a lesson), and "Your teaching" with the lessons left
+# to record. No money on Home; the role dashboards are under More → Dashboard.
+appId: ${APP_ID}
+tags:
+  - smoke
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Alex'
+- assertVisible:
+    id: home-strip
+    text: 'Today: [0-9]+ lessons?.*'
+- assertVisible:
+    id: next-up
+- assertVisible:
+    id: 'next-up-(lesson_unrecorded|lesson_now|reviews_waiting|lesson_next)'
+- assertVisible:
+    id: quick-record_lesson
+- assertVisible:
+    id: quick-start_lesson
+- takeScreenshot: member-home-tutor
+- scrollUntilVisible:
+    element:
+      id: home-section-tutor
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: home-to-record
+    centerElement: true
+- assertVisible:
+    id: 'home-to-record-.*-record'
+- assertVisible:
+    id: home-tutor-week
+    text: 'This week: [0-9]+ lessons?'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: member-home-tutor-section
+# The dashboards live under More now.
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 20000

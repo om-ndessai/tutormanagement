@@ -16,7 +16,7 @@ tags:
       ORG: assess
 - extendedWaitUntil:
     visible:
-      id: space-home
+      id: home-band
     timeout: 30000
 - tapOn:
     id: tab-more

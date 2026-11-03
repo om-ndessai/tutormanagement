@@ -41,14 +41,17 @@ tags:
 - assertVisible:
     id: home-now-celebrate-detail
     text: "That's [0-9]+ together since [A-Z][a-z]+.*It ended (yesterday )?at .*"
+# Phase 66: the celebration is Next up, with its buttons.
 - assertVisible:
-    id: home-now-record
+    id: next-up-lesson_unrecorded
 - assertVisible:
-    id: home-now-later
+    id: next-up-action
+- assertVisible:
+    id: next-up-later
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: home-now-celebrate
 - tapOn:
-    id: home-now-record
+    id: next-up-action
 # The quick sheet, filled in from the schedule (mockup 4).
 - extendedWaitUntil:
     visible:

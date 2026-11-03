@@ -1,0 +1,56 @@
+# Phase 66 (H1, H3) in a space without Tutoring: Ines (student, admin and parent in `assess`). Her
+# learner section comes first (orderHats), then the office's and her children's; nothing of Tutoring's
+# (no To record, no dashboard link, no Sessions tab). Changes nothing.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Ines'
+- assertVisible:
+    id: next-up
+- scrollUntilVisible:
+    element:
+      id: home-section-learner
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element: 'Practice'
+    direction: UP
+- takeScreenshot: member-home-space
+- scrollUntilVisible:
+    element:
+      id: home-section-office
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: home-office-invitations
+    centerElement: true
+- assertNotVisible:
+    id: home-office-to-record
+- assertNotVisible:
+    id: home-dashboard-link
+- scrollUntilVisible:
+    element:
+      id: home-section-parent
+    visibilityPercentage: 1
+- assertNotVisible:
+    id: home-section-tutor
+- assertNotVisible:
+    id: home-to-record
+- assertNotVisible:
+    id: tab-sessions
+- assertNotVisible: '.*\$[0-9].*'

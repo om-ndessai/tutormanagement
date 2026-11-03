@@ -51,18 +51,25 @@ function lessonOf(schedule: ScheduledSession, date: string, together: Map<string
   };
 }
 
+/** A tutor's own active schedules (an admin who tutors: theirs only). */
+export async function tutorSchedules(db: D1Database, org: OrgId, viewer: User): Promise<ScheduledSession[]> {
+  return (await listSchedules(db, org, viewer, { include_inactive: false, tutor_user_id: viewer.id })).filter(
+    (s) => s.tutor_user_id === viewer.id,
+  );
+}
+
 export async function buildTutorHome(
   db: D1Database,
   org: { id: OrgId; time_zone: string },
   viewer: User,
   nowIso = new Date().toISOString(),
+  /** The tutor's own active schedules, when the caller has read them already (Phase 66's member home). */
+  preloaded?: ScheduledSession[],
 ): Promise<TutorHome> {
   const { day: today, minutesOfDay: now } = zonedClockParts(nowIso, org.time_zone);
   const yesterday = addDays(today, -1);
 
-  const schedules = (await listSchedules(db, org.id, viewer, { include_inactive: false, tutor_user_id: viewer.id })).filter(
-    (s) => s.tutor_user_id === viewer.id,
-  );
+  const schedules = preloaded ?? (await tutorSchedules(db, org.id, viewer));
 
   const [recorded, together, running, cancellations] = await Promise.all([
     db
@@ -135,7 +142,7 @@ export async function buildTutorHome(
 }
 
 /** The pairing's last recorded lesson, as the viewer may see it (write-up and assessments included). */
-async function lastLesson(db: D1Database, org: OrgId, viewer: User, studentId: string) {
+export async function lastLesson(db: D1Database, org: OrgId, viewer: User, studentId: string) {
   const row = await db
     .prepare(
       `SELECT id FROM sessions

@@ -15,10 +15,8 @@ import {
   mapChoices,
   nextHeadline,
   nowGreeting,
-  nowState,
   placeAction,
   togetherLine,
-  type UnrecordedLesson,
 } from './now-model';
 
 const TODAY = '2026-10-20'; // a Tuesday
@@ -54,40 +52,7 @@ function lesson(overrides: Partial<TutorHomeLesson> = {}): TutorHomeLesson {
   };
 }
 
-function unrecorded(overrides: Partial<UnrecordedLesson> = {}): UnrecordedLesson {
-  return { ...lesson(), homework_last: 'pp. 48-53', ...overrides };
-}
-
-describe('nowState', () => {
-  const none = new Set<string>();
-
-  it('celebrates a finished, unrecorded lesson before anything else, a running lesson included', () => {
-    const home = { unrecorded: [unrecorded()], next: lesson({ occurs_on: '2026-10-24' }) };
-    expect(nowState(home, { running: true, later: none })).toEqual({ kind: 'celebrate', lesson: home.unrecorded[0] });
-  });
-
-  it('skips the lessons put off with Later, in order', () => {
-    const first = unrecorded({ schedule_id: 'a' });
-    const second = unrecorded({ schedule_id: 'b' });
-    const home = { unrecorded: [first, second], next: lesson() };
-    expect(nowState(home, { running: false, later: new Set([lessonKey(first)]) })).toEqual({
-      kind: 'celebrate',
-      lesson: second,
-    });
-    expect(nowState(home, { running: false, later: new Set([lessonKey(first), lessonKey(second)]) })).toEqual({
-      kind: 'next',
-      lesson: home.next,
-    });
-  });
-
-  it('then a running lesson (the live bar says so), then the next, then nothing', () => {
-    const next = lesson();
-    expect(nowState({ unrecorded: [], next }, { running: true, later: none })).toEqual({ kind: 'running' });
-    expect(nowState({ unrecorded: [], next }, { running: false, later: none })).toEqual({ kind: 'next', lesson: next });
-    expect(nowState({ unrecorded: [], next: null }, { running: false, later: none })).toEqual({ kind: 'none' });
-    expect(nowState(null, { running: false, later: none })).toEqual({ kind: 'none' });
-  });
-
+describe('lessonKey', () => {
   it('keys a lesson by its series and date', () => {
     expect(lessonKey(lesson())).toBe(`sch-1:${TODAY}`);
   });

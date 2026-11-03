@@ -14,9 +14,9 @@ appId: ${APP_ID}
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-student|dashboard-parent)'
+      id: home-band
     timeout: 30000
-# Home, Tutoring (the default for a tutor or admin), and a student's dashboard.
+# Home (Phase 66: the member home, no money for anyone).
 - runFlow:
     when:
       notVisible:

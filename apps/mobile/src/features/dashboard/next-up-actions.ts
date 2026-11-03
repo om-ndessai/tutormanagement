@@ -1,10 +1,10 @@
 // What the Home "Next up" card offers (ux-audit F-6, #43): the tutor's main job, starting the lesson
 // that is about to happen, from where they already are. Pure, so the rules are tested without a
 // device. Nothing here carries money: the card sits on the Tutoring tab.
-import { parseClockTime, type UpcomingSession } from '@tmi/shared';
+import { parseClockTime, START_LEAD_MINUTES, type UpcomingSession } from '@tmi/shared';
 
-/** How long before its start a lesson may be started (or written up) from Home. */
-export const START_LEAD_MINUTES = 60;
+// Phase 66: one lead for web and app, the shared START_LEAD_MINUTES (15; it was 60 here).
+export { START_LEAD_MINUTES };
 
 type Occurrence = Pick<
   UpcomingSession,
@@ -20,8 +20,8 @@ type Occurrence = Pick<
   Partial<Pick<UpcomingSession, 'locations' | 'location'>>;
 
 /**
- * True while the lesson is "at hand": today on the organization's clock, from an hour before its
- * start until its end. (The upcoming list drops a lesson once it has ended.)
+ * True while the lesson is "at hand": today on the organization's clock, from START_LEAD_MINUTES before
+ * its start until its end. (The upcoming list drops a lesson once it has ended.)
  */
 export function lessonAtHand(occurrence: Occurrence, today: string, nowMinutes: number): boolean {
   if (occurrence.cancellation || occurrence.occurs_on !== today) return false;

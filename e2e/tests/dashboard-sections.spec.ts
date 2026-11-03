@@ -12,7 +12,7 @@ import { visible } from '../support/ui.js';
 test.describe('the Tutoring tab’s sections', () => {
   test('an admin sees the four sections in order, tight and aligned', async ({ as }) => {
     const admin = await as('admin');
-    await admin.goto('/');
+    await admin.goto('/dashboard');
 
     const panel = admin.getByRole('tabpanel');
     await expect(panel.getByRole('heading', { name: 'Recent Activity' })).toBeVisible();
@@ -34,7 +34,7 @@ test.describe('the Tutoring tab’s sections', () => {
 
   test('the carousel leads with the next lesson and pulls in five more', async ({ as }) => {
     const admin = await as('admin');
-    await admin.goto('/');
+    await admin.goto('/dashboard');
 
     const sessions = admin.getByRole('region', { name: 'Tutoring Sessions' });
     await expect(sessions.getByRole('link', { name: /^Next session:/ })).toBeVisible();
@@ -50,7 +50,7 @@ test.describe('the Tutoring tab’s sections', () => {
 
   test('progress shows at most five students, each charted, and links to the rest', async ({ as }) => {
     const admin = await as('admin');
-    await admin.goto('/');
+    await admin.goto('/dashboard');
 
     const cards = admin.getByTestId('progress-spotlight-card');
     await expect(cards.first()).toBeVisible();
@@ -89,7 +89,7 @@ test.describe('the Tutoring tab’s sections', () => {
     try {
       for (const who of ['admin', 'tutor'] as const) {
         const page = await as(who);
-        await page.goto('/');
+        await page.goto('/dashboard');
         await expect(page.getByRole('heading', { name: 'Recent Activity' })).toBeVisible();
         await page.waitForLoadState('networkidle');
         const text = await page.getByRole('tabpanel').innerText();
@@ -118,7 +118,7 @@ test.describe('the Tutoring tab’s sections', () => {
       expect(taught.has(card.student.user_id)).toBe(true);
     }
 
-    await tutor.goto('/');
+    await tutor.goto('/dashboard');
     const sessions = tutor.getByRole('region', { name: 'Tutoring Sessions' });
     await expect(sessions.getByRole('link', { name: /^Next session:/ })).toBeVisible();
     await expect(sessions.getByText('Sanjay Patel')).toHaveCount(0);

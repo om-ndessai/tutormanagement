@@ -1,5 +1,5 @@
 # Phase 50, the main path: a space allowed Assessment alone. Ines (admin and parent, `assess`) lands
-# on the space home -- the Assessment home -- with Home and More alone in the bar, a menu without
+# on the member home (Phase 66) -- with the Assessment home -- with Home and More alone in the bar, a menu without
 # anything of Tutoring's or Quest's, and a create sheet of Start an assessment and adding people.
 # Changes nothing.
 appId: ${APP_ID}
@@ -20,12 +20,13 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
+# Phase 66: the member home; the Assessment home is in Ines's first section ("Practice").
 - extendedWaitUntil:
     visible:
-      id: space-home
+      id: home-band
     timeout: 15000
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: assess-home-students
     timeout: 15000
 - assertVisible:

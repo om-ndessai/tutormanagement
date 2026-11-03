@@ -10,7 +10,7 @@ test.describe('the dashboard tabs', () => {
   test('both halves are reachable, and the tab survives a reload', async ({ as }) => {
     const admin = await as('admin');
 
-    await admin.goto('/');
+    await admin.goto('/dashboard');
     await expect(admin.getByRole('tab', { name: /Tutoring/ })).toBeVisible();
     await expect(admin.getByRole('tab', { name: /Finance/ })).toBeVisible();
 
@@ -63,7 +63,7 @@ test.describe('the dashboard tabs', () => {
     }
 
     // Their own columns are on the screen, the institute's are not.
-    await tutor.goto('/?tab=finance');
+    await tutor.goto('/dashboard?tab=finance');
     await expect(tutor.getByRole('columnheader', { name: 'Earned' })).toBeVisible();
     await expect(tutor.getByRole('columnheader', { name: 'Billed' })).toHaveCount(0);
   });
@@ -90,7 +90,7 @@ test.describe('the dashboard tabs', () => {
       );
     }
 
-    await admin.goto('/?tab=finance');
+    await admin.goto('/dashboard?tab=finance');
     const button = admin.getByRole('button', { name: '1099-NEC' }).first();
     await expect(button).toBeVisible();
     await button.click();

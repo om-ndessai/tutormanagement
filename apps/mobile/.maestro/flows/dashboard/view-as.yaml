@@ -1,5 +1,5 @@
 # The admin's "view as" (Priya): find Alex in the people sheet, see his tutor dashboard exactly as
-# he does under a "Viewing as" banner, and come back to her own. Then the Finance tab's tutor
+# he does under a "Viewing as" banner (More → Dashboard since Phase 66), and come back to her own. Then the Finance tab's tutor
 # card opens that tutor's own Finance tab, as on the web.
 appId: ${APP_ID}
 tags:
@@ -13,8 +13,16 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
+# Phase 66: the eye is on More → Dashboard, never on Home.
+- assertNotVisible:
+    id: dashboard-view-as
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: tabs-tutoring
+    timeout: 20000
 - assertNotVisible:
     id: view-as-banner
 - tapOn:
@@ -50,7 +58,7 @@ tags:
 - assertVisible: "Alex Chen's dashboard"
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: tabs-tutoring
     timeout: 15000
 # Alex holds one role here: no role chips under the banner. His tutor view has Student Reflections,
 # and no Finish write-up: a draft is its author's alone.
@@ -62,8 +70,6 @@ tags:
     id: session-money
 - assertNotVisible:
     id: home-finish-write-up
-- assertNotVisible:
-    id: home-greeting
 - takeScreenshot: view-as-alex
 - scrollUntilVisible:
     element:
@@ -81,30 +87,14 @@ tags:
     notVisible:
       id: view-as-banner
     timeout: 10000
-# Her own Home again: greeted by name (by the heading, or her Now card's -- Phase 43).
-- extendedWaitUntil:
-    visible: 'Good (morning|afternoon|evening), Priya'
-    timeout: 15000
+# Her own dashboard again, with her own roles as chips (Phase 66: on the page).
 - assertNotVisible: "Alex Chen's dashboard"
-# Her own roles are chosen in the account sheet (UI upgrades U6), and only once she is back.
-- assertNotVisible:
-    id: dashboard-role-admin
-- tapOn:
-    id: account-button
 - extendedWaitUntil:
     visible:
       id: dashboard-role-admin
-    timeout: 10000
+    timeout: 15000
 - assertVisible:
     id: dashboard-role-tutor
-- runFlow:
-    file: ../../subflows/dismiss-sheet.yaml
-    env:
-      SHEET: screen-account
-- extendedWaitUntil:
-    notVisible:
-      id: screen-account
-    timeout: 10000
 # From Finance: a tutor's payment card opens their Finance tab.
 - tapOn:
     id: tabs-finance
@@ -140,5 +130,5 @@ tags:
     timeout: 10000
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: tabs-tutoring
     timeout: 15000

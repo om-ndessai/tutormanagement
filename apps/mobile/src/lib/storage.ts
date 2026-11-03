@@ -27,6 +27,8 @@ export const STORAGE_KEYS = {
   celebrated: 'tmi.celebrated',
   /** The finished lessons the tutor's Now card has celebrated here (Phase 43): `<schedule id>:<date>` keys, the last 200. */
   lessonsCelebrated: 'tmi.lessonsCelebrated',
+  /** Phase 66: the Next up items put off with "Later" today, per space (`nextUpKey`s and the date only). */
+  homeLater: 'tmi.homeLater',
   /**
    * Phase 63 (P10): what a guest's phone remembers -- their grade, the free questions it has played
    * (question ids), best scores and tiles played (tile codes), and when the sign-up offer was last

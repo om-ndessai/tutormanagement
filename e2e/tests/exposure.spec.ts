@@ -200,6 +200,13 @@ test.describe('what each non-admin can see', () => {
       await read('/api/curricula');
       await read('/api/sessions/active');
 
+      // R29 (Phase 66): the member home takes no person -- `?user_id` changes nothing -- and carries no money.
+      await read('/api/home');
+      const home = await get(page, '/api/home');
+      if (JSON.stringify(home).match(/cents|amount|balance/i)) problems.push('R29: money on the member home');
+      const asked = await get(page, `/api/home?user_id=${alexId}`);
+      if (JSON.stringify(asked) !== JSON.stringify(home)) problems.push('R29: ?user_id changed the member home');
+
       // R17 (Phase 38): a submitted Assessment reaches the student's audience as a row, but its
       // PDF -- which carries the answers -- only the student's current tutors and the admins.
       const started = await unwrap<any>(

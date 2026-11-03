@@ -1,14 +1,74 @@
-// "Later" on the Now card (Phase 43): the lessons put off for the rest of this app session. Held in
-// memory only, so the card comes back the next time the app is started; never stored, never sent.
-import { useSyncExternalStore } from 'react';
+// "Later" on Next up (Phase 66, H2; Phase 43's Now card before it): the items put off for the rest of
+// TODAY on this phone, per space. Kept in the phone's preferences (`tmi.homeLater`) as `nextUpKey`s with
+// the date, so a restart keeps them and the next day starts clean; never sent. Ported in spirit from
+// apps/web/src/features/home/api.ts (readPutOff / putOff, localStorage per space and day).
+import { useEffect, useSyncExternalStore } from 'react';
 
-let later: ReadonlySet<string> = new Set();
+import { readPref, STORAGE_KEYS, writePref } from '@/lib/storage';
+
+interface Stored {
+  day: string;
+  /** Space slug → the keys put off that day. */
+  spaces: Record<string, string[]>;
+}
+
+let stored: Stored = { day: '', spaces: {} };
+let hydrated = false;
+let hydrating: Promise<void> | null = null;
 const listeners = new Set<() => void>();
+const EMPTY: ReadonlySet<string> = new Set();
+let cache = new Map<string, ReadonlySet<string>>();
 
-export function putOff(key: string): void {
-  if (later.has(key)) return;
-  later = new Set([...later, key]);
+function notify() {
+  cache = new Map();
   listeners.forEach((listener) => listener());
+}
+
+/** Reads the phone's list once; a bad or missing value reads as nothing put off. */
+function hydrate(): Promise<void> {
+  if (hydrated) return Promise.resolve();
+  hydrating ??= (async () => {
+    try {
+      const raw = await readPref(STORAGE_KEYS.homeLater);
+      const value = raw ? (JSON.parse(raw) as Partial<Stored>) : null;
+      if (value && typeof value.day === 'string' && value.spaces && typeof value.spaces === 'object') {
+        // Anything put off in this session before the read wins over nothing.
+        if (!stored.day) stored = { day: value.day, spaces: value.spaces as Record<string, string[]> };
+      }
+    } catch {
+      // Not readable: nothing is put off.
+    }
+    hydrated = true;
+    notify();
+  })();
+  return hydrating;
+}
+
+function keysFor(space: string, day: string): ReadonlySet<string> {
+  if (stored.day !== day) return EMPTY;
+  const id = `${space}|${day}`;
+  let set = cache.get(id);
+  if (!set) {
+    set = new Set(stored.spaces[space] ?? []);
+    cache.set(id, set);
+  }
+  return set;
+}
+
+/** Puts one Next up item off for the rest of `day` in `space`. */
+export function putOff(space: string | undefined, day: string, key: string): void {
+  const slug = space ?? '';
+  const spaces = stored.day === day ? { ...stored.spaces } : {};
+  const list = spaces[slug] ?? [];
+  if (list.includes(key)) return;
+  spaces[slug] = [...list, key];
+  stored = { day, spaces };
+  notify();
+  try {
+    void writePref(STORAGE_KEYS.homeLater, JSON.stringify(stored));
+  } catch {
+    // Not saved: "Later" lasts until the app is restarted.
+  }
 }
 
 function subscribe(listener: () => void) {
@@ -18,12 +78,18 @@ function subscribe(listener: () => void) {
   };
 }
 
-/** The keys (`lessonKey`) put off with "Later" since the app started. */
-export function usePutOff(): ReadonlySet<string> {
-  return useSyncExternalStore(subscribe, () => later);
+/** The keys put off today in this space (re-read when the date changes). */
+export function usePutOff(space: string | undefined, day: string): ReadonlySet<string> {
+  useEffect(() => {
+    void hydrate();
+  }, []);
+  return useSyncExternalStore(subscribe, () => keysFor(space ?? '', day));
 }
 
 /** Tests only. */
 export function resetPutOff(): void {
-  later = new Set();
+  stored = { day: '', spaces: {} };
+  hydrated = true;
+  hydrating = null;
+  notify();
 }

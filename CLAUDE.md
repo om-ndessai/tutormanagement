@@ -552,6 +552,22 @@ from before. Decisions are `platform.access_*` on the platform log. Both platfor
 release (owner, 2026-11-03); it sits beside the sign-up switch below, which still decides whether anyone may
 sign up at all.
 
+**One member home, one Next up** (Phase 66, `docs/member-home-plan.md` H1-H4, H9, H11). `/` (the app's Home tab)
+is the same home for every member, built from the same blocks: the band (the guest band, slimmer: greeting,
+space, one line for the hat that leads), ONE **Next up** card, at most three quick actions (`quickActionsFor`), and
+a section per hat. Hats exist only with content -- tutor (a pairing in force), office (an admin of a space that is
+not personal), parent (a live child here), learner (a student, or anyone who plays where there is no Tutoring) --
+and someone with none gets the one their roles imply, empty; hats with something today come first
+(`orderHats`). Next up is `chooseNextUp(nextUpCandidates(home, extras))` in shared `home.ts`, a fixed priority,
+time-bound first (a lesson just ended and not recorded, a lesson starting within `START_LEAD_MINUTES`, a change
+to a child's lesson, a game invite, reviews...); "Later" puts one off for the day on the device; nothing else on
+the page moves. Everything comes from one read, `GET /api/home` (`repositories/member-home.ts`), which takes no
+person and carries no money (R29); the office part is memoised 60 s per space; `/home/tutor` (Phase 43) stays,
+gated to Tutoring. The role dashboards, with Tutoring and Finance, moved to `/dashboard` (web menu "Dashboard",
+the app's More → Dashboard), and the tour now starts on the home's blocks. Lessons of the last
+`UNRECORDED_LOOKBACK_DAYS` (7) scheduled and never recorded are flagged under "To record", for the tutor and the
+office; Record opens `SessionFormDialog` prefilled from the schedule (`fromSchedule`).
+
 **Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
 `docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
 else is the web. Platform admins set, for the web portal and the app separately, which providers besides

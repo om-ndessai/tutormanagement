@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 
 import { renderWithProviders } from '@/test/render';
 import { resetCelebratedLessons } from './celebrated-lessons';
-import { resetPutOff } from './later';
+import { CelebrateCard } from './now-card';
 import { TutorNow } from './tutor-now';
 
 jest.mock('expo-router', () => ({
@@ -23,9 +23,6 @@ jest.mock('@/features/teaching/api', () => ({
   useActiveSession: () => ({ data: { data: { mine: mockActive.current } } }),
 }));
 const mockHome = { current: null as TutorHome | null };
-jest.mock('./api', () => ({
-  useTutorHome: () => ({ data: mockHome.current ? { data: mockHome.current } : undefined, refetch: jest.fn() }),
-}));
 
 const TODAY = '2026-10-20';
 const PLACE = {
@@ -90,7 +87,6 @@ function allText(): string {
 
 beforeEach(() => {
   mockActive.current = null;
-  resetPutOff();
   resetCelebratedLessons();
   (router.navigate as jest.Mock).mockClear();
   // 3:12 PM in New York (UTC-4).
@@ -98,28 +94,24 @@ beforeEach(() => {
 });
 afterEach(() => jest.useRealTimers());
 
-describe('TutorNow', () => {
+describe('TutorNow and the CelebrateCard', () => {
   it('shows nothing for someone who teaches nobody', async () => {
     mockHome.current = { part_of_day: 'afternoon', unrecorded: [], next: null, brief: null };
-    await renderWithProviders(<TutorNow />);
+    await renderWithProviders(<TutorNow now={mockHome.current!} />);
     expect(screen.queryByTestId('home-now')).toBeNull();
   });
 
-  it('celebrates a finished lesson; Record it now opens the sheet filled in, Later puts it off', async () => {
-    mockHome.current = {
-      part_of_day: 'afternoon',
-      unrecorded: [{ ...NEXT, start_time: '13:30', end_time: '14:30', homework_last: 'pp. 48-53' }],
-      next: null,
-      brief: null,
-    };
-    await renderWithProviders(<TutorNow />);
+  it('celebrates a finished lesson; Record it now opens the sheet filled in, Later is the caller\'s', async () => {
+    const onLater = jest.fn();
+    const lesson = { ...NEXT, start_time: '13:30', end_time: '14:30', homework_last: 'pp. 48-53' };
+    await renderWithProviders(<CelebrateCard lesson={lesson} today={TODAY} onLater={onLater} />);
     expect(screen.getByTestId('home-now-celebrate-title')).toHaveTextContent(
       'Yay! You completed one more lesson with Sofia',
     );
     expect(screen.getByTestId('home-now-celebrate-detail')).toHaveTextContent(
       "That's 24 together since August. It ended at 2:30 PM. Record it while it's fresh.",
     );
-    await fireEvent.press(screen.getByTestId('home-now-record'));
+    await fireEvent.press(screen.getByTestId('next-up-action'));
     expect(router.navigate).toHaveBeenCalledWith({
       pathname: '/record-as-planned',
       params: {
@@ -134,16 +126,24 @@ describe('TutorNow', () => {
       },
     });
     await act(async () => {
-      await fireEvent.press(screen.getByTestId('home-now-later'));
+      await fireEvent.press(screen.getByTestId('next-up-later'));
     });
-    expect(screen.queryByTestId('home-now-celebrate')).toBeNull();
+    expect(onLater).toHaveBeenCalled();
     expect(allText()).not.toMatch(/\$/);
+  });
+
+  it('hides the card (not the brief) when Next up already shows that lesson', async () => {
+    mockHome.current = { part_of_day: 'afternoon', unrecorded: [], next: NEXT, brief: BRIEF };
+    await renderWithProviders(<TutorNow now={mockHome.current} hideCard />);
+    expect(screen.queryByTestId('home-now-next')).toBeNull();
+    expect(screen.getByTestId('home-brief')).toBeTruthy();
   });
 
   it('the next lesson: the message, the four brief cards, the notes hidden until tapped', async () => {
     mockHome.current = { part_of_day: 'afternoon', unrecorded: [], next: NEXT, brief: BRIEF };
-    await renderWithProviders(<TutorNow />);
-    expect(screen.getByTestId('home-now-greeting')).toHaveTextContent('Good afternoon, Alex');
+    await renderWithProviders(<TutorNow now={mockHome.current!} />);
+    // Home's band greets; the card does not (never twice on one screen).
+    expect(screen.queryByTestId('home-now-greeting')).toBeNull();
     expect(screen.getByTestId('home-now-headline')).toHaveTextContent(
       "Sofia's lesson is today at 4:30 PM, in 1 h 18 min",
     );
@@ -165,7 +165,7 @@ describe('TutorNow', () => {
   it('offers Start from 15 minutes before, with the student and mode chosen', async () => {
     jest.setSystemTime(new Date(`${TODAY}T20:20:00Z`)); // 4:20 PM
     mockHome.current = { part_of_day: 'afternoon', unrecorded: [], next: NEXT, brief: BRIEF };
-    await renderWithProviders(<TutorNow />);
+    await renderWithProviders(<TutorNow now={mockHome.current!} />);
     await fireEvent.press(screen.getByTestId('home-now-start'));
     expect(router.navigate).toHaveBeenCalledWith({
       pathname: '/start-lesson',
@@ -176,7 +176,7 @@ describe('TutorNow', () => {
   it('shows no Now card while a lesson runs, but keeps the brief', async () => {
     mockActive.current = { id: 'live-1' };
     mockHome.current = { part_of_day: 'afternoon', unrecorded: [], next: NEXT, brief: BRIEF };
-    await renderWithProviders(<TutorNow />);
+    await renderWithProviders(<TutorNow now={mockHome.current!} />);
     expect(screen.queryByTestId('home-now-next')).toBeNull();
     expect(screen.getByTestId('home-brief')).toBeTruthy();
   });
@@ -188,7 +188,7 @@ describe('TutorNow', () => {
       next: { ...NEXT, occurs_on: '2026-10-21', start_time: '08:00', end_time: '09:00' },
       brief: { ...BRIEF, homework: { assigned: null, status_before: null }, next_topic: null, assessments: [] },
     };
-    await renderWithProviders(<TutorNow />);
+    await renderWithProviders(<TutorNow now={mockHome.current!} />);
     expect(screen.getByTestId('home-now-headline')).toHaveTextContent("Sofia's lesson is tomorrow at 8:00 AM");
     expect(screen.getByTestId('home-brief-homework-text')).toHaveTextContent('No homework was set last time.');
     expect(screen.getByTestId('home-brief-topic-none')).toHaveTextContent('No plan yet');

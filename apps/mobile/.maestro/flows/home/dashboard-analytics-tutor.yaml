@@ -11,17 +11,16 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
-- extendedWaitUntil:
-    visible:
-      id: tabs-tutoring
-    timeout: 20000
+# Phase 66: the member home -- no figures, no tabs, no Recent Activity.
 - assertNotVisible:
-    id: home-figures
+    id: stat-students
+- assertNotVisible:
+    id: tabs-tutoring
 - scrollUntilVisible:
     element:
-      id: progress-spotlight-card
+      id: home-tutor-week
     direction: DOWN
 - scroll
 - scroll

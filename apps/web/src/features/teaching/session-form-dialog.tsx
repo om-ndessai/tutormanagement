@@ -94,6 +94,7 @@ export function SessionFormDialog({
   existing,
   draft = null,
   showMoney = true,
+  fromSchedule = null,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -108,6 +109,18 @@ export function SessionFormDialog({
    * uses with the student beside them: the preview then shows the length only.
    */
   showMoney?: boolean;
+  /**
+   * Phase 66 (H9): a scheduled lesson being recorded from the home ("Record it now"): its pairing,
+   * date, times and mode fill the form, instead of today at 16:00-17:00.
+   */
+  fromSchedule?: {
+    tutor_user_id: string;
+    student_user_id: string;
+    occurs_on: string;
+    start_time: string;
+    end_time: string;
+    mode: SessionMode;
+  } | null;
 }) {
   const isEdit = existing !== null;
   const isDraft = draft !== null;
@@ -210,6 +223,21 @@ export function SessionFormDialog({
       fillWriteUp(draft.write_up);
       setMyRating(draft.assessment?.rating ?? null);
       setMyAssessment(draft.assessment?.body ?? '');
+    } else if (fromSchedule) {
+      const match = assignments.find(
+        (a) => a.tutor_user_id === fromSchedule.tutor_user_id && a.student_user_id === fromSchedule.student_user_id,
+      );
+      setAssignmentId(match?.id ?? '');
+      setOccurredOn(fromSchedule.occurs_on);
+      setStartedAt(fromSchedule.start_time);
+      setEndedAt(fromSchedule.end_time);
+      setMode(fromSchedule.mode);
+      setNotes('');
+      setGoalRating(null);
+      setTopicRatings(new Map());
+      fillWriteUp(null);
+      setMyRating(null);
+      setMyAssessment('');
     } else {
       setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
       setOccurredOn(todayIso());
@@ -227,6 +255,15 @@ export function SessionFormDialog({
     // stomp on what the user has typed when the query refetches.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, existing, draft]);
+
+  // The pairings may arrive after the form opens from the home: pick the scheduled one then.
+  useEffect(() => {
+    if (!open || !fromSchedule || assignmentId) return;
+    const match = assignments.find(
+      (a) => a.tutor_user_id === fromSchedule.tutor_user_id && a.student_user_id === fromSchedule.student_user_id,
+    );
+    if (match) setAssignmentId(match.id);
+  }, [open, fromSchedule, assignmentId, assignments]);
 
   function fillWriteUp(writeUp: TutoringSession['write_up']) {
     setPlanned(writeUp?.planned ?? '');

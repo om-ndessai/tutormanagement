@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { CompassIcon, EyeIcon, Loader2Icon, XIcon } from 'lucide-react';
 import { DASHBOARD_ROLE_LABELS, featureOn, type UserRole } from '@tmi/shared';
 
@@ -15,8 +15,6 @@ import {
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useDashboard } from '@/features/dashboard/api';
-import { AssessmentHome } from '@/features/dashboard/assessment-home';
-import { PlayFavorites, PlayHome, WaitingForYou } from '@/features/play/play-home';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { UserPicker } from '@/features/dashboard/user-picker';
 import { RoleIcons } from '@/features/users/role-icon';
@@ -40,28 +38,11 @@ import {
  * never calls /dashboard (which answers 403 there).
  */
 export function DashboardPage() {
-  const { organization, user } = useAuth();
-  // Phase 62 (P6): the Play home leads where Quest is on -- every member of a space without
-  // Tutoring, and students anywhere. Staff dashboards are unchanged.
-  const play = featureOn(organization, 'quest');
-  if (!featureOn(organization, 'tutoring')) return <AssessmentHome lead={play ? <PlayHome /> : null} />;
-  return (
-    <>
-      {play && user?.roles.includes('student') ? (
-        <div className="mx-auto mb-6 max-w-6xl">
-          <PlayHome />
-        </div>
-      ) : play ? (
-        <>
-          <PlayFavorites compact />
-          <div className="mx-auto max-w-6xl empty:hidden [&>*]:mb-4">
-            <WaitingForYou />
-          </div>
-        </>
-      ) : null}
-      <TutoringDashboard />
-    </>
-  );
+  const { organization } = useAuth();
+  // Phase 66: the member home (/) leads; this page is the role dashboards, Tutoring's. A space
+  // without Tutoring has none: its home is everything.
+  if (!featureOn(organization, 'tutoring')) return <Navigate to="/" replace />;
+  return <TutoringDashboard />;
 }
 
 function TutoringDashboard() {

@@ -16,8 +16,14 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
+# Phase 66: the role dashboards are More → Dashboard.
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: tabs-finance
+    timeout: 20000
 - tapOn:
     id: tabs-finance
 - extendedWaitUntil:

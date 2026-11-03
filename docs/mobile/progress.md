@@ -524,6 +524,23 @@ native rebuild of both dev builds, so build only while the devices are free.
   green; `platform/access` green on iOS and Android once Xcode's first launch was run; a row at the top of
   Settings (mode, who waits, Review) jumps past the tiles to the block.
 
+## Portal Phase 66 — one home, one Next up (parity: the web half is built by the lead)
+
+- [x] 77. Mobile: H1-H4, H9, H11 of `docs/member-home-plan.md` (build-log entry 75) -- the member home for every
+  space on `GET /api/home`: the band (`home-band`, `home-greeting`, `home-strip`), ONE Next up (`next-up`,
+  `next-up-<kind>`, `next-up-action`, `next-up-later`; Later for the day on this phone, `tmi.homeLater`), quick
+  actions (`quick-<action>`), a section per hat (`home-section-<hat>`: To record, Needs you, the children's cards
+  or `home-children-empty`, Practice with the Play and Assessment homes); no money on Home. The role dashboards
+  moved to More → Dashboard (`/analytics`, every role where Tutoring is on, role chips on the page, the eye);
+  `AnalyticsScreen` and `SpaceHomeScreen` removed; `QuestLanding` kept until Phase 67; `TodayCard` →
+  `ScheduleTodayCard`; one start lead (shared `START_LEAD_MINUTES`, 15). Built 2026-11-03: typecheck, lint
+  (0 errors), Jest and export green; flows `home/member-home-*` and the dashboard flows through
+  `subflows/open-dashboard.yaml`. `npm run smoke -- mobile`: Android 10/10; iOS 9/10, `play/play-home` red
+  on a section taller than the screen (scroll fixed, then green on iOS and Android in the reset run of
+  `flows/home` + `play/play-home`). `flows/home` (16 flows, resets): green on both but `next-up-cancel`
+  (both) -- run 15:50-16:30 ET on a Tuesday, when the seed's own Sofia-with-Alex lesson (4-5 PM) is the next
+  card with Start; a clock collision of the seed, wider under the old 60-minute lead; to rerun after 5 PM.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

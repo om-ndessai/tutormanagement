@@ -351,7 +351,7 @@ test.describe('cancelling one lesson of a schedule', () => {
     );
 
     try {
-      await alex.goto('/');
+      await alex.goto('/dashboard');
       const sessions = alex.getByRole('region', { name: 'Tutoring Sessions' });
       const cancelled = sessions.getByRole('link', { name: /^Cancelled session:/ }).first();
       await expect(cancelled).toBeVisible();

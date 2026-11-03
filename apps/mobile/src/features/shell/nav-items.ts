@@ -98,14 +98,14 @@ export const NAV_ITEMS: NavItem[] = [
     tourId: 'nav-quest',
   },
   {
-    // Phase 43 (the owner, 2026-10-20): the Analytics figures, which left Home. For the roles that
-    // had them on Home: tutors and the office.
+    // Phase 43 (the owner, 2026-10-20): the Analytics figures, which left Home. Since Phase 66 the whole
+    // role dashboard (Tutoring and Finance, the admin's "view as"), for every role where Tutoring is on:
+    // Home carries no money, so a parent's balances and a student's figures are here.
     href: '/analytics',
     set: 'tutoring',
     label: 'Dashboard',
     icon: 'view-dashboard-outline',
-    keywords: ['analytics', 'figures', 'counts', 'stats', 'overview'],
-    roles: ['admin', 'tutor'],
+    keywords: ['analytics', 'figures', 'counts', 'stats', 'overview', 'balance', 'finance'],
     tourId: 'nav-analytics',
   },
   {

@@ -1,4 +1,4 @@
-# The tutor's dashboard, Tutoring tab (Alex, tutor in chmi): the Now card and brief (Phase 43), then
+# The tutor's dashboard, Tutoring tab (Alex, tutor in chmi; More → Dashboard since Phase 66): Analytics, then
 # Tutoring Sessions, Student Reflections and Progress -- the carousel narrowed to his own lessons,
 # and no money anywhere on the tab, which a tutor may have open beside a student.
 appId: ${APP_ID}
@@ -19,15 +19,24 @@ tags:
 # card may greet him instead of the heading (never both); no figures on Home.
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
-- assertVisible: 'Good (morning|afternoon|evening), Alex'
+# Phase 66: the role dashboards are More → Dashboard.
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+    timeout: 20000
 - assertVisible:
     id: home-today
 - assertVisible:
     id: tabs-tutoring
-- assertNotVisible:
-    id: home-figures
+- assertVisible:
+    id: stat-students
+- assertVisible:
+    id: stat-sessions
+- assertVisible:
+    id: stat-sessions-running
 - scrollUntilVisible:
     element:
       id: dashboard-section-tutoring-sessions
@@ -69,29 +78,13 @@ tags:
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'
-# Recent Activity left Home (Phase 43): nothing follows Progress.
-- scroll
-- assertNotVisible:
-    id: dashboard-section-recent-activity
+# Recent Activity closes the page.
+- scrollUntilVisible:
+    element:
+      id: dashboard-section-recent-activity
+    direction: DOWN
+    visibilityPercentage: 1
 - takeScreenshot: dashboard-tutor-bottom
 - assertNotVisible:
     id: session-money
-- assertNotVisible: '.*\$[0-9].*'
-# His figures (counts only) are on More → Dashboard (Phase 43).
-- tapOn:
-    id: tab-more
-- extendedWaitUntil:
-    visible:
-      id: screen-more
-    timeout: 10000
-- tapOn:
-    id: more-nav-analytics
-- extendedWaitUntil:
-    visible:
-      id: stat-students
-    timeout: 20000
-- assertVisible:
-    id: stat-sessions
-- assertVisible:
-    id: stat-sessions-running
 - assertNotVisible: '.*\$[0-9].*'

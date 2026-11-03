@@ -148,9 +148,10 @@ describe('Finish write-up (UI upgrades U6)', () => {
 });
 
 describe("Home's Next up card (#43)", () => {
-  // 3:30 PM on the organization's clock (New York, UTC-4): a 4 PM lesson today is at hand.
+  // 3:50 PM on the organization's clock (New York, UTC-4): a 4 PM lesson today is at hand (Phase 66: within
+  // the shared START_LEAD_MINUTES, 15).
   function atHand(overrides = {}) {
-    jest.setSystemTime(new Date(`${TODAY}T19:30:00Z`));
+    jest.setSystemTime(new Date(`${TODAY}T19:50:00Z`));
     mockUpcoming.mockReturnValue({
       data: {
         pages: [

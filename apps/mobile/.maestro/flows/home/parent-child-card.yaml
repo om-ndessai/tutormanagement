@@ -1,5 +1,5 @@
 # A parent's Home is centred on the child (UI upgrades U6). Maria (tutor, and Sofia's parent) turns
-# Home to her parent dashboard: Today, the figures, then Sofia's card -- her next lesson, this month
+# her parent dashboard (More → Dashboard since Phase 66): Today, the figures, then Sofia's card -- her next lesson, this month
 # in words with a small bar, and a coral celebration for the topic she mastered yesterday (seeded).
 # The celebration shows once per topic on this phone: after a relaunch (the phone's storage kept)
 # it is gone. No tutor's pay on the card. clean-sessions.js removes the seeded lesson.
@@ -20,25 +20,20 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: tabs-tutoring
+      id: home-band
     timeout: 30000
-- tapOn:
-    id: account-button
+# Phase 66: the role dashboards are More → Dashboard, with her roles as chips on the page.
+- runFlow: ../../subflows/open-dashboard.yaml
 - extendedWaitUntil:
     visible:
       id: dashboard-role-parent
-    timeout: 10000
-- waitForAnimationToEnd:
-    timeout: 3000
+    timeout: 15000
 - tapOn:
     id: dashboard-role-parent
 - extendedWaitUntil:
     visible:
       id: dashboard-parent
     timeout: 15000
-- assertVisible:
-    id: home-greeting
-    text: 'Good (morning|afternoon|evening), Maria'
 - assertVisible:
     id: home-today
 - extendedWaitUntil:
@@ -87,16 +82,14 @@ tags:
     file: ../../subflows/dev-client-load.yaml
 - extendedWaitUntil:
     visible:
-      id: tabs-tutoring
+      id: home-band
     timeout: 30000
-- tapOn:
-    id: account-button
+# Phase 66: the role dashboards are More → Dashboard, with her roles as chips on the page.
+- runFlow: ../../subflows/open-dashboard.yaml
 - extendedWaitUntil:
     visible:
       id: dashboard-role-parent
-    timeout: 10000
-- waitForAnimationToEnd:
-    timeout: 3000
+    timeout: 15000
 - tapOn:
     id: dashboard-role-parent
 - extendedWaitUntil:

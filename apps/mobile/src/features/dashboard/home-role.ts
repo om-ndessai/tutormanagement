@@ -53,7 +53,7 @@ const choiceListeners = new Set<ChoiceListener>();
  */
 export function chooseHomeRole(role: UserRole): void {
   if (router.canGoBack()) router.back();
-  router.navigate({ pathname: '/dashboard', params: { role } });
+  router.navigate({ pathname: '/analytics', params: { role } });
   choiceListeners.forEach((listener) => listener(role));
 }
 

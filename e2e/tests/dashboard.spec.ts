@@ -8,7 +8,7 @@ test.describe('dashboards', () => {
   // on the other. Each half is asserted where it now lives.
   test('an admin sees institute-wide counts and balances', async ({ as }) => {
     const admin = await as('admin');
-    await admin.goto('/');
+    await admin.goto('/dashboard');
 
     await expect(admin.getByText('Students', { exact: true })).toBeVisible();
     await expect(admin.getByText('Recent activity')).toBeVisible();
@@ -21,12 +21,12 @@ test.describe('dashboards', () => {
 
   test('a tutor sees their own students and earnings, not the institute', async ({ as }) => {
     const tutor = await as('tutor');
-    await tutor.goto('/');
+    await tutor.goto('/dashboard');
 
     await expect(tutor.getByRole('heading', { name: 'Tutoring Sessions' })).toBeVisible();
     await expect(tutor.getByRole('heading', { name: 'Progress', exact: true })).toBeVisible();
 
-    await tutor.goto('/?tab=finance');
+    await tutor.goto('/dashboard?tab=finance');
     await expect(tutor.getByText('Owed to you')).toBeVisible();
     // Institute-wide figures belong to the admin dashboard only, on either tab.
     await expect(tutor.getByText('Owed by families')).toHaveCount(0);
@@ -34,7 +34,7 @@ test.describe('dashboards', () => {
 
   test('a parent sees their children and what they owe', async ({ as }) => {
     const parent = await as('parent');
-    await parent.goto('/');
+    await parent.goto('/dashboard');
 
     await expect(parent.getByText('Your children')).toBeVisible();
     await expect(parent.getByText('Outstanding')).toBeVisible();
@@ -60,7 +60,7 @@ test.describe('dashboards', () => {
     expect(asStudent.data.tutors.length).toBeGreaterThan(0);
 
     // The switcher is offered in the UI because he holds more than one role.
-    await page.goto('/');
+    await page.goto('/dashboard');
     await expect(page.getByLabel('Dashboard role')).toBeVisible();
   });
 
@@ -91,7 +91,7 @@ test.describe('dashboards', () => {
 test.describe('viewing another dashboard', () => {
   test('an admin can search for a user and open their dashboard', async ({ as }) => {
     const page = await as('admin');
-    await page.goto('/');
+    await page.goto('/dashboard');
 
     await page.getByLabel('View dashboard as').click();
     await page.getByPlaceholder('Search by name or email').fill('lindqvist');
@@ -112,7 +112,7 @@ test.describe('viewing another dashboard', () => {
 
   test('searching by email works too, and clears back to your own', async ({ as }) => {
     const page = await as('admin');
-    await page.goto('/');
+    await page.goto('/dashboard');
 
     await page.getByLabel('View dashboard as').click();
     await page.getByPlaceholder('Search by name or email').fill(PEOPLE.student.email);

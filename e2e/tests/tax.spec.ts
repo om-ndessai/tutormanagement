@@ -93,14 +93,14 @@ test.describe('tax documents', () => {
 
     // The tutor's own dashboard asks them to hand it over, and says how not to.
     // It leads the finance tab, which is where their tax affairs live.
-    await tutor.goto('/?tab=finance');
+    await tutor.goto('/dashboard?tab=finance');
     await expect(tutor.getByText('Action needed: your SSN')).toBeVisible();
     await expect(tutor.getByText(/Never send it through this portal/)).toBeVisible();
 
     // The admin's lists them as work to chase, beside the year-end documents --
     // with the action right there, because having to go and find the tutor's
     // record to tick it off is what made this impossible to use.
-    await admin.goto('/?tab=finance');
+    await admin.goto('/dashboard?tab=finance');
     // The panel's heading, not the text: each tutor's row in the year-end
     // list also says "SSN not on file", so a bare getByText matched as many
     // times as that list happened to have loaded -- once locally, three
@@ -200,7 +200,7 @@ test.describe('the organization TIN', () => {
       'setting the TIN',
     );
 
-    await admin.goto('/?tab=finance');
+    await admin.goto('/dashboard?tab=finance');
     await admin.getByRole('button', { name: '1099-NEC' }).first().click();
     const dialog = admin.getByRole('dialog');
     await expect(dialog.getByLabel(/Payer.s TIN/)).toHaveValue('47-2019388');
@@ -220,7 +220,7 @@ test.describe('producing a 1099', () => {
     // Explicitly with nothing on file.
     await admin.request.post(`/api/users/${tutorId}/ssn-receipt`, { data: { received: false } });
 
-    await admin.goto('/?tab=finance');
+    await admin.goto('/dashboard?tab=finance');
     const row = admin
       .locator('li')
       .filter({ hasText: PEOPLE.tutor.name })
@@ -238,7 +238,7 @@ test.describe('producing a 1099', () => {
     const admin = await as('admin');
     const lastYear = new Date().getFullYear() - 1;
 
-    await admin.goto('/?tab=finance');
+    await admin.goto('/dashboard?tab=finance');
     await admin.getByLabel('Tax year').click();
     await admin.getByRole('option', { name: String(lastYear) }).click();
 

@@ -249,7 +249,7 @@ test.describe('the student’s reflection on a lesson', () => {
 
       // Her tutor's Tutoring tab flags the pace.
       const alex = await as('tutor');
-      await alex.goto('/');
+      await alex.goto('/dashboard');
       const section = alex.getByRole('region', { name: 'Student Reflections' });
       const row = section.getByRole('listitem').filter({ hasText: 'Page two took ages.' });
       await expect(row).toContainText(PEOPLE.student.name);
@@ -265,7 +265,7 @@ test.describe('the student’s reflection on a lesson', () => {
 
     try {
       const maria = await as('parentTutor');
-      await maria.goto('/?role=parent');
+      await maria.goto('/dashboard?role=parent');
       // Named by date and time, so another lesson of hers today cannot be taken for it.
       await maria
         .getByRole('button', { name: `Reflect with Sofia on the ${lesson.occurred_on} 7:00 AM lesson` })

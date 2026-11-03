@@ -12,8 +12,14 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-student
+      id: home-band
     timeout: 30000
+# Phase 66: the role dashboards are More → Dashboard.
+- runFlow: ../../subflows/open-dashboard.yaml
+- extendedWaitUntil:
+    visible:
+      id: dashboard-student
+    timeout: 20000
 - assertNotVisible:
     id: tabs-finance
 - assertVisible:
@@ -22,10 +28,7 @@ tags:
     id: stat-time-tutored
 - assertVisible:
     id: stat-tutors
-# UI upgrades U6: the greeting and Today first, then her own card: the next lesson and this month.
-- assertVisible:
-    id: home-greeting
-    text: 'Good (morning|afternoon|evening), Sofia'
+# UI upgrades U6: Today first (Phase 66: the greeting is Home's), then her own card: the next lesson and this month.
 - assertVisible:
     id: home-today
 - assertVisible:

@@ -1,4 +1,4 @@
-# Phase 43 (the owner, 2026-10-20): Analytics left Home for the Dashboard page under More, and
+# Phase 43 (the owner, 2026-10-20) and Phase 66: the dashboards left Home for the Dashboard page under More, and
 # Recent Activity left every Home (the Activity page stays under More). Priya (admin and tutor in
 # chmi): Home has neither; More → Dashboard is the whole dashboard (since 2026-10-28), the office's or, by its Tutor chip, her own teaching's; Search
 # finds the page too.
@@ -13,25 +13,21 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: '(tabs-tutoring|dashboard-parent|dashboard-student)'
+      id: home-band
     timeout: 30000
-- extendedWaitUntil:
-    visible:
-      id: tabs-tutoring
-    timeout: 20000
-- assertNotVisible:
-    id: home-figures
+# Phase 66: Home is the member home -- no figures, no Recent Activity, no Tutoring/Finance tabs.
 - assertNotVisible:
     id: stat-students
+- assertNotVisible:
+    id: tabs-tutoring
 - scrollUntilVisible:
     element:
-      id: progress-spotlight-card
-    direction: DOWN
+      id: home-section-office
+    visibilityPercentage: 1
 - scroll
 - scroll
 - assertNotVisible:
     id: dashboard-section-recent-activity
-- assertNotVisible: 'Recent Activity'
 - takeScreenshot: home-admin-bottom
 # More → Dashboard.
 - tapOn:
@@ -75,6 +71,8 @@ tags:
     element:
       id: dashboard-role-tutor
     direction: UP
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: dashboard-role-tutor
 - extendedWaitUntil:

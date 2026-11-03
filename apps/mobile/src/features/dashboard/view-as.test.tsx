@@ -65,7 +65,7 @@ describe('role chips in the account sheet (UI upgrades U6)', () => {
     });
     await fireEvent.press(screen.getByTestId('dashboard-role-parent'));
     expect(mockBack).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith({ pathname: '/dashboard', params: { role: 'parent' } });
+    expect(mockNavigate).toHaveBeenCalledWith({ pathname: '/analytics', params: { role: 'parent' } });
     expect(chosen).toHaveBeenCalledWith('parent');
     expect(mockSetParams).not.toHaveBeenCalled();
     unsubscribe();

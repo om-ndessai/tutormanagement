@@ -1,6 +1,6 @@
-# Phase 43 (the owner, 2026-10-20): Recent Activity is on no one's Home. A parent's Home (Anita)
-# shows her children, balances, recent lessons and payments -- and no Recent Activity, and no
-# Dashboard page in More (its figures are for tutors and the office). The Activity page stays.
+# Phase 43 (the owner, 2026-10-20): Recent Activity is on no one's Home. A parent's Home (Anita) shows
+# her children and no Recent Activity; since Phase 66 her dashboard (balances, lessons, payments) is
+# More → Dashboard, also without Recent Activity. The Activity page stays.
 appId: ${APP_ID}
 tags:
   - feature
@@ -12,10 +12,39 @@ tags:
       ORG: chmi
 - extendedWaitUntil:
     visible:
-      id: dashboard-parent
+      id: home-band
     timeout: 30000
+# Phase 66: her Home is the member home -- her children, no Recent Activity, no money.
 - assertNotVisible:
     id: home-now
+- scrollUntilVisible:
+    element:
+      id: home-section-parent
+    visibilityPercentage: 1
+- scroll
+- assertNotVisible:
+    id: dashboard-section-recent-activity
+- assertNotVisible: 'Recent Activity'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: home-parent-bottom
+# More has the Dashboard (since Phase 66, for every role where Tutoring is on) and Activity.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-analytics
+- assertVisible:
+    id: more-nav-activity
+# Her dashboard: balances, payments -- and still no Recent Activity.
+- tapOn:
+    id: more-nav-analytics
+- extendedWaitUntil:
+    visible:
+      id: dashboard-parent
+    timeout: 20000
 - scrollUntilVisible:
     element:
       id: parent-payments-action
@@ -23,15 +52,3 @@ tags:
 - scroll
 - assertNotVisible:
     id: dashboard-section-recent-activity
-- assertNotVisible: 'Recent Activity'
-- takeScreenshot: home-parent-bottom
-- tapOn:
-    id: tab-more
-- extendedWaitUntil:
-    visible:
-      id: screen-more
-    timeout: 10000
-- assertNotVisible:
-    id: more-nav-analytics
-- assertVisible:
-    id: more-nav-activity

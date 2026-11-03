@@ -58,13 +58,13 @@ describe('visibleNavItems', () => {
     expect(labels(['admin'], true)).toContain('Space');
   });
 
-  it('lists the Dashboard (the Analytics figures, Phase 43) for tutors and admins only; Home is the tab', () => {
+  it('lists the Dashboard (the role dashboards, Phase 66) for every role; Home is the tab', () => {
     const dashboard = (roles: string[]) =>
       visibleNavItems(roles, {}).filter((item) => item.label === 'Dashboard' && !item.tab);
     expect(dashboard(['admin'])).toHaveLength(1);
     expect(dashboard(['tutor', 'parent'])[0]).toMatchObject({ href: '/analytics', tourId: 'nav-analytics' });
-    expect(dashboard(['parent'])).toHaveLength(0);
-    expect(dashboard(['student'])).toHaveLength(0);
+    expect(dashboard(['parent'])).toHaveLength(1);
+    expect(dashboard(['student'])).toHaveLength(1);
     expect(visibleNavItems(['parent'], {}).find((item) => item.tourId === 'nav-dashboard')?.label).toBe(
       'Home',
     );

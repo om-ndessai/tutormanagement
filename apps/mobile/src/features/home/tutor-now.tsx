@@ -1,58 +1,34 @@
-// The top of a tutor's Tutoring tab (Phase 43): the Now card, then the brief for the next lesson.
-// Also an admin's who tutors (the owner, 2026-10-20), for their own pairings. Someone who teaches
-// nobody gets an empty answer and sees nothing here. Never while an admin views someone else: the
-// route answers for the reader alone.
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useRef } from 'react';
+// The tutor's next lesson (Phase 43): the Now card's personal message, then the brief for that lesson.
+// Since Phase 66 it sits in Home's "Your teaching" section, fed by the member home's `tutor.now` (one read,
+// `GET /api/home`); a finished lesson to record is Next up's (CelebrateCard there), so this shows only
+// the next lesson -- and not its card when Next up already shows that lesson (then Next up is that card).
+// Under Home's band, which greets already, the card does not greet. No money.
+import type { TutorHome } from '@tmi/shared';
 import { View } from 'react-native';
 
 import { useOrgClock } from '@/features/dashboard/home-data';
 import { useActiveSession } from '@/features/teaching/api';
 import { space } from '@/theme/tokens';
-import { useTutorHome } from './api';
 import { BriefCards } from './brief-cards';
-import { usePutOff } from './later';
-import { CelebrateCard, NextCard } from './now-card';
-import { nowState, type NowState } from './now-model';
+import { NextCard } from './now-card';
 
-/** The Now card's state for the reader, read once by Home (the greeting) and once by the card. */
-export function useNowState(enabled = true): { state: NowState; home: ReturnType<typeof useTutorHome> } {
-  const home = useTutorHome(enabled);
-  const active = useActiveSession();
-  const later = usePutOff();
-  const running = Boolean(active.data?.data.mine);
-  return { state: nowState(enabled ? home.data?.data : null, { running, later }), home };
-}
-
-export function TutorNow() {
-  const { state, home } = useNowState();
+export function TutorNow({ now, hideCard = false }: { now: TutorHome; hideCard?: boolean }) {
   const clock = useOrgClock();
-  const data = home.data?.data;
-
-  // Read again whenever Home comes back into view (the first focus is the mount's own read).
-  const focused = useRef(false);
-  const refetch = home.refetch;
-  useFocusEffect(
-    useCallback(() => {
-      if (focused.current) void refetch();
-      focused.current = true;
-    }, [refetch]),
-  );
-
-  if (!data) return null;
+  const active = useActiveSession();
+  const running = Boolean(active.data?.data.mine);
+  if (!now.next) return null;
   const card =
-    state.kind === 'celebrate' ? (
-      <CelebrateCard lesson={state.lesson} today={clock.day} />
-    ) : state.kind === 'next' ? (
+    hideCard || running ? null : (
       <NextCard
-        lesson={state.lesson}
-        brief={data.brief}
-        part={data.part_of_day}
+        lesson={now.next}
+        brief={now.brief}
+        part={now.part_of_day}
         today={clock.day}
         nowMinutes={clock.minutesOfDay}
+        greet={false}
       />
-    ) : null;
-  const brief = data.next && data.brief ? <BriefCards lesson={data.next} brief={data.brief} today={clock.day} /> : null;
+    );
+  const brief = now.brief ? <BriefCards lesson={now.next} brief={now.brief} today={clock.day} /> : null;
   if (!card && !brief) return null;
   return (
     <View testID="home-now" style={{ gap: space.md }}>
