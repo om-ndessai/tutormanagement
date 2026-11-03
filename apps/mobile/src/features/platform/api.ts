@@ -1,10 +1,15 @@
 // Ported from apps/web/src/features/platform/api.ts @ 1132322 (Phase 50's useUpdateOrganizationFeatures
 // @ 2471d84; Phase 59's useSetPaymentModel @ f96b984, working tree, which replaced Phase 54's businesses)
 // Phase 62's sign-in switches @ 0e3ec7a (working tree); Phase 62's Play settings (P5) @ 0e3ec7a (working tree);
-// Phase 63's guest play (P16) @ 0e3ec7a (working tree).
+// Phase 63's guest play (P16) @ 0e3ec7a (working tree); Phase 65's sign-up access @ 6d53d01 (written beside
+// the web's, built in parallel: same routes and query key).
 // Mobile: the logo upload takes the picked image's bytes (apiClient.putBytes) instead of a DOM File.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
+  AccessConsoleResponse,
+  AccessDecision,
+  AccessListEntryInput,
+  AccessSettings,
   AddOrganizationAdminInput,
   ApiOk,
   CreateOrganizationInput,
@@ -289,5 +294,50 @@ export function useSaveGuestPool() {
     mutationFn: (input: GuestPoolUpdate) =>
       apiClient.put<ApiOk<GuestPoolConsoleResponse>>(`/platform/guest/pools/${encodeURIComponent(input.level_id)}`, input),
     onSuccess: () => void queryClient.invalidateQueries({ queryKey: guestKey }),
+  });
+}
+
+/**
+ * Phase 65 (docs/access-approval-plan.md, A1-A6): who may sign up -- the mode, the platform's list, and
+ * the accounts waiting for (or lately given) a decision. Every write answers the whole console.
+ */
+export const accessKey = ['platform', 'access'] as const;
+
+export function useAccessConsole() {
+  return useQuery({ queryKey: accessKey, queryFn: () => apiClient.get<ApiOk<AccessConsoleResponse>>('/platform/access') });
+}
+
+export function useSaveAccessMode() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (settings: AccessSettings) => apiClient.put<ApiOk<AccessConsoleResponse>>('/platform/access', settings),
+    onSuccess: (result) => queryClient.setQueryData(accessKey, result),
+  });
+}
+
+export function useAddAccessEntry() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (entry: AccessListEntryInput) =>
+      apiClient.post<ApiOk<AccessConsoleResponse>>('/platform/access/list', entry),
+    onSuccess: (result) => queryClient.setQueryData(accessKey, result),
+  });
+}
+
+export function useRemoveAccessEntry() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiClient.delete<ApiOk<AccessConsoleResponse>>(`/platform/access/list/${encodeURIComponent(id)}`),
+    onSuccess: (result) => queryClient.setQueryData(accessKey, result),
+  });
+}
+
+export function useDecideAccess() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ userId, access }: { userId: string } & AccessDecision) =>
+      apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(userId)}`, { access }),
+    onSuccess: (result) => queryClient.setQueryData(accessKey, result),
   });
 }

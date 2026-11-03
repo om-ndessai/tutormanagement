@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Phase 53: who may sign in to the TEST portal (tutoring-test-db's invited_users). Never production:
+ * Phase 53, moved in Phase 65: the TEST platform's sign-up list (tutoring-test-db's access_list, the list
+ * the console's Sign-up access keeps; used while the mode is Pre-approved). Never production:
  * every command runs with --env tutoring-test, whose account the wrangler config pins to TEST, and
  * scripts/check-test-account.mjs runs first.
  *
@@ -26,19 +27,19 @@ const id = "lower(hex(randomblob(16)))";
 let sql;
 switch (action) {
   case 'list':
-    sql = 'SELECT COALESCE(email, provider || ":" || subject) AS who, note, added_at FROM invited_users ORDER BY added_at';
+    sql = 'SELECT COALESCE(email, provider || ":" || subject) AS who, note, added_at FROM access_list ORDER BY added_at';
     break;
   case 'add':
     if (!value) throw new Error('add needs an email or a pattern');
-    sql = `INSERT INTO invited_users (id, email, note) VALUES (${id}, ${q(value.trim().toLowerCase())}, ${q(note)})`;
+    sql = `INSERT INTO access_list (id, email, note) VALUES (${id}, ${q(value.trim().toLowerCase())}, ${q(note)})`;
     break;
   case 'add-google':
     if (!value) throw new Error('add-google needs a Google account id (sub)');
-    sql = `INSERT INTO invited_users (id, provider, subject, note) VALUES (${id}, 'google', ${q(value.trim())}, ${q(note)})`;
+    sql = `INSERT INTO access_list (id, provider, subject, note) VALUES (${id}, 'google', ${q(value.trim())}, ${q(note)})`;
     break;
   case 'remove':
     if (!value) throw new Error('remove needs what was added');
-    sql = `DELETE FROM invited_users WHERE lower(email) = ${q(value.trim().toLowerCase())} OR subject = ${q(value.trim())}`;
+    sql = `DELETE FROM access_list WHERE lower(email) = ${q(value.trim().toLowerCase())} OR subject = ${q(value.trim())}`;
     break;
   default:
     console.error('usage: npm run test:invite -- list | add <email|pattern> [note] | add-google <sub> [note] | remove <email|pattern|sub>');

@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useSignInSettings, useUpdateSignInSetting } from './api';
 import { PlaySettingsSection } from './play-settings-section';
 import { GuestSettingsSection } from './guest-settings-section';
+import { AccessJump } from './access-section';
 
 type Switchable = (typeof SWITCHABLE_PROVIDERS)[number];
 
@@ -53,6 +54,10 @@ export function PlatformSettingsPage() {
         title="Settings"
         description="Platform-wide switches. Changes reach every visitor within a minute."
       />
+      {/* Phase 65: who may sign up, and who waits; Review jumps to it in Guest play. */}
+      <div className="mb-6">
+        <AccessJump />
+      </div>
       <section aria-labelledby="sign-in-heading" className="space-y-3">
         <div>
           <h2 id="sign-in-heading" className="text-base font-semibold">

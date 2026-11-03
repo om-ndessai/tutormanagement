@@ -5,7 +5,7 @@
 //
 // Mobile: on the console's Settings screen under Play; the settings are checked with the shared
 // guestSettingsSchema before they are sent; a level's pool opens beneath its chip, its questions as
-// plain text (mathToText), with "Use the suggestion".
+// plain text (mathToText), with "Use the suggestion". Phase 65: Sign-up access is its last block.
 import {
   TILE_LEVEL_WORDS,
   guestSettingsSchema,
@@ -26,6 +26,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
+import { AccessSettingsSection } from './access-settings-section';
 import { useGuestConsole, useGuestPoolConsole, useSaveGuestPool, useSaveGuestSettings } from './api';
 
 const levelWords = (level: string) => TILE_LEVEL_WORDS[level as QuestionBankLevelId] ?? level;
@@ -119,6 +120,8 @@ function GuestEditor({ data }: { data: GuestConsoleResponse }) {
       <Text variant="titleMedium" accessibilityRole="header" style={{ fontWeight: '600' }}>
         Guest play
       </Text>
+      {/* Phase 65: who may sign up, at the top of the guest play section (owner, 2026-11-03), as on the web. */}
+      <AccessSettingsSection />
       {!data.address_allows ? (
         <Text testID="guest-settings-address-off" variant="bodyMedium" style={muted}>
           This address does not offer guest play (its GUEST_PLAY is off), whatever is set here.
@@ -212,6 +215,7 @@ function GuestEditor({ data }: { data: GuestConsoleResponse }) {
           {level ? <PoolEditor level={level} /> : null}
         </View>
       </Panel>
+
     </View>
   );
 }

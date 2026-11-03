@@ -1,0 +1,242 @@
+# Phase 65 (docs/access-approval-plan.md, A4, A6, A7): who may sign up. Nav (a platform admin) opens the
+# console's Settings and, under Guest play's Sign-up access, chooses Post-approved. A newcomer then signs up
+# from the guest home's sign-up sheet (with sign-in off, the developer path) and, instead of the "You're in."
+# splash, meets the plain refusal screen: "Waiting for approval", with Contact us and Back. Back is the
+# guest home. Nav, signed in again, sees the gear's count, finds them under Waiting for approval and
+# approves them; they move to Recently decided. The newcomer can then sign in, into their own space.
+# Self-cleaning, before and after: the mode back to Open, the newcomer approved (so it may be deleted)
+# and deleted with its personal space, and guest play off.
+appId: ${APP_ID}
+tags:
+  - feature
+onFlowStart:
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: access.pending@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: access.pending@example.com }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: access.pending@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: access.pending@example.com }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+---
+# 1. The platform admin chooses Post-approved.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- tapOn:
+    id: platform-settings
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-settings
+    timeout: 10000
+# The row at the top of Settings jumps past the tiles to Sign-up access.
+- extendedWaitUntil:
+    visible:
+      id: access-jump-review
+    timeout: 10000
+- assertVisible: 'Sign-up access: Open'
+- tapOn:
+    id: access-jump-review
+- scrollUntilVisible:
+    element:
+      id: access-mode-postapproved
+    centerElement: true
+    timeout: 20000
+- assertVisible:
+    id: access-mode-description
+    text: 'Anyone may sign up.'
+- tapOn:
+    id: access-mode-postapproved
+- extendedWaitUntil:
+    visible:
+      id: access-mode-description
+      text: 'Anyone may sign up, then waits until a platform admin approves them.'
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: access-waiting-empty
+    centerElement: true
+- takeScreenshot: access-console-postapproved
+
+# 2. A newcomer signs up from the guest home, and waits.
+- runScript:
+    file: ../../scripts/guest-play.js
+    env: { ACTION: 'on' }
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 30000
+- tapOn:
+    id: guest-band-signup
+- extendedWaitUntil:
+    visible:
+      id: signup-sheet
+    timeout: 10000
+- tapOn:
+    id: signup-sheet-email
+- inputText: 'access.pending@example.com'
+- tapOn:
+    id: signup-sheet-continue
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 10000
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Pia Pending'
+# The return key puts the keyboard away (guest-signup.yaml: hideKeyboard on iOS taps the Terms link).
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: Enter
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - hideKeyboard
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-6
+- tapOn:
+    id: signup-year
+- tapOn:
+    id: signup-year-search
+- inputText: '1990'
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: signup-year-1990
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: signup-accept
+- tapOn:
+    id: signup-accept
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- scrollUntilVisible:
+    element:
+      id: signup-submit
+- tapOn:
+    id: signup-submit
+# Not the splash: the refusal screen, in the server's words.
+- extendedWaitUntil:
+    visible:
+      id: screen-access-refused
+    timeout: 15000
+- assertVisible:
+    id: access-refused-title
+    text: 'Waiting for approval'
+- assertVisible:
+    id: access-refused-message
+    text: 'Thanks, Pia. Your access is waiting for approval.*'
+- assertNotVisible:
+    id: signup-splash
+- assertVisible:
+    id: access-refused-contact
+- takeScreenshot: access-refused-pending
+- tapOn:
+    id: access-refused-back
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 15000
+
+# 3. The platform admin approves them.
+- runScript:
+    file: ../../scripts/guest-play.js
+    env: { ACTION: 'off' }
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: find, EMAIL: access.pending@example.com }
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+# The gear counts who waits.
+- assertVisible:
+    id: platform-settings-waiting
+    text: '1'
+- tapOn:
+    id: platform-settings
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-settings
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: access-jump-waiting
+      text: '1 waiting for approval'
+    timeout: 10000
+- tapOn:
+    id: access-jump-review
+- scrollUntilVisible:
+    element:
+      id: access-waiting-${output.access.userId}
+    centerElement: true
+    timeout: 20000
+- assertVisible: 'Pia Pending'
+- assertVisible: 'access.pending@example.com'
+- assertVisible: 'Adult · Developer sign-in · signed up .*'
+- takeScreenshot: access-console-waiting
+- tapOn:
+    id: access-approve-${output.access.userId}
+- extendedWaitUntil:
+    visible:
+      id: access-decided-${output.access.userId}
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: access-revoke-${output.access.userId}
+    centerElement: true
+- assertVisible: 'Approved by Nav Dessai.*'
+- assertNotVisible:
+    id: access-waiting-${output.access.userId}
+- takeScreenshot: access-console-approved
+
+# 4. Approved: they sign in, into their own space.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: access.pending@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertNotVisible:
+    id: screen-access-refused

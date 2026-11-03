@@ -1,5 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
+  AccessConsoleResponse,
+  AccessListEntryInput,
+  AccessSettings,
   AddOrganizationAdminInput,
   ApiOk,
   CreateOrganizationInput,
@@ -269,4 +272,34 @@ export function useSaveGuestPool() {
       apiClient.put<ApiOk<GuestPoolConsoleResponse>>(`/platform/guest/pools/${encodeURIComponent(input.level_id)}`, input),
     onSuccess: () => void queryClient.invalidateQueries({ queryKey: guestKey }),
   });
+}
+
+/** Phase 65: sign-up access -- the mode, the platform's list, and the decisions on sign-ups. */
+export const accessKey = ['platform', 'access'] as const;
+
+export function useAccessConsole() {
+  return useQuery({ queryKey: accessKey, queryFn: () => apiClient.get<ApiOk<AccessConsoleResponse>>('/platform/access') });
+}
+
+function useAccessMutation<I>(call: (input: I) => Promise<ApiOk<AccessConsoleResponse>>) {
+  const queryClient = useQueryClient();
+  return useMutation({ mutationFn: call, onSuccess: (result) => queryClient.setQueryData(accessKey, result) });
+}
+
+export function useSaveAccessMode() {
+  return useAccessMutation((settings: AccessSettings) => apiClient.put<ApiOk<AccessConsoleResponse>>('/platform/access', settings));
+}
+
+export function useAddAccessEntry() {
+  return useAccessMutation((entry: AccessListEntryInput) => apiClient.post<ApiOk<AccessConsoleResponse>>('/platform/access/list', entry));
+}
+
+export function useRemoveAccessEntry() {
+  return useAccessMutation((id: string) => apiClient.delete<ApiOk<AccessConsoleResponse>>(`/platform/access/list/${encodeURIComponent(id)}`));
+}
+
+export function useDecideAccess() {
+  return useAccessMutation((input: { userId: string; access: 'approved' | 'declined' }) =>
+    apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(input.userId)}`, { access: input.access }),
+  );
 }

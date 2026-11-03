@@ -690,4 +690,8 @@ requirements P1-P20.
   and a new privacy version. Guest play on `tutoring` and the demo, not `tmi-portal`.
 - **Phase 64 — habit.** A weekly streak, badges and My progress, the Daily set and its share grid, beat your
   best.
+- **Phase 65 — who may sign up.** The console's Sign-up access: Open, Pre-approved (a list the platform
+  admins keep, in both databases) or Post-approved (a sign-up waits for a platform admin's approval;
+  pending and declined accounts are told so). Only self sign-ups are gated. The test Worker's own list moves
+  into it. Plan: `docs/access-approval-plan.md`, requirements A1-A9.
 

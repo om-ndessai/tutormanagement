@@ -117,6 +117,12 @@ export const AUDIT_ACTIONS = [
   'platform.play_updated',
   // Phase 63 (P16): guest play's settings and pools.
   'platform.guest_updated',
+  // Phase 65: sign-up access -- the mode, the list, and each decision on an account.
+  'platform.access_updated',
+  'platform.access_listed',
+  'platform.access_unlisted',
+  'platform.access_approved',
+  'platform.access_declined',
   // Phase 63 (P13): a newcomer's own space, made at sign-up.
   'account.personal_space',
   'person.updated_by_platform',
@@ -262,6 +268,11 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'platform.sign_in_updated': 'Sign-in settings changed',
   'platform.play_updated': 'Play settings changed',
   'platform.guest_updated': 'Guest play changed',
+  'platform.access_updated': 'Sign-up access changed',
+  'platform.access_listed': 'Added to the sign-up list',
+  'platform.access_unlisted': 'Removed from the sign-up list',
+  'platform.access_approved': 'Access approved',
+  'platform.access_declined': 'Access declined',
   'account.personal_space': 'Own space made at sign-up',
   'person.updated_by_platform': 'Shared details updated by the platform',
   'person.sign_in_unpinned': 'Google sign-in unpinned',

@@ -49,3 +49,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS invited_users_login ON invited_users (provider
 -- The owner, who runs the platform console on test too.
 INSERT INTO invited_users (id, email, note) VALUES ('owner', 'ndessai@gmail.com', 'the owner')
   ON CONFLICT DO NOTHING;
+
+-- Phase 65 (docs/access-approval-plan.md, A8): the test platform's sign-up list is the console's
+-- (access_list). invited_users holds it across a reset (db/test-keep-list.sql copies it there first);
+-- here it goes back. Run once at the Phase 65 release, this also moves the Phase 53 list over.
+INSERT OR IGNORE INTO access_list (id, email, provider, subject, note, added_at)
+  SELECT id, email, provider, subject, note, added_at FROM invited_users;

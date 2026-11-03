@@ -1,6 +1,7 @@
 import { getCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
 import { ApiError } from '../lib/errors.js';
+import { assertAccess } from '../lib/access.js';
 import { allowlistOn, assertPersonInvited, sameSecret } from '../lib/invited.js';
 import { SESSION_COOKIE, readSessionToken } from '../lib/session.js';
 import {
@@ -35,6 +36,8 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
     // is already fully open, so this grants nothing that was not available.
     const requested = c.req.header(DEV_USER_HEADER)?.trim();
     const person = await resolveBypassPerson(c.env, requested);
+    // Phase 65 (A5): a sign-up that waits, or was declined, is refused here too.
+    assertAccess(person);
     c.set('person', person);
     c.set('platformAdmin', person.platform_admin);
     c.set('impersonated', true);
@@ -51,6 +54,7 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
     const requested = c.req.header(DEV_USER_HEADER)?.trim();
     const person = requested ? await getPersonByEmail(c.env.DB, requested) : null;
     if (!person) throw new ApiError(404, 'not_found', `No live user matches ${DEV_USER_HEADER}.`);
+    assertAccess(person);
     c.set('person', person);
     c.set('platformAdmin', person.platform_admin);
     c.set('impersonated', true);
@@ -75,6 +79,8 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
   if (allowlistOn(c.env)) {
     await assertPersonInvited(c.env, person, await listIdentitySubjects(c.env.DB, person.id));
   }
+  // Phase 65 (A5): approving or revoking a self sign-up takes effect on its next request.
+  assertAccess(person);
 
   c.set('person', person);
   c.set('platformAdmin', person.platform_admin);

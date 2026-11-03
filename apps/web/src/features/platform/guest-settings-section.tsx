@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { MathText } from '@/features/question-bank/math-text';
 import { NotificationsSwitch } from '@/features/organizations/notifications-switch';
 import { ApiRequestError } from '@/lib/api-client';
+import { AccessSection } from './access-section';
 import { useGuestConsole, useGuestPoolConsole, useSaveGuestPool, useSaveGuestSettings } from './api';
 
 /**
@@ -39,6 +40,8 @@ export function GuestSettingsSection() {
 
   return (
     <div className="space-y-4" data-testid="guest-settings">
+      {/* Phase 65: who may sign up, in the guest play section (owner, 2026-11-03). */}
+      <AccessSection />
       {!data.address_allows && (
         <p className="bg-muted rounded-md px-3 py-2 text-sm">This address does not offer guest play (its GUEST_PLAY is off), whatever is set here.</p>
       )}

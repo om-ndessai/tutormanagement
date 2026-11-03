@@ -20,6 +20,7 @@ import { forgetQuestLandings } from '@/features/quest/quest-model';
 import { clearQuickActions } from '@/features/shell/quick-actions';
 import { endLiveSurface } from '@/features/teaching/live-surface';
 import { ToastProvider } from '@/components/toast';
+import { AccessRefusedScreen } from '@/features/auth/access-refused-screen';
 import { BootScreen } from '@/features/auth/boot-screen';
 import { navigationTheme } from '@/features/shell/navigation-theme';
 import { loadHapticsPreference } from '@/lib/haptics';
@@ -37,7 +38,7 @@ void SplashScreen.preventAutoHideAsync();
  * guards (the server picker, developer screens) is reachable from anywhere.
  */
 function RootNavigator() {
-  const { status, organization, platformAdmin } = useAuth();
+  const { status, organization, platformAdmin, accessRefusal, clearAccessRefusal } = useAuth();
   const theme = useAppTheme();
   // The heading face (UI upgrades U1). A failure to load falls back to the system font rather than
   // holding the splash.
@@ -75,6 +76,17 @@ function RootNavigator() {
   const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
   if (status === 'loading' || status === 'error' || !fontsReady) return <BootScreen />;
+
+  // Phase 65 (A4, A7): the server will not let this person in (yet). The refusal stands in for every
+  // screen -- the sign-up sheet included -- until Back, which lands afresh (the guest home or sign-in).
+  if (accessRefusal) {
+    return (
+      <NavigationThemeProvider value={navTheme}>
+        <StatusBar style={theme.dark ? 'light' : 'dark'} />
+        <AccessRefusedScreen code={accessRefusal.code} message={accessRefusal.message} onBack={clearAccessRefusal} />
+      </NavigationThemeProvider>
+    );
+  }
 
   return (
     <NavigationThemeProvider value={navTheme}>

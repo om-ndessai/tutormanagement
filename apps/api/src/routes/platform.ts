@@ -1,6 +1,11 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import {
+  ACCESS_MODE_LABELS,
+  accessDecisionSchema,
+  accessListEntrySchema,
+  accessSettingsSchema,
+  type AccessConsoleResponse,
   LOGO_KINDS,
   MAX_LOGO_BYTES,
   addOrganizationAdminSchema,
@@ -49,6 +54,17 @@ import {
   type QuestTile,
 } from '@tmi/shared';
 
+import {
+  addAccessListEntry,
+  decideAccess,
+  getAccessAccount,
+  getAccessSettings,
+  listAccessList,
+  listDecidedAccounts,
+  listWaitingAccounts,
+  putAccessSettings,
+  removeAccessListEntry,
+} from '../repositories/access.js';
 import type { AppEnv, Env } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { configuredProviders } from '../lib/identity.js';
@@ -846,6 +862,70 @@ export const platformRoutes = new Hono<AppEnv>()
   })
 
   /** Phase 63 (P16): guest play -- its settings, each level's pool size and the version. */
+  // Phase 65 (docs/access-approval-plan.md): sign-up access -- the mode, the list, the decisions.
+  .get('/access', async (c) => {
+    const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
+    return c.json(body);
+  })
+  .put('/access', zValidator('json', accessSettingsSchema), async (c) => {
+    const settings = c.req.valid('json');
+    const before = await getAccessSettings(c.env.DB, 0);
+    await putAccessSettings(c.env.DB, settings, c.get('person').id);
+    if (before.mode !== settings.mode) {
+      await recordAudit(c.env.DB, c.get('person'), 'platform', {
+        action: 'platform.access_updated',
+        description: `Sign-up access: ${ACCESS_MODE_LABELS[settings.mode]} (was ${ACCESS_MODE_LABELS[before.mode]}).`,
+        entity_type: 'platform',
+        entity_id: 'access',
+      });
+    }
+    const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
+    return c.json(body);
+  })
+  .post('/access/list', zValidator('json', accessListEntrySchema), async (c) => {
+    const entry = await addAccessListEntry(c.env.DB, c.req.valid('json'), c.get('person').id);
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.access_listed',
+      description: `Added ${describeAccessEntry(entry)} to the sign-up list.`,
+      entity_type: 'platform',
+      entity_id: 'access',
+    });
+    const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
+    return c.json(body, 201);
+  })
+  .delete('/access/list/:id', async (c) => {
+    const entry = await removeAccessListEntry(c.env.DB, c.req.param('id'));
+    if (!entry) throw ApiError.notFound('That entry is not on the list.');
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.access_unlisted',
+      description: `Removed ${describeAccessEntry(entry)} from the sign-up list.`,
+      entity_type: 'platform',
+      entity_id: 'access',
+    });
+    const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
+    return c.json(body);
+  })
+  .put('/access/accounts/:userId', zValidator('json', accessDecisionSchema), async (c) => {
+    const account = await getAccessAccount(c.env.DB, c.req.param('userId'));
+    if (!account) throw ApiError.notFound('No such sign-up.');
+    const { access } = c.req.valid('json');
+    if (account.access !== access) {
+      await decideAccess(c.env.DB, account.user_id, access, c.get('person').id);
+      await recordAudit(c.env.DB, c.get('person'), 'platform', {
+        action: access === 'approved' ? 'platform.access_approved' : 'platform.access_declined',
+        description:
+          access === 'approved'
+            ? `Approved ${account.full_name}'s access.`
+            : account.access === 'approved'
+              ? `Revoked ${account.full_name}'s access.`
+              : `Declined ${account.full_name}'s access.`,
+        entity_type: 'user',
+        entity_id: account.user_id,
+      });
+    }
+    const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
+    return c.json(body);
+  })
   .get('/guest', async (c) => {
     const body: ApiOk<GuestConsoleResponse> = { data: await guestConsole(c.env) };
     return c.json(body);
@@ -971,4 +1051,19 @@ async function signInStatus(env: Env): Promise<SignInSettingsResponse> {
       };
     }),
   };
+}
+
+/** Phase 65: what the console's Sign-up access section reads, all at once. */
+async function accessConsole(db: D1Database): Promise<AccessConsoleResponse> {
+  const [settings, list, waiting, decided] = await Promise.all([
+    getAccessSettings(db, 0),
+    listAccessList(db),
+    listWaitingAccounts(db),
+    listDecidedAccounts(db),
+  ]);
+  return { settings, list, waiting, decided };
+}
+
+function describeAccessEntry(entry: { email: string | null; provider: string | null }): string {
+  return entry.email ?? `a ${entry.provider ?? 'provider'} account`;
 }

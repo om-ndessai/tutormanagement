@@ -1,4 +1,4 @@
-import { ApiRequestError, apiClient, requestHeaders, setReauthenticator } from './api-client';
+import { ApiRequestError, apiClient, isAccessRefusal, requestHeaders, setReauthenticator } from './api-client';
 import { on } from './events';
 import { clearActiveOrg, setActiveOrg, withOrg } from './organization';
 import { toQueryString } from './query-string';
@@ -127,6 +127,24 @@ describe('api client', () => {
     const error = (await apiClient.get('/sessions').catch((caught: unknown) => caught)) as ApiRequestError;
     expect(error.code).toBe('feature_unavailable');
     expect(featureUnavailable).toHaveBeenCalledTimes(1);
+    off();
+  });
+
+  it('raises access-refused with the server\'s words on a 403 access refusal, and only then (Phase 65)', async () => {
+    const refused = jest.fn();
+    const off = on('access-refused', refused);
+    fetchMock.mockReturnValueOnce(
+      respond(403, { error: { code: 'access_pending', message: 'Your access is waiting for approval.' } }),
+    );
+    const error = (await apiClient.get('/auth/session').catch((caught: unknown) => caught)) as ApiRequestError;
+    expect(error.code).toBe('access_pending');
+    expect(isAccessRefusal(error)).toBe(true);
+    expect(refused).toHaveBeenCalledWith({ code: 'access_pending', message: 'Your access is waiting for approval.' });
+
+    fetchMock.mockReturnValueOnce(respond(403, { error: { code: 'forbidden', message: 'No.' } }));
+    const other = await apiClient.get('/sessions').catch((caught: unknown) => caught);
+    expect(isAccessRefusal(other)).toBe(false);
+    expect(refused).toHaveBeenCalledTimes(1);
     off();
   });
 

@@ -35,3 +35,16 @@ describe('.maestro/scripts/guest-play.js', () => {
     expect(new Set(origins)).toEqual(new Set(['http://localhost:8787']));
   });
 });
+
+const accessScript = readFileSync(join(__dirname, '../../.maestro/scripts/access.js'), 'utf8');
+
+describe('.maestro/scripts/access.js (Phase 65)', () => {
+  it('talks to the local Worker only', () => {
+    const origins = accessScript.match(/https?:\/\/[^'"/]+/g) ?? [];
+    expect(new Set(origins)).toEqual(new Set(['http://localhost:8787']));
+  });
+
+  it('puts the mode back to Open, the shared default', () => {
+    expect(accessScript).toContain("{ mode: 'open' }");
+  });
+});

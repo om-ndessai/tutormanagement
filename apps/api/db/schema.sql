@@ -39,6 +39,7 @@ DROP TABLE IF EXISTS platform_settings;
 DROP TABLE IF EXISTS guest_questions;
 DROP TABLE IF EXISTS consents;
 DROP TABLE IF EXISTS join_requests;
+DROP TABLE IF EXISTS access_list;
 DROP TABLE IF EXISTS platform_accounts;
 DROP TABLE IF EXISTS question_suggestions;
 DROP TABLE IF EXISTS shares;
@@ -2683,8 +2684,29 @@ CREATE TABLE platform_accounts (
   age_confirmed_at  TEXT NOT NULL,
   terms_version     TEXT NOT NULL,
   privacy_version   TEXT NOT NULL,
-  accepted_at       TEXT NOT NULL
+  accepted_at       TEXT NOT NULL,
+  -- Phase 65 (docs/access-approval-plan.md, A5): whether this self sign-up may use the platform. Rows
+  -- made before Phase 65 are approved; a sign-up while the console's mode is Post-approved waits.
+  -- Checked on every request with the person (people.ts SELECT_PERSON).
+  access            TEXT NOT NULL DEFAULT 'approved' CHECK (access IN ('approved', 'pending', 'declined')),
+  access_decided_at TEXT,
+  access_decided_by TEXT REFERENCES users (id) ON DELETE SET NULL
 );
+
+-- Phase 65 (A2): the platform's sign-up list, kept by platform admins in the console. Read while
+-- the mode is Pre-approved: a sign-up whose verified email (or a pattern of it, `*` and `?`) or
+-- provider account is not here is refused before anything is stored. No organization: the platform's.
+CREATE TABLE access_list (
+  id        TEXT PRIMARY KEY,
+  email     TEXT,
+  provider  TEXT CHECK (provider IN ('google', 'microsoft', 'apple', 'facebook')),
+  subject   TEXT,
+  note      TEXT,
+  added_by  TEXT REFERENCES users (id) ON DELETE SET NULL,
+  added_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  CHECK (email IS NOT NULL OR (provider IS NOT NULL AND subject IS NOT NULL))
+);
+CREATE INDEX platform_accounts_access_idx ON platform_accounts (access) WHERE access <> 'approved';
 
 -- Phase 52: asking to join a space with its code. The one root table that
 -- names somebody who is NOT a member of the organization -- that is what a

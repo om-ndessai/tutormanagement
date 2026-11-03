@@ -55,6 +55,7 @@ import {
 } from '../lib/facebook.js';
 import { OAUTH_COOKIE, clearedStateCookie, randomToken, readState, safeReturnTo, stateCookie } from '../lib/oauth-state.js';
 import { seal, unseal } from '../lib/seal.js';
+import { assertAccess, assertMaySignUp, signUpWaits } from '../lib/access.js';
 import { allowlistOn, assertInvited } from '../lib/invited.js';
 import { createSignupToken, readSignupToken } from '../lib/signup-token.js';
 import { orgIdFromRow } from '../lib/org.js';
@@ -335,6 +336,8 @@ async function completeSignIn(
         `Your ${label} account shares no verified email address. Sign up another way.`,
       );
     }
+    // Phase 65 (A3): while the console's mode is Pre-approved, only people on its list go on.
+    await assertMaySignUp(env.DB, { email: identity.email, provider: identity.provider, subject: identity.subject });
     // Phase 52: a newcomer. Nothing is written and nothing logged until they answer the age
     // question; the token carries who the provider says they are, for 15 minutes.
     const name = identity.name?.trim() || identity.email;
@@ -359,6 +362,9 @@ async function completeSignIn(
     });
     throw new ApiError(403, 'no_account', 'You are not authorized to access this portal. Please reach out to the administrator.');
   }
+
+  // Phase 65 (A4): a self sign-up that waits for approval, or was declined, gets no session.
+  if (!platformAdmin) assertAccess(person);
 
   try {
     await recordSignIn(env.DB, person.id, identity, options.revokeToken ?? null);
@@ -870,6 +876,10 @@ export const authRoutes = new Hono<AppEnv>()
     } else {
       throw ApiError.badRequest('Sign in with Google first.');
     }
+    // Phase 65 (A3): Pre-approved -- only people on the platform's list, refused before anything is stored.
+    await assertMaySignUp(c.env.DB, { email: claims.email, provider: claims.sub ? claims.provider : null, subject: claims.sub });
+    // Phase 65 (A4): Post-approved -- the account is made, and waits.
+    const waits = await signUpWaits(c.env.DB);
 
     const band = ageBandFor(input.birth_year, input.birth_month, new Date());
     if (band === 'under13') {
@@ -893,6 +903,7 @@ export const authRoutes = new Hono<AppEnv>()
         ageBand: band,
         termsVersion: input.terms_version,
         privacyVersion: input.privacy_version,
+        access: waits ? 'pending' : 'approved',
       });
     } catch (error) {
       if (isUniqueConstraintError(error)) throw ApiError.conflict('That address already has an account. Sign in instead.');
@@ -901,7 +912,7 @@ export const authRoutes = new Hono<AppEnv>()
     // On the platform log: the account was made. Never the age, never a birth date.
     await recordAudit(c.env.DB, person, 'platform', {
       action: 'account.created',
-      description: `${person.full_name} signed up`,
+      description: waits ? `${person.full_name} signed up and waits for approval` : `${person.full_name} signed up`,
       entity_type: 'user',
       entity_id: person.id,
     });
@@ -930,6 +941,8 @@ export const authRoutes = new Hono<AppEnv>()
       console.error('Personal space not made at sign-up', error);
     }
 
+    // Phase 65 (A4): waiting, they are told so, and get no session until a platform admin approves them.
+    assertAccess(person);
     if (isAuthEnabled(c.env)) {
       const token = await createSessionToken(person.id, c.env.SESSION_SECRET);
       c.header('Set-Cookie', sessionCookie(token, isProduction(c.env)));

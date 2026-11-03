@@ -512,6 +512,18 @@ native rebuild of both dev builds, so build only while the devices are free.
   (`guestTileName` / `guestLevelWords`). Built 2026-11-02: typecheck, lint (0 errors), Jest 165 suites / 1213 tests;
   `guest/*` (4, `guest-today` new) on the iOS simulator and the Android emulator (see parity.md).
 
+
+## Portal Phase 65 — who may sign up (parity: the web half is built by the lead)
+
+- [x] 76. Mobile: A6-A7 of `docs/access-approval-plan.md` -- the console's Sign-up access inside Guest play (the
+  three modes, the Pre-approved list, Waiting for approval with Approve / Decline, Recently decided with Revoke /
+  Approve, the waiting count on the console's gear) on `GET`/`PUT /api/platform/access` and its list and account
+  routes; and the refusal screen (`screen-access-refused`: Waiting for approval / Access not approved / Sign-up is
+  by invitation, the server's words, Contact us, Back) for any 403 `access_pending` / `access_declined` /
+  `not_on_list` -- the sign-up sheet shows it instead of the splash. Built 2026-11-03: typecheck, lint (0 errors), Jest 167 suites / 1232 tests, export
+  green; `platform/access` green on iOS and Android once Xcode's first launch was run; a row at the top of
+  Settings (mode, who waits, Review) jumps past the tiles to the block.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

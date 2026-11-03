@@ -66,6 +66,8 @@ const server = {
   known: new Set<string>(),
   signupRefusal: null as null | { status: number; code: string; message: string },
   withRequest: false,
+  /** Phase 65: a refusal of the person's access, from the sign-in route and from every guarded request. */
+  accessRefusal: null as null | { code: string; message: string },
   /** Phase 60: the person's memberships, when a test needs more than the one space. */
   memberships: null as null | { slug: string; name: string; status: 'active' | 'suspended'; is_default: boolean }[],
   calls: [] as { method: string; path: string; init: RequestInit }[],
@@ -94,6 +96,9 @@ function fakeFetch(url: string, init: RequestInit = {}) {
         brand: null,
       },
     });
+  }
+  if (path === '/auth/google' && server.accessRefusal) {
+    return json(403, { error: server.accessRefusal });
   }
   if (path === '/auth/google') {
     const body = JSON.parse((init.body as string | undefined) ?? '{}') as { signup?: boolean };
@@ -128,6 +133,7 @@ function fakeFetch(url: string, init: RequestInit = {}) {
     return Promise.resolve({ status: 204, ok: true, json: () => Promise.resolve(null) } as Response);
   }
   const devUser = headers['X-Dev-User'];
+  if (server.accessRefusal && (server.cookie || devUser)) return json(403, { error: server.accessRefusal });
   if (!server.authEnabled) {
     if (!devUser || !server.known.has(devUser))
       return json(404, { error: { code: 'not_found', message: 'No such person.' } });
@@ -202,6 +208,7 @@ beforeEach(async () => {
   server.known = new Set();
   server.signupRefusal = null;
   server.withRequest = false;
+  server.accessRefusal = null;
   server.memberships = null;
   server.calls = [];
   globalThis.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
@@ -539,5 +546,68 @@ describe('Phase 60: landing in the last space chosen (S4)', () => {
     await act(async () => auth.chooseOrganization('chmi'));
     await waitFor(() => expect(calls('/auth/enter')).toHaveLength(2));
     expect((calls('/auth/enter')[1]!.init.headers as Record<string, string>)['X-Organization']).toBe('chmi');
+  });
+});
+
+describe('Phase 65: sign-up access refused', () => {
+  const PENDING = { code: 'access_pending', message: 'Thanks, Sam. Your access is waiting for approval.' };
+
+  it('a sign-up that waits for approval: no persona kept, signed out, and the refusal to show', async () => {
+    server.authEnabled = false;
+    await mount();
+    await act(async () => auth.startDevSignup('sam.signup@example.com'));
+    server.signupRefusal = { status: 403, ...PENDING };
+
+    await act(async () => {
+      await expect(auth.completeSignup({ birth_year: 1990, birth_month: 6 })).rejects.toMatchObject({
+        code: 'access_pending',
+      });
+    });
+
+    expect(auth.accessRefusal).toEqual(PENDING);
+    expect(auth.pendingSignup).toBeNull();
+    expect(auth.status).toBe('unauthenticated');
+    expect(auth.error).toBeNull();
+    expect(calls('/auth/session')).toHaveLength(0);
+
+    await act(async () => auth.clearAccessRefusal());
+    expect(auth.accessRefusal).toBeNull();
+  });
+
+  it('a provider sign-in refused as not on the list shows the refusal, not an error line', async () => {
+    server.accessRefusal = { code: 'not_on_list', message: 'Sign-up is by invitation for now. Ask us to add you.' };
+    GoogleSignin.signIn.mockResolvedValue({ type: 'success', data: { idToken: 'id-token-1' } });
+    await mount();
+
+    await act(() => auth.signInWithGoogle());
+
+    expect(auth.status).toBe('unauthenticated');
+    expect(auth.accessRefusal?.code).toBe('not_on_list');
+    expect(auth.error).toBeNull();
+    expect(GoogleSignin.signOut).toHaveBeenCalled();
+  });
+
+  it('a revoked person is signed out on their next request, with the reason', async () => {
+    server.cookie = true;
+    await mount();
+    expect(auth.status).toBe('authenticated');
+
+    server.accessRefusal = { code: 'access_declined', message: "Your access wasn't approved." };
+    await act(async () => {
+      await apiClient.get('/dashboard').catch(() => undefined);
+    });
+
+    expect(auth.status).toBe('unauthenticated');
+    expect(auth.accessRefusal?.code).toBe('access_declined');
+    expect(getActiveOrg()).toBeNull();
+  });
+
+  it('boots onto the refusal when the stored session waits for approval', async () => {
+    server.cookie = true;
+    server.accessRefusal = PENDING;
+    await mount();
+    expect(auth.status).toBe('unauthenticated');
+    expect(auth.accessRefusal).toEqual(PENDING);
+    expect(auth.statusMessage).toBeNull();
   });
 });

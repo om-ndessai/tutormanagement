@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
+import { isAccessRefusal } from '@/features/auth/access-refused';
 import { countEvent } from './guest-api';
 import { guestMemory, type GuestToday } from './guest-store';
 import { SignupSheet } from './signup-sheet';
@@ -36,7 +37,7 @@ import { NudgeSheet, benefitsFor } from './nudge-sheet';
  * three short answers and a three-link footer. Curricula are never named here: "Grade 4", "Adv G4".
  */
 export function GuestHome() {
-  const { config, pendingSignup } = useAuth();
+  const { config, pendingSignup, error } = useAuth();
   const guest = config?.guest;
   const navigate = useNavigate();
   const brand = useBrand();
@@ -47,9 +48,10 @@ export function GuestHome() {
 
   useEffect(() => countEvent({ name: 'home_viewed', source: 'home' }), []);
   // P13: back from a redirect provider mid sign-up: the sheet opens at the age question.
+  // Phase 65: back from a redirect provider with a sign-up access refusal: the sheet says it.
   useEffect(() => {
-    if (pendingSignup) setSigningUp(true);
-  }, [pendingSignup]);
+    if (pendingSignup || isAccessRefusal(error?.code)) setSigningUp(true);
+  }, [pendingSignup, error]);
 
   if (!guest) return null;
   const board = guestBoard(tiles, grade);

@@ -29,7 +29,7 @@
     "e2e:report": "npm run report --workspace @tmi/e2e",
     "deploy:test": "npm run build && npm run deploy:test --workspace @tmi/api",
     "migrate:tmi:stage": "node scripts/migrate-tmi/build-stage.mjs",
-    "db:reset:test": "npm run db:rebuild:test --workspace @tmi/api && npm run db:seed:test --workspace @tmi/api && npm run db:platform-admin:test --workspace @tmi/api && npm run db:questions:test --workspace @tmi/api && npm run db:test-only:test --workspace @tmi/api",
+    "db:reset:test": "npm run db:keep-list:test --workspace @tmi/api && npm run db:rebuild:test --workspace @tmi/api && npm run db:seed:test --workspace @tmi/api && npm run db:platform-admin:test --workspace @tmi/api && npm run db:questions:test --workspace @tmi/api && npm run db:test-only:test --workspace @tmi/api",
     "mobile:install": "npm ci --prefix apps/mobile || npm install --prefix apps/mobile",
     "mobile:start": "npm --prefix apps/mobile run start",
     "mobile:ios": "npm --prefix apps/mobile run ios",

@@ -1,5 +1,5 @@
 // Ported from apps/web/src/lib/api-client.ts @ 1132322
-import { CLIENT_HEADER, FEATURE_UNAVAILABLE, ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
+import { ACCESS_ERROR_CODES, CLIENT_HEADER, FEATURE_UNAVAILABLE, ORG_HEADER, type ApiErrorBody, type ApiErrorCode } from '@tmi/shared';
 
 import { emit } from './events';
 import { getActiveOrg } from './organization';
@@ -30,6 +30,16 @@ export class ApiRequestError extends Error {
     }
     return result;
   }
+}
+
+/** Phase 65: the three answers that mean this person may not use the app (yet). */
+export function isAccessRefusalCode(code: string): boolean {
+  return (ACCESS_ERROR_CODES as readonly string[]).includes(code);
+}
+
+/** Phase 65: a refusal of the person's access (as opposed to any other failure). */
+export function isAccessRefusal(caught: unknown): caught is ApiRequestError {
+  return caught instanceof ApiRequestError && caught.status === 403 && isAccessRefusalCode(caught.code);
 }
 
 function isApiErrorBody(value: unknown): value is ApiErrorBody {
@@ -147,6 +157,10 @@ async function request<T>(path: string, init: RequestInit = {}, retried = false)
     if (isApiErrorBody(payload) && payload.error.code === FEATURE_UNAVAILABLE) {
       // Phase 50: a set was switched off while the app was open; the session is re-read.
       emit('feature-unavailable');
+    }
+    if (isApiErrorBody(payload) && response.status === 403 && isAccessRefusalCode(payload.error.code)) {
+      // Phase 65: waiting for approval, declined, or not on the list -- the refusal screen, wherever asked.
+      emit('access-refused', { code: payload.error.code, message: payload.error.message });
     }
     if (isApiErrorBody(payload)) {
       throw new ApiRequestError(

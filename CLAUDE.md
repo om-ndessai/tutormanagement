@@ -152,7 +152,7 @@ Run from the repo root.
 | `npm run test:compat` | The backward-compatibility test (Phase 49), local: the last release's database (`release-*` tag) with the pending SQL from `docs/database.md`, compared with `schema.sql`, then the last release's Worker and today's run on it |
 | `npm run questions:export` | Copy production's APPROVED questions into `apps/api/db/questions/*.json` and regenerate `db/questions.sql` (one read-only SELECT on `tutoring-db`) |
 | `npm run db:studio` | Dump the users table from local D1 |
-| `npm run test:invite -- list\|add <email or pattern>\|add-google <sub>\|remove <…>` | Who may sign in to the test portal (`invited_users` in `tutoring-test-db`, TEST account only) |
+| `npm run test:invite -- list\|add <email or pattern>\|add-google <sub>\|remove <…>` | The test platform's sign-up list (`access_list` in `tutoring-test-db`, TEST account only; the console edits the same list) |
 | `npm run typecheck` | Typecheck all three packages — run this before declaring work done |
 | `npm run smoke` | The smoke test on BOTH clients, locally: the web tests tagged `@smoke`, then the mobile flows tagged `smoke` on the iOS simulator and the Android emulator. `-- web\|mobile\|ios\|android` runs one side. **Run it after any change to the API, the shared contract or the schema** |
 | `npm run build` | Build the SPA into `apps/web/dist` |
@@ -539,6 +539,19 @@ has played, the answers are posted once and marked by the server (`checkAnswer`)
 one play a day. It is the console's switch (Settings > Play, `PlaySettings.daily`). A tile's `best` and a single
 player's `new_best` are read from finished games (`bestScores`, `isNewBest`), never stored. Games still award no points.
 
+**Who may sign up is the console's, per platform** (Phase 65, `docs/access-approval-plan.md` A1-A9).
+Settings > Guest play > Sign-up access (`platform_settings` 'access', no row = Open): **Open**; **Pre-approved**
+-- a newcomer whose verified email, pattern or provider account is not on `access_list` is refused (403
+`not_on_list`) before anything is stored (`assertMaySignUp`, in `completeSignIn`'s sign-up branch and `POST
+/api/auth/signup`); **Post-approved** -- the account and its personal space are made with
+`platform_accounts.access` 'pending' and no session (403 `access_pending`). `access` is read with the person
+on every request (`SELECT_PERSON`) and `assertAccess` refuses a pending or declined account at sign-in, at
+sign-up and in `requireAuth`, so approving or revoking takes effect on the next request. Only self sign-ups
+are gated: a person a space adds or invites has no platform account and is approved, as is every account
+from before. Decisions are `platform.access_*` on the platform log. Both platforms run Post-approved since the
+release (owner, 2026-11-03); it sits beside the sign-up switch below, which still decides whether anyone may
+sign up at all.
+
 **Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
 `docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
 else is the web. Platform admins set, for the web portal and the app separately, which providers besides
@@ -685,13 +698,13 @@ never SVG, which can carry script), at most 256 KB, served at a versioned public
 `nosniff` and `default-src 'none'`; `builtin_logo: 'institute'` (platform admins only) wears the
 institute's shipped artwork. Never hardcode an organization's name: say `brand.short`.
 
-**The test Worker behaves like production, and lets in only invited people** (Phase 53,
-`docs/test-environment-plan.md`). `tutoring-test` has Google sign-in on, the same sign-in and sign-up
-as production, and `SIGNIN_ALLOWLIST` "true": a verified Google sign-in is checked against
-`invited_users` (an email, a pattern with `*` and `?`, or a Google id) before anything else, and again
-on every request. That table exists in `tutoring-test-db` ALONE: it lives in `db/test-only.sql`, never
+**The test Worker behaves like production** (Phase 53, `docs/test-environment-plan.md`). `tutoring-test`
+has Google sign-in on and the same sign-in and sign-up as production. Since Phase 65 who may sign up there
+is the console's Sign-up access, as in production, and `SIGNIN_ALLOWLIST` is "false"; `invited_users` (the
+Phase 53 list, still checked if that var is ever "true") now only keeps the console's `access_list` across
+`db:reset:test` (`db/test-keep-list.sql` before, `db/test-only.sql` after). That table exists in `tutoring-test-db` ALONE: it lives in `db/test-only.sql`, never
 in `schema.sql` or a production SQL block (`scripts/check-test-only.mjs` fails otherwise), and survives
-`db:reset:test`. The owner maintains it with SQL or `npm run test:invite`. The test Worker's seed
+`db:reset:test`. The list itself is kept in the console, or with `npm run test:invite`. The test Worker's seed
 scripts act as seeded people with `X-Automation-Key`, a secret (`TEST_AUTOMATION_KEY`) set on the TEST
 Worker only and never honoured in production. The app's `test` variant, "AimTrue-Test"
 (`com.aimtrue.app.test`), is the production app pointed at it. Local development and the local suites

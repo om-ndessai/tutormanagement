@@ -14,6 +14,7 @@ import { Button, Text, TextInput } from 'react-native-paper';
 
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
+import { AccessRefusedScreen } from '@/features/auth/access-refused-screen';
 import { ProviderButtons, ProviderSignInButton } from '@/features/auth/provider-buttons';
 import type { UsableProvider } from '@/features/auth/provider-model';
 import { SignInError } from '@/features/auth/sign-in-error';
@@ -51,6 +52,8 @@ export function SignupSheet() {
     signInWithProvider,
     error,
     clearError,
+    accessRefusal,
+    clearAccessRefusal,
   } = useAuth();
   const [email, setEmail] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
@@ -59,7 +62,8 @@ export function SignupSheet() {
   const [signingUp, setSigningUp] = useState(false);
   if (pendingSignup && !signingUp) setSigningUp(true);
   const signedIn = status === 'authenticated';
-  const splash = signingUp && (signedIn || !pendingSignup);
+  // Phase 65: a sign-up that waits for approval (or is refused) never shows the splash.
+  const splash = !accessRefusal && signingUp && (signedIn || !pendingSignup);
   const devSignUp = DEV_TOOLS && config?.auth_enabled === false;
 
   // Signed up: the splash, then back to the screen beneath. Signed in to an existing account: back at once.
@@ -92,6 +96,21 @@ export function SignupSheet() {
     },
     [],
   );
+
+  // Phase 65 (A4): waiting for approval, not approved, or not on the list -- the refusal screen, not
+  // "You're in." (The root shows it too, over every screen; this keeps the sheet's own render honest.)
+  if (accessRefusal) {
+    return (
+      <AccessRefusedScreen
+        code={accessRefusal.code}
+        message={accessRefusal.message}
+        onBack={() => {
+          clearAccessRefusal();
+          close();
+        }}
+      />
+    );
+  }
 
   if (splash) {
     return (

@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from '@/components/ui/input';
 import { GoogleSignInButton } from '@/features/auth/google-sign-in-button';
 import { ProviderButtons } from '@/features/auth/provider-buttons';
+import { AccessRefused, isAccessRefusal } from '@/features/auth/access-refused';
 import { SignupForm } from '@/features/auth/signup-form';
 import { useAuth } from '@/providers/auth-provider';
 import { countEvent, flushEvents } from './guest-api';
@@ -18,7 +19,7 @@ import { countEvent, flushEvents } from './guest-api';
  * (`returnTo`), and a quest in progress is kept in this tab's storage.
  */
 export function SignupSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { config, pendingSignup, signInWithGoogle, status } = useAuth();
+  const { config, pendingSignup, signInWithGoogle, status, error, clearError } = useAuth();
   const location = useLocation();
   const [devEmail, setDevEmail] = useState('');
   const [devName, setDevName] = useState('');
@@ -51,6 +52,9 @@ export function SignupSheet({ open, onClose }: { open: boolean; onClose: () => v
             <LogoMark className="size-16 animate-pulse" />
             <p className="font-display text-lg font-semibold">You&apos;re in.</p>
           </div>
+        ) : isAccessRefusal(error?.code) ? (
+          // Phase 65: a provider sign-in that sign-up access stopped (not on the list, waiting, declined).
+          <AccessRefused code={error.code} message={error.message} onBack={clearError} />
         ) : tooYoung ? (
           <DialogHeader>
             <DialogTitle>Ask a parent to add you</DialogTitle>

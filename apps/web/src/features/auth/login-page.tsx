@@ -10,6 +10,7 @@ import { withLinkedOrg } from '@/lib/organization';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand, useBrandReady } from '@/providers/brand-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
+import { AccessRefused, isAccessRefusal } from './access-refused';
 import { ProviderButtons } from './provider-buttons';
 
 /** Where the router stashes the page the user was trying to reach. */
@@ -131,7 +132,13 @@ export function LoginPage() {
               </p>
             </div>
 
-            {error && <SignInError code={error.code} message={error.message} />}
+            {error && (isAccessRefusal(error.code) ? (
+              <div className="mb-6 rounded-lg border p-3.5">
+                <AccessRefused code={error.code} message={error.message} />
+              </div>
+            ) : (
+              <SignInError code={error.code} message={error.message} />
+            ))}
 
             {status === 'loading' && (
               <p className="text-muted-foreground flex items-center gap-2 py-3 text-sm">

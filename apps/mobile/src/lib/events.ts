@@ -9,17 +9,26 @@ type EventMap = {
   'organization-required': void;
   /** Phase 50: a feature set is off here now (the session's organization is stale). */
   'feature-unavailable': void;
+  /**
+   * Phase 65 (A4, A7): the person may not use the app -- their sign-up waits for approval or was
+   * declined, or sign-up is by invitation and they are not on the list. Carries the server's words.
+   */
+  'access-refused': { code: string; message: string };
 };
 
-type Listener = () => void;
-const listeners: { [K in keyof EventMap]?: Set<Listener> } = {};
+type EventName = keyof EventMap;
+type Listener<K extends EventName> = (payload: EventMap[K]) => void;
+const listeners: Partial<Record<EventName, Set<(payload: any) => void>>> = {};
 
-export function emit(event: keyof EventMap): void {
-  listeners[event]?.forEach((listener) => listener());
+export function emit<K extends EventName>(
+  event: K,
+  ...payload: EventMap[K] extends void ? [] : [EventMap[K]]
+): void {
+  listeners[event]?.forEach((listener) => listener(payload[0]));
 }
 
 /** Subscribe; returns the unsubscribe function. */
-export function on(event: keyof EventMap, listener: Listener): () => void {
+export function on<K extends EventName>(event: K, listener: Listener<K>): () => void {
   const set = (listeners[event] ??= new Set());
   set.add(listener);
   return () => set.delete(listener);

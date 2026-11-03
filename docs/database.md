@@ -1640,6 +1640,31 @@ BEGIN
 END;
 ```
 
+Phase 65 (sign-up access, `docs/access-approval-plan.md` A1-A9) is additive: three columns on
+`platform_accounts` (every existing account stays approved) and the platform's sign-up list. Apply after
+the backup, before `npm run deploy`. Then set the mode (both platforms Post-approved, owner 2026-11-03):
+
+```sql release=phase-65
+ALTER TABLE platform_accounts ADD COLUMN access TEXT NOT NULL DEFAULT 'approved' CHECK (access IN ('approved', 'pending', 'declined'));
+ALTER TABLE platform_accounts ADD COLUMN access_decided_at TEXT;
+ALTER TABLE platform_accounts ADD COLUMN access_decided_by TEXT REFERENCES users (id) ON DELETE SET NULL;
+CREATE TABLE access_list (
+  id        TEXT PRIMARY KEY,
+  email     TEXT,
+  provider  TEXT CHECK (provider IN ('google', 'microsoft', 'apple', 'facebook')),
+  subject   TEXT,
+  note      TEXT,
+  added_by  TEXT REFERENCES users (id) ON DELETE SET NULL,
+  added_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  CHECK (email IS NOT NULL OR (provider IS NOT NULL AND subject IS NOT NULL))
+);
+CREATE INDEX platform_accounts_access_idx ON platform_accounts (access) WHERE access <> 'approved';
+```
+
+The test database also moves its own list into the platform's (A8), once, after the block above:
+`INSERT INTO access_list (id, email, provider, subject, note, added_at) SELECT id, email, provider,
+subject, note, added_at FROM invited_users;` -- `tutoring-test-db` only, where `invited_users` exists.
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

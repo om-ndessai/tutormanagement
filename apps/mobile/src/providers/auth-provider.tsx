@@ -20,7 +20,7 @@ import { landingFor } from '@/features/auth/landing';
 import { resetInvitationBanner } from '@/features/organizations/spaces-model';
 import { offersGoogle, signInProviders, type UsableProvider } from '@/features/auth/provider-model';
 import { signupRequest, type PendingSignup, type SignupForm } from '@/features/auth/sign-up-model';
-import { ApiRequestError, apiClient, setReauthenticator } from '@/lib/api-client';
+import { ApiRequestError, apiClient, isAccessRefusal, setReauthenticator } from '@/lib/api-client';
 import { on } from '@/lib/events';
 import {
   configureGoogle,
@@ -113,6 +113,18 @@ interface AuthContextValue {
   /** Re-runs boot from scratch, e.g. after choosing another server. */
   reboot: () => Promise<void>;
   clearError: () => void;
+  /**
+   * Phase 65 (A4, A7): the server refused this person's access -- waiting for approval, declined, or
+   * not on the invitation list. The app shows the refusal screen until the person goes back.
+   */
+  accessRefusal: AccessRefusal | null;
+  clearAccessRefusal: () => void;
+}
+
+/** Phase 65: why the server will not let this person in, in its own words. */
+export interface AccessRefusal {
+  code: string;
+  message: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -170,6 +182,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [onboarding, setOnboarding] = useState<OnboardingState | null>(null);
   const [error, setError] = useState<ApiRequestError | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [accessRefusal, setAccessRefusal] = useState<AccessRefusal | null>(null);
   // Phase 55: whether this device offers Sign in with Apple (asked once; false unless the build's flag is on).
   const [appleReady, setAppleReady] = useState(false);
   useEffect(() => {
@@ -285,7 +298,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await loadSession();
       setStatus('authenticated');
     } catch (reason) {
-      if (reason instanceof ApiRequestError && reason.status !== 401 && reason.status !== 404) {
+      // Phase 65: waiting or declined -- signed out, and the refusal screen says why (the event did).
+      if (!isAccessRefusal(reason) && reason instanceof ApiRequestError && reason.status !== 401 && reason.status !== 404) {
         setStatusMessage(reason.message);
         setStatus('error');
         return;
@@ -365,6 +379,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Any 401 from anywhere drops the app back to signed out (after the one silent renewal).
   useEffect(() => on('unauthenticated', () => resetSignedOut()), [resetSignedOut]);
 
+  // Phase 65 (A4, A5, A7): a refusal of the person's access, from any request -- a sign-in, the sign-up,
+  // the session check, or any request after a platform admin revoked them -- signs out and shows why.
+  useEffect(
+    () =>
+      on('access-refused', (refusal) => {
+        setAccessRefusal(refusal);
+        setPendingSignup(null);
+        setError(null);
+        void setDevUser(null);
+        void googleSignOut();
+        resetSignedOut();
+      }),
+    [resetSignedOut],
+  );
+
   const googleAvailable =
     config?.auth_enabled === true &&
     offersGoogle(config) &&
@@ -427,7 +456,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // The server's refusal (no account, unverified, suspended) in its own words, or Google's.
       await googleSignOut();
       resetSignedOut();
-      setError(toError(caught));
+      if (!isAccessRefusal(caught)) setError(toError(caught));
     }
   }, [loadSession, queryClient, resetSignedOut]);
 
@@ -454,7 +483,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (caught) {
         // The server's refusal (no_account says to sign in the way they did before), or the provider's.
         resetSignedOut();
-        setError(toError(caught));
+        if (!isAccessRefusal(caught)) setError(toError(caught));
       }
     },
     [loadSession, queryClient, resetSignedOut],
@@ -476,7 +505,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (caught) {
         await setDevUser(null);
         resetSignedOut();
-        setError(toError(caught));
+        if (!isAccessRefusal(caught)) setError(toError(caught));
       }
     },
     [loadSession, queryClient, resetSignedOut],
@@ -527,6 +556,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [config, resetSignedOut]);
 
   const clearError = useCallback(() => setError(null), []);
+  const clearAccessRefusal = useCallback(() => setAccessRefusal(null), []);
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -562,6 +592,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut,
       reboot,
       clearError,
+      accessRefusal,
+      clearAccessRefusal,
     }),
     [
       status,
@@ -595,6 +627,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut,
       reboot,
       clearError,
+      accessRefusal,
+      clearAccessRefusal,
     ],
   );
 

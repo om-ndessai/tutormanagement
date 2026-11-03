@@ -1,4 +1,4 @@
-import { mayLinkByEmail, type AgeBand, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
+import { mayLinkByEmail, type AccountAccess, type AgeBand, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
 
 import type { VerifiedIdentity } from '../lib/identity.js';
 /**
@@ -24,6 +24,11 @@ export interface Person {
   updated_at: string;
   /** Read in the same query, so the gate on every request is one round trip. */
   platform_admin: boolean;
+  /**
+   * Phase 65 (A5): a self sign-up's access, read in the same query. Approved when they have no
+   * platform account (a space added them) or one from before Phase 65.
+   */
+  access: AccountAccess;
 }
 
 interface PersonRow {
@@ -36,15 +41,17 @@ interface PersonRow {
   created_at: string;
   updated_at: string;
   platform_admin: number;
+  access: AccountAccess | null;
 }
 
 const SELECT_PERSON = `SELECT id, email, full_name, phone, google_sub, last_login_at, created_at, updated_at,
-       EXISTS (SELECT 1 FROM platform_admins p WHERE p.user_id = users.id) AS platform_admin
+       EXISTS (SELECT 1 FROM platform_admins p WHERE p.user_id = users.id) AS platform_admin,
+       (SELECT a.access FROM platform_accounts a WHERE a.user_id = users.id) AS access
   FROM users`;
 
 function toPerson(row: PersonRow): Person {
-  const { google_sub, platform_admin, ...rest } = row;
-  return { ...rest, google_sub_pinned: google_sub !== null, platform_admin: platform_admin === 1 };
+  const { google_sub, platform_admin, access, ...rest } = row;
+  return { ...rest, google_sub_pinned: google_sub !== null, platform_admin: platform_admin === 1, access: access ?? 'approved' };
 }
 
 export async function getPersonById(db: D1Database, id: string): Promise<Person | null> {
@@ -391,6 +398,8 @@ export async function createSignedUpPerson(
     ageBand: AgeBand;
     termsVersion: string;
     privacyVersion: string;
+    /** Phase 65 (A4): 'pending' while the console's mode is Post-approved. */
+    access?: 'approved' | 'pending';
   },
 ): Promise<Person> {
   const id = crypto.randomUUID();
@@ -401,10 +410,10 @@ export async function createSignedUpPerson(
     ...(input.identity ? identityStatements(db, id, input.identity) : []),
     db
       .prepare(
-        `INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at)
-         VALUES (?, ?, ${NOW}, ?, ?, ${NOW})`,
+        `INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at, access)
+         VALUES (?, ?, ${NOW}, ?, ?, ${NOW}, ?)`,
       )
-      .bind(id, input.ageBand, input.termsVersion, input.privacyVersion),
+      .bind(id, input.ageBand, input.termsVersion, input.privacyVersion, input.access ?? 'approved'),
   ]);
   const person = await getPersonById(db, id);
   if (!person) throw new Error('Insert into users returned no row.');

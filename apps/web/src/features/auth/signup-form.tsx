@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2Icon } from 'lucide-react';
-import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
+import { PRIVACY_VERSION, TERMS_VERSION, type AccessErrorCode } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
+import { AccessRefused, isAccessRefusal } from './access-refused';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -32,6 +33,8 @@ export function SignupForm({
   const [accepted, setAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<{ code: string; message: string } | null>(null);
+  // Phase 65: not on the platform's list, or waiting for approval: said in full, in place of the form.
+  const [refused, setRefused] = useState<{ code: AccessErrorCode; message: string } | null>(null);
   const thisYear = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => String(thisYear - i));
 
@@ -54,11 +57,14 @@ export function SignupForm({
           ? { code: caught.code, message: caught.message }
           : { code: 'internal_error', message: 'Could not sign you up. Please try again.' };
       if (next.code === 'too_young') onTooYoung();
+      else if (isAccessRefusal(next.code)) setRefused({ code: next.code, message: next.message });
       else setProblem(next);
     } finally {
       setBusy(false);
     }
   }
+
+  if (refused) return <AccessRefused code={refused.code} message={refused.message} />;
 
   return (
     <form className="grid gap-4" onSubmit={submit} aria-label="About you">

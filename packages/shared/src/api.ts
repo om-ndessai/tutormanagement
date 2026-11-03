@@ -70,6 +70,11 @@ export const ERROR_CODES = [
   // Phase 53: the test portal lets in only the people on its invited list.
   'not_invited',
 
+  // Phase 65: sign-up access -- not on the platform's list, waiting for approval, or declined.
+  'not_on_list',
+  'access_pending',
+  'access_declined',
+
   // Phase 54: a space paid directly has no organization -- no payer, no
   // payments to tutors; and a lesson keeps the model it was recorded under.
   'paid_directly',
