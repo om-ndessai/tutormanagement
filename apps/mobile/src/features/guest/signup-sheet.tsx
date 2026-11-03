@@ -19,14 +19,18 @@ import type { UsableProvider } from '@/features/auth/provider-model';
 import { SignInError } from '@/features/auth/sign-in-error';
 import { SignUpScreen } from '@/features/auth/sign-up-screen';
 import { GoogleButton } from '@/lib/google-sign-in';
-import { DEV_TOOLS } from '@/lib/variant';
+import { APP_VARIANT, DEV_TOOLS } from '@/lib/variant';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { countEvent, flushEvents } from './guest-api';
 
-/** How long the "You're in." splash shows before the sheet goes. */
-export const SPLASH_MS = 1100;
+/**
+ * How long the "You're in." splash shows before the sheet goes. Outside production builds (the
+ * development and e2e builds the Maestro flows drive) it stays longer: on Android, reading the screen
+ * after a tap takes about as long as the real splash lasts, so a flow could not reliably see it.
+ */
+export const SPLASH_MS = APP_VARIANT === 'production' ? 1100 : 4000;
 
 function close() {
   if (router.canGoBack()) router.back();
