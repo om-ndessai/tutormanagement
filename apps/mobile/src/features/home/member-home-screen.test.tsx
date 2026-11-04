@@ -49,11 +49,15 @@ jest.mock('./api', () => ({
     isError: false,
     refetch: jest.fn(),
   }),
+  usePinHome: () => ({ mutate: mockPin, isPending: false }),
 }));
+const mockPin = jest.fn();
+const mockTiles = { current: [] as { level_id: string }[] };
+const mockStart = jest.fn();
 const mockWaiting = { current: [] as { game_id: string; code: string; host_first_name: string; level_id: string; mode: string; question_count: number; duration_seconds: null; status: string }[] };
 jest.mock('@/features/play/play-api', () => ({
   useWaitingGames: () => ({ data: { data: mockWaiting.current } }),
-  useMemberTiles: () => ({ data: undefined }),
+  useMemberTiles: () => ({ data: mockTiles.current.length ? { data: { tiles: mockTiles.current } } : undefined }),
   useLastQuest: () => ({ data: null }),
   useGuestLeadLevel: () => ({ data: null }),
 }));
@@ -64,7 +68,7 @@ jest.mock('@/features/play/play-home', () => {
     PlayFavorites: () => <Text testID="play-favorites-row">Favorites</Text>,
     WaitingForYou: () => null,
     HaveACode: () => null,
-    useStartQuest: () => ({ start: jest.fn(), pending: false }),
+    useStartQuest: () => ({ start: mockStart, pending: false }),
   };
 });
 jest.mock('@/features/dashboard/assessment-home', () => {
@@ -138,6 +142,9 @@ beforeEach(() => {
   mockWelcomeBack.current = false;
   mockQuest.current = null;
   mockQuest.enabled = [];
+  mockTiles.current = [];
+  mockPin.mockClear();
+  mockStart.mockClear();
   (router.navigate as jest.Mock).mockClear();
   (router.push as jest.Mock).mockClear();
   jest.useFakeTimers({ now: new Date('2026-11-03T19:00:00Z') });
@@ -299,5 +306,86 @@ describe('MemberHomeScreen, a parent whose child is not added yet', () => {
     expect(screen.getByTestId('home-children-empty')).toHaveTextContent(
       'No children here yet. Once the space adds your child, their lessons and homework show here.',
     );
+  });
+});
+
+describe('Phase 68: focus and families', () => {
+  it('Make this my home: Automatic and each choice, the chosen one checked; a tap pins it', async () => {
+    await show({ ...MARIA, focus: 'family', pin: null, focus_options: ['assessment', 'family'] }, ['parent', 'tutor']);
+    expect(screen.getByTestId('home-pin')).toBeTruthy();
+    expect(screen.getByTestId('home-pin-auto')).toHaveTextContent('Automatic (My children)');
+    expect(screen.getByTestId('home-pin-auto')).toHaveProp('accessibilityState', expect.objectContaining({ selected: true }));
+    expect(screen.getByTestId('home-pin-family')).toHaveProp('accessibilityState', expect.objectContaining({ selected: false }));
+    expect(screen.getByTestId('home-pin-family')).toHaveTextContent('My children');
+    await fireEvent.press(screen.getByTestId('home-pin-family'));
+    expect(mockPin).toHaveBeenCalledWith('family', expect.anything());
+  });
+
+  it('no pin row with a single option', async () => {
+    await show({ ...SOFIA, focus: 'quest', pin: null, focus_options: ['quest'] }, ['student']);
+    expect(screen.queryByTestId('home-pin')).toBeNull();
+  });
+
+  it('a pinned focus leads the sections', async () => {
+    await show({ ...PRIYA, focus: 'tutoring', pin: 'tutoring', focus_options: ['tutoring', 'office'] }, ['tutor', 'admin']);
+    expect(sectionOrder()).toEqual(['home-section-tutor', 'home-section-office']);
+    expect(screen.getByTestId('home-pin-auto')).toHaveTextContent(/^Automatic$/);
+  });
+
+  it("a parent's card: days played, and Play with starts a game of two with the child invited", async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    const kid = child({ days_played_this_week: 2, daily_done_today: true, next_lesson: null });
+    await show({ ...ANITA, parent: { children: [kid] } }, ['parent']);
+    expect(screen.getByTestId('home-child-played-sanjay')).toHaveTextContent("Played 2 days this week (aim: 3) · today's Daily done");
+    expect(screen.getByTestId('home-child-play-sanjay')).toHaveTextContent(/Play with Sanjay$/);
+    await fireEvent.press(screen.getByTestId('home-child-play-sanjay'));
+    expect(mockStart).toHaveBeenCalledWith(
+      'With Sanjay',
+      expect.objectContaining({ level_id: 'NC26.4', players: 'multi', host_plays: true, invite_user_ids: ['sanjay'] }),
+    );
+  });
+
+  it("the child's own last level wins, and a lesson soon makes it practice together", async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    await show({ ...ANITA, parent: { children: [child({ days_played_this_week: 0, daily_done_today: false, play_level_id: 'BA3' })] } }, ['parent']);
+    expect(screen.getByTestId('home-child-play-sanjay')).toHaveTextContent(/Practise together before Thursday's lesson$/);
+    await fireEvent.press(screen.getByTestId('home-child-play-sanjay'));
+    expect(mockStart).toHaveBeenCalledWith('With Sanjay', expect.objectContaining({ level_id: 'BA3' }));
+  });
+
+  it('Quest off: no played line and no Play with', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    const off = { ...TUTORING, feature_quest: false };
+    await show({ ...ANITA, parent: { children: [child({ days_played_this_week: null })] } }, ['parent'], off);
+    expect(screen.queryByTestId('home-child-played-sanjay')).toBeNull();
+    expect(screen.queryByTestId('home-child-play-sanjay')).toBeNull();
+  });
+
+  it('the parent card shows in a space without Tutoring too', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    await show({ ...ANITA, parent: { children: [child({ days_played_this_week: 1, next_lesson: null })] } }, ['parent'], ASSESS);
+    expect(screen.getByTestId('home-child-sanjay')).toBeTruthy();
+    expect(screen.getByTestId('home-child-play-sanjay')).toBeTruthy();
+  });
+
+  it('an assessment-led home puts Assessments before the Quest board', async () => {
+    await show({ ...INES, focus: 'assessment' }, ['student', 'admin', 'parent'], ASSESS);
+    const ids: string[] = [];
+    const walk = (node: unknown): void => {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) return node.forEach(walk);
+      const id = (node as { props?: { testID?: string } }).props?.testID;
+      if (id === 'assessment-home' || id === 'play-home') ids.push(id);
+      walk((node as { children?: unknown }).children);
+    };
+    walk(screen.toJSON());
+    expect(ids).toEqual(['assessment-home', 'play-home']);
+  });
+
+  it('the Next up for an assessment-led home with nothing else opens Assessments', async () => {
+    await show({ ...INES, focus: 'assessment' }, ['student', 'admin', 'parent'], ASSESS);
+    expect(screen.getByTestId('next-up-focus_default')).toHaveTextContent(/Start an assessment\./);
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(router.navigate).toHaveBeenCalledWith('/assessments');
   });
 });

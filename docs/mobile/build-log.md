@@ -4638,3 +4638,47 @@ grade), `quest/play` and `quest/play-number` and `spaces/new-space-quest` throug
 grade tile and outputs `habitGrade`.
 **Jest:** `play/quest-card.test.tsx`, `play/play-home.test.tsx` (the board, More levels, Show your work, the rings,
 the week), `play/play-model.test.ts`, `habit/habit-model.test.ts`, `home/member-home-{model,screen}.test.ts(x)`.
+
+## 77. Phase 68, H4/H10: focus and families, in the app — design and build (2026-11-03)
+
+**Source:** `docs/member-home-plan.md` (H4, H10, "Phase 68"), the shared contract (`home.ts`: `HOME_FOCUS_LABELS`,
+`FOCUS_HAT`, `MemberHome.focus`/`pin`/`focus_options`, `HomeChild.days_played_this_week`/`daily_done_today`/
+`play_level_id`, `NextUpExtras.practice_level_id`/`played_today`, the `practise_before` and `focus_default` kinds,
+`orderHats` with the pin, `playWithRequest`, `practiseRequest`, `practiseBefore`, `lessonDayWords`,
+`arrivalFromGuest`; `spaces.ts`: `signupSchema.arrived_via`), `GET /api/home`, `PUT /api/home/pin`, and the web's
+`features/home/{api,member-home,next-up}.tsx` and `providers/auth-provider.tsx`. Built beside the web's half (the
+lead), same testIDs. No contract or API change from the app.
+
+- **Make this my home** (`home/pin-home.tsx`, H4): at the foot of Home, as the web's; shown only with two or more
+  `focus_options` (`pinChoices`). Paper chips in a radiogroup: `home-pin-auto` ("Automatic (<what it picks>)" while
+  unpinned, "Automatic" once pinned, `pinLabel`) and `home-pin-<focus>` (`HOME_FOCUS_LABELS`); the chosen one is
+  `selected`. A tap is `usePinHome` (`PUT /home/pin`, then the answer set into `['home','member']`), so the sections
+  reorder from the new `orderHats` at once. A refusal toasts the server's message. No log line (a preference).
+- **Focus-led learner** (`home-sections.tsx`): with `home.focus === 'assessment'` the Assessment home comes before
+  the Play home in Practice, in any space.
+- **Families** (`ChildCard`, H10): `home-child-played-<id>` "Played N days this week (aim: 3) · today's Daily done"
+  (`childPlayedLine`, counts only, R29; absent where Quest is off -- the server sends null), and below the card's
+  progress link a tonal button `home-child-play-<id>`: "Play with <first name>", or "Practise together before
+  <day>'s lesson" when `practiseBefore(child.next_lesson, home.day)` (`childPlayLabel`). It starts
+  `playWithRequest(child.play_level_id ?? first member tile's level, child id)` through `useStartQuest` (the same
+  one tap as favorites; remembered for Continue as "With <name>") and opens the game's lobby. The parent section
+  already showed in every space in the app (Phase 66); its Tutoring-only parts are unchanged.
+- **Next up** (`next-up-card.tsx`): `deviceExtras` gains `practiceLevelId` (the board's lead/Daily tile level, for a
+  learner where Quest is on) and `playedToday` (the habit summary). `next-up-practise_before`: eyebrow "Before your
+  lesson", "Practise before <lessonDayWords>.", "Five questions at <level>, warm-up for <tutor>'s lesson.", Practise
+  5 (`practiseRequest`, one tap) and Later. `next-up-focus_default`: "Start an assessment." → Open Assessments
+  (`/assessments`), or "Start a quest." → New quest (`/quest/new-game`); no Later (it is the last resort).
+- **Arrival** (`auth-provider.tsx`, `sign-up-model.ts`): `completeSignup` loads the phone's guest memory and sends
+  `arrived_via: arrivalFromGuest(guestMemory.played())` -- one word, never the tiles (`signupRequest`'s third
+  argument).
+
+**Mobile differences:** the parent card's Progress stays the card's own tap (as since Phase 66) rather than a
+Tutoring-only button; the Assessment home stays in Practice wherever the learner hat and Assessment are (as since
+Phase 66), only its order follows the focus; the chips report the choice as `selected` (Paper's Chip sets the state
+itself) where the web's buttons say `aria-checked`.
+**Flows:** `home/focus-pin` (Maria pins My children and goes back to Automatic; `scripts/home-pin-reset.js` unpins
+before and after), `play/play-with-child` (Quest on; Anita's played line and Play with → the lobby); re-run
+`flows/home` and `flows/play` for the parent card outside Tutoring.
+**Jest:** `home/member-focus-model.test.ts` (pin choices and words, the pinned hat first, the played line, the Play
+with label, `practise_before` and `focus_default`), `home/member-home-screen.test.tsx` (Phase 68 block),
+`auth/sign-up-model.test.ts` and `providers/auth-provider.test.tsx` (`arrived_via`).

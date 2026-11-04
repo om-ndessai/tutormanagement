@@ -32,6 +32,7 @@ import { HomeBand } from './home-band';
 import { HomeSections } from './home-sections';
 import { stripLine } from './member-home-model';
 import { NextUpCard, useNextUp } from './next-up-card';
+import { PinHome } from './pin-home';
 import { QuickActions } from './quick-actions';
 import { SpaceNotes } from './space-notes';
 
@@ -118,6 +119,8 @@ export function MemberHomeScreen() {
               <WaitingForYou />
             </>
           ) : null}
+          {/* Phase 68 (H4): "Make this my home", at the foot, as the web's. */}
+          <PinHome home={home} />
         </View>
       )}
       {/* Phase 33: a lesson about to start, where its locations ask for a reminder. */}

@@ -6,6 +6,7 @@
 import {
   featureOn,
   HOME_HAT_LABELS,
+  playWithRequest,
   type HomeChild,
   type HomeHat,
   type MemberHome,
@@ -18,13 +19,16 @@ import { Button, Icon, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
 import { AssessmentHome } from '@/features/dashboard/assessment-home';
-import { PlayHome } from '@/features/play/play-home';
+import { useMemberTiles } from '@/features/play/play-api';
+import { PlayHome, useStartQuest } from '@/features/play/play-home';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import {
   capitalise,
+  childPlayLabel,
+  childPlayedLine,
   firstOf,
   lessonWithStudent,
   lessonWithTutor,
@@ -199,9 +203,27 @@ function OfficeSection({ home, assessment }: { home: MemberHome; assessment: boo
   );
 }
 
-function ChildCard({ child, today }: { child: HomeChild; today: string }) {
+function ChildCard({
+  child,
+  today,
+  quest,
+  firstTileLevel,
+  start,
+  pending,
+}: {
+  child: HomeChild;
+  today: string;
+  quest: boolean;
+  firstTileLevel: string | null;
+  start: ReturnType<typeof useStartQuest>['start'];
+  pending: boolean;
+}) {
   const theme = useAppTheme();
   const id = child.student_user_id;
+  // Phase 68 (H10): what the child played this week (counts only, R29), and "Play with <child>" at their
+  // last level, else this space's first tile -- a game of two with the child invited, one tap.
+  const played = quest ? childPlayedLine(child) : null;
+  const playLevel = quest ? (child.play_level_id ?? firstTileLevel) : null;
   return (
     <OutlinedCard testID={`home-child-${id}`} style={{ borderRadius: radius.lg }}>
       <Pressable
@@ -229,13 +251,31 @@ function ChildCard({ child, today }: { child: HomeChild; today: string }) {
         ) : null}
         {child.homework ? <Muted testID={`home-child-homework-${id}`}>{`Homework: ${child.homework}`}</Muted> : null}
         <Muted testID={`home-child-month-${id}`}>{`${plural(child.lessons_this_month, 'lesson')} this month`}</Muted>
+        {played ? <Muted testID={`home-child-played-${id}`}>{played}</Muted> : null}
       </Pressable>
+      {playLevel ? (
+        <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, flexDirection: 'row' }}>
+          <Button
+            testID={`home-child-play-${id}`}
+            mode="contained-tonal"
+            icon="account-multiple-outline"
+            disabled={pending}
+            contentStyle={{ minHeight: MIN_TARGET }}
+            onPress={() => void start(`With ${child.first_name}`, playWithRequest(playLevel, id))}
+          >
+            {childPlayLabel(child, today)}
+          </Button>
+        </View>
+      ) : null}
     </OutlinedCard>
   );
 }
 
-function ParentSection({ home, assessment }: { home: MemberHome; assessment: boolean }) {
+function ParentSection({ home, assessment, quest }: { home: MemberHome; assessment: boolean; quest: boolean }) {
   const children = home.parent?.children ?? [];
+  const tiles = useMemberTiles(quest && children.length > 0);
+  const firstTileLevel = tiles.data?.data.tiles[0]?.level_id ?? null;
+  const { start, pending } = useStartQuest();
   return (
     <Section hat="parent">
       {/* A parent whose child the space has not added yet: the hat their role implies, empty. */}
@@ -245,7 +285,15 @@ function ParentSection({ home, assessment }: { home: MemberHome; assessment: boo
         </Card>
       ) : null}
       {children.map((child) => (
-        <ChildCard key={child.student_user_id} child={child} today={home.day} />
+        <ChildCard
+          key={child.student_user_id}
+          child={child}
+          today={home.day}
+          quest={quest}
+          firstTileLevel={firstTileLevel}
+          start={start}
+          pending={pending}
+        />
       ))}
       {assessment ? <AssessmentHome /> : null}
     </Section>
@@ -264,8 +312,10 @@ function LearnerSection({ home, quest, assessment }: { home: MemberHome; quest: 
           </Text>
         </Card>
       ) : null}
+      {/* Phase 68 (H4): an assessment-led home puts Assessments before the Quest board. */}
+      {assessment && home.focus === 'assessment' ? <AssessmentHome /> : null}
       {quest ? <PlayHome /> : null}
-      {assessment ? <AssessmentHome /> : null}
+      {assessment && home.focus !== 'assessment' ? <AssessmentHome /> : null}
     </Section>
   );
 }
@@ -295,7 +345,7 @@ export function HomeSections({ home, hats, item }: { home: MemberHome; hats: Hom
           case 'office':
             return home.office ? <OfficeSection key={hat} home={home} assessment={assessmentHat === 'office'} /> : null;
           case 'parent':
-            return home.parent ? <ParentSection key={hat} home={home} assessment={assessmentHat === 'parent'} /> : null;
+            return home.parent ? <ParentSection key={hat} home={home} assessment={assessmentHat === 'parent'} quest={quest} /> : null;
           case 'learner':
             return <LearnerSection key={hat} home={home} quest={quest} assessment={assessmentHat === 'learner'} />;
         }

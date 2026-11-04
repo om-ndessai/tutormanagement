@@ -701,9 +701,10 @@ requirements P1-P20.
   H11. Built on the branch `member-home-stickiness`; test deploys after each phase, production after the owner.
 - **Phase 67 — coloured tiles.** Level tiles in one hue per grade with human titles and icons, Today's 5 rings,
   the grade row and week dots from the guest home; welcome back; personal spaces with NC 2026 and Beast Academy so
-  a guest's grade and tiles carry over. H5-H8.
+  a guest's grade and tiles carry over. H5-H8. Built on the branch; on the test Worker since 2026-11-03.
 - **Phase 68 — focus and families.** "Make this my home", the home led by how a person arrived (Quest or
-  Assessment), the parent's per-child strip, Play with <child>, Practise before the lesson. H4, H10.
+  Assessment), the parent's per-child strip, Play with <child>, Practise before the lesson. H4, H10. Built on the
+  branch.
 - **Phase 69 — stickiness, measured.** One visit row per person a day and the console's Stickiness page (weekly
   actives, days per week, cohort retention by role, space and arrival). H12.
 

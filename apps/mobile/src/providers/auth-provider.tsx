@@ -3,6 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import {
   DEFAULT_ORG_TIME_ZONE,
+  arrivalFromGuest,
   type ApiOk,
   type AuthConfig,
   type Invitation,
@@ -20,6 +21,7 @@ import { landingFor } from '@/features/auth/landing';
 import { resetInvitationBanner } from '@/features/organizations/spaces-model';
 import { offersGoogle, signInProviders, type UsableProvider } from '@/features/auth/provider-model';
 import { signupRequest, type PendingSignup, type SignupForm } from '@/features/auth/sign-up-model';
+import { guestMemory, loadGuestMemory } from '@/features/guest/guest-store';
 import { ApiRequestError, apiClient, isAccessRefusal, setReauthenticator } from '@/lib/api-client';
 import { on } from '@/lib/events';
 import {
@@ -521,7 +523,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const completeSignup = useCallback(
     async (form: SignupForm) => {
       if (!pendingSignup) return;
-      await apiClient.post<ApiOk<SessionResponse>>('/auth/signup', signupRequest(form, pendingSignup));
+      // Phase 68 (H4): how they arrived, from this phone's guest play (read here; only the one word is sent).
+      await loadGuestMemory();
+      const arrivedVia = arrivalFromGuest(guestMemory.played());
+      await apiClient.post<ApiOk<SessionResponse>>('/auth/signup', signupRequest(form, pendingSignup, arrivedVia));
       // Sign-in off: act as the new person -- only now, after the 201, so a refused under-13
       // leaves no persona behind on the device.
       if (pendingSignup.dev) await setDevUser(pendingSignup.email);

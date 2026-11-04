@@ -3,9 +3,14 @@
 // the shared contract's (`packages/shared/src/home.ts`); this file only words them for the phone and
 // gathers what only the device knows. Nothing here carries money.
 import {
+  HOME_FOCUS_LABELS,
+  STREAK_DAYS_PER_WEEK,
+  lessonDayWords,
   lessonWhen,
+  practiseBefore,
   startsInWords,
   type HomeChild,
+  type HomeFocus,
   type HomeHat,
   type HomeLesson,
   type MemberHome,
@@ -122,6 +127,8 @@ export function deviceExtras({
   daily,
   questionQuest = null,
   welcomeBack = false,
+  practiceLevelId = null,
+  playedToday = false,
 }: {
   waiting: readonly Pick<WaitingGame, 'game_id' | 'code' | 'host_first_name'>[];
   lastLabel: string | null;
@@ -130,6 +137,9 @@ export function deviceExtras({
   questionQuest?: { level_id: string | null } | null;
   /** Phase 67 (H8): back after a week away, from the habit summary. */
   welcomeBack?: boolean;
+  /** Phase 68 (H10): where a learner's practice before a lesson starts (the board's lead), and whether they played today. */
+  practiceLevelId?: string | null;
+  playedToday?: boolean;
 }): { extras: NextUpExtras; codes: Record<string, string> } {
   const game = waiting[0];
   const codes: Record<string, string> = {};
@@ -141,6 +151,8 @@ export function deviceExtras({
       daily,
       question_quest: questionQuest,
       welcome_back: welcomeBack,
+      practice_level_id: practiceLevelId,
+      played_today: playedToday,
     },
     codes,
   };
@@ -175,3 +187,31 @@ export const QUICK_ACTION_META: Record<QuickAction, { label: string; icon: strin
   schedule: { label: 'Schedule', icon: 'calendar-month-outline', href: '/schedule' },
   progress: { label: 'Progress', icon: 'chart-timeline-variant', href: '/progress' },
 };
+
+// --- Phase 68 (H4, H10): focus and families ---------------------------------------------------------
+
+/** "Make this my home": Automatic first, then each focus this person has here. Shown only with 2+ options. */
+export function pinChoices(home: Pick<MemberHome, 'focus_options'>): (HomeFocus | null)[] {
+  const options = home.focus_options ?? [];
+  return options.length > 1 ? [null, ...options] : [];
+}
+
+/** A chip's words: "Automatic (Quest)" while nothing is pinned, "Automatic" once something is; else the focus's label. */
+export function pinLabel(focus: HomeFocus | null, home: Pick<MemberHome, 'focus' | 'pin'>): string {
+  if (focus) return HOME_FOCUS_LABELS[focus];
+  return home.pin ? 'Automatic' : `Automatic (${HOME_FOCUS_LABELS[home.focus ?? 'quest']})`;
+}
+
+/** "Played 2 days this week (aim: 3) · today's Daily done" -- counts only (R29); null where Quest is off. */
+export function childPlayedLine(child: Pick<HomeChild, 'days_played_this_week' | 'daily_done_today'>): string | null {
+  if (child.days_played_this_week == null) return null;
+  const daily = child.daily_done_today ? " · today's Daily done" : '';
+  return `Played ${plural(child.days_played_this_week, 'day')} this week (aim: ${STREAK_DAYS_PER_WEEK})${daily}`;
+}
+
+/** "Play with Sanjay", or "Practise together before Thursday's lesson" when his lesson is close. */
+export function childPlayLabel(child: Pick<HomeChild, 'first_name' | 'next_lesson'>, today: string): string {
+  return practiseBefore(child.next_lesson, today)
+    ? `Practise together before ${lessonDayWords(child.next_lesson!.occurs_on, today)}`
+    : `Play with ${child.first_name}`;
+}

@@ -1,4 +1,4 @@
-import { mayLinkByEmail, type AccountAccess, type AgeBand, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
+import { mayLinkByEmail, type AccountAccess, type AgeBand, type Arrival, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
 
 import type { VerifiedIdentity } from '../lib/identity.js';
 /**
@@ -400,6 +400,8 @@ export async function createSignedUpPerson(
     privacyVersion: string;
     /** Phase 65 (A4): 'pending' while the console's mode is Post-approved. */
     access?: 'approved' | 'pending';
+    /** Phase 68 (H4): how they arrived, one word from the sign-up sheet. */
+    arrivedVia?: Arrival | null;
   },
 ): Promise<Person> {
   const id = crypto.randomUUID();
@@ -410,10 +412,10 @@ export async function createSignedUpPerson(
     ...(input.identity ? identityStatements(db, id, input.identity) : []),
     db
       .prepare(
-        `INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at, access)
-         VALUES (?, ?, ${NOW}, ?, ?, ${NOW}, ?)`,
+        `INSERT INTO platform_accounts (user_id, age_band, age_confirmed_at, terms_version, privacy_version, accepted_at, access, arrived_via)
+         VALUES (?, ?, ${NOW}, ?, ?, ${NOW}, ?, ?)`,
       )
-      .bind(id, input.ageBand, input.termsVersion, input.privacyVersion, input.access ?? 'approved'),
+      .bind(id, input.ageBand, input.termsVersion, input.privacyVersion, input.access ?? 'approved', input.arrivedVia ?? null),
   ]);
   const person = await getPersonById(db, id);
   if (!person) throw new Error('Insert into users returned no row.');

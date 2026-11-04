@@ -9,14 +9,21 @@
 //
 // Phase 67: two more kinds -- `question_quest` (a student's Quest question waiting; it replaces the
 // QuestLanding redirect) and `welcome_back` (back after a week away, from the habit summary).
+//
+// Phase 68 (H4, H10): `practise_before` (a learner's lesson within three days: Practise 5 at the board's
+// lead level) and `focus_default` (an assessment- or quest-led home's first step, when nothing else is).
 import {
   START_LEAD_MINUTES,
   chooseNextUp,
   featureOn,
   gameLengthLabel,
+  lessonDayWords,
   levelLabel,
+  TILE_LEVEL_WORDS,
+  type QuestionBankLevelId,
   nextUpCandidates,
   nextUpKey,
+  practiseRequest,
   type MemberHome,
   type NextUp,
 } from '@tmi/shared';
@@ -81,6 +88,9 @@ export function useNextUp(home: MemberHome | undefined) {
     daily: dailyLevel && dailyDone !== null ? { level_id: dailyLevel, done: dailyDone } : null,
     questionQuest: quest && learner && plays ? questionQuestExtra(questState.data?.data) : null,
     welcomeBack: quest && learner ? habit.data?.data.welcome_back === true : false,
+    // Phase 68 (H10): practice before a lesson starts at the board's lead level.
+    practiceLevelId: learner && quest ? (dailyTile?.level_id ?? null) : null,
+    playedToday: habit.data?.data.played_today ?? false,
   });
   const item = home ? chooseNextUp(nextUpCandidates(home, extras), later) : null;
   const waitingGame = item?.kind === 'game_invite' ? waitingList.find((g) => g.game_id === item.game.game_id) : undefined;
@@ -374,6 +384,38 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           ) : (
             <Primary label="Start a quest" icon="play" onPress={() => router.push('/quest/new-game')} />
           )}
+        </Shell>
+      );
+    case 'practise_before':
+      return (
+        <Shell
+          kind={item.kind}
+          icon="target"
+          eyebrow="Before your lesson"
+          title={`Practise before ${lessonDayWords(item.lesson.occurs_on, home.day)}.`}
+          detail={`Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id)}, warm-up for ${firstOf(item.lesson.tutor_name)}'s lesson.`}
+          onLater={later}
+        >
+          <Button
+            testID="next-up-action"
+            mode="contained"
+            icon="target"
+            disabled={pending}
+            contentStyle={{ minHeight: 48 }}
+            onPress={() => void start('Practice', practiseRequest(item.level_id))}
+          >
+            {pending ? 'Starting…' : 'Practise 5'}
+          </Button>
+        </Shell>
+      );
+    case 'focus_default':
+      return item.focus === 'assessment' ? (
+        <Shell kind={item.kind} icon="draw-pen" eyebrow="Assessments" title="Start an assessment." detail="Questions answered by hand, one page each.">
+          <Primary label="Open Assessments" icon="draw-pen" onPress={go('/assessments')} />
+        </Shell>
+      ) : (
+        <Shell kind={item.kind} icon="play" eyebrow="Quest" title="Start a quest." detail="Pick a level and go.">
+          <Primary label="New quest" icon="play" onPress={go('/quest/new-game')} />
         </Shell>
       );
     case 'continue_quest':

@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import type { ApiOk, MemberHome } from '@tmi/shared';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { ApiOk, HomeFocus, MemberHome } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
 
@@ -12,6 +12,15 @@ export function useMemberHome() {
     queryFn: () => apiClient.get<ApiOk<MemberHome>>('/home'),
     staleTime: 30_000,
     refetchOnWindowFocus: true,
+  });
+}
+
+/** Phase 68 (H4): "Make this my home" -- pin a focus, or null for automatic. Answers the new home. */
+export function usePinHome() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (focus: HomeFocus | null) => apiClient.put<ApiOk<MemberHome>>('/home/pin', { focus }),
+    onSuccess: (answer) => client.setQueryData(memberHomeKey, answer),
   });
 }
 

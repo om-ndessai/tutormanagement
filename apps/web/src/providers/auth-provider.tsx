@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { DEFAULT_ORG_TIME_ZONE, decideLanding } from '@tmi/shared';
+import { DEFAULT_ORG_TIME_ZONE, arrivalFromGuest, decideLanding } from '@tmi/shared';
+import { guestMemory } from '@/features/guest/guest-store';
 import type {
   MyJoinRequest,
   PlatformAccount,
@@ -388,6 +389,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const completeSignup = useCallback(
     async (input: Omit<SignupInput, 'token'>) => {
       await apiClient.post<ApiOk<SessionResponse>>('/auth/signup', {
+        // Phase 68 (H4): one word for how they arrived, read from this browser's guest play -- never the tiles.
+        arrived_via: arrivalFromGuest(guestMemory.played()),
         ...input,
         ...(pendingSignup ? { token: pendingSignup.token } : {}),
       });

@@ -16,12 +16,15 @@ import {
 } from 'lucide-react';
 import {
   START_LEAD_MINUTES,
+  TILE_LEVEL_WORDS,
   chooseNextUp,
   featureOn,
+  lessonDayWords,
   lessonWhen,
   levelLabel,
   nextUpCandidates,
   nextUpKey,
+  practiseRequest,
   startsInWords,
   type MemberHome,
   type NextUp,
@@ -76,6 +79,9 @@ function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: s
     game_invite: game ? { game_id: game.game_id, title: 'game', host_first_name: game.host_first_name } : null,
     continue_quest: last ? { code: last.label, title: last.label } : null,
     daily: dailyLevel && daily.data ? { level_id: dailyLevel, done: daily.data.data.result !== null } : null,
+    // Phase 68 (H10): practice before a lesson starts at the board's lead level.
+    practice_level_id: learner && quest ? (dailyTile?.level_id ?? null) : null,
+    played_today: habit.data?.data.played_today ?? false,
     dailyLevel,
   };
 }
@@ -90,7 +96,7 @@ export function useNextUp(home: MemberHome | undefined) {
     void later;
     return chooseNextUp(nextUpCandidates(home, extras), readPutOff(organization?.slug, home.day));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [home, extras.game_invite?.game_id, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, later, organization?.slug]);
+  }, [home, extras.game_invite?.game_id, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, extras.practice_level_id, extras.played_today, later, organization?.slug]);
   return {
     item,
     putOff(next: NextUp) {
@@ -337,6 +343,29 @@ export function NextUpCard({
           onLater={later}
         >
           {item.level_id ? link("Play today's Daily", `/quest/daily/${item.level_id}`, TargetIcon) : link('Start a quest', '/quest/games/new', PlayIcon)}
+        </Shell>
+      );
+    case 'practise_before':
+      return (
+        <Shell
+          kind={item.kind}
+          icon={TargetIcon}
+          eyebrow="Before your lesson"
+          title={`Practise before ${lessonDayWords(item.lesson.occurs_on, home.day)}.`}
+          detail={`Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id as QuestionBankLevelId)}, warm-up for ${firstName(item.lesson.tutor_name)}'s lesson.`}
+          onLater={later}
+        >
+          {primary(pending ? 'Starting…' : 'Practise 5', () => void start('Practice', practiseRequest(item.level_id)), TargetIcon)}
+        </Shell>
+      );
+    case 'focus_default':
+      return item.focus === 'assessment' ? (
+        <Shell kind={item.kind} icon={PencilLineIcon} eyebrow="Assessments" title="Start an assessment." detail="Questions answered by hand, one page each.">
+          {link('Open Assessments', '/assessments', PencilLineIcon)}
+        </Shell>
+      ) : (
+        <Shell kind={item.kind} icon={PlayIcon} eyebrow="Quest" title="Start a quest." detail="Pick a level and go.">
+          {link('New quest', '/quest/games/new', PlayIcon)}
         </Shell>
       );
     case 'continue_quest':

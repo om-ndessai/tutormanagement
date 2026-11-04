@@ -1,6 +1,10 @@
 import {
+  HOME_FOCUS_ACTIVITY_DAYS,
   UNRECORDED_LOOKBACK_DAYS,
   addDays,
+  deriveHomeFocus,
+  homeFocusOptions,
+  weekOf,
   cancellationKey,
   expandUpcoming,
   featureOn,
@@ -10,7 +14,9 @@ import {
   upcomingTakenKey,
   weekdayOf,
   zonedClockParts,
+  type Arrival,
   type HomeChild,
+  type HomeFocus,
   type HomeHat,
   type HomeLearner,
   type HomeLesson,
@@ -22,7 +28,7 @@ import {
   type User,
 } from '@tmi/shared';
 
-import type { OrgContext } from '../lib/org.js';
+import type { OrgContext, OrgId } from '../lib/org.js';
 import { pairingInForce } from '../lib/scope.js';
 import { buildTutorHome, tutorSchedules } from './home.js';
 import { nextQuestReview } from './quest.js';
@@ -349,6 +355,42 @@ async function parentBlock(
       ])
     : [{ results: [] }, [], { results: [] }, { results: [] }];
 
+  // Phase 68 (H10, R29): where Quest is on, this week's days played and today's Daily -- counts only --
+  // and the level each child played last, for "Play with <child>".
+  const questOn = featureOn(org, 'quest');
+  const childIds = JSON.stringify([...ids]);
+  const [playedRows, dailyRows, levelRows] = questOn
+    ? await Promise.all([
+        db
+          .prepare(
+            `SELECT user_id, COUNT(*) AS n FROM activity_days
+             WHERE organization_id = ? AND day >= ? AND (answers + game_answers + reviews) > 0
+               AND user_id IN (SELECT value FROM json_each(?))
+             GROUP BY user_id`,
+          )
+          .bind(org.id, weekOf(today), childIds)
+          .all<{ user_id: string; n: number }>(),
+        db
+          .prepare(
+            `SELECT DISTINCT user_id FROM daily_results
+             WHERE organization_id = ? AND day = ? AND user_id IN (SELECT value FROM json_each(?))`,
+          )
+          .bind(org.id, today, childIds)
+          .all<{ user_id: string }>(),
+        db
+          .prepare(
+            `SELECT user_id, level_id FROM (
+               SELECT p.user_id, g.level_id, ROW_NUMBER() OVER (PARTITION BY p.user_id ORDER BY g.created_at DESC) AS rn
+               FROM quest_game_players p
+               JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+               WHERE p.organization_id = ? AND p.user_id IN (SELECT value FROM json_each(?))
+             ) WHERE rn = 1`,
+          )
+          .bind(org.id, childIds)
+          .all<{ user_id: string; level_id: string }>(),
+      ])
+    : [null, null, null];
+
   const taken = new Set((recorded.results ?? []).map((r) => upcomingTakenKey(r.tutor_user_id, r.student_user_id, r.occurred_on)));
   const out: HomeChild[] = [];
   for (const child of children) {
@@ -378,6 +420,9 @@ async function parentBlock(
       homework: lesson?.write_up?.homework_assigned ?? null,
       last_lesson_on: last?.occurred_on ?? null,
       lessons_this_month: (monthRows.results ?? []).find((r) => r.student_user_id === child.id)?.n ?? 0,
+      days_played_this_week: playedRows ? ((playedRows.results ?? []).find((r) => r.user_id === child.id)?.n ?? 0) : null,
+      daily_done_today: dailyRows ? (dailyRows.results ?? []).some((r) => r.user_id === child.id) : null,
+      play_level_id: levelRows ? ((levelRows.results ?? []).find((r) => r.user_id === child.id)?.level_id ?? null) : null,
     });
   }
   return { children: out };
@@ -471,6 +516,23 @@ export async function buildMemberHome(
     getPlatformAccount(db, viewer.id),
   ]);
 
+  // Phase 68 (H4): the pin, how they arrived, and what they did on how many days of the last two weeks.
+  const since = addDays(today, -HOME_FOCUS_ACTIVITY_DAYS);
+  const focusFacts = await db
+    .prepare(
+      `SELECT
+         (SELECT home_pin FROM org_members WHERE organization_id = ?1 AND user_id = ?2) AS pin,
+         (SELECT arrived_via FROM platform_accounts WHERE user_id = ?2) AS arrived_via,
+         (SELECT COUNT(*) FROM activity_days
+           WHERE organization_id = ?1 AND user_id = ?2 AND day >= ?3 AND (answers + game_answers) > 0) AS quest,
+         (SELECT COUNT(DISTINCT substr(started_at, 1, 10)) FROM canvas_assessments
+           WHERE organization_id = ?1 AND started_by_user_id = ?2 AND started_at >= ?3) AS assessment,
+         (SELECT COUNT(DISTINCT occurred_on) FROM sessions
+           WHERE organization_id = ?1 AND tutor_user_id = ?2 AND occurred_on >= ?3) AS tutoring`,
+    )
+    .bind(org.id, viewer.id, since)
+    .first<{ pin: HomeFocus | null; arrived_via: Arrival | null; quest: number; assessment: number; tutoring: number }>();
+
   const kids = children.results ?? [];
   const roles = viewer.roles;
   const hats: HomeHat[] = [];
@@ -487,6 +549,16 @@ export async function buildMemberHome(
   }
   // Where there is no Tutoring, playing leads (the space is for practice).
   if (!tutoring && hats.includes('learner')) hats.unshift(...hats.splice(hats.indexOf('learner'), 1));
+
+  const focusOptions = homeFocusOptions(hats, { quest: featureOn(org, 'quest'), assessment: featureOn(org, 'assessment') });
+  const pin = focusFacts?.pin && focusOptions.includes(focusFacts.pin) ? focusFacts.pin : null;
+  const focus = deriveHomeFocus({
+    pin,
+    activity: { quest: focusFacts?.quest ?? 0, assessment: focusFacts?.assessment ?? 0, tutoring: focusFacts?.tutoring ?? 0 },
+    arrived_via: focusFacts?.arrived_via ?? null,
+    hats,
+    options: focusOptions,
+  });
 
   const [tutor, office, parent, learner] = await Promise.all([
     hats.includes('tutor') ? tutorBlock(db, org, viewer, nowIso) : Promise.resolve(null),
@@ -506,7 +578,18 @@ export async function buildMemberHome(
     parent,
     learner,
     may_bring_people: account?.age_band !== '13-17',
+    focus,
+    pin,
+    focus_options: focusOptions,
   };
+}
+
+/** Phase 68 (H4): the person's own "Make this my home" in this space (null for automatic). */
+export async function setHomePin(db: D1Database, org: OrgId, userId: string, focus: HomeFocus | null): Promise<void> {
+  await db
+    .prepare(`UPDATE org_members SET home_pin = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE organization_id = ? AND user_id = ?`)
+    .bind(focus, org, userId)
+    .run();
 }
 
 /** For tests: forget the office memo. */

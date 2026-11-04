@@ -425,6 +425,8 @@ describe('auth provider: signing up (Phase 52)', () => {
       birth_month: 6,
       terms_version: expect.any(String),
       privacy_version: expect.any(String),
+      // Phase 68 (H4): nothing played as a guest on this phone.
+      arrived_via: 'direct',
     });
     expect(auth.status).toBe('authenticated');
     expect(auth.pendingSignup).toBeNull();

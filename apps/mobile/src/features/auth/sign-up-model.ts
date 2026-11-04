@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/auth/signup-page.tsx @ 9485a8e (its pure parts)
-import { PRIVACY_VERSION, TERMS_VERSION, type SignupInput } from '@tmi/shared';
+import { PRIVACY_VERSION, TERMS_VERSION, type Arrival, type SignupInput } from '@tmi/shared';
 
 /** The web's twelve names, in order: index + 1 is the month sent. */
 export const MONTHS = [
@@ -41,12 +41,14 @@ export interface SignupForm {
 }
 
 /** The exact body of POST /auth/signup: the current versions, and the token or the developer email. */
-export function signupRequest(form: SignupForm, pending: PendingSignup): SignupInput {
+export function signupRequest(form: SignupForm, pending: PendingSignup, arrivedVia?: Arrival): SignupInput {
   const body: SignupInput = {
     birth_year: form.birth_year,
     birth_month: form.birth_month,
     terms_version: TERMS_VERSION,
     privacy_version: PRIVACY_VERSION,
+    // Phase 68 (H4): one word for how they arrived, read from this phone's guest play -- never the tiles.
+    ...(arrivedVia ? { arrived_via: arrivedVia } : {}),
   };
   if (pending.token && !pending.dev) return { ...body, token: pending.token };
   const name = form.dev_name?.trim();

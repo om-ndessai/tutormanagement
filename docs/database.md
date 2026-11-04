@@ -1684,6 +1684,15 @@ UPDATE organization_curricula SET is_default = 1
   WHERE curriculum_id = 'nc-2026' AND organization_id IN (SELECT id FROM organizations WHERE personal = 1);
 ```
 
+Phase 68 (focus and families, H4 and H10) adds two nullable columns: a person's "Make this my home" choice per
+space, and how a self sign-up arrived (one word the sign-up sheet sends). Additive; existing rows read NULL
+(automatic, and arrival unknown).
+
+```sql release=phase-68
+ALTER TABLE org_members ADD COLUMN home_pin TEXT CHECK (home_pin IN ('quest', 'assessment', 'tutoring', 'family', 'office'));
+ALTER TABLE platform_accounts ADD COLUMN arrived_via TEXT CHECK (arrived_via IN ('guest_quest', 'guest_assessment', 'direct'));
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

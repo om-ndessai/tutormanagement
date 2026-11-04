@@ -904,6 +904,7 @@ export const authRoutes = new Hono<AppEnv>()
         termsVersion: input.terms_version,
         privacyVersion: input.privacy_version,
         access: waits ? 'pending' : 'approved',
+        arrivedVia: input.arrived_via ?? null,
       });
     } catch (error) {
       if (isUniqueConstraintError(error)) throw ApiError.conflict('That address already has an account. Sign in instead.');

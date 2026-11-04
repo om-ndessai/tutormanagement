@@ -1,4 +1,4 @@
-import { PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
+import { PRIVACY_VERSION, TERMS_VERSION, arrivalFromGuest } from '@tmi/shared';
 
 import { birthYears, firstNameOf, legalUrl, MONTHS, signupRequest } from './sign-up-model';
 
@@ -28,6 +28,16 @@ describe('sign-up model (Phase 52)', () => {
     expect(
       signupRequest({ birth_year: 1990, birth_month: 1, dev_name: ' ' }, { token: null, email: 'a@b.c', name: 'a@b.c', dev: true }),
     ).not.toHaveProperty('dev_name');
+  });
+
+  it('Phase 68: sends one word for how they arrived, from the guest tiles played on this phone', () => {
+    const pending = { token: 't-1', email: 'nina@example.com', name: 'Nina', dev: false };
+    const form = { birth_year: 1990, birth_month: 6 };
+    expect(signupRequest(form, pending, arrivalFromGuest(['G4A5', 'G4T10']))).toMatchObject({ arrived_via: 'guest_assessment' });
+    expect(signupRequest(form, pending, arrivalFromGuest(['G4T10']))).toMatchObject({ arrived_via: 'guest_quest' });
+    expect(signupRequest(form, pending, arrivalFromGuest([]))).toMatchObject({ arrived_via: 'direct' });
+    // Only the word: never the tiles.
+    expect(JSON.stringify(signupRequest(form, pending, arrivalFromGuest(['G4A5'])))).not.toMatch(/G4A5/);
   });
 
   it('offers this year back 100, and the twelve months', () => {

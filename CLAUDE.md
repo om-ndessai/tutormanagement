@@ -585,6 +585,19 @@ guest's assessment tiles -- is for oneself (`POST /canvas-assessments` with one'
 `org.personal`). `QuestLanding` is gone: a student's waiting Question Quest is a Next up item (`question_quest`),
 a tutor's answers to review already were.
 
+**A home leads with what its person does, and a family plays together** (Phase 68, `docs/member-home-plan.md` H4,
+H10). Each home has a focus (`HOME_FOCUSES`: Quest, Assessments, Teaching, My children, Running the space), chosen by
+`deriveHomeFocus` in shared: the person's pin ("Make this my home", `org_members.home_pin`, `PUT /api/home/pin`, only a
+choice in `focus_options`; a preference like the last space opened, so no log line), else what they did on at least
+two of the last 14 days, else how they arrived (`platform_accounts.arrived_via`: the sign-up sends ONE word,
+`arrivalFromGuest` of the device's played tiles -- never the tiles, grade or scores), else their hats. The pinned
+hat's section always comes first; otherwise the focus leads within `orderHats`' today-first order; an
+assessment-led home puts Assessments above the Quest board; with nothing else, Next up offers the focus's first step
+(`focus_default`). A parent's child card shows in every space: where Quest is on, the child's days played this week
+and today's Daily (counts only, R29) and **Play with <child>** (`playWithRequest`: a game of two, the parent playing,
+the child invited), "Practise together before <day>'s lesson" when one is within `PRACTISE_BEFORE_DAYS`; a learner
+with such a lesson who has not played today gets **Practise before <day>'s lesson** in Next up (`practise_before`).
+
 **Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
 `docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
 else is the web. Platform admins set, for the web portal and the app separately, which providers besides

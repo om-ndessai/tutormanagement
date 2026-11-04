@@ -1,0 +1,73 @@
+# Phase 68 (H4): "Make this my home". Maria, a parent who also holds the tutor role in chmi, may pin
+# Assessments or My children. Unpinned, Automatic says what it picks ("Automatic (My children)") and is the
+# chosen chip. She pins My children: it is chosen, her children's section leads Home and Automatic loses
+# its hint. Back to Automatic. home-pin-reset.js unpins her before and after, whatever happened.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/home-pin-reset.js
+onFlowComplete:
+  - runScript: ../../scripts/home-pin-reset.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: maria.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+# The row sits at the foot of Home.
+- scrollUntilVisible:
+    element:
+      id: home-pin
+    centerElement: true
+    timeout: 30000
+- assertVisible: 'Make this my home'
+- assertVisible:
+    id: home-pin-auto
+    text: 'Automatic \(My children\)'
+    selected: true
+- assertVisible:
+    id: home-pin-assessment
+    selected: false
+- assertVisible:
+    id: home-pin-family
+    selected: false
+- assertNotVisible:
+    id: home-pin-office
+- tapOn:
+    id: home-pin-family
+- extendedWaitUntil:
+    visible:
+      id: home-pin-family
+      selected: true
+    timeout: 15000
+- assertVisible:
+    id: home-pin-auto
+    text: 'Automatic'
+    selected: false
+- takeScreenshot: home-focus-pin
+# Her children's section leads Home.
+- scrollUntilVisible:
+    element:
+      id: home-section-parent
+    direction: UP
+    visibilityPercentage: 1
+- assertVisible:
+    id: home-child-00000000-0000-4000-8000-000000000008
+# Automatic again.
+- scrollUntilVisible:
+    element:
+      id: home-pin
+    centerElement: true
+- tapOn:
+    id: home-pin-auto
+- extendedWaitUntil:
+    visible:
+      id: home-pin-auto
+      text: 'Automatic \(My children\)'
+      selected: true
+    timeout: 15000

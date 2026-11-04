@@ -1,10 +1,12 @@
 import { Hono } from 'hono';
-import type { ApiOk, MemberHome, TutorHome } from '@tmi/shared';
+import { homePinSchema, type ApiOk, type MemberHome, type TutorHome } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
+import { ApiError } from '../lib/errors.js';
+import { zValidator } from '../lib/validate.js';
 import type { OrgId } from '../lib/org.js';
 import { buildTutorHome } from '../repositories/home.js';
-import { buildMemberHome } from '../repositories/member-home.js';
+import { buildMemberHome, setHomePin } from '../repositories/member-home.js';
 
 // The tutor's Home (Phase 43, docs/tutor-home-plan.md): one read for the "Now"
 // card and the next lesson's brief. Anyone may ask; it holds only the reader's
@@ -17,6 +19,22 @@ export const homeRoutes = new Hono<AppEnv>()
    */
   .get('/', async (c) => {
     const body: ApiOk<MemberHome> = { data: await buildMemberHome(c.env.DB, c.get('org'), c.get('user')) };
+    return c.json(body);
+  })
+  /**
+   * Phase 68 (H4): "Make this my home" -- the reader's own pin in this space, or null for automatic.
+   * A preference, like the last space opened (Phase 60): no log line of its own. Answers the new home.
+   */
+  .put('/pin', zValidator('json', homePinSchema), async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    const { focus } = c.req.valid('json');
+    // Only a focus this person has here (their hats, the space's sets).
+    if (focus && !(await buildMemberHome(c.env.DB, org, user)).focus_options?.includes(focus)) {
+      throw ApiError.validation('That is not one of your home choices here.', { focus: ['Not one of your home choices here.'] });
+    }
+    await setHomePin(c.env.DB, org.id as OrgId, user.id, focus);
+    const body: ApiOk<MemberHome> = { data: await buildMemberHome(c.env.DB, org, user) };
     return c.json(body);
   })
   .get('/tutor', async (c) => {

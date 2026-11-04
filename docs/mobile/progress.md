@@ -551,6 +551,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   Jest 169 suites / 1262 tests, export green; the Phase 67 flows green on iOS and Android; `npm run smoke -- mobile` 10/10
   on both.
 
+## Portal Phase 68 — focus and families (parity: the web half is built by the lead)
+
+- [x] 79. Mobile: H4/H10 of `docs/member-home-plan.md` (build-log entry 77) -- "Make this my home" (`home/pin-home.tsx`,
+  `PUT /home/pin`), the focus-led learner section, the parent card's days played and "Play with <child>" /
+  "Practise together before <day>'s lesson", Next up's `practise_before` and `focus_default`, and sign-up's
+  `arrived_via` from the phone's guest play. Built 2026-11-03: typecheck, lint (0 errors), Jest, export green;
+  `flows/home` + `flows/play` green on iOS and Android (iOS `dashboard-analytics` green on rerun); `npm run smoke --
+  mobile` 10/10 on iOS and on Android.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { PLATFORM_BRAND } from './brand.js';
 import { featureAllowed, type FeatureState } from './features.js';
 import { ORG_TIME_ZONES, type OrgPalette } from './organizations.js';
+import { ARRIVALS } from './home.js';
 import { refuseSsn } from './tax.js';
 
 // ---------------------------------------------------------------------------
@@ -93,6 +94,8 @@ export const signupSchema = z.object({
   birth_month: z.number().int().min(1).max(12),
   terms_version: z.string().min(1).max(40),
   privacy_version: z.string().min(1).max(40),
+  /** Phase 68 (H4): how they arrived, one word from the guest device ('direct' when absent). Older apps omit it. */
+  arrived_via: z.enum(ARRIVALS).optional(),
 });
 export type SignupInput = z.input<typeof signupSchema>;
 

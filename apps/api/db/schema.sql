@@ -382,6 +382,10 @@ CREATE TABLE org_members (
   -- no phone, so adding an address never reveals whose it is. NULL otherwise.
   invited_name         TEXT,
 
+  -- Phase 68 (docs/member-home-plan.md H4): "Make this my home" -- what this person's home leads with
+  -- in this space (HOME_FOCUSES), or NULL for automatic. Their own choice; nobody else reads it.
+  home_pin             TEXT CHECK (home_pin IN ('quest', 'assessment', 'tutoring', 'family', 'office')),
+
   created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 
@@ -2690,7 +2694,10 @@ CREATE TABLE platform_accounts (
   -- Checked on every request with the person (people.ts SELECT_PERSON).
   access            TEXT NOT NULL DEFAULT 'approved' CHECK (access IN ('approved', 'pending', 'declined')),
   access_decided_at TEXT,
-  access_decided_by TEXT REFERENCES users (id) ON DELETE SET NULL
+  access_decided_by TEXT REFERENCES users (id) ON DELETE SET NULL,
+  -- Phase 68 (H4): how they arrived, one word from the sign-up sheet (a guest quest, the guest
+  -- Assessment, or neither). NULL for accounts from before, and for older apps.
+  arrived_via       TEXT CHECK (arrived_via IN ('guest_quest', 'guest_assessment', 'direct'))
 );
 
 -- Phase 65 (A2): the platform's sign-up list, kept by platform admins in the console. Read while

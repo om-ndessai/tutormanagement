@@ -1,8 +1,10 @@
+import { z } from 'zod';
 import type { Location } from './locations.js';
 import type { HomeworkStatus, SessionAssessment } from './session-notes.js';
 import { formatClockTime, type SessionMode } from './teaching.js';
 import { addDays, weekdayOf } from './schedules.js';
 import type { Rating } from './progress.js';
+import type { CreateGameRequest } from './quest-games.js';
 
 // ---------------------------------------------------------------------------
 // The tutor's Home (Phase 43, docs/tutor-home-plan.md)
@@ -136,6 +138,14 @@ export interface HomeChild {
   homework: string | null;
   last_lesson_on: string | null;
   lessons_this_month: number;
+  /**
+   * Phase 68 (H10, R29): this week's days played (0-7) and whether today's Daily is done -- counts
+   * only, never a score or an answer. Null where Quest is off. Absent from an older Worker.
+   */
+  days_played_this_week?: number | null;
+  daily_done_today?: boolean | null;
+  /** The level the child played last (a game or a Daily), for "Play with <child>"; null if none. */
+  play_level_id?: string | null;
 }
 
 export interface HomeLearner {
@@ -160,6 +170,147 @@ export interface MemberHome {
   office: HomeOffice | null;
   parent: { children: HomeChild[] } | null;
   learner: HomeLearner | null;
+  /**
+   * Phase 68 (H4): what leads this home -- the person's pin, else what they did most in the last
+   * HOME_FOCUS_ACTIVITY_DAYS days, else how they arrived, else their roles (`deriveHomeFocus`).
+   * Absent from an older Worker.
+   */
+  focus?: HomeFocus;
+  /** "Make this my home": the person's own choice in this space, or null for automatic. */
+  pin?: HomeFocus | null;
+  /** The focuses this person may pin here. */
+  focus_options?: HomeFocus[];
+}
+
+// --- Focus (H4, Phase 68) ------------------------------------------------------
+
+/** What a home can lead with. */
+export const HOME_FOCUSES = ['quest', 'assessment', 'tutoring', 'family', 'office'] as const;
+export type HomeFocus = (typeof HOME_FOCUSES)[number];
+
+export const HOME_FOCUS_LABELS: Record<HomeFocus, string> = {
+  quest: 'Quest',
+  assessment: 'Assessments',
+  tutoring: 'Teaching',
+  family: 'My children',
+  office: 'Running the space',
+};
+
+/** The hat a focus brings to the top. */
+export const FOCUS_HAT: Record<HomeFocus, HomeHat> = {
+  quest: 'learner',
+  assessment: 'learner',
+  tutoring: 'tutor',
+  family: 'parent',
+  office: 'office',
+};
+
+/** PUT /api/home/pin: "Make this my home", or null for automatic. */
+export const homePinSchema = z.object({ focus: z.enum(HOME_FOCUSES).nullable() });
+export type HomePinInput = z.infer<typeof homePinSchema>;
+
+/** How a person arrived, as the sign-up sheet knew it (`platform_accounts.arrived_via`). */
+export const ARRIVALS = ['guest_quest', 'guest_assessment', 'direct'] as const;
+export type Arrival = (typeof ARRIVALS)[number];
+
+/**
+ * How a newcomer arrived, from what the guest's device played (most recent first, tile codes): the guest
+ * Assessment, a guest quest, or neither. Only this one word is sent -- never the tiles, grade or scores.
+ */
+export function arrivalFromGuest(played: readonly string[]): Arrival {
+  const last = played[0];
+  if (!last) return 'direct';
+  return /^[A-Z0-9]+A\d+$/.test(last) ? 'guest_assessment' : 'guest_quest';
+}
+
+/** How far back "what they did most" looks. */
+export const HOME_FOCUS_ACTIVITY_DAYS = 14;
+/** Days of an activity in that window before it counts as what they do. */
+export const HOME_FOCUS_MIN_DAYS = 2;
+
+/** Days with each activity in the last HOME_FOCUS_ACTIVITY_DAYS: quests played, assessments, lessons recorded. */
+export interface HomeActivity {
+  quest: number;
+  assessment: number;
+  tutoring: number;
+}
+
+/** The focuses a person may have here: what their hats and the space's feature sets allow. */
+export function homeFocusOptions(hats: readonly HomeHat[], sets: { quest: boolean; assessment: boolean }): HomeFocus[] {
+  const out: HomeFocus[] = [];
+  if (sets.quest) out.push('quest');
+  if (sets.assessment) out.push('assessment');
+  if (hats.includes('tutor')) out.push('tutoring');
+  if (hats.includes('parent')) out.push('family');
+  if (hats.includes('office')) out.push('office');
+  return out;
+}
+
+/**
+ * The focus (H4), first to last: the pin; what they did most in the last 14 days (at least
+ * HOME_FOCUS_MIN_DAYS days of it); how they arrived; the hat that leads by their roles.
+ */
+export function deriveHomeFocus(input: {
+  pin: HomeFocus | null;
+  activity: HomeActivity;
+  arrived_via: Arrival | null;
+  hats: readonly HomeHat[];
+  options: readonly HomeFocus[];
+}): HomeFocus {
+  const { pin, activity, arrived_via, hats, options } = input;
+  const allowed = (focus: HomeFocus | null): focus is HomeFocus => focus !== null && options.includes(focus);
+  if (allowed(pin)) return pin;
+  const ranked = (['tutoring', 'assessment', 'quest'] as const)
+    .filter((focus) => allowed(focus) && activity[focus] >= HOME_FOCUS_MIN_DAYS)
+    .sort((a, b) => activity[b] - activity[a]);
+  if (ranked[0]) return ranked[0];
+  const arrived: HomeFocus | null =
+    arrived_via === 'guest_quest' ? 'quest' : arrived_via === 'guest_assessment' ? 'assessment' : null;
+  if (allowed(arrived)) return arrived;
+  const lead = hats[0];
+  const byHat: HomeFocus | null =
+    lead === 'tutor' ? 'tutoring' : lead === 'parent' ? 'family' : lead === 'office' ? 'office' : options.includes('quest') ? 'quest' : 'assessment';
+  if (allowed(byHat)) return byHat;
+  return options[0] ?? 'quest';
+}
+
+// --- Families (H10, Phase 68) --------------------------------------------------
+
+/** "Play with <child>": a game of two, each on their own, the parent playing, the child invited. */
+export function playWithRequest(levelId: string, childUserId: string): CreateGameRequest {
+  return {
+    level_id: levelId as CreateGameRequest['level_id'],
+    mode: 'count',
+    question_count: 5,
+    players: 'multi',
+    max_teams: 2,
+    max_team_size: 1,
+    late_join: true,
+    host_plays: true,
+    invite_user_ids: [childUserId],
+  };
+}
+
+/** A quick practice of five on one's own (Practise before a lesson). */
+export function practiseRequest(levelId: string): CreateGameRequest {
+  return { level_id: levelId as CreateGameRequest['level_id'], mode: 'count', question_count: 5, players: 'single', max_team_size: 1 };
+}
+
+/** How many days ahead a lesson prompts "Practise before <day>'s lesson". */
+export const PRACTISE_BEFORE_DAYS = 3;
+
+/** Whether a lesson is close enough to practise for: later today, or within PRACTISE_BEFORE_DAYS days. */
+export function practiseBefore(lesson: Pick<HomeLesson, 'occurs_on' | 'starts_in'> | null, today: string): boolean {
+  if (!lesson) return false;
+  if (lesson.occurs_on === today) return lesson.starts_in > 60;
+  return lesson.occurs_on > today && lesson.occurs_on <= addDays(today, PRACTISE_BEFORE_DAYS);
+}
+
+/** "Thursday's lesson", "tomorrow's lesson", "today's lesson". */
+export function lessonDayWords(occursOn: string, today: string): string {
+  if (occursOn === today || occursOn === addDays(today, 1)) return `${dayInWords(occursOn, today)}'s lesson`;
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return `${days[weekdayOf(occursOn)] ?? dayInWords(occursOn, today)}'s lesson`;
 }
 
 // --- Next up (H2) ------------------------------------------------------------
@@ -173,6 +324,9 @@ export interface NextUpExtras {
   question_quest?: { level_id: string | null } | null;
   /** Phase 67 (H8): back after a week or more away (`welcome_back` in the habit summary). */
   welcome_back?: boolean;
+  /** Phase 68: the level a learner's practice starts at (the board's lead), and whether they played today. */
+  practice_level_id?: string | null;
+  played_today?: boolean;
 }
 
 export type NextUp =
@@ -184,13 +338,15 @@ export type NextUp =
   | { kind: 'assessment_continue'; hat: 'learner'; assessment: NonNullable<HomeLearner['assessment_in_progress']> }
   | { kind: 'office_to_record'; hat: 'office'; office: HomeOffice }
   | { kind: 'question_quest'; hat: 'learner'; level_id: string | null }
+  | { kind: 'practise_before'; hat: 'learner'; lesson: HomeLesson; level_id: string }
   | { kind: 'daily'; hat: 'learner'; level_id: string }
   | { kind: 'welcome_back'; hat: 'learner'; level_id: string | null }
   | { kind: 'continue_quest'; hat: 'learner'; code: string; title: string }
   | { kind: 'learner_lesson'; hat: 'learner'; lesson: HomeLesson }
   | { kind: 'child_next_lesson'; hat: 'parent'; child: HomeChild }
   | { kind: 'office_needs'; hat: 'office'; office: HomeOffice }
-  | { kind: 'lesson_next'; hat: 'tutor'; lesson: TutorHomeLesson; starts_in: number | null };
+  | { kind: 'lesson_next'; hat: 'tutor'; lesson: TutorHomeLesson; starts_in: number | null }
+  | { kind: 'focus_default'; hat: HomeHat; focus: 'quest' | 'assessment' };
 
 export type NextUpKind = NextUp['kind'];
 
@@ -204,6 +360,7 @@ export const NEXT_UP_ORDER: readonly NextUpKind[] = [
   'assessment_continue',
   'question_quest',
   'office_to_record',
+  'practise_before',
   'daily',
   'welcome_back',
   'continue_quest',
@@ -211,6 +368,7 @@ export const NEXT_UP_ORDER: readonly NextUpKind[] = [
   'child_next_lesson',
   'office_needs',
   'lesson_next',
+  'focus_default',
 ];
 
 /** A stable key per item, so "Later" can put one off for the day. */
@@ -232,7 +390,10 @@ export function nextUpKey(item: NextUp): string {
     case 'continue_quest':
       return `${item.kind}:${item.code}`;
     case 'learner_lesson':
+    case 'practise_before':
       return `${item.kind}:${item.lesson.schedule_id}:${item.lesson.occurs_on}`;
+    case 'focus_default':
+      return `${item.kind}:${item.focus}`;
     default:
       return item.kind;
   }
@@ -260,6 +421,10 @@ export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): N
   }
   if (home.office && home.office.to_record_count > 0) out.push({ kind: 'office_to_record', hat: 'office', office: home.office });
   if (extras.question_quest) out.push({ kind: 'question_quest', hat: 'learner', level_id: extras.question_quest.level_id });
+  const learnerLesson = home.learner?.next_lesson ?? null;
+  if (learnerLesson && extras.practice_level_id && !extras.played_today && practiseBefore(learnerLesson, home.day)) {
+    out.push({ kind: 'practise_before', hat: 'learner', lesson: learnerLesson, level_id: extras.practice_level_id });
+  }
   if (extras.daily && !extras.daily.done) out.push({ kind: 'daily', hat: 'learner', level_id: extras.daily.level_id });
   if (extras.welcome_back) out.push({ kind: 'welcome_back', hat: 'learner', level_id: extras.daily?.level_id ?? null });
   if (extras.continue_quest) {
@@ -273,6 +438,10 @@ export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): N
     out.push({ kind: 'office_needs', hat: 'office', office: home.office });
   }
   if (t?.now.next) out.push({ kind: 'lesson_next', hat: 'tutor', lesson: t.now.next, starts_in: t.next_starts_in });
+  // Phase 68 (H4): with nothing else, the focus's own first step.
+  if (home.focus === 'quest' || home.focus === 'assessment') {
+    out.push({ kind: 'focus_default', hat: 'learner', focus: home.focus });
+  }
   const rank = (item: NextUp) => NEXT_UP_ORDER.indexOf(item.kind);
   return out.sort((a, b) => rank(a) - rank(b));
 }
@@ -304,10 +473,17 @@ export function hatHasToday(home: MemberHome, hat: HomeHat): boolean {
   }
 }
 
-/** The hats in the order shown: those with something today first, each group in the base order. */
+/**
+ * The hats in the order shown: a pinned focus's hat first, always; then those with something today;
+ * within each group the focus's hat leads (Phase 68, H4), then the base order.
+ */
 export function orderHats(home: MemberHome): HomeHat[] {
-  const today = home.hats.filter((hat) => hatHasToday(home, hat));
-  return [...today, ...home.hats.filter((hat) => !today.includes(hat))];
+  const focusHat = home.focus ? FOCUS_HAT[home.focus] : null;
+  const base = focusHat && home.hats.includes(focusHat) ? [focusHat, ...home.hats.filter((h) => h !== focusHat)] : [...home.hats];
+  const today = base.filter((hat) => hatHasToday(home, hat));
+  const ordered = [...today, ...base.filter((hat) => !today.includes(hat))];
+  const pinnedHat = home.pin ? FOCUS_HAT[home.pin] : null;
+  return pinnedHat && ordered.includes(pinnedHat) ? [pinnedHat, ...ordered.filter((h) => h !== pinnedHat)] : ordered;
 }
 
 /** The quick actions (at most 3), most useful first, for the hats worn and what this person may do. */

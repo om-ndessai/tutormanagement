@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BarChart3Icon,
+  HomeIcon,
+  UsersIcon,
   CalendarDaysIcon,
   ClipboardCheckIcon,
   CompassIcon,
@@ -15,15 +17,20 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import {
+  HOME_FOCUS_LABELS,
   HOME_HAT_LABELS,
   STREAK_DAYS_PER_WEEK,
   featureOn,
   homeGreeting,
   lessonWhen,
+  lessonDayWords,
   orderHats,
+  playWithRequest,
+  practiseBefore,
   quickActionsFor,
   startsInWords,
   type HomeChild,
+  type HomeFocus,
   type HomeHat,
   type HomeOffice,
   type HomeTutor,
@@ -38,12 +45,13 @@ import { AssessmentSection } from '@/features/dashboard/assessment-home';
 import { useHabit } from '@/features/habit/habit-api';
 import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
-import { PlayFavorites, PlayHome, WaitingForYou } from '@/features/play/play-home';
+import { PlayFavorites, PlayHome, WaitingForYou, useStartQuest } from '@/features/play/play-home';
+import { useMemberTiles } from '@/features/play/play-api';
 import { SessionFormDialog } from '@/features/teaching/session-form-dialog';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
-import { useMemberHome } from './api';
+import { useMemberHome, usePinHome } from './api';
 import { NextUpCard, useNextUp, type RecordRequest } from './next-up';
 
 const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
@@ -112,6 +120,8 @@ export function MemberHomePage() {
           {item?.kind !== 'game_invite' && <WaitingForYou />}
         </section>
       )}
+
+      {(home.focus_options?.length ?? 0) > 1 && <PinHome home={home} />}
 
       {tutoring && (
         <SessionFormDialog
@@ -284,7 +294,7 @@ function HatSection({
     case 'parent':
       // A child's card is their lessons; where there is no Tutoring their assessments are under
       // Practice (Phase 68 adds what they played).
-      return <ParentSectionIfTutoring home={home} kids={home.parent!.children} />;
+      return <ParentSection home={home} kids={home.parent!.children} />;
     case 'learner':
       return <LearnerSection home={home} hideWaiting={nextUp?.kind === 'game_invite'} />;
   }
@@ -435,14 +445,14 @@ function OfficeSection({ home, office }: { home: MemberHome; office: HomeOffice 
   );
 }
 
-function ParentSectionIfTutoring({ home, kids }: { home: MemberHome; kids: HomeChild[] }) {
-  const { organization } = useAuth();
-  return featureOn(organization, 'tutoring') ? <ParentSection home={home} kids={kids} /> : null;
-}
-
 function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) {
   const { organization } = useAuth();
   const tutoring = featureOn(organization, 'tutoring');
+  const quest = featureOn(organization, 'quest');
+  // Phase 68 (H10): "Play with <child>" starts at the child's last level, else this space's first tile.
+  const tiles = useMemberTiles(quest && kids.length > 0);
+  const firstTileLevel = tiles.data?.data.tiles[0]?.level_id ?? null;
+  const { start, pending } = useStartQuest();
   return (
     <SectionShell hat="parent">
       {kids.length === 0 && (
@@ -487,15 +497,36 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
                   <span className="text-foreground font-medium">Homework:</span> {child.homework}
                 </p>
               )}
-              {tutoring && (
-                <div>
+              {quest && child.days_played_this_week != null && (
+                <p className="text-muted-foreground text-xs" data-testid={`home-child-played-${child.student_user_id}`}>
+                  Played {plural(child.days_played_this_week, 'day')} this week (aim: {STREAK_DAYS_PER_WEEK})
+                  {child.daily_done_today ? " · today's Daily done" : ''}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2 empty:hidden">
+                {quest && (child.play_level_id ?? firstTileLevel) && (
+                  <Button
+                    size="sm"
+                    disabled={pending}
+                    onClick={() =>
+                      void start(`With ${child.first_name}`, playWithRequest((child.play_level_id ?? firstTileLevel)!, child.student_user_id))
+                    }
+                    data-testid={`home-child-play-${child.student_user_id}`}
+                  >
+                    <UsersIcon />
+                    {practiseBefore(child.next_lesson, home.day)
+                      ? `Practise together before ${lessonDayWords(child.next_lesson!.occurs_on, home.day)}`
+                      : `Play with ${child.first_name}`}
+                  </Button>
+                )}
+                {tutoring && (
                   <Button asChild size="sm" variant="outline">
                     <Link to={`/progress/${child.student_user_id}`}>
                       <TrendingUpIcon /> Progress
                     </Link>
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -523,8 +554,45 @@ function LearnerSection({ home, hideWaiting }: { home: MemberHome; hideWaiting: 
           </CardContent>
         </Card>
       )}
+      {/* Phase 68 (H4): an assessment-led home puts Assessments first, in any space. */}
+      {assessment && home.focus === 'assessment' && <AssessmentSection />}
       {quest && <PlayHome hideWaiting={hideWaiting} />}
-      {assessment && !tutoring && <AssessmentSection />}
+      {assessment && !tutoring && home.focus !== 'assessment' && <AssessmentSection />}
     </SectionShell>
+  );
+}
+
+/** Phase 68 (H4): "Make this my home" -- the person pins what leads, or leaves it automatic. */
+function PinHome({ home }: { home: MemberHome }) {
+  const pin = usePinHome();
+  const choices: (HomeFocus | null)[] = [null, ...(home.focus_options ?? [])];
+  return (
+    <section className="grid gap-2" data-testid="home-pin" aria-labelledby="home-pin-heading">
+      <h2 id="home-pin-heading" className="text-muted-foreground flex items-center gap-2 text-sm font-semibold">
+        <HomeIcon className="size-4" aria-hidden /> Make this my home
+      </h2>
+      <div className="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="home-pin-heading">
+        {choices.map((focus) => {
+          const chosen = (home.pin ?? null) === focus;
+          return (
+            <button
+              key={focus ?? 'auto'}
+              type="button"
+              role="radio"
+              aria-checked={chosen}
+              disabled={pin.isPending}
+              onClick={() => !chosen && pin.mutate(focus)}
+              data-testid={`home-pin-${focus ?? 'auto'}`}
+              className={cn(
+                'min-h-9 rounded-full border px-3 text-sm font-medium transition-colors',
+                chosen ? 'border-primary bg-primary text-primary-foreground' : 'bg-card hover:bg-muted',
+              )}
+            >
+              {focus ? HOME_FOCUS_LABELS[focus] : `Automatic${home.pin ? '' : ` (${HOME_FOCUS_LABELS[home.focus ?? 'quest']})`}`}
+            </button>
+          );
+        })}
+      </div>
+    </section>
   );
 }
