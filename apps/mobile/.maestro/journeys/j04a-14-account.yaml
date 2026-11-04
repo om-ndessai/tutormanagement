@@ -1,0 +1,7 @@
+# J04A step 14: no "Start a space" in More; Ava tries her initials (the account button) at the top.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: account-button
+- waitForAnimationToEnd:
+    timeout: 3000

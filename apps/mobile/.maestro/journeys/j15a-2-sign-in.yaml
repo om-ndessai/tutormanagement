@@ -1,0 +1,11 @@
+# J15A step 2: Hana taps "Sign in" (the office told her to sign in).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-sign-in
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 2000

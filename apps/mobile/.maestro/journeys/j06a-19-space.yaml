@@ -1,0 +1,7 @@
+# J06A step 19: Pat taps "Space", hoping to make or name one.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: more-nav-organization
+- waitForAnimationToEnd:
+    timeout: 3000

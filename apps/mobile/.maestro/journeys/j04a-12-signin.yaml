@@ -1,0 +1,12 @@
+# J04A step 12: Ava taps Sign in. Expected: into her own space.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: sign-in-email-submit
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

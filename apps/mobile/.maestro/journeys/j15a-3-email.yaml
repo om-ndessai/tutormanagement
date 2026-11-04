@@ -1,0 +1,12 @@
+# J15A step 3: Hana scrolls to the address field and types the address the office gave her.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+    centerElement: true
+- tapOn:
+    id: sign-in-email
+- inputText: 'hana.mori@example.com'
+- waitForAnimationToEnd:
+    timeout: 2000

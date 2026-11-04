@@ -1,0 +1,18 @@
+# J06A step 13: Pat taps "Sign in", scrolls to the address field and types the address again.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-sign-in
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+    centerElement: true
+- tapOn:
+    id: sign-in-email
+- inputText: 'pat.quinn@example.com'
+- waitForAnimationToEnd:
+    timeout: 2000

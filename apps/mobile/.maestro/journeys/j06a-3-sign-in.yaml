@@ -1,0 +1,17 @@
+# J06A step 3: nothing for a class; Pat scrolls back up and taps "Sign in" at the top of the guest home.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: guest-sign-in
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: guest-sign-in
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

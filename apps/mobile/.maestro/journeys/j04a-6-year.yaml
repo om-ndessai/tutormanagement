@@ -1,0 +1,12 @@
+# J04A step 6: Ava types 2010 in the year search and picks it.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-year-search
+- inputText: '2010'
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: signup-year-2010
+- waitForAnimationToEnd:
+    timeout: 2000

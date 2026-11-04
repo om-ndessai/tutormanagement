@@ -1,0 +1,18 @@
+# J01A step 12: Morgan ticks "I agree to the Terms and the Privacy notice".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-accept
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- assertVisible:
+    id: signup-submit
+    enabled: true

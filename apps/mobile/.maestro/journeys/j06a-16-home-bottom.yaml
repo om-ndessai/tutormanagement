@@ -1,0 +1,10 @@
+# J06A step 16: Pat scrolls on to the end of the home.
+appId: ${APP_ID}
+---
+- scroll
+- scroll
+- scroll
+- scroll
+- scroll
+- waitForAnimationToEnd:
+    timeout: 2000

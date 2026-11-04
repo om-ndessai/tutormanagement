@@ -1,0 +1,9 @@
+# J06A step 41 (end-state check): Pat scrolls a little further to read "Needs you".
+appId: ${APP_ID}
+---
+- swipe:
+    start: 200, 600
+    end: 200, 350
+    duration: 700
+- waitForAnimationToEnd:
+    timeout: 2000

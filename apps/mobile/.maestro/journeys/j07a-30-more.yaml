@@ -1,0 +1,10 @@
+# J07A step 30: Elena goes back and opens More, looking for a way to add her child.
+appId: ${APP_ID}
+---
+- tapOn: 'Navigate up|Back|Go back'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: tab-more
+- waitForAnimationToEnd:
+    timeout: 3000

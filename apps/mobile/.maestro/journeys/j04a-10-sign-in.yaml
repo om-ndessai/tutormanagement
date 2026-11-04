@@ -1,0 +1,7 @@
+# J04A step 10: Ava taps "Sign in" at the top of the guest home.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-sign-in
+- waitForAnimationToEnd:
+    timeout: 3000

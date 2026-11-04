@@ -1,0 +1,7 @@
+# J07A step 14: Elena taps the quick action "Have a code?".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: quick-join_code
+- waitForAnimationToEnd:
+    timeout: 3000

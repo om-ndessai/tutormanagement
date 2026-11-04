@@ -1,0 +1,11 @@
+# J06A step 40 (end-state check): Pat scrolls the home looking for Ella's assessment.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element: 'Recent assessments'
+    direction: DOWN
+    centerElement: true
+    timeout: 30000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

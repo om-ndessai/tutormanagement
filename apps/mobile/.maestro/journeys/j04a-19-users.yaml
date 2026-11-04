@@ -1,0 +1,22 @@
+# J04A step 19: for her club, Ava tries her own space instead: back, More > Users (she is its Admin).
+appId: ${APP_ID}
+---
+- tapOn: 'Navigate up|Back|Go back'
+- waitForAnimationToEnd:
+    timeout: 2000
+- runFlow:
+    when:
+      visible:
+        id: account-spaces
+    commands:
+      - swipe:
+          direction: DOWN
+      - waitForAnimationToEnd:
+          timeout: 2000
+- tapOn:
+    id: tab-more
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn: 'Users'
+- waitForAnimationToEnd:
+    timeout: 3000

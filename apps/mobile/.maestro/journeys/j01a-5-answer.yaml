@@ -1,0 +1,11 @@
+# J01A step 5: Morgan taps Answer; the sign-up offer is expected after question 1.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-answer
+- extendedWaitUntil:
+    visible:
+      id: guest-nudge
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000

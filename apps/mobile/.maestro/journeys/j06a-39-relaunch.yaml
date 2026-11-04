@@ -1,0 +1,17 @@
+# J06A step 39 (end-state check): the app is closed and opened again mid-assessment. Nothing is cleared.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: ../subflows/dev-client-load.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 60000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

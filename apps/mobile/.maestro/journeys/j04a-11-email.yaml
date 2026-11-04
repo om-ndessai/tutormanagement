@@ -1,0 +1,12 @@
+# J04A step 11: Ava scrolls to the address field and types her address.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+    centerElement: true
+- tapOn:
+    id: sign-in-email
+- inputText: 'ava.grant@example.com'
+- waitForAnimationToEnd:
+    timeout: 2000

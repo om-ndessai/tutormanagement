@@ -1,0 +1,12 @@
+# J04A step 27: Ava keeps the defaults and taps Next.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: game-step-3
+    timeout: 5000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

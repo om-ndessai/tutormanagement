@@ -1,0 +1,15 @@
+# J06A step 28: Pat taps Continue at the foot of Invite people.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: invite-continue
+- tapOn:
+    id: invite-continue
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

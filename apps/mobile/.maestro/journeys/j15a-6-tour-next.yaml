@@ -1,0 +1,7 @@
+# J15A step 6: Hana taps Next on the tour.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tour-next
+- waitForAnimationToEnd:
+    timeout: 3000

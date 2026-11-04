@@ -1,0 +1,12 @@
+# J04A step 2: Ava taps "Sign up free" on the guest home, without playing first.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-band-signup
+- extendedWaitUntil:
+    visible:
+      id: signup-sheet
+    timeout: 10000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

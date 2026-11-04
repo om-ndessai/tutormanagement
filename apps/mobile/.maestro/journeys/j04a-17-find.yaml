@@ -1,0 +1,12 @@
+# J04A step 17: Ava taps Find.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: welcome-find
+- extendedWaitUntil:
+    visible:
+      id: welcome-ask
+    timeout: 10000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

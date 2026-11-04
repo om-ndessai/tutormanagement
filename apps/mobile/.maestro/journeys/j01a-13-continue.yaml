@@ -1,0 +1,13 @@
+# J01A step 13: Morgan taps Continue. Expected (Post-approved): "Waiting for approval".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-submit
+    waitToSettleTimeoutMs: 200
+- extendedWaitUntil:
+    visible:
+      id: screen-access-refused
+    timeout: 20000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

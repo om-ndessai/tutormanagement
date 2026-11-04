@@ -1,0 +1,7 @@
+# J06A step 36: Pat picks G4 (Ella is in Grade 4).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: assessment-level-NC26.4
+- waitForAnimationToEnd:
+    timeout: 2000

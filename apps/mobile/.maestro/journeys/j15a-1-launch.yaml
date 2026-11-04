@@ -1,0 +1,10 @@
+# J15A step 1 (docs/userjourney/README.md): Hana opens the app for the first time; the office told her to sign in with hana.mori@example.com.
+appId: ${APP_ID}
+---
+- runFlow: ../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000

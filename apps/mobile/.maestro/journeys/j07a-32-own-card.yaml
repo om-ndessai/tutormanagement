@@ -1,0 +1,7 @@
+# J07A step 32: Elena taps her own card, hoping her profile lets her add her child.
+# (The card is one accessible element, "Elena Ruiz, ..., open their record"; a tap by the bare name finds nothing.)
+appId: ${APP_ID}
+---
+- tapOn: 'Elena Ruiz, .*'
+- waitForAnimationToEnd:
+    timeout: 3000

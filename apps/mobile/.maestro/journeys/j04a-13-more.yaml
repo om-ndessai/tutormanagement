@@ -1,0 +1,7 @@
+# J04A step 13: Ava looks for a way to start her club's space: she opens More.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tab-more
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,6 @@
+# J15A step 22: Hana taps Exit to go back to where she started.
+appId: ${APP_ID}
+---
+- tapOn: 'Exit'
+- waitForAnimationToEnd:
+    timeout: 3000

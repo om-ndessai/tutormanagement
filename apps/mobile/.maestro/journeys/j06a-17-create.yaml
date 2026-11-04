@@ -1,0 +1,7 @@
+# J06A step 17: nothing on the home; Pat taps the big yellow (+) in the tab bar, the obvious "make something".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: create-button
+- waitForAnimationToEnd:
+    timeout: 3000

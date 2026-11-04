@@ -1,0 +1,9 @@
+# J01A step 9: Morgan opens Month and picks May.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-5
+- waitForAnimationToEnd:
+    timeout: 2000

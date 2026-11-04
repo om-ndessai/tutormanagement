@@ -1,0 +1,15 @@
+# J04A step 3: Ava types her address and taps Continue (developer sign-up: sign-in is off locally).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-sheet-email
+- inputText: 'ava.grant@example.com'
+- tapOn:
+    id: signup-sheet-continue
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 10000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

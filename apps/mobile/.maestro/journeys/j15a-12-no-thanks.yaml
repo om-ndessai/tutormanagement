@@ -1,0 +1,13 @@
+# J15A step 12: Hana taps "No thanks" on the repeated tour offer, then scrolls to the top of her home.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tour-offer-dismiss
+- waitForAnimationToEnd:
+    timeout: 2000
+- swipe:
+    start: 200, 300
+    end: 200, 700
+    duration: 500
+- waitForAnimationToEnd:
+    timeout: 2000

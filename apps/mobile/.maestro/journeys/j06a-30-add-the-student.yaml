@@ -1,0 +1,13 @@
+# J06A step 30: Pat taps "Add the student" (the child is Jo Baker's, not Pat's).
+# (First run tapped the card around the button, by its id student-flow-student: nothing opened; harness.)
+appId: ${APP_ID}
+---
+- tapOn:
+    id: student-flow-add-student
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

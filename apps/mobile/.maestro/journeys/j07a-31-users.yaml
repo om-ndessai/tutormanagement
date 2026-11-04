@@ -1,0 +1,6 @@
+# J07A step 31: Elena taps Users, looking for her child.
+appId: ${APP_ID}
+---
+- tapOn: 'Users'
+- waitForAnimationToEnd:
+    timeout: 3000

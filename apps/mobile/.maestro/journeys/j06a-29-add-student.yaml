@@ -1,0 +1,12 @@
+# J06A step 29: an assessment needs a student first; Pat taps "Add a student".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: onboarding-choice-student
+- extendedWaitUntil:
+    visible:
+      id: student-flow-student
+    timeout: 10000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

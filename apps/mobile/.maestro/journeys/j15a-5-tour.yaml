@@ -1,0 +1,12 @@
+# J15A step 5: Hana taps the "Take the tour" button.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: onboarding-choice-tour
+- extendedWaitUntil:
+    visible:
+      id: tour-card
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

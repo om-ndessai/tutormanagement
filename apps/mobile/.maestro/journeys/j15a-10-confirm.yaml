@@ -1,0 +1,17 @@
+# J15A step 10: Hana scrolls to the end of her details and taps "Yes, that's all right".
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: confirm-details-yes
+    direction: DOWN
+    centerElement: false
+- tapOn:
+    id: confirm-details-yes
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-done
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

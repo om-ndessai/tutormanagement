@@ -1,0 +1,17 @@
+# J04A step 29: Ava taps "Start game". The countdown, then question 1.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: game-create
+    waitToSettleTimeoutMs: 200
+- extendedWaitUntil:
+    visible:
+      id: game-countdown
+    timeout: 8000
+    optional: true
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,10 @@
+# J01A step 8: Morgan types the name.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Morgan Lee'
+# Return puts the keyboard away (hideKeyboard on iOS taps the sheet's lower edge, where the legal links are).
+- pressKey: Enter
+- waitForAnimationToEnd:
+    timeout: 2000

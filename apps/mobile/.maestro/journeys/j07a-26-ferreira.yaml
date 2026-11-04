@@ -1,0 +1,12 @@
+# J07A step 26: Elena taps "Ferreira Family Practice · Parent".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: account-org-assess
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 20000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,9 @@
+# J06A step 38 (end-state check): Pat looks for a fourth choice by scrolling inside the question card.
+appId: ${APP_ID}
+---
+- swipe:
+    start: 200, 440
+    end: 200, 320
+    duration: 600
+- waitForAnimationToEnd:
+    timeout: 2000

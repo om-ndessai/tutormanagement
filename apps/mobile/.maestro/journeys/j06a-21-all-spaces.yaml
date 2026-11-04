@@ -1,0 +1,7 @@
+# J06A step 21: Pat taps "All spaces" (Invitations, codes, starting or leaving a space).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: account-spaces
+- waitForAnimationToEnd:
+    timeout: 3000

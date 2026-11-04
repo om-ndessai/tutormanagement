@@ -30,3 +30,6 @@ scripts/migrate-tmi/out/
 # Playwright run output
 e2e/test-results/
 e2e/playwright-report/
+
+# UI journey audit (docs/userjourney/README.md): browser profiles, status log and handoffs, never committed.
+docs/userjourney/_run/

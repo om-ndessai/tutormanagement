@@ -1,0 +1,12 @@
+# J06A step 4: Pat scrolls to the address field and types an address the app has never seen.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+    centerElement: true
+- tapOn:
+    id: sign-in-email
+- inputText: 'pat.quinn@example.com'
+- waitForAnimationToEnd:
+    timeout: 2000

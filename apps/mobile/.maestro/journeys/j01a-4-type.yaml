@@ -1,0 +1,8 @@
+# J01A step 4: Morgan taps the answer box and types 30.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-number
+- inputText: '30'
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>cuj audit — J18: parent who is also a tutor: which hat leads, the switcher, All spaces, the dashboard</title><style>
+:root{color-scheme:light dark;
+--bg:#fbfbfc;--fg:#16161a;--mut:#6b7076;--card:#ffffff;--line:#e8e8ec;--link:#2563eb;
+--shadow:0 1px 2px rgba(18,18,28,.04),0 2px 6px rgba(18,18,28,.06);
+--s4:#ef4444;--s3:#f97316;--s2:#eab308;--s2ink:#1a1a1a;--s1:#94a3b8;--s1ink:#1a1a1a;
+--c4:#dc2626;--c3:#ea580c;--c2:#a16207;--c1:#64748b;}
+@media(prefers-color-scheme:dark){:root{
+--bg:#0f0f12;--fg:#e9e9ec;--mut:#9a9aa2;--card:#17181c;--line:#2a2b31;--link:#7aa2f7;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.35);
+--c4:#f87171;--c3:#fb923c;--c2:#eab308;--c1:#94a3b8;}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:800px;margin:0 auto;padding:2.8rem 1.2rem 5rem}
+.report-head{margin-bottom:.4rem}
+.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:800;color:var(--fg)}
+h1{font-size:1.65rem;line-height:1.22;margin:.4rem 0 .6rem;letter-spacing:-.015em}
+.target code{background:transparent;border:0;color:var(--mut);font-size:.84rem;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.chip{font-size:.73rem;background:var(--card);border:1px solid var(--line);
+border-radius:999px;padding:.16rem .65rem;color:var(--mut);box-shadow:var(--shadow)}
+/* severity summary — larger boxed cells, bold ramp: colour number + top accent */
+.sevrow{display:flex;flex-wrap:wrap;gap:.65rem;margin:1.6rem 0 2.6rem}
+.scell{flex:1 1 0;min-width:100px;background:var(--card);border:1px solid var(--line);
+border-top:3px solid var(--line);border-radius:13px;padding:.8rem .9rem;box-shadow:var(--shadow);
+display:flex;flex-direction:column;gap:.25rem}
+.scell b{font-size:1.85rem;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.scell span{font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}
+.scell.off{opacity:.5}.scell.total{border-top-color:var(--fg)}
+.scell.sev4{border-top-color:var(--s4)}.scell.sev4 b{color:var(--c4)}
+.scell.sev3{border-top-color:var(--s3)}.scell.sev3 b{color:var(--c3)}
+.scell.sev2{border-top-color:var(--s2)}.scell.sev2 b{color:var(--c2)}
+.scell.sev1{border-top-color:var(--s1)}.scell.sev1 b{color:var(--c1)}
+section.md{margin:0 0 1.6rem}
+h2{font-size:1.2rem;font-weight:750;margin:2.5rem 0 .9rem;letter-spacing:-.01em}
+h3{font-size:1rem;margin:1.2rem 0 .5rem}h4{font-size:.9rem;margin:1rem 0 .4rem;color:var(--mut)}
+p{margin:.55rem 0}a{color:var(--link)}
+code{background:var(--card);border:1px solid var(--line);border-radius:5px;
+padding:.05rem .35rem;font-size:.85em}
+blockquote{margin:.5rem 0;padding:.3rem 0 .3rem .9rem;border-left:3px solid var(--line);color:var(--mut)}
+ul,ol{margin:.5rem 0;padding-left:1.3rem}li{margin:.25rem 0}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:.9rem 0;font-size:.9rem;
+display:block;overflow-x:auto;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+th,td{border-bottom:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+tr:last-child td{border-bottom:0}th{background:var(--card);font-size:.78rem;text-transform:uppercase;
+letter-spacing:.03em;color:var(--mut)}
+/* finding cards — soft-shadowed, no stripe; the bold badge carries the severity colour */
+.finding{background:var(--card);border:1px solid var(--line);border-radius:14px;
+padding:1.1rem 1.3rem;margin:1rem 0;box-shadow:var(--shadow)}
+.finding header{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+.finding h3{margin:0;font-size:1.02rem;font-weight:680}
+.badge{font-size:.7rem;font-weight:800;letter-spacing:.02em;color:#fff;border-radius:6px;
+padding:.16rem .5rem;white-space:nowrap;text-transform:uppercase}
+.badge.sev4{background:var(--s4)}.badge.sev3{background:var(--s3)}
+.badge.sev2{background:var(--s2);color:var(--s2ink)}.badge.sev1{background:var(--s1);color:var(--s1ink)}
+.finding dl{margin:.85rem 0 0;display:grid;grid-template-columns:5.5rem 1fr;gap:.4rem .9rem}
+.finding dt{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);
+font-weight:700;padding-top:.15rem}
+.finding dd{margin:0}.finding dd p:first-child{margin-top:0}
+.shot{margin:.8rem 0;text-align:center}
+.shot img{max-width:100%;max-height:540px;height:auto;border:1px solid var(--line);
+border-radius:10px;box-shadow:var(--shadow);display:inline-block}
+.shot figcaption{font-size:.74rem;color:var(--mut);margin-top:.4rem}
+.missing{display:inline-block;font-size:.78rem;color:var(--mut);background:var(--card);
+border:1px dashed var(--line);border-radius:6px;padding:.15rem .5rem}
+.none{color:var(--mut)}
+/* walkthrough flipbook */
+.flip{background:var(--card);border:1px solid var(--line);border-radius:14px;
+box-shadow:var(--shadow);padding:.85rem;margin:1.1rem 0}
+.flip:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.flip-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+color:var(--mut);margin:.15rem .2rem .65rem}
+.frames{position:relative}
+.frame{display:none;margin:0}.frame.is-active{display:block}
+.frame img{width:100%;max-height:560px;height:auto;object-fit:contain;background:var(--bg);
+border:1px solid var(--line);border-radius:10px;display:block}
+.frame figcaption{font-size:.84rem;color:var(--fg);margin-top:.65rem;line-height:1.5}
+.frame figcaption b{font-weight:700}
+.flip-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:.7rem}
+.flip-nav button{background:var(--card);border:1px solid var(--line);border-radius:9px;
+width:2.1rem;height:2.1rem;font-size:1.2rem;line-height:1;cursor:pointer;color:var(--fg)}
+.flip-nav button:hover{border-color:var(--link);color:var(--link)}
+.counter{font-size:.8rem;color:var(--mut);font-variant-numeric:tabular-nums;
+min-width:3.6rem;text-align:center}
+.dots{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.55rem}
+.dot{width:.5rem;height:.5rem;border-radius:50%;border:0;padding:0;cursor:pointer;
+background:var(--line)}.dot.is-active{background:var(--fg)}
+/* banners: cuj pass, provenance */
+.banner{display:flex;gap:.6rem;align-items:baseline;border:1px solid var(--line);
+border-left-width:4px;border-radius:12px;padding:.75rem 1rem;margin:.2rem 0 1.5rem;
+font-size:.9rem;box-shadow:var(--shadow)}
+.banner .b-ico{font-size:1rem;line-height:1.4}
+.banner b{font-weight:750}
+.banner.pass{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.35);border-left-color:#22c55e}
+.banner.warn{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.4);border-left-color:#eab308}
+.banner.info{background:rgba(148,163,184,.13);border-color:rgba(148,163,184,.4);border-left-color:#94a3b8}
+.banner.go{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.4);border-left-color:#22c55e}
+.banner.nogo{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.4);border-left-color:#ef4444}
+.banner.verdict{font-size:1rem;padding:.9rem 1.1rem}
+.banner.verdict b{font-size:1.15rem;text-transform:uppercase;letter-spacing:.03em}
+/* evidence fallback gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem}
+.tile{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:.5rem;box-shadow:var(--shadow)}
+.tile img{width:100%;max-height:220px;height:auto;object-fit:contain;background:var(--bg);
+border:1px solid var(--line);border-radius:7px;display:block}
+.tile figcaption{font-size:.72rem;color:var(--mut);margin-top:.35rem;word-break:break-all}
+</style></head><body><main class="wrap"><header class="report-head"><div class="eyebrow">cuj audit</div><h1>J18: parent who is also a tutor: which hat leads, the switcher, All spaces, the dashboard</h1><div class="target"><code>http://localhost:8797/</code></div><div class="chips"><span class="chip">mode: live</span><span class="chip">2026-11-04 17:43:33+00:00</span><span class="chip">cuj-contract</span><span class="chip">task-completion</span><span class="chip">success-criteria</span></div></header>
+
+
+<section class="sevrow"><div class="scell total"><b>6</b><span>findings</span></div><div class="scell sev4 off"><b>0</b><span>sev4 · Catastrophe</span></div><div class="scell sev3"><b>1</b><span>sev3 · Major</span></div><div class="scell sev2"><b>4</b><span>sev2 · Minor</span></div><div class="scell sev1"><b>1</b><span>sev1 · Cosmetic</span></div></section>
+<section class="md"><h2>Executive summary</h2><p><strong>Who:</strong> Maria Okafor, a seeded person at Chapel Hill Math Institute (CHMI). She is Sofia&#x27;s mother and also a tutor there. She belongs to cohort <strong>C8, several roles</strong> (&quot;What&#x27;s urgent across my hats?&quot;) in <code>docs/member-home-plan.md</code>. The contract for that cohort: the most time-bound item of any hat wins Next up, and each hat gets its own section. She wants to sign in and see Sofia&#x27;s lessons and her own teaching in one place. She also wants to know where to go for each.</p>
+<p><strong>Outcome: 1/1 journeys passed, 0 skipped, 15 of 15 steps verified.</strong> Maria saw everything the journey asks for:</p>
+<ul><li>the home (steps 3-4);</li><li>the space switcher (step 6);</li><li>All spaces (step 7);</li><li>the Dashboard, in both its views (steps 8-10, 14).</li></ul>
+<p>She also tried &quot;Make this my home&quot; (step 12). After a reload (step 13) the pin was still saved, but the home had not changed.</p>
+<p><strong>Which hat leads:</strong> the parent hat, and only the parent hat. It leads because it is the only hat with anything in it:</p>
+<ul><li>The home&#x27;s chip reads &quot;Automatic (My children)&quot;.</li><li>Next up is &quot;Sofia&#x27;s next lesson, Tue at 4:00 PM with Alex&quot;.</li><li>&quot;Your children&quot; is the only section on the page.</li></ul>
+<p>Her tutor hat never appears on the home: there is no section, no &quot;Teaching&quot; choice and no empty line. The reason shows only on the Dashboard: &quot;No students assigned to you yet.&quot; Elsewhere the app does know she teaches. The switcher and All spaces both label her &quot;Tutor · Parent&quot;, and the Dashboard opens as &quot;Tutor&quot;. So the home and the Dashboard pick opposite hats: the home picks the hat with content, and the Dashboard opens on the empty one.</p>
+<p><strong>Can she tell where to go for what?</strong> Only partly:</p>
+<ul><li><strong>The switcher:</strong> one space and &quot;All spaces&quot;. With one space there is nothing to switch to.</li><li><strong>All spaces:</strong> her role and &quot;Here now&quot;. It also offers &quot;Start a space … for your students&quot;, which is a tempting</li></ul>
+<p>wrong door for a tutor.</p>
+<ul><li><strong>The Dashboard:</strong> the only place with what she acts on as a parent: $152.50 outstanding, and Sofia &quot;Behind&quot; on her</li></ul>
+<p>plan. She gets there only by changing an unlabelled &quot;Tutor&quot; dropdown to &quot;Parent&quot;, and the Dashboard forgets that choice on her next visit.</p>
+<p><strong>Conversion figures</strong> (counted from the entry point, <code>/</code> signed out):</p>
+<table><thead><tr><th>Stretch</th><th>Screens</th><th>Taps</th><th>Typed fields</th><th>Waits</th><th>Dead ends</th></tr></thead><tbody><tr><td>Entry to the home inside CHMI (steps 1-3)</td><td>3</td><td>2</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Entry to her real data as a parent, the Dashboard&#x27;s Parent view, shortest path (steps 1-3, 8-10)</td><td>6</td><td>7</td><td>0</td><td>0</td><td>1</td></tr><tr><td>Whole run, 15 steps</td><td>8 distinct (11 views)</td><td>18</td><td>0</td><td>1</td><td>3</td></tr></tbody></table>
+<p><strong>Conversion and stickiness:</strong></p>
+<ul><li><strong>Conversion into the space:</strong> immediate. One Google tap lands her in CHMI with no space picker.</li><li><strong>Conversion to a tutor feature:</strong> none. Nothing on the home or the Dashboard gives a tutor without students a next</li></ul>
+<p>step.</p>
+<ul><li><strong>Stickiness as a parent:</strong> decent. The home shows Sofia&#x27;s next lesson with its homework, and &quot;Play with Sofia&quot;. The</li></ul>
+<p>week&#x27;s &quot;Played 0 days (aim: 3)&quot; gives a reason to come back.</p>
+<ul><li><strong>Stickiness as a tutor:</strong> nothing pulls her back.</li></ul>
+<p><strong>The 3 screens Maria would notice most:</strong></p>
+<ul><li><strong>Step 3, the home after sign-in.</strong> Everything on it is about Sofia, and nothing says Maria teaches here. Cohort C8</li></ul>
+<p>expects one section per hat, and she gets one section for two hats. <figure class="shot"><img alt="step 3" src="./assets/cuj-j18-step-3.png"><figcaption>step 3</figcaption></figure></p>
+<ul><li><strong>Step 8, the Dashboard.</strong> It opens on &quot;Tutor&quot;: three zero counts, &quot;No lessons recorded or scheduled yet&quot; and &quot;No</li></ul>
+<p>students assigned to you yet&quot;. For someone with several hats, the first page is the empty one, with only a bare dropdown hinting at another view. <figure class="shot"><img alt="step 8" src="./assets/cuj-j18-step-8.png"><figcaption>step 8</figcaption></figure></p>
+<ul><li><strong>Step 10, the Dashboard&#x27;s Parent view.</strong> This is the page she would act on: $152.50 outstanding, and Sofia &quot;Behind&quot;</li></ul>
+<p>on her plan, at 11% with 2 of 18 planned sessions held. It is reached only through the dropdown, and at phone width its Recent sessions rows overlap (&quot;wi2026-09-15&quot;). <figure class="shot"><img alt="step 10" src="./assets/cuj-j18-step-10.png"><figcaption>step 10</figcaption></figure></p>
+<p><strong>Contact sheet</strong> (all 15 phone steps):</p>
+<p><figure class="shot"><img alt="J18 contact sheet" src="./assets/cuj-j18-sheet.png"><figcaption>J18 contact sheet</figcaption></figure></p>
+<table><thead><tr><th>Severity</th><th>Count</th></tr></thead><tbody><tr><td>sev4 (blocked)</td><td>0</td></tr><tr><td>sev3 (major)</td><td>1</td></tr><tr><td>sev2 (minor)</td><td>4</td></tr><tr><td>sev1 (cosmetic)</td><td>1</td></tr><tr><td><strong>Total</strong></td><td><strong>6</strong></td></tr></tbody></table></section>
+<section class="md"><h2>Prioritized fixes</h2><ol><li>[sev3] <a href="#sev3-the-dashboard-opens-on-her-empty-tutor-view-and-forgets-the-parent-choice">The Dashboard opens on her empty Tutor view and forgets the Parent choice</a>: open on the role with content, or the home&#x27;s lead, and remember the last choice (steps 8, 10, 14).</li><li>[sev2] <a href="#sev2-the-home-ignores-her-tutor-role-no-section-no-teaching-choice-no-next-step">The home ignores her tutor role: no section, no Teaching choice, no next step</a>: show a one-line tutor section and offer Teaching in &quot;Make this my home&quot; (steps 3, 4, 11).</li><li>[sev2] <a href="#sev2-make-this-my-home-changes-nothing-she-can-see-and-says-nothing">&quot;Make this my home&quot; changes nothing she can see and says nothing</a>: confirm the pin, say what it changes, and hide choices that would change nothing (steps 12, 13, 15).</li><li>[sev2] <a href="#sev2-sign-in-opens-a-sheet-titled-sign-up-free">&quot;Sign in&quot; opens a sheet titled &quot;Sign up free&quot;</a>: title the sheet after the button that opened it (step 2).</li><li>[sev2] <a href="#sev2-recent-sessions-rows-overlap-on-the-parent-dashboard-at-phone-width">Recent sessions rows overlap on the parent Dashboard at phone width</a>: stack the row&#x27;s parts below <code>sm</code> (step 10).</li><li>[sev1] <a href="#sev1-all-spaces-the-space-name-is-truncated-and-leave-is-an-unlabelled-icon-beside-open">All spaces: the space name is truncated and Leave is an unlabelled icon beside Open</a>: let the name wrap and label Leave (step 7).</li></ol></section>
+<section class="md"><h2>Findings</h2><article class="finding sev3"><header><span class="badge sev3">sev3</span><h3>The Dashboard opens on her empty Tutor view and forgets the Parent choice</h3></header><dl><dt>Issue</dt><dd><p>Menu → Dashboard opens with the role dropdown set to &quot;Tutor&quot;. That view shows:</p>
+<ul><li>STUDENTS 0, SESSIONS 0, SESSIONS RUNNING 0;</li><li>&quot;No lessons recorded or scheduled yet&quot;;</li><li>&quot;No students assigned to you yet&quot;;</li><li>and, as its only Recent Activity, Maria&#x27;s own &quot;opened Chapel Hill Math Institute&quot;.</li></ul>
+<p>Her real data is under &quot;Parent&quot;, the second option of an unlabelled dropdown: Sofia, $227.50 charged, $152.50 outstanding, the progress plan &quot;Behind&quot;, two recent sessions and a payment. Choosing Parent only puts <code>?role=parent</code> in the URL. The menu&#x27;s Dashboard link drops it, so the next visit (step 14) opens on the empty Tutor view again. The home led with the parent hat. The Dashboard leads with the other one.</p></dd><dt>Violation</dt><dd><p>cuj-contract, steps 8 and 14 (cohort C8: what is urgent across her hats should lead). Nielsen #6 Recognition rather than recall, because she has to remember to switch every visit. Nielsen #4 Consistency and standards, because the home and the Dashboard pick opposite hats.</p></dd><dt>Severity</dt><dd><ol><li>A workaround is needed on every visit. For a parent who is also a tutor, the Dashboard&#x27;s first</li></ol>
+<p>screen is a page of zeros. The page she acts on (what she owes, and that Sofia is behind) is one hidden choice away, and the home never mentions it. A C8 person who gives up at the zeros never finds it.</p></dd><dt>Evidence</dt><dd><p><figure class="shot"><img alt="step 8" src="./assets/cuj-j18-step-8.png"><figcaption>step 8</figcaption></figure> <figure class="shot"><img alt="step 10" src="./assets/cuj-j18-step-10.png"><figcaption>step 10</figcaption></figure> <figure class="shot"><img alt="step 14" src="./assets/cuj-j18-step-8.png"><figcaption>step 14</figcaption></figure> Repro:</p>
+<ol><li>Sign in as Maria Okafor.</li><li>Open the menu and choose Dashboard: it shows &quot;Tutor&quot;, all zeros.</li><li>Change the dropdown to Parent: the URL becomes <code>/dashboard?role=parent</code> and the data appears.</li><li>Open the menu and choose Dashboard again: it is back on &quot;Tutor&quot;.</li></ol></dd><dt>Fix</dt><dd><ul><li>Choose the Dashboard&#x27;s opening role the way the home chooses its lead: the hat with content (here Parent). Better</li></ul>
+<p>still, follow the home&#x27;s focus or pin.</p>
+<ul><li>Remember the last role chosen per person and space, as the tab&#x27;s <code>?tab=</code> already does for Tutoring/Finance. Make the</li></ul>
+<p>menu link carry it.</p>
+<ul><li>Give the dropdown a visible label (&quot;View as&quot;) so a second view is discoverable.</li><li>Leave out the reader&#x27;s own &quot;opened the space&quot; lines from Recent Activity. For a tutor with no students they are the</li></ul>
+<p>only content.</p></dd></dl></article>
+<article class="finding sev2"><header><span class="badge sev2">sev2</span><h3>The home ignores her tutor role: no section, no Teaching choice, no next step</h3></header><dl><dt>Issue</dt><dd><p>Maria holds the tutor role in CHMI. The switcher and All spaces say &quot;Tutor · Parent&quot; (steps 6 and 7). Yet the home has:</p>
+<ul><li>no tutor section;</li><li>no &quot;To record&quot;;</li><li>no empty line;</li><li>no &quot;Teaching&quot; chip under &quot;Make this my home&quot; (the chips are Automatic (My children), Quest, Assessments and My</li></ul>
+<p>children).</p>
+<p>Nothing on the home says why. The reason, &quot;No students assigned to you yet&quot;, appears only in the Dashboard&#x27;s Tutor view (step 8). A tutor who has just been added and is waiting for students gets no sign that the space knows she teaches, and no next step.</p></dd><dt>Violation</dt><dd><p>cuj-contract, steps 3 and 4 (cohort C8: &quot;one section per hat&quot;). Nielsen #1 Visibility of system status: her tutor status, and the fact that she has no students yet, is invisible where she lands.</p></dd><dt>Severity</dt><dd><ol><li>This is an observable mismatch and real friction, not a blocker. For this cohort the home&#x27;s promise</li></ol>
+<p>is one view across her hats, and half of her role is missing. The cost falls on conversion to teaching: a new tutor is told nothing about what happens next.</p></dd><dt>Evidence</dt><dd><p><figure class="shot"><img alt="step 4" src="./assets/cuj-j18-step-4.png"><figcaption>step 4</figcaption></figure> <figure class="shot"><img alt="step 6" src="./assets/cuj-j18-step-6.png"><figcaption>step 6</figcaption></figure> <figure class="shot"><img alt="step 11" src="./assets/cuj-j18-step-15.png"><figcaption>step 11</figcaption></figure> Repro:</p>
+<ol><li>Sign in as Maria Okafor and dismiss the tour.</li><li>Scroll the home: &quot;Your children&quot; is the only section, and the chips have no Teaching.</li><li>Open the switcher: it says &quot;Tutor · Parent&quot;.</li></ol></dd><dt>Fix</dt><dd><ul><li>When a person holds the tutor role here but has no pairing in force, show a one-line &quot;Teaching&quot; section. For</li></ul>
+<p>example: &quot;No students yet. When the office pairs you with a student, their lessons appear here.&quot;</p>
+<ul><li>Offer &quot;Teaching&quot; in &quot;Make this my home&quot; whenever she holds the role.</li><li>Keep the hat order rule (the hat with something today first), so the parent hat still leads today.</li></ul></dd></dl></article>
+<article class="finding sev2"><header><span class="badge sev2">sev2</span><h3>&quot;Make this my home&quot; changes nothing she can see and says nothing</h3></header><dl><dt>Issue</dt><dd><p>Maria had no Teaching choice, so she pinned &quot;Assessments&quot;, the nearest thing to a tutor&#x27;s tool. The chip turned selected and &quot;Automatic (My children)&quot; became plain &quot;Automatic&quot;. Nothing else on the page changed:</p>
+<ul><li>the same Next up (Sofia&#x27;s next lesson);</li><li>the same quick actions;</li><li>the same single section;</li><li>no Assessments block;</li><li>no toast, and no line saying what the pin does.</li></ul>
+<p>After a reload (step 13) the pin was kept, so it was saved, but the home was still identical. Setting it back to Automatic (step 15) was just as silent.</p></dd><dt>Violation</dt><dd><p>cuj-contract, steps 12 and 13. Nielsen #1 Visibility of system status, because a saved preference gets no acknowledgement. Nielsen #2 Match between system and the real world, because the control promises &quot;make this my home&quot; and the home does not change.</p></dd><dt>Severity</dt><dd><ol><li>Real friction. She cannot tell whether the control works. For C8, whose question is &quot;what leads my</li></ol>
+<p>home?&quot;, the one control meant to answer it gives no feedback. That is a dead end (she undid it).</p></dd><dt>Evidence</dt><dd><p><figure class="shot"><img alt="step 11" src="./assets/cuj-j18-step-15.png"><figcaption>step 11</figcaption></figure> <figure class="shot"><img alt="step 12" src="./assets/cuj-j18-step-12.png"><figcaption>step 12</figcaption></figure> <figure class="shot"><img alt="step 13" src="./assets/cuj-j18-step-13.png"><figcaption>step 13</figcaption></figure> Repro:</p>
+<ol><li>On the home, scroll to &quot;Make this my home&quot; and tap &quot;Assessments&quot;.</li><li>Compare the page with before: identical.</li><li>Reload: &quot;Assessments&quot; is still checked, and the page is still identical.</li></ol></dd><dt>Fix</dt><dd><ul><li>Acknowledge the pin, for example with a toast: &quot;Your home now leads with Assessments&quot;.</li><li>Add a one-line hint under the chips saying what a choice does.</li><li>When the pinned focus has nothing to show, say so where its section would be (&quot;Nothing in Assessments yet. Start</li></ul>
+<p>one for a student&quot;), so the change is visible.</p>
+<ul><li>Do not offer a focus that would put nothing on her page.</li></ul></dd></dl></article>
+<article class="finding sev2"><header><span class="badge sev2">sev2</span><h3>&quot;Sign in&quot; opens a sheet titled &quot;Sign up free&quot;</h3></header><dl><dt>Issue</dt><dd><p>On the signed-out page Maria taps the header&#x27;s &quot;Sign in&quot;. The sheet that opens is titled &quot;Sign up free&quot;, with &quot;Keep your scores, unlock every quest and play with your family&quot;. Its only action is &quot;Continue with Google&quot;. She already has an account at the institute.</p></dd><dt>Violation</dt><dd><p>cuj-contract, step 2. Nielsen #4 Consistency and standards: the sheet&#x27;s title does not match the button that opened it.</p></dd><dt>Severity</dt><dd><ol><li>An observable mismatch at the door. A tutor or parent with an existing account hesitates over</li></ol>
+<p>whether this will create a second one. For this cohort the copy also speaks to a child player, not to a member of a tutoring space.</p></dd><dt>Evidence</dt><dd><p><figure class="shot"><img alt="step 2" src="./assets/cuj-j19-step-2.png"><figcaption>step 2</figcaption></figure> Repro:</p>
+<ol><li>Open <code>/</code> signed out.</li><li>Tap &quot;Sign in&quot; (top right).</li></ol></dd><dt>Fix</dt><dd><p>Title the sheet by the button that opened it: &quot;Sign in&quot;, with a line such as &quot;Use the Google account your space knows&quot;. Keep &quot;Sign up free&quot; for the sign-up buttons. One Google button can still serve both.</p></dd></dl></article>
+<article class="finding sev2"><header><span class="badge sev2">sev2</span><h3>Recent sessions rows overlap on the parent Dashboard at phone width</h3></header><dl><dt>Issue</dt><dd><p>At 390 px, the Dashboard&#x27;s Parent view squeezes &quot;Sofia Okafor with Alex Chen&quot; into a narrow column of Recent sessions, one word per line. The word &quot;with&quot; is drawn over the date, which reads &quot;wi2026-09-15 · 1 hr 30 min&quot;. The badge and the amount take the rest of the row.</p></dd><dt>Violation</dt><dd><p>cuj-contract, step 10. Nielsen #8 Aesthetic and minimalist design. Legibility: overlapping text on a row that carries money.</p></dd><dt>Severity</dt><dd><ol><li>An observable defect on the one page that shows a parent what each lesson cost. The date of a</li></ol>
+<p>billed lesson is unreadable. The page does not overflow sideways, so <code>responsive.spec.ts</code> would not catch it.</p></dd><dt>Evidence</dt><dd><p><figure class="shot"><img alt="step 10" src="./assets/cuj-j18-step-10.png"><figcaption>step 10</figcaption></figure> Repro:</p>
+<ol><li>Sign in as Maria Okafor on a phone-width window.</li><li>Open the Dashboard and choose Parent.</li><li>Scroll to Recent sessions.</li></ol></dd><dt>Fix</dt><dd><p>Below <code>sm</code>, stack the row: names on one line, then date · length · location badge, then the amount right-aligned, or under the names. Give the text column <code>min-w-0</code> with wrapping instead of a fixed squeeze. Add an overlap check (no two text boxes intersecting) to the responsive spec for this panel.</p></dd></dl></article>
+<article class="finding sev1"><header><span class="badge sev1">sev1</span><h3>All spaces: the space name is truncated and Leave is an unlabelled icon beside Open</h3></header><dl><dt>Issue</dt><dd><p>On All spaces at phone width, her only space reads &quot;Chapel Hill M…&quot;. The &quot;Here now&quot; badge, the open arrow and an icon-only exit button take the rest of the row. The exit button, named &quot;Leave Chapel Hill Math Institute&quot; for screen readers, has no visible label, and no tooltip appeared on hover. It sits a thumb&#x27;s width from the open arrow.</p></dd><dt>Violation</dt><dd><p>cuj-contract, step 7. Nielsen #6 Recognition rather than recall: an icon-only destructive action.</p></dd><dt>Severity</dt><dd><ol><li>Cosmetic as observed. She can still tell which space it is from the menu, and Leave was not</li></ol>
+<p>pressed, so whether it asks for confirmation was not checked. For a member of one space, the unlabelled door icon next to Open is the only visible way out.</p></dd><dt>Evidence</dt><dd><p><figure class="shot"><img alt="step 7" src="./assets/cuj-j18-step-7.png"><figcaption>step 7</figcaption></figure> Repro:</p>
+<ol><li>Sign in as Maria Okafor.</li><li>Open the menu, then the space card, then &quot;All spaces&quot;, at 390 px.</li></ol></dd><dt>Fix</dt><dd><p>Let the name wrap to two lines, or move &quot;Here now&quot; under it, on phones. Give Leave a text label (&quot;Leave&quot;) or move it into an overflow menu. Keep a confirmation step.</p></dd></dl></article></section>
+<section class="md"><h2>Walkthrough</h2><div class="flip" tabindex="0"><div class="frames"><figure class="frame is-active"><img alt="J18 step 1" src="./assets/cuj-j19-step-1.png"><figcaption><b>Step 1 — Open http://localhost:8797/ signed out (landing)</b> Expected: a way in for an existing member. Observed: the guest Play home: &quot;Math quests. Hit the target.&quot;, Today&#x27;s 5 for Grade 4, a grade row and tiles. A small &quot;Sign in&quot; outline button sits top right, and &quot;Sign up free&quot; is the big white call to action. Desktop and dark mode show the same.</figcaption></figure><figure class="frame"><img alt="J18 step 2" src="./assets/cuj-j19-step-2.png"><figcaption><b>Step 2 — Tap &quot;Sign in&quot;</b> Expected: a &quot;Sign in&quot; sheet. Observed: a sheet titled &quot;Sign up free&quot; (&quot;Keep your scores, unlock every quest and play with your family&quot;), with one &quot;Continue with Google&quot; button and a close X.</figcaption></figure><figure class="frame"><img alt="J18 step 3" src="./assets/cuj-j18-step-3.png"><figcaption><b>Step 3 — Tap &quot;Continue with Google&quot; (landing: the first screen inside a space)</b> Expected (C8): the most time-bound item of either hat in Next up, and a section per hat. Observed: she goes straight into CHMI with no picker. The page shows: - the band, &quot;Good afternoon, Maria / Sofia: next lesson Tue at 4:00 PM&quot;; - Next up, &quot;Sofia&#x27;s next lesson: Tue at 4:00 PM with Alex.&quot; with the homework and &quot;See the schedule&quot;; - the quick actions Schedule and Progress; - one section, &quot;Your children&quot;.  A &quot;New here on this device?&quot; tour offer covers the bottom of the phone screen. The desktop sidebar lists Home, Dashboard, Users, Pairings, Sessions, Progress, Assessment, Quest, Schedule, Billing, Comments, Activity and My profile.</figcaption></figure><figure class="frame"><img alt="J18 step 4" src="./assets/cuj-j18-step-4.png"><figcaption><b>Step 4 — &quot;No thanks&quot; to the tour; the whole home (full page)</b> Expected: one section per hat. Observed, in order: the band, Next up, two quick actions, &quot;Your children&quot; (Sofia: 0 lessons this month, the next lesson, the homework, &quot;Played 0 days this week (aim: 3)&quot;, Play with Sofia, Progress), then &quot;Make this my home&quot; with Automatic (My children) checked, Quest, Assessments and My children. There is no tutor section and no Teaching choice.</figcaption></figure><figure class="frame"><img alt="J18 step 5" src="./assets/cuj-j18-step-5.png"><figcaption><b>Step 5 — Open the menu</b> Expected: navigation and a space switcher. Observed: a drawer. At the top is the space card &quot;CHMI / Where numbers click&quot; with an up-down chevron (named &quot;Switch space&quot;), shown in a muted purple with grey text on it. Below it are the 13 menu items, and the footer reads &quot;Chapel Hill Math Institute / Developed by: Om Dessai&quot;.</figcaption></figure><figure class="frame"><img alt="J18 step 6" src="./assets/cuj-j18-step-6.png"><figcaption><b>Step 6 — Tap the space card (the switcher)</b> Expected: her spaces and a way to the others. Observed: a &quot;Spaces&quot; menu with one item, &quot;Chapel Hill Math Institute, Tutor · Parent&quot;, checked, then &quot;All spaces&quot;. While it is open, the space logo in the card turns white on cream and is nearly invisible.</figcaption></figure><figure class="frame"><img alt="J18 step 7" src="./assets/cuj-j18-step-7.png"><figcaption><b>Step 7 — Tap &quot;All spaces&quot; (landing)</b> Expected: her spaces and her role in each. Observed: &quot;Spaces&quot;, with &quot;Signed in as maria.okafor@gmail.com. You land in the space you opened last. Each tab can be in a different one.&quot; Below that: - YOUR SPACES: &quot;Chapel Hill M…&quot;, Here now, Tutor · Parent, an open arrow and an icon-only Leave; - &quot;Join with a code&quot;; - &quot;Start a space&quot;, &quot;For your family or your students: …&quot;.  On desktop the name is shown in full.</figcaption></figure><figure class="frame"><img alt="J18 step 8" src="./assets/cuj-j18-step-8.png"><figcaption><b>Step 8 — Menu → &quot;Dashboard&quot; (landing)</b> Expected: her dashboard, with a clear choice between her roles. Observed: &quot;Dashboard / Chapel Hill Math Institute&quot;, &quot;Getting started&quot;, an unlabelled dropdown set to &quot;Tutor&quot;, and the tabs Tutoring and Finance. Tutoring shows: - Students 0, Sessions 0, Sessions running 0; - &quot;No lessons recorded or scheduled yet. Set up a schedule&quot;; - &quot;No reflections yet&quot;; - &quot;No students assigned to you yet&quot;; - Recent Activity: her own &quot;opened Chapel Hill Math Institute&quot;.</figcaption></figure><figure class="frame"><img alt="J18 step 9" src="./assets/cuj-j18-step-9.png"><figcaption><b>Step 9 — Tap the &quot;Tutor&quot; dropdown</b> Expected: the available views. Observed: a list with &quot;Tutor&quot; (checked) and &quot;Parent&quot;.</figcaption></figure><figure class="frame"><img alt="J18 step 10" src="./assets/cuj-j18-step-10.png"><figcaption><b>Step 10 — Choose &quot;Parent&quot; (full page)</b> Expected: Sofia&#x27;s lessons, progress and money. Observed: the URL becomes <code>/dashboard?role=parent</code>, with no Tutoring/Finance tabs. The page shows: - Children 1, Charged $227.50, Outstanding $152.50 ($75.00 paid); - Your children; - Sofia&#x27;s progress plan, &quot;Behind&quot;, 1 of 9 topics mastered, 2 of 18 planned sessions held, a chart at 11%; - Recent sessions (2026-09-15, $127.50; 2026-09-08, $100.00, &quot;You pay&quot;); - Your payments (Sep 9, Zelle, $75.00).  At 390 px the Recent sessions names wrap one word per line, and &quot;with&quot; overlaps the date.</figcaption></figure><figure class="frame"><img alt="J18 step 11" src="./assets/cuj-j18-step-15.png"><figcaption><b>Step 11 — Menu → Home; scroll to &quot;Make this my home&quot;</b> Expected: a way to make the home lead with what she does. Observed: the chips Automatic (My children), Quest, Assessments and My children, with no Teaching and no explanation. Scrolled, the translucent sticky bar sits over the band&#x27;s &quot;CHMI / Getting started&quot;.</figcaption></figure><figure class="frame"><img alt="J18 step 12" src="./assets/cuj-j18-step-12.png"><figcaption><b>Step 12 — Tap &quot;Assessments&quot; (full page)</b> Expected: the home re-orders to lead with Assessments, with some acknowledgement. Observed: &quot;Assessments&quot; is selected and &quot;Automatic&quot; loses &quot;(My children)&quot;. Everything else is identical: Next up, quick actions and sections. No Assessments block appears, and there is no toast.</figcaption></figure><figure class="frame"><img alt="J18 step 13" src="./assets/cuj-j18-step-13.png"><figcaption><b>Step 13 — Reload the home (end-state check)</b> Expected: the pin is kept and the home leads with it. Observed: &quot;Assessments&quot; is still checked, so the pin was saved, and the home is unchanged from step 4.</figcaption></figure><figure class="frame"><img alt="J18 step 14" src="./assets/cuj-j18-step-8.png"><figcaption><b>Step 14 — Menu → Dashboard again</b> Expected: the Dashboard remembers &quot;Parent&quot; from step 10. Observed: <code>/dashboard</code> opens on &quot;Tutor&quot; again, all zeros. &quot;Getting started&quot; carries the cyan focus highlight.</figcaption></figure><figure class="frame"><img alt="J18 step 15" src="./assets/cuj-j18-step-15.png"><figcaption><b>Step 15 — Menu → Home; set &quot;Make this my home&quot; back to Automatic</b> Expected: back to &quot;Automatic (My children)&quot;. Observed: &quot;Automatic (My children)&quot; is checked and the home is as before. There is no acknowledgement. This also restored her preference as it was before the audit.</figcaption></figure></div><div class="flip-nav"><button class="prev" aria-label="Previous frame">&lsaquo;</button><span class="counter">1 / 15</span><button class="next" aria-label="Next frame">&rsaquo;</button></div><div class="dots"><button class="dot is-active" data-i="0" aria-label="Go to frame 1"></button><button class="dot" data-i="1" aria-label="Go to frame 2"></button><button class="dot" data-i="2" aria-label="Go to frame 3"></button><button class="dot" data-i="3" aria-label="Go to frame 4"></button><button class="dot" data-i="4" aria-label="Go to frame 5"></button><button class="dot" data-i="5" aria-label="Go to frame 6"></button><button class="dot" data-i="6" aria-label="Go to frame 7"></button><button class="dot" data-i="7" aria-label="Go to frame 8"></button><button class="dot" data-i="8" aria-label="Go to frame 9"></button><button class="dot" data-i="9" aria-label="Go to frame 10"></button><button class="dot" data-i="10" aria-label="Go to frame 11"></button><button class="dot" data-i="11" aria-label="Go to frame 12"></button><button class="dot" data-i="12" aria-label="Go to frame 13"></button><button class="dot" data-i="13" aria-label="Go to frame 14"></button><button class="dot" data-i="14" aria-label="Go to frame 15"></button></div></div></section>
+<section class="md"><h2>Appendix</h2><ul><li><strong>Mode:</strong> live. The web app at <code>http://localhost:8797</code> is a frozen copy of commit <code>2d6e7d3</code> with sign-in on. It was</li></ul>
+<p>driven in headless Chrome at 390×844 (phone), plus 1280×800 and dark mode at the landing steps (1, 3, 7 and 8).</p>
+<ul><li><strong>Frameworks applied:</strong></li><li>cuj-contract: every step against its expected result, including the C8 contract of one section per hat.</li><li>task-completion: the journey ran to its defined end (home, switcher, All spaces, Dashboard), with &quot;Make this my</li></ul>
+<p>home&quot; tried.</p>
+<ul><li>success-criteria: the end state was checked again after a reload at step 13 (the pin was kept and the home was</li></ul>
+<p>unchanged), and on a second visit to the Dashboard at step 14 (the role choice was not kept).</p>
+<ul><li><strong>CUJ manifest:</strong> J18, 15 steps, all observed (15 of 15 verified). Steps 2, 3/4, 8, 10, 12/13 and 14 did not match</li></ul>
+<p>the expected result (see the findings above).</p>
+<ul><li><strong>Coverage / not inspected:</strong></li><li><strong>Two hats with content.</strong> Maria has no students assigned, so her tutor hat never had anything in it. How the home</li></ul>
+<p>orders a parent hat and a tutor hat that both have items (C8&#x27;s &quot;most time-bound item of any hat wins&quot;) was not observed. That needs a person who is a parent and has a pairing in force.</p>
+<ul><li><strong>&quot;Make this my home&quot; choices:</strong> only &quot;Assessments&quot; was tried, then &quot;Automatic&quot; restored. &quot;Quest&quot; and &quot;My children&quot;</li></ul>
+<p>were not tried.</p>
+<ul><li><strong>The tour and &quot;Getting started&quot;:</strong> the tour offer was dismissed (step 4), and neither was opened.</li><li><strong>Links from the home not opened:</strong> &quot;See the schedule&quot;, the Schedule and Progress quick actions, &quot;Play with Sofia&quot;</li></ul>
+<p>and Sofia&#x27;s Progress.</p>
+<ul><li><strong>The Dashboard:</strong> the Finance tab of the Tutor view, and the &quot;Set up a schedule&quot; link, were not opened.</li><li><strong>Menu pages not opened:</strong> Users, Pairings, Sessions, Progress, Assessment, Quest, Schedule, Billing, Comments,</li></ul>
+<p>Activity and My profile. So whether a tutor with no students finds a next step there was not checked.</p>
+<ul><li><strong>All spaces:</strong> Leave was not pressed (it would remove her from CHMI), so whether it asks for confirmation is</li></ul>
+<p>unknown. &quot;Join with a code&quot; and &quot;Start a space&quot; were not used.</p>
+<ul><li><strong>Other screens:</strong> desktop layouts beyond the landing captures; keyboard-only and screen-reader use (the</li></ul>
+<p>accessibility tree was read only to find controls).</p>
+<ul><li><strong>Other clients and providers:</strong> the iOS app is covered by separate journeys. Other sign-in providers are not</li></ul>
+<p>offered on the production web.</p>
+<ul><li><strong>The server&#x27;s records:</strong> by the audit&#x27;s rules there were no database or API reads. The browser console showed</li></ul>
+<p>only the expected 401 on <code>/api/auth/session</code> while signed out.</p>
+<ul><li><strong>Access:</strong> through the app&#x27;s real sign-in and sign-up screens; the Google provider step is simulated (a stand-in for Google&#x27;s button hands the app a local test token for the persona).</li><li><strong>Preconditions made outside the UI:</strong></li><li>None for J18 itself. Maria Okafor is a seeded person.</li><li>The run&#x27;s platform settings, and Assessment and Quest switched on in <code>chmi</code>, were set before the journeys, as</li></ul>
+<p><code>docs/userjourney/README.md</code> &quot;The run&quot; records.</p>
+<ul><li>The home pin she changed at step 12 was set back to Automatic through the UI at step 15.</li></ul></section></main><script>
+document.querySelectorAll('.flip').forEach(function(flip){
+  var frames=flip.querySelectorAll('.frame'),dots=flip.querySelectorAll('.dot'),
+      counter=flip.querySelector('.counter'),n=frames.length,cur=0;
+  if(n<2)return;
+  function show(i){cur=(i%n+n)%n;
+    frames.forEach(function(f,j){f.classList.toggle('is-active',j===cur);});
+    dots.forEach(function(d,j){d.classList.toggle('is-active',j===cur);});
+    if(counter)counter.textContent=(cur+1)+' / '+n;}
+  var p=flip.querySelector('.prev'),x=flip.querySelector('.next');
+  if(p)p.addEventListener('click',function(){show(cur-1);});
+  if(x)x.addEventListener('click',function(){show(cur+1);});
+  dots.forEach(function(d){d.addEventListener('click',function(){show(+d.dataset.i);});});
+  flip.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'){show(cur-1);e.preventDefault();}
+    else if(e.key==='ArrowRight'){show(cur+1);e.preventDefault();}});
+});
+</script></body></html>

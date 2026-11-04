@@ -1,0 +1,12 @@
+# J15A step 9: Hana taps Finish on the tour.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tour-finish
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding-confirm
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,7 @@
+# J07A step 28: Elena taps "Choose a student" to pick her child.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: assessment-student
+- waitForAnimationToEnd:
+    timeout: 2000

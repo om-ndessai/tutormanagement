@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Recommendations</title><style>
+:root{color-scheme:light dark;
+--bg:#fbfbfc;--fg:#16161a;--mut:#6b7076;--card:#ffffff;--line:#e8e8ec;--link:#2563eb;
+--shadow:0 1px 2px rgba(18,18,28,.04),0 2px 6px rgba(18,18,28,.06);
+--s4:#ef4444;--s3:#f97316;--s2:#eab308;--s2ink:#1a1a1a;--s1:#94a3b8;--s1ink:#1a1a1a;
+--c4:#dc2626;--c3:#ea580c;--c2:#a16207;--c1:#64748b;}
+@media(prefers-color-scheme:dark){:root{
+--bg:#0f0f12;--fg:#e9e9ec;--mut:#9a9aa2;--card:#17181c;--line:#2a2b31;--link:#7aa2f7;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.35);
+--c4:#f87171;--c3:#fb923c;--c2:#eab308;--c1:#94a3b8;}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:800px;margin:0 auto;padding:2.8rem 1.2rem 5rem}
+.report-head{margin-bottom:.4rem}
+.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:800;color:var(--fg)}
+h1{font-size:1.65rem;line-height:1.22;margin:.4rem 0 .6rem;letter-spacing:-.015em}
+.target code{background:transparent;border:0;color:var(--mut);font-size:.84rem;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.chip{font-size:.73rem;background:var(--card);border:1px solid var(--line);
+border-radius:999px;padding:.16rem .65rem;color:var(--mut);box-shadow:var(--shadow)}
+/* severity summary — larger boxed cells, bold ramp: colour number + top accent */
+.sevrow{display:flex;flex-wrap:wrap;gap:.65rem;margin:1.6rem 0 2.6rem}
+.scell{flex:1 1 0;min-width:100px;background:var(--card);border:1px solid var(--line);
+border-top:3px solid var(--line);border-radius:13px;padding:.8rem .9rem;box-shadow:var(--shadow);
+display:flex;flex-direction:column;gap:.25rem}
+.scell b{font-size:1.85rem;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.scell span{font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}
+.scell.off{opacity:.5}.scell.total{border-top-color:var(--fg)}
+.scell.sev4{border-top-color:var(--s4)}.scell.sev4 b{color:var(--c4)}
+.scell.sev3{border-top-color:var(--s3)}.scell.sev3 b{color:var(--c3)}
+.scell.sev2{border-top-color:var(--s2)}.scell.sev2 b{color:var(--c2)}
+.scell.sev1{border-top-color:var(--s1)}.scell.sev1 b{color:var(--c1)}
+section.md{margin:0 0 1.6rem}
+h2{font-size:1.2rem;font-weight:750;margin:2.5rem 0 .9rem;letter-spacing:-.01em}
+h3{font-size:1rem;margin:1.2rem 0 .5rem}h4{font-size:.9rem;margin:1rem 0 .4rem;color:var(--mut)}
+p{margin:.55rem 0}a{color:var(--link)}
+code{background:var(--card);border:1px solid var(--line);border-radius:5px;
+padding:.05rem .35rem;font-size:.85em}
+blockquote{margin:.5rem 0;padding:.3rem 0 .3rem .9rem;border-left:3px solid var(--line);color:var(--mut)}
+ul,ol{margin:.5rem 0;padding-left:1.3rem}li{margin:.25rem 0}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:.9rem 0;font-size:.9rem;
+display:block;overflow-x:auto;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+th,td{border-bottom:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+tr:last-child td{border-bottom:0}th{background:var(--card);font-size:.78rem;text-transform:uppercase;
+letter-spacing:.03em;color:var(--mut)}
+/* finding cards — soft-shadowed, no stripe; the bold badge carries the severity colour */
+.finding{background:var(--card);border:1px solid var(--line);border-radius:14px;
+padding:1.1rem 1.3rem;margin:1rem 0;box-shadow:var(--shadow)}
+.finding header{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+.finding h3{margin:0;font-size:1.02rem;font-weight:680}
+.badge{font-size:.7rem;font-weight:800;letter-spacing:.02em;color:#fff;border-radius:6px;
+padding:.16rem .5rem;white-space:nowrap;text-transform:uppercase}
+.badge.sev4{background:var(--s4)}.badge.sev3{background:var(--s3)}
+.badge.sev2{background:var(--s2);color:var(--s2ink)}.badge.sev1{background:var(--s1);color:var(--s1ink)}
+.finding dl{margin:.85rem 0 0;display:grid;grid-template-columns:5.5rem 1fr;gap:.4rem .9rem}
+.finding dt{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);
+font-weight:700;padding-top:.15rem}
+.finding dd{margin:0}.finding dd p:first-child{margin-top:0}
+.shot{margin:.8rem 0;text-align:center}
+.shot img{max-width:100%;max-height:540px;height:auto;border:1px solid var(--line);
+border-radius:10px;box-shadow:var(--shadow);display:inline-block}
+.shot figcaption{font-size:.74rem;color:var(--mut);margin-top:.4rem}
+.missing{display:inline-block;font-size:.78rem;color:var(--mut);background:var(--card);
+border:1px dashed var(--line);border-radius:6px;padding:.15rem .5rem}
+.none{color:var(--mut)}
+/* walkthrough flipbook */
+.flip{background:var(--card);border:1px solid var(--line);border-radius:14px;
+box-shadow:var(--shadow);padding:.85rem;margin:1.1rem 0}
+.flip:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.flip-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+color:var(--mut);margin:.15rem .2rem .65rem}
+.frames{position:relative}
+.frame{display:none;margin:0}.frame.is-active{display:block}
+.frame img{width:100%;max-height:560px;height:auto;object-fit:contain;background:var(--bg);
+border:1px solid var(--line);border-radius:10px;display:block}
+.frame figcaption{font-size:.84rem;color:var(--fg);margin-top:.65rem;line-height:1.5}
+.frame figcaption b{font-weight:700}
+.flip-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:.7rem}
+.flip-nav button{background:var(--card);border:1px solid var(--line);border-radius:9px;
+width:2.1rem;height:2.1rem;font-size:1.2rem;line-height:1;cursor:pointer;color:var(--fg)}
+.flip-nav button:hover{border-color:var(--link);color:var(--link)}
+.counter{font-size:.8rem;color:var(--mut);font-variant-numeric:tabular-nums;
+min-width:3.6rem;text-align:center}
+.dots{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.55rem}
+.dot{width:.5rem;height:.5rem;border-radius:50%;border:0;padding:0;cursor:pointer;
+background:var(--line)}.dot.is-active{background:var(--fg)}
+/* banners: cuj pass, provenance */
+.banner{display:flex;gap:.6rem;align-items:baseline;border:1px solid var(--line);
+border-left-width:4px;border-radius:12px;padding:.75rem 1rem;margin:.2rem 0 1.5rem;
+font-size:.9rem;box-shadow:var(--shadow)}
+.banner .b-ico{font-size:1rem;line-height:1.4}
+.banner b{font-weight:750}
+.banner.pass{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.35);border-left-color:#22c55e}
+.banner.warn{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.4);border-left-color:#eab308}
+.banner.info{background:rgba(148,163,184,.13);border-color:rgba(148,163,184,.4);border-left-color:#94a3b8}
+.banner.go{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.4);border-left-color:#22c55e}
+.banner.nogo{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.4);border-left-color:#ef4444}
+.banner.verdict{font-size:1rem;padding:.9rem 1.1rem}
+.banner.verdict b{font-size:1.15rem;text-transform:uppercase;letter-spacing:.03em}
+/* evidence fallback gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem}
+.tile{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:.5rem;box-shadow:var(--shadow)}
+.tile img{width:100%;max-height:220px;height:auto;object-fit:contain;background:var(--bg);
+border:1px solid var(--line);border-radius:7px;display:block}
+.tile figcaption{font-size:.72rem;color:var(--mut);margin-top:.35rem;word-break:break-all}
+</style></head><body><main class="wrap"><header class="report-head"><div class="eyebrow">UX audits</div><h1>Recommendations</h1></header><p>This page is input for the owner. It ranks changes drawn from the 24 journeys recorded on 2026-11-04 at commit <code>2d6e7d3</code>: J01-J19 on the web, and J01A, J04A, J06A, J07A and J15A in the iOS app. It also draws on the two audits built from them, <a href="audit-design.html">audit-design</a> and <a href="audit-workflows.html">audit-workflows</a>. Each item is judged on three things: can a person do it (usability), do they get from the guest page into a space and to a feature (conversion), and is there a reason to come back (stickiness). The ranks are:</p>
+<ul><li><strong>P0:</strong> blocks a cohort&#x27;s core task, or loses newcomers at sign-up or join;</li><li><strong>P1:</strong> major friction on a main path, or a reason not to come back;</li><li><strong>P2:</strong> friction or inconsistency;</li><li><strong>P3:</strong> polish.</li></ul>
+<p>Duplicates are merged, so each item is one underlying problem and cites every journey that hit it. Cohorts are C1-C8 of <a href="../member-home-plan.html">docs/member-home-plan.md</a>. There are 37 items: 3 P0, 14 P1, 17 P2 and 3 P3. <strong>None of it is scheduled.</strong> A feature is built only once the owner writes it into <code>docs/plan.md</code>.</p>
+<p>Every P0 and P1 item carries a <strong>Checked</strong> line from a second pass, made to refute it. That pass re-read the cited steps, opened the embedded screenshots and the code at <code>2d6e7d3</code>, and looked for a plan that made the behaviour deliberate. Where a rule is deliberate, the item says so and the change is the owner&#x27;s decision. All 17 items held up in substance, and none changed rank. Six claims were corrected:</p>
+<ul><li>the <code>/play/&lt;tile&gt;</code> route exists;</li><li>Continue&#x27;s replay is the plan&#x27;s design, so it is the owner&#x27;s decision;</li><li>what <code>may_bring_people</code> means;</li><li>who pays the approval wait;</li><li>the guest page&#x27;s &quot;Example code.&quot; label;</li><li>one caption.</li></ul>
+<p>One P2 part, the app&#x27;s hidden answer choice, should be treated as P1.</p>
+<p>## The ten that matter most</p>
+<ol><li><a href="#p0-a-parent-let-in-by-code-cannot-reach-her-child">P0. A parent let in by code cannot reach her child</a>: the only</li></ol>
+<p>blocked journeys of the 24 (J07 and J07A) end here, on the web and in the app alike.</p>
+<ol><li><a href="#p0-say-what-the-approval-wait-means-and-tell-people-when-it-ends">P0. Say what the approval wait means, and tell people when it ends</a>:</li></ol>
+<p>every self sign-up under Post-approved (production&#x27;s mode) pays this wait, and nobody is told when it is over.</p>
+<ol><li><a href="#p0-the-apps-have-a-code-button-crashes">P0. The app&#x27;s Have a code button crashes</a>: the first door a parent with</li></ol>
+<p>a code tries in the app breaks it; the fix is small.</p>
+<ol><li><a href="#p1-one-have-a-code-door-from-the-guest-page-on">P1. One Have a code door, from the guest page on</a>: a code has</li></ol>
+<p>nowhere to go until after sign-up, approval and a second sign-in.</p>
+<ol><li><a href="#p1-tell-people-the-spaces-answer-to-their-request">P1. Tell people the space&#x27;s answer to their request</a>: being</li></ol>
+<p>let in or declined is found only by going to look.</p>
+<ol><li><a href="#p1-lead-the-first-home-with-what-the-person-came-for">P1. Lead the first home with what the person came for</a>:</li></ol>
+<p>teachers and parents land on a child&#x27;s practice board.</p>
+<ol><li><a href="#p1-continue-resumes-the-open-game">P1. Continue resumes the open game</a>: coming back to a quest starts it over,</li></ol>
+<p>on both clients.</p>
+<ol><li><a href="#p1-start-the-board-at-the-learners-grade-and-remember-it">P1. Start the board at the learner&#x27;s grade, and remember it</a>:</li></ol>
+<p>teens, adults and a 7th grader all open on Grade 1.</p>
+<ol><li><a href="#p1-play-with-a-child-on-one-device-credited-to-the-child">P1. Play with a child on one device, credited to the child</a>:</li></ol>
+<p>the family&#x27;s main action makes a game the child cannot join, and the child&#x27;s count never moves.</p>
+<ol><li><a href="#p1-a-missing-price-hides-behind-9500-until-a-live-lesson-cannot-end">P1. A missing price hides behind 95.00 until a live lesson cannot end</a>:</li></ol>
+<p>the office&#x27;s form saved a student with no price, and the next day the tutor could not end that student&#x27;s lesson.</p>
+<p>## Conversion</p>
+<h3>P0. A parent let in by code cannot reach her child</h3>
+<ul><li><strong>What:</strong></li><li><strong>Let in.</strong> Make it a short sheet, not the generic Add user form. Preselect the role the newcomer asked for. For a</li></ul>
+<p>parent, ask &quot;Which child is theirs?&quot;: pick a student here, or add one now with the family flow. Name the button &quot;Let in&quot;.</p>
+<ul><li><strong>An empty Student picker</strong> (web and app) says why, and who can help: &quot;No children are linked to you in Ferreira</li></ul>
+<p>Family Practice. Ines Ferreira adds them.&quot; Add an &quot;Ask Ines&quot; button that puts a line in the admin&#x27;s Needs you.</p>
+<ul><li><strong>Next up and the quick actions</strong> never offer &quot;Start an assessment&quot; while the reader has no student to start one</li></ul>
+<p>for.</p>
+<ul><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C7 givers and C4 parents who join a tutor&#x27;s or teacher&#x27;s space with its code, which is the way in</li></ul>
+<p>Phase 61 offers them. The space&#x27;s one feature is out of their reach, and nothing says why.</p>
+<ul><li><strong>What happens today.</strong> Both journeys ended 0/1. The next step is a text to the admin, outside the app. These are</li></ul>
+<p>the only blocked journeys in the run (22 of 24 reached their end, <a href="README.html">README</a>).</p>
+<ul><li><strong>C1 admins</strong> decide with no prompt to link a child.</li><li><strong>Evidence:</strong></li><li><strong>Web:</strong> <a href="J07-space-code-let-in.html">J07 steps 24-35</a>. The home leads with Start an assessment (24). The picker</li></ul>
+<p>opens empty with no message (26). Start stays grey (28). Users → Add user lets her fill in the child&#x27;s whole record, then refuses: &quot;Only an administrator can make this change.&quot; (30-34). After a reload, the home still offers the assessment (35).</p>
+<ul><li><strong>App:</strong> <a href="J07A-space-code-let-in-app.html">J07A steps 26-34</a>. &quot;No students to choose from.&quot; (28). Users has no Add</li></ul>
+<p>(31). Only her own record&#x27;s activity names Ines (32).</p>
+<ul><li><strong>The admin&#x27;s side:</strong> <a href="J11-space-admin-decides.html">J11 steps 6-10</a>. Let in is the Add user form, with no role ticked</li></ul>
+<p>(6). Ticking Parent asks nothing about a child (7). The home says nothing afterwards (10).</p>
+<ul><li><strong>The same empty picker in a personal space:</strong> <a href="J03-parent-after-guest-play.html">J03 step 16</a>.</li><li><strong>Audits:</strong> design sev4,</li></ul>
+<p><a href="audit-design.html#sev4-an-empty-picker-and-late-refusals-stop-a-parent-at-the-one-feature-her-space-offers">An empty picker and late refusals stop a parent…</a>; workflows sev4, <a href="audit-workflows.html#sev4-a-parent-let-in-by-code-gets-no-child-and-no-door-they-can-reach-adds-one">A parent let in by code gets no child…</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/users/join-requests-panel.tsx:53-62</code>. Let in opens <code>UserFormDialog</code> with</li></ul>
+<p><code>roles: []</code>.</p>
+<p><figure class="shot"><img alt="J07A step 28: &quot;No students to choose from.&quot;" src="./assets/cuj-j07a-step-28.png"><figcaption>J07A step 28: &quot;No students to choose from.&quot;</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong></li><li>Whether a join request should say what the person joins as (parent, student, tutor). Today it carries a name and</li></ul>
+<p>an email only (<a href="J11-space-admin-decides.html">J11 step 4</a>).</p>
+<ul><li>Whether a parent may propose their own child for the admin to confirm. Today only a space&#x27;s admins add people</li></ul>
+<p>(CLAUDE.md, &quot;only admins of the organization may mutate its users&quot;).</p>
+<ul><li><strong>Checked:</strong> confirmed, and the rank holds (J07 and J07A both end &quot;0/1 journeys passed&quot;).</li><li><strong>Screenshots.</strong> <a href="./assets/cuj-j07a-step-28.png">J07A step 28</a> shows &quot;No students to choose from.&quot; with Start grey.</li></ul>
+<p>J07 steps 24-35 read as the item says.</p>
+<ul><li><strong>Code: why the home offers it.</strong> In a space without Tutoring, anyone who plays gets the learner hat</li></ul>
+<p>(<code>apps/api/src/repositories/member-home.ts:542</code>). The learner&#x27;s quick actions include <code>start_assessment</code> (<code>packages/shared/src/home.ts:527</code>), and its Next up falls to <code>focus_default</code> &quot;assessment&quot; (<code>home.ts:443-444</code>). Nothing checks for a student to start one for.</p>
+<ul><li><strong>Code: the empty picker.</strong> The web&#x27;s student picker has no empty state</li></ul>
+<p>(<code>apps/web/src/features/canvas-assessments/assessments-page.tsx:96-105</code>). The app&#x27;s says &quot;No students to choose from.&quot; (<code>apps/mobile/src/features/canvas-assessments/assessments-screen.tsx:128</code>).</p>
+<ul><li><strong>Code: Let in.</strong> It is <code>UserFormDialog</code> with <code>roles: []</code> (<code>join-requests-panel.tsx:57</code>).</li><li><strong>Deliberate.</strong> Let in reusing the user form, and a request carrying no free text, were both planned</li></ul>
+<p>(<a href="../open-signup-plan.html">open-signup-plan.md:513, 518-521</a>). The &quot;short sheet&quot; is therefore a change to Phase 52&#x27;s design, for the owner to decide, as the item&#x27;s Owner decides already suggests.</p>
+<h3>P0. Say what the approval wait means, and tell people when it ends</h3>
+<ul><li><strong>What:</strong></li><li><strong>The waiting screen:</strong></li><li>one heading, where the web shows &quot;Almost there&quot; above &quot;Waiting for approval&quot;;</li><li>who decides, a time the platform admins can keep, and how the person will hear;</li><li>&quot;Keep playing&quot; as the main button, back to the question they left;</li><li>&quot;Contact&quot; as a secondary link to a product address, shown in full.</li><li><strong>The end of the wait.</strong> When the account is approved, tell the person. The cheapest way: the device that signed up</li></ul>
+<p>checks on its next visit and shows &quot;Your account is ready: Sign in&quot; on the guest page (or in the app). An email is the other way (see Owner decides).</p>
+<ul><li><strong>Before sign-up</strong> under Post-approved, say that a person checks new accounts. Casey first learned it after the</li></ul>
+<p>whole form (<a href="J02-adult-declined.html">J02 step 9</a>).</p>
+<ul><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> Every self sign-up under Post-approved in the run: C6 players, C4 and C7 parents and C1 teachers,</li></ul>
+<p>on both clients. (J12&#x27;s sign-up ran under Pre-approved and did not wait.)</p>
+<ul><li><strong>How the journeys went on.</strong> Each one continued only because the persona came back unprompted and tried &quot;Sign in&quot;</li></ul>
+<p>on a hunch.</p>
+<ul><li><strong>What the persona sees.</strong> Coming back, the guest page is unchanged. In the app, Back from the wait drops the quest</li></ul>
+<p>in progress.</p>
+<ul><li><strong>Where it costs most.</strong> An adult with no stake yet is most likely to leave for good here. J01, J01A, J02, J03,</li></ul>
+<p>J06, J06A, J07 and J08 each list this screen among their three most noticed.</p>
+<ul><li><strong>It is today&#x27;s production path.</strong> Both platforms have run Post-approved since 2026-11-03 (CLAUDE.md, Phase 65).</li><li><strong>Evidence:</strong></li><li><strong>The wait and the return, web:</strong></li><li><a href="J01-adult-player.html">J01 steps 10-12</a>;</li><li><a href="J02-adult-declined.html">J02 step 9</a>;</li><li><a href="J03-parent-after-guest-play.html">J03 steps 11-12</a>;</li><li><a href="J04-teen.html">J04 steps 7-8</a>;</li><li><a href="J06-start-a-space.html">J06 steps 7-8</a>;</li><li><a href="J07-space-code-let-in.html">J07 steps 10-11</a>;</li><li><a href="J08-friend-game-code.html">J08 steps 6-7</a>;</li><li><a href="J10-space-code-declined.html">J10 steps 10-11</a>.</li><li><strong>The wait and the return, app:</strong></li><li><a href="J01A-adult-player-app.html">J01A steps 13-15</a>, where Back drops the quest (14);</li><li><a href="J04A-teen-app.html">J04A steps 8-10</a>;</li><li><a href="J06A-start-a-space-app.html">J06A steps 11-12</a>;</li><li><a href="J07A-space-code-let-in-app.html">J07A step 10</a>.</li><li><strong>Audits:</strong> design sev3,</li></ul>
+<p><a href="audit-design.html#sev3-the-waiting-and-refusal-screens-stop-the-journey-cold">The waiting and refusal screens stop the journey cold</a>; workflows sev3, <a href="audit-workflows.html#sev3-each-outcome-of-a-request-is-told-a-different-way-and-three-of-four-are-told-nowhere">Each outcome of a request is told a different way…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/guest/signup-sheet.tsx:69</code> keeps &quot;Almost there&quot; over the waiting state;</li><li><code>apps/web/src/features/auth/access-refused.tsx:36</code> makes &quot;Contact us&quot; a <code>mailto:</code>;</li><li><code>packages/shared/src/guest-board.ts:146</code> sets <code>PLATFORM_CONTACT_EMAIL</code> to a personal Gmail address.</li></ul>
+<p><figure class="shot"><img alt="J01 step 10: Waiting for approval" src="./assets/cuj-j01-step-10.png"><figcaption>J01 step 10: Waiting for approval</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S for the words and &quot;Keep playing&quot;. M for the device telling the person they are approved.</li><li><strong>Owner decides:</strong></li><li><strong>The promise:</strong> who &quot;we&quot; are, and a time frame the platform admins can keep.</li><li><strong>Email.</strong> Production&#x27;s sender reaches only verified addresses on the free plan (CLAUDE.md, Phase 32: &quot;only</li></ul>
+<p>verified destination addresses receive mail&quot;). So the device&#x27;s own check is the route that works today.</p>
+<ul><li><strong>The mode.</strong> Whether Post-approved stays the default. Under Pre-approved, Grace went from a stranger to a question</li></ul>
+<p>in six taps with no wait (<a href="J12-preapproved-on-list.html">J12</a>).</p>
+<ul><li><strong>The support address</strong> that replaces the personal one.</li><li><strong>Checked:</strong> confirmed, with one correction of emphasis.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j01-step-10.png">J01 step 10</a> shows &quot;Almost there&quot; over &quot;Waiting for approval&quot;, with</li></ul>
+<p>only Contact us.</p>
+<ul><li><strong>Code.</strong> The refusal renders inside <code>SignupForm</code> (<code>apps/web/src/features/auth/signup-form.tsx:67</code>), under the</li></ul>
+<p>sheet&#x27;s &quot;Almost there&quot; header (<code>signup-sheet.tsx:69</code>). The words are <code>accessPendingMessage</code> (<code>packages/shared/src/access.ts:41-44</code>): no who, no time frame and no notice.</p>
+<ul><li><strong>Deliberate in part.</strong> Those exact words were specified in Phase 65</li></ul>
+<p>(<a href="../access-approval-plan.html">access-approval-plan.md:39-40</a>, A4). That plan never planned a way to tell a person they were approved, so the missing notice is a gap in the plan, not a bug. That is why the time frame and the notice are the owner&#x27;s decisions above.</p>
+<ul><li><strong>Rank.</strong> P0 holds: Post-approved is production&#x27;s mode, and eight journeys list this screen among the three their</li></ul>
+<p>persona noticed most.</p>
+<h3>P0. The app&#x27;s Have a code button crashes</h3>
+<ul><li><strong>What:</strong></li><li>Render the home&#x27;s &quot;Have a code?&quot; dialog inside the toast provider, or hand the box a toast function.</li><li>Give the app an error screen with a way home.</li><li>Add a Maestro flow that taps the quick action.</li><li>Better still, replace the dialog with the single code sheet of the next item.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C7 parents and C6 players in the app who were told &quot;join with my code&quot;. The quick action is the</li></ul>
+<p>first door they try.</p>
+<ul><li><strong>What happens today.</strong> The app shows a red &quot;Render Error: useToast must be used inside &lt;ToastProvider&gt;.&quot;, then a</li></ul>
+<p>blank screen with nothing to tap, twice. Recovering took two relaunches and a long scroll to a second box at the bottom of the home.</p>
+<ul><li><strong>On the web,</strong> the same quick action works.</li><li><strong>Evidence:</strong></li><li><a href="J07A-space-code-let-in-app.html">J07A steps 14-20</a>: the crash (14), the blank screen (15), the same again (17), then</li></ul>
+<p>the box at the bottom of the home works (18-20).</p>
+<ul><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-the-app-have-a-code-quick-action-is-a-second-copy-of-the-code-box-and-it-crashes">The app Have a code quick action… crashes</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/mobile/src/features/home/quick-actions.tsx:40-49</code> renders <code>&lt;HaveACode /&gt;</code> in a Paper <code>Portal</code></li></ul>
+<p>dialog. <code>HaveACode</code> calls <code>useToast()</code> (<code>apps/mobile/src/features/play/play-home.tsx:368-371</code>, per the workflows audit).</p>
+<ul><li><strong>Not verified:</strong> this was seen in a development build. What a release build shows was not checked.</li></ul>
+<p><figure class="shot"><img alt="J07A step 14: the red Render Error" src="./assets/cuj-j07a-step-14.png"><figcaption>J07A step 14: the red Render Error</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li><li><strong>Checked:</strong> confirmed, and the provider tree is now traced.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j07a-step-14.png">J07A step 14</a> shows the Render Error, from <code>play-home.tsx (368:8)</code>.</li><li><strong>The provider order.</strong> <code>ToastProvider</code> sits inside <code>ThemeProvider</code> (<code>apps/mobile/src/app/_layout.tsx:154-160</code>).</li></ul>
+<p>Paper&#x27;s <code>PaperProvider</code>, which hosts every <code>Portal</code>, is in <code>ThemeProvider</code> (<code>apps/mobile/src/providers/theme-provider.tsx:61</code>). So the quick action&#x27;s <code>Portal</code> dialog (<code>quick-actions.tsx:41-52</code>) mounts outside the toast context, and <code>HaveACode</code>&#x27;s <code>useToast()</code> (<code>play-home.tsx:370</code>) throws (<code>apps/mobile/src/components/toast.tsx:102</code>).</p>
+<ul><li><strong>No error screen.</strong> No route exports an error boundary (no <code>ErrorBoundary</code> anywhere in <code>apps/mobile/src</code>). A</li></ul>
+<p>release build therefore cannot show the dialog either, as J07A itself argues; only what it shows instead is unobserved.</p>
+<ul><li><strong>Rank.</strong> J07A rated it sev3, because a second box works further down the home. It stays P0 under &quot;loses newcomers</li></ul>
+<p>at join&quot;: the quick action is on the first home of every new personal space in the app (<code>home.ts:525-527</code>).</p>
+<h3>P1. One Have a code door, from the guest page on</h3>
+<ul><li><strong>What:</strong></li><li><strong>One &quot;Have a code?&quot; sheet</strong> on both clients. It opens from:</li><li>the guest page, signed out;</li><li>the home&#x27;s quick action;</li><li>the Quest board;</li><li>the Question Quest page;</li><li>the Spaces page.</li><li><strong>What it takes:</strong> a game or team code (6 characters) or a space code (8). It always shows what it found before</li></ul>
+<p>sending: the space&#x27;s name, or the game and the space it is in. Its toasts name the space.</p>
+<ul><li><strong>Signed out,</strong> it keeps the code on the device through sign-up and approval. The first home then offers it: &quot;You</li></ul>
+<p>have a code for Ferreira Family Practice: Ask to join&quot;.</p>
+<ul><li><strong>The guest page&#x27;s example code</strong> is drawn as an illustration labelled &quot;Example&quot;, not as a box that looks like a</li></ul>
+<p>field.</p>
+<ul><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> Codes are how C7 parents reach a tutor&#x27;s space and C6 players reach a friend&#x27;s game.</li><li><strong>When the code finally fits.</strong> Marcus could first type his code at step 14, after sign-up, the approval and a</li></ul>
+<p>second sign-in (<a href="J10-space-code-declined.html">J10</a>).</p>
+<ul><li><strong>A false field.</strong> The example code looks like a field, and three web journeys met it as a dead end at the front</li></ul>
+<p>door.</p>
+<ul><li><strong>Two boxes, two behaviours.</strong> The home&#x27;s box sends a space request at once, with a toast that does not name the</li></ul>
+<p>space. The Spaces page names it twice.</p>
+<ul><li><strong>A third box.</strong> The Question Quest page takes 6 characters only.</li><li><strong>Evidence:</strong></li><li><strong>The example code:</strong></li><li><a href="J07-space-code-let-in.html">J07 step 3</a>;</li><li><a href="J08-friend-game-code.html">J08 step 2</a>;</li><li><a href="J10-space-code-declined.html">J10 step 3</a>;</li><li><a href="J07A-space-code-let-in-app.html">J07A step 3</a>.</li><li><strong>The home&#x27;s box,</strong> after a long scroll: <a href="J07-space-code-let-in.html">J07 steps 14-16</a>,</li></ul>
+<p><a href="J08-friend-game-code.html">J08 steps 10-12</a>, <a href="J10-space-code-declined.html">J10 steps 14-16</a>.</p>
+<ul><li><strong>The Spaces page&#x27;s box:</strong> <a href="J04-teen.html">J04 steps 16-18</a>, <a href="J10-space-code-declined.html">J10 steps 25-26</a>.</li><li><strong>The Question Quest box:</strong> <a href="J08-friend-game-code.html">J08 steps 14-15</a>.</li><li><strong>Audits:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-three-code-boxes-take-different-codes-none-is-on-the-guest-page-and-a-game-in-another-space-reads-as-missing">Three code boxes take different codes…</a>; design sev3, <a href="audit-design.html#sev3-example-values-look-like-saved-data">Example values look like saved data</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/home/member-home.tsx:246-249</code>: the quick action scrolls to <code>#play-code</code>;</li><li><code>apps/web/src/features/play/play-home.tsx:333-336</code>: the toast without the space&#x27;s name;</li><li><code>apps/web/src/features/quest/games-card.tsx:78-86</code>: 6 characters only;</li><li><code>apps/web/src/features/guest/guest-home.tsx:181</code>: the example code in a bordered <code>kbd</code>.</li></ul>
+<p><figure class="shot"><img alt="J08 step 2: an example code that looks like a field" src="./assets/cuj-j08-step-2.png"><figcaption>J08 step 2: an example code that looks like a field</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M for one sheet on both clients. L with the code carried through approval.</li><li><strong>Owner decides:</strong> whether a code typed signed out may be kept on the device and sent once the account is approved.</li></ul>
+<p>Today only a signed-in member can send a join request.</p>
+<ul><li><strong>Checked:</strong> confirmed, with one detail corrected.</li><li><strong>Code.</strong> Every citation holds:</li><li>the quick action only scrolls to <code>#play-code</code> (<code>member-home.tsx:246-249</code>);</li><li>the home&#x27;s box sends a space code at once, with a toast that names no space (<code>play-home.tsx:333-335</code>);</li><li>Question Quest&#x27;s box cuts input to 6 characters (<code>games-card.tsx:80</code>);</li><li>the guest page draws <code>QF7K2M</code> in a bordered <code>kbd</code> (<code>guest-home.tsx:181</code>).</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j08-step-2.png">J08 step 2</a> shows the bordered code box.</li><li><strong>Correction.</strong> The page already prints &quot;Example code.&quot; in small type beside the box (J08 step 2). The fix is how</li></ul>
+<p>it is drawn, not a missing label.</p>
+<ul><li><strong>Deliberate.</strong> The Play home&#x27;s &quot;Have a code?&quot; was planned as one box for both codes</li></ul>
+<p>(<a href="../stickiness-plan.html">stickiness-plan.md:395-396</a>). No plan put a code door on the guest page.</p>
+<h3>P1. Tell people the space&#x27;s answer to their request</h3>
+<ul><li><strong>What:</strong></li><li><strong>A pending request</strong> is a row on the home (&quot;Asked to join Ferreira Family Practice · waiting for its admins&quot;) and a</li></ul>
+<p>Next up item.</p>
+<ul><li><strong>Being let in</strong> is a Next up item, &quot;You&#x27;re in Ferreira Family Practice: Open&quot;. The next arrival lands in that space</li></ul>
+<p>once.</p>
+<ul><li><strong>A decline</strong> is a Next up item and a band line, with its date, &quot;Ask again&quot;, &quot;Contact&quot; and a dismiss. It stays in</li></ul>
+<p>the person&#x27;s history even if a later request is withdrawn.</p>
+<ul><li><strong>Asking again</strong> after a decline says the space declined before.</li><li><strong>A badge</strong> on the switcher (web) or the account sheet (app) until the outcome is dismissed.</li><li><strong>Keep the invitation banner as it is.</strong> It is the one outcome told well.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C7 and C4 parents, and C6 teens asking to join a club.</li><li><strong>Let in.</strong> Lena found her new space by chance in the switcher (<a href="J07-space-code-let-in.html">J07 step 23</a>).</li><li><strong>Declined.</strong> Marcus&#x27;s first guess, Activity, was a dead end. The answer was one grey line, three taps away. It</li></ul>
+<p>vanished when he withdrew a second request (<a href="J10-space-code-declined.html">J10</a>).</p>
+<ul><li><strong>The admin&#x27;s side, by contrast,</strong> says &quot;2 asking to join&quot; three times on the first screen</li></ul>
+<p>(<a href="J11-space-admin-decides.html">J11 step 3</a>).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>Web:</strong></li><li><a href="J07-space-code-let-in.html">J07 steps 16-17, 20-23</a>;</li><li><a href="J10-space-code-declined.html">J10 steps 16-28</a> (home unchanged 20, the decline 24, asking again 25-26, erased</li></ul>
+<p>27);</p>
+<ul><li><a href="J04-teen.html">J04 steps 17-18</a>.</li><li><strong>App:</strong> <a href="J07A-space-code-let-in-app.html">J07A steps 20-25</a>, <a href="J04A-teen-app.html">J04A steps 17-18</a>.</li><li><strong>Audits:</strong> design sev3,</li></ul>
+<p><a href="audit-design.html#sev3-outcomes-that-happen-elsewhere-leave-no-trace-on-screen">Outcomes that happen elsewhere leave no trace on screen</a>; workflows sev3, <a href="audit-workflows.html#sev3-each-outcome-of-a-request-is-told-a-different-way-and-three-of-four-are-told-nowhere">Each outcome of a request is told a different way…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/organizations/org-switcher.tsx:44-50</code>: the switcher&#x27;s count is invitations only;</li><li><code>apps/web/src/features/organizations/welcome.tsx:40-58</code>: a decline is shown once, on the Spaces page.</li></ul>
+<p><figure class="shot"><img alt="J10 step 24: the decline, one line on the Spaces page" src="./assets/cuj-j10-step-24.png"><figcaption>J10 step 24: the decline, one line on the Spaces page</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong> no.</li><li><strong>Checked:</strong> confirmed.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j10-step-24.png">J10 step 24</a> shows the one decline line on the Spaces page, with no</li></ul>
+<p>date and no action.</p>
+<ul><li><strong>Steps.</strong> J10 steps 20-28 match: the home is unchanged (20), Activity is a dead end (22), and after Withdraw the</li></ul>
+<p>decline does not come back (27-28).</p>
+<ul><li><strong>Code.</strong> The switcher&#x27;s badge counts invitations only (<code>org-switcher.tsx:44-50</code>). The decline is a plain <code>&lt;p&gt;</code></li></ul>
+<p>(<code>welcome.tsx:54-58</code>).</p>
+<ul><li><strong>Deliberate.</strong> &quot;A decline is shown once&quot; (<code>welcome.tsx:46-50</code>, marked seen on view) is a coded choice. The Phase 52</li></ul>
+<p>plan only says the person sees &quot;&lt;space&gt; didn&#x27;t accept your request&quot; (<a href="../open-signup-plan.html">open-signup-plan.md:522</a>). So &quot;Owner decides: no&quot; stands for the let-in notice. Keeping a decline after it is seen reverses that choice, which the owner should confirm.</p>
+<h3>P1. Lead the first home with what the person came for</h3>
+<ul><li><strong>What:</strong></li><li><strong>Finish the arrivals H4 planned.</strong> Invited or let in as a parent → the family focus, with the child&#x27;s card first.</li></ul>
+<p>Started a space → the office focus in that space: Needs you, invitations not yet accepted, open assessments.</p>
+<ul><li><strong>An adult who has not played</strong> lands on a personal home whose band offers three doors (Play · Join with a code ·</li></ul>
+<p>Start a space), not &quot;0 of 3 days played this week&quot;.</p>
+<ul><li><strong>Explain the personal space</strong> in one line (&quot;Just you: your own practice lives here&quot;). When a join request is</li></ul>
+<p>pending, lead with it.</p>
+<ul><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C1 makers, C4 and C7 parents and pilot teachers. The learner&#x27;s board is their first screen, and</li></ul>
+<p>what they came to do is screens down.</p>
+<ul><li><strong>Leo</strong> was on Ana&#x27;s fourth screen, 2,928 px down (<a href="J09-invited-by-space.html">J09</a>).</li><li><strong>Sam</strong> found nothing leading to Start a space (<a href="J06-start-a-space.html">J06 step 10</a>).</li><li><strong>Code holders</strong> land as admin and learner of a space they never asked for</li></ul>
+<p>(<a href="J07-space-code-let-in.html">J07 step 13</a>, <a href="J10-space-code-declined.html">J10 step 13</a>).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>Space makers:</strong></li><li><a href="J06-start-a-space.html">J06 steps 10, 20</a>;</li><li><a href="J06A-start-a-space-app.html">J06A steps 14, 39-41</a>.</li><li><strong>Parents:</strong></li><li><a href="J09-invited-by-space.html">J09 steps 4-5, 18</a>;</li><li><a href="J03-parent-after-guest-play.html">J03 steps 14, 29</a>;</li><li><a href="J07A-space-code-let-in-app.html">J07A steps 13, 22</a>.</li><li><strong>A pilot teacher:</strong> <a href="J12-preapproved-on-list.html">J12 step 6</a>.</li><li><strong>A parent who also tutors:</strong> <a href="J18-several-hats.html">J18 step 3</a>.</li><li><strong>Audit:</strong> design sev3,</li></ul>
+<p><a href="audit-design.html#sev3-the-first-screen-talks-to-a-learner-when-the-person-came-to-run-a-space-or-for-their-child">The first screen talks to a learner…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>ARRIVALS</code> holds only <code>guest_quest</code>, <code>guest_assessment</code> and <code>direct</code> (<code>packages/shared/src/home.ts:213</code>). H4</li></ul>
+<p>planned &quot;invited as a tutor → Tutoring; as a parent → Family; made a space → Office&quot; (<a href="../member-home-plan.html">member-home-plan.md:96-101</a>).</p>
+<ul><li>With no pin, activity or arrival, <code>deriveHomeFocus</code> falls to the first hat (<code>home.ts:253-276</code>).</li></ul>
+<p><figure class="shot"><img alt="J09 step 4: the club&#x27;s first screen, a game for Ana" src="./assets/cuj-j09-step-4.png"><figcaption>J09 step 4: the club&#x27;s first screen, a game for Ana</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong></li><li>The arrivals list: it changes what each newcomer sees first.</li><li>Whether a code holder who joins a space still needs the personal space made at sign-up (Phase 63), or should land</li></ul>
+<p>in the space they asked for.</p>
+<ul><li><strong>Checked:</strong> confirmed. The item missed the rule that causes most of it, which is deliberate.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j09-step-4.png">J09 step 4</a> shows Ana&#x27;s club home leading with &quot;0 of 3 days played&quot;</li></ul>
+<p>and Today&#x27;s 5. J09 measured Leo&#x27;s card at 2,928 px of a 3,262 px page.</p>
+<ul><li><strong>Code.</strong> <code>ARRIVALS</code> is the guest&#x27;s three words (<code>home.ts:213</code>), while H4 planned five</li></ul>
+<p>(<a href="../member-home-plan.html">member-home-plan.md:96-101</a>). The fall-back hat is as cited (<code>home.ts:269-272</code>).</p>
+<ul><li><strong>The deliberate rule.</strong> In a space without Tutoring, anyone who plays wears the learner hat, and that hat is moved</li></ul>
+<p>first: &quot;Where there is no Tutoring, playing leads (the space is for practice)&quot; (<code>member-home.ts:542, 550-551</code>). That is why Ana (a parent) and Sam (an admin) open on a learner&#x27;s board in a club.</p>
+<ul><li><strong>Why the arrivals cannot help.</strong> People a space invites or adds have no platform account (Phase 65, A5), so</li></ul>
+<p><code>arrived_via</code> cannot carry &quot;invited as a parent&quot; for them.</p>
+<ul><li><strong>Owner decides, besides the above.</strong> Whether a parent&#x27;s or an admin&#x27;s hat should lead over playing in a space</li></ul>
+<p>without Tutoring.</p>
+<h3>P1. Put Start a space where a teacher looks</h3>
+<ul><li><strong>What:</strong></li><li><strong>Under the list of spaces,</strong> put &quot;Join with a code&quot; and &quot;Start a space&quot; (adults). On the web that is the switcher;</li></ul>
+<p>in the app, the account sheet.</p>
+<ul><li><strong>In the app&#x27;s (+),</strong> add &quot;Start a space&quot; for adults.</li><li><strong>Rename the menu&#x27;s &quot;Space&quot;</strong> to &quot;Space settings&quot;.</li><li><strong>For 13-17,</strong> replace the grey footnote with a card: &quot;A club needs an adult to start its space. Ask a teacher or</li></ul>
+<p>parent to start it, then join with its code.&quot;</p>
+<ul><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C1 owners who signed up to start a space for a class or club.</li><li><strong>What happens today.</strong> Sam found it on the third try, Pat in the fifth place Pat looked.</li><li><strong>Teens</strong> who run clubs are told no, with no route forward.</li><li><strong>A tutor</strong> sees &quot;Start a space … for your students&quot; on All spaces, a tempting wrong door.</li><li><strong>Evidence:</strong></li><li><strong>Web:</strong></li><li><a href="J06-start-a-space.html">J06 steps 11-14</a>, including the dead end at &quot;Space&quot; (12);</li><li><a href="J04-teen.html">J04 steps 11-13</a>;</li><li><a href="J18-several-hats.html">J18 steps 6-7</a>.</li><li><strong>App:</strong></li><li><a href="J06A-start-a-space-app.html">J06A steps 15-21</a>, where the yellow (+) is a dead end (17);</li><li><a href="J04A-teen-app.html">J04A steps 13-15</a>.</li><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-spaces-are-reached-three-ways-and-start-a-space-only-from-the-spaces-page">Spaces are reached three ways and Start a space only from the Spaces page</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/organizations/welcome.tsx:70-71, 197</code>: on the Spaces page only;</li><li><code>apps/web/src/components/layout/app-shell.tsx:70</code>: the menu&#x27;s &quot;Space&quot; is <code>/organization</code>;</li><li><code>apps/mobile/src/features/shell/create-actions.ts:31-90</code>: no space action in (+).</li></ul>
+<p><figure class="shot"><img alt="J06A step 17: the (+) offers everything but a space" src="./assets/cuj-j06a-step-17.png"><figcaption>J06A step 17: the (+) offers everything but a space</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li><li><strong>Checked:</strong> confirmed.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j06a-step-17.png">J06A step 17</a>: Create offers Start an assessment, Add a student</li></ul>
+<p>and Add someone else.</p>
+<ul><li><strong>Code.</strong> <code>MakeSpace</code> is rendered only by the Spaces page (<code>welcome.tsx:70-71</code>; the web&#x27;s <code>spaces-page.tsx</code> and the</li></ul>
+<p>app&#x27;s <code>space-welcome.tsx</code> are its only hosts). Neither (+) branch has a space action (<code>create-actions.ts:126-137</code>).</p>
+<ul><li><strong>Why it is buried.</strong> Phase 61 put Join and Start side by side for a newcomer in no space yet (<code>sideBySide</code>,</li></ul>
+<p><code>welcome.tsx:44</code>, with <code>spaces-page.tsx:161</code>). Since Phase 63, a self sign-up always has a personal space, so that Welcome &quot;remains only for someone in no space&quot; (CLAUDE.md, Phase 63) and no newcomer sees it. This is a side effect of two deliberate phases, not a choice anyone made.</p>
+<h3>P1. Refusals give a next step and never reopen unasked</h3>
+<ul><li><strong>What:</strong></li><li><strong>Clear the refused sign-up</strong> when a refusal is shown. The &quot;Almost there&quot; form must never reopen by itself, with or</li></ul>
+<p>without the email (J05). A refusal must not reopen over the guest page (J02, J13). Add J05&#x27;s repro as an e2e check.</p>
+<ul><li><strong>Every refusal</strong> says guest play is still open, with &quot;Keep playing&quot; as its main button.</li><li><strong>Under 13:</strong> &quot;Ask a grown-up&quot;, with something a parent can act on.</li><li><strong>Pre-approved:</strong></li><li>an &quot;Ask for an invitation&quot; action that carries the email, in place of a blank <code>mailto:</code>;</li><li>the sign-up buttons say &quot;invitation only&quot; before Google;</li><li>the refusal names the account checked and offers &quot;Use another Google account&quot;.</li><li><strong>Declined:</strong> stop offering sign-up in that tab.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C6 adults who are declined, children under 13 (who can join only through a parent), and parents</li></ul>
+<p>not on the list.</p>
+<ul><li><strong>The under-13 form</strong> re-asks the age question seconds after a no, with her email filled in. That invites picking an</li></ul>
+<p>older year, so it is a hole in the age gate, not only friction (<a href="J05-under-13.html">J05</a>, sev3).</p>
+<ul><li><strong>Not on the list:</strong> &quot;Contact us&quot; did nothing visible, and every door still said &quot;free&quot;</li></ul>
+<p>(<a href="J13-preapproved-not-on-list.html">J13</a>).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>Declined:</strong> <a href="J02-adult-declined.html">J02 steps 12-13, 15-17, 19-20</a>.</li><li><strong>Under 13:</strong> <a href="J05-under-13.html">J05 steps 6-7, 11, 13, 16-17</a>.</li><li><strong>Not on the list:</strong> <a href="J13-preapproved-not-on-list.html">J13 steps 3-4, 9-10, 15, 17, 20</a>.</li><li><strong>Audit:</strong> design sev3,</li></ul>
+<p><a href="audit-design.html#sev3-the-waiting-and-refusal-screens-stop-the-journey-cold">The waiting and refusal screens stop the journey cold</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/auth/access-refused.tsx:36-37</code>, whose only action is a <code>mailto:</code> to</li></ul>
+<p><code>PLATFORM_CONTACT_EMAIL</code>.</p>
+<p><figure class="shot"><img alt="J05 step 11: the sign-up form reopens after the under-13 refusal" src="./assets/cuj-j05-step-11.png"><figcaption>J05 step 11: the sign-up form reopens after the under-13 refusal</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong></li><li>Whether the device may remember an under-13 refusal (<a href="J05-under-13.html">J05</a>, finding 3), given the promise</li></ul>
+<p>&quot;Nothing about you has been kept&quot;.</p>
+<ul><li>What an &quot;Ask for an invitation&quot; request stores: the email of someone with no account.</li><li>Whether a decline gives a reason category.</li><li><strong>Checked:</strong> confirmed, and the cause is found in code.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j05-step-11.png">J05 step 11</a> shows &quot;Almost there&quot; with <code>mia.lopez@example.com</code> over</li></ul>
+<p>the quest she chose.</p>
+<ul><li><strong>The cause.</strong> <code>completeSignup</code> clears <code>pendingSignup</code> only after a successful <code>POST /auth/signup</code></li></ul>
+<p>(<code>apps/web/src/providers/auth-provider.tsx:389-397</code>). The under-13 refusal and Phase 65&#x27;s refusals throw before that (<code>signup-form.tsx:59-60</code>). The guest page reopens the sheet whenever <code>pendingSignup</code> is set (<code>guest-home.tsx:53-55</code>). The sheet&#x27;s &quot;too young&quot; flag is local state, so a remounted sheet is back at the form (<code>signup-sheet.tsx:27, 58</code>).</p>
+<ul><li><strong>Not deliberate.</strong> It is a client bug, not a rule. The server keeps nothing of an under-13 answer, as Phase 52</li></ul>
+<p>planned.</p>
+<ul><li><strong>The age gate.</strong> A fresh Google sign-in can re-answer the age anyway (J05 steps 15-17). The reopen makes that</li></ul>
+<p>immediate, so the item&#x27;s word &quot;hole&quot; is fair. Whether to guard it on the device stays the owner&#x27;s decision.</p>
+<ul><li><strong>Code.</strong> <code>access-refused.tsx:36-37</code> is the <code>mailto:</code> as cited.</li></ul>
+<h3>P1. A friend&#x27;s game code and tile link reach the friend&#x27;s game</h3>
+<ul><li><strong>What:</strong></li><li><strong>Now:</strong></li><li>a game code from another space gets an honest answer, not &quot;No game or team has that code.&quot;: &quot;This game is in</li></ul>
+<p>another space. Ask your friend to invite you, or start your own game and share its code&quot;;</p>
+<ul><li>stop <code>/play/&lt;tile&gt;</code> dropping a tile that guests cannot play. The route exists, but a locked tile sends a</li></ul>
+<p>signed-out visitor to <code>/</code> (see Checked). Signed out, put the sent tile first (&quot;You were sent: 10 in a row · Grade 4&quot;). Keep it on the device through sign-up, and open the space on it, as <code>guestLeadLevel</code> does for the grade.</p>
+<ul><li><strong>Later, if allowed:</strong> let a game code admit a non-member to that one game.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C6 players. &quot;A friend asked me to play&quot; is their reason to come, and the invitation died at</li></ul>
+<p><a href="J08-friend-game-code.html">J08 step 12</a>.</p>
+<ul><li><strong>What Kai did instead.</strong> He played the friend&#x27;s tile alone, found by hand.</li><li><strong>A promise half kept.</strong> Phase 63 built <code>/play/&lt;code&gt;</code> links (<a href="../plan.html">docs/plan.md</a>, Phase 63). This link</li></ul>
+<p>was to a tile locked for guests, so it was rewritten to <code>/</code> and forgotten by the time Kai signed in.</p>
+<ul><li><strong>Evidence:</strong></li><li><a href="J08-friend-game-code.html">J08 steps 1-2, 7, 9</a>: the tile link dropped.</li><li><a href="J08-friend-game-code.html">J08 steps 10-15</a>: the code refused twice.</li><li><a href="J08-friend-game-code.html">J08 steps 16-17</a>: played alone.</li><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-three-code-boxes-take-different-codes-none-is-on-the-guest-page-and-a-game-in-another-space-reads-as-missing">Three code boxes…</a>.</p>
+<ul><li><strong>Rules:</strong> game codes are found only in their own space (CLAUDE.md, Phase 46). R13 says nothing crosses spaces.</li></ul>
+<p><figure class="shot"><img alt="J08 step 12: the friend&#x27;s real game, refused" src="./assets/cuj-j08-step-12.png"><figcaption>J08 step 12: the friend&#x27;s real game, refused</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S for the wording and the tile link. L for play across spaces.</li><li><strong>Owner decides:</strong></li><li>Whether a game may take players from outside its space.</li><li>Whether a refusal may even say that the code exists in another space, which itself crosses R13.</li><li><strong>Checked:</strong> corrected.</li><li><strong>The correction.</strong> The item said &quot;make <code>/play/&lt;tile&gt;</code> a real route&quot;. It already is one: <code>App.tsx:60</code> routes it to</li></ul>
+<p><code>PlayLink</code>.</p>
+<ul><li><strong>What the route does.</strong> Signed in, it starts the tile (<code>play-link.tsx:36-37</code>). Signed out, it plays only a tile</li></ul>
+<p>open to guests (<code>play-link.tsx:33</code>). Any other tile is <code>&lt;Navigate to=&quot;/&quot; replace /&gt;</code> (<code>play-link.tsx:39</code>), which drops the code.</p>
+<ul><li><strong>Why J08 lost it.</strong> G4Q10, &quot;10 in a row&quot;, is locked for guests (<a href="./assets/cuj-j08-step-2.png">J08 step 2</a> shows</li></ul>
+<p>it locked). Kai then signed in from <code>/</code> (step 9), so the link never reached the member branch.</p>
+<ul><li><strong>The plan was silent.</strong> Phase 63&#x27;s P14 lists signed-out and signed-in checks, but not a locked tile</li></ul>
+<p>(<a href="../stickiness-plan.html">stickiness-plan.md:663-676</a>). The What and Why are corrected above.</p>
+<ul><li><strong>Confirmed: the code refusal.</strong> <a href="./assets/cuj-j08-step-12.png">J08 step 12</a> shows &quot;No game or team has that code.&quot;</li></ul>
+<p>That refusal is deliberate: game codes are found only in the person&#x27;s own spaces (CLAUDE.md, Phase 46; <a href="../stickiness-plan.html">stickiness-plan.md:395</a>). That is why it is the owner&#x27;s decision.</p>
+<h3>P2. The guest page speaks to every visitor and keeps its promises</h3>
+<ul><li><strong>What:</strong></li><li><strong>The hero:</strong> a line for adults, teens and classes, and &quot;Can adults play?&quot; in the FAQ.</li><li><strong>The guest board:</strong> levels above Grade 8 on it.</li><li><strong>A code door</strong> for &quot;Have a code from a tutor or club?&quot; (see the code item).</li><li><strong>An age note</strong> without &quot;18&quot;.</li><li><strong>The sign-up offer:</strong></li><li>mark the answer before pitching, as the app does (&quot;Nice! That one is right.&quot;);</li><li>accept &quot;30%&quot; as well as &quot;30&quot; (whether &quot;30%&quot; was marked right was not checked);</li><li>either carry the guest&#x27;s best score into the account (on the device, as the grade and tiles are) or stop saying</li></ul>
+<p>&quot;Save this score&quot;.</p>
+<ul><li><strong>Why:</strong></li><li><strong>C6 adults and teens</strong> read &quot;Grades 1-8&quot; and &quot;Is it safe for my child?&quot; as &quot;not for me&quot;, on the page that decides</li></ul>
+<p>conversion.</p>
+<ul><li><strong>A parent sent by a tutor</strong> wonders whether she signed up for a children&#x27;s game</li></ul>
+<p>(<a href="J07-space-code-let-in.html">J07 step 10</a>).</p>
+<ul><li><strong>A right answer reads as wrong</strong> at the moment of the offer (<a href="J01-adult-player.html">J01 step 4</a>).</li><li><strong>The child&#x27;s 5 of 5</strong> was gone after sign-up (<a href="J03-parent-after-guest-play.html">J03</a>).</li><li><strong>Evidence:</strong></li><li><strong>Who the page speaks to:</strong></li><li><a href="J01-adult-player.html">J01 steps 1, 4-5</a>;</li><li><a href="J01A-adult-player-app.html">J01A steps 1, 5-6</a>;</li><li><a href="J02-adult-declined.html">J02 steps 1-2, 4</a>;</li><li><a href="J04-teen.html">J04 steps 1-2, 9</a>;</li><li><a href="J04A-teen-app.html">J04A steps 1-2, 9</a>;</li><li><a href="J13-preapproved-not-on-list.html">J13 steps 8-9</a>;</li><li><a href="J15A-tutoring-parent-first-sign-in-app.html">J15A steps 1-2</a>, where the centre is never mentioned.</li><li><strong>The offer:</strong> <a href="J01-adult-player.html">J01 steps 3-4</a> (&quot;Good try&quot; with no mark);</li></ul>
+<p><a href="J03-parent-after-guest-play.html">J03 steps 7, 12, 15</a> (the score not kept).</p>
+<ul><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-the-guest-page-speaks-only-to-families-with-young-children">The guest page speaks only to families with young children</a>.</p>
+<p><figure class="shot"><img alt="J01 step 1, desktop: the guest page" src="./assets/cuj-j19-step-1-desktop.png"><figcaption>J01 step 1, desktop: the guest page</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong></li><li>The words: who the product says it is for.</li><li>Whether the guest&#x27;s best score may carry over on the device.</li></ul>
+<h3>P2. Sign in opens a sheet titled Sign up free</h3>
+<ul><li><strong>What:</strong></li><li>Open the sheet in a sign-in mode from &quot;Sign in&quot;: titled &quot;Sign in&quot;, &quot;Welcome back&quot;, with the same Google button and</li></ul>
+<p>a small &quot;New here? Sign up free&quot;.</p>
+<ul><li>Keep &quot;Sign up free&quot; for the calls to action.</li><li><strong>Why:</strong></li><li><strong>The most frequent hesitation in the audit.</strong> Every returning member, tutor, office admin and parent on the web is</li></ul>
+<p>told to sign up. It is worst for an approved newcomer who was never told of the approval: &quot;am I making a second account?&quot; (<a href="J01-adult-player.html">J01 step 12</a>).</p>
+<ul><li><strong>The app</strong> has its own sign-in screen.</li><li><strong>Evidence:</strong></li><li><strong>Web, 18 journeys:</strong></li><li>J01 step 12, J02 step 11, J03 step 13, J04 step 9, J05 step 15;</li><li>J06 steps 3, 9, J07 step 12, J08 steps 3, 8, J09 step 2, J10 step 12;</li><li>J11 step 2, J13 steps 10-11, J14 step 2, J15 step 2;</li><li>J16 step 2, J17 step 2, J18 step 2, J19 step 2.</li><li><strong>The app:</strong> its own sign-in screen (<a href="J01A-adult-player-app.html">J01A step 16</a>,</li></ul>
+<p><a href="J15A-tutoring-parent-first-sign-in-app.html">J15A step 2</a>).</p>
+<ul><li><strong>Audits:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-sign-in-opens-a-sheet-titled-sign-up-free">&quot;Sign in&quot; opens a sheet titled &quot;Sign up free&quot;</a>; workflows sev2, <a href="audit-workflows.html#sev2-on-the-web-sign-in-opens-the-sign-up-free-sheet-while-the-app-has-its-own-sign-in-screen">On the web Sign in opens the Sign up free sheet…</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/guest/guest-home.tsx:97-104</code> (the header&#x27;s Sign in calls <code>signUp</code>);</li></ul>
+<p><code>apps/web/src/features/guest/signup-sheet.tsx:86-87</code> (the title).</p>
+<p><figure class="shot"><img alt="J15 step 2: a returning parent is told &quot;Sign up free&quot;" src="./assets/cuj-j19-step-2.png"><figcaption>J15 step 2: a returning parent is told &quot;Sign up free&quot;</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
+<h3>P2. An invitation link opens on the invitation</h3>
+<ul><li><strong>What:</strong></li><li><strong>The link.</strong> The invitation text links to the invitation itself, naming the space and who invited, not to the</li></ul>
+<p>guest game page.</p>
+<ul><li><strong>The invitation card:</strong></li><li>wraps the space&#x27;s name (&quot;Rivera …&quot; today);</li><li>says who invited her and for which child;</li><li>drops &quot;you need to be 18 or older&quot; for an adult.</li><li><strong>Why:</strong></li><li><strong>The best moment in J09.</strong> For an invited C4/C7 parent, the invitation waiting on the first screen after Google,</li></ul>
+<p>with no form and no approval, was the best moment of the journey.</p>
+<ul><li><strong>The way there.</strong> It starts on a children&#x27;s game page and a &quot;Sign up free&quot; sheet.</li><li><strong>Evidence:</strong></li><li><a href="J09-invited-by-space.html">J09 steps 1-3</a>.</li><li>J09&#x27;s Outcome notes that an invited person is never shown the terms or the privacy notice.</li></ul>
+<p><figure class="shot"><img alt="J09 step 3: the invitation, name cut" src="./assets/cuj-j09-step-3.png"><figcaption>J09 step 3: the invitation, name cut</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> whether an invited person must see and accept the terms and the privacy notice before entering.</li></ul>
+<p>J09 left this to the owner and did not count it as a finding.</p>
+<p>## Stickiness</p>
+<h3>P1. Continue resumes the open game</h3>
+<ul><li><strong>What:</strong></li><li><strong>Continue</strong> (the board, Next up, the iPhone&#x27;s home-screen action) opens the reader&#x27;s open game, running or in a</li></ul>
+<p>lobby. It reads the server&#x27;s list, and is labelled in words with progress: &quot;Grade 7 Quick 5 · question 3 of 5 · 2 points&quot;.</p>
+<ul><li><strong>With no open game,</strong> offer the replay under its own name: &quot;Play Grade 7 Quick 5 again&quot;.</li><li><strong>A game started from New Quest</strong> gets a Continue too.</li><li><strong>The home moves after a game:</strong> the open game shows in Next up, and the day counts.</li><li><strong>Why:</strong></li><li><strong>C6 and C5 players.</strong> Coming back mid-quest is the stickiness moment, and it sends them back to Question 1 with 0</li></ul>
+<p>points.</p>
+<ul><li><strong>C4 parents</strong> meet it as a second empty lobby.</li><li><strong>The way back</strong> was 4 taps, landing in the wrong game. The one real resume is a list of identical rows that differ</li></ul>
+<p>only by code.</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>Web:</strong> <a href="J19-returning-player.html">J19 steps 12-17</a>; <a href="J09-invited-by-space.html">J09 steps 14-16</a>.</li><li><strong>App:</strong> <a href="J01A-adult-player-app.html">J01A steps 23-24</a>; <a href="J04A-teen-app.html">J04A steps 30-32</a>, where a New Quest game</li></ul>
+<p>gets no Continue.</p>
+<ul><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-continue-replays-the-last-tile-as-a-new-game-instead-of-resuming-the-open-one">Continue replays the last tile as a new game…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/play/play-home.tsx:229-239</code>: Continue calls <code>start(last.label, last.request)</code>, which makes</li></ul>
+<p>a new game;</p>
+<ul><li><code>apps/web/src/features/home/next-up.tsx:414-440</code>: Next up&#x27;s Continue, the same call;</li><li>the app: <code>apps/mobile/src/features/play/play-home.tsx:284-287</code>.</li></ul>
+<p><figure class="shot"><img alt="J19 step 14: Continue starts over at question 1" src="./assets/cuj-j19-step-14.png"><figcaption>J19 step 14: Continue starts over at question 1</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong> yes, corrected from &quot;no&quot; (see Checked). Continue was planned as &quot;the last settings, kept on the</li></ul>
+<p>device; one tap&quot; (<a href="../stickiness-plan.html">stickiness-plan.md:393</a>). Resuming the open game is a change to that design.</p>
+<ul><li><strong>Checked:</strong> behaviour confirmed; the rule turns out to be deliberate.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j19-step-14.png">J19 step 14</a> shows Question 1 of 5 and 0 points after Continue.</li></ul>
+<p>J19 steps 13-16 show the new game address and the older game, still at question 3, on Question Quest.</p>
+<ul><li><strong>Code.</strong> <code>useStartQuest</code> always creates a game (<code>play-home.tsx:51-61</code>). Every Continue calls it with the device&#x27;s</li></ul>
+<p>last request: the board (<code>play-home.tsx:229-239</code>), Next up (<code>next-up.tsx:414-440</code>) and the app (<code>apps/mobile/src/features/play/play-home.tsx:278-289</code>). The last quest is written only by <code>useStartQuest</code> (<code>play-home.tsx:60</code>), so a game made in the New Quest wizard gets no Continue (J04A steps 30-32).</p>
+<ul><li><strong>Deliberate, but at odds with its own words.</strong> Replaying the last settings is the plan</li></ul>
+<p>(<a href="../stickiness-plan.html">stickiness-plan.md:393</a>, and the member-home plan&#x27;s &quot;Continue (the device&#x27;s last quest)&quot;, <a href="../member-home-plan.html">member-home-plan.md:207</a>). Yet Next up&#x27;s card says &quot;Pick up where you left off&quot; over it (<code>next-up.tsx:428</code>; the app&#x27;s <code>next-up-card.tsx:423</code>). That promise is broken as built, which is what keeps this a P1.</p>
+<h3>P1. Start the board at the learner&#x27;s grade, and remember it</h3>
+<ul><li><strong>What:</strong> lead the Quest board, and the Daily in Next up, with:</li></ul>
+<ol><li>the grade the space records for a student;</li><li>the last level the person played, read from the server rather than the device;</li><li>for anyone 13 or older, the top of the row or &quot;More levels&quot;;</li><li>only then Grade 1.</li></ol>
+<p>Remember a grade picked on the row, for that person. Next up&#x27;s Daily and the board&#x27;s Daily use one level, and name it.</p>
+<ul><li><strong>Why:</strong></li><li><strong>&quot;For little kids.&quot;</strong> That is what teens, adults and pilot teachers read before they play (C6).</li><li><strong>Sofia&#x27;s practice</strong> (C5) was 4 to 6 grades below her: a Grade 3 Daily for a 7th grader. Her chosen Grade 7 was</li></ul>
+<p>lost on reload (<a href="J17-tutored-student-practice.html">J17</a>).</p>
+<ul><li><strong>A returning player</strong> must find their grade again on every new device.</li><li><strong>Evidence:</strong></li><li><strong>Teens:</strong> <a href="J04-teen.html">J04 steps 10, 19-20</a>; <a href="J04A-teen-app.html">J04A steps 12, 23-24</a>.</li><li><strong>Adults and parents:</strong></li><li><a href="J06-start-a-space.html">J06 step 10</a>;</li><li><a href="J07-space-code-let-in.html">J07 step 13</a>;</li><li><a href="J09-invited-by-space.html">J09 step 4</a>;</li><li><a href="J10-space-code-declined.html">J10 step 13</a>;</li><li><a href="J12-preapproved-on-list.html">J12 steps 6-7</a>.</li><li><strong>Learners:</strong> <a href="J17-tutored-student-practice.html">J17 steps 3, 5, 12-15</a>; <a href="J19-returning-player.html">J19 steps 3-5</a>.</li><li><strong>Next up and the board disagree:</strong> <a href="J08-friend-game-code.html">J08 step 9</a>.</li><li><strong>Audits:</strong> design sev3,</li></ul>
+<p><a href="audit-design.html#sev3-the-quest-board-leads-with-grade-1-whoever-is-playing">The Quest board leads with Grade 1, whoever is playing</a>; workflows sev2, <a href="audit-workflows.html#sev2-one-screen-offers-six-ways-to-start-a-quest-and-the-daily-has-four-names-at-two-levels">One screen offers six ways to start a quest…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/play/play-home.tsx:114-125</code>: the lead comes from device storage, and the chosen grade is</li></ul>
+<p>component state;</p>
+<ul><li><code>packages/shared/src/tile-look.ts:72-77</code>: <code>boardLeadGrade</code> falls to the first grade;</li><li><code>next-up.tsx:64-68</code> against <code>play-home.tsx:138-141</code>: two level rules.</li></ul>
+<p><figure class="shot"><img alt="J04 step 10: a 15-year-old&#x27;s first board, Grade 1" src="./assets/cuj-j04-step-10.png"><figcaption>J04 step 10: a 15-year-old&#x27;s first board, Grade 1</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong> whether to ask a newcomer&#x27;s grade once. One more question at sign-up costs a little; a one-tap</li></ul>
+<p>&quot;What grade?&quot; card on the first home costs less.</p>
+<ul><li><strong>Checked:</strong> confirmed, with one precision.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j04-step-10.png">J04 step 10</a> shows &quot;Today&#x27;s Daily · Grade 1&quot; for a 15-year-old.</li><li><strong>Steps.</strong> J17 steps 3, 5 and 12-15 show it for Sofia: the board opens on Grade 1, Next up&#x27;s Daily is Grade 3,</li></ul>
+<p>and her Grade 7 is lost on reload while My profile reads &quot;Grade 7 Mathematics&quot;.</p>
+<ul><li><strong>Code.</strong></li><li>the lead is the device&#x27;s last quest, else the guest&#x27;s grade (<code>play-home.tsx:113, 118-119</code>);</li><li>the chosen grade is component state (<code>play-home.tsx:123-124</code>);</li><li><code>boardLeadGrade</code> falls to the first grade (<code>tile-look.ts:72-77</code>);</li><li>Next up&#x27;s Daily falls to <code>list[0]</code> (<code>next-up.tsx:66-67</code>), the board&#x27;s to the chosen grade&#x27;s first tile</li></ul>
+<p>(<code>play-home.tsx:139</code>).</p>
+<ul><li><strong>The precision.</strong> &quot;The grade the space records&quot; is free text today (<code>student_profiles.current_math_course</code>,</li></ul>
+<p>&quot;Grade 7 Mathematics&quot;). The structured one is Question Quest&#x27;s <code>quest_level_id</code> (Phase 42), which a tutor or an admin sets. Item 1 of What should read that column, or parse the course.</p>
+<ul><li><strong>Deliberate.</strong> Phase 67&#x27;s order (last quest, then the guest&#x27;s grade) is the plan; it says nothing of a student&#x27;s</li></ul>
+<p>grade or of Grade 1 as a fall-back. So this extends the plan rather than reversing it.</p>
+<h3>P1. Play with a child on one device, credited to the child</h3>
+<ul><li><strong>What:</strong></li><li><strong>For a child who does not sign in</strong> (no email), &quot;Play with &lt;child&gt;&quot; and &quot;Practise together&quot; become a game on this</li></ul>
+<p>device. The two play side by side, at the child&#x27;s grade from the profile, and the child&#x27;s days played count.</p>
+<ul><li><strong>For a child who signs in,</strong> keep the online invite, and show the child as invited in the lobby.</li><li><strong>Continue</strong> resumes that game rather than opening a new lobby.</li><li><strong>Why:</strong></li><li><strong>The family&#x27;s primary action.</strong> It is what the home gives C3 and C4 (H10).</li><li><strong>What happens today.</strong> It makes a two-player online game the child cannot join. It ends &quot;Nadia wins!&quot;, at Grade 3</li></ul>
+<p>for a Grade 4 child.</p>
+<ul><li><strong>The count that should bring the family back,</strong> &quot;Played 0 days this week (aim: 3)&quot;, cannot move.</li><li><strong>Children a space adds often cannot sign in.</strong> Yusuf, Ken and Leo had no email. In production, students and</li></ul>
+<p>parents &quot;have not really signed in yet&quot; (<a href="../member-home-plan.html">member-home-plan.md:22-23</a>).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>Web:</strong> <a href="J15-tutoring-parent-first-sign-in.html">J15 steps 14-21</a>; <a href="J09-invited-by-space.html">J09 steps 11-16</a>.</li><li><strong>App:</strong> <a href="J15A-tutoring-parent-first-sign-in-app.html">J15A steps 16-23</a>.</li><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-play-with-a-child-opens-an-online-game-the-child-cannot-join-on-both-clients">Play with a child opens an online game the child cannot join…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>packages/shared/src/home.ts:280-292</code>: <code>playWithRequest</code> is <code>players: &#x27;multi&#x27;</code> with <code>invite_user_ids: [child]</code>;</li><li><code>apps/web/src/features/home/member-home.tsx:516-526</code>: the level is the child&#x27;s last, else the first tile.</li></ul>
+<p><figure class="shot"><img alt="J15 step 15: &quot;Practise together&quot;, with only Nadia in the lobby" src="./assets/cuj-j15-step-15.png"><figcaption>J15 step 15: &quot;Practise together&quot;, with only Nadia in the lobby</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M to L.</li><li><strong>Owner decides:</strong></li><li><strong>A new mode.</strong> H10 defined Play with as a game with the child invited</li></ul>
+<p>(<a href="../member-home-plan.html">member-home-plan.md:131</a>). A shared-device game is a new mode.</p>
+<ul><li><strong>What the counts mean.</strong> Crediting a child who never signed in changes what R29&#x27;s counts mean.</li><li><strong>Checked:</strong> confirmed; it is deliberate, and the item already says so.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j15-step-15.png">J15 step 15</a> shows a lobby of &quot;1 of 2 places&quot; holding only Nadia,</li></ul>
+<p>with the game at G3.</p>
+<ul><li><strong>Steps.</strong> J15 steps 19 and 21 give &quot;Nadia wins!&quot;, then &quot;Played 0 days&quot; after a reload.</li><li><strong>Code.</strong> <code>playWithRequest</code> is as cited (<code>home.ts:280-292</code>). The child&#x27;s level is their last game&#x27;s level</li></ul>
+<p>(<code>apps/api/src/repositories/member-home.ts:380-389</code>), else the first tile (<code>member-home.tsx:513-518</code>), never the child&#x27;s grade. Days played count only the child&#x27;s own answers (<code>member-home.ts:366-372</code>), so a game the child never joins cannot move them.</p>
+<ul><li><strong>Rank.</strong> P1 holds: no journey was blocked, but the family&#x27;s main action fails for every child without an email.</li></ul>
+<h3>P2. My progress shows one state, and never a zero first</h3>
+<ul><li><strong>What:</strong></li><li><strong>One state per habit card:</strong> &quot;4-week streak: play 3 days this week to keep it&quot;, or &quot;Start a streak&quot;, never both.</li></ul>
+<p>Count streak badges from the current run.</p>
+<ul><li><strong>The band</strong> leads with the next step, not &quot;0 of 3 days played this week&quot;. The app already says &quot;Start a streak&quot;.</li><li><strong>A cancelled or empty game</strong> is not a result and earns nothing.</li><li><strong>After a game,</strong> the week and Next up update.</li><li><strong>Why:</strong></li><li><strong>The streak is the reason to come back</strong> three days a week (H8), for C6 and C5.</li><li><strong>A returning player</strong> read four messages on one card that disagree (<a href="J19-returning-player.html">J19 step 4</a>).</li><li><strong>New members</strong> read a zero minutes after playing as a guest.</li><li><strong>Cancelling an empty game</strong> congratulated Ana on a win and gave her two badges</li></ul>
+<p>(<a href="J09-invited-by-space.html">J09 steps 12-15</a>).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>The contradicting card, and a home that does not move:</strong> <a href="J19-returning-player.html">J19 steps 4, 12</a>.</li><li><strong>A zero first:</strong></li><li><a href="J01-adult-player.html">J01 step 13</a>;</li><li><a href="J12-preapproved-on-list.html">J12 step 6</a>;</li><li><a href="J06-start-a-space.html">J06 step 10</a>;</li><li><a href="J09-invited-by-space.html">J09 step 4</a>.</li><li><strong>The app&#x27;s softer band:</strong> <a href="J01A-adult-player-app.html">J01A step 18</a>.</li><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-the-habit-card-contradicts-itself-and-leads-with-a-zero">The habit card contradicts itself and leads with a zero</a>.</p>
+<p><figure class="shot"><img alt="J19 step 4: Welcome back, Start a streak and 4 weeks in a row at once" src="./assets/cuj-j19-step-4.png"><figcaption>J19 step 4: Welcome back, Start a streak and 4 weeks in a row at once</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> whether a guest&#x27;s play day may count as a new member&#x27;s first day. The device knows it, but Phase</li></ul>
+<p>63 sends nothing about a guest.</p>
+<h3>P3. Lesson cards say where, and lead to practice</h3>
+<ul><li><strong>What:</strong></li><li><strong>The next-lesson cards</strong> name the place (&quot;Thu 4:00 PM with Alex · Institute, room 2&quot;).</li><li><strong>A tap on the lesson line</strong> opens the lesson and offers practice for it.</li><li><strong>Practise before:</strong> consider offering it earlier than three days ahead.</li><li><strong>Why:</strong></li><li><strong>C3 parents</strong> asked &quot;when&#x27;s the next lesson?&quot; and got when, not where.</li><li><strong>C5 students</strong> six days before a lesson found nothing on the home about it. The lesson line does nothing.</li><li><strong>Evidence:</strong></li><li><a href="J15-tutoring-parent-first-sign-in.html">J15 step 4</a> and <a href="J15A-tutoring-parent-first-sign-in-app.html">J15A steps 12-14</a>:</li></ul>
+<p>when, not where.</p>
+<ul><li><a href="J17-tutored-student-practice.html">J17 step 11</a>: the lesson line does nothing.</li><li><strong>Code:</strong> <code>PRACTISE_BEFORE_DAYS = 3</code> (<code>packages/shared/src/home.ts:300</code>).</li></ul>
+<p><figure class="shot"><img alt="J15 step 4: the next lesson, without its place" src="./assets/cuj-j15-step-4.png"><figcaption>J15 step 4: the next lesson, without its place</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> the &quot;Practise before&quot; window.</li></ul>
+<p>## Usability</p>
+<h3>P1. A missing price hides behind 95.00 until a live lesson cannot end</h3>
+<ul><li><strong>What:</strong></li><li><strong>The price field.</strong> Use helper text (&quot;For example 95.00&quot;) in place of a realistic placeholder, and leave the field</li></ul>
+<p>visibly empty.</p>
+<ul><li><strong>A missing price</strong> shows as &quot;No price set&quot; on the student&#x27;s record and wherever the student is paired or</li></ul>
+<p>scheduled.</p>
+<ul><li><strong>At Start,</strong> check the rule the stop uses. Word the refusal for a tutor: &quot;Ask the office to set Yusuf&#x27;s price&quot;.</li><li><strong>The stop dialog</strong> prints every field error as text, and &quot;Keep going&quot; keeps the typed note. The longer fix, Stop</li></ul>
+<p>opening the full record surface, is in the record item below.</p>
+<ul><li><strong>Why:</strong></li><li><strong>What happened.</strong> The two journeys are one story. Priya (C1) saved Yusuf with an empty price behind a grey</li></ul>
+<p>&quot;95.00&quot;. Later, Alex (C2) started a timer for Yusuf.</p>
+<ul><li><strong>What the tutor saw.</strong> &quot;End and record&quot; failed twice with &quot;Please correct the highlighted fields.&quot;, with nothing</li></ul>
+<p>highlighted. Discard, losing the lesson, was the only way out. Tomorrow&#x27;s lesson cannot be recorded either.</p>
+<ul><li><strong>Who it costs.</strong> Tutors are the cohort with real use in production: one tutor recorded 22 lessons on 19 days</li></ul>
+<p>(<a href="../member-home-plan.html">member-home-plan.md:19</a>).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>The placeholder:</strong> <a href="J14-office-adds-family.html">J14 steps 13, 30</a>.</li><li><strong>The failed stop:</strong> <a href="J16-tutor-record-entry-points.html">J16 steps 15-16, 26-29</a>. The full form names the reason</li></ul>
+<p>(28). Another student records normally (31).</p>
+<ul><li><strong>Audits:</strong> design sev3, <a href="audit-design.html#sev3-example-values-look-like-saved-data">Example values look like saved data</a>;</li></ul>
+<p>workflows sev3, <a href="audit-workflows.html#sev3-ending-a-live-lesson-is-a-second-record-form-that-cannot-say-why-it-fails">Ending a live lesson is a second record form that cannot say why it fails</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/users/user-form-dialog.tsx:886</code>: the &quot;95.00&quot; placeholder;</li><li><code>apps/api/src/lib/pricing.ts:97-103</code>: the refusal is attached to the <code>mode</code> field;</li><li><code>apps/web/src/features/teaching/live-session-bar.tsx:169-172</code>: the stop dialog shows <code>error.message</code> only.</li><li>The app&#x27;s stop sheet is likely the same, but no app tutor journey ran (potential, unverified).</li></ul>
+<p><figure class="shot"><img alt="J14 step 30: &quot;95.00&quot; is a placeholder, not a price" src="./assets/cuj-j14-step-30.png"><figcaption>J14 step 30: &quot;95.00&quot; is a placeholder, not a price</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> whether a price is required to save a student in a space that bills, or allowed empty and flagged.</li><li><strong>Checked:</strong> confirmed, with one nuance.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j14-step-30.png">J14 step 30</a> shows the grey &quot;95.00&quot; in an empty field.</li><li><strong>The nuance.</strong> The field&#x27;s own hint already reads &quot;Charged to the family. A session cannot be recorded without it.&quot;</li></ul>
+<p>(<code>user-form-dialog.tsx:877</code>). It is not marked optional, yet the shared schema accepts it empty (<code>charge_rate_in_person_cents: optionalCentsField</code>, <code>packages/shared/src/profiles.ts:167</code>). So the form warns and saves anyway.</p>
+<ul><li><strong>Code.</strong> Starting a lesson checks only the pairing, never a price (<code>apps/api/src/routes/sessions.ts:692-730</code>).</li></ul>
+<p>Stopping prices it (<code>apps/api/src/lib/live-sessions.ts:47</code>), and the refusal is a validation error keyed to <code>mode</code> (<code>pricing.ts:97-103</code>). The web&#x27;s stop dialog toasts only <code>error.message</code> (<code>live-session-bar.tsx:169-172</code>).</p>
+<ul><li><strong>Not observed, from code.</strong> The cron&#x27;s auto-stop goes through the same pricing. It catches the failure</li></ul>
+<p>(<code>live-sessions.ts:120-123</code>), so it cannot close an unpriced lesson either.</p>
+<ul><li><strong>Rank.</strong> P1 holds: the block depends on the office&#x27;s data (Ben&#x27;s lesson recorded, J16 step 31), not on the path.</li></ul>
+<h3>P1. A saved draft disappears from the home</h3>
+<ul><li><strong>What:</strong></li><li><strong>Every door for one lesson</strong> (Next up, To record, the Dashboard&#x27;s carousel, Stop) opens the writer&#x27;s draft for that</li></ul>
+<p>pairing and date, when there is one.</p>
+<ul><li><strong>Mark the lesson on the home:</strong> &quot;Draft saved 12:43 PM · Continue&quot;.</li><li><strong>In the app,</strong> move &quot;Finish write-up&quot; from More → Dashboard to the home.</li><li><strong>Why:</strong></li><li><strong>The question.</strong> C2&#x27;s is &quot;did I record the last one?&quot;.</li><li><strong>What happens today.</strong> After a draft is saved, the home is unchanged. &quot;Record it now&quot; opens an empty form for the</li></ul>
+<p>same lesson, which autosaves a second draft. The notes look lost.</p>
+<ul><li><strong>It is a real habit.</strong> Production&#x27;s one active tutor uses drafts (<a href="../member-home-plan.html">member-home-plan.md:19-20</a>).</li><li><strong>Evidence:</strong></li><li><a href="J16-tutor-record-entry-points.html">J16 steps 21-25, 33</a>.</li><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-a-saved-draft-is-found-only-on-sessions-or-the-app-dashboard-and-the-home-starts-the-lesson-over">A saved draft is found only on Sessions or the app Dashboard…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/teaching/session-form-dialog.tsx:226-234</code>: a scheduled lesson sets the pairing and times;</li></ul>
+<p>nothing looks up a draft;</p>
+<ul><li><code>apps/web/src/features/teaching/sessions-page.tsx:509-518</code>: the only drafts panel on the web.</li></ul>
+<p><figure class="shot"><img alt="J16 step 25: Record it now opens empty, though a draft of the lesson is saved" src="./assets/cuj-j16-step-25.png"><figcaption>J16 step 25: Record it now opens empty, though a draft of the lesson is saved</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong> no.</li><li><strong>Checked:</strong> confirmed, and one caption corrected.</li><li><strong>The caption.</strong> <a href="./assets/cuj-j16-step-25.png">J16 step 25</a> shows the form with empty Session notes. The draft</li></ul>
+<p>itself is not in the shot (it is on Sessions, step 23), so &quot;beside a saved draft&quot; became &quot;though a draft … is saved&quot;.</p>
+<ul><li><strong>Code.</strong> The <code>fromSchedule</code> branch fills the pairing and times and clears the notes, with no draft lookup</li></ul>
+<p>(<code>session-form-dialog.tsx:226-238</code>). The web&#x27;s only <code>DraftsPanel</code> host is Sessions (<code>sessions-page.tsx:509-518</code>). The app&#x27;s are Sessions and the Dashboard&#x27;s <code>finish-write-up.tsx</code>.</p>
+<ul><li><strong>Not deliberate.</strong> No rule ties drafts to the home. The draft rules (CLAUDE.md) cover autosave and scope only.</li></ul>
+<h3>P1. A guardian cannot open her child&#x27;s assessment</h3>
+<ul><li><strong>What:</strong></li><li><strong>Opening it.</strong> Let a guardian open a child&#x27;s in-progress assessment on her own device (&quot;Hand the device to Leo&quot;).</li></ul>
+<p>Or, where that is not allowed, say on the row who started it and where the child answers it.</p>
+<ul><li><strong>Starting another.</strong> Warn on Start when the child already has one in progress.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C4 and C7 parents in a club, which is the self-serve path the platform offers.</li><li><strong>What happens today.</strong> The one piece of work the club set for her child, &quot;Leo Costa G4 In progress&quot;, is shown twice</li></ul>
+<p>and opens nowhere. Leo cannot sign in.</p>
+<ul><li><strong>The workaround,</strong> starting a second assessment, splits his work.</li><li><strong>Together with Play with,</strong> both of the family&#x27;s actions fail for this child.</li><li><strong>Evidence:</strong> <a href="J09-invited-by-space.html">J09 steps 5, 8-10</a>.</li></ul>
+<p><figure class="shot"><img alt="J09 step 9: the row that opens nowhere" src="./assets/cuj-j09-step-9.png"><figcaption>J09 step 9: the row that opens nowhere</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong></li><li>Who may open a child&#x27;s assessment to take it. Today it is the person who started it (<a href="J06A-start-a-space-app.html">J06A</a>:</li></ul>
+<p>&quot;hand them the phone or tablet&quot;).</p>
+<ul><li>R17 keeps the answers&#x27; PDF for the student&#x27;s tutors and admins. Taking the assessment is a different act from</li></ul>
+<p>reading that PDF.</p>
+<ul><li><strong>Checked:</strong> confirmed; the rule is deliberate.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j09-step-9.png">J09 step 9</a> shows &quot;Leo Costa G4 In progress · 10 questions · started</li></ul>
+<p>8 minutes ago&quot;, with no button and no starter.</p>
+<ul><li><strong>Code.</strong> Continue is <code>can_continue: mine &amp;&amp; in_progress</code></li></ul>
+<p>(<code>apps/api/src/repositories/canvas-assessments.ts:125</code>). The starter&#x27;s name is blanked for a reader who neither started nor reviews it (<code>canvas-assessments.ts:112</code>). So the row cannot even say &quot;started by Sam&quot;.</p>
+<ul><li><strong>Deliberate.</strong> &quot;Continue: for whoever started it, while it is in progress&quot;</li></ul>
+<p>(<a href="../canvas-assessment-plan.html">canvas-assessment-plan.md:40</a>). Both halves of What are therefore the owner&#x27;s to decide: who may open it, and whether a guardian may see who started it.</p>
+<h3>P1. One Add chooser, led by A family</h3>
+<ul><li><strong>What:</strong></li><li><strong>One &quot;Add&quot; chooser</strong> on both clients, opened by the home&#x27;s quick action, the Users header and the app&#x27;s (+). It</li></ul>
+<p>offers:</p>
+<ul><li>&quot;A family (parent and child)&quot;;</li><li>&quot;A tutor&quot; (where Tutoring is on);</li><li>&quot;Someone else&quot;;</li><li>&quot;Invite by email&quot;.</li><li><strong>&quot;A family&quot;</strong> is the wizard&#x27;s guided flow, in every space.</li><li>In a personal space it starts with &quot;This is my child&quot;, which makes the signed-in adult the parent.</li><li>For an office it leads with &quot;Create a family account&quot;.</li><li><strong>After each save,</strong> offer the next step (&quot;Pair Yusuf with a tutor&quot;, &quot;Set a weekly lesson&quot;) rather than a toast.</li><li><strong>The student&#x27;s details</strong> show the tutor and the lessons.</li><li><strong>Why:</strong></li><li><strong>C1 offices</strong> add families every week, and the first door they meet sets the habit. Priya&#x27;s was a list called</li></ul>
+<p>Users with &quot;Add user&quot;, one person at a time.</p>
+<ul><li><strong>A C4 parent</strong> in her own space needed 29 taps, a refusal of her own email as the parent (&quot;Someone in this space</li></ul>
+<p>already has that email address.&quot;) and an edit of her own roles to add her daughter.</p>
+<ul><li><strong>The app&#x27;s (+)</strong> already has the family-first flow.</li><li><strong>Evidence:</strong></li><li><strong>The office:</strong> <a href="J14-office-adds-family.html">J14 steps 5-14, 17, 22, 31-32</a>.</li><li><strong>A parent in her own space:</strong> <a href="J03-parent-after-guest-play.html">J03 steps 16-28</a>.</li><li><strong>A new club:</strong> <a href="J06-start-a-space.html">J06 steps 20-24</a>; <a href="J06A-start-a-space-app.html">J06A steps 17, 29-34</a>.</li><li><strong>Let in:</strong> <a href="J11-space-admin-decides.html">J11 step 6</a>.</li><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-adding-a-person-has-six-doors-on-the-web-and-the-family-first-one-is-the-hardest-to-reach">Adding a person has six doors on the web…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/home/member-home.tsx:233</code>: <code>add_person</code> goes to <code>/users</code>;</li><li><code>apps/web/src/features/onboarding/onboarding-provider.tsx:76-92</code>: the wizard opens only where Tutoring is on, or</li></ul>
+<p>once after a new space.</p>
+<p><figure class="shot"><img alt="J14 step 5: &quot;Add a person&quot; opens a list called Users" src="./assets/cuj-j14-step-5.png"><figcaption>J14 step 5: &quot;Add a person&quot; opens a list called Users</figcaption></figure></p>
+<ul><li><strong>Size:</strong> L.</li><li><strong>Owner decides:</strong></li><li>In a personal space, whether &quot;This is my child&quot; makes the signed-in adult the parent by itself.</li><li><code>docs/mobile/parity.md</code> records the app&#x27;s (+) flows as deliberate, app-only designs. Making them the model for both</li></ul>
+<p>clients is a change of course.</p>
+<ul><li><strong>Checked:</strong> confirmed.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j14-step-5.png">J14 step 5</a> shows Users with &quot;Add user&quot; after &quot;Add a person&quot;.</li><li><strong>Steps.</strong> J03 counts 29 taps from home to Maya&#x27;s first question, and quotes the email refusal (J03 step 23).</li><li><strong>Code.</strong> <code>add_person</code> goes to <code>/users</code> (<code>member-home.tsx:233</code>). The wizard is gated: invite step first in a new</li></ul>
+<p>space, never in a personal space, and only where Tutoring is on (<code>onboarding-provider.tsx:76-92</code>).</p>
+<ul><li><strong>Deliberate.</strong> The app&#x27;s family-first (+) is recorded as app-only (UI upgrade U2,</li></ul>
+<p><a href="../mobile/parity.html">mobile/parity.md:18</a>). The tour&#x27;s Tutoring-only rule is the owner&#x27;s (2026-11-04).</p>
+<ul><li><strong>Rank.</strong> P1 holds for offices: no journey was blocked, but the path costs a form per person.</li></ul>
+<h3>P1. Offer adding people only to those who may add</h3>
+<ul><li><strong>What:</strong></li><li><strong>One shared rule,</strong> &quot;may add people here&quot;: an admin, and not aged 13-17. Today that is two checks: the office</li></ul>
+<p>hat (an admin) and <code>may_bring_people</code> (not 13-17), which <code>quickActionsFor</code> combines (see Checked). Apply the one rule to Users, People, the (+) sheet and the Add chooser alike.</p>
+<ul><li><strong>For anyone else,</strong> say who can (&quot;Only Ines can add people here&quot;), with a way to ask.</li><li><strong>Why:</strong></li><li><strong>A C7 parent</strong> filled in her child&#x27;s whole record before &quot;Only an administrator can make this change.&quot;</li><li><strong>A C6 teen</strong> filled in the whole form before &quot;Adding people to a space is for adults&quot;.</li><li><strong>In the app,</strong> (+) offered a 16-year-old &quot;Add a student&quot;, which opens on a billed family.</li><li><strong>Each refusal after the work</strong> costs a form and trust.</li><li><strong>Evidence:</strong></li><li><strong>Web:</strong> <a href="J07-space-code-let-in.html">J07 steps 30-34</a>; <a href="J04-teen.html">J04 steps 14-15</a>.</li><li><strong>App:</strong> <a href="J04A-teen-app.html">J04A steps 19-22</a>; <a href="J07A-space-code-let-in-app.html">J07A step 31</a>.</li><li><strong>A tutor.</strong> On Users, a tutor was also offered Edit, Deactivate and Delete permanently. This was seen, not clicked</li></ul>
+<p>(<a href="J16-tutor-record-entry-points.html">J16, Appendix</a>).</p>
+<ul><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-add-user-is-offered-to-people-who-cannot-add-and-web-and-app-hide-it-in-opposite-places">Add user is offered to people who cannot add…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/users/users-page.tsx:168-175</code>: Add user has no role check;</li><li><code>apps/api/src/repositories/member-home.ts:580</code>: <code>may_bring_people</code>, which only the home uses;</li><li><code>apps/mobile/src/features/shell/create-actions.ts:131-137</code>: (+) checks <code>isAdmin</code> only.</li></ul>
+<p><figure class="shot"><img alt="J04 step 15: refused after the whole form" src="./assets/cuj-j04-step-15.png"><figcaption>J04 step 15: refused after the whole form</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li><li><strong>Checked:</strong> confirmed, and one claim corrected.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j04-step-15.png">J04 step 15</a> shows &quot;Adding people to a space is for adults&quot; under</li></ul>
+<p>the filled form.</p>
+<ul><li><strong>The correction.</strong> <code>may_bring_people</code> is only <code>age_band !== &#x27;13-17&#x27;</code> (<code>member-home.ts:580</code>). It is not &quot;an admin&quot;:</li></ul>
+<p>the admin half is the office hat (<code>member-home.ts:540</code>), which <code>quickActionsFor</code> combines with it (<code>home.ts:515-516</code>). The What is corrected above.</p>
+<ul><li><strong>Code, web.</strong> Users computes <code>isAdminViewer</code> (<code>users-page.tsx:57</code>) and uses it for join requests (178), but not for</li></ul>
+<p>Add user (170-173) or the row menu (<code>users-table.tsx:99-121</code>).</p>
+<ul><li><strong>Code, app.</strong> The app&#x27;s (+) checks <code>isAdmin</code> only: in a space without Tutoring, Ava&#x27;s personal space, that is</li></ul>
+<p><code>create-actions.ts:127</code>; with Tutoring, <code>create-actions.ts:137</code>.</p>
+<ul><li><strong>Deliberate.</strong> That a teen adds nobody is a rule (CLAUDE.md, Phase 63). Only its enforcement is late.</li></ul>
+<h3>P2. The home repeats its own Next up</h3>
+<ul><li><strong>What:</strong></li><li><strong>Twins.</strong> When an item is in Next up, collapse its twin below to a one-line reference.</li><li><strong>Weight.</strong> Give Next up the heaviest button on the page.</li><li><strong>One Daily:</strong> one name, one card, one level rule.</li><li><strong>New quest.</strong> Drop the &quot;New quest&quot; quick action while the board is on the same screen.</li><li><strong>Counts.</strong> Show each count once.</li><li><strong>Why:</strong></li><li><strong>Everyone, on every visit,</strong> hesitates over which button is which.</li><li><strong>The heavier twin wins the eye.</strong> The lower &quot;Play today&#x27;s Daily&quot; is a full-width amber button, so the eye lands on</li></ul>
+<p>the second item first.</p>
+<ul><li><strong>The plan&#x27;s own rule.</strong> H1 asks for one Next up card.</li><li><strong>Evidence:</strong></li><li><strong>The Daily twice:</strong></li><li><a href="J01-adult-player.html">J01 step 13</a>;</li><li><a href="J01A-adult-player-app.html">J01A steps 18-19</a>;</li><li><a href="J12-preapproved-on-list.html">J12 step 6</a>;</li><li><a href="J17-tutored-student-practice.html">J17 steps 3, 5, 12</a>.</li><li><strong>Six starts on one screen:</strong> <a href="J19-returning-player.html">J19 step 12</a>.</li><li><strong>&quot;Start an assessment&quot; three times:</strong> <a href="J07-space-code-let-in.html">J07 step 24</a>,</li></ul>
+<p><a href="J07A-space-code-let-in-app.html">J07A step 26</a>.</p>
+<ul><li><strong>Counts three times:</strong> <a href="J11-space-admin-decides.html">J11 step 3</a>, <a href="J14-office-adds-family.html">J14 step 4</a>.</li><li><strong>Three record doors to one lesson:</strong> <a href="J16-tutor-record-entry-points.html">J16 step 4</a>.</li><li><strong>Audits:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-the-home-repeats-one-action-two-or-three-times-in-competing-styles">The home repeats one action two or three times…</a>; workflows sev2, <a href="audit-workflows.html#sev2-one-screen-offers-six-ways-to-start-a-quest-and-the-daily-has-four-names-at-two-levels">One screen offers six ways to start a quest…</a>.</p>
+<p><figure class="shot"><img alt="J01 step 13: Today&#x27;s 5 and Today&#x27;s Daily on one screen" src="./assets/cuj-j01-step-13.png"><figcaption>J01 step 13: Today&#x27;s 5 and Today&#x27;s Daily on one screen</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> the Daily&#x27;s one name. It is &quot;Today&#x27;s 5&quot;, &quot;Today&#x27;s Daily&quot;, &quot;Play today&#x27;s Daily&quot; and &quot;Practise 5&quot;</li></ul>
+<p>today.</p>
+<h3>P2. The Dashboard opens on the wrong hat</h3>
+<ul><li><strong>What:</strong></li><li><strong>The Dashboard</strong> opens on the role of the home&#x27;s leading hat, remembers the last role chosen per space, and labels</li></ul>
+<p>the role switch (&quot;Viewing as: Tutor&quot;).</p>
+<ul><li><strong>A tutor with no students yet</strong> gets a one-line section and a Teaching choice in &quot;Make this my home&quot;.</li><li><strong>Pinning a focus</strong> visibly reorders the page and says so.</li><li><strong>The wizard&#x27;s last button</strong> reads &quot;Done&quot;, not &quot;Go to my dashboard&quot;.</li><li><strong>Why:</strong></li><li><strong>C8 gets two answers.</strong> For &quot;what&#x27;s urgent across my hats?&quot;, the home answers one way and the Dashboard the other.</li><li><strong>Maria&#x27;s money and plan.</strong> Her $152.50 outstanding and Sofia &quot;Behind&quot; sit behind an unlabelled dropdown, and are</li></ul>
+<p>forgotten on the next visit.</p>
+<ul><li><strong>One of the plan&#x27;s own problems.</strong> Problem 4 of the member-home plan&#x27;s ten is still present on the Dashboard (design</li></ul>
+<p>audit, &quot;Earlier audits&quot;).</p>
+<ul><li><strong>Evidence:</strong></li><li><a href="J18-several-hats.html">J18 steps 3-4, 8-14</a>.</li><li><a href="J15-tutoring-parent-first-sign-in.html">J15 step 10</a>, <a href="J15A-tutoring-parent-first-sign-in-app.html">J15A step 11</a>:</li></ul>
+<p>&quot;Go to my dashboard&quot; stays on the home.</p>
+<ul><li><strong>Audit:</strong> workflows sev3,</li></ul>
+<p><a href="audit-workflows.html#sev3-home-and-dashboard-pick-opposite-hats-and-the-wizard-still-calls-the-home-the-dashboard">Home and Dashboard pick opposite hats…</a>.</p>
+<ul><li><strong>Code:</strong> <code>packages/shared/src/dashboard.ts:207-210</code>, a fixed admin, tutor, parent, student order, against</li></ul>
+<p><code>orderHats</code> (<code>packages/shared/src/home.ts:481-488</code>).</p>
+<p><figure class="shot"><img alt="J18 step 8: the Dashboard opens on an empty Tutor view" src="./assets/cuj-j18-step-8.png"><figcaption>J18 step 8: the Dashboard opens on an empty Tutor view</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> whether a role with nothing in it yet gets a one-line section. H3 says hats exist only with</li></ul>
+<p>content (<a href="../member-home-plan.html">member-home-plan.md:93</a>).</p>
+<h3>P2. The tour covers what it introduces, and appears without Tutoring</h3>
+<ul><li><strong>What:</strong></li><li><strong>Tutoring only.</strong> Apply <code>tourOffered</code> to the welcome wizard&#x27;s &quot;Take the tour&quot; as well. This is a bug against the</li></ul>
+<p>owner&#x27;s rule of 2026-11-04 (the tour is Tutoring&#x27;s).</p>
+<ul><li><strong>Inline.</strong> Make the offer a card in the page&#x27;s flow, not a layer over it.</li><li><strong>Once.</strong> Offer it once per person, not per browser, and count the wizard&#x27;s tour as seen.</li><li><strong>On a phone,</strong> point each stop at the section on the page, not at the menu, and tour a parent&#x27;s own blocks</li></ul>
+<p>(Practise together).</p>
+<ul><li><strong>Words.</strong> Drop &quot;portal&quot; and &quot;the dashboard and the menu&quot;.</li><li><strong>Why:</strong></li><li><strong>The offer covers the work.</strong> It sat over the To record buttons and Needs you on a tutor&#x27;s and an office&#x27;s first</li></ul>
+<p>visit (C2, C1).</p>
+<ul><li><strong>It repeats.</strong> It came back at once after the tour (C3).</li><li><strong>It appears where the rule says not.</strong> The wizard offered it in clubs without Tutoring.</li><li><strong>Evidence:</strong></li><li><strong>Covering the page:</strong> <a href="J16-tutor-record-entry-points.html">J16 step 4</a>, <a href="J14-office-adds-family.html">J14 step 4</a>.</li><li><strong>Offered without Tutoring:</strong> <a href="J06-start-a-space.html">J06 step 20</a>, <a href="J06A-start-a-space-app.html">J06A step 28</a>.</li><li><strong>Repeated, pointing at the menu:</strong> <a href="J15-tutoring-parent-first-sign-in.html">J15 steps 3, 7, 10, 20</a>;</li></ul>
+<p><a href="J15A-tutoring-parent-first-sign-in-app.html">J15A steps 4-11</a>.</p>
+<ul><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-the-tour-and-its-offers-cover-what-they-introduce">The tour and its offers cover what they introduce</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/onboarding/onboarding-wizard.tsx:119</code> has no <code>tourOffered</code> check, while the home&#x27;s</li></ul>
+<p>offer has one (<code>apps/web/src/features/home/member-home.tsx:158</code>).</p>
+<p><figure class="shot"><img alt="J06 step 20: the tour offered in a club without Tutoring" src="./assets/cuj-j06-step-20.png"><figcaption>J06 step 20: the tour offered in a club without Tutoring</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
+<h3>P2. Join requests say who is asking, and Decline can be undone</h3>
+<ul><li><strong>What:</strong></li><li><strong>A request shows:</strong></li><li>the role the person asks for;</li><li>a short note from them;</li><li>the full email and when they asked, at every width.</li><li><strong>Decline</strong> gets an Undo in its toast, or a confirmation.</li><li><strong>Declined requests</strong> stay findable for a while.</li><li><strong>Why:</strong></li><li><strong>C1 admins of spaces for children&#x27;s families</strong> decide who gets in on a name alone. On a phone, the email is cut</li></ul>
+<p>and the time is hidden.</p>
+<ul><li><strong>Decline</strong> is one tap, with no way back.</li><li><strong>Evidence:</strong></li><li><a href="J11-space-admin-decides.html">J11 steps 4-5, 9</a>.</li><li><a href="J10-space-code-declined.html">J10 steps 25-28</a>: the declined person&#x27;s history erased.</li><li><strong>Audit:</strong> workflows sev4,</li></ul>
+<p><a href="audit-workflows.html#sev4-a-parent-let-in-by-code-gets-no-child-and-no-door-they-can-reach-adds-one">A parent let in by code gets no child…</a>, for Decline&#x27;s undo.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/users/join-requests-panel.tsx:40-48</code>: Decline fires at once.</li></ul>
+<p><figure class="shot"><img alt="J11 step 4: two requests, a name and a cut email each" src="./assets/cuj-j11-step-5.png"><figcaption>J11 step 4: two requests, a name and a cut email each</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> whether the join request asks for a role and a note. This is shared with the first P0.</li></ul>
+<h3>P2. A pairing that keeps the tutor&#x27;s rates is saved as custom</h3>
+<ul><li><strong>What:</strong></li><li><strong>Empty by default.</strong> Leave the pairing&#x27;s rate fields empty, with the tutor&#x27;s default as a labelled placeholder</li></ul>
+<p>(&quot;Alex&#x27;s default, $75.00&quot;). An untouched pairing then follows the default, and only a typed value is custom.</p>
+<ul><li><strong>Labels.</strong> Name the fields &quot;Tutor pay, in person&quot; and &quot;Tutor pay, virtual&quot;.</li><li><strong>Why:</strong></li><li><strong>C1 offices.</strong> Accepting the prefilled default freezes it as an override, marked &quot;custom&quot;. If the tutor&#x27;s rate</li></ul>
+<p>later changes, this pairing&#x27;s pay silently stays behind.</p>
+<ul><li><strong>Two ways for the same values.</strong> Sofia&#x27;s pairing at the same rates has no badge.</li><li><strong>Evidence:</strong> <a href="J14-office-adds-family.html">J14 steps 21-22</a>.</li></ul>
+<p><figure class="shot"><img alt="J14 step 22: the pairing marked custom" src="./assets/cuj-j14-step-22.png"><figcaption>J14 step 22: the pairing marked custom</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
+<h3>P2. Phone-width layouts break on a dozen screens</h3>
+<ul><li><strong>What:</strong></li><li><strong>First, the app&#x27;s question card.</strong> Make every answer choice visible, or show a scroll cue. The fourth choice was</li></ul>
+<p>hidden below the card, with nothing to say the card scrolls.</p>
+<ul><li><strong>Rows</strong> stack below <code>sm</code>: text first, actions on a line of their own.</li><li><strong>Names</strong> wrap rather than truncate.</li><li><strong>The grade row</strong> shows a scroll cue and scrolls the chosen grade into view.</li><li><strong>The countdown</strong> is sized with <code>clamp()</code>.</li><li><strong>The spec.</strong> Add the game results, the Dashboard and Activity to <code>responsive.spec.ts</code>.</li><li><strong>Why:</strong></li><li><strong>Most people here use a phone.</strong> Each break costs a guess, or hides a fact.</li><li><strong>The project&#x27;s own rule.</strong> Game results 430 px wide break &quot;zero horizontal overflow at 390 px&quot; (CLAUDE.md,</li></ul>
+<p>responsive rule).</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>The hidden choice:</strong> <a href="J06A-start-a-space-app.html">J06A steps 37-38</a>.</li><li><strong>Overflow and overlap:</strong></li><li><a href="J15-tutoring-parent-first-sign-in.html">J15 step 19</a>: game results;</li><li><a href="J18-several-hats.html">J18 step 10</a>: &quot;wi2026-09-15&quot;;</li><li><a href="J10-space-code-declined.html">J10 step 22</a>, <a href="J11-space-admin-decides.html">J11 step 12</a>: Activity filters;</li><li><a href="J14-office-adds-family.html">J14 steps 23-27</a>: Schedule.</li><li><strong>Cut text:</strong></li><li><a href="J06-start-a-space.html">J06 steps 18, 21</a>: &quot;a..&quot;;</li><li><a href="J11-space-admin-decides.html">J11 step 4</a>;</li><li><a href="J04-teen.html">J04 step 17</a>, <a href="J09-invited-by-space.html">J09 step 3</a>: space names;</li><li><a href="J04A-teen-app.html">J04A step 29</a>: the game title.</li><li><strong>The countdown off the edge:</strong> <a href="J12-preapproved-on-list.html">J12 step 9</a>, <a href="J19-returning-player.html">J19 step 6</a>.</li><li><strong>The grade row hides Grade 8:</strong> <a href="J01-adult-player.html">J01 steps 11, 14</a>.</li><li><strong>The (+) covers a row:</strong> <a href="J06A-start-a-space-app.html">J06A step 40</a>.</li><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-phone-width-layouts-break-on-a-dozen-screens">Phone-width layouts break on a dozen screens</a>.</p>
+<p><figure class="shot"><img alt="J06A step 37: the fourth answer is below the card" src="./assets/cuj-j06a-step-37.png"><figcaption>J06A step 37: the fourth answer is below the card</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong> no.</li><li><strong>Checked (rank only):</strong> the first bullet of What deserves P1, ahead of the rest of this item.</li><li><strong>Screenshot.</strong> <a href="./assets/cuj-j06a-step-37.png">J06A step 37</a> shows A-C, with D below the card and no cue.</li><li><strong>Code.</strong> On a phone the question card is a <code>ScrollView</code> capped at a third of the screen</li></ul>
+<p>(<code>maxHeight: Math.max(160, window.height * 0.34)</code>, <code>apps/mobile/src/features/canvas-assessments/take-assessment-screen.tsx:238</code>). Any question with four longer choices will clip.</p>
+<ul><li><strong>Why P1.</strong> Code marks the choice (Phase 38), so a child who never sees the right answer is marked wrong, and the</li></ul>
+<p>tutor&#x27;s PDF reports it. That falsifies the one result C7&#x27;s giver came for (&quot;give one, see results&quot;). The rest of the item stays P2. Its counts are left as they are.</p>
+<h3>P2. Contrast and accessibility gaps</h3>
+<ul><li><strong>What:</strong></li><li><strong>The selected grade chip:</strong> a 2 px ring or a tick.</li><li><strong>The ADV pill:</strong> at least 12 px, white on a dark pill.</li><li><strong>Tile codes:</strong> full muted contrast at 12 px or more, or dropped (see the words item).</li><li><strong>The drawer:</strong> restate <code>--sidebar-accent</code> in the warm foundation for every palette.</li><li><strong>The app&#x27;s parent rows</strong> in Add a student get an accessible name and a radio role.</li><li><strong>Why:</strong></li><li><strong>Low-vision readers, and parents on a phone outdoors.</strong> Nothing is blocked, because labels repeat the grade.</li><li><strong>The platform&#x27;s own bar.</strong> These pieces fall below the WCAG minimums the grade tiles already meet.</li><li><strong>Evidence:</strong></li><li><strong>Measured from the tokens:</strong></li><li>Grade 4&#x27;s selected chip is 1.30:1 (<a href="J03-parent-after-guest-play.html">J03 step 15</a>);</li><li>the ADV pill is 3.22-3.97:1 (<a href="J04-teen.html">J04 step 19</a>);</li><li>the tile code is 3.75:1 (<a href="J01-adult-player.html">J01 step 14</a>).</li><li><strong>Measured from pixels:</strong> the Indigo drawer&#x27;s tagline is 1.15:1 (<a href="J14-office-adds-family.html">J14 step 18</a>).</li><li><strong>The unnamed rows:</strong> <a href="J06A-start-a-space-app.html">J06A steps 30-31</a>.</li><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-measured-contrast-failures-on-the-quest-board-and-in-the-phone-drawer">Measured contrast failures…</a>.</p>
+<ul><li><strong>Not checked:</strong> screen readers, keyboard-only use and the largest text sizes were not run.</li></ul>
+<p><figure class="shot"><img alt="J03 step 15: the selected Grade 4 chip" src="./assets/cuj-j03-step-15.png"><figcaption>J03 step 15: the selected Grade 4 chip</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
+<p>## Consistency</p>
+<h3>P2. Record and start a lesson one way, on both clients</h3>
+<ul><li><strong>What:</strong> adopt the app&#x27;s two-stage model on the web, and cut the doors.</li><li><strong>A known lesson</strong> (Next up, To record, the carousel, Stop) opens &quot;Record a lesson&quot;, prefilled. It offers &quot;It ran as</li></ul>
+<p>planned&quot;, then &quot;Write up the lesson&quot;.</p>
+<ul><li><strong>The quick action and the Sessions button</strong> open a list of lessons still owed, with &quot;Another lesson&quot; for a blank</li></ul>
+<p>form. No form defaults to today at 4:00-5:00 PM.</p>
+<ul><li><strong>To record</strong> sits at the top of Sessions. The office&#x27;s list covers every tutor, and each row has Record.</li><li><strong>Every Start</strong> opens the Start sheet in place, prefilled. A running lesson becomes Next up&#x27;s first item, with</li></ul>
+<p>Stop.</p>
+<ul><li><strong>One noun and one verb on screen:</strong> &quot;lesson&quot; and &quot;Record&quot;.</li><li><strong>Why:</strong></li><li><strong>C2 and C1, the cohorts with real use.</strong></li><li><strong>Seven doors on the web, twelve in the app,</strong> with four form titles and nine verbs.</li><li><strong>A dating risk.</strong> The blank form is dated today, so yesterday&#x27;s lesson can be recorded as today&#x27;s.</li><li><strong>A dead end.</strong> &quot;Start a lesson&quot; only changes page, and with a lesson running it shows no Start and no reason.</li><li><strong>Lists that are not there.</strong> The home&#x27;s &quot;+N more&quot; and the office&#x27;s count lead to a Sessions page without the list.</li><li><strong>Evidence:</strong></li><li><a href="J16-tutor-record-entry-points.html">J16 steps 4-14, 20, 23-24, 30, 32-33</a>.</li><li><a href="J14-office-adds-family.html">J14 step 28</a>: &quot;24 to record&quot; as plain text.</li><li><strong>Audits:</strong> workflows sev2,</li></ul>
+<p><a href="audit-workflows.html#sev2-recording-a-lesson-has-seven-doors-on-the-web-and-twelve-in-the-app-with-four-titles-and-nine-verbs">Recording a lesson has seven doors…</a>, <a href="audit-workflows.html#sev2-start-a-lesson-behaves-three-ways-on-the-web-and-a-fourth-way-in-the-app">Start a lesson behaves three ways…</a> and <a href="audit-workflows.html#sev2-to-record-lives-only-on-the-home-and-every-more-link-leads-to-a-sessions-page-without-it">To record lives only on the home…</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/web/src/features/home/member-home.tsx:110-112</code>: the quick action passes <code>lesson: null</code>;</li><li><code>member-home.tsx:229</code>: <code>start_lesson</code> is <code>/sessions</code>;</li><li><code>apps/web/src/features/teaching/session-form-dialog.tsx:567-569, 822</code>: the titles and button names.</li><li><strong>Not walked:</strong> the app&#x27;s doors are mapped from code only. No app journey played a tutor.</li></ul>
+<p><figure class="shot"><img alt="J16 step 4: three doors to one lesson on one screen" src="./assets/cuj-j16-step-4.png"><figcaption>J16 step 4: three doors to one lesson on one screen</figcaption></figure></p>
+<ul><li><strong>Size:</strong> L.</li><li><strong>Owner decides:</strong> whether the app&#x27;s model, recorded in <code>docs/mobile/parity.md</code> as a deliberate app-only design,</li></ul>
+<p>becomes the model for both clients.</p>
+<h3>P2. Tutoring words and the office menu reach readers who have neither</h3>
+<ul><li><strong>What:</strong></li><li><strong>Copy per kind of space and per reader:</strong></li><li>&quot;Who looks after this student?&quot; in place of &quot;who is billed&quot;;</li><li>&quot;Your teacher (or parent) looks at it next&quot; in place of &quot;your tutor reviews it&quot;.</li><li><strong>Tutoring&#x27;s fields and sections</strong> are hidden where Tutoring is off: a student&#x27;s virtual-session fields, and</li></ul>
+<p>comments refused with &quot;Tutoring is not part of this space&quot;.</p>
+<ul><li><strong>The menu</strong> is built from the reader&#x27;s hats. A student or a parent never sees Users, Pairings or Billing.</li><li><strong>Words that are not ours:</strong> drop &quot;portal&quot;, and the app&#x27;s &quot;Each tab can be in a different one.&quot;</li><li><strong>Why:</strong></li><li><strong>A C1 teacher</strong> about to invite families doubts at &quot;billed&quot;.</li><li><strong>A child</strong> in a space with no tutor is told a tutor will mark the work (C5).</li><li><strong>A CHMI student or parent</strong> gets the office&#x27;s 13-item menu.</li><li><strong>The project&#x27;s own rule.</strong> R23 says a space without Tutoring leaves Tutoring&#x27;s sections out.</li><li><strong>Evidence:</strong></li><li><strong>&quot;Billed&quot; in a free club:</strong> <a href="J06-start-a-space.html">J06 step 21</a>, <a href="J06A-start-a-space-app.html">J06A steps 30, 32</a>.</li><li><strong>&quot;Your tutor&quot;:</strong> <a href="J03-parent-after-guest-play.html">J03 step 32</a>, <a href="J06A-start-a-space-app.html">J06A step 37</a>.</li><li><strong>Tutoring roles:</strong> <a href="J07-space-code-let-in.html">J07 step 31</a>, <a href="J11-space-admin-decides.html">J11 step 6</a>.</li><li><strong>Tutoring fields and a refused comment:</strong> <a href="J09-invited-by-space.html">J09 steps 8, 18-19</a>.</li><li><strong>The office&#x27;s menu:</strong> <a href="J17-tutored-student-practice.html">J17 step 7</a>, <a href="J15-tutoring-parent-first-sign-in.html">J15 step 13</a>.</li><li><strong>Web words in the app:</strong> <a href="J04A-teen-app.html">J04A step 15</a>.</li><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-a-tutoring-offices-words-reach-spaces-and-readers-without-one">A tutoring office&#x27;s words reach spaces and readers without one</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/mobile/src/features/organizations/spaces-screen.tsx:89</code>, the &quot;Each tab&quot; copy.</li></ul>
+<p><figure class="shot"><img alt="J06 step 21: &quot;billed&quot; in a free club" src="./assets/cuj-j06-step-21.png"><figcaption>J06 step 21: &quot;billed&quot; in a free club</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong> whether a student&#x27;s and a parent&#x27;s menus drop Users.</li></ul>
+<h3>P2. One word per thing, and words rather than codes</h3>
+<ul><li><strong>What:</strong></li><li><strong>Words.</strong> Name every surface with the words <code>tileLook</code> already builds (&quot;Quick 5 · Grade 8&quot;). This covers</li></ul>
+<p>favorites, the Daily&#x27;s eyebrow, the game header, the lobby and the assessment&#x27;s level list. Keep codes for the console and support.</p>
+<ul><li><strong>Games</strong> are listed with their progress.</li><li><strong>&quot;Beta&quot;:</strong> one line per board, not a pill on every tile and question.</li><li><strong>A glossary in shared code</strong> (person, lesson, game, quest, space), read by both clients, with the quick actions&#x27;</li></ul>
+<p>labels moved beside <code>QUICK_ACTIONS</code>.</p>
+<ul><li><strong>Why:</strong></li><li><strong>Every cohort decodes &quot;G8Q5&quot;, &quot;G8D #4&quot; and &quot;G4&quot;.</strong></li><li><strong>Favorites,</strong> the most personal row, are the least readable.</li><li><strong>One task, several names.</strong> &quot;Add a person&quot; opens &quot;Users&quot; and &quot;Add user&quot;. The menu&#x27;s &quot;Quest&quot; opens &quot;Question</li></ul>
+<p>Quest&quot;. Web and app name the same quick actions differently.</p>
+<ul><li><strong>Evidence:</strong></li><li><strong>Codes:</strong></li><li><a href="J01-adult-player.html">J01 steps 13-15</a>;</li><li><a href="J01A-adult-player-app.html">J01A steps 19, 22-24</a>;</li><li><a href="J03-parent-after-guest-play.html">J03 steps 15, 30</a>;</li><li><a href="J12-preapproved-on-list.html">J12 steps 7-10</a>;</li><li><a href="J15-tutoring-parent-first-sign-in.html">J15 step 15</a>;</li><li><a href="J19-returning-player.html">J19 step 15</a>.</li><li><strong>Names:</strong></li><li><a href="J14-office-adds-family.html">J14 step 5</a>: Add a person and Users;</li><li><a href="J17-tutored-student-practice.html">J17 step 16</a>: Quest and Question Quest;</li><li><a href="J06A-start-a-space-app.html">J06A step 17</a>: the app&#x27;s own labels.</li><li><strong>Audits:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-codes-where-people-expect-names">Codes where people expect names</a> and <a href="audit-design.html#sev2-one-thing-goes-by-several-names">One thing goes by several names</a>; workflows sev1, <a href="audit-workflows.html#sev1-the-same-quick-actions-are-worded-differently-on-the-web-and-in-the-app">The same quick actions are worded differently…</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/play/quest-card.tsx:97</code>, the code under each title.</li></ul>
+<p><figure class="shot"><img alt="J19 step 15: two games told apart only by their codes" src="./assets/cuj-j19-step-15.png"><figcaption>J19 step 15: two games told apart only by their codes</figcaption></figure></p>
+<ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong></li><li>The glossary&#x27;s words: lesson or session; Quest or Question Quest.</li><li>Whether &quot;Beta&quot; stays on each question.</li></ul>
+<h3>P2. Each space looks like itself</h3>
+<ul><li><strong>What:</strong></li><li><strong>A palette per new space.</strong> Rotate through the palettes, or let the maker choose one in Start a space.</li><li><strong>Slate</strong> is kept for the platform, the guest page and personal spaces, and the personal space reads &quot;Just you&quot; in</li></ul>
+<p>the switcher.</p>
+<ul><li><strong>The mark</strong> gets a per-instance gradient id, so it shows in the phone drawer.</li><li><strong>Why:</strong></li><li><strong>Everyone with two spaces</strong> (C7 parents, C1 makers) holds two that look alike. That is part of why being let in</li></ul>
+<p>went unnoticed.</p>
+<ul><li><strong>The wrong space.</strong> Misreading which space is open is how a person ends up added, or an assessment started, in the</li></ul>
+<p>wrong one.</p>
+<ul><li><strong>Evidence:</strong></li><li><a href="J07-space-code-let-in.html">J07 steps 21, 23-24</a>.</li><li><a href="J06-start-a-space.html">J06 steps 10, 20</a>.</li><li><strong>The drawer&#x27;s mark at 1.13:1:</strong> <a href="J04-teen.html">J04 step 11</a>, <a href="J10-space-code-declined.html">J10 step 17</a>.</li><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-nothing-on-screen-tells-one-space-from-another">Nothing on screen tells one space from another</a>.</p>
+<ul><li><strong>Code:</strong></li><li><code>apps/api/src/repositories/organizations.ts:1175</code>: every self-serve space is inserted with the <code>&#x27;platform&#x27;</code></li></ul>
+<p>palette;</p>
+<ul><li><code>apps/web/src/components/brand/logo.tsx:53, 59</code>: a fixed gradient id.</li></ul>
+<p><figure class="shot"><img alt="J07 step 23: two spaces, the same navy" src="./assets/cuj-j07-step-23.png"><figcaption>J07 step 23: two spaces, the same navy</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> rotate the palettes, or let the maker choose.</li></ul>
+<h3>P3. Amber does one job</h3>
+<ul><li><strong>What:</strong></li><li><strong>One meaning.</strong> Keep amber for the call to action (&quot;notice this first&quot;).</li><li><strong>Grade 3 and the Daily.</strong> Move Grade 3&#x27;s hue, or draw the Daily and Today&#x27;s 5 buttons in the space&#x27;s primary.</li><li><strong>Optionally,</strong> use the grade hues on the guest page too, with the mode shown by its icon.</li><li><strong>Why:</strong></li><li><strong>Five jobs for one colour.</strong> Amber is a timed mode, Grade 3, the Daily button, a hit ring and the highlight.</li><li><strong>A button that blends in.</strong> On a Grade 3 board, the Daily button sits on cards of nearly the same colour (1.13:1</li></ul>
+<p>apart).</p>
+<ul><li><strong>A code that changes.</strong> The colour code learned on the guest page changes after sign-up.</li><li><strong>Nothing is blocked.</strong> WCAG 1.4.1 is met, because every card names its level.</li><li><strong>Evidence:</strong></li><li><a href="J01-adult-player.html">J01 steps 1, 14</a>: guest mode colours, then member grade hues.</li><li><a href="J09-invited-by-space.html">J09 step 15</a>: the amber button over Grade 3 cards.</li><li><strong>Audit:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-amber-carries-five-meanings-and-the-tile-colours-change-meaning-after-sign-up">Amber carries five meanings…</a>.</p>
+<p><figure class="shot"><img alt="J09 step 15: the amber Daily button over Grade 3 cards" src="./assets/cuj-j09-step-15.png"><figcaption>J09 step 15: the amber Daily button over Grade 3 cards</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> grade hues on the guest page would reverse Decision 1 of the member-home plan (&quot;The guest home</li></ul>
+<p>keeps its mode colours&quot;, <a href="../member-home-plan.html">member-home-plan.md:155</a>).</p>
+<h3>P3. Small type, all-caps labels, year lists and dates</h3>
+<ul><li><strong>What:</strong></li><li><strong>Labels.</strong> Make the all-caps eyebrows sentence case at 12-13 px, or drop them where the heading says it, and set a</li></ul>
+<p>12 px floor on the web.</p>
+<ul><li><strong>The birth year</strong> opens near an adult&#x27;s year, or is typed. Show all twelve months in the app&#x27;s list.</li><li><strong>Dates.</strong> Format every date through one shared formatter.</li><li><strong>The header</strong> becomes solid once the page scrolls.</li><li><strong>The wizard</strong> preselects &quot;Single player&quot; for a solo quest.</li><li><strong>All spaces</strong> labels its Leave icon.</li><li><strong>Why:</strong></li><li><strong>Polish.</strong> Each costs a little on every visit.</li><li><strong>Stale docs.</strong> <code>docs/branding.md</code> still names Poppins, while the build loads Nunito (design audit).</li><li><strong>Evidence:</strong></li><li><strong>Labels:</strong> 68 <code>uppercase</code> classes and 64 places at 10-11 px on the web (design audit).</li><li><strong>Year lists:</strong></li><li><a href="J06-start-a-space.html">J06 step 5</a>;</li><li><a href="J04-teen.html">J04 step 4</a>;</li><li><a href="J10-space-code-declined.html">J10 step 6</a>;</li><li><a href="J06A-start-a-space-app.html">J06A steps 7-8</a>, where October is hidden.</li><li><strong>ISO dates on the web:</strong> <a href="J15-tutoring-parent-first-sign-in.html">J15 step 11</a>, <a href="J16-tutor-record-entry-points.html">J16 step 23</a>.</li><li><strong>Multiplayer preselected:</strong> <a href="J04-teen.html">J04 steps 20-23</a>, <a href="J04A-teen-app.html">J04A steps 25-28</a>.</li><li><strong>Leave unlabelled:</strong> <a href="J18-several-hats.html">J18 step 7</a>.</li><li><strong>Audits:</strong> design sev1,</li></ul>
+<p><a href="audit-design.html#sev1-all-caps-eyebrows-and-10-11-px-text-remain-against-the-u1-spec">All-caps eyebrows and 10-11 px text remain…</a>, <a href="audit-design.html#sev1-birth-year-lists-start-at-this-year-and-the-web-prints-iso-dates">Birth-year lists start at this year…</a> and <a href="audit-design.html#sev1-the-glass-header-lets-content-show-through-behind-the-spaces-name">The glass header…</a>.</p>
+<p><figure class="shot"><img alt="J06 step 5: the year list opens at 2026" src="./assets/cuj-j06-step-5.png"><figcaption>J06 step 5: the year list opens at 2026</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
+<p>## Web and app</p>
+<h3>P2. Leaving a game works the same on both clients</h3>
+<ul><li><strong>What:</strong></li><li><strong>One Exit,</strong> in the same corner of every full-screen play surface, returning to where play was opened. The web</li></ul>
+<p>passes the origin, as the app does.</p>
+<ul><li><strong>Ending.</strong> Confirm &quot;End the game now&quot; and &quot;Cancel the game&quot; on the web, as the app does.</li><li><strong>The Daily</strong> gets a close control that says what leaving keeps.</li><li><strong>The app&#x27;s waiting screen.</strong> Its Back returns to the question.</li><li><strong>Why:</strong></li><li><strong>C4, C5 and C6 players on the web</strong> land on Question Quest reading &quot;0 points&quot;, which looks like lost work.</li><li><strong>An accidental end.</strong> A game ends with one tap.</li><li><strong>A dead end.</strong> The Daily can be left only with the browser&#x27;s Back.</li><li><strong>Evidence:</strong></li><li><strong>Exit goes to Question Quest:</strong></li><li><a href="J19-returning-player.html">J19 steps 9-10</a>;</li><li><a href="J15-tutoring-parent-first-sign-in.html">J15 step 20</a>;</li><li><a href="J09-invited-by-space.html">J09 steps 13, 17</a>.</li><li><strong>No way out of the Daily:</strong> <a href="J17-tutored-student-practice.html">J17 steps 5-6</a>.</li><li><strong>The web ends at once:</strong> <a href="J15-tutoring-parent-first-sign-in.html">J15 step 19</a>, <a href="J09-invited-by-space.html">J09 step 12</a>.</li><li><strong>The app confirms, then goes home:</strong> <a href="J15A-tutoring-parent-first-sign-in-app.html">J15A steps 20-22</a>.</li><li><strong>The app&#x27;s Back drops the quest:</strong> <a href="J01A-adult-player-app.html">J01A step 14</a>.</li><li><strong>Audits:</strong> design sev2,</li></ul>
+<p><a href="audit-design.html#sev2-ways-out-of-full-screen-play-are-missing-or-lead-somewhere-else">Ways out of full-screen play…</a>; workflows sev2, <a href="audit-workflows.html#sev2-a-game-ends-and-exits-differently-on-the-web-and-in-the-app">A game ends and exits differently…</a>.</p>
+<ul><li><strong>Code:</strong> <code>apps/web/src/features/quest/fullscreen-frame.tsx:75-76</code>: Exit is a link to <code>/quest</code>.</li></ul>
+<p><figure class="shot"><img alt="J19 step 10: Exit lands on Question Quest" src="./assets/cuj-j19-step-10.png"><figcaption>J19 step 10: Exit lands on Question Quest</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
+<h3>P2. Invite people at any time, with Copy and Share on both</h3>
+<ul><li><strong>What:</strong></li><li><strong>Invite by email</strong> is an option of the Add chooser, at any time.</li><li><strong>Every invited row,</strong> on Users and People, has &quot;Copy invitation&quot; and &quot;Share&quot;, with a confirmation.</li><li><strong>The invitation text</strong> says how to sign in (Google, with which address), what the space is, and who sent it.</li><li><strong>The form</strong> explains Active, Invited and Suspended.</li><li><strong>Why:</strong></li><li><strong>Once only.</strong> C1 owners of self-serve spaces get the ready-made invitation only right after starting the space.</li></ul>
+<p>Such spaces send no email (CLAUDE.md, Phase 51), so a second family later means writing their own message.</p>
+<ul><li><strong>A link that misleads.</strong> The text Ana received led to a children&#x27;s game page (<a href="J09-invited-by-space.html">J09 step 1</a>).</li><li><strong>Uneven controls.</strong> The app has no Copy, and its Share sheet&#x27;s Copy gives no confirmation.</li><li><strong>Evidence:</strong></li><li><strong>Web:</strong> <a href="J06-start-a-space.html">J06 steps 16-19</a>; <a href="J14-office-adds-family.html">J14 step 7</a>, where &quot;Invited&quot; is not</li></ul>
+<p>explained.</p>
+<ul><li><strong>App:</strong> <a href="J06A-start-a-space-app.html">J06A steps 23-27</a>.</li><li><strong>Audit:</strong> workflows sev2,</li></ul>
+<p><a href="audit-workflows.html#sev2-invite-people-and-its-invitation-text-are-offered-once-right-after-starting-a-space">Invite people and its invitation text are offered once…</a>.</p>
+<ul><li><strong>Code:</strong> <code>packages/shared/src/spaces.ts:273</code> (<code>invitationText</code>) is used only in the two <code>invite-people.tsx</code> screens.</li></ul>
+<p><figure class="shot"><img alt="J06 step 19: Copy invitation, offered once" src="./assets/cuj-j06-step-19.png"><figcaption>J06 step 19: Copy invitation, offered once</figcaption></figure></p>
+<ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> the invitation&#x27;s wording.</li></ul>
+<p>## Already good</p>
+<p>Keep these. The journeys found them working, and several fix problems the member-home plan set out to fix.</p>
+<ul><li><strong>Pre-approved for a listed person.</strong> Grace went from a stranger&#x27;s first screen to a question in six taps, with no</li></ul>
+<p>typing and no wait (<a href="J12-preapproved-on-list.html">J12</a>).</p>
+<ul><li><strong>An invitation is told best.</strong> Accept sits on the first screen after Google, with no form and no approval</li></ul>
+<p>(<a href="J09-invited-by-space.html">J09 step 3</a>).</p>
+<ul><li><strong>The tutoring parent&#x27;s home answers C3&#x27;s question at once:</strong> &quot;Yusuf: next lesson tomorrow at 4:00 PM&quot;</li></ul>
+<p>(<a href="J15-tutoring-parent-first-sign-in.html">J15 step 4</a>, <a href="J15A-tutoring-parent-first-sign-in-app.html">J15A step 12</a>).</p>
+<ul><li><strong>The tutor&#x27;s Next up.</strong> &quot;Record it now&quot; opens the form prefilled from the schedule, which fixes the member-home</li></ul>
+<p>plan&#x27;s first problem (<a href="J16-tutor-record-entry-points.html">J16 steps 4-5</a>).</p>
+<ul><li><strong>The admin sees who is waiting at once:</strong> &quot;2 asking to join&quot;, with one obvious button</li></ul>
+<p>(<a href="J11-space-admin-decides.html">J11 step 3</a>).</p>
+<ul><li><strong>What the guest played carries over:</strong> the grade and the played tile as a favorite</li></ul>
+<p>(<a href="J01-adult-player.html">J01 step 14</a>, <a href="J01A-adult-player-app.html">J01A step 19</a>, <a href="J03-parent-after-guest-play.html">J03 step 15</a>).</p>
+<ul><li><strong>Welcome back.</strong> It is warm, with no loss message (<a href="J19-returning-player.html">J19 step 4</a>).</li><li><strong>Starting a space hands on well, once found.</strong> Invite people leads to Add a student, then to Start an assessment.</li></ul>
+<p>The app says &quot;hand them the phone or tablet&quot; (<a href="J06-start-a-space.html">J06 steps 16-27</a>, <a href="J06A-start-a-space-app.html">J06A steps 22-37</a>).</p>
+<ul><li><strong>Refusals cost nothing to reach.</strong> &quot;Sign-up is by invitation&quot; comes before any personal question</li></ul>
+<p>(<a href="J13-preapproved-not-on-list.html">J13 step 3</a>). The under-13 refusal is polite, and keeps nothing (<a href="J05-under-13.html">J05 step 6</a>).</p>
+<ul><li><strong>The real hook.</strong> A competition-style AoPS question is the strongest reason to come back</li></ul>
+<p>(<a href="J04-teen.html">J04 step 24</a>, <a href="J04A-teen-app.html">J04A step 29</a>).</p>
+<ul><li><strong>The code hint:</strong> &quot;Six characters join a game; eight ask to join a space.&quot; (<a href="J10-space-code-declined.html">J10 step 14</a>).</li><li><strong>The foundations hold</strong> (<a href="audit-design.html">audit-design</a>):</li><li>every grade hue passes contrast in light and dark;</li><li>dark mode holds on every landing shot;</li><li>the app&#x27;s header buttons now read in dark mode;</li><li>a web quest survives a reload (<a href="J01-adult-player.html">J01 step 16</a>).</li></ul>
+<p>## How this was made</p>
+<ul><li><strong>The journeys.</strong> 24 journeys were recorded on 2026-11-04 against commit <code>2d6e7d3</code> on <code>member-home-stickiness</code></li></ul>
+<p>(<a href="README.html">README</a>).</p>
+<ul><li><strong>The stack.</strong> It ran in a frozen worktree, with the worktree&#x27;s own Worker and local D1 and sign-in on.</li><li><strong>The settings were production&#x27;s:</strong> Post-approved access, guest play and the Daily on.</li><li><strong>The web, J01-J19.</strong> At phone width, with desktop and dark captures at landing screens, through a stand-in for</li></ul>
+<p>Google&#x27;s script.</p>
+<ul><li><strong>The app, J01A, J04A, J06A, J07A and J15A.</strong> On the iOS simulator, with the developer sign-in.</li><li><strong>The approvals and declines</strong> were made by a platform-admin agent in the console.</li><li><strong>The findings.</strong> 22 journeys reached their end and 2 were blocked. They recorded 194 findings.</li><li><strong>The two audits.</strong> <a href="audit-design.html">audit-design</a> (23 findings) and <a href="audit-workflows.html">audit-workflows</a></li></ul>
+<p>(20 findings) read every report and contact sheet, and the code at <code>2d6e7d3</code>.</p>
+<ul><li><strong>This page.</strong> It merges all three into 37 items. Code references are to <code>2d6e7d3</code>, read in</li></ul>
+<p><code>.claude/worktrees/ux-audit</code>.</p>
+<ul><li><strong>What no journey covered</strong>, so this page says nothing about it:</li><li>Android;</li><li>the platform console;</li><li>Microsoft, Apple and Facebook sign-in, and production&#x27;s Google screen;</li><li>the inside of quests and assessments;</li><li>the app&#x27;s tutor and office paths, mapped from code only;</li><li>screen readers and the largest text sizes.</li><li><strong>Where the run differs from production:</strong></li><li>J19&#x27;s history was inserted into the local database;</li><li>&quot;a day later&quot; was a pause, not a real day;</li><li>the app&#x27;s crash was seen in a development build.</li></ul></main><script>
+document.querySelectorAll('.flip').forEach(function(flip){
+  var frames=flip.querySelectorAll('.frame'),dots=flip.querySelectorAll('.dot'),
+      counter=flip.querySelector('.counter'),n=frames.length,cur=0;
+  if(n<2)return;
+  function show(i){cur=(i%n+n)%n;
+    frames.forEach(function(f,j){f.classList.toggle('is-active',j===cur);});
+    dots.forEach(function(d,j){d.classList.toggle('is-active',j===cur);});
+    if(counter)counter.textContent=(cur+1)+' / '+n;}
+  var p=flip.querySelector('.prev'),x=flip.querySelector('.next');
+  if(p)p.addEventListener('click',function(){show(cur-1);});
+  if(x)x.addEventListener('click',function(){show(cur+1);});
+  dots.forEach(function(d){d.addEventListener('click',function(){show(+d.dataset.i);});});
+  flip.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'){show(cur-1);e.preventDefault();}
+    else if(e.key==='ArrowRight'){show(cur+1);e.preventDefault();}});
+});
+</script></body></html>

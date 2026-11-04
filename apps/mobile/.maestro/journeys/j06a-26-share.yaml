@@ -1,0 +1,11 @@
+# J06A step 26: there is no "Copy invitation" button; Pat taps Share on Jo's row (nothing is sent).
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    notVisible: '.*nvitation.* made.*'
+    timeout: 15000
+    optional: true
+- tapOn:
+    id: invite-share-jo.baker@example.com
+- waitForAnimationToEnd:
+    timeout: 3000

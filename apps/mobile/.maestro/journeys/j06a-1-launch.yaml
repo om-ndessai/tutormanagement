@@ -1,0 +1,10 @@
+# J06A step 1 (docs/userjourney/README.md): Pat opens the app for the first time.
+appId: ${APP_ID}
+---
+- runFlow: ../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000

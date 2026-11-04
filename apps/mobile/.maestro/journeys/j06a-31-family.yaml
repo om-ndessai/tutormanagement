@@ -1,0 +1,17 @@
+# J06A step 31: Pat chooses Jo Baker as the family and taps Next.
+# (The row's accessible text is only "checkbox, unchecked", so it is found by its id.)
+appId: ${APP_ID}
+---
+- tapOn:
+    id: 'add-student-parents-row-.*'
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: add-student-name
+    timeout: 10000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,13 @@
+# J06A step 7: Pat types the name and opens Month.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Pat Quinn'
+- pressKey: Enter
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: signup-month
+- waitForAnimationToEnd:
+    timeout: 2000

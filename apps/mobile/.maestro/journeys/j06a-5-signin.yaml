@@ -1,0 +1,12 @@
+# J06A step 5: Pat taps Sign in with an address the app does not know.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: sign-in-email-submit
+- extendedWaitUntil:
+    visible:
+      id: sign-in-error
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

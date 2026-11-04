@@ -1,0 +1,9 @@
+# J15A step 18: the countdown ends; Hana and Ken read the first question.
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible: 'QUESTION 1 OF 5|Question 1 of 5|.*1 of 5.*'
+    timeout: 20000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

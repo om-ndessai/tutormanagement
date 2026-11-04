@@ -1,0 +1,16 @@
+# J04A step 28: Ava wants to practise alone: Single player, then Next.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: game-players-single
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

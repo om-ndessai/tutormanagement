@@ -1,0 +1,7 @@
+# J15A step 24: Hana taps Ken's card (name and chevron) to see what else there is for him.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: home-child-next-a5d09b5c-1a82-4696-ab5f-6202d99083d3
+- waitForAnimationToEnd:
+    timeout: 3000

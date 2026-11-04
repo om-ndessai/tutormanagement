@@ -1,0 +1,8 @@
+# J06A step 35: Pat taps "Start an assessment".
+# (First run tapped the card around the button, by its id student-flow-start: nothing opened; harness.)
+appId: ${APP_ID}
+---
+- tapOn:
+    id: student-flow-start-assessment
+- waitForAnimationToEnd:
+    timeout: 3000

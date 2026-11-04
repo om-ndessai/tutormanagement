@@ -1,0 +1,7 @@
+# J04A step 24: Ava scrolls on, past the Grade 1 tiles, looking for her level.
+appId: ${APP_ID}
+---
+- scroll
+- scroll
+- waitForAnimationToEnd:
+    timeout: 2000

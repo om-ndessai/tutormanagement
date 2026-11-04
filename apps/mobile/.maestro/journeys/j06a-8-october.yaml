@@ -1,0 +1,28 @@
+# J06A step 8: Pat scrolls the month list to October (it sits below the list's visible edge), picks it,
+# then opens Year. (First run: the tap on the half-hidden October missed and Year opened beside Month;
+# the recovery closes Year again before the scroll.)
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      visible:
+        id: signup-year-2026
+    commands:
+      - tapOn:
+          id: signup-year
+      - waitForAnimationToEnd:
+          timeout: 1500
+- swipe:
+    start: 100, 700
+    end: 100, 520
+    duration: 700
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn:
+    id: signup-month-10
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: signup-year
+- waitForAnimationToEnd:
+    timeout: 2000

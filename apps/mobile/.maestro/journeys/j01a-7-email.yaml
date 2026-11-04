@@ -1,0 +1,14 @@
+# J01A step 7: Morgan types the address and taps Continue (developer sign-up: sign-in is off locally).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-sheet-email
+- inputText: 'morgan.lee@example.com'
+- tapOn:
+    id: signup-sheet-continue
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000

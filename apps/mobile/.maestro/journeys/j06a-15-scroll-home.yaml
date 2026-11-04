@@ -1,0 +1,7 @@
+# J06A step 15: Pat scrolls the home looking for a way to start a space for the class.
+appId: ${APP_ID}
+---
+- scroll
+- scroll
+- waitForAnimationToEnd:
+    timeout: 2000

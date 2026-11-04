@@ -1,0 +1,7 @@
+# J01A step 14: Morgan taps Back on the waiting screen, to see whether play can go on.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: access-refused-back
+- waitForAnimationToEnd:
+    timeout: 3000

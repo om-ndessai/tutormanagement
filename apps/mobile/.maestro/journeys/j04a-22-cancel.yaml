@@ -1,0 +1,6 @@
+# J04A step 22: a club member's billed parent is not what Ava has; she taps Cancel.
+appId: ${APP_ID}
+---
+- tapOn: 'Cancel'
+- waitForAnimationToEnd:
+    timeout: 3000

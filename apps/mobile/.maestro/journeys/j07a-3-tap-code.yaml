@@ -1,0 +1,7 @@
+# J07A step 3: "One code, everyone joins" - Elena taps the code box QF7K2M to type her own code.
+# (The box is one accessible element, "Example game code Q F 7 K 2 M"; tapping its text by "QF7K2M" finds nothing.)
+appId: ${APP_ID}
+---
+- tapOn: 'Example game code.*'
+- waitForAnimationToEnd:
+    timeout: 2000

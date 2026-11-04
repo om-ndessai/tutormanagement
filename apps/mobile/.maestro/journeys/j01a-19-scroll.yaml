@@ -1,0 +1,6 @@
+# J01A step 19: Morgan scrolls down the home.
+appId: ${APP_ID}
+---
+- scroll
+- waitForAnimationToEnd:
+    timeout: 2000

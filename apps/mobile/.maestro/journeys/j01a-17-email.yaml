@@ -1,0 +1,12 @@
+# J01A step 17: Morgan scrolls to the address field and types the address.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+    centerElement: true
+- tapOn:
+    id: sign-in-email
+- inputText: 'morgan.lee@example.com'
+- waitForAnimationToEnd:
+    timeout: 2000

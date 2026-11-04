@@ -1,0 +1,11 @@
+# J01A step 6: Morgan taps "Sign up free" on the offer.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-nudge-signup
+- extendedWaitUntil:
+    visible:
+      id: signup-sheet
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,6 @@
+# J15A step 16: Hana taps "Practise together before Friday's lesson" on Ken's card.
+appId: ${APP_ID}
+---
+- tapOn: "Practise together before Friday.*"
+- waitForAnimationToEnd:
+    timeout: 4000

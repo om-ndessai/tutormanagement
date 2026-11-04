@@ -1,0 +1,15 @@
+# J06A step 24: Pat types Jo Baker's address and name, and keeps Parent.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: invite-email-0
+- inputText: 'jo.baker@example.com'
+- pressKey: Enter
+- tapOn:
+    id: invite-name-0
+- inputText: 'Jo Baker'
+- pressKey: Enter
+- tapOn:
+    id: invite-role-0-parent
+- waitForAnimationToEnd:
+    timeout: 2000

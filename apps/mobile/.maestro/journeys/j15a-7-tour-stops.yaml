@@ -1,0 +1,23 @@
+# J15A step 7: Hana taps Next through the tour's stops 4-7, one at a time (each read on screen).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tour-next
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: j15a-stop4
+- tapOn:
+    id: tour-next
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: j15a-stop5
+- tapOn:
+    id: tour-next
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: j15a-stop6
+- tapOn:
+    id: tour-next
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: j15a-stop7

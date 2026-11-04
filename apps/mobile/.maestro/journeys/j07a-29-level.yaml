@@ -1,0 +1,11 @@
+# J07A step 29: Elena chooses a level anyway (her child is in Grade 3), to see whether Start lights up.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: assessment-level
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: assessment-level-NC26.3
+- waitForAnimationToEnd:
+    timeout: 2000

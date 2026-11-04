@@ -1,0 +1,18 @@
+# J07A step 33: a last try: back to More, its Search ("Pages, people and actions"), for "child".
+# (First run looked for the header's search button on the record page, which has none; harness.)
+appId: ${APP_ID}
+---
+- tapOn: 'Navigate up|Back|Go back'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn: 'Navigate up|Back|Go back'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn: 'Search.*Pages, people and actions.*'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: search-input
+- inputText: 'child'
+- waitForAnimationToEnd:
+    timeout: 3000

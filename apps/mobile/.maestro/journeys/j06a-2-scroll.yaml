@@ -1,0 +1,11 @@
+# J06A step 2: Pat scrolls the guest home looking for something for a teacher or a class.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: guest-parents
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000

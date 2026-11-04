@@ -1,0 +1,18 @@
+# J07A step 12: Elena taps "Sign in", scrolls to the address field and types her address.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-sign-in
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+    centerElement: true
+- tapOn:
+    id: sign-in-email
+- inputText: 'elena.ruiz@example.com'
+- waitForAnimationToEnd:
+    timeout: 2000

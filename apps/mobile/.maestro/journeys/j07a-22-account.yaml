@@ -1,0 +1,7 @@
+# J07A step 22: Elena taps her initials (the account button) to look for Ines's space.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: account-button
+- waitForAnimationToEnd:
+    timeout: 3000

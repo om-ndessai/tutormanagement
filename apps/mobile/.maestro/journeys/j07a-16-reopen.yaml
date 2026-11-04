@@ -1,0 +1,17 @@
+# J07A step 16: the app is blank; Elena closes it and opens it again. Nothing is cleared.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: ../subflows/dev-client-load.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 60000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

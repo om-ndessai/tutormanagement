@@ -1,0 +1,12 @@
+# J06A step 6: Pat follows what the app offers: "Sign up as pat.quinn@example.com".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: sign-in-signup
+- extendedWaitUntil:
+    visible:
+      id: signup-dev-name
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

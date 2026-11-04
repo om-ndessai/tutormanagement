@@ -1,0 +1,12 @@
+# J07A step 21: Elena scrolls back to the top of her home to see whether her request shows.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: quick-join_code
+    direction: UP
+    timeout: 30000
+- swipe:
+    direction: DOWN
+- waitForAnimationToEnd:
+    timeout: 2000

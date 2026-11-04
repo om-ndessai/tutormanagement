@@ -1,0 +1,7 @@
+# J04A step 15: Ava taps "All spaces" (Invitations, codes, starting or leaving a space).
+appId: ${APP_ID}
+---
+- tapOn:
+    id: account-spaces
+- waitForAnimationToEnd:
+    timeout: 3000

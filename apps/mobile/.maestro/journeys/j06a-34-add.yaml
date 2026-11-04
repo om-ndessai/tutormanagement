@@ -1,0 +1,16 @@
+# J06A step 34: Pat ticks the permission box (the class has the parents' permission) and taps Add student.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: add-student-consent
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: student-flow-start
+    timeout: 20000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

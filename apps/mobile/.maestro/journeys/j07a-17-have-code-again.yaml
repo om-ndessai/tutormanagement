@@ -1,0 +1,7 @@
+# J07A step 17: Elena tries "Have a code?" once more.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: quick-join_code
+- waitForAnimationToEnd:
+    timeout: 3000

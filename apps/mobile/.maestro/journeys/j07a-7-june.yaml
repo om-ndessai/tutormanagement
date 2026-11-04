@@ -1,0 +1,11 @@
+# J07A step 7: Elena picks June, then opens Year.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-month-6
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: signup-year
+- waitForAnimationToEnd:
+    timeout: 2000

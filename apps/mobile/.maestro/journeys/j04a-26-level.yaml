@@ -1,0 +1,16 @@
+# J04A step 26: Ava picks AoPS Geometry (her competition level) and taps Next.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: game-tile-GEO
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: game-step-2
+    timeout: 5000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

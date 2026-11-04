@@ -1,0 +1,8 @@
+# J07A step 19: Elena types Ines's code, FMXY2345, into the home's "Have a code?" box.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: play-code
+- inputText: 'FMXY2345'
+- waitForAnimationToEnd:
+    timeout: 2000

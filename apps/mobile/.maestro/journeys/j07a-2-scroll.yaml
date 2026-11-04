@@ -1,0 +1,11 @@
+# J07A step 2: Elena scrolls the guest home looking for a place to type Ines's code.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: guest-parents
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,16 @@
+# J04A step 31 (end-state check): Ava looks for her game under More > Quest.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tab-more
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

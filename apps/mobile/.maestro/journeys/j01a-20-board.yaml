@@ -1,0 +1,10 @@
+# J01A step 20: Morgan scrolls on to the rest of the grade-8 tiles.
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: play-tile-G8Q10
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,13 @@
+# J06A step 32: Pat types the child's name, Ella Baker (no email), and taps Next.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: add-student-name
+- inputText: 'Ella Baker'
+- pressKey: Enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn:
+    id: step-flow-next
+- waitForAnimationToEnd:
+    timeout: 2500

@@ -1,0 +1,10 @@
+# J04A step 20: no Add user on Users; Ava goes back and taps the big yellow (+) in the tab bar.
+appId: ${APP_ID}
+---
+- tapOn: 'Navigate up|Back|Go back'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: create-button
+- waitForAnimationToEnd:
+    timeout: 3000

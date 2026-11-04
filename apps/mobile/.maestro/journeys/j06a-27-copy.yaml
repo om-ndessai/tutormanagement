@@ -1,0 +1,16 @@
+# J06A step 27: Pat taps Copy in the share sheet (nothing is sent). The share sheet is the system's, outside
+# the app's view tree, so Copy is tapped by its place (first run: tapOn 'Copy' closed the sheet without copying).
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      notVisible: 'Save to Files'
+    commands:
+      - tapOn:
+          id: invite-share-jo.baker@example.com
+      - waitForAnimationToEnd:
+          timeout: 3000
+- tapOn:
+    point: 70, 778
+- waitForAnimationToEnd:
+    timeout: 3000

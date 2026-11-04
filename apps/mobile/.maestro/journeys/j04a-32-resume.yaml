@@ -1,0 +1,11 @@
+# J04A step 32 (end-state check): Ava taps her game, "Playing now".
+appId: ${APP_ID}
+---
+- tapOn: '.*AoPS Geometry.*'
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+    timeout: 20000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

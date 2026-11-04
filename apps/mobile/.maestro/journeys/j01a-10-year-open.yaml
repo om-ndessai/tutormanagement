@@ -1,0 +1,7 @@
+# J01A step 10: Morgan opens Year.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-year
+- waitForAnimationToEnd:
+    timeout: 2000

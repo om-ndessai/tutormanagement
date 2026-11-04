@@ -1,0 +1,7 @@
+# J04A step 18: Ava taps "Ask to join".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: welcome-ask
+- waitForAnimationToEnd:
+    timeout: 3000

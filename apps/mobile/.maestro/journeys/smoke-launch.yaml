@@ -1,0 +1,8 @@
+# UI journey audit (docs/userjourney/README.md): the app launches fresh against the local Worker.
+appId: ${APP_ID}
+---
+- runFlow: ../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 60000

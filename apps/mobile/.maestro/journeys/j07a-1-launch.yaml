@@ -1,0 +1,10 @@
+# J07A step 1 (docs/userjourney/README.md): Elena opens the app for the first time, code FMXY2345 in hand.
+appId: ${APP_ID}
+---
+- runFlow: ../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000

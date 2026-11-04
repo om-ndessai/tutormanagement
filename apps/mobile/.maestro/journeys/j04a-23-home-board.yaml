@@ -1,0 +1,15 @@
+# J04A step 23: Ava goes Home and scrolls the board looking for something at her level.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tab-dashboard
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: play-daily-eyebrow
+    direction: DOWN
+    centerElement: true
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

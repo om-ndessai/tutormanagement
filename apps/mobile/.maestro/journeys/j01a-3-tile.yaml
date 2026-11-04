@@ -1,0 +1,11 @@
+# J01A step 3: Morgan taps Quick 5 (Grade 8) as a guest.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: guest-tile-G8Q5
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000

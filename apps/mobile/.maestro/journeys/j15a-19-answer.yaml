@@ -1,0 +1,11 @@
+# J15A step 19: with Ken, Hana chooses A (both have 24 squares) and taps Submit.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: game-choice-A
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn:
+    id: game-submit
+- waitForAnimationToEnd:
+    timeout: 1500

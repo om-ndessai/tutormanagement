@@ -1,0 +1,17 @@
+# J01A step 2: Morgan swipes the grade row and picks 8, the hardest on offer.
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 20000
+- swipe:
+    from:
+      id: guest-grade-5
+    direction: LEFT
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: guest-grade-8
+- waitForAnimationToEnd:
+    timeout: 3000

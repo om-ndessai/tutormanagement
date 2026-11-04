@@ -1,0 +1,17 @@
+# J07A step 9: Elena ticks "I agree to the Terms and the Privacy notice".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-accept
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,7 @@
+# J07A step 27: Elena taps "Open Assessments" in Next up.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: next-up-action
+- waitForAnimationToEnd:
+    timeout: 3000

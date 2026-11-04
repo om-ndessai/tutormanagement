@@ -1,0 +1,17 @@
+# J04A step 25: nothing at her level on the board; Ava scrolls back up and taps "New Quest".
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element:
+      id: quick-new_quest
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: quick-new_quest
+- extendedWaitUntil:
+    visible:
+      id: game-tile-NC26.6
+    timeout: 15000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,10 @@
+# J06A step 20: Pat goes back and tries the initials (the account button) at the top.
+appId: ${APP_ID}
+---
+- tapOn: 'Navigate up|Back|Go back'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: account-button
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,6 @@
+# J15A step 17: Hana taps "Start the Quest".
+appId: ${APP_ID}
+---
+- tapOn: 'Start the Quest'
+- waitForAnimationToEnd:
+    timeout: 1500

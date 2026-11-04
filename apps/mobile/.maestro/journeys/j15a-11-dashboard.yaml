@@ -1,0 +1,7 @@
+# J15A step 11: Hana taps "Go to my dashboard".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: onboarding-done-close
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,8 @@
+# J04A step 16: Ava types her school club's space code, RVRS2345.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: welcome-code
+- inputText: 'RVRS2345'
+- waitForAnimationToEnd:
+    timeout: 2000

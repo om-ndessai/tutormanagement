@@ -1,0 +1,7 @@
+# J15A step 15: Hana goes back to her home with the Home tab.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: tab-dashboard
+- waitForAnimationToEnd:
+    timeout: 3000

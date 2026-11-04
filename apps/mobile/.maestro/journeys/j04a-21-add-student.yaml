@@ -1,0 +1,6 @@
+# J04A step 21: Ava taps "Add a student" for a club member.
+appId: ${APP_ID}
+---
+- tapOn: 'Add a student'
+- waitForAnimationToEnd:
+    timeout: 3000

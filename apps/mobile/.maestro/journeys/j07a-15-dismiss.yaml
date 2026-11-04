@@ -1,0 +1,6 @@
+# J07A step 15: the red error screen; Elena taps Dismiss.
+appId: ${APP_ID}
+---
+- tapOn: 'Dismiss'
+- waitForAnimationToEnd:
+    timeout: 3000

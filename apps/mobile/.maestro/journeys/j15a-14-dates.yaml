@@ -1,0 +1,6 @@
+# J15A step 14: Hana taps "Dates" on Ken's weekly lesson to see the first date.
+appId: ${APP_ID}
+---
+- tapOn: 'Dates'
+- waitForAnimationToEnd:
+    timeout: 3000

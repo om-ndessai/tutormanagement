@@ -1,0 +1,7 @@
+# J06A step 37: Pat taps Start. Expected: the assessment's first question.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: assessment-begin
+- waitForAnimationToEnd:
+    timeout: 5000

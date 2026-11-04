@@ -1,0 +1,14 @@
+# J04A step 4: Ava types her name.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Ava Grant'
+# Return puts the keyboard away (hideKeyboard on iOS taps the sheet's lower edge, where the legal links are).
+- pressKey: Enter
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: signup-month
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audit index</title><style>
+:root{color-scheme:light dark;
+--bg:#fbfbfc;--fg:#16161a;--mut:#6b7076;--card:#ffffff;--line:#e8e8ec;--link:#2563eb;
+--shadow:0 1px 2px rgba(18,18,28,.04),0 2px 6px rgba(18,18,28,.06);
+--s4:#ef4444;--s3:#f97316;--s2:#eab308;--s2ink:#1a1a1a;--s1:#94a3b8;--s1ink:#1a1a1a;
+--c4:#dc2626;--c3:#ea580c;--c2:#a16207;--c1:#64748b;}
+@media(prefers-color-scheme:dark){:root{
+--bg:#0f0f12;--fg:#e9e9ec;--mut:#9a9aa2;--card:#17181c;--line:#2a2b31;--link:#7aa2f7;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.35);
+--c4:#f87171;--c3:#fb923c;--c2:#eab308;--c1:#94a3b8;}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:800px;margin:0 auto;padding:2.8rem 1.2rem 5rem}
+.report-head{margin-bottom:.4rem}
+.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;font-weight:800;color:var(--fg)}
+h1{font-size:1.65rem;line-height:1.22;margin:.4rem 0 .6rem;letter-spacing:-.015em}
+.target code{background:transparent;border:0;color:var(--mut);font-size:.84rem;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.chip{font-size:.73rem;background:var(--card);border:1px solid var(--line);
+border-radius:999px;padding:.16rem .65rem;color:var(--mut);box-shadow:var(--shadow)}
+/* severity summary — larger boxed cells, bold ramp: colour number + top accent */
+.sevrow{display:flex;flex-wrap:wrap;gap:.65rem;margin:1.6rem 0 2.6rem}
+.scell{flex:1 1 0;min-width:100px;background:var(--card);border:1px solid var(--line);
+border-top:3px solid var(--line);border-radius:13px;padding:.8rem .9rem;box-shadow:var(--shadow);
+display:flex;flex-direction:column;gap:.25rem}
+.scell b{font-size:1.85rem;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.scell span{font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}
+.scell.off{opacity:.5}.scell.total{border-top-color:var(--fg)}
+.scell.sev4{border-top-color:var(--s4)}.scell.sev4 b{color:var(--c4)}
+.scell.sev3{border-top-color:var(--s3)}.scell.sev3 b{color:var(--c3)}
+.scell.sev2{border-top-color:var(--s2)}.scell.sev2 b{color:var(--c2)}
+.scell.sev1{border-top-color:var(--s1)}.scell.sev1 b{color:var(--c1)}
+section.md{margin:0 0 1.6rem}
+h2{font-size:1.2rem;font-weight:750;margin:2.5rem 0 .9rem;letter-spacing:-.01em}
+h3{font-size:1rem;margin:1.2rem 0 .5rem}h4{font-size:.9rem;margin:1rem 0 .4rem;color:var(--mut)}
+p{margin:.55rem 0}a{color:var(--link)}
+code{background:var(--card);border:1px solid var(--line);border-radius:5px;
+padding:.05rem .35rem;font-size:.85em}
+blockquote{margin:.5rem 0;padding:.3rem 0 .3rem .9rem;border-left:3px solid var(--line);color:var(--mut)}
+ul,ol{margin:.5rem 0;padding-left:1.3rem}li{margin:.25rem 0}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:.9rem 0;font-size:.9rem;
+display:block;overflow-x:auto;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+th,td{border-bottom:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+tr:last-child td{border-bottom:0}th{background:var(--card);font-size:.78rem;text-transform:uppercase;
+letter-spacing:.03em;color:var(--mut)}
+/* finding cards — soft-shadowed, no stripe; the bold badge carries the severity colour */
+.finding{background:var(--card);border:1px solid var(--line);border-radius:14px;
+padding:1.1rem 1.3rem;margin:1rem 0;box-shadow:var(--shadow)}
+.finding header{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+.finding h3{margin:0;font-size:1.02rem;font-weight:680}
+.badge{font-size:.7rem;font-weight:800;letter-spacing:.02em;color:#fff;border-radius:6px;
+padding:.16rem .5rem;white-space:nowrap;text-transform:uppercase}
+.badge.sev4{background:var(--s4)}.badge.sev3{background:var(--s3)}
+.badge.sev2{background:var(--s2);color:var(--s2ink)}.badge.sev1{background:var(--s1);color:var(--s1ink)}
+.finding dl{margin:.85rem 0 0;display:grid;grid-template-columns:5.5rem 1fr;gap:.4rem .9rem}
+.finding dt{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);
+font-weight:700;padding-top:.15rem}
+.finding dd{margin:0}.finding dd p:first-child{margin-top:0}
+.shot{margin:.8rem 0;text-align:center}
+.shot img{max-width:100%;max-height:540px;height:auto;border:1px solid var(--line);
+border-radius:10px;box-shadow:var(--shadow);display:inline-block}
+.shot figcaption{font-size:.74rem;color:var(--mut);margin-top:.4rem}
+.missing{display:inline-block;font-size:.78rem;color:var(--mut);background:var(--card);
+border:1px dashed var(--line);border-radius:6px;padding:.15rem .5rem}
+.none{color:var(--mut)}
+/* walkthrough flipbook */
+.flip{background:var(--card);border:1px solid var(--line);border-radius:14px;
+box-shadow:var(--shadow);padding:.85rem;margin:1.1rem 0}
+.flip:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.flip-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+color:var(--mut);margin:.15rem .2rem .65rem}
+.frames{position:relative}
+.frame{display:none;margin:0}.frame.is-active{display:block}
+.frame img{width:100%;max-height:560px;height:auto;object-fit:contain;background:var(--bg);
+border:1px solid var(--line);border-radius:10px;display:block}
+.frame figcaption{font-size:.84rem;color:var(--fg);margin-top:.65rem;line-height:1.5}
+.frame figcaption b{font-weight:700}
+.flip-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:.7rem}
+.flip-nav button{background:var(--card);border:1px solid var(--line);border-radius:9px;
+width:2.1rem;height:2.1rem;font-size:1.2rem;line-height:1;cursor:pointer;color:var(--fg)}
+.flip-nav button:hover{border-color:var(--link);color:var(--link)}
+.counter{font-size:.8rem;color:var(--mut);font-variant-numeric:tabular-nums;
+min-width:3.6rem;text-align:center}
+.dots{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.55rem}
+.dot{width:.5rem;height:.5rem;border-radius:50%;border:0;padding:0;cursor:pointer;
+background:var(--line)}.dot.is-active{background:var(--fg)}
+/* banners: cuj pass, provenance */
+.banner{display:flex;gap:.6rem;align-items:baseline;border:1px solid var(--line);
+border-left-width:4px;border-radius:12px;padding:.75rem 1rem;margin:.2rem 0 1.5rem;
+font-size:.9rem;box-shadow:var(--shadow)}
+.banner .b-ico{font-size:1rem;line-height:1.4}
+.banner b{font-weight:750}
+.banner.pass{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.35);border-left-color:#22c55e}
+.banner.warn{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.4);border-left-color:#eab308}
+.banner.info{background:rgba(148,163,184,.13);border-color:rgba(148,163,184,.4);border-left-color:#94a3b8}
+.banner.go{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.4);border-left-color:#22c55e}
+.banner.nogo{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.4);border-left-color:#ef4444}
+.banner.verdict{font-size:1rem;padding:.9rem 1.1rem}
+.banner.verdict b{font-size:1.15rem;text-transform:uppercase;letter-spacing:.03em}
+/* evidence fallback gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem}
+.tile{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:.5rem;box-shadow:var(--shadow)}
+.tile img{width:100%;max-height:220px;height:auto;object-fit:contain;background:var(--bg);
+border:1px solid var(--line);border-radius:7px;display:block}
+.tile figcaption{font-size:.72rem;color:var(--mut);margin-top:.35rem;word-break:break-all}
+</style></head><body><main class="wrap"><header class="report-head"><div class="eyebrow">UX audits</div><h1>Audit index</h1></header><blockquote>Status (2026-11-04): plan approved by the owner. Gate 1 cleared: the other session committed and pushed <code>2d6e7d3</code> (&quot;Owner&#x27;s review fixes: member home, tour only with Tutoring, space form asks sets first&quot;) and deployed it to the test Worker at 16:41 UTC; <code>2d6e7d3</code> is the audited commit. Gate 2 cleared: ux-agent-skills 0.6.0 (with its dependency web-quality-skills 2.0.0) and frontend-design 1.1.1 are installed; the three scripts the agents run are identical to the reviewed copies, and no plugin has hooks or MCP servers. Gate 3 cleared: the owner said go on 2026-11-04 (after a restart of the</blockquote>
+<p>Mac; the scripts were re-read in the new session, unchanged in kind: they read the report and its images, write the <code>.html</code> beside it, and run only <code>git</code>). <strong>Done 2026-11-04:</strong> 24 journeys (19 web, 5 iOS app), the design and workflow audits, and the recommendations, checked. The audit stack was then stopped and its worktree removed.</p>
+<p><strong>Start here:</strong> <a href="recommendations.html">recommendations</a> (37 items: 3 P0, 14 P1, 17 P2, 3 P3; every P0 and P1 checked against its screenshots and the audited code), then <a href="audit-design.html">audit-design</a> (23 findings), <a href="audit-workflows.html">audit-workflows</a> (20 findings) and the journeys below. Each <code>.md</code> has an <code>.html</code> beside it (open <code>index.html</code> in a browser for the walkthrough flipbooks). The pages are rendered with the plugin&#x27;s <code>render_report_html.py</code>. Its images are then pointed at <code>./assets/</code> instead of inlined, so the repo carries each screenshot once. The screenshots are reduced to 256 colours (31 MB for 827 images, no visible change).</p>
+<p># UI journey audit (docs/roadmap/ui-audit-plan.md)</p>
+<p>## The run (2026-11-04)</p>
+<ul><li><strong>Audited commit:</strong> <code>2d6e7d3</code> on <code>member-home-stickiness</code>, frozen in the worktree <code>.claude/worktrees/ux-audit</code>.</li><li><strong>Stack:</strong> the worktree&#x27;s own Worker on <code>http://localhost:8797</code> with <code>AUTH_ENABLED:true</code>, serving the built SPA</li></ul>
+<p>itself (one origin, real cookies), its own local D1. Fake provider tokens on (never in production); Google&#x27;s script is the stand-in described below. <code>DEFAULT_ORGANIZATION</code> is blank in the worktree&#x27;s <code>.dev.vars</code>, as on <code>tutoring</code>, so signed-out pages wear Aimtrue, not the institute.</p>
+<ul><li><strong>Data:</strong> <code>npm run db:reset</code>, then <code>npm run seed:scenarios</code> (3 assessments, 20 Quest answers, 4 reviews, 2 games).</li><li><strong>Settings (console API, as the platform admin), as in production:</strong></li><li>sign-in, web: Google only, sign-up open, until changed; app: Google, Microsoft, Facebook, sign-up open;</li><li>sign-up access: <strong>Post-approved</strong>;</li><li>guest play on, guest assessment on (sign-up offer after question 1, 24 h before it shows again);</li><li>Play home on, the Daily on, the default 64 tiles, 50 questions a level;</li><li>visit recording on.</li><li><strong>Preconditions made before the journeys (the only writes outside the UI):</strong></li><li>Assessment and Quest switched on in <code>chmi</code> and <code>riverside</code> by each space&#x27;s admin, with the same request</li></ul>
+<p><code>seed:scenarios --demo</code> makes on the demo (locally the seed puts them back off). <code>assess</code> keeps Quest off.</p>
+<ul><li>J08&#x27;s friend&#x27;s game: Sanjay Patel (Riverside) opened a game of teams, Grade 4, 10 questions, joining open,</li></ul>
+<p>code <strong>TVFEJK</strong>, left in the lobby. The tile link J08 is sent is <code>/play/G4Q10</code>.</p>
+<ul><li>J19&#x27;s history: twelve play days for Leila Eriksen (<code>chmi</code> student), three a week from 2026-09-29 to 2026-10-25,</li></ul>
+<p>inserted into the local database. The seed makes only today&#x27;s play, so without it no one could show a streak or &quot;Welcome back&quot;. <strong>Not in the approved plan; added on the day, local only.</strong></p>
+<ul><li><strong>Dry run:</strong> passed end to end (guest page signed out, sign-up, the real &quot;Waiting for approval&quot;, the admin&#x27;s</li></ul>
+<p>approval in the console, signing in again, the personal space). <code>/api/auth/session</code> answered 401 signed out and 200 after sign-in; <code>validate_report.py</code> passed on a sample report.</p>
+<ul><li><strong>The app part:</strong> the same worktree and database, the Worker restarted on :8787 with sign-in off, the</li></ul>
+<p>development build on the iPhone 17 simulator (Metro on :8081), flows in <code>apps/mobile/.maestro/journeys/</code>. The approvals and Ines&#x27;s let-in for the app journeys were made in the web console on :8787 (not audited). J15A&#x27;s family (Hana and Ken Mori) was added by the office the same way, as its precondition.</p>
+<ul><li><strong>Harness:</strong> <code>e2e/journeys/driver.mjs</code> (usage in its header). Reports are checked with the plugin&#x27;s</li></ul>
+<p><code>validate_report.py</code> and rendered with <code>render_report_html.py</code> (ux-agent-skills 0.6.0). Its <code>audit_safety.py</code> checks a <code>.ux/audits/</code> layout this audit does not use, so the footprint is checked with <code>git status</code>.</p>
+<p>## Journey index</p>
+<p>Findings are counted by severity: 4 blocks the journey, 3 major, 2 minor, 1 cosmetic. Every report passes the plugin&#x27;s <code>validate_report.py</code> and <code>e2e/journeys/check-report.mjs</code>. Seeded people keep their seed addresses; everyone else is invented, at <code>@example.com</code>.</p>
+<table><thead><tr><th>Journey</th><th>Who (cohort)</th><th>Outcome</th><th>4 / 3 / 2 / 1</th></tr></thead><tbody><tr><td><a href="J01-adult-player.html">J01</a></td><td>Jordan Avery, adult player, from the guest offer (C6)</td><td>approved; quest started in own space</td><td>0 / 1 / 4 / 2</td></tr><tr><td><a href="J02-adult-declined.html">J02</a></td><td>Casey Morgan, adult player (C6)</td><td>declined; refusal seen twice</td><td>0 / 2 / 3 / 2</td></tr><tr><td><a href="J03-parent-after-guest-play.html">J03</a></td><td>Renee Shah, parent after guest play (C4)</td><td>approved; carry-over checked; assessment started for her child</td><td>0 / 2 / 6 / 1</td></tr><tr><td><a href="J04-teen.html">J04</a></td><td>Theo Brooks, 15 (C6)</td><td>approved; space refused, code asked; quest started</td><td>0 / 0 / 5 / 4</td></tr><tr><td><a href="J05-under-13.html">J05</a></td><td>Mia Lopez, 11 (C6)</td><td>refused, nothing kept</td><td>0 / 1 / 3 / 0</td></tr><tr><td><a href="J06-start-a-space.html">J06</a></td><td>Sam Rivera, teacher, from the sign-in link (C1/C7)</td><td>approved; space started, Ana invited; assessment started</td><td>0 / 2 / 6 / 3</td></tr><tr><td><a href="J07-space-code-let-in.html">J07</a></td><td>Lena Fischer, given the code FMXY2345 (C7)</td><td>approved, let in; <strong>blocked</strong>: no child, no assessment</td><td>1 / 3 / 3 / 1</td></tr><tr><td><a href="J08-friend-game-code.html">J08</a></td><td>Kai Turner, sent a game code and a tile link (C6)</td><td>approved; the code does not reach the friend&#x27;s game; quest started</td><td>0 / 4 / 3 / 1</td></tr><tr><td><a href="J09-invited-by-space.html">J09</a></td><td>Ana Costa, invited by Rivera Math Club (C4/C7)</td><td>accepted and landed</td><td>0 / 3 / 5 / 0</td></tr><tr><td><a href="J10-space-code-declined.html">J10</a></td><td>Marcus Webb, given the same code (C7)</td><td>approved, declined by the space; decline seen</td><td>0 / 1 / 7 / 4</td></tr><tr><td><a href="J11-space-admin-decides.html">J11</a></td><td>Ines Ferreira, space admin (C1)</td><td>let Lena in, declined Marcus</td><td>0 / 0 / 5 / 1</td></tr><tr><td><a href="J12-preapproved-on-list.html">J12</a></td><td>Grace Liu, on the list, Pre-approved (C6)</td><td>straight in; quest started</td><td>0 / 0 / 3 / 2</td></tr><tr><td><a href="J13-preapproved-not-on-list.html">J13</a></td><td>Ben Carter, not on the list, Pre-approved (C6)</td><td>refused at the Google step</td><td>0 / 1 / 3 / 0</td></tr><tr><td><a href="J14-office-adds-family.html">J14</a></td><td>Priya Raghavan, tutoring office admin (C1)</td><td>family added, paired, weekly lesson set</td><td>0 / 1 / 7 / 1</td></tr><tr><td><a href="J15-tutoring-parent-first-sign-in.html">J15</a></td><td>Nadia Hassan, new tutoring parent (C3)</td><td>tour, My children, the lesson; Play with started</td><td>0 / 1 / 5 / 2</td></tr><tr><td><a href="J16-tutor-record-entry-points.html">J16</a></td><td>Alex Chen, tutor (C2)</td><td>record form opened from every entry point</td><td>0 / 2 / 4 / 1</td></tr><tr><td><a href="J17-tutored-student-practice.html">J17</a></td><td>Sofia Okafor, tutored student (C5)</td><td>the Daily started from Next up</td><td>0 / 1 / 5 / 1</td></tr><tr><td><a href="J18-several-hats.html">J18</a></td><td>Maria Okafor, parent and tutor (C8)</td><td>home, switcher, All spaces, dashboard</td><td>0 / 1 / 4 / 1</td></tr><tr><td><a href="J19-returning-player.html">J19</a></td><td>Leila Eriksen, back after ten days (C6/C5)</td><td>Welcome back seen; resumed only from the Quest page</td><td>0 / 1 / 5 / 0</td></tr><tr><td><a href="J01A-adult-player-app.html">J01A</a></td><td>Morgan Lee, adult player, app (C6)</td><td>approved; quest started</td><td>0 / 1 / 2 / 3</td></tr><tr><td><a href="J04A-teen-app.html">J04A</a></td><td>Ava Grant, 16, app (C6)</td><td>approved; space refused, code asked; quest started</td><td>0 / 0 / 6 / 4</td></tr><tr><td><a href="J06A-start-a-space-app.html">J06A</a></td><td>Pat Quinn, teacher, app (C1/C7)</td><td>approved; space started, Jo invited; assessment started</td><td>0 / 2 / 6 / 4</td></tr><tr><td><a href="J07A-space-code-let-in-app.html">J07A</a></td><td>Elena Ruiz, given the code, app (C7)</td><td>approved, let in; <strong>blocked</strong> as in J07</td><td>1 / 3 / 3 / 1</td></tr><tr><td><a href="J15A-tutoring-parent-first-sign-in-app.html">J15A</a></td><td>Hana Mori, new tutoring parent, app (C3)</td><td>tour, Ken&#x27;s lesson; Play with started</td><td>0 / 1 / 2 / 4</td></tr></tbody></table>
+<p>In all: 24 journeys, 22 reached their end, 2 blocked (the same dead end on web and app), 194 findings.</p>
+<p># The plan</p>
+<p>## Context</p>
+<p>The platform has been built over 69 phases. The owner wants to see it the way an outside newcomer does, judged on three things:</p>
+<ul><li><strong>usability</strong>: can they do it;</li><li><strong>conversion</strong>: do they get from the guest page into a space and to a feature;</li><li><strong>stickiness</strong>: is there a reason to come back.</li></ul>
+<p>The method is a fleet of agents. Each one plays one user cohort through one path, screenshots every step, and writes a journey document in <code>docs/userjourney/</code>. A platform-admin agent approves or declines their sign-ups, so both outcomes are recorded. Once every journey is in, a design agent (the frontend-design skill) audits all of them for consistency, colour and usability. It also checks for redundant workflows that built up across phases, such as the eight ways a tutor records a lesson, and writes the recommendations.</p>
+<p>Scope comes from the brief:</p>
+<ul><li>The platform console is not audited. The admin agent only does the approvals.</li><li>Journeys stop once the person lands in a space and starts a feature (a quest, an assessment, the record form).</li><li>The guest&#x27;s own &quot;today&#x27;s questions&quot; journey is not recorded.</li></ul>
+<p>Decided with the owner:</p>
+<ul><li>Every journey is recorded on the web, at phone width and desktop width.</li><li>Five key sign-up journeys are also replayed in the iOS app.</li><li>The owner installs both plugins (below).</li></ul>
+<p>## Nothing starts until three gates clear</p>
+<ol><li><strong>The other session is done.</strong> Its review follow-ups are committed and pushed on <code>member-home-stickiness</code>,</li></ol>
+<p>and it has deployed to the test Worker. Today 45 files are uncommitted. A background check runs every 5 minutes and clears when:</p>
+<ul><li>no tracked file is modified;</li><li><code>HEAD</code> is past <code>9aa5bc0</code> and equals <code>origin/member-home-stickiness</code>;</li><li><code>npx wrangler deployments list --env tutoring-test</code> (read-only) shows a deployment newer than that commit.</li></ul>
+<p>The audited commit SHA is recorded. When the gate clears I send a push notification and do NOT start.</p>
+<ol><li><strong>The skills are installed.</strong> The owner runs:</li></ol>
+<ul><li><code>/plugin marketplace add carlsz/ux-agent-skills</code></li><li><code>/plugin install ux-agent-skills@ux-agent-skills</code> (render-report, plus its sibling cuj and usability skills;</li></ul>
+<p>third-party, not reviewed by Anthropic; it pulls in <code>web-quality-skills</code>)</p>
+<ul><li><code>/plugin install frontend-design@claude-plugins-official</code></li></ul>
+<p>Before any agent runs the plugin&#x27;s Python scripts, I read <code>render_report_html.py</code>, <code>validate_report.py</code> and <code>audit_safety.py</code>.</p>
+<ol><li><strong>The owner says go (owner, 2026-11-04).</strong> Once gates 1 and 2 have cleared, I report that and wait for the</li></ol>
+<p>owner&#x27;s explicit approval. Nothing from the setup onwards happens before it: the worktree, the servers, the agents and the status job. Preparing the harness in the scratchpad is the only work done while waiting.</p>
+<p>The first file I write on approval is this plan, copied to <code>docs/userjourney/README.md</code>. Plan mode blocks that copy now.</p>
+<p>## Setup (Phase 0, done by me, about 45 min)</p>
+<p><strong>The local stack has to change: today&#x27;s dev setup does not show what a stranger sees.</strong> It runs with sign-in off:</p>
+<ul><li>a browser with no header is silently the first admin;</li><li>signed-out pages exist only by faking a 401;</li><li>the sign-up sheet shows a &quot;Developer sign-up&quot; form;</li><li>a person waiting for approval sees &quot;The portal can&#x27;t start&quot; instead of the real &quot;Waiting for approval&quot; screen.</li></ul>
+<p>So the audit gets its own stack:</p>
+<ul><li><strong>A frozen, isolated copy.</strong> A git worktree of the audited commit at <code>.claude/worktrees/ux-audit</code> (already</li></ul>
+<p>gitignored), with <code>npm ci</code>, <code>npm run build</code> and <code>apps/api/.dev.vars</code> copied in. It has its own local D1, so nothing touches the main checkout&#x27;s database or the other session. All later edits elsewhere are invisible to it.</p>
+<ul><li><strong>Seeding, with sign-in still off.</strong> <code>npm run db:reset</code> in the worktree, then the Worker on <strong>:8797</strong></li></ul>
+<p>(<code>--inspector-port 9239</code>), then <code>npm run seed:scenarios -- --base=http://localhost:8797</code>. That gives the personas a history and gives returning players something to come back to.</p>
+<ul><li><strong>Production&#x27;s settings,</strong> made through the API as the platform admin <code>ndessai@gmail.com</code>, then recorded in</li></ul>
+<p>the README:</p>
+<ul><li>sign-up open on web and app, until changed;</li><li>Google only on the web (as on <code>tutoring</code>);</li><li><strong>Post-approved</strong>;</li><li>guest play on, the Daily on, the default tiles;</li><li>visit recording on.</li><li><strong>Restart with sign-in on.</strong> <code>npx wrangler dev --port 8797 --var AUTH_ENABLED:true</code>, with the fake providers</li></ul>
+<p>still on. The Worker serves the built SPA itself, as production does: one origin, real cookies, real sign-in and sign-up screens, and the real &quot;Waiting for approval&quot;, &quot;Sign-up is by invitation&quot; and &quot;Access not approved&quot; screens.</p>
+<ul><li><strong>Google&#x27;s button is the one stand-in.</strong> Each browser loads a small stand-in for Google&#x27;s sign-in script,</li></ul>
+<p>served at <code>accounts.google.com/gsi/client</code>. Its button hands the app a <code>fake:google:&lt;sub&gt;:&lt;email&gt;:1:&lt;name&gt;</code> token, so the app&#x27;s own code path runs from that click on. Each report&#x27;s Appendix says this (&quot;Access: provider step simulated&quot;).</p>
+<ul><li><strong>The driver, <code>e2e/journeys/driver.mjs</code>.</strong> One long-lived headless Chrome per journey (the installed Chrome,</li></ul>
+<p><code>channel: &#x27;chrome&#x27;</code>, as the e2e config uses), each with its own profile in <code>docs/userjourney/_run/&lt;id&gt;/</code>.</p>
+<ul><li>An agent sends one action at a time (<code>goto</code>, <code>click</code>, <code>fill</code>, <code>shot</code>, <code>eval</code>), looks at the screenshot,</li></ul>
+<p>and decides the next step, as a person would. Nothing is replayed, and the tab&#x27;s sessionStorage (its space) survives between steps.</p>
+<ul><li><code>shot</code> saves a phone-width (390×844) PNG. At landing screens it also saves desktop (1280×800) and dark</li></ul>
+<p>mode.</p>
+<ul><li><code>sheet &lt;id&gt;</code> makes a contact sheet: one image of a journey&#x27;s phone steps, for the auditor.</li><li><code>status &lt;id&gt; &lt;msg&gt;</code> appends to <code>_run/status.log</code>.</li><li>It reuses the e2e helpers (<code>visible()</code>, the test ids the explorers listed).</li><li><strong>A dry run before any agent starts.</strong> A throwaway persona goes the whole path:</li></ul>
+<ol><li>the guest page, signed out;</li><li>sign up;</li><li>&quot;Waiting for approval&quot;;</li><li>the admin approves in the console;</li><li>sign in again;</li><li>the personal space.</li></ol>
+<p><code>validate_report.py</code> must pass on a sample report. If the cookie or the Google stand-in fails here, the fallback is sign-in off with the developer forms, flagged in every Appendix. The owner is told before going on.</p>
+<p>## Cohorts and journeys</p>
+<p>Every persona is invented, at <code>@example.com</code>, and exists on the local stack only. The cohorts follow <code>docs/member-home-plan.md</code> (C1-C8), so findings link back to that research.</p>
+<table><thead><tr><th>#</th><th>Who and how they arrive</th><th>Approval</th><th>Ends when they…</th></tr></thead><tbody><tr><td>J01</td><td>Adult player, from the guest page&#x27;s sign-up offer</td><td>platform: <strong>approved</strong></td><td>start a quest in their own space</td></tr><tr><td>J02</td><td>Same entry</td><td>platform: <strong>declined</strong></td><td>see the refusal, then try again later</td></tr><tr><td>J03</td><td>Parent who played a tile as a guest (not recorded), then signs up</td><td>approved</td><td>start &quot;Show your work&quot; or an assessment for their child (carry-over checked)</td></tr><tr><td>J04</td><td>Teen, 13-17</td><td>approved</td><td>try Start a space or a code, then play</td></tr><tr><td>J05</td><td>Under 13</td><td>refused, nothing kept</td><td>read &quot;Ask a parent&quot;, and what is left to do</td></tr><tr><td>J06</td><td>Adult who wants their own space (tutor or teacher), from the sign-in link</td><td>approved</td><td>start a space, invite people, start an assessment</td></tr><tr><td>J07</td><td>Adult given a space code (<code>assess</code>, FMXY2345)</td><td>approved, then <strong>let in</strong> by the space&#x27;s admin</td><td>land in that space and try Quest or Assessment</td></tr><tr><td>J10</td><td>Same as J07</td><td>approved, then <strong>declined</strong> by the space&#x27;s admin</td><td>see the decline</td></tr><tr><td>J08</td><td>Friend sent a code (a game code and a tile link)</td><td>approved</td><td>find out whether the code still works after the wait</td></tr><tr><td>J09</td><td>Invited by J06&#x27;s new space: an invitation text, then Google</td><td>none (the space vouches)</td><td>accept and land in the space</td></tr><tr><td>J11</td><td>Space admin (Ines, <code>assess</code>) answering J07 and J10</td><td>—</td><td>let in and decline (the space owner&#x27;s view)</td></tr><tr><td>J12</td><td>Under <strong>Pre-approved</strong>: on the list</td><td>—</td><td>go straight in and play</td></tr><tr><td>J13</td><td>Under Pre-approved: not on the list</td><td>refused</td><td>read &quot;By invitation&quot; and Contact us</td></tr><tr><td>J14</td><td>Tutoring office admin (Priya, <code>chmi</code>) adds a new family</td><td>—</td><td>finish adding the family (the parent becomes J15)</td></tr><tr><td>J15</td><td>New tutoring parent: first sign-in, tour</td><td>—</td><td>reach My children, the next lesson, Play with child</td></tr><tr><td>J16</td><td>Tutor (Alex)</td><td>—</td><td>open the record form <strong>from every entry point</strong>: Next up, To record, quick action, sessions page, timer stop, draft</td></tr><tr><td>J17</td><td>Tutored student (Sofia)</td><td>—</td><td>start &quot;Practise before&quot; the lesson, the Daily, or an assessment</td></tr><tr><td>J18</td><td>Several hats (Maria: parent and tutor)</td><td>—</td><td>see which hat leads, the switcher, All spaces, /dashboard</td></tr><tr><td>J19</td><td>Returning player with a history (from seed:scenarios)</td><td>—</td><td>read My progress, the streak, Welcome back, and Continue</td></tr></tbody></table>
+<p><strong>In the app (iOS simulator):</strong> J01, J04, J06, J07 and J15 again, as <code>JxxA</code>.</p>
+<ul><li>New personas, signed in through the app&#x27;s developer sign-in (the native Google step cannot be driven).</li><li>Maestro flows are written to <code>apps/mobile/.maestro/journeys/</code> and run one at a time with</li></ul>
+<p><code>maestro test --device &lt;udid&gt;</code> (never <code>e2e:mobile</code>, which resets the database).</p>
+<ul><li>For this part the worktree&#x27;s Worker restarts on <strong>:8787</strong> with sign-in off, on the same data. The app is</li></ul>
+<p>wired to that port; I check it is free first.</p>
+<ul><li>Uses <code>MAESTRO_DRIVER_STARTUP_TIMEOUT</code> and cleared sessions, the workaround for the slow iOS driver.</li></ul>
+<p>Not covered, and said so in the README: Microsoft, Apple and Facebook sign-in (not offered on the production web), Android, the console, and the quest and assessment themselves.</p>
+<p>## How the agents run</p>
+<p>Three Workflow runs, with me in between to switch the Worker. The user asked for as many agents as needed: about 30 agent calls in all, at most about 10 at once. The Mac has 18 cores and 64 GB.</p>
+<p><strong>Workflow 1: web journeys.</strong></p>
+<ol><li><strong>Sign up</strong> (in parallel):</li></ol>
+<ul><li>J01-J08 and J10 go as far as &quot;waiting&quot; (J05 runs to its end);</li><li>J14 and J16-J19 run whole, since they need no approval;</li><li>J08&#x27;s game is set up first by a seeded player.</li></ul>
+<ol><li><strong>Approve:</strong> one platform-admin agent, signed in to the console. It finds each waiting person by email and</li></ol>
+<p>approves J01, J03, J04 and J06-J08 and declines J02. It screenshots the waiting list for the record, which is not audited. The pause between signing up and returning stands for &quot;the next day&quot;.</p>
+<ol><li><strong>Come back</strong> (a pipeline, so each journey moves as soon as it can):</li></ol>
+<ul><li>each waiting journey&#x27;s second stage starts from the signed-out guest page;</li><li>J07 and J10 ask to join <code>assess</code>, then J11 lets J07 in and declines J10, then both finish;</li><li>J06&#x27;s invite step hands J09 the invitation text, then J09 runs;</li><li>J14 hands J15 the parent&#x27;s email, then J15 runs.</li></ul>
+<ol><li><strong>Pre-approved:</strong></li></ol>
+<ul><li>the admin agent switches the mode and adds J12&#x27;s email to the list;</li><li>J12 and J13 run;</li><li>the admin switches back to Post-approved.</li></ul>
+<p>A journey&#x27;s second stage is a new agent. It continues the first stage&#x27;s notes, browser profile and document, so the persona stays one person.</p>
+<p><strong>Workflow 2: the app.</strong> One mobile agent, using the <code>mobile-tester</code> skill:</p>
+<ol><li>writes and runs the five flows, one at a time;</li><li>pauses after the sign-ups so the platform-admin agent can approve them (through the web console on :8787);</li><li>reviews the screenshots and writes the five <code>JxxA</code> reports.</li></ol>
+<p><strong>Workflow 3: audit, then recommendations.</strong> Two agents work in parallel, then a third combines their results:</p>
+<ul><li><strong>Design auditor</strong>, using <code>frontend-design</code> plus the design plugin&#x27;s critique and accessibility skills. It</li></ul>
+<p>works from:</p>
+<ul><li>every report and contact sheet;</li><li>the tokens in <code>index.css</code> (palettes, dark mode, grade hues);</li><li><code>docs/branding.md</code>, <code>docs/ui-upgrades-spec.md</code>;</li><li>the earlier audits (<code>docs/mobile/ux-audit.md</code> and the member-home plan&#x27;s &quot;ten problems&quot;). It marks those</li></ul>
+<p>fixed or still present rather than reporting them again.</p>
+<p>It covers consistency across spaces, palettes, web and app, colour themes and usability. It writes <code>audit-design.md</code>.</p>
+<ul><li><strong>Workflow auditor.</strong> It checks for redundant and inconsistent paths, from the journeys plus the entry-point</li></ul>
+<p>map:</p>
+<ul><li>recording a lesson: 8 entry points on the web, and two separate forms in the app;</li><li>adding a person: the wizard, People, Let in, Invite people;</li><li>starting a quest: tiles, favorites, New Quest, two code boxes, the Daily, Next up.</li></ul>
+<p>It also checks web-versus-app differences. It writes <code>audit-workflows.md</code>.</p>
+<ul><li><strong>Recommendations:</strong> <code>recommendations.md</code>, ranked P0-P3 and grouped by conversion, stickiness, usability and</li></ul>
+<p>consistency. Each item has its evidence, its rough size, and whether the owner must decide. These are input for the owner, not scheduled work: a feature is built only once it is in <code>docs/plan.md</code>.</p>
+<p>After that I render the reports to HTML, refresh the index, and commit.</p>
+<p>## What every journey document holds</p>
+<p>The plugin&#x27;s report format (Schema 2, auditor <code>cuj</code>), so render-report can turn it into a walkthrough flipbook:</p>
+<ul><li>frontmatter: the nine keys, <code>version</code> read from the plugin&#x27;s <code>plugin.json</code>, <code>mode: live</code>;</li><li>Executive summary:</li><li>who the persona is and what they wanted;</li><li>the outcome;</li><li>the conversion figures: screens, taps and typed fields from the entry point to the feature, waits, dead ends;</li><li><strong>the 3 screens this cohort would notice most</strong>;</li><li>Prioritized fixes, then Findings as <code>### [sevN]</code> with the five fields;</li><li>Walkthrough, one <code>### Step n — action</code> per step, each with:</li><li>expected versus what happened;</li><li><strong>&quot;What &lt;persona&gt; notices&quot;</strong>;</li><li>the phone screenshot, plus desktop and dark mode at landing screens;</li><li>Appendix: mode, coverage and what was not inspected, the Access line.</li></ul>
+<p>Screenshots are named <code>cuj-&lt;id&gt;-step-&lt;n&gt;.png</code> and saved in <code>docs/userjourney/assets/</code>.</p>
+<p>## Layout of <code>docs/userjourney/</code></p>
+<ul><li><strong><code>README.md</code>:</strong> this plan, the audited commit, the settings, the personas, and the journey index.</li><li><strong><code>J01-…md</code> to <code>J19-…md</code>, <code>J01A-…md</code> and the other app reports:</strong> one per journey, each with its <code>.html</code></li></ul>
+<p>beside it.</p>
+<ul><li><strong><code>audit-design.md</code>, <code>audit-workflows.md</code>, <code>recommendations.md</code>:</strong> the audit and its recommendations.</li><li><strong><code>index.md</code> / <code>index.html</code>:</strong> the render-report index.</li><li><strong><code>assets/</code>:</strong> screenshots and contact sheets. Kept to about 25-40 MB: 1× PNGs, desktop and dark mode only at</li></ul>
+<p>landing screens.</p>
+<ul><li><strong><code>_run/</code>:</strong> the status log, browser profiles and handoffs. Gitignored, never committed.</li></ul>
+<p>## Status every 15 minutes</p>
+<ul><li>A recurring job (<code>CronCreate</code>, at minutes 7, 22, 37 and 52) has me read <code>_run/status.log</code> and post a short</li></ul>
+<p>checklist. It runs from the start of Workflow 1 until the commit, then is deleted.</p>
+<ul><li>The checklist always has the same order: the journey being recorded now and its step, what finished since</li></ul>
+<p>last time, and what is left with estimates and a total.</p>
+<ul><li>Push notifications only for things that need the owner: a gate cleared, the dry run failed, or a journey</li></ul>
+<p>blocked by a bug.</p>
+<p>## Rules for every agent</p>
+<ul><li>Audit only: no change to app code, the schema or the seed.</li><li>Commands only against the worktree&#x27;s local stack:</li><li>no <code>--remote</code> and no deploys;</li><li>nothing against production or the demo;</li><li>no <code>db:reset</code> in the main checkout.</li><li>No API shortcuts during a journey. The only exceptions are the preconditions this plan names: the J08 game,</li></ul>
+<p>and the settings changes the admin agent makes.</p>
+<ul><li>A bug that blocks a journey is a finding, with its severity and screenshot; the journey stops there.</li></ul>
+<p>Observations are never invented. A step not checked is listed under coverage.</p>
+<p>## Verification</p>
+<ul><li><strong>Setup:</strong> the dry run passes end to end, and its &quot;Waiting for approval&quot; screenshot is the real screen.</li></ul>
+<p><code>/api/auth/session</code> answers 401 when signed out and 200 after a sign-in.</p>
+<ul><li><strong>Each journey:</strong></li><li><code>validate_report.py</code> passes;</li><li>every embedded image exists (a check script over <code>./assets/</code>);</li><li>the step count matches the screenshots;</li><li>J02, J05, J10 and J13 show their refusal screens;</li><li>J01, J04, J07 and J12 show a started feature.</li><li><strong>At the end:</strong></li><li>render-report produces the HTML and <code>index.html</code>;</li><li><code>git status</code> shows changes only in <code>docs/userjourney/</code>, <code>e2e/journeys/</code>,</li></ul>
+<p><code>apps/mobile/.maestro/journeys/</code> and one <code>.gitignore</code> line;</p>
+<ul><li>the cron job is deleted;</li><li>the worktree&#x27;s Worker is stopped and the worktree removed;</li><li><code>npm run typecheck</code> still passes (the driver sits in <code>e2e/</code>).</li><li><strong>Commit:</strong> pushed to <code>member-home-stickiness</code> (documents and harness only, no deploy). I can also publish the</li></ul>
+<p>rendered index as a private page to share if the owner wants.</p>
+<p>## Time and risks</p>
+<p><strong>Time: about 5-6 hours after the gates.</strong></p>
+<table><thead><tr><th>Step</th><th>Estimate</th></tr></thead><tbody><tr><td>Setup</td><td>45 min</td></tr><tr><td>Sign-ups</td><td>20 min</td></tr><tr><td>Approvals</td><td>10 min</td></tr><tr><td>Coming back, and the tutoring journeys</td><td>50 min</td></tr><tr><td>Pre-approved</td><td>15 min</td></tr><tr><td>iOS</td><td>about 90 min (the iOS driver can take 30 min to start)</td></tr><tr><td>Audit and recommendations</td><td>60 min</td></tr><tr><td>Render and commit</td><td>15 min</td></tr></tbody></table>
+<p><strong>Risks, and what happens if they hit:</strong></p>
+<ul><li>Sign-in with the stand-in: checked in the code. Fake tokens are accepted whenever the environment is not</li></ul>
+<p>production (<code>lib/identity.ts</code>). The session cookie drops <code>Secure</code> outside production (<code>lib/session.ts</code>). The sign-up sheet passes Google&#x27;s credential to <code>signInWithGoogle</code> and shows the About-you form in place. If the dry run still fails, fall back as set out there.</p>
+<ul><li>The iOS driver hangs: the web journeys and the audit still finish, and the app part is reported as not run.</li><li>A daily cap (3 spaces per person, 20 people added per self-serve space): each journey has its own persona.</li><li>The seeded <code>assess</code> space&#x27;s join code is off: J07 and J10 switch to <code>riverside</code> (RVRS2345).</li></ul></main><script>
+document.querySelectorAll('.flip').forEach(function(flip){
+  var frames=flip.querySelectorAll('.frame'),dots=flip.querySelectorAll('.dot'),
+      counter=flip.querySelector('.counter'),n=frames.length,cur=0;
+  if(n<2)return;
+  function show(i){cur=(i%n+n)%n;
+    frames.forEach(function(f,j){f.classList.toggle('is-active',j===cur);});
+    dots.forEach(function(d,j){d.classList.toggle('is-active',j===cur);});
+    if(counter)counter.textContent=(cur+1)+' / '+n;}
+  var p=flip.querySelector('.prev'),x=flip.querySelector('.next');
+  if(p)p.addEventListener('click',function(){show(cur-1);});
+  if(x)x.addEventListener('click',function(){show(cur+1);});
+  dots.forEach(function(d){d.addEventListener('click',function(){show(+d.dataset.i);});});
+  flip.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'){show(cur-1);e.preventDefault();}
+    else if(e.key==='ArrowRight'){show(cur+1);e.preventDefault();}});
+});
+</script></body></html>

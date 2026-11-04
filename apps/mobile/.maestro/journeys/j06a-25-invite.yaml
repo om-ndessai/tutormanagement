@@ -1,0 +1,9 @@
+# J06A step 25: Pat taps Invite.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: invite-send
+- extendedWaitUntil:
+    visible: '.*nvitation.* made.*'
+    timeout: 15000
+    optional: true

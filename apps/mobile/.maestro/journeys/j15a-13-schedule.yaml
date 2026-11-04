@@ -1,0 +1,6 @@
+# J15A step 13: Hana taps "See the schedule" on Ken's next lesson.
+appId: ${APP_ID}
+---
+- tapOn: 'See the schedule'
+- waitForAnimationToEnd:
+    timeout: 3000

@@ -1,0 +1,7 @@
+# J07A step 25: Elena taps her initials again, where her spaces are listed.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: account-button
+- waitForAnimationToEnd:
+    timeout: 3000

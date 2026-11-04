@@ -1,0 +1,13 @@
+# J06A step 33: Pat types the course, "Grade 4", and taps Next.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: add-student-course
+- inputText: 'Grade 4'
+- pressKey: Enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- tapOn:
+    id: step-flow-next
+- waitForAnimationToEnd:
+    timeout: 2500

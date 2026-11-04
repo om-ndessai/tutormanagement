@@ -1,0 +1,11 @@
+# J06A step 18: no space in Create; Pat closes the sheet (taps above it) and opens More.
+appId: ${APP_ID}
+---
+- tapOn:
+    point: 50%, 25%
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: tab-more
+- waitForAnimationToEnd:
+    timeout: 3000

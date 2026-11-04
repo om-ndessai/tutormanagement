@@ -1,0 +1,8 @@
+# J06A step 22: Pat types the space's name, "Quinn Learning Lab".
+appId: ${APP_ID}
+---
+- tapOn:
+    id: welcome-space-name
+- inputText: 'Quinn Learning Lab'
+- waitForAnimationToEnd:
+    timeout: 2000

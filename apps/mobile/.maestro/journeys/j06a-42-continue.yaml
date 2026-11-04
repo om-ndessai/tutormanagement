@@ -1,0 +1,21 @@
+# J06A step 42 (end-state check): Pat taps Continue on Ella's assessment (Recent assessments).
+# (First run: tapOn 'Continue' hit the Students card's button, scrolled above the screen, at the status bar,
+# which scrolled the home back to its top; harness. Re-run scrolls back and taps the visible one.)
+appId: ${APP_ID}
+---
+- scrollUntilVisible:
+    element: 'Recent assessments'
+    direction: DOWN
+    centerElement: true
+    timeout: 30000
+- tapOn:
+    text: 'Continue'
+    below:
+      text: 'Recent assessments'
+- extendedWaitUntil:
+    visible:
+      id: screen-assessment-take
+    timeout: 20000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000

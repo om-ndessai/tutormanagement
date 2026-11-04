@@ -1,0 +1,7 @@
+# J07A step 20: Elena taps Go.
+appId: ${APP_ID}
+---
+- tapOn:
+    id: play-code-go
+- waitForAnimationToEnd:
+    timeout: 1500

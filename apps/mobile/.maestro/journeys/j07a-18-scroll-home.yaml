@@ -1,0 +1,26 @@
+# J07A step 18: Elena dismisses the error, closes and reopens the app, and this time scrolls down her
+# home looking for another place to type the code.
+appId: ${APP_ID}
+---
+- tapOn: 'Dismiss'
+- waitForAnimationToEnd:
+    timeout: 2000
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      true: ${APP_ID.endsWith('.dev')}
+    file: ../subflows/dev-client-load.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: play-code-card
+    direction: DOWN
+    centerElement: true
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 2000
