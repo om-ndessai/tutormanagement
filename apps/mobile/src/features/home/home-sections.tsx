@@ -18,6 +18,7 @@ import { Pressable, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
+import { TourTarget } from '@/features/onboarding/tour-targets';
 import { AssessmentHome } from '@/features/dashboard/assessment-home';
 import { useMemberTiles } from '@/features/play/play-api';
 import { PlayHome, useStartQuest } from '@/features/play/play-home';
@@ -27,9 +28,13 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import {
   capitalise,
+  CHILD_OFF_LINE,
+  childCardFallback,
   childPlayLabel,
   childPlayedLine,
   firstOf,
+  LEARNER_EMPTY_LINE,
+  learnerSectionParts,
   lessonWithStudent,
   lessonWithTutor,
   nextUpShowsLesson,
@@ -107,37 +112,39 @@ function TutorSection({ home, item }: { home: MemberHome; item: NextUp | null })
     <Section hat="tutor">
       <TutorNow now={tutor.now} hideCard={nextUpShowsLesson(item, tutor.now.next)} />
       {tutor.to_record.length > 0 ? (
-        <Card testID="home-to-record">
-          <Text variant="titleSmall" accessibilityRole="header">
-            To record
-          </Text>
-          {tutor.to_record.map((lesson) => (
-            <View
-              key={`${lesson.schedule_id}-${lesson.occurs_on}`}
-              testID={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}`}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}
-            >
-              <Text variant="bodyMedium" style={{ flex: 1 }}>
-                {capitalise(lessonWithStudent(lesson, home.day))}
-              </Text>
-              <Button
-                testID={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}-record`}
-                mode="contained-tonal"
-                compact
-                contentStyle={{ minHeight: 40 }}
-                onPress={() => {
-                  haptics.selection();
-                  router.navigate(recordUnrecordedHref(lesson, user?.id));
-                }}
+        <TourTarget id="home-to-record">
+          <Card testID="home-to-record">
+            <Text variant="titleSmall" accessibilityRole="header">
+              To record
+            </Text>
+            {tutor.to_record.map((lesson) => (
+              <View
+                key={`${lesson.schedule_id}-${lesson.occurs_on}`}
+                testID={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}`}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}
               >
-                Record
-              </Button>
-            </View>
-          ))}
-          {more > 0 ? (
-            <LinkRow testID="home-to-record-more" label={`+${more} more`} to="/sessions" icon="dots-horizontal" />
-          ) : null}
-        </Card>
+                <Text variant="bodyMedium" style={{ flex: 1 }}>
+                  {capitalise(lessonWithStudent(lesson, home.day))}
+                </Text>
+                <Button
+                  testID={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}-record`}
+                  mode="contained-tonal"
+                  compact
+                  contentStyle={{ minHeight: 40 }}
+                  onPress={() => {
+                    haptics.selection();
+                    router.navigate(recordUnrecordedHref(lesson, user?.id));
+                  }}
+                >
+                  Record
+                </Button>
+              </View>
+            ))}
+            {more > 0 ? (
+              <LinkRow testID="home-to-record-more" label={`+${more} more`} to="/sessions" icon="dots-horizontal" />
+            ) : null}
+          </Card>
+        </TourTarget>
       ) : null}
       {tutor.reviews.assessments > 0 ? (
         <LinkRow
@@ -170,7 +177,11 @@ function OfficeSection({ home, assessment }: { home: MemberHome; assessment: boo
         {tutoring ? (
           <LinkRow
             testID="home-office-to-record"
-            label={office.to_record_count > 0 ? `${plural(office.to_record_count, 'lesson')} to record` : 'Every lesson is recorded'}
+            label={
+              office.to_record_count > 0
+                ? `${plural(office.to_record_count, 'lesson')} to record`
+                : 'Every lesson is recorded'
+            }
             to="/sessions"
             icon="pencil-outline"
           />
@@ -195,7 +206,12 @@ function OfficeSection({ home, assessment }: { home: MemberHome; assessment: boo
           icon="account-plus-outline"
         />
         {tutoring ? (
-          <LinkRow testID="home-dashboard-link" label="Open the dashboard" to="/analytics" icon="view-dashboard-outline" />
+          <LinkRow
+            testID="home-dashboard-link"
+            label="Open the dashboard"
+            to="/analytics"
+            icon="view-dashboard-outline"
+          />
         ) : null}
       </Card>
       {assessment ? <AssessmentHome /> : null}
@@ -206,14 +222,18 @@ function OfficeSection({ home, assessment }: { home: MemberHome; assessment: boo
 function ChildCard({
   child,
   today,
+  tutoring,
   quest,
+  assessment,
   firstTileLevel,
   start,
   pending,
 }: {
   child: HomeChild;
   today: string;
+  tutoring: boolean;
   quest: boolean;
+  assessment: boolean;
   firstTileLevel: string | null;
   start: ReturnType<typeof useStartQuest>['start'];
   pending: boolean;
@@ -224,11 +244,15 @@ function ChildCard({
   // last level, else this space's first tile -- a game of two with the child invited, one tap.
   const played = quest ? childPlayedLine(child) : null;
   const playLevel = quest ? (child.play_level_id ?? firstTileLevel) : null;
+  // With Tutoring and Quest off there are no lessons or quests to show: Assessments, else a word (as the web).
+  const fallback = childCardFallback({ tutoring, quest, assessment });
   return (
     <OutlinedCard testID={`home-child-${id}`} style={{ borderRadius: radius.lg }}>
+      {/* Progress and lessons are Tutoring's: without it the card is not a link (the route answers 403). */}
       <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`${child.first_name}'s progress`}
+        accessibilityRole={tutoring ? 'button' : undefined}
+        accessibilityLabel={tutoring ? `${child.first_name}'s progress` : undefined}
+        disabled={!tutoring}
         onPress={() => {
           haptics.selection();
           router.navigate({ pathname: '/progress/[studentId]', params: { studentId: id } }, { withAnchor: true });
@@ -239,20 +263,41 @@ function ChildCard({
           <Text variant="titleMedium" style={{ flex: 1, fontWeight: '700' }}>
             {child.first_name}
           </Text>
-          <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} />
+          {tutoring ? <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} /> : null}
         </View>
-        <Text testID={`home-child-next-${id}`} variant="bodyMedium">
-          {child.next_lesson ? `Next: ${lessonWithTutor(child.next_lesson, today)}` : 'No lessons scheduled'}
-        </Text>
+        {tutoring ? (
+          <Text testID={`home-child-next-${id}`} variant="bodyMedium">
+            {child.next_lesson ? `Next: ${lessonWithTutor(child.next_lesson, today)}` : 'No lessons scheduled'}
+          </Text>
+        ) : null}
         {child.cancelled ? (
           <Text testID={`home-child-cancelled-${id}`} variant="bodyMedium" style={{ color: theme.colors.error }}>
             {`Cancelled: ${whenWords(child.cancelled, today)} with ${firstOf(child.cancelled.tutor_name)}`}
           </Text>
         ) : null}
         {child.homework ? <Muted testID={`home-child-homework-${id}`}>{`Homework: ${child.homework}`}</Muted> : null}
-        <Muted testID={`home-child-month-${id}`}>{`${plural(child.lessons_this_month, 'lesson')} this month`}</Muted>
+        {tutoring ? (
+          <Muted testID={`home-child-month-${id}`}>{`${plural(child.lessons_this_month, 'lesson')} this month`}</Muted>
+        ) : null}
         {played ? <Muted testID={`home-child-played-${id}`}>{played}</Muted> : null}
+        {fallback === 'off' ? <Muted testID={`home-child-off-${id}`}>{CHILD_OFF_LINE}</Muted> : null}
       </Pressable>
+      {fallback === 'assessments' ? (
+        <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, flexDirection: 'row' }}>
+          <Button
+            testID={`home-child-assessments-${id}`}
+            mode="outlined"
+            icon="draw-pen"
+            contentStyle={{ minHeight: MIN_TARGET }}
+            onPress={() => {
+              haptics.selection();
+              router.navigate('/assessments');
+            }}
+          >
+            Assessments
+          </Button>
+        </View>
+      ) : null}
       {playLevel ? (
         <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, flexDirection: 'row' }}>
           <Button
@@ -271,39 +316,68 @@ function ChildCard({
   );
 }
 
-function ParentSection({ home, assessment, quest }: { home: MemberHome; assessment: boolean; quest: boolean }) {
+function ParentSection({
+  home,
+  assessment,
+  quest,
+  tutoring,
+  assessmentOn,
+}: {
+  home: MemberHome;
+  assessment: boolean;
+  quest: boolean;
+  tutoring: boolean;
+  assessmentOn: boolean;
+}) {
   const children = home.parent?.children ?? [];
   const tiles = useMemberTiles(quest && children.length > 0);
   const firstTileLevel = tiles.data?.data.tiles[0]?.level_id ?? null;
   const { start, pending } = useStartQuest();
   return (
-    <Section hat="parent">
-      {/* A parent whose child the space has not added yet: the hat their role implies, empty. */}
-      {children.length === 0 ? (
-        <Card testID="home-children-empty">
-          <Muted>No children here yet. Once the space adds your child, their lessons and homework show here.</Muted>
-        </Card>
-      ) : null}
-      {children.map((child) => (
-        <ChildCard
-          key={child.student_user_id}
-          child={child}
-          today={home.day}
-          quest={quest}
-          firstTileLevel={firstTileLevel}
-          start={start}
-          pending={pending}
-        />
-      ))}
-      {assessment ? <AssessmentHome /> : null}
-    </Section>
+    <TourTarget id="home-section-parent">
+      <Section hat="parent">
+        {/* A parent whose child the space has not added yet: the hat their role implies, empty. */}
+        {children.length === 0 ? (
+          <Card testID="home-children-empty">
+            <Muted>No children here yet. Once the space adds your child, their lessons and homework show here.</Muted>
+          </Card>
+        ) : null}
+        {children.map((child) => (
+          <ChildCard
+            key={child.student_user_id}
+            child={child}
+            today={home.day}
+            tutoring={tutoring}
+            quest={quest}
+            assessment={assessmentOn}
+            firstTileLevel={firstTileLevel}
+            start={start}
+            pending={pending}
+          />
+        ))}
+        {assessment ? <AssessmentHome /> : null}
+      </Section>
+    </TourTarget>
   );
 }
 
-function LearnerSection({ home, quest, assessment }: { home: MemberHome; quest: boolean; assessment: boolean }) {
-  const next = home.learner?.next_lesson;
+function LearnerSection({
+  home,
+  item,
+  quest,
+  assessment,
+}: {
+  home: MemberHome;
+  item: NextUp | null;
+  quest: boolean;
+  assessment: boolean;
+}) {
+  // Next up already names the lesson when it is the learner's next lesson: not twice. With nothing at all
+  // (no lesson shown, Quest and Assessment off), one muted line rather than an empty heading.
+  const { next, empty } = learnerSectionParts(home.learner?.next_lesson, item, { quest, assessment });
   return (
     <Section hat="learner">
+      {empty ? <Muted testID="home-learner-empty">{LEARNER_EMPTY_LINE}</Muted> : null}
       {next ? (
         <Card testID="home-learner-next-card">
           <Muted>Your next lesson</Muted>
@@ -345,9 +419,26 @@ export function HomeSections({ home, hats, item }: { home: MemberHome; hats: Hom
           case 'office':
             return home.office ? <OfficeSection key={hat} home={home} assessment={assessmentHat === 'office'} /> : null;
           case 'parent':
-            return home.parent ? <ParentSection key={hat} home={home} assessment={assessmentHat === 'parent'} quest={quest} /> : null;
+            return home.parent ? (
+              <ParentSection
+                key={hat}
+                home={home}
+                assessment={assessmentHat === 'parent'}
+                quest={quest}
+                tutoring={tutoring}
+                assessmentOn={assessmentOn}
+              />
+            ) : null;
           case 'learner':
-            return <LearnerSection key={hat} home={home} quest={quest} assessment={assessmentHat === 'learner'} />;
+            return (
+              <LearnerSection
+                key={hat}
+                home={home}
+                item={item}
+                quest={quest}
+                assessment={assessmentHat === 'learner'}
+              />
+            );
         }
       })}
     </>

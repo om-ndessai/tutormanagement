@@ -277,7 +277,7 @@ tags:
       text: '1 point'
     timeout: 10000
 - takeScreenshot: spaces-new-space-quest-play
-# --- 2. A console space made with the defaults ------------------------------------------------
+# --- 2. A console space made with the defaults (and Assessment ticked) ------------------------------------------------
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -307,13 +307,18 @@ tags:
     centerElement: true
 # A ticked box: Android reports it as checked; iOS gives a checkbox its state as its value
 # ("checkbox, checked"), which Maestro does not read as checked there.
+# Owner, 2026-11-04: a new space starts with Quest alone ticked; Assessment is ticked here by hand, so
+# what follows still checks S10 -- the sets it may use start switched on for its admins.
 - runFlow:
     when:
       platform: Android
     commands:
       - assertVisible:
+          id: org-form-feature-tutoring
+          checked: false
+      - assertVisible:
           id: org-form-feature-assessment
-          checked: true
+          checked: false
       - assertVisible:
           id: org-form-feature-quest
           checked: true
@@ -322,10 +327,29 @@ tags:
       platform: iOS
     commands:
       - assertVisible:
+          id: org-form-feature-tutoring
+          text: 'checkbox, unchecked'
+      - assertVisible:
           id: org-form-feature-assessment
-          text: 'checkbox, checked'
+          text: 'checkbox, unchecked'
       - assertVisible:
           id: org-form-feature-quest
+          text: 'checkbox, checked'
+- tapOn:
+    id: org-form-feature-assessment
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: org-form-feature-assessment
+          checked: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: org-form-feature-assessment
           text: 'checkbox, checked'
 - scrollUntilVisible:
     element:

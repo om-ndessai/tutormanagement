@@ -53,6 +53,15 @@ onFlowComplete:
     id: org-form-short
 - inputText: 'MCA'
 - pressKey: Enter
+# Owner, 2026-11-04: who families pay is Tutoring's -- shown only once Tutoring is ticked.
+- assertNotVisible:
+    id: org-form-payment-model
+- scrollUntilVisible:
+    element:
+      id: org-form-feature-tutoring
+    centerElement: true
+- tapOn:
+    id: org-form-feature-tutoring
 - scrollUntilVisible:
     element:
       id: org-form-payment-space

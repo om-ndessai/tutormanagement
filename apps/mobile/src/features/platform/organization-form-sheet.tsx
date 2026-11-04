@@ -174,126 +174,12 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         <Text variant="bodyMedium" style={{ color: muted }}>
           {existing
             ? 'Its identity, look and who families pay. Its own admins can keep its payer details too.'
-            : 'Its name, look and who families pay. Its admins come next, once it exists.'}
+            : 'Its name, what it may use, and its look. Its admins come next, once it exists.'}
         </Text>
       </View>
 
       {text('name', 'org-form-name', 'Name')}
       {text('short_name', 'org-form-short', 'Short name', { hint: 'For the sidebar and the tab title.' })}
-      {text('slug', 'org-form-slug', 'Address name', {
-        hint: 'Lower-case letters, digits and hyphens. Names its files and remembers the choice.',
-        autoCapitalize: 'none',
-      })}
-      {text('place', 'org-form-place', 'Place', { optional: true })}
-      {text('tagline', 'org-form-tagline', 'Tagline', { optional: true, autoCapitalize: 'sentences' })}
-      {text('blurb', 'org-form-blurb', 'Description', {
-        optional: true,
-        hint: 'The line under the tagline on the sign-in page.',
-        autoCapitalize: 'sentences',
-      })}
-
-      <OptionPicker
-        testID="org-form-tz"
-        label="Lessons are recorded on"
-        placeholder="Choose a time zone"
-        options={ORG_TIME_ZONES.map((zone) => ({ id: zone, label: `${ORG_TIME_ZONE_LABELS[zone]} time` }))}
-        value={form.time_zone}
-        onChange={(zone) => set('time_zone', zone as OrgTimeZone)}
-        error={errors.time_zone}
-      />
-
-      {/* Phase 59 (S2): who families pay -- the space (its own payer details, its 1099s, its cut), or
-          each lesson's tutor directly. A change applies going forward. */}
-      <View
-        testID="org-form-payment-model"
-        style={{
-          gap: space.sm,
-          borderWidth: 1,
-          borderColor: theme.colors.outlineVariant,
-          borderRadius: radius.md,
-          padding: space.md,
-        }}
-      >
-        <Text variant="bodyMedium" accessibilityRole="header">
-          Who families pay
-        </Text>
-        <RadioButton.Group
-          value={form.payment_model}
-          onValueChange={(value) => {
-            haptics.selection();
-            set('payment_model', value as OrgFormState['payment_model']);
-          }}
-        >
-          {SPACE_PAYMENT_MODELS.map((model) => (
-            <Pressable
-              key={model}
-              testID={`org-form-payment-${model}`}
-              accessibilityRole="radio"
-              accessibilityLabel={SPACE_PAYMENT_MODEL_LABELS[model]}
-              accessibilityState={{ checked: form.payment_model === model }}
-              onPress={() => {
-                haptics.selection();
-                set('payment_model', model);
-              }}
-              style={{ minHeight: MIN_TARGET, flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}
-            >
-              <RadioButton.Android value={model} />
-              <View style={{ flex: 1, gap: 2, paddingTop: space.sm }}>
-                <Text variant="bodyMedium">{SPACE_PAYMENT_MODEL_LABELS[model]}</Text>
-                <Text variant="bodySmall" style={{ color: muted }}>
-                  {SPACE_PAYMENT_MODEL_DESCRIPTIONS[model]}
-                </Text>
-              </View>
-            </Pressable>
-          ))}
-        </RadioButton.Group>
-        {existing ? (
-          <Text testID="org-form-payment-hint" variant="bodySmall" style={{ color: muted }}>
-            A change applies from now on; recorded lessons and payments keep theirs.
-          </Text>
-        ) : null}
-        {form.payment_model === 'space' ? (
-          <PayerFields
-            payer={form.payer}
-            errors={errors}
-            spaceName={form.name}
-            onChange={(key, value) => {
-              set('payer', { ...form.payer, [key]: value });
-              if (errors[key]) setErrors(({ [key]: _gone, ...rest }) => rest);
-            }}
-          />
-        ) : null}
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          gap: space.md,
-          borderWidth: 1,
-          borderColor: theme.colors.outlineVariant,
-          borderRadius: radius.md,
-          padding: space.md,
-        }}
-      >
-        <View style={{ flex: 1, gap: 2 }}>
-          <Text variant="bodyMedium">Email notifications</Text>
-          <Text variant="bodySmall" style={{ color: muted }}>
-            Emails the people concerned when someone is added, a plan or assessment is added, lessons are
-            scheduled, or a session is recorded. Its own admins can switch it too.
-          </Text>
-        </View>
-        <Switch
-          testID="org-form-notifications"
-          accessibilityLabel="Email notifications"
-          value={form.email_notifications}
-          onValueChange={(value) => {
-            haptics.selection();
-            set('email_notifications', value);
-          }}
-        />
-      </View>
-
       {existing ? (
         <>
         {/* Phase 51: a space whose Quest reviews only suggest approvals, for the console to decide. */}
@@ -355,8 +241,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
         </View>
         </>
       ) : (
-        // Phase 50: what it may use, all ticked unless unticked. Editing leaves them to the space
-        // screen's "This space may use" section (S3).
+        // Phase 50: what it may use -- Quest alone unless ticked (owner, 2026-11-04), asked right after
+        // the name. Editing leaves the sets to the space screen's "This space may use" section (S3).
         <Field label="This space may use">
           <View>
             {FEATURE_SETS.map((feature) => (
@@ -378,6 +264,128 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
           </View>
         </Field>
       )}
+
+
+      {text('slug', 'org-form-slug', 'Address name', {
+        hint: 'Lower-case letters, digits and hyphens. Names its files and remembers the choice.',
+        autoCapitalize: 'none',
+      })}
+      {text('place', 'org-form-place', 'Place', { optional: true })}
+      {text('tagline', 'org-form-tagline', 'Tagline', { optional: true, autoCapitalize: 'sentences' })}
+      {text('blurb', 'org-form-blurb', 'Description', {
+        optional: true,
+        hint: 'The line under the tagline on the sign-in page.',
+        autoCapitalize: 'sentences',
+      })}
+
+      {/* Owner, 2026-11-04: the clock, who families pay and email notifications are Tutoring's: shown only
+          while the space may use Tutoring (its switch here when creating; what it is allowed when editing).
+          Their values are kept and sent as before, only hidden. */}
+      {form.features.tutoring ? (
+        <>
+        <OptionPicker
+          testID="org-form-tz"
+          label="Lessons are recorded on"
+          placeholder="Choose a time zone"
+          options={ORG_TIME_ZONES.map((zone) => ({ id: zone, label: `${ORG_TIME_ZONE_LABELS[zone]} time` }))}
+          value={form.time_zone}
+          onChange={(zone) => set('time_zone', zone as OrgTimeZone)}
+          error={errors.time_zone}
+        />
+
+        {/* Phase 59 (S2): who families pay -- the space (its own payer details, its 1099s, its cut), or
+            each lesson's tutor directly. A change applies going forward. */}
+        <View
+          testID="org-form-payment-model"
+          style={{
+            gap: space.sm,
+            borderWidth: 1,
+            borderColor: theme.colors.outlineVariant,
+            borderRadius: radius.md,
+            padding: space.md,
+          }}
+        >
+          <Text variant="bodyMedium" accessibilityRole="header">
+            Who families pay
+          </Text>
+          <RadioButton.Group
+            value={form.payment_model}
+            onValueChange={(value) => {
+              haptics.selection();
+              set('payment_model', value as OrgFormState['payment_model']);
+            }}
+          >
+            {SPACE_PAYMENT_MODELS.map((model) => (
+              <Pressable
+                key={model}
+                testID={`org-form-payment-${model}`}
+                accessibilityRole="radio"
+                accessibilityLabel={SPACE_PAYMENT_MODEL_LABELS[model]}
+                accessibilityState={{ checked: form.payment_model === model }}
+                onPress={() => {
+                  haptics.selection();
+                  set('payment_model', model);
+                }}
+                style={{ minHeight: MIN_TARGET, flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}
+              >
+                <RadioButton.Android value={model} />
+                <View style={{ flex: 1, gap: 2, paddingTop: space.sm }}>
+                  <Text variant="bodyMedium">{SPACE_PAYMENT_MODEL_LABELS[model]}</Text>
+                  <Text variant="bodySmall" style={{ color: muted }}>
+                    {SPACE_PAYMENT_MODEL_DESCRIPTIONS[model]}
+                  </Text>
+                </View>
+              </Pressable>
+            ))}
+          </RadioButton.Group>
+          {existing ? (
+            <Text testID="org-form-payment-hint" variant="bodySmall" style={{ color: muted }}>
+              A change applies from now on; recorded lessons and payments keep theirs.
+            </Text>
+          ) : null}
+          {form.payment_model === 'space' ? (
+            <PayerFields
+              payer={form.payer}
+              errors={errors}
+              spaceName={form.name}
+              onChange={(key, value) => {
+                set('payer', { ...form.payer, [key]: value });
+                if (errors[key]) setErrors(({ [key]: _gone, ...rest }) => rest);
+              }}
+            />
+          ) : null}
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            gap: space.md,
+            borderWidth: 1,
+            borderColor: theme.colors.outlineVariant,
+            borderRadius: radius.md,
+            padding: space.md,
+          }}
+        >
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text variant="bodyMedium">Email notifications</Text>
+            <Text variant="bodySmall" style={{ color: muted }}>
+              Emails the people concerned when someone is added, a plan or assessment is added, lessons are
+              scheduled, or a session is recorded. Its own admins can switch it too.
+            </Text>
+          </View>
+          <Switch
+            testID="org-form-notifications"
+            accessibilityLabel="Email notifications"
+            value={form.email_notifications}
+            onValueChange={(value) => {
+              haptics.selection();
+              set('email_notifications', value);
+            }}
+          />
+        </View>
+        </>
+      ) : null}
 
       <Field label="Palette" error={errors.palette}>
         <PaletteSwatches

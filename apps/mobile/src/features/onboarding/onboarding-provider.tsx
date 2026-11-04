@@ -8,7 +8,7 @@
 //
 // The wizard is a route (`(org)/onboarding/*`, a full-screen modal) so that the app's own form
 // sheets can open over it; the tour is an overlay over the dashboard, drawn here.
-import type { TourOutcome, UserRole } from '@tmi/shared';
+import { tourOffered, type TourOutcome, type UserRole } from '@tmi/shared';
 import { router, useSegments } from 'expo-router';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -128,15 +128,18 @@ function OnboardingHost({ children }: { children: ReactNode }) {
       openWizard('invite');
       return;
     }
+    // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home (no wizard, no
+    // offer). The just-started space's "Invite people" above is not the tour and still opens.
+    if (!tourOffered(organization)) return;
     const decision = decideOnboarding({ onboarding, deviceSeen, viewingAs: dashboard.viewingAs });
     // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard.
     if (decision === 'wizard' && !organization?.personal) openWizard('welcome');
     else if (decision === 'offer') setOffer(true);
-  }, [user, onboarding, deviceSeen, dashboard, openWizard, organization?.slug, organization?.personal]);
+  }, [user, onboarding, deviceSeen, dashboard, openWizard, organization]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
-    if (!firstVisit || !onboarding?.tour_finished_at || !organization) return;
+    if (!firstVisit || !onboarding?.tour_finished_at || !organization || !tourOffered(organization)) return;
     if (!dashboard || dashboard.viewingAs) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the API's answer, once per entry
     setOfferTitle(`Welcome to ${organization.short_name}`);

@@ -23,7 +23,7 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# Phase 66: the Play home is in her "Practice" section, under Next up and the quick actions.
+# Phase 66: the Play home is in her "Your learning" section, under Next up and the quick actions.
 - scrollUntilVisible:
     element:
       id: play-home

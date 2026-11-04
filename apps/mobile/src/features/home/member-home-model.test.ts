@@ -4,10 +4,15 @@ import { chooseNextUp, nextUpCandidates, nextUpKey, orderHats, quickActionsFor }
 
 import { ALEX, ANITA, DAY, INES, MARIA, PRIYA, SOFIA, child, homeLesson, tutorLesson } from './member-home-fixtures';
 import {
+  CHILD_OFF_LINE,
+  childCardFallback,
   childStrip,
   deviceExtras,
+  LEARNER_EMPTY_LINE,
+  learnerSectionParts,
   lessonNowLine,
   lessonWithTutor,
+  nextUpShowsLearnerLesson,
   nextUpShowsLesson,
   officeStrip,
   questionQuestExtra,
@@ -156,3 +161,42 @@ describe('the sections and quick actions', () => {
 });
 
 type MemberHomeHats = typeof ALEX.hats;
+
+describe('Your learning and the child card, with sets off', () => {
+  it("leaves the learner's next lesson out while Next up shows it", () => {
+    const item = chooseNextUp(nextUpCandidates(SOFIA));
+    expect(item?.kind).toBe('learner_lesson');
+    expect(nextUpShowsLearnerLesson(item)).toBe(true);
+    const parts = learnerSectionParts(SOFIA.learner!.next_lesson, item, { quest: true, assessment: false });
+    expect(parts).toEqual({ next: null, empty: false });
+    // A game invite leads instead: the section shows the lesson itself.
+    const invite = chooseNextUp(nextUpCandidates(SOFIA, { game_invite: { game_id: 'g1', title: 'G4', host_first_name: 'Maria' } }));
+    expect(nextUpShowsLearnerLesson(invite)).toBe(false);
+    expect(learnerSectionParts(SOFIA.learner!.next_lesson, invite, { quest: true, assessment: false }).next).toEqual(
+      SOFIA.learner!.next_lesson,
+    );
+  });
+
+  it('is empty only with no lesson shown and Quest and Assessment off, and says so', () => {
+    const lesson = SOFIA.learner!.next_lesson;
+    expect(learnerSectionParts(null, null, { quest: false, assessment: false }).empty).toBe(true);
+    expect(learnerSectionParts(lesson, { kind: 'learner_lesson', hat: 'learner', lesson: lesson! }, { quest: false, assessment: false }).empty).toBe(true);
+    expect(learnerSectionParts(lesson, null, { quest: false, assessment: false }).empty).toBe(false);
+    expect(learnerSectionParts(null, null, { quest: true, assessment: false }).empty).toBe(false);
+    expect(learnerSectionParts(null, null, { quest: false, assessment: true }).empty).toBe(false);
+    expect(LEARNER_EMPTY_LINE).toBe('Nothing to practise here yet: Quest and Assessments are off in this space.');
+  });
+
+  it('with every set off, Next up offers no quest (the focus is only a fallback)', () => {
+    const none = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null }, focus: 'quest' as const, focus_options: [] };
+    expect(chooseNextUp(nextUpCandidates(none))).toBeNull();
+  });
+
+  it("gives a child's card Assessments, else a word, only with Tutoring and Quest off", () => {
+    expect(childCardFallback({ tutoring: true, quest: false, assessment: true })).toBeNull();
+    expect(childCardFallback({ tutoring: false, quest: true, assessment: false })).toBeNull();
+    expect(childCardFallback({ tutoring: false, quest: false, assessment: true })).toBe('assessments');
+    expect(childCardFallback({ tutoring: false, quest: false, assessment: false })).toBe('off');
+    expect(CHILD_OFF_LINE).toBe('Lessons and quests are off in this space.');
+  });
+});

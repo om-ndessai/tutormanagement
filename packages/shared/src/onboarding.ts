@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { featureOn, type FeatureState } from './features.js';
+
 // ---------------------------------------------------------------------------
 // Onboarding (Phase 26)
 // ---------------------------------------------------------------------------
@@ -27,3 +29,12 @@ export type FinishTourPayload = z.output<typeof finishTourSchema>;
  * by the page itself, so not HttpOnly, and it carries nothing but "seen".
  */
 export const TOUR_COOKIE = 'tmi_tour_seen';
+
+/**
+ * Whether a space offers the welcome wizard's tour and "Getting started" (owner, 2026-11-04): only where
+ * Tutoring is on -- the tour walks through pairings, lessons and billing. Elsewhere the home itself is the
+ * start. A just-started space's "Invite people" step is not the tour and is offered anyway.
+ */
+export function tourOffered(org: Partial<FeatureState> | null | undefined): boolean {
+  return featureOn(org, 'tutoring');
+}

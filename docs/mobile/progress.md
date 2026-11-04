@@ -567,6 +567,15 @@ native rebuild of both dev builds, so build only while the devices are free.
   notice covers visits, Recompute, six tiles, two charts, retention by week 1/4/8 (`GET`/`PUT /platform/visits`, `GET
   /platform/stickiness`, `POST /platform/stickiness/refresh`). Built 2026-11-04: typecheck, lint (0 errors), Jest, export green;
   `flows/platform` (8, `stickiness` new) green on iOS and Android; `npm run smoke -- mobile` 10/10 on iOS and on Android.
+- [x] 81. Mobile: member-home fixes across feature sets (build-log entry 79) -- "Your learning" (was "Practice"), its next
+  lesson left out while Next up shows it, one muted line when it would be empty, the Play home's heading a "Quest"
+  sub-label, a child's card with Tutoring and Quest off (Assessments, else "Lessons and quests are off"). 2026-11-04.
+- [x] 82. Mobile: the tour is Tutoring's (`tourOffered`: no wizard or tour offer by itself, no "Take the tour" in the
+  account sheet or Search where Tutoring is off; "Invite people" still opens) and the console's space form (name, short
+  name, then what it may use; Quest alone ticked for a new space; clock, who families pay and email notifications only
+  with Tutoring) (build-log entry 80). 2026-11-04.
+- [x] 83. Mobile: the tour on the member home (build-log entry 81) -- the web's Phase 66 steps (the band, Next up, To
+  record, the children, then Dashboard under More and the menu), the home's blocks registered as tour targets. 2026-11-04.
 
 ## Phase 4 — Google sign-in
 

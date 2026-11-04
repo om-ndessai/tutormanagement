@@ -119,7 +119,13 @@ describe('organization form', () => {
       feature_assessment: true,
       feature_quest: true,
     });
-    expect(EMPTY_ORG_FORM.features).toEqual({ tutoring: true, assessment: true, quest: true });
+    // Owner, 2026-11-04: a new space starts with Quest alone.
+    expect(EMPTY_ORG_FORM.features).toEqual({ tutoring: false, assessment: false, quest: true });
+    expect(formToInput(EMPTY_ORG_FORM, true)).toMatchObject({
+      feature_tutoring: false,
+      feature_assessment: false,
+      feature_quest: true,
+    });
     expect(formFromOrganization(null)).toBe(EMPTY_ORG_FORM);
   });
 

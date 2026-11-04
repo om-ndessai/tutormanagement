@@ -611,6 +611,14 @@ space kind and arrival), stored as `platform_settings` 'stickiness' and shown on
 under `STICKINESS_MIN_GROUP` (5) are withheld; no route reads a person's rows. Visit rows are deleted after
 `VISIT_KEEP_DAYS`, with the space and with the account.
 
+**The tour is Tutoring's, and a new space is asked what it may use first** (owner, 2026-11-04). The welcome
+wizard's tour, its first-visit offer and "Getting started" appear only where Tutoring is on (`tourOffered` in
+shared `onboarding.ts`); a just-started space's "Invite people" step is not the tour and still opens. The
+console's space form asks Name, Short name, then the sets ("This space may use", Quest alone ticked for a new
+space), and shows the clock ("Lessons are recorded on"), "Who families pay" and email notifications only while
+Tutoring is ticked. An API create with no sets keeps its old defaults (older clients). On the member home, Next up
+never offers a set the space has off, and a section with nothing to show says so in one line.
+
 **Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
 `docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
 else is the web. Platform admins set, for the web portal and the app separately, which providers besides

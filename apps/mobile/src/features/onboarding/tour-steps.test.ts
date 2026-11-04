@@ -62,3 +62,30 @@ describe('placementOf', () => {
     expect(placementOf('dash-assess-students')).toEqual({ kind: 'view', id: 'dash-assess-students' });
   });
 });
+
+describe('Phase 66: the tour starts on the member home', () => {
+  it('leads each role with the home’s blocks, as the web', () => {
+    expect(targets(TOUR_STEPS.tutor).slice(0, 4)).toEqual(['home-band', 'home-next-up', 'home-to-record', 'nav-analytics']);
+    expect(TOUR_STEPS.tutor[0]!.title).toBe('Your teaching at a glance');
+    expect(TOUR_STEPS.tutor[1]!.title).toBe('Next up');
+    expect(TOUR_STEPS.tutor.at(-1)!.title).toBe('Your profile');
+    expect(targets(TOUR_STEPS.admin).slice(0, 3)).toEqual(['home-band', 'home-next-up', 'nav-analytics']);
+    expect(targets(TOUR_STEPS.parent).slice(0, 3)).toEqual(['home-section-parent', 'home-next-up', 'nav-analytics']);
+    expect(targets(TOUR_STEPS.student).slice(0, 3)).toEqual(['home-band', 'home-next-up', 'nav-analytics']);
+  });
+
+  it('lights no dashboard section and no Tutoring/Finance tabs: those moved to More → Dashboard', () => {
+    for (const steps of Object.values(TOUR_STEPS)) {
+      for (const target of targets(steps)) {
+        expect(target.startsWith('dash-')).toBe(false);
+        expect(target).not.toBe('tabs');
+      }
+    }
+  });
+
+  it('finds the Dashboard step under More, and keeps it where Tutoring is on', () => {
+    expect(placementOf('nav-analytics')).toEqual({ kind: 'tab', index: 3, within: 'More' });
+    expect(targets(tourStepsFor('tutor', ALL))).toContain('nav-analytics');
+    expect(targets(tourStepsFor('tutor', ALL))).toContain('nav-schedule');
+  });
+});

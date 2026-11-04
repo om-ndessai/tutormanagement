@@ -16,7 +16,7 @@ tags:
     env:
       PERSONA: sofia.okafor@gmail.com
       ORG: chmi
-# Phase 66: the Play home is in her "Practice" section, under Next up and the quick actions.
+# Phase 66: the Play home is in her "Your learning" section, under Next up and the quick actions.
 - extendedWaitUntil:
     visible:
       id: screen-home

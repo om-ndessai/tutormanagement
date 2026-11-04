@@ -23,12 +23,13 @@ const mockFeatures = jest.fn();
 const mockSave = jest.fn();
 let mockOrganizations: OrganizationListItem[] = [];
 const mockSetModel = jest.fn();
+const mockCreate = jest.fn();
 jest.mock('./api', () => ({
   useLookupPerson: () => ({ mutateAsync: mockLookup, isPending: false }),
   useUpdatePerson: () => ({ mutateAsync: mockUpdate, isPending: false }),
   useUnpinPerson: () => ({ mutate: jest.fn(), isPending: false }),
   useOrganizations: () => ({ data: { data: mockOrganizations }, isPending: false }),
-  useCreateOrganization: () => ({ mutateAsync: jest.fn(), isPending: false }),
+  useCreateOrganization: () => ({ mutateAsync: mockCreate, isPending: false }),
   useUpdateOrganization: () => ({ mutateAsync: mockSave, isPending: false }),
   useUpdateOrganizationFeatures: () => ({ mutateAsync: mockFeatures, isPending: false }),
   useSetPaymentModel: () => ({ mutateAsync: mockSetModel, isPending: false }),
@@ -156,12 +157,76 @@ describe('FeaturesSection (Phase 50)', () => {
 });
 
 describe('OrganizationFormSheet (Phase 50)', () => {
-  it('ticks all three feature sets when creating', async () => {
+  it('offers the three feature sets when creating, Quest alone ticked (owner, 2026-11-04)', async () => {
     await renderWithProviders(<OrganizationFormSheet />);
     for (const set of ['tutoring', 'assessment', 'quest']) {
       expect(screen.getByTestId(`org-form-feature-${set}`)).toBeTruthy();
     }
-    expect(screen.getAllByRole('checkbox', { checked: true }).length).toBeGreaterThanOrEqual(3);
+    const checked = (set: string) => screen.getByTestId(`org-form-feature-${set}`).props.accessibilityState?.checked;
+    expect(checked('quest')).toBe(true);
+    expect(checked('tutoring')).toBe(false);
+    expect(checked('assessment')).toBe(false);
+    expect(
+      screen.getByText('Its name, what it may use, and its look. Its admins come next, once it exists.'),
+    ).toBeTruthy();
+  });
+
+  it('asks what it may use right after the name, before the address name', async () => {
+    await renderWithProviders(<OrganizationFormSheet />);
+    const ids: string[] = [];
+    const walk = (node: unknown): void => {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) return node.forEach(walk);
+      const id = (node as { props?: { testID?: string } }).props?.testID;
+      if (id && ['org-form-name', 'org-form-short', 'org-form-feature-tutoring', 'org-form-slug', 'org-form-place'].includes(id) && !ids.includes(id))
+        ids.push(id);
+      walk((node as { children?: unknown }).children);
+    };
+    walk(screen.toJSON());
+    expect(ids).toEqual(['org-form-name', 'org-form-short', 'org-form-feature-tutoring', 'org-form-slug', 'org-form-place']);
+  });
+
+  it("shows the clock, who families pay and email notifications only while Tutoring is ticked", async () => {
+    mockCreate.mockReset();
+    mockCreate.mockResolvedValue({ data: RIVERSIDE });
+    await renderWithProviders(<OrganizationFormSheet />);
+    expect(screen.queryByTestId('org-form-tz')).toBeNull();
+    expect(screen.queryByTestId('org-form-payment-model')).toBeNull();
+    expect(screen.queryByTestId('org-form-notifications')).toBeNull();
+    await fireEvent.press(screen.getByTestId('org-form-feature-tutoring'));
+    expect(screen.getByTestId('org-form-tz')).toBeTruthy();
+    expect(screen.getByTestId('org-form-payment-model')).toBeTruthy();
+    expect(screen.getByTestId('org-form-notifications')).toBeTruthy();
+    await fireEvent(screen.getByTestId('org-form-notifications'), 'valueChange', true);
+    await fireEvent.press(screen.getByTestId('org-form-feature-tutoring'));
+    expect(screen.queryByTestId('org-form-tz')).toBeNull();
+    expect(screen.queryByTestId('org-form-payment-model')).toBeNull();
+    expect(screen.queryByTestId('org-form-notifications')).toBeNull();
+    // Hidden, not dropped: what was chosen still travels.
+    await fireEvent.changeText(screen.getByTestId('org-form-name'), 'Hidden Values Academy');
+    await fireEvent.changeText(screen.getByTestId('org-form-short'), 'HVA');
+    await fireEvent.press(screen.getByTestId('org-form-save'));
+    await waitFor(() => expect(mockCreate).toHaveBeenCalled());
+    expect(mockCreate.mock.calls[0][0]).toMatchObject({
+      email_notifications: true,
+      time_zone: 'America/New_York',
+      feature_tutoring: false,
+      feature_quest: true,
+    });
+  });
+
+  it('editing a space without Tutoring hides those three fields too', async () => {
+    mockOrganizations = [{ ...RIVERSIDE, feature_tutoring: false }];
+    await renderWithProviders(<OrganizationFormSheet id={RIVERSIDE.id} />);
+    expect(screen.getByTestId('org-form-quest-trusted')).toBeTruthy();
+    expect(screen.queryByTestId('org-form-tz')).toBeNull();
+    expect(screen.queryByTestId('org-form-payment-model')).toBeNull();
+    expect(screen.queryByTestId('org-form-notifications')).toBeNull();
+    mockOrganizations = [RIVERSIDE];
+    await renderWithProviders(<OrganizationFormSheet id={RIVERSIDE.id} />);
+    expect(screen.getByTestId('org-form-tz')).toBeTruthy();
+    expect(screen.getByTestId('org-form-payment-model')).toBeTruthy();
+    mockOrganizations = [];
   });
 
   it('offers the Quest trust only when editing, and sends it with the sets as they stand (Phase 51)', async () => {

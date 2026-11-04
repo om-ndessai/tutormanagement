@@ -1,7 +1,7 @@
 // Ported from apps/web/src/components/layout/command-palette.tsx @ 1132322: navigation becomes
 // search -- type a few letters of a page, a person or an action. Only ever offers what the reader
 // may do; the API decides the rest.
-import { USER_ROLE_LABELS, featureOn } from '@tmi/shared';
+import { USER_ROLE_LABELS, featureOn, tourOffered } from '@tmi/shared';
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -90,7 +90,7 @@ export function SearchScreen() {
 
   const actions: ActionRow[] = [
     // The web palette's "Take the tour": the welcome wizard, which offers the tour (#34).
-    ...(onboarding
+    ...(onboarding && tourOffered(organization)
       ? [
           {
             key: 'tour',

@@ -197,12 +197,13 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
     }
   });
 
-  test('a console space made with the defaults has Assessment and Quest allowed and on', async ({ as }) => {
+  test('a console space made with the defaults has Quest alone; Tutoring brings its clock, payments and email', async ({ as }) => {
     const platform = await as('platformAdmin', { org: null });
     const name = `Defaults Academy ${stamp % 100000}`;
     const slug = `defaults-academy-${stamp % 100000}`;
 
-    // The console's form: all three sets ticked unless a platform admin unticks one.
+    // The console's form (owner, 2026-11-04): the sets are asked right after the names, Quest alone
+    // ticked; the clock, who families pay and email notifications are Tutoring's, shown once it is ticked.
     await platform.goto('/platform');
     await platform.getByRole('button', { name: 'New space' }).click();
     const dialog = platform.getByRole('dialog');
@@ -210,18 +211,24 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
     await expect(dialog.getByLabel('Address name')).toHaveValue(slug);
     await dialog.getByLabel('Short name').fill('Defaults');
     const sets = dialog.getByTestId('org-feature-sets');
-    for (const set of ['Tutoring', 'Assessment', 'Quest']) {
-      await expect(sets.getByRole('switch', { name: set, exact: true })).toHaveAttribute('aria-checked', 'true');
+    await expect(sets.getByRole('switch', { name: 'Quest', exact: true })).toHaveAttribute('aria-checked', 'true');
+    for (const set of ['Tutoring', 'Assessment']) {
+      await expect(sets.getByRole('switch', { name: set, exact: true })).toHaveAttribute('aria-checked', 'false');
     }
+    const tutoringOnly = [dialog.getByLabel('Lessons are recorded on'), dialog.getByTestId('org-payment-model'), dialog.getByLabel('Email notifications')];
+    for (const field of tutoringOnly) await expect(field).toHaveCount(0);
+    await sets.getByRole('switch', { name: 'Tutoring', exact: true }).click();
+    for (const field of tutoringOnly) await expect(field).toBeVisible();
+    await sets.getByRole('switch', { name: 'Tutoring', exact: true }).click();
+    for (const field of tutoringOnly) await expect(field).toHaveCount(0);
     await dialog.getByRole('button', { name: 'Create space' }).click();
     await expect(visible(platform, `${name} created.`).first()).toBeVisible();
 
     const row = await consoleRow(platform, slug);
     expect(row).toMatchObject({
-      feature_tutoring: true,
-      feature_assessment: true,
+      feature_tutoring: false,
+      feature_assessment: false,
       feature_quest: true,
-      canvas_assessments: true,
       gamify_question_quest: true,
       created_via: 'console',
     });
@@ -253,15 +260,18 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
     await unwrap(await invited.request.post(`/api/auth/invitations/${slug}/accept`), 'accepting');
     const dora = await as('admin', { email: adminEmail, org: slug });
     const settings = await unwrap<any>(await dora.request.get('/api/organization/settings'), 'its settings');
-    expect(settings).toMatchObject({ canvas_assessments: true, gamify_question_quest: true });
-    expect((await dora.request.get('/api/canvas-assessments')).status()).toBe(200);
+    expect(settings).toMatchObject({ gamify_question_quest: true });
+    // Quest, allowed and on; Assessment was left unticked, so it is not there at all.
     expect((await dora.request.get('/api/quest/review')).status()).toBe(200);
-    await unwrap(await dora.request.post('/api/onboarding/tour', { data: { outcome: 'skipped' } }), 'past the wizard');
+    expect((await dora.request.get('/api/canvas-assessments')).status()).toBe(403);
     await dora.goto('/');
-    await closeWizardIfOpen(dora);
+    // No Tutoring, so no welcome tour opens and no "Getting started" is offered (owner, 2026-11-04).
+    await expect(dora.getByTestId('home-greeting')).toBeVisible({ timeout: 15_000 });
+    await expect(dora.getByRole('dialog')).toHaveCount(0);
+    await expect(dora.getByTestId('home-getting-started')).toHaveCount(0);
     const nav = mainNav(dora);
-    await expect(nav.getByRole('link', { name: /^Assessment/ })).toBeVisible();
     await expect(nav.getByRole('link', { name: /^Quest\b/ })).toBeVisible();
+    await expect(nav.getByRole('link', { name: /^Assessment/ })).toHaveCount(0);
   });
 
   test('the seed has a console space made after the change, with Assessment and Quest on', async ({ as }) => {

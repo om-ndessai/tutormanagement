@@ -2,9 +2,9 @@
 // the web's; only "Getting started" says where the phone keeps it (the account menu), and
 // `placementOf` says where each target is on a phone: a registered view, or a tab of the tab bar
 // (the menu items the tab bar has no room for live under More).
-// Phase 43 (app-first, 2026-10-20): Home lost Analytics and Recent Activity, so the figures' step
-// lights the Dashboard page under More and the Recent Activity step is gone; the web's tour follows
-// when its half of the phase is built.
+// Phase 66 (re-ported 2026-11-04 from the web's tour-steps.ts): the tour starts on the member home's
+// blocks (the band, Next up, To record, the children), then the menu; the dashboard's own sections
+// moved to More → Dashboard with the dashboard, so the tour no longer lights them.
 // Phase 50: the tour follows the feature sets (`tourStepsFor`): a menu step whose page is not on
 // here is dropped, a space without Tutoring gets the space home's own steps, and the tab a step
 // points at is found among the tabs the bar shows here.
@@ -24,33 +24,32 @@ export interface TourStep {
   body: string;
 }
 
+// The web's "Dashboard" page (its `nav-dashboard`) is the app's More → Dashboard (`nav-analytics`): the
+// app's `nav-dashboard` is the Home tab itself. So the Dashboard steps point at `nav-analytics`, which
+// lights More and says "You will find it under More".
+const DASHBOARD = 'nav-analytics';
+
 /**
- * The tour for each dashboard, in the order a newcomer needs it: the
- * dashboard's own sections first, then the menu. Copy speaks of "the office"
- * and never names the institute -- the same build serves the demo too.
+ * The tour for each role, in the order a newcomer needs it: the home's own blocks first (Phase 66),
+ * then the menu. Copy speaks of "the office" and never names the institute -- the same build serves
+ * the demo too.
  */
 export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   admin: [
     {
-      // Phase 43: the figures left Home for the Dashboard page, under More.
-      target: 'nav-analytics',
+      target: 'home-band',
       title: 'Your space at a glance',
-      body: 'Students, tutors, parents and lessons, counted. Each card opens the list behind it.',
+      body: 'Your day here: lessons not yet recorded, invitations waiting and today’s lessons.',
     },
     {
-      target: 'dash-sessions',
-      title: 'Lessons, past and coming',
-      body: 'The last five lessons, then what the schedules say is next. A cancelled date shows here too.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'The one thing to do now. Later puts it off for the day.',
     },
     {
-      target: 'dash-progress',
-      title: 'Progress towards each goal',
-      body: 'A few students with their timeline against the plan. All Progress has everyone.',
-    },
-    {
-      target: 'tabs',
-      title: 'Tutoring and Finance',
-      body: 'Teaching lives on Tutoring, which shows no money. Charges, pay, balances and year-end are on Finance.',
+      target: DASHBOARD,
+      title: 'Dashboard',
+      body: 'Counts, lessons, progress and recent activity on Tutoring, which shows no money. Charges, pay, balances and year-end are on Finance.',
     },
     {
       target: 'nav-users',
@@ -100,29 +99,24 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   tutor: [
     {
-      target: 'nav-analytics',
+      target: 'home-band',
       title: 'Your teaching at a glance',
-      body: 'Your students, your lessons, and whether one is running now.',
+      body: 'Today’s lessons and what is still to record.',
     },
     {
-      target: 'dash-sessions',
-      title: 'Your lessons',
-      body: 'Your last five lessons, then your next ones from the schedule — cancelled dates included.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'A lesson just finished: record it in one tap, already filled in from the schedule. One about to start: start it from here.',
     },
     {
-      target: 'dash-reflections',
-      title: 'What your students said',
-      body: 'Each student’s reflection on a lesson, with a flag when it was too fast, too hard or not new.',
+      target: 'home-to-record',
+      title: 'To record',
+      body: 'Lessons of the last week that were never written up. Record each one from here.',
     },
     {
-      target: 'dash-progress',
-      title: 'Progress',
-      body: 'A few of your students against their learning plans.',
-    },
-    {
-      target: 'tabs',
-      title: 'Tutoring and Finance',
-      body: 'Tutoring shows no money, so it is safe with a student beside you. Your pay is on Finance.',
+      target: DASHBOARD,
+      title: 'Dashboard',
+      body: 'Your lessons, what your students said and their progress. Your pay is on Finance.',
     },
     {
       target: 'nav-sessions',
@@ -152,24 +146,19 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   parent: [
     {
-      target: 'dash-children',
+      target: 'home-section-parent',
       title: 'Your children',
-      body: 'Each child, their lessons and their balance.',
+      body: 'Each child’s next lesson, any change to it, and the homework from last time.',
     },
     {
-      target: 'dash-reflect',
-      title: 'Reflect together',
-      body: 'After a lesson, a few quick questions answered with your child. Their tutor reads them.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'What matters now, such as a cancelled lesson or the next one coming.',
     },
     {
-      target: 'dash-child-progress',
-      title: 'Progress',
-      body: 'Where your child is against their goal, lesson by lesson.',
-    },
-    {
-      target: 'dash-recent-sessions',
-      title: 'Recent lessons',
-      body: 'The latest lessons. The Sessions page has the notes and the homework.',
+      target: DASHBOARD,
+      title: 'Dashboard',
+      body: 'Reflections, progress, recent lessons and what you owe.',
     },
     {
       target: 'nav-sessions',
@@ -199,24 +188,19 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
   ],
   student: [
     {
-      target: 'dash-my-stats',
+      target: 'home-band',
       title: 'Your lessons at a glance',
-      body: 'How many lessons you have had, and with whom.',
+      body: 'When your next lesson is, and how your week is going.',
     },
     {
-      target: 'dash-reflect',
-      title: 'How did it go?',
-      body: 'After each lesson, a few quick questions. Your tutor reads your answers.',
+      target: 'home-next-up',
+      title: 'Next up',
+      body: 'The one thing to do now: an assessment to finish, today’s 5, or your next lesson.',
     },
     {
-      target: 'dash-my-progress',
-      title: 'Your progress',
-      body: 'Where you are against your goal, lesson by lesson.',
-    },
-    {
-      target: 'dash-my-sessions',
-      title: 'Your lessons',
-      body: 'Your recent lessons. The Sessions page has the notes and the homework.',
+      target: DASHBOARD,
+      title: 'Dashboard',
+      body: 'Your lessons, your reflections and your progress.',
     },
     {
       target: 'nav-sessions',
@@ -355,8 +339,7 @@ const INSIDE_TAB: Record<string, { tab: TabName; within: 'Sessions' }> = {
  * sidebar.
  */
 export type TourPlacement =
-  | { kind: 'view'; id: string }
-  | { kind: 'tab'; index: number; within: 'More' | 'Sessions' | null };
+  { kind: 'view'; id: string } | { kind: 'tab'; index: number; within: 'More' | 'Sessions' | null };
 
 export function placementOf(target: string, tabs: readonly TabName[] = FULL_TABS): TourPlacement {
   if (target.startsWith('nav-')) {

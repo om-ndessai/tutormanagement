@@ -10,6 +10,7 @@ import {
   KeyRoundIcon,
   Loader2Icon,
   PencilLineIcon,
+  PenLineIcon,
   PlayIcon,
   PlusIcon,
   TrendingUpIcon,
@@ -21,6 +22,7 @@ import {
   HOME_HAT_LABELS,
   STREAK_DAYS_PER_WEEK,
   featureOn,
+  tourOffered,
   homeGreeting,
   lessonWhen,
   lessonDayWords,
@@ -152,15 +154,18 @@ function Band({ home, hat }: { home: MemberHome; hat: HomeHat | null }) {
       <div className="relative grid gap-1">
         <span className="flex items-center gap-2 text-sm font-semibold text-white/75">
           {brand.short}
-          {/* Phase 26: the welcome wizard and tour, on demand. */}
-          <button
-            type="button"
-            onClick={openWizard}
-            data-tour="getting-started"
-            className="ml-auto inline-flex h-8 items-center gap-1.5 rounded-full border border-white/50 px-3 text-xs font-semibold text-white transition-colors hover:bg-white/10"
-          >
-            <CompassIcon className="size-3.5" aria-hidden /> Getting started
-          </button>
+          {/* Phase 26: the welcome wizard and tour, on demand -- where Tutoring is on (owner, 2026-11-04). */}
+          {tourOffered(organization) && (
+            <button
+              type="button"
+              onClick={openWizard}
+              data-tour="getting-started"
+              data-testid="home-getting-started"
+              className="ml-auto inline-flex h-8 items-center gap-1.5 rounded-full border border-white/50 px-3 text-xs font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              <CompassIcon className="size-3.5" aria-hidden /> Getting started
+            </button>
+          )}
         </span>
         <h1 className="font-display text-3xl leading-tight font-black sm:text-4xl" data-testid="home-greeting">
           {homeGreeting(home)}
@@ -296,7 +301,7 @@ function HatSection({
       // Practice (Phase 68 adds what they played).
       return <ParentSection home={home} kids={home.parent!.children} />;
     case 'learner':
-      return <LearnerSection home={home} hideWaiting={nextUp?.kind === 'game_invite'} />;
+      return <LearnerSection home={home} hideWaiting={nextUp?.kind === 'game_invite'} nextShown={nextUp?.kind === 'learner_lesson'} />;
   }
 }
 
@@ -449,6 +454,7 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
   const { organization } = useAuth();
   const tutoring = featureOn(organization, 'tutoring');
   const quest = featureOn(organization, 'quest');
+  const assessment = featureOn(organization, 'assessment');
   // Phase 68 (H10): "Play with <child>" starts at the child's last level, else this space's first tile.
   const tiles = useMemberTiles(quest && kids.length > 0);
   const firstTileLevel = tiles.data?.data.tiles[0]?.level_id ?? null;
@@ -526,7 +532,19 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
                     </Link>
                   </Button>
                 )}
+                {!tutoring && !quest && assessment && (
+                  <Button asChild size="sm" variant="outline" data-testid={`home-child-assessments-${child.student_user_id}`}>
+                    <Link to="/assessments">
+                      <PenLineIcon /> Assessments
+                    </Link>
+                  </Button>
+                )}
               </div>
+              {!tutoring && !quest && !assessment && (
+                <p className="text-muted-foreground text-xs" data-testid={`home-child-off-${child.student_user_id}`}>
+                  Lessons and quests are off in this space.
+                </p>
+              )}
             </CardContent>
           </Card>
         ))}
@@ -535,14 +553,20 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
   );
 }
 
-function LearnerSection({ home, hideWaiting }: { home: MemberHome; hideWaiting: boolean }) {
+function LearnerSection({ home, hideWaiting, nextShown }: { home: MemberHome; hideWaiting: boolean; nextShown: boolean }) {
   const { organization } = useAuth();
   const quest = featureOn(organization, 'quest');
   const assessment = featureOn(organization, 'assessment');
   const tutoring = featureOn(organization, 'tutoring');
-  const next = home.learner!.next_lesson;
+  // Next up already names the lesson when it is the learner's next lesson: not twice.
+  const next = nextShown ? null : home.learner!.next_lesson;
   return (
     <SectionShell hat="learner">
+      {!next && !quest && !assessment && (
+        <p className="text-muted-foreground text-sm" data-testid="home-learner-empty">
+          Nothing to practise here yet: Quest and Assessments are off in this space.
+        </p>
+      )}
       {next && (
         <Card className="py-0" data-testid="home-learner-next">
           <CardContent className="flex flex-wrap items-center gap-3 p-4 text-sm">

@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CompassIcon, XIcon } from 'lucide-react';
-import type { TourOutcome, UserRole } from '@tmi/shared';
+import { tourOffered, type TourOutcome, type UserRole } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/providers/auth-provider';
@@ -83,6 +83,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard
     // (the tour stays one tap away in the menu).
     if (organization?.personal) return;
+    // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home.
+    if (!tourOffered(organization)) return;
 
     if (!onboarding.tour_finished_at) {
       setScreen('welcome');
@@ -90,10 +92,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     } else if (!hasTourCookie()) {
       setOffer(true);
     }
-  }, [user, onboarding, organization?.slug, organization?.personal, location.search]);
+  }, [user, onboarding, organization, location.search]);
 
   useEffect(() => {
-    if (!firstVisit || !onboarding?.tour_finished_at || !organization) return;
+    if (!firstVisit || !onboarding?.tour_finished_at || !organization || !tourOffered(organization)) return;
     if (new URLSearchParams(location.search).has('as')) return;
     setOfferTitle(`Welcome to ${organization.short_name}`);
     setOffer(true);

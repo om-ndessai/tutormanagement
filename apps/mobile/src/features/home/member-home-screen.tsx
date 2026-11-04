@@ -2,12 +2,7 @@
 // space -- the band, ONE Next up, quick actions and a section per hat, all from one read (`GET /api/home`)
 // plus what only the device knows. The web's half is apps/web/src/features/home (same ids). It replaces
 // the role dashboard on Home (now More → Dashboard) and the Phase 50 space home. No money on it.
-import {
-  featureOn,
-  homeGreeting,
-  orderHats,
-  quickActionsFor,
-} from '@tmi/shared';
+import { featureOn, homeGreeting, orderHats, quickActionsFor } from '@tmi/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -22,7 +17,7 @@ import { streakLine } from '@/features/habit/habit-model';
 import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { primaryRole } from '@/features/onboarding/onboarding-model';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
-import { useTourScroller } from '@/features/onboarding/tour-targets';
+import { TourTarget, useTourScroller } from '@/features/onboarding/tour-targets';
 import { InvitationBanner } from '@/features/organizations/invitation-banner';
 import { PlayFavorites, WaitingForYou } from '@/features/play/play-home';
 import { useAuth } from '@/providers/auth-provider';
@@ -107,8 +102,13 @@ export function MemberHomeScreen() {
         <ErrorState error={query.error} onRetry={() => void refetch()} />
       ) : (
         <View testID="member-home" style={{ gap: space.lg }}>
-          <HomeBand greeting={homeGreeting(home)} strip={stripLine(home, hats[0], streak)} />
-          <NextUpCard home={home} next={next} />
+          {/* The tour starts on the home's blocks (Phase 66, as the web's data-tour ids). */}
+          <TourTarget id="home-band">
+            <HomeBand greeting={homeGreeting(home)} strip={stripLine(home, hats[0], streak)} />
+          </TourTarget>
+          <TourTarget id="home-next-up">
+            <NextUpCard home={home} next={next} />
+          </TourTarget>
           <QuickActions actions={actions} />
           <HomeSections home={home} hats={hats} item={next.item} />
           <SpaceNotes learner={learner} />

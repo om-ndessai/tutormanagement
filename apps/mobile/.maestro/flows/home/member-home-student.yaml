@@ -1,4 +1,4 @@
-# Phase 66 (H3): Sofia, a student in chmi. Her Home is "Practice": Next up and her section name her
+# Phase 66 (H3): Sofia, a student in chmi. Her Home is "Your learning": Next up and her section name her
 # next lesson with Alex, in words.
 appId: ${APP_ID}
 tags:
@@ -21,17 +21,40 @@ tags:
     text: '(Next lesson: .* with Alex|.*in a row|Start a streak|Ready when you are)'
 - assertVisible:
     id: next-up
-- scrollUntilVisible:
-    element:
-      id: home-section-learner
-    visibilityPercentage: 1
-- scrollUntilVisible:
-    element:
-      id: home-learner-next
-    centerElement: true
-- assertVisible:
-    id: home-learner-next
-    text: '.*with Alex.*'
+# The lesson is named once: by Next up when it leads (then the section leaves its own card out), else by
+# her section's "Your next lesson" card.
+# (The notVisible branch goes first: it scrolls, and runs only where Next up is something else.)
+- runFlow:
+    when:
+      notVisible:
+        id: next-up-learner_lesson
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: home-section-learner
+          visibilityPercentage: 1
+      - scrollUntilVisible:
+          element:
+            id: home-learner-next
+          centerElement: true
+      - assertVisible:
+          id: home-learner-next
+          text: '.*with Alex.*'
+- runFlow:
+    when:
+      visible:
+        id: next-up-learner_lesson
+    commands:
+      - assertVisible:
+          id: next-up-title
+          text: '.*with Alex.*'
+      - scrollUntilVisible:
+          element:
+            id: home-section-learner
+          visibilityPercentage: 1
+      - assertVisible: 'Your learning'
+      - assertNotVisible:
+          id: home-learner-next
 - assertNotVisible:
     id: home-section-tutor
 - assertNotVisible:

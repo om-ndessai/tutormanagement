@@ -707,5 +707,11 @@ requirements P1-P20.
   branch.
 - **Phase 69 — stickiness, measured.** One visit row per person a day and the console's Stickiness page (weekly
   actives, days per week, cohort retention by role, space and arrival). H12. Built on the branch; visit recording
-  waits for the owner to publish privacy version 2026-11-04 (drafted at `/privacy?draft=1`).
+  waits for the owner to publish privacy version 2026-11-04 (drafted at `/privacy?draft=1`). Privacy version
+  2026-11-04 approved and published by the owner on 2026-11-04.
+- **Follow-ups from the owner's review (2026-11-04), web and app.** From screenshots of every feature combination:
+  Next up never offers a set that is off; the learner section is "Your learning", says so when it has nothing, and
+  does not repeat Next up's lesson; the Play board's heading is a sub-label; a child card says why it is empty. The
+  tour and "Getting started" only where Tutoring is on. The console's space form asks the sets right after the
+  names (Quest alone by default) and shows the clock, who families pay and email notifications only with Tutoring.
 

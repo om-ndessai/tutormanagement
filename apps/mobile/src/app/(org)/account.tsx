@@ -1,6 +1,6 @@
 // The web's user menu and space switcher, as one sheet (Phase 60: no star; "Spaces" opens the
 // person's own console, apps/web/src/features/organizations/{org-switcher,spaces-page}.tsx).
-import { USER_ROLE_LABELS } from '@tmi/shared';
+import { tourOffered, USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { View } from 'react-native';
 import { Divider, List, Text } from 'react-native-paper';
@@ -129,17 +129,20 @@ export default function AccountSheet() {
           }}
           style={{ paddingHorizontal: 0 }}
         />
-        <ListItem
-          testID="account-tour"
-          title="Take the tour"
-          left={(props) => <List.Icon {...props} icon="compass-outline" />}
-          onPress={() => {
-            haptics.selection();
-            router.back();
-            openWizard();
-          }}
-          style={{ paddingHorizontal: 0 }}
-        />
+        {/* Owner, 2026-11-04: the tour is Tutoring's (`tourOffered`), as the web's Getting started. */}
+        {tourOffered(organization) ? (
+          <ListItem
+            testID="account-tour"
+            title="Take the tour"
+            left={(props) => <List.Icon {...props} icon="compass-outline" />}
+            onPress={() => {
+              haptics.selection();
+              router.back();
+              openWizard();
+            }}
+            style={{ paddingHorizontal: 0 }}
+          />
+        ) : null}
         {platformAdmin ? (
           <ListItem
             testID="account-platform"

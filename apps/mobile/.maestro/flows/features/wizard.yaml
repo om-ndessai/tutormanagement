@@ -1,5 +1,5 @@
-# Phase 50: the welcome wizard in a space without Tutoring. Ines (`assess`, a fresh device): the
-# welcome offers Add a student and no Add a tutor; the student flow's steps are the family and the
+# Phase 50: the welcome wizard in a space without Tutoring. Ines (`assess`, a fresh device): it does not
+# open by itself there (owner, 2026-11-04); opened from its link, the welcome offers Add a student and no Add a tutor; the student flow's steps are the family and the
 # student, then Start an assessment (no Assessment, plan or tutor steps); Add the student opens the
 # add-student flow with four steps -- family, student, school, the review. Closed unsaved.
 appId: ${APP_ID}
@@ -16,29 +16,39 @@ tags:
       PERSONA: ines.ferreira.assess@gmail.com
       ORG: assess
       FRESH: '1'
+# Owner, 2026-11-04: the wizard and the tour are Tutoring's (`tourOffered`): here it never opens by
+# itself, and neither the account menu nor Search offers the tour. Its no-Tutoring variant is still
+# checked, opened from its link.
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible:
+    id: screen-onboarding
+- assertNotVisible:
+    id: tour-offer
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: account-profile
+    timeout: 10000
+- assertNotVisible:
+    id: account-tour
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://onboarding
 - extendedWaitUntil:
     visible:
       id: screen-onboarding
-    timeout: 20000
-    optional: true
-# Someone already through the wizard: open it from its link.
-- runFlow:
-    when:
-      notVisible:
-        id: screen-onboarding
-    commands:
-      - extendedWaitUntil:
-          visible:
-            id: screen-home
-          timeout: 20000
-      - runFlow:
-          file: ../../subflows/open-link.yaml
-          env:
-            LINK: aimtrue://onboarding
-      - extendedWaitUntil:
-          visible:
-            id: screen-onboarding
-          timeout: 15000
+    timeout: 15000
 - assertVisible:
     id: onboarding-choice-student
 - assertNotVisible:

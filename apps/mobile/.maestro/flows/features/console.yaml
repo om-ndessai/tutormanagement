@@ -1,6 +1,6 @@
 # Phase 50: the console shows and toggles each organization's feature sets. Nav (a platform admin):
 # riverside's row names "Tutoring, Assessment" (then, since Phase 59, who families pay); its detail shows the three switches, Quest off;
-# allowing Quest saves at once, disallowing asks first. The create form ticks all three (not saved:
+# allowing Quest saves at once, disallowing asks first. The create form offers all three, Quest alone ticked (not saved:
 # platform/organizations.yaml owns creating). reset-features.js puts riverside back.
 appId: ${APP_ID}
 onFlowStart:
@@ -57,7 +57,7 @@ tags:
 - extendedWaitUntil:
     visible: 'Disallowed Quest.'
     timeout: 10000
-# The create form ticks all three.
+# The create form offers all three, Quest alone ticked (owner, 2026-11-04).
 - runFlow: ../../subflows/go-back.yaml
 - extendedWaitUntil:
     visible:
@@ -77,10 +77,32 @@ tags:
     element:
       id: org-form-feature-quest
     centerElement: true
-- assertVisible:
-    id: org-form-feature-tutoring
-- assertVisible:
-    id: org-form-feature-assessment
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: org-form-feature-tutoring
+          checked: false
+      - assertVisible:
+          id: org-form-feature-assessment
+          checked: false
+      - assertVisible:
+          id: org-form-feature-quest
+          checked: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: org-form-feature-tutoring
+          text: 'checkbox, unchecked'
+      - assertVisible:
+          id: org-form-feature-assessment
+          text: 'checkbox, unchecked'
+      - assertVisible:
+          id: org-form-feature-quest
+          text: 'checkbox, checked'
 - takeScreenshot: features-console-create
 - runFlow:
     file: ../../subflows/dismiss-sheet.yaml

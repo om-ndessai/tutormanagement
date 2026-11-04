@@ -259,9 +259,11 @@ export function PlayHome() {
   return (
     <View testID="play-home" style={{ gap: space.lg }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-        <Text variant="titleLarge" accessibilityRole="header" style={{ flex: 1, fontWeight: '600' }}>
-          Play
-        </Text>
+        {/* A sub-label under the section's own heading ("Your learning"), as the board's other groups: never
+            two big headings in a row. */}
+        <View testID="play-home-heading" style={{ flex: 1 }}>
+          <GroupHeading>Quest</GroupHeading>
+        </View>
         <Button
           testID="play-new"
           mode="outlined"

@@ -104,6 +104,8 @@ test.describe('the platform console', () => {
     const dialog = platform.getByRole('dialog');
     await dialog.getByLabel('Name', { exact: true }).fill('Hillside Learning');
     await dialog.getByLabel('Short name').fill('Hillside');
+    // Who families pay is Tutoring's: it appears once Tutoring is ticked (owner, 2026-11-04).
+    await dialog.getByTestId('org-feature-sets').getByRole('switch', { name: 'Tutoring', exact: true }).click();
     // Who families pay: each tutor until chosen; the space shows its payer details.
     const who = dialog.getByRole('radiogroup', { name: 'Who families pay' });
     await expect(who.getByRole('radio', { name: /Each tutor, directly/ })).toBeChecked();
@@ -225,6 +227,7 @@ test.describe('S2: who families pay, from the console', () => {
     await dialog.getByLabel('Name', { exact: true }).fill(name);
     await expect(dialog.getByLabel('Address name')).toHaveValue(slug);
     await dialog.getByLabel('Short name').fill('S2 Direct');
+    await dialog.getByTestId('org-feature-sets').getByRole('switch', { name: 'Tutoring', exact: true }).click();
     const who = dialog.getByRole('radiogroup', { name: 'Who families pay' });
     await expect(who.getByRole('radio')).toHaveCount(2);
     await expect(who.getByRole('radio', { name: /Each tutor, directly/ })).toBeChecked();

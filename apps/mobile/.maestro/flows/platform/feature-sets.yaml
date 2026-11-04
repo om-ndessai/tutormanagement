@@ -22,7 +22,7 @@ onFlowComplete:
     visible:
       id: screen-platform
     timeout: 20000
-# Make the space, with Quest unticked.
+# Make the space: Tutoring and Assessment ticked, Quest unticked.
 - tapOn:
     id: platform-org-new
 - extendedWaitUntil:
@@ -42,9 +42,56 @@ onFlowComplete:
       id: org-form-feature-quest
     centerElement: true
 - assertVisible: 'This space may use'
-- assertVisible:
+# Owner, 2026-11-04: Quest alone is ticked; the clock, who families pay and email notifications are
+# Tutoring's, shown only while it is ticked.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: org-form-feature-tutoring
+          checked: false
+      - assertVisible:
+          id: org-form-feature-assessment
+          checked: false
+      - assertVisible:
+          id: org-form-feature-quest
+          checked: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: org-form-feature-tutoring
+          text: 'checkbox, unchecked'
+      - assertVisible:
+          id: org-form-feature-assessment
+          text: 'checkbox, unchecked'
+      - assertVisible:
+          id: org-form-feature-quest
+          text: 'checkbox, checked'
+- assertNotVisible:
+    id: org-form-tz
+- assertNotVisible:
+    id: org-form-payment-model
+- assertNotVisible:
+    id: org-form-notifications
+- tapOn:
     id: org-form-feature-tutoring
+- scrollUntilVisible:
+    element:
+      id: org-form-notifications
+    centerElement: true
 - assertVisible:
+    id: org-form-tz
+- assertVisible:
+    id: org-form-payment-model
+- scrollUntilVisible:
+    element:
+      id: org-form-feature-quest
+    centerElement: true
+    direction: UP
+- tapOn:
     id: org-form-feature-assessment
 - tapOn:
     id: org-form-feature-quest

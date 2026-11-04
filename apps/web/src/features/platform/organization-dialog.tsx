@@ -1,6 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
-import { ImageUpIcon, Trash2Icon, UserMinusIcon, UserPlusIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import {
+  ImageUpIcon,
+  Trash2Icon,
+  UserMinusIcon,
+  UserPlusIcon,
+} from "lucide-react";
 import {
   LOGO_KINDS,
   MAX_LOGO_BYTES,
@@ -23,10 +28,10 @@ import {
   spacePaymentModel,
   type SpacePayer,
   type SpacePaymentModel,
-} from '@tmi/shared';
+} from "@tmi/shared";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -34,20 +39,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { ApiRequestError } from '@/lib/api-client';
-import { cn } from '@/lib/utils';
-import { OrgAvatar } from '@/features/organizations/org-avatar';
-import { NotificationsSwitch } from '@/features/organizations/notifications-switch';
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { ApiRequestError } from "@/lib/api-client";
+import { cn } from "@/lib/utils";
+import { OrgAvatar } from "@/features/organizations/org-avatar";
+import { NotificationsSwitch } from "@/features/organizations/notifications-switch";
 import {
   useAddOrganizationAdmin,
   useCreateOrganization,
@@ -58,8 +63,8 @@ import {
   useUpdateOrganizationFeatures,
   useSetPaymentModel,
   useUploadLogo,
-} from './api';
-import { FormField } from './form-field';
+} from "./api";
+import { FormField } from "./form-field";
 
 interface FormState {
   name: string;
@@ -90,51 +95,62 @@ interface FormState {
 type PayerForm = Record<keyof SpacePayer, string>;
 
 const PAYER_KEYS = [
-  'name',
-  'tin',
-  'payer_address_line1',
-  'payer_address_line2',
-  'payer_city',
-  'payer_state',
-  'payer_postal_code',
+  "name",
+  "tin",
+  "payer_address_line1",
+  "payer_address_line2",
+  "payer_city",
+  "payer_state",
+  "payer_postal_code",
 ] as const satisfies readonly (keyof SpacePayer)[];
 
-const EMPTY_PAYER: PayerForm = Object.fromEntries(PAYER_KEYS.map((key) => [key, ''])) as PayerForm;
+const EMPTY_PAYER: PayerForm = Object.fromEntries(
+  PAYER_KEYS.map((key) => [key, ""]),
+) as PayerForm;
 
 function payerForm(payer: SpacePayer | null): PayerForm {
   if (!payer) return EMPTY_PAYER;
-  return Object.fromEntries(PAYER_KEYS.map((key) => [key, payer[key] ?? ''])) as PayerForm;
+  return Object.fromEntries(
+    PAYER_KEYS.map((key) => [key, payer[key] ?? ""]),
+  ) as PayerForm;
 }
 
 /** The request's names for the payer fields: the name on the 1099 travels as `payer_name`. */
 function payerRequestKey(key: keyof SpacePayer): string {
-  return key === 'name' ? 'payer_name' : key;
+  return key === "name" ? "payer_name" : key;
 }
 
 /** The payer fields that differ from what was loaded, in the request's names. */
-function changedPayer(form: PayerForm, loaded: PayerForm): Record<string, string> {
+function changedPayer(
+  form: PayerForm,
+  loaded: PayerForm,
+): Record<string, string> {
   return Object.fromEntries(
-    PAYER_KEYS.filter((key) => form[key] !== loaded[key]).map((key) => [payerRequestKey(key), form[key]]),
+    PAYER_KEYS.filter((key) => form[key] !== loaded[key]).map((key) => [
+      payerRequestKey(key),
+      form[key],
+    ]),
   );
 }
 
 const EMPTY: FormState = {
-  name: '',
-  short_name: '',
-  slug: '',
-  tagline: '',
-  blurb: '',
-  place: '',
-  palette: 'platform',
-  time_zone: 'America/New_York',
+  name: "",
+  short_name: "",
+  slug: "",
+  tagline: "",
+  blurb: "",
+  place: "",
+  palette: "platform",
+  time_zone: "America/New_York",
   builtin_institute: false,
   email_notifications: false,
-  feature_tutoring: true,
-  feature_assessment: true,
+  // Owner, 2026-11-04: a new space starts with Quest alone; the rest are ticked as needed.
+  feature_tutoring: false,
+  feature_assessment: false,
   feature_quest: true,
   quest_trusted: true,
   checked_questions: true,
-  payment_model: 'direct',
+  payment_model: "direct",
   payer: EMPTY_PAYER,
 };
 
@@ -142,9 +158,9 @@ const EMPTY: FormState = {
 function slugFrom(name: string): string {
   return name
     .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+    .normalize("NFKD")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
     .slice(0, 40);
 }
 
@@ -179,16 +195,16 @@ export function OrganizationDialog({
             name: existing.name,
             short_name: existing.short_name,
             slug: existing.slug,
-            tagline: existing.tagline ?? '',
-            blurb: existing.blurb ?? '',
-            place: existing.place ?? '',
+            tagline: existing.tagline ?? "",
+            blurb: existing.blurb ?? "",
+            place: existing.place ?? "",
             palette: existing.palette,
             time_zone: existing.time_zone,
-            builtin_institute: existing.builtin_logo === 'institute',
+            builtin_institute: existing.builtin_logo === "institute",
             email_notifications: existing.email_notifications,
-            feature_tutoring: featureAllowed(existing, 'tutoring'),
-            feature_assessment: featureAllowed(existing, 'assessment'),
-            feature_quest: featureAllowed(existing, 'quest'),
+            feature_tutoring: featureAllowed(existing, "tutoring"),
+            feature_assessment: featureAllowed(existing, "assessment"),
+            feature_quest: featureAllowed(existing, "quest"),
             quest_trusted: existing.quest_trusted !== false,
             checked_questions: existing.checked_questions !== false,
             payment_model: spacePaymentModel(existing),
@@ -202,7 +218,10 @@ export function OrganizationDialog({
     setForm((previous) => ({ ...previous, [key]: value }));
   const set_ = set;
   const setPayer = (key: keyof SpacePayer, value: string) =>
-    setForm((previous) => ({ ...previous, payer: { ...previous.payer, [key]: value } }));
+    setForm((previous) => ({
+      ...previous,
+      payer: { ...previous.payer, [key]: value },
+    }));
 
   async function save(event: React.FormEvent) {
     event.preventDefault();
@@ -217,7 +236,7 @@ export function OrganizationDialog({
       palette: form.palette,
       time_zone: form.time_zone,
       email_notifications: form.email_notifications,
-      builtin_logo: form.builtin_institute ? ('institute' as const) : null,
+      builtin_logo: form.builtin_institute ? ("institute" as const) : null,
     };
     try {
       const features = {
@@ -229,21 +248,38 @@ export function OrganizationDialog({
         // Who families pay first: a space that starts collecting gets its own payer record,
         // which the PATCH below then fills in.
         if (spacePaymentModel(existing) !== form.payment_model) {
-          await setPaymentModel.mutateAsync({ id: existing.id, model: form.payment_model });
+          await setPaymentModel.mutateAsync({
+            id: existing.id,
+            model: form.payment_model,
+          });
         }
         const payer =
-          form.payment_model === 'space' ? changedPayer(form.payer, payerForm(existing.payer ?? null)) : {};
-        await update.mutateAsync({ id: existing.id, input: { ...input, ...payer } });
-        const trustChanged = (existing.quest_trusted !== false) !== form.quest_trusted;
-        const checkedChanged = (existing.checked_questions !== false) !== form.checked_questions;
+          form.payment_model === "space"
+            ? changedPayer(form.payer, payerForm(existing.payer ?? null))
+            : {};
+        await update.mutateAsync({
+          id: existing.id,
+          input: { ...input, ...payer },
+        });
+        const trustChanged =
+          (existing.quest_trusted !== false) !== form.quest_trusted;
+        const checkedChanged =
+          (existing.checked_questions !== false) !== form.checked_questions;
         if (
           trustChanged ||
           checkedChanged ||
-          FEATURE_SETS.some((set) => featureAllowed(existing, set) !== features[`feature_${set}`])
+          FEATURE_SETS.some(
+            (set) =>
+              featureAllowed(existing, set) !== features[`feature_${set}`],
+          )
         ) {
           await updateFeatures.mutateAsync({
             id: existing.id,
-            input: { ...features, quest_trusted: form.quest_trusted, checked_questions: form.checked_questions },
+            input: {
+              ...features,
+              quest_trusted: form.quest_trusted,
+              checked_questions: form.checked_questions,
+            },
           });
         }
         toast.success(`${form.name} saved.`);
@@ -252,7 +288,9 @@ export function OrganizationDialog({
           ...input,
           ...features,
           payment_model: form.payment_model,
-          ...(form.payment_model === 'space' ? changedPayer(form.payer, EMPTY_PAYER) : {}),
+          ...(form.payment_model === "space"
+            ? changedPayer(form.payer, EMPTY_PAYER)
+            : {}),
         });
         toast.success(`${form.name} created. Add its first admin next.`);
       }
@@ -260,7 +298,8 @@ export function OrganizationDialog({
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
-        if (caught.status === 409 && caught.code === 'conflict') setErrors({ slug: caught.message });
+        if (caught.status === 409 && caught.code === "conflict")
+          setErrors({ slug: caught.message });
         toast.error(caught.message);
       }
     }
@@ -270,11 +309,11 @@ export function OrganizationDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{existing ? existing.name : 'New space'}</DialogTitle>
+          <DialogTitle>{existing ? existing.name : "New space"}</DialogTitle>
           <DialogDescription>
             {existing
-              ? 'Its identity, look and who families pay. Its own admins can keep its payer details too.'
-              : 'Its name, look and who families pay. Its admins come next, once it exists.'}
+              ? "Its identity, look and who families pay. Its own admins can keep its payer details too."
+              : "Its name, what it may use, and its look. Its admins come next, once it exists."}
           </DialogDescription>
         </DialogHeader>
 
@@ -285,135 +324,44 @@ export function OrganizationDialog({
                 id="org-name"
                 value={form.name}
                 onChange={(event) => {
-                  set('name', event.target.value);
-                  if (!slugTouched) set('slug', slugFrom(event.target.value));
+                  set("name", event.target.value);
+                  if (!slugTouched) set("slug", slugFrom(event.target.value));
                 }}
                 placeholder="Riverside Tutoring"
               />
             </FormField>
-            <FormField id="org-short" label="Short name" error={errors.short_name} hint="For the sidebar and the tab title.">
-              <Input id="org-short" value={form.short_name} onChange={(event) => set('short_name', event.target.value)} placeholder="Riverside" />
-            </FormField>
             <FormField
-              id="org-slug"
-              label="Address name"
-              error={errors.slug}
-              hint="Lower-case letters, digits and hyphens. Names its files and remembers the choice."
+              id="org-short"
+              label="Short name"
+              error={errors.short_name}
+              hint="For the sidebar and the tab title."
             >
               <Input
-                id="org-slug"
-                value={form.slug}
-                onChange={(event) => {
-                  setSlugTouched(true);
-                  set('slug', event.target.value);
-                }}
-                placeholder="riverside"
+                id="org-short"
+                value={form.short_name}
+                onChange={(event) => set("short_name", event.target.value)}
+                placeholder="Riverside"
               />
-            </FormField>
-            <FormField id="org-place" label="Place" optional error={errors.place}>
-              <Input id="org-place" value={form.place} onChange={(event) => set('place', event.target.value)} placeholder="Durham, North Carolina" />
-            </FormField>
-            <FormField id="org-tagline" label="Tagline" optional error={errors.tagline}>
-              <Input id="org-tagline" value={form.tagline} onChange={(event) => set('tagline', event.target.value)} />
-            </FormField>
-            <FormField id="org-tz" label="Lessons are recorded on" error={errors.time_zone}>
-              <Select value={form.time_zone} onValueChange={(value) => set('time_zone', value as OrgTimeZone)}>
-                <SelectTrigger id="org-tz" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ORG_TIME_ZONES.map((zone) => (
-                    <SelectItem key={zone} value={zone}>
-                      {ORG_TIME_ZONE_LABELS[zone]} time
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </FormField>
           </div>
 
-          {/* Phase 59 (S2): who families pay -- the space (its own payer details, its 1099s, its
-              cut), or each lesson's tutor directly. A change applies going forward. */}
-          <fieldset className="grid gap-3 rounded-lg border p-3" data-testid="org-payment-model">
-            <legend className="px-1 text-sm font-medium">Who families pay</legend>
-            <div className="grid gap-2" role="radiogroup" aria-label="Who families pay">
-              {SPACE_PAYMENT_MODELS.map((model) => (
-                <label key={model} className="flex items-start gap-2 text-sm">
-                  <input
-                    type="radio"
-                    name="payment_model"
-                    className="accent-primary mt-0.5 size-4"
-                    checked={form.payment_model === model}
-                    onChange={() => set('payment_model', model)}
-                  />
-                  <span className="grid gap-0.5">
-                    <span>{SPACE_PAYMENT_MODEL_LABELS[model]}</span>
-                    <span className="text-muted-foreground text-xs">{SPACE_PAYMENT_MODEL_DESCRIPTIONS[model]}</span>
-                  </span>
-                </label>
-              ))}
-            </div>
-            {existing && (
-              <p className="text-muted-foreground text-xs">
-                A change applies from now on; recorded lessons and payments keep theirs.
-              </p>
-            )}
-            {form.payment_model === 'space' && (
-              <div className="grid gap-4 border-t pt-3 sm:grid-cols-2" data-testid="org-payer">
-                <FormField
-                  id="org-payer-name"
-                  label="Name on the 1099"
-                  optional
-                  error={errors.payer_name}
-                  hint="The space’s own name when left blank."
-                >
-                  <Input
-                    id="org-payer-name"
-                    value={form.payer.name}
-                    onChange={(event) => setPayer('name', event.target.value)}
-                    placeholder={form.name}
-                  />
-                </FormField>
-                <FormField
-                  id="org-payer-tin"
-                  label="Payer TIN"
-                  optional
-                  error={errors.tin}
-                  hint="The space’s EIN -- never a Social Security number, which the portal refuses to store."
-                >
-                  <Input id="org-payer-tin" value={form.payer.tin} onChange={(event) => setPayer('tin', event.target.value)} placeholder="12-3456789" />
-                </FormField>
-                <FormField id="org-payer-line1" label="Address" optional error={errors.payer_address_line1}>
-                  <Input id="org-payer-line1" value={form.payer.payer_address_line1} onChange={(event) => setPayer('payer_address_line1', event.target.value)} />
-                </FormField>
-                <FormField id="org-payer-line2" label="Address line 2" optional error={errors.payer_address_line2}>
-                  <Input id="org-payer-line2" value={form.payer.payer_address_line2} onChange={(event) => setPayer('payer_address_line2', event.target.value)} />
-                </FormField>
-                <FormField id="org-payer-city" label="City" optional error={errors.payer_city}>
-                  <Input id="org-payer-city" value={form.payer.payer_city} onChange={(event) => setPayer('payer_city', event.target.value)} />
-                </FormField>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField id="org-payer-state" label="State" optional error={errors.payer_state}>
-                    <Input id="org-payer-state" value={form.payer.payer_state} onChange={(event) => setPayer('payer_state', event.target.value)} placeholder="NC" />
-                  </FormField>
-                  <FormField id="org-payer-zip" label="ZIP" optional error={errors.payer_postal_code}>
-                    <Input id="org-payer-zip" value={form.payer.payer_postal_code} onChange={(event) => setPayer('payer_postal_code', event.target.value)} placeholder="27514" />
-                  </FormField>
-                </div>
-              </div>
-            )}
-          </fieldset>
-
-          {/* Phase 50: what the space may use. Its own admins switch Assessment and Quest on (S3). */}
-          <fieldset className="grid gap-2 rounded-lg border p-3" data-testid="org-feature-sets">
-            <legend className="px-1 text-sm font-medium">This space may use</legend>
+          {/* Phase 50: what the space may use; asked right after the name (owner, 2026-11-04). Its own admins switch Assessment and Quest on (S3). */}
+          <fieldset
+            className="grid gap-2 rounded-lg border p-3"
+            data-testid="org-feature-sets"
+          >
+            <legend className="px-1 text-sm font-medium">
+              This space may use
+            </legend>
             {FEATURE_SETS.map((set) => (
               <div key={set} className="flex items-start gap-3">
                 <div className="grid flex-1 gap-0.5">
                   <label htmlFor={`org-feature-${set}`} className="text-sm">
                     {FEATURE_SET_LABELS[set]}
                   </label>
-                  <p className="text-muted-foreground text-xs">{FEATURE_SET_DESCRIPTIONS[set]}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {FEATURE_SET_DESCRIPTIONS[set]}
+                  </p>
                 </div>
                 <NotificationsSwitch
                   label={FEATURE_SET_LABELS[set]}
@@ -430,14 +378,15 @@ export function OrganizationDialog({
                     Quest reviews approve questions
                   </label>
                   <p className="text-muted-foreground text-xs">
-                    Off: its tutors’ “Question is right” only suggests the approval here, in the console.
+                    Off: its tutors’ “Question is right” only suggests the
+                    approval here, in the console.
                   </p>
                 </div>
                 <NotificationsSwitch
                   label="Quest reviews approve questions"
                   id="org-quest-trusted"
                   checked={form.quest_trusted}
-                  onCheckedChange={(checked) => set('quest_trusted', checked)}
+                  onCheckedChange={(checked) => set("quest_trusted", checked)}
                 />
               </div>
             )}
@@ -448,54 +397,307 @@ export function OrganizationDialog({
                     Checked questions (Beta)
                   </label>
                   <p className="text-muted-foreground text-xs">
-                    Games, tiles and assessments here also draw questions the bank has checked but no person has
-                    approved, each marked Beta. Off: approved questions only.
+                    Games, tiles and assessments here also draw questions the
+                    bank has checked but no person has approved, each marked
+                    Beta. Off: approved questions only.
                   </p>
                 </div>
                 <NotificationsSwitch
                   label="Checked questions (Beta)"
                   id="org-checked-questions"
                   checked={form.checked_questions}
-                  onCheckedChange={(checked) => set('checked_questions', checked)}
+                  onCheckedChange={(checked) =>
+                    set("checked_questions", checked)
+                  }
                 />
               </div>
             )}
           </fieldset>
 
-          <div className="flex items-start gap-3 rounded-lg border p-3">
-            <div className="grid flex-1 gap-0.5">
-              <label htmlFor="org-notifications" className="text-sm font-medium">
-                Email notifications
-              </label>
-              <p className="text-muted-foreground text-xs">
-                Emails the people concerned when someone is added, a plan or assessment is added,
-                lessons are scheduled, or a session is recorded. Its own admins can switch it too.
-              </p>
-            </div>
-            <NotificationsSwitch
-              id="org-notifications"
-              checked={form.email_notifications}
-              onCheckedChange={(checked) => set('email_notifications', checked)}
-            />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormField
+              id="org-slug"
+              label="Address name"
+              error={errors.slug}
+              hint="Lower-case letters, digits and hyphens. Names its files and remembers the choice."
+            >
+              <Input
+                id="org-slug"
+                value={form.slug}
+                onChange={(event) => {
+                  setSlugTouched(true);
+                  set("slug", event.target.value);
+                }}
+                placeholder="riverside"
+              />
+            </FormField>
+            <FormField
+              id="org-place"
+              label="Place"
+              optional
+              error={errors.place}
+            >
+              <Input
+                id="org-place"
+                value={form.place}
+                onChange={(event) => set("place", event.target.value)}
+                placeholder="Durham, North Carolina"
+              />
+            </FormField>
+            <FormField
+              id="org-tagline"
+              label="Tagline"
+              optional
+              error={errors.tagline}
+            >
+              <Input
+                id="org-tagline"
+                value={form.tagline}
+                onChange={(event) => set("tagline", event.target.value)}
+              />
+            </FormField>
+            {/* Owner, 2026-11-04: the clock, who families pay and email notifications are Tutoring's. */}
+            {form.feature_tutoring && (
+              <FormField
+                id="org-tz"
+                label="Lessons are recorded on"
+                error={errors.time_zone}
+              >
+                <Select
+                  value={form.time_zone}
+                  onValueChange={(value) =>
+                    set("time_zone", value as OrgTimeZone)
+                  }
+                >
+                  <SelectTrigger id="org-tz" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ORG_TIME_ZONES.map((zone) => (
+                      <SelectItem key={zone} value={zone}>
+                        {ORG_TIME_ZONE_LABELS[zone]} time
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormField>
+            )}
           </div>
 
-          <FormField id="org-blurb" label="Description" optional error={errors.blurb} hint="The line under the tagline on the sign-in page.">
-            <Input id="org-blurb" value={form.blurb} onChange={(event) => set('blurb', event.target.value)} />
+          {/* Phase 59 (S2): who families pay -- the space (its own payer details, its 1099s, its
+              cut), or each lesson's tutor directly. A change applies going forward. */}
+          {form.feature_tutoring && (
+            <fieldset
+              className="grid gap-3 rounded-lg border p-3"
+              data-testid="org-payment-model"
+            >
+              <legend className="px-1 text-sm font-medium">
+                Who families pay
+              </legend>
+              <div
+                className="grid gap-2"
+                role="radiogroup"
+                aria-label="Who families pay"
+              >
+                {SPACE_PAYMENT_MODELS.map((model) => (
+                  <label key={model} className="flex items-start gap-2 text-sm">
+                    <input
+                      type="radio"
+                      name="payment_model"
+                      className="accent-primary mt-0.5 size-4"
+                      checked={form.payment_model === model}
+                      onChange={() => set("payment_model", model)}
+                    />
+                    <span className="grid gap-0.5">
+                      <span>{SPACE_PAYMENT_MODEL_LABELS[model]}</span>
+                      <span className="text-muted-foreground text-xs">
+                        {SPACE_PAYMENT_MODEL_DESCRIPTIONS[model]}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              {existing && (
+                <p className="text-muted-foreground text-xs">
+                  A change applies from now on; recorded lessons and payments
+                  keep theirs.
+                </p>
+              )}
+              {form.payment_model === "space" && (
+                <div
+                  className="grid gap-4 border-t pt-3 sm:grid-cols-2"
+                  data-testid="org-payer"
+                >
+                  <FormField
+                    id="org-payer-name"
+                    label="Name on the 1099"
+                    optional
+                    error={errors.payer_name}
+                    hint="The space’s own name when left blank."
+                  >
+                    <Input
+                      id="org-payer-name"
+                      value={form.payer.name}
+                      onChange={(event) => setPayer("name", event.target.value)}
+                      placeholder={form.name}
+                    />
+                  </FormField>
+                  <FormField
+                    id="org-payer-tin"
+                    label="Payer TIN"
+                    optional
+                    error={errors.tin}
+                    hint="The space’s EIN -- never a Social Security number, which the portal refuses to store."
+                  >
+                    <Input
+                      id="org-payer-tin"
+                      value={form.payer.tin}
+                      onChange={(event) => setPayer("tin", event.target.value)}
+                      placeholder="12-3456789"
+                    />
+                  </FormField>
+                  <FormField
+                    id="org-payer-line1"
+                    label="Address"
+                    optional
+                    error={errors.payer_address_line1}
+                  >
+                    <Input
+                      id="org-payer-line1"
+                      value={form.payer.payer_address_line1}
+                      onChange={(event) =>
+                        setPayer("payer_address_line1", event.target.value)
+                      }
+                    />
+                  </FormField>
+                  <FormField
+                    id="org-payer-line2"
+                    label="Address line 2"
+                    optional
+                    error={errors.payer_address_line2}
+                  >
+                    <Input
+                      id="org-payer-line2"
+                      value={form.payer.payer_address_line2}
+                      onChange={(event) =>
+                        setPayer("payer_address_line2", event.target.value)
+                      }
+                    />
+                  </FormField>
+                  <FormField
+                    id="org-payer-city"
+                    label="City"
+                    optional
+                    error={errors.payer_city}
+                  >
+                    <Input
+                      id="org-payer-city"
+                      value={form.payer.payer_city}
+                      onChange={(event) =>
+                        setPayer("payer_city", event.target.value)
+                      }
+                    />
+                  </FormField>
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      id="org-payer-state"
+                      label="State"
+                      optional
+                      error={errors.payer_state}
+                    >
+                      <Input
+                        id="org-payer-state"
+                        value={form.payer.payer_state}
+                        onChange={(event) =>
+                          setPayer("payer_state", event.target.value)
+                        }
+                        placeholder="NC"
+                      />
+                    </FormField>
+                    <FormField
+                      id="org-payer-zip"
+                      label="ZIP"
+                      optional
+                      error={errors.payer_postal_code}
+                    >
+                      <Input
+                        id="org-payer-zip"
+                        value={form.payer.payer_postal_code}
+                        onChange={(event) =>
+                          setPayer("payer_postal_code", event.target.value)
+                        }
+                        placeholder="27514"
+                      />
+                    </FormField>
+                  </div>
+                </div>
+              )}
+            </fieldset>
+          )}
+
+          {form.feature_tutoring && (
+            <div className="flex items-start gap-3 rounded-lg border p-3">
+              <div className="grid flex-1 gap-0.5">
+                <label
+                  htmlFor="org-notifications"
+                  className="text-sm font-medium"
+                >
+                  Email notifications
+                </label>
+                <p className="text-muted-foreground text-xs">
+                  Emails the people concerned when someone is added, a plan or
+                  assessment is added, lessons are scheduled, or a session is
+                  recorded. Its own admins can switch it too.
+                </p>
+              </div>
+              <NotificationsSwitch
+                id="org-notifications"
+                checked={form.email_notifications}
+                onCheckedChange={(checked) =>
+                  set("email_notifications", checked)
+                }
+              />
+            </div>
+          )}
+
+          <FormField
+            id="org-blurb"
+            label="Description"
+            optional
+            error={errors.blurb}
+            hint="The line under the tagline on the sign-in page."
+          >
+            <Input
+              id="org-blurb"
+              value={form.blurb}
+              onChange={(event) => set("blurb", event.target.value)}
+            />
           </FormField>
 
           <fieldset className="grid gap-2">
             <legend className="mb-2 text-sm font-medium">Palette</legend>
-            <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Palette">
-              {ORG_PALETTES.filter((palette) => palette !== 'plum' || form.builtin_institute || form.palette === 'plum').map((palette) => (
+            <div
+              className="flex flex-wrap gap-2"
+              role="radiogroup"
+              aria-label="Palette"
+            >
+              {ORG_PALETTES.filter(
+                (palette) =>
+                  palette !== "plum" ||
+                  form.builtin_institute ||
+                  form.palette === "plum",
+              ).map((palette) => (
                 <button
                   key={palette}
                   type="button"
                   role="radio"
                   aria-checked={form.palette === palette}
-                  onClick={() => set('palette', palette)}
+                  onClick={() => set("palette", palette)}
                   className={cn(
-                    'flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-colors',
-                    form.palette === palette ? 'border-primary ring-primary/30 ring-2' : 'hover:bg-accent/50',
+                    "flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-colors",
+                    form.palette === palette
+                      ? "border-primary ring-primary/30 ring-2"
+                      : "hover:bg-accent/50",
                   )}
                 >
                   <span
@@ -515,7 +717,9 @@ export function OrganizationDialog({
               type="checkbox"
               className="accent-primary size-4"
               checked={form.builtin_institute}
-              onChange={(event) => set('builtin_institute', event.target.checked)}
+              onChange={(event) =>
+                set("builtin_institute", event.target.checked)
+              }
             />
             Wear the Mathematics Institute of the Triangle’s built-in logo
           </label>
@@ -532,10 +736,14 @@ export function OrganizationDialog({
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            {existing ? 'Close' : 'Cancel'}
+            {existing ? "Close" : "Cancel"}
           </Button>
-          <Button type="submit" form="organization-form" disabled={create.isPending || update.isPending}>
-            {existing ? 'Save' : 'Create space'}
+          <Button
+            type="submit"
+            form="organization-form"
+            disabled={create.isPending || update.isPending}
+          >
+            {existing ? "Save" : "Create space"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -546,22 +754,29 @@ export function OrganizationDialog({
 function LogoSection({ organization }: { organization: OrganizationListItem }) {
   const upload = useUploadLogo();
   const remove = useRemoveLogo();
-  const inputs = useRef<Record<LogoKind, HTMLInputElement | null>>({ mark: null, full: null });
+  const inputs = useRef<Record<LogoKind, HTMLInputElement | null>>({
+    mark: null,
+    full: null,
+  });
 
   async function onFile(kind: LogoKind, file: File | undefined) {
     if (!file) return;
     if (file.size > MAX_LOGO_BYTES) {
-      toast.error('A logo may be at most 256 KB.');
+      toast.error("A logo may be at most 256 KB.");
       return;
     }
     try {
       await upload.mutateAsync({ id: organization.id, kind, file });
-      toast.success('Logo updated.');
+      toast.success("Logo updated.");
     } catch (caught) {
-      toast.error(caught instanceof ApiRequestError ? (caught.fieldErrors.logo ?? caught.message) : 'Upload failed.');
+      toast.error(
+        caught instanceof ApiRequestError
+          ? (caught.fieldErrors.logo ?? caught.message)
+          : "Upload failed.",
+      );
     } finally {
       const input = inputs.current[kind];
-      if (input) input.value = '';
+      if (input) input.value = "";
     }
   }
 
@@ -569,19 +784,35 @@ function LogoSection({ organization }: { organization: OrganizationListItem }) {
     <section className="grid gap-3" aria-label="Logos">
       <h3 className="text-sm font-medium">Logos</h3>
       <p className="text-muted-foreground text-xs">
-        PNG or WebP, at most 256 KB. The mark is square and goes in the browser tab and the
-        sidebar; the full logo goes on the sign-in page.
+        PNG or WebP, at most 256 KB. The mark is square and goes in the browser
+        tab and the sidebar; the full logo goes on the sign-in page.
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         {LOGO_KINDS.map((kind) => {
-          const url = kind === 'mark' ? organization.logo_mark_url : organization.logo_full_url;
+          const url =
+            kind === "mark"
+              ? organization.logo_mark_url
+              : organization.logo_full_url;
           return (
-            <div key={kind} className="flex items-center gap-3 rounded-lg border p-3">
+            <div
+              key={kind}
+              className="flex items-center gap-3 rounded-lg border p-3"
+            >
               <span className="bg-muted flex h-12 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md">
-                {url ? <img src={url} alt="" className="max-h-full max-w-full object-contain" /> : <ImageUpIcon className="text-muted-foreground size-5" />}
+                {url ? (
+                  <img
+                    src={url}
+                    alt=""
+                    className="max-h-full max-w-full object-contain"
+                  />
+                ) : (
+                  <ImageUpIcon className="text-muted-foreground size-5" />
+                )}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm">{kind === 'mark' ? 'Mark' : 'Full logo'}</p>
+                <p className="text-sm">
+                  {kind === "mark" ? "Mark" : "Full logo"}
+                </p>
                 <div className="mt-1 flex gap-1">
                   <input
                     ref={(element) => {
@@ -590,19 +821,32 @@ function LogoSection({ organization }: { organization: OrganizationListItem }) {
                     type="file"
                     accept="image/png,image/webp"
                     className="hidden"
-                    aria-label={kind === 'mark' ? 'Upload mark' : 'Upload full logo'}
+                    aria-label={
+                      kind === "mark" ? "Upload mark" : "Upload full logo"
+                    }
                     data-testid={`logo-input-${kind}`}
-                    onChange={(event) => void onFile(kind, event.target.files?.[0])}
+                    onChange={(event) =>
+                      void onFile(kind, event.target.files?.[0])
+                    }
                   />
-                  <Button size="sm" variant="outline" disabled={upload.isPending} onClick={() => inputs.current[kind]?.click()}>
-                    {url ? 'Replace' : 'Upload'}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={upload.isPending}
+                    onClick={() => inputs.current[kind]?.click()}
+                  >
+                    {url ? "Replace" : "Upload"}
                   </Button>
                   {url && (
                     <Button
                       size="sm"
                       variant="ghost"
-                      aria-label={kind === 'mark' ? 'Remove mark' : 'Remove full logo'}
-                      onClick={() => void remove.mutateAsync({ id: organization.id, kind })}
+                      aria-label={
+                        kind === "mark" ? "Remove mark" : "Remove full logo"
+                      }
+                      onClick={() =>
+                        void remove.mutateAsync({ id: organization.id, kind })
+                      }
                     >
                       <Trash2Icon />
                     </Button>
@@ -617,12 +861,16 @@ function LogoSection({ organization }: { organization: OrganizationListItem }) {
   );
 }
 
-function AdminsSection({ organization }: { organization: OrganizationListItem }) {
+function AdminsSection({
+  organization,
+}: {
+  organization: OrganizationListItem;
+}) {
   const admins = useOrganizationAdmins(organization.id);
   const add = useAddOrganizationAdmin(organization.id);
   const remove = useRemoveOrganizationAdmin(organization.id);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   async function addAdmin(event: React.FormEvent) {
@@ -630,9 +878,11 @@ function AdminsSection({ organization }: { organization: OrganizationListItem })
     setErrors({});
     try {
       await add.mutateAsync({ email, full_name: name });
-      toast.success(`${name || email} added as an admin of ${organization.name}.`);
-      setEmail('');
-      setName('');
+      toast.success(
+        `${name || email} added as an admin of ${organization.name}.`,
+      );
+      setEmail("");
+      setName("");
     } catch (caught) {
       if (caught instanceof ApiRequestError) {
         setErrors(caught.fieldErrors);
@@ -646,12 +896,21 @@ function AdminsSection({ organization }: { organization: OrganizationListItem })
       <h3 className="text-sm font-medium">Admins</h3>
       <ul className="grid gap-2">
         {(admins.data?.data ?? []).map((admin) => (
-          <li key={admin.user_id} className="flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm">
+          <li
+            key={admin.user_id}
+            className="flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm"
+          >
             <span className="min-w-0 flex-1">
               <span className="block truncate">{admin.full_name}</span>
-              <span className="text-muted-foreground block truncate text-xs">{admin.email}</span>
+              <span className="text-muted-foreground block truncate text-xs">
+                {admin.email}
+              </span>
             </span>
-            {admin.status !== 'active' && <Badge variant="outline">{admin.status === 'invited' ? 'Invited' : 'Suspended'}</Badge>}
+            {admin.status !== "active" && (
+              <Badge variant="outline">
+                {admin.status === "invited" ? "Invited" : "Suspended"}
+              </Badge>
+            )}
             <Button
               size="sm"
               variant="ghost"
@@ -664,16 +923,32 @@ function AdminsSection({ organization }: { organization: OrganizationListItem })
           </li>
         ))}
         {admins.data && admins.data.data.length === 0 && (
-          <li className="text-muted-foreground text-sm">No admins yet. Add the first one below.</li>
+          <li className="text-muted-foreground text-sm">
+            No admins yet. Add the first one below.
+          </li>
         )}
       </ul>
 
-      <form className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end" onSubmit={addAdmin} aria-label="Add an admin">
+      <form
+        className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
+        onSubmit={addAdmin}
+        aria-label="Add an admin"
+      >
         <FormField id="admin-email" label="Google address" error={errors.email}>
-          <Input id="admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@gmail.com" />
+          <Input
+            id="admin-email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="name@gmail.com"
+          />
         </FormField>
         <FormField id="admin-name" label="Name" error={errors.full_name}>
-          <Input id="admin-name" value={name} onChange={(event) => setName(event.target.value)} />
+          <Input
+            id="admin-name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
         </FormField>
         <Button type="submit" disabled={add.isPending || !email || !name}>
           <UserPlusIcon />
@@ -681,8 +956,8 @@ function AdminsSection({ organization }: { organization: OrganizationListItem })
         </Button>
       </form>
       <p className="text-muted-foreground text-xs">
-        Someone new signs in with that Google address to accept. Someone who already uses the
-        portal is invited, and accepts when they next sign in.
+        Someone new signs in with that Google address to accept. Someone who
+        already uses the portal is invited, and accepts when they next sign in.
       </p>
     </section>
   );

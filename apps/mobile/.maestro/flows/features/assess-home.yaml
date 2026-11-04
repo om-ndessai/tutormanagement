@@ -20,7 +20,7 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# Phase 66: the member home; the Assessment home is in Ines's first section ("Practice").
+# Phase 66: the member home; the Assessment home is in Ines's first section ("Your learning").
 - extendedWaitUntil:
     visible:
       id: home-band

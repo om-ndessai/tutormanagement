@@ -97,7 +97,15 @@ jest.mock('@/features/teaching/api', () => ({ useActiveSession: () => ({ data: {
 jest.mock('@/features/locations/lesson-reminder', () => ({ LessonReminderSheet: () => null }));
 jest.mock('@/features/organizations/invitation-banner', () => ({ InvitationBanner: () => null }));
 jest.mock('@/features/onboarding/onboarding-provider', () => ({ useOptionalOnboarding: () => null }));
-jest.mock('@/features/onboarding/tour-targets', () => ({ useTourScroller: () => undefined, useTourTarget: () => () => undefined }));
+jest.mock('@/features/onboarding/tour-targets', () => {
+  const { View } = jest.requireActual('react-native');
+  // The tour's targets: plain views carrying their id, so a test can see the home registered them.
+  return {
+    useTourScroller: () => undefined,
+    useTourTarget: () => () => undefined,
+    TourTarget: ({ id, children }: { id: string; children: unknown }) => <View nativeID={id}>{children}</View>,
+  };
+});
 
 function allText(): string {
   const out: string[] = [];
@@ -383,9 +391,100 @@ describe('Phase 68: focus and families', () => {
   });
 
   it('the Next up for an assessment-led home with nothing else opens Assessments', async () => {
-    await show({ ...INES, focus: 'assessment' }, ['student', 'admin', 'parent'], ASSESS);
+    await show({ ...INES, focus: 'assessment', focus_options: ['assessment', 'quest'] }, ['student', 'admin', 'parent'], ASSESS);
     expect(screen.getByTestId('next-up-focus_default')).toHaveTextContent(/Start an assessment\./);
     await fireEvent.press(screen.getByTestId('next-up-action'));
     expect(router.navigate).toHaveBeenCalledWith('/assessments');
+  });
+});
+
+describe('Your learning and the child card, with sets off', () => {
+  const NONE = { ...ASSESS, feature_assessment: false, feature_quest: false };
+
+  it('names the section "Your learning"', async () => {
+    await show(SOFIA, ['student']);
+    expect(screen.getByTestId('home-section-learner')).toHaveTextContent(/^Your learning/);
+    expect(allText()).not.toMatch(/\bPractice\b/);
+  });
+
+  it("Sofia: Next up names her lesson, so her section leaves its own card out", async () => {
+    await show(SOFIA, ['student']);
+    expect(screen.getByTestId('next-up-learner_lesson')).toBeTruthy();
+    expect(screen.queryByTestId('home-learner-next-card')).toBeNull();
+    expect(screen.getByTestId('play-home')).toBeTruthy();
+    expect(screen.queryByTestId('home-learner-empty')).toBeNull();
+  });
+
+  it('every set off: one muted line in Your learning, and no quest offered anywhere', async () => {
+    const home = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null }, focus: 'quest' as const, focus_options: [] };
+    await show(home, ['student'], NONE);
+    expect(screen.getByTestId('home-learner-empty')).toHaveTextContent(
+      'Nothing to practise here yet: Quest and Assessments are off in this space.',
+    );
+    expect(screen.queryByTestId('play-home')).toBeNull();
+    expect(screen.queryByTestId('assessment-home')).toBeNull();
+    expect(screen.queryByTestId('next-up-focus_default')).toBeNull();
+    expect(screen.queryByTestId('quick-new_quest')).toBeNull();
+    expect(allText()).not.toMatch(/Start a quest|New [Qq]uest/);
+  });
+
+  it('a lesson in the section is not "empty", with Quest and Assessments off', async () => {
+    mockWaiting.current = [];
+    const home = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: SOFIA.learner!.next_lesson } };
+    await show(home, ['student'], { ...TUTORING, feature_assessment: false, feature_quest: false });
+    // Next up shows it, so the section has nothing else: the line, not a second copy of the lesson.
+    expect(screen.getByTestId('next-up-learner_lesson')).toBeTruthy();
+    expect(screen.queryByTestId('home-learner-next-card')).toBeNull();
+    expect(screen.getByTestId('home-learner-empty')).toBeTruthy();
+  });
+
+  it('a child card with Tutoring and Quest off: Assessments where it is on, opening the Assessment page', async () => {
+    const off = { ...ASSESS, feature_quest: false };
+    await show({ ...ANITA, parent: { children: [child({ next_lesson: null })] } }, ['parent'], off);
+    expect(screen.queryByTestId('home-child-next-sanjay')).toBeNull();
+    expect(screen.queryByTestId('home-child-month-sanjay')).toBeNull();
+    expect(screen.queryByTestId('home-child-off-sanjay')).toBeNull();
+    await fireEvent.press(screen.getByTestId('home-child-assessments-sanjay'));
+    expect(router.navigate).toHaveBeenCalledWith('/assessments');
+  });
+
+  it('a child card with every set off says lessons and quests are off', async () => {
+    await show({ ...ANITA, parent: { children: [child({ next_lesson: null })] } }, ['parent'], NONE);
+    expect(screen.getByTestId('home-child-off-sanjay')).toHaveTextContent('Lessons and quests are off in this space.');
+    expect(screen.queryByTestId('home-child-assessments-sanjay')).toBeNull();
+    expect(screen.queryByTestId('home-child-play-sanjay')).toBeNull();
+  });
+
+  it('a child card where Tutoring is on keeps its lessons and no fallback', async () => {
+    await show(ANITA, ['parent']);
+    expect(screen.getByTestId('home-child-next-sanjay')).toBeTruthy();
+    expect(screen.queryByTestId('home-child-assessments-sanjay')).toBeNull();
+    expect(screen.queryByTestId('home-child-off-sanjay')).toBeNull();
+  });
+});
+
+describe('the tour lights the home’s blocks (Phase 66)', () => {
+  const ids = () => {
+    const out: string[] = [];
+    const walk = (node: unknown): void => {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) return node.forEach(walk);
+      const id = (node as { props?: { nativeID?: string } }).props?.nativeID;
+      if (id) out.push(id);
+      walk((node as { children?: unknown }).children);
+    };
+    walk(screen.toJSON());
+    return out;
+  };
+
+  it('registers the band, Next up and To record for a tutor', async () => {
+    await show(ALEX, ['tutor']);
+    expect(ids()).toEqual(expect.arrayContaining(['home-band', 'home-next-up', 'home-to-record']));
+  });
+
+  it("registers a parent's section", async () => {
+    await show(ANITA, ['parent']);
+    expect(ids()).toEqual(expect.arrayContaining(['home-band', 'home-next-up', 'home-section-parent']));
+    expect(ids()).not.toContain('home-to-record');
   });
 });

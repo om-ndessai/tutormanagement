@@ -151,4 +151,41 @@ test.describe('Phase 68: focus and families', () => {
       await questOn(admin, false);
     }
   });
+
+  test('with every set off, nothing offers a set: no quest in Next up, a line instead of an empty section, a child card that says why', async ({
+    as,
+  }) => {
+    const platform = await as('platformAdmin', { org: null });
+    const admin = await as('admin');
+    const session = await unwrap<any>(await admin.request.get('/api/auth/session'), 'session');
+    const spaceId = session.organization.id;
+    const sets = (data: Record<string, boolean>) =>
+      platform.request.put(`/api/platform/organizations/${spaceId}/features`, { data });
+    try {
+      expect((await sets({ feature_tutoring: false, feature_assessment: false, feature_quest: false })).status()).toBe(200);
+
+      const student = await as('student');
+      const home = await unwrap<any>(await student.request.get('/api/home'), 'the home');
+      expect(home.focus_options).toEqual([]);
+      await student.goto('/');
+      await expect(student.getByTestId('next-up')).toBeVisible({ timeout: 15_000 });
+      await expect(student.getByTestId('next-up-focus_default')).toHaveCount(0);
+      await expect(student.getByTestId('home-learner-empty')).toBeVisible();
+      await expect(student.getByTestId('home-section-learner')).toContainText('Your learning');
+
+      const parent = await as('parent');
+      await parent.goto('/');
+      await expect(parent.locator('[data-testid^="home-child-off-"]').first()).toContainText('Lessons and quests are off in this space.');
+
+      // Assessment alone: the child card leads to it.
+      expect((await sets({ feature_tutoring: false, feature_assessment: true, feature_quest: false })).status()).toBe(200);
+      // Taking a set away clears its admins' switch; allowing it again leaves it off until they switch it on.
+      expect((await admin.request.patch('/api/organization/settings', { data: { canvas_assessments: true } })).status()).toBe(200);
+      await parent.goto('/');
+      await expect(parent.locator('[data-testid^="home-child-assessments-"]').first()).toBeVisible({ timeout: 15_000 });
+    } finally {
+      expect((await sets({ feature_tutoring: true, feature_assessment: true, feature_quest: true })).status()).toBe(200);
+      expect((await admin.request.patch('/api/organization/settings', { data: { canvas_assessments: true } })).status()).toBe(200);
+    }
+  });
 });

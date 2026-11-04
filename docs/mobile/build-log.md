@@ -4719,3 +4719,74 @@ press under the chart rather than on hover; retention is a list of rows rather t
 iOS 27 (iPhone 17) and Android 37 (Medium Phone); `npm run smoke -- mobile` 10/10 on both. Screenshots reviewed (light):
 the held switch with its waiting line, the empty state before Recompute, and after it the tiles (suppressed shares "—"
 with "fewer than 5"), both charts' "Fewer than 5 people." (the local seed has no days played) and Everyone at "<5".
+
+## 79. Member home across feature sets: four fixes, in the app (2026-11-04)
+
+The owner's screenshots of Home with a space's Tutoring / Assessment / Quest sets each on or off. Shared (the lead's,
+`packages/shared/src/home.ts`): `focus_default` only for a focus in `focus_options` (with every set off the focus fell
+back to Quest and Next up offered "Start a quest", a 403 page), and `HOME_HAT_LABELS.learner` is "Your learning". The
+web half is `apps/web/src/features/home/member-home.tsx` and `features/play/play-home.tsx` (same words and testIDs).
+
+- **Your learning** (`home/home-sections.tsx`, `learnerSectionParts` in `member-home-model.ts`): its "Your next lesson"
+  card (`home-learner-next-card`) is left out while Next up is `learner_lesson` (`nextUpShowsLearnerLesson`), as the
+  tutor's Now card is for `lesson_now`/`lesson_next`; with no lesson shown and Quest and Assessment off, one muted
+  line (`home-learner-empty`, "Nothing to practise here yet: Quest and Assessments are off in this space.").
+  No app-side "Start a quest" remains with Quest off: `welcome_back` needs Quest, `focus_default` is the shared fix,
+  `new_quest` is `quickActionsFor`'s.
+- **One big heading**: the Play home's "Play" title is now the board's uppercase sub-label "Quest"
+  (`play-home-heading`, `GroupHeading`), New Quest (`play-new`) kept on its row.
+- **A child's card** with Tutoring and Quest off (`childCardFallback`): an outlined **Assessments**
+  (`home-child-assessments-<id>`, to `/assessments`) where Assessment is on, else the muted line
+  `home-child-off-<id>` "Lessons and quests are off in this space.". As the web, the lesson lines
+  (`home-child-next-`, `-month-`) and the tap to Progress (a Tutoring route, 403 without it) are Tutoring's only.
+
+**Flows:** `home/member-home-space` scrolls to "Your learning"; `home/member-home-student` checks Sofia's lesson
+named once -- by Next up's title when it leads (and no section card), else by the section; comments in
+`features/assess-home`, `play/{play-home,habit,favorites}`. Also `.maestro/scripts/spaces.js` accepts terms/privacy
+2026-11-04 (left behind by the privacy notice commit; `maestro-scripts.test.ts` was red).
+**Jest:** `member-home-model.test.ts` (learner parts, child fallback, no quest with every set off),
+`member-focus-model.test.ts` (fixture gains `focus_options`; a focus not offered gives nothing),
+`member-home-screen.test.tsx` (the label, the lesson once, the empty line, both child-card fallbacks).
+
+## 80. The tour is Tutoring's; the console's space form asks what it may use first (2026-11-04)
+
+Owner, 2026-11-04, the web's half in `apps/web/src/features/onboarding/onboarding-provider.tsx`,
+`features/home/member-home.tsx` and `features/platform/organization-dialog.tsx`; shared adds `tourOffered(org)`
+(`onboarding.ts`, = Tutoring on).
+
+- **The tour** (`onboarding/onboarding-provider.tsx`): where `!tourOffered(organization)` the wizard never opens by
+  itself and no tour offer shows (new device, first visit). A space just started on this device still opens on
+  "Invite people" (checked before the gate). The account sheet's **Take the tour** (`account-tour`, the app's
+  "Getting started") and Search's `search-action-tour` are hidden there. The wizard's route stays reachable by its link.
+- **The space form** (`platform/organization-form-sheet.tsx`, `org-form.ts`): Name, Short name, then "This space may
+  use" (creating: the three sets; editing: the Quest-trust and checked-questions switches), then address name, place,
+  tagline, description. A new space starts with Quest alone ticked (`EMPTY_ORG_FORM.features`). The clock (`org-form-tz`),
+  who families pay (`org-form-payment-model`, payer details) and email notifications (`org-form-notifications`) show
+  only while Tutoring is ticked -- when editing, while the space is allowed Tutoring (the app edits the sets on the
+  space's screen, S3, so the form reads the allowed sets); hidden values are kept and sent as before. New subtitle:
+  "Its name, what it may use, and its look. Its admins come next, once it exists."
+
+**Flows:** `platform/feature-sets` (Quest alone ticked, the three Tutoring fields appear with Tutoring),
+`features/console` (the defaults), `spaces/new-space-quest` (defaults, then Assessment ticked for S10),
+`spaces/console-payment` and `tutor-spaces/console-payment` (Tutoring ticked before who families pay),
+`features/wizard` (in `assess`: no wizard by itself, no `account-tour`; the no-Tutoring wizard opened by its link).
+**Jest:** `onboarding/onboarding-provider.test.tsx` (new), `platform/platform-views.test.tsx` (defaults, order, the
+three fields with Tutoring on create and edit, hidden values still sent), `platform/platform-model.test.ts`.
+
+## 81. The tour on the member home, in the app (2026-11-04)
+
+A Phase 66 parity gap: the web's tour moved onto the member home's blocks (`apps/web/src/features/onboarding/tour-steps.ts`),
+the app's still lit dashboard sections (`dash-sessions`, `dash-progress`, `dash-reflections`, `tabs`, `dash-children`...)
+that live under More → Dashboard since then, so those steps were skipped and `onboarding/tour` failed at step 2.
+
+- **Steps** (`onboarding/tour-steps.ts`): the web's lists for admin, tutor, parent and student, same targets and words,
+  except the web's `nav-dashboard` (its Dashboard page) is the app's `nav-analytics` (More → Dashboard, "You will find it
+  under More"; the app's `nav-dashboard` is the Home tab) and "Getting started" keeps the phone's words (the account
+  menu). The space (no Tutoring) steps are unchanged.
+- **Targets** (`TourTarget`): `home-band` and `home-next-up` (`home/member-home-screen.tsx`), `home-to-record` and
+  `home-section-parent` (`home/home-sections.tsx`).
+
+**Flows:** `onboarding/tour` -- step 1 "Your teaching at a glance", step 2 "Next up" (by its title), Back/Next, the
+Dashboard step under More (new), Schedule under Sessions, the last "Your profile" under More, Finish → Confirm your
+details. **Jest:** `onboarding/tour-steps.test.ts` (each role's first steps, no `dash-`/`tabs` target, Dashboard under
+More), `home/member-home-screen.test.tsx` (the home registers its targets).

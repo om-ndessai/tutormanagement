@@ -28,7 +28,7 @@ tags:
       id: home-section-learner
     visibilityPercentage: 1
 - scrollUntilVisible:
-    element: 'Practice'
+    element: 'Your learning'
     direction: UP
 - takeScreenshot: member-home-space
 - scrollUntilVisible:

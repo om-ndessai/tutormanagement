@@ -79,7 +79,7 @@ export const HOME_HAT_LABELS: Record<HomeHat, string> = {
   tutor: 'Your teaching',
   office: 'Needs you',
   parent: 'Your children',
-  learner: 'Practice',
+  learner: 'Your learning',
 };
 
 /** A lesson starts showing "Start" this many minutes before it begins (one constant for web and app). */
@@ -438,8 +438,9 @@ export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): N
     out.push({ kind: 'office_needs', hat: 'office', office: home.office });
   }
   if (t?.now.next) out.push({ kind: 'lesson_next', hat: 'tutor', lesson: t.now.next, starts_in: t.next_starts_in });
-  // Phase 68 (H4): with nothing else, the focus's own first step.
-  if (home.focus === 'quest' || home.focus === 'assessment') {
+  // Phase 68 (H4): with nothing else, the focus's own first step -- only where that set is on here
+  // (with every set off, the focus is a fallback, and offering it would open a page that answers 403).
+  if ((home.focus === 'quest' || home.focus === 'assessment') && (home.focus_options ?? []).includes(home.focus)) {
     out.push({ kind: 'focus_default', hat: 'learner', focus: home.focus });
   }
   const rank = (item: NextUp) => NEXT_UP_ORDER.indexOf(item.kind);

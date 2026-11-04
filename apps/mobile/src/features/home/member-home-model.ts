@@ -168,6 +168,33 @@ export function questionQuestExtra(
   return state?.question ? { level_id: state.level_id } : null;
 }
 
+/** Whether Next up shows the learner's next lesson already (then "Your learning" leaves its card out). */
+export function nextUpShowsLearnerLesson(item: NextUp | null): boolean {
+  return item?.kind === 'learner_lesson';
+}
+
+/**
+ * What the learner section ("Your learning") holds: its next lesson unless Next up shows it, the Quest
+ * board, the Assessment home -- and with none of them, one muted line rather than an empty heading.
+ */
+export function learnerSectionParts(
+  nextLesson: HomeLesson | null | undefined,
+  item: NextUp | null,
+  sets: { quest: boolean; assessment: boolean },
+): { next: HomeLesson | null; empty: boolean } {
+  const next = nextLesson && !nextUpShowsLearnerLesson(item) ? nextLesson : null;
+  return { next, empty: !next && !sets.quest && !sets.assessment };
+}
+
+export const LEARNER_EMPTY_LINE = 'Nothing to practise here yet: Quest and Assessments are off in this space.';
+export const CHILD_OFF_LINE = 'Lessons and quests are off in this space.';
+
+/** A child's card in a space with Tutoring and Quest off: Assessments where it is on, else a line. */
+export function childCardFallback(sets: { tutoring: boolean; quest: boolean; assessment: boolean }): 'assessments' | 'off' | null {
+  if (sets.tutoring || sets.quest) return null;
+  return sets.assessment ? 'assessments' : 'off';
+}
+
 /** Whether Next up shows the tutor's next lesson already (then the section leaves its Now card out). */
 export function nextUpShowsLesson(item: NextUp | null, lesson: Pick<TutorHomeLesson, 'schedule_id' | 'occurs_on'> | null): boolean {
   if (!item || !lesson) return false;

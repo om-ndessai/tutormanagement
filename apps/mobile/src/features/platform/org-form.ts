@@ -72,7 +72,8 @@ export function payerChanges(form: PayerFormState, loaded: PayerFormState): Part
   ) as Partial<PayerFormState>;
 }
 
-const ALL_FEATURES: Record<FeatureSet, boolean> = { tutoring: true, assessment: true, quest: true };
+// Owner, 2026-11-04: a new space starts with Quest alone; the rest are ticked as needed.
+const NEW_FEATURES: Record<FeatureSet, boolean> = { tutoring: false, assessment: false, quest: true };
 
 export const EMPTY_ORG_FORM: OrgFormState = {
   name: '',
@@ -85,7 +86,7 @@ export const EMPTY_ORG_FORM: OrgFormState = {
   time_zone: 'America/New_York',
   builtin_institute: false,
   email_notifications: false,
-  features: ALL_FEATURES,
+  features: NEW_FEATURES,
   quest_trusted: true,
   checked_questions: true,
   payment_model: 'direct',
@@ -115,7 +116,12 @@ export function formFromOrganization(org: OrganizationListItem | null): OrgFormS
     time_zone: org.time_zone,
     builtin_institute: org.builtin_logo === 'institute',
     email_notifications: org.email_notifications,
-    features: ALL_FEATURES,
+    // On an edit the sets are not sent (the space's screen switches them); they decide what the form shows.
+    features: {
+      tutoring: featureAllowed(org, 'tutoring'),
+      assessment: featureAllowed(org, 'assessment'),
+      quest: featureAllowed(org, 'quest'),
+    },
     quest_trusted: org.quest_trusted !== false,
     checked_questions: org.checked_questions !== false,
     payment_model: spacePaymentModel(org),

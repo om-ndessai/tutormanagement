@@ -70,9 +70,12 @@ describe('Next up, Phase 68', () => {
   });
 
   it("with nothing else, an assessment-led or quest-led home offers its own first step", () => {
-    const quiet: MemberHome = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null } };
+    const quiet: MemberHome = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null }, focus_options: ['quest', 'assessment'] };
     expect(chooseNextUp(nextUpCandidates({ ...quiet, focus: 'assessment' }))).toMatchObject({ kind: 'focus_default', focus: 'assessment' });
     expect(chooseNextUp(nextUpCandidates({ ...quiet, focus: 'quest' }))).toMatchObject({ kind: 'focus_default', focus: 'quest' });
+    // Only a focus this space offers: with its set off, the focus is a fallback and offers nothing (a 403 page).
+    expect(chooseNextUp(nextUpCandidates({ ...quiet, focus: 'quest', focus_options: ['assessment'] }))).toBeNull();
+    expect(chooseNextUp(nextUpCandidates({ ...quiet, focus: 'quest', focus_options: [] }))).toBeNull();
     expect(chooseNextUp(nextUpCandidates({ ...ANITA, focus: 'family' }))?.kind).toBe('child_next_lesson');
   });
 });

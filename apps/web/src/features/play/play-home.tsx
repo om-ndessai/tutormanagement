@@ -218,9 +218,9 @@ export function PlayHome({ hideWaiting = false }: { hideWaiting?: boolean } = {}
   return (
     <section className="grid gap-4" data-testid="play-home" aria-labelledby="play-home-heading">
       <div className="flex flex-wrap items-center gap-2">
-        <h2 id="play-home-heading" className="font-display text-xl font-semibold">
-          Play
-        </h2>
+        <h3 id="play-home-heading" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+          Quest
+        </h3>
         <Button variant="outline" size="sm" className="ml-auto" onClick={() => navigate('/quest/games/new')}>
           <PlusIcon /> New Quest
         </Button>

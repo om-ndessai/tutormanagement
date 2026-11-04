@@ -1,5 +1,6 @@
-# A tutor takes the tour from the account menu (Alex): the wizard, Take the tour, then the
-# dashboard dimmed with one part lit and a card ("1 of N"); Back and Next move between steps, and
+# A tutor takes the tour from the account menu (Alex): the wizard, Take the tour, then Home
+# dimmed with one part lit and a card ("1 of N") -- since Phase 66 the home's own blocks first (the
+# band, Next up, To record), then Dashboard under More and the menu; Back and Next move between steps, and
 # Finish brings the wizard back on confirming his details (a non-admin's last step). Schedule's
 # step lights Sessions, where Schedule lives now. Closing it
 # changes nothing: he had been through it already.
@@ -51,7 +52,9 @@ tags:
 - tapOn:
     id: tour-next
 - extendedWaitUntil:
-    visible: 'Your lessons'
+    visible:
+      id: tour-title
+      text: 'Next up'
     timeout: 5000
 - assertVisible: '2 of .*'
 - tapOn:
@@ -64,6 +67,20 @@ tags:
 - tapOn:
     id: tour-next
 - takeScreenshot: tour-step-3
+# Phase 66: the dashboard moved off Home to More → Dashboard; its step lights More and says so.
+- repeat:
+    times: 6
+    while:
+      notVisible:
+        id: tour-title
+        text: 'Dashboard'
+    commands:
+      - tapOn:
+          id: tour-next
+- assertVisible:
+    id: tour-title
+    text: 'Dashboard'
+- assertVisible: '.*You will find it under More\..*'
 # Schedule is inside Sessions (the tab bar, revised 2026-10-15): its step lights the Sessions tab
 # and says where to find it.
 - repeat:
