@@ -1,7 +1,9 @@
 # Phase 62 (P6): the members' Play home. Quest on in chmi; Sofia, a student, opens the app and her Home
-# leads with Play: the tiles grouped by curriculum, "Have a code?" at the end. One tap on G6Q5 makes and
-# begins a single player's game: the doors count down and her first question follows ("Question 1 of 5").
-# Exit brings her back to Home, where Continue offers G6Q5 again. The switches are off again at the end.
+# leads with Play, "Have a code?" at the end. Phase 67 (H5): the tiles are the Quest board -- a grade row
+# of the grades her tiles reach, the chosen grade's cards in its hue. Grade 6 shows Grade 6's cards and
+# not Grade 4's; one tap on G6Q5 makes and begins a single player's game: the doors count down and her
+# first question follows ("Question 1 of 5"). Exit brings her back to Home, where Continue offers G6Q5
+# again and the board opens on Grade 6. The switches are off again at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -27,13 +29,41 @@ tags:
       id: play-home
     visibilityPercentage: 1
     timeout: 15000
+# The grade row, then Grade 4: its cards.
 - scrollUntilVisible:
-    element: 'NC standards'
+    element:
+      id: play-grade-4
+    centerElement: true
+    speed: 15
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-grade-4
+- scrollUntilVisible:
+    element:
+      id: play-tile-G4Q5
+    centerElement: true
+    speed: 15
+- assertNotVisible:
+    id: play-tile-G6Q5
+# Grade 6: its cards replace Grade 4's.
+- scrollUntilVisible:
+    element:
+      id: play-grade-6
+    direction: UP
+    centerElement: true
+    speed: 15
+- tapOn:
+    id: play-grade-6
 - scrollUntilVisible:
     element:
       id: play-tile-start-G6Q5
     centerElement: true
     speed: 15
+- assertNotVisible:
+    id: play-tile-G4Q5
+- assertVisible: 'Start G6Q5: Quick 5, Grade 6, 5 questions'
+- takeScreenshot: play-quest-board
 # The Play home is long since Phase 64 (My progress, the Daily): a slow scroll, and its momentum let to
 # end, so the tile does not drift on under the header (where a tap lands on the account button).
 - waitForAnimationToEnd:
@@ -71,6 +101,11 @@ tags:
 - assertVisible:
     id: play-continue
     text: '.*Continue G6Q5.*'
+# The board opens on the grade last played.
+- scrollUntilVisible:
+    element:
+      id: play-tile-G6Q5
+    timeout: 30000
 # "Have a code?" sits at the end of the home, under every tile (a long way down on a phone): scrolled to
 # its last line, which can be brought on screen but not centred.
 - scrollUntilVisible:

@@ -541,6 +541,16 @@ native rebuild of both dev builds, so build only while the devices are free.
   (both) -- run 15:50-16:30 ET on a Tuesday, when the seed's own Sofia-with-Alex lesson (4-5 PM) is the next
   card with Start; a clock collision of the seed, wider under the old 60-minute lead; to rerun after 5 PM.
 
+## Portal Phase 67 — coloured tiles and a newcomer's continuity (parity: the web half is built by the lead)
+
+- [x] 78. Mobile: H5-H8 of `docs/member-home-plan.md` (build-log entry 76) -- the shared QuestCard / TodayCard / grade
+  row (`features/play/quest-card.tsx`) on the guest home and the member Play home; the Quest board (`play-board`,
+  `play-grade-<n>`, grade hues from the `grade1..8` tokens, ADV, "Advanced", "More levels", "Show your work" for
+  oneself); the Daily as rings (`play-daily`); the week strip, welcome back and the next badge in My progress; Next up's
+  `question_quest` and `welcome_back`; QuestLanding retired. Built 2026-11-03: typecheck, lint (0 errors),
+  Jest 169 suites / 1262 tests, export green; the Phase 67 flows green on iOS and Android; `npm run smoke -- mobile` 10/10
+  on both.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

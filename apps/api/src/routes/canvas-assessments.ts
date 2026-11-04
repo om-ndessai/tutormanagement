@@ -152,7 +152,10 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     // The same people who may follow the student's progress: the student,
     // their guardians, their current tutors and the admins. Anybody else is
     // told the student is missing, not forbidden.
-    if (!(await canViewStudentProgress(c.env.DB, org.id, user, input.student_user_id))) {
+    // Phase 67 (H7): in a personal space, "Show your work" is for oneself: its owner is no student, so
+    // the progress rule above cannot admit them, and nobody else is in it to see the work.
+    const forSelf = org.personal && input.student_user_id === user.id;
+    if (!forSelf && !(await canViewStudentProgress(c.env.DB, org.id, user, input.student_user_id))) {
       throw ApiError.notFound('That student was not found.');
     }
     if (!bankLevelOffered(input.level_id, await offeredCurricula(c.env.DB, org.id))) {
@@ -163,7 +166,7 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     const drawn = await drawQuestionIds(
       c.env.DB,
       input.level_id,
-      org.canvas_assessment_questions,
+      input.question_count ?? org.canvas_assessment_questions,
       checkedQuestionsOn(org),
     );
     if (drawn.ids.length === 0) {

@@ -10,8 +10,17 @@
 //
 // Phase 64 (P17-P20): My progress under Continue, "Today's Daily · <tag>D" (while the console has the
 // Daily on) for the level last played or the first tile's, and a tile's "Best N".
+//
+// Phase 67 (H5-H8, docs/member-home-plan.md): the curriculum groups become the Quest board -- the grade
+// row, the grade's cards in its hue (QuestCard, shared with the guest home), "Advanced", and "More levels";
+// the Daily is a TodayCard of five rings; "Show your work" starts the reader's own assessment. Each card
+// keeps `play-tile-<code>` (now its root), `play-tile-start-<code>` and `play-tile-star-<code>`.
 import {
+  boardGrades,
+  memberBoard,
   tileGameRequest,
+  tileLook,
+  tileSpoken,
   gameLengthLabel,
   levelLabel,
   type CreateGameRequest,
@@ -20,7 +29,7 @@ import {
 } from '@tmi/shared';
 import { router, useIsFocused } from 'expo-router';
 import { useState } from 'react';
-import { Platform, Pressable, View, useWindowDimensions } from 'react-native';
+import { Platform, View, useWindowDimensions } from 'react-native';
 import { Button, Dialog, Portal, Text, TextInput } from 'react-native-paper';
 
 import { BadgePill } from '@/components/badge-pill';
@@ -28,9 +37,17 @@ import { CheckRow } from '@/components/check-row';
 import { IconButton } from '@/components/icon-button';
 import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
-import { useHabit } from '@/features/habit/api';
+import { useStartCanvasAssessment } from '@/features/canvas-assessments/api';
+import { useDaily, useHabit } from '@/features/habit/api';
 import { MyProgressCard } from '@/features/habit/my-progress-card';
-import { dailyButtonLabel, dailyTileFor } from '@/features/habit/habit-model';
+import {
+  DAILY_NEXT_TEXT,
+  dailyButtonLabel,
+  dailyCardTitle,
+  dailyRings,
+  dailyRingsLabel,
+  dailyTileFor,
+} from '@/features/habit/habit-model';
 import { useAskToJoin } from '@/features/organizations/api';
 import { CODE_FONT } from '@/features/quest/game-style';
 import { useCreateGame, useGameFavorites, useSaveGameFavorite } from '@/features/quest/games-api';
@@ -38,7 +55,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { radius, space } from '@/theme/tokens';
 import {
   useCarryGuestTiles,
   useGuestLeadLevel,
@@ -48,7 +65,16 @@ import {
   useRosterMembers,
   useWaitingGames,
 } from './play-api';
-import { codeKind, groupTiles, rosterSavedText, startRequest, tidyCode } from './play-model';
+import {
+  assessmentTileRequest,
+  codeKind,
+  offBoardGroups,
+  rosterSavedText,
+  shownGrade,
+  startRequest,
+  tidyCode,
+} from './play-model';
+import { CardGrid, GradeRow, QuestCard, TodayCard } from './quest-card';
 
 const failure = (caught: unknown, fallback: string) =>
   caught instanceof ApiRequestError ? caught.message : fallback;
@@ -100,35 +126,55 @@ function GroupHeading({ children }: { children: string }) {
 /**
  * Phase 62 (P6): the members' Play home. The home of a space without Tutoring, and of a student
  * anywhere. Nothing at all while the console has the Play home off (`play_home: false`).
+ *
+ * Phase 67 (H5-H8): the Quest board -- the Daily as five rings, the grade row (only the grades the
+ * reader's tiles reach), that grade's cards in its hue (its standards, then "Advanced"), and "More
+ * levels" for the tiles off the 1-8 row.
  */
 export function PlayHome() {
   const theme = useAppTheme();
   const toast = useToast();
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
   const tiles = useMemberTiles();
   const favorites = useGameFavorites();
   const saveFavorite = useSaveGameFavorite();
   const lastQuest = useLastQuest(organization?.slug);
   const last = lastQuest.data ?? null;
   const { start, pending } = useStartQuest();
-  // Two tiles a row on a phone, three or four on a tablet; the percentages leave room for the gaps.
+  const startAssessment = useStartCanvasAssessment();
+  const [chosenGrade, setChosenGrade] = useState<number | null>(null);
+  // Two cards a row on a phone, three or four on a tablet.
   const { width } = useWindowDimensions();
-  const tileWidth = width >= 1000 ? '23.5%' : width >= 700 ? '31.5%' : '48.5%';
+  const columns = width >= 1000 ? 4 : width >= 700 ? 3 : 2;
 
   // Phase 64: My progress is read beside the tiles, and the home waits for it to settle (or fail), so
   // the card never arrives later and pushes the tiles down under a finger (or a test's tap).
   const habit = useHabit();
   const guestLead = useGuestLeadLevel();
   useCarryGuestTiles(guestLead.isSuccess, tiles.data?.data.tiles, favorites.data?.data);
-
-  if (!tiles.data || !tiles.data.data.play_home || habit.isPending || guestLead.isPending || lastQuest.isLoading)
-    return null;
+  const list = tiles.data?.data.tiles ?? [];
   // The level last played here leads; before any, a guest's grade on this phone (P13).
   const lead = last?.request.level_id ?? guestLead.data ?? null;
-  const groups = groupTiles(tiles.data.data.tiles, lead);
-  // Phase 64 (P19): the Daily of that level, else of the first tile's.
-  const dailyTile = dailyTileFor(tiles.data.data.tiles, lead);
+  // Phase 64 (P19): the Daily of that level, else of the first tile's; Phase 67 shows it as rings.
+  const dailyTile = dailyTileFor(list, lead);
+  const dailyLevel = tiles.data?.data.daily && dailyTile ? dailyTile.level_id : null;
+  const daily = useDaily(dailyLevel);
+
+  if (
+    !tiles.data ||
+    !tiles.data.data.play_home ||
+    habit.isPending ||
+    guestLead.isPending ||
+    lastQuest.isLoading ||
+    daily.isLoading
+  )
+    return null;
+  const grades = boardGrades(list);
+  const grade = shownGrade(list, chosenGrade, lead);
+  const board = grade === null ? { standard: [], advanced: [] } : memberBoard(list, grade);
+  const more = offBoardGroups(list);
   const starred = new Set((favorites.data?.data ?? []).map((favorite) => favorite.name));
+  const dailySet = daily.data?.data ?? null;
 
   async function star(tile: MemberTile) {
     haptics.selection();
@@ -139,6 +185,75 @@ export function PlayHome() {
     } catch (caught) {
       toast.error(failure(caught, 'Could not save that favorite.'));
     }
+  }
+
+  // Phase 67 (H7): "Show your work" is the reader's own assessment (a personal space serves it).
+  async function showYourWork(tile: MemberTile) {
+    if (!user) return;
+    haptics.selection();
+    try {
+      const made = await startAssessment.mutateAsync(assessmentTileRequest(tile, user.id));
+      router.push({ pathname: '/assessments/[id]', params: { id: made.data.id } });
+    } catch (caught) {
+      haptics.error();
+      toast.error(failure(caught, 'That assessment could not start.'));
+    }
+  }
+
+  function card(tile: MemberTile) {
+    const look = tileLook(tile);
+    const isStarred = starred.has(tile.code);
+    const assessment = tile.kind === 'assessment';
+    return (
+      <QuestCard
+        testID={`play-tile-${tile.code}`}
+        pressTestID={`play-tile-start-${tile.code}`}
+        label={`Start ${tile.code}: ${tileSpoken(tile)}`}
+        title={look.title}
+        detail={look.detail}
+        level={look.level}
+        icon={look.icon}
+        tone={{ grade: look.grade }}
+        advanced={look.advanced}
+        code={tile.code}
+        disabled={pending || startAssessment.isPending}
+        onPress={() => void (assessment ? showYourWork(tile) : start(tile.code, tileGameRequest(tile)))}
+        footer={
+          <>
+            {tile.beta ? (
+              <View style={{ flexDirection: 'row', marginTop: 2 }}>
+                <BadgePill testID={`play-tile-beta-${tile.code}`} />
+              </View>
+            ) : null}
+            {/* Phase 64 (P20): the reader's best score of this tile's shape. */}
+            {tile.best != null ? (
+              <Text
+                testID={`play-best-${tile.code}`}
+                variant="labelMedium"
+                style={{ color: theme.colors.primary, fontWeight: '600' }}
+              >
+                {`Best ${tile.best}`}
+              </Text>
+            ) : null}
+          </>
+        }
+        // A favorite is a game: "Show your work" is not one, so it has no star.
+        aside={
+          assessment ? undefined : (
+            <IconButton
+              testID={`play-tile-star-${tile.code}`}
+              icon={isStarred ? 'star' : 'star-outline'}
+              size={20}
+              iconColor={isStarred ? theme.colors.primary : theme.tokens.mutedForeground}
+              accessibilityLabel={isStarred ? `${tile.code} is a favorite` : `Add ${tile.code} to favorites`}
+              accessibilityState={{ selected: isStarred, disabled: isStarred || saveFavorite.isPending }}
+              disabled={isStarred || saveFavorite.isPending}
+              onPress={() => void star(tile)}
+            />
+          )
+        }
+      />
+    );
   }
 
   return (
@@ -171,103 +286,76 @@ export function PlayHome() {
         </Button>
       ) : null}
 
-      {/* Phase 64 (P17-P18): the streak, today's ring and the badges. */}
+      {/* Phase 64 (P17-P18): the streak, today's ring and the badges; Phase 67: the week's dots. */}
       <MyProgressCard />
 
-      {dailyTile && tiles.data.data.daily ? (
-        <Button
+      {/* Phase 67 (H8): today's Daily as five rings, filled once played. */}
+      {dailyLevel && dailySet && (dailySet.result || dailySet.questions.length > 0) ? (
+        <TodayCard
           testID="play-daily"
-          mode="outlined"
-          icon="calendar-check"
-          onPress={() => {
+          eyebrow={dailyButtonLabel(dailyLevel)}
+          eyebrowTestID="play-daily-eyebrow"
+          title={dailyCardTitle(dailySet.result)}
+          titleTestID="play-daily-title"
+          states={dailyRings(dailySet.result, Math.max(dailySet.questions.length, dailySet.result?.of ?? 0))}
+          ringsTestID="play-daily-rings"
+          ringsLabel={dailyRingsLabel(dailySet.result, dailySet.questions.length)}
+          note={dailySet.result ? DAILY_NEXT_TEXT : null}
+          playTestID="play-daily-play"
+          playIcon={dailySet.result ? 'eye-outline' : 'bullseye-arrow'}
+          playLabel={dailySet.result ? 'See today’s result' : 'Play today’s Daily'}
+          quiet={dailySet.result !== null}
+          onPlay={() => {
             haptics.selection();
-            router.push({ pathname: '/quest/daily/[level]', params: { level: dailyTile.level_id } });
+            router.push({ pathname: '/quest/daily/[level]', params: { level: dailyLevel } });
           }}
-          contentStyle={{ minHeight: 48, justifyContent: 'flex-start' }}
-        >
-          {dailyButtonLabel(dailyTile.level_id)}
-        </Button>
+        />
       ) : null}
 
       <PlayFavorites />
 
       <WaitingForYou />
 
-      {groups.map(([group, groupTiles]) => (
-        <View key={group} style={{ gap: space.sm }}>
-          <GroupHeading>{group}</GroupHeading>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-            {groupTiles.map((tile) => {
-              const isStarred = starred.has(tile.code);
-              return (
-                // A plain View holds the column's width: Paper's Card splits its style between an
-                // outer shadow view and an inner one on iOS, where a flexBasis on it squeezed the
-                // tiles into four narrow columns.
-                <View key={tile.code} style={{ width: tileWidth }}>
-                  <OutlinedCard testID={`play-tile-${tile.code}`} style={{ borderRadius: radius.lg }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                      <Pressable
-                        testID={`play-tile-start-${tile.code}`}
-                        accessibilityRole="button"
-                        accessibilityLabel={`Start ${tile.code}: ${tile.words}`}
-                        disabled={pending}
-                        onPress={() => void start(tile.code, tileGameRequest(tile))}
-                        style={({ pressed }) => ({
-                          flex: 1,
-                          minHeight: MIN_TARGET + space.lg,
-                          padding: space.md,
-                          gap: 2,
-                          borderRadius: radius.lg,
-                          backgroundColor: pressed ? theme.tokens.muted : undefined,
-                        })}
-                      >
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
-                          <Text variant="titleMedium" style={{ fontFamily: CODE_FONT, fontWeight: '700' }}>
-                            {tile.code}
-                          </Text>
-                          {tile.beta ? <BadgePill testID={`play-tile-beta-${tile.code}`} /> : null}
-                        </View>
-                        <Text
-                          variant="bodySmall"
-                          numberOfLines={2}
-                          style={{ color: theme.tokens.mutedForeground }}
-                        >
-                          {tile.words}
-                        </Text>
-                        {/* Phase 64 (P20): the reader's best score of this tile's shape. */}
-                        {tile.best != null ? (
-                          <Text
-                            testID={`play-best-${tile.code}`}
-                            variant="labelMedium"
-                            style={{ color: theme.colors.primary, fontWeight: '600' }}
-                          >
-                            {`Best ${tile.best}`}
-                          </Text>
-                        ) : null}
-                      </Pressable>
-                      <IconButton
-                        testID={`play-tile-star-${tile.code}`}
-                        icon={isStarred ? 'star' : 'star-outline'}
-                        size={20}
-                        iconColor={isStarred ? theme.colors.primary : theme.tokens.mutedForeground}
-                        accessibilityLabel={
-                          isStarred ? `${tile.code} is a favorite` : `Add ${tile.code} to favorites`
-                        }
-                        accessibilityState={{
-                          selected: isStarred,
-                          disabled: isStarred || saveFavorite.isPending,
-                        }}
-                        disabled={isStarred || saveFavorite.isPending}
-                        onPress={() => void star(tile)}
-                      />
-                    </View>
-                  </OutlinedCard>
-                </View>
-              );
-            })}
-          </View>
+      {grades.length > 0 ? (
+        <View testID="play-board" style={{ gap: space.md }}>
+          <GroupHeading>Your grade</GroupHeading>
+          <GradeRow
+            grades={grades}
+            value={grade}
+            hued
+            testIDPrefix="play-grade-"
+            onChange={(g) => {
+              haptics.selection();
+              setChosenGrade(g);
+            }}
+          />
+          {board.standard.length > 0 ? (
+            <CardGrid items={board.standard} columns={columns} keyOf={(t) => t.code} render={card} />
+          ) : null}
+          {board.advanced.length > 0 ? (
+            <>
+              <Text variant="titleMedium" accessibilityRole="header" style={{ fontWeight: '700', marginTop: space.sm }}>
+                Advanced
+              </Text>
+              <CardGrid items={board.advanced} columns={columns} keyOf={(t) => t.code} render={card} />
+            </>
+          ) : null}
         </View>
-      ))}
+      ) : null}
+
+      {more.length > 0 ? (
+        <View testID="play-more" style={{ gap: space.md }}>
+          <GroupHeading>More levels</GroupHeading>
+          {more.map(([words, group]) => (
+            <View key={words} style={{ gap: space.sm }}>
+              <Text variant="titleSmall" accessibilityRole="header" style={{ fontWeight: '700' }}>
+                {words}
+              </Text>
+              <CardGrid items={group} columns={columns} keyOf={(t) => t.code} render={card} />
+            </View>
+          ))}
+        </View>
+      ) : null}
 
       <HaveACode />
     </View>

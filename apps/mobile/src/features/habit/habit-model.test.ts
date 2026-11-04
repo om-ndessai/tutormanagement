@@ -4,7 +4,11 @@ import { DEFAULT_TILES, dailyShareText, tileWords, type DailyQuestion, type Memb
 
 import { dailyResultHtml, dailyResultSpeech, dailyResultText } from './daily-html';
 import {
+  WELCOME_BACK_TEXT,
   dailyButtonLabel,
+  dailyCardTitle,
+  dailyRings,
+  dailyRingsLabel,
   dailyGrid,
   dailyGridSpeech,
   dailyHeading,
@@ -15,9 +19,11 @@ import {
   giveAnswer,
   levelTag,
   levelWords,
+  nextBadgeLine,
   secondsSince,
   streakLine,
   todayLabel,
+  weekDotLabel,
 } from './habit-model';
 
 const member = (code: string): MemberTile => {
@@ -120,5 +126,35 @@ describe('the Daily’s result page', () => {
     expect(dailyResultSpeech(questions, [true, false])).toMatch(/^Question 1, right\. .*Answer: 4\. Question 2, wrong\./);
     expect(dailyResultText(questions, [true, false])).toContain('✓ 1\n');
     expect(dailyResultText(questions, [true, false])).toContain('Answer: 5');
+  });
+});
+
+describe('Phase 67 (H8): the week, welcome back, the next badge and the Daily rings', () => {
+  it('reads each dot aloud by its day', () => {
+    expect(weekDotLabel(0, 'played')).toBe('Monday: played');
+    expect(weekDotLabel(3, 'missed')).toBe('Thursday: not played');
+    expect(weekDotLabel(4, 'today')).toBe('Friday: today, not played yet');
+    expect(weekDotLabel(6, 'ahead')).toBe('Sunday: still to come');
+  });
+
+  it('welcomes back without a word of loss, and names the next badge', () => {
+    expect(WELCOME_BACK_TEXT).toBe('Welcome back! A fresh week starts now.');
+    expect(WELCOME_BACK_TEXT).not.toMatch(/lost|broke|missed/i);
+    expect(nextBadgeLine({ label: '10 quests', have: 4, need: 10 })).toBe('Next badge: 10 quests · 4 of 10');
+  });
+
+  it('fills the rings from the marks once played, else leaves them open', () => {
+    expect(dailyRings(null)).toEqual(['open', 'open', 'open', 'open', 'open']);
+    expect(dailyRings({ right: 2, of: 5, seconds: 30, marks: [true, false, true, false, false] })).toEqual([
+      'hit',
+      'miss',
+      'hit',
+      'miss',
+      'miss',
+    ]);
+    expect(dailyCardTitle(null)).toBe('Five questions. Can you hit all five?');
+    expect(dailyCardTitle({ right: 4, of: 5, seconds: 30, marks: [] })).toBe('You hit 4 of 5 today.');
+    expect(dailyRingsLabel(null)).toBe('5 targets, not played yet');
+    expect(dailyRingsLabel({ right: 4, of: 5, seconds: 30, marks: [] })).toBe('4 hit of 5');
   });
 });

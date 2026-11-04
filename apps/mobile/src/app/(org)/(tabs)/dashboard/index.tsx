@@ -1,14 +1,10 @@
 import { MemberHomeScreen } from '@/features/home/member-home-screen';
-import { QuestLanding } from '@/features/quest/quest-landing';
 
+/**
+ * Phase 66: one Home for every space; the role dashboards are More → Dashboard. Phase 67 retired the
+ * Quest landing (Phase 42): a student's waiting question and a tutor's answers to review are Next up
+ * items now, never a redirect.
+ */
 export default function DashboardRoute() {
-  return (
-    <>
-      {/* Phase 42: once per sign-in, a student or a tutor with something waiting goes into Quest (kept
-          through Phase 66; Phase 67 makes it a Next up item). */}
-      <QuestLanding />
-      {/* Phase 66: one Home for every space; the role dashboards are More → Dashboard. */}
-      <MemberHomeScreen />
-    </>
-  );
+  return <MemberHomeScreen />;
 }

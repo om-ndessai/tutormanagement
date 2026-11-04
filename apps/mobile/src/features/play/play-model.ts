@@ -1,32 +1,50 @@
-// Ported from apps/web/src/features/play/play-home.tsx @ 0e3ec7a (working tree): groupOf, the tile
-// order, useStartQuest's request and HaveACode's routing -- kept pure here so Jest can hold them.
-// Phase 62 (P6-P8, docs/stickiness-plan.md).
+// Ported from apps/web/src/features/play/play-home.tsx @ 0e3ec7a (working tree): the board's grouping,
+// useStartQuest's request and HaveACode's routing -- kept pure here so Jest can hold them.
+// Phase 62 (P6-P8, docs/stickiness-plan.md); Phase 67 (H5, H7): the Quest board.
 import {
   GAME_CODE_LENGTH,
   PLATFORM_BRAND,
   SPACE_CODE_LENGTH,
+  boardGrades,
+  boardLeadGrade,
+  offBoardTiles,
+  tileLook,
   type CreateGameRequest,
   type MemberTile,
+  type QuestionBankLevelId,
+  type StartCanvasAssessmentInput,
 } from '@tmi/shared';
 
-/** A curriculum's group on the home, in the order shown. */
-export function groupOf(levelId: string): string {
-  if (levelId.startsWith('NC26.')) return 'NC standards';
-  if (levelId.startsWith('NC17.')) return 'NC standards (2017)';
-  if (/^BA\d$/.test(levelId)) return 'Beast Academy';
-  if (['PRE', 'ALG', 'GEO'].includes(levelId)) return 'Art of Problem Solving';
-  return 'Math Kangaroo';
+/**
+ * Phase 67 (H5): the Quest board's "More levels" -- the tiles off the 1-8 row (Kindergarten, Math 1,
+ * Kangaroo 9-12...), grouped by their level in words, in the console's order.
+ */
+export function offBoardGroups(list: readonly MemberTile[]): [string, MemberTile[]][] {
+  const map = new Map<string, MemberTile[]>();
+  for (const tile of offBoardTiles(list)) {
+    const words = tileLook(tile).level;
+    map.set(words, [...(map.get(words) ?? []), tile]);
+  }
+  return [...map.entries()];
 }
 
-/** The tiles in their groups: the level last played first, then the console's order. */
-export function groupTiles(list: readonly MemberTile[], lastLevel?: string | null): [string, MemberTile[]][] {
-  const ordered = [...list].sort(
-    (a, b) => Number(b.level_id === lastLevel) - Number(a.level_id === lastLevel),
-  );
-  const map = new Map<string, MemberTile[]>();
-  for (const tile of ordered)
-    map.set(groupOf(tile.level_id), [...(map.get(groupOf(tile.level_id)) ?? []), tile]);
-  return [...map.entries()];
+/** The grade the board opens on: the one chosen here, else the lead's (`boardLeadGrade`). */
+export function shownGrade(
+  list: readonly MemberTile[],
+  chosen: number | null,
+  lead: string | null | undefined,
+): number | null {
+  const grades: number[] = boardGrades(list);
+  if (chosen !== null && grades.includes(chosen)) return chosen;
+  return boardLeadGrade(list, (lead ?? null) as QuestionBankLevelId | null);
+}
+
+/**
+ * Phase 67 (H7): "Show your work" for oneself -- the tile's level and its number of questions, as the
+ * reader's own assessment (allowed in a personal space).
+ */
+export function assessmentTileRequest(tile: Pick<MemberTile, 'level_id' | 'value'>, me: string): StartCanvasAssessmentInput {
+  return { student_user_id: me, level_id: tile.level_id, question_count: tile.value };
 }
 
 /**

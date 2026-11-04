@@ -9,6 +9,9 @@
 // Mobile: Sign in opens the sign-in screen; "Create a free family space" and the offer's Sign up open the
 // sign-up sheet over this screen. Once signed in (by either), the app lands as usual. Two columns of
 // cards on a phone, four (and the panels side by side) on a wide screen.
+//
+// Phase 67 (H6): the card, Today's 5 and the grade row are the shared `features/play/quest-card.tsx`
+// pieces (the member Play home uses them too); the guest board keeps its mode colours and testIDs.
 import {
   GUEST_GRADES,
   GUEST_PROMISES,
@@ -44,6 +47,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
+import { CardGrid, GradeRow, QuestCard, TodayCard } from '@/features/play/quest-card';
 import { countEvent } from './guest-api';
 import { benefitsFor, boardGrade, gradeLevel, playLink } from './guest-model';
 import { openSignupSheet } from './guest-nav';
@@ -266,7 +270,7 @@ export function GuestHome() {
         {todayLevel ? (
           <View style={{ ...gutter, marginTop: -40 - space.xl }}>
             <ConnectivityBanner />
-            <TodayCard
+            <GuestTodayCard
               level={todayLevel}
               played={today}
               onPlay={() => {
@@ -284,50 +288,13 @@ export function GuestHome() {
           >
             Your grade
           </Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            accessibilityRole="radiogroup"
-            contentContainerStyle={{ ...gutter, gap: space.sm }}
-          >
-            {GUEST_GRADES.map((g) => {
-              const selected = g === grade;
-              return (
-                <Pressable
-                  key={g}
-                  testID={`guest-grade-${g}`}
-                  accessibilityRole="radio"
-                  accessibilityLabel={`Grade ${g}`}
-                  accessibilityState={{ checked: selected, selected }}
-                  onPress={() => chooseGrade(g)}
-                  style={({ pressed }) => ({
-                    width: 48,
-                    height: 48,
-                    borderRadius: radius.pill,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderWidth: 1,
-                    borderColor: selected ? theme.tokens.primary : theme.colors.outlineVariant,
-                    backgroundColor: selected
-                      ? theme.tokens.primary
-                      : pressed
-                        ? withAlpha(theme.tokens.primary, 0.08)
-                        : theme.colors.surface,
-                  })}
-                >
-                  <Text
-                    variant="titleMedium"
-                    style={{
-                      fontWeight: '700',
-                      color: selected ? theme.tokens.primaryForeground : theme.colors.onSurface,
-                    }}
-                  >
-                    {g}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
+          <GradeRow
+            grades={GUEST_GRADES}
+            value={grade}
+            onChange={(g) => chooseGrade(g as GuestGrade)}
+            testIDPrefix="guest-grade-"
+            gutter={space.lg}
+          />
         </View>
 
         <View style={{ ...gutter, gap: space.md }}>
@@ -336,7 +303,14 @@ export function GuestHome() {
               {`Quests for Grade ${grade} are on their way.`}
             </Text>
           ) : (
-            <CardGrid tiles={board.standard} columns={wide ? 4 : 2} bests={memory.bests} onPress={openTile} />
+            <CardGrid
+              items={board.standard}
+              columns={wide ? 4 : 2}
+              keyOf={(t) => t.code}
+              render={(t) => (
+                <GuestQuestCard tile={t} best={memory.bests[t.code]} onPress={() => openTile(t)} advanced={false} />
+              )}
+            />
           )}
           {board.advanced.length > 0 ? (
             <>
@@ -348,11 +322,12 @@ export function GuestHome() {
                 Advanced
               </Text>
               <CardGrid
-                tiles={board.advanced}
+                items={board.advanced}
                 columns={wide ? 4 : 2}
-                bests={memory.bests}
-                onPress={openTile}
-                advanced
+                keyOf={(t) => t.code}
+                render={(t) => (
+                  <GuestQuestCard tile={t} best={memory.bests[t.code]} onPress={() => openTile(t)} advanced />
+                )}
               />
             </>
           ) : null}
@@ -424,8 +399,8 @@ export function GuestHome() {
   );
 }
 
-/** Today's 5: the day's five of the grade's level, and once played, the hits. */
-function TodayCard({
+/** Today's 5 (the shared TodayCard, H6): the day's five of the grade's level, and once played, the hits. */
+function GuestTodayCard({
   level,
   played,
   onPlay,
@@ -434,136 +409,32 @@ function TodayCard({
   played: GuestToday | undefined;
   onPlay: () => void;
 }) {
-  const theme = useAppTheme();
-  const { width } = useWindowDimensions();
   const hits = played?.hits.filter(Boolean).length ?? 0;
   return (
-    <OutlinedCard testID="guest-today" style={{ borderRadius: radius.lg }}>
-      <View style={{ padding: space.lg, gap: space.md }}>
-        <Text
-          variant="labelMedium"
-          style={{
-            color: theme.tokens.primary,
-            fontWeight: '700',
-            letterSpacing: 0.6,
-            textTransform: 'uppercase',
-          }}
-        >
-          {`Today’s 5 · ${guestLevelWords(level)}`}
-        </Text>
-        <Text testID="guest-today-line" variant="titleMedium" style={{ fontWeight: '700' }}>
-          {played
-            ? `You hit ${hits} of ${played.hits.length} today. A new five tomorrow.`
-            : 'Five questions. Can you hit all five?'}
-        </Text>
-        <View
-          testID="guest-today-rings"
-          accessible
-          accessibilityLabel={
-            played ? `${hits} hit of ${played.hits.length}` : 'Five targets, not played yet'
-          }
-          style={{ flexDirection: 'row', gap: space.sm }}
-        >
-          {Array.from({ length: GUEST_TODAY_SIZE }, (_, i) => (
-            <TargetRing
-              key={i}
-              state={
-                played ? (played.hits[i] === undefined ? 'open' : played.hits[i] ? 'hit' : 'miss') : 'open'
-              }
-            />
-          ))}
-        </View>
-        <Button
-          testID="guest-today-play"
-          mode="contained"
-          buttonColor={theme.tokens.warning}
-          textColor={theme.tokens.warningForeground}
-          icon={played ? 'replay' : 'bullseye-arrow'}
-          onPress={onPlay}
-          // Full width on a phone; its own width on a tablet, where a full-width button reads as a bar.
-          style={{ alignSelf: width >= 700 ? 'flex-start' : 'stretch' }}
-          contentStyle={{ minHeight: 48, paddingHorizontal: width >= 700 ? space.lg : 0 }}
-          labelStyle={{ fontWeight: '700' }}
-        >
-          {played ? 'Play again' : 'Play today’s 5'}
-        </Button>
-      </View>
-    </OutlinedCard>
+    <TodayCard
+      testID="guest-today"
+      eyebrow={`Today’s 5 · ${guestLevelWords(level)}`}
+      titleTestID="guest-today-line"
+      title={
+        played
+          ? `You hit ${hits} of ${played.hits.length} today. A new five tomorrow.`
+          : 'Five questions. Can you hit all five?'
+      }
+      ringsTestID="guest-today-rings"
+      ringsLabel={played ? `${hits} hit of ${played.hits.length}` : 'Five targets, not played yet'}
+      states={Array.from({ length: GUEST_TODAY_SIZE }, (_, i) =>
+        played ? (played.hits[i] === undefined ? 'open' : played.hits[i] ? 'hit' : 'miss') : 'open',
+      )}
+      playTestID="guest-today-play"
+      playIcon={played ? 'replay' : 'bullseye-arrow'}
+      playLabel={played ? 'Play again' : 'Play today’s 5'}
+      onPlay={onPlay}
+    />
   );
 }
 
-/** One of Today's five targets: open, hit (filled amber) or missed (faint). */
-function TargetRing({ state }: { state: 'open' | 'hit' | 'miss' }) {
-  const theme = useAppTheme();
-  const ink =
-    state === 'hit'
-      ? theme.tokens.warning
-      : state === 'miss'
-        ? theme.colors.outlineVariant
-        : theme.tokens.primary;
-  return (
-    <Svg width={36} height={36} viewBox="0 0 36 36" aria-hidden>
-      <Circle
-        cx={18}
-        cy={18}
-        r={16}
-        stroke={ink}
-        strokeWidth={2.5}
-        fill={state === 'hit' ? withAlpha(theme.tokens.warning, 0.22) : 'none'}
-      />
-      <Circle cx={18} cy={18} r={10} stroke={ink} strokeWidth={2.5} fill="none" />
-      <Circle
-        cx={18}
-        cy={18}
-        r={4}
-        fill={state === 'miss' ? 'none' : ink}
-        stroke={ink}
-        strokeWidth={state === 'miss' ? 2 : 0}
-      />
-    </Svg>
-  );
-}
-
-/** Cards in rows of `columns`, the last row's gaps kept empty so no card stretches. */
-function CardGrid({
-  tiles,
-  columns,
-  bests,
-  onPress,
-  advanced = false,
-}: {
-  tiles: GuestTile[];
-  columns: number;
-  bests: Record<string, number>;
-  onPress: (tile: GuestTile) => void;
-  advanced?: boolean;
-}) {
-  const rows: GuestTile[][] = [];
-  for (let i = 0; i < tiles.length; i += columns) rows.push(tiles.slice(i, i + columns));
-  return (
-    <View style={{ gap: space.md }}>
-      {rows.map((row) => (
-        <View key={row.map((t) => t.code).join()} style={{ flexDirection: 'row', gap: space.md }}>
-          {row.map((tile) => (
-            <QuestCard
-              key={tile.code}
-              tile={tile}
-              best={bests[tile.code]}
-              onPress={() => onPress(tile)}
-              advanced={advanced}
-            />
-          ))}
-          {Array.from({ length: columns - row.length }, (_, i) => (
-            <View key={`gap-${i}`} style={{ flex: 1 }} />
-          ))}
-        </View>
-      ))}
-    </View>
-  );
-}
-
-/** A quest as a game card: a coloured band with its icon, its title and its detail; locked, the offer. */
-function QuestCard({
+/** A guest's quest card: the mode's colour, its title and detail; locked, the offer. */
+function GuestQuestCard({
   tile,
   best,
   onPress,
@@ -575,73 +446,22 @@ function QuestCard({
   advanced: boolean;
 }) {
   const theme = useAppTheme();
-  const timed = tile.kind === 'quest' && tile.mode === 'timed';
-  // Locked: a big lock on a tinted band, so it reads at a glance and stands off the page.
-  const icon = tile.locked
-    ? 'lock'
-    : tile.kind === 'assessment'
-      ? 'pencil-outline'
-      : timed
-        ? 'timer-outline'
-        : 'bullseye-arrow';
-  const band = tile.locked
-    ? withAlpha(theme.tokens.primary, 0.15)
-    : timed
-      ? theme.tokens.warning
-      : theme.tokens.primary;
-  const ink = tile.locked
-    ? theme.tokens.primary
-    : timed
-      ? theme.tokens.warningForeground
-      : theme.tokens.primaryForeground;
   const title = guestTileTitle(tile);
   const detail = advanced
     ? `${guestLevelWords(tile.level_id)} · ${guestTileDetail(tile)}`
     : guestTileDetail(tile);
   return (
-    <Pressable
-      testID={tile.locked ? `guest-locked-${tile.code}` : `guest-tile-${tile.code}`}
-      accessibilityRole="button"
-      accessibilityLabel={
-        tile.locked ? `${title} is free with an account` : `Play ${guestTileName(tile)}: ${detail}`
-      }
+    <QuestCard
+      pressTestID={tile.locked ? `guest-locked-${tile.code}` : `guest-tile-${tile.code}`}
+      label={tile.locked ? `${title} is free with an account` : `Play ${guestTileName(tile)}: ${detail}`}
+      title={title}
+      detail={detail}
+      icon={tile.kind === 'assessment' ? 'pencil' : tile.mode === 'timed' ? 'timer' : 'target'}
+      tone={{ mode: tile.kind === 'quest' && tile.mode === 'timed' ? 'timed' : 'count' }}
+      locked={tile.locked}
       onPress={onPress}
-      style={({ pressed }) => ({
-        flex: 1,
-        minWidth: 0,
-        borderWidth: 1,
-        borderRadius: radius.lg,
-        overflow: 'hidden',
-        borderColor: pressed ? theme.tokens.primary : theme.colors.outline,
-        backgroundColor: theme.colors.surface,
-        opacity: pressed ? 0.85 : 1,
-        // Lift the card off the page: on a light page a card and the background are close.
-        shadowColor: theme.colors.shadow,
-        shadowOpacity: theme.dark ? 0 : 0.08,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
-      })}
-    >
-      <View
-        style={{ height: 56, backgroundColor: band, justifyContent: 'center', paddingHorizontal: space.md }}
-      >
-        <Icon source={icon} size={tile.locked ? 34 : 28} color={ink} />
-      </View>
-      <View style={{ padding: space.md, gap: 2, minHeight: 84 }}>
-        <Text
-          variant="titleMedium"
-          style={{
-            fontWeight: '700',
-            color: theme.colors.onSurface,
-          }}
-        >
-          {title}
-        </Text>
-        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          {detail}
-        </Text>
-        {tile.locked ? (
+      footer={
+        tile.locked ? (
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs, marginTop: space.xs }}>
             <Icon source="lock-outline" size={14} color={theme.tokens.primary} />
             <Text variant="labelMedium" style={{ color: theme.tokens.primary, fontWeight: '700' }}>
@@ -652,9 +472,9 @@ function QuestCard({
           <Text variant="labelMedium" style={{ color: theme.tokens.primary, marginTop: space.xs }}>
             {`Best: ${best}`}
           </Text>
-        ) : null}
-      </View>
-    </Pressable>
+        ) : null
+      }
+    />
   );
 }
 

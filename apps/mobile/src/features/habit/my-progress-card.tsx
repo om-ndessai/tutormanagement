@@ -5,6 +5,10 @@
 //
 // Mobile: the ring and the streak on one row, the badges wrapping beneath (a phone is too narrow for the
 // web's one line); a badge's description is its accessibility hint (the web's title).
+//
+// Phase 67 (H8): the week as seven dots with the 3-day target, "Welcome back" after a week away (never a
+// loss message), and the next badge within reach. An older Worker sends none of them: shown as before.
+import type { WeekDot } from '@tmi/shared';
 import { View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
@@ -13,7 +17,17 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { useHabit } from './api';
-import { NO_BADGE_TEXT, daysLine, earnedOf, streakLine, todayLabel } from './habit-model';
+import {
+  NO_BADGE_TEXT,
+  WEEK_DAY_NAMES,
+  WELCOME_BACK_TEXT,
+  daysLine,
+  earnedOf,
+  nextBadgeLine,
+  streakLine,
+  todayLabel,
+  weekDotLabel,
+} from './habit-model';
 
 export function MyProgressCard() {
   const theme = useAppTheme();
@@ -52,11 +66,18 @@ export function MyProgressCard() {
             <Text testID="my-progress-streak" variant="titleSmall" style={{ fontWeight: '700' }}>
               {streakLine(data.streak_weeks)}
             </Text>
-            <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+            <Text testID="my-progress-days" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
               {daysLine(data.days_this_week)}
             </Text>
           </View>
         </View>
+        {/* Phase 67 (H8): this week as seven dots, Monday first; absent from an older Worker. */}
+        {data.week ? <WeekStrip week={data.week} /> : null}
+        {data.welcome_back ? (
+          <Text testID="my-progress-welcome" variant="bodyMedium" style={{ color: theme.colors.primary, fontWeight: '600' }}>
+            {WELCOME_BACK_TEXT}
+          </Text>
+        ) : null}
         <View
           accessibilityLabel="Badges"
           style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs }}
@@ -91,7 +112,56 @@ export function MyProgressCard() {
             ))
           )}
         </View>
+        {data.next_badge ? (
+          <Text testID="my-progress-next" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+            {nextBadgeLine(data.next_badge)}
+          </Text>
+        ) : null}
       </View>
     </OutlinedCard>
+  );
+}
+
+/** Seven dots, Monday first: filled when played, ringed for today, faint for the rest. */
+function WeekStrip({ week }: { week: readonly WeekDot[] }) {
+  const theme = useAppTheme();
+  return (
+    <View testID="my-progress-week" style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      {week.map((dot, i) => {
+        const played = dot === 'played';
+        const today = dot === 'today';
+        return (
+          <View
+            key={i}
+            testID={`my-progress-day-${i}`}
+            accessible
+            accessibilityLabel={weekDotLabel(i, dot)}
+            style={{ alignItems: 'center', gap: 4, minWidth: 32 }}
+          >
+            <View
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: 13,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: today ? 2 : 1.5,
+                borderColor: played || today ? theme.colors.primary : theme.colors.outlineVariant,
+                backgroundColor: played ? theme.colors.primary : 'transparent',
+              }}
+            >
+              {played ? <Icon source="check" size={16} color={theme.colors.onPrimary} /> : null}
+            </View>
+            <Text
+              variant="labelSmall"
+              aria-hidden
+              style={{ color: today ? theme.colors.primary : theme.tokens.mutedForeground, fontWeight: today ? '700' : '400' }}
+            >
+              {WEEK_DAY_NAMES[i]!.slice(0, 1)}
+            </Text>
+          </View>
+        );
+      })}
+    </View>
   );
 }

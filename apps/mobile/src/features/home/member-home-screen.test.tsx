@@ -71,9 +71,22 @@ jest.mock('@/features/dashboard/assessment-home', () => {
   const { Text } = jest.requireActual('react-native');
   return { AssessmentHome: () => <Text testID="assessment-home">Assessments</Text> };
 });
+const mockWelcomeBack = { current: false };
 jest.mock('@/features/habit/api', () => ({
-  useHabit: () => ({ data: { data: { streak_weeks: 3, days_this_week: 1, played_today: false, badges: [] } } }),
+  useHabit: () => ({
+    data: {
+      data: { streak_weeks: 3, days_this_week: 1, played_today: false, badges: [], welcome_back: mockWelcomeBack.current },
+    },
+  }),
   useDaily: () => ({ data: undefined }),
+}));
+// Phase 67: the student's Question Quest state (the old landing's read), and whether it was asked for.
+const mockQuest = { current: null as { level_id: string | null; question: unknown } | null, enabled: [] as boolean[] };
+jest.mock('@/features/quest/api', () => ({
+  useQuestState: (enabled: boolean) => {
+    mockQuest.enabled.push(enabled);
+    return { data: enabled && mockQuest.current ? { data: mockQuest.current } : undefined };
+  },
 }));
 jest.mock('./brief-cards', () => ({ BriefCards: () => null }));
 jest.mock('@/features/teaching/api', () => ({ useActiveSession: () => ({ data: { data: { mine: null } } }) }));
@@ -122,6 +135,9 @@ const NO_MONEY = /\$|Charged|Outstanding|Balance|Owed/;
 beforeEach(() => {
   resetPutOff();
   mockWaiting.current = [];
+  mockWelcomeBack.current = false;
+  mockQuest.current = null;
+  mockQuest.enabled = [];
   (router.navigate as jest.Mock).mockClear();
   (router.push as jest.Mock).mockClear();
   jest.useFakeTimers({ now: new Date('2026-11-03T19:00:00Z') });
@@ -243,6 +259,36 @@ describe('MemberHomeScreen', () => {
     expect(screen.getByTestId('space-home-assessment-off')).toBeTruthy();
     expect(screen.getByTestId('space-home-organization')).toBeTruthy();
     expect(screen.getByTestId('space-home-quest')).toBeTruthy();
+  });
+});
+
+describe('Phase 67: Next up carries what QuestLanding did, and welcome back', () => {
+  it("Sofia (student): her Quest's waiting question is Next up, and opens Question Quest", async () => {
+    mockQuest.current = { level_id: 'BA3', question: { id: 'q1' } };
+    await show(SOFIA, ['student']);
+    expect(screen.getByTestId('next-up-question_quest')).toHaveTextContent(/Your Quest has a question waiting\./);
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(router.push).toHaveBeenCalledWith('/quest/play');
+  });
+
+  it('nothing to answer: no Quest card, and only a student reads the Quest state', async () => {
+    mockQuest.current = { level_id: 'BA3', question: null };
+    await show(SOFIA, ['student']);
+    expect(screen.queryByTestId('next-up-question_quest')).toBeNull();
+    mockQuest.enabled = [];
+    await show(ALEX, ['tutor']);
+    expect(mockQuest.enabled.every((on) => !on)).toBe(true);
+  });
+
+  it('back after a week away: a kind welcome by first name, never a loss', async () => {
+    mockWelcomeBack.current = true;
+    await show(SOFIA, ['student']);
+    const card = screen.getByTestId('next-up-welcome_back');
+    expect(card).toHaveTextContent(/Welcome back, Sofia\./);
+    expect(card).toHaveTextContent(/A fresh week starts today\./);
+    expect(allText()).not.toMatch(/lost|broke|missed/i);
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(router.push).toHaveBeenCalledWith('/quest/new-game');
   });
 });
 

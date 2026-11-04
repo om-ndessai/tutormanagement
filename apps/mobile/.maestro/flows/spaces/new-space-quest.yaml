@@ -3,7 +3,7 @@
 #    Spaces, skips "Invite people", and adds their child Kit
 #    (with an address, so Kit signs in) through the welcome wizard, with the parent's consent. More
 #    lists Assessment AND Quest, and nothing of Tutoring's. On the Quest page Quinn, its admin, sets
-#    Kit's level to BA3; Kit (past the welcome wizard) signs in, lands in Quest at BA3 and answers:
+#    Kit's level to BA3; Kit (past the welcome wizard) signs in, opens Quest from Next up at BA3 and answers:
 #    "Saved. +1 point".
 # 2. The console's create form ticks all three sets; a space made with the defaults has Assessment
 #    and Quest allowed, and its admins' own switches on (read back from the local API).
@@ -221,22 +221,20 @@ tags:
 - extendedWaitUntil:
     visible: 'Kit Questmaker starts at BA3\.'
     timeout: 10000
-# Kit has never been through the welcome wizard, which opens before Quest's landing (QuestLanding
-# gives way to it, as on the web); that is not this flow's subject, so it is skipped for him there.
+# Kit has never been through the welcome wizard, which would open over Home; that is not this flow's
+# subject, so it is skipped for him there.
 - evalScript: "${output.kitSpace = json(http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'spaces.questkid@example.com' } }).body).data.memberships[0].slug}"
 - runScript:
     file: ../../scripts/spaces.js
     env: { ACTION: tour-done, EMAIL: spaces.questkid@example.com, ORG: '${output.kitSpace}' }
-# Kit signs in (one space: he lands in it) and Quest takes over.
+# Kit signs in (one space: he lands in it), and Next up takes him into Quest.
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
       PERSONA: spaces.questkid@example.com
       ORG: ''
-- extendedWaitUntil:
-    visible:
-      id: screen-quest-play
-    timeout: 30000
+# Phase 67: Home's Next up has his Quest's waiting question, and opens it (no landing redirect).
+- runFlow: ../../subflows/open-question-quest.yaml
 - extendedWaitUntil:
     notVisible:
       id: quest-welcome

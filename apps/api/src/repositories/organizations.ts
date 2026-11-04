@@ -1,5 +1,6 @@
 import {
   DEFAULT_CURRICULUM_ID,
+  PERSONAL_SPACE_CURRICULA,
   SPACE_CODE_ALPHABET,
   SPACE_CODE_LENGTH,
   spaceSlugFor,
@@ -1186,9 +1187,13 @@ export async function createSpace(
             input.makerId,
             input.personal ? 1 : 0,
           ),
-        db
-          .prepare('INSERT INTO organization_curricula (organization_id, curriculum_id, is_default) VALUES (?, ?, 1)')
-          .bind(id, DEFAULT_CURRICULUM_ID),
+        // Phase 67 (H7): a personal space offers NC 2026 (its default, so the guest page's "Grade 4"
+        // carries over) and Beast Academy; any other space starts with the platform default alone.
+        ...(input.personal ? PERSONAL_SPACE_CURRICULA : [DEFAULT_CURRICULUM_ID]).map((curriculum, index) =>
+          db
+            .prepare('INSERT INTO organization_curricula (organization_id, curriculum_id, is_default) VALUES (?, ?, ?)')
+            .bind(id, curriculum, index === 0 ? 1 : 0),
+        ),
         db
           .prepare(
             `INSERT INTO org_members (organization_id, user_id, status, first_entered_at, last_entered_at)

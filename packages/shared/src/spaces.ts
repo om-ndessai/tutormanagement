@@ -205,6 +205,12 @@ export function decideLanding(
  * The roles the "Invite people" step offers, in order. Students are not here: they are added in
  * the welcome wizard's "Add a student", which keeps the guardian and consent rules (Phase 52).
  */
+/**
+ * Phase 67 (H7): the curricula a personal space starts with, the first its default. NC 2026 carries the
+ * guest page's "Grade 4" into the space (Phase 63's P13 promise); Beast Academy stays beside it.
+ */
+export const PERSONAL_SPACE_CURRICULA = ['nc-2026', 'ba'] as const;
+
 export const SPACE_INVITE_ROLES = ['admin', 'parent', 'tutor'] as const;
 export type SpaceInviteRole = (typeof SPACE_INVITE_ROLES)[number];
 

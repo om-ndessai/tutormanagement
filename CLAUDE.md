@@ -568,6 +568,23 @@ the app's More → Dashboard), and the tour now starts on the home's blocks. Les
 `UNRECORDED_LOOKBACK_DAYS` (7) scheduled and never recorded are flagged under "To record", for the tutor and the
 office; Record opens `SessionFormDialog` prefilled from the schedule (`fromSchedule`).
 
+**A tile wears its grade's hue, and a newcomer keeps the guest page's promise** (Phase 67, `docs/member-home-plan.md`
+H5-H8). One hue per grade 1-8 (`--grade-N` / `--grade-N-foreground` in `index.css`, the Okabe-Ito colour-blind-safe
+set, the same in every palette, regenerated into the app; `apps/mobile/scripts/check-contrast.mjs` checks each label
+at 4.5:1 and every pair apart under three colour-blindness simulations). A harder track (Beast Academy, AoPS,
+Kangaroo) takes its grade's hue with an "Adv" mark; a level off the row wears the brand's; the mode is an icon; a
+card always says its level in words (`tileLook`, `levelGrade`, `memberBoard` in shared `tile-look.ts`) -- never
+colour alone. Members read real curriculum names; the guest page masks them and keeps its mode colours. The guest
+board's `QuestCard`, `TodayCard` and `GradeRow` live in `features/play/` and serve both homes. The member Play home
+is the Quest board: Continue, today's Daily as five rings, My progress (this week's seven dots, a "Welcome back"
+after a week away -- never a loss message -- and the next badge with how far along: `weekDots`, `welcomeBack`,
+`nextBadge`, all derived), favorites, then a grade row led by the last quest's (or the guest's) grade, that
+grade's cards and "More levels". A personal space starts with NC 2026 (default) and Beast Academy
+(`PERSONAL_SPACE_CURRICULA`; existing ones backfilled by the `phase-67` block), and there "Show your work" -- the
+guest's assessment tiles -- is for oneself (`POST /canvas-assessments` with one's own id, only where
+`org.personal`). `QuestLanding` is gone: a student's waiting Question Quest is a Next up item (`question_quest`),
+a tutor's answers to review already were.
+
 **Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
 `docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
 else is the web. Platform admins set, for the web portal and the app separately, which providers besides

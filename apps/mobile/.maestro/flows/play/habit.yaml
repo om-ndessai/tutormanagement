@@ -1,7 +1,8 @@
 # Phase 64 (P17-P20): the habit layer. Quest on in chmi, the console's Daily set on; habit.js picks one of
 # Sofia's count tiles whose level's Daily she has not played today. She starts it from her Play home and
 # finishes the quest: the first question answered (a choice, or a number), the rest skipped, to the
-# results. Exit brings her Home, where My progress says she played today and shows the First quest badge.
+# results. Exit brings her Home, where My progress says she played today and shows the First quest badge
+# and (Phase 67) the week's dots. The Daily is a card of five rings (Phase 67), filled once played.
 # "Today's Daily" is that level's (the level last played on this phone): five questions, one at a time,
 # skipped through -- the answers go to the server once, at the end -- and the result: "<tag>D #n · 0 of 5"
 # and the grid ✗✗✗✗✗, with Share and Back to Play; Home again, the tile shows her best. The switches are
@@ -21,10 +22,27 @@ tags:
     env:
       PERSONA: sofia.okafor@gmail.com
       ORG: chmi
+# Phase 66: the Play home is in her "Practice" section, under Next up and the quick actions.
 - extendedWaitUntil:
     visible:
-      id: play-home
+      id: screen-home
     timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-home
+    visibilityPercentage: 1
+    timeout: 15000
+# Phase 67: the tile's grade on the Quest board.
+- scrollUntilVisible:
+    element:
+      id: play-grade-${output.habitGrade}
+    centerElement: true
+    speed: 15
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-grade-${output.habitGrade}
 - scrollUntilVisible:
     element:
       id: play-tile-start-${output.habitTile}
@@ -152,17 +170,32 @@ tags:
     id: badge-first_quest
 - assertVisible:
     id: my-progress-streak
+# Phase 67 (H8): the week as seven dots, today's played, and the 3-day target.
+- assertVisible:
+    id: my-progress-week
+- assertVisible: '(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday): played'
+- assertVisible:
+    id: my-progress-days
+    text: '[1-3] of 3 days this week'
+- assertNotVisible:
+    id: my-progress-welcome
 - takeScreenshot: habit-my-progress
-# Today's Daily, of the level just played.
+# Today's Daily, of the level just played: five open rings (Phase 67).
 - scrollUntilVisible:
     element:
-      id: play-daily
+      id: play-daily-play
     centerElement: true
 - assertVisible:
-    id: play-daily
-    text: ".*Today's Daily · ${output.habitTag}D.*"
+    id: play-daily-eyebrow
+    text: "(?i)Today's Daily · ${output.habitTag}D"
+- assertVisible:
+    id: play-daily-title
+    text: 'Five questions\. Can you hit all five\?'
+- assertVisible:
+    id: play-daily-rings
+- takeScreenshot: habit-daily-card
 - tapOn:
-    id: play-daily
+    id: play-daily-play
 - extendedWaitUntil:
     visible:
       id: daily-play
@@ -255,6 +288,19 @@ tags:
     visible:
       id: screen-home
     timeout: 15000
+# Phase 67 (H8): the Daily card's rings are filled now -- all missed -- and it says so.
+- scrollUntilVisible:
+    element:
+      id: play-daily-title
+    centerElement: true
+    timeout: 20000
+- assertVisible:
+    id: play-daily-title
+    text: 'You hit 0 of 5 today\.'
+- assertVisible:
+    id: play-daily-play
+    text: "(?i).*See today.s result.*"
+- takeScreenshot: habit-daily-card-played
 # P20: the tile just played carries Sofia's best.
 - scrollUntilVisible:
     element:

@@ -3,6 +3,8 @@
 // starts with the host playing and its roster invited; the roster dialog lists first names and saves
 // them; Waiting for you joins through the join sheet; the code box tells a game from a space; and the
 // console's switch hides it all. Phase 64 (P17-P20): My progress, the Daily's button and a tile's best.
+// Phase 67 (H5-H8): the Quest board (the grade row, the grade's cards, "More levels", "Show your work"),
+// the Daily as rings and the week strip.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import {
@@ -11,6 +13,7 @@ import {
   createGameSchema,
   tileGameRequest,
   tileWords,
+  type DailySet,
   type GameFavorite,
   type HabitSummary,
   type MemberTile,
@@ -116,13 +119,17 @@ function serve({
   favorites = [] as GameFavorite[],
   waiting = [] as WaitingGame[],
   habit = HABIT,
+  daily,
 }: {
   tiles?: MemberTilesResponse;
   favorites?: GameFavorite[];
   waiting?: WaitingGame[];
   habit?: HabitSummary;
+  daily?: DailySet;
 } = {}) {
   mockGet.mockImplementation(async (path: string) => {
+    const dailyLevel = /^\/quest\/daily\/(.+)$/.exec(path)?.[1];
+    if (dailyLevel) return { data: daily ?? DAILY(decodeURIComponent(dailyLevel)) };
     if (path === '/quest/tiles') return { data: tiles };
     if (path === '/quest/me/habit') return { data: habit };
     if (path === '/quest/games/favorites') return { data: favorites };
@@ -138,29 +145,70 @@ beforeEach(async () => {
   resetGuestMemoryForTests({});
   mockPost.mockImplementation(async (path: string) => {
     if (path === '/quest/games') return { data: { id: 'g-new' } };
+    if (path === '/canvas-assessments') return { data: { id: 'a-new' } };
     if (path === '/spaces/join-requests') return { data: { requested: true, slug: 'other' } };
     throw new Error(`unexpected POST ${path}`);
   });
   mockPut.mockResolvedValue({ data: {} });
 });
 
-describe('PlayHome', () => {
-  it('groups the tiles by curriculum, each with its words and a Beta chip while its level is checked', async () => {
+const DAILY = (level: string, result: DailySet['result'] = null): DailySet => ({
+  day: '2026-11-03',
+  number: 12,
+  level_id: level as DailySet['level_id'],
+  questions: Array.from({ length: 5 }, (_, i) => ({ id: `q${i}` }) as unknown as DailySet['questions'][number]),
+  result,
+});
+
+const grade = (n: number) => screen.getByTestId(`play-grade-${n}`);
+
+describe('PlayHome: the Quest board (Phase 67)', () => {
+  it('shows only the grades the tiles reach, opens on the first, and switches cards by grade', async () => {
     serve();
     await renderWithProviders(<PlayHome />);
-    await screen.findByTestId('play-tile-G4Q5');
-    expect(screen.getByText('NC standards')).toBeTruthy();
-    expect(screen.getByText('Beast Academy')).toBeTruthy();
-    expect(screen.getByText('Grade 4 · 10 minutes')).toBeTruthy();
+    await screen.findByTestId('play-board');
+    expect(grade(3)).toBeTruthy();
+    expect(grade(4)).toBeTruthy();
+    expect(screen.queryByTestId('play-grade-5')).toBeNull();
+    // Grade 3 first: BA3 is its harder track, under "Advanced"; no Grade 4 card yet.
+    expect(grade(3).props.accessibilityState).toMatchObject({ checked: true });
+    expect(screen.getByTestId('play-tile-BA3Q5')).toBeTruthy();
+    expect(screen.getByText('Advanced')).toBeTruthy();
+    expect(screen.getByText('Beast Academy 3')).toBeTruthy();
+    expect(screen.queryByTestId('play-tile-G4Q5')).toBeNull();
+    await fireEvent.press(grade(4));
+    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
+    expect(screen.getByTestId('play-tile-G4Q5')).toBeTruthy();
+    expect(screen.queryByTestId('play-tile-BA3Q5')).toBeNull();
+    // Each card: a human title, its detail, its level in words, its code small; Beta while checked.
+    expect(screen.getByText('Quick 5')).toBeTruthy();
+    expect(screen.getByText('10-minute challenge')).toBeTruthy();
+    expect(screen.getAllByText('Grade 4')).toHaveLength(2);
+    expect(screen.getByText('G4T10')).toBeTruthy();
+    expect(screen.getByTestId('play-tile-start-G4T10').props.accessibilityLabel).toBe(
+      'Start G4T10: 10-minute challenge, Grade 4, Beat the clock',
+    );
     expect(screen.getByTestId('play-tile-beta-G4Q5')).toBeTruthy();
     expect(screen.queryByTestId('play-tile-beta-G4T10')).toBeNull();
     // Nothing remembered on this phone yet: no Continue.
     expect(screen.queryByTestId('play-continue')).toBeNull();
   });
 
+  it('lists the levels off the 1-8 row under "More levels", by their words', async () => {
+    serve({ tiles: { ...TILES, tiles: [...TILES.tiles, member('M1Q5'), member('M1T5')] } });
+    await renderWithProviders(<PlayHome />);
+    expect(await screen.findByTestId('play-more')).toBeTruthy();
+    expect(screen.getByText('More levels')).toBeTruthy();
+    // The heading, and each card's level line.
+    expect(screen.getAllByText('Math 1')).toHaveLength(3);
+    expect(screen.getByTestId('play-tile-M1Q5')).toBeTruthy();
+    expect(screen.getByTestId('play-tile-M1T5')).toBeTruthy();
+  });
+
   it('starts a tile in one tap: the single player’s request, then the game, remembered for Continue', async () => {
     serve();
     await renderWithProviders(<PlayHome />);
+    await fireEvent.press(await screen.findByTestId('play-grade-4'));
     await fireEvent.press(await screen.findByTestId('play-tile-start-G4T10'));
     await waitFor(() =>
       expect(mockPost).toHaveBeenCalledWith('/quest/games', tileGameRequest(member('G4T10'))),
@@ -177,27 +225,49 @@ describe('PlayHome', () => {
     });
   });
 
-  it('continues the last quest from this phone, its level first', async () => {
+  it('starts "Show your work" as the reader’s own assessment, and opens it to take (H7)', async () => {
+    serve({ tiles: { ...TILES, tiles: [member('G4Q5'), member('G4A5')] } });
+    await renderWithProviders(<PlayHome />);
+    await screen.findByTestId('play-tile-G4A5');
+    expect(screen.getByText('Show your work')).toBeTruthy();
+    // Not a game, so not a favorite.
+    expect(screen.queryByTestId('play-tile-star-G4A5')).toBeNull();
+    await fireEvent.press(screen.getByTestId('play-tile-start-G4A5'));
+    await waitFor(() =>
+      expect(mockPost).toHaveBeenCalledWith('/canvas-assessments', {
+        student_user_id: 'me',
+        level_id: 'NC26.4',
+        question_count: 5,
+      }),
+    );
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/assessments/[id]', params: { id: 'a-new' } });
+  });
+
+  it('continues the last quest from this phone, and opens on its grade', async () => {
     await AsyncStorage.setItem(
       'tmi.lastQuest.ferreira',
-      JSON.stringify({ label: 'BA3Q5', request: tileGameRequest(member('BA3Q5')) }),
+      JSON.stringify({ label: 'G4T10', request: tileGameRequest(member('G4T10')) }),
     );
     serve();
     await renderWithProviders(<PlayHome />);
     const cont = await screen.findByTestId('play-continue');
-    expect(cont).toHaveTextContent(/Continue BA3Q5/);
-    // Beast Academy leads, as the level last played.
-    const headings = screen.getAllByRole('header').map((h) => h.props.children);
-    expect(headings.indexOf('Beast Academy')).toBeLessThan(headings.indexOf('NC standards'));
+    expect(cont).toHaveTextContent(/Continue G4T10/);
+    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
+    expect(screen.getByTestId('play-tile-G4Q5')).toBeTruthy();
     await fireEvent.press(cont);
     await waitFor(() =>
-      expect(mockPost).toHaveBeenCalledWith('/quest/games', tileGameRequest(member('BA3Q5'))),
+      expect(mockPost).toHaveBeenCalledWith('/quest/games', tileGameRequest(member('G4T10'))),
     );
   });
 
   it('keeps a starred tile as a favorite named by its code', async () => {
     serve({ favorites: [SOLO] });
     await renderWithProviders(<PlayHome />);
+    // A tile already a favorite cannot be starred twice.
+    expect((await screen.findByTestId('play-tile-star-BA3Q5')).props.accessibilityState).toMatchObject({
+      disabled: true,
+    });
+    await fireEvent.press(grade(4));
     await fireEvent.press(await screen.findByTestId('play-tile-star-G4Q5'));
     await waitFor(() =>
       expect(mockPut).toHaveBeenCalledWith('/quest/games/favorites', {
@@ -206,10 +276,6 @@ describe('PlayHome', () => {
       }),
     );
     expect(mockToast.success).toHaveBeenCalledWith('G4Q5 is in your favorites.');
-    // A tile already a favorite cannot be starred twice.
-    expect(screen.getByTestId('play-tile-star-BA3Q5').props.accessibilityState).toMatchObject({
-      disabled: true,
-    });
   });
 
   it('is nothing at all while the console has the Play home off', async () => {
@@ -224,7 +290,7 @@ describe('PlayHome', () => {
   });
 });
 
-describe('Phase 64: My progress, the Daily and a tile’s best', () => {
+describe('Phase 64/67: My progress, the Daily and a tile’s best', () => {
   it('shows My progress under Continue: the streak, today’s ring and the badges earned', async () => {
     serve();
     await renderWithProviders(<PlayHome />);
@@ -234,6 +300,29 @@ describe('Phase 64: My progress, the Daily and a tile’s best', () => {
     expect(screen.getByTestId('my-progress-today').props.accessibilityLabel).toBe('Played today');
     expect(screen.getByTestId('badge-first_quest')).toBeTruthy();
     expect(screen.queryByTestId('badge-quests_10')).toBeNull();
+    // An older Worker: no week strip, no welcome, no next badge.
+    expect(screen.queryByTestId('my-progress-week')).toBeNull();
+    expect(screen.queryByTestId('my-progress-welcome')).toBeNull();
+    expect(screen.queryByTestId('my-progress-next')).toBeNull();
+  });
+
+  it('shows the week as seven dots, welcome back kindly, and the next badge (H8)', async () => {
+    serve({
+      habit: {
+        ...HABIT,
+        week: ['played', 'missed', 'today', 'ahead', 'ahead', 'ahead', 'ahead'],
+        welcome_back: true,
+        next_badge: { id: 'quests_10', label: '10 quests', description: 'Ten quests finished', have: 4, need: 10 },
+      },
+    });
+    await renderWithProviders(<PlayHome />);
+    expect(await screen.findByTestId('my-progress-week')).toBeTruthy();
+    expect(screen.getByTestId('my-progress-day-0').props.accessibilityLabel).toBe('Monday: played');
+    expect(screen.getByTestId('my-progress-day-1').props.accessibilityLabel).toBe('Tuesday: not played');
+    expect(screen.getByTestId('my-progress-day-2').props.accessibilityLabel).toBe('Wednesday: today, not played yet');
+    expect(screen.getByTestId('my-progress-day-6').props.accessibilityLabel).toBe('Sunday: still to come');
+    expect(screen.getByTestId('my-progress-welcome')).toHaveTextContent('Welcome back! A fresh week starts now.');
+    expect(screen.getByTestId('my-progress-next')).toHaveTextContent('Next badge: 10 quests · 4 of 10');
   });
 
   it('says how to begin before any play: no streak, the ring empty, no badge yet', async () => {
@@ -246,13 +335,26 @@ describe('Phase 64: My progress, the Daily and a tile’s best', () => {
     expect(screen.getByText('Your first badge is one quest away.')).toBeTruthy();
   });
 
-  it('offers the Daily of the first tile’s level while the console has it on, and opens it', async () => {
+  it('shows the Daily of the first tile’s level as five open rings, and opens it', async () => {
     serve({ tiles: { ...TILES, daily: true } });
     await renderWithProviders(<PlayHome />);
-    const daily = await screen.findByTestId('play-daily');
-    expect(daily).toHaveTextContent(/Today's Daily · G4D/);
-    await fireEvent.press(daily);
+    expect(await screen.findByTestId('play-daily')).toBeTruthy();
+    expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · G4D");
+    expect(screen.getByTestId('play-daily-title')).toHaveTextContent('Five questions. Can you hit all five?');
+    expect(screen.getByTestId('play-daily-rings').props.accessibilityLabel).toBe('5 targets, not played yet');
+    await fireEvent.press(screen.getByTestId('play-daily-play'));
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/daily/[level]', params: { level: 'NC26.4' } });
+  });
+
+  it('fills the rings once played today, with a quiet way back to the result', async () => {
+    serve({
+      tiles: { ...TILES, daily: true },
+      daily: DAILY('NC26.4', { right: 3, of: 5, seconds: 90, marks: [true, false, true, true, false] }),
+    });
+    await renderWithProviders(<PlayHome />);
+    expect(await screen.findByTestId('play-daily-title')).toHaveTextContent('You hit 3 of 5 today.');
+    expect(screen.getByTestId('play-daily-rings').props.accessibilityLabel).toBe('3 hit of 5');
+    expect(screen.getByTestId('play-daily-play')).toHaveTextContent(/See today’s result/);
   });
 
   it('offers the Daily of the level last played', async () => {
@@ -262,44 +364,46 @@ describe('Phase 64: My progress, the Daily and a tile’s best', () => {
     );
     serve({ tiles: { ...TILES, daily: true } });
     await renderWithProviders(<PlayHome />);
-    await waitFor(() => expect(screen.getByTestId('play-daily')).toHaveTextContent(/Today's Daily · BA3D/));
+    await waitFor(() => expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent(/Today's Daily · BA3D/));
   });
 
   it('leads with a guest’s grade on this phone before any quest here (P13), the tile played if none was chosen', async () => {
     resetGuestMemoryForTests({ played: ['BA3Q5'] });
     serve({ tiles: { ...TILES, daily: true } });
     await renderWithProviders(<PlayHome />);
-    expect(await screen.findByTestId('play-daily')).toHaveTextContent(/BA3D/);
-    const headings = screen.getAllByRole('header').map((h) => h.props.children);
-    expect(headings.indexOf('Beast Academy')).toBeLessThan(headings.indexOf('NC standards'));
+    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/BA3D/);
+    expect(grade(3).props.accessibilityState).toMatchObject({ checked: true });
   });
 
   it('a chosen grade outranks the tile played, and a quest started here outranks both', async () => {
     resetGuestMemoryForTests({ grade: 'NC26.4', played: ['BA3Q5'] });
     serve({ tiles: { ...TILES, daily: true } });
     const first = await renderWithProviders(<PlayHome />);
-    expect(await screen.findByTestId('play-daily')).toHaveTextContent(/G4D/);
+    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/G4D/);
+    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
     first.unmount();
     await AsyncStorage.setItem(
       'tmi.lastQuest.ferreira',
       JSON.stringify({ label: 'BA3Q5', request: tileGameRequest(member('BA3Q5')) }),
     );
     await renderWithProviders(<PlayHome />);
-    expect(await screen.findByTestId('play-daily')).toHaveTextContent(/BA3D/);
+    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/BA3D/);
   });
 
   it('has no Daily while the console has it off (or an older Worker does not say)', async () => {
     serve({ tiles: { ...TILES, daily: false } });
     await renderWithProviders(<PlayHome />);
-    await screen.findByTestId('play-tile-G4Q5');
+    await screen.findByTestId('play-board');
     expect(screen.queryByTestId('play-daily')).toBeNull();
   });
 
   it('shows a tile’s best, and nothing on a tile never played', async () => {
     serve({ tiles: { ...TILES, tiles: [{ ...member('G4Q5'), best: 3 }, { ...member('G4T10'), best: null }, member('BA3Q5')] } });
     await renderWithProviders(<PlayHome />);
+    await fireEvent.press(await screen.findByTestId('play-grade-4'));
     expect(await screen.findByTestId('play-best-G4Q5')).toHaveTextContent('Best 3');
     expect(screen.queryByTestId('play-best-G4T10')).toBeNull();
+    await fireEvent.press(grade(3));
     expect(screen.queryByTestId('play-best-BA3Q5')).toBeNull();
   });
 });

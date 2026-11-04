@@ -24,6 +24,11 @@ test.describe('P6: the Play home', () => {
       await sofia.goto('/');
       const home = sofia.getByTestId('play-home');
       await expect(home).toBeVisible();
+      // Phase 67: the Quest board shows one grade at a time; Grade 4's cards hold G4Q5.
+      await home.getByTestId('play-grade-4').click();
+      await expect(home.getByTestId('play-grade-4')).toHaveAttribute('aria-checked', 'true');
+      await expect(home.getByTestId('play-tile-G4Q5')).toContainText('Quick 5');
+      await expect(home.getByTestId('play-tile-G4Q5')).toContainText('Grade 4');
       await home.getByRole('button', { name: /^Start G4Q5/ }).click();
       // One tap: the doors, then the first question.
       await expect(sofia).toHaveURL(/\/quest\/games\/[0-9a-f-]+$/);
@@ -34,7 +39,14 @@ test.describe('P6: the Play home', () => {
       await sofia.goto('/');
       await expect(home.getByTestId('play-continue')).toHaveText(/Continue G4Q5/);
 
-      // A star saves the tile as a favorite, which then starts in one tap.
+      // Back home, the last quest's grade leads the board.
+      await expect(home.getByTestId('play-grade-4')).toHaveAttribute('aria-checked', 'true');
+
+      // A star saves the tile as a favorite, which then starts in one tap. Beast Academy 3 is Grade 3's
+      // advanced track, marked so.
+      await home.getByTestId('play-grade-3').click();
+      await expect(home.getByTestId('play-tile-BA3Q5')).toContainText('Beast Academy 3');
+      await expect(home.getByTestId('play-tile-BA3Q5')).toContainText('Adv');
       await home.getByRole('button', { name: 'Add BA3Q5 to favorites' }).click();
       await expect(home.getByTestId('play-favorite-BA3Q5')).toBeVisible();
       await home.getByTestId('play-favorite-BA3Q5').click();
@@ -75,7 +87,9 @@ test.describe('P6: the Play home', () => {
       await sofia.evaluate(() => localStorage.setItem('aimtrue.guest', JSON.stringify({ grade: 'NC26.5', played: ['G4T10', 'BA3Q5'] })));
       await sofia.reload();
       const home = sofia.getByTestId('play-home');
-      await expect(home.getByTestId('play-daily')).toHaveText(/G5D/);
+      await expect(home.getByTestId('play-daily')).toContainText(/G5D/);
+      // Phase 67: the guest's grade leads the board too.
+      await expect(home.getByTestId('play-grade-5')).toHaveAttribute('aria-checked', 'true');
       await expect(home.getByTestId('play-favorite-G4T10')).toBeVisible();
       await expect(home.getByTestId('play-favorite-BA3Q5')).toBeVisible();
       const names = (await unwrap<any[]>(await sofia.request.get('/api/quest/games/favorites'), 'favorites')).map((f) => f.name).sort();

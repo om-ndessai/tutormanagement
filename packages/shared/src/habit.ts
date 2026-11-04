@@ -102,6 +102,82 @@ export interface HabitSummary {
   days_this_week: number;
   played_today: boolean;
   badges: { id: BadgeId; label: string; description: string; earned: boolean }[];
+  /** Phase 67 (H8): this week, Monday first. Absent from an older Worker. */
+  week?: WeekDot[];
+  /** Phase 67 (H8): back after a week or more away; say welcome, never what was lost. */
+  welcome_back?: boolean;
+  /** Phase 67 (H8): the next badge within reach, with how far along. Null once all are earned. */
+  next_badge?: NextBadge | null;
+}
+
+// --- Phase 67 (H8): the habit, made visible and kind -------------------------
+
+/** One day of the week strip: played, not played (past), today (not yet played) or still to come. */
+export type WeekDot = 'played' | 'missed' | 'today' | 'ahead';
+
+/** This week's seven days, Monday first, from the days played. Today shows played once it is. */
+export function weekDots(days: readonly string[], today: string): WeekDot[] {
+  const played = new Set(days);
+  const monday = new Date(`${weekOf(today)}T12:00:00Z`);
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(monday);
+    date.setUTCDate(monday.getUTCDate() + i);
+    const day = date.toISOString().slice(0, 10);
+    if (played.has(day)) return 'played';
+    if (day === today) return 'today';
+    return day < today ? 'missed' : 'ahead';
+  });
+}
+
+/** How many days away counts as "back" (a full week). */
+export const WELCOME_BACK_DAYS = 7;
+
+/**
+ * Back after time away (H8): played before, but not in the WELCOME_BACK_DAYS before today, and not yet
+ * today. A fresh start, said kindly: the home never says what was lost.
+ */
+export function welcomeBack(days: readonly string[], today: string): boolean {
+  if (days.includes(today)) return false;
+  const before = days.filter((day) => day < today).sort();
+  const last = before[before.length - 1];
+  if (!last) return false;
+  const gap = Math.round((Date.parse(`${today}T12:00:00Z`) - Date.parse(`${last}T12:00:00Z`)) / 86_400_000);
+  return gap > WELCOME_BACK_DAYS;
+}
+
+export interface NextBadge {
+  id: BadgeId;
+  label: string;
+  description: string;
+  /** How far along, out of `need`. */
+  have: number;
+  need: number;
+}
+
+/** What each badge counts, and how many it needs. */
+const BADGE_GOALS: Record<BadgeId, { fact: keyof HabitFacts; need: number }> = {
+  first_quest: { fact: 'quests_finished', need: 1 },
+  quests_10: { fact: 'quests_finished', need: 10 },
+  quests_50: { fact: 'quests_finished', need: 50 },
+  quests_100: { fact: 'quests_finished', need: 100 },
+  first_family_game: { fact: 'family_games', need: 1 },
+  daily_7: { fact: 'dailies', need: 7 },
+  weeks_4: { fact: 'best_weeks', need: 4 },
+  weeks_12: { fact: 'best_weeks', need: 12 },
+};
+
+/** The next milestone (H8): of the badges not yet earned, the one closest to done, as a share of its goal. */
+export function nextBadge(facts: HabitFacts): NextBadge | null {
+  const earned = new Set(earnedBadges(facts));
+  let best: NextBadge | null = null;
+  for (const badge of BADGES) {
+    if (earned.has(badge.id)) continue;
+    const goal = BADGE_GOALS[badge.id];
+    const have = Math.min(facts[goal.fact], goal.need);
+    const candidate = { id: badge.id, label: badge.label, description: badge.description, have, need: goal.need };
+    if (!best || have / goal.need > best.have / best.need) best = candidate;
+  }
+  return best;
 }
 
 // --- The Daily set (P19) ---------------------------------------------------

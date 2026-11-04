@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/quest/quest-page.tsx @ 82397b8 (working tree): QuestPage. The
-// landing is quest-landing.tsx.
+// sign-in landing is retired (Phase 67): a waiting question is a Next up item on Home.
 //
 // Phase 42: Question Quest's page in the portal. A student starts their Quest here; a tutor or admin
 // sees what waits for review, starts reviewing, and sets each student's starting level. The Quest

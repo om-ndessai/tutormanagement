@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CheckIcon, LockIcon, PencilLineIcon, PlayIcon, TargetIcon, TimerIcon } from 'lucide-react';
+import { CheckIcon, LockIcon } from 'lucide-react';
 import {
   GUEST_DEFAULT_GRADE,
   GUEST_GRADES,
@@ -29,6 +29,7 @@ import { countEvent } from './guest-api';
 import { guestMemory, type GuestToday } from './guest-store';
 import { SignupSheet } from './signup-sheet';
 import { NudgeSheet, benefitsFor } from './nudge-sheet';
+import { GradeRow, QuestCard, TodayCard, type RingState } from '@/features/play/quest-card';
 
 /**
  * The guest Play home, "Quest board" (docs/landing-page-proposal.md, direction C): the page a
@@ -132,7 +133,7 @@ export function GuestHome() {
               </div>
             </div>
             {todayLevel && (
-              <TodayCard
+              <GuestTodayCard
                 level={todayLevel}
                 played={guestMemory.today(guestDay(), todayLevel)}
                 onPlay={() => navigate(`/play/today/${todayLevel}`)}
@@ -147,29 +148,7 @@ export function GuestHome() {
           <h2 id="guest-grade-label" className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             Your grade
           </h2>
-          <div
-            className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0"
-            role="radiogroup"
-            aria-labelledby="guest-grade-label"
-          >
-            {GUEST_GRADES.map((g) => (
-              <button
-                key={g}
-                type="button"
-                role="radio"
-                aria-checked={g === grade}
-                aria-label={`Grade ${g}`}
-                onClick={() => chooseGrade(g)}
-                data-testid={`guest-grade-${g}`}
-                className={cn(
-                  'font-display min-h-11 min-w-11 flex-none rounded-full border px-3 text-base font-bold transition-colors',
-                  g === grade ? 'border-primary bg-primary text-primary-foreground' : 'bg-card hover:bg-muted',
-                )}
-              >
-                {g}
-              </button>
-            ))}
-          </div>
+          <GradeRow grades={GUEST_GRADES} value={grade} onChange={chooseGrade} labelId="guest-grade-label" testIdPrefix="guest-grade-" />
         </section>
 
         <section className="grid gap-3" aria-label={`Grade ${grade} quests`}>
@@ -301,101 +280,56 @@ function Rings() {
 }
 
 /** Today's 5: the day's five questions of the grade, the same for every visitor (guestTodaySet). */
-function TodayCard({ level, played, onPlay }: { level: QuestionBankLevelId; played?: GuestToday; onPlay: () => void }) {
+function GuestTodayCard({ level, played, onPlay }: { level: QuestionBankLevelId; played?: GuestToday; onPlay: () => void }) {
   const hits = played?.hits.filter(Boolean).length ?? 0;
+  const states: RingState[] = Array.from({ length: GUEST_TODAY_SIZE }, (_, index) =>
+    played ? (played.hits[index] ? 'hit' : 'miss') : 'open',
+  );
   return (
-    <div
-      className="bg-card text-card-foreground grid gap-3 rounded-3xl border p-5 shadow-[var(--elevation-2)]"
-      data-testid="guest-today"
-    >
-      <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
-        Today&apos;s {GUEST_TODAY_SIZE} · {guestLevelWords(level)}
-      </span>
-      <h2 className="font-display text-2xl font-black">
-        {played ? `You hit ${hits} of ${played.hits.length} today.` : 'Five questions. Can you hit all five?'}
-      </h2>
-      <div
-        className="flex gap-2"
-        role="img"
-        aria-label={played ? `${hits} of ${played.hits.length} hit` : `${GUEST_TODAY_SIZE} targets`}
-      >
-        {Array.from({ length: GUEST_TODAY_SIZE }, (_, index) => {
-          const state = played ? (played.hits[index] ? 'hit' : 'miss') : 'open';
-          return (
-            <span
-              key={index}
-              className={cn(
-                'grid size-7 place-items-center rounded-full border-[3px]',
-                state === 'hit' ? 'border-warning bg-warning/25' : state === 'miss' ? 'border-muted-foreground/30' : 'border-border',
-              )}
-            >
-              <span
-                className={cn(
-                  'size-2 rounded-full',
-                  state === 'hit' ? 'bg-warning' : state === 'miss' ? 'bg-muted-foreground/30' : 'bg-border',
-                )}
-              />
-            </span>
-          );
-        })}
-      </div>
-      {played && <p className="text-muted-foreground text-sm">A new five tomorrow.</p>}
-      <Button
-        size="lg"
-        onClick={onPlay}
-        variant={played ? 'outline' : 'default'}
-        className={cn('w-full sm:w-fit', !played && 'bg-warning text-warning-foreground hover:bg-warning/90')}
-        data-testid="guest-today-play"
-      >
-        {played ? 'Play again' : "Play today's 5"} <PlayIcon className="size-4" />
-      </Button>
-    </div>
+    <TodayCard
+      eyebrow={<>Today&apos;s {GUEST_TODAY_SIZE} · {guestLevelWords(level)}</>}
+      title={played ? `You hit ${hits} of ${played.hits.length} today.` : 'Five questions. Can you hit all five?'}
+      states={states}
+      played={Boolean(played)}
+      note={played ? 'A new five tomorrow.' : undefined}
+      onPlay={onPlay}
+      playLabel={played ? 'Play again' : "Play today's 5"}
+      testId="guest-today"
+      playTestId="guest-today-play"
+    />
   );
 }
 
 function CardGrid({ tiles, onOpen, advanced = false }: { tiles: GuestTile[]; onOpen: (tile: GuestTile) => void; advanced?: boolean }) {
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {tiles.map((tile) => (
-        <QuestCard key={tile.code} tile={tile} onOpen={onOpen} advanced={advanced} />
-      ))}
+      {tiles.map((tile) => {
+        const best = tile.locked ? undefined : guestMemory.best(tile.code);
+        return (
+          <QuestCard
+            key={tile.code}
+            title={guestTileTitle(tile)}
+            detail={`${advanced ? `${guestLevelWords(tile.level_id)} · ` : ''}${guestTileDetail(tile)}`}
+            icon={tile.kind === 'assessment' ? 'pencil' : tile.mode === 'timed' ? 'timer' : 'target'}
+            // The guest board keeps its mode colours (H5: grade hues are the member home's).
+            tone={tile.locked ? 'locked' : { mode: tile.mode }}
+            locked={tile.locked}
+            onOpen={() => onOpen(tile)}
+            label={tile.locked ? `${guestTileName(tile)} is free with an account` : `Play ${guestTileName(tile)}`}
+            testId={tile.locked ? `guest-locked-${tile.code}` : `guest-tile-${tile.code}`}
+            footer={
+              <>
+                {tile.locked && (
+                  <span className="text-primary mt-0.5 inline-flex items-center gap-1 text-xs font-bold">
+                    <LockIcon className="size-3" aria-hidden /> Free account
+                  </span>
+                )}
+                {best !== undefined && <span className="text-primary mt-0.5 text-xs font-semibold">Best: {best}</span>}
+              </>
+            }
+          />
+        );
+      })}
     </div>
-  );
-}
-
-function QuestCard({ tile, onOpen, advanced }: { tile: GuestTile; onOpen: (tile: GuestTile) => void; advanced: boolean }) {
-  // Locked: a big lock on a tinted band, so it reads at a glance and stands off the page.
-  const Icon = tile.locked ? LockIcon : tile.kind === 'assessment' ? PencilLineIcon : tile.mode === 'timed' ? TimerIcon : TargetIcon;
-  const tone = tile.locked
-    ? 'bg-primary/15 text-primary'
-    : tile.mode === 'timed'
-      ? 'bg-warning text-warning-foreground'
-      : 'bg-primary text-primary-foreground';
-  const best = tile.locked ? undefined : guestMemory.best(tile.code);
-  const detail = `${advanced ? `${guestLevelWords(tile.level_id)} · ` : ''}${guestTileDetail(tile)}`;
-  return (
-    <button
-      type="button"
-      onClick={() => onOpen(tile)}
-      aria-label={tile.locked ? `${guestTileName(tile)} is free with an account` : `Play ${guestTileName(tile)}`}
-      data-testid={tile.locked ? `guest-locked-${tile.code}` : `guest-tile-${tile.code}`}
-      className={cn(
-        'bg-card focus-visible:ring-ring border-foreground/15 grid grid-rows-[auto_1fr] overflow-hidden rounded-2xl border text-left shadow-[var(--elevation-1)] transition-shadow hover:shadow-[var(--elevation-2)] focus-visible:ring-2 focus-visible:outline-none',
-      )}
-    >
-      <span className={cn('grid h-14 place-items-center', tone)}>
-        <Icon className={tile.locked ? 'size-9' : 'size-7'} aria-hidden />
-      </span>
-      <span className="grid content-start gap-0.5 px-3 pt-2.5 pb-3">
-        <span className="font-display text-base leading-tight font-extrabold">{guestTileTitle(tile)}</span>
-        <span className="text-muted-foreground text-xs">{detail}</span>
-        {tile.locked && (
-          <span className="text-primary mt-0.5 inline-flex items-center gap-1 text-xs font-bold">
-            <LockIcon className="size-3" aria-hidden /> Free account
-          </span>
-        )}
-        {best !== undefined && <span className="text-primary mt-0.5 text-xs font-semibold">Best: {best}</span>}
-      </span>
-    </button>
   );
 }

@@ -1665,6 +1665,25 @@ The test database also moves its own list into the platform's (A8), once, after 
 `INSERT INTO access_list (id, email, provider, subject, note, added_at) SELECT id, email, provider,
 subject, note, added_at FROM invited_users;` -- `tutoring-test-db` only, where `invited_users` exists.
 
+Phase 66 (the member home, `docs/member-home-plan.md` H1-H4, H9, H11) changes no table.
+
+Phase 67 (coloured tiles and a newcomer's continuity, H5-H8) changes no table either: it gives every
+existing personal space NC 2026 as its default curriculum beside Beast Academy, as new ones now start
+(`PERSONAL_SPACE_CURRICULA`). Data only, idempotent; the default moves in two steps because at most one
+row per space may be the default (`organization_curricula_one_default`):
+
+```sql release=phase-67
+INSERT OR IGNORE INTO organization_curricula (organization_id, curriculum_id, is_default)
+  SELECT id, 'nc-2026', 0 FROM organizations WHERE personal = 1;
+UPDATE organization_curricula SET retired_at = NULL
+  WHERE curriculum_id = 'nc-2026' AND organization_id IN (SELECT id FROM organizations WHERE personal = 1);
+UPDATE organization_curricula SET is_default = 0
+  WHERE is_default = 1 AND curriculum_id <> 'nc-2026'
+    AND organization_id IN (SELECT id FROM organizations WHERE personal = 1);
+UPDATE organization_curricula SET is_default = 1
+  WHERE curriculum_id = 'nc-2026' AND organization_id IN (SELECT id FROM organizations WHERE personal = 1);
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

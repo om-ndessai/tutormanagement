@@ -16,12 +16,28 @@ tags:
     env:
       PERSONA: sofia.okafor@gmail.com
       ORG: chmi
+# Phase 66: the Play home is in her "Practice" section, under Next up and the quick actions.
 - extendedWaitUntil:
     visible:
-      id: play-home
+      id: screen-home
     timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-home
+    visibilityPercentage: 1
+    timeout: 15000
 - assertNotVisible:
     id: play-favorites
+# Phase 67: the Quest board shows one grade at a time; Grade 6 holds G6Q5.
+- scrollUntilVisible:
+    element:
+      id: play-grade-6
+    centerElement: true
+    speed: 15
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-grade-6
 - scrollUntilVisible:
     element:
       id: play-tile-star-G6Q5

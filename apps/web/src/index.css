@@ -68,6 +68,25 @@
   --warning: oklch(0.72 0.15 75);
   --warning-foreground: oklch(0.24 0.04 75);
 
+  /* Phase 67 (H5): one hue per grade, 1-8, the same in every palette, light and dark: the Okabe-Ito
+     colour-blind-safe set (plus Tol's wine for 8). Never the only signal: a tile always says its level. */
+  --grade-1: oklch(67.9% 0.118 346.3);
+  --grade-1-foreground: oklch(0.2 0.006 56);
+  --grade-2: oklch(62.1% 0.170 47.5);
+  --grade-2-foreground: oklch(0.2 0.006 56);
+  --grade-3: oklch(75.3% 0.158 76.8);
+  --grade-3-foreground: oklch(0.2 0.006 56);
+  --grade-4: oklch(90.2% 0.172 105.0);
+  --grade-4-foreground: oklch(0.2 0.006 56);
+  --grade-5: oklch(62.0% 0.130 165.5);
+  --grade-5-foreground: oklch(0.2 0.006 56);
+  --grade-6: oklch(73.5% 0.117 236.2);
+  --grade-6-foreground: oklch(0.2 0.006 56);
+  --grade-7: oklch(53.2% 0.131 244.0);
+  --grade-7-foreground: oklch(1 0 0);
+  --grade-8: oklch(43.2% 0.145 354.5);
+  --grade-8-foreground: oklch(1 0 0);
+
   --border: oklch(0.912 0.012 324);
   --input: oklch(0.912 0.012 324);
   --ring: var(--brand-600);
@@ -743,6 +762,22 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-grade-1: var(--grade-1);
+  --color-grade-1-foreground: var(--grade-1-foreground);
+  --color-grade-2: var(--grade-2);
+  --color-grade-2-foreground: var(--grade-2-foreground);
+  --color-grade-3: var(--grade-3);
+  --color-grade-3-foreground: var(--grade-3-foreground);
+  --color-grade-4: var(--grade-4);
+  --color-grade-4-foreground: var(--grade-4-foreground);
+  --color-grade-5: var(--grade-5);
+  --color-grade-5-foreground: var(--grade-5-foreground);
+  --color-grade-6: var(--grade-6);
+  --color-grade-6-foreground: var(--grade-6-foreground);
+  --color-grade-7: var(--grade-7);
+  --color-grade-7-foreground: var(--grade-7-foreground);
+  --color-grade-8: var(--grade-8);
+  --color-grade-8-foreground: var(--grade-8-foreground);
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-foreground);
   --color-highlight-soft: var(--highlight-soft);

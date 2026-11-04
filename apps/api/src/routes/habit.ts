@@ -9,7 +9,10 @@ import {
   dailyNumber,
   dailyResultSchema,
   earnedBadges,
+  nextBadge,
+  weekDots,
   weeklyStreak,
+  welcomeBack,
   zonedClockParts,
   type ApiOk,
   type DailySet,
@@ -53,13 +56,18 @@ export const habitRoutes = new Hono<AppEnv>()
     const today = todayIn(org.time_zone);
     const [days, facts] = await Promise.all([habitDays(c.env.DB, org.id, user.id, today), habitFacts(c.env.DB, org.id, user.id)]);
     const streak = weeklyStreak(days, today);
-    const earned = new Set(earnedBadges({ ...facts, best_weeks: Math.max(bestWeeklyStreak(days), streak.weeks) }));
+    const allFacts = { ...facts, best_weeks: Math.max(bestWeeklyStreak(days), streak.weeks) };
+    const earned = new Set(earnedBadges(allFacts));
     const body: ApiOk<HabitSummary> = {
       data: {
         streak_weeks: streak.weeks,
         days_this_week: streak.days_this_week,
         played_today: streak.played_today,
         badges: BADGES.map((badge) => ({ ...badge, earned: earned.has(badge.id) })),
+        // Phase 67 (H8): the week strip, a kind welcome after a week away, and the next milestone.
+        week: weekDots(days, today),
+        welcome_back: welcomeBack(days, today),
+        next_badge: nextBadge(allFacts),
       },
     };
     return c.json(body);

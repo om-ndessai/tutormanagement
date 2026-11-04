@@ -1,5 +1,4 @@
-// Phase 62 (P6-P8): the Play home's pure rules -- the tiles in their curricula, the level last played
-// first; what one tap sends (a multiplayer favorite with the host playing and its roster invited);
+// Phase 62 (P6-P8), Phase 67: the Play home's pure rules -- the board's grade and its "More levels"; what one tap sends (a multiplayer favorite with the host playing and its roster invited);
 // which code is which; and the lobby's invitation.
 import { DEFAULT_TILES, createGameSchema, tileGameRequest, tileWords, type MemberTile } from '@tmi/shared';
 
@@ -7,9 +6,10 @@ import {
   codeKind,
   gameInviteUrl,
   gameShareText,
-  groupOf,
-  groupTiles,
+  assessmentTileRequest,
+  offBoardGroups,
   rosterSavedText,
+  shownGrade,
   startRequest,
   tidyCode,
 } from './play-model';
@@ -19,31 +19,39 @@ const member = (code: string): MemberTile => {
   return { ...tile, words: tileWords(tile), available: 200, beta: false };
 };
 
-describe('groupTiles', () => {
-  it('groups by curriculum in the order first seen, keeping the console order inside a group', () => {
-    const tiles = ['G4Q5', 'BA3Q5', 'G5Q5', 'MK34Q10', 'PAQ10'].map(member);
-    const groups = groupTiles(tiles);
-    expect(groups.map(([name]) => name)).toEqual([
-      'NC standards',
-      'Beast Academy',
-      'Math Kangaroo',
-      'Art of Problem Solving',
-    ]);
-    expect(groups[0]![1].map((t) => t.code)).toEqual(['G4Q5', 'G5Q5']);
+describe('offBoardGroups (Phase 67, the board\'s "More levels")', () => {
+  it('keeps the levels off the 1-8 row, grouped by their words in the console order', () => {
+    const tiles = ['G4Q5', 'M1Q5', 'BA3Q5', 'M1T5', 'G5Q5'].map(member);
+    const groups = offBoardGroups(tiles);
+    expect(groups.map(([name]) => name)).toEqual(['Math 1']);
+    expect(groups[0]![1].map((t) => t.code)).toEqual(['M1Q5', 'M1T5']);
   });
 
-  it('puts the level last played first, so its curriculum leads', () => {
-    const tiles = ['G4Q5', 'G5Q5', 'BA3Q5', 'BA3T10'].map(member);
-    const groups = groupTiles(tiles, 'BA3');
-    expect(groups[0]![0]).toBe('Beast Academy');
-    expect(groups[0]![1].map((t) => t.code)).toEqual(['BA3Q5', 'BA3T10']);
-    expect(groupTiles(tiles, 'NC26.5')[0]![1].map((t) => t.code)).toEqual(['G5Q5', 'G4Q5']);
+  it('is empty when every tile is on the row', () => {
+    expect(offBoardGroups(['G4Q5', 'BA3Q5'].map(member))).toEqual([]);
   });
+});
 
-  it('names NC 2017 apart from NC 2026', () => {
-    expect(groupOf('NC17.4')).toBe('NC standards (2017)');
-    expect(groupOf('NC26.M1')).toBe('NC standards');
-    expect(groupOf('GEO')).toBe('Art of Problem Solving');
+describe('shownGrade', () => {
+  const tiles = ['G4Q5', 'G5Q5', 'BA3Q5', 'G6Q5'].map(member);
+  it('opens on the lead level\'s grade, else the first grade with tiles', () => {
+    expect(shownGrade(tiles, null, 'NC26.5')).toBe(5);
+    expect(shownGrade(tiles, null, null)).toBe(3);
+    expect(shownGrade(tiles, null, 'NC26.8')).toBe(3);
+  });
+  it('keeps the grade chosen here while it has tiles', () => {
+    expect(shownGrade(tiles, 6, 'NC26.5')).toBe(6);
+    expect(shownGrade(tiles, 8, 'NC26.5')).toBe(5);
+  });
+});
+
+describe('assessmentTileRequest', () => {
+  it('asks for the reader\'s own assessment of the tile\'s level and size', () => {
+    expect(assessmentTileRequest({ level_id: 'NC26.4', value: 5 }, 'me-id')).toEqual({
+      student_user_id: 'me-id',
+      level_id: 'NC26.4',
+      question_count: 5,
+    });
   });
 });
 

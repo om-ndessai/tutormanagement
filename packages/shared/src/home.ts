@@ -169,6 +169,10 @@ export interface NextUpExtras {
   game_invite?: { game_id: string; title: string; host_first_name: string } | null;
   continue_quest?: { code: string; title: string } | null;
   daily?: { level_id: string; done: boolean } | null;
+  /** Phase 67: a student's Question Quest has a question waiting (it replaces the old landing redirect). */
+  question_quest?: { level_id: string | null } | null;
+  /** Phase 67 (H8): back after a week or more away (`welcome_back` in the habit summary). */
+  welcome_back?: boolean;
 }
 
 export type NextUp =
@@ -179,7 +183,9 @@ export type NextUp =
   | { kind: 'reviews_waiting'; hat: 'tutor'; assessments: number; quest: number }
   | { kind: 'assessment_continue'; hat: 'learner'; assessment: NonNullable<HomeLearner['assessment_in_progress']> }
   | { kind: 'office_to_record'; hat: 'office'; office: HomeOffice }
+  | { kind: 'question_quest'; hat: 'learner'; level_id: string | null }
   | { kind: 'daily'; hat: 'learner'; level_id: string }
+  | { kind: 'welcome_back'; hat: 'learner'; level_id: string | null }
   | { kind: 'continue_quest'; hat: 'learner'; code: string; title: string }
   | { kind: 'learner_lesson'; hat: 'learner'; lesson: HomeLesson }
   | { kind: 'child_next_lesson'; hat: 'parent'; child: HomeChild }
@@ -196,8 +202,10 @@ export const NEXT_UP_ORDER: readonly NextUpKind[] = [
   'game_invite',
   'reviews_waiting',
   'assessment_continue',
+  'question_quest',
   'office_to_record',
   'daily',
+  'welcome_back',
   'continue_quest',
   'learner_lesson',
   'child_next_lesson',
@@ -251,7 +259,9 @@ export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): N
     out.push({ kind: 'assessment_continue', hat: 'learner', assessment: home.learner.assessment_in_progress });
   }
   if (home.office && home.office.to_record_count > 0) out.push({ kind: 'office_to_record', hat: 'office', office: home.office });
+  if (extras.question_quest) out.push({ kind: 'question_quest', hat: 'learner', level_id: extras.question_quest.level_id });
   if (extras.daily && !extras.daily.done) out.push({ kind: 'daily', hat: 'learner', level_id: extras.daily.level_id });
+  if (extras.welcome_back) out.push({ kind: 'welcome_back', hat: 'learner', level_id: extras.daily?.level_id ?? null });
   if (extras.continue_quest) {
     out.push({ kind: 'continue_quest', hat: 'learner', code: extras.continue_quest.code, title: extras.continue_quest.title });
   }

@@ -245,7 +245,8 @@ const assessment = (level_id: QuestionBankLevelId, value: number, guest: TileGue
   mode: 'count',
   value,
   guest,
-  // Members' assessment tiles ("G4A10 for Sofia") come later; guests' are Phase 63's.
+  // Members' assessment tiles ("G4A10 for Sofia") come later; guests' are Phase 63's. A personal space
+  // (Phase 67) shows the guest's ones too, for oneself (`GET /quest/tiles`).
   members: false,
 });
 

@@ -1,5 +1,5 @@
 # Question Quest (Phase 42), the tutor. With chmi's switch on and Sofia having answered two BA3
-# questions (through the local API), Alex, her tutor, signs in and lands straight in the review, full
+# questions (through the local API), Alex, her tutor, signs in and opens the review from his Home (Phase 67), full
 # screen: how many wait and his points at the top; the question with its key, Sofia's answer and
 # code's mark, the worked solution. "Question is right" approves it for the whole platform: the toast,
 # one fewer waiting, and his points up (by two when her answer matched the key) -- all read from the
@@ -23,6 +23,22 @@ tags:
     env:
       PERSONA: alex.chen.math@gmail.com
       ORG: chmi
+# Phase 67: no landing redirect -- Home says what waits. His tutor section lists the Quest answers to
+# review (Next up may lead with a lesson), and that line opens the review.
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: home-tutor-reviews-quest
+    centerElement: true
+    timeout: 30000
+- assertVisible:
+    id: home-tutor-reviews-quest
+    text: '(?i).*answer.* to review.*'
+- tapOn:
+    id: home-tutor-reviews-quest
 - extendedWaitUntil:
     visible:
       id: screen-quest-review

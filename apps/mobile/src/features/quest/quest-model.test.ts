@@ -1,23 +1,17 @@
 // Question Quest's pure rules (Phase 42, from the web's quest pages): who plays and who reviews, the
-// once-per-sign-in landing, the sentences the screens say, the level picker, and what a submit sends.
-import { QUESTION_BANK_LEVEL_IDS, type QuestReviewQueue, type QuestState } from '@tmi/shared';
+// sentences the screens say, the level picker, and what a submit sends.
+import { QUESTION_BANK_LEVEL_IDS, type QuestState } from '@tmi/shared';
 
 import {
   NOT_SET,
-  decideQuestLanding,
   finishedText,
   firstName,
-  forgetQuestLandings,
-  hasLanded,
-  landingKey,
   levelInput,
   levelOptions,
   levelToast,
-  markLanded,
   movedUpText,
   playSummary,
   pointsLabel,
-  questLandingKind,
   questResponse,
   questRoles,
   questWide,
@@ -41,7 +35,6 @@ const STATE: QuestState = {
   points: 3,
   answered: 3,
 };
-const QUEUE: QuestReviewQueue = { item: null, waiting: 2, points: 5 };
 
 describe('who plays and who reviews', () => {
   it('a student plays; a tutor or an admin reviews', () => {
@@ -50,73 +43,6 @@ describe('who plays and who reviews', () => {
     expect(questRoles(['admin'])).toEqual({ plays: false, reviews: true });
     expect(questRoles(['parent'])).toEqual({ plays: false, reviews: false });
     expect(questRoles(undefined)).toEqual({ plays: false, reviews: false });
-  });
-
-  it('lands a pure student or a pure tutor only', () => {
-    expect(questLandingKind(['student'])).toBe('student');
-    expect(questLandingKind(['tutor'])).toBe('tutor');
-    expect(questLandingKind(['tutor', 'parent'])).toBe('tutor');
-    // An admin is never taken anywhere, tutoring or not; nor is someone on both sides, or a parent.
-    expect(questLandingKind(['admin'])).toBeNull();
-    expect(questLandingKind(['admin', 'tutor'])).toBeNull();
-    expect(questLandingKind(['tutor', 'student'])).toBeNull();
-    expect(questLandingKind(['parent'])).toBeNull();
-    expect(questLandingKind(undefined)).toBeNull();
-  });
-});
-
-describe('the landing', () => {
-  const base = { on: true, wizardPending: false, state: undefined, queue: undefined };
-
-  it('decides nothing while the organization has Quest off', () => {
-    expect(decideQuestLanding({ ...base, on: false, kind: 'student', state: STATE })).toEqual({
-      settled: false,
-    });
-  });
-
-  it('waits for the server, then sends a student with a question to play', () => {
-    expect(decideQuestLanding({ ...base, kind: 'student' })).toEqual({ settled: false });
-    expect(decideQuestLanding({ ...base, kind: 'student', state: STATE })).toEqual({
-      settled: true,
-      href: '/quest/play',
-    });
-    // Nothing to answer (no level, or finished): settled, and left on Home.
-    expect(decideQuestLanding({ ...base, kind: 'student', state: { ...STATE, question: null } })).toEqual({
-      settled: true,
-      href: null,
-    });
-  });
-
-  it('sends a tutor with answers waiting to review, and one with none nowhere', () => {
-    expect(decideQuestLanding({ ...base, kind: 'tutor' })).toEqual({ settled: false });
-    expect(decideQuestLanding({ ...base, kind: 'tutor', queue: QUEUE })).toEqual({
-      settled: true,
-      href: '/quest/review',
-    });
-    expect(decideQuestLanding({ ...base, kind: 'tutor', queue: { ...QUEUE, waiting: 0 } })).toEqual({
-      settled: true,
-      href: null,
-    });
-  });
-
-  it('never lands anyone else, and gives way to the welcome wizard', () => {
-    expect(decideQuestLanding({ ...base, kind: null })).toEqual({ settled: true, href: null });
-    expect(decideQuestLanding({ ...base, kind: 'student', wizardPending: true, state: STATE })).toEqual({
-      settled: true,
-      href: null,
-    });
-  });
-
-  it('is remembered per person and organization until sign-out, in memory', () => {
-    forgetQuestLandings();
-    const sofia = landingKey('u-sofia', 'chmi');
-    expect(hasLanded(sofia)).toBe(false);
-    markLanded(sofia);
-    expect(hasLanded(sofia)).toBe(true);
-    expect(hasLanded(landingKey('u-sofia', 'tmi'))).toBe(false);
-    expect(hasLanded(landingKey('u-alex', 'chmi'))).toBe(false);
-    forgetQuestLandings();
-    expect(hasLanded(sofia)).toBe(false);
   });
 });
 

@@ -157,7 +157,7 @@ test.describe('Question Quest (Phase 42)', () => {
     });
   });
 
-  test('full screen: the student lands in Quest and answers; the tutor lands in review and approves', async ({ as }) => {
+  test('full screen: Next up takes the student into Quest and the tutor into review (Phase 67: no redirect)', async ({ as }) => {
     const admin = await as('admin');
     await withQuest(admin, async () => {
       const tutor = await as('tutor', { questLanding: true });
@@ -165,9 +165,12 @@ test.describe('Question Quest (Phase 42)', () => {
       const sofia = students.find((s) => s.full_name === 'Sofia Okafor');
       await unwrap(await tutor.request.put(`/api/quest/students/${sofia.user_id}/level`, { data: { level_id: 'BA3' } }), 'level');
 
-      // The student signs in and lands in Quest, outside the portal's frame.
+      // The student signs in: home's Next up is their Quest, one tap into it, outside the portal's frame.
       const student = await as('student', { questLanding: true });
       await student.goto('/');
+      await expect(student.getByTestId('member-home')).toBeVisible();
+      await expect(student.getByTestId('next-up-question_quest')).toBeVisible();
+      await student.getByTestId('next-up-action').click();
       await expect(student.getByTestId('quest-play')).toBeVisible();
       await expect(student.getByRole('navigation')).toHaveCount(0);
       await expect(student.getByTestId('quest-question')).toBeVisible();
@@ -190,8 +193,10 @@ test.describe('Question Quest (Phase 42)', () => {
       await student.goto('/');
       await expect(student.getByTestId('quest-play')).toHaveCount(0);
 
-      // The tutor signs in with answers waiting and lands in review.
+      // The tutor signs in with answers waiting: home says so, one tap into review.
       await tutor.goto('/');
+      await expect(tutor.getByTestId('member-home')).toBeVisible();
+      await tutor.getByTestId('home-tutor-reviews').getByRole('link', { name: /answers? to review/ }).click();
       await expect(tutor.getByTestId('quest-review')).toBeVisible();
       await expect(tutor.getByTestId('quest-review-item')).toBeVisible();
       await tutor.getByTestId('quest-approve').click();

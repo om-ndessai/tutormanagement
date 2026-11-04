@@ -1,11 +1,16 @@
 // Ported from apps/web/src/features/habit/{my-progress-card,daily-page}.tsx and the Daily button of
 // apps/web/src/features/play/play-home.tsx @ 0e3ec7a (working tree): their words and decisions, kept
-// pure here so Jest can hold them. Phase 64 (P17-P20, docs/stickiness-plan.md).
+// pure here so Jest can hold them. Phase 64 (P17-P20, docs/stickiness-plan.md); Phase 67 (H8): the week
+// strip, welcome back, the next badge and the Daily's rings.
 import {
+  DAILY_SET_SIZE,
   STREAK_DAYS_PER_WEEK,
   TILE_LEVEL_TAGS,
   TILE_LEVEL_WORDS,
+  type DailySet,
   type HabitSummary,
+  type NextBadge,
+  type WeekDot,
   type MemberTile,
   type QuestionBankLevelId,
 } from '@tmi/shared';
@@ -28,6 +33,30 @@ export function todayLabel(playedToday: boolean): string {
 }
 
 export const NO_BADGE_TEXT = 'Your first badge is one quest away.';
+
+// --- The week, made visible and kind (Phase 67, H8) -------------------------
+
+export const WEEK_DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
+
+const DOT_WORDS: Record<WeekDot, string> = {
+  played: 'played',
+  missed: 'not played',
+  today: 'today, not played yet',
+  ahead: 'still to come',
+};
+
+/** One dot read aloud: "Monday: played". */
+export function weekDotLabel(index: number, dot: WeekDot): string {
+  return `${WEEK_DAY_NAMES[index] ?? ''}: ${DOT_WORDS[dot]}`;
+}
+
+/** Back after time away: a fresh start, never what was lost. */
+export const WELCOME_BACK_TEXT = 'Welcome back! A fresh week starts now.';
+
+/** "Next badge: 10 quests · 4 of 10". */
+export function nextBadgeLine(badge: Pick<NextBadge, 'label' | 'have' | 'need'>): string {
+  return `Next badge: ${badge.label} · ${badge.have} of ${badge.need}`;
+}
 
 /** The badges earned, in the shared order. */
 export function earnedOf(summary: Pick<HabitSummary, 'badges'>) {
@@ -53,6 +82,25 @@ export function dailyTileFor(tiles: readonly MemberTile[], lastLevel?: string | 
 /** "Today's Daily · G4D". */
 export function dailyButtonLabel(levelId: string): string {
   return `Today's Daily · ${levelTag(levelId)}D`;
+}
+
+/** Phase 67 (H8): the Daily card's five rings -- hit or missed once played, else open. */
+export function dailyRings(result: Pick<DailySet, 'result'>['result'], size: number = DAILY_SET_SIZE): ('open' | 'hit' | 'miss')[] {
+  return Array.from({ length: size }, (_, i) => {
+    const mark = result?.marks[i];
+    return mark === undefined ? 'open' : mark ? 'hit' : 'miss';
+  });
+}
+
+/** The Daily card's line: the call before playing, the hits after. */
+export function dailyCardTitle(result: Pick<DailySet, 'result'>['result']): string {
+  if (!result) return 'Five questions. Can you hit all five?';
+  return `You hit ${result.right} of ${result.of} today.`;
+}
+
+/** What the rings say to assistive tech. */
+export function dailyRingsLabel(result: Pick<DailySet, 'result'>['result'], size: number = DAILY_SET_SIZE): string {
+  return result ? `${result.right} hit of ${result.of}` : `${size} targets, not played yet`;
 }
 
 /** "G4D #42 · 4 of 5". */

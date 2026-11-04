@@ -195,6 +195,8 @@ export function formatStroke(stroke: CanvasStroke): string {
 export const startCanvasAssessmentSchema = z.object({
   student_user_id: z.string().uuid('Choose a student.'),
   level_id: z.enum(CANVAS_ASSESSMENT_LEVEL_IDS, { message: 'Choose a level.' }),
+  /** Phase 67: a tile's own number of questions ("Show your work", 5); else the space's setting. */
+  question_count: z.number().int().min(1).max(25).optional(),
 });
 export type StartCanvasAssessmentInput = z.infer<typeof startCanvasAssessmentSchema>;
 

@@ -11,6 +11,7 @@ import {
   type MemberHome,
   type NextUp,
   type NextUpExtras,
+  type QuestState,
   type QuickAction,
   type TutorHomeLesson,
   type WaitingGame,
@@ -119,10 +120,16 @@ export function deviceExtras({
   waiting,
   lastLabel,
   daily,
+  questionQuest = null,
+  welcomeBack = false,
 }: {
   waiting: readonly Pick<WaitingGame, 'game_id' | 'code' | 'host_first_name'>[];
   lastLabel: string | null;
   daily: { level_id: string; done: boolean } | null;
+  /** Phase 67: a student's Question Quest with a question waiting (it replaces the landing redirect). */
+  questionQuest?: { level_id: string | null } | null;
+  /** Phase 67 (H8): back after a week away, from the habit summary. */
+  welcomeBack?: boolean;
 }): { extras: NextUpExtras; codes: Record<string, string> } {
   const game = waiting[0];
   const codes: Record<string, string> = {};
@@ -132,9 +139,21 @@ export function deviceExtras({
       game_invite: game ? { game_id: game.game_id, title: 'game', host_first_name: game.host_first_name } : null,
       continue_quest: lastLabel ? { code: lastLabel, title: lastLabel } : null,
       daily,
+      question_quest: questionQuest,
+      welcome_back: welcomeBack,
     },
     codes,
   };
+}
+
+/**
+ * Phase 67: whether a student's Question Quest has a question waiting -- the old sign-in landing's test
+ * (`state.question`), now a Next up item rather than a redirect.
+ */
+export function questionQuestExtra(
+  state: Pick<QuestState, 'level_id' | 'question'> | null | undefined,
+): { level_id: string | null } | null {
+  return state?.question ? { level_id: state.level_id } : null;
 }
 
 /** Whether Next up shows the tutor's next lesson already (then the section leaves its Now card out). */

@@ -66,6 +66,19 @@ test.describe('P17-P18, P20: streak, badges and best', () => {
       await expect(card).toBeVisible();
       await expect(card.getByTestId('my-progress-today')).toHaveAttribute('aria-label', 'Played today');
       await expect(card.getByTestId('badge-first_quest')).toBeVisible();
+      // Phase 67 (H8): this week's strip, Monday first, today played; and the next badge within reach.
+      await expect(card.getByTestId('my-progress-week').locator('[data-state]')).toHaveCount(7);
+      await expect(card.locator('[data-state="played"]')).not.toHaveCount(0);
+      expect(habit.week).toHaveLength(7);
+      expect(habit.week).toContain('played');
+      expect(habit.welcome_back).toBe(false);
+      // The next milestone is one not yet earned, said with how far along.
+      expect(habit.next_badge).not.toBeNull();
+      expect(habit.badges.find((b: any) => b.id === habit.next_badge.id)?.earned).toBe(false);
+      await expect(card.getByTestId('my-progress-next')).toContainText(`${habit.next_badge.label} · ${habit.next_badge.have} of ${habit.next_badge.need}`);
+      // A finished quest's tile carries its best on the board (Grade 4).
+      await sofia.getByTestId('play-grade-4').click();
+      await expect(sofia.getByTestId('play-best-G4Q5')).toBeVisible();
     } finally {
       await questOn(admin, false);
     }

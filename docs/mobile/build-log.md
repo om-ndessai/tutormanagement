@@ -4585,3 +4585,56 @@ is `ScheduleTodayCard` (the name is Phase 67's). One start lead: shared `START_L
 **Flows:** `home/member-home-{tutor (smoke),parent,student,space,multirole}`; flows that read the dashboard on
 Home open it through `subflows/open-dashboard.yaml`.
 **Jest:** `home/member-home-model.test.ts`, `home/member-home-screen.test.tsx`.
+
+## 76. Phase 67, H5-H8: coloured tiles and a newcomer's continuity, in the app — design and build (2026-11-03)
+
+**Source:** `docs/member-home-plan.md` (H5-H8, "Phase 67"), the shared contract (`tile-look.ts`: `tileLook`,
+`tileSpoken`, `boardGrades`, `boardLeadGrade`, `memberBoard`, `offBoardTiles`; `habit.ts`: `HabitSummary.week`,
+`welcome_back`, `next_badge`; `home.ts`: the `question_quest` and `welcome_back` kinds; `canvas-assessments.ts`:
+`question_count`), the `grade1..8` / `gradeNForeground` tokens (generated from the web's `--grade-N`), and the web's
+`features/play/quest-card.tsx`. Built beside the web's half (the lead), with the same testIDs. No contract or API
+change from the app.
+
+- **Shared pieces** (`features/play/quest-card.tsx`, H6): `QuestCard` (band with the mode's icon, an "ADV" pill on a
+  harder track; title, detail, level line, small code, a footer for Beta/Best/lock, an aside for the star), `CardGrid`,
+  `TargetRing`, `TodayCard` (eyebrow, line, five rings with one spoken label, the amber play button or a quiet
+  outlined one) and `GradeRow` (radio chips; the chosen chip in its grade's hue when `hued`, else the brand's). Tones:
+  `{ grade }` (member: `gradeColors`), `{ mode }` (guest: primary / warning, exactly as before), `'locked'`. The guest
+  home uses them with every testID unchanged (`guest-today*`, `guest-grade-<n>`, `guest-tile-*`, `guest-locked-*`).
+- **The member Play home is the Quest board** (`play-home.tsx`): Continue, My progress, the Daily card, favorites,
+  Waiting for you, then `play-board` -- "Your grade" and `GradeRow` (`play-grade-<n>`, only `boardGrades`; opens on
+  `shownGrade`: the grade chosen here, else `boardLeadGrade(tiles, lead)` with the lead as before -- the last quest,
+  else the guest's carried level), that grade's standards, "Advanced" and its harder tracks -- then `play-more`
+  ("More levels", `offBoardGroups`: the tiles off the row by their level words), then "Have a code?". A card's root
+  is `play-tile-<code>`, its button `play-tile-start-<code>` (label `Start <code>: <tileSpoken>`), the star
+  `play-tile-star-<code>`, the best `play-best-<code>`, Beta `play-tile-beta-<code>`. A `kind: 'assessment'` tile
+  ("Show your work", served in a personal space) has no star; it POSTs `/canvas-assessments`
+  `{ student_user_id: me, level_id, question_count: value }` (`assessmentTileRequest`) and opens `/assessments/[id]`.
+- **The Daily as rings** (H8): `TodayCard` `play-daily` for the lead level's Daily (`GET /quest/daily/<level>`, the
+  same query key as Next up's): `play-daily-eyebrow` "Today's Daily · G5D", `play-daily-title` (the call, or "You hit
+  N of 5 today."), `play-daily-rings` (open, or hit/miss from `result.marks`), `play-daily-play` ("Play today's
+  Daily", or a quiet "See today's result" with "A new Daily tomorrow…"). The home waits for the Daily's read as it
+  does for My progress, so nothing lands under a finger.
+- **My progress** (H8): `my-progress-week` with `my-progress-day-<0..6>` (filled and ticked when played, ringed for
+  today; label "Monday: played" / "not played" / "today, not played yet" / "still to come"), `my-progress-days`
+  ("N of 3 days this week"), `my-progress-welcome` ("Welcome back! A fresh week starts now." -- never a loss),
+  `my-progress-next` ("Next badge: <label> · <have> of <need>"). An older Worker's summary shows as before.
+- **Next up** (`next-up-card.tsx`): `next-up-question_quest` (eyebrow "Your Quest", "Your Quest has a question
+  waiting.", the level; Answer it → `/quest/play`), fed by `useQuestState` for a student where Quest is on
+  (`questionQuestExtra`: a question waiting); `next-up-welcome_back` ("Welcome back, <first name>.", "A fresh week
+  starts today."; Play today's Daily with a level, else Start a quest → `/quest/new-game`), fed by the habit
+  summary's `welcome_back`.
+- **QuestLanding retired**: `quest-landing.tsx` deleted, its use on Home and `forgetQuestLandings` in the root layout
+  removed, with `decideQuestLanding`/`questLandingKind`/the landed set and their tests. A tutor's answers are
+  `reviews_waiting` and the tutor section's `home-tutor-reviews-quest`.
+
+**Mobile differences:** the band's icon sits at its left (the guest board's look) and the star just under the band;
+"Start a quest" (New Quest) stands in for the web's "open Play" on a welcome back with no Daily, since the app's
+Play home is Home itself.
+**Flows:** `play/play-home` (smoke: the grade row switches the cards, a grade card starts a quest), `play/habit` (the
+Daily's rings open then filled, the week strip), `play/favorites`, `guest/guest-signup` (the board opens on the carried
+grade), `quest/play` and `quest/play-number` and `spaces/new-space-quest` through `subflows/open-question-quest.yaml`
+(the student's Next up "Your Quest"), `quest/review` (the tutor's section link). `scripts/habit.js` now picks an NC 2026
+grade tile and outputs `habitGrade`.
+**Jest:** `play/quest-card.test.tsx`, `play/play-home.test.tsx` (the board, More levels, Show your work, the rings,
+the week), `play/play-model.test.ts`, `habit/habit-model.test.ts`, `home/member-home-{model,screen}.test.ts(x)`.

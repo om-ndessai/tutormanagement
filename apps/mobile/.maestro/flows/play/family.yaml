@@ -22,9 +22,15 @@ tags:
     env:
       PERSONA: priya.raghavan@gmail.com
       ORG: chmi
+# Phase 66 put the favorites row at the end of Home (staff and parents, below their sections).
 - extendedWaitUntil:
     visible:
-      id: play-favorites-row
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-favorite-players-Family G6
+    centerElement: true
     timeout: 30000
 - assertVisible: 'Play a favorite'
 - tapOn:
@@ -71,9 +77,15 @@ tags:
     env:
       PERSONA: sofia.okafor@gmail.com
       ORG: chmi
+# Phase 66: the invitation is also Home's Next up; Waiting for you sits in the Play home, below it.
 - extendedWaitUntil:
     visible:
-      id: play-waiting
+      id: next-up-game_invite
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: 'play-waiting-join-.*'
+    centerElement: true
     timeout: 30000
 - assertVisible: '.*started a G6 game · 2 questions.*'
 - takeScreenshot: play-family-waiting

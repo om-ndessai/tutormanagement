@@ -1,14 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { CalendarCheckIcon, PlayIcon, PlusIcon, StarIcon, UsersIcon } from 'lucide-react';
+import { PlayIcon, PlusIcon, StarIcon, UsersIcon } from 'lucide-react';
 import {
+  DAILY_SET_SIZE,
   GAME_CODE_LENGTH,
   GAME_LIMITS,
   SPACE_CODE_LENGTH,
   tileGameRequest,
   gameLengthLabel,
   levelLabel,
+  TILE_LEVEL_WORDS,
+  boardGrades,
+  boardLeadGrade,
+  memberBoard,
+  offBoardTiles,
+  tileLook,
+  tileSpoken,
+  type CanvasAssessmentLevelId,
+  type QuestionBankLevelId,
   type CreateGameRequest,
   type GameFavorite,
   type GameLookup,
@@ -27,17 +37,11 @@ import { useCreateGame, useGameFavorites, useLookupGame, useSaveGameFavorite } f
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
+import { useStartCanvasAssessment } from '@/features/canvas-assessments/api';
+import { useDaily } from '@/features/habit/habit-api';
+import { GradeRow, QuestCard, TodayCard, type RingState } from './quest-card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { readLastQuest, useMemberTiles, useRosterMembers, useWaitingGames, writeLastQuest } from './play-api';
-
-/** A curriculum's group on the home, in the order shown. */
-function groupOf(levelId: string): string {
-  if (levelId.startsWith('NC26.')) return 'NC standards';
-  if (levelId.startsWith('NC17.')) return 'NC standards (2017)';
-  if (/^BA\d$/.test(levelId)) return 'Beast Academy';
-  if (['PRE', 'ALG', 'GEO'].includes(levelId)) return 'Art of Problem Solving';
-  return 'Math Kangaroo';
-}
 
 /** One tap: the game is made and begun (a single player's), remembered for Continue, and opened. */
 export function useStartQuest() {
@@ -99,7 +103,8 @@ function useCarryGuestTiles(list: MemberTile[], favorites: GameFavorite[] | unde
  * quest in one tap. The home of a space without Tutoring, and of a student anywhere.
  */
 export function PlayHome({ hideWaiting = false }: { hideWaiting?: boolean } = {}) {
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
+  const startAssessment = useStartCanvasAssessment();
   const tiles = useMemberTiles();
   const favorites = useGameFavorites();
   const saveFavorite = useSaveGameFavorite();
@@ -111,21 +116,27 @@ export function PlayHome({ hideWaiting = false }: { hideWaiting?: boolean } = {}
 
   // P13: until a quest is started in this space here, a guest's grade (or the tile they played last) leads.
   const [guestLead] = useState(guestLeadLevel);
-  const lead = last?.request.level_id ?? guestLead;
+  const lead = (last?.request.level_id ?? guestLead) as QuestionBankLevelId | null | undefined;
   useCarryGuestTiles(list, favorites.data?.data);
 
-  // The lead level first, then the catalogue's order.
-  const groups = useMemo(() => {
-    const ordered = [...list].sort((a, b) => Number(b.level_id === lead) - Number(a.level_id === lead));
+  // Phase 67 (H5): the Quest board -- a grade row, that grade's cards in its hue, then levels off the row.
+  const grades = boardGrades(list);
+  const [chosenGrade, setChosenGrade] = useState<number | null>(null);
+  const grade = chosenGrade ?? boardLeadGrade(list, lead);
+  const board = useMemo(() => (grade ? memberBoard(list, grade) : { standard: [], advanced: [] }), [list, grade]);
+  const offBoard = useMemo(() => {
     const map = new Map<string, MemberTile[]>();
-    for (const tile of ordered) map.set(groupOf(tile.level_id), [...(map.get(groupOf(tile.level_id)) ?? []), tile]);
+    for (const tile of offBoardTiles(list)) {
+      const words = TILE_LEVEL_WORDS[tile.level_id];
+      map.set(words, [...(map.get(words) ?? []), tile]);
+    }
     return [...map.entries()];
-  }, [list, lead]);
+  }, [list]);
 
   if (tiles.data && !tiles.data.data.play_home) return null;
 
-  // Phase 64 (P19): the Daily of the lead level, else of the first tile's.
-  const dailyTile = list.find((tile) => tile.level_id === lead) ?? list[0];
+  // Phase 64 (P19): the Daily of the lead level, else of the chosen grade's first tile, else the first tile's.
+  const dailyTile = list.find((tile) => tile.level_id === lead) ?? board.standard[0] ?? list[0];
   const dailyLevel = dailyTile?.level_id ?? null;
   const dailyTag = dailyTile ? `${dailyTile.code.replace(/[QTA]\d+$/, '')}D` : '';
 
@@ -137,6 +148,72 @@ export function PlayHome({ hideWaiting = false }: { hideWaiting?: boolean } = {}
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not save that favorite.');
     }
   }
+
+  async function open(tile: MemberTile) {
+    if (tile.kind !== 'assessment') {
+      void start(tile.code, tileGameRequest(tile));
+      return;
+    }
+    // Phase 67 (H7): "Show your work" in a personal space is for oneself.
+    if (!user) return;
+    try {
+      const made = await startAssessment.mutateAsync({
+        student_user_id: user.id,
+        level_id: tile.level_id as CanvasAssessmentLevelId,
+        question_count: tile.value,
+      });
+      navigate(`/assessments/${made.data.id}`);
+    } catch (caught) {
+      toast.error(caught instanceof ApiRequestError ? caught.message : 'That assessment could not start.');
+    }
+  }
+
+  const card = (tile: MemberTile) => {
+    const look = tileLook(tile);
+    return (
+      <QuestCard
+        key={tile.code}
+        title={look.title}
+        detail={`${look.level} · ${look.detail}`}
+        icon={look.icon}
+        tone={{ grade: look.grade }}
+        advanced={look.advanced}
+        code={tile.code}
+        disabled={pending || startAssessment.isPending}
+        onOpen={() => void open(tile)}
+        label={`Start ${tile.code}: ${tileSpoken(tile)}`}
+        testId={`play-tile-${tile.code}`}
+        footer={
+          <span className="flex flex-wrap items-center gap-1.5">
+            {tile.best != null && (
+              <span className="text-primary text-xs font-semibold" data-testid={`play-best-${tile.code}`}>
+                Best {tile.best}
+              </span>
+            )}
+            {tile.beta && (
+              <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
+                Beta
+              </Badge>
+            )}
+          </span>
+        }
+        aside={
+          tile.kind === 'quest' ? (
+            <button
+              type="button"
+              className="text-muted-foreground hover:text-foreground p-2.5"
+              aria-label={starred.has(tile.code) ? `${tile.code} is a favorite` : `Add ${tile.code} to favorites`}
+              aria-pressed={starred.has(tile.code)}
+              disabled={starred.has(tile.code) || saveFavorite.isPending}
+              onClick={() => void star(tile)}
+            >
+              <StarIcon className={cn('size-4', starred.has(tile.code) && 'fill-current')} />
+            </button>
+          ) : undefined
+        }
+      />
+    );
+  };
 
   return (
     <section className="grid gap-4" data-testid="play-home" aria-labelledby="play-home-heading">
@@ -161,67 +238,79 @@ export function PlayHome({ hideWaiting = false }: { hideWaiting?: boolean } = {}
         </Button>
       )}
 
-      <MyProgressCard />
-
-      {dailyLevel && tiles.data?.data.daily && (
-        <Button variant="outline" className="justify-start" data-testid="play-daily" onClick={() => navigate(`/quest/daily/${dailyLevel}`)}>
-          <CalendarCheckIcon /> Today&apos;s Daily · {dailyTag}
-        </Button>
-      )}
+      <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
+        {dailyLevel && tiles.data?.data.daily && <DailyCard level={dailyLevel} tag={dailyTag} />}
+        <MyProgressCard />
+      </div>
 
       <PlayFavorites />
 
       {/* Phase 66: shown in the home's Next up instead, when a game is waiting. */}
       {!hideWaiting && <WaitingForYou />}
 
-      {groups.map(([group, groupTiles]) => (
-        <div key={group} className="grid gap-2">
-          <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{group}</h3>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-            {groupTiles.map((tile) => (
-              <Card key={tile.code} className="py-0" data-testid={`play-tile-${tile.code}`}>
-                <CardContent className="flex items-start gap-1 p-0">
-                  <button
-                    type="button"
-                    className="hover:bg-muted min-w-0 flex-1 rounded-l-xl p-3 text-left transition-colors"
-                    disabled={pending}
-                    aria-label={`Start ${tile.code}: ${tile.words}`}
-                    onClick={() => void start(tile.code, tileGameRequest(tile))}
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <span className="font-display text-lg font-semibold">{tile.code}</span>
-                      {tile.beta && (
-                        <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
-                          Beta
-                        </Badge>
-                      )}
-                    </span>
-                    <span className="text-muted-foreground block truncate text-xs">{tile.words}</span>
-                    {tile.best != null && (
-                      <span className="text-primary block text-xs font-medium" data-testid={`play-best-${tile.code}`}>
-                        Best {tile.best}
-                      </span>
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    className="text-muted-foreground hover:text-foreground p-3"
-                    aria-label={starred.has(tile.code) ? `${tile.code} is a favorite` : `Add ${tile.code} to favorites`}
-                    aria-pressed={starred.has(tile.code)}
-                    disabled={starred.has(tile.code) || saveFavorite.isPending}
-                    onClick={() => void star(tile)}
-                  >
-                    <StarIcon className={cn('size-4', starred.has(tile.code) && 'fill-current')} />
-                  </button>
-                </CardContent>
-              </Card>
-            ))}
+      {grade !== null && (
+        <div className="grid gap-3">
+          <h3 id="play-grade-label" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+            Grade
+          </h3>
+          <GradeRow grades={grades} value={grade} onChange={setChosenGrade} labelId="play-grade-label" testIdPrefix="play-grade-" hued />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" aria-label={`Grade ${grade} quests`}>
+            {board.standard.map(card)}
           </div>
+          {board.advanced.length > 0 && (
+            <>
+              <h3 className="text-muted-foreground mt-1 text-xs font-semibold tracking-wide uppercase">Advanced</h3>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{board.advanced.map(card)}</div>
+            </>
+          )}
         </div>
-      ))}
+      )}
+
+      {offBoard.length > 0 && (
+        <div className="grid gap-3" data-testid="play-more-levels">
+          <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{grade !== null ? 'More levels' : 'Levels'}</h3>
+          {offBoard.map(([words, levelTiles]) => (
+            <div key={words} className="grid gap-2">
+              <h4 className="text-sm font-semibold">{words}</h4>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{levelTiles.map(card)}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <HaveACode />
     </section>
+  );
+}
+
+/**
+ * Phase 67 (H6): today's Daily as five rings -- open until played, then hit or missed, from the
+ * server's marks. Its tag (G5D) stays on the card, as the set's name.
+ */
+function DailyCard({ level, tag }: { level: QuestionBankLevelId; tag: string }) {
+  const daily = useDaily(level);
+  const navigate = useNavigate();
+  const set = daily.data?.data;
+  const result = set?.result ?? null;
+  const size = set?.questions.length || DAILY_SET_SIZE;
+  const states: RingState[] = Array.from({ length: size }, (_, i) => (result ? (result.marks[i] ? 'hit' : 'miss') : 'open'));
+  return (
+    <TodayCard
+      eyebrow={
+        <>
+          Today&apos;s Daily · {TILE_LEVEL_WORDS[level]} · {tag}
+          {set ? ` #${set.number}` : ''}
+        </>
+      }
+      title={result ? `You hit ${result.right} of ${result.of} today.` : `${size} questions. Can you hit them all?`}
+      states={states}
+      played={result !== null}
+      note={result ? 'A new set tomorrow.' : undefined}
+      onPlay={() => navigate(`/quest/daily/${level}`)}
+      playLabel={result ? 'See your answers' : "Play today's Daily"}
+      testId="play-daily"
+      playTestId="play-daily-play"
+    />
   );
 }
 

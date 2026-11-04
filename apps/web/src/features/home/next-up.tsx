@@ -8,7 +8,9 @@ import {
   ClipboardCheckIcon,
   PencilLineIcon,
   PlayIcon,
+  HandHeartIcon,
   TargetIcon,
+  TrophyIcon,
   UserPlusIcon,
   type LucideIcon,
 } from 'lucide-react';
@@ -17,18 +19,21 @@ import {
   chooseNextUp,
   featureOn,
   lessonWhen,
+  levelLabel,
   nextUpCandidates,
   nextUpKey,
   startsInWords,
   type MemberHome,
   type NextUp,
   type NextUpExtras,
+  type QuestionBankLevelId,
   type SessionMode,
 } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { guestLeadLevel } from '@/features/guest/guest-store';
-import { useDaily } from '@/features/habit/habit-api';
+import { useDaily, useHabit } from '@/features/habit/habit-api';
+import { questRoles, useQuestState } from '@/features/quest/api';
 import { WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { readLastQuest, useMemberTiles, useWaitingGames } from '@/features/play/play-api';
 import { useStartSession } from '@/features/teaching/api';
@@ -48,7 +53,7 @@ export interface RecordRequest {
 
 /** What only this device knows (H2): a game waiting, the last quest here, today's Daily. */
 function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: string | null } {
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
   const learner = Boolean(home?.hats.includes('learner'));
   const quest = featureOn(organization, 'quest');
   const waiting = useWaitingGames(quest);
@@ -60,7 +65,14 @@ function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: s
   const dailyLevel = learner && tiles.data?.data.daily && dailyTile ? dailyTile.level_id : null;
   const daily = useDaily(dailyLevel);
   const game = waiting.data?.data[0];
+  // Phase 67: a student's Question Quest with a question waiting is a Next up item (it was a redirect).
+  const roles = questRoles(user?.roles);
+  const questStudent = Boolean(organization?.gamify_question_quest) && roles.plays && !roles.reviews;
+  const questState = useQuestState(questStudent);
+  const habit = useHabit(quest && learner);
   return {
+    question_quest: questStudent && questState.data?.data.question ? { level_id: questState.data.data.level_id } : null,
+    welcome_back: habit.data?.data.welcome_back ?? false,
     game_invite: game ? { game_id: game.game_id, title: 'game', host_first_name: game.host_first_name } : null,
     continue_quest: last ? { code: last.label, title: last.label } : null,
     daily: dailyLevel && daily.data ? { level_id: dailyLevel, done: daily.data.data.result !== null } : null,
@@ -78,7 +90,7 @@ export function useNextUp(home: MemberHome | undefined) {
     void later;
     return chooseNextUp(nextUpCandidates(home, extras), readPutOff(organization?.slug, home.day));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [home, extras.game_invite?.game_id, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, later, organization?.slug]);
+  }, [home, extras.game_invite?.game_id, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, later, organization?.slug]);
   return {
     item,
     putOff(next: NextUp) {
@@ -299,6 +311,32 @@ export function NextUpCard({
       return (
         <Shell kind={item.kind} icon={TargetIcon} eyebrow="Today's 5" title="Five questions. Can you hit all five?" onLater={later}>
           {link("Play today's 5", `/quest/daily/${item.level_id}`, TargetIcon)}
+        </Shell>
+      );
+    case 'question_quest':
+      return (
+        <Shell
+          kind={item.kind}
+          icon={TrophyIcon}
+          eyebrow="Your Quest"
+          title="Your Quest has a question waiting."
+          detail={item.level_id ? `${levelLabel(item.level_id as QuestionBankLevelId)} · one question at a time.` : null}
+          onLater={later}
+        >
+          {link('Open Quest', '/quest/play', TrophyIcon)}
+        </Shell>
+      );
+    case 'welcome_back':
+      return (
+        <Shell
+          kind={item.kind}
+          icon={HandHeartIcon}
+          eyebrow="Welcome back"
+          title={`Welcome back, ${home.first_name}.`}
+          detail="A fresh week starts today."
+          onLater={later}
+        >
+          {item.level_id ? link("Play today's Daily", `/quest/daily/${item.level_id}`, TargetIcon) : link('Start a quest', '/quest/games/new', PlayIcon)}
         </Shell>
       );
     case 'continue_quest':

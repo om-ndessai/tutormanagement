@@ -10,6 +10,7 @@ import {
   lessonWithTutor,
   nextUpShowsLesson,
   officeStrip,
+  questionQuestExtra,
   reviewsLine,
   stripLine,
   tutorStrip,
@@ -85,6 +86,26 @@ describe('Next up per persona', () => {
     const played = deviceExtras({ waiting: [], lastLabel: 'G4T10', daily: { level_id: 'NC26.4', done: true } });
     expect(chooseNextUp(nextUpCandidates(SOFIA, played.extras))).toMatchObject({ kind: 'continue_quest', title: 'G4T10' });
     expect(chooseNextUp(nextUpCandidates(SOFIA))?.kind).toBe('learner_lesson');
+  });
+
+  it('Phase 67: a Quest question waiting comes before the Daily; welcome back after it', () => {
+    const quest = deviceExtras({
+      waiting: [],
+      lastLabel: 'G4T10',
+      daily: { level_id: 'NC26.4', done: false },
+      questionQuest: questionQuestExtra({ level_id: 'BA3', question: {} as never }),
+      welcomeBack: true,
+    });
+    expect(chooseNextUp(nextUpCandidates(SOFIA, quest.extras))).toMatchObject({ kind: 'question_quest', level_id: 'BA3' });
+    const back = deviceExtras({
+      waiting: [],
+      lastLabel: 'G4T10',
+      daily: { level_id: 'NC26.4', done: true },
+      questionQuest: questionQuestExtra({ level_id: 'BA3', question: null }),
+      welcomeBack: true,
+    });
+    expect(chooseNextUp(nextUpCandidates(SOFIA, back.extras))).toMatchObject({ kind: 'welcome_back' });
+    expect(questionQuestExtra(undefined)).toBeNull();
   });
 
   it('Ines (no Tutoring): nothing waiting is "all caught up"', () => {

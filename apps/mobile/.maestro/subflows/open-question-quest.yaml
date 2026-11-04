@@ -1,0 +1,22 @@
+# Phase 67: a student with a Question Quest question waiting finds it as Home's Next up ("Your Quest has a
+# question waiting.") -- it replaced the Phase 42 sign-in landing, which took them in by itself -- and
+# its action opens Question Quest.
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: next-up-question_quest
+    timeout: 20000
+- assertVisible:
+    id: next-up-title
+    text: 'Your Quest has a question waiting\.'
+- tapOn:
+    id: next-up-action
+- extendedWaitUntil:
+    visible:
+      id: screen-quest-play
+    timeout: 20000

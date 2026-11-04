@@ -19,6 +19,8 @@ import {
   type CanvasAssessmentLevelId,
   type MemberTile,
   type MemberTilesResponse,
+  CANVAS_ASSESSMENT_LEVEL_IDS,
+  featureOn,
 } from '@tmi/shared';
 
 import { cachedDrawableCounts } from '../repositories/level-counts.js';
@@ -124,9 +126,18 @@ export const questRoutes = new Hono<AppEnv>()
         b.best,
       ]),
     );
+    const selfAssess = org.personal && featureOn(org, 'assessment');
     const shown: MemberTile[] = tiles.flatMap((tile) => {
       const count = counts.get(tile.level_id as CanvasAssessmentLevelId);
-      if (!tile.members || tile.kind !== 'quest' || !count || count.available < settings.min_depth) return [];
+      // Phase 67 (H7): "Show your work" reaches a personal space, where it is for oneself -- the tiles the
+      // guest page shows carry over to the newcomer, whatever the members' flag (which is for quests).
+      const selfTile =
+        tile.kind === 'assessment' &&
+        selfAssess &&
+        (tile.members || tile.guest !== 'hidden') &&
+        (CANVAS_ASSESSMENT_LEVEL_IDS as readonly string[]).includes(tile.level_id);
+      const forMembers = (tile.kind === 'quest' && tile.members) || selfTile;
+      if (!forMembers || !count || count.available < settings.min_depth) return [];
       const shape = `${tile.level_id}|${tile.mode}|${tile.mode === 'count' ? tile.value : ''}|${tile.mode === 'timed' ? tile.value * 60 : ''}`;
       return [{ ...tile, words: tileWords(tile), available: count.available, beta: count.unreviewed > 0, best: bests.get(shape) ?? null }];
     });

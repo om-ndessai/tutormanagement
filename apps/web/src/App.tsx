@@ -40,7 +40,7 @@ import { AssessmentsPage } from '@/features/canvas-assessments/assessments-page'
 import { TakeAssessmentPage } from '@/features/canvas-assessments/take-assessment-page';
 import { ReviewAssessmentPage } from '@/features/canvas-assessments/review-assessment-page';
 import { AssessmentPdfPage } from '@/features/canvas-assessments/assessment-pdf-page';
-import { QuestLanding, QuestPage } from '@/features/quest/quest-page';
+import { QuestPage } from '@/features/quest/quest-page';
 import { QuestPlayPage } from '@/features/quest/quest-play-page';
 import { DailyPage } from '@/features/habit/daily-page';
 import { QuestReviewPage } from '@/features/quest/quest-review-page';
@@ -99,15 +99,7 @@ export function App() {
           <Route path="quest/games/:gameId" element={<GamePage />} />
         </Route>
         <Route element={<AppShell />}>
-          <Route
-            index
-            element={
-              <>
-                <QuestLanding />
-                <MemberHomePage />
-              </>
-            }
-          />
+          <Route index element={<MemberHomePage />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="users" element={<UsersPage />} />

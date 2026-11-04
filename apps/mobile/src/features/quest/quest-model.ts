@@ -1,6 +1,6 @@
 // Question Quest's pure rules (Phase 42), from apps/web/src/features/quest/{api.ts, quest-page.tsx,
 // quest-play-page.tsx, quest-review-page.tsx} @ 82397b8 (working tree): who plays and who reviews,
-// the once-per-session landing, the sentences and labels the screens show (the web's copy), the
+// the sentences and labels the screens show (the web's copy), the
 // level picker's options, and the answer a submit sends. Pure: no React, no api client.
 import {
   QUESTION_BANK_LEVEL_IDS,
@@ -9,7 +9,6 @@ import {
   offeredBankLevelIds,
   questLevelLabel,
   type QuestReviewDecision,
-  type QuestReviewQueue,
   type QuestState,
 } from '@tmi/shared';
 
@@ -32,78 +31,6 @@ export function questIntro(roles: readonly string[] | undefined): string {
     return 'Play the question bank together: start a game and share its code, or join one with a code.';
   }
   return 'Answer the question bank’s new questions, one at a time, and earn points. Tutors check each answer and approve the question for everyone.';
-}
-
-// --- The landing ------------------------------------------------------------------------------
-
-/**
- * Who the sign-in landing is for (the web's QuestLanding): a student who neither tutors nor runs
- * the organization, and a tutor who is neither an admin nor a student. Anyone else (an admin, a
- * parent, someone holding both sides) is never taken anywhere.
- */
-export type QuestLandingKind = 'student' | 'tutor';
-
-export function questLandingKind(roles: readonly string[] | undefined): QuestLandingKind | null {
-  const { plays, reviews } = questRoles(roles);
-  const admin = Boolean(roles?.includes('admin'));
-  if (plays && !reviews) return 'student';
-  if (!plays && reviews && !admin) return 'tutor';
-  return null;
-}
-
-export type QuestLandingHref = '/quest/play' | '/quest/review';
-
-/** Not decided yet (waiting for the server), or decided: go somewhere, or nowhere. */
-export type QuestLandingDecision = { settled: false } | { settled: true; href: QuestLandingHref | null };
-
-/**
- * Where Home sends the reader, once: a student with a question waiting goes to play, a tutor with
- * answers waiting goes to review. Nothing is decided while the organization has Quest off (it may
- * be switched on later in the session, as on the web), and the welcome wizard, when it is about to
- * open, comes first: no landing in that session.
- */
-export function decideQuestLanding({
-  on,
-  kind,
-  wizardPending,
-  state,
-  queue,
-}: {
-  on: boolean;
-  kind: QuestLandingKind | null;
-  wizardPending: boolean;
-  state: QuestState | undefined;
-  queue: QuestReviewQueue | undefined;
-}): QuestLandingDecision {
-  if (!on) return { settled: false };
-  if (!kind || wizardPending) return { settled: true, href: null };
-  if (kind === 'student') {
-    if (!state) return { settled: false };
-    return { settled: true, href: state.question ? '/quest/play' : null };
-  }
-  if (!queue) return { settled: false };
-  return { settled: true, href: queue.waiting > 0 ? '/quest/review' : null };
-}
-
-/** One landing per person per organization, for as long as they stay signed in. */
-export function landingKey(userId: string, organizationSlug: string): string {
-  return `${userId}|${organizationSlug}`;
-}
-
-// In memory only (never persisted): a new sign-in, or a new launch, lands again.
-const landed = new Set<string>();
-
-export function hasLanded(key: string): boolean {
-  return landed.has(key);
-}
-
-export function markLanded(key: string): void {
-  landed.add(key);
-}
-
-/** On signing out: the next person (or the same one, signing in again) lands afresh. */
-export function forgetQuestLandings(): void {
-  landed.clear();
 }
 
 // --- Words ------------------------------------------------------------------------------------

@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ClipboardCheckIcon, PlayIcon, TrophyIcon } from 'lucide-react';
 import {
@@ -191,52 +190,4 @@ function StudentRow({ row }: { row: QuestStudent }) {
       <TableCell className="text-right tabular-nums">{row.points}</TableCell>
     </TableRow>
   );
-}
-
-const LANDED = 'aimtrue.quest-landed';
-
-/**
- * The sign-in landing (owner's brief): once per tab, a student with a question
- * waiting goes straight into Quest, and a tutor with answers waiting straight
- * to review. Never again in that tab, so leaving Quest stays left.
- */
-export function QuestLanding() {
-  const { user, organization } = useAuth();
-  const navigate = useNavigate();
-  const on = Boolean(organization?.gamify_question_quest);
-  const roles = questRoles(user?.roles);
-  const admin = Boolean(user?.roles.includes('admin'));
-  const already = (() => {
-    try {
-      return sessionStorage.getItem(LANDED) === '1';
-    } catch {
-      return false;
-    }
-  })();
-  const student = roles.plays && !roles.reviews;
-  const tutor = !roles.plays && roles.reviews && !admin;
-  const state = useQuestState(on && !already && student);
-  const queue = useQuestReview(on && !already && tutor);
-
-  useEffect(() => {
-    if (!on || already) return;
-    const mark = () => {
-      try {
-        sessionStorage.setItem(LANDED, '1');
-      } catch {
-        // Storage blocked: it may land again, which is harmless.
-      }
-    };
-    if (student && state.data) {
-      mark();
-      if (state.data.data.question) navigate('/quest/play');
-    } else if (tutor && queue.data) {
-      mark();
-      if (queue.data.data.waiting > 0) navigate('/quest/review');
-    } else if (!student && !tutor) {
-      mark();
-    }
-  }, [on, already, student, tutor, state.data, queue.data, navigate]);
-
-  return null;
 }

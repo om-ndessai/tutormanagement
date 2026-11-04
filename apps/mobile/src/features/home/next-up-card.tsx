@@ -6,6 +6,9 @@
 // from the schedule); Start opens the existing Start sheet with the student and mode chosen; a waiting
 // game's Join opens the existing join sheet by its code (kept from the waiting poll, by game id); the
 // directions and meeting link of a lesson about to start are the Now card's. No money anywhere.
+//
+// Phase 67: two more kinds -- `question_quest` (a student's Quest question waiting; it replaces the
+// QuestLanding redirect) and `welcome_back` (back after a week away, from the habit summary).
 import {
   START_LEAD_MINUTES,
   chooseNextUp,
@@ -23,10 +26,12 @@ import { View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
 import { useOrgClock } from '@/features/dashboard/home-data';
-import { useDaily } from '@/features/habit/api';
+import { useDaily, useHabit } from '@/features/habit/api';
 import { dailyTileFor } from '@/features/habit/habit-model';
 import { useGuestLeadLevel, useLastQuest, useMemberTiles, useWaitingGames } from '@/features/play/play-api';
 import { useStartQuest } from '@/features/play/play-home';
+import { useQuestState } from '@/features/quest/api';
+import { questRoles } from '@/features/quest/quest-model';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -36,6 +41,7 @@ import {
   capitalise,
   deviceExtras,
   firstOf,
+  questionQuestExtra,
   lessonWithTutor,
   reviewsLine,
   whenWords,
@@ -44,7 +50,7 @@ import { CelebrateCard, NextCard } from './now-card';
 
 /** The one Next up, what it needs to act, and Later. */
 export function useNextUp(home: MemberHome | undefined) {
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
   const slug = organization?.slug;
   const focused = useIsFocused();
   const quest = featureOn(organization, 'quest');
@@ -61,6 +67,11 @@ export function useNextUp(home: MemberHome | undefined) {
   const dailyLevel = learner && tiles.data?.data.daily && dailyTile ? dailyTile.level_id : null;
   const daily = useDaily(dailyLevel);
   const later = usePutOff(slug, home?.day ?? '');
+  // Phase 67: a student's Question Quest with a question waiting (the old sign-in landing's read), and
+  // "welcome back" from the habit summary -- both only where Quest is on.
+  const plays = questRoles(user?.roles).plays;
+  const questState = useQuestState(quest && learner && plays);
+  const habit = useHabit(quest && learner);
 
   const waitingList = quest ? (waiting.data?.data ?? []) : [];
   const dailyDone = daily.data ? daily.data.data.result !== null : null;
@@ -68,6 +79,8 @@ export function useNextUp(home: MemberHome | undefined) {
     waiting: waitingList,
     lastLabel: last?.label ?? null,
     daily: dailyLevel && dailyDone !== null ? { level_id: dailyLevel, done: dailyDone } : null,
+    questionQuest: quest && learner && plays ? questionQuestExtra(questState.data?.data) : null,
+    welcomeBack: quest && learner ? habit.data?.data.welcome_back === true : false,
   });
   const item = home ? chooseNextUp(nextUpCandidates(home, extras), later) : null;
   const waitingGame = item?.kind === 'game_invite' ? waitingList.find((g) => g.game_id === item.game.game_id) : undefined;
@@ -327,6 +340,40 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
             icon="target"
             onPress={() => router.push({ pathname: '/quest/daily/[level]', params: { level: item.level_id } })}
           />
+        </Shell>
+      );
+    case 'question_quest':
+      return (
+        <Shell
+          kind={item.kind}
+          icon="help-circle-outline"
+          eyebrow="Your Quest"
+          title="Your Quest has a question waiting."
+          detail={item.level_id ? levelLabel(item.level_id) : null}
+          onLater={later}
+        >
+          <Primary label="Answer it" icon="play" onPress={() => router.push('/quest/play')} />
+        </Shell>
+      );
+    case 'welcome_back':
+      return (
+        <Shell
+          kind={item.kind}
+          icon="hand-wave-outline"
+          eyebrow="Welcome back"
+          title={`Welcome back, ${home.first_name}.`}
+          detail="A fresh week starts today."
+          onLater={later}
+        >
+          {item.level_id ? (
+            <Primary
+              label="Play today's Daily"
+              icon="target"
+              onPress={() => router.push({ pathname: '/quest/daily/[level]', params: { level: item.level_id! } })}
+            />
+          ) : (
+            <Primary label="Start a quest" icon="play" onPress={() => router.push('/quest/new-game')} />
+          )}
         </Shell>
       );
     case 'continue_quest':
