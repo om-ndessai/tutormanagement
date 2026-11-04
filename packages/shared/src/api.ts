@@ -83,6 +83,8 @@ export const ERROR_CODES = [
   'model_changed',
   // Phase 60: a space's only administrator cannot leave it (POST /api/spaces/:slug/leave).
   'last_admin',
+  // Phase 69: visit recording waits for the privacy notice that says visits are kept.
+  'privacy_pending',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

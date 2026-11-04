@@ -1,0 +1,55 @@
+# Phase 69, H12 (docs/member-home-plan.md, R30): the console's Stickiness. Nav (a platform admin) opens it
+# from the chart in the console's header: the visit switch is held, waiting for the privacy notice that
+# says visits are kept (locally the published notice is older), and Recompute makes the figures, whose
+# retention always has its Everyone row. Totals only; nothing here names a person.
+appId: ${APP_ID}
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ndessai@gmail.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-platform
+    timeout: 20000
+- tapOn:
+    id: platform-stickiness
+- extendedWaitUntil:
+    visible:
+      id: screen-platform-stickiness
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: stickiness-visits
+    timeout: 10000
+- assertVisible:
+    id: stickiness-visits-line
+    text: "Waiting for the privacy notice of .* \\(published: .*\\)\\..*"
+- assertVisible:
+    id: stickiness-visits-toggle
+    enabled: false
+- takeScreenshot: platform-stickiness-switch
+- tapOn:
+    id: stickiness-refresh
+- extendedWaitUntil:
+    visible:
+      text: Figures recomputed.
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: stickiness-computed
+    timeout: 10000
+- assertVisible:
+    id: stickiness-wau
+- scrollUntilVisible:
+    element:
+      id: stickiness-row-all-all-all
+    centerElement: true
+# The row is one accessible element ("Everyone: <n> people. Week 1: …"), so its words are matched on it.
+- assertVisible:
+    id: stickiness-row-all-all-all
+    text: "Everyone.*"
+- takeScreenshot: platform-stickiness-retention

@@ -4682,3 +4682,40 @@ before and after), `play/play-with-child` (Quest on; Anita's played line and Pla
 **Jest:** `home/member-focus-model.test.ts` (pin choices and words, the pinned hat first, the played line, the Play
 with label, `practise_before` and `focus_default`), `home/member-home-screen.test.tsx` (Phase 68 block),
 `auth/sign-up-model.test.ts` and `providers/auth-provider.test.tsx` (`arrived_via`).
+
+## 78. Phase 69, H12: stickiness, measured, in the app — design and build (2026-11-03)
+
+**Source:** `docs/member-home-plan.md` (H12, R30, "Phase 69"), the shared contract (`stickiness.ts`:
+`StickinessReport`, `RetentionRow`, `StickyShare`, `VisitSettingsResponse`, `STICKINESS_MIN_GROUP`, `RETENTION_WEEKS`,
+`STICKY_HAT_LABELS`, `SPACE_KIND_LABELS`, `STICKY_ARRIVAL_LABELS`), `GET`/`PUT /api/platform/visits`, `GET
+/api/platform/stickiness` and `POST /api/platform/stickiness/refresh`, and the web's
+`features/platform/{stickiness-page,api}.tsx` (built by the lead, uncommitted). Same words, same testIDs. No contract
+or API change from the app. Visits themselves need nothing from the app: it already sends `X-Client: app`, which
+`requireOrg` records as the day's client.
+
+- **Where:** the console's tabs are full (five), so Stickiness is pushed over them (`(platform)/platform-stickiness`,
+  `screen-platform-stickiness`), from a chart icon (`platform-stickiness`, "Stickiness") beside the Settings gear in
+  the console's header.
+- **The page** (`platform/stickiness-screen.tsx`, root `stickiness-page`): the intro sentence; **Recompute**
+  (`stickiness-refresh`, `useRefreshStickiness`, toast "Figures recomputed."); the visit switch card
+  (`stickiness-visits`: "Record visits: on/off", the line `stickiness-visits-line` -- "Waiting for the privacy notice of
+  <needs> (published: <published>)…" while `may_record` is false, the toggle `stickiness-visits-toggle` disabled
+  until then; switching off is never held); "No figures yet…" (`stickiness-empty`) or the computed line
+  (`stickiness-computed`), six tiles two to a row (StatCard, no count-up; `stickiness-wau`, `-mau`, `-ratio`,
+  `-rhythm`, `-return`, `-daily`; a suppressed share is "—" with "· fewer than 5"), the two single-series charts in
+  the brand colour (`stickiness-days`, `stickiness-weekly`: each bar a button whose label is its value, a press shows
+  it under the chart, "Fewer than 5 people." when empty), and the retention list (`stickiness-retention`, rows
+  `stickiness-row-<hat>-<kind>-<arrival>`: the group, its people or "<5", Week 1/4/8). Totals only (R30).
+- **Model** (`platform/stickiness-model.ts`): `percent`, `shareHint`, `dayBars`, `weeklyBars`, `weeklyEmpty`,
+  `rowName`, `shownRows`, `cohortLabel`, `rowKey`, `visitsLine`, `visitsToggleEnabled`.
+
+**Mobile differences:** reached from the header's chart (the web has a console tab); the computed time is relative
+("5 minutes ago": the console has no space's clock) where the web prints a date and time; a bar's value shows on a
+press under the chart rather than on hover; retention is a list of rows rather than a table.
+**Flows:** `platform/stickiness` (Nav: the switch held with the waiting line, Recompute, Everyone in retention).
+**Jest:** `platform/stickiness-model.test.ts`, `platform/stickiness-screen.test.tsx`.
+**Verified (2026-11-04):** typecheck (rules ok), lint (0 errors), Jest 172 suites / 1289 tests, `mobile:export` green;
+`platform/{access,admins-people,feature-sets,logo,org-admin-denied,organizations,sign-in-settings,stickiness}` green on
+iOS 27 (iPhone 17) and Android 37 (Medium Phone); `npm run smoke -- mobile` 10/10 on both. Screenshots reviewed (light):
+the held switch with its waiting line, the empty state before Recompute, and after it the tiles (suppressed shares "—"
+with "fewer than 5"), both charts' "Fewer than 5 people." (the local seed has no days played) and Everyone at "<5".

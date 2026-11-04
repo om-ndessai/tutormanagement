@@ -9,7 +9,8 @@ import { useAppTheme } from '@/providers/theme-provider';
  * platform's own identity for as long as it is open -- the sheet too -- and runs outside every
  * space: nothing here reads a space's people, lessons or money (R14). The question
  * bank's Review (#54) is pushed over the tabs, so the question gets the whole height; so are the
- * console's Settings (Phase 62), from the gear in its header, since the tabs are full.
+ * console's Settings (Phase 62), from the gear in its header, since the tabs are full, and its
+ * Stickiness (Phase 69), from the chart beside it.
  */
 export default function PlatformLayout() {
   usePlatformBrand();
@@ -20,6 +21,7 @@ export default function PlatformLayout() {
       <Stack.Screen name="platform" />
       <Stack.Screen name="question-review" options={{ ...review, headerShown: true, title: 'Review' }} />
       <Stack.Screen name="platform-settings" options={{ ...review, headerShown: true, title: 'Settings' }} />
+      <Stack.Screen name="platform-stickiness" options={{ ...review, headerShown: true, title: 'Stickiness' }} />
       <Stack.Screen
         name="organization-form"
         options={{

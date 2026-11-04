@@ -88,6 +88,15 @@ import {
   suggestPoolFor,
 } from '../repositories/guest.js';
 import { fillOpenTilePools, forgetGuestSizes } from '../lib/guest.js';
+import { getStickiness, getVisitSettings, putVisitSettings, refreshStickiness } from '../repositories/visits.js';
+import {
+  PRIVACY_VERSION,
+  VISITS_PRIVACY_VERSION,
+  visitSettingsSchema,
+  visitsMayRecord,
+  type StickinessReport,
+  type VisitSettingsResponse,
+} from '@tmi/shared';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
 import { orgIdFromRow } from '../lib/org.js';
 import { zValidator } from '../lib/validate.js';
@@ -928,6 +937,57 @@ export const platformRoutes = new Hono<AppEnv>()
   })
   .get('/guest', async (c) => {
     const body: ApiOk<GuestConsoleResponse> = { data: await guestConsole(c.env) };
+    return c.json(body);
+  })
+  // Phase 69 (H12, R30): visit recording and the Stickiness figures -- totals only.
+  .get('/visits', async (c) => {
+    const body: ApiOk<VisitSettingsResponse> = {
+      data: {
+        settings: await getVisitSettings(c.env.DB, 0),
+        may_record: visitsMayRecord(),
+        privacy_version: PRIVACY_VERSION,
+        needs_privacy_version: VISITS_PRIVACY_VERSION,
+      },
+    };
+    return c.json(body);
+  })
+  .put('/visits', zValidator('json', visitSettingsSchema), async (c) => {
+    const settings = c.req.valid('json');
+    if (settings.record && !visitsMayRecord()) {
+      throw new ApiError(
+        409,
+        'privacy_pending',
+        `Visits can be recorded once the privacy notice of ${VISITS_PRIVACY_VERSION}, which says so, is published.`,
+      );
+    }
+    const before = await getVisitSettings(c.env.DB, 0);
+    await putVisitSettings(c.env.DB, settings, c.get('person').id);
+    if (before.record !== settings.record) {
+      await recordAudit(c.env.DB, c.get('person'), 'platform', {
+        action: 'platform.visits_updated',
+        description: `Visit recording ${settings.record ? 'switched on' : 'switched off'}.`,
+        entity_type: 'platform',
+        entity_id: 'visits',
+      });
+    }
+    const body: ApiOk<VisitSettingsResponse> = {
+      data: { settings, may_record: visitsMayRecord(), privacy_version: PRIVACY_VERSION, needs_privacy_version: VISITS_PRIVACY_VERSION },
+    };
+    return c.json(body);
+  })
+  .get('/stickiness', async (c) => {
+    const body: ApiOk<StickinessReport | null> = { data: await getStickiness(c.env.DB) };
+    return c.json(body);
+  })
+  .post('/stickiness/refresh', async (c) => {
+    const report = await refreshStickiness(c.env.DB, new Date().toISOString().slice(0, 10));
+    await recordAudit(c.env.DB, c.get('person'), 'platform', {
+      action: 'platform.stickiness_refreshed',
+      description: 'Stickiness figures recomputed.',
+      entity_type: 'platform',
+      entity_id: 'stickiness',
+    });
+    const body: ApiOk<StickinessReport> = { data: report };
     return c.json(body);
   })
   .put('/guest', zValidator('json', guestSettingsSchema), async (c) => {

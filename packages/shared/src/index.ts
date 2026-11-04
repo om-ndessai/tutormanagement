@@ -38,3 +38,4 @@ export * from './identities.js';
 export * from './sign-in-settings.js';
 export * from './sharing.js';
 export * from './habit.js';
+export * from './stickiness.js';

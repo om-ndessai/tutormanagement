@@ -16,6 +16,7 @@ const TABS = [
   { to: '/platform/questions', label: 'Question bank', end: false },
   { to: '/platform/ai', label: 'AI', end: false },
   { to: '/platform/activity', label: 'Activity', end: false },
+  { to: '/platform/stickiness', label: 'Stickiness', end: false },
   { to: '/platform/settings', label: 'Settings', end: false },
 ];
 

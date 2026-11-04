@@ -24,6 +24,7 @@ export const PURGE_ORDER: { table: string; where: string }[] = [
   { table: 'quest_game_favorites', where: 'organization_id = ?' },
   { table: 'points_ledger', where: 'organization_id = ?' },
   { table: 'activity_days', where: 'organization_id = ?' },
+  { table: 'visit_days', where: 'organization_id = ?' },
   { table: 'daily_results', where: 'organization_id = ?' },
   { table: 'question_suggestions', where: 'organization_id = ?' },
   { table: 'quest_attempts', where: 'organization_id = ?' },

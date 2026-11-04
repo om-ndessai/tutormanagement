@@ -560,6 +560,14 @@ native rebuild of both dev builds, so build only while the devices are free.
   `flows/home` + `flows/play` green on iOS and Android (iOS `dashboard-analytics` green on rerun); `npm run smoke --
   mobile` 10/10 on iOS and on Android.
 
+## Portal Phase 69 — stickiness, measured (parity: the web half is built by the lead)
+
+- [x] 80. Mobile: H12 of `docs/member-home-plan.md` (build-log entry 78) -- the console's Stickiness
+  (`(platform)/platform-stickiness`, from the chart beside the Settings gear): the visit switch held until the privacy
+  notice covers visits, Recompute, six tiles, two charts, retention by week 1/4/8 (`GET`/`PUT /platform/visits`, `GET
+  /platform/stickiness`, `POST /platform/stickiness/refresh`). Built 2026-11-04: typecheck, lint (0 errors), Jest, export green;
+  `flows/platform` (8, `stickiness` new) green on iOS and Android; `npm run smoke -- mobile` 10/10 on iOS and on Android.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

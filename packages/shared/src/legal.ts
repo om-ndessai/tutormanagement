@@ -28,7 +28,7 @@ export const LEGAL_DRAFT = false;
  * The next version, a DRAFT shown at /privacy?draft=1 and /terms?draft=1 until the owner approves it.
  * While it equals TERMS_VERSION there is no draft: Phase 63's (2026-11-01) was approved and published.
  */
-export const LEGAL_NEXT_VERSION: string = '2026-11-01';
+export const LEGAL_NEXT_VERSION: string = '2026-11-04';
 
 export interface LegalSection {
   heading: string;
@@ -177,6 +177,39 @@ export const PRIVACY_SECTIONS: LegalSection[] = PRIVACY_SECTIONS_2026_10_31.flat
   }
   return [section];
 });
-/** The draft's text: the published text while there is no draft. */
-export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS;
+/**
+ * The DRAFT, version 2026-11-04 (Phase 68-69, docs/member-home-plan.md H4, H12), for the owner to approve:
+ * 2026-11-01's with the days a person opens a space and how they first came, and how long those are kept.
+ * Publishing it is: PRIVACY_VERSION (and TERMS_VERSION) to '2026-11-04', PRIVACY_SECTIONS to this text, the
+ * version added to ACCEPTED_LEGAL_VERSIONS -- and only then may the console switch on recording visits
+ * (`visitsMayRecord`).
+ */
+export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS.map((section) => {
+  if (section.heading === 'What we keep') {
+    return {
+      ...section,
+      paragraphs: [
+        ...section.paragraphs.slice(0, 2),
+        'How you use Aimtrue, in outline: which days you open each space, and whether on the web or in the app -- one line a day, never what you looked at or did there. If you signed up yourself, how you first came: after playing as a guest, after trying the guest assessment, or neither.',
+        ...section.paragraphs.slice(2),
+      ],
+    };
+  }
+  if (section.heading === 'Cookies and counts') {
+    return {
+      ...section,
+      paragraphs: [
+        ...section.paragraphs,
+        'The platform’s administrators see the days people open their spaces only as totals over groups of at least five people -- for example how many come back each week -- to learn what helps people keep learning. Never one person’s days, and never a space’s administrators.',
+      ],
+    };
+  }
+  if (section.heading === 'How long we keep it') {
+    return {
+      ...section,
+      paragraphs: [...section.paragraphs, 'The days you opened a space for 120 days, then they are deleted; they are deleted at once with your account or the space.'],
+    };
+  }
+  return section;
+});
 export const TERMS_SECTIONS_NEXT: LegalSection[] = TERMS_SECTIONS;

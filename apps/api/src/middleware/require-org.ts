@@ -1,7 +1,7 @@
 import type { Context } from 'hono';
 import { createMiddleware } from 'hono/factory';
 import { getCookie } from 'hono/cookie';
-import { LAST_ORG_COOKIE, ORG_HEADER, ORG_QUERY_PARAM } from '@tmi/shared';
+import { CLIENT_HEADER, LAST_ORG_COOKIE, ORG_HEADER, ORG_QUERY_PARAM, zonedClockParts } from '@tmi/shared';
 import { ApiError } from '../lib/errors.js';
 import {
   organizationBySlugStatement,
@@ -9,6 +9,7 @@ import {
   toOrgContext,
 } from '../repositories/organizations.js';
 import { getOrgAndMember } from '../repositories/users.js';
+import { recordVisit } from '../repositories/visits.js';
 import { isAuthEnabled, type AppEnv } from '../types.js';
 
 /**
@@ -88,5 +89,19 @@ export const requireOrg = createMiddleware<AppEnv>(async (c, next) => {
 
   c.set('org', org);
   c.set('user', user);
+  // Phase 69 (H12, R30): the day this person opened this space, once a day, while the console records
+  // visits (off until the privacy notice covers it). After the response; never fails a request.
+  const visit = recordVisit(
+    c.env.DB,
+    org.id,
+    user.id,
+    zonedClockParts(new Date().toISOString(), org.time_zone).day,
+    c.req.header(CLIENT_HEADER) === 'app' ? 'app' : 'web',
+  ).catch((error) => console.error('Visit not recorded', error));
+  try {
+    c.executionCtx.waitUntil(visit);
+  } catch {
+    // No execution context (a unit test): the promise runs on by itself.
+  }
   return next();
 });

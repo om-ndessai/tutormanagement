@@ -23,6 +23,9 @@ import type {
   UpdateSignInSetting,
   SpacePaymentModel,
   UpdateOrganizationInput,
+  StickinessReport,
+  VisitSettings,
+  VisitSettingsResponse,
 } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
@@ -302,4 +305,34 @@ export function useDecideAccess() {
   return useAccessMutation((input: { userId: string; access: 'approved' | 'declined' }) =>
     apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(input.userId)}`, { access: input.access }),
   );
+}
+
+/** Phase 69 (H12): visit recording, and the Stickiness figures (totals only). */
+export const stickinessKeys = {
+  visits: ['platform', 'visits'] as const,
+  report: ['platform', 'stickiness'] as const,
+};
+
+export function useVisitSettings() {
+  return useQuery({ queryKey: stickinessKeys.visits, queryFn: () => apiClient.get<ApiOk<VisitSettingsResponse>>('/platform/visits') });
+}
+
+export function useSaveVisitSettings() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (settings: VisitSettings) => apiClient.put<ApiOk<VisitSettingsResponse>>('/platform/visits', settings),
+    onSuccess: (answer) => client.setQueryData(stickinessKeys.visits, answer),
+  });
+}
+
+export function useStickiness() {
+  return useQuery({ queryKey: stickinessKeys.report, queryFn: () => apiClient.get<ApiOk<StickinessReport | null>>('/platform/stickiness') });
+}
+
+export function useRefreshStickiness() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<ApiOk<StickinessReport>>('/platform/stickiness/refresh'),
+    onSuccess: (answer) => client.setQueryData(stickinessKeys.report, answer),
+  });
 }

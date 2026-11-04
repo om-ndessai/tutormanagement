@@ -31,6 +31,7 @@ import { PlatformPeoplePage } from '@/features/platform/platform-people-page';
 import { PlatformShell } from '@/features/platform/platform-shell';
 import { GuestTodayLink, MemberTileStart, PlayLink } from '@/features/guest/play-link';
 import { PlatformSettingsPage } from '@/features/platform/platform-settings-page';
+import { StickinessPage } from '@/features/platform/stickiness-page';
 import { AiPage } from '@/features/question-bank/ai-page';
 import { QuestionBankPage } from '@/features/question-bank/question-bank-page';
 import { ReviewPage } from '@/features/question-bank/review-page';
@@ -80,6 +81,7 @@ export function App() {
           <Route path="admins" element={<PlatformAdminsPage />} />
           <Route path="people" element={<PlatformPeoplePage />} />
           <Route path="activity" element={<PlatformActivityPage />} />
+          <Route path="stickiness" element={<StickinessPage />} />
           <Route path="questions" element={<QuestionBankPage />} />
           <Route path="questions/review" element={<ReviewPage />} />
           <Route path="questions/:topicId" element={<StandardPage />} />

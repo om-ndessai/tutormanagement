@@ -598,6 +598,18 @@ and today's Daily (counts only, R29) and **Play with <child>** (`playWithRequest
 the child invited), "Practise together before <day>'s lesson" when one is within `PRACTISE_BEFORE_DAYS`; a learner
 with such a lesson who has not played today gets **Practise before <day>'s lesson** in Next up (`practise_before`).
 
+**Whether people come back is counted, never watched** (Phase 69, `docs/member-home-plan.md` H12, R30). `visit_days`
+holds one row per person, space and day they opened it (the day on the space's clock and the first client, nothing
+else), written by `requireOrg` after the response, at most once a day per isolate (`recordVisit`), and only while the
+console's visit recording is on (`platform_settings` 'visits') -- which `PUT /api/platform/visits` refuses (409
+`privacy_pending`) until the published privacy notice is `VISITS_PRIVACY_VERSION` or later (`visitsMayRecord`):
+never loosen that guard, publish the notice. The cron's daily rollup (`refreshStickinessIfDue`) reads the visits and
+the days played (`activity_days`) across spaces into totals (`computeStickiness` in shared: weekly over monthly
+actives, days per week, the 3-day rhythm kept, back after a missed week, the Daily, retention at weeks 1/4/8 by hat,
+space kind and arrival), stored as `platform_settings` 'stickiness' and shown on the console's Stickiness page; groups
+under `STICKINESS_MIN_GROUP` (5) are withheld; no route reads a person's rows. Visit rows are deleted after
+`VISIT_KEEP_DAYS`, with the space and with the account.
+
 **Sign-in is switched per client at runtime, and Google cannot be switched off** (Phase 62 P0,
 `docs/stickiness-plan.md`). The app sends `X-Client: app` (`CLIENT_HEADER`) on every request; anything
 else is the web. Platform admins set, for the web portal and the app separately, which providers besides

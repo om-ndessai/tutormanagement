@@ -2,7 +2,7 @@
 // @ 2471d84; Phase 59's useSetPaymentModel @ f96b984, working tree, which replaced Phase 54's businesses)
 // Phase 62's sign-in switches @ 0e3ec7a (working tree); Phase 62's Play settings (P5) @ 0e3ec7a (working tree);
 // Phase 63's guest play (P16) @ 0e3ec7a (working tree); Phase 65's sign-up access @ 6d53d01 (written beside
-// the web's, built in parallel: same routes and query key).
+// the web's, built in parallel: same routes and query key); Phase 69's Stickiness (working tree, beside the web's).
 // Mobile: the logo upload takes the picked image's bytes (apiClient.putBytes) instead of a DOM File.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
@@ -32,6 +32,9 @@ import type {
   UpdateSignInSetting,
   SpacePaymentModel,
   UpdateOrganizationInput,
+  StickinessReport,
+  VisitSettings,
+  VisitSettingsResponse,
 } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
@@ -339,5 +342,38 @@ export function useDecideAccess() {
     mutationFn: ({ userId, access }: { userId: string } & AccessDecision) =>
       apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(userId)}`, { access }),
     onSuccess: (result) => queryClient.setQueryData(accessKey, result),
+  });
+}
+
+/** Phase 69 (H12): visit recording, and the Stickiness figures (totals only). */
+export const stickinessKeys = {
+  visits: ['platform', 'visits'] as const,
+  report: ['platform', 'stickiness'] as const,
+};
+
+export function useVisitSettings() {
+  return useQuery({ queryKey: stickinessKeys.visits, queryFn: () => apiClient.get<ApiOk<VisitSettingsResponse>>('/platform/visits') });
+}
+
+export function useSaveVisitSettings() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (settings: VisitSettings) => apiClient.put<ApiOk<VisitSettingsResponse>>('/platform/visits', settings),
+    onSuccess: (result) => queryClient.setQueryData(stickinessKeys.visits, result),
+  });
+}
+
+export function useStickiness() {
+  return useQuery({
+    queryKey: stickinessKeys.report,
+    queryFn: () => apiClient.get<ApiOk<StickinessReport | null>>('/platform/stickiness'),
+  });
+}
+
+export function useRefreshStickiness() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<ApiOk<StickinessReport>>('/platform/stickiness/refresh'),
+    onSuccess: (result) => queryClient.setQueryData(stickinessKeys.report, result),
   });
 }

@@ -30,6 +30,7 @@ import { questionBankRoutes } from './routes/question-bank.js';
 import { canvasAssessmentRoutes } from './routes/canvas-assessments.js';
 import { questRoutes } from './routes/quest.js';
 import { homeRoutes } from './routes/home.js';
+import { refreshStickinessIfDue } from './repositories/visits.js';
 import { spacesRoutes } from './routes/spaces.js';
 import { publicShareRoutes, sharesRoutes } from './routes/shares.js';
 import { playPage, sharePage } from './lib/share-page.js';
@@ -216,6 +217,12 @@ export default {
       if (await refreshLevelCountsIfDue(env.DB)) console.log('Refreshed the question bank level counts.');
     } catch (error) {
       console.error('Level counts not refreshed', error);
+    }
+    // Phase 69 (H12): the Stickiness figures, once a day, and visit rows past their keeping.
+    try {
+      if (await refreshStickinessIfDue(env.DB, new Date().toISOString().slice(0, 10))) console.log('Refreshed the Stickiness figures.');
+    } catch (error) {
+      console.error('Stickiness not refreshed', error);
     }
   },
 } satisfies ExportedHandler<Env>;

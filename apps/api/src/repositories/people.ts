@@ -461,6 +461,9 @@ export async function deleteOwnAccount(db: D1Database, userId: string): Promise<
     // org-scope: a person's own shares, in every space, as their account goes.
     db.prepare(`UPDATE shares SET withdrawn_at = COALESCE(withdrawn_at, ${NOW}) WHERE user_id = ?`).bind(userId),
     db.prepare('DELETE FROM platform_accounts WHERE user_id = ?').bind(userId),
+    // Phase 69 (R30): the days they opened their spaces go with the account.
+    // org-scope: a person's own visit days, in every space, as their account goes.
+    db.prepare('DELETE FROM visit_days WHERE user_id = ?').bind(userId),
     // Memberships of archived spaces (the only ones `accountDeletable` lets remain) end, as leaving
     // does: restored, such a space has no deleted account among its members.
     db

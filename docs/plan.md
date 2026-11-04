@@ -706,5 +706,6 @@ requirements P1-P20.
   Assessment), the parent's per-child strip, Play with <child>, Practise before the lesson. H4, H10. Built on the
   branch.
 - **Phase 69 — stickiness, measured.** One visit row per person a day and the console's Stickiness page (weekly
-  actives, days per week, cohort retention by role, space and arrival). H12.
+  actives, days per week, cohort retention by role, space and arrival). H12. Built on the branch; visit recording
+  waits for the owner to publish privacy version 2026-11-04 (drafted at `/privacy?draft=1`).
 

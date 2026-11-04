@@ -123,6 +123,9 @@ export const AUDIT_ACTIONS = [
   'platform.access_unlisted',
   'platform.access_approved',
   'platform.access_declined',
+  // Phase 69 (H12): recording visits switched, and the Stickiness figures recomputed by hand.
+  'platform.visits_updated',
+  'platform.stickiness_refreshed',
   // Phase 63 (P13): a newcomer's own space, made at sign-up.
   'account.personal_space',
   'person.updated_by_platform',
@@ -272,6 +275,8 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'platform.access_listed': 'Added to the sign-up list',
   'platform.access_unlisted': 'Removed from the sign-up list',
   'platform.access_approved': 'Access approved',
+  'platform.visits_updated': 'Visit recording changed',
+  'platform.stickiness_refreshed': 'Stickiness figures recomputed',
   'platform.access_declined': 'Access declined',
   'account.personal_space': 'Own space made at sign-up',
   'person.updated_by_platform': 'Shared details updated by the platform',

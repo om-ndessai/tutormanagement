@@ -50,6 +50,7 @@ DROP TABLE IF EXISTS daily_results;
 DROP TABLE IF EXISTS quest_game_players;
 DROP TABLE IF EXISTS quest_game_teams;
 DROP TABLE IF EXISTS quest_games;
+DROP TABLE IF EXISTS visit_days;
 DROP TABLE IF EXISTS activity_days;
 DROP TABLE IF EXISTS points_ledger;
 DROP TABLE IF EXISTS quest_attempts;
@@ -2363,6 +2364,36 @@ BEFORE INSERT ON activity_days
 WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
 BEGIN
   SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+-- Phase 69 (docs/member-home-plan.md H12, R30): the days a person opened a space -- the day on the space's
+-- clock and the first client that day, nothing else. Written at most once a day per person and space
+-- (memoised), only while the console's visit recording is on (which the privacy notice must cover first).
+-- Read only by the daily Stickiness rollup, which keeps totals over groups of 5 or more; kept
+-- VISIT_KEEP_DAYS days, deleted with the space (purge) and with the account.
+CREATE TABLE visit_days (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  day             TEXT NOT NULL,
+  client          TEXT NOT NULL CHECK (client IN ('web', 'app')),
+
+  PRIMARY KEY (organization_id, user_id, day)
+);
+
+CREATE INDEX visit_days_day_idx ON visit_days (day);
+CREATE INDEX activity_days_day_idx ON activity_days (day);
+
+CREATE TRIGGER visit_days_same_organization
+BEFORE INSERT ON visit_days
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+
+CREATE TRIGGER visit_days_organization_fixed
+BEFORE UPDATE OF organization_id ON visit_days
+BEGIN
+  SELECT RAISE(ABORT, 'organization_immutable');
 END;
 
 

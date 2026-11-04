@@ -1693,6 +1693,33 @@ ALTER TABLE org_members ADD COLUMN home_pin TEXT CHECK (home_pin IN ('quest', 'a
 ALTER TABLE platform_accounts ADD COLUMN arrived_via TEXT CHECK (arrived_via IN ('guest_quest', 'guest_assessment', 'direct'));
 ```
 
+Phase 69 (stickiness, measured, H12 and R30) adds `visit_days`: one row per person, space and day they opened
+it, written only while the console's visit recording is on -- which the server refuses until the published
+privacy notice covers it (`visitsMayRecord`). Plus an index on `activity_days (day)` for the daily rollup.
+
+```sql release=phase-69
+CREATE TABLE visit_days (
+  organization_id TEXT NOT NULL REFERENCES organizations (id),
+  user_id         TEXT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  day             TEXT NOT NULL,
+  client          TEXT NOT NULL CHECK (client IN ('web', 'app')),
+  PRIMARY KEY (organization_id, user_id, day)
+);
+CREATE INDEX visit_days_day_idx ON visit_days (day);
+CREATE INDEX activity_days_day_idx ON activity_days (day);
+CREATE TRIGGER visit_days_same_organization
+BEFORE INSERT ON visit_days
+WHEN NOT EXISTS (SELECT 1 FROM org_members m WHERE m.organization_id = NEW.organization_id AND m.user_id = NEW.user_id)
+BEGIN
+  SELECT RAISE(ABORT, 'organization_mismatch');
+END;
+CREATE TRIGGER visit_days_organization_fixed
+BEFORE UPDATE OF organization_id ON visit_days
+BEGIN
+  SELECT RAISE(ABORT, 'organization_immutable');
+END;
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/platform/platform-shell.tsx @ 1132322 (the header's actions):
 // back to My spaces for a platform admin who belongs to any, and Sign out. Phase 62: the gear opens
 // the console's Settings (the sign-in switches), a pushed screen since the tabs are full. Phase 65: its badge
-// counts the sign-ups waiting for approval.
+// counts the sign-ups waiting for approval. Phase 69: the chart beside it opens Stickiness (totals only).
 import { router } from 'expo-router';
 import { View } from 'react-native';
 import { Badge } from 'react-native-paper';
@@ -32,6 +32,16 @@ export function ConsoleHeaderButtons() {
           }}
         />
       ) : null}
+      <IconButton
+        testID="platform-stickiness"
+        icon="chart-bar"
+        iconColor={theme.colors.primary}
+        accessibilityLabel="Stickiness"
+        onPress={() => {
+          haptics.selection();
+          router.push('/platform-stickiness');
+        }}
+      />
       <View>
         <IconButton
           testID="platform-settings"
