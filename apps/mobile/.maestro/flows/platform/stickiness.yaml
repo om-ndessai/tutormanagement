@@ -1,7 +1,7 @@
 # Phase 69, H12 (docs/member-home-plan.md, R30): the console's Stickiness. Nav (a platform admin) opens it
-# from the chart in the console's header: the visit switch is held, waiting for the privacy notice that
-# says visits are kept (locally the published notice is older), and Recompute makes the figures, whose
-# retention always has its Everyone row. Totals only; nothing here names a person.
+# from the chart in the console's header: the visit switch is free (privacy notice 2026-11-04, which says
+# visits are kept, is published) and left off, and Recompute makes the figures, whose retention always has
+# its Everyone row. Totals only; nothing here names a person.
 appId: ${APP_ID}
 tags:
   - feature
@@ -27,10 +27,10 @@ tags:
     timeout: 10000
 - assertVisible:
     id: stickiness-visits-line
-    text: "Waiting for the privacy notice of .* \\(published: .*\\)\\..*"
+    text: "One line per person, space and day.*"
 - assertVisible:
     id: stickiness-visits-toggle
-    enabled: false
+    enabled: true
 - takeScreenshot: platform-stickiness-switch
 - tapOn:
     id: stickiness-refresh

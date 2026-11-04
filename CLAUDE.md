@@ -355,7 +355,8 @@ such as `organization.created`); old audit lines are never rewritten; proper nam
 strings, and in strings given to labels, titles, messages, toasts, `ApiError`s, Zod messages and
 `*_LABELS` tables; a `ui-words:` comment marks a deliberate exception. The terms and privacy reworded
 the same way are version 2026-10-31, approved by the owner on 2026-11-01; version 2026-11-01 (guest play and
-anonymous counts, Phase 63) was approved the same day and is the current one. A sign-up still accepts 2026-10-31
+anonymous counts, Phase 63) was approved the same day, and version 2026-11-04 (the days a person opens a space and
+how they first came, Phases 68-69) on 2026-11-04 and is the current one. A sign-up still accepts 2026-11-01, 2026-10-31
 and 2026-10-29, which app builds on phones send (`ACCEPTED_LEGAL_VERSIONS`), and records the version sent.
 
 **Platform admins run the platform, not organizations.** The console (`/platform`,

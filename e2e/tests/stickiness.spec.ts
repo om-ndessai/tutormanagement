@@ -8,17 +8,26 @@ import { unwrap } from '../support/api.js';
  * - Only platform admins read them; a space's admin is refused.
  */
 test.describe('Phase 69: the Stickiness page', () => {
-  test('recording waits for the privacy notice; the figures are totals, for platform admins only', async ({ as }) => {
+  test('visit recording follows the published privacy notice; the figures are totals, for platform admins only', async ({ as }) => {
     const platform = await as('platformAdmin', { org: null });
 
     const visits = await unwrap<any>(await platform.request.get('/api/platform/visits'), 'visit settings');
     expect(visits.settings.record).toBe(false);
     expect(visits.needs_privacy_version).toBe('2026-11-04');
-    if (!visits.may_record) {
-      const refused = await platform.request.put('/api/platform/visits', { data: { record: true } });
-      expect(refused.status()).toBe(409);
-      expect((await refused.json()).error.code).toBe('privacy_pending');
-    }
+    // The published notice (2026-11-04) says visits are kept, so the switch may be turned on -- and off.
+    expect(visits.may_record).toBe(true);
+    const on = await unwrap<any>(await platform.request.put('/api/platform/visits', { data: { record: true } }), 'switch on');
+    expect(on.settings.record).toBe(true);
+    // A request inside a space is now a visit: it shows up as one person active this week.
+    const member = await as('admin');
+    expect((await member.request.get('/api/home')).status()).toBe(200);
+    // The visit is written just after the response, so the figures are polled.
+    await expect
+      .poll(async () => {
+        const figures = await unwrap<any>(await platform.request.post('/api/platform/stickiness/refresh'), 'with a visit');
+        return figures.recording && figures.weekly_active >= 1;
+      }, { timeout: 10_000 })
+      .toBe(true);
     expect((await platform.request.put('/api/platform/visits', { data: { record: false } })).status()).toBe(200);
 
     const report = await unwrap<any>(await platform.request.post('/api/platform/stickiness/refresh'), 'the figures');
@@ -44,7 +53,7 @@ test.describe('Phase 69: the Stickiness page', () => {
     const page = platform.getByTestId('stickiness-page');
     await expect(page).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId('stickiness-visits')).toContainText('Record visits: off');
-    if (!visits.may_record) await expect(page.getByTestId('stickiness-visits-toggle')).toBeDisabled();
+    await expect(page.getByTestId('stickiness-visits-toggle')).toBeEnabled();
     await expect(page.getByTestId('stickiness-wau')).toBeVisible();
     await expect(page.getByTestId('stickiness-row-all-all-all')).toContainText('Everyone');
     await page.getByTestId('stickiness-refresh').click();

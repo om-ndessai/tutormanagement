@@ -6,27 +6,29 @@
 // accepted, so a change of wording is a new version, never an edit in place.
 
 /** The version a newcomer accepts (Phase 52 records it). A wording change gets a new date. */
-export const TERMS_VERSION: string = '2026-11-01';
-export const PRIVACY_VERSION: string = '2026-11-01';
+export const TERMS_VERSION: string = '2026-11-04';
+export const PRIVACY_VERSION: string = '2026-11-04';
 
 /**
  * Earlier versions a sign-up may still accept, recorded as sent: an app build already on a phone
  * shows and sends the version it was built with. 2026-10-31 only reworded "organization" as
  * "space" (Phase 59), so 2026-10-29 is still a fair thing to have agreed to; 2026-11-01 only adds
- * playing as a guest and anonymous counts (Phase 63), which take nothing more from an account.
+ * playing as a guest and anonymous counts (Phase 63), which take nothing more from an account; 2026-11-04
+ * adds the days a person opens a space and how they first came (Phases 68-69).
  */
-export const ACCEPTED_LEGAL_VERSIONS: readonly string[] = ['2026-11-01', '2026-10-31', '2026-10-29'];
+export const ACCEPTED_LEGAL_VERSIONS: readonly string[] = ['2026-11-04', '2026-11-01', '2026-10-31', '2026-10-29'];
 
 /**
  * While true, both pages say they are a draft. The owner approved version 2026-10-29 on 2026-10-29
  * (docs/stable-release-checklist.md, A3), without a lawyer's review, version 2026-10-31 on 2026-11-01, and
- * version 2026-11-01 (guest play and anonymous counts, Phase 63) on 2026-11-01.
+ * version 2026-11-01 (guest play and anonymous counts, Phase 63) on 2026-11-01, and version 2026-11-04 (visit days
+ * and arrival, Phases 68-69) on 2026-11-04.
  */
 export const LEGAL_DRAFT = false;
 
 /**
  * The next version, a DRAFT shown at /privacy?draft=1 and /terms?draft=1 until the owner approves it.
- * While it equals TERMS_VERSION there is no draft: Phase 63's (2026-11-01) was approved and published.
+ * While it equals TERMS_VERSION there is no draft: Phase 69's (2026-11-04) was approved and published.
  */
 export const LEGAL_NEXT_VERSION: string = '2026-11-04';
 
@@ -149,10 +151,10 @@ export const TERMS_SECTIONS: LegalSection[] = [
 ];
 
 /**
- * The published privacy text, version 2026-11-01 (Phase 63, P15): 2026-10-31's with the cookies paragraph
- * changed and a section on playing as a guest added after "What we keep". The terms are unchanged.
+ * Version 2026-11-01 (Phase 63, P15): 2026-10-31's with the cookies paragraph changed and a section on
+ * playing as a guest added after "What we keep". The terms are unchanged.
  */
-export const PRIVACY_SECTIONS: LegalSection[] = PRIVACY_SECTIONS_2026_10_31.flatMap((section) => {
+const PRIVACY_SECTIONS_2026_11_01: LegalSection[] = PRIVACY_SECTIONS_2026_10_31.flatMap((section) => {
   if (section.heading === 'Cookies') {
     return [
       {
@@ -178,13 +180,12 @@ export const PRIVACY_SECTIONS: LegalSection[] = PRIVACY_SECTIONS_2026_10_31.flat
   return [section];
 });
 /**
- * The DRAFT, version 2026-11-04 (Phase 68-69, docs/member-home-plan.md H4, H12), for the owner to approve:
- * 2026-11-01's with the days a person opens a space and how they first came, and how long those are kept.
- * Publishing it is: PRIVACY_VERSION (and TERMS_VERSION) to '2026-11-04', PRIVACY_SECTIONS to this text, the
- * version added to ACCEPTED_LEGAL_VERSIONS -- and only then may the console switch on recording visits
- * (`visitsMayRecord`).
+ * The published privacy text, version 2026-11-04 (Phases 68-69, docs/member-home-plan.md H4, H12; approved by
+ * the owner 2026-11-04): 2026-11-01's with the days a person opens a space and how they first came, and how
+ * long those are kept. Publishing it is what lets the console switch on recording visits (`visitsMayRecord`).
+ * The terms are unchanged.
  */
-export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS.map((section) => {
+export const PRIVACY_SECTIONS: LegalSection[] = PRIVACY_SECTIONS_2026_11_01.map((section) => {
   if (section.heading === 'What we keep') {
     return {
       ...section,
@@ -212,4 +213,6 @@ export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS.map((secti
   }
   return section;
 });
+/** No draft: the next version is the published one. */
+export const PRIVACY_SECTIONS_NEXT: LegalSection[] = PRIVACY_SECTIONS;
 export const TERMS_SECTIONS_NEXT: LegalSection[] = TERMS_SECTIONS;
