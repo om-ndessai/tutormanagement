@@ -1481,7 +1481,7 @@ Keep these. The journeys found them working, and several fix problems the member
     Google's script.
   - **The app, J01A, J04A, J06A, J07A and J15A.** On the iOS simulator, with the developer sign-in.
   - **The approvals and declines** were made by a platform-admin agent in the console.
-  - **The findings.** 22 journeys reached their end and 2 were blocked. They recorded 194 findings.
+  - **The findings.** 22 journeys reached their end and 2 were blocked. They recorded 184 findings.
 - **The two audits.** [audit-design.md](audit-design.md) (23 findings) and [audit-workflows.md](audit-workflows.md)
   (20 findings) read every report and contact sheet, and the code at `2d6e7d3`.
 - **This page.** It merges all three into 37 items. Code references are to `2d6e7d3`, read in

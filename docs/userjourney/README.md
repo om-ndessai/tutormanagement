@@ -78,7 +78,7 @@ everyone else is invented, at `@example.com`.
 | [J07A](J07A-space-code-let-in-app.md) | Elena Ruiz, given the code, app (C7) | approved, let in; **blocked** as in J07 | 1 / 3 / 3 / 1 |
 | [J15A](J15A-tutoring-parent-first-sign-in-app.md) | Hana Mori, new tutoring parent, app (C3) | tour, Ken's lesson; Play with started | 0 / 1 / 2 / 4 |
 
-In all: 24 journeys, 22 reached their end, 2 blocked (the same dead end on web and app), 194 findings.
+In all: 24 journeys, 22 reached their end, 2 blocked (the same dead end on web and app), 184 findings (sev4 2, sev3 34, sev2 105, sev1 43).
 
 # The plan
 

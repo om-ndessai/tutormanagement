@@ -715,3 +715,36 @@ requirements P1-P20.
   tour and "Getting started" only where Tutoring is on. The console's space form asks the sets right after the
   names (Quest alone by default) and shows the clock, who families pay and email notifications only with Tutoring.
 
+Phases 70-78 and a fix-up: (requested 2026-11-04 by the owner after the UI journey audit, `docs/userjourney/`; plan
+`docs/journey-fixes-plan.md`, items JF1-JF37; **all approved together on 2026-11-04**; built straight through on the
+branch `member-home-stickiness`, each phase's decisions asked before it starts; web and the app; no deploy to the
+test Worker until the owner asks, then the last committed phase.) The audit's 37 recommendations, each fixed in the
+phase that owns its component.
+- **Fix-up (UI only).** The app's "Have a code?" quick action no longer crashes (and the app has an error screen);
+  the app shows every answer choice; the wizard's tour only where Tutoring is on, its last button "Done"; the web's
+  sign-up sheet never reopens by itself after a refusal. JF3, JF8, JF24, JF25, JF28.
+- **Phase 70 — the wait and the front door.** The waiting screen says who checks and when ("usually within a day")
+  and leads with Keep playing; refusals give a next step; Sign in opens a sign-in sheet; the guest page speaks to
+  adults and teens and marks the answer before the offer; "30%" is marked right; an under-13 refusal is remembered
+  on the device. JF2, JF8, JF10, JF11.
+- **Phase 71 — let in, and hear back.** Let in is a short sheet that links a parent's child; an empty student picker
+  says who adds children; one rule decides who may add people; a let-in or a decline stays on the person's home
+  until dismissed; the admin sees the full request and can undo a decline. JF1, JF5, JF22, JF26.
+- **Phase 72 — codes and the spaces menu.** One "Have a code?" sheet from the guest page on; requests carry a role
+  and a note; a friend's game code and tile link answer honestly; Start a space where a teacher looks; invitation
+  links open the invitation; each new space wears its own palette. JF4, JF7, JF9, JF12, JF26, JF33.
+- **Phase 73 — coming back to play.** Continue resumes the open game; the board starts at the learner's grade with
+  one Daily rule; My progress shows one state and an empty game earns nothing; leaving a game works the same on
+  both clients. JF13, JF14, JF16, JF23, JF32, JF36.
+- **Phase 74 — the first home.** The first home leads with the person's hats; Next up is not repeated; the
+  Dashboard opens on the home's hat; the tour is inline and once per person; Tutoring words and the office menu
+  only where they apply; lesson cards say where. JF6, JF17, JF23, JF24, JF25, JF31.
+- **Phase 75 — the tutor's record.** A missing price is caught at Start and stop errors are readable; a saved draft
+  is reached from every door; a pairing at the default rate is not "custom". JF18, JF19, JF27 (and JF30 if adopted).
+- **Phase 76 — adding people one way.** One Add chooser led by "A family"; invitations at any time, Copy and Share
+  on both clients. JF21, JF37.
+- **Phase 77 — families at home.** Play with a child on one device, credited to the child; a guardian opens the
+  child's assessment. JF15, JF20.
+- **Phase 78 — the look.** Words rather than codes, amber for one job, contrast, phone-width layouts, small type and
+  one date formatter. JF28, JF29, JF32, JF34, JF35.
+
