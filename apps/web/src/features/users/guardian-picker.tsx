@@ -5,6 +5,7 @@ import {
   RELATIONSHIPS,
   RELATIONSHIP_LABELS,
   createUserRequestSchema,
+  featureAllowed,
   type GuardianshipInput,
   type Relationship,
 } from '@tmi/shared';
@@ -29,6 +30,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/providers/auth-provider';
 import { useCreateUser, useUsers } from './api';
 
 type GuardianValue = Required<GuardianshipInput>;
@@ -111,7 +113,7 @@ export function GuardianPicker({
         {required && <span className="text-destructive"> *</span>}
       </span>
       <p className="text-muted-foreground -mt-1 text-xs">
-        Choose a parent already in the portal, or add a new one here.
+        Choose a parent already in this space, or add a new one here.
       </p>
 
       {value.length > 0 && (
@@ -197,7 +199,7 @@ export function GuardianPicker({
             ? 'Loading…'
             : value.length > 0
               ? 'No other parents available.'
-              : 'No parents in the portal yet. Add one with New parent.'}
+              : 'No parents in this space yet. Add one with New parent.'}
         </p>
       )}
         <Button type="button" variant="outline" size="sm" onClick={() => setCreating(true)}>
@@ -238,6 +240,9 @@ function NewParentDialog({
   onCreated: (id: string, name: string) => void;
 }) {
   const createUser = useCreateUser();
+  // Phase 74 (JF31): only a space with Tutoring bills anyone.
+  const { organization } = useAuth();
+  const tutoring = featureAllowed(organization, 'tutoring');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -293,7 +298,11 @@ function NewParentDialog({
         <form onSubmit={save} noValidate data-testid="new-parent-form">
           <DialogHeader>
             <DialogTitle>New parent</DialogTitle>
-            <DialogDescription>They sign in with this Google address and are billed for the lessons.</DialogDescription>
+            <DialogDescription>
+              {tutoring
+                ? 'They sign in with this Google address and are billed for the lessons.'
+                : 'They look after this student, and sign in with this Google address.'}
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             {(

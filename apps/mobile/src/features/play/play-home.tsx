@@ -16,20 +16,32 @@
 // row, the grade's cards in its hue (QuestCard, shared with the guest home), "Advanced", and "More levels";
 // the Daily is a TodayCard of five rings; "Show your work" starts the reader's own assessment. Each card
 // keeps `play-tile-<code>` (now its root), `play-tile-start-<code>` and `play-tile-star-<code>`.
+//
+// Phase 73 (docs/journey-fixes-plan.md; owner 2026-11-05). JF13: Continue is the server's open game (running
+// or in its lobby, in words with where the reader is), else "Play Grade 7 Quick 5 again"; the device's last
+// quest is gone. JF14: the board leads with the server's grade (`tiles.lead`); a grade tapped on the row is
+// saved (`PUT /quest/grade`), so it holds across reloads and devices; when nothing says, "Which grade?" is
+// asked once (a guest's grade on this phone is carried instead, once). JF23: the Daily's level is shared
+// `dailyLevelFor` (Next up uses the same) and it is "Today's Daily · Grade 4". JF32: waiting games in words.
+// JF36: New Quest and Join open with `from=home`, so the game's Exit comes back here.
+//
+// Phase 74 (JF23, owner 2026-11-05): the board is told what Next up shows (`nextUp`); while Next up offers the Daily
+// (or welcome back's Daily) the board's Daily card is the quiet twin -- an outlined button, not the amber full-width
+// one -- and while Next up offers Continue (`open_game`) or "again" (`continue_quest`), so is the board's Continue.
 import {
   boardGrades,
+  dailyLevelFor,
   memberBoard,
   tileGameRequest,
   tileLook,
   tileSpoken,
-  gameLengthLabel,
-  levelLabel,
   type CreateGameRequest,
   type GameFavorite,
   type MemberTile,
+  type NextUpKind,
 } from '@tmi/shared';
 import { router, useIsFocused } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Platform, View, useWindowDimensions } from 'react-native';
 import { Button, Dialog, Portal, Text, TextInput } from 'react-native-paper';
 
@@ -39,17 +51,19 @@ import { IconButton } from '@/components/icon-button';
 import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
 import { useStartCanvasAssessment } from '@/features/canvas-assessments/api';
+import { guestMemory } from '@/features/guest/guest-store';
 import { useDaily, useHabit } from '@/features/habit/api';
 import { MyProgressCard } from '@/features/habit/my-progress-card';
 import {
   DAILY_NEXT_TEXT,
+  PLAY_DAILY_LABEL,
   dailyButtonLabel,
   dailyCardTitle,
   dailyRings,
   dailyRingsLabel,
-  dailyTileFor,
 } from '@/features/habit/habit-model';
 import { CODE_SHEET_HINT } from '@/features/organizations/code-sheet-model';
+import { gameWordsOf } from '@/features/quest/game-model';
 import { CODE_FONT } from '@/features/quest/game-style';
 import { useCreateGame, useGameFavorites, useSaveGameFavorite } from '@/features/quest/games-api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -60,15 +74,19 @@ import { radius, space } from '@/theme/tokens';
 import {
   useCarryGuestTiles,
   useGuestLeadLevel,
-  useLastQuest,
   useMemberTiles,
-  useRememberLastQuest,
+  useOpenGame,
   useRosterMembers,
+  useSaveQuestGrade,
   useWaitingGames,
 } from './play-api';
 import {
+  asksGrade,
   assessmentTileRequest,
   codeKind,
+  continueAction,
+  gradeChoices,
+  guestGradeToCarry,
   offBoardGroups,
   rosterSavedText,
   shownGrade,
@@ -80,35 +98,45 @@ import { CardGrid, GradeRow, QuestCard, TodayCard } from './quest-card';
 const failure = (caught: unknown, fallback: string) =>
   caught instanceof ApiRequestError ? caught.message : fallback;
 
-function openGame(gameId: string) {
-  // `from=home`: the game's Exit comes back here, where Continue is.
+/** A game opened from Home: `from=home`, so its Exit comes back here, where Continue is. */
+export function openGameFromHome(gameId: string) {
   router.push({ pathname: '/quest/games/[gameId]', params: { gameId, from: 'home' } });
 }
 
-function joinByCode(code: string) {
-  router.push({ pathname: '/quest/join-game', params: { code } });
+/** Phase 73 (JF36): the New Quest wizard from Home -- the game it makes exits back here too. */
+export function openNewQuestFromHome() {
+  router.push({ pathname: '/quest/new-game', params: { from: 'home' } });
 }
 
-/** One tap: the game is made (and begun, a single player's), remembered for Continue, and opened. */
+function joinByCode(code: string) {
+  router.push({ pathname: '/quest/join-game', params: { code, from: 'home' } });
+}
+
+/** One tap: the game is made (and begun, a single player's) and opened; Continue reads it from the server. */
 export function useStartQuest() {
   const create = useCreateGame();
   const toast = useToast();
-  const { organization } = useAuth();
-  const remember = useRememberLastQuest(organization?.slug);
-  async function start(label: string, request: CreateGameRequest, roster?: string[] | null) {
+  async function start(request: CreateGameRequest, roster?: string[] | null) {
     haptics.selection();
     try {
       // Phase 62 (P7): from a multiplayer favorite the host is in the game from the start; (P8) its
       // roster's people are invited and see it under "Waiting for you".
       const game = await create.mutateAsync(startRequest(request, roster));
-      remember({ label, request });
-      openGame(game.data.id);
+      openGameFromHome(game.data.id);
     } catch (caught) {
       haptics.error();
       toast.error(failure(caught, 'That quest could not start.'));
     }
   }
   return { start, pending: create.isPending };
+}
+
+/** "Not now" on "Which grade?": put off for this run of the app, per person and space (never stored). */
+const gradeAskPutOff = new Set<string>();
+
+/** For tests: forget this run's "Not now"s. */
+export function resetGradeAskForTests() {
+  gradeAskPutOff.clear();
 }
 
 function GroupHeading({ children }: { children: string }) {
@@ -132,18 +160,26 @@ function GroupHeading({ children }: { children: string }) {
  * reader's tiles reach), that grade's cards in its hue (its standards, then "Advanced"), and "More
  * levels" for the tiles off the 1-8 row.
  */
-export function PlayHome() {
+export function PlayHome({ nextUp = null }: { nextUp?: NextUpKind | null } = {}) {
   const theme = useAppTheme();
+  // Phase 74 (JF23): Next up's heavy button leads; the board's own copy of it is quiet.
+  const dailyAbove = nextUp === 'daily' || nextUp === 'welcome_back';
+  const continueAbove = nextUp === 'open_game' || nextUp === 'continue_quest';
   const toast = useToast();
   const { organization, user } = useAuth();
+  const focused = useIsFocused();
   const tiles = useMemberTiles();
   const favorites = useGameFavorites();
   const saveFavorite = useSaveGameFavorite();
-  const lastQuest = useLastQuest(organization?.slug);
-  const last = lastQuest.data ?? null;
+  // Phase 73 (JF13): Continue's read, only while Home is in front (each read may ask the game itself).
+  const openRead = useOpenGame(focused);
+  const continueWith = continueAction(openRead.data?.data);
   const { start, pending } = useStartQuest();
   const startAssessment = useStartCanvasAssessment();
+  const { mutate: putGrade, variables: savingGrade } = useSaveQuestGrade();
   const [chosenGrade, setChosenGrade] = useState<number | null>(null);
+  const askKey = `${organization?.slug ?? ''}:${user?.id ?? ''}`;
+  const [askPutOff, setAskPutOff] = useState(() => gradeAskPutOff.has(askKey));
   // Two cards a row on a phone, three or four on a tablet.
   const { width } = useWindowDimensions();
   const columns = width >= 1000 ? 4 : width >= 700 ? 3 : 2;
@@ -153,29 +189,63 @@ export function PlayHome() {
   const habit = useHabit();
   const guestLead = useGuestLeadLevel();
   useCarryGuestTiles(guestLead.isSuccess, tiles.data?.data.tiles, favorites.data?.data);
-  const list = tiles.data?.data.tiles ?? [];
-  // The level last played here leads; before any, a guest's grade on this phone (P13).
-  const lead = last?.request.level_id ?? guestLead.data ?? null;
-  // Phase 64 (P19): the Daily of that level, else of the first tile's; Phase 67 shows it as rings.
-  const dailyTile = dailyTileFor(list, lead);
-  const dailyLevel = tiles.data?.data.daily && dailyTile ? dailyTile.level_id : null;
-  const daily = useDaily(dailyLevel);
+  const data = tiles.data?.data;
+  const list = data?.tiles ?? [];
+  // Phase 73 (JF14): a guest's grade on this phone, carried once into the server's keeping while the server
+  // knows nothing more particular -- asked, or led by age alone -- (it then leads, as P13 had it), instead of
+  // asking; then marked carried on the phone, never again (the web's rule).
+  const carry =
+    data && guestLead.isSuccess && !guestMemory.gradeCarried() ? guestGradeToCarry(data, guestLead.data) : null;
+  const carried = useRef(false);
+  useEffect(() => {
+    if (carry === null || carried.current) return;
+    carried.current = true;
+    putGrade({ grade: carry }, { onSuccess: () => guestMemory.markGradeCarried() });
+  }, [carry, putGrade]);
+  // The grade just tapped (or just carried, until the tiles say so), else the server's lead, else (an older
+  // Worker) the phone's guest grade (P13).
+  const grade = shownGrade(list, chosenGrade ?? carry ?? (savingGrade?.grade || null), data?.lead, guestLead.data);
+  // Phase 73 (JF23): the one Daily rule, Next up's too -- the shown grade's first standard card's level.
+  const dailyLevel = data?.daily ? dailyLevelFor(list, grade) : null;
+  // While a newly chosen grade's Daily loads, the card keeps the one it had (its own level's words).
+  const daily = useDaily(dailyLevel, { keepPrevious: true });
 
   if (
-    !tiles.data ||
-    !tiles.data.data.play_home ||
+    !data ||
+    !data.play_home ||
     habit.isPending ||
     guestLead.isPending ||
-    lastQuest.isLoading ||
+    openRead.isLoading ||
     daily.isLoading
   )
     return null;
   const grades = boardGrades(list);
-  const grade = shownGrade(list, chosenGrade, lead);
+  // Not while a grade is being (or has just been) saved: the tiles say so on their next read.
+  const asking = chosenGrade === null && asksGrade(data, carry ?? savingGrade?.grade ?? null, askPutOff);
   const board = grade === null ? { standard: [], advanced: [] } : memberBoard(list, grade);
   const more = offBoardGroups(list);
   const starred = new Set((favorites.data?.data ?? []).map((favorite) => favorite.name));
   const dailySet = daily.data?.data ?? null;
+
+  /** A grade chosen on the row or in "Which grade?": shown at once, and kept on the server here. */
+  function chooseGrade(picked: number, shown: number) {
+    haptics.selection();
+    setChosenGrade(shown);
+    putGrade(
+      { grade: picked },
+      { onError: (caught) => toast.error(failure(caught, 'Your grade could not be saved.')) },
+    );
+  }
+
+  function continueQuest() {
+    if (!continueWith) return;
+    if (continueWith.kind === 'open') {
+      haptics.selection();
+      openGameFromHome(continueWith.game_id);
+    } else {
+      void start(continueWith.request);
+    }
+  }
 
   async function star(tile: MemberTile) {
     haptics.selection();
@@ -218,7 +288,7 @@ export function PlayHome() {
         advanced={look.advanced}
         code={tile.code}
         disabled={pending || startAssessment.isPending}
-        onPress={() => void (assessment ? showYourWork(tile) : start(tile.code, tileGameRequest(tile)))}
+        onPress={() => void (assessment ? showYourWork(tile) : start(tileGameRequest(tile)))}
         footer={
           <>
             {tile.beta ? (
@@ -270,23 +340,32 @@ export function PlayHome() {
           mode="outlined"
           compact
           icon="plus"
-          onPress={() => router.push('/quest/new-game')}
+          onPress={openNewQuestFromHome}
         >
           New Quest
         </Button>
       </View>
 
-      {last ? (
-        <Button
-          testID="play-continue"
-          mode="contained"
-          icon="play"
-          disabled={pending}
-          onPress={() => void start(last.label, last.request)}
-          contentStyle={{ minHeight: 52, justifyContent: 'flex-start' }}
-        >
-          {`Continue ${last.label}`}
-        </Button>
+      {/* Phase 73 (JF13): the open game, in words with where the reader is; else its settings again. */}
+      {continueWith ? (
+        <View style={{ gap: space.xs }}>
+          <Button
+            testID="play-continue"
+            mode={continueAbove ? 'outlined' : 'contained'}
+            icon="play"
+            disabled={pending}
+            accessibilityLabel={continueWith.label}
+            onPress={continueQuest}
+            contentStyle={{ minHeight: 52, justifyContent: 'flex-start' }}
+          >
+            {continueWith.title}
+          </Button>
+          {continueWith.where ? (
+            <Text testID="play-continue-where" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+              {continueWith.where}
+            </Text>
+          ) : null}
+        </View>
       ) : null}
 
       {/* Phase 64 (P17-P18): the streak, today's ring and the badges; Phase 67: the week's dots. */}
@@ -296,7 +375,7 @@ export function PlayHome() {
       {dailyLevel && dailySet && (dailySet.result || dailySet.questions.length > 0) ? (
         <TodayCard
           testID="play-daily"
-          eyebrow={dailyButtonLabel(dailyLevel)}
+          eyebrow={dailyButtonLabel(dailySet.level_id)}
           eyebrowTestID="play-daily-eyebrow"
           title={dailyCardTitle(dailySet.result)}
           titleTestID="play-daily-title"
@@ -306,11 +385,11 @@ export function PlayHome() {
           note={dailySet.result ? DAILY_NEXT_TEXT : null}
           playTestID="play-daily-play"
           playIcon={dailySet.result ? 'eye-outline' : 'bullseye-arrow'}
-          playLabel={dailySet.result ? 'See today’s result' : 'Play today’s Daily'}
-          quiet={dailySet.result !== null}
+          playLabel={dailySet.result ? 'See today’s result' : PLAY_DAILY_LABEL}
+          quiet={dailySet.result !== null || dailyAbove}
           onPlay={() => {
             haptics.selection();
-            router.push({ pathname: '/quest/daily/[level]', params: { level: dailyLevel } });
+            router.push({ pathname: '/quest/daily/[level]', params: { level: dailySet.level_id } });
           }}
         />
       ) : null}
@@ -318,6 +397,19 @@ export function PlayHome() {
       <PlayFavorites />
 
       <WaitingForYou />
+
+      {/* Phase 73 (JF14): asked once, only when nothing says which grade leads. */}
+      {asking && grades.length > 0 ? (
+        <GradeAsk
+          list={list}
+          onPick={(picked) => chooseGrade(picked, picked === 0 ? grades[grades.length - 1]! : picked)}
+          onLater={() => {
+            haptics.selection();
+            gradeAskPutOff.add(askKey);
+            setAskPutOff(true);
+          }}
+        />
+      ) : null}
 
       {grades.length > 0 ? (
         <View testID="play-board" style={{ gap: space.md }}>
@@ -327,10 +419,7 @@ export function PlayHome() {
             value={grade}
             hued
             testIDPrefix="play-grade-"
-            onChange={(g) => {
-              haptics.selection();
-              setChosenGrade(g);
-            }}
+            onChange={(g) => chooseGrade(g, g)}
           />
           {board.standard.length > 0 ? (
             <CardGrid items={board.standard} columns={columns} keyOf={(t) => t.code} render={card} />
@@ -362,6 +451,59 @@ export function PlayHome() {
 
       <HaveACode />
     </View>
+  );
+}
+
+/**
+ * Phase 73 (JF14): "Which grade?" -- asked once, on first Play, only when the server knows no grade for this
+ * person here (none picked, none recorded for a student, nothing played, no age to go by). The answer leads
+ * the board and the Daily from then on, here and on every device; "Not now" puts it off for this run.
+ */
+function GradeAsk({
+  list,
+  onPick,
+  onLater,
+}: {
+  list: readonly MemberTile[];
+  onPick: (grade: number) => void;
+  onLater: () => void;
+}) {
+  const theme = useAppTheme();
+  return (
+    <OutlinedCard testID="play-ask-grade" style={{ borderRadius: radius.lg }}>
+      <View style={{ padding: space.lg, gap: space.sm }}>
+        <Text variant="titleSmall" accessibilityRole="header" style={{ fontWeight: '700' }}>
+          Which grade?
+        </Text>
+        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+          So your quests and today’s Daily start at the right level. You can change it on the row below.
+        </Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+          {gradeChoices(list).map((choice) => (
+            <Button
+              key={choice.grade}
+              testID={`play-ask-grade-${choice.grade}`}
+              mode="outlined"
+              compact
+              onPress={() => onPick(choice.grade)}
+              contentStyle={{ minHeight: 44 }}
+            >
+              {choice.label}
+            </Button>
+          ))}
+        </View>
+        <Button
+          testID="play-ask-grade-later"
+          mode="text"
+          compact
+          onPress={onLater}
+          style={{ alignSelf: 'flex-start' }}
+          contentStyle={{ minHeight: 44 }}
+        >
+          Not now
+        </Button>
+      </View>
+    </OutlinedCard>
   );
 }
 
@@ -447,7 +589,7 @@ export function PlayFavorites({ compact = false }: { compact?: boolean }) {
               icon={favorite.roster?.length ? 'account-star' : 'star'}
               disabled={pending}
               accessibilityLabel={`Start ${favorite.name}${favorite.roster?.length ? ', with its players' : ''}`}
-              onPress={() => void start(favorite.name, favorite.config, favorite.roster)}
+              onPress={() => void start(favorite.config, favorite.roster)}
               contentStyle={{ minHeight: 44 }}
             >
               {favorite.name}
@@ -485,9 +627,10 @@ export function WaitingForYou() {
       {list.map((game) => (
         <OutlinedCard key={game.game_id} style={{ borderRadius: radius.lg }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, padding: space.md }}>
-            <Text variant="bodyMedium" style={{ flex: 1 }}>
+            {/* Phase 73 (JF32): the game in words ("Grade 5 Quick 3"), never its code (the web's words). */}
+            <Text testID={`play-waiting-words-${game.code}`} variant="bodyMedium" style={{ flex: 1 }}>
               <Text style={{ fontWeight: '700' }}>{game.host_first_name}</Text>
-              {` started a ${levelLabel(game.level_id)} game · ${gameLengthLabel(game)}`}
+              {` started ${gameWordsOf(game)}`}
               {game.status === 'running' ? (
                 <Text style={{ color: theme.tokens.mutedForeground }}> · under way</Text>
               ) : null}

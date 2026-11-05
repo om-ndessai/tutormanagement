@@ -853,6 +853,9 @@ export function UserFormDialog({
                       placeholder="Move up to the accelerated track"
                     />
                   </Field>
+                  {tutoring && (
+                  <>
+                  {/* Phase 74 (JF31, R23): Tutoring's field, left out where the space has no Tutoring. */}
                   <Checkbox
                     id="s_virtual"
                     label="Available for virtual tutoring"
@@ -862,8 +865,6 @@ export function UserFormDialog({
                     }
                   />
 
-                  {tutoring && (
-                  <>
                   {/* What the FAMILY is charged. Priced on the student, so it
                       does not change with whoever happens to teach them; the
                       institute keeps the difference from the tutor's rate.

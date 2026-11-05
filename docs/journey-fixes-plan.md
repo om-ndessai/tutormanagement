@@ -6,7 +6,7 @@
 >
 > Progress: the fix-up `8173a2a`; Phase 70 web `2b78590` and app `023ba00`; Phase 71 web `ab71793`; the 70+71
 > contract `98c40ab` (smoke green on the web, iOS and Android; `test:compat` green); Phase 72 (smoke green on all
-> three, `test:compat` green). Phase 73 next.
+> three, `test:compat` green); Phases 73 and 74 (one smoke and one commit, as planned). Phase 75 next.
 
 The UI journey audit ([docs/userjourney/](userjourney/README.md)) played 24 journeys at commit `2d6e7d3` and merged
 its findings into 37 recommendations ([recommendations.md](userjourney/recommendations.md)). This plan fixes each
@@ -156,24 +156,63 @@ JF13 with games listed with their progress (from JF32), JF14 and one Daily rule 
 
 ### Phase 74: the first home, about 40 h
 JF6 (led from the person's hats: new arrival kinds would need a new privacy version), the band (JF16), JF23's
-twins, JF24, JF25, JF31, JF17. **Decisions:** whether a parent's or admin's hat leads over playing in a space
-without Tutoring; whether students' and parents' menus drop Users; the Practise-before window.
+twins, JF24, JF25, JF31, JF17. **Decided (owner, 2026-11-05):**
+- **the reader's hat leads the first home where Tutoring is off**: a parent with a child here gets the family section
+  first (the child's card); the maker or an admin of a space that is not personal gets the office section first
+  (needs you, invitations not yet accepted, open assessments); the board follows. Built from hats, so no new
+  arrival kind and no new privacy version. An adult who has not played gets three doors in the band (Play · Join
+  with a code · Start a space), never "0 of 3 days";
+- **students and parents never see Users** (nor Pairings or Billing); a parent reaches their child from the home's
+  child card (and Progress where Tutoring is on); admins and tutors keep their menus;
+- **Practise before a lesson opens 7 days ahead** (`PRACTISE_BEFORE_DAYS` 3 -> 7), once a day until played;
+- **a guest's play day does not count** as a member's first day: nothing about a guest is sent (R26); the band leads
+  with "Start a streak" in words that never read as a zero.
 
 ### Phase 75: the tutor's record, about 22 h (about 50 h with JF30)
-JF18, JF19, JF27, and JF30 if adopted. **Decisions:** a price required where the space bills; the app's record model
-on the web.
+JF18, JF19, JF27, and JF30 (adopted). **Decided (owner, 2026-11-05):**
+- **a price stays optional, but is flagged and checked at Start**: the field is visibly empty with helper text ("For
+  example 95.00"); a missing price reads "No price set" on the student, the pairing and the schedule; Start refuses up
+  front in a tutor's words ("Ask the office to set Yusuf's price"); the stop dialog shows every field error as text and
+  keeps the note;
+- **the app's record model is adopted on the web (JF30)**: a known lesson opens "Record a lesson" prefilled ("It ran as
+  planned" / "Write up the lesson"); the quick action and the Sessions button open the list of lessons still owed, with
+  "Another lesson"; no form defaults to today at 4:00-5:00 PM; To record sits at the top of Sessions; every Start opens
+  the Start sheet in place; a running lesson leads Next up with Stop; one noun and one verb, "lesson" and "Record". Phase
+  75 becomes about 50 h.
 
 ### Phase 76: adding people one way, about 32 h
-JF21, JF37. **Decisions:** the app's Add model on both clients (`docs/mobile/parity.md` U2); "This is my child" in a
-personal space; the invitation's wording.
+JF21, JF37. **Decided (owner, 2026-11-05):**
+- **one "Add" chooser on both clients** -- "A family (parent and child)", "A tutor" (where Tutoring is on), "Someone
+  else", "Invite by email" -- opened by the home's quick action, the Users (People) header and the app's (+); "A family"
+  is the guided flow; after each save, the next step ("Pair Yusuf with a tutor", "Set a weekly lesson"); the student's
+  details show the tutor and the lessons (the app's model, `docs/mobile/parity.md` U2);
+- **"This is my child" in a personal space**: there the family flow asks only for the child and the signed-in adult is
+  the parent (a teen's personal space still adds nobody);
+- **the invitation says how and what**: "Ines invited you to Ferreira Family Practice on Aimtrue, a space for practice
+  and assessments. Open <address>/spaces and sign in with Google using ana@example.com: your invitation is waiting
+  there." ("lessons" named only where Tutoring is on).
 
 ### Phase 77: families at home, about 48 h
-JF15, JF20. **Decisions:** a shared-device Play with, credited to the child (H10, R29); a guardian opening a child's
-assessment (R17).
+JF15, JF20. **Decided (owner, 2026-11-05):**
+- **"Play with <child>" for a child who does not sign in is a game on the parent's device**, side by side at the
+  child's grade, and the child's answers are credited to the child (days played, counts), never shown outside the
+  child's audience (changes H10's "each on their own"; a line in R29). A child who signs in keeps the online invite;
+- **a guardian may open a child's in-progress assessment on her own device to hand it over** ("Hand the device to
+  Leo"); the submitted PDF stays the tutor's and the admins' (R17 unchanged for answers); Start warns when one is in
+  progress.
 
 ### Phase 78: the look, about 30 h
-JF32's rest, JF34, JF29, JF28's rest (with `responsive.spec.ts` additions), JF35's rest. **Decisions:** "Beta" on
-every question; the glossary's words; grade hues on the guest page.
+JF32's rest, JF34, JF29, JF28's rest (with `responsive.spec.ts` additions), JF35's rest. **Decided (owner,
+2026-11-05):**
+- **"Beta" goes altogether**: checked questions are served like any other and are curated over time by the server's
+  two-right-answers rule (Phase 42's consensus); no pill, line or mark a player or family sees. (The tutor's own
+  per-question "not yet reviewed" mark on the assessment PDF is the reviewer's, and is kept unless the owner says
+  otherwise.);
+- **one word per thing**, in a glossary in shared code both clients read: "lesson" (never "session" on screen),
+  "quest" for anything played on the board ("game" only in "Play with" and codes), "person/people" (the web's Users page
+  becomes People, as in the app), "space"; API and code names unchanged;
+- **grade hues on both boards, amber for action only**: the guest page takes the grade hues (mode shown by its icon),
+  reversing the member-home plan's Decision 1; the Daily's button takes the space's primary.
 
 ## How it is committed
 

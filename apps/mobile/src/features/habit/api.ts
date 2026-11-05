@@ -1,6 +1,10 @@
 // Ported from apps/web/src/features/habit/habit-api.ts @ 0e3ec7a (working tree). Phase 64 (P17-P19,
 // docs/stickiness-plan.md). The same query keys, reads and invalidation as the web.
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+//
+// Mobile (Phase 73): `useDaily(level, { keepPrevious })` -- the Play home and Next up keep showing the Daily
+// they had while a newly chosen grade's loads (the same key; TanStack's `keepPreviousData`), so tapping a
+// grade never empties the home under the finger.
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ApiOk, DailyResultInput, DailySet, HabitSummary } from '@tmi/shared';
 
 import { apiClient } from '@/lib/api-client';
@@ -16,11 +20,12 @@ export function useHabit(enabled = true) {
 }
 
 /** Phase 64 (P19): today's Daily set of a level, and the reader's result if they have played it. */
-export function useDaily(levelId: string | null) {
+export function useDaily(levelId: string | null, options: { keepPrevious?: boolean } = {}) {
   return useQuery({
     queryKey: ['quest', 'daily', levelId] as const,
     queryFn: () => apiClient.get<ApiOk<DailySet>>(`/quest/daily/${encodeURIComponent(levelId!)}`),
     enabled: levelId !== null,
+    placeholderData: options.keepPrevious ? keepPreviousData : undefined,
   });
 }
 

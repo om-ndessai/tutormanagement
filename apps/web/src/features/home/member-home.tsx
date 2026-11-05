@@ -5,15 +5,20 @@ import {
   HomeIcon,
   UsersIcon,
   CalendarDaysIcon,
+  CheckCircle2Icon,
   ClipboardCheckIcon,
   CompassIcon,
   KeyRoundIcon,
   Loader2Icon,
+  MapPinIcon,
   PencilLineIcon,
   PenLineIcon,
   PlayIcon,
   PlusIcon,
+  SparklesIcon,
+  TargetIcon,
   TrendingUpIcon,
+  UserIcon,
   UserPlusIcon,
   type LucideIcon,
 } from 'lucide-react';
@@ -26,11 +31,14 @@ import {
   homeGreeting,
   lessonWhen,
   lessonDayWords,
+  mayMakeSpace,
   orderHats,
   playWithRequest,
   practiseBefore,
+  practiseRequest,
   quickActionsFor,
   startsInWords,
+  type HabitSummary,
   type HomeChild,
   type HomeFocus,
   type HomeHat,
@@ -46,7 +54,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { AssessmentSection } from '@/features/dashboard/assessment-home';
 import { useHabit } from '@/features/habit/habit-api';
 import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
-import { useOnboarding } from '@/features/onboarding/onboarding-provider';
+import { TourOfferCard, useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { PlayFavorites, PlayHome, WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { useMemberTiles } from '@/features/play/play-api';
 import { SessionFormDialog } from '@/features/teaching/session-form-dialog';
@@ -56,6 +64,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useMemberHome, usePinHome } from './api';
+import { lessonLine } from './lesson-words';
 import { NextUpCard, useNextUp, type RecordRequest } from './next-up';
 
 const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
@@ -71,7 +80,9 @@ export function MemberHomePage() {
   const { organization } = useAuth();
   const query = useMemberHome();
   const home = query.data?.data;
-  const { item, putOff } = useNextUp(home);
+  const { item, putOff, practiceLevel } = useNextUp(home);
+  // The learner's habit (shared with the band and My progress through the query cache).
+  const habit = useHabit(Boolean(home && orderHats(home)[0] === 'learner') && featureOn(organization, 'quest'));
   const [record, setRecord] = useState<{ open: boolean; lesson: RecordRequest | null }>({ open: false, lesson: null });
   // The one "Have a code?" sheet (JF4): null is closed. A shared game link (`/?code=`, the lobby's QR) opens it.
   const [params, setParams] = useSearchParams();
@@ -102,12 +113,19 @@ export function MemberHomePage() {
   const tutoring = featureOn(organization, 'tutoring');
   const quest = featureOn(organization, 'quest');
   const assessment = featureOn(organization, 'assessment');
+  // Phase 74 (JF6): a learner who has never played here gets the doors in the band (Play, Join with a code, Start a
+  // space) -- so the quick "Have a code?" beside them is not a second door to the same sheet.
+  const newcomer = hats[0] === 'learner' && quest && habit.data?.data.played_before === false;
+  // Phase 74 (JF23): the board carries its own New Quest, so the quick action is not shown beside it.
+  const boardShown = quest && hats.includes('learner');
   const actions = quickActionsFor(hats, {
     tutoring,
     quest,
     assessment,
     mayBringPeople: home.may_bring_people,
     mayAssess: home.may_assess,
+    board: boardShown,
+    doors: newcomer,
   });
 
   return (
@@ -117,14 +135,17 @@ export function MemberHomePage() {
       <RequestOutcomes />
       <KeptForYou onCode={(code) => setCodeSheet(code)} />
       {codeSheet !== null && <CodeSheet initialCode={codeSheet} onClose={closeCodeSheet} />}
+      {/* Phase 74 (JF25): the tour, offered once, in the page's flow -- never over the work it introduces. */}
+      <TourOfferCard />
       <div className="relative">
-        <Band home={home} hat={hats[0] ?? null} />
+        <Band home={home} hat={hats[0] ?? null} nextUp={item} newcomer={newcomer} onCode={() => setCodeSheet('')} />
         <div className="relative -mt-12 px-3 sm:px-6">
           <NextUpCard
             home={home}
             item={item}
             onLater={(next: NextUp) => putOff(next)}
             onRecord={(lesson) => setRecord({ open: true, lesson })}
+            practiceLevel={practiceLevel}
           />
         </div>
       </div>
@@ -134,7 +155,14 @@ export function MemberHomePage() {
       )}
 
       {hats.map((hat) => (
-        <HatSection key={hat} hat={hat} home={home} nextUp={item} onRecord={(lesson) => setRecord({ open: true, lesson })} />
+        <HatSection
+          key={hat}
+          hat={hat}
+          home={home}
+          nextUp={item}
+          practiceLevel={practiceLevel}
+          onRecord={(lesson) => setRecord({ open: true, lesson })}
+        />
       ))}
 
       {/* Where Quest is on, a member who does not wear the learner hat keeps their favorites in one tap. */}
@@ -160,12 +188,32 @@ export function MemberHomePage() {
   );
 }
 
-/** The guest home's band, slimmer: the greeting, the space, and one line for the hat that leads. */
-function Band({ home, hat }: { home: MemberHome; hat: HomeHat | null }) {
+/**
+ * The guest home's band, slimmer: the greeting, the space, and one line for the hat that leads. Phase 74 (JF6, JF16):
+ * never a zero -- a learner who has not played here gets three doors and "Start a streak" -- and never what Next up,
+ * just below, already says.
+ */
+function Band({
+  home,
+  hat,
+  nextUp,
+  newcomer,
+  onCode,
+}: {
+  home: MemberHome;
+  hat: HomeHat | null;
+  nextUp: NextUp | null;
+  /** A learner who has never played here (JF6): the doors in, not a count. */
+  newcomer: boolean;
+  onCode: () => void;
+}) {
   const brand = useBrand();
-  const { organization } = useAuth();
-  const habit = useHabit(hat === 'learner' && featureOn(organization, 'quest'));
+  const { organization, account, memberships, platformAdmin } = useAuth();
+  const quest = featureOn(organization, 'quest');
+  const habit = useHabit(hat === 'learner' && quest);
   const { openWizard } = useOnboarding();
+  const summary = habit.data?.data ?? null;
+  const mayStart = mayMakeSpace({ account, memberships, platform_admin: platformAdmin });
   return (
     <div
       className="from-brand-900 to-brand-800 relative overflow-hidden rounded-3xl bg-gradient-to-br px-5 pt-5 pb-16 text-white sm:px-8"
@@ -193,14 +241,68 @@ function Band({ home, hat }: { home: MemberHome; hat: HomeHat | null }) {
           {homeGreeting(home)}
         </h1>
         <p className="text-[15px] text-white/85" data-testid="home-strip">
-          {stripLine(home, hat, habit.data?.data.days_this_week ?? null)}
+          {newcomer ? 'Start a streak: play on three days this week.' : stripLine(home, hat, summary, nextUp, featureOn(organization, 'tutoring'), quest)}
         </p>
+        {newcomer && (
+          <div className="mt-2 flex flex-wrap gap-2" data-testid="home-doors">
+            <BandDoor
+              icon={PlayIcon}
+              label="Play"
+              testId="home-door-play"
+              onClick={() => document.querySelector('[data-testid="play-home"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            />
+            <BandDoor icon={KeyRoundIcon} label="Join with a code" testId="home-door-code" onClick={onCode} />
+            {mayStart && <BandDoor icon={SparklesIcon} label="Start a space" testId="home-door-start" href="/spaces#start" />}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-function stripLine(home: MemberHome, hat: HomeHat | null, daysThisWeek: number | null): string {
+/** A door in the band: a light outline pill on the brand's dark ground. */
+function BandDoor({
+  icon: Icon,
+  label,
+  testId,
+  onClick,
+  href,
+}: {
+  icon: LucideIcon;
+  label: string;
+  testId: string;
+  onClick?: () => void;
+  href?: string;
+}) {
+  const className =
+    'inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/60 px-4 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none';
+  return href ? (
+    // A full load, so the Spaces page opens on its Start a space card.
+    <a href={href} className={className} data-testid={testId}>
+      <Icon className="size-4" aria-hidden /> {label}
+    </a>
+  ) : (
+    <button type="button" onClick={onClick} className={className} data-testid={testId}>
+      <Icon className="size-4" aria-hidden /> {label}
+    </button>
+  );
+}
+
+const names = (kids: readonly HomeChild[]) =>
+  kids.length <= 1 ? (kids[0]?.first_name ?? '') : `${kids.slice(0, -1).map((k) => k.first_name).join(', ')} and ${kids[kids.length - 1]!.first_name}`;
+
+/**
+ * The band's one line for the hat that leads (Phase 66), never a zero and never what Next up says (Phase 74: JF6,
+ * JF16, JF23). Where Tutoring is off, the office's and a parent's lines say nothing about lessons.
+ */
+function stripLine(
+  home: MemberHome,
+  hat: HomeHat | null,
+  habit: HabitSummary | null,
+  nextUp: NextUp | null,
+  tutoring: boolean,
+  quest: boolean,
+): string {
   switch (hat) {
     case 'tutor': {
       const t = home.tutor!;
@@ -210,24 +312,52 @@ function stripLine(home: MemberHome, hat: HomeHat | null, daysThisWeek: number |
     }
     case 'office': {
       const o = home.office!;
+      // Next up names these counts already: the band does not say them again.
+      const saysRecord = nextUp?.kind === 'office_to_record';
+      const saysPeople = nextUp?.kind === 'office_needs';
       const parts = [
-        o.to_record_count ? `${o.to_record_count} to record` : null,
-        o.invitations ? `${o.invitations} invited` : null,
-        o.join_requests ? `${o.join_requests} asking to join` : null,
+        tutoring && o.to_record_count && !saysRecord ? `${o.to_record_count} to record` : null,
+        o.invitations && !saysPeople ? `${o.invitations} invited` : null,
+        o.join_requests && !saysPeople ? `${o.join_requests} asking to join` : null,
+        o.assessments_open ? `${plural(o.assessments_open, 'assessment')} to look at` : null,
       ].filter(Boolean);
-      return parts.length ? parts.join(' · ') : `All caught up · ${plural(o.lessons_this_week, 'lesson')} this week`;
+      if (parts.length) return parts.join(' · ');
+      if (saysRecord || saysPeople) return tutoring ? `This week: ${plural(o.lessons_this_week, 'lesson')}` : 'Here is what needs you.';
+      return tutoring ? `All caught up · ${plural(o.lessons_this_week, 'lesson')} this week` : 'All caught up';
     }
     case 'parent': {
-      const child = home.parent!.children[0];
+      const kids = home.parent!.children;
+      const child = kids[0];
       if (!child) return 'Your children';
-      return child.next_lesson
-        ? `${child.first_name}: next lesson ${lessonWhen(child.next_lesson.occurs_on, child.next_lesson.start_time, home.day)}`
-        : `${child.first_name}: no lessons scheduled`;
+      if (!tutoring) {
+        // Counts only (R29): the child's week of play, where Quest is on.
+        if (quest && child.days_played_this_week != null) {
+          return child.days_played_this_week > 0
+            ? `${child.first_name}: ${plural(child.days_played_this_week, 'day')} played this week`
+            : `${child.first_name}: no play yet this week`;
+        }
+        return `${kids.length === 1 ? 'Your child' : 'Your children'}: ${names(kids)}`;
+      }
+      // Next up names this child's lesson already: the band names the children, not the lesson again.
+      const shown = (nextUp?.kind === 'child_next_lesson' || nextUp?.kind === 'child_change') && nextUp.child.student_user_id === child.student_user_id;
+      if (shown) return `${kids.length === 1 ? 'Your child' : 'Your children'}: ${names(kids)}`;
+      if (child.next_lesson) return `${child.first_name}: next lesson ${lessonLine(child.next_lesson, home.day)}`;
+      return `${child.first_name}: no lessons scheduled`;
     }
     case 'learner': {
       const next = home.learner!.next_lesson;
-      if (next) return `Next lesson ${lessonWhen(next.occurs_on, next.start_time, home.day)}`;
-      if (daysThisWeek !== null) return `${daysThisWeek} of ${STREAK_DAYS_PER_WEEK} days played this week`;
+      const nextShown = nextUp?.kind === 'learner_lesson' || nextUp?.kind === 'practise_before';
+      if (next && !nextShown) return `Next lesson ${lessonLine(next, home.day)}`;
+      if (habit) {
+        // Never a zero first (JF16): "Start a streak" in words until a day is played.
+        if (habit.streak_weeks > 0) {
+          return habit.days_this_week > 0
+            ? `${habit.streak_weeks}-week streak · ${Math.min(habit.days_this_week, STREAK_DAYS_PER_WEEK)} of ${STREAK_DAYS_PER_WEEK} days this week`
+            : `${habit.streak_weeks}-week streak · play this week to keep it`;
+        }
+        if (habit.days_this_week === 0) return 'Start a streak: play on three days this week.';
+        return `${habit.days_this_week} of ${STREAK_DAYS_PER_WEEK} days played this week`;
+      }
       return 'Ready when you are.';
     }
     default:
@@ -266,7 +396,8 @@ function QuickActions({ actions, onRecord, onCode }: { actions: QuickAction[]; o
         const onClick = () => {
           if (action === 'record_lesson') onRecord();
           else if (action === 'join_code') onCode();
-          else if (to) navigate(to);
+          // A full-screen Quest page goes back home (JF36).
+          else if (to) navigate(to, to.startsWith('/quest/') ? { state: { from: '/' } } : undefined);
         };
         return (
           <Button
@@ -303,11 +434,13 @@ function HatSection({
   hat,
   home,
   nextUp,
+  practiceLevel,
   onRecord,
 }: {
   hat: HomeHat;
   home: MemberHome;
   nextUp: NextUp | null;
+  practiceLevel: string | null;
   onRecord: (lesson: RecordRequest) => void;
 }) {
   switch (hat) {
@@ -320,7 +453,16 @@ function HatSection({
       // Practice (Phase 68 adds what they played).
       return <ParentSection home={home} kids={home.parent!.children} />;
     case 'learner':
-      return <LearnerSection home={home} hideWaiting={nextUp?.kind === 'game_invite'} nextShown={nextUp?.kind === 'learner_lesson'} />;
+      return (
+        <LearnerSection
+          home={home}
+          nextUp={nextUp}
+          practiceLevel={practiceLevel}
+          hideWaiting={nextUp?.kind === 'game_invite'}
+          // Next up already names the lesson (as the lesson, or as practice for it): not twice.
+          nextShown={nextUp?.kind === 'learner_lesson' || nextUp?.kind === 'practise_before'}
+        />
+      );
   }
 }
 
@@ -423,28 +565,44 @@ function TutorSection({
 function OfficeSection({ home, office }: { home: MemberHome; office: HomeOffice }) {
   const { organization } = useAuth();
   const tutoring = featureOn(organization, 'tutoring');
+  const assessment = featureOn(organization, 'assessment');
+  // Phase 74 (JF6): only what waits -- never "0 invitations not yet accepted" -- and one line when nothing does.
   const rows: { id: string; label: string; to: string; count: number }[] = [
     ...(tutoring ? [{ id: 'to-record', label: 'lessons not recorded (last 7 days)', to: '/sessions', count: office.to_record_count }] : []),
-    { id: 'invitations', label: 'invitations not yet accepted', to: '/users', count: office.invitations },
     { id: 'requests', label: 'asking to join', to: '/users', count: office.join_requests },
-  ];
-  // Where there is no Tutoring and nothing waits, there is nothing to show.
-  if (!tutoring && office.invitations + office.join_requests === 0) return null;
+    { id: 'invitations', label: office.invitations === 1 ? 'invitation not yet accepted' : 'invitations not yet accepted', to: '/users', count: office.invitations },
+    ...(assessment
+      ? [
+          {
+            id: 'assessments',
+            label: (office.assessments_open ?? 0) === 1 ? 'assessment submitted, to look at' : 'assessments submitted, to look at',
+            to: '/assessments',
+            count: office.assessments_open ?? 0,
+          },
+        ]
+      : []),
+  ].filter((row) => row.count > 0);
   return (
     <SectionShell hat="office" aside={tutoring ? `Today: ${plural(office.lessons_today, 'lesson')} · this week: ${office.lessons_this_week}` : undefined}>
       <Card className="py-0">
         <CardContent className="grid gap-2 p-4 text-sm">
-          {rows.map((row) => (
-            <Link
-              key={row.id}
-              to={row.to}
-              className={cn('hover:bg-muted flex items-center gap-3 rounded-lg px-2 py-1.5', row.count === 0 && 'text-muted-foreground')}
-              data-testid={`home-office-${row.id}`}
-            >
-              <span className={cn('font-display w-8 text-right text-lg font-bold', row.count > 0 && 'text-primary')}>{row.count}</span>
-              <span>{row.label}</span>
-            </Link>
-          ))}
+          {rows.length === 0 ? (
+            <p className="text-muted-foreground flex items-center gap-2" data-testid="home-office-nothing">
+              <CheckCircle2Icon className="text-success size-4" aria-hidden /> Nothing needs you right now.
+            </p>
+          ) : (
+            rows.map((row) => (
+              <Link
+                key={row.id}
+                to={row.to}
+                className="hover:bg-muted flex items-center gap-3 rounded-lg px-2 py-1.5"
+                data-testid={`home-office-${row.id}`}
+              >
+                <span className="font-display text-primary w-8 text-right text-lg font-bold">{row.count}</span>
+                <span>{row.label}</span>
+              </Link>
+            ))
+          )}
           {office.to_record.length > 0 && (
             <ul className="text-muted-foreground grid gap-1 border-t pt-2 text-xs">
               {office.to_record.map((l) => (
@@ -506,6 +664,17 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
                     <>
                       Next lesson <span className="font-medium">{lessonWhen(child.next_lesson.occurs_on, child.next_lesson.start_time, home.day)}</span>{' '}
                       with {firstName(child.next_lesson.tutor_name)}
+                      {/* Phase 74 (JF17): where, by the place's name. */}
+                      {child.next_lesson.place && (
+                        <span className="text-muted-foreground" data-testid={`home-child-place-${child.student_user_id}`}>
+                          {' '}
+                          ·{' '}
+                          <span className="inline-flex items-baseline gap-1">
+                            <MapPinIcon className="size-3.5 shrink-0 self-center" aria-hidden />
+                            {child.next_lesson.place.name}
+                          </span>
+                        </span>
+                      )}
                     </>
                   ) : (
                     <span className="text-muted-foreground">No lessons scheduled.</span>
@@ -534,7 +703,7 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
                     size="sm"
                     disabled={pending}
                     onClick={() =>
-                      void start(`With ${child.first_name}`, playWithRequest((child.play_level_id ?? firstTileLevel)!, child.student_user_id))
+                      void start(playWithRequest((child.play_level_id ?? firstTileLevel)!, child.student_user_id))
                     }
                     data-testid={`home-child-play-${child.student_user_id}`}
                   >
@@ -558,6 +727,14 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
                     </Link>
                   </Button>
                 )}
+                {/* Phase 74 (JF31): a parent's menu has no Users; where there is no Progress page, the card leads to the child. */}
+                {!tutoring && (
+                  <Button asChild size="sm" variant="outline" data-testid={`home-child-open-${child.student_user_id}`}>
+                    <Link to={`/users?view=${child.student_user_id}`}>
+                      <UserIcon /> {child.first_name}&apos;s details
+                    </Link>
+                  </Button>
+                )}
               </div>
               {!tutoring && !quest && !assessment && (
                 <p className="text-muted-foreground text-xs" data-testid={`home-child-off-${child.student_user_id}`}>
@@ -572,13 +749,28 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
   );
 }
 
-function LearnerSection({ home, hideWaiting, nextShown }: { home: MemberHome; hideWaiting: boolean; nextShown: boolean }) {
+function LearnerSection({
+  home,
+  nextUp,
+  practiceLevel,
+  hideWaiting,
+  nextShown,
+}: {
+  home: MemberHome;
+  nextUp: NextUp | null;
+  practiceLevel: string | null;
+  hideWaiting: boolean;
+  nextShown: boolean;
+}) {
   const { organization } = useAuth();
   const quest = featureOn(organization, 'quest');
   const assessment = featureOn(organization, 'assessment');
   const tutoring = featureOn(organization, 'tutoring');
+  const { start, pending } = useStartQuest();
   // Next up already names the lesson when it is the learner's next lesson: not twice.
   const next = nextShown ? null : home.learner!.next_lesson;
+  // Phase 74 (JF17): where Quest is on, the lesson line opens practice for it.
+  const practise = quest && practiceLevel ? () => void start(practiseRequest(practiceLevel)) : null;
   return (
     <SectionShell hat="learner">
       {!next && !quest && !assessment && (
@@ -588,18 +780,37 @@ function LearnerSection({ home, hideWaiting, nextShown }: { home: MemberHome; hi
       )}
       {next && (
         <Card className="py-0" data-testid="home-learner-next">
-          <CardContent className="flex flex-wrap items-center gap-3 p-4 text-sm">
-            <CalendarDaysIcon className="text-primary size-5" aria-hidden />
-            <span className="min-w-0 flex-1">
-              Your next lesson: <span className="font-medium">{lessonWhen(next.occurs_on, next.start_time, home.day)}</span> with{' '}
-              {firstName(next.tutor_name)}
-            </span>
+          <CardContent className="p-0 text-sm">
+            {practise ? (
+              <button
+                type="button"
+                disabled={pending}
+                onClick={practise}
+                className="hover:bg-muted flex w-full flex-wrap items-center gap-3 rounded-xl p-4 text-left transition-colors"
+                data-testid="home-learner-practise"
+              >
+                <CalendarDaysIcon className="text-primary size-5" aria-hidden />
+                <span className="min-w-0 flex-1">
+                  Your next lesson: <span className="font-medium">{lessonLine(next, home.day)}</span>
+                </span>
+                <span className="text-primary inline-flex items-center gap-1 font-semibold">
+                  <TargetIcon className="size-4" aria-hidden /> {pending ? 'Starting…' : 'Practise for it'}
+                </span>
+              </button>
+            ) : (
+              <p className="flex flex-wrap items-center gap-3 p-4">
+                <CalendarDaysIcon className="text-primary size-5" aria-hidden />
+                <span className="min-w-0 flex-1">
+                  Your next lesson: <span className="font-medium">{lessonLine(next, home.day)}</span>
+                </span>
+              </p>
+            )}
           </CardContent>
         </Card>
       )}
       {/* Phase 68 (H4): an assessment-led home puts Assessments first, in any space. */}
       {assessment && home.focus === 'assessment' && <AssessmentSection />}
-      {quest && <PlayHome hideWaiting={hideWaiting} />}
+      {quest && <PlayHome hideWaiting={hideWaiting} nextUp={nextUp} />}
       {assessment && !tutoring && home.focus !== 'assessment' && <AssessmentSection />}
     </SectionShell>
   );

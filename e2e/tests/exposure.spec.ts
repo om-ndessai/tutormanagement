@@ -41,6 +41,9 @@ import { pdfPageText } from '../support/pdf.js';
  *   R12 reflections  a student's reflection, the tutor dashboard's digest of
  *                    them and a parent's or student's prompt for one are all
  *                    about lessons the reader lists, and a prompt has no money
+ *   R33 Continue     the open game is one the reader plays in, with their own
+ *                    team's progress; the lead grade and the grade picked are
+ *                    the reader's own (Phase 73)
  */
 
 const PERSONAS: PersonKey[] = ['tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
@@ -200,6 +203,31 @@ test.describe('what each non-admin can see', () => {
       await read('/api/curricula');
       await read('/api/sessions/active');
 
+      // R33 (Phase 73): Continue and the lead grade. Where Quest is off here, both answer 403 like every /quest route.
+      const openRead = await page.request.get('/api/quest/games/open');
+      const tilesRead = await page.request.get('/api/quest/tiles');
+      for (const [path, response] of [['/api/quest/games/open', openRead], ['/api/quest/tiles', tilesRead]] as const) {
+        if (response.status() === 403) {
+          if ((await response.json()).error?.code !== 'feature_unavailable') problems.push(`R33: ${path} refused without feature_unavailable`);
+        } else if (response.status() !== 200) {
+          problems.push(`R33: ${path} answered ${response.status()}`);
+        }
+      }
+      if (openRead.status() === 200) {
+        const continued = (await openRead.json()).data;
+        check(reader, '/api/quest/games/open', continued, problems);
+        if (continued.open) {
+          const game = await page.request.get(`/api/quest/games/${continued.open.game_id}`);
+          if (game.status() !== 200 || (await game.json()).data.me.team_id === null) {
+            problems.push('R33: Continue named a game the reader does not play in');
+          }
+        }
+      }
+      if (tilesRead.status() === 200) {
+        const tiles = (await tilesRead.json()).data;
+        for (const key of ['lead', 'ask_grade', 'picked_grade']) if (!(key in tiles)) problems.push(`R33: /api/quest/tiles without ${key}`);
+      }
+
       // R29 (Phase 66): the member home takes no person -- `?user_id` changes nothing -- and carries no money.
       await read('/api/home');
       const home = await get(page, '/api/home');
@@ -343,6 +371,48 @@ test.describe('what each non-admin can see', () => {
       expect(problems, problems.slice(0, 20).join('\n')).toEqual([]);
     });
   }
+
+  test('R33: Continue and the grade picked are the reader’s own', async ({ as }) => {
+    const admin = await as('admin');
+    const sofia = await as('student');
+    const sanjay = await as('studentTutor');
+    const setQuest = (on: boolean) => admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: on } });
+    expect((await setQuest(true)).status()).toBe(200);
+    let gameId = '';
+    try {
+      // Sofia's game is hers: Continue names it for her, with her progress, and never for Sanjay.
+      const game = await unwrap<any>(
+        await sofia.request.post('/api/quest/games', {
+          data: { level_id: 'NC26.6', mode: 'count', question_count: 4, players: 'single', max_team_size: 1 },
+        }),
+        'Sofia starts a game',
+      );
+      gameId = game.id;
+      const hers = await unwrap<any>(await sofia.request.get('/api/quest/games/open'), 'her Continue');
+      expect(hers.open).toMatchObject({ game_id: gameId, status: 'running', of: 4 });
+      expect(hers.open.label).toMatch(/^Grade 6 Quick 4/);
+      const his = await unwrap<any>(await sanjay.request.get('/api/quest/games/open'), 'his Continue');
+      expect(his.open?.game_id ?? null).not.toBe(gameId);
+      // A person parameter changes nothing.
+      const sofiaId = (await unwrap<any>(await sofia.request.get('/api/auth/session'), 'session')).user.id;
+      expect(await unwrap<any>(await sanjay.request.get(`/api/quest/games/open?user_id=${sofiaId}`), 'asked')).toEqual(his);
+
+      // Each one's pick is their own: Sanjay's does not move Sofia's.
+      await unwrap(await sofia.request.put('/api/quest/grade', { data: { grade: 6 } }), 'Sofia picks 6');
+      await unwrap(await sanjay.request.put('/api/quest/grade', { data: { grade: 3 } }), 'Sanjay picks 3');
+      const sofiaTiles = await unwrap<any>(await sofia.request.get('/api/quest/tiles'), 'her tiles');
+      const sanjayTiles = await unwrap<any>(await sanjay.request.get(`/api/quest/tiles?user_id=${sofiaId}`), 'his tiles');
+      expect(sofiaTiles).toMatchObject({ picked_grade: 6, lead: { grade: 6, from: 'picked' }, ask_grade: false });
+      expect(sanjayTiles).toMatchObject({ picked_grade: 3, lead: { grade: 3, from: 'picked' }, ask_grade: false });
+      // Out of range is refused.
+      expect((await sofia.request.put('/api/quest/grade', { data: { grade: 9 } })).status()).toBe(422);
+    } finally {
+      if (gameId) await sofia.request.post(`/api/quest/games/${gameId}/end`);
+      await sofia.request.put('/api/quest/grade', { data: { grade: null } });
+      await sanjay.request.put('/api/quest/grade', { data: { grade: null } });
+      await setQuest(false);
+    }
+  });
 
   test('a non-admin cannot widen their view through the query string', async ({ as }) => {
     const parent = await as('parent');

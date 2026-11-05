@@ -8,6 +8,9 @@
 //
 // Phase 67 (H8): the week as seven dots with the 3-day target, "Welcome back" after a week away (never a
 // loss message), and the next badge within reach. An older Worker sends none of them: shown as before.
+//
+// Phase 73 (JF16): ONE headline from the current run (`progressHeadline`): the streak, "Start a streak", or
+// after a week away the welcome in its place -- never two that disagree. Badges once earned stay listed.
 import type { WeekDot } from '@tmi/shared';
 import { View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
@@ -20,11 +23,9 @@ import { useHabit } from './api';
 import {
   NO_BADGE_TEXT,
   WEEK_DAY_NAMES,
-  WELCOME_BACK_TEXT,
-  daysLine,
   earnedOf,
   nextBadgeLine,
-  streakLine,
+  progressHeadline,
   todayLabel,
   weekDotLabel,
 } from './habit-model';
@@ -36,6 +37,7 @@ export function MyProgressCard() {
   if (!data) return null;
   const earned = earnedOf(data);
   const played = data.played_today;
+  const headline = progressHeadline(data);
   return (
     <OutlinedCard testID="my-progress" style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.lg, gap: space.md }}>
@@ -62,22 +64,22 @@ export function MyProgressCard() {
               color={played ? theme.colors.primary : theme.tokens.mutedForeground}
             />
           </View>
+          {/* The one state; after a week away a kind word in place of the streak (`my-progress-welcome`). */}
           <View style={{ flex: 1, gap: 2 }}>
-            <Text testID="my-progress-streak" variant="titleSmall" style={{ fontWeight: '700' }}>
-              {streakLine(data.streak_weeks)}
+            <Text
+              testID={headline.welcome ? 'my-progress-welcome' : 'my-progress-streak'}
+              variant="titleSmall"
+              style={{ fontWeight: '700', color: headline.welcome ? theme.colors.primary : theme.colors.onSurface }}
+            >
+              {headline.title}
             </Text>
-            <Text testID="my-progress-days" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-              {daysLine(data.days_this_week)}
+            <Text testID="my-progress-detail" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+              {headline.detail}
             </Text>
           </View>
         </View>
         {/* Phase 67 (H8): this week as seven dots, Monday first; absent from an older Worker. */}
         {data.week ? <WeekStrip week={data.week} /> : null}
-        {data.welcome_back ? (
-          <Text testID="my-progress-welcome" variant="bodyMedium" style={{ color: theme.colors.primary, fontWeight: '600' }}>
-            {WELCOME_BACK_TEXT}
-          </Text>
-        ) : null}
         <View
           accessibilityLabel="Badges"
           style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs }}

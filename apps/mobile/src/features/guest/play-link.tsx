@@ -4,6 +4,7 @@
 // starts it as a single player's game in their space; anything else lands on the home.
 // Phase 72 (UI audit JF9): a friend's link to a tile guests cannot play is kept on the phone (`keepSent`), named on
 // the guest page and offered on the first home after sign-up, rather than dropped.
+// Phase 73 (JF13): nothing is remembered on the phone for Continue any more: the server's open game is it.
 import { parseTileCode, tileCode, tileGameRequest, tileWords, type QuestionBankLevelId } from '@tmi/shared';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -11,7 +12,6 @@ import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { LoadingState } from '@/components/state-views';
-import { useRememberLastQuest } from '@/features/play/play-api';
 import { startRequest } from '@/features/play/play-model';
 import { useCreateGame } from '@/features/quest/games-api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -85,9 +85,7 @@ export function TodayLink() {
 export function MemberTileStart() {
   const theme = useAppTheme();
   const { code = '' } = useLocalSearchParams<{ code: string }>();
-  const { organization } = useAuth();
   const create = useCreateGame();
-  const remember = useRememberLastQuest(organization?.slug);
   const [refusal, setRefusal] = useState<string | null>(null);
   const started = useRef(false);
   const shape = parseTileCode(code);
@@ -99,13 +97,12 @@ export function MemberTileStart() {
     create
       .mutateAsync(startRequest(request))
       .then((game) => {
-        remember({ label: tileCode(shape), request });
         router.replace({ pathname: '/quest/games/[gameId]', params: { gameId: game.data.id, from: 'home' } });
       })
       .catch((caught: unknown) =>
         setRefusal(caught instanceof ApiRequestError ? caught.message : 'That quest could not start.'),
       );
-  }, [shape, create, remember]);
+  }, [shape, create]);
 
   if (!shape) return <Redirect href="/" />;
   return (

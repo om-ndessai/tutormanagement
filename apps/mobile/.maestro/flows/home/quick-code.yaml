@@ -28,12 +28,32 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- scrollUntilVisible:
-    element:
-      id: quick-join_code
-    timeout: 15000
-- tapOn:
-    id: quick-join_code
+# Phase 74 (JF6, JF23): before she has played here, "Join with a code" is a door in the band, and the quick action is
+# not repeated beside it; once she has played, it is the quick action. Either opens the one code sheet. Whether she has
+# played here is the server's (the habit read the band uses).
+- evalScript: "${output.codeDoor = (json(http.get('http://localhost:8787/api/quest/me/habit', { headers: { 'X-Dev-User': 'sofia.okafor@gmail.com', 'X-Organization': 'chmi' } }).body).data || {}).played_before === false}"
+- runFlow:
+    when:
+      true: ${output.codeDoor}
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: home-door-code
+          timeout: 15000
+      - assertNotVisible:
+          id: quick-join_code
+      - tapOn:
+          id: home-door-code
+- runFlow:
+    when:
+      true: ${!output.codeDoor}
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: quick-join_code
+          timeout: 15000
+      - tapOn:
+          id: quick-join_code
 # The sheet with the code box -- not a red Render Error.
 - extendedWaitUntil:
     visible:

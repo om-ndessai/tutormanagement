@@ -29,7 +29,9 @@ import {
   type GameSummary,
   type GameTeamView,
   type GameView,
+  type QuestionBankLevelId,
   gameRefetchDelay,
+  gameWords,
 } from '@tmi/shared';
 
 import { gameShareText } from '@/features/play/play-model';
@@ -84,12 +86,29 @@ export function gameRowHost(
   return `${game.is_host ? 'You host' : `${game.host_first_name} hosts`} · ${game.teams} ${game.teams === 1 ? 'team' : 'teams'}`;
 }
 
-/** A games-list row's title: "G6 · 2 questions", "G5 and up, at random · 5 minutes". */
+/**
+ * Phase 73 (JF32): a game in words, never its code -- "Grade 6 Quick 2", "Grade 5 and up 5-minute dash" (shared
+ * `gameWords`). For a games-list row, a waiting game and Next up's invitation.
+ */
+export function gameWordsOf(
+  game: Pick<GameSummary, 'level_id' | 'mode' | 'question_count' | 'duration_seconds'> &
+    Partial<Pick<GameSummary, 'level_scope'>>,
+): string {
+  return gameWords({
+    level_id: game.level_id as QuestionBankLevelId,
+    level_scope: game.level_scope ?? 'level',
+    mode: game.mode,
+    question_count: game.question_count,
+    duration_seconds: game.duration_seconds,
+  });
+}
+
+/** A games-list row's title, in words (Phase 73): "Grade 6 Quick 2"; the code follows, small. */
 export function gameRowTitle(
   game: Pick<GameSummary, 'level_id' | 'mode' | 'question_count' | 'duration_seconds'> &
     Partial<Pick<GameSummary, 'level_scope'>>,
 ): string {
-  return `${gameLevelLabel(game, levelLabel)} · ${gameLengthLabel(game)}`;
+  return gameWordsOf(game);
 }
 
 /**
@@ -373,21 +392,30 @@ export function myTeam(game: Pick<GameView, 'teams' | 'me'>): GameTeamView | und
 }
 
 /**
+ * Phase 73 (JF16): a game nobody answered anything in -- cancelled in its lobby, or ended at once. It is not a
+ * result: no winner ("Nobody played"), no celebration. The server no longer places such a team either.
+ */
+export function nobodyPlayed(game: Pick<GameView, 'teams'>): boolean {
+  return game.teams.every((team) => team.answered === 0);
+}
+
+/**
  * Whether to celebrate (confetti and the success haptic): the game is finished and the reader's team
- * won -- or, a single player having nobody to beat, they got any answer right.
+ * won -- or, a single player having nobody to beat, they got any answer right. Never an empty game.
  */
 export function celebrates(game: Pick<GameView, 'status' | 'teams' | 'me' | 'players'>): boolean {
-  if (game.status !== 'finished') return false;
+  if (game.status !== 'finished' || nobodyPlayed(game)) return false;
   const mine = myTeam(game);
-  if (!mine) return false;
+  if (!mine || mine.answered === 0) return false;
   return game.players === 'single' ? mine.correct > 0 : mine.place === 1;
 }
 
-/** The results' headline: a single player's "N right, M points", else the winners. */
+/** The results' headline: a single player's "N right, M points", else the winners; "Nobody played" for an empty game. */
 export function resultsHeadline(
   game: Pick<GameView, 'players' | 'teams'>,
   mine: Pick<GameTeamView, 'correct' | 'score'> | undefined,
 ): string {
+  if (nobodyPlayed(game)) return 'Nobody played';
   if (game.players === 'single' && mine) return `${mine.correct} right, ${scoreLabel(mine.score)}`;
   return winnersLabel(game.teams);
 }

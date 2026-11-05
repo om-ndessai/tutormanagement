@@ -1,6 +1,10 @@
-# Phase 66 (H1, H3) in a space without Tutoring: Ines (student, admin and parent in `assess`). Her
-# learner section comes first (orderHats), then the office's and her children's; nothing of Tutoring's
-# (no To record, no dashboard link, no Sessions tab). Changes nothing.
+# Phase 66 (H1, H3) in a space without Tutoring: Ines (admin and Noor's parent in `assess`, Assessment alone).
+# Phase 74 (JF6, owner 2026-11-05): what she came for leads -- her child first, then the office, then her own learning
+# (the Assessment home; Quest is off here) -- in the server's order, which the home keeps (by the shared rule only
+# something today, such as an assessment waiting for review, brings the office forward). The band says nothing about
+# lessons; the office lists only what is above zero, else one line, "Nothing needs you right now." -- never "0
+# invitations not yet accepted"; Noor's card opens Noor. Nothing of Tutoring's (no To record, no dashboard link, no
+# Sessions tab). Changes nothing.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/reset-features.js
@@ -9,6 +13,11 @@ onFlowComplete:
 tags:
   - feature
 ---
+# The server's order (the contract the home keeps): parent, office, learner; and what the office has today.
+- evalScript: "${output.inesHome = json(http.get('http://localhost:8787/api/home', { headers: { 'X-Dev-User': 'ines.ferreira.assess@gmail.com', 'X-Organization': 'assess' } }).body).data}"
+- assertTrue: ${output.inesHome.hats.join(',') === 'parent,office,learner'}
+- evalScript: ${output.officeToday = (output.inesHome.office.assessments_open || 0) + output.inesHome.office.join_requests > 0}
+- evalScript: ${output.officeQuiet = !output.officeToday && output.inesHome.office.invitations === 0}
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -21,31 +30,77 @@ tags:
 - assertVisible:
     id: home-greeting
     text: 'Good (morning|afternoon|evening), Ines'
+# The band speaks for the hat that leads -- Noor (her week of play where Quest is on; here, "all caught up") or the
+# office -- and never of lessons.
+- assertVisible:
+    id: home-strip
+    text: '(Noor: .*|.*to review.*|.*asking to join.*)'
+- assertNotVisible:
+    id: home-strip
+    text: '.*[Ll]esson.*'
 - assertVisible:
     id: next-up
+# Her child first (the office first only when it has something today).
+- runFlow:
+    when:
+      true: ${!output.officeToday}
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: home-section-parent
+          visibilityPercentage: 1
+      - assertVisible: 'Your children'
+      - takeScreenshot: member-home-space
+      - scrollUntilVisible:
+          element:
+            id: home-section-office
+          visibilityPercentage: 1
+- runFlow:
+    when:
+      true: ${output.officeToday}
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: home-section-office
+          visibilityPercentage: 1
+      - takeScreenshot: member-home-space
+      - scrollUntilVisible:
+          element:
+            id: home-section-parent
+          visibilityPercentage: 1
+# The office: what is above zero, else one line.
 - scrollUntilVisible:
     element:
-      id: home-section-learner
-    visibilityPercentage: 1
-- scrollUntilVisible:
-    element: 'Your learning'
-    direction: UP
-- takeScreenshot: member-home-space
-- scrollUntilVisible:
-    element:
-      id: home-section-office
-    visibilityPercentage: 1
-- scrollUntilVisible:
-    element:
-      id: home-office-invitations
+      id: home-office
     centerElement: true
+- runFlow:
+    when:
+      true: ${output.officeQuiet}
+    commands:
+      - assertVisible:
+          id: home-office-nothing
+          text: 'Nothing needs you right now\.'
+      - assertNotVisible:
+          id: home-office-invitations
+      - assertNotVisible:
+          id: home-office-requests
+- runFlow:
+    when:
+      true: ${(output.inesHome.office.assessments_open || 0) > 0}
+    commands:
+      - assertVisible:
+          id: home-office-assessments
+          text: '[0-9]+ assessments? not yet reviewed'
+- assertNotVisible: '0 invitations? not yet accepted'
+- assertNotVisible: '0 asking to join'
 - assertNotVisible:
     id: home-office-to-record
 - assertNotVisible:
     id: home-dashboard-link
+# Then her own learning: the Assessment home.
 - scrollUntilVisible:
     element:
-      id: home-section-parent
+      id: home-section-learner
     visibilityPercentage: 1
 - assertNotVisible:
     id: home-section-tutor
@@ -54,3 +109,18 @@ tags:
 - assertNotVisible:
     id: tab-sessions
 - assertNotVisible: '.*\$[0-9].*'
+# Noor's card opens Noor (Progress is Tutoring's, and a parent's menu has no Users).
+- scrollUntilVisible:
+    element:
+      id: home-child-link-0d100000-0000-4000-8000-000000000003
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: home-child-link-0d100000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: screen-person
+    timeout: 15000
+- assertVisible: 'Noor Haddad'
+- assertNotVisible:
+    id: person-section-comments

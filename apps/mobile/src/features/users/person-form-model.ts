@@ -280,6 +280,35 @@ export function parsePreset(param: string | undefined): UserRole[] {
   );
 }
 
+// --- Phase 74 (JF31): a parent's words, per kind of space ---------------------------------------------
+
+/** "New parent": billed where the space bills (Tutoring), kept informed where it does not. */
+export function newParentLine(tutoring: boolean): string {
+  return tutoring
+    ? 'They sign in with this Google address and are billed for the lessons.'
+    : 'They look after this student, and sign in with this Google address.';
+}
+
+/** "Add a parent" (the person form for a guardian): the web's New family account words. */
+export function guardianFormLine(tutoring: boolean): string {
+  return tutoring
+    ? 'The parent or guardian: they sign in with this Google address, and are billed for the lessons.'
+    : 'The parent or guardian: they sign in with this Google address.';
+}
+
+/** Add a student's family step: "Who looks after this student?" where nobody is billed. */
+export function familyStepWords(tutoring: boolean): { title: string; description: string } {
+  return tutoring
+    ? {
+        title: 'Who is their family?',
+        description: 'The parent or guardian who is billed and kept informed. Add them here if they are new.',
+      }
+    : {
+        title: 'Who looks after this student?',
+        description: 'The parent or guardian who is kept informed. Add them here if they are new.',
+      };
+}
+
 /** The payment block's hint, from the web's three. */
 export function handlesHint(roles: readonly UserRole[]): string {
   const isTutor = roles.includes('tutor');

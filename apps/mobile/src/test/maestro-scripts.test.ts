@@ -3,7 +3,14 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { DEFAULT_GUEST_SETTINGS, JOIN_REQUEST_ROLES, PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
+import {
+  DAILY_NAME,
+  DEFAULT_GUEST_SETTINGS,
+  JOIN_REQUEST_ROLES,
+  PRIVACY_VERSION,
+  TERMS_VERSION,
+  questGradeSchema,
+} from '@tmi/shared';
 
 const script = readFileSync(join(__dirname, '../../.maestro/scripts/spaces.js'), 'utf8');
 
@@ -60,5 +67,26 @@ describe('.maestro/scripts/access.js (Phase 65)', () => {
 
   it('puts the mode back to Open, the shared default', () => {
     expect(accessScript).toContain("{ mode: 'open' }");
+  });
+});
+
+// Phase 73 (JF14, JF23): the play flows' hard-coded words and the grade they put back.
+const questEnd = readFileSync(join(__dirname, '../../.maestro/scripts/quest-games-end.js'), 'utf8');
+const playFlow = (name: string) => readFileSync(join(__dirname, '../../.maestro/flows/play', name), 'utf8');
+
+describe('.maestro/scripts/quest-games-end.js and the play flows (Phase 73)', () => {
+  it('forgets the grade picked on the row for everyone the play flows sign in as, grade.yaml\'s Sanjay too', () => {
+    expect(questEnd).toContain("call('PUT', '/quest/grade', { grade: null }, GRADED[g])");
+    expect(questGradeSchema.safeParse({ grade: null }).success).toBe(true);
+    expect(questEnd).toContain("'sanjay.patel.nc@gmail.com'");
+    expect(playFlow('grade.yaml')).toContain('PERSONA: sanjay.patel.nc@gmail.com');
+    for (const flow of ['grade.yaml', 'continue.yaml', 'play-home.yaml', 'habit.yaml']) {
+      expect(playFlow(flow)).toContain('runScript: ../../scripts/quest-games-end.js');
+    }
+  });
+
+  it('names the members\' Daily by its one name', () => {
+    expect(playFlow('habit.yaml')).toContain(`${DAILY_NAME} · Grade \${output.habitGrade}`);
+    expect(playFlow('habit.yaml')).not.toMatch(/Today's 5/);
   });
 });

@@ -392,6 +392,10 @@ CREATE TABLE org_members (
   -- in this space (HOME_FOCUSES), or NULL for automatic. Their own choice; nobody else reads it.
   home_pin             TEXT CHECK (home_pin IN ('quest', 'assessment', 'tutoring', 'family', 'office')),
 
+  -- Phase 73 (UI audit JF14): the grade this person picked on the Quest board's row here (1-8, or 0 for "Not in
+  -- school"), so the board and the Daily lead with it on every device. Their own choice; nobody else reads it.
+  quest_grade          INTEGER CHECK (quest_grade IS NULL OR quest_grade BETWEEN 0 AND 8),
+
   created_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at           TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 

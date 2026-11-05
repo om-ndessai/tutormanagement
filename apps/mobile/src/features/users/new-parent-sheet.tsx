@@ -4,7 +4,7 @@
 // still sent in ONE request at the end of the flow, so the guardian rule is unchanged. The same
 // three fields and the same shared schema as the web's NewParentDialog. Payment handles stay on the
 // parent's record (the full form), to keep this to three inputs.
-import { createUserRequestSchema } from '@tmi/shared';
+import { createUserRequestSchema, featureAllowed } from '@tmi/shared';
 import { useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 
@@ -19,10 +19,13 @@ import { space } from '@/theme/tokens';
 import { useCreateUser } from './api';
 import { FormTextField } from './form-text-field';
 import { announceGuardianCreated } from './guardian-bridge';
+import { newParentLine } from './person-form-model';
 
 export function NewParentSheet({ name: initialName = '' }: { name?: string }) {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
+  // Phase 74 (JF31): "billed" only where the space bills.
+  const tutoring = featureAllowed(organization, 'tutoring');
   const offline = useOffline();
   const createUser = useCreateUser();
   const [name, setName] = useState(initialName);
@@ -56,7 +59,7 @@ export function NewParentSheet({ name: initialName = '' }: { name?: string }) {
     <QuickSheet
       testID="new-parent"
       title="New parent"
-      description="They sign in with this Google address and are billed for the lessons."
+      description={newParentLine(tutoring)}
       primaryLabel="Add parent"
       primaryIcon="account-plus-outline"
       loading={createUser.isPending}

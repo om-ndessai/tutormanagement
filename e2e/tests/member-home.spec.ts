@@ -58,7 +58,10 @@ test.describe('the member home (Phase 66)', () => {
     const ines = await as('assessAdmin', { org: 'assess' });
     const home = await unwrap<any>(await ines.request.get('/api/home'), 'assess home');
     expect(home.tutor).toBeNull();
-    expect(home.hats[0]).toBe('learner');
+    // Phase 74 (JF6, owner 2026-11-05): where Tutoring is off, what the reader came for leads -- her child, then the
+    // office of the space she runs -- and playing follows.
+    expect(home.hats).toEqual(['parent', 'office', 'learner']);
+    expect(home.focus).toBe('family');
     expect((await ines.request.get('/api/home/tutor')).status()).toBe(403);
   });
 

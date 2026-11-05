@@ -8,18 +8,17 @@ const been = { tour_finished_at: '2026-09-01T12:00:00.000Z', details_confirmed_a
 
 describe('the welcome wizard decides', () => {
   it('opens itself for somebody who has never been through it, on any device', () => {
-    expect(decideOnboarding({ onboarding: never, deviceSeen: false, viewingAs: false })).toBe('wizard');
-    expect(decideOnboarding({ onboarding: never, deviceSeen: true, viewingAs: false })).toBe('wizard');
+    expect(decideOnboarding({ onboarding: never, viewingAs: false })).toBe('wizard');
   });
 
-  it('only offers the tour to somebody who has, on a device that has not shown it', () => {
-    expect(decideOnboarding({ onboarding: been, deviceSeen: false, viewingAs: false })).toBe('offer');
-    expect(decideOnboarding({ onboarding: been, deviceSeen: true, viewingAs: false })).toBe('none');
+  // Phase 74 (JF25): once per PERSON -- the server's record decides; a new device offers nothing.
+  it('offers nothing to somebody who has been through it, whatever the device', () => {
+    expect(decideOnboarding({ onboarding: been, viewingAs: false })).toBe('none');
   });
 
   it('never opens while an admin is viewing somebody else', () => {
-    expect(decideOnboarding({ onboarding: never, deviceSeen: false, viewingAs: true })).toBe('none');
-    expect(decideOnboarding({ onboarding: been, deviceSeen: false, viewingAs: true })).toBe('none');
+    expect(decideOnboarding({ onboarding: never, viewingAs: true })).toBe('none');
+    expect(decideOnboarding({ onboarding: been, viewingAs: true })).toBe('none');
   });
 
   it('tours the first dashboard a person sees, and returns an admin to the start', () => {
@@ -45,6 +44,9 @@ describe('the tour on a phone', () => {
     expect(placementOf('nav-schedule')).toEqual({ kind: 'tab', index: 1, within: 'Sessions' });
     expect(placementOf('nav-progress')).toEqual({ kind: 'tab', index: 2, within: null });
     expect(placementOf('nav-billing')).toEqual({ kind: 'tab', index: 3, within: 'More' });
+    // Phase 74 (JF25, JF31): a parent's menu has no Billing, so neither has their tour.
+    expect(TOUR_STEPS.parent.map((step) => step.target)).not.toContain('nav-billing');
+    expect(TOUR_STEPS.tutor.map((step) => step.target)).toContain('nav-billing');
     expect(placementOf('dash-analytics')).toEqual({ kind: 'view', id: 'dash-analytics' });
     expect(placementOf('getting-started')).toEqual({ kind: 'view', id: 'getting-started' });
   });

@@ -1,5 +1,4 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, ShuffleIcon, StarIcon, UserIcon, UsersIcon, XIcon } from 'lucide-react';
 import {
@@ -28,6 +27,7 @@ import { cn } from '@/lib/utils';
 import { QuestFrame } from './fullscreen-frame';
 import { Toggle } from './games-card';
 import { useCreateGame, useDeleteGameFavorite, useGameFavorites, useGameLevels, useSaveGameFavorite } from './games-api';
+import { useExitTo, useGoToGame } from './play-origin';
 
 // Phase 47 (docs/quest-games-g2-plan.md): starting a game is a wizard -- since
 // 2026-10-23 (owner) of four steps: Select level (compact level tiles, Random
@@ -132,7 +132,9 @@ export function StartGamePage() {
   const levels = useGameLevels();
   const favorites = useGameFavorites();
   const create = useCreateGame();
-  const navigate = useNavigate();
+  // Phase 73 (JF36): the wizard and the game it makes both go back to where the wizard was opened.
+  const goToGame = useGoToGame();
+  const exitTo = useExitTo();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<Draft>(START);
   const set = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
@@ -154,15 +156,15 @@ export function StartGamePage() {
   async function go() {
     try {
       const game = await create.mutateAsync(request);
-      // Replace the wizard: Back leads to Quest, never into a made game's settings.
-      navigate(`/quest/games/${game.data.id}`, { replace: true });
+      // Replace the wizard: Back leads to where it was opened, never into a made game's settings.
+      goToGame(game.data.id, { replace: true });
     } catch (caught) {
       toast.error(message(caught, 'Could not start the game.'));
     }
   }
 
   return (
-    <QuestFrame title="New Quest" shortTitle="New Quest" testId="game-wizard">
+    <QuestFrame title="New Quest" shortTitle="New Quest" testId="game-wizard" exitTo={exitTo}>
       <ol className="flex flex-wrap gap-2 text-xs" aria-label="Steps">
         {STEPS.map((label, i) => (
           <li

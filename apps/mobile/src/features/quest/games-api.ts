@@ -7,6 +7,8 @@
 // while `active` (the game screen is focused) and the game is not finished. TanStack's focusManager
 // follows AppState (query-provider.tsx), so a backgrounded app stops polling too
 // (`refetchIntervalInBackground` stays false), and a finished game is never polled again.
+// Phase 73 (JF13): `gameKeys.open` is Continue's read (play-api.ts `useOpenGame`); a start, a join and
+// every action mark it stale, so Home reads it again when it is back in front -- never while a game is.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
@@ -33,6 +35,8 @@ export const gameKeys = {
   list: ['quest-games', 'list'] as const,
   levels: ['quest-games', 'levels'] as const,
   favorites: ['quest-games', 'favorites'] as const,
+  /** Phase 73: the reader's open game, else what "again" would start (`GET /quest/games/open`). */
+  open: ['quest-games', 'open'] as const,
   game: (id: string) => ['quest-games', 'game', id] as const,
   results: (id: string, team: string | null) => ['quest-games', 'results', id, team] as const,
 };
@@ -61,6 +65,7 @@ export function useCreateGame() {
     onSuccess: (game) => {
       queryClient.setQueryData(gameKeys.game(game.data.id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
+      void queryClient.invalidateQueries({ queryKey: gameKeys.open });
     },
   });
 }
@@ -106,6 +111,7 @@ export function useJoinGame() {
     onSuccess: (game) => {
       queryClient.setQueryData(gameKeys.game(game.data.id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
+      void queryClient.invalidateQueries({ queryKey: gameKeys.open });
     },
   });
 }
@@ -156,6 +162,8 @@ export function useGameAction(id: string) {
     onSuccess: (game) => {
       if (game.data) queryClient.setQueryData(gameKeys.game(id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
+      // Continue's words move with each answer, a leave and the end; read again once Home is in front.
+      void queryClient.invalidateQueries({ queryKey: gameKeys.open });
     },
   });
 }

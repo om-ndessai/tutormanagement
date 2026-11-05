@@ -211,5 +211,6 @@ tags:
     timeout: 15000
 - assertVisible:
     id: game-list
-- assertVisible: '.*G6 and up, at random · 2 questions.*'
+# Phase 73 (JF32): the row says the game in words, its code after.
+- assertVisible: '.*Grade 6 and up Quick 2.*'
 - assertVisible: '.*Single player.*'

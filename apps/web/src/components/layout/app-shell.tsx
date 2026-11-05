@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { featureOn, type FeatureSet } from '@tmi/shared';
+import { featureOn, seesPeoplePages, type FeatureSet } from '@tmi/shared';
 import {
   ActivityIcon,
   BookOpenIcon,
@@ -43,6 +43,8 @@ import { useBrand } from '@/providers/brand-provider';
 const NAV_ITEMS: (PaletteDestination & {
   end: boolean;
   admin?: boolean;
+  /** Phase 74 (JF31): the people pages -- for admins and tutors only (`seesPeoplePages`); a link still opens them. */
+  people?: boolean;
   /** Phase 50: the feature set it belongs to; shown only while that set is on here. */
   set?: FeatureSet;
   /** A small label beside it, such as "Beta". */
@@ -51,8 +53,8 @@ const NAV_ITEMS: (PaletteDestination & {
   // Phase 66: the member home first; the role dashboards (with Finance) where Tutoring is on.
   { to: '/', label: 'Home', icon: HouseIcon, end: true, keywords: ['home', 'next', 'today'] },
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboardIcon, end: false, set: 'tutoring', keywords: ['overview', 'analytics', 'finance'] },
-  { to: '/users', label: 'Users', icon: UsersIcon, end: false, keywords: ['people', 'students', 'tutors', 'parents', 'family'] },
-  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, set: 'tutoring', keywords: ['assignments', 'tutor', 'student'] },
+  { to: '/users', label: 'Users', icon: UsersIcon, end: false, people: true, keywords: ['people', 'students', 'tutors', 'parents', 'family'] },
+  { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, people: true, set: 'tutoring', keywords: ['assignments', 'tutor', 'student'] },
   { to: '/sessions', label: 'Sessions', icon: BookOpenIcon, end: false, set: 'tutoring', keywords: ['lessons', 'record', 'notes', 'drafts'] },
   { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, set: 'tutoring', keywords: ['plans', 'assessments', 'goals'] },
   // Phase 38, in beta: answers written on a canvas. Only while the organization has it on.
@@ -62,7 +64,7 @@ const NAV_ITEMS: (PaletteDestination & {
   { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, set: 'tutoring', keywords: ['calendar', 'cancel', 'weekly'] },
   // Every tutor's and student's places (Phase 33): admins only.
   { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, set: 'tutoring', keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },
-  { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, set: 'tutoring', keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
+  { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, people: true, set: 'tutoring', keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
   { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, set: 'tutoring', keywords: ['notes', 'messages'] },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false, keywords: ['me', 'account'] },
@@ -71,12 +73,18 @@ const NAV_ITEMS: (PaletteDestination & {
   { to: '/organization', label: 'Space settings', icon: Building2Icon, end: false, admin: true, keywords: ['settings', 'tin', 'payer', 'organization', 'code', 'join'] },
 ];
 
-/** The menu, less what this reader's roles do not reach. */
+/**
+ * The menu, from the reader's roles: what they do not reach is left out. A student or a parent never sees Users,
+ * Pairings or Billing (owner, 2026-11-05; JF31) -- a parent reaches their child from the home's child card -- though a
+ * link to one still opens it.
+ */
 function useNavItems() {
   const { user, organization } = useAuth();
-  const admin = Boolean(user?.roles.includes('admin'));
+  const roles = user?.roles ?? [];
+  const admin = roles.includes('admin');
+  const people = seesPeoplePages(roles);
   return NAV_ITEMS.filter(
-    (item) => (!item.admin || admin) && (!item.set || featureOn(organization, item.set)),
+    (item) => (!item.admin || admin) && (!item.people || people) && (!item.set || featureOn(organization, item.set)),
   );
 }
 

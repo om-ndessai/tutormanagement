@@ -14,6 +14,8 @@ import {
   type JoinGameInput,
 } from '@tmi/shared';
 
+import { memberHomeKey } from '@/features/home/api';
+import { openGameKey } from '@/features/play/play-api';
 import { ApiRequestError, apiClient } from '@/lib/api-client';
 
 // Phase 46: Quest Games. docs/quest-games-plan.md. Phase 47 (the start
@@ -52,6 +54,8 @@ export function useCreateGame() {
     onSuccess: (game) => {
       queryClient.setQueryData(gameKeys.game(game.data.id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
+      // Phase 73 (JF13): Continue now names this game.
+      queryClient.removeQueries({ queryKey: openGameKey });
     },
   });
 }
@@ -96,6 +100,7 @@ export function useJoinGame() {
     onSuccess: (game) => {
       queryClient.setQueryData(gameKeys.game(game.data.id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
+      queryClient.removeQueries({ queryKey: openGameKey });
     },
   });
 }
@@ -140,6 +145,10 @@ export function useGameAction(id: string) {
     onSuccess: (game) => {
       if (game.data) queryClient.setQueryData(gameKeys.game(id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
+      // Phase 73 (JF13): where the reader is in the game moved (or they left it, or it ended). Dropped rather than
+      // refetched: nothing reads it while the game is on screen, so this costs no request until the home is back,
+      // and the home never shows the old words meanwhile.
+      queryClient.removeQueries({ queryKey: openGameKey });
     },
   });
 }
@@ -153,6 +162,9 @@ export function useGameResults(id: string, team: string | null, enabled: boolean
       // Phase 64: a finished game moves My progress and a tile's best, so they are read again on the way home.
       void queryClient.invalidateQueries({ queryKey: ['quest', 'habit'] });
       void queryClient.invalidateQueries({ queryKey: ['quest', 'tiles'] });
+      // Phase 73 (JF16, JF36): and the home itself -- the day counts, Next up moves, Continue offers "again".
+      queryClient.removeQueries({ queryKey: openGameKey });
+      void queryClient.invalidateQueries({ queryKey: memberHomeKey });
       return results;
     },
     enabled,

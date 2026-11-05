@@ -1,5 +1,8 @@
 # Phase 66: the role dashboards (Tutoring and Finance, the role chips, the admin's "view as") left Home
 # for More → Dashboard. Opens it from wherever the tabs are, and waits for the page.
+# Phase 74 (JF24): the page opens on the hat the home leads with (else the role last chosen there), which for
+# someone with several roles can change with the day -- a tutor's lesson today brings the tutor hat forward. A
+# flow about one role's dashboard names it (ROLE: admin, tutor, parent, student) and it is chosen on the page.
 appId: ${APP_ID}
 ---
 - tapOn:
@@ -17,3 +20,15 @@ appId: ${APP_ID}
     visible:
       id: screen-dashboard-analytics
     timeout: 15000
+- runFlow:
+    when:
+      true: ${typeof ROLE !== 'undefined' && !!ROLE}
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: dashboard-role-${ROLE}
+          timeout: 15000
+      - tapOn:
+          id: dashboard-role-${ROLE}
+      - waitForAnimationToEnd:
+          timeout: 3000

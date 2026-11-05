@@ -80,6 +80,8 @@ test.describe('P17-P18, P20: streak, badges and best', () => {
       await sofia.getByTestId('play-grade-4').click();
       await expect(sofia.getByTestId('play-best-G4Q5')).toBeVisible();
     } finally {
+      // Phase 73: the grade picked on the row is kept on the server; forget it again.
+      await sofia.request.put('/api/quest/grade', { data: { grade: null } });
       await questOn(admin, false);
     }
   });

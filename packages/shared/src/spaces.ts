@@ -89,6 +89,14 @@ export const joinRequestSchema = spaceCodeSchema.extend({
 });
 export type JoinRequestInput = z.input<typeof joinRequestSchema>;
 
+/**
+ * Phase 74 (JF31, owner 2026-11-05): the menu's people pages -- Users, Pairings, Billing -- are for admins and tutors.
+ * A student or a parent never sees them (a parent reaches their child from the home's child card).
+ */
+export function seesPeoplePages(roles: readonly string[]): boolean {
+  return roles.includes('admin') || roles.includes('tutor');
+}
+
 /** Words a self-serve space may not take in its name: it must never pass for the platform or an institute. */
 export const RESERVED_SPACE_WORDS = ['aimtrue', 'official', 'institute', 'platform', 'admin', 'support'];
 

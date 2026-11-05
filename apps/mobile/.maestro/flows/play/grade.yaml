@@ -1,0 +1,103 @@
+# Phase 73 (JF14; owner 2026-11-05): "Which grade?", asked once, only when nothing says. Quest on in chmi;
+# Sanjay is a student there with no Quest level recorded, nothing played and no age the platform knows (a
+# space added him), and no grade picked (forgotten before and after, quest-games-end.js). His board asks
+# "Which grade?" above the grade row: Grade 1 ... Grade 8 (the grades his tiles reach) and "Not in school".
+# "Not now" hides it for this run of the app only: opened again, it asks again. He picks Grade 6: the question
+# goes, the row leads with Grade 6, and so it does after the app is opened again -- the grade is kept on the
+# server for him in this space (PUT /quest/grade), not on the phone.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sanjay.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# His learner section holds the Quest board; the question sits above its grade row.
+- scrollUntilVisible:
+    element:
+      id: play-ask-grade
+    centerElement: true
+    timeout: 60000
+- assertVisible: 'Which grade\?'
+- assertVisible:
+    id: play-ask-grade-6
+    text: 'Grade 6'
+- assertVisible:
+    id: play-ask-grade-0
+    text: 'Not in school'
+- takeScreenshot: grade-ask
+# "Not now": gone for this run, nothing saved.
+- tapOn:
+    id: play-ask-grade-later
+- assertNotVisible:
+    id: play-ask-grade
+# Opened again (a new run of the app): asked again.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sanjay.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-ask-grade-6
+    centerElement: true
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-ask-grade-6
+# The question goes, and the row leads with Grade 6.
+- extendedWaitUntil:
+    notVisible:
+      id: play-ask-grade
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: play-grade-6
+    centerElement: true
+    timeout: 20000
+- assertVisible:
+    id: play-grade-6
+    selected: true
+- takeScreenshot: grade-picked
+# Opened again: the server kept it -- Grade 6 leads, and nothing is asked.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sanjay.patel.nc@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-grade-6
+    centerElement: true
+    timeout: 60000
+- assertVisible:
+    id: play-grade-6
+    selected: true
+- assertNotVisible:
+    id: play-ask-grade
+- scrollUntilVisible:
+    element:
+      id: play-tile-G6Q5
+    centerElement: true
+    timeout: 20000
+- takeScreenshot: grade-reopened

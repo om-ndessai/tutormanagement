@@ -42,6 +42,15 @@ describe('role selector', () => {
     expect(screen.queryByTestId('dashboard-role-tutor')).toBeNull();
   });
 
+  // Phase 74 (JF24): the switch says what it is, on screen ("Viewing as"), and keeps its spoken name.
+  it('shows its label beside the chips when given one', async () => {
+    await renderWithProviders(<RoleSelector roles={['parent', 'tutor']} current="parent" label="Viewing as" />);
+    expect(screen.getByTestId('dashboard-role-label')).toHaveTextContent('Viewing as');
+    expect(screen.getByLabelText('Dashboard role')).toBeTruthy();
+    await renderWithProviders(<RoleSelector roles={['tutor']} current="tutor" label="Viewing as" />);
+    expect(screen.queryByTestId('dashboard-role-label')).toBeNull();
+  });
+
   it('switches role through the params', async () => {
     await renderWithProviders(<RoleSelector roles={['parent', 'tutor']} current="tutor" />);
     await fireEvent.press(screen.getByTestId('dashboard-role-parent'));

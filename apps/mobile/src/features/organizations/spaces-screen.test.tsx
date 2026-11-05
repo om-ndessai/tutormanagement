@@ -94,7 +94,7 @@ describe('SpacesScreen (Phase 60, S5 and S7)', () => {
     await renderWithProviders(<SpacesScreen />);
     expect(screen.getByTestId('spaces-title')).toHaveTextContent('Choose a space');
     expect(screen.getByTestId('spaces-subtitle')).toHaveTextContent(
-      'Signed in as priya@example.com. You land in the space you opened last. Each tab can be in a different one.',
+      'Signed in as priya@example.com. You land in the space you opened last.',
     );
     expect(screen.getByText('YOUR SPACES')).toBeTruthy();
     expect(screen.getByTestId('org-chmi')).toBeTruthy();

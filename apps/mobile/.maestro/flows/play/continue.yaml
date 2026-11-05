@@ -1,0 +1,137 @@
+# Phase 73 (JF13, JF16, JF36; owner 2026-11-05): Continue resumes the open game. Quest on in chmi; Sofia starts
+# G6Q5 from her Quest board and sees question 1, then leaves to Home. Continue is that game, read from the
+# server, in words with where she is -- "Continue Grade 6 Quick 5", "Question 1 of 5 · 0 points" -- and it
+# opens the SAME game: no doors (a new game would count down), question 1 still. She ends it, asked first;
+# nobody answered anything, so the results say "Nobody played" and nothing is celebrated. Exit brings her back
+# Home, where Continue now offers the game's settings again: "Play Grade 6 Quick 5 again". The switches, and
+# the grade she picked, are put back at the end (quest-games-end.js).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: play-home
+    visibilityPercentage: 1
+    timeout: 15000
+# Grade 6 on the Quest board, then its Quick 5.
+- scrollUntilVisible:
+    element:
+      id: play-grade-6
+    centerElement: true
+    speed: 15
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-grade-6
+- scrollUntilVisible:
+    element:
+      id: play-tile-start-G6Q5
+    centerElement: true
+    speed: 15
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: play-tile-start-G6Q5
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 5'
+    timeout: 25000
+# Leave to Home: the game was opened there (from=home).
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+# Continue: the open game in words, with where she is in it -- never "G6Q5", never a replay.
+- scrollUntilVisible:
+    element:
+      id: play-continue
+    direction: UP
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: play-continue-where
+      text: '(?i)question 1 of 5 · 0 points'
+    timeout: 15000
+- assertVisible:
+    id: play-continue
+    text: '.*Continue Grade 6 Quick 5.*'
+- assertNotVisible: '.*Play Grade 6 Quick 5 again.*'
+- takeScreenshot: continue-open-game
+# The board's button can sit under the tab bar: bring it to the middle first.
+- scrollUntilVisible:
+    element:
+      id: play-continue
+    centerElement: true
+- tapOn:
+    id: play-continue
+# The same game, resumed: no doors' countdown (a new game would have one), and still question 1.
+- extendedWaitUntil:
+    visible:
+      id: game-question-number
+      text: '(?i)Question 1 of 5'
+    timeout: 20000
+- assertNotVisible:
+    id: game-countdown-number
+- takeScreenshot: continue-resumed
+# End it, asked first.
+- scrollUntilVisible:
+    element:
+      id: game-end
+    centerElement: true
+- tapOn:
+    id: game-end
+- extendedWaitUntil:
+    visible: 'End the game now\?'
+    timeout: 5000
+- tapOn: 'End the game'
+# Nothing was answered: no winner, no celebration.
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      text: 'Nobody played'
+    timeout: 15000
+- assertNotVisible:
+    id: game-confetti
+- assertNotVisible: '.*wins!.*'
+- assertNotVisible: '.*You won.*'
+- takeScreenshot: continue-nobody-played
+# Back where the game was opened: Home.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+# No game open now: Continue offers its settings again, under their own name.
+- scrollUntilVisible:
+    element:
+      id: play-continue
+    direction: UP
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: play-continue
+      text: '.*Play Grade 6 Quick 5 again.*'
+    timeout: 15000
+- assertNotVisible:
+    id: play-continue-where
+- takeScreenshot: continue-again

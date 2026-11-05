@@ -3,10 +3,18 @@
 // left to record, reviews waiting and the week. Office: what needs it and the way to the dashboards.
 // Parent: a card per child. Learner: their next lesson, the Play home and the Assessment home. No money
 // on any of them: a parent's balances are on the Dashboard (More), never here.
+//
+// Phase 74 (docs/journey-fixes-plan.md, owner 2026-11-05): the office lists only what is above zero -- lessons to
+// record, invitations not yet accepted, people asking to join, assessments not yet reviewed (a link to Assessments) --
+// and with none, one line, "Nothing needs you right now." (JF6); a child's card where Tutoring is off opens the child
+// (`/people/[id]`); lesson lines say where (JF17), and a tap on the learner's lesson line starts practice for it where
+// Quest is on; the board is told what Next up shows, so its own Daily or Continue is the quiet twin (JF23).
 import {
   featureOn,
   HOME_HAT_LABELS,
+  lessonDayWords,
   playWithRequest,
+  practiseRequest,
   type HomeChild,
   type HomeHat,
   type MemberHome,
@@ -38,6 +46,9 @@ import {
   lessonWithStudent,
   lessonWithTutor,
   nextUpShowsLesson,
+  OFFICE_NOTHING_LINE,
+  officeNeeds,
+  openAssessmentsLine,
   reviewsLine,
   whenWords,
 } from './member-home-model';
@@ -171,40 +182,51 @@ function OfficeSection({ home, assessment }: { home: MemberHome; assessment: boo
   const { organization } = useAuth();
   const office = home.office!;
   const tutoring = featureOn(organization, 'tutoring');
+  const needs = officeNeeds(office, tutoring);
   return (
     <Section hat="office">
-      <Card>
-        {tutoring ? (
+      <Card testID="home-office">
+        {/* Phase 74 (JF6): each count above zero once; with none, one line rather than a column of zeros. */}
+        {needs.nothing ? <Muted testID="home-office-nothing">{OFFICE_NOTHING_LINE}</Muted> : null}
+        {needs.toRecord ? (
           <LinkRow
             testID="home-office-to-record"
-            label={
-              office.to_record_count > 0
-                ? `${plural(office.to_record_count, 'lesson')} to record`
-                : 'Every lesson is recorded'
-            }
+            label={`${plural(office.to_record_count, 'lesson')} to record`}
             to="/sessions"
             icon="pencil-outline"
           />
         ) : null}
-        {tutoring
+        {needs.toRecord
           ? office.to_record.slice(0, 3).map((row, index) => (
               <Muted key={`${row.occurs_on}-${row.start_time}-${index}`} testID={`home-office-to-record-line-${index}`}>
                 {`${capitalise(whenWords(row, home.day))} · ${firstOf(row.student_name)} with ${firstOf(row.tutor_name)}`}
               </Muted>
             ))
           : null}
-        <LinkRow
-          testID="home-office-invitations"
-          label={`${plural(office.invitations, 'invitation')} not yet accepted`}
-          to="/people"
-          icon="email-outline"
-        />
-        <LinkRow
-          testID="home-office-requests"
-          label={`${office.join_requests} asking to join`}
-          to="/people"
-          icon="account-plus-outline"
-        />
+        {needs.invitations ? (
+          <LinkRow
+            testID="home-office-invitations"
+            label={`${plural(office.invitations, 'invitation')} not yet accepted`}
+            to="/people"
+            icon="email-outline"
+          />
+        ) : null}
+        {needs.requests ? (
+          <LinkRow
+            testID="home-office-requests"
+            label={`${office.join_requests} asking to join`}
+            to="/people"
+            icon="account-plus-outline"
+          />
+        ) : null}
+        {needs.assessments ? (
+          <LinkRow
+            testID="home-office-assessments"
+            label={openAssessmentsLine(office.assessments_open!)}
+            to="/assessments"
+            icon="clipboard-check-outline"
+          />
+        ) : null}
         {tutoring ? (
           <LinkRow
             testID="home-dashboard-link"
@@ -248,14 +270,19 @@ function ChildCard({
   const fallback = childCardFallback({ tutoring, quest, assessment });
   return (
     <OutlinedCard testID={`home-child-${id}`} style={{ borderRadius: radius.lg }}>
-      {/* Progress and lessons are Tutoring's: without it the card is not a link (the route answers 403). */}
+      {/* Progress and lessons are Tutoring's (that route answers 403 without it): there the card opens the child's
+          own page instead (Phase 74, JF6) -- the parent's way to their child, as Users is not in their menu. */}
       <Pressable
-        accessibilityRole={tutoring ? 'button' : undefined}
-        accessibilityLabel={tutoring ? `${child.first_name}'s progress` : undefined}
-        disabled={!tutoring}
+        testID={`home-child-link-${id}`}
+        accessibilityRole="button"
+        accessibilityLabel={tutoring ? `${child.first_name}'s progress` : child.first_name}
         onPress={() => {
           haptics.selection();
-          router.navigate({ pathname: '/progress/[studentId]', params: { studentId: id } }, { withAnchor: true });
+          if (tutoring) {
+            router.navigate({ pathname: '/progress/[studentId]', params: { studentId: id } }, { withAnchor: true });
+          } else {
+            router.navigate({ pathname: '/people/[id]', params: { id } });
+          }
         }}
         style={({ pressed }) => ({ padding: space.lg, gap: space.xs, opacity: pressed ? 0.8 : 1 })}
       >
@@ -263,7 +290,7 @@ function ChildCard({
           <Text variant="titleMedium" style={{ flex: 1, fontWeight: '700' }}>
             {child.first_name}
           </Text>
-          {tutoring ? <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} /> : null}
+          <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} />
         </View>
         {tutoring ? (
           <Text testID={`home-child-next-${id}`} variant="bodyMedium">
@@ -306,7 +333,7 @@ function ChildCard({
             icon="account-multiple-outline"
             disabled={pending}
             contentStyle={{ minHeight: MIN_TARGET }}
-            onPress={() => void start(`With ${child.first_name}`, playWithRequest(playLevel, id))}
+            onPress={() => void start(playWithRequest(playLevel, id))}
           >
             {childPlayLabel(child, today)}
           </Button>
@@ -366,29 +393,57 @@ function LearnerSection({
   item,
   quest,
   assessment,
+  practiceLevelId,
 }: {
   home: MemberHome;
   item: NextUp | null;
   quest: boolean;
   assessment: boolean;
+  practiceLevelId: string | null;
 }) {
+  const theme = useAppTheme();
+  const { start, pending } = useStartQuest();
   // Next up already names the lesson when it is the learner's next lesson: not twice. With nothing at all
   // (no lesson shown, Quest and Assessment off), one muted line rather than an empty heading.
   const { next, empty } = learnerSectionParts(home.learner?.next_lesson, item, { quest, assessment });
+  // Phase 74 (JF17): a tap on the lesson line starts five questions for it, where Quest is on.
+  const practise = quest && practiceLevelId ? practiceLevelId : null;
   return (
     <Section hat="learner">
       {empty ? <Muted testID="home-learner-empty">{LEARNER_EMPTY_LINE}</Muted> : null}
       {next ? (
         <Card testID="home-learner-next-card">
           <Muted>Your next lesson</Muted>
-          <Text testID="home-learner-next" variant="titleMedium" style={{ fontWeight: '700' }}>
-            {capitalise(lessonWithTutor(next, home.day))}
-          </Text>
+          <Pressable
+            testID="home-learner-next-line"
+            accessibilityRole={practise ? 'button' : undefined}
+            accessibilityHint={practise ? `Practise five questions before ${lessonDayWords(next.occurs_on, home.day)}` : undefined}
+            disabled={!practise || pending}
+            onPress={() => practise && void start(practiseRequest(practise))}
+            style={({ pressed }) => ({
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: space.sm,
+              minHeight: MIN_TARGET,
+              opacity: pressed ? 0.7 : 1,
+            })}
+          >
+            <Text testID="home-learner-next" variant="titleMedium" style={{ flex: 1, fontWeight: '700' }}>
+              {capitalise(lessonWithTutor(next, home.day))}
+            </Text>
+            {practise ? <Icon source="target" size={20} color={theme.colors.primary} /> : null}
+          </Pressable>
+          {practise ? <Muted testID="home-learner-practise">Tap to practise five questions for it.</Muted> : null}
         </Card>
       ) : null}
       {/* Phase 68 (H4): an assessment-led home puts Assessments before the Quest board. */}
       {assessment && home.focus === 'assessment' ? <AssessmentHome /> : null}
-      {quest ? <PlayHome /> : null}
+      {/* Phase 74: the band's Play door scrolls here; the board is told what Next up shows (JF23). */}
+      {quest ? (
+        <TourTarget id="home-board">
+          <PlayHome nextUp={item?.kind ?? null} />
+        </TourTarget>
+      ) : null}
       {assessment && home.focus !== 'assessment' ? <AssessmentHome /> : null}
     </Section>
   );
@@ -398,7 +453,18 @@ function LearnerSection({
  * The sections, in the hats' order. The Assessment home appears once: with the learner, else (where
  * Tutoring is off, as the Phase 50 space home had it) with the first of the office's and the parent's.
  */
-export function HomeSections({ home, hats, item }: { home: MemberHome; hats: HomeHat[]; item: NextUp | null }) {
+export function HomeSections({
+  home,
+  hats,
+  item,
+  practiceLevelId = null,
+}: {
+  home: MemberHome;
+  hats: HomeHat[];
+  item: NextUp | null;
+  /** Phase 74: where the learner's practice for a lesson starts (Next up's lead level). */
+  practiceLevelId?: string | null;
+}) {
   const { organization } = useAuth();
   const quest = featureOn(organization, 'quest');
   const assessmentOn = featureOn(organization, 'assessment');
@@ -437,6 +503,7 @@ export function HomeSections({ home, hats, item }: { home: MemberHome; hats: Hom
                 item={item}
                 quest={quest}
                 assessment={assessmentHat === 'learner'}
+                practiceLevelId={practiceLevelId}
               />
             );
         }

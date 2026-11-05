@@ -1,9 +1,9 @@
 // The menu follows the organization's switches as the web's does (Phase 38): the Assessment item,
 // with its Beta badge, only while the organization has it on -- for every role; and (Phase 42) Quest,
 // only while the organization has Question Quest on.
-import { featureSetOfPath } from '@tmi/shared';
+import { featureSetOfPath, seesPeoplePages } from '@tmi/shared';
 
-import { NAV_ITEMS, visibleNavItems } from './nav-items';
+import { NAV_ITEMS, PEOPLE_PAGE_ROLES, visibleNavItems } from './nav-items';
 
 describe('visibleNavItems', () => {
   const labels = (roles: string[], on: boolean) =>
@@ -58,6 +58,24 @@ describe('visibleNavItems', () => {
     expect(labels(['admin'], true)).toContain('Space settings');
   });
 
+  // Phase 74 (JF31, owner 2026-11-05): the menu is built from the reader's hats -- Users, Pairings and Billing are for
+  // admins and tutors (shared `seesPeoplePages`); a student or a parent never sees them (the routes still open by link).
+  it('lists Users, Pairings and Billing only for admins and tutors', () => {
+    const people = ['Users', 'Pairings', 'Billing'];
+    const shown = (roles: string[]) => visibleNavItems(roles, {}).map((item) => item.label);
+    for (const roles of [['admin'], ['tutor'], ['tutor', 'parent'], ['student', 'admin']]) {
+      expect(shown(roles)).toEqual(expect.arrayContaining(people));
+    }
+    for (const roles of [['parent'], ['student'], ['parent', 'student']]) {
+      for (const label of people) expect(shown(roles)).not.toContain(label);
+    }
+    // One rule: the menu's roles are the shared helper's.
+    for (const roles of [['admin'], ['tutor'], ['parent'], ['student'], []]) {
+      expect(roles.some((role) => (PEOPLE_PAGE_ROLES as readonly string[]).includes(role))).toBe(seesPeoplePages(roles));
+    }
+    for (const item of NAV_ITEMS.filter((entry) => people.includes(entry.label))) expect(item.roles).toBe(PEOPLE_PAGE_ROLES);
+  });
+
   it('lists the Dashboard (the role dashboards, Phase 66) for every role; Home is the tab', () => {
     const dashboard = (roles: string[]) =>
       visibleNavItems(roles, {}).filter((item) => item.label === 'Dashboard' && !item.tab);
@@ -100,11 +118,11 @@ describe('visibleNavItems', () => {
       ]);
     });
 
-    it('gives a parent there Home, Assessment, Users, Activity and My profile', () => {
+    // Phase 74 (JF31, owner 2026-11-05): a parent's menu has no Users (they reach their child from the home).
+    it('gives a parent there Home, Assessment, Activity and My profile', () => {
       expect(visibleNavItems(['parent'], ASSESS_ONLY).map((item) => item.label)).toEqual([
         'Home',
         'Assessment',
-        'Users',
         'Activity',
         'My profile',
       ]);

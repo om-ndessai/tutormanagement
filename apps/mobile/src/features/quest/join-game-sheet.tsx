@@ -23,11 +23,12 @@ import { JOIN_RUNNING_TEXT, joinClosedText, lookupLine } from './game-model';
 import { JoinChoices } from './game-join-choices';
 import { useLookupGame } from './games-api';
 
-function openGame(gameId: string) {
-  router.replace({ pathname: '/quest/games/[gameId]', params: { gameId } });
+/** Phase 73 (JF36): the game keeps where the sheet was opened from (`from=home`), for its Exit. */
+function openGame(gameId: string, from?: string) {
+  router.replace({ pathname: '/quest/games/[gameId]', params: from ? { gameId, from } : { gameId } });
 }
 
-export function JoinGameSheet({ code }: { code: string }) {
+export function JoinGameSheet({ code, from }: { code: string; from?: string }) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
   const lookup = useLookupGame();
@@ -49,13 +50,13 @@ export function JoinGameSheet({ code }: { code: string }) {
     lookup
       .mutateAsync(valid)
       .then((result) => {
-        if (result.data.joined) openGame(result.data.game_id);
+        if (result.data.joined) openGame(result.data.game_id, from);
         else setFound(result.data);
       })
       .catch((caught: unknown) =>
         setRefusal(caught instanceof ApiRequestError ? caught.message : 'Could not find that code.'),
       );
-  }, [valid, lookup]);
+  }, [valid, lookup, from]);
 
   return (
     <ScrollView
@@ -123,7 +124,7 @@ export function JoinGameSheet({ code }: { code: string }) {
                 maxTeamSize={found.max_team_size}
                 team={found.team}
                 teamCount={found.teams.filter((t) => !t.solo).length}
-                onJoined={openGame}
+                onJoined={(gameId) => openGame(gameId, from)}
               />
             </>
           )}

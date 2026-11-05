@@ -23,6 +23,10 @@ import {
   checkedQuestionsOn,
   type QuestMember,
   type WaitingGame,
+  openGameLabel,
+  playAgain,
+  type GameShapeRow,
+  type OpenGameResponse,
 } from '@tmi/shared';
 
 import type { AppEnv, Env } from '../types.js';
@@ -42,6 +46,7 @@ import {
   firstNameOf,
   insertGame,
   inviteToGame,
+  latestGamesOf,
   listFavorites,
   listGames,
   rosterMembers,
@@ -106,6 +111,42 @@ export const questGameRoutes = new Hono<AppEnv>()
   .get('/members', async (c) => {
     const members = await rosterMembers(c.env.DB, c.get('org').id, readerOf(c));
     const body: ApiOk<QuestMember[]> = { data: members.map((m) => ({ id: m.id, first_name: firstNameOf(m.full_name) })) };
+    return c.json(body);
+  })
+
+  /**
+   * Phase 73 (JF13): Continue. The reader's open game here, with where they are in it, else the last game's settings to
+   * start again. One D1 read, and at most one call to a game -- a read-only one, and only while it runs.
+   */
+  .get('/open', async (c) => {
+    const org = c.get('org');
+    const user = c.get('user');
+    const games = await latestGamesOf(c.env.DB, org.id, user.id);
+    let open: OpenGameResponse['open'] = null;
+    const candidate = games.find((g) => g.open === 1);
+    if (candidate) {
+      const shape = candidate as unknown as GameShapeRow;
+      if (candidate.status === 'lobby') {
+        open = {
+          game_id: candidate.id,
+          status: 'lobby',
+          label: openGameLabel({ ...shape, status: 'lobby', question: null, of: null, points: null }),
+          question: null,
+          of: null,
+          points: null,
+        };
+      } else {
+        const reply = await gameStub(c.env, org.id, candidate.id).progress(viewerOf(user));
+        if (reply.ok && reply.data.status !== 'finished') {
+          const where = { status: reply.data.status, question: reply.data.question, of: reply.data.of, points: reply.data.points };
+          open = { game_id: candidate.id, label: openGameLabel({ ...shape, ...where }), ...where };
+        }
+      }
+    }
+    const last = games[0];
+    const body: ApiOk<OpenGameResponse> = {
+      data: { open, again: open || !last ? null : playAgain(last as unknown as GameShapeRow) },
+    };
     return c.json(body);
   })
 

@@ -140,7 +140,8 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     {
       target: 'nav-dashboard',
       title: 'Dashboard',
-      body: 'Reflections, progress, recent lessons and what you owe.',
+      // A parent's menu has no Billing (owner, 2026-11-05; JF31): what they owe is on the Dashboard's Finance tab.
+      body: 'Reflections, progress, recent lessons and, on Finance, what you owe.',
     },
     {
       target: 'nav-sessions',
@@ -151,11 +152,6 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
       target: 'nav-schedule',
       title: 'Schedule',
       body: 'Weekly lessons and calendar files. Away one week? Cancel just that date.',
-    },
-    {
-      target: 'nav-billing',
-      title: 'Billing',
-      body: 'What each lesson costs, what you have paid, and what is outstanding.',
     },
     {
       target: 'nav-comments',
@@ -177,7 +173,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     {
       target: 'home-next-up',
       title: 'Next up',
-      body: 'The one thing to do now: an assessment to finish, today’s 5, or your next lesson.',
+      body: 'The one thing to do now: an assessment to finish, today’s Daily, or your next lesson.',
     },
     {
       target: 'nav-dashboard',

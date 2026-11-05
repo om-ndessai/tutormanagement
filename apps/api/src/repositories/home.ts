@@ -27,7 +27,7 @@ import { buildStudentProgress, progressReader } from './progress.js';
 /** How far back a finished lesson still asks to be recorded on Home. */
 const UNRECORDED_WINDOW_MINUTES = 24 * 60;
 
-function placeFor(locations: Location[], mode: ScheduledSession['mode']): Location | null {
+export function placeFor(locations: Location[], mode: ScheduledSession['mode']): Location | null {
   const kind = mode === 'virtual' ? 'virtual' : 'physical';
   return locations.find((l) => l.kind === kind) ?? locations[0] ?? null;
 }

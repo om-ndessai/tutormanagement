@@ -36,6 +36,7 @@ test.describe('P8: family rosters', () => {
     const alex = await as('tutor');
     expect((await admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: true } })).status()).toBe(200);
     let favoriteId = '';
+    let gameId = '';
     try {
       const members = await unwrap<any[]>(await admin.request.get('/api/quest/games/members'), 'members');
       const sofiaId = members.find((m) => m.first_name === 'Sofia').id;
@@ -57,11 +58,13 @@ test.describe('P8: family rosters', () => {
       await admin.goto('/');
       await admin.getByTestId('play-favorite-Family G5').click();
       await expect(admin.getByTestId('game-lobby-code')).toBeVisible();
+      gameId = admin.url().split('/').pop()!;
 
       // Sofia sees it waiting and joins in one tap (no code typed).
       await sofia.goto('/');
       const waiting = sofia.getByTestId('play-waiting');
-      await expect(waiting).toContainText('started a G5 game');
+      // Phase 73 (JF32): the game in words, not its code.
+      await expect(waiting).toContainText('Priya started Grade 5 Quick 3');
       await waiting.getByRole('button', { name: 'Join' }).click();
       const dialog = sofia.getByTestId('game-join-dialog');
       await expect(dialog).toBeVisible();
@@ -76,6 +79,8 @@ test.describe('P8: family rosters', () => {
       await admin.reload();
       await expect(admin.getByTestId('game-start')).toBeEnabled();
     } finally {
+      // Cancelled, so no lobby is left open for Continue in later specs (Phase 73).
+      if (gameId) await admin.request.post(`/api/quest/games/${gameId}/end`);
       if (favoriteId) await admin.request.delete(`/api/quest/games/favorites/${favoriteId}`);
       await admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: false } });
     }

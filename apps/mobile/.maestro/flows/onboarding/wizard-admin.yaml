@@ -1,7 +1,7 @@
 # A new admin meets the welcome wizard (Wren, added by the office, never signed in; a fresh device):
 # it opens by itself; Add a student walks the family and the student (the Add a student flow, a new
 # parent added inside it), the assessment, the plan and the pairing, each in the app's own sheet; done says the student is set up. Closed, it is through: a
-# fresh device after that only offers the tour. Self-cleaning.
+# fresh device after that offers nothing (Phase 74, JF25: once per person). Self-cleaning.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-people.js
@@ -212,7 +212,7 @@ tags:
 - assertNotVisible:
     id: screen-onboarding
 
-# Through it now: another fresh device only offers the tour.
+# Through it now: another fresh device offers nothing -- once per person (Phase 74, JF25).
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -221,11 +221,11 @@ tags:
       FRESH: '1'
 - extendedWaitUntil:
     visible:
-      id: tour-offer
+      id: home-band
     timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
 - assertNotVisible:
     id: screen-onboarding
-- tapOn:
-    id: tour-offer-dismiss
 - assertNotVisible:
     id: tour-offer

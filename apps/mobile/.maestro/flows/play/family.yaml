@@ -2,7 +2,8 @@
 # joining open) with Sofia on its roster (play-family.js). On Priya's Home (an admin's dashboard) the
 # compact "Play a favorite" row holds it; its Players dialog shows Sofia ticked. One tap makes the game
 # with Priya already playing: the lobby, its code large, a QR code and Share. Then Sofia opens the app:
-# "Waiting for you" says Priya started a G6 game, and Join -- with no code typed -- opens the join sheet,
+# "Waiting for you" says Priya started Grade 6 Quick 2 (Phase 73, JF32: in words, never a code), and Join --
+# with no code typed -- opens the join sheet,
 # and "Join the game" puts her in the lobby. quest-games-end.js ends the game, deletes the favorite and
 # turns the switches off.
 appId: ${APP_ID}
@@ -87,7 +88,7 @@ tags:
       id: 'play-waiting-join-.*'
     centerElement: true
     timeout: 30000
-- assertVisible: '.*started a G6 game · 2 questions.*'
+- assertVisible: '.*Priya started Grade 6 Quick 2.*'
 - takeScreenshot: play-family-waiting
 # Join, by its testID (the code is the game's, unknown to the flow: `play-waiting-join-<code>`).
 - tapOn:

@@ -192,7 +192,7 @@ export function StudentFlow() {
           <StepText>
             {tutoring
               ? 'Every student needs a parent or guardian on file, who is billed and kept informed: choose an existing family or add a new parent, then the student — their school, goal, when they can learn and what the family is charged per hour. A child with no email of their own needs none.'
-              : 'Every student needs a parent or guardian on file, who is kept informed: choose an existing family or add a new parent, then the student — their school, course and goal for the year. A child with no email of their own needs none.'}
+              : 'Who looks after this student? Every student needs a parent or guardian here, who is kept informed: choose an existing family or add a new parent, then the student — their school, course and goal for the year. A child with no email of their own needs none.'}
           </StepText>
         </StepPanel>
       ) : null}

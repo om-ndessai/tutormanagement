@@ -33,6 +33,7 @@ export function QuestFrame({
   status,
   children,
   testId,
+  exitTo = '/quest',
 }: {
   title: string;
   /** What a phone shows instead, where the header has room for little else. */
@@ -41,6 +42,8 @@ export function QuestFrame({
   status?: ReactNode;
   children: ReactNode;
   testId: string;
+  /** Phase 73 (JF36): where Exit goes -- where the page was opened from; the Quest page by default. */
+  exitTo?: string;
 }) {
   const fullscreen = useFullscreen();
 
@@ -72,7 +75,7 @@ export function QuestFrame({
           </Button>
         )}
         <Button asChild variant="outline" size="sm" data-testid="quest-exit">
-          <Link to="/quest">
+          <Link to={exitTo}>
             <XIcon /> Exit
           </Link>
         </Button>

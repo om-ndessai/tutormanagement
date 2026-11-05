@@ -5,12 +5,18 @@
 // console's switch hides it all. Phase 64 (P17-P20): My progress, the Daily's button and a tile's best.
 // Phase 67 (H5-H8): the Quest board (the grade row, the grade's cards, "More levels", "Show your work"),
 // the Daily as rings and the week strip.
+// Phase 73 (JF13, JF14, JF16, JF23, JF32, JF36): Continue from the server's open game (else "again"), the
+// board's grade from the server's lead and saved when tapped, "Which grade?" asked once, the guest grade
+// carried once, the Daily's one rule and one name, one headline in My progress, waiting games in words, and
+// New Quest / Join opened from Home.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import {
   BADGES,
   DEFAULT_TILES,
   createGameSchema,
+  openGameLabel,
+  playAgain,
   tileGameRequest,
   tileWords,
   type DailySet,
@@ -18,13 +24,14 @@ import {
   type HabitSummary,
   type MemberTile,
   type MemberTilesResponse,
+  type OpenGameResponse,
   type QuestMember,
   type WaitingGame,
 } from '@tmi/shared';
 
-import { resetGuestMemoryForTests } from '@/features/guest/guest-store';
+import { guestMemory, resetGuestMemoryForTests } from '@/features/guest/guest-store';
 import { renderWithProviders } from '@/test/render';
-import { PlayFavorites, PlayHome, WaitingForYou, rosterFirst } from './play-home';
+import { PlayFavorites, PlayHome, WaitingForYou, resetGradeAskForTests, rosterFirst } from './play-home';
 
 const mockGet = jest.fn();
 const mockPost = jest.fn();
@@ -114,23 +121,29 @@ const HABIT: HabitSummary = {
   badges: BADGES.map((badge) => ({ ...badge, earned: badge.id === 'first_quest' })),
 };
 
+const NOTHING_OPEN: OpenGameResponse = { open: null, again: null };
+const SHAPE = { level_id: 'NC26.4' as const, level_scope: 'level' as const, mode: 'timed' as const, question_count: null, duration_seconds: 600 };
+
 function serve({
   tiles = TILES,
   favorites = [] as GameFavorite[],
   waiting = [] as WaitingGame[],
   habit = HABIT,
   daily,
+  open = NOTHING_OPEN,
 }: {
   tiles?: MemberTilesResponse;
   favorites?: GameFavorite[];
   waiting?: WaitingGame[];
   habit?: HabitSummary;
   daily?: DailySet;
+  open?: OpenGameResponse;
 } = {}) {
   mockGet.mockImplementation(async (path: string) => {
     const dailyLevel = /^\/quest\/daily\/(.+)$/.exec(path)?.[1];
     if (dailyLevel) return { data: daily ?? DAILY(decodeURIComponent(dailyLevel)) };
     if (path === '/quest/tiles') return { data: tiles };
+    if (path === '/quest/games/open') return { data: open };
     if (path === '/quest/me/habit') return { data: habit };
     if (path === '/quest/games/favorites') return { data: favorites };
     if (path === '/quest/games/waiting') return { data: waiting };
@@ -143,6 +156,7 @@ beforeEach(async () => {
   jest.clearAllMocks();
   await AsyncStorage.clear();
   resetGuestMemoryForTests({});
+  resetGradeAskForTests();
   mockPost.mockImplementation(async (path: string) => {
     if (path === '/quest/games') return { data: { id: 'g-new' } };
     if (path === '/canvas-assessments') return { data: { id: 'a-new' } };
@@ -164,9 +178,11 @@ const grade = (n: number) => screen.getByTestId(`play-grade-${n}`);
 
 describe('PlayHome: the Quest board (Phase 67)', () => {
   it('shows only the grades the tiles reach, opens on the first, and switches cards by grade', async () => {
+    // An older Worker: no lead, nothing to ask.
     serve();
     await renderWithProviders(<PlayHome />);
     await screen.findByTestId('play-board');
+    expect(screen.queryByTestId('play-ask-grade')).toBeNull();
     expect(grade(3)).toBeTruthy();
     expect(grade(4)).toBeTruthy();
     expect(screen.queryByTestId('play-grade-5')).toBeNull();
@@ -180,6 +196,8 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
     expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
     expect(screen.getByTestId('play-tile-G4Q5')).toBeTruthy();
     expect(screen.queryByTestId('play-tile-BA3Q5')).toBeNull();
+    // Phase 73 (JF14): the grade tapped is kept on the server here, so it holds on reload and other devices.
+    await waitFor(() => expect(mockPut).toHaveBeenCalledWith('/quest/grade', { grade: 4 }));
     // Each card: a human title, its detail, its level in words, its code small; Beta while checked.
     expect(screen.getByText('Quick 5')).toBeTruthy();
     expect(screen.getByText('10-minute challenge')).toBeTruthy();
@@ -190,8 +208,19 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
     );
     expect(screen.getByTestId('play-tile-beta-G4Q5')).toBeTruthy();
     expect(screen.queryByTestId('play-tile-beta-G4T10')).toBeNull();
-    // Nothing remembered on this phone yet: no Continue.
+    // Nothing open and nothing played (the server says): no Continue.
     expect(screen.queryByTestId('play-continue')).toBeNull();
+  });
+
+  it('leads with the server’s grade (Phase 73), over a guest grade on this phone', async () => {
+    resetGuestMemoryForTests({ grade: 'NC26.4' });
+    serve({ tiles: { ...TILES, lead: { grade: 3, from: 'played' }, ask_grade: false, picked_grade: null } });
+    await renderWithProviders(<PlayHome />);
+    await screen.findByTestId('play-board');
+    expect(grade(3).props.accessibilityState).toMatchObject({ checked: true });
+    // Something was played here: the phone's guest grade is not carried, and nothing is asked.
+    expect(mockPut).not.toHaveBeenCalledWith('/quest/grade', expect.anything());
+    expect(screen.queryByTestId('play-ask-grade')).toBeNull();
   });
 
   it('lists the levels off the 1-8 row under "More levels", by their words', async () => {
@@ -205,7 +234,7 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
     expect(screen.getByTestId('play-tile-M1T5')).toBeTruthy();
   });
 
-  it('starts a tile in one tap: the single player’s request, then the game, remembered for Continue', async () => {
+  it('starts a tile in one tap: the single player’s request, then the game -- nothing kept on the phone', async () => {
     serve();
     await renderWithProviders(<PlayHome />);
     await fireEvent.press(await screen.findByTestId('play-grade-4'));
@@ -218,11 +247,15 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
       pathname: '/quest/games/[gameId]',
       params: { gameId: 'g-new', from: 'home' },
     });
-    // Continue appears, on this space's key.
-    expect(await screen.findByTestId('play-continue')).toHaveTextContent(/Continue G4T10/);
-    expect(JSON.parse((await AsyncStorage.getItem('tmi.lastQuest.ferreira'))!)).toMatchObject({
-      label: 'G4T10',
-    });
+    // Phase 73 (JF13): Continue is the server's open game; the phone keeps no "last quest".
+    expect(await AsyncStorage.getAllKeys()).not.toContainEqual(expect.stringMatching(/lastQuest/));
+  });
+
+  it('opens New Quest from Home, so the game it makes exits back here (JF36)', async () => {
+    serve();
+    await renderWithProviders(<PlayHome />);
+    await fireEvent.press(await screen.findByTestId('play-new'));
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/new-game', params: { from: 'home' } });
   });
 
   it('starts "Show your work" as the reader’s own assessment, and opens it to take (H7)', async () => {
@@ -243,21 +276,49 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/assessments/[id]', params: { id: 'a-new' } });
   });
 
-  it('continues the last quest from this phone, and opens on its grade', async () => {
-    await AsyncStorage.setItem(
-      'tmi.lastQuest.ferreira',
-      JSON.stringify({ label: 'G4T10', request: tileGameRequest(member('G4T10')) }),
-    );
-    serve();
+  it('Continue opens the open game, in words with where the reader is -- never a new game (JF13)', async () => {
+    serve({
+      open: {
+        open: {
+          game_id: 'g-open',
+          status: 'running',
+          label: openGameLabel({ ...SHAPE, mode: 'count', question_count: 5, duration_seconds: null, status: 'running', question: 3, of: 5, points: 2 }),
+          question: 3,
+          of: 5,
+          points: 2,
+        },
+        again: null,
+      },
+    });
     await renderWithProviders(<PlayHome />);
     const cont = await screen.findByTestId('play-continue');
-    expect(cont).toHaveTextContent(/Continue G4T10/);
-    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
-    expect(screen.getByTestId('play-tile-G4Q5')).toBeTruthy();
+    expect(cont).toHaveTextContent(/Continue Grade 4 Quick 5/);
+    expect(cont).not.toHaveTextContent(/question/);
+    expect(cont.props.accessibilityLabel).toBe('Continue Grade 4 Quick 5 · question 3 of 5 · 2 points');
+    expect(screen.getByTestId('play-continue-where')).toHaveTextContent('Question 3 of 5 · 2 points');
     await fireEvent.press(cont);
-    await waitFor(() =>
-      expect(mockPost).toHaveBeenCalledWith('/quest/games', tileGameRequest(member('G4T10'))),
-    );
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/games/[gameId]', params: { gameId: 'g-open', from: 'home' } });
+    expect(mockPost).not.toHaveBeenCalledWith('/quest/games', expect.anything());
+  });
+
+  it('a game in its lobby is Continue too, waiting to start', async () => {
+    const label = openGameLabel({ ...SHAPE, status: 'lobby', question: null, of: null, points: null });
+    serve({ open: { open: { game_id: 'g-lobby', status: 'lobby', label, question: null, of: null, points: null }, again: null } });
+    await renderWithProviders(<PlayHome />);
+    expect(await screen.findByTestId('play-continue')).toHaveTextContent(/Continue Grade 4 10-minute challenge/);
+    expect(screen.getByTestId('play-continue-where')).toHaveTextContent('Waiting to start');
+  });
+
+  it('with no game open, offers the last one again under its own name, and starts its settings', async () => {
+    const again = playAgain(SHAPE);
+    serve({ open: { open: null, again } });
+    await renderWithProviders(<PlayHome />);
+    const cont = await screen.findByTestId('play-continue');
+    expect(cont).toHaveTextContent(/Play Grade 4 10-minute challenge again/);
+    expect(screen.queryByTestId('play-continue-where')).toBeNull();
+    await fireEvent.press(cont);
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith('/quest/games', again.request));
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/games/[gameId]', params: { gameId: 'g-new', from: 'home' } });
   });
 
   it('keeps a starred tile as a favorite named by its code', async () => {
@@ -295,8 +356,9 @@ describe('Phase 64/67: My progress, the Daily and a tile’s best', () => {
     serve();
     await renderWithProviders(<PlayHome />);
     expect(await screen.findByTestId('my-progress')).toBeTruthy();
-    expect(screen.getByTestId('my-progress-streak')).toHaveTextContent('2 weeks in a row');
-    expect(screen.getByText('1 of 3 days this week')).toBeTruthy();
+    // Phase 73 (JF16): a streak this week has not kept yet says what keeps it (the web's words).
+    expect(screen.getByTestId('my-progress-streak')).toHaveTextContent('2-week streak');
+    expect(screen.getByTestId('my-progress-detail')).toHaveTextContent('Play 2 days more this week to keep it.');
     expect(screen.getByTestId('my-progress-today').props.accessibilityLabel).toBe('Played today');
     expect(screen.getByTestId('badge-first_quest')).toBeTruthy();
     expect(screen.queryByTestId('badge-quests_10')).toBeNull();
@@ -306,22 +368,33 @@ describe('Phase 64/67: My progress, the Daily and a tile’s best', () => {
     expect(screen.queryByTestId('my-progress-next')).toBeNull();
   });
 
-  it('shows the week as seven dots, welcome back kindly, and the next badge (H8)', async () => {
+  it('shows the week as seven dots, welcome back kindly as the ONE headline, and the next badge (H8, JF16)', async () => {
     serve({
       habit: {
         ...HABIT,
-        week: ['played', 'missed', 'today', 'ahead', 'ahead', 'ahead', 'ahead'],
+        // Back after a week away: no run this week, nothing played today; earlier badges kept.
+        streak_weeks: 0,
+        days_this_week: 0,
+        played_today: false,
+        badges: BADGES.map((badge) => ({ ...badge, earned: badge.id === 'first_quest' || badge.id === 'weeks_4' })),
+        week: ['missed', 'missed', 'today', 'ahead', 'ahead', 'ahead', 'ahead'],
         welcome_back: true,
         next_badge: { id: 'quests_10', label: '10 quests', description: 'Ten quests finished', have: 4, need: 10 },
       },
     });
     await renderWithProviders(<PlayHome />);
     expect(await screen.findByTestId('my-progress-week')).toBeTruthy();
-    expect(screen.getByTestId('my-progress-day-0').props.accessibilityLabel).toBe('Monday: played');
-    expect(screen.getByTestId('my-progress-day-1').props.accessibilityLabel).toBe('Tuesday: not played');
+    expect(screen.getByTestId('my-progress-day-0').props.accessibilityLabel).toBe('Monday: not played');
     expect(screen.getByTestId('my-progress-day-2').props.accessibilityLabel).toBe('Wednesday: today, not played yet');
     expect(screen.getByTestId('my-progress-day-6').props.accessibilityLabel).toBe('Sunday: still to come');
-    expect(screen.getByTestId('my-progress-welcome')).toHaveTextContent('Welcome back! A fresh week starts now.');
+    // The welcome IS the headline: never "Start a streak" beside it, and never what was lost.
+    expect(screen.getByTestId('my-progress-welcome')).toHaveTextContent('Welcome back!');
+    expect(screen.getByTestId('my-progress-detail')).toHaveTextContent('A fresh week starts now: play 3 days to start a streak.');
+    expect(screen.queryByTestId('my-progress-streak')).toBeNull();
+    expect(screen.queryByText('Start a streak')).toBeNull();
+    expect(screen.getByTestId('my-progress')).not.toHaveTextContent(/lost|broke/i);
+    // A badge once earned stays listed as earned.
+    expect(screen.getByTestId('badge-weeks_4')).toBeTruthy();
     expect(screen.getByTestId('my-progress-next')).toHaveTextContent('Next badge: 10 quests · 4 of 10');
   });
 
@@ -331,15 +404,17 @@ describe('Phase 64/67: My progress, the Daily and a tile’s best', () => {
     });
     await renderWithProviders(<PlayHome />);
     expect(await screen.findByTestId('my-progress-streak')).toHaveTextContent('Start a streak');
+    expect(screen.getByTestId('my-progress-detail')).toHaveTextContent('Play on 3 days this week.');
     expect(screen.getByTestId('my-progress-today').props.accessibilityLabel).toBe('Not played yet today');
     expect(screen.getByText('Your first badge is one quest away.')).toBeTruthy();
   });
 
-  it('shows the Daily of the first tile’s level as five open rings, and opens it', async () => {
-    serve({ tiles: { ...TILES, daily: true } });
+  it('shows the lead grade’s Daily as five open rings, by its one name and its level in words, and opens it', async () => {
+    serve({ tiles: { ...TILES, daily: true, lead: { grade: 4, from: 'picked' }, ask_grade: false, picked_grade: 4 } });
     await renderWithProviders(<PlayHome />);
     expect(await screen.findByTestId('play-daily')).toBeTruthy();
-    expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · G4D");
+    expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · Grade 4");
+    expect(screen.getByTestId('play-daily-play')).toHaveTextContent(/Play today's Daily/);
     expect(screen.getByTestId('play-daily-title')).toHaveTextContent('Five questions. Can you hit all five?');
     expect(screen.getByTestId('play-daily-rings').props.accessibilityLabel).toBe('5 targets, not played yet');
     await fireEvent.press(screen.getByTestId('play-daily-play'));
@@ -357,37 +432,91 @@ describe('Phase 64/67: My progress, the Daily and a tile’s best', () => {
     expect(screen.getByTestId('play-daily-play')).toHaveTextContent(/See today’s result/);
   });
 
-  it('offers the Daily of the level last played', async () => {
-    await AsyncStorage.setItem(
-      'tmi.lastQuest.ferreira',
-      JSON.stringify({ label: 'BA3Q5', request: tileGameRequest(member('BA3Q5')) }),
-    );
-    serve({ tiles: { ...TILES, daily: true } });
+  it('follows the grade on the row: one Daily rule, the grade’s own standard first (JF23)', async () => {
+    serve({ tiles: { ...TILES, daily: true, lead: { grade: 4, from: 'played' }, ask_grade: false, picked_grade: null } });
     await renderWithProviders(<PlayHome />);
-    await waitFor(() => expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent(/Today's Daily · BA3D/));
+    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · Grade 4");
+    await fireEvent.press(grade(3));
+    // Grade 3 has only its harder track here.
+    await waitFor(() => expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · Beast Academy 3"));
   });
 
-  it('leads with a guest’s grade on this phone before any quest here (P13), the tile played if none was chosen', async () => {
+  it('an older Worker (no lead): a guest’s grade on this phone leads (P13), the tile played if none was chosen', async () => {
     resetGuestMemoryForTests({ played: ['BA3Q5'] });
     serve({ tiles: { ...TILES, daily: true } });
     await renderWithProviders(<PlayHome />);
-    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/BA3D/);
+    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/Beast Academy 3/);
     expect(grade(3).props.accessibilityState).toMatchObject({ checked: true });
+    // Nowhere to keep it on such a Worker: nothing is sent.
+    expect(mockPut).not.toHaveBeenCalledWith('/quest/grade', expect.anything());
   });
 
-  it('a chosen grade outranks the tile played, and a quest started here outranks both', async () => {
+  it('carries a guest’s grade once, instead of asking, when the server knows none (JF14)', async () => {
     resetGuestMemoryForTests({ grade: 'NC26.4', played: ['BA3Q5'] });
-    serve({ tiles: { ...TILES, daily: true } });
-    const first = await renderWithProviders(<PlayHome />);
-    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/G4D/);
-    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
-    first.unmount();
-    await AsyncStorage.setItem(
-      'tmi.lastQuest.ferreira',
-      JSON.stringify({ label: 'BA3Q5', request: tileGameRequest(member('BA3Q5')) }),
-    );
+    serve({ tiles: { ...TILES, daily: true, lead: null, ask_grade: true, picked_grade: null } });
     await renderWithProviders(<PlayHome />);
-    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent(/BA3D/);
+    expect(await screen.findByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · Grade 4");
+    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
+    await waitFor(() => expect(mockPut).toHaveBeenCalledWith('/quest/grade', { grade: 4 }));
+    expect(mockPut.mock.calls.filter(([path]) => path === '/quest/grade')).toHaveLength(1);
+    expect(screen.queryByTestId('play-ask-grade')).toBeNull();
+    // Marked carried on this phone: never again, in this space or another.
+    await waitFor(() => expect(guestMemory.gradeCarried()).toBe(true));
+  });
+
+  it('never carries a guest grade twice from one phone', async () => {
+    resetGuestMemoryForTests({ grade: 'NC26.4', gradeCarried: true });
+    serve({ tiles: { ...TILES, lead: null, ask_grade: true, picked_grade: null } });
+    await renderWithProviders(<PlayHome />);
+    // Asked instead.
+    expect(await screen.findByTestId('play-ask-grade')).toBeTruthy();
+    expect(mockPut).not.toHaveBeenCalledWith('/quest/grade', expect.anything());
+  });
+
+  it('a 13+ newcomer led by age alone: the grade they played as a guest says more, and is carried', async () => {
+    resetGuestMemoryForTests({ grade: 'NC26.3' });
+    serve({ tiles: { ...TILES, lead: { grade: 4, from: 'age' }, ask_grade: false, picked_grade: null } });
+    await renderWithProviders(<PlayHome />);
+    await screen.findByTestId('play-board');
+    expect(grade(3).props.accessibilityState).toMatchObject({ checked: true });
+    await waitFor(() => expect(mockPut).toHaveBeenCalledWith('/quest/grade', { grade: 3 }));
+  });
+
+  it('asks "Which grade?" once when nothing says; the choice leads and is kept (JF14)', async () => {
+    serve({ tiles: { ...TILES, daily: true, lead: null, ask_grade: true, picked_grade: null } });
+    await renderWithProviders(<PlayHome />);
+    const ask = await screen.findByTestId('play-ask-grade');
+    expect(ask).toHaveTextContent(/Which grade\?/);
+    expect(screen.getByTestId('play-ask-grade-3')).toHaveTextContent('Grade 3');
+    expect(screen.getByTestId('play-ask-grade-4')).toHaveTextContent('Grade 4');
+    expect(screen.getByTestId('play-ask-grade-0')).toHaveTextContent('Not in school');
+    expect(screen.queryByTestId('play-ask-grade-5')).toBeNull();
+    await fireEvent.press(screen.getByTestId('play-ask-grade-4'));
+    await waitFor(() => expect(mockPut).toHaveBeenCalledWith('/quest/grade', { grade: 4 }));
+    expect(screen.queryByTestId('play-ask-grade')).toBeNull();
+    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
+    expect(screen.getByTestId('play-daily-eyebrow')).toHaveTextContent("Today's Daily · Grade 4");
+  });
+
+  it('"Not in school" leads with the top of the row', async () => {
+    serve({ tiles: { ...TILES, lead: null, ask_grade: true, picked_grade: null } });
+    await renderWithProviders(<PlayHome />);
+    await fireEvent.press(await screen.findByTestId('play-ask-grade-0'));
+    await waitFor(() => expect(mockPut).toHaveBeenCalledWith('/quest/grade', { grade: 0 }));
+    expect(grade(4).props.accessibilityState).toMatchObject({ checked: true });
+  });
+
+  it('"Not now" puts the question off for this run only, and sends nothing', async () => {
+    serve({ tiles: { ...TILES, lead: null, ask_grade: true, picked_grade: null } });
+    const first = await renderWithProviders(<PlayHome />);
+    await fireEvent.press(await screen.findByTestId('play-ask-grade-later'));
+    expect(screen.queryByTestId('play-ask-grade')).toBeNull();
+    expect(mockPut).not.toHaveBeenCalledWith('/quest/grade', expect.anything());
+    await first.unmount();
+    // Home again in the same run: still put off (a new run asks again: see the test above, after the reset).
+    await renderWithProviders(<PlayHome />);
+    await screen.findByTestId('play-board');
+    expect(screen.queryByTestId('play-ask-grade')).toBeNull();
   });
 
   it('has no Daily while the console has it off (or an older Worker does not say)', async () => {
@@ -509,13 +638,23 @@ describe('rosterFirst', () => {
 });
 
 describe('WaitingForYou', () => {
-  it('lists a roster’s game by its host’s first name, and joins it through the join sheet', async () => {
+  it('lists a roster’s game in words, then its host’s first name, and joins it through the join sheet', async () => {
     serve({ waiting: WAITING });
     await renderWithProviders(<WaitingForYou />);
-    expect(await screen.findByText(/started a G4 game · 10 questions/)).toBeTruthy();
-    expect(screen.getByText('Ana')).toBeTruthy();
+    // Phase 73 (JF32): the game in words, never a code.
+    expect(await screen.findByTestId('play-waiting-words-FAM234')).toHaveTextContent('Ana started Grade 4 10 in a row');
+    expect(screen.queryByText(/G4/)).toBeNull();
     await fireEvent.press(screen.getByTestId('play-waiting-join-FAM234'));
-    expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/join-game', params: { code: 'FAM234' } });
+    // From Home, so the game's Exit comes back here (JF36).
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/join-game', params: { code: 'FAM234', from: 'home' } });
+  });
+
+  it('says an upward game\'s scope in words', async () => {
+    serve({ waiting: [{ ...WAITING[0]!, level_scope: 'upward', status: 'running' }] });
+    await renderWithProviders(<WaitingForYou />);
+    expect(await screen.findByTestId('play-waiting-words-FAM234')).toHaveTextContent(
+      'Ana started Grade 4 and up 10 in a row · under way',
+    );
   });
 
   it('is nothing when no game waits', async () => {

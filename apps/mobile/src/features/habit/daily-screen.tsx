@@ -9,8 +9,9 @@
 // result's questions are one web view, never one per question. Share is the system share sheet. A
 // refused save (409: played elsewhere, or the day turned) reads the Daily again; any other failure takes
 // the last answer back, so it can be given again.
+// Phase 73 (JF23): called by its one name, `DAILY_NAME` ("Today's Daily"), as on the board and in Next up.
 import { useQueryClient } from '@tanstack/react-query';
-import { dailyShareText, type DailyQuestion, type DailySet } from '@tmi/shared';
+import { DAILY_NAME, dailyShareText, type DailyQuestion, type DailySet } from '@tmi/shared';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Share, View } from 'react-native';
 import { Button, Chip, Text, TextInput } from 'react-native-paper';
@@ -58,7 +59,7 @@ export function DailyScreen({ level }: { level: string }) {
   return (
     <QuestFrame
       testID="screen-quest-daily"
-      title="Today's Daily"
+      title={DAILY_NAME}
       status={data ? <QuestStatus strong>{`${tag}D #${data.number}`}</QuestStatus> : undefined}
       onExit={backToPlay}
     >

@@ -80,13 +80,13 @@ export function OnboardingWizard({
           description: isAdmin
             ? tourOffered(organization)
               ? tutoring
-                ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
-                : 'A quick tour of the portal, and guided setup for a new student.'
+                ? 'A quick tour, and guided setup for a new student or tutor.'
+                : 'A quick tour, and guided setup for a new student.'
               : tutoring
                 ? 'Guided setup for a new student or tutor.'
                 : 'Guided setup for a new student.'
             : tourOffered(organization)
-              ? 'A quick tour of the portal, then a check that the office has your details right.'
+              ? 'A quick tour, then a check that the office has your details right.'
               : 'A check that the office has your details right.',
         }
       : screen === 'invite'
@@ -126,7 +126,7 @@ export function OnboardingWizard({
               <Choice
                 icon={CompassIcon}
                 title="Take the tour"
-                description="The dashboard and the menu, one part at a time, with what each is for."
+                description="Your home and the menu, one part at a time, with what each is for."
                 badge={tourDone ? 'Done' : 'Tour'}
                 action="Take the tour"
                 onClick={onStartTour}

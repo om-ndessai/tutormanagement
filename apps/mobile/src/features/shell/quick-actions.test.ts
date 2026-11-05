@@ -1,3 +1,5 @@
+import { playAgain, type OpenGameResponse } from '@tmi/shared';
+
 import { quickActionItems, quickActionRoute } from './quick-actions';
 
 jest.mock('expo-router', () => ({ router: { navigate: jest.fn() } }));
@@ -43,22 +45,34 @@ describe('home-screen quick actions', () => {
     expect(quickActionRoute('record-session', ['tutor'], ASSESS_ONLY)).toBeNull();
   });
 
-  it('offer "Play <tile>" where Quest is on, only for a tile code (never a typed favorite name)', () => {
+  it('offer Continue where Quest is on, from the open-game read Home had: the game, else "again", naming nobody', () => {
     const QUEST = { feature_quest: true, gamify_question_quest: true };
-    expect(quickActionItems(['student'], QUEST, 'g4t10')).toEqual([
-      { id: 'play-last', title: 'Play G4T10', icon: 'symbol:play.fill' },
+    const shape = { level_id: 'NC26.4' as const, level_scope: 'level' as const, mode: 'timed' as const, question_count: null, duration_seconds: 600 };
+    const open: OpenGameResponse = {
+      open: { game_id: 'g-1', status: 'running', label: 'Grade 4 10-minute challenge · 3 points', question: null, of: null, points: 3 },
+      again: null,
+    };
+    const again: OpenGameResponse = { open: null, again: playAgain(shape) };
+    expect(quickActionItems(['student'], QUEST, open)).toEqual([
+      { id: 'play-last', title: 'Continue your game', icon: 'symbol:play.fill' },
     ]);
-    // A tutor in a Tutoring space with Quest on: the lesson actions, then Play.
-    expect(quickActionItems(['tutor'], QUEST, 'BA3Q5').map((item) => item.title)).toEqual([
+    expect(quickActionItems(['student'], QUEST, again)).toEqual([
+      { id: 'play-last', title: 'Play Grade 4 10-minute challenge again', icon: 'symbol:play.fill' },
+    ]);
+    // A tutor in a Tutoring space with Quest on: the lesson actions, then Continue.
+    expect(quickActionItems(['tutor'], QUEST, again).map((item) => item.title)).toEqual([
       'Start a lesson',
       'Record a lesson',
-      'Play BA3Q5',
+      'Play Grade 4 10-minute challenge again',
     ]);
-    // A favorite's name may carry a person's name: never on a system surface.
-    expect(quickActionItems(['student'], QUEST, "Sofia's Friday")).toEqual([]);
+    // Nothing to continue, nothing read yet, Quest off, or nobody signed in: none.
+    expect(quickActionItems(['student'], QUEST, { open: null, again: null })).toEqual([]);
     expect(quickActionItems(['student'], QUEST, null)).toEqual([]);
-    expect(quickActionItems(['student'], { feature_quest: false }, 'G4T10')).toEqual([]);
-    expect(quickActionItems(undefined, QUEST, 'G4T10')).toEqual([]);
+    expect(quickActionItems(['student'], QUEST, undefined)).toEqual([]);
+    expect(quickActionItems(['student'], { feature_quest: false }, again)).toEqual([]);
+    expect(quickActionItems(undefined, QUEST, again)).toEqual([]);
+    // A system surface: the open game's progress and any label a person typed never reach the icon.
+    expect(quickActionItems(['student'], QUEST, open)[0]!.title).not.toMatch(/point|question/);
   });
 
   it('lead "Play" to the last-quest screen only while Quest is on', () => {

@@ -199,6 +199,13 @@ export const DASHBOARD_ROLE_LABELS: Record<UserRole, string> = {
 };
 
 /**
+ * Phase 74 (JF24): the dashboard role that matches a home hat, so the Dashboard opens on the hat the home leads with.
+ */
+export function dashboardRoleForHat(hat: 'tutor' | 'office' | 'parent' | 'learner'): UserRole {
+  return hat === 'tutor' ? 'tutor' : hat === 'office' ? 'admin' : hat === 'parent' ? 'parent' : 'student';
+}
+
+/**
  * Which view to open on when none was asked for.
  *
  * Admin first because it is the widest, then tutor: somebody who both tutors

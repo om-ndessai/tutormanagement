@@ -15,6 +15,8 @@ interface GuestMemory {
   played?: string[];
   /** Played tiles already made a member's favorites on this device (P13), so each is carried once. */
   carried?: string[];
+  /** Phase 73 (JF14): the grade was saved as a member's pick once, where they would have been asked; not again. */
+  gradeCarried?: boolean;
   nudgeDismissedAt?: number;
   /** Today's 5 as played on this device: the day, the level, and which questions hit. */
   today?: GuestToday;
@@ -105,6 +107,9 @@ export const guestMemory = {
   },
   markCarried: (codes: readonly string[]) =>
     write((m) => ({ ...m, carried: [...new Set([...(m.carried ?? []), ...codes])].slice(-50) })),
+  /** Phase 73 (JF14): whether this device's guest grade has already answered a member's "Which grade?". */
+  gradeCarried: (): boolean => Boolean(read().gradeCarried),
+  markGradeCarried: () => write((m) => ({ ...m, gradeCarried: true })),
   nudgeDismissedAt: (): number | undefined => read().nudgeDismissedAt,
   dismissNudge: () => write((m) => ({ ...m, nudgeDismissedAt: Date.now() })),
   /** Today's 5 for this day and level, if played here. */
@@ -130,7 +135,8 @@ export const guestMemory = {
 
 /**
  * Phase 63 (P13, "its grade becomes the default"): the level a guest's play leads a member's Play home with
- * in this browser -- the grade they chose, else the level of the tile they played last.
+ * in this browser -- the grade they chose, else the level of the tile they played last. Since Phase 73 it is
+ * carried once into the member's pick on the server, where they would otherwise be asked "Which grade?".
  */
 export function guestLeadLevel(): QuestionBankLevelId | null {
   const memory = read();

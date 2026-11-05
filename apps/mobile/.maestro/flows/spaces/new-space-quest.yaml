@@ -111,10 +111,11 @@ tags:
     timeout: 10000
 - tapOn:
     id: student-flow-my-child
+# Phase 74 (JF31): no Tutoring here, so nobody is billed -- the family step asks who looks after the student.
 - extendedWaitUntil:
     visible:
       id: step-flow-title
-      text: '.*Who is their family\?.*'
+      text: '.*Who looks after this student\?.*'
     timeout: 15000
 - tapOn:
     id: step-flow-next

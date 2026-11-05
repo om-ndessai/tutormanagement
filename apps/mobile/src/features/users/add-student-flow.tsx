@@ -49,7 +49,15 @@ import { onGuardianCreated } from './guardian-bridge';
 import { GuardianLinkCard } from './guardian-picker';
 import { CheckRow } from './person-form';
 import { StudentPriceFields } from './person-form-rates';
-import { EMPTY, addGuardian, toRequest, updateGuardian, removeGuardian, type FormState } from './person-form-model';
+import {
+  EMPTY,
+  addGuardian,
+  familyStepWords,
+  toRequest,
+  updateGuardian,
+  removeGuardian,
+  type FormState,
+} from './person-form-model';
 import { SessionLimitField } from './session-limit-field';
 import { useAddPerson, type AddedPerson } from './use-add-person';
 import { StudentPrices } from './user-rates';
@@ -197,8 +205,8 @@ function StudentSteps({
   const allSteps: StepDef<FormState>[] = [
     {
       key: 'family',
-      title: 'Who is their family?',
-      description: 'The parent or guardian who is billed and kept informed. Add them here if they are new.',
+      // Phase 74 (JF31): "billed" only where the space bills; else "Who looks after this student?".
+      ...familyStepWords(tutoring),
       fields: STUDENT_STEP_FIELDS.family,
       scroll: false,
       validate: (draft) => familyIssues(draft, today),
@@ -474,7 +482,7 @@ function FamilyStep({
       onQueryChange={setQuery}
       filter={false}
       loading={parents.isPending}
-      emptyTitle={search ? 'No parent matches.' : 'No parents in the portal yet.'}
+      emptyTitle={search ? 'No parent matches.' : 'No parents in this space yet.'}
       emptyBody="Add them as a new parent: they are created first, then chosen here."
       emptyAction={
         <Button

@@ -13,6 +13,44 @@ import type { OrgId } from '../lib/org.js';
 import { guestIdsFor } from './guest.js';
 
 /**
+ * Phase 73 (JF14): what decides the grade leading a member's board, in one read: the grade they picked here, the
+ * level the space records for them as a student, the level they played last (a game or a Daily) and their age band.
+ */
+export async function leadFacts(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+): Promise<{ picked: number | null; recorded: string | null; played: string | null; age_band: string | null }> {
+  const row = await db
+    .prepare(
+      `SELECT
+         (SELECT m.quest_grade FROM org_members m WHERE m.organization_id = ?1 AND m.user_id = ?2) AS picked,
+         (SELECT s.quest_level_id FROM student_profiles s WHERE s.organization_id = ?1 AND s.user_id = ?2) AS recorded,
+         (SELECT level_id FROM (
+            SELECT g.level_id AS level_id, g.created_at AS at FROM quest_game_players p
+              JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+              WHERE p.organization_id = ?1 AND p.user_id = ?2
+            UNION ALL
+            SELECT d.level_id AS level_id, d.created_at AS at FROM daily_results d
+              WHERE d.organization_id = ?1 AND d.user_id = ?2
+          ) ORDER BY at DESC LIMIT 1) AS played,
+         -- org-scope: the person's own age band, which is the platform's, not the space's.
+         (SELECT a.age_band FROM platform_accounts a WHERE a.user_id = ?2) AS age_band`,
+    )
+    .bind(org, userId)
+    .first<{ picked: number | null; recorded: string | null; played: string | null; age_band: string | null }>();
+  return row ?? { picked: null, recorded: null, played: null, age_band: null };
+}
+
+/** Saves the grade picked on the row here (Phase 73); null forgets it. A preference: no log line. */
+export async function setQuestGrade(db: D1Database, org: OrgId, userId: string, grade: number | null): Promise<void> {
+  await db
+    .prepare('UPDATE org_members SET quest_grade = ? WHERE organization_id = ? AND user_id = ?')
+    .bind(grade, org, userId)
+    .run();
+}
+
+/**
  * Phase 64 (P17-P20, docs/stickiness-plan.md): the habit layer's reads, all derived from rows kept
  * anyway -- the day rollup, finished games, invitations and the Daily results. Nothing here is a
  * running total.
@@ -37,11 +75,19 @@ export async function habitFacts(db: D1Database, org: OrgId, userId: string): Pr
   const row = await db
     .prepare(
       `SELECT
-         (SELECT COUNT(*) FROM quest_game_players p JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
-           WHERE p.organization_id = ?1 AND p.user_id = ?2 AND g.status = 'finished') AS quests_finished,
-         (SELECT COUNT(*) FROM quest_game_invites i WHERE i.organization_id = ?1 AND i.user_id = ?2)
-         + (SELECT COUNT(DISTINCT i.game_id) FROM quest_game_invites i JOIN quest_games g ON g.organization_id = i.organization_id AND g.id = i.game_id
-             WHERE i.organization_id = ?1 AND g.host_user_id = ?2) AS family_games,
+         -- Phase 73 (JF16): only games the person's team answered in (a skip counts) -- an empty or cancelled game earns nothing.
+         (SELECT COUNT(*) FROM quest_game_players p
+           JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+           JOIN quest_game_teams t ON t.organization_id = p.organization_id AND t.id = p.team_id
+           WHERE p.organization_id = ?1 AND p.user_id = ?2 AND g.status = 'finished'
+             AND COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0) AS quests_finished,
+         -- A family game is one with invitations that the person played in (invited or hosting), not one merely sent.
+         (SELECT COUNT(DISTINCT i.game_id) FROM quest_game_invites i
+           JOIN quest_games g ON g.organization_id = i.organization_id AND g.id = i.game_id AND g.status = 'finished'
+           JOIN quest_game_players p ON p.organization_id = i.organization_id AND p.game_id = i.game_id AND p.user_id = ?2
+           JOIN quest_game_teams t ON t.organization_id = p.organization_id AND t.id = p.team_id
+           WHERE i.organization_id = ?1 AND (i.user_id = ?2 OR g.host_user_id = ?2)
+             AND COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0) AS family_games,
          (SELECT COUNT(DISTINCT day) FROM daily_results d WHERE d.organization_id = ?1 AND d.user_id = ?2) AS dailies`,
     )
     .bind(org, userId)
@@ -147,6 +193,7 @@ export async function bestScores(
        JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
        JOIN quest_game_teams t ON t.organization_id = p.organization_id AND t.id = p.team_id
        WHERE p.organization_id = ? AND p.user_id = ? AND g.players = 'single' AND g.status = 'finished'
+         AND COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0
        GROUP BY g.level_id, g.mode, g.question_count, g.duration_seconds`,
     )
     .bind(org, userId)
@@ -164,7 +211,8 @@ export async function isNewBest(db: D1Database, org: OrgId, userId: string, game
   const row = await db
     .prepare(
       `SELECT
-         (SELECT t.score FROM quest_game_players p
+         -- Phase 73 (JF16): a game with nothing answered (a skip counts) sets no best and beats none.
+         (SELECT CASE WHEN COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0 THEN t.score END FROM quest_game_players p
             JOIN quest_game_teams t ON t.organization_id = p.organization_id AND t.id = p.team_id
            WHERE p.organization_id = g.organization_id AND p.game_id = g.id AND p.user_id = ?3) AS mine,
          (SELECT MAX(t2.score) FROM quest_game_players p2
@@ -172,7 +220,8 @@ export async function isNewBest(db: D1Database, org: OrgId, userId: string, game
             JOIN quest_game_teams t2 ON t2.organization_id = p2.organization_id AND t2.id = p2.team_id
            WHERE p2.organization_id = g.organization_id AND p2.user_id = ?3 AND g2.id <> g.id AND g2.ended_at < g.ended_at
              AND g2.players = 'single' AND g2.status = 'finished' AND g2.level_id = g.level_id AND g2.mode = g.mode
-             AND g2.question_count IS g.question_count AND g2.duration_seconds IS g.duration_seconds) AS before
+             AND g2.question_count IS g.question_count AND g2.duration_seconds IS g.duration_seconds
+             AND COALESCE(t2.correct, 0) + COALESCE(t2.wrong, 0) + COALESCE(t2.skipped, 0) > 0) AS before
        FROM quest_games g
        WHERE g.organization_id = ?1 AND g.id = ?2 AND g.players = 'single' AND g.status = 'finished'`,
     )

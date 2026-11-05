@@ -4,10 +4,11 @@
 // sign-out (§0.7). An action is only a route: the role is checked again on arrival, and the
 // server checks again after that. Phase 50: lessons are Tutoring's, so a space without it offers none.
 //
-// Phase 62 (P6): "Play <tile>" -- the last quest started in this space, when it was a tile. A tile's
-// code ("G4T10") names no one; a favorite's name is typed by a person and may carry a name, so it is
-// never put on the icon. Only where Quest is on.
-import { featureOn, parseTileCode, type FeatureState, type UserRole as Role } from '@tmi/shared';
+// Phase 62 (P6): a quest from the icon, only where Quest is on. Phase 73 (JF13, owner 2026-11-05): it is
+// Continue, from the server's open-game read as Home last had it (never read for the icon itself): with a game
+// open, "Continue your game"; with none, the last game's settings again under their words ("Play Grade 7 Quick
+// 5 again"), built from the settings alone -- never a favorite's typed name, a code, a person or a space.
+import { featureOn, type FeatureState, type OpenGameResponse, type UserRole as Role } from '@tmi/shared';
 import { router } from 'expo-router';
 import * as QuickActions from 'expo-quick-actions';
 import { useEffect, useRef } from 'react';
@@ -29,26 +30,30 @@ const ITEMS: Record<QuickActionId, QuickActionItem> = {
 
 type Org = Partial<FeatureState> | null | undefined;
 
-/** "Play G4T10" while the last quest here was a tile and Quest is on; otherwise none. */
-function playItem(organization: Org, lastLabel: string | null | undefined): QuickActionItem[] {
-  if (!lastLabel || !featureOn(organization, 'quest') || parseTileCode(lastLabel) === null) return [];
-  return [{ ...ITEMS['play-last'], title: `Play ${lastLabel.toUpperCase()}` }];
+/** The open game's or "again"'s words while Quest is on and Home has read one; otherwise none. */
+export const CONTINUE_GAME_TITLE = 'Continue your game';
+
+function playItem(organization: Org, open: OpenGameResponse | null | undefined): QuickActionItem[] {
+  if (!open || !featureOn(organization, 'quest')) return [];
+  if (open.open) return [{ ...ITEMS['play-last'], title: CONTINUE_GAME_TITLE }];
+  if (open.again) return [{ ...ITEMS['play-last'], title: open.again.label }];
+  return [];
 }
 
 /**
  * The lesson actions only for someone who teaches in this organization, and only where Tutoring is
- * on; "Play <tile>" for anyone, where Quest is on.
+ * on; Continue for anyone, where Quest is on, once Home has read their open game.
  */
 export function quickActionItems(
   roles: readonly Role[] | undefined,
   organization: Org,
-  lastLabel?: string | null,
+  open?: OpenGameResponse | null,
 ): QuickActionItem[] {
   const lessons =
     roles?.includes('tutor') && featureOn(organization, 'tutoring')
       ? [ITEMS['start-lesson'], ITEMS['record-session']]
       : [];
-  return roles ? [...lessons, ...playItem(organization, lastLabel)] : [];
+  return roles ? [...lessons, ...playItem(organization, open)] : [];
 }
 
 /** Where an action leads, or null when the reader may not take it here. */
@@ -86,9 +91,9 @@ export function clearQuickActions() {
 export function useQuickActionItems(
   roles: readonly Role[] | undefined,
   organization: Org,
-  lastLabel?: string | null,
+  open?: OpenGameResponse | null,
 ) {
-  const items = quickActionItems(roles, organization, lastLabel);
+  const items = quickActionItems(roles, organization, open);
   const key = items.map((item) => `${item.id}:${item.title}`).join(',');
   useEffect(() => {
     setItems(items);

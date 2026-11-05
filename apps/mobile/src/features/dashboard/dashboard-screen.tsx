@@ -1,6 +1,8 @@
 // Ported from apps/web/src/pages/dashboard-page.tsx @ 1132322: one route, four dashboards, with the
 // role selector and the admin's "view as" kept in the screen's params as the web keeps them in the URL.
 // Phase 66: this is More → Dashboard (`/analytics`); Home is the member home (features/home).
+// Phase 74 (JF24): it opens on the link's role, else the one last chosen in this space on this phone, else the role of
+// the hat Home leads with, else the server's default (`useOpeningDashboardRole`); "Viewing as" labels the switch.
 import { useQueryClient } from '@tanstack/react-query';
 import { USER_ROLES, type UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams, useNavigation } from 'expo-router';
@@ -19,6 +21,7 @@ import { SearchButton } from '@/features/shell/search-button';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { useDashboard } from './api';
+import { useOpeningDashboardRole } from './dashboard-role';
 import { AdminFinance, TutorFinance } from './finance-views';
 import { ParentView } from './parent-balance-view';
 import { ScheduleTodayCard, useToday, type TodayScope } from './home-top';
@@ -58,14 +61,14 @@ function HeaderActions({ isAdmin, viewingId }: { isAdmin: boolean; viewingId: st
 
 /**
  * The Dashboard page (More → Dashboard; Phase 66 moved it off Home): whose dashboard, then the dashboard,
- * with Analytics first and Recent Activity last, and the Finance tab. Which role is the server's choice
- * unless one is asked for (`?role=`), made the same way as the web (`defaultDashboardRole`: admin, then
- * tutor, then parent, then student); the reader's roles are chips here, as the web's role picker. An
+ * with Analytics first and Recent Activity last, and the Finance tab. Which role: the one asked for (`?role=`),
+ * else (Phase 74) the reader's last choice here, else the role of Home's leading hat, else the server's
+ * (`defaultDashboardRole`); the reader's roles are chips here, "Viewing as", as the web's role picker. An
  * admin may look at anybody's (`?as=`, the eye); for anyone else the param is ignored, so the app never
  * asks the server for somebody else's dashboard on their behalf.
  */
 export function DashboardScreen() {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const theme = useAppTheme();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
@@ -86,11 +89,18 @@ export function DashboardScreen() {
   const isAdmin = user?.roles.includes('admin') ?? false;
   const viewingId = isAdmin && params.as && params.as !== user?.id ? params.as : undefined;
   const requestedRole = asRole(params.role);
+  // The reader's own dashboard opens on the hat Home leads with (or their last choice here); somebody viewed opens on
+  // the server's choice, as before.
+  const opening = useOpeningDashboardRole(organization?.slug, user?.roles);
+  const role = requestedRole ?? (viewingId ? undefined : opening.role);
 
-  const query = useDashboard({
-    ...(requestedRole ? { role: requestedRole } : {}),
-    ...(viewingId ? { userId: viewingId } : {}),
-  });
+  const query = useDashboard(
+    {
+      ...(role ? { role } : {}),
+      ...(viewingId ? { userId: viewingId } : {}),
+    },
+    { enabled: Boolean(requestedRole || viewingId || opening.ready) },
+  );
   const response = query.data?.data;
   const subject = response?.subject;
   const viewingOther = Boolean(viewingId && subject?.viewing_as_other);
@@ -127,7 +137,7 @@ export function DashboardScreen() {
           </Text>
           {large ? null : (
             <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-              You are seeing the portal exactly as they see it.
+              You are seeing this exactly as they see it.
             </Text>
           )}
         </View>
@@ -138,8 +148,13 @@ export function DashboardScreen() {
         <RoleSelector
           roles={subject.roles}
           current={response.role}
-          // This screen's own params (a new role starts on its Tutoring tab), as the people sheet's choice.
-          onChoose={(role) => navigation.setParams({ role, tab: undefined } as never)}
+          label="Viewing as"
+          // This screen's own params (a new role starts on its Tutoring tab), as the people sheet's choice; the
+          // reader's own choice is remembered for this space (Phase 74).
+          onChoose={(chosen) => {
+            if (!viewingOther) void opening.remember(chosen);
+            navigation.setParams({ role: chosen, tab: undefined } as never);
+          }}
         />
       ) : null}
       <RoleDashboard query={query} subjectId={viewingOther ? subject?.user_id : undefined} mine={!viewingId} />

@@ -39,9 +39,16 @@ describe("a parent's child card", () => {
     expect(childPlayedLine(child())).toBeNull();
   });
 
-  it("offers practice together before a lesson within three days, else Play with", () => {
+  // Phase 74 (JF17, owner 2026-11-05): the week before a lesson (PRACTISE_BEFORE_DAYS 7), strictly less than 7 days
+  // ahead, so "Tuesday's lesson" is never said on a Tuesday of a lesson a week away.
+  it("offers practice together before a lesson in the coming week, else Play with", () => {
     // Thursday 2026-11-05 from Tuesday 2026-11-03.
     expect(childPlayLabel(child(), DAY)).toBe("Practise together before Thursday's lesson");
+    // Six days ahead (Monday the 9th): still the coming week.
+    expect(childPlayLabel(child({ next_lesson: homeLesson({ occurs_on: '2026-11-09' }) }), DAY)).toBe(
+      "Practise together before Monday's lesson",
+    );
+    // Seven days ahead (next Tuesday, the 10th): not yet.
     expect(childPlayLabel(child({ next_lesson: homeLesson({ occurs_on: '2026-11-10' }) }), DAY)).toBe('Play with Sanjay');
     expect(childPlayLabel(child({ next_lesson: null }), DAY)).toBe('Play with Sanjay');
     // Later today, more than an hour away: still worth a warm-up.
@@ -59,14 +66,19 @@ describe('Next up, Phase 68', () => {
   };
 
   it('a learner with a lesson soon practises five first, unless they played today', () => {
-    const { extras } = deviceExtras({ waiting: [], lastLabel: null, daily: null, practiceLevelId: 'NC26.4', playedToday: false });
+    const { extras } = deviceExtras({ waiting: [], daily: null, practiceLevelId: 'NC26.4', playedToday: false });
     expect(extras.practice_level_id).toBe('NC26.4');
     const item = chooseNextUp(nextUpCandidates(soon, extras));
     expect(item).toMatchObject({ kind: 'practise_before', level_id: 'NC26.4' });
-    const played = deviceExtras({ waiting: [], lastLabel: null, daily: null, practiceLevelId: 'NC26.4', playedToday: true });
+    const played = deviceExtras({ waiting: [], daily: null, practiceLevelId: 'NC26.4', playedToday: true });
     expect(chooseNextUp(nextUpCandidates(soon, played.extras))?.kind).toBe('learner_lesson');
-    // A lesson a week out is not "before your lesson".
+    // A lesson a week out is not "before your lesson"; six days out is (Phase 74: the week before).
     expect(chooseNextUp(nextUpCandidates(SOFIA, extras))?.kind).toBe('learner_lesson');
+    const sixDays: MemberHome = {
+      ...SOFIA,
+      learner: { ...SOFIA.learner!, next_lesson: homeLesson({ occurs_on: '2026-11-09', tutor_name: 'Alex Chen' }) },
+    };
+    expect(chooseNextUp(nextUpCandidates(sixDays, extras))?.kind).toBe('practise_before');
   });
 
   it("with nothing else, an assessment-led or quest-led home offers its own first step", () => {

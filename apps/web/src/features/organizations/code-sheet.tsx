@@ -16,6 +16,7 @@ import {
   type SpaceLookup,
 } from '@tmi/shared';
 
+import { useGoToGame } from '@/features/quest/play-origin';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -57,7 +58,7 @@ export function CodeSheet({
   onSignUp?: () => void;
 }) {
   const { status } = useAuth();
-  const navigate = useNavigate();
+  const goToGame = useGoToGame();
   const lookupSpace = useLookupSpace();
   const lookupGame = useLookupGame();
   const ask = useAskToJoin();
@@ -92,7 +93,7 @@ export function CodeSheet({
         guestMemory.dropCode();
         if (found.joined) {
           onClose();
-          navigate(`/quest/games/${found.game_id}`);
+          goToGame(found.game_id);
         } else setGame(found);
       } else {
         const found = (await lookupSpace.mutateAsync(value)).data;

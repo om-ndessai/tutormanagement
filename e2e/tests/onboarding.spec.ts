@@ -8,15 +8,13 @@ import { PEOPLE } from '../support/people.js';
  * Phase 26: the welcome wizard and feature tour.
  *
  * The rules worth holding: it opens by itself once per person (the database
- * remembers), a browser that has not seen it only offers it to somebody who
- * has (a cookie remembers the device), closing it counts as having been
- * through it, an admin's guided setup uses the portal's own forms and leaves
- * real records, and everybody else can only confirm their details or send
- * the office a note -- never edit them.
+ * remembers) and, since Phase 74 (JF25), a new browser does not offer it
+ * again; closing it counts as having been through it, an admin's guided setup
+ * uses the portal's own forms and leaves real records, and everybody else can
+ * only confirm their details or send the office a note -- never edit them.
  *
- * Every other spec's browser carries the tour cookie and every seeded person
- * has been through the wizard (support/fixtures.ts, the seed), so none of
- * them meets it. These tests use `fresh` browsers, and people made here.
+ * Every seeded person has been through the wizard (the seed), so no other spec
+ * meets it. These tests use people made here.
  */
 
 const wizard = (page: Page) => page.getByTestId('onboarding-wizard');
@@ -58,12 +56,16 @@ test.describe('the welcome wizard', () => {
       await expect(tour.getByRole('heading', { name: 'Your children' })).toBeVisible();
       await expect(page.locator('[data-tour-active]')).toHaveAttribute('data-tour', 'home-section-parent');
 
-      // Through to the end; menu items are lit where they are.
+      // Through to the end; menu items are lit where they are. A parent's menu has no Billing, nor its stop (JF31).
+      const lit: string[] = [];
       await tour.getByRole('button', { name: 'Next' }).click();
       await expect(page.locator('[data-tour-active]')).toHaveAttribute('data-tour', /^(home-|nav-)/);
       while (await tour.getByRole('button', { name: 'Next' }).count()) {
+        lit.push((await page.locator('[data-tour-active]').getAttribute('data-tour')) ?? '');
         await tour.getByRole('button', { name: 'Next' }).click();
       }
+      lit.push((await page.locator('[data-tour-active]').getAttribute('data-tour')) ?? '');
+      expect(lit).not.toContain('nav-billing');
       await tour.getByRole('button', { name: 'Finish' }).click();
 
       // Then their own details, which they cannot edit -- only tell the office.
@@ -82,10 +84,14 @@ test.describe('the welcome wizard', () => {
       );
       expect(thread.comments.map((comment: any) => comment.body)).toContain('My phone number has changed.');
 
+      // Closed, no offer of it comes back at once (JF25).
+      await expect(page.getByTestId('home-tour-offer')).toHaveCount(0);
+
       // It does not open again, and the person has been through it.
       await page.reload();
       await expect(page.getByTestId('member-home')).toBeVisible();
       await expect(wizard(page)).toHaveCount(0);
+      await expect(page.getByTestId('home-tour-offer')).toHaveCount(0);
       expect((await session(page)).onboarding.tour_finished_at).not.toBeNull();
     } finally {
       await admin.request.delete(`/api/users/${parent.id}?hard=true`);
@@ -123,18 +129,17 @@ test.describe('the welcome wizard', () => {
     }
   });
 
-  test('on a new browser, somebody who has been through it is only offered the tour', async ({ as }) => {
+  test('on a new browser, somebody who has been through it is not offered it again', async ({ as }) => {
+    // Phase 74 (JF25): once per PERSON -- the server's record decides, not the browser.
     const alex = await as('tutor', { fresh: true });
     await alex.goto('/');
 
-    const offer = alex.getByRole('dialog', { name: 'New here on this device?' });
-    await expect(offer).toBeVisible();
-    await expect(wizard(alex)).toHaveCount(0);
-
-    await offer.getByRole('button', { name: 'No thanks' }).click();
-    await alex.reload();
     await expect(alex.getByTestId('member-home')).toBeVisible();
-    await expect(alex.getByRole('dialog', { name: 'New here on this device?' })).toHaveCount(0);
+    await expect(wizard(alex)).toHaveCount(0);
+    await expect(alex.getByTestId('home-tour-offer')).toHaveCount(0);
+    await expect(alex.getByRole('dialog')).toHaveCount(0);
+    // Getting started still brings it back on demand.
+    await expect(alex.getByRole('button', { name: 'Getting started' })).toBeVisible();
   });
 
   test('Getting started brings it back; a non-admin gets the tour, not the setup', async ({ as }) => {

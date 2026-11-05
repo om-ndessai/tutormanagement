@@ -341,6 +341,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Lead the first home with what the person came for
 
+> **Status (JF6):** done in Phase 74 (2026-11-05) on both clients, as decided: where Tutoring is off, a parent's child leads, then the office of a space they help run, then the board; an office with nothing says so in one line and counts open assessments; a learner who never played gets three doors in the band (Play · Join with a code · Start a space).
+
+
 - **What:**
   - **Finish the arrivals H4 planned.** Invited or let in as a parent → the family focus, with the child's card first.
     Started a space → the office focus in that space: Needs you, invitations not yet accepted, open assessments.
@@ -640,6 +643,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Continue resumes the open game
 
+> **Status (JF13):** done in Phase 73 (2026-11-05) on both clients: Continue -- the board, Next up and the iPhone's home-screen action -- opens the reader's open game, running or in its lobby, read from the server and said in words ("Grade 7 Quick 5 · question 3 of 5 · 2 points"); with none open, "Play Grade 7 Quick 5 again". A New Quest game gets one too, and the games list says games in words.
+
+
 - **What:**
   - **Continue** (the board, Next up, the iPhone's home-screen action) opens the reader's open game, running or in a
     lobby. It reads the server's list, and is labelled in words with progress: "Grade 7 Quick 5 · question 3 of 5 · 2
@@ -683,6 +689,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
     a P1.
 
 ### P1. Start the board at the learner's grade, and remember it
+
+> **Status (JF14):** done in Phase 73 (2026-11-05), as decided: the board and the Daily lead with the grade picked on the row (saved per space), else the level recorded for a student, else the last level played, else for 13+ the top of the row; a guest's grade beats only that age guess; only when nothing says, "Which grade?" once (with Not in school). One Daily rule and one name, "Today's Daily".
+
 
 - **What:** lead the Quest board, and the Daily in Next up, with:
   1. the grade the space records for a student;
@@ -777,6 +786,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. My progress shows one state, and never a zero first
 
+> **Status (JF16):** done in Phases 73 and 74 (2026-11-05): one headline, never "0 of 3" first; an empty game wins nothing; the band never leads with a zero and offers doors to a newcomer. A guest's play day is not counted (owner, 2026-11-05).
+
+
 - **What:**
   - **One state per habit card:** "4-week streak: play 3 days this week to keep it", or "Start a streak", never both.
     Count streak badges from the current run.
@@ -806,6 +818,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   63 sends nothing about a guest.
 
 ### P3. Lesson cards say where, and lead to practice
+
+> **Status (JF17):** done in Phase 74 (2026-11-05): lesson lines name the place ("Tue at 4:00 PM with Alex · Institute, room 2"); the learner's lesson line leads to practice; "Practise before" opens the week before (owner, 2026-11-05).
+
 
 - **What:**
   - **The next-lesson cards** name the place ("Thu 4:00 PM with Alex · Institute, room 2").
@@ -1027,6 +1042,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. The home repeats its own Next up
 
+> **Status (JF23):** done in Phases 73 and 74 (2026-11-05): one Daily rule and name; when Next up shows the Daily or a game the board's own is quiet; the quick actions leave out the board's twins before the cut to three; the band does not repeat Next up.
+
+
 - **What:**
   - **Twins.** When an item is in Next up, collapse its twin below to a one-line reference.
   - **Weight.** Give Next up the heaviest button on the page.
@@ -1061,6 +1079,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. The Dashboard opens on the wrong hat
 
+> **Status (JF24):** done in the fix-up and Phase 74 (2026-11-05): the Dashboard opens on the home's hat (or the role asked for or last chosen in the space), under "Viewing as"; the wizard's last button is "Done".
+
+
 > **Status (JF24):** in part, in the fix-up (2026-11-04): the wizard's last button reads "Done". The rest is Phase 74.
 
 
@@ -1091,6 +1112,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   content ([member-home-plan.md:93](../member-home-plan.md)).
 
 ### P2. The tour covers what it introduces, and appears without Tutoring
+
+> **Status (JF25):** done in the fix-up and Phase 74 (2026-11-05): the tour only where Tutoring is on, once per person (not per browser), offered inline on the home; it no longer comes back right after closing; no Billing step for a parent.
+
 
 > **Status (JF25):** in part, in the fix-up (2026-11-04): the wizard offers the tour only where Tutoring is on, on both clients. The rest is Phase 74.
 
@@ -1280,6 +1304,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. Tutoring words and the office menu reach readers who have neither
 
+> **Status (JF31):** done in Phase 74 (2026-11-05): Users, Pairings and Billing only for admins and tutors; Tutoring's fields hidden where it is off; "billed", "your tutor reviews it" and "portal" reworded.
+
+
 - **What:**
   - **Copy per kind of space and per reader:**
     - "Who looks after this student?" in place of "who is billed";
@@ -1309,6 +1336,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 - **Owner decides:** whether a student's and a parent's menus drop Users.
 
 ### P2. One word per thing, and words rather than codes
+
+> **Status (JF32):** in part, in Phase 73 (2026-11-05): games and "Waiting for you" are said in words, the code after. The glossary and the rest are Phase 78.
+
 
 - **What:**
   - **Words.** Name every surface with the words `tileLook` already builds ("Quick 5 · Grade 8"). This covers
@@ -1436,6 +1466,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 ## Web and app
 
 ### P2. Leaving a game works the same on both clients
+
+> **Status (JF36):** done in Phases 70 and 73 (2026-11-04/05): Exit returns to where the game was opened on both clients; Cancel and End ask first on the web as in the app; the web's Daily has a close; results refresh the home.
+
 
 - **What:**
   - **One Exit,** in the same corner of every full-screen play surface, returning to where play was opened. The web

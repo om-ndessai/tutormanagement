@@ -1,7 +1,10 @@
-// Phase 62 (P6, docs/stickiness-plan.md): where the "Play <tile>" quick action lands. It starts the
-// last quest started in this space on this phone -- the same one-tap request as Continue on the Play
-// home -- and gives way to the game. With nothing remembered (another phone, a cleared app), or a
-// refusal, it says so and goes Home.
+// Phase 62 (P6, docs/stickiness-plan.md): where the home-screen quick action lands.
+//
+// Phase 73 (JF13, owner 2026-11-05): it is Continue, from the server -- the open-game read, fresh (the icon's
+// words may be a minute old): a game the reader is in (running or in its lobby) opens where they are; with none
+// open, the last game's settings start again, the same one-request start as a tile; with neither, or a
+// refusal, it says so and goes Home. Either way the game exits back Home (`from=home`).
+import { useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -11,39 +14,49 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LoadingState } from '@/components/state-views';
 import { useCreateGame } from '@/features/quest/games-api';
 import { ApiRequestError } from '@/lib/api-client';
-import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
-import { useLastQuest, useRememberLastQuest } from './play-api';
-import { startRequest } from './play-model';
+import { openGameQuery } from './play-api';
+import { continueAction, startRequest } from './play-model';
+
+export const NOTHING_TO_CONTINUE = 'There is no quest to continue here yet.';
+
+function openGame(gameId: string) {
+  router.replace({ pathname: '/quest/games/[gameId]', params: { gameId, from: 'home' } });
+}
 
 export function PlayLastScreen() {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
-  const { organization } = useAuth();
-  const last = useLastQuest(organization?.slug);
-  const remember = useRememberLastQuest(organization?.slug);
+  const queryClient = useQueryClient();
   const create = useCreateGame();
-  const [refusal, setRefusal] = useState<string | null>(null);
-  // Nothing kept on this phone (another phone, a cleared app): said, and nothing is started.
-  const nothingKept = last.isSuccess && !last.data;
-  const problem = refusal ?? (nothingKept ? 'There is no quest to continue on this phone yet.' : null);
-  const started = useRef(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [starting, setStarting] = useState<string | null>(null);
+  const begun = useRef(false);
 
   useEffect(() => {
-    const quest = last.data;
-    if (started.current || !quest) return;
-    started.current = true;
-    create
-      .mutateAsync(startRequest(quest.request))
-      .then((game) => {
-        remember(quest);
-        router.replace({ pathname: '/quest/games/[gameId]', params: { gameId: game.data.id, from: 'home' } });
-      })
-      .catch((caught: unknown) =>
-        setRefusal(caught instanceof ApiRequestError ? caught.message : 'That quest could not start.'),
-      );
-  }, [last.data, create, remember]);
+    if (begun.current) return;
+    begun.current = true;
+    void (async () => {
+      try {
+        const read = await queryClient.fetchQuery({ ...openGameQuery, staleTime: 0 });
+        const next = continueAction(read.data);
+        if (!next) {
+          setProblem(NOTHING_TO_CONTINUE);
+          return;
+        }
+        if (next.kind === 'open') {
+          openGame(next.game_id);
+          return;
+        }
+        setStarting(next.label);
+        const game = await create.mutateAsync(startRequest(next.request));
+        openGame(game.data.id);
+      } catch (caught) {
+        setProblem(caught instanceof ApiRequestError ? caught.message : 'That quest could not start.');
+      }
+    })();
+  }, [queryClient, create]);
 
   return (
     <View
@@ -72,7 +85,7 @@ export function PlayLastScreen() {
           </Button>
         </>
       ) : (
-        <LoadingState label={last.data ? `Starting ${last.data.label}…` : 'Starting…'} />
+        <LoadingState label={starting ? `${starting.replace(/^Play /, 'Starting ').replace(/ again$/, '')}…` : 'Opening your quest…'} />
       )}
     </View>
   );

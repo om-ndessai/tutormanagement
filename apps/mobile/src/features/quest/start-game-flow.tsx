@@ -11,6 +11,8 @@
 // fills every step and jumps to the Review; its × asks first, natively. The first step validates
 // rather than disabling Next: the message shows under the tiles, with the error buzz. Each step is
 // capped at 720 pt and centred on an iPad. Nothing worth guarding is lost on Close (`dirty` false).
+// Phase 73 (JF36): opened from Home (`from=home`), the game it makes says so too, so its Exit comes back Home
+// rather than to the Quest hub it never passed through; and Home's Continue finds it (from the server).
 import {
   GAME_LIMITS,
   createGameSchema,
@@ -76,7 +78,7 @@ const STEP_MAX_WIDTH = 720;
 
 type Patch = (patch: Partial<WizardDraft>) => void;
 
-export function StartGameFlow() {
+export function StartGameFlow({ from }: { from?: string } = {}) {
   const levels = useGameLevels();
   const favorites = useGameFavorites();
   const create = useCreateGame();
@@ -111,8 +113,12 @@ export function StartGameFlow() {
     }
     try {
       const game = await create.mutateAsync(request);
-      // Replace the wizard: Exit from the game lands on Quest, never in a made game's settings.
-      router.replace({ pathname: '/quest/games/[gameId]', params: { gameId: game.data.id } });
+      // Replace the wizard: Exit from the game lands where the wizard was opened (Home or Quest), never in a
+      // made game's settings.
+      router.replace({
+        pathname: '/quest/games/[gameId]',
+        params: from ? { gameId: game.data.id, from } : { gameId: game.data.id },
+      });
     } catch (caught) {
       haptics.error();
       setRefusal(message(caught, 'Could not start the game.'));

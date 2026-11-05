@@ -52,6 +52,16 @@ describe('SearchScreen', () => {
     expect(screen.getByText('Nothing matches “payer”.')).toBeTruthy();
   });
 
+  // Phase 74 (JF31): a parent's search finds no Users, Pairings or Billing -- the menu's own rule.
+  it('never offers the people pages to a parent', async () => {
+    mockAuth.mockReturnValue(auth(['parent']));
+    await renderWithProviders(<SearchScreen />);
+    expect(screen.queryByTestId('search-goto-nav-users')).toBeNull();
+    expect(screen.queryByTestId('search-goto-nav-assignments')).toBeNull();
+    expect(screen.queryByTestId('search-goto-nav-billing')).toBeNull();
+    expect(screen.getByTestId('search-goto-nav-profile')).toBeTruthy();
+  });
+
   it('offers Organization to an admin, and narrows destinations as you type', async () => {
     mockAuth.mockReturnValue(auth(['admin', 'tutor']));
     await renderWithProviders(<SearchScreen />);

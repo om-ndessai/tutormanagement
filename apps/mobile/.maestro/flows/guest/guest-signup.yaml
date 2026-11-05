@@ -167,7 +167,9 @@ tags:
     id: screen-onboarding
 - takeScreenshot: guest-signup-home
 # Their grade carried over (P13): the Play home leads with Grade 4 -- the tile played here as a guest,
-# no grade chosen otherwise -- its Daily, and the Quest board on Grade 4 (Phase 67).
+# no grade chosen otherwise -- its Daily, and the Quest board on Grade 4 (Phase 67). Phase 73 (JF14): an
+# adult with nothing played here would be led by age (the top of the row); the grade played as a guest says
+# more, so the phone carries it once into the grade the server keeps. The Daily is "Today's Daily · Grade 4".
 - extendedWaitUntil:
     visible:
       id: play-home
@@ -178,7 +180,7 @@ tags:
     centerElement: true
 - assertVisible:
     id: play-daily-eyebrow
-    text: "(?i)Today's Daily · G4D"
+    text: "Today's Daily · Grade 4"
 # Phase 67 (H5): the Quest board opens on that grade.
 - scrollUntilVisible:
     element:

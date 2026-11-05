@@ -79,7 +79,8 @@ export function MemberTileStart() {
   useEffect(() => {
     if (!shape || started.current) return;
     started.current = true;
-    void start(tileCode(shape), tileGameRequest(shape));
+    // Replaced: Back from the game does not start another (and Exit goes home, where the link was opened for).
+    void start(tileGameRequest(shape), { replace: true });
   }, [shape, start]);
   if (!shape) return <Navigate to="/" replace />;
   return <p className="text-muted-foreground p-6 text-sm">Starting {tileCode(shape)} · {tileWords(shape)}…</p>;

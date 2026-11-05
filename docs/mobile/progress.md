@@ -601,6 +601,31 @@ native rebuild of both dev builds, so build only while the devices are free.
   simulator and the Android emulator. Found on the way: the guest page's code dialog lost fast-typed letters (its state
   sat outside the Paper portal; it now lives inside), the join note is one line whose Return puts the keyboard away,
   and Spaces opened from "Start a space" puts that card first (Android left the focused field under the keyboard).
+- [x] 88. Mobile: Phase 73's app half (2026-11-05, build-log entry 83) -- Continue from the server's open game (the
+  board, Next up's `open_game`, the iPhone home-screen action and its screen), "Play … again" with none open, the
+  device's last quest removed; the board's grade from the server's lead, saved when tapped, "Which grade?" once (the
+  guest grade carried once instead, also over the age guess); one Daily rule and "Today's Daily" everywhere a member
+  reads it; games and Waiting for you in words; My progress's one state; an empty game is "Nobody played"; New Quest
+  and Join keep `from`, results refresh Home. Typecheck, lint, Jest and export green; flows written (`play/continue`,
+  `play/grade` new; `play/play-home`, `play/habit`, `play/family`, `quest/game-start`, `quest/game-single`,
+  `guest/guest-signup`, `journeys/j01a-24-continue` updated), not yet run on the iOS simulator or the Android emulator. The 8 Phase 73 flows (`play/continue`, `play/grade`, and the updated `play/*`, `quest/game-start`, `quest/game-single`,
+  `guest/guest-signup`) green on the iOS simulator and the Android emulator.
+- [x] 89. Mobile: Phase 74's app half (2026-11-05, build-log entry 84) -- the first home: the server's hat order kept
+  (a parent's child, then the office, then playing where Tutoring is off), the office's non-zero counts (open
+  assessments too) or "Nothing needs you right now.", a child's card that opens the child; the band's three doors and
+  "Start a streak" for a learner who has not played here, never a zero, never what Next up says, nothing of lessons
+  where Tutoring is off; the board's Daily and Continue quiet beside Next up's, no New Quest or "Have a code?" twins;
+  the Dashboard on the home's hat (else the role last chosen in the space), "Viewing as"; the tour once per person, its
+  offer a card in the home, never back after the wizard, no parent Billing step; Users, Pairings and Billing for admins
+  and tutors only, the words of a space that bills nobody; lesson lines with their place, practice from the learner's
+  lesson line, Practise before the week ahead. Typecheck, lint, Jest and export green; flows written (`home/first-home`
+  new; `home/member-home-space`, `home/member-home-student`, `home/member-home-parent`, `home/member-home-multirole`,
+  `home/quick-code`, `home/dashboard-analytics`, `dashboard/role-selector`, `onboarding/tour`,
+  `onboarding/confirm-details`, `onboarding/wizard-admin`, `features/wizard`, `spaces/make-space`,
+  `spaces/new-space-quest`, `shell/navigation`, the office's dashboard flows and `subflows/open-dashboard` updated), not
+  yet run on the iOS simulator or the Android emulator. The 22 Phase 74 flows (`home/first-home` and the updated home, dashboard, onboarding, spaces and finance flows)
+  green on the iOS simulator and the Android emulator; found on the way: a role chosen on the Dashboard did not stick
+  after "Back to mine" (fixed in `dashboard-role.ts`).
 
 ## Phase 4 — Google sign-in
 

@@ -3,7 +3,7 @@ import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import { RouteError } from '@/components/route-error';
 import { DictationProvider } from '@/features/dictation/dictation-provider';
 import { OnboardingProvider } from '@/features/onboarding/onboarding-provider';
-import { useLastQuest } from '@/features/play/play-api';
+import { useOpenGame } from '@/features/play/play-api';
 import { useQuickActionHandler, useQuickActionItems } from '@/features/shell/quick-actions';
 import { useStackOptions } from '@/features/shell/stack-options';
 import { LiveSessionHost } from '@/features/teaching/live-session-banner';
@@ -44,9 +44,9 @@ export default function OrgLayout() {
   const options = useStackOptions({ large: false });
   // Home-screen quick actions follow the roles held in THIS organization (#43).
   // Phase 50: and the feature sets, so a space without Tutoring clears them.
-  // Phase 62 (P6): and "Play <tile>", the last tile started here on this phone.
-  const lastQuest = useLastQuest(organization?.slug).data;
-  useQuickActionItems(user?.roles, organization, lastQuest?.label);
+  // Phase 73 (JF13): and Continue, from the open-game read as Home last had it -- observed, never fetched here.
+  const openGame = useOpenGame(false).data?.data;
+  useQuickActionItems(user?.roles, organization, openGame);
   useQuickActionHandler(user?.roles, organization);
   return (
     <LiveSessionHost key={organization?.slug ?? 'none'}>

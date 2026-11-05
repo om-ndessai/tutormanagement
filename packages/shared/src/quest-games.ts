@@ -199,6 +199,8 @@ export interface WaitingGame {
   code: string;
   host_first_name: string;
   level_id: string;
+  /** Phase 73 (JF32): a game drawing upward reads "Grade 4 and up". Absent from an older Worker. */
+  level_scope?: GameLevelScope;
   mode: GameMode;
   question_count: number | null;
   duration_seconds: number | null;
@@ -765,8 +767,10 @@ function scoreReachedAt(team: EngineTeam, scoring: GameScoring): number {
  * score first. Teams still level share the place.
  */
 export function rankTeams(game: EngineGame): Map<string, number> {
+  // Phase 73 (JF16): a team that answered nothing is not placed, so an empty game has no winner ("Nobody played"). A
+  // skip is an answer -- with negative marking, skipping is a choice -- as the server's counts agree.
   const teams = game.teams
-    .filter((team) => team.players.length > 0 || team.answers.length > 0)
+    .filter((team) => team.answers.length > 0)
     .map((team) => {
       const totals = teamTotals(team.answers, game);
       return {
@@ -855,6 +859,26 @@ export function placeLabel(place: number): string {
 export function clockLabel(ms: number): string {
   const total = Math.max(0, Math.ceil(ms / 1000));
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}
+
+/**
+ * Phase 73 (JF13): the reader's open game, for Continue -- running or in its lobby -- with where they are in it, read
+ * without being served a question; else what "again" would start. GET /api/quest/games/open.
+ */
+export interface OpenGame {
+  game_id: string;
+  status: 'lobby' | 'running';
+  /** "Grade 7 Quick 5 · question 3 of 5 · 2 points" (`openGameLabel`). */
+  label: string;
+  question: number | null;
+  of: number | null;
+  points: number | null;
+}
+
+export interface OpenGameResponse {
+  open: OpenGame | null;
+  /** The last game's settings to start again ("Play Grade 7 Quick 5 again"), when none is open. */
+  again: { label: string; request: CreateGameRequest } | null;
 }
 
 /** The winning teams' names, for the results' headline. */

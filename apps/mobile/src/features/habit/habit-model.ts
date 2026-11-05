@@ -2,7 +2,12 @@
 // apps/web/src/features/play/play-home.tsx @ 0e3ec7a (working tree): their words and decisions, kept
 // pure here so Jest can hold them. Phase 64 (P17-P20, docs/stickiness-plan.md); Phase 67 (H8): the week
 // strip, welcome back, the next badge and the Daily's rings.
+// Phase 73 (JF16, JF23): My progress says ONE headline from the current run (the streak, "Start a streak",
+// or -- back after a week away -- the welcome, never two at once and never a loss); the members' Daily is
+// `DAILY_NAME` ("Today's Daily") with its level in words, and its level is shared `dailyLevelFor`'s, the one
+// rule the board and Next up both use.
 import {
+  DAILY_NAME,
   DAILY_SET_SIZE,
   STREAK_DAYS_PER_WEEK,
   TILE_LEVEL_TAGS,
@@ -11,7 +16,6 @@ import {
   type HabitSummary,
   type NextBadge,
   type WeekDot,
-  type MemberTile,
   type QuestionBankLevelId,
 } from '@tmi/shared';
 
@@ -53,6 +57,40 @@ export function weekDotLabel(index: number, dot: WeekDot): string {
 /** Back after time away: a fresh start, never what was lost. */
 export const WELCOME_BACK_TEXT = 'Welcome back! A fresh week starts now.';
 
+/**
+ * Phase 73 (JF16): My progress's ONE state, from the current run -- a streak and what keeps it, a welcome back,
+ * or "Start a streak" -- never two that disagree, and never a zero first (the web's words, my-progress-card.tsx).
+ * Badges once earned stay listed below, as badges.
+ */
+export function progressHeadline(
+  summary: Pick<HabitSummary, 'streak_weeks' | 'days_this_week'> & Partial<Pick<HabitSummary, 'welcome_back'>>,
+): { title: string; detail: string; welcome: boolean } {
+  const days = (n: number) => `${n} ${n === 1 ? 'day' : 'days'}`;
+  const left = Math.max(0, STREAK_DAYS_PER_WEEK - summary.days_this_week);
+  if (summary.streak_weeks > 0) {
+    return {
+      title: `${summary.streak_weeks}-week streak`,
+      detail: left === 0 ? 'This week counts. Keep it going next week.' : `Play ${days(left)} more this week to keep it.`,
+      welcome: false,
+    };
+  }
+  if (summary.welcome_back) {
+    return {
+      title: 'Welcome back!',
+      detail: `A fresh week starts now: play ${days(STREAK_DAYS_PER_WEEK)} to start a streak.`,
+      welcome: true,
+    };
+  }
+  return {
+    title: 'Start a streak',
+    detail:
+      summary.days_this_week === 0
+        ? `Play on ${days(STREAK_DAYS_PER_WEEK)} this week.`
+        : `${summary.days_this_week} of ${STREAK_DAYS_PER_WEEK} days this week. ${left} to go.`,
+    welcome: false,
+  };
+}
+
 /** "Next badge: 10 quests · 4 of 10". */
 export function nextBadgeLine(badge: Pick<NextBadge, 'label' | 'have' | 'need'>): string {
   return `Next badge: ${badge.label} · ${badge.have} of ${badge.need}`;
@@ -74,15 +112,13 @@ export function levelWords(levelId: string): string {
   return TILE_LEVEL_WORDS[levelId as QuestionBankLevelId] ?? levelId;
 }
 
-/** The Play home's Daily: of the level last played, else of the first tile's; none without tiles. */
-export function dailyTileFor(tiles: readonly MemberTile[], lastLevel?: string | null): MemberTile | null {
-  return tiles.find((tile) => tile.level_id === lastLevel) ?? tiles[0] ?? null;
+/** "Today's Daily · Grade 4": the members' Daily by its one name, its level in words (JF23, JF32). */
+export function dailyButtonLabel(levelId: string): string {
+  return `${DAILY_NAME} · ${levelWords(levelId)}`;
 }
 
-/** "Today's Daily · G4D". */
-export function dailyButtonLabel(levelId: string): string {
-  return `Today's Daily · ${levelTag(levelId)}D`;
-}
+/** The Daily's button on the board and in Next up. */
+export const PLAY_DAILY_LABEL = `Play ${DAILY_NAME[0]!.toLowerCase()}${DAILY_NAME.slice(1)}`;
 
 /** Phase 67 (H8): the Daily card's five rings -- hit or missed once played, else open. */
 export function dailyRings(result: Pick<DailySet, 'result'>['result'], size: number = DAILY_SET_SIZE): ('open' | 'hit' | 'miss')[] {

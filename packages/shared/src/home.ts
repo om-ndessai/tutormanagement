@@ -100,6 +100,11 @@ export interface HomeLesson {
   tutor_name: string;
   /** Minutes from now until it starts on the space's clock; negative once under way. */
   starts_in: number;
+  /**
+   * Phase 74 (JF17): where it is -- the schedule's location of its kind, by NAME only (never an address or a link, R16,
+   * R29). Absent from an older Worker; null when the schedule names none.
+   */
+  place?: { name: string; kind: 'physical' | 'virtual' } | null;
 }
 
 export interface HomeTutor {
@@ -125,6 +130,8 @@ export interface HomeOffice {
   invitations: number;
   lessons_today: number;
   lessons_this_week: number;
+  /** Phase 74 (JF6): assessments submitted and not yet reviewed, where Assessment is on. A count (R29). */
+  assessments_open?: number;
 }
 
 export interface HomeChild {
@@ -270,6 +277,11 @@ export function deriveHomeFocus(input: {
     .filter((focus) => allowed(focus) && activity[focus] >= HOME_FOCUS_MIN_DAYS)
     .sort((a, b) => activity[b] - activity[a]);
   if (ranked[0]) return ranked[0];
+  // Phase 74 (JF6, owner 2026-11-05): a parent's or the office's hat, where it leads, beats how they first arrived --
+  // a parent invited for a child, or someone who started a space, came for that, whatever they played as a guest.
+  const lead0 = hats[0];
+  const early: HomeFocus | null = lead0 === 'parent' ? 'family' : lead0 === 'office' ? 'office' : null;
+  if (allowed(early)) return early;
   const arrived: HomeFocus | null =
     arrived_via === 'guest_quest' ? 'quest' : arrived_via === 'guest_assessment' ? 'assessment' : null;
   if (allowed(arrived)) return arrived;
@@ -302,14 +314,17 @@ export function practiseRequest(levelId: string): CreateGameRequest {
   return { level_id: levelId as CreateGameRequest['level_id'], mode: 'count', question_count: 5, players: 'single', max_team_size: 1 };
 }
 
-/** How many days ahead a lesson prompts "Practise before <day>'s lesson". */
-export const PRACTISE_BEFORE_DAYS = 3;
+/** How many days ahead a lesson prompts "Practise before <day>'s lesson": the week before (owner, 2026-11-05; JF17). */
+export const PRACTISE_BEFORE_DAYS = 7;
 
-/** Whether a lesson is close enough to practise for: later today, or within PRACTISE_BEFORE_DAYS days. */
+/**
+ * Whether a lesson is close enough to practise for: later today, or in the coming week -- strictly less than
+ * PRACTISE_BEFORE_DAYS ahead, so "Thursday's lesson" is never said on a Thursday of a lesson a week away.
+ */
 export function practiseBefore(lesson: Pick<HomeLesson, 'occurs_on' | 'starts_in'> | null, today: string): boolean {
   if (!lesson) return false;
   if (lesson.occurs_on === today) return lesson.starts_in > 60;
-  return lesson.occurs_on > today && lesson.occurs_on <= addDays(today, PRACTISE_BEFORE_DAYS);
+  return lesson.occurs_on > today && lesson.occurs_on < addDays(today, PRACTISE_BEFORE_DAYS);
 }
 
 /** "Thursday's lesson", "tomorrow's lesson", "today's lesson". */
@@ -325,6 +340,8 @@ export function lessonDayWords(occursOn: string, today: string): string {
 export interface NextUpExtras {
   game_invite?: { game_id: string; title: string; host_first_name: string } | null;
   continue_quest?: { code: string; title: string } | null;
+  /** Phase 73 (JF13): the reader's open game here, from the server; it outranks "again". */
+  open_game?: { game_id: string; title: string } | null;
   daily?: { level_id: string; done: boolean } | null;
   /** Phase 67: a student's Question Quest has a question waiting (it replaces the old landing redirect). */
   question_quest?: { level_id: string | null } | null;
@@ -340,6 +357,7 @@ export type NextUp =
   | { kind: 'lesson_now'; hat: 'tutor'; lesson: TutorHomeLesson; starts_in: number }
   | { kind: 'child_change'; hat: 'parent'; child: HomeChild }
   | { kind: 'game_invite'; hat: 'learner'; game: NonNullable<NextUpExtras['game_invite']> }
+  | { kind: 'open_game'; hat: 'learner'; game: NonNullable<NextUpExtras['open_game']> }
   | { kind: 'reviews_waiting'; hat: 'tutor'; assessments: number; quest: number }
   | { kind: 'assessment_continue'; hat: 'learner'; assessment: NonNullable<HomeLearner['assessment_in_progress']> }
   | { kind: 'office_to_record'; hat: 'office'; office: HomeOffice }
@@ -362,6 +380,7 @@ export const NEXT_UP_ORDER: readonly NextUpKind[] = [
   'lesson_now',
   'child_change',
   'game_invite',
+  'open_game',
   'reviews_waiting',
   'assessment_continue',
   'question_quest',
@@ -388,6 +407,7 @@ export function nextUpKey(item: NextUp): string {
     case 'child_next_lesson':
       return `${item.kind}:${item.child.student_user_id}`;
     case 'game_invite':
+    case 'open_game':
       return `${item.kind}:${item.game.game_id}`;
     case 'assessment_continue':
       return `${item.kind}:${item.assessment.id}`;
@@ -433,14 +453,16 @@ export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): N
   }
   if (extras.daily && !extras.daily.done) out.push({ kind: 'daily', hat: 'learner', level_id: extras.daily.level_id });
   if (extras.welcome_back) out.push({ kind: 'welcome_back', hat: 'learner', level_id: extras.daily?.level_id ?? null });
-  if (extras.continue_quest) {
+  if (extras.open_game) out.push({ kind: 'open_game', hat: 'learner', game: extras.open_game });
+  if (extras.continue_quest && !extras.open_game) {
     out.push({ kind: 'continue_quest', hat: 'learner', code: extras.continue_quest.code, title: extras.continue_quest.title });
   }
   if (home.learner?.next_lesson) out.push({ kind: 'learner_lesson', hat: 'learner', lesson: home.learner.next_lesson });
   for (const child of home.parent?.children ?? []) {
     if (child.next_lesson) out.push({ kind: 'child_next_lesson', hat: 'parent', child });
   }
-  if (home.office && home.office.join_requests + home.office.invitations > 0) {
+  // Phase 74 (JF6): open assessments are the office's too, so Next up never says "all caught up" beside them.
+  if (home.office && home.office.join_requests + home.office.invitations + (home.office.assessments_open ?? 0) > 0) {
     out.push({ kind: 'office_needs', hat: 'office', office: home.office });
   }
   if (t?.now.next) out.push({ kind: 'lesson_next', hat: 'tutor', lesson: t.now.next, starts_in: t.next_starts_in });
@@ -470,7 +492,9 @@ export function hatHasToday(home: MemberHome, hat: HomeHat): boolean {
     case 'tutor':
       return Boolean(home.tutor && (home.tutor.lessons_today > 0 || home.tutor.now.unrecorded.length > 0));
     case 'office':
-      return Boolean(home.office && home.office.to_record_count + home.office.join_requests > 0);
+      return Boolean(
+        home.office && home.office.to_record_count + home.office.join_requests + (home.office.assessments_open ?? 0) > 0,
+      );
     case 'parent':
       return (home.parent?.children ?? []).some(
         (c) => c.cancelled !== null || c.next_lesson?.occurs_on === home.day,
@@ -518,6 +542,12 @@ export function quickActionsFor(
     mayBringPeople: boolean;
     /** MemberHome.may_assess: someone to start an assessment for (absent: true). */
     mayAssess?: boolean;
+    /**
+     * Phase 74 (JF23): the Quest board is on the home (it has its own New Quest), and the band's doors are shown (they
+     * have their own Join with a code) -- left out BEFORE the cut to three, so the freed place is refilled.
+     */
+    board?: boolean;
+    doors?: boolean;
   },
 ): QuickAction[] {
   const out: QuickAction[] = [];
@@ -538,8 +568,8 @@ export function quickActionsFor(
         add('progress');
       }
     } else {
-      if (options.quest) add('new_quest');
-      if (options.quest) add('join_code');
+      if (options.quest && !options.board) add('new_quest');
+      if (options.quest && !options.doors) add('join_code');
       if (options.assessment && options.mayAssess !== false) add('start_assessment');
     }
   }

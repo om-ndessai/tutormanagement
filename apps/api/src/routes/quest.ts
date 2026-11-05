@@ -15,7 +15,10 @@ import {
   type QuestSummary,
   type User,
   checkedQuestionsOn,
+  questGradeSchema,
+  questLeadGrade,
   tileWords,
+  type QuestionBankLevelId,
   type CanvasAssessmentLevelId,
   type MemberTile,
   type MemberTilesResponse,
@@ -48,7 +51,7 @@ import {
 } from '../repositories/quest.js';
 import { questGameRoutes } from './quest-games.js';
 import { habitRoutes } from './habit.js';
-import { bestScores } from '../repositories/habit.js';
+import { bestScores, leadFacts, setQuestGrade } from '../repositories/habit.js';
 
 // Question Quest (Phase 42, docs/gamification-plan.md): signed-in students
 // answer the bank's unapproved questions; their tutors approve or flag them;
@@ -141,7 +144,31 @@ export const questRoutes = new Hono<AppEnv>()
       const shape = `${tile.level_id}|${tile.mode}|${tile.mode === 'count' ? tile.value : ''}|${tile.mode === 'timed' ? tile.value * 60 : ''}`;
       return [{ ...tile, words: tileWords(tile), available: count.available, beta: count.unreviewed > 0, best: bests.get(shape) ?? null }];
     });
-    const body: ApiOk<MemberTilesResponse> = { data: { play_home: settings.play_home, daily: settings.daily, tiles: shown } };
+    // Phase 73 (JF14): the grade that leads this reader's board and Daily, or the question to ask once.
+    const facts = await leadFacts(c.env.DB, org.id, c.get('user').id);
+    const lead = questLeadGrade(shown, {
+      picked: facts.picked,
+      recorded: facts.recorded as QuestionBankLevelId | null,
+      played: facts.played as QuestionBankLevelId | null,
+      grown: facts.age_band === '13-17' || facts.age_band === 'adult',
+    });
+    const body: ApiOk<MemberTilesResponse> = {
+      data: {
+        play_home: settings.play_home,
+        daily: settings.daily,
+        tiles: shown,
+        lead,
+        ask_grade: lead === null && shown.length > 0,
+        picked_grade: facts.picked,
+      },
+    };
+    return c.json(body);
+  })
+
+  /** Phase 73 (JF14): the grade picked on the board's row here (null forgets it). A preference, so no log line. */
+  .put('/grade', zValidator('json', questGradeSchema), async (c) => {
+    await setQuestGrade(c.env.DB, c.get('org').id, c.get('user').id, c.req.valid('json').grade);
+    const body: ApiOk<{ grade: number | null }> = { data: { grade: c.req.valid('json').grade } };
     return c.json(body);
   })
 

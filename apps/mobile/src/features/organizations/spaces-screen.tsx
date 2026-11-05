@@ -90,7 +90,8 @@ export function SpacesScreen({ focusJoin = false, focusStart = false }: { focusJ
             {user ? `Signed in as ${user.email ?? user.full_name}. ` : ''}
             {newcomer
               ? 'Join a space with its code, or start your own.'
-              : 'You land in the space you opened last. Each tab can be in a different one.'}
+              : // Phase 74 (JF31): the web's "Each tab can be in a different one" is about browser tabs; an app has none.
+                'You land in the space you opened last.'}
           </Text>
         </View>
       </View>

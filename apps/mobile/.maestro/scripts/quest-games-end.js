@@ -2,7 +2,9 @@
 // whatever happened in between: Sofia's Quest level cleared, every unfinished game in chmi ended (as Priya, an admin, whose list
 // is every game), then "include questions not yet reviewed" off (the Assessment menu's flows expect
 // it off, clean-canvas-assessments.js) and Question Quest off. Phase 47: every favorite of the four
-// people the game flows sign in as is deleted too, so a rerun starts with none. Through the LOCAL
+// people the game flows sign in as is deleted too, so a rerun starts with none. Phase 73 (JF14): each of
+// them -- and Sanjay, play/grade.yaml's -- has the grade picked on the board's row forgotten again
+// (PUT /quest/grade { grade: null }), so the next flow's board leads as the seed has it. Through the LOCAL
 // Worker only.
 var ORG = 'chmi';
 var ADMIN = 'priya.raghavan@gmail.com';
@@ -53,6 +55,12 @@ for (var p = 0; p < PLAYERS.length; p++) {
     var gone = call('DELETE', '/quest/games/favorites/' + favorites[f].id, undefined, PLAYERS[p]);
     if (gone.status >= 300) problems.push('could not delete a favorite: ' + gone.status);
   }
+}
+// Phase 73: the grade picked on the row is each person's own preference here.
+var GRADED = PLAYERS.concat(['sanjay.patel.nc@gmail.com']);
+for (var g = 0; g < GRADED.length; g++) {
+  var forgot = call('PUT', '/quest/grade', { grade: null }, GRADED[g]);
+  if (forgot.status >= 300) problems.push('could not forget the grade of ' + GRADED[g] + ': ' + forgot.status);
 }
 var off = call('PATCH', '/organization/settings', { gamify_question_quest: false, canvas_assessments_unreviewed: false });
 if (off.status >= 300) throw new Error('Could not switch Question Quest back off: ' + off.status + ' ' + off.body);

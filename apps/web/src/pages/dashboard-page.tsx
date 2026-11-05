@@ -1,7 +1,17 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { CompassIcon, EyeIcon, Loader2Icon, XIcon } from 'lucide-react';
-import { DASHBOARD_ROLE_LABELS, featureOn, type UserRole } from '@tmi/shared';
+import {
+  DASHBOARD_ROLE_LABELS,
+  USER_ROLES,
+  dashboardRoleForHat,
+  featureOn,
+  orderHats,
+  type ApiOk,
+  type MemberHome,
+  type UserRole,
+} from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
 import { Button } from '@/components/ui/button';
@@ -15,6 +25,7 @@ import {
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useDashboard } from '@/features/dashboard/api';
+import { memberHomeKey } from '@/features/home/api';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { UserPicker } from '@/features/dashboard/user-picker';
 import { RoleIcons } from '@/features/users/role-icon';
@@ -45,14 +56,62 @@ export function DashboardPage() {
   return <TutoringDashboard />;
 }
 
+const NO_ROLES: readonly UserRole[] = [];
+
+/** Phase 74 (JF24): the role last chosen on the Dashboard, per space, on this device. */
+const roleKey = (space: string | undefined) => `aimtrue.dashboard-role.${space ?? ''}`;
+
+function readRole(space: string | undefined): UserRole | null {
+  try {
+    const role = localStorage.getItem(roleKey(space));
+    return role && (USER_ROLES as readonly string[]).includes(role) ? (role as UserRole) : null;
+  } catch {
+    return null;
+  }
+}
+
+function rememberRole(space: string | undefined, role: UserRole): void {
+  try {
+    localStorage.setItem(roleKey(space), role);
+  } catch {
+    // Storage blocked: the choice lasts while the URL carries it.
+  }
+}
+
+/** The dashboard role matching the hat a home leads with, if the person holds it. */
+function roleForHome(home: MemberHome, roles: readonly UserRole[]): UserRole | undefined {
+  const lead = orderHats(home)[0];
+  const role = lead ? dashboardRoleForHat(lead) : undefined;
+  return role && roles.includes(role) ? role : undefined;
+}
+
+/**
+ * Phase 74 (JF24): the role the Dashboard opens on when the URL names none -- the one last chosen here on this device,
+ * else the one matching the hat the home leads with, from the home already read (no request of its own), else the
+ * server's. Decided once per visit, so a home refreshed meanwhile does not switch the view under the reader.
+ */
+function useOpeningRole(roles: readonly UserRole[]): UserRole | undefined {
+  const { organization } = useAuth();
+  const client = useQueryClient();
+  const [role] = useState<UserRole | undefined>(() => {
+    const remembered = readRole(organization?.slug);
+    if (remembered && roles.includes(remembered)) return remembered;
+    const cached = client.getQueryData<ApiOk<MemberHome>>(memberHomeKey)?.data;
+    return cached ? roleForHome(cached, roles) : undefined;
+  });
+  return role;
+}
+
 function TutoringDashboard() {
   const brand = useBrand();
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const [params, setParams] = useSearchParams();
 
   const isAdmin = user?.roles.includes('admin') ?? false;
   const viewingId = params.get('as') ?? undefined;
-  const requestedRole = (params.get('role') as UserRole | null) ?? undefined;
+  // Someone else's dashboard opens on the server's choice for them; one's own, on the opening role (JF24).
+  const opening = useOpeningRole(user?.roles ?? NO_ROLES);
+  const requestedRole = (params.get('role') as UserRole | null) ?? (viewingId ? undefined : opening);
 
   const { data, isPending, isError } = useDashboard({
     ...(requestedRole ? { role: requestedRole } : {}),
@@ -82,6 +141,12 @@ function TutoringDashboard() {
     setParams(next, { replace: true });
   }
 
+  function chooseRole(role: UserRole) {
+    // Remembered for this space when it is one's own dashboard (JF24).
+    if (!viewingId) rememberRole(organization?.slug, role);
+    setParam('role', role);
+  }
+
   return (
     <div className="mx-auto max-w-6xl">
       {/* Phase 33: a lesson about to start, where its locations ask for a reminder. Never while viewing someone else. */}
@@ -90,7 +155,7 @@ function TutoringDashboard() {
         title={subject?.viewing_as_other ? `${subject.full_name}'s dashboard` : 'Dashboard'}
         description={
           subject?.viewing_as_other
-            ? 'You are seeing the portal exactly as they see it.'
+            ? 'You are seeing this exactly as they see it.'
             : brand.name
         }
         actions={
@@ -106,21 +171,24 @@ function TutoringDashboard() {
             {/* "Handle cases where a single user could have multiple roles and
                 so dashboard should have ability to select the role." */}
             {roleOptions.length > 1 && (
-              <Select
-                value={response?.role ?? ''}
-                onValueChange={(value) => setParam('role', value)}
-              >
-                <SelectTrigger className="w-full sm:w-44" aria-label="Dashboard role">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {roleOptions.map((role) => (
-                    <SelectItem key={role} value={role}>
-                      {DASHBOARD_ROLE_LABELS[role]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              // Phase 74 (JF24): the switch says what it is -- "Viewing as: Tutor".
+              <div className="flex w-full items-center gap-2 sm:w-auto" data-testid="dashboard-viewing-as">
+                <span id="dashboard-role-label" className="text-muted-foreground shrink-0 text-sm font-medium">
+                  Viewing as
+                </span>
+                <Select value={response?.role ?? ''} onValueChange={(value) => chooseRole(value as UserRole)}>
+                  <SelectTrigger className="w-full sm:w-44" aria-label="Dashboard role">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roleOptions.map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {DASHBOARD_ROLE_LABELS[role]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             )}
 
             {isAdmin && (

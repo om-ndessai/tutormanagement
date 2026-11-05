@@ -1,5 +1,6 @@
 import { guestLevelPlace, guestTileDetail, guestTileTitle } from './guest-board.js';
-import { TILE_LEVEL_WORDS, type MemberTile, type TileShape } from './quest-tiles.js';
+import { QUEST_GRADE_NOT_IN_SCHOOL, TILE_LEVEL_WORDS, tileGameRequest, type MemberTile, type QuestLead, type TileShape } from './quest-tiles.js';
+import type { CreateGameRequest } from './quest-games.js';
 import type { QuestionBankLevelId } from './questions.js';
 
 // ---------------------------------------------------------------------------
@@ -74,6 +75,85 @@ export function boardLeadGrade(tiles: readonly TileShape[], lead?: QuestionBankL
   const fromLead = lead ? levelGrade(lead) : null;
   if (fromLead && grades.includes(fromLead)) return fromLead;
   return grades[0] ?? null;
+}
+
+/**
+ * Phase 73 (JF14, owner 2026-11-05): the grade that leads a member's Quest board and their Daily, in this order:
+ * 1. the grade they picked on the row here (0, "Not in school", leads with the top of the row);
+ * 2. the level the space records for a student;
+ * 3. the level they played last;
+ * 4. for anyone 13 or older, the top of the row.
+ * Null when none of these says: then they are asked once ("Which grade?").
+ */
+export function questLeadGrade(
+  tiles: readonly TileShape[],
+  input: { picked: number | null; recorded: QuestionBankLevelId | null; played: QuestionBankLevelId | null; grown: boolean },
+): QuestLead | null {
+  const grades = boardGrades(tiles);
+  const top = grades[grades.length - 1];
+  if (top === undefined) return null;
+  const onRow = (grade: number | null): TileGrade | null =>
+    grade !== null && (grades as readonly number[]).includes(grade) ? (grade as TileGrade) : null;
+  if (input.picked !== null) {
+    const picked = input.picked === QUEST_GRADE_NOT_IN_SCHOOL ? top : onRow(input.picked);
+    if (picked !== null) return { grade: picked, from: 'picked' };
+  }
+  const recorded = input.recorded ? onRow(levelGrade(input.recorded)) : null;
+  if (recorded !== null) return { grade: recorded, from: 'recorded' };
+  const played = input.played ? onRow(levelGrade(input.played)) : null;
+  if (played !== null) return { grade: played, from: 'played' };
+  return input.grown ? { grade: top, from: 'age' } : null;
+}
+
+/**
+ * Phase 73 (JF14, JF23): ONE rule for a member's Daily, on the board and in Next up alike: the level of the lead
+ * grade's first card (its standard first), else the first tile's.
+ */
+export function dailyLevelFor<T extends MemberTile>(tiles: readonly T[], grade: number | null): QuestionBankLevelId | null {
+  if (grade !== null) {
+    const { standard, advanced } = memberBoard(tiles, grade);
+    const first = standard[0] ?? advanced[0];
+    if (first) return first.level_id;
+  }
+  return tiles[0]?.level_id ?? null;
+}
+
+/** A game's settings, as the open-game read carries them. */
+export interface GameShapeRow {
+  level_id: QuestionBankLevelId;
+  level_scope: 'level' | 'upward';
+  mode: 'count' | 'timed';
+  question_count: number | null;
+  duration_seconds: number | null;
+}
+
+/** "Grade 7 Quick 5": a game in words, never codes (Phase 73, JF13, JF32). */
+export function gameWords(game: GameShapeRow): string {
+  const value = game.mode === 'timed' ? Math.round((game.duration_seconds ?? 0) / 60) : (game.question_count ?? 0);
+  const level = `${TILE_LEVEL_WORDS[game.level_id] ?? game.level_id}${game.level_scope === 'upward' ? ' and up' : ''}`;
+  return `${level} ${guestTileTitle({ kind: 'quest', level_id: game.level_id, mode: game.mode, value })}`;
+}
+
+/** Continue's words for an open game: "Grade 7 Quick 5 · question 3 of 5 · 2 points", or "· waiting to start". */
+export function openGameLabel(
+  game: GameShapeRow & { status: 'lobby' | 'running'; question: number | null; of: number | null; points: number | null },
+): string {
+  const parts = [gameWords(game)];
+  if (game.status === 'lobby') parts.push('waiting to start');
+  else {
+    if (game.mode === 'count' && game.question !== null && game.of !== null) parts.push(`question ${game.question} of ${game.of}`);
+    if (game.points !== null) parts.push(`${game.points} ${Math.abs(game.points) === 1 ? 'point' : 'points'}`);
+  }
+  return parts.join(' · ');
+}
+
+/** With no open game: the last one's settings, to start again, alone ("Play Grade 7 Quick 5 again"). */
+export function playAgain(game: GameShapeRow): { label: string; request: CreateGameRequest } {
+  const value = game.mode === 'timed' ? Math.round((game.duration_seconds ?? 0) / 60) : (game.question_count ?? 0);
+  return {
+    label: `Play ${gameWords(game)} again`,
+    request: { ...tileGameRequest({ kind: 'quest', level_id: game.level_id, mode: game.mode, value }), level_scope: game.level_scope },
+  };
 }
 
 /** One grade's cards for a member: its standards' first, then the harder tracks', each in the console's order. */

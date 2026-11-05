@@ -68,6 +68,7 @@ export const habitRoutes = new Hono<AppEnv>()
         week: weekDots(days, today),
         welcome_back: welcomeBack(days, today),
         next_badge: nextBadge(allFacts),
+        played_before: days.length > 0,
       },
     };
     return c.json(body);

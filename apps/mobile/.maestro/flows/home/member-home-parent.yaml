@@ -1,6 +1,8 @@
 # Phase 66 (H3): Anita, a parent in chmi. Home is about Sanjay: Next up names his next lesson, and his
 # card under "Your children" has it in words, the homework from his last lesson and this month's
 # lessons. No money anywhere on Home (balances are under More → Dashboard).
+# Phase 74: the band never repeats what Next up says (JF23); lesson lines may end with the place (JF17); and her menu
+# has no Users, Pairings or Billing (JF31) -- she reaches Sanjay from his card.
 appId: ${APP_ID}
 tags:
   - feature
@@ -19,10 +21,19 @@ tags:
     id: home-greeting
     text: 'Good (morning|afternoon|evening), Anita'
 - assertVisible:
-    id: home-strip
-    text: 'Sanjay: .*'
-- assertVisible:
     id: 'next-up-(child_change|child_next_lesson|none)'
+# With Sanjay's lesson in Next up, the band says something else (his week of play) or nothing; never the lesson twice.
+- runFlow:
+    when:
+      visible:
+        id: next-up-none
+    commands:
+      - assertVisible:
+          id: home-strip
+          text: 'Sanjay: .*'
+- assertNotVisible:
+    id: home-strip
+    text: 'Sanjay: next .*'
 - scrollUntilVisible:
     element:
       id: home-child-00000000-0000-4000-8000-000000000006
@@ -37,6 +48,39 @@ tags:
 - assertNotVisible: 'Outstanding'
 - assertNotVisible: 'Charged'
 - takeScreenshot: member-home-parent
+# Phase 74 (JF31): her menu is built from her hats -- no Users, Pairings or Billing; the Dashboard keeps her balances.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+# Dashboard is followed by Comments here (Users and Pairings would sit between them), and Billing by nothing of hers.
+- scrollUntilVisible:
+    element:
+      id: more-nav-analytics
+    centerElement: true
+- assertNotVisible:
+    id: more-nav-users
+- assertNotVisible:
+    id: more-nav-assignments
+- scrollUntilVisible:
+    element:
+      id: more-nav-comments
+    centerElement: true
+- assertNotVisible:
+    id: more-nav-billing
+- takeScreenshot: member-home-parent-menu
+- tapOn:
+    id: tab-dashboard
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: home-child-00000000-0000-4000-8000-000000000006
+    centerElement: true
 # The card opens his progress.
 - tapOn:
     id: home-child-00000000-0000-4000-8000-000000000006

@@ -2,7 +2,10 @@
 // `feature` and `badge`: the Assessment menu, in beta, only while the organization has it on; Phase 42
 // @ 82397b8, working tree, added Quest, only while the organization has Question Quest on; Phase 47
 // @ 9eccdf2, working tree, gave Quest the Beta badge; Phase 50 @ 2471d84, working tree, replaced
-// `feature` with `set`: each item of a feature set shows only while that set is on here).
+// `feature` with `set`: each item of a feature set shows only while that set is on here). Phase 74 (JF31, owner
+// 2026-11-05): Users, Pairings and Billing are for admins and tutors (`PEOPLE_PAGE_ROLES`, shared `seesPeoplePages`):
+// a student or a parent never sees them in the menu (a parent reaches their child from the home's child card); the
+// routes still answer a deep link.
 import type { Href } from 'expo-router';
 
 import { featureOn, type FeatureSet, type FeatureState } from '@tmi/shared';
@@ -37,6 +40,9 @@ export interface NavItem {
   /** A small label beside it, such as "Beta". */
   badge?: string;
 }
+
+/** Phase 74 (JF31): who sees the people pages in the menu -- the roles of shared `seesPeoplePages`. */
+export const PEOPLE_PAGE_ROLES = ['admin', 'tutor'] as const;
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -113,6 +119,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Users',
     icon: 'account-group-outline',
     keywords: ['people', 'students', 'tutors', 'parents', 'family'],
+    roles: PEOPLE_PAGE_ROLES,
     tourId: 'nav-users',
   },
   {
@@ -121,6 +128,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Pairings',
     icon: 'link-variant',
     keywords: ['assignments', 'tutor', 'student'],
+    roles: PEOPLE_PAGE_ROLES,
     tourId: 'nav-assignments',
   },
   {
@@ -139,6 +147,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'Billing',
     icon: 'wallet-outline',
     keywords: ['payments', 'money', 'balances', '1099', 'tax'],
+    roles: PEOPLE_PAGE_ROLES,
     tourId: 'nav-billing',
   },
   {

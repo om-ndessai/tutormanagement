@@ -10,6 +10,7 @@ import {
   LOBBY_LABEL,
   answerNotice,
   celebrates,
+  nobodyPlayed,
   clockAnnouncement,
   clockSpeech,
   countdownLabel,
@@ -127,7 +128,8 @@ describe('the hub', () => {
       host_first_name: 'Priya',
       teams: 1,
     };
-    expect(gameRowTitle(row)).toBe('G6 · 2 questions');
+    // Phase 73 (JF32): in words, never the code first.
+    expect(gameRowTitle(row)).toBe('Grade 6 Quick 2');
     expect(gameRowHost(row)).toBe('Priya hosts · 1 team');
     expect(gameRowHost({ ...row, is_host: true, teams: 3 })).toBe('You host · 3 teams');
     expect(gameRowStatus({ status: 'lobby', place: null })).toBe('Waiting to start');
@@ -135,7 +137,10 @@ describe('the hub', () => {
     expect(gameRowStatus({ status: 'finished', place: 1 })).toBe('Finished · 1st');
     expect(gameRowStatus({ status: 'finished', place: null })).toBe('Finished');
     // Phase 47: a Random level's scope, and a single player's game.
-    expect(gameRowTitle({ ...row, level_scope: 'upward' })).toBe('G6 and up, at random · 2 questions');
+    expect(gameRowTitle({ ...row, level_scope: 'upward' })).toBe('Grade 6 and up Quick 2');
+    expect(gameRowTitle({ ...row, mode: 'timed', question_count: null, duration_seconds: 600 })).toBe(
+      'Grade 6 10-minute challenge',
+    );
     expect(gameRowHost({ ...row, players: 'single' })).toBe('Single player');
   });
 
@@ -363,6 +368,27 @@ describe('in the game', () => {
     expect(resultsLine(second, second.teams[1]!)).toBe(
       'Every question you try makes the next one easier. Go again!',
     );
+  });
+
+  it('an empty game -- nobody answered or skipped anything -- is "Nobody played": no win, no celebration (Phase 73, JF16)', () => {
+    // Cancelled in its lobby, or ended at once: the server places nobody either.
+    const empty = team({ answered: 0, correct: 0, score: 0, place: null });
+    const multi = game({ status: 'finished', teams: [empty, team({ id: 't2', name: 'Bats', answered: 0, correct: 0, score: 0 })] });
+    expect(nobodyPlayed(multi)).toBe(true);
+    expect(resultsHeadline(multi, empty)).toBe('Nobody played');
+    expect(celebrates(multi)).toBe(false);
+    expect(resultsLine(multi, empty)).not.toMatch(/won/);
+    // Even an older Worker that still placed the empty team first.
+    const placed = game({ status: 'finished', teams: [{ ...empty, place: 1 }] });
+    expect(celebrates(placed)).toBe(false);
+    expect(resultsHeadline(placed, placed.teams[0])).toBe('Nobody played');
+    const single = game({ status: 'finished', players: 'single', teams: [{ ...empty, solo: true, name: 'Sofia' }] });
+    expect(resultsHeadline(single, single.teams[0])).toBe('Nobody played');
+    expect(celebrates(single)).toBe(false);
+    // A skip counts as playing: skipped through is a result.
+    const skipped = game({ status: 'finished', players: 'single', teams: [team({ answered: 2, skipped: 2, correct: 0, score: 0, place: 1 })] });
+    expect(nobodyPlayed(skipped)).toBe(false);
+    expect(resultsHeadline(skipped, skipped.teams[0])).toBe('0 right, 0 points');
   });
 });
 

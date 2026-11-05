@@ -30,7 +30,7 @@ import {
 
 import type { OrgContext, OrgId } from '../lib/org.js';
 import { pairingInForce } from '../lib/scope.js';
-import { buildTutorHome, tutorSchedules } from './home.js';
+import { buildTutorHome, placeFor, tutorSchedules } from './home.js';
 import { nextQuestReview } from './quest.js';
 import { getPlatformAccount } from './people.js';
 import { hasFollowableStudent } from './progress.js';
@@ -80,6 +80,11 @@ function homeLesson(schedule: ScheduledSession, occursOn: string, today: string,
     tutor_user_id: schedule.tutor_user_id,
     tutor_name: schedule.tutor_name,
     starts_in: startsIn(today, now, occursOn, schedule.start_time),
+    // Phase 74 (JF17): where, by name only (R16, R29).
+    place: (() => {
+      const place = placeFor(schedule.locations ?? [], schedule.mode);
+      return place ? { name: place.name, kind: place.kind } : null;
+    })(),
   };
 }
 
@@ -233,7 +238,7 @@ async function officeBlock(db: D1Database, org: OrgContext, nowIso: string): Pro
   const lookFrom = from < monday ? from : monday;
   const tutoring = featureOn(org, 'tutoring');
 
-  const [schedules, recorded, running, cancelled, requests, invited] = await Promise.all([
+  const [schedules, recorded, running, cancelled, requests, invited, openAssessments] = await Promise.all([
     tutoring
       ? db
           .prepare(
@@ -277,6 +282,13 @@ async function officeBlock(db: D1Database, org: OrgContext, nowIso: string): Pro
       .prepare("SELECT COUNT(*) AS n FROM org_members WHERE organization_id = ? AND status = 'invited' AND removed_at IS NULL")
       .bind(org.id)
       .first<{ n: number }>(),
+    // Phase 74 (JF6): assessments submitted and not yet reviewed -- a count, where Assessment is on.
+    featureOn(org, 'assessment')
+      ? db
+          .prepare("SELECT COUNT(*) AS n FROM canvas_assessments WHERE organization_id = ? AND status = 'submitted' AND reviewed_at IS NULL")
+          .bind(org.id)
+          .first<{ n: number }>()
+      : Promise.resolve(null),
   ]);
 
   const series = (schedules.results ?? []).map(
@@ -304,6 +316,7 @@ async function officeBlock(db: D1Database, org: OrgContext, nowIso: string): Pro
     join_requests: requests?.n ?? 0,
     invitations: invited?.n ?? 0,
     ...lessonCounts(all, cancelledSet, today),
+    ...(openAssessments ? { assessments_open: openAssessments.n } : {}),
   };
   officeMemo.set(org.id, { at: Date.now(), value });
   return value;
@@ -548,8 +561,12 @@ export async function buildMemberHome(
     else if (roles.includes('admin')) hats.push('office');
     else hats.push('learner');
   }
-  // Where there is no Tutoring, playing leads (the space is for practice).
-  if (!tutoring && hats.includes('learner')) hats.unshift(...hats.splice(hats.indexOf('learner'), 1));
+  // Where there is no Tutoring (owner, 2026-11-05; JF6): what the reader came for leads -- a parent's child first, then
+  // the office of a space they help run -- and playing follows; with neither, playing leads (the space is for practice).
+  if (!tutoring) {
+    const lead: HomeHat | undefined = (['parent', 'office', 'learner'] as const).find((hat) => hats.includes(hat));
+    if (lead) hats.unshift(...hats.splice(hats.indexOf(lead), 1));
+  }
 
   const focusOptions = homeFocusOptions(hats, { quest: featureOn(org, 'quest'), assessment: featureOn(org, 'assessment') });
   const pin = focusFacts?.pin && focusOptions.includes(focusFacts.pin) ? focusFacts.pin : null;

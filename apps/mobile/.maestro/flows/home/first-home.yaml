@@ -1,0 +1,101 @@
+# Phase 74 (JF6, JF16; owner 2026-11-05): the first home of a learner who has never played here. Fern signs up (the
+# script: an adult, so her own personal space, Quest and Assessments on) and lands on its home. The band offers three
+# doors instead of a zero -- Play, Join with a code, Start a space (an adult may) -- and "Start a streak" in words,
+# never "0 of 3 days"; the doors' twins are not quick actions (no "Have a code?", no New Quest beside the board). Each
+# door opens what it says: the one code sheet, Spaces on a new space's name, and the board on this page.
+# Whether she has played here is the server's (`played_before` on the habit read), checked first by HTTP.
+# Self-cleaning: Fern is put back to nothing before and after (her own space goes with her).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: first.home@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: first.home@example.com, NAME: Fern Firsthome }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: first.home@example.com }
+tags:
+  - feature
+---
+# Her own space, and what the server says of her play there: never.
+- evalScript: "${output.fernSpace = json(http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'first.home@example.com' } }).body).data.memberships[0].slug}"
+- evalScript: "${output.fernHabit = json(http.get('http://localhost:8787/api/quest/me/habit', { headers: { 'X-Dev-User': 'first.home@example.com', 'X-Organization': output.fernSpace } }).body).data}"
+- assertTrue: ${output.fernHabit.played_before === false}
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: first.home@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+# The three doors, and the streak in words.
+- extendedWaitUntil:
+    visible:
+      id: home-doors
+    timeout: 15000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Fern'
+- assertVisible:
+    id: home-strip
+    text: 'Start a streak: play on three days this week\.'
+- assertVisible:
+    id: home-door-play
+- assertVisible:
+    id: home-door-code
+- assertVisible:
+    id: home-door-start
+- assertNotVisible: '.*0 of 3 days.*'
+- assertNotVisible:
+    id: quick-join_code
+- assertNotVisible:
+    id: quick-new_quest
+- takeScreenshot: home-first-home
+# Join with a code: the one code sheet.
+- tapOn:
+    id: home-door-code
+- extendedWaitUntil:
+    visible:
+      id: code-sheet
+    timeout: 10000
+- assertVisible:
+    id: code-sheet-code
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: code-sheet
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 10000
+# Start a space: Spaces, on the new space's name.
+- tapOn:
+    id: home-door-start
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: welcome-space-name
+    timeout: 10000
+- hideKeyboard
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 10000
+# Play: down to the board on this page (its tiles and today's Daily), where My progress starts the streak in words too.
+- tapOn:
+    id: home-door-play
+- extendedWaitUntil:
+    visible:
+      id: play-home
+    timeout: 10000
+- assertNotVisible: '.*0 of 3 days.*'
+- takeScreenshot: home-first-home-board

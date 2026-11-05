@@ -11,6 +11,8 @@
 // first question's moment is still ahead -- the timed game's clock hidden until it opens, the body
 // beneath hidden from a screen reader -- and, the moment it reaches 0, the game read at once rather than
 // at the next poll.
+// Phase 73 (JF36): `from` reaches the lobby and the results too, so leaving, a cancelled game and Back after
+// the results all return where the game was opened (Home or Quest), as Exit does.
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsFocused } from 'expo-router';
 import { useCallback, useEffect } from 'react';
@@ -126,11 +128,11 @@ export function GameScreen({ gameId, from }: { gameId: string; from?: string }) 
             </View>
           ) : null}
           {game.status === 'lobby' ? (
-            <GameLobby game={game} />
+            <GameLobby game={game} from={from} />
           ) : game.status === 'running' ? (
             <GamePlay game={game} counting={counting} />
           ) : (
-            <GameResults game={game} />
+            <GameResults game={game} from={from} />
           )}
         </View>
       )}

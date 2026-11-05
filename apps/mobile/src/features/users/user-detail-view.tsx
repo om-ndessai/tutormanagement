@@ -90,7 +90,7 @@ export function UserDetailView({
             <Detail icon="calendar-clock-outline" label="Last sign-in">
               {formatInstant(user.last_login_at, timeZone, 'Has not signed in yet')}
             </Detail>
-            <Detail icon="calendar-clock-outline" label="Added to the portal">
+            <Detail icon="calendar-clock-outline" label="Added">
               {formatInstant(user.created_at, timeZone, '—')}
             </Detail>
           </>

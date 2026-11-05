@@ -173,6 +173,20 @@ describe('StartGameFlow', () => {
     expect(screen.getByTestId('game-team-size').props.value).toBe('2');
   });
 
+  it('opened from Home, gives way to a game that exits back Home (Phase 73, JF36)', async () => {
+    serve([FRIDAY]);
+    mockPost.mockResolvedValueOnce({ data: { id: 'g8' } });
+    await renderWithProviders(<StartGameFlow from="home" />);
+    await fireEvent.press(await screen.findByTestId('game-fav-Friday G6'));
+    await fireEvent.press(await screen.findByTestId('game-create'));
+    await waitFor(() =>
+      expect(mockReplace).toHaveBeenCalledWith({
+        pathname: '/quest/games/[gameId]',
+        params: { gameId: 'g8', from: 'home' },
+      }),
+    );
+  });
+
   it('asks before deleting a favorite, then deletes it', async () => {
     serve([FRIDAY]);
     mockDelete.mockResolvedValueOnce({ data: { id: 'f1' } });

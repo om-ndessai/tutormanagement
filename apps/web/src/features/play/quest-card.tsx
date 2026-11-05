@@ -139,6 +139,7 @@ export function TodayCard({
   testId,
   playTestId,
   note,
+  quiet = false,
 }: {
   eyebrow: ReactNode;
   title: ReactNode;
@@ -149,8 +150,29 @@ export function TodayCard({
   testId: string;
   playTestId: string;
   note?: ReactNode;
+  /**
+   * Phase 74 (JF23): Next up above already offers it, so the twin here is a quiet line -- a normal-weight outline
+   * button, never the heavier amber one that would win the eye from Next up.
+   */
+  quiet?: boolean;
 }) {
   const hits = states.filter((state) => state === 'hit').length;
+  if (quiet) {
+    return (
+      <div className="bg-card text-card-foreground flex flex-wrap items-center gap-3 rounded-2xl border p-4" data-testid={testId} data-quiet="true">
+        {/* No min-w-0: the rings keep their width, and the button wraps below them on a phone. */}
+        <span className="grid flex-1 gap-1">
+          <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">{eyebrow}</span>
+          <TargetRings states={states} label={played ? `${hits} of ${states.length} hit` : `${states.length} targets`} />
+        </span>
+        {onPlay && (
+          <Button size="sm" variant="outline" onClick={onPlay} data-testid={playTestId}>
+            {playLabel}
+          </Button>
+        )}
+      </div>
+    );
+  }
   return (
     <div className="bg-card text-card-foreground grid gap-3 rounded-3xl border p-5 shadow-[var(--elevation-2)]" data-testid={testId}>
       <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">{eyebrow}</span>

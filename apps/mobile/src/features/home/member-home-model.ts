@@ -2,6 +2,11 @@
 // tested without a device. The rules themselves (which hats, their order, Next up, the quick actions) are
 // the shared contract's (`packages/shared/src/home.ts`); this file only words them for the phone and
 // gathers what only the device knows. Nothing here carries money.
+//
+// Phase 74 (docs/journey-fixes-plan.md, owner 2026-11-05): a lesson line says where it is ("Tue at 4:00 PM with Alex ·
+// Institute, room 2", JF17); the band never repeats what Next up says and never leads with a zero -- a learner who has
+// not played here gets three doors instead (JF6, JF16); office and parent lines say nothing about lessons where Tutoring
+// is off; the office section says "Nothing needs you right now" rather than zero rows (JF6).
 import {
   HOME_FOCUS_LABELS,
   STREAK_DAYS_PER_WEEK,
@@ -16,6 +21,7 @@ import {
   type MemberHome,
   type NextUp,
   type NextUpExtras,
+  type OpenGameResponse,
   type QuestState,
   type QuickAction,
   type TutorHomeLesson,
@@ -41,9 +47,18 @@ export function whenWords(lesson: Pick<HomeLesson, 'occurs_on' | 'start_time'>, 
   return lessonWhen(lesson.occurs_on, lesson.start_time, today);
 }
 
-/** "Thu at 5:00 PM with Priya". */
-export function lessonWithTutor(lesson: Pick<HomeLesson, 'occurs_on' | 'start_time' | 'tutor_name'>, today: string): string {
-  return `${whenWords(lesson, today)} with ${firstOf(lesson.tutor_name)}`;
+/** Phase 74 (JF17): " · Institute, room 2" -- where a lesson is, by name only (never an address); "" without one. */
+export function placeWords(lesson: Pick<HomeLesson, 'place'>): string {
+  const name = lesson.place?.name?.trim();
+  return name ? ` · ${name}` : '';
+}
+
+/** "Thu at 5:00 PM with Priya", and its place when the schedule names one: "… with Priya · Institute, room 2". */
+export function lessonWithTutor(
+  lesson: Pick<HomeLesson, 'occurs_on' | 'start_time' | 'tutor_name'> & Partial<Pick<HomeLesson, 'place'>>,
+  today: string,
+): string {
+  return `${whenWords(lesson, today)} with ${firstOf(lesson.tutor_name)}${placeWords(lesson)}`;
 }
 
 /** "Thu at 5:00 PM with Sofia". */
@@ -61,48 +76,168 @@ export function tutorStrip(tutor: NonNullable<MemberHome['tutor']>): string {
   return parts.join(' · ');
 }
 
-/** "3 to record · 2 invitations · 1 asking to join", only the non-zero parts; else "All caught up". */
-export function officeStrip(office: NonNullable<MemberHome['office']>): string {
+/**
+ * "3 to record · 2 invitations · 1 asking to join · 2 assessments to review", only the non-zero parts; else "All
+ * caught up". Phase 74 (JF23): what Next up already says is left out (`skip`) -- each count once; with nothing else
+ * left, no line (null), since Next up has said it.
+ */
+export function officeStrip(
+  office: NonNullable<MemberHome['office']>,
+  skip: 'to_record' | 'needs' | null = null,
+): string | null {
   const parts: string[] = [];
-  if (office.to_record_count > 0) parts.push(`${office.to_record_count} to record`);
-  if (office.invitations > 0) parts.push(plural(office.invitations, 'invitation'));
-  if (office.join_requests > 0) parts.push(`${office.join_requests} asking to join`);
-  return parts.length > 0 ? parts.join(' · ') : 'All caught up';
+  if (skip !== 'to_record' && office.to_record_count > 0) parts.push(`${office.to_record_count} to record`);
+  if (skip !== 'needs') {
+    if (office.invitations > 0) parts.push(plural(office.invitations, 'invitation'));
+    if (office.join_requests > 0) parts.push(`${office.join_requests} asking to join`);
+  }
+  if ((office.assessments_open ?? 0) > 0) parts.push(`${plural(office.assessments_open!, 'assessment')} to review`);
+  if (parts.length > 0) return parts.join(' · ');
+  return skip ? null : 'All caught up';
 }
 
-/** "Sofia: next Tue at 4:00 PM" / "Sofia: no lessons scheduled". */
-export function childStrip(child: HomeChild, today: string): string {
-  return child.next_lesson
-    ? `${child.first_name}: next ${whenWords(child.next_lesson, today)}`
-    : `${child.first_name}: no lessons scheduled`;
+/**
+ * The parent's line for a child. Where Tutoring is on: "Sofia: next Tue at 4:00 PM · Institute, room 2" / "Sofia: no
+ * lessons scheduled". Phase 74 (JF16): where Tutoring is off -- or Next up already names the lesson (`skipLesson`) --
+ * nothing about lessons: the child's week of play, counts only ("Noor: played 2 days this week", "Noor: not played yet
+ * this week"); where Quest is off too, "Noor: all caught up". Null when Next up has said everything.
+ */
+export function childStrip(
+  child: HomeChild,
+  today: string,
+  { tutoring = true, skipLesson = false }: { tutoring?: boolean; skipLesson?: boolean } = {},
+): string | null {
+  if (tutoring && !skipLesson) {
+    return child.next_lesson
+      ? `${child.first_name}: next ${whenWords(child.next_lesson, today)}${placeWords(child.next_lesson)}`
+      : `${child.first_name}: no lessons scheduled`;
+  }
+  const days = child.days_played_this_week;
+  if (days != null) {
+    return days > 0
+      ? `${child.first_name}: played ${plural(days, 'day')} this week`
+      : `${child.first_name}: not played yet this week`;
+  }
+  return tutoring ? null : `${child.first_name}: all caught up`;
 }
 
-/** The learner's line: their next lesson, else the streak (where Quest is on), else a calm word. */
+/**
+ * The learner's line: their next lesson (with its place), else the streak in words (where Quest is on: "Start a
+ * streak", never "0 of 3 days"), else a calm word. Phase 74 (JF23): not the lesson while Next up names it.
+ */
 export function learnerStrip(
   learner: MemberHome['learner'],
   today: string,
   streak: string | null,
+  skipLesson = false,
 ): string {
-  if (learner?.next_lesson) return `Next lesson: ${lessonWithTutor(learner.next_lesson, today)}`;
+  if (learner?.next_lesson && !skipLesson) return `Next lesson: ${lessonWithTutor(learner.next_lesson, today)}`;
   return streak ?? 'Ready when you are';
 }
 
-/** The band's one line, for the first hat of `orderHats` (null without a hat). */
-export function stripLine(home: MemberHome, hat: HomeHat | undefined, streak: string | null): string | null {
+/**
+ * The band's one line, for the first hat of `orderHats` (null without a hat). Phase 74: never what Next up (`next`)
+ * already says, and nothing about lessons where Tutoring is off (`tutoring`).
+ */
+export function stripLine(
+  home: MemberHome,
+  hat: HomeHat | undefined,
+  streak: string | null,
+  { next = null, tutoring = true }: { next?: NextUp | null; tutoring?: boolean } = {},
+): string | null {
   switch (hat) {
     case 'tutor':
       return home.tutor ? tutorStrip(home.tutor) : null;
     case 'office':
-      return home.office ? officeStrip(home.office) : null;
+      return home.office
+        ? officeStrip(home.office, next?.kind === 'office_to_record' ? 'to_record' : next?.kind === 'office_needs' ? 'needs' : null)
+        : null;
     case 'parent': {
       const child = home.parent?.children[0];
-      return child ? childStrip(child, home.day) : 'No lessons scheduled';
+      if (!child) return tutoring ? 'No lessons scheduled' : null;
+      const named =
+        (next?.kind === 'child_next_lesson' || next?.kind === 'child_change') &&
+        next.child.student_user_id === child.student_user_id;
+      return childStrip(child, home.day, { tutoring, skipLesson: named });
     }
     case 'learner':
-      return learnerStrip(home.learner, home.day, streak);
+      return learnerStrip(
+        home.learner,
+        home.day,
+        streak,
+        next?.kind === 'learner_lesson' || next?.kind === 'practise_before',
+      );
     default:
       return null;
   }
+}
+
+// --- Phase 74 (JF6, JF16): the first home's band -----------------------------------------------------
+
+/** The band's line beside the doors: the streak to start, in words (the web's), never "0 of 3 days". */
+export const NEWCOMER_STRIP = 'Start a streak: play on three days this week.';
+
+/** The band's doors for a learner who has not played here yet: Play, Join with a code, and (adults) Start a space. */
+export const BAND_DOORS = ['play', 'code', 'start'] as const;
+export type BandDoor = (typeof BAND_DOORS)[number];
+
+export const BAND_DOOR_LABELS: Record<BandDoor, string> = {
+  play: 'Play',
+  code: 'Join with a code',
+  start: 'Start a space',
+};
+
+/**
+ * Three doors instead of a zero (owner, 2026-11-05): only when the band speaks for a learner, where Quest is on, who
+ * has never played here (`HabitSummary.played_before === false`; absent from an older Worker: no doors). "Start a
+ * space" only for someone who may make one (shared `mayMakeSpace`).
+ */
+export function bandDoors({
+  hat,
+  quest,
+  playedBefore,
+  mayMakeSpace,
+}: {
+  hat: HomeHat | undefined;
+  quest: boolean;
+  playedBefore: boolean | undefined;
+  mayMakeSpace: boolean;
+}): BandDoor[] {
+  if (hat !== 'learner' || !quest || playedBefore !== false) return [];
+  return mayMakeSpace ? ['play', 'code', 'start'] : ['play', 'code'];
+}
+
+/**
+ * The quick actions shown, less the twins of what is already on the home (JF23): New Quest while the Quest board (with
+ * its own New Quest) is on it, and "Have a code?" while the band's doors offer Join with a code.
+ */
+export function shownQuickActions(
+  actions: readonly QuickAction[],
+  { board, doors }: { board: boolean; doors: readonly BandDoor[] },
+): QuickAction[] {
+  return actions.filter(
+    (action) => !(action === 'new_quest' && board) && !(action === 'join_code' && doors.includes('code')),
+  );
+}
+
+/** The office section's one line when nothing needs it (never "0 invitations not yet accepted"). */
+export const OFFICE_NOTHING_LINE = 'Nothing needs you right now.';
+
+/** What the office section lists: each count above zero, and whether nothing at all needs it. */
+export function officeNeeds(
+  office: NonNullable<MemberHome['office']>,
+  tutoring: boolean,
+): { toRecord: boolean; invitations: boolean; requests: boolean; assessments: boolean; nothing: boolean } {
+  const toRecord = tutoring && office.to_record_count > 0;
+  const invitations = office.invitations > 0;
+  const requests = office.join_requests > 0;
+  const assessments = (office.assessments_open ?? 0) > 0;
+  return { toRecord, invitations, requests, assessments, nothing: !toRecord && !invitations && !requests && !assessments };
+}
+
+/** "2 assessments not yet reviewed". */
+export function openAssessmentsLine(count: number): string {
+  return `${plural(count, 'assessment')} not yet reviewed`;
 }
 
 /** "2 assessments and 3 answers to review". */
@@ -120,10 +255,15 @@ export function lessonNowLine(lesson: Pick<TutorHomeLesson, 'student_name'>, sta
   return startsIn <= 0 ? `${who}'s lesson is under way.` : `${who}'s lesson starts ${startsInWords(startsIn)}.`;
 }
 
-/** What only the device knows, and the codes Join needs (the contract carries the game's id only). */
+/**
+ * What the device gathers from its own reads, and the codes Join needs (the contract carries the game's id
+ * only). Phase 73 (JF13): the open game and "again" come from the server's open-game read (`open`), never
+ * from the device: an open game is `open_game`, titled by its label; with none, the last game's settings are
+ * `continue_quest` ("Play Grade 7 Quick 5 again"), keyed by that label.
+ */
 export function deviceExtras({
   waiting,
-  lastLabel,
+  open = null,
   daily,
   questionQuest = null,
   welcomeBack = false,
@@ -131,7 +271,8 @@ export function deviceExtras({
   playedToday = false,
 }: {
   waiting: readonly Pick<WaitingGame, 'game_id' | 'code' | 'host_first_name'>[];
-  lastLabel: string | null;
+  /** GET /quest/games/open, where Quest is on for a learner; null elsewhere or before it has loaded. */
+  open?: OpenGameResponse | null;
   daily: { level_id: string; done: boolean } | null;
   /** Phase 67: a student's Question Quest with a question waiting (it replaces the landing redirect). */
   questionQuest?: { level_id: string | null } | null;
@@ -147,7 +288,8 @@ export function deviceExtras({
   return {
     extras: {
       game_invite: game ? { game_id: game.game_id, title: 'game', host_first_name: game.host_first_name } : null,
-      continue_quest: lastLabel ? { code: lastLabel, title: lastLabel } : null,
+      open_game: open?.open ? { game_id: open.open.game_id, title: open.open.label } : null,
+      continue_quest: !open?.open && open?.again ? { code: open.again.label, title: open.again.label } : null,
       daily,
       question_quest: questionQuest,
       welcome_back: welcomeBack,
@@ -206,7 +348,8 @@ export function nextUpShowsLesson(item: NextUp | null, lesson: Pick<TutorHomeLes
 export const QUICK_ACTION_META: Record<QuickAction, { label: string; icon: string; href: string }> = {
   record_lesson: { label: 'Record a lesson', icon: 'plus', href: '/record-lesson' },
   start_lesson: { label: 'Start a lesson', icon: 'play', href: '/start-lesson' },
-  new_quest: { label: 'New Quest', icon: 'trophy-outline', href: '/quest/new-game' },
+  // Phase 73 (JF36): from Home, so the game it makes exits back here.
+  new_quest: { label: 'New Quest', icon: 'trophy-outline', href: '/quest/new-game?from=home' },
   // "Have a code?": the one code sheet (UI audit JF4), for a game's code or a space's.
   join_code: { label: 'Have a code?', icon: 'ticket-confirmation-outline', href: '/have-a-code' },
   start_assessment: { label: 'Start an assessment', icon: 'draw-pen', href: '/assessments' },

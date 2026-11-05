@@ -466,9 +466,9 @@ a tutor through it uses `UserFormDialog` preset (`preset`) and scoped to a block
 a form, so validation, the guardian rule and the audit stay in one place. A scoped edit saves the
 whole record, so a step never clears another's fields. The tour points at `data-tour` attributes
 (menu items, `DashboardSection`/`Panel` `tourId`s, the tabs, Getting started): keep them when
-moving markup. Whether someone has been through it is `user_onboarding` (per person) plus the
-`tmi_tour_seen` cookie (per browser); the e2e fixture sets that cookie on every context, and
-`as(who, { fresh: true })` leaves it off. Onboarding lines are left out of the dashboards'
+moving markup. Whether someone has been through it is `user_onboarding` (per person) alone since
+Phase 74 (JF25): the `tmi_tour_seen` cookie no longer re-offers it on a new browser or device, and the
+offer is a card on the home, not an overlay. Onboarding lines are left out of the dashboards'
 Recent Activity, as payment lines are.
 
 **Deletes are soft.** `DELETE /api/users/:id` sets `deleted_at`. Hard delete needs an explicit
@@ -636,6 +636,30 @@ invitation names the admin who added the person by first name (`org_members.invi
 in before Phase 72), the session says `legal_due`, and the portal waits behind a sheet until `POST /api/auth/legal`.
 A trailing % counts as the number only where the question asks for a percent (`asksForPercent`, `checkAnswer`'s
 `stem`); the bank's blind solve stays exact.
+
+**Continue resumes the open game, and the board leads with the learner's grade** (Phase 73, `docs/journey-fixes-plan.md`
+JF13, JF14, JF16, JF23, JF36). Continue (the board, Next up's `open_game`, the app's home-screen action) reads
+`GET /api/quest/games/open`: the reader's newest game here through the player index, and for a running one a READ-ONLY
+`progress` call on its Durable Object -- never `view`, which hands a question -- labelled in words (`openGameLabel`,
+"Grade 7 Quick 5 · question 3 of 5 · 2 points"); with none open, `playAgain` ("Play Grade 7 Quick 5 again"). It is read
+lazily where Continue shows, never polled. Nothing about the last quest is kept on the device any more. The board and the
+Daily lead with `GET /api/quest/tiles`' `lead` (`questLeadGrade`: the grade picked on the row, `org_members.quest_grade`,
+0 "Not in school"; else the level recorded for a student; else the last level played; else, for 13+, the top of the
+row), and `ask_grade` asks once when nothing says; a pick is `PUT /api/quest/grade` (a preference, no log line). One
+Daily rule (`dailyLevelFor`) and one name (`DAILY_NAME`, "Today's Daily"; "Today's 5" is the guest page's). A team that
+answered nothing is not placed ("Nobody played"), and games, family games and best scores count only games the
+person answered in (a skip is an answer: with negative marking, skipping is a choice).
+
+**A first home leads with what its reader came for** (Phase 74, `docs/journey-fixes-plan.md` JF6, JF16, JF17, JF23-JF25,
+JF31). Where Tutoring is off, the hats lead parent, then office, then learner (a parent's or the office's lead also beats
+how they first arrived, in `deriveHomeFocus`); an office with nothing says so in one line, and counts its open
+assessments (`HomeOffice.assessments_open`). A learner who never played here (`HabitSummary.played_before`) gets three
+doors in the band -- Play, Join with a code, Start a space -- and never "0 of 3 days". When Next up shows the Daily or a
+game, the board's own is quiet. Lesson lines name the place by name only (`HomeLesson.place`, R16). Practice before a
+lesson opens the week before (`PRACTISE_BEFORE_DAYS` 7, strictly less than 7 days ahead). The Dashboard opens on the
+home's hat (`dashboardRoleForHat`) unless a role was asked for or remembered for the space, under "Viewing as". The tour
+is offered once per PERSON (`tour_finished_at`), inline on the home. Users, Pairings and Billing are in the menu only for
+admins and tutors (`seesPeoplePages`); deep links still open.
 
 **The tour is Tutoring's, and a new space is asked what it may use first** (owner, 2026-11-04). The welcome
 wizard's tour, its first-visit offer and "Getting started" appear only where Tutoring is on (`tourOffered` in

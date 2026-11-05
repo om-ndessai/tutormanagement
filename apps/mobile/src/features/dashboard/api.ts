@@ -4,7 +4,7 @@ import type { ApiOk, DashboardResponse, MonthlyFinanceResponse, TutorTaxStatus, 
 
 import { apiClient, toQueryString } from '@/lib/api-client';
 
-export function useDashboard(params: { role?: UserRole; userId?: string }) {
+export function useDashboard(params: { role?: UserRole; userId?: string }, options: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: ['dashboard', params],
     queryFn: () =>
@@ -13,6 +13,8 @@ export function useDashboard(params: { role?: UserRole; userId?: string }) {
       ),
     // Switching role or subject should not blank the page.
     placeholderData: keepPreviousData,
+    // Mobile (Phase 74, JF24): held until the Dashboard knows which role it opens on, so it asks once.
+    enabled: options.enabled ?? true,
   });
 }
 

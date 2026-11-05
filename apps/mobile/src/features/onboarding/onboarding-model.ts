@@ -9,26 +9,23 @@ export function primaryRole(roles: readonly UserRole[]): UserRole {
   return 'student';
 }
 
-export type OnboardingDecision = 'wizard' | 'offer' | 'none';
+export type OnboardingDecision = 'wizard' | 'none';
 
 /**
  * What to do once we know who this is (the web provider's first effect): the wizard opens by
- * itself for somebody who has never been through it; somebody who has, on a device that has not
- * shown it, is only offered the tour. Never while an admin is viewing somebody else's dashboard.
+ * itself for somebody who has never been through it. Phase 74 (JF25): once per PERSON -- the server's
+ * `tour_finished_at` decides, so a new device offers nothing to somebody who has. Never while an admin
+ * is viewing somebody else's dashboard.
  */
 export function decideOnboarding({
   onboarding,
-  deviceSeen,
   viewingAs,
 }: {
-  onboarding: OnboardingState;
-  deviceSeen: boolean;
+  onboarding: Pick<OnboardingState, 'tour_finished_at'>;
   viewingAs: boolean;
 }): OnboardingDecision {
   if (viewingAs) return 'none';
-  if (!onboarding.tour_finished_at) return 'wizard';
-  if (!deviceSeen) return 'offer';
-  return 'none';
+  return onboarding.tour_finished_at ? 'none' : 'wizard';
 }
 
 /** Where the wizard goes back to after the tour it started: an admin's start, anyone else's details. */

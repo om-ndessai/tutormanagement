@@ -27,7 +27,7 @@ const signup = (page: Page, email: string, name: string) =>
   });
 
 test.describe('Phase 67: the Quest board and a newcomer’s space', () => {
-  test('a personal space offers NC 2026 and Beast Academy; Grade 4 leads in its hue; Show your work is for oneself', async ({
+  test('a personal space offers NC 2026 and Beast Academy; a guest’s Grade 4 leads in its hue; Show your work is for oneself', async ({
     page,
     as,
   }) => {
@@ -49,13 +49,18 @@ test.describe('Phase 67: the Quest board and a newcomer’s space', () => {
       expect(codes).toContain('G4Q5');
       expect(codes).toContain('G4A5');
 
-      // A guest's Grade 4, left on this device, leads the board.
+      // A guest's Grade 4, left on this device, leads the board (Phase 67's promise): over the age guess -- an adult's
+      // board would otherwise lead with the top of the row -- it is saved once as their pick here (Phase 73, JF14).
       await nia.goto('/');
       await nia.evaluate(() => localStorage.setItem('aimtrue.guest', JSON.stringify({ grade: 'NC26.4' })));
       await nia.reload();
       const home = nia.getByTestId('play-home');
       await expect(home).toBeVisible({ timeout: 15_000 });
       await expect(home.getByTestId('play-grade-4')).toHaveAttribute('aria-checked', 'true');
+      await expect(home.getByTestId('play-ask-grade')).toHaveCount(0);
+      await expect
+        .poll(async () => (await unwrap<any>(await nia.request.get('/api/quest/tiles'), 'tiles')).lead)
+        .toMatchObject({ grade: 4, from: 'picked' });
       // Grade 4's hue on the chip and the card's band, with the level said in words beside it.
       await expect(home.getByTestId('play-grade-4')).toHaveClass(/bg-grade-4/);
       const card = home.getByTestId('play-tile-G4Q5');

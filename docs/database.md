@@ -1751,6 +1751,13 @@ CREATE TABLE legal_acceptances (
 );
 ```
 
+Phase 73 (coming back to play, `docs/journey-fixes-plan.md` JF14) adds the grade a person picked on the Quest board's
+row, per space: 1-8, or 0 for "Not in school". Their own preference, like `home_pin`; nobody else reads it.
+
+```sql release=phase-73
+ALTER TABLE org_members ADD COLUMN quest_grade INTEGER CHECK (quest_grade IS NULL OR quest_grade BETWEEN 0 AND 8);
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

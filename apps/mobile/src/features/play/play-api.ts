@@ -1,85 +1,86 @@
 // Ported from apps/web/src/features/play/play-api.ts @ 0e3ec7a (working tree). Phase 62 (P5-P8,
 // docs/stickiness-plan.md). The same query keys and reads.
 //
-// Mobile: the last quest is kept in AsyncStorage (`readLastQuestRaw`), one per space, read through a
-// query so Continue and the quick action follow a start at once (`rememberLastQuest`). Waiting for you
-// is read only while Home is focused (`active`): TanStack's focusManager follows AppState, so a
-// backgrounded app never polls it (`refetchIntervalInBackground` stays false).
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+// Mobile: Waiting for you is read only while Home is focused (`active`): TanStack's focusManager follows
+// AppState, so a backgrounded app never polls it (`refetchIntervalInBackground` stays false).
+//
+// Phase 73 (JF13, owner 2026-11-05): the device's "last quest" is gone. Continue is the server's open game
+// (`GET /quest/games/open`, `useOpenGame`), read only where Continue is shown and only while that screen is
+// in front -- each read may call the game's Durable Object -- for a minute at a time, never polled. (JF14) A
+// grade picked on the board's row is the server's too (`PUT /quest/grade`, `useSaveQuestGrade`).
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   GAME_LIMITS,
   tileGameRequest,
   type ApiOk,
-  type CreateGameRequest,
   type GameFavorite,
   type MemberTile,
   type MemberTilesResponse,
+  type OpenGameResponse,
+  type QuestGradeInput,
   type QuestMember,
   type WaitingGame,
 } from '@tmi/shared';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { guestLeadLevel, guestMemory, loadGuestMemory } from '@/features/guest/guest-store';
-import { useSaveGameFavorite } from '@/features/quest/games-api';
+import { gameKeys, useSaveGameFavorite } from '@/features/quest/games-api';
 import { apiClient } from '@/lib/api-client';
-import { readLastQuestRaw, writeLastQuestRaw } from '@/lib/storage';
+
+const TILES_KEY = ['quest', 'tiles'] as const;
 
 /** Phase 62 (P5/P6): the tiles a member here may start in one tap, and whether the Play home is on. */
 export function useMemberTiles(enabled = true) {
   return useQuery({
-    queryKey: ['quest', 'tiles'] as const,
+    queryKey: TILES_KEY,
     queryFn: () => apiClient.get<ApiOk<MemberTilesResponse>>('/quest/tiles'),
     enabled,
     staleTime: 60_000,
   });
 }
 
-/** The last quest started here, kept on this device for Continue (never on the server: no audit line per game). */
-export interface LastQuest {
-  label: string;
-  request: CreateGameRequest;
-}
+/**
+ * Phase 73 (JF13): the reader's open game here -- running or in its lobby, with where they are in it -- else
+ * what "again" would start. Read only while `enabled` (Continue is on screen, for a learner where Quest is
+ * on, and that screen is in front): each read may ask the game itself, so it holds for a minute, is read
+ * again when the app comes back to the front, and is never polled. A start, a join, every game action and
+ * the results mark it stale (games-api.ts, game-results.tsx). With `enabled` false it only hands back what
+ * is already cached (the home-screen quick action reads it that way).
+ */
+export const openGameQuery = {
+  queryKey: gameKeys.open,
+  queryFn: () => apiClient.get<ApiOk<OpenGameResponse>>('/quest/games/open'),
+};
 
-export const lastQuestKey = (space: string | undefined) => ['play', 'last-quest', space ?? ''] as const;
-
-export function parseLastQuest(raw: string | null): LastQuest | null {
-  if (!raw) return null;
-  try {
-    const value = JSON.parse(raw) as Partial<LastQuest>;
-    return typeof value.label === 'string' && value.request && typeof value.request === 'object'
-      ? (value as LastQuest)
-      : null;
-  } catch {
-    return null;
-  }
-}
-
-export function useLastQuest(space: string | undefined) {
+export function useOpenGame(enabled = true) {
   return useQuery({
-    queryKey: lastQuestKey(space),
-    queryFn: async () => parseLastQuest(await readLastQuestRaw(space!)),
-    enabled: Boolean(space),
-    staleTime: Infinity,
+    ...openGameQuery,
+    enabled,
+    staleTime: 60_000,
+    refetchOnWindowFocus: true,
+    refetchInterval: false,
   });
 }
 
-/** Remembers a start on this device, and tells Continue and the quick action at once. */
-export function useRememberLastQuest(space: string | undefined) {
+/**
+ * Phase 73 (JF14): the grade picked on the board's row here (0 is "Not in school", null forgets it) -- a
+ * preference kept on the server per space, so it follows the person to another device. The tiles carry the
+ * lead again afterwards.
+ */
+export function useSaveQuestGrade() {
   const queryClient = useQueryClient();
-  return useCallback(
-    (last: LastQuest) => {
-      if (!space) return;
-      queryClient.setQueryData(lastQuestKey(space), last);
-      void writeLastQuestRaw(space, JSON.stringify(last));
-    },
-    [queryClient, space],
-  );
+  return useMutation({
+    mutationFn: (input: QuestGradeInput) => apiClient.put<ApiOk<{ grade: number | null }>>('/quest/grade', input),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: TILES_KEY }),
+  });
 }
 
 /**
  * Phase 63 (P13): the level a guest's play on this phone leads the Play home with once they are a member
- * (their grade becomes the default), until a quest started here takes over as the last one. A query, so
- * the phone's memory is read once it has loaded (and again after sign-up clears the cache).
+ * (their grade becomes the default). Phase 73 (JF14): carried once into the grade the server keeps for them
+ * here (`guestGradeToCarry`), when the server knows nothing more particular; an older Worker, which keeps no
+ * grade, still leads with it. A query, so the phone's memory is read once it has loaded (and again after
+ * sign-up clears the cache).
  */
 export function useGuestLeadLevel() {
   return useQuery({

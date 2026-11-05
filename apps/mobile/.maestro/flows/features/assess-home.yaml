@@ -20,7 +20,8 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-# Phase 66: the member home; the Assessment home is in Ines's first section ("Your learning").
+# Phase 66: the member home; the Assessment home is in Ines's "Your learning" -- since Phase 74 (JF6) after her
+# child's card and the office (what she came for leads), so it is scrolled to.
 - extendedWaitUntil:
     visible:
       id: home-band

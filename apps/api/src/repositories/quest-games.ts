@@ -591,11 +591,49 @@ export async function inviteToGame(
  * "Waiting for you": games a roster invited the reader to in the last day, in the lobby or running with
  * joining open, that they have not joined. One indexed read of their invitations.
  */
+/**
+ * Phase 73 (JF13): the reader's latest games here, newest first, for Continue: one read through the player index. A
+ * game counts as open while it is running (started within 3 hours) or in its lobby (made within 6 hours); the game
+ * itself has the last word, and D1's status can lag behind it.
+ */
+export async function latestGamesOf(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+): Promise<
+  {
+    id: string;
+    status: 'lobby' | 'running' | 'finished';
+    level_id: string;
+    level_scope: 'level' | 'upward';
+    mode: 'count' | 'timed';
+    question_count: number | null;
+    duration_seconds: number | null;
+    open: number;
+  }[]
+> {
+  const result = await db
+    .prepare(
+      `SELECT g.id, g.status, g.level_id, g.level_scope, g.mode, g.question_count, g.duration_seconds,
+              CASE WHEN g.status = 'running' AND g.started_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-3 hours') THEN 1
+                   WHEN g.status = 'lobby' AND g.created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-6 hours') THEN 1
+                   ELSE 0 END AS open
+       FROM quest_game_players p
+       JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+       WHERE p.organization_id = ? AND p.user_id = ?
+       ORDER BY g.created_at DESC
+       LIMIT 5`,
+    )
+    .bind(org, userId)
+    .all();
+  return (result.results ?? []) as never;
+}
+
 export async function waitingGames(db: D1Database, org: OrgId, userId: string): Promise<WaitingGame[]> {
   const since = new Date(Date.now() - 24 * 3_600_000).toISOString();
   const result = await db
     .prepare(
-      `SELECT g.id AS game_id, g.code, u.full_name AS host_name, g.level_id, g.mode, g.question_count,
+      `SELECT g.id AS game_id, g.code, u.full_name AS host_name, g.level_id, g.level_scope, g.mode, g.question_count,
               g.duration_seconds, g.status, g.created_at
        FROM quest_game_invites i
        JOIN quest_games g ON g.organization_id = i.organization_id AND g.id = i.game_id
@@ -613,6 +651,7 @@ export async function waitingGames(db: D1Database, org: OrgId, userId: string): 
       code: string;
       host_name: string;
       level_id: string;
+      level_scope: GameLevelScope;
       mode: GameMode;
       question_count: number | null;
       duration_seconds: number | null;

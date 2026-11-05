@@ -59,9 +59,10 @@ test.describe('dashboards', () => {
     expect(asStudent.data.kind).toBe('student');
     expect(asStudent.data.tutors.length).toBeGreaterThan(0);
 
-    // The switcher is offered in the UI because he holds more than one role.
+    // The switcher is offered in the UI because he holds more than one role, and says what it is (JF24).
     await page.goto('/dashboard');
     await expect(page.getByLabel('Dashboard role')).toBeVisible();
+    await expect(page.getByTestId('dashboard-viewing-as')).toContainText('Viewing as');
   });
 
   test('an admin can view another user\'s dashboard, and others cannot', async ({ as }) => {
@@ -121,6 +122,10 @@ test.describe('viewing another dashboard', () => {
     await expect(page.getByText(`Viewing as ${PEOPLE.student.name}`)).toBeVisible();
 
     await page.getByRole('button', { name: 'Back to mine' }).click();
-    await expect(page.getByText('Viewing as')).toHaveCount(0);
+    // Back to her own: the banner naming someone else is gone. (Since Phase 74 the role switch itself is labelled
+    // "Viewing as" -- "Viewing as: Administrator" -- for anyone with more than one role, JF24.)
+    await expect(page.getByText(`Viewing as ${PEOPLE.student.name}`)).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Back to mine' })).toHaveCount(0);
+    await expect(page.getByTestId('dashboard-viewing-as')).toContainText('Administrator');
   });
 });

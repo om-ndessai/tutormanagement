@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Gamepad2Icon, LogInIcon, PlusIcon, UsersIcon } from 'lucide-react';
 import {
@@ -9,10 +9,12 @@ import {
   gameLevelLabel,
   gameMarkingLabel,
   gamePlayersLabel,
+  gameWords,
   levelLabel,
   normalizeGameCode,
   placeLabel,
   type GameLookup,
+  type GameShapeRow,
   type JoinGameInput,
 } from '@tmi/shared';
 
@@ -25,6 +27,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useGames, useJoinGame, useLookupGame } from './games-api';
+import { useGoToGame, usePlayFrom, type PlayOriginState } from './play-origin';
 
 // Phase 46: Quest Games on the Quest page -- for everyone in the organization.
 // Start a game (Phase 47: the wizard, /quest/games/new), or type a code to
@@ -37,13 +40,14 @@ export function GamesCard() {
   const lookup = useLookupGame();
   const [code, setCode] = useState('');
   const [found, setFound] = useState<GameLookup | null>(null);
-  const navigate = useNavigate();
+  const goToGame = useGoToGame();
+  const from = usePlayFrom();
   const rows = games.data?.data ?? [];
 
   async function join() {
     try {
       const result = await lookup.mutateAsync(code);
-      if (result.data.joined) navigate(`/quest/games/${result.data.game_id}`);
+      if (result.data.joined) goToGame(result.data.game_id);
       else setFound(result.data);
     } catch (caught) {
       toast.error(message(caught, 'Could not find that code.'));
@@ -99,12 +103,15 @@ export function GamesCard() {
               <li key={game.id}>
                 <Link
                   to={`/quest/games/${game.id}`}
+                  state={{ from } satisfies PlayOriginState}
                   className="hover:bg-muted flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2"
                   data-testid={`game-row-${game.code}`}
                 >
-                  <span className="font-mono font-medium">{game.code}</span>
-                  <span>{gameLevelLabel(game, levelLabel)}</span>
-                  <span className="text-muted-foreground">{gameLengthLabel(game)}</span>
+                  {/* Phase 73 (JF32): a game in words first ("Grade 6 Quick 5"); its code follows, small. */}
+                  <span className="font-medium" data-testid={`game-row-words-${game.code}`}>
+                    {gameWords(game as GameShapeRow)}
+                  </span>
+                  <span className="text-muted-foreground font-mono text-xs">{game.code}</span>
                   <span className="text-muted-foreground">
                     {game.players === 'single'
                       ? 'Single player'
@@ -233,7 +240,8 @@ export function JoinChoices({
   onJoined?: () => void;
 }) {
   const join = useJoinGame();
-  const navigate = useNavigate();
+  const goToGame = useGoToGame();
+  const { pathname } = useLocation();
   const { user } = useAuth();
   const [tab, setTab] = useState<'team' | 'new'>(host || teamCount === 0 ? 'new' : 'team');
   const [teamName, setTeamName] = useState(() => defaultTeamName(user?.full_name));
@@ -243,7 +251,8 @@ export function JoinChoices({
     try {
       await join.mutateAsync({ gameId, ...input });
       onJoined?.();
-      navigate(`/quest/games/${gameId}`);
+      // In the game's own lobby already: stay, keeping where it was opened from.
+      goToGame(gameId, { replace: pathname === `/quest/games/${gameId}` });
     } catch (caught) {
       toast.error(message(caught, 'Could not join the game.'));
     }

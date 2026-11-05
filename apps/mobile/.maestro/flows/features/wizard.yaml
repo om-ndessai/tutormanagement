@@ -33,8 +33,12 @@ tags:
     id: account-button
 - extendedWaitUntil:
     visible:
-      id: account-profile
+      id: screen-account
     timeout: 10000
+# Phase 72 put Join with a code and Start a space under the spaces: My profile is further down.
+- scrollUntilVisible:
+    element:
+      id: account-profile
 - assertNotVisible:
     id: account-tour
 - runFlow:
@@ -69,10 +73,11 @@ tags:
 - takeScreenshot: features-wizard-student
 - tapOn:
     id: student-flow-add-student
+# Phase 74 (JF31): no Tutoring here, so nobody is billed -- the family step asks who looks after the student.
 - extendedWaitUntil:
     visible:
       id: step-flow-title
-      text: '.*Who is their family\?.*'
+      text: '.*Who looks after this student\?.*'
     timeout: 15000
 - assertVisible: 'Step 1 of 4'
 - waitForAnimationToEnd:

@@ -4,21 +4,88 @@
 # Finish brings the wizard back on confirming his details (a non-admin's last step). Schedule's
 # step lights Sessions, where Schedule lives now. Closing it
 # changes nothing: he had been through it already.
+# Phase 74 (JF25, owner 2026-11-05): the tour is offered once per PERSON, the server's record deciding -- Alex on a
+# fresh device is offered nothing. The one offer left, a first visit to a space by somebody who has been through it
+# (Tessa, just added to chmi), is a card at the top of the home, in the page's flow (the band and Next up stay in
+# view, nothing covered), "A quick tour"; No thanks puts it away, and her next sign-in -- a fresh device too -- offers
+# nothing. Self-cleaning (clean-people.js removes Tessa).
 appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: add-person, EMAIL: tour.visitor@example.com, NAME: Tessa Visitor, ROLES: parent, ACTOR: priya.raghavan@gmail.com, ORG: chmi, STATUS: active }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: tour-done, EMAIL: tour.visitor@example.com, ORG: chmi }
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
 tags:
   - feature
 ---
+# --- The first visit's offer, inline, once --------------------------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: tour.visitor@example.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: tour-offer
+    timeout: 30000
+- assertVisible:
+    id: tour-offer-title
+    text: 'Welcome to .+'
+- assertVisible: 'A quick tour of what is where\.'
+- assertNotVisible: '.*portal.*'
+# In the page's flow: the band and Next up are still there to read and tap.
+- assertVisible:
+    id: home-band
+- assertVisible:
+    id: next-up
+- assertNotVisible:
+    id: screen-onboarding
+- takeScreenshot: tour-offer-inline
+- tapOn:
+    id: tour-offer-dismiss
+- assertNotVisible:
+    id: tour-offer
+# Her next sign-in, on a fresh device: nothing (no first visit any more, and the device never decides).
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: tour.visitor@example.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible:
+    id: tour-offer
+- assertNotVisible:
+    id: screen-onboarding
+
+# --- Once per person: Alex on a fresh device is offered nothing; the account menu still opens it --------------------
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
       PERSONA: alex.chen.math@gmail.com
       ORG: chmi
+      FRESH: '1'
 - extendedWaitUntil:
     visible:
       id: home-band
     timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
 - assertNotVisible:
     id: tour-offer
+- assertNotVisible:
+    id: screen-onboarding
 - tapOn:
     id: account-button
 - extendedWaitUntil:

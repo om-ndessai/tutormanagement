@@ -14,6 +14,9 @@
 // game from the hub shows the words only.
 // Phase 64 (P17, P20): a single player's "New best!" (`new_best`), and a played game reads My progress
 // and the tiles' bests again.
+// Phase 73 (JF13, JF16, JF36): the results refresh the member home (its Next up and counts) and Continue's
+// read, whoever played; an empty game -- nobody answered anything -- has no winner ("Nobody played"), no
+// confetti and no win line; Back returns where the game was opened (Home or Quest).
 import { useQueryClient } from '@tanstack/react-query';
 import { gameEndLabel, type GameResultItem, type GameView } from '@tmi/shared';
 import { useEffect, useMemo, useState } from 'react';
@@ -24,6 +27,7 @@ import { BadgePill } from '@/components/badge-pill';
 import { OutlinedCard } from '@/components/outlined-card';
 import { Panel } from '@/components/section';
 import { DetailSkeleton } from '@/components/skeletons';
+import { memberHomeKey } from '@/features/home/api';
 import { Confetti } from '@/features/home/confetti';
 import { MathBody } from '@/features/question-bank/math-body';
 import { haptics } from '@/lib/haptics';
@@ -45,9 +49,9 @@ import {
   reviewLine,
 } from './game-model';
 import { Scoreboard } from './game-scoreboard';
-import { useGameResults } from './games-api';
+import { gameKeys, useGameResults } from './games-api';
 import { ShareButton } from '../sharing/share-button';
-import { exitQuest } from './quest-frame';
+import { exitGame } from './quest-frame';
 import { questWide } from './quest-model';
 
 /** Games already celebrated in this run of the app: once per game. */
@@ -60,7 +64,7 @@ function seedOf(id: string): number {
   return seed;
 }
 
-export function GameResults({ game }: { game: GameView }) {
+export function GameResults({ game, from }: { game: GameView; from?: string }) {
   const theme = useAppTheme();
   const { width, height } = useWindowDimensions();
   const wide = questWide(width);
@@ -85,6 +89,9 @@ export function GameResults({ game }: { game: GameView }) {
   const queryClient = useQueryClient();
   const played = Boolean(mine);
   useEffect(() => {
+    // Phase 73: a game over is no longer Continue's, and Home's Next up and counts may move.
+    void queryClient.invalidateQueries({ queryKey: gameKeys.open });
+    void queryClient.invalidateQueries({ queryKey: memberHomeKey });
     if (!played) return;
     void queryClient.invalidateQueries({ queryKey: ['quest', 'habit'] });
     void queryClient.invalidateQueries({ queryKey: ['quest', 'tiles'] });
@@ -134,8 +141,8 @@ export function GameResults({ game }: { game: GameView }) {
       </OutlinedCard>
       <Scoreboard game={game} title="Final places" />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-        <Button testID="game-back" mode="outlined" onPress={exitQuest} contentStyle={{ minHeight: 48 }}>
-          Back to Quest
+        <Button testID="game-back" mode="outlined" onPress={() => exitGame(from)} contentStyle={{ minHeight: 48 }}>
+          {from === 'home' ? 'Back home' : 'Back to Quest'}
         </Button>
         {/* Phase 56: the reader's own team's result, as a public card. */}
         {mine ? (

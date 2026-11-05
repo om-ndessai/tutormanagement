@@ -1,43 +1,67 @@
-import { useQuery } from '@tanstack/react-query';
-import type { ApiOk, CreateGameRequest, MemberTilesResponse, QuestMember, WaitingGame } from '@tmi/shared';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  boardGrades,
+  boardLeadGrade,
+  type ApiOk,
+  type MemberTilesResponse,
+  type OpenGameResponse,
+  type QuestGradeInput,
+  type QuestMember,
+  type WaitingGame,
+} from '@tmi/shared';
 
+import { guestLeadLevel } from '@/features/guest/guest-store';
 import { apiClient } from '@/lib/api-client';
+
+export const memberTilesKey = ['quest', 'tiles'] as const;
 
 /** Phase 62 (P5/P6): the tiles a member here may start in one tap, and whether the Play home is on. */
 export function useMemberTiles(enabled = true) {
   return useQuery({
-    queryKey: ['quest', 'tiles'] as const,
+    queryKey: memberTilesKey,
     queryFn: () => apiClient.get<ApiOk<MemberTilesResponse>>('/quest/tiles'),
     enabled,
     staleTime: 60_000,
   });
 }
 
-/** The last quest started here, kept on this device for Continue (never on the server: no audit line per game). */
-export interface LastQuest {
-  label: string;
-  request: CreateGameRequest;
+/**
+ * Phase 73 (JF14): the grade that leads the board and the Daily -- the server's `lead` (picked on the row, recorded
+ * for a student, played last, or the top of the row for 13+). While it is unknown (`ask_grade`) the row's first
+ * grade stands in; an older Worker sends no `lead`, and then the old rule applies (the guest's grade, else the first).
+ */
+export function leadGradeOf(data: MemberTilesResponse | undefined): number | null {
+  if (!data) return null;
+  if (data.lead) return data.lead.grade;
+  if ('lead' in data) return boardGrades(data.tiles)[0] ?? null;
+  return boardLeadGrade(data.tiles, guestLeadLevel());
 }
 
-const key = (space: string) => `aimtrue.last-quest.${space}`;
-
-export function readLastQuest(space: string | undefined): LastQuest | null {
-  if (!space) return null;
-  try {
-    const raw = localStorage.getItem(key(space));
-    return raw ? (JSON.parse(raw) as LastQuest) : null;
-  } catch {
-    return null;
-  }
+/** Phase 73 (JF14): saves the grade picked on the row here (0 is "Not in school"); the board and Daily follow. */
+export function useSaveQuestGrade() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: QuestGradeInput) => apiClient.put<ApiOk<{ grade: number | null }>>('/quest/grade', input),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: memberTilesKey }),
+  });
 }
 
-export function writeLastQuest(space: string | undefined, last: LastQuest): void {
-  if (!space) return;
-  try {
-    localStorage.setItem(key(space), JSON.stringify(last));
-  } catch {
-    // A private window: Continue simply does not appear.
-  }
+export const openGameKey = ['quest', 'open'] as const;
+
+/**
+ * Phase 73 (JF13): Continue -- the reader's open game here (running or in its lobby, with where they are in it), else
+ * the last game's settings to start again. Each read costs the Worker a call to the game, so it is read only where
+ * Continue shows, at most once a minute and when the tab comes back to the front: never polled. Starting, answering,
+ * leaving, ending and the results mark it stale.
+ */
+export function useOpenGame(enabled = true) {
+  return useQuery({
+    queryKey: openGameKey,
+    queryFn: () => apiClient.get<ApiOk<OpenGameResponse>>('/quest/games/open'),
+    enabled,
+    staleTime: 60_000,
+    refetchOnWindowFocus: true,
+  });
 }
 
 /**

@@ -6,7 +6,7 @@
 // Mobile: the screen never scrolls while writing -- the question scrolls in its own box, and the
 // canvas is the largest 5:4 page that fits what is left (beside the question on a wide screen, an
 // iPad in landscape). The swipe back is off here, so an edge stroke never leaves the page.
-import { levelLabel } from '@tmi/shared';
+import { featureAllowed, levelLabel } from '@tmi/shared';
 import type { CanvasStroke } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
@@ -23,6 +23,7 @@ import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { readCanvasWork, writeCanvasWork } from '@/lib/storage';
+import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useCanvasAssessment, useSubmitCanvasAssessment } from './api';
@@ -43,6 +44,7 @@ import { QuestionView } from './question-view';
 const NO_STROKES: CanvasStroke[] = [];
 
 export function TakeAssessmentScreen() {
+  const { organization } = useAuth();
   const { id = '' } = useLocalSearchParams<{ id: string }>();
   const theme = useAppTheme();
   const toast = useToast();
@@ -274,7 +276,10 @@ export function TakeAssessmentScreen() {
               (question.kind === 'choice'
                 ? 'Choose your answer, and use the page below for your working.'
                 : 'Write your working and your answer below.') +
-              ' Nothing is marked until your tutor reviews it.'}
+              (featureAllowed(organization, 'tutoring')
+                ? ' Nothing is marked until your tutor reviews it.'
+                : // Phase 74 (JF31): a space without Tutoring has no tutor to promise.
+                  ' Nothing is marked yet: your teacher (or parent) looks at it next.')}
           </Text>
         </View>
         <QuestionView

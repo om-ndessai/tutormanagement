@@ -1,7 +1,9 @@
 # A parent the office has just added meets the wizard (Odessa, a fresh device): it opens by itself,
 # with no setup choices; Confirm my details shows the office's record of her (her email) and "Yes,
-# that's all right" confirms it -> done -> her dashboard. Then a person who has been through it
-# (Anita) on a fresh device is only offered the tour, and No thanks puts it away. Self-cleaning.
+# that's all right" confirms it -> done -> her dashboard. Self-cleaning.
+# Phase 74 (JF25): closing the wizard on her first visit records the tour, and the "Welcome to …" offer does not
+# come back straight after; and a person who has been through it (Anita), on a fresh device, is offered nothing --
+# once per person, the server's record deciding, never the device.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-people.js
@@ -57,8 +59,17 @@ tags:
     timeout: 15000
 - assertNotVisible:
     id: screen-onboarding
+# Phase 74 (JF25): the wizard recorded her tour; the first visit's offer does not reappear because of it.
+- waitForAnimationToEnd:
+    timeout: 3000
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 15000
+- assertNotVisible:
+    id: tour-offer
 
-# Somebody who has been through it, on a device that has not shown it: an offer, not the wizard.
+# Somebody who has been through it, on a fresh device: nothing -- once per person (Phase 74, JF25).
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -67,13 +78,13 @@ tags:
       FRESH: '1'
 - extendedWaitUntil:
     visible:
-      id: tour-offer
+      id: home-band
     timeout: 30000
-- assertVisible: 'New here on this device?'
-- assertNotVisible:
-    id: screen-onboarding
-- takeScreenshot: onboarding-offer
-- tapOn:
-    id: tour-offer-dismiss
+- waitForAnimationToEnd:
+    timeout: 3000
 - assertNotVisible:
     id: tour-offer
+- assertNotVisible:
+    id: screen-onboarding
+- assertNotVisible: 'New here on this device\?'
+- takeScreenshot: onboarding-no-offer

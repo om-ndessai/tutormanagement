@@ -1,5 +1,7 @@
 # Phase 66 (H3): Sofia, a student in chmi. Her Home is "Your learning": Next up and her section name her
-# next lesson with Alex, in words.
+# next lesson with Alex, in words. Phase 74 (JF17): and where -- the place of her schedule, by name ("… with Alex ·
+# Institute, room 2", or his online room); the band never repeats the lesson Next up shows (JF23); her menu has no
+# Users (JF31).
 appId: ${APP_ID}
 tags:
   - feature
@@ -18,7 +20,7 @@ tags:
     text: 'Good (morning|afternoon|evening), Sofia'
 - assertVisible:
     id: home-strip
-    text: '(Next lesson: .* with Alex|.*in a row|Start a streak|Ready when you are)'
+    text: '(Next lesson: .* with Alex · .+|.*in a row|Start a streak.*|Ready when you are)'
 - assertVisible:
     id: next-up
 # The lesson is named once: by Next up when it leads (then the section leaves its own card out), else by
@@ -39,7 +41,7 @@ tags:
           centerElement: true
       - assertVisible:
           id: home-learner-next
-          text: '.*with Alex.*'
+          text: '.*with Alex · (Institute, room 2|Online room)'
 - runFlow:
     when:
       visible:
@@ -47,7 +49,10 @@ tags:
     commands:
       - assertVisible:
           id: next-up-title
-          text: '.*with Alex.*'
+          text: '.*with Alex · (Institute, room 2|Online room)\.'
+      - assertNotVisible:
+          id: home-strip
+          text: 'Next lesson: .*'
       - scrollUntilVisible:
           element:
             id: home-section-learner
@@ -61,3 +66,20 @@ tags:
     id: home-section-parent
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: member-home-student
+# Phase 74 (JF31): a student's menu has no Users (nor Pairings or Billing); links to those pages still open.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-analytics
+    centerElement: true
+- assertNotVisible:
+    id: more-nav-users
+- assertNotVisible:
+    id: more-nav-assignments
+- assertNotVisible:
+    id: more-nav-billing

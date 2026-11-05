@@ -13,9 +13,18 @@ tags:
     visible:
       id: home-band
     timeout: 30000
-- assertVisible:
+# Phase 74 (JF23): the band never names the lesson Next up already shows.
+- runFlow:
+    when:
+      visible:
+        id: next-up-none
+    commands:
+      - assertVisible:
+          id: home-strip
+          text: 'Sofia: .*'
+- assertNotVisible:
     id: home-strip
-    text: 'Sofia: .*'
+    text: 'Sofia: next .*'
 - scrollUntilVisible:
     element:
       id: home-section-parent
@@ -26,7 +35,7 @@ tags:
     centerElement: true
 - assertVisible:
     id: home-child-next-00000000-0000-4000-8000-000000000008
-    text: '(Next: .* with Alex|No lessons scheduled)'
+    text: '(Next: .* with Alex.*|No lessons scheduled)'
 - assertNotVisible:
     id: home-section-tutor
 - assertNotVisible: 'Your teaching'

@@ -116,7 +116,10 @@ export function StudentFlow({
           }
         >
           <p>
-            Every student needs a parent or guardian on file, who is billed and kept informed.
+            {/* Phase 74 (JF31): only a space with Tutoring bills anyone. */}
+            {tutoring
+              ? 'Every student needs a parent or guardian on file, who is billed and kept informed.'
+              : 'Who looks after this student? Every student needs a parent or guardian here, who is kept informed.'}{' '}
             Choose an existing family, or create their account.
           </p>
           <div className="grid gap-1.5 sm:max-w-sm">

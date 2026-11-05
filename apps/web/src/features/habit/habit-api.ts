@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ApiOk, DailySet, HabitSummary } from '@tmi/shared';
 
+import { memberHomeKey } from '@/features/home/api';
 import { apiClient } from '@/lib/api-client';
 
 /** Phase 64 (P17-P18): the reader's own streak and badges here. */
@@ -30,6 +31,8 @@ export function useSaveDaily(levelId: string) {
     onSuccess: (result) => {
       queryClient.setQueryData(['quest', 'daily', levelId], result);
       void queryClient.invalidateQueries({ queryKey: ['quest', 'habit'] });
+      // Phase 73: the day counts on the home, and Next up moves on.
+      void queryClient.invalidateQueries({ queryKey: memberHomeKey });
     },
   });
 }

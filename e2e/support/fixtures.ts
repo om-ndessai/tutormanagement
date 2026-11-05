@@ -9,16 +9,11 @@ import { ORGS, PEOPLE, type PersonKey } from './people.js';
  * The header is honoured only while auth is off, so this cannot be used to
  * impersonate anyone on a live, secured deployment.
  */
-/**
- * A browser the welcome wizard (Phase 26) has already been shown in. Every
- * seeded person has been through the wizard, so with this cookie too they
- * meet neither it nor its "new here on this device?" offer -- which would
- * otherwise sit over the page in every spec. Set before the page's own
- * scripts run, on every navigation.
+/*
+ * The welcome wizard (Phase 26) opens once per PERSON, decided by the server alone since Phase 74 (JF25): every
+ * seeded person has been through it, so no spec's browser meets it or an offer of it, and no browser is different --
+ * the old `tmi_tour_seen` cookie is no longer set here, nor read by the app.
  */
-function markTourSeen() {
-  document.cookie = 'tmi_tour_seen=1; path=/';
-}
 
 /**
  * A tab that has already had its sign-in landing (Phase 42: Question Quest
@@ -43,7 +38,10 @@ function markTabOrg(slug: string) {
 }
 
 export interface AsOptions {
-  /** A browser that has never shown the wizard: no tour cookie. */
+  /**
+   * A browser that has never shown the wizard. Since Phase 74 the server alone decides (JF25), so this marks the
+   * specs that meet the wizard and changes nothing about the browser.
+   */
   fresh?: boolean;
   /** Let Question Quest's sign-in landing happen (Phase 42); off in every other spec. */
   questLanding?: boolean;
@@ -67,7 +65,6 @@ export const test = base.extend<{
       const context = await browser.newContext({
         extraHTTPHeaders: { 'X-Dev-User': options.email ?? PEOPLE[who].email },
       });
-      if (!options.fresh) await context.addInitScript(markTourSeen);
       if (!options.questLanding) await context.addInitScript(markQuestLanded);
 
       // The organization travels the way a returning browser's does: the

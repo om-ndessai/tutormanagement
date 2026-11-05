@@ -15,9 +15,11 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import {
+  DAILY_NAME,
   START_LEAD_MINUTES,
   TILE_LEVEL_WORDS,
   chooseNextUp,
+  dailyLevelFor,
   featureOn,
   lessonDayWords,
   lessonWhen,
@@ -34,16 +36,17 @@ import {
 } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
-import { guestLeadLevel } from '@/features/guest/guest-store';
 import { useDaily, useHabit } from '@/features/habit/habit-api';
 import { questRoles, useQuestState } from '@/features/quest/api';
+import { useGoToGame, type PlayOriginState } from '@/features/quest/play-origin';
 import { WaitingForYou, useStartQuest } from '@/features/play/play-home';
-import { readLastQuest, useMemberTiles, useWaitingGames } from '@/features/play/play-api';
+import { leadGradeOf, useMemberTiles, useOpenGame, useWaitingGames } from '@/features/play/play-api';
 import { useStartSession } from '@/features/teaching/api';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { putOff, readPutOff } from './api';
+import { lessonLine } from './lesson-words';
 
 export interface RecordRequest {
   tutor_user_id: string;
@@ -54,19 +57,22 @@ export interface RecordRequest {
   mode: SessionMode;
 }
 
-/** What only this device knows (H2): a game waiting, the last quest here, today's Daily. */
+/** What the home's own read does not carry (H2): a game waiting, the open game (or "again"), today's Daily. */
 function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: string | null } {
   const { organization, user } = useAuth();
   const learner = Boolean(home?.hats.includes('learner'));
   const quest = featureOn(organization, 'quest');
   const waiting = useWaitingGames(quest);
   const tiles = useMemberTiles(quest && learner);
-  const last = learner ? readLastQuest(organization?.slug) : null;
+  // Phase 73 (JF13): Continue is the server's -- the open game, else the last one's settings again.
+  const open = useOpenGame(quest && learner);
   const list = tiles.data?.data.tiles ?? [];
-  const lead = last?.request.level_id ?? guestLeadLevel();
-  const dailyTile = list.find((tile) => tile.level_id === lead) ?? list[0];
-  const dailyLevel = learner && tiles.data?.data.daily && dailyTile ? dailyTile.level_id : null;
+  // Phase 73 (JF14, JF23): ONE Daily rule, the board's: the lead grade's first card's level.
+  const ruled = dailyLevelFor(list, leadGradeOf(tiles.data?.data));
+  const dailyLevel = learner && tiles.data?.data.daily ? ruled : null;
   const daily = useDaily(dailyLevel);
+  const openGame = learner ? (open.data?.data.open ?? null) : null;
+  const again = learner ? (open.data?.data.again ?? null) : null;
   const game = waiting.data?.data[0];
   // Phase 67: a student's Question Quest with a question waiting is a Next up item (it was a redirect).
   const roles = questRoles(user?.roles);
@@ -77,10 +83,11 @@ function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: s
     question_quest: questStudent && questState.data?.data.question ? { level_id: questState.data.data.level_id } : null,
     welcome_back: habit.data?.data.welcome_back ?? false,
     game_invite: game ? { game_id: game.game_id, title: 'game', host_first_name: game.host_first_name } : null,
-    continue_quest: last ? { code: last.label, title: last.label } : null,
+    open_game: openGame ? { game_id: openGame.game_id, title: openGame.label } : null,
+    continue_quest: again ? { code: again.label, title: again.label } : null,
     daily: dailyLevel && daily.data ? { level_id: dailyLevel, done: daily.data.data.result !== null } : null,
     // Phase 68 (H10): practice before a lesson starts at the board's lead level.
-    practice_level_id: learner && quest ? (dailyTile?.level_id ?? null) : null,
+    practice_level_id: learner && quest ? ruled : null,
     played_today: habit.data?.data.played_today ?? false,
     dailyLevel,
   };
@@ -96,9 +103,11 @@ export function useNextUp(home: MemberHome | undefined) {
     void later;
     return chooseNextUp(nextUpCandidates(home, extras), readPutOff(organization?.slug, home.day));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [home, extras.game_invite?.game_id, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, extras.practice_level_id, extras.played_today, later, organization?.slug]);
+  }, [home, extras.game_invite?.game_id, extras.open_game?.game_id, extras.open_game?.title, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, extras.practice_level_id, extras.played_today, later, organization?.slug]);
   return {
     item,
+    /** Phase 74 (JF17): the level a learner's practice starts at, where Quest is on (the board's lead). */
+    practiceLevel: extras.practice_level_id ?? null,
     putOff(next: NextUp) {
       if (!home) return;
       putOff(organization?.slug, home.day, nextUpKey(next));
@@ -170,16 +179,20 @@ export function NextUpCard({
   item,
   onLater,
   onRecord,
+  practiceLevel = null,
 }: {
   home: MemberHome;
   item: NextUp | null;
   onLater: (item: NextUp) => void;
   onRecord: (lesson: RecordRequest) => void;
+  /** Where Quest is on, the level a learner's practice for their lesson starts at. */
+  practiceLevel?: string | null;
 }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const startSession = useStartSession();
   const { start, pending } = useStartQuest();
+  const goToGame = useGoToGame();
   const later = item ? () => onLater(item) : undefined;
   const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
 
@@ -194,8 +207,15 @@ export function NextUpCard({
   }
 
   if (!item) {
+    // The office's own section says "Nothing needs you right now" (JF6): not twice.
     return (
-      <Shell kind="none" icon={CheckCircle2Icon} eyebrow="Next up" title="You're all caught up." detail="Nothing needs you right now." />
+      <Shell
+        kind="none"
+        icon={CheckCircle2Icon}
+        eyebrow="Next up"
+        title="You're all caught up."
+        detail={home.hats.includes('office') ? null : 'Nothing needs you right now.'}
+      />
     );
   }
 
@@ -206,7 +226,8 @@ export function NextUpCard({
   );
   const link = (label: string, to: string, Icon: LucideIcon = PlayIcon) => (
     <Button asChild size="lg" className="rounded-full" data-testid="next-up-action">
-      <Link to={to}>
+      {/* A full-screen Quest page goes back here (JF36). */}
+      <Link to={to} state={to.startsWith('/quest/') ? ({ from: '/' } satisfies PlayOriginState) : undefined}>
         <Icon /> {label}
       </Link>
     </Button>
@@ -263,13 +284,19 @@ export function NextUpCard({
           icon={CalendarXIcon}
           eyebrow="A change"
           title={`${c.first_name}'s lesson ${lessonWhen(c.cancelled!.occurs_on, c.cancelled!.start_time, home.day)} is cancelled.`}
-          detail={c.next_lesson ? `Next: ${lessonWhen(c.next_lesson.occurs_on, c.next_lesson.start_time, home.day)} with ${firstName(c.next_lesson.tutor_name)}.` : null}
+          detail={c.next_lesson ? `Next: ${lessonLine(c.next_lesson, home.day)}.` : null}
           onLater={later}
         >
           {link('See the schedule', '/schedule', CalendarClockIcon)}
         </Shell>
       );
     }
+    case 'open_game':
+      return (
+        <Shell kind={item.kind} icon={PlayIcon} eyebrow="Pick up where you left off" title={item.game.title} onLater={later}>
+          {primary('Continue', () => goToGame(item.game.game_id))}
+        </Shell>
+      );
     case 'game_invite':
       return (
         <Shell kind={item.kind} icon={TargetIcon} eyebrow="Waiting for you" title={`${item.game.host_first_name} started a game.`} onLater={later}>
@@ -315,8 +342,15 @@ export function NextUpCard({
       );
     case 'daily':
       return (
-        <Shell kind={item.kind} icon={TargetIcon} eyebrow="Today's 5" title="Five questions. Can you hit all five?" onLater={later}>
-          {link("Play today's 5", `/quest/daily/${item.level_id}`, TargetIcon)}
+        <Shell
+          kind={item.kind}
+          icon={TargetIcon}
+          eyebrow={DAILY_NAME}
+          title="Five questions. Can you hit all five?"
+          detail={TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id as QuestionBankLevelId)}
+          onLater={later}
+        >
+          {link(`Play ${DAILY_NAME.replace(/^T/, 't')}`, `/quest/daily/${item.level_id}`, TargetIcon)}
         </Shell>
       );
     case 'question_quest':
@@ -342,7 +376,9 @@ export function NextUpCard({
           detail="A fresh week starts today."
           onLater={later}
         >
-          {item.level_id ? link("Play today's Daily", `/quest/daily/${item.level_id}`, TargetIcon) : link('Start a quest', '/quest/games/new', PlayIcon)}
+          {item.level_id
+            ? link(`Play ${DAILY_NAME.replace(/^T/, 't')}`, `/quest/daily/${item.level_id}`, TargetIcon)
+            : link('Start a quest', '/quest/games/new', PlayIcon)}
         </Shell>
       );
     case 'practise_before':
@@ -352,10 +388,10 @@ export function NextUpCard({
           icon={TargetIcon}
           eyebrow="Before your lesson"
           title={`Practise before ${lessonDayWords(item.lesson.occurs_on, home.day)}.`}
-          detail={`Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id as QuestionBankLevelId)}, warm-up for ${firstName(item.lesson.tutor_name)}'s lesson.`}
+          detail={`${lessonLine(item.lesson, home.day, { capitalise: true })}. Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id as QuestionBankLevelId)} to warm up.`}
           onLater={later}
         >
-          {primary(pending ? 'Starting…' : 'Practise 5', () => void start('Practice', practiseRequest(item.level_id)), TargetIcon)}
+          {primary(pending ? 'Starting…' : 'Practise 5', () => void start(practiseRequest(item.level_id)), TargetIcon)}
         </Shell>
       );
     case 'focus_default':
@@ -376,9 +412,22 @@ export function NextUpCard({
           kind={item.kind}
           icon={CalendarClockIcon}
           eyebrow="Your next lesson"
-          title={`${lessonWhen(item.lesson.occurs_on, item.lesson.start_time, home.day)[0]!.toUpperCase()}${lessonWhen(item.lesson.occurs_on, item.lesson.start_time, home.day).slice(1)} with ${firstName(item.lesson.tutor_name)}.`}
+          title={`${lessonLine(item.lesson, home.day, { capitalise: true })}.`}
         >
           {link('See the schedule', '/schedule', CalendarClockIcon)}
+          {/* Phase 74 (JF17): the lesson leads to practice for it, where Quest is on. */}
+          {practiceLevel && (
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-full"
+              disabled={pending}
+              onClick={() => void start(practiseRequest(practiceLevel))}
+              data-testid="next-up-practise"
+            >
+              <TargetIcon /> {pending ? 'Starting…' : 'Practise for it'}
+            </Button>
+          )}
         </Shell>
       );
     case 'child_next_lesson': {
@@ -389,7 +438,7 @@ export function NextUpCard({
           kind={item.kind}
           icon={CalendarClockIcon}
           eyebrow={`${c.first_name}'s next lesson`}
-          title={`${lessonWhen(l.occurs_on, l.start_time, home.day)[0]!.toUpperCase()}${lessonWhen(l.occurs_on, l.start_time, home.day).slice(1)} with ${firstName(l.tutor_name)}.`}
+          title={`${lessonLine(l, home.day, { capitalise: true })}.`}
           detail={c.homework ? `Homework: ${c.homework}` : null}
         >
           {link('See the schedule', '/schedule', CalendarClockIcon)}
@@ -401,16 +450,20 @@ export function NextUpCard({
       const parts = [
         o.join_requests ? `${o.join_requests} asking to join` : null,
         o.invitations ? `${o.invitations} ${o.invitations === 1 ? 'invitation' : 'invitations'} not yet accepted` : null,
+        // Phase 74 (JF6): assessments submitted and waiting to be looked at are the office's too.
+        o.assessments_open ? `${o.assessments_open} ${o.assessments_open === 1 ? 'assessment' : 'assessments'} to look at` : null,
       ].filter(Boolean);
+      const onlyAssessments = !o.join_requests && !o.invitations;
       return (
         <Shell kind={item.kind} icon={UserPlusIcon} eyebrow="Needs you" title={parts.join(' · ')} onLater={later}>
-          {link('Open people', '/users', UserPlusIcon)}
+          {onlyAssessments ? link('Open assessments', '/assessments', UserPlusIcon) : link('Open people', '/users', UserPlusIcon)}
         </Shell>
       );
     }
   }
 }
 
+/** Phase 73 (JF13): with no game open, the last one's settings under their own name -- "Play Grade 7 Quick 5 again". */
 function ContinueQuest({
   item,
   pending,
@@ -422,18 +475,18 @@ function ContinueQuest({
   start: ReturnType<typeof useStartQuest>['start'];
   onLater?: () => void;
 }) {
-  const { organization } = useAuth();
-  const last = readLastQuest(organization?.slug);
+  const open = useOpenGame();
+  const again = open.data?.data.again ?? null;
   return (
-    <Shell kind={item.kind} icon={PlayIcon} eyebrow="Pick up where you left off" title={`Continue ${item.title}.`} onLater={onLater}>
+    <Shell kind={item.kind} icon={PlayIcon} eyebrow="Play again" title={`${item.title}.`} onLater={onLater}>
       <Button
         size="lg"
         className="rounded-full"
-        disabled={pending || !last}
-        onClick={() => last && void start(last.label, last.request)}
+        disabled={pending || !again}
+        onClick={() => again && void start(again.request)}
         data-testid="next-up-action"
       >
-        <PlayIcon /> Continue
+        <PlayIcon /> Play again
       </Button>
     </Shell>
   );

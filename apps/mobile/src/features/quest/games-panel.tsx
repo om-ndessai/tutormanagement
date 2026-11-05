@@ -7,6 +7,7 @@
 // up itself, so a refused code is said there. The recent games are list rows into the game screen;
 // with none, no list (as on the web). Phase 47 (design 61): New Quest (owner, 2026-10-23) opens the wizard
 // (a card rising from the bottom); a row says a Random level's scope and "Single player".
+// Phase 73 (JF32): a row leads with the game in words ("Grade 6 Quick 2"); its code follows, small.
 import { GAME_CODE_LENGTH } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -98,10 +99,10 @@ export function GamesPanel() {
                 {index > 0 ? <Divider /> : null}
                 <ListItem
                   testID={`game-row-${game.code}`}
-                  title={`${game.code} · ${gameRowTitle(game)}`}
+                  title={gameRowTitle(game)}
                   titleStyle={{ fontWeight: '600' }}
-                  description={gameRowHost(game)}
-                  accessibilityLabel={`Game ${game.code}, ${gameRowTitle(game)}, ${gameRowHost(game)}, ${gameRowStatus(game)}`}
+                  description={`${gameRowHost(game)} · ${game.code}`}
+                  accessibilityLabel={`${gameRowTitle(game)}, ${gameRowHost(game)}, code ${game.code}, ${gameRowStatus(game)}`}
                   onPress={() =>
                     router.push({ pathname: '/quest/games/[gameId]', params: { gameId: game.id } })
                   }

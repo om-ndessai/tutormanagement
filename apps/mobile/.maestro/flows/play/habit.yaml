@@ -7,6 +7,10 @@
 # skipped through -- the answers go to the server once, at the end -- and the result: "<tag>D #n · 0 of 5"
 # and the grid ✗✗✗✗✗, with Share and Back to Play; Home again, the tile shows her best. The switches are
 # off again at the end.
+# Phase 73 (JF14, JF16, JF23): the grade she taps is kept on the server, and the Daily is its grade's -- the one
+# rule the board and Next up share -- named "Today's Daily · Grade <n>" (its level in words, never a code); My
+# progress says ONE state (a streak and what keeps it, or "Start a streak" with the days so far). Her picked
+# grade is forgotten again at the end (quest-games-end.js).
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -174,20 +178,21 @@ tags:
 - assertVisible:
     id: my-progress-week
 - assertVisible: '(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday): played'
+# Phase 73 (JF16): one state, from the current run -- never a welcome beside it, and never a zero first.
 - assertVisible:
-    id: my-progress-days
-    text: '[1-3] of 3 days this week'
+    id: my-progress-detail
+    text: '([1-2] of 3 days this week\. [1-2] to go\.|Play [1-2] days? more this week to keep it\.|This week counts\. Keep it going next week\.)'
 - assertNotVisible:
     id: my-progress-welcome
 - takeScreenshot: habit-my-progress
-# Today's Daily, of the level just played: five open rings (Phase 67).
+# Today's Daily, of the grade she picked: five open rings (Phase 67), its level in words (Phase 73).
 - scrollUntilVisible:
     element:
       id: play-daily-play
     centerElement: true
 - assertVisible:
     id: play-daily-eyebrow
-    text: "(?i)Today's Daily · ${output.habitTag}D"
+    text: "Today's Daily · Grade ${output.habitGrade}"
 - assertVisible:
     id: play-daily-title
     text: 'Five questions\. Can you hit all five\?'

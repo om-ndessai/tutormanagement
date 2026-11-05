@@ -4837,3 +4837,109 @@ waiting invitation. Tagged `feature`, none `smoke`.
 **Jest:** `code-sheet-model`, `code-sheet`, `kept-for-you`, `legal-sheet` (new); `space-welcome`, `spaces-screen`,
 `invite-people`, `let-in-sheet`, `join-requests-section`, `create-actions`, `nav-items`, `guest-home`, `guest-store`,
 `guest-model` (the percent rule), `play-home`, `auth-provider`, `maestro-scripts`.
+
+## 83. Phase 73: coming back to play, in the app — build (2026-11-05)
+
+The app half of Phase 73 (`docs/journey-fixes-plan.md`, "Phase 73" and its design; owner 2026-11-05), beside the
+web half, on the contract already in the tree (`GET /quest/games/open`, `tiles.lead`/`ask_grade`/`picked_grade`,
+`PUT /quest/grade`, `dailyLevelFor`, `gameWords`, `openGameLabel`, `playAgain`, `DAILY_NAME`, Next up's `open_game`).
+
+- **Continue** (JF13): `useOpenGame` (`gameKeys.open`, `['quest-games','open']`) is read only where Continue shows --
+  the board and Next up, for a learner where Quest is on, while Home is in front -- for a minute, again on the app's
+  return to the front, never polled (each read may call the game's Durable Object). A start, a join and every game
+  action mark it stale; the results too (with `['home','member']`). The board's `play-continue` is two lines: "Continue
+  Grade 6 Quick 5" and `play-continue-where` "Question 1 of 5 · 0 points" (the whole sentence is the label); with none
+  open, "Play Grade 6 Quick 5 again" starts `again.request` as a tile does. Next up: `open_game` ("Pick up where you
+  left off", the label, Continue → the game with `from=home`) and `continue_quest` ("Play again", "Play … again.").
+  The home-screen action is Continue too, observed from Home's read (`useOpenGame(false)` in `(org)/_layout`): "Continue
+  your game", else the again words -- never a person or a typed name; `play-last-screen` reads the open game fresh, then
+  opens it or starts again, else "There is no quest to continue here yet." `lib/storage` lastQuest, `useLastQuest`,
+  `useRememberLastQuest` are gone (also from the tile link's start).
+- **The grade** (JF14): `shownGrade(list, tapped, tiles.lead, guestLead)`; a tap on the row is shown at once and PUT;
+  "Which grade?" (`play-ask-grade`, the web's testIDs) only when the server asks and nothing is being saved; "Not now"
+  for this run, per person and space. The phone's guest grade is carried once (`guestGradeToCarry`: asked, or led by
+  age alone -- the coordinator's settled rule, as the web), then `guestMemory.markGradeCarried()`.
+- **The Daily** (JF23): `dailyLevelFor(tiles, grade)` on the board (the shown grade) and in Next up (the lead grade);
+  "Today's Daily · Grade 4" (`dailyButtonLabel` in words), "Play today's Daily", the Daily screen's title, the tour's
+  line. `useDaily(level, { keepPrevious: true })` on the board and in Next up, so a newly picked grade never blanks the
+  home while its Daily loads (found by Jest: the Play home returned null under the finger).
+- **Words** (JF32): `gameWordsOf` for the games panel's rows (the code in the second line and the label; the status
+  still ends the label, so the hub flows read as before) and Waiting for you ("Priya started Grade 6 Quick 2",
+  `play-waiting-words-<code>`, `level_scope` when the Worker sends it), and Next up's invitation.
+- **My progress** (JF16): `progressHeadline`, the web's words: "N-week streak" + what keeps it, "Welcome back!" (testID
+  `my-progress-welcome` in place of `my-progress-streak`), or "Start a streak" + the days so far; the line is
+  `my-progress-detail`. Empty games: `nobodyPlayed` (no answers, skips count) → "Nobody played", no confetti, no win.
+- **Leaving** (JF36): New Quest (board, Next up, the home's quick action) and Join from Home carry `from=home` through
+  the wizard and the join sheet to the game; the lobby's leave, the results' Back ("Back home") and Exit all use
+  `exitGame(from)`.
+
+**Not ported / different:** the web's Daily-page close and its Cancel/End confirmations were already in the app.
+`start(label, request)` lost its label (nothing remembers it now). Older Workers: no lead → the phone's guest grade
+leads as before and nothing is saved; no open-game route → no Continue (its read fails quietly).
+**Flows (written, not run here):** `play/continue` (new: start G6Q5, leave, Continue says question 1 of 5 and resumes
+with no doors, End asked first, "Nobody played", Home says "Play Grade 6 Quick 5 again"), `play/grade` (new: Sanjay, no
+grade known: "Which grade?", Not now, asked again on relaunch, Grade 6, kept after a relaunch); updated `play/play-home`
+(smoke: Continue in words with where she is, no "again" while open), `play/habit` ("Today's Daily · Grade N", one
+state), `play/family`, `quest/game-start`, `quest/game-single` (rows in words), `guest/guest-signup` (the Daily in
+words; the guest grade carried over the age guess), `journeys/j01a-24-continue`. `scripts/quest-games-end.js` forgets
+the picked grade of the play flows' people and Sanjay. Nothing new tagged smoke.
+**Jest:** `play/play-api` (new), `play/play-model`, `play/play-home`, `play/play-last-screen`, `habit/habit-model`,
+`home/member-home-model`, `home/member-focus-model`, `home/member-home-screen`, `quest/game-model`, `quest/games-api`,
+`quest/start-game-flow`, `shell/quick-actions`, `test/maestro-scripts`.
+
+## 84. Phase 74: the first home, in the app — build (2026-11-05)
+
+The app half of Phase 74 (`docs/journey-fixes-plan.md`, "Phase 74"; owner 2026-11-05: JF6, JF16's band, JF23's twins
+and weight, JF24, JF25, JF31, JF17), beside the web half, on the contract already in the tree (the server's hat order
+where Tutoring is off, `HomeOffice.assessments_open`, `HomeLesson.place`, `HabitSummary.played_before`,
+`PRACTISE_BEFORE_DAYS` 7, `dashboardRoleForHat`, `seesPeoplePages`). No API, shared or web file touched.
+
+- **The first home** (JF6): sections in the server's order (`orderHats` adds only today-first and the pin). The office
+  card lists only non-zero counts -- to record, invitations, asking to join, `assessments_open` → Assessments -- else
+  `home-office-nothing` "Nothing needs you right now."; the child's card is always a link (`home-child-link-<id>`):
+  Progress where Tutoring is on, `/people/[id]` where it is off (a parent's menu has no Users now).
+- **The band** (JF6, JF16): `bandDoors` -- a learner hat leading, Quest on, `played_before === false` -- gives
+  `home-door-play` (scrolls to the board's `home-board` tour target; else today's Daily, else New Quest),
+  `home-door-code` (`/have-a-code`) and, for `mayMakeSpace`, `home-door-start` (`/spaces?start=1`), with the web's
+  "Start a streak: play on three days this week."; one habit read, Next up's. `stripLine(…, { next, tutoring })`
+  leaves out what Next up says and, where Tutoring is off, says the child's week of play ("Noor: played 2 days this
+  week", "not played yet this week", "all caught up" without Quest) or "All caught up".
+- **Twins and weight** (JF23): `PlayHome({ nextUp })` -- the board's Daily card quiet (`TodayCard quiet`) beside Next up's
+  `daily`/`welcome_back`, its Continue outlined beside `open_game`/`continue_quest`; `shownQuickActions` drops New Quest
+  beside the board and "Have a code?" beside the doors (the web's rule too).
+- **The Dashboard** (JF24): `dashboard/dashboard-role.ts` -- `?role`, else the role last chosen in this space
+  (`tmi.dashboardRole`, slug → role, the last 20), else `dashboardRoleForHat(orderHats(cached home)[0])`, else the server;
+  decided once per opening, held until the phone's memory is read (`useDashboard(…, { enabled })`); a choice on one's
+  own dashboard is remembered; "Viewing as" (`dashboard-role-label`) beside the chips. "portal" dropped.
+- **The tour** (JF25): `decideOnboarding` without the device -- once per person; `tourSeen` removed (the developer
+  link's `tour=seen` is accepted and ignored). The first-visit offer is decided once on entry (`finishedOnEntry`,
+  `answered`), so the wizard's close -- which records the tour -- never brings it back (Jest reproduces it). The offer
+  is `TourOfferCard` at the top of the home, not an overlay; "A quick tour…", "Your home and the menu…"; the parent's
+  Billing step is gone.
+- **Menus and words** (JF31): `PEOPLE_PAGE_ROLES` (`['admin','tutor']`, tested against `seesPeoplePages`) on Users,
+  Pairings and Billing; "billed" only where the space bills (`newParentLine`, `guardianFormLine`, `familyStepWords`:
+  "Who looks after this student?"), the assessment's note where there is no tutor, "Added", "No parents in this space
+  yet.", Spaces without "Each tab can be in a different one". The person view and form already left Tutoring's fields,
+  Locations and Comments out.
+- **Where** (JF17): `placeWords` / `lessonWithTutor` give " · <place name>" on every lesson line (learner and child
+  cards, Next up's lesson kinds, the band); `home-learner-next-line` starts practice where Quest is on, and Next up's
+  `learner_lesson` has an outlined `next-up-practise`.
+
+**Not ported / different:** Play scrolls the page rather than jumping to an anchor. The office's dashboard flows now
+name `ROLE: admin` (`subflows/open-dashboard`), since an admin who tutors may open on Tutor on a lesson day.
+**Contract gap:** `quickActionsFor` slices to three before a client drops the twins, so the slot is not refilled (an
+admin and parent who plays loses "Start an assessment" there; the Assessment home on the page keeps it) -- a `board`
+option on the shared helper would fix both clients. The journeys (`journeys/j07a-31-users`, `j04a-19-users`,
+`j07a-14/17/21` and `j04a-25`) still tap the old menu item and quick actions: they are the audit's record, replayed by
+`e2e/journeys/driver.mjs`, and need re-recording when replayed.
+**Flows (written, not run here):** `home/first-home` (new); `home/member-home-space` (Ines: the server's order checked
+by HTTP, child, office, learning; "Nothing needs you right now."; Noor's card opens Noor), `home/member-home-student`
+(the place; no repeated lesson in the band; no Users), `home/member-home-parent` and `home/member-home-multirole` (the
+band and Next up, no Users/Pairings/Billing), `home/quick-code` (the door or the quick action, by `played_before`),
+`dashboard/role-selector` (Maria on Parent, "Viewing as", Tutor remembered), `onboarding/tour` (the inline first-visit
+offer once; Alex on a fresh device: nothing), `onboarding/confirm-details` and `onboarding/wizard-admin` (no offer after
+the wizard, nor on a fresh device), `features/wizard`, `spaces/make-space`, `spaces/new-space-quest` ("Who looks after
+this student?"), `home/dashboard-analytics`, `shell/navigation` and the office's dashboard flows (`ROLE: admin`).
+**Jest:** `dashboard/dashboard-role` (new), `home/member-home-model`, `home/member-focus-model`,
+`home/member-home-screen`, `onboarding/onboarding-model`, `onboarding/onboarding-provider`, `shell/nav-items`,
+`shell/search-screen`, `dashboard/view-as`, `organizations/spaces-screen`.

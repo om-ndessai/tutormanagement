@@ -299,5 +299,5 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-row-${output.gameCode}
-      text: '.*G6 · 2 questions.*You host · 1 team.*Finished'
+      text: '.*Grade 6 Quick 2.*You host · 1 team.*Finished'
     timeout: 10000

@@ -4,7 +4,7 @@
 // someone who asked to join (Phase 52: their name and email come from the cached requests, never the
 // link). Admin only, as the API
 // (`requireAdmin`): the person themselves asks the office to change their record.
-import { mayAddPeople, type UserDetail } from '@tmi/shared';
+import { featureAllowed, mayAddPeople, type UserDetail } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import type { ScrollView } from 'react-native';
@@ -21,7 +21,7 @@ import { space } from '@/theme/tokens';
 import { useUserDetail } from './api';
 import { announceGuardianCreated } from './guardian-bridge';
 import { PersonForm } from './person-form';
-import { parsePreset, parseSections } from './person-form-model';
+import { guardianFormLine, parsePreset, parseSections } from './person-form-model';
 import { recordSection } from './record-sections';
 
 function close() {
@@ -47,7 +47,7 @@ export function PersonFormSheet({
   /** Phase 52: the id of the person whose request to join this lets in. */
   request?: string;
 }) {
-  const { user, account } = useAuth();
+  const { user, account, organization } = useAuth();
   // Changing a record is an admin's; adding someone is an ADULT admin's (a 13-17 adds nobody, JF22).
   const adding = !id;
   const isAdmin =
@@ -154,7 +154,7 @@ export function PersonFormSheet({
         }
         description={
           forGuardian
-            ? 'The parent or guardian: they sign in with this Google address, and are billed for the lessons.'
+            ? guardianFormLine(featureAllowed(organization, 'tutoring'))
             : fromRecord
               ? fromRecord.editDescription
               : taxSetup

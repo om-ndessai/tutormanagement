@@ -194,6 +194,28 @@ export class QuestGame extends DurableObject<Env> {
     });
   }
 
+  /**
+   * Phase 73 (JF13): where this person is in the game, for Continue's words. Read-only: it ends nothing, serves
+   * nothing and saves nothing (`view` hands a question, which a label must never do).
+   */
+  async progress(
+    viewer: GameViewer,
+  ): Promise<GameReply<{ status: 'lobby' | 'running' | 'finished'; question: number | null; of: number | null; points: number | null }>> {
+    const game = this.game;
+    if (!game || !this.canSee(game, viewer)) return notFound();
+    if (game.status === 'finished' || gameEndReason(game, Date.now()) !== null) {
+      return ok({ status: 'finished', question: null, of: null, points: null });
+    }
+    const team = findTeamOf(game, viewer.id);
+    if (game.status === 'lobby' || !team) return ok({ status: game.status, question: null, of: null, points: null });
+    return ok({
+      status: 'running',
+      question: Math.min(team.answers.length + 1, game.series_length),
+      of: game.series_length,
+      points: teamTotals(team.answers, game).score,
+    });
+  }
+
   /** The game as this person sees it now; while it runs, it hands them their question. */
   async view(viewer: GameViewer): Promise<GameReply<GameView>> {
     const now = Date.now();

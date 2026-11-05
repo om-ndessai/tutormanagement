@@ -74,6 +74,13 @@ tags:
     visible:
       id: screen-dashboard-analytics
     timeout: 10000
+# Phase 74 (JF24): it opens on the hat her home leads with (her teaching on a lesson day); the office's figures here.
+- extendedWaitUntil:
+    visible:
+      id: dashboard-role-admin
+    timeout: 15000
+- tapOn:
+    id: dashboard-role-admin
 - extendedWaitUntil:
     visible:
       id: stat-students

@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckIcon, XIcon } from 'lucide-react';
-import { TILE_LEVEL_TAGS, TILE_LEVEL_WORDS, dailyShareText, type QuestionBankLevelId } from '@tmi/shared';
+import { DAILY_NAME, TILE_LEVEL_TAGS, TILE_LEVEL_WORDS, dailyShareText, type QuestionBankLevelId } from '@tmi/shared';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { MathText } from '@/features/question-bank/math-text';
+import { backLabel, useExitTo } from '@/features/quest/play-origin';
 import { ApiRequestError } from '@/lib/api-client';
 import { useDaily, useSaveDaily } from './habit-api';
 
@@ -28,13 +29,24 @@ export function DailyPage() {
   const data = daily.data?.data;
   const tag = TILE_LEVEL_TAGS[level as QuestionBankLevelId] ?? level;
   const words = TILE_LEVEL_WORDS[level as QuestionBankLevelId] ?? level;
+  // Phase 73 (JF36): the Daily closes back to where it was opened (the home, by default).
+  const exitTo = useExitTo('/');
 
   useEffect(() => {
     started.current = Date.now();
   }, [data?.day]);
 
   if (daily.isPending) return <p className="text-muted-foreground p-6 text-sm">Getting today&apos;s Daily…</p>;
-  if (!data || data.questions.length === 0) return <p className="p-6 text-sm">There is no Daily for {words} today.</p>;
+  if (!data || data.questions.length === 0) {
+    return (
+      <div className="grid gap-3 p-6 text-sm">
+        <p>There is no Daily for {words} today.</p>
+        <Button variant="outline" className="w-fit" asChild>
+          <Link to={exitTo}>{backLabel(exitTo)}</Link>
+        </Button>
+      </div>
+    );
+  }
 
   const result = data.result;
   if (result) {
@@ -44,8 +56,11 @@ export function DailyPage() {
         <Card className="py-0">
           <CardContent className="grid gap-3 p-6">
             <h1 className="font-display text-2xl font-semibold">
-              {tag}D #{data.number} · {result.right} of {result.of}
+              {DAILY_NAME} · {result.right} of {result.of}
             </h1>
+            <p className="text-muted-foreground text-sm">
+              {words} · {tag}D #{data.number}
+            </p>
             <p className="font-mono text-lg tracking-widest" data-testid="daily-grid">
               {result.marks.map((m) => (m ? '✓' : '✗')).join('')}
             </p>
@@ -67,8 +82,8 @@ export function DailyPage() {
               >
                 Share
               </Button>
-              <Button variant="outline" asChild>
-                <Link to="/">Back to Play</Link>
+              <Button variant="outline" asChild data-testid="daily-back">
+                <Link to={exitTo}>{backLabel(exitTo)}</Link>
               </Button>
             </div>
           </CardContent>
@@ -108,8 +123,24 @@ export function DailyPage() {
 
   return (
     <div className="mx-auto grid max-w-2xl gap-4 p-4" data-testid="daily-play">
-      <p className="text-muted-foreground text-sm">
-        {tag}D #{data.number} · {words} · question {index + 1} of {data.questions.length}
+      <div className="flex items-start gap-3">
+        <div className="grid min-w-0 flex-1 gap-0.5">
+          <h1 className="font-display text-lg font-semibold">
+            {DAILY_NAME} · {words}
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            {tag}D #{data.number} · question {index + 1} of {data.questions.length}
+          </p>
+        </div>
+        {/* Phase 73 (JF36): a way out, saying what leaving keeps. */}
+        <Button asChild variant="outline" size="sm" data-testid="daily-close">
+          <Link to={exitTo} aria-label={`Close ${DAILY_NAME.replace(/^T/, 't')}`}>
+            <XIcon /> Close
+          </Link>
+        </Button>
+      </div>
+      <p className="text-muted-foreground text-xs" data-testid="daily-close-note">
+        Your answers are sent when you finish. Leave now and nothing is kept: {DAILY_NAME.replace(/^T/, 't')} starts again when you come back.
       </p>
       <Card className="py-0">
         <CardContent className="grid gap-4 p-6">

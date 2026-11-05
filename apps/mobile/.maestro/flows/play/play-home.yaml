@@ -2,8 +2,11 @@
 # leads with Play, "Have a code?" at the end. Phase 67 (H5): the tiles are the Quest board -- a grade row
 # of the grades her tiles reach, the chosen grade's cards in its hue. Grade 6 shows Grade 6's cards and
 # not Grade 4's; one tap on G6Q5 makes and begins a single player's game: the doors count down and her
-# first question follows ("Question 1 of 5"). Exit brings her back to Home, where Continue offers G6Q5
-# again and the board opens on Grade 6. The switches are off again at the end.
+# first question follows ("Question 1 of 5"). Exit brings her back to Home. Phase 73 (JF13, JF14): Continue
+# is that open game, from the server, in words with where she is ("Continue Grade 6 Quick 5", "Question 1 of
+# 5 · 0 points") -- not a replay, so no "again" while it is open -- and the board opens on Grade 6, the grade
+# she picked (kept on the server). Resuming, ending and "again" are play/continue.yaml's. The switches, and
+# her picked grade, are put back at the end.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -87,8 +90,9 @@ tags:
 - takeScreenshot: play-home-first-question
 - tapOn:
     id: quest-exit
-# Exit goes back to Home, where the game was started (from=home); Continue remembers the tile, at the
-# top of the Play home (Home kept its scroll position, down by the tile).
+# Exit goes back to Home, where the game was started (from=home); Continue is the open game, in words, at
+# the top of the Play home (Home kept its scroll position, down by the tile; it reads the game again once in
+# front).
 - extendedWaitUntil:
     visible:
       id: screen-home
@@ -98,10 +102,17 @@ tags:
       id: play-continue
     direction: UP
     timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: play-continue-where
+      text: '(?i)question 1 of 5 · 0 points'
+    timeout: 15000
 - assertVisible:
     id: play-continue
-    text: '.*Continue G6Q5.*'
-# The board opens on the grade last played.
+    text: '.*Continue Grade 6 Quick 5.*'
+- assertNotVisible: '.*Play Grade 6 Quick 5 again.*'
+- takeScreenshot: play-home-continue
+# The board opens on the grade she picked (the server keeps it).
 - scrollUntilVisible:
     element:
       id: play-tile-G6Q5

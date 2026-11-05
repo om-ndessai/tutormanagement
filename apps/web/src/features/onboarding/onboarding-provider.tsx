@@ -13,10 +13,10 @@ import { CompassIcon, XIcon } from 'lucide-react';
 import { tourOffered, type TourOutcome, type UserRole } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/providers/auth-provider';
 import { clearInviteStep, hasInviteStep } from '@/features/organizations/invite-step';
 import { useFinishTour } from './api';
-import { hasTourCookie, setTourCookie } from './cookie';
 import { OnboardingWizard, type WizardScreen } from './onboarding-wizard';
 import { Tour } from './tour';
 import { TOUR_STEPS } from './tour-steps';
@@ -26,6 +26,10 @@ interface OnboardingContextValue {
   openWizard: () => void;
   /** The dashboard says which role it is showing, so the tour matches it. */
   setDashboardRole: (role: UserRole | null) => void;
+  /** Phase 74 (JF25): the tour offered on the home itself, in its flow, or null. */
+  offer: { title: string } | null;
+  takeOffer: () => void;
+  dismissOffer: () => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextValue | null>(null);
@@ -42,10 +46,11 @@ function primaryRole(roles: readonly UserRole[]): UserRole {
  * The welcome wizard and feature tour (Phase 26), for the whole signed-in
  * portal.
  *
- * Opens by itself once per person: the database says whether they have been
- * through it. A browser that has not seen it -- no cookie -- offers the tour
- * to somebody who has, rather than opening it. Never while an admin is
- * viewing somebody else's dashboard.
+ * Opens by itself once per PERSON (Phase 74, JF25): the database says whether
+ * they have been through it, and a new browser or device does not offer it
+ * again. Someone who has been through it, opening a space for the first time,
+ * is offered it there once -- on the home, in the page's flow, never over it.
+ * Never while an admin is viewing somebody else's dashboard.
  */
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const { user, onboarding, firstVisit, organization } = useAuth();
@@ -56,13 +61,17 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [wizardOpen, setWizardOpen] = useState(false);
   const [screen, setScreen] = useState<WizardScreen>('welcome');
   const [touring, setTouring] = useState<null | 'wizard' | 'offer'>(null);
-  const [offer, setOffer] = useState(false);
-  // Someone who has been through the tour, opening an organization for the
-  // first time, is offered it again there: the people and roles are new.
-  const [offerTitle, setOfferTitle] = useState('New here on this device?');
+  // Someone who has been through the tour, opening a space for the first
+  // time, is offered it there: the people and roles are new.
+  const [offer, setOffer] = useState<{ title: string } | null>(null);
   const [tourDone, setTourDone] = useState(false);
   const [dashboardRole, setDashboardRole] = useState<UserRole | null>(null);
   const decided = useRef(false);
+  // Whether they had been through it when this page loaded: closing the wizard
+  // now does not make a first visit offer it again at once (JF25).
+  const [finishedAtLoad, setFinishedAtLoad] = useState<boolean | null>(null);
+  // The space it was offered in on this load: answered once, it does not come back when the session refreshes.
+  const offeredIn = useRef<string | null>(null);
 
   const isAdmin = user?.roles.includes('admin') ?? false;
 
@@ -70,6 +79,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (decided.current || !user || !onboarding) return;
     decided.current = true;
+    setFinishedAtLoad(Boolean(onboarding.tour_finished_at));
 
     if (new URLSearchParams(location.search).has('as')) return;
 
@@ -86,23 +96,23 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home.
     if (!tourOffered(organization)) return;
 
+    // Once per person: someone who has been through it is not offered it again on a new browser (JF25).
     if (!onboarding.tour_finished_at) {
       setScreen('welcome');
       setWizardOpen(true);
-    } else if (!hasTourCookie()) {
-      setOffer(true);
     }
   }, [user, onboarding, organization, location.search]);
 
   useEffect(() => {
-    if (!firstVisit || !onboarding?.tour_finished_at || !organization || !tourOffered(organization)) return;
+    if (!firstVisit || finishedAtLoad !== true || !organization || !tourOffered(organization)) return;
     if (new URLSearchParams(location.search).has('as')) return;
-    setOfferTitle(`Welcome to ${organization.short_name}`);
-    setOffer(true);
-  }, [firstVisit, onboarding?.tour_finished_at, organization, location.search]);
+    if (offeredIn.current === organization.slug) return;
+    offeredIn.current = organization.slug;
+    setOffer({ title: `Welcome to ${organization.short_name}` });
+  }, [firstVisit, finishedAtLoad, organization, location.search]);
 
   const openWizard = useCallback(() => {
-    setOffer(false);
+    setOffer(null);
     setScreen('welcome');
     setWizardOpen(true);
   }, []);
@@ -114,7 +124,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const closeWizard = useCallback(() => {
     setWizardOpen(false);
     clearInviteStep();
-    setTourCookie();
     if (onboarding && !onboarding.tour_finished_at) {
       finishTour.mutate(tourDone ? 'completed' : 'skipped');
     }
@@ -124,7 +133,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const startTour = useCallback(
     (from: 'wizard' | 'offer') => {
       setWizardOpen(false);
-      setOffer(false);
+      setOffer(null);
       if (location.pathname !== '/' && location.pathname !== '/dashboard') navigate('/');
       setTouring(from);
     },
@@ -135,7 +144,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     (outcome: TourOutcome) => {
       const from = touring;
       setTouring(null);
-      setTourCookie();
       if (outcome === 'completed') setTourDone(true);
       if (from !== 'wizard') return;
 
@@ -152,7 +160,12 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     [user, dashboardRole],
   );
 
-  const value = useMemo(() => ({ openWizard, setDashboardRole }), [openWizard]);
+  const takeOffer = useCallback(() => startTour('offer'), [startTour]);
+  const dismissOffer = useCallback(() => setOffer(null), []);
+  const value = useMemo(
+    () => ({ openWizard, setDashboardRole, offer: wizardOpen || touring ? null : offer, takeOffer, dismissOffer }),
+    [openWizard, offer, wizardOpen, touring, takeOffer, dismissOffer],
+  );
 
   return (
     <OnboardingContext value={value}>
@@ -175,63 +188,47 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       )}
 
       {touring && <Tour steps={steps} onDone={endTour} />}
-
-      {offer && !wizardOpen && !touring && (
-        <TourOffer
-          title={offerTitle}
-          onTake={() => startTour('offer')}
-          onDismiss={() => {
-            setOffer(false);
-            setTourCookie();
-          }}
-        />
-      )}
     </OnboardingContext>
   );
 }
 
 /**
- * For somebody who has been through the wizard, on a browser that has not
- * seen it: an offer, not the wizard. Out of the way in a corner, and gone for
- * good on this browser once answered.
+ * Phase 74 (JF25): the offer, for somebody who has been through the wizard and opens a space for the first time -- a
+ * card at the top of the home, in the page's flow (never over the work it introduces), gone once answered.
  */
-function TourOffer({
-  title,
-  onTake,
-  onDismiss,
-}: {
-  title: string;
-  onTake: () => void;
-  onDismiss: () => void;
-}) {
+export function TourOfferCard() {
+  const { offer, takeOffer, dismissOffer } = useOnboarding();
+  if (!offer) return null;
   return (
-    <div
-      role="dialog"
-      aria-labelledby="tour-offer-title"
-      className="bg-popover text-popover-foreground fixed right-4 bottom-4 left-4 z-[60] rounded-lg border p-4 shadow-xl sm:left-auto sm:w-80"
-    >
-      <button
-        type="button"
-        aria-label="Dismiss"
-        onClick={onDismiss}
-        className="text-muted-foreground hover:text-foreground absolute top-2 right-2 rounded p-1"
-      >
-        <XIcon className="size-4" />
-      </button>
-      <p id="tour-offer-title" className="flex items-center gap-2 pr-6 text-sm font-medium">
-        <CompassIcon className="text-primary size-4" />
-        {title}
-      </p>
-      <p className="text-muted-foreground mt-1 text-sm">A two-minute tour of what is where.</p>
-      <div className="mt-3 flex gap-2">
-        <Button size="sm" onClick={onTake}>
-          Take the tour
-        </Button>
-        <Button size="sm" variant="ghost" onClick={onDismiss}>
-          No thanks
-        </Button>
-      </div>
-    </div>
+    <Card className="relative py-0" role="region" aria-labelledby="tour-offer-title" data-testid="home-tour-offer">
+      <CardContent className="flex flex-wrap items-center gap-3 p-4 pr-10 text-sm">
+        <button
+          type="button"
+          aria-label="Dismiss"
+          onClick={dismissOffer}
+          className="text-muted-foreground hover:text-foreground absolute top-2 right-2 rounded p-1.5"
+        >
+          <XIcon className="size-4" />
+        </button>
+        <span className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full">
+          <CompassIcon className="size-4" aria-hidden />
+        </span>
+        <span className="grid min-w-0 flex-1 gap-0.5">
+          <span id="tour-offer-title" className="font-medium">
+            {offer.title}
+          </span>
+          <span className="text-muted-foreground">A quick tour of what is where, in two minutes.</span>
+        </span>
+        <span className="flex gap-2">
+          <Button size="sm" onClick={takeOffer}>
+            Take the tour
+          </Button>
+          <Button size="sm" variant="ghost" onClick={dismissOffer}>
+            No thanks
+          </Button>
+        </span>
+      </CardContent>
+    </Card>
   );
 }
 

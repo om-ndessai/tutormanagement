@@ -8,6 +8,9 @@
 // Phase 50: the tour follows the feature sets (`tourStepsFor`): a menu step whose page is not on
 // here is dropped, a space without Tutoring gets the space home's own steps, and the tab a step
 // points at is found among the tabs the bar shows here.
+// Phase 73 (JF23): the members' Daily by its one name ("today’s Daily", the web's words).
+// Phase 74 (JF25, JF31): the parent's tour has no Billing step -- Billing is not in a parent's menu (admins and tutors
+// only, `seesPeoplePages`); what a parent owes is on the Dashboard, which the tour already shows.
 import { featureOn, type FeatureState, type UserRole } from '@tmi/shared';
 
 import { visibleNavItems } from '@/features/shell/nav-items';
@@ -171,11 +174,6 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
       body: 'Weekly lessons and calendar files. Away one week? Cancel just that date.',
     },
     {
-      target: 'nav-billing',
-      title: 'Billing',
-      body: 'What each lesson costs, what you have paid, and what is outstanding.',
-    },
-    {
       target: 'nav-comments',
       title: 'Comments',
       body: 'Notes with the tutor and the office.',
@@ -195,7 +193,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     {
       target: 'home-next-up',
       title: 'Next up',
-      body: 'The one thing to do now: an assessment to finish, today’s 5, or your next lesson.',
+      body: 'The one thing to do now: an assessment to finish, today’s Daily, or your next lesson.',
     },
     {
       target: DASHBOARD,

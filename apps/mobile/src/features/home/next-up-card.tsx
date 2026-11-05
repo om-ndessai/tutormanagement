@@ -10,13 +10,24 @@
 // Phase 67: two more kinds -- `question_quest` (a student's Quest question waiting; it replaces the
 // QuestLanding redirect) and `welcome_back` (back after a week away, from the habit summary).
 //
-// Phase 68 (H4, H10): `practise_before` (a learner's lesson within three days: Practise 5 at the board's
-// lead level) and `focus_default` (an assessment- or quest-led home's first step, when nothing else is).
+// Phase 68 (H4, H10): `practise_before` (a learner's lesson in the coming week -- `PRACTISE_BEFORE_DAYS`, 7 since
+// Phase 74: Practise 5 at the board's lead level) and `focus_default` (an assessment- or quest-led home's first step,
+// when nothing else is).
+//
+// Phase 74 (JF17): a lesson line says where it is ("… with Alex · Institute, room 2"), and the learner's next lesson
+// offers practice for it where Quest is on (`next-up-practise`, outlined: Next up's own action stays the heaviest).
+//
+// Phase 73 (docs/journey-fixes-plan.md; owner 2026-11-05): `open_game` -- the reader's open game, from the
+// server, in words with where they are; Continue opens it -- and `continue_quest` is now "again" ("Play
+// Grade 7 Quick 5 again"), only with no game open: one tap starts its settings as a tile does (JF13). The
+// Daily is "Today's Daily", its level the board's (`dailyLevelFor` of the lead grade, JF14/JF23). An
+// invitation's game in words (JF32). New Quest opens with `from=home` (JF36).
 import {
+  DAILY_NAME,
   START_LEAD_MINUTES,
   chooseNextUp,
+  dailyLevelFor,
   featureOn,
-  gameLengthLabel,
   lessonDayWords,
   levelLabel,
   TILE_LEVEL_WORDS,
@@ -34,10 +45,12 @@ import { Button, Icon, Text } from 'react-native-paper';
 
 import { useOrgClock } from '@/features/dashboard/home-data';
 import { useDaily, useHabit } from '@/features/habit/api';
-import { dailyTileFor } from '@/features/habit/habit-model';
-import { useGuestLeadLevel, useLastQuest, useMemberTiles, useWaitingGames } from '@/features/play/play-api';
-import { useStartQuest } from '@/features/play/play-home';
+import { PLAY_DAILY_LABEL, levelWords } from '@/features/habit/habit-model';
+import { useGuestLeadLevel, useMemberTiles, useOpenGame, useWaitingGames } from '@/features/play/play-api';
+import { openGameFromHome, openNewQuestFromHome, useStartQuest } from '@/features/play/play-home';
+import { shownGrade } from '@/features/play/play-model';
 import { useQuestState } from '@/features/quest/api';
+import { gameWordsOf } from '@/features/quest/game-model';
 import { questRoles } from '@/features/quest/quest-model';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
@@ -48,6 +61,7 @@ import {
   capitalise,
   deviceExtras,
   firstOf,
+  placeWords,
   questionQuestExtra,
   lessonWithTutor,
   reviewsLine,
@@ -65,14 +79,16 @@ export function useNextUp(home: MemberHome | undefined) {
   // The waiting poll is read only while Home is in front, as the Play home's (at most once a minute).
   const waiting = useWaitingGames(quest && focused);
   const tiles = useMemberTiles(quest && learner);
-  const lastQuest = useLastQuest(learner ? slug : undefined);
+  // Phase 73 (JF13): Continue's read -- for a learner where Quest is on, while Home is in front.
+  const openRead = useOpenGame(quest && learner && focused);
+  const open = quest && learner ? (openRead.data?.data ?? null) : null;
   const guestLead = useGuestLeadLevel();
-  const last = learner ? (lastQuest.data ?? null) : null;
   const list = tiles.data?.data.tiles ?? [];
-  const lead = last?.request.level_id ?? guestLead.data ?? null;
-  const dailyTile = dailyTileFor(list, lead);
-  const dailyLevel = learner && tiles.data?.data.daily && dailyTile ? dailyTile.level_id : null;
-  const daily = useDaily(dailyLevel);
+  // Phase 73 (JF14, JF23): the board's one Daily rule -- the lead grade's first standard card's level.
+  const leadGrade = shownGrade(list, null, tiles.data?.data.lead, guestLead.data);
+  const leadLevel = list.length > 0 ? dailyLevelFor(list, leadGrade) : null;
+  const dailyLevel = learner && tiles.data?.data.daily ? leadLevel : null;
+  const daily = useDaily(dailyLevel, { keepPrevious: true });
   const later = usePutOff(slug, home?.day ?? '');
   // Phase 67: a student's Question Quest with a question waiting (the old sign-in landing's read), and
   // "welcome back" from the habit summary -- both only where Quest is on.
@@ -84,12 +100,12 @@ export function useNextUp(home: MemberHome | undefined) {
   const dailyDone = daily.data ? daily.data.data.result !== null : null;
   const { extras, codes } = deviceExtras({
     waiting: waitingList,
-    lastLabel: last?.label ?? null,
+    open,
     daily: dailyLevel && dailyDone !== null ? { level_id: dailyLevel, done: dailyDone } : null,
     questionQuest: quest && learner && plays ? questionQuestExtra(questState.data?.data) : null,
     welcomeBack: quest && learner ? habit.data?.data.welcome_back === true : false,
     // Phase 68 (H10): practice before a lesson starts at the board's lead level.
-    practiceLevelId: learner && quest ? (dailyTile?.level_id ?? null) : null,
+    practiceLevelId: learner && quest ? leadLevel : null,
     playedToday: habit.data?.data.played_today ?? false,
   });
   const item = home ? chooseNextUp(nextUpCandidates(home, extras), later) : null;
@@ -98,7 +114,14 @@ export function useNextUp(home: MemberHome | undefined) {
     item,
     codes,
     waitingGame,
-    last,
+    /** "Again": what the `continue_quest` item starts (the server's last game's settings). */
+    again: open?.again ?? null,
+    /** Phase 74: where practice for a lesson starts (the board's lead level), for the learner's lesson line. */
+    practiceLevelId: learner && quest ? leadLevel : null,
+    /** Phase 74: today's Daily's level, for the band's Play door when the board is not on screen. */
+    dailyLevel,
+    /** Phase 74: whether the console has the Play home on (unknown until the tiles load: assumed on). */
+    playHome: tiles.data?.data.play_home ?? true,
     putOff(next: NextUp) {
       if (home) putOff(slug, home.day, nextUpKey(next));
     },
@@ -218,7 +241,7 @@ const go = (href: Href) => () => router.navigate(href);
 export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<typeof useNextUp> }) {
   const { start, pending } = useStartQuest();
   const clock = useOrgClock();
-  const { item, waitingGame, last } = next;
+  const { item, waitingGame, again } = next;
   const later = item ? () => next.putOff(item) : undefined;
 
   if (!item) {
@@ -283,14 +306,14 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           icon="target"
           eyebrow="Waiting for you"
           title={`${item.game.host_first_name} started a game.`}
-          detail={waitingGame ? `${levelLabel(waitingGame.level_id)} · ${gameLengthLabel(waitingGame)}` : null}
+          detail={waitingGame ? gameWordsOf(waitingGame) : null}
           onLater={later}
         >
           {code ? (
             <Primary
               label="Join"
               icon="account-multiple-plus-outline"
-              onPress={() => router.push({ pathname: '/quest/join-game', params: { code } })}
+              onPress={() => router.push({ pathname: '/quest/join-game', params: { code, from: 'home' } })}
             />
           ) : null}
         </Shell>
@@ -344,9 +367,16 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
     }
     case 'daily':
       return (
-        <Shell kind={item.kind} icon="target" eyebrow="Today's 5" title="Five questions. Can you hit all five?" onLater={later}>
+        <Shell
+          kind={item.kind}
+          icon="target"
+          eyebrow={DAILY_NAME}
+          title="Five questions. Can you hit all five?"
+          detail={levelWords(item.level_id)}
+          onLater={later}
+        >
           <Primary
-            label="Play today's 5"
+            label={PLAY_DAILY_LABEL}
             icon="target"
             onPress={() => router.push({ pathname: '/quest/daily/[level]', params: { level: item.level_id } })}
           />
@@ -377,12 +407,12 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
         >
           {item.level_id ? (
             <Primary
-              label="Play today's Daily"
+              label={PLAY_DAILY_LABEL}
               icon="target"
               onPress={() => router.push({ pathname: '/quest/daily/[level]', params: { level: item.level_id! } })}
             />
           ) : (
-            <Primary label="Start a quest" icon="play" onPress={() => router.push('/quest/new-game')} />
+            <Primary label="Start a quest" icon="play" onPress={openNewQuestFromHome} />
           )}
         </Shell>
       );
@@ -393,7 +423,7 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           icon="target"
           eyebrow="Before your lesson"
           title={`Practise before ${lessonDayWords(item.lesson.occurs_on, home.day)}.`}
-          detail={`Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id)}, warm-up for ${firstOf(item.lesson.tutor_name)}'s lesson.`}
+          detail={`Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id)}, warm-up for ${firstOf(item.lesson.tutor_name)}'s lesson${placeWords(item.lesson)}.`}
           onLater={later}
         >
           <Button
@@ -402,7 +432,7 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
             icon="target"
             disabled={pending}
             contentStyle={{ minHeight: 48 }}
-            onPress={() => void start('Practice', practiseRequest(item.level_id))}
+            onPress={() => void start(practiseRequest(item.level_id))}
           >
             {pending ? 'Starting…' : 'Practise 5'}
           </Button>
@@ -415,21 +445,29 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
         </Shell>
       ) : (
         <Shell kind={item.kind} icon="play" eyebrow="Quest" title="Start a quest." detail="Pick a level and go.">
-          <Primary label="New quest" icon="play" onPress={go('/quest/new-game')} />
+          <Primary label="New quest" icon="play" onPress={openNewQuestFromHome} />
+        </Shell>
+      );
+    case 'open_game':
+      // Phase 73 (JF13): the game the reader is in, resumed where they are -- never a new one.
+      return (
+        <Shell kind={item.kind} icon="play" eyebrow="Pick up where you left off" title={item.game.title} onLater={later}>
+          <Primary label="Continue" icon="play" onPress={() => openGameFromHome(item.game.game_id)} />
         </Shell>
       );
     case 'continue_quest':
+      // Phase 73 (JF13): no game open -- the last one's settings, again, under their own name.
       return (
-        <Shell kind={item.kind} icon="play" eyebrow="Pick up where you left off" title={`Continue ${item.title}.`} onLater={later}>
+        <Shell kind={item.kind} icon="replay" eyebrow="Play again" title={`${item.title}.`} onLater={later}>
           <Button
             testID="next-up-action"
             mode="contained"
-            icon="play"
-            disabled={pending || !last}
+            icon="replay"
+            disabled={pending || !again}
             contentStyle={{ minHeight: 48 }}
-            onPress={() => last && void start(last.label, last.request)}
+            onPress={() => again && void start(again.request)}
           >
-            Continue
+            {pending ? 'Starting…' : 'Play again'}
           </Button>
         </Shell>
       );
@@ -442,6 +480,19 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           title={`${capitalise(lessonWithTutor(item.lesson, home.day))}.`}
         >
           <Primary label="See the schedule" icon="calendar-month-outline" onPress={go('/schedule')} />
+          {/* Phase 74 (JF17): practice for it, where Quest is on -- secondary, so Next up keeps one heavy action. */}
+          {next.practiceLevelId ? (
+            <Button
+              testID="next-up-practise"
+              mode="outlined"
+              icon="target"
+              disabled={pending}
+              contentStyle={{ minHeight: 48 }}
+              onPress={() => void start(practiseRequest(next.practiceLevelId!))}
+            >
+              Practise for it
+            </Button>
+          ) : null}
         </Shell>
       );
     case 'child_next_lesson': {
@@ -463,10 +514,17 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
       const parts = [
         o.join_requests ? `${o.join_requests} asking to join` : null,
         o.invitations ? `${o.invitations} ${o.invitations === 1 ? 'invitation' : 'invitations'} not yet accepted` : null,
+        // Phase 74 (JF6): assessments submitted and waiting to be looked at are the office's too.
+        o.assessments_open ? `${o.assessments_open} ${o.assessments_open === 1 ? 'assessment' : 'assessments'} to look at` : null,
       ].filter(Boolean);
+      const onlyAssessments = !o.join_requests && !o.invitations;
       return (
         <Shell kind={item.kind} icon="account-plus-outline" eyebrow="Needs you" title={parts.join(' · ')} onLater={later}>
-          <Primary label="Open people" icon="account-group-outline" onPress={go('/people')} />
+          {onlyAssessments ? (
+            <Primary label="Open assessments" icon="clipboard-check-outline" onPress={go('/assessments')} />
+          ) : (
+            <Primary label="Open people" icon="account-group-outline" onPress={go('/people')} />
+          )}
         </Shell>
       );
     }

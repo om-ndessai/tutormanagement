@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { EraserIcon, PenLineIcon, Trash2Icon, Undo2Icon } from 'lucide-react';
 import {
   CANVAS_LIMITS,
+  featureAllowed,
   formatStroke,
   levelLabel,
   type CanvasAssessmentQuestion,
@@ -26,6 +27,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/providers/auth-provider';
 import { MathText } from '@/features/question-bank/math-text';
 import { useCanvasAssessment, useSubmitCanvasAssessment } from './api';
 import { DrawingCanvas, pageSize, type CanvasTool } from './drawing-canvas';
@@ -78,6 +80,7 @@ function forgetPages(id: string): void {
 export function TakeAssessmentPage() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
+  const { organization } = useAuth();
   const detail = useCanvasAssessment(id);
   const submit = useSubmitCanvasAssessment(id);
 
@@ -175,7 +178,10 @@ export function TakeAssessmentPage() {
             {question?.kind === 'choice'
               ? 'Choose your answer, and use the page below for your working.'
               : 'Write your working and your answer below.'}{' '}
-            Nothing is marked until your tutor reviews it.
+            {/* Phase 74 (JF31): a space without Tutoring has no tutor to promise. */}
+            {featureAllowed(organization, 'tutoring')
+              ? 'Nothing is marked until your tutor reviews it.'
+              : 'Nothing is marked yet: your teacher (or parent) looks at it next.'}
           </p>
         </div>
         <Button onClick={() => setConfirming(true)} disabled={submit.isPending} data-testid="assessment-submit">

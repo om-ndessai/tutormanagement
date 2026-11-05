@@ -27,6 +27,7 @@ import {
   formatDuration,
   formatMailingAddress,
   formatTimeRange,
+  featureAllowed,
   groupSlotsByDay,
   type UserDetail,
 } from '@tmi/shared';
@@ -74,7 +75,10 @@ export function UserDetailView({
 }) {
   const tutor = user.tutor_profile;
   const student = user.student_profile;
-  const { user: viewer } = useAuth();
+  const { user: viewer, organization } = useAuth();
+  // Phase 74 (JF31, R23): where Tutoring is not part of the space, its fields and sections are left out -- a
+  // student's lesson details, places and the comment thread (which the API refuses there).
+  const tutoring = featureAllowed(organization, 'tutoring');
   // A tutor's rates are their pay, and their SSN receipt is between them and
   // the office: the API sends both to an admin and to the tutor, and to nobody
   // else. "Not set" or "Not received" would be a false claim to a family, so
@@ -111,7 +115,7 @@ export function UserDetailView({
         <Detail icon={<CalendarClockIcon className="size-4" />} label="Last sign-in">
           {formatTimestamp(user.last_login_at, 'Has not signed in yet')}
         </Detail>
-        <Detail icon={<CalendarClockIcon className="size-4" />} label="Added to the portal">
+        <Detail icon={<CalendarClockIcon className="size-4" />} label="Added">
           {formatTimestamp(user.created_at, '—')}
         </Detail>
       </dl>
@@ -205,9 +209,11 @@ export function UserDetailView({
             <Detail icon={<TargetIcon className="size-4" />} label="Goal this year">
               {student.academic_year_goal ?? <Muted>Not recorded</Muted>}
             </Detail>
-            <Detail icon={<VideoIcon className="size-4" />} label="Virtual sessions">
-              {student.virtual_available ? 'Available' : 'In person only'}
-            </Detail>
+            {tutoring && (
+              <Detail icon={<VideoIcon className="size-4" />} label="Virtual sessions">
+                {student.virtual_available ? 'Available' : 'In person only'}
+              </Detail>
+            )}
             {/* The API sends these to an admin and to the student's own
                 family -- it is what they pay -- and blanks them for a tutor,
                 who knows their own rate and would learn the margin. */}
@@ -221,13 +227,15 @@ export function UserDetailView({
                 {`${formatCents(student.charge_rate_virtual_cents)} / hr`}
               </Detail>
             )}
-            <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
-              {student.max_session_minutes != null ? (
-                formatDuration(student.max_session_minutes)
-              ) : (
-                <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (space default)</Muted>
-              )}
-            </Detail>
+            {tutoring && (
+              <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
+                {student.max_session_minutes != null ? (
+                  formatDuration(student.max_session_minutes)
+                ) : (
+                  <Muted>{formatDuration(DEFAULT_MAX_SESSION_MINUTES)} (space default)</Muted>
+                )}
+              </Detail>
+            )}
           </dl>
         </Section>
       )}
@@ -269,7 +277,8 @@ export function UserDetailView({
       )}
 
       {/* Phase 33: where they like to have lessons -- for the office, the person, and a student's parents. */}
-      {(user.roles.includes('tutor') || user.roles.includes('student')) &&
+      {tutoring &&
+        (user.roles.includes('tutor') || user.roles.includes('student')) &&
         ((viewer?.roles.includes('admin') ?? false) ||
           viewer?.id === user.id ||
           user.guardians.some((guardian) => guardian.user_id === viewer?.id)) && (
@@ -294,9 +303,11 @@ export function UserDetailView({
           someone matters more on their record than what the system logged. */}
       {!compact && (
         <>
-          <Section title="Comments" icon={<MessageSquareIcon className="size-4" />}>
-            <CommentThread target={{ target_type: 'user', target_id: user.id }} />
-          </Section>
+          {tutoring && (
+            <Section title="Comments" icon={<MessageSquareIcon className="size-4" />}>
+              <CommentThread target={{ target_type: 'user', target_id: user.id }} />
+            </Section>
+          )}
 
           <RecentActivity userId={user.id} />
         </>

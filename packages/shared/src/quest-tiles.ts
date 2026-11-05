@@ -296,7 +296,32 @@ export interface MemberTilesResponse {
   /** Phase 64 (P19): whether the Daily set is on. Absent from an older Worker means off. */
   daily?: boolean;
   tiles: MemberTile[];
+  /**
+   * Phase 73 (JF14): the grade that leads this reader's board and Daily, and where it came from (`questLeadGrade`);
+   * null when nothing says, and then `ask_grade` is true: they are asked once. Absent from older Workers.
+   */
+  lead?: QuestLead | null;
+  ask_grade?: boolean;
+  /** The grade they picked on the row here (0 is "Not in school"), or null. */
+  picked_grade?: number | null;
 }
+
+/** Where a member's lead grade came from (Phase 73). */
+export type QuestLeadFrom = 'picked' | 'recorded' | 'played' | 'age';
+
+export interface QuestLead {
+  grade: number;
+  from: QuestLeadFrom;
+}
+
+/** A grade picked on the row: 1-8, or 0 for "Not in school" (it leads with the top of the row). */
+export const QUEST_GRADE_NOT_IN_SCHOOL = 0;
+
+/** PUT /api/quest/grade: the grade picked on the board's row here; null forgets it. A preference, so no log line. */
+export const questGradeSchema = z.object({
+  grade: z.number().int().min(0).max(8).nullable(),
+});
+export type QuestGradeInput = z.infer<typeof questGradeSchema>;
 
 /** What the console reads: the settings and the list, and whether the list is still the default. */
 export interface PlayConsoleResponse {

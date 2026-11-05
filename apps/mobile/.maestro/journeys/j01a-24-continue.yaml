@@ -1,7 +1,9 @@
-# J01A step 24 (end-state check): Morgan taps "Continue G8Q10".
+# J01A step 24 (end-state check): Morgan taps Continue. Phase 73 (JF13): it is the server's open game, in words
+# ("Continue Grade 8 10 in a row"), resumed where it was -- no longer "Continue G8Q10", a new game of the tile.
 appId: ${APP_ID}
 ---
-- tapOn: 'Continue G8Q10'
+- tapOn:
+    id: play-continue
 - extendedWaitUntil:
     visible:
       id: game-question-number

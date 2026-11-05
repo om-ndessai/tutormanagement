@@ -1,6 +1,7 @@
 // Test fixtures for the member home (Phase 66): one MemberHome per persona of the local seed, trimmed
 // from `GET /api/home` (Alex the tutor, Priya the tutor and office, Anita the parent, Sofia the learner,
-// Maria the parent, Ines in a space without Tutoring). Tests only.
+// Maria the parent, Ines in a space without Tutoring). Tests only. Phase 74: Ines's hats in the server's new order
+// where Tutoring is off -- her child first, then the office, then playing (focus 'family').
 import type { HomeChild, HomeLesson, MemberHome, TutorHome, TutorHomeLesson } from '@tmi/shared';
 
 export const DAY = '2026-11-03';
@@ -147,7 +148,8 @@ export const MARIA: MemberHome = {
 export const INES: MemberHome = {
   ...base,
   first_name: 'Ines',
-  hats: ['learner', 'office', 'parent'],
+  hats: ['parent', 'office', 'learner'],
+  focus: 'family',
   office: { to_record_count: 0, to_record: [], join_requests: 0, invitations: 0, lessons_today: 0, lessons_this_week: 0 },
   parent: {
     children: [

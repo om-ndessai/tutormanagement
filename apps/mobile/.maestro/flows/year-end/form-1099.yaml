@@ -19,7 +19,11 @@ tags:
       id: home-band
     timeout: 30000
 # Phase 66: the role dashboards are More → Dashboard.
-- runFlow: ../../subflows/open-dashboard.yaml
+# Phase 74 (JF24): the page opens on the hat Home leads with, which may be her teaching today; this is the office's.
+- runFlow:
+    file: ../../subflows/open-dashboard.yaml
+    env:
+      ROLE: admin
 - extendedWaitUntil:
     visible:
       id: tabs-finance

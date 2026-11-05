@@ -18,6 +18,7 @@ import {
   useGame,
   useGameAction,
   useGameFavorites,
+  useJoinGame,
   useSaveGameFavorite,
 } from './games-api';
 import { QuestChoices } from './quest-choices';
@@ -283,6 +284,41 @@ describe('favorites (Phase 47)', () => {
     });
     expect(mockPost).toHaveBeenCalledWith('/quest/games', request);
     expect(client.getQueryData<{ data: GameView }>(gameKeys.game('g9'))?.data.players).toBe('single');
+    client.clear();
+  });
+});
+
+describe('Continue’s read (Phase 73, JF13)', () => {
+  it('keeps the open game under its own key, which a start, a join and every action mark stale', async () => {
+    expect(gameKeys.open).toEqual(['quest-games', 'open']);
+    const { wrapper, client } = setup();
+    const stale = () => client.getQueryState(gameKeys.open)?.isInvalidated;
+    const { result } = await renderHook(
+      () => ({ create: useCreateGame(), act: useGameAction('g1'), join: useJoinGame() }),
+      { wrapper },
+    );
+    const request = {
+      level_id: 'NC26.6' as const,
+      level_scope: 'level' as const,
+      mode: 'count' as const,
+      question_count: 5,
+      players: 'single' as const,
+      max_team_size: 1,
+    };
+    for (const step of [
+      () => result.current.create.mutateAsync(request),
+      () => result.current.act.mutateAsync({ kind: 'answer', question_id: 'q', skip: true }),
+      () => result.current.act.mutateAsync({ kind: 'end' }),
+      () => result.current.join.mutateAsync({ gameId: 'g1', as: 'solo' }),
+    ]) {
+      client.setQueryData(gameKeys.open, { data: { open: null, again: null } });
+      expect(stale()).toBe(false);
+      mockPost.mockResolvedValueOnce({ data: aGame() });
+      await act(async () => {
+        await step();
+      });
+      expect(stale()).toBe(true);
+    }
     client.clear();
   });
 });

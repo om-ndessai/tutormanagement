@@ -1,9 +1,19 @@
 // Phase 64 (P17-P20): the words and decisions of My progress, the Play home's Daily and the Daily screen,
-// and the Daily's result page.
-import { DEFAULT_TILES, dailyShareText, tileWords, type DailyQuestion, type MemberTile } from '@tmi/shared';
+// and the Daily's result page. Phase 73 (JF16, JF23): My progress's one headline, and the Daily's one name and
+// one level rule (shared `dailyLevelFor`, which the board and Next up both use).
+import {
+  DAILY_NAME,
+  DEFAULT_TILES,
+  dailyLevelFor,
+  dailyShareText,
+  tileWords,
+  type DailyQuestion,
+  type MemberTile,
+} from '@tmi/shared';
 
 import { dailyResultHtml, dailyResultSpeech, dailyResultText } from './daily-html';
 import {
+  PLAY_DAILY_LABEL,
   WELCOME_BACK_TEXT,
   dailyButtonLabel,
   dailyCardTitle,
@@ -13,13 +23,13 @@ import {
   dailyGridSpeech,
   dailyHeading,
   dailyProgress,
-  dailyTileFor,
   daysLine,
   earnedOf,
   giveAnswer,
   levelTag,
   levelWords,
   nextBadgeLine,
+  progressHeadline,
   secondsSince,
   streakLine,
   todayLabel,
@@ -44,6 +54,40 @@ describe('My progress', () => {
     expect(todayLabel(false)).toBe('Not played yet today');
   });
 
+  it('says ONE state from the current run, never "Start a streak" beside a welcome (Phase 73, JF16; the web\'s words)', () => {
+    expect(progressHeadline({ streak_weeks: 0, days_this_week: 0 })).toEqual({
+      title: 'Start a streak',
+      detail: 'Play on 3 days this week.',
+      welcome: false,
+    });
+    expect(progressHeadline({ streak_weeks: 0, days_this_week: 1 })).toEqual({
+      title: 'Start a streak',
+      detail: '1 of 3 days this week. 2 to go.',
+      welcome: false,
+    });
+    // Back after a week away: the welcome IS the state (no "Start a streak" with it), and no loss.
+    const back = progressHeadline({ streak_weeks: 0, days_this_week: 0, welcome_back: true });
+    expect(back).toEqual({
+      title: 'Welcome back!',
+      detail: 'A fresh week starts now: play 3 days to start a streak.',
+      welcome: true,
+    });
+    expect(`${back.title} ${back.detail}`).not.toMatch(/lost|broke|missed|Start a streak/);
+    // A streak this week has not yet kept: what keeps it.
+    expect(progressHeadline({ streak_weeks: 4, days_this_week: 1 })).toEqual({
+      title: '4-week streak',
+      detail: 'Play 2 days more this week to keep it.',
+      welcome: false,
+    });
+    expect(progressHeadline({ streak_weeks: 4, days_this_week: 2 }).detail).toBe('Play 1 day more this week to keep it.');
+    // This week kept.
+    expect(progressHeadline({ streak_weeks: 5, days_this_week: 4 })).toEqual({
+      title: '5-week streak',
+      detail: 'This week counts. Keep it going next week.',
+      welcome: false,
+    });
+  });
+
   it('keeps the earned badges in the shared order', () => {
     const badges = [
       { id: 'first_quest', label: 'First quest', description: '', earned: true },
@@ -54,18 +98,22 @@ describe('My progress', () => {
   });
 });
 
-describe('the Play home’s Daily', () => {
-  const tiles = [member('G4Q5'), member('BA3Q5')];
-  it('is of the level last played, else the first tile’s, and none without tiles', () => {
-    expect(dailyTileFor(tiles, 'BA3')?.code).toBe('BA3Q5');
-    expect(dailyTileFor(tiles, null)?.code).toBe('G4Q5');
-    expect(dailyTileFor(tiles, 'NC26.8')?.code).toBe('G4Q5');
-    expect(dailyTileFor([], 'NC26.4')).toBeNull();
+describe('the Play home’s Daily (Phase 73: one rule, one name)', () => {
+  const tiles = [member('BA3Q5'), member('G4Q5'), member('G4T10'), member('G5Q5')];
+  it('is the lead grade’s first standard card’s level -- its harder track only without one -- else the first tile’s', () => {
+    expect(dailyLevelFor(tiles, 4)).toBe('NC26.4');
+    expect(dailyLevelFor(tiles, 5)).toBe('NC26.5');
+    expect(dailyLevelFor(tiles, 3)).toBe('BA3');
+    expect(dailyLevelFor(tiles, null)).toBe('BA3');
+    expect(dailyLevelFor(tiles, 8)).toBe('BA3');
+    expect(dailyLevelFor([], 4)).toBeNull();
   });
 
-  it('says the level’s Daily by its tag', () => {
-    expect(dailyButtonLabel('NC26.4')).toBe("Today's Daily · G4D");
-    expect(dailyButtonLabel('BA3')).toBe("Today's Daily · BA3D");
+  it('says the Daily by its one name and its level in words', () => {
+    expect(DAILY_NAME).toBe("Today's Daily");
+    expect(dailyButtonLabel('NC26.4')).toBe("Today's Daily · Grade 4");
+    expect(dailyButtonLabel('BA3')).toBe("Today's Daily · Beast Academy 3");
+    expect(PLAY_DAILY_LABEL).toBe("Play today's Daily");
     expect(levelTag('NOPE')).toBe('NOPE');
     expect(levelWords('NC26.4')).toBe('Grade 4');
   });

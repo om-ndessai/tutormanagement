@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 /**
  * Preferences kept on the device. Nothing sensitive: the server chosen, the theme, the last
  * organization (which only picks where a person lands -- the API checks membership on every
- * request), whether the tour was seen here, whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), which finished lessons the Now card has thrown confetti for (schedule ids and dates only), the last quest started in each space (its code and settings, `readLastQuestRaw`), the developer sign-in persona, and (Phase 63) a guest's memory and the guest pools it has fetched (public questions, kept by their version as the web's browser keeps them). Never a lesson,
+ * request), whether haptics are off, whether the notification permission was asked for (Android), whether dictation may use the phone's online speech service, which lesson reminders were dismissed (ids and dates only), which mastered topics Home has celebrated (ids only), which finished lessons the Now card has thrown confetti for (schedule ids and dates only), the Dashboard's role last chosen in each space, the developer sign-in persona, and (Phase 63) a guest's memory and the guest pools it has fetched (public questions, kept by their version as the web's browser keeps them). Never a lesson,
  * a note, an amount or an SSN; and never the query cache.
  *
  * One exception, kept apart below (`canvasWork*`): an assessment's handwriting while it is being
@@ -15,7 +15,7 @@ export const STORAGE_KEYS = {
   customServerUrl: 'tmi.server.custom',
   theme: 'tmi.theme',
   lastOrg: 'tmi.lastOrg',
-  tourSeen: 'tmi.tourSeen',
+  // (Phase 74, JF25: `tmi.tourSeen` is gone -- the tour is offered once per person, the server deciding.)
   devUser: 'tmi.devUser',
   haptics: 'tmi.haptics',
   liveSurfaceAsked: 'tmi.liveSurfaceAsked',
@@ -29,6 +29,8 @@ export const STORAGE_KEYS = {
   lessonsCelebrated: 'tmi.lessonsCelebrated',
   /** Phase 66: the Next up items put off with "Later" today, per space (`nextUpKey`s and the date only). */
   homeLater: 'tmi.homeLater',
+  /** Phase 74 (JF24): the Dashboard's role last chosen, per space (`{ <slug>: <role> }`, the last 20). */
+  dashboardRole: 'tmi.dashboardRole',
   /**
    * Phase 63 (P10): what a guest's phone remembers -- their grade, the free questions it has played
    * (question ids), best scores and tiles played (tile codes), and when the sign-up offer was last
@@ -73,29 +75,6 @@ export async function writeCanvasWork(assessmentId: string, value: string | null
     else await AsyncStorage.setItem(CANVAS_WORK_PREFIX + assessmentId, value);
   } catch {
     // Full storage: the work is still in memory until it is submitted.
-  }
-}
-
-/**
- * Phase 62 (P6): the last quest started in a space, for the Play home's Continue and the "Play <tile>"
- * quick action -- its label (a tile's code or a favorite's name) and the game's settings, nothing about
- * anyone. Kept on the device, as the web keeps it in the browser, so no game writes a server row for it.
- */
-const LAST_QUEST_PREFIX = 'tmi.lastQuest.';
-
-export async function readLastQuestRaw(space: string): Promise<string | null> {
-  try {
-    return await AsyncStorage.getItem(LAST_QUEST_PREFIX + space);
-  } catch {
-    return null;
-  }
-}
-
-export async function writeLastQuestRaw(space: string, value: string): Promise<void> {
-  try {
-    await AsyncStorage.setItem(LAST_QUEST_PREFIX + space, value);
-  } catch {
-    // Not remembered: Continue simply does not appear.
   }
 }
 

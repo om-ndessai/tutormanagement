@@ -108,6 +108,8 @@ export interface HabitSummary {
   welcome_back?: boolean;
   /** Phase 67 (H8): the next badge within reach, with how far along. Null once all are earned. */
   next_badge?: NextBadge | null;
+  /** Phase 74 (JF6): whether they have played here on any day; a newcomer's band offers doors, never a zero. */
+  played_before?: boolean;
 }
 
 // --- Phase 67 (H8): the habit, made visible and kind -------------------------
@@ -184,6 +186,9 @@ export function nextBadge(facts: HabitFacts): NextBadge | null {
 
 /** How many questions a Daily set holds. */
 export const DAILY_SET_SIZE = 5;
+
+/** The members' Daily is called this everywhere -- Next up, the board, the Daily's page (owner, 2026-11-05; JF23). */
+export const DAILY_NAME = "Today's Daily";
 
 /** The Daily's number: days since the first Daily (2026-11-01 is #1). */
 export function dailyNumber(day: string): number {

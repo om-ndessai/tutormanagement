@@ -1,25 +1,32 @@
 // Ported from apps/web/src/features/onboarding/onboarding-provider.tsx @ 1132322.
 //
 // The welcome wizard and feature tour (Phase 26), for everything inside an organization. Opens by
-// itself once per person: the database says whether they have been through it. A device that has
-// not shown it -- no `tourSeen` flag, the web's `tmi_tour_seen` cookie -- offers the tour to
-// somebody who has, rather than opening it. Never while an admin is viewing somebody else's
-// dashboard: the dashboard reports what it shows, and the decision waits for that report.
+// itself once per PERSON: the database says whether they have been through it (`tour_finished_at`).
+// Never while an admin is viewing somebody else's dashboard: the dashboard reports what it shows, and
+// the decision waits for that report.
+//
+// Phase 74 (JF25, docs/journey-fixes-plan.md): a new device no longer offers the tour again -- the
+// server alone decides, so it is offered once per person (the device's `tourSeen` flag is gone). The
+// one offer left is a first visit to a space by somebody who had been through it before (the people
+// and roles are new there), decided once on entry: closing the wizard -- which records the tour --
+// never brings it back. And the offer is a card at the top of the home (`TourOfferCard`), in the page's
+// flow, not a layer over the work.
 //
 // The wizard is a route (`(org)/onboarding/*`, a full-screen modal) so that the app's own form
 // sheets can open over it; the tour is an overlay over the dashboard, drawn here.
 import { tourOffered, type TourOutcome, type UserRole } from '@tmi/shared';
-import { router, useSegments } from 'expo-router';
+import { router } from 'expo-router';
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Icon, Surface, Text } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'react-native';
+import { Button, Icon, Text } from 'react-native-paper';
 
 import { IconButton } from '@/components/icon-button';
-import { readPref, STORAGE_KEYS, writePref } from '@/lib/storage';
+import { OutlinedCard } from '@/components/outlined-card';
+import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
+import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { radius, space } from '@/theme/tokens';
+import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { clearInviteStep, hasInviteStep } from '@/features/organizations/invite-step';
 import { useFinishTour } from './api';
 import { decideOnboarding, primaryRole, screenAfterTour } from './onboarding-model';
@@ -54,6 +61,12 @@ interface OnboardingContextValue {
   reportDashboard: (report: DashboardReport) => void;
   /** Whether the tour has been taken in this run (the wizard ticks its choice). */
   tourDone: boolean;
+  /** Phase 74 (JF25): the first-visit offer is waiting for its card at the top of the home. */
+  offer: boolean;
+  /** The offer's Take the tour. */
+  takeOffer: () => void;
+  /** The offer's No thanks (or its close): gone for this entry. */
+  dismissOffer: () => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextValue | null>(null);
@@ -70,15 +83,16 @@ function OnboardingHost({ children }: { children: ReactNode }) {
   const { user, onboarding, firstVisit, organization } = useAuth();
   const { mutate: recordTour } = useFinishTour();
 
-  const [deviceSeen, setDeviceSeen] = useState<boolean | null>(null);
   const [dashboard, setDashboard] = useState<DashboardReport | null>(null);
   const [touring, setTouring] = useState<null | 'wizard' | 'offer'>(null);
   const [offer, setOffer] = useState(false);
-  // Someone who has been through the tour, opening an organization for the first time, is offered
-  // it again there: the people and roles are new.
-  const [offerTitle, setOfferTitle] = useState('New here on this device?');
   const [tourDone, setTourDone] = useState(false);
   const decided = useRef(false);
+  // Phase 74 (JF25): whether the person had been through the tour when they entered (the first-visit offer is
+  // for them alone), and whether this run has already opened the wizard or the tour, or answered the offer --
+  // after any of those, no offer comes (closing the wizard records the tour, which once brought it straight back).
+  const finishedOnEntry = useRef(false);
+  const answered = useRef(false);
 
   // Read inside callbacks that outlive a render (the wizard's unmount).
   const wizardOpen = useRef(false);
@@ -91,23 +105,9 @@ function OnboardingHost({ children }: { children: ReactNode }) {
 
   const isAdmin = user?.roles.includes('admin') ?? false;
 
-  useEffect(() => {
-    let cancelled = false;
-    void readPref(STORAGE_KEYS.tourSeen).then((value) => {
-      if (!cancelled) setDeviceSeen(value === '1');
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const markDeviceSeen = useCallback(() => {
-    setDeviceSeen(true);
-    void writePref(STORAGE_KEYS.tourSeen, '1');
-  }, []);
-
   const openWizard = useCallback((screen: WizardScreen = 'welcome') => {
     setOffer(false);
+    answered.current = true;
     if (wizardOpen.current) {
       router.navigate(WIZARD_HREF[screen]);
       return;
@@ -120,8 +120,9 @@ function OnboardingHost({ children }: { children: ReactNode }) {
   // decision, not a sync of state to state.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    if (decided.current || !user || !onboarding || deviceSeen === null || !dashboard) return;
+    if (decided.current || !user || !onboarding || !dashboard) return;
     decided.current = true;
+    finishedOnEntry.current = Boolean(onboarding.tour_finished_at);
     // Phase 61 (S12): a space this run has just started opens on "Invite people" first, whether or
     // not its maker has been through the wizard elsewhere.
     if (hasInviteStep(organization?.slug) && user.roles.includes('admin')) {
@@ -131,20 +132,20 @@ function OnboardingHost({ children }: { children: ReactNode }) {
     // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home (no wizard, no
     // offer). The just-started space's "Invite people" above is not the tour and still opens.
     if (!tourOffered(organization)) return;
-    const decision = decideOnboarding({ onboarding, deviceSeen, viewingAs: dashboard.viewingAs });
+    const decision = decideOnboarding({ onboarding, viewingAs: dashboard.viewingAs });
     // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard.
     if (decision === 'wizard' && !organization?.personal) openWizard('welcome');
-    else if (decision === 'offer') setOffer(true);
-  }, [user, onboarding, deviceSeen, dashboard, openWizard, organization]);
+  }, [user, onboarding, dashboard, openWizard, organization]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  // A first visit to this space by somebody who had already been through the tour: offered once, on the home.
   useEffect(() => {
-    if (!firstVisit || !onboarding?.tour_finished_at || !organization || !tourOffered(organization)) return;
+    if (!firstVisit || !organization || !tourOffered(organization) || organization.personal) return;
+    if (!decided.current || !finishedOnEntry.current || answered.current) return;
     if (!dashboard || dashboard.viewingAs) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the API's answer, once per entry
-    setOfferTitle(`Welcome to ${organization.short_name}`);
     setOffer(true);
-  }, [firstVisit, onboarding?.tour_finished_at, organization, dashboard]);
+  }, [firstVisit, organization, dashboard, onboarding]);
 
   /**
    * The wizard has closed, recording that this person has been through it the first time they do
@@ -154,11 +155,10 @@ function OnboardingHost({ children }: { children: ReactNode }) {
     wizardOpen.current = false;
     clearInviteStep();
     if (leavingForTour.current) return;
-    markDeviceSeen();
     if (onboardingRef.current && !onboardingRef.current.tour_finished_at) {
       recordTour(tourDoneRef.current ? 'completed' : 'skipped');
     }
-  }, [recordTour, markDeviceSeen]);
+  }, [recordTour]);
 
   /**
    * The tour runs on the dashboard, over the page itself. From the wizard, the wizard closes
@@ -166,6 +166,7 @@ function OnboardingHost({ children }: { children: ReactNode }) {
    */
   const beginTour = useCallback((from: 'wizard' | 'offer') => {
     setOffer(false);
+    answered.current = true;
     if (from === 'wizard') {
       if (wizardOpen.current) leavingForTour.current = true;
     } else {
@@ -179,7 +180,6 @@ function OnboardingHost({ children }: { children: ReactNode }) {
       const from = touring;
       setTouring(null);
       leavingForTour.current = false;
-      markDeviceSeen();
       if (outcome === 'completed') {
         tourDoneRef.current = true;
         setTourDone(true);
@@ -188,13 +188,18 @@ function OnboardingHost({ children }: { children: ReactNode }) {
       // confirming their details.
       if (from === 'wizard') openWizard(screenAfterTour(isAdmin));
     },
-    [touring, isAdmin, markDeviceSeen, openWizard],
+    [touring, isAdmin, openWizard],
   );
 
   const reportDashboard = useCallback((report: DashboardReport) => {
     setDashboard((current) =>
       current && current.role === report.role && current.viewingAs === report.viewingAs ? current : report,
     );
+  }, []);
+
+  const dismissOffer = useCallback(() => {
+    answered.current = true;
+    setOffer(false);
   }, []);
 
   const steps = useMemo(
@@ -209,96 +214,85 @@ function OnboardingHost({ children }: { children: ReactNode }) {
       wizardClosed,
       reportDashboard,
       tourDone,
+      offer: offer && !touring,
+      takeOffer: () => beginTour('offer'),
+      dismissOffer,
     }),
-    [openWizard, beginTour, wizardClosed, reportDashboard, tourDone],
+    [openWizard, beginTour, wizardClosed, reportDashboard, tourDone, offer, touring, dismissOffer],
   );
-
-  // The offer floats over the tabs only. On Android a sheet (Account, a form) renders beneath this
-  // overlay, so an offer shown there covered the sheet and took its taps (Account -> Spaces, S7); it
-  // waits instead, and is back when the person returns to a tab.
-  const segments = useSegments() as string[];
-  const onTabs = segments.includes('(tabs)');
 
   return (
     <OnboardingContext value={value}>
       <View style={{ flex: 1 }}>
         {children}
         {touring ? <Tour steps={steps} onDone={endTour} /> : null}
-        {offer && !touring && onTabs ? (
-          <TourOffer
-            title={offerTitle}
-            onTake={() => beginTour('offer')}
-            onDismiss={() => {
-              setOffer(false);
-              markDeviceSeen();
-            }}
-          />
-        ) : null}
       </View>
     </OnboardingContext>
   );
 }
 
 /**
- * For somebody who has been through the wizard, on a device that has not shown it: an offer, not
- * the wizard. Out of the way above the tab bar, and gone for good on this device once answered.
+ * Phase 74 (JF25): the tour's offer -- for somebody who has been through it, on their first visit to this space -- as a
+ * card at the top of the home, in the page's flow: it covers nothing (it once sat over To record and Needs you). The
+ * web's words, "A quick tour". Gone for this entry once answered.
  */
-function TourOffer({
-  title,
-  onTake,
-  onDismiss,
-}: {
-  title: string;
-  onTake: () => void;
-  onDismiss: () => void;
-}) {
+export function TourOfferCard() {
+  const onboarding = useOptionalOnboarding();
   const theme = useAppTheme();
-  const insets = useSafeAreaInsets();
+  const brand = useBrand();
+  if (!onboarding?.offer) return null;
   return (
-    <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
-      <Surface
-        testID="tour-offer"
-        elevation={3}
-        accessibilityRole="alert"
-        style={{
-          position: 'absolute',
-          left: space.lg,
-          right: space.lg,
-          bottom: insets.bottom + 100,
-          borderRadius: radius.lg,
-          padding: space.lg,
-          gap: space.xs,
-          backgroundColor: theme.colors.surface,
-        }}
-      >
+    <OutlinedCard testID="tour-offer" style={{ borderRadius: radius.lg }}>
+      <View style={{ padding: space.lg, gap: space.xs }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
           {/* Decorative: an icon, not an unlabelled button (ux-audit F-20). */}
           <Icon source="compass-outline" size={18} color={theme.colors.primary} />
-          <Text testID="tour-offer-title" variant="titleSmall" style={{ flex: 1 }}>
-            {title}
+          <Text testID="tour-offer-title" variant="titleSmall" accessibilityRole="header" style={{ flex: 1 }}>
+            {`Welcome to ${brand.short}`}
           </Text>
           <IconButton
             testID="tour-offer-close"
             icon="close"
             size={18}
             accessibilityLabel="Dismiss"
-            onPress={onDismiss}
+            onPress={() => {
+              haptics.selection();
+              onboarding.dismissOffer();
+            }}
             style={{ margin: 0 }}
           />
         </View>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-          A two-minute tour of what is where.
+          A quick tour of what is where.
         </Text>
         <View style={{ flexDirection: 'row', gap: space.sm, marginTop: space.sm }}>
-          <Button testID="tour-offer-take" mode="contained" compact onPress={onTake}>
+          <Button
+            testID="tour-offer-take"
+            mode="contained"
+            compact
+            contentStyle={{ minHeight: MIN_TARGET }}
+            onPress={() => {
+              haptics.selection();
+              onboarding.takeOffer();
+            }}
+          >
             Take the tour
           </Button>
-          <Button testID="tour-offer-dismiss" mode="text" compact onPress={onDismiss}>
+          <Button
+            testID="tour-offer-dismiss"
+            mode="text"
+            compact
+            contentStyle={{ minHeight: MIN_TARGET }}
+            onPress={() => {
+              haptics.selection();
+              onboarding.dismissOffer();
+            }}
+          >
             No thanks
           </Button>
         </View>
-      </Surface>
-    </View>
+      </View>
+    </OutlinedCard>
   );
 }
 

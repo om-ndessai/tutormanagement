@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckIcon, CopyIcon, CrownIcon, FlagIcon, PlayIcon, SkipForwardIcon, TimerIcon, XIcon } from 'lucide-react';
 import {
@@ -20,6 +20,16 @@ import {
 } from '@tmi/shared';
 
 import { LobbyInvite } from './lobby-invite';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -32,6 +42,7 @@ import { QuestFrame } from './fullscreen-frame';
 import { Confetti, DoorsCountdown, KnockoutBurst, useCountdown } from './game-effects';
 import { JoinChoices } from './games-card';
 import { gameIsMissing, useGame, useGameAction, useGameResults } from './games-api';
+import { backLabel, useExitTo } from './play-origin';
 import { ShareButton } from '@/features/sharing/share-button';
 
 // Phase 46: one Quest game, full screen -- the lobby while players join, the
@@ -43,6 +54,56 @@ import { ShareButton } from '@/features/sharing/share-button';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
 const message = (caught: unknown, fallback: string) => (caught instanceof ApiRequestError ? caught.message : fallback);
+
+/** Phase 73 (JF16): nobody answered anything (a skip counts) -- not a result: no winner, confetti or "You won". */
+function nobodyPlayed(game: Pick<GameView, 'teams'>): boolean {
+  return game.teams.every((team) => team.answered === 0);
+}
+
+/**
+ * Phase 73 (JF36): ending a game asks first, as the app does -- "Cancel the game" in the lobby, "End the game now"
+ * while it runs.
+ */
+function ConfirmEnd({
+  open,
+  onOpenChange,
+  title,
+  body,
+  confirm,
+  keep,
+  onConfirm,
+  testId,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  body: string;
+  confirm: string;
+  keep: string;
+  onConfirm: () => void;
+  testId: string;
+}) {
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent data-testid={testId}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{body}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel data-testid={`${testId}-keep`}>{keep}</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={onConfirm}
+            data-testid={`${testId}-yes`}
+          >
+            {confirm}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
 
 /** Milliseconds left on a timed game, ticking on the device but set by the server's clock. */
 function useTimeLeft(game: GameView | undefined): number | null {
@@ -83,6 +144,8 @@ export function GamePage() {
   const myTeam = game?.teams.find((team) => team.id === game.me.team_id);
   const countdown = useCountdown(game?.status === 'running' ? game.started_at : null, game?.now);
   const counting = countdown > 0;
+  // Phase 73 (JF36): Exit returns to where the game was opened (the home, the Quest page).
+  const exitTo = useExitTo();
   // The doors open: ask for the first question at once rather than at the next poll.
   const refetch = query.refetch;
   useEffect(() => {
@@ -95,6 +158,7 @@ export function GamePage() {
       title={game ? `Quest game · ${gameLevelLabel(game, levelLabel)}` : 'Quest game'}
       shortTitle="Game"
       testId="game-page"
+      exitTo={exitTo}
       status={
         game ? (
           <>
@@ -138,7 +202,7 @@ export function GamePage() {
       ) : game.status === 'lobby' ? (
         <>
           <Reconnecting show={query.isError} />
-          <Lobby game={game} />
+          <Lobby game={game} exitTo={exitTo} />
         </>
       ) : game.status === 'running' ? (
         <>
@@ -147,7 +211,7 @@ export function GamePage() {
           <Play game={game} counting={counting} />
         </>
       ) : (
-        <Results game={game} />
+        <Results game={game} exitTo={exitTo} />
       )}
     </QuestFrame>
   );
@@ -164,14 +228,23 @@ function Rules({ game }: { game: GameView }) {
   );
 }
 
-function Lobby({ game }: { game: GameView }) {
+function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
   const action = useGameAction(game.id);
+  const navigate = useNavigate();
+  const [cancelling, setCancelling] = useState(false);
   const players = game.teams.reduce((n, team) => n + team.players.length, 0);
   const mine = game.teams.find((team) => team.id === game.me.team_id);
 
   async function run(kind: 'start' | 'leave' | 'end') {
     try {
-      await action.mutateAsync({ kind });
+      const reply = await action.mutateAsync({ kind });
+      // Having left, a player may no longer see the game (the reply is null; an admin's is the game without them):
+      // back to where it was opened, as in the app. A host who leaves their team stays to run it.
+      const gone = reply.data === null || (!reply.data.is_host && reply.data.me.team_id === null);
+      if (kind === 'leave' && gone) {
+        toast.success('You left the game.');
+        navigate(exitTo);
+      }
     } catch (caught) {
       toast.error(message(caught, 'That did not work.'));
     }
@@ -225,11 +298,21 @@ function Lobby({ game }: { game: GameView }) {
               </Button>
             )}
             {game.is_host && (
-              <Button variant="ghost" onClick={() => void run('end')} disabled={action.isPending} data-testid="game-cancel">
+              <Button variant="ghost" onClick={() => setCancelling(true)} disabled={action.isPending} data-testid="game-cancel">
                 Cancel the game
               </Button>
             )}
           </div>
+          <ConfirmEnd
+            open={cancelling}
+            onOpenChange={setCancelling}
+            title="Cancel the game?"
+            body="Nobody will be able to play it."
+            confirm="Cancel the game"
+            keep="Keep the game"
+            onConfirm={() => void run('end')}
+            testId="game-cancel-confirm"
+          />
           {!game.is_host && <p className="text-muted-foreground text-sm">Waiting for {game.host.first_name} to begin…</p>}
         </CardContent>
       </Card>
@@ -341,6 +424,7 @@ function TeamRow({
 
 function Play({ game, counting }: { game: GameView; counting: boolean }) {
   const action = useGameAction(game.id);
+  const [ending, setEnding] = useState(false);
   const playing = game.me.team_id !== null;
   const mine = game.teams.find((team) => team.id === game.me.team_id);
   return (
@@ -393,16 +477,23 @@ function Play({ game, counting }: { game: GameView; counting: boolean }) {
           </Card>
         )}
         {(game.is_host || false) && (
-          <Button
-            variant="outline"
-            className="w-fit"
-            onClick={() =>
-              void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the game.')))
-            }
-            data-testid="game-end"
-          >
-            <FlagIcon /> End the game now
-          </Button>
+          <>
+            <Button variant="outline" className="w-fit" onClick={() => setEnding(true)} data-testid="game-end">
+              <FlagIcon /> End the game now
+            </Button>
+            <ConfirmEnd
+              open={ending}
+              onOpenChange={setEnding}
+              title="End the game now?"
+              body="Every team stops where it is, and the places are given."
+              confirm="End the game"
+              keep="Keep playing"
+              onConfirm={() =>
+                void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the game.')))
+              }
+              testId="game-end-confirm"
+            />
+          </>
         )}
       </div>
       <Scoreboard game={game} title="Scores" />
@@ -537,7 +628,7 @@ function QuestionPanel({ gameId, question, total }: { gameId: string; question: 
   );
 }
 
-function Results({ game }: { game: GameView }) {
+function Results({ game, exitTo }: { game: GameView; exitTo: string }) {
   const overseer = game.is_host || game.me.team_id === null;
   const [team, setTeam] = useState<string | null>(null);
   const results = useGameResults(game.id, team, true);
@@ -545,8 +636,10 @@ function Results({ game }: { game: GameView }) {
   const shownTeam = game.teams.find((t) => t.id === (data?.team_id ?? null));
   const mine = game.teams.find((t) => t.id === game.me.team_id);
   const single = game.players === 'single';
+  // Phase 73 (JF16): a game nobody answered in is not a result -- "Nobody played", and nothing to celebrate.
+  const empty = nobodyPlayed(game);
   // A single player has nobody to beat: confetti for any right answer, and their score as the headline.
-  const won = single ? (mine?.correct ?? 0) > 0 : mine?.place === 1;
+  const won = !empty && (single ? (mine?.correct ?? 0) > 0 : mine?.place === 1);
   const ending = gameEndLabel(game.end_reason);
 
   return (
@@ -565,15 +658,17 @@ function Results({ game }: { game: GameView }) {
                 {ending}
               </p>
             )}
-            {single && data?.new_best && (
+            {single && !empty && data?.new_best && (
               <Badge className="w-fit" data-testid="game-new-best">
                 New best!
               </Badge>
             )}
             <h2 className="text-2xl font-bold" data-testid="game-winner">
-              {single && mine
-                ? `${mine.correct} right, ${mine.score} ${mine.score === 1 ? 'point' : 'points'}`
-                : winnersLabel(game.teams)}
+              {empty
+                ? 'Nobody played'
+                : single && mine
+                  ? `${mine.correct} right, ${mine.score} ${mine.score === 1 ? 'point' : 'points'}`
+                  : winnersLabel(game.teams)}
             </h2>
             {mine && (
               <p className="text-base" data-testid="game-encouragement">
@@ -591,11 +686,11 @@ function Results({ game }: { game: GameView }) {
         </Card>
         <Scoreboard game={game} title="Final places" />
         <div className="flex flex-wrap gap-2">
-          <Button asChild variant="outline" className="w-fit">
-            <Link to="/quest">Back to Quest</Link>
+          <Button asChild variant="outline" className="w-fit" data-testid="game-results-back">
+            <Link to={exitTo}>{backLabel(exitTo)}</Link>
           </Button>
           {/* Phase 56: the reader's own team's result, as a public card. */}
-          {mine && <ShareButton input={{ kind: 'game_result', game_id: game.id }} label="Share the result" size="default" />}
+          {mine && !empty && <ShareButton input={{ kind: 'game_result', game_id: game.id }} label="Share the result" size="default" />}
         </div>
       </div>
       <Card className="py-0" data-testid="game-review">

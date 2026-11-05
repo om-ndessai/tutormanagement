@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/onboarding/onboarding-wizard.tsx @ 1132322: the welcome and the
 // done screens. An admin chooses: the tour, adding a student, adding a tutor. Everyone else takes
 // the tour and then confirms the details the office keeps on them. Closing it at any point is
-// fine -- whatever was added stays.
+// fine -- whatever was added stays. Phase 74 (JF25): "A quick tour" -- no "portal", no "the dashboard and
+// the menu".
 import { featureAllowed, featureOn, tourOffered } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { View } from 'react-native';
@@ -55,13 +56,13 @@ export function WelcomeScreen() {
           isAdmin
             ? tour
               ? tutoring
-                ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
-                : 'A quick tour of the portal, and guided setup for a new student.'
+                ? 'A quick tour, and guided setup for a new student or tutor.'
+                : 'A quick tour, and guided setup for a new student.'
               : tutoring
                 ? 'Guided setup for a new student or tutor.'
                 : 'Guided setup for a new student.'
             : tour
-              ? 'A quick tour of the portal, then a check that the office has your details right.'
+              ? 'A quick tour, then a check that the office has your details right.'
               : 'A check that the office has your details right.'
         }
       />
@@ -73,7 +74,7 @@ export function WelcomeScreen() {
             testID="onboarding-choice-tour"
             icon="compass-outline"
             title="Take the tour"
-            description="The dashboard and the menu, one part at a time, with what each is for."
+            description="Your home and the menu, one part at a time, with what each is for."
             badge={tourDone ? 'Done' : 'Tour'}
             action="Take the tour"
             onPress={() => {

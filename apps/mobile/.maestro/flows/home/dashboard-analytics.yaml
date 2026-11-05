@@ -46,6 +46,13 @@ tags:
     visible:
       id: screen-dashboard-analytics
     timeout: 10000
+# Phase 74 (JF24): the page opens on the hat her home leads with -- her teaching on a lesson day; the office's here.
+- extendedWaitUntil:
+    visible:
+      id: dashboard-role-admin
+    timeout: 15000
+- tapOn:
+    id: dashboard-role-admin
 - extendedWaitUntil:
     visible:
       id: stat-students
@@ -73,12 +80,16 @@ tags:
     direction: UP
 - waitForAnimationToEnd:
     timeout: 3000
-- tapOn:
-    id: dashboard-role-tutor
-- extendedWaitUntil:
-    visible:
-      id: stat-sessions
-    timeout: 20000
+# A tap sent while the page was still settling once landed on nothing: one retry.
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: dashboard-role-tutor
+      - extendedWaitUntil:
+          visible:
+            id: stat-sessions
+          timeout: 15000
 - assertNotVisible:
     id: stat-tutors
 - runFlow: ../../subflows/go-back.yaml

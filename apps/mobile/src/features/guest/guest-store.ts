@@ -28,6 +28,8 @@ export interface GuestMemory {
   played?: string[];
   /** Played tiles already made a member's favorites on this phone (P13), so each is carried once. */
   carried?: string[];
+  /** Phase 73 (JF14): the guest grade has been saved as a member's pick once (`PUT /quest/grade`): never again. */
+  gradeCarried?: boolean;
   nudgeDismissedAt?: number;
   /** Today's 5 as played on this phone: the day, the level, and which questions hit. */
   today?: GuestToday;
@@ -113,6 +115,9 @@ export const guestMemory = {
   uncarried: (): string[] => (memory.played ?? []).filter((code) => !(memory.carried ?? []).includes(code)),
   markCarried: (codes: readonly string[]) =>
     write((m) => ({ ...m, carried: [...new Set([...(m.carried ?? []), ...codes])].slice(-50) })),
+  /** Phase 73 (JF14): whether this phone's guest grade has been carried into a member's pick already. */
+  gradeCarried: (): boolean => Boolean(memory.gradeCarried),
+  markGradeCarried: () => write((m) => ({ ...m, gradeCarried: true })),
   nudgeDismissedAt: (): number | undefined => memory.nudgeDismissedAt,
   dismissNudge: (now = Date.now()) => write((m) => ({ ...m, nudgeDismissedAt: now })),
   /** Today's 5 for this day and level, if played on this phone. */
@@ -202,7 +207,8 @@ export const signupSheetPresence = {
 /**
  * Phase 63 (P13, "its grade becomes the default"): the level a guest's play leads a member's Play home
  * with on this phone -- the grade they chose, else the level of the tile they played last. Read after
- * the memory has loaded.
+ * the memory has loaded. Since Phase 73 it is carried once into the member's pick on the server
+ * (`gradeCarried`), where they would otherwise be asked "Which grade?" or led by age alone.
  */
 export function guestLeadLevel(): QuestionBankLevelId | null {
   if (memory.grade) return memory.grade;

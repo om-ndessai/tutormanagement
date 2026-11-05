@@ -28,6 +28,19 @@ async function keyOf(platform: Page, questionId: string): Promise<{ answer: stri
   throw new Error(`question ${questionId} not found in BA3`);
 }
 
+/**
+ * Phase 73 (JF13): a game the reader left open outranks their Quest in Next up ("Pick up where you left off"), so a
+ * test about the Quest item starts with none open.
+ */
+async function endOpenGames(page: Page) {
+  for (let i = 0; i < 6; i += 1) {
+    const { open } = await unwrap<any>(await page.request.get('/api/quest/games/open'), 'the open game');
+    if (!open) return;
+    const ended = await page.request.post(`/api/quest/games/${open.game_id}/end`);
+    if (!ended.ok()) await page.request.post(`/api/quest/games/${open.game_id}/leave`);
+  }
+}
+
 async function withQuest(admin: Page, run: () => Promise<void>) {
   const set = (on: boolean) => admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: on } });
   expect((await set(true)).status()).toBe(200);
@@ -167,6 +180,7 @@ test.describe('Question Quest (Phase 42)', () => {
 
       // The student signs in: home's Next up is their Quest, one tap into it, outside the portal's frame.
       const student = await as('student', { questLanding: true });
+      await endOpenGames(student);
       await student.goto('/');
       await expect(student.getByTestId('member-home')).toBeVisible();
       await expect(student.getByTestId('next-up-question_quest')).toBeVisible();

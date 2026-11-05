@@ -3,7 +3,7 @@
 // off -- and no money anywhere on it. The children that read their own routes (the Play home, the
 // Assessment home, the brief) are stood in for; their own tests cover them.
 import { act, fireEvent, screen } from '@testing-library/react-native';
-import type { MemberHome } from '@tmi/shared';
+import { openGameLabel, playAgain, type MemberHome } from '@tmi/shared';
 import { router } from 'expo-router';
 
 import { renderWithProviders } from '@/test/render';
@@ -62,31 +62,50 @@ const mockPin = jest.fn();
 const mockTiles = { current: [] as { level_id: string }[] };
 const mockStart = jest.fn();
 const mockWaiting = { current: [] as { game_id: string; code: string; host_first_name: string; level_id: string; mode: string; question_count: number; duration_seconds: null; status: string }[] };
+// Phase 73: Continue's read (the open game, else "again"), and whether it was asked for.
+const mockOpen = { current: null as unknown, enabled: [] as boolean[] };
 jest.mock('@/features/play/play-api', () => ({
   useWaitingGames: () => ({ data: { data: mockWaiting.current } }),
   useMemberTiles: () => ({ data: mockTiles.current.length ? { data: { tiles: mockTiles.current } } : undefined }),
-  useLastQuest: () => ({ data: null }),
+  useOpenGame: (enabled: boolean) => {
+    mockOpen.enabled.push(enabled);
+    return { data: enabled && mockOpen.current ? { data: mockOpen.current } : undefined };
+  },
   useGuestLeadLevel: () => ({ data: null }),
 }));
 jest.mock('@/features/play/play-home', () => {
   const { Text } = jest.requireActual('react-native');
   return {
-    PlayHome: () => <Text testID="play-home">Play</Text>,
+    // Phase 74: the board is told what Next up shows (its twin is then quiet); the stand-in says it.
+    PlayHome: ({ nextUp }: { nextUp?: string | null }) => <Text testID="play-home">{`Play ${nextUp ?? ''}`}</Text>,
     PlayFavorites: () => <Text testID="play-favorites-row">Favorites</Text>,
     WaitingForYou: () => null,
     HaveACode: () => null,
     useStartQuest: () => ({ start: mockStart, pending: false }),
+    openGameFromHome: (gameId: string) => mockOpenGame(gameId),
+    openNewQuestFromHome: () => mockNewQuest(),
   };
 });
+const mockOpenGame = jest.fn();
+const mockNewQuest = jest.fn();
 jest.mock('@/features/dashboard/assessment-home', () => {
   const { Text } = jest.requireActual('react-native');
   return { AssessmentHome: () => <Text testID="assessment-home">Assessments</Text> };
 });
 const mockWelcomeBack = { current: false };
+// Phase 74: the habit summary's streak and whether they have played here (`played_before`; absent: an older Worker).
+const mockHabit = { current: { streak_weeks: 3, played_before: undefined as boolean | undefined } };
 jest.mock('@/features/habit/api', () => ({
   useHabit: () => ({
     data: {
-      data: { streak_weeks: 3, days_this_week: 1, played_today: false, badges: [], welcome_back: mockWelcomeBack.current },
+      data: {
+        streak_weeks: mockHabit.current.streak_weeks,
+        days_this_week: 1,
+        played_today: false,
+        badges: [],
+        welcome_back: mockWelcomeBack.current,
+        played_before: mockHabit.current.played_before,
+      },
     },
   }),
   useDaily: () => ({ data: undefined }),
@@ -103,13 +122,18 @@ jest.mock('./brief-cards', () => ({ BriefCards: () => null }));
 jest.mock('@/features/teaching/api', () => ({ useActiveSession: () => ({ data: { data: { mine: null } } }) }));
 jest.mock('@/features/locations/lesson-reminder', () => ({ LessonReminderSheet: () => null }));
 jest.mock('@/features/organizations/invitation-banner', () => ({ InvitationBanner: () => null }));
-jest.mock('@/features/onboarding/onboarding-provider', () => ({ useOptionalOnboarding: () => null }));
+jest.mock('@/features/onboarding/onboarding-provider', () => ({ useOptionalOnboarding: () => null, TourOfferCard: () => null }));
+// Phase 74: the band's Play door scrolls to the board when it is on screen (`home-board`), else opens a quest.
+const mockBoard = { current: null as null | { view: unknown } };
 jest.mock('@/features/onboarding/tour-targets', () => {
   const { View } = jest.requireActual('react-native');
   // The tour's targets: plain views carrying their id, so a test can see the home registered them.
   return {
     useTourScroller: () => undefined,
     useTourTarget: () => () => undefined,
+    useTourRegistry: () => ({}),
+    resolveTarget: async () => mockBoard.current,
+    scrollIntoView: async () => mockBoard.current !== null,
     TourTarget: ({ id, children }: { id: string; children: unknown }) => <View nativeID={id}>{children}</View>,
   };
 });
@@ -139,6 +163,8 @@ async function show(
     invitations: [],
     joinRequests: [],
     account: null,
+    memberships: [],
+    platformAdmin: false,
     ...auth,
   });
   await renderWithProviders(<MemberHomeScreen />);
@@ -163,11 +189,17 @@ beforeEach(() => {
   resetPutOff();
   mockWaiting.current = [];
   mockWelcomeBack.current = false;
+  mockHabit.current = { streak_weeks: 3, played_before: undefined };
+  mockBoard.current = null;
   mockQuest.current = null;
   mockQuest.enabled = [];
   mockTiles.current = [];
+  mockOpen.current = null;
+  mockOpen.enabled = [];
   mockPin.mockClear();
   mockStart.mockClear();
+  mockOpenGame.mockClear();
+  mockNewQuest.mockClear();
   (router.navigate as jest.Mock).mockClear();
   (router.push as jest.Mock).mockClear();
   jest.useFakeTimers({ now: new Date('2026-11-03T19:00:00Z') });
@@ -216,7 +248,10 @@ describe('MemberHomeScreen', () => {
     expect(sectionOrder()).toEqual(['home-section-office', 'home-section-tutor']);
     expect(screen.getByTestId('home-office-to-record')).toBeTruthy();
     expect(screen.getByTestId('home-office-invitations')).toHaveTextContent(/2 invitations/);
-    expect(screen.getByTestId('home-office-requests')).toBeTruthy();
+    // Phase 74 (JF6): nobody asking to join -- no "0 asking to join" row; and the band leaves out what Next up says.
+    expect(screen.queryByTestId('home-office-requests')).toBeNull();
+    expect(screen.queryByTestId('home-office-nothing')).toBeNull();
+    expect(screen.getByTestId('home-strip')).toHaveTextContent(/^2 invitations$/);
     expect(screen.getByTestId('home-office-to-record-line-0')).toHaveTextContent(/Yesterday at 5:00 PM · Milo with Imani/);
     await fireEvent.press(screen.getByTestId('home-dashboard-link'));
     expect(router.navigate).toHaveBeenCalledWith('/analytics');
@@ -250,11 +285,14 @@ describe('MemberHomeScreen', () => {
     await show(SOFIA, ['student']);
     expect(screen.getByTestId('next-up-game_invite')).toHaveTextContent(/Maria started a game/);
     await fireEvent.press(screen.getByTestId('next-up-action'));
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/quest/join-game', params: { code: 'ABC123' } });
+    // From Home (Phase 73, JF36): the game's Exit comes back here.
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/quest/join-game', params: { code: 'ABC123', from: 'home' } });
     expect(sectionOrder()).toEqual(['home-section-learner']);
     expect(screen.getByTestId('home-learner-next')).toHaveTextContent(/Tue, Nov 10 at 4:00 PM with Alex/);
     expect(screen.getByTestId('play-home')).toBeTruthy();
-    expect(screen.getByTestId('quick-new_quest')).toBeTruthy();
+    // Phase 74 (JF23): the board carries its own New Quest, so the quick action is not shown beside it.
+    expect(screen.queryByTestId('quick-new_quest')).toBeNull();
+    expect(screen.getByTestId('quick-join_code')).toBeTruthy();
     expect(screen.queryByTestId('play-favorites-row')).toBeNull();
   });
 
@@ -265,10 +303,18 @@ describe('MemberHomeScreen', () => {
     expect(screen.getByTestId('play-favorites-row')).toBeTruthy();
   });
 
-  it('Ines (a space without Tutoring): learner first, the Assessment home once, no tutoring pieces', async () => {
+  it('Ines (a space without Tutoring): her child first, then the office, then playing; the Assessment home once', async () => {
     await show(INES, ['student', 'admin', 'parent'], ASSESS);
-    expect(sectionOrder()).toEqual(['home-section-learner', 'home-section-office', 'home-section-parent']);
-    expect(screen.getByTestId('home-strip')).toHaveTextContent('3 weeks in a row');
+    // Phase 74 (JF6, owner 2026-11-05): the server's order, kept -- no client re-sort puts playing first.
+    expect(sectionOrder()).toEqual(['home-section-parent', 'home-section-office', 'home-section-learner']);
+    // The band speaks for her child, and of nothing Tutoring's.
+    expect(screen.getByTestId('home-strip')).toHaveTextContent('Noor: all caught up');
+    expect(screen.getByTestId('home-strip')).not.toHaveTextContent(/lesson/i);
+    // The office with nothing to do says so once -- never "0 invitations not yet accepted".
+    expect(screen.getByTestId('home-office-nothing')).toHaveTextContent('Nothing needs you right now.');
+    expect(screen.queryByTestId('home-office-invitations')).toBeNull();
+    expect(screen.queryByTestId('home-office-requests')).toBeNull();
+    expect(allText()).not.toMatch(/\b0 (invitations|asking)/);
     expect(screen.getByTestId('next-up-none')).toHaveTextContent(/You're all caught up/);
     expect(screen.getAllByTestId('assessment-home')).toHaveLength(1);
     expect(screen.queryByTestId('home-office-to-record')).toBeNull();
@@ -278,9 +324,11 @@ describe('MemberHomeScreen', () => {
   });
 
   it('may_assess false (nobody to assess here): no Start an assessment; the office adds people instead', async () => {
-    await show({ ...INES, may_assess: true }, ['student', 'admin', 'parent'], ASSESS);
+    // Playing leads (a learner first): the board's New Quest is on the page, so its quick action is not.
+    const playing = { ...INES, hats: ['learner', 'office'] as MemberHome['hats'], parent: null, focus: 'quest' as const };
+    await show({ ...playing, may_assess: true }, ['student', 'admin'], ASSESS);
     expect(screen.getByTestId('quick-start_assessment')).toBeTruthy();
-    await show({ ...INES, may_assess: false }, ['student', 'admin', 'parent'], ASSESS);
+    await show({ ...playing, may_assess: false }, ['student', 'admin'], ASSESS);
     expect(screen.queryByTestId('quick-start_assessment')).toBeNull();
     expect(screen.getByTestId('quick-add_person')).toBeTruthy();
   });
@@ -365,7 +413,53 @@ describe('Phase 67: Next up carries what QuestLanding did, and welcome back', ()
     expect(card).toHaveTextContent(/A fresh week starts today\./);
     expect(allText()).not.toMatch(/lost|broke|missed/i);
     await fireEvent.press(screen.getByTestId('next-up-action'));
-    expect(router.push).toHaveBeenCalledWith('/quest/new-game');
+    // From Home (JF36): the game it makes exits back here.
+    expect(mockNewQuest).toHaveBeenCalled();
+  });
+});
+
+describe('Phase 73: Continue in Next up is the server’s open game, else "again"', () => {
+  const SHAPE = { level_id: 'NC26.7' as const, level_scope: 'level' as const, mode: 'count' as const, question_count: 5, duration_seconds: null };
+
+  it('an open game: "Pick up where you left off", in words with where she is; Continue opens it (no new game)', async () => {
+    mockOpen.current = {
+      open: {
+        game_id: 'g-open',
+        status: 'running',
+        label: openGameLabel({ ...SHAPE, status: 'running', question: 3, of: 5, points: 2 }),
+        question: 3,
+        of: 5,
+        points: 2,
+      },
+      again: null,
+    };
+    await show({ ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null } }, ['student']);
+    const card = screen.getByTestId('next-up-open_game');
+    expect(card).toHaveTextContent(/Pick up where you left off/);
+    expect(card).toHaveTextContent(/Grade 7 Quick 5 · question 3 of 5 · 2 points/);
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(mockOpenGame).toHaveBeenCalledWith('g-open');
+    expect(mockStart).not.toHaveBeenCalled();
+  });
+
+  it('none open: "Play Grade 7 Quick 5 again" starts its settings in one request', async () => {
+    const again = playAgain(SHAPE);
+    mockOpen.current = { open: null, again };
+    await show({ ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null } }, ['student']);
+    const card = screen.getByTestId('next-up-continue_quest');
+    expect(card).toHaveTextContent(/Play again/);
+    expect(card).toHaveTextContent(/Play Grade 7 Quick 5 again\./);
+    expect(card).not.toHaveTextContent(/Pick up where you left off/);
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(mockStart).toHaveBeenCalledWith(again.request);
+  });
+
+  it('is read only for a learner where Quest is on', async () => {
+    await show(ALEX, ['tutor']);
+    expect(mockOpen.enabled.every((on) => !on)).toBe(true);
+    mockOpen.enabled = [];
+    await show(SOFIA, ['student']);
+    expect(mockOpen.enabled.some((on) => on)).toBe(true);
   });
 });
 
@@ -410,7 +504,6 @@ describe('Phase 68: focus and families', () => {
     expect(screen.getByTestId('home-child-play-sanjay')).toHaveTextContent(/Play with Sanjay$/);
     await fireEvent.press(screen.getByTestId('home-child-play-sanjay'));
     expect(mockStart).toHaveBeenCalledWith(
-      'With Sanjay',
       expect.objectContaining({ level_id: 'NC26.4', players: 'multi', host_plays: true, invite_user_ids: ['sanjay'] }),
     );
   });
@@ -420,7 +513,7 @@ describe('Phase 68: focus and families', () => {
     await show({ ...ANITA, parent: { children: [child({ days_played_this_week: 0, daily_done_today: false, play_level_id: 'BA3' })] } }, ['parent']);
     expect(screen.getByTestId('home-child-play-sanjay')).toHaveTextContent(/Practise together before Thursday's lesson$/);
     await fireEvent.press(screen.getByTestId('home-child-play-sanjay'));
-    expect(mockStart).toHaveBeenCalledWith('With Sanjay', expect.objectContaining({ level_id: 'BA3' }));
+    expect(mockStart).toHaveBeenCalledWith(expect.objectContaining({ level_id: 'BA3' }));
   });
 
   it('Quest off: no played line and no Play with', async () => {
@@ -548,5 +641,125 @@ describe('the tour lights the home’s blocks (Phase 66)', () => {
     await show(ANITA, ['parent']);
     expect(ids()).toEqual(expect.arrayContaining(['home-band', 'home-next-up', 'home-section-parent']));
     expect(ids()).not.toContain('home-to-record');
+  });
+});
+
+describe('Phase 74: the first home', () => {
+  const NEWCOMER: MemberHome = {
+    ...SOFIA,
+    first_name: 'Nina',
+    personal: true,
+    learner: { ...SOFIA.learner!, next_lesson: null },
+    focus: 'quest',
+    focus_options: ['quest', 'assessment'],
+  };
+
+  it('a learner who has not played here: three doors in the band and "Start a streak", never a zero (JF6, JF16)', async () => {
+    mockHabit.current = { streak_weeks: 0, played_before: false };
+    await show(NEWCOMER, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: 'adult' } });
+    expect(screen.getByTestId('home-strip')).toHaveTextContent('Start a streak: play on three days this week.');
+    // (A button's text starts with its icon's glyph.)
+    expect(screen.getByTestId('home-door-play')).toHaveTextContent(/Play$/);
+    expect(screen.getByTestId('home-door-code')).toHaveTextContent(/Join with a code$/);
+    expect(screen.getByTestId('home-door-start')).toHaveTextContent(/Start a space$/);
+    expect(allText()).not.toMatch(/0 of 3/);
+    // The doors' twins are not repeated as quick actions.
+    expect(screen.queryByTestId('quick-join_code')).toBeNull();
+    expect(screen.queryByTestId('quick-new_quest')).toBeNull();
+    await fireEvent.press(screen.getByTestId('home-door-code'));
+    expect(router.push).toHaveBeenCalledWith('/have-a-code');
+    await fireEvent.press(screen.getByTestId('home-door-start'));
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/spaces', params: { start: '1' } });
+  });
+
+  it('Play goes down to the board when it is on screen, else opens a quest', async () => {
+    mockHabit.current = { streak_weeks: 0, played_before: false };
+    await show(NEWCOMER, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: 'adult' } });
+    await act(async () => {
+      await fireEvent.press(screen.getByTestId('home-door-play'));
+    });
+    expect(mockNewQuest).toHaveBeenCalledTimes(1);
+    mockBoard.current = { view: {} };
+    await act(async () => {
+      await fireEvent.press(screen.getByTestId('home-door-play'));
+    });
+    expect(mockNewQuest).toHaveBeenCalledTimes(1);
+  });
+
+  it('no Start a space for a 13-17, and no doors once they have played (or from an older Worker)', async () => {
+    mockHabit.current = { streak_weeks: 0, played_before: false };
+    await show(NEWCOMER, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: '13-17' } });
+    expect(screen.getByTestId('home-door-code')).toBeTruthy();
+    expect(screen.queryByTestId('home-door-start')).toBeNull();
+    mockHabit.current = { streak_weeks: 0, played_before: true };
+    await show(NEWCOMER, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: 'adult' } });
+    expect(screen.queryByTestId('home-doors')).toBeNull();
+    expect(screen.getByTestId('home-strip')).toHaveTextContent('Start a streak');
+    mockHabit.current = { streak_weeks: 0, played_before: undefined };
+    await show(NEWCOMER, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: 'adult' } });
+    expect(screen.queryByTestId('home-doors')).toBeNull();
+  });
+
+  it('open assessments: the office says how many, with a link to Assessments, and comes first today (JF6)', async () => {
+    await show({ ...INES, office: { ...INES.office!, assessments_open: 2 } }, ['student', 'admin', 'parent'], ASSESS);
+    expect(sectionOrder()[0]).toBe('home-section-office');
+    expect(screen.getByTestId('home-office-assessments')).toHaveTextContent(/2 assessments not yet reviewed/);
+    expect(screen.queryByTestId('home-office-nothing')).toBeNull();
+    expect(screen.getByTestId('home-strip')).toHaveTextContent('2 assessments to review');
+    await fireEvent.press(screen.getByTestId('home-office-assessments'));
+    expect(router.navigate).toHaveBeenCalledWith('/assessments');
+  });
+
+  it("a child's card opens the child where Tutoring is off, their progress where it is on", async () => {
+    await show(ANITA, ['parent'], ASSESS);
+    await fireEvent.press(screen.getByTestId('home-child-link-sanjay'));
+    expect(router.navigate).toHaveBeenLastCalledWith({ pathname: '/people/[id]', params: { id: 'sanjay' } });
+    await show(ANITA, ['parent']);
+    await fireEvent.press(screen.getByTestId('home-child-link-sanjay'));
+    expect(router.navigate).toHaveBeenLastCalledWith(
+      { pathname: '/progress/[studentId]', params: { studentId: 'sanjay' } },
+      { withAnchor: true },
+    );
+  });
+
+  it('a lesson line says where, and a learner may practise for it from there (JF17)', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    const place = { name: 'Institute, room 2', kind: 'physical' as const };
+    const sofia = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: { ...SOFIA.learner!.next_lesson!, place } } };
+    await show(sofia, ['student']);
+    // Seven days out: not yet "before your lesson", so Next up names the lesson, with its place.
+    expect(screen.getByTestId('next-up-learner_lesson')).toHaveTextContent(/Tue, Nov 10 at 4:00 PM with Alex · Institute, room 2\./);
+    await fireEvent.press(screen.getByTestId('next-up-practise'));
+    expect(mockStart).toHaveBeenCalledWith(expect.objectContaining({ level_id: 'NC26.4', players: 'single', question_count: 5 }));
+    // An invitation leads instead: the section's own lesson card says where, and its line starts practice.
+    mockStart.mockClear();
+    mockWaiting.current = [
+      { game_id: 'g1', code: 'ABC123', host_first_name: 'Maria', level_id: 'NC26.4', mode: 'count', question_count: 10, duration_seconds: null, status: 'lobby' },
+    ];
+    await show(sofia, ['student']);
+    expect(screen.getByTestId('home-learner-next')).toHaveTextContent('Tue, Nov 10 at 4:00 PM with Alex · Institute, room 2');
+    expect(screen.getByTestId('home-learner-practise')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('home-learner-next-line'));
+    expect(mockStart).toHaveBeenCalledWith(expect.objectContaining({ level_id: 'NC26.4' }));
+  });
+
+  it("a parent's lesson lines say where too", async () => {
+    const place = { name: 'Online room', kind: 'virtual' as const };
+    const kid = child({ next_lesson: { ...child().next_lesson!, place } });
+    await show({ ...ANITA, parent: { children: [kid] } }, ['parent']);
+    expect(screen.getByTestId('home-child-next-sanjay')).toHaveTextContent('Next: Thu at 5:00 PM with Priya · Online room');
+    expect(screen.getByTestId('next-up-child_next_lesson')).toHaveTextContent(/with Priya · Online room/);
+    // Next up names the lesson, so the band does not (JF23).
+    expect(screen.queryByTestId('home-strip')).toBeNull();
+  });
+
+  it('the board is told what Next up shows, so its own Continue is the quiet twin (JF23)', async () => {
+    mockOpen.current = {
+      open: { game_id: 'g-open', status: 'running', label: 'Grade 7 Quick 5', question: 1, of: 5, points: 0 },
+      again: null,
+    };
+    await show({ ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null } }, ['student']);
+    expect(screen.getByTestId('next-up-open_game')).toBeTruthy();
+    expect(screen.getByTestId('play-home')).toHaveTextContent('Play open_game');
   });
 });

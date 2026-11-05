@@ -1,9 +1,33 @@
 import { AwardIcon, FlameIcon } from 'lucide-react';
-import { STREAK_DAYS_PER_WEEK, type WeekDot } from '@tmi/shared';
+import { STREAK_DAYS_PER_WEEK, type HabitSummary, type WeekDot } from '@tmi/shared';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useHabit } from './habit-api';
+
+const days = (n: number) => `${n} ${n === 1 ? 'day' : 'days'}`;
+
+/**
+ * Phase 73 (JF16): ONE state, from the current run -- a streak and what keeps it, a welcome back, or "Start a
+ * streak" -- never two that disagree, and never a zero first. Badges earned stay listed below, as badges.
+ */
+function progressHeadline(data: Pick<HabitSummary, 'streak_weeks' | 'days_this_week' | 'welcome_back'>): { title: string; detail: string } {
+  const left = Math.max(0, STREAK_DAYS_PER_WEEK - data.days_this_week);
+  if (data.streak_weeks > 0) {
+    return {
+      title: `${data.streak_weeks}-week streak`,
+      detail: left === 0 ? 'This week counts. Keep it going next week.' : `Play ${days(left)} more this week to keep it.`,
+    };
+  }
+  if (data.welcome_back) return { title: 'Welcome back!', detail: `A fresh week starts now: play ${days(STREAK_DAYS_PER_WEEK)} to start a streak.` };
+  return {
+    title: 'Start a streak',
+    detail:
+      data.days_this_week === 0
+        ? `Play on ${days(STREAK_DAYS_PER_WEEK)} this week.`
+        : `${data.days_this_week} of ${STREAK_DAYS_PER_WEEK} days this week. ${left} to go.`,
+  };
+}
 
 /**
  * Phase 64 (P17-P18): "My progress" -- the weekly streak (weeks in a row with 3 days played), today's
@@ -14,6 +38,7 @@ export function MyProgressCard() {
   const data = habit.data?.data;
   if (!data) return null;
   const earned = data.badges.filter((badge) => badge.earned);
+  const headline = progressHeadline(data);
   return (
     <Card className="py-0" data-testid="my-progress">
       <CardContent className="flex flex-wrap items-center gap-4 p-4 text-sm">
@@ -25,36 +50,36 @@ export function MyProgressCard() {
           <FlameIcon className={cn('size-5', data.played_today ? 'text-primary' : 'text-muted-foreground')} />
         </span>
         <span className="grid">
-          <span className="font-semibold" data-testid="my-progress-streak">
-            {data.streak_weeks === 0 ? 'Start a streak' : `${data.streak_weeks} week${data.streak_weeks === 1 ? '' : 's'} in a row`}
+          {/* Phase 67 (H8): after a week away, a kind word in place of the streak -- never what was lost. */}
+          <span
+            className={cn('font-semibold', data.welcome_back && data.streak_weeks === 0 && 'text-primary')}
+            data-testid={data.welcome_back && data.streak_weeks === 0 ? 'my-progress-welcome' : 'my-progress-streak'}
+          >
+            {headline.title}
           </span>
-          <span className="text-muted-foreground text-xs">
-            {Math.min(data.days_this_week, STREAK_DAYS_PER_WEEK)} of {STREAK_DAYS_PER_WEEK} days this week
+          <span className="text-muted-foreground text-xs" data-testid="my-progress-detail">
+            {headline.detail}
           </span>
         </span>
         {data.week && <WeekStrip week={data.week} />}
-        {/* Phase 67 (H8): a kind word after a week away, never what was lost. */}
-        {data.welcome_back && (
-          <p className="text-primary w-full text-sm font-semibold" data-testid="my-progress-welcome">
-            Welcome back! A fresh week starts now.
-          </p>
-        )}
         {data.next_badge && (
           <p className="text-muted-foreground w-full text-xs" data-testid="my-progress-next">
             Next badge: <span className="text-foreground font-semibold">{data.next_badge.label}</span> · {data.next_badge.have} of{' '}
             {data.next_badge.need}
           </p>
         )}
-        <span className="ml-auto flex flex-wrap gap-1.5" aria-label="Badges">
+        <span className="ml-auto flex flex-wrap items-center gap-1.5" aria-label="Badges earned">
           {earned.length === 0 ? (
             !data.next_badge && <span className="text-muted-foreground text-xs">Your first badge is one quest away.</span>
           ) : (
+            <span className="text-muted-foreground text-xs font-medium">Badges:</span>
+          )}
+          {earned.length > 0 &&
             earned.map((badge) => (
               <span key={badge.id} title={badge.description} className="bg-primary/10 text-primary flex items-center gap-1 rounded-full px-2 py-0.5 text-xs" data-testid={`badge-${badge.id}`}>
                 <AwardIcon className="size-3" /> {badge.label}
               </span>
-            ))
-          )}
+            ))}
         </span>
       </CardContent>
     </Card>

@@ -35,7 +35,7 @@ import { confirmEnd } from './game-play';
 import { Scoreboard } from './game-scoreboard';
 import { CODE_FONT } from './game-style';
 import { useGameAction } from './games-api';
-import { exitQuest } from './quest-frame';
+import { exitGame } from './quest-frame';
 import { questWide } from './quest-model';
 import { useQuestNotice } from './quest-notice';
 
@@ -57,7 +57,8 @@ export function GameRules({ game }: { game: GameView }) {
   );
 }
 
-export function GameLobby({ game }: { game: GameView }) {
+/** `from`: where the game was opened (Phase 73, JF36): leaving goes back there. */
+export function GameLobby({ game, from }: { game: GameView; from?: string }) {
   const theme = useAppTheme();
   const { width } = useWindowDimensions();
   const action = useGameAction(game.id);
@@ -74,7 +75,7 @@ export function GameLobby({ game }: { game: GameView }) {
       // without them): back to the hub, which says so. A host who leaves their team stays to run it.
       const gone = reply.data === null || (!reply.data.is_host && reply.data.me.team_id === null);
       if (kind === 'leave' && gone) {
-        exitQuest();
+        exitGame(from);
         toast.success('You left the game.');
       }
     } catch (caught) {
