@@ -72,7 +72,7 @@ test.describe('the welcome wizard', () => {
       await wizard(page).getByRole('button', { name: 'Something needs changing' }).click();
       await wizard(page).getByLabel('What needs changing?').fill('My phone number has changed.');
       await wizard(page).getByRole('button', { name: 'Send to the office' }).click();
-      await wizard(page).getByRole('button', { name: 'Go to my dashboard' }).click();
+      await wizard(page).getByRole('button', { name: 'Done' }).click();
       await expect(wizard(page)).toHaveCount(0);
 
       // The office has the note, on the parent's own record.
@@ -101,7 +101,7 @@ test.describe('the welcome wizard', () => {
       await page.goto('/');
       await wizard(page).getByRole('button', { name: 'Confirm my details' }).click();
       await wizard(page).getByRole('button', { name: 'Yes, that’s all right' }).click();
-      await wizard(page).getByRole('button', { name: 'Go to my dashboard' }).click();
+      await wizard(page).getByRole('button', { name: 'Done' }).click();
 
       const state = (await session(page)).onboarding;
       expect(state.tour_finished_at).not.toBeNull();

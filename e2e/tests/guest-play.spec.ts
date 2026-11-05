@@ -247,6 +247,42 @@ test.describe('guest play', () => {
     expect(listed.some((space) => space.personal)).toBe(false);
   });
 
+  test('a refused sign-up is said once: the sheet never reopens by itself on the guest page or a quest (UI audit J05)', async ({
+    as,
+  }) => {
+    const page = await as('student', { org: null });
+    await signedOut(page);
+    // A child arriving from a provider: the page holds a sign-up token, as a redirect sign-in leaves it.
+    const email = `j05.child.${Date.now().toString(36)}@example.com`;
+    const started = await unwrap<any>(
+      await page.request.post('/api/auth/google', {
+        data: { credential: `fake:google:j05-${Date.now().toString(36)}:${email}:1:Mia Child`, signup: true },
+      }),
+      'a child at Google',
+    );
+    await page.goto(`/#${new URLSearchParams({ signup: started.signup.token, email, name: 'Mia Child' })}`);
+    const sheet = page.getByTestId('signup-sheet');
+    await expect(sheet).toBeVisible();
+    await sheet.getByTestId('signup-month').click();
+    await page.getByRole('option', { name: 'May', exact: true }).click();
+    await sheet.getByTestId('signup-year').click();
+    await page.getByRole('option', { name: String(new Date().getFullYear() - 11), exact: true }).click();
+    await sheet.getByTestId('signup-accept').check();
+    await sheet.getByTestId('signup-submit').click();
+    await expect(sheet.getByText('Ask a parent to add you')).toBeVisible();
+
+    // Closed, and then playing on: the form does not come back unasked -- not over a quest, not on the page.
+    await page.keyboard.press('Escape');
+    await expect(sheet).toHaveCount(0);
+    await page.getByTestId('guest-tile-G4Q5').click();
+    await expect(page).toHaveURL(/\/play\/G4Q5$/);
+    await expect(page.getByTestId('guest-question')).toBeVisible();
+    await expect(page.getByTestId('signup-sheet')).toHaveCount(0);
+    await page.goBack();
+    await expect(page.getByTestId('guest-home')).toBeVisible();
+    await expect(page.getByTestId('signup-sheet')).toHaveCount(0);
+  });
+
   test('afterwards: guest play off and no level has free questions again', async ({ as }) => {
     const platform = await as('platformAdmin', { org: null });
     await guestPlayOff(platform);

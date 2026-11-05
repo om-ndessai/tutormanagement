@@ -21,11 +21,14 @@ export function SignupForm({
   devName,
   onDone,
   onTooYoung,
+  onRefused,
 }: {
   devEmail?: string | null;
   devName?: string;
   onDone: () => void;
   onTooYoung: () => void;
+  /** The sign-up sheet keeps an access refusal itself (it outlives this form); elsewhere the form shows it. */
+  onRefused?: (refusal: { code: AccessErrorCode; message: string }) => void;
 }) {
   const { completeSignup } = useAuth();
   const [year, setYear] = useState('');
@@ -57,7 +60,10 @@ export function SignupForm({
           ? { code: caught.code, message: caught.message }
           : { code: 'internal_error', message: 'Could not sign you up. Please try again.' };
       if (next.code === 'too_young') onTooYoung();
-      else if (isAccessRefusal(next.code)) setRefused({ code: next.code, message: next.message });
+      else if (isAccessRefusal(next.code)) {
+        if (onRefused) onRefused({ code: next.code, message: next.message });
+        else setRefused({ code: next.code, message: next.message });
+      }
       else setProblem(next);
     } finally {
       setBusy(false);

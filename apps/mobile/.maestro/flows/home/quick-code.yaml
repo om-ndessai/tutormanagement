@@ -1,0 +1,53 @@
+# UI audit fix-up (docs/journey-fixes-plan.md, JF3): the home's "Have a code?" quick action opens the code box
+# in a dialog. It crashed the app (J07A step 14): Paper mounts a Portal's content above ToastProvider, so the
+# box's useToast() threw. Sofia, a student in chmi with Quest on, taps the quick action: the box shows in the
+# dialog, an unknown space code is refused with a toast from inside it, and Close returns to Home.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: sofia.okafor@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: quick-join_code
+    timeout: 15000
+- tapOn:
+    id: quick-join_code
+# The dialog with the code box -- not a red Render Error.
+- extendedWaitUntil:
+    visible:
+      id: home-code-dialog
+    timeout: 10000
+- assertVisible:
+    id: play-code
+- assertNotVisible: 'Render Error'
+# An eight-character code no space has: refused with a toast, from inside the dialog.
+- tapOn:
+    id: play-code
+- inputText: 'ZZZZ9999'
+- tapOn:
+    id: play-code-go
+- extendedWaitUntil:
+    visible: 'No space has that code.'
+    timeout: 10000
+- tapOn:
+    id: home-code-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- assertNotVisible:
+    id: home-code-dialog

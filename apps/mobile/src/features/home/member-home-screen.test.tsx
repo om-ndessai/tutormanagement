@@ -18,7 +18,10 @@ jest.mock('expo-router', () => ({
   Stack: { Screen: () => null },
 }));
 jest.mock('@/lib/haptics', () => ({ haptics: { selection: jest.fn(), success: jest.fn(), error: jest.fn() } }));
-jest.mock('@/components/toast', () => ({ useToast: () => ({ success: jest.fn(), error: jest.fn() }) }));
+jest.mock('@/components/toast', () => ({
+  useToast: () => ({ success: jest.fn(), error: jest.fn() }),
+  ToastBridge: ({ children }: { children: React.ReactNode }) => children,
+}));
 jest.mock('@/providers/brand-provider', () => {
   const { PLATFORM_BRAND } = jest.requireActual('@tmi/shared');
   return { useBrand: () => ({ ...PLATFORM_BRAND, short: 'Chapel Hill' }) };

@@ -71,6 +71,11 @@ interface AuthContextValue {
   pendingSignup: SignupStart['signup'] | null;
   /** Phase 52: answers the age question and the terms, and signs the newcomer in. */
   completeSignup: (input: Omit<SignupInput, 'token'>) => Promise<void>;
+  /**
+   * Drops a sign-up that was refused (too young, waiting, declined, not on the list), so the guest page does not
+   * reopen its form by itself (UI audit J05 step 11). The app has had the same since Phase 52.
+   */
+  cancelSignup: () => void;
   /** True the first time this person has ever opened this organization. */
   firstVisit: boolean;
   /**
@@ -421,6 +426,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [queryClient]);
 
   const clearError = useCallback(() => setError(null), []);
+  const cancelSignup = useCallback(() => setPendingSignup(null), []);
 
   const value = useMemo(
     () => ({
@@ -435,6 +441,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       accountDeletable,
       pendingSignup,
       completeSignup,
+      cancelSignup,
       firstVisit,
       pendingLink,
       chooseOrganization,
@@ -461,6 +468,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       accountDeletable,
       pendingSignup,
       completeSignup,
+      cancelSignup,
       firstVisit,
       pendingLink,
       chooseOrganization,

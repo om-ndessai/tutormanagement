@@ -198,6 +198,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Rank.</strong> P0 holds: Post-approved is production&#x27;s mode, and eight journeys list this screen among the three their</li></ul>
 <p>persona noticed most.</p>
 <h3>P0. The app&#x27;s Have a code button crashes</h3>
+<blockquote><strong>Status (JF3):</strong> done in the fix-up (2026-11-04). The dialog gets the toast through a bridge, the app has an error screen with Try again and Go to Home, and a Maestro flow taps the quick action.</blockquote>
 <ul><li><strong>What:</strong></li><li>Render the home&#x27;s &quot;Have a code?&quot; dialog inside the toast provider, or hand the box a toast function.</li><li>Give the app an error screen with a way home.</li><li>Add a Maestro flow that taps the quick action.</li><li>Better still, replace the dialog with the single code sheet of the next item.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C7 parents and C6 players in the app who were told &quot;join with my code&quot;. The quick action is the</li></ul>
 <p>first door they try.</p>
 <ul><li><strong>What happens today.</strong> The app shows a red &quot;Render Error: useToast must be used inside &lt;ToastProvider&gt;.&quot;, then a</li></ul>
@@ -311,6 +312,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Why it is buried.</strong> Phase 61 put Join and Start side by side for a newcomer in no space yet (<code>sideBySide</code>,</li></ul>
 <p><code>welcome.tsx:44</code>, with <code>spaces-page.tsx:161</code>). Since Phase 63, a self sign-up always has a personal space, so that Welcome &quot;remains only for someone in no space&quot; (CLAUDE.md, Phase 63) and no newcomer sees it. This is a side effect of two deliberate phases, not a choice anyone made.</p>
 <h3>P1. Refusals give a next step and never reopen unasked</h3>
+<blockquote><strong>Status (JF8):</strong> in part, in the fix-up (2026-11-04): a refused sign-up no longer reopens by itself on the web (J05&#x27;s repro is a spec). The next steps and words are Phase 70.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Clear the refused sign-up</strong> when a refusal is shown. The &quot;Almost there&quot; form must never reopen by itself, with or</li></ul>
 <p>without the email (J05). A refusal must not reopen over the guest page (J02, J13). Add J05&#x27;s repro as an e2e check.</p>
 <ul><li><strong>Every refusal</strong> says guest play is still open, with &quot;Keep playing&quot; as its main button.</li><li><strong>Under 13:</strong> &quot;Ask a grown-up&quot;, with something a parent can act on.</li><li><strong>Pre-approved:</strong></li><li>an &quot;Ask for an invitation&quot; action that carries the email, in place of a blank <code>mailto:</code>;</li><li>the sign-up buttons say &quot;invitation only&quot; before Google;</li><li>the refusal names the account checked and offers &quot;Use another Google account&quot;.</li><li><strong>Declined:</strong> stop offering sign-up in that tab.</li><li><strong>Why:</strong></li><li><strong>Who it hits.</strong> C6 adults who are declined, children under 13 (who can join only through a parent), and parents</li></ul>
@@ -581,6 +583,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> the Daily&#x27;s one name. It is &quot;Today&#x27;s 5&quot;, &quot;Today&#x27;s Daily&quot;, &quot;Play today&#x27;s Daily&quot; and &quot;Practise 5&quot;</li></ul>
 <p>today.</p>
 <h3>P2. The Dashboard opens on the wrong hat</h3>
+<blockquote><strong>Status (JF24):</strong> in part, in the fix-up (2026-11-04): the wizard&#x27;s last button reads &quot;Done&quot;. The rest is Phase 74.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>The Dashboard</strong> opens on the role of the home&#x27;s leading hat, remembers the last role chosen per space, and labels</li></ul>
 <p>the role switch (&quot;Viewing as: Tutor&quot;).</p>
 <ul><li><strong>A tutor with no students yet</strong> gets a one-line section and a Teaching choice in &quot;Make this my home&quot;.</li><li><strong>Pinning a focus</strong> visibly reorders the page and says so.</li><li><strong>The wizard&#x27;s last button</strong> reads &quot;Done&quot;, not &quot;Go to my dashboard&quot;.</li><li><strong>Why:</strong></li><li><strong>C8 gets two answers.</strong> For &quot;what&#x27;s urgent across my hats?&quot;, the home answers one way and the Dashboard the other.</li><li><strong>Maria&#x27;s money and plan.</strong> Her $152.50 outstanding and Sofia &quot;Behind&quot; sit behind an unlabelled dropdown, and are</li></ul>
@@ -597,6 +600,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> whether a role with nothing in it yet gets a one-line section. H3 says hats exist only with</li></ul>
 <p>content (<a href="../member-home-plan.html">member-home-plan.md:93</a>).</p>
 <h3>P2. The tour covers what it introduces, and appears without Tutoring</h3>
+<blockquote><strong>Status (JF25):</strong> in part, in the fix-up (2026-11-04): the wizard offers the tour only where Tutoring is on, on both clients. The rest is Phase 74.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Tutoring only.</strong> Apply <code>tourOffered</code> to the welcome wizard&#x27;s &quot;Take the tour&quot; as well. This is a bug against the</li></ul>
 <p>owner&#x27;s rule of 2026-11-04 (the tour is Tutoring&#x27;s).</p>
 <ul><li><strong>Inline.</strong> Make the offer a card in the page&#x27;s flow, not a layer over it.</li><li><strong>Once.</strong> Offer it once per person, not per browser, and count the wizard&#x27;s tour as seen.</li><li><strong>On a phone,</strong> point each stop at the section on the page, not at the menu, and tour a parent&#x27;s own blocks</li></ul>
@@ -628,6 +632,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p><figure class="shot"><img alt="J14 step 22: the pairing marked custom" src="./assets/cuj-j14-step-22.png"><figcaption>J14 step 22: the pairing marked custom</figcaption></figure></p>
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
 <h3>P2. Phone-width layouts break on a dozen screens</h3>
+<blockquote><strong>Status (JF28):</strong> in part, in the fix-up (2026-11-04): the app&#x27;s question card shows every answer choice (half the screen for a choice question, and a &quot;More choices below&quot; cue). The rest is Phase 78.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>First, the app&#x27;s question card.</strong> Make every answer choice visible, or show a scroll cue. The fourth choice was</li></ul>
 <p>hidden below the card, with nothing to say the card scrolls.</p>
 <ul><li><strong>Rows</strong> stack below <code>sm</code>: text first, actions on a line of their own.</li><li><strong>Names</strong> wrap rather than truncate.</li><li><strong>The grade row</strong> shows a scroll cue and scrolls the chosen grade into view.</li><li><strong>The countdown</strong> is sized with <code>clamp()</code>.</li><li><strong>The spec.</strong> Add the game results, the Dashboard and Activity to <code>responsive.spec.ts</code>.</li><li><strong>Why:</strong></li><li><strong>Most people here use a phone.</strong> Each break costs a guess, or hides a fact.</li><li><strong>The project&#x27;s own rule.</strong> Game results 430 px wide break &quot;zero horizontal overflow at 390 px&quot; (CLAUDE.md,</li></ul>

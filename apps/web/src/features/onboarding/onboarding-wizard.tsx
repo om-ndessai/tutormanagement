@@ -6,7 +6,7 @@ import {
   UserPlusIcon,
 } from 'lucide-react';
 
-import { featureOn } from '@tmi/shared';
+import { featureOn, tourOffered } from '@tmi/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -76,11 +76,18 @@ export function OnboardingWizard({
     screen === 'welcome'
       ? {
           title: `Welcome to ${brand.short}${firstName ? `, ${firstName}` : ''}`,
+          // The tour is Tutoring's (owner, 2026-11-04): where it is not offered, the heading does not promise it.
           description: isAdmin
-            ? tutoring
-              ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
-              : 'A quick tour of the portal, and guided setup for a new student.'
-            : 'A quick tour of the portal, then a check that the office has your details right.',
+            ? tourOffered(organization)
+              ? tutoring
+                ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
+                : 'A quick tour of the portal, and guided setup for a new student.'
+              : tutoring
+                ? 'Guided setup for a new student or tutor.'
+                : 'Guided setup for a new student.'
+            : tourOffered(organization)
+              ? 'A quick tour of the portal, then a check that the office has your details right.'
+              : 'A check that the office has your details right.',
         }
       : screen === 'invite'
         ? {
@@ -114,14 +121,17 @@ export function OnboardingWizard({
 
         {screen === 'welcome' && (
           <div className="grid gap-3">
-            <Choice
-              icon={CompassIcon}
-              title="Take the tour"
-              description="The dashboard and the menu, one part at a time, with what each is for."
-              badge={tourDone ? 'Done' : 'Tour'}
-              action="Take the tour"
-              onClick={onStartTour}
-            />
+            {/* The tour is Tutoring's (owner, 2026-11-04): a new space without it never offers it (UI audit J06). */}
+            {tourOffered(organization) && (
+              <Choice
+                icon={CompassIcon}
+                title="Take the tour"
+                description="The dashboard and the menu, one part at a time, with what each is for."
+                badge={tourDone ? 'Done' : 'Tour'}
+                action="Take the tour"
+                onClick={onStartTour}
+              />
+            )}
 
             {isAdmin && (
               <>
@@ -174,7 +184,7 @@ export function OnboardingWizard({
               That’s everything. Welcome aboard.
             </p>
             <div className="flex justify-end">
-              <Button onClick={onClose}>Go to my dashboard</Button>
+              <Button onClick={onClose}>Done</Button>
             </div>
           </div>
         )}

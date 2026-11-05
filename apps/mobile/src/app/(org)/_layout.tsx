@@ -1,5 +1,6 @@
-import { Stack } from 'expo-router';
+import { Stack, type ErrorBoundaryProps } from 'expo-router';
 
+import { RouteError } from '@/components/route-error';
 import { DictationProvider } from '@/features/dictation/dictation-provider';
 import { OnboardingProvider } from '@/features/onboarding/onboarding-provider';
 import { useLastQuest } from '@/features/play/play-api';
@@ -32,6 +33,11 @@ const QUEST_OPTIONS = {
   gestureEnabled: false,
   headerShown: false,
 } as const;
+
+/** A screen inside a space that throws shows a way home instead of a blank app (UI audit J07A). */
+export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
+  return <RouteError retry={retry} />;
+}
 
 export default function OrgLayout() {
   const { organization, user } = useAuth();

@@ -152,11 +152,13 @@ test.describe('starting a space, then inviting people (S12)', () => {
       .poll(() => maker.evaluate(() => (window as any).__shared?.text))
       .toBe(invitationText({ inviter: name, space, address: origin, email: parentEmail }));
 
-    // Continue goes on to the welcome tour, and the step does not come back.
+    // Continue goes on to the welcome, and the step does not come back. A new space has no Tutoring, so the
+    // welcome offers no tour (the tour is Tutoring's, owner 2026-11-04; UI audit J06 step 20).
     await maker.getByTestId('invite-continue').click();
     await expect(maker.getByTestId('invite-step')).toHaveCount(0);
     await expect(maker.getByTestId('onboarding-wizard')).toBeVisible();
-    await expect(maker.getByRole('button', { name: /Take the tour/ })).toBeVisible();
+    await expect(maker.getByRole('button', { name: /Add a student/ })).toBeVisible();
+    await expect(maker.getByRole('button', { name: /Take the tour/ })).toHaveCount(0);
   });
 
   test('an address pasted with spaces around it is trimmed and sent, as the app does', async ({ as, page }) => {
@@ -400,7 +402,7 @@ test.describe('starting a space, then inviting people (S12)', () => {
     await expect(dialog.getByRole('checkbox', { name: /Tutor/ })).toHaveCount(0);
   });
 
-  test('skipping goes on to the tour, invites nobody, and the step does not come back', async ({ as, page }) => {
+  test('skipping goes on to the welcome, invites nobody, and the step does not come back', async ({ as, page }) => {
     const { page: maker, slug, email } = await startSpace(as, page, 'skipper');
 
     // Something half-typed and skipped is not sent.
@@ -408,7 +410,8 @@ test.describe('starting a space, then inviting people (S12)', () => {
     await maker.getByTestId('invite-skip').click();
     await expect(maker.getByTestId('invite-step')).toHaveCount(0);
     await expect(maker.getByTestId('onboarding-wizard')).toBeVisible();
-    await expect(maker.getByRole('button', { name: /Take the tour/ })).toBeVisible();
+    // No Tutoring in a new space, so no tour (owner, 2026-11-04).
+    await expect(maker.getByRole('button', { name: /Take the tour/ })).toHaveCount(0);
     // In the new space: its Assessment home behind the wizard.
     await expect(maker.getByTestId('assessment-home')).toBeAttached({ timeout: 15_000 });
 

@@ -97,6 +97,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Hands the toast to content a Paper `Portal` mounts: Paper renders a portal's children under its host,
+ * above `ToastProvider` (`theme-provider.tsx`), so they lose this context. Read `useToast()` where the
+ * portal is written and wrap its content in this (the home's "Have a code?" dialog crashed without it, UI
+ * audit J07A step 14).
+ */
+export function ToastBridge({ toast, children }: { toast: ToastApi; children: ReactNode }) {
+  return <ToastContext value={toast}>{children}</ToastContext>;
+}
+
 export function useToast(): ToastApi {
   const context = use(ToastContext);
   if (!context) throw new Error('useToast must be used inside <ToastProvider>.');

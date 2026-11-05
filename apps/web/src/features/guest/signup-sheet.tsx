@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import type { AccessErrorCode } from '@tmi/shared';
+
 import { LogoMark } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -19,16 +21,30 @@ import { countEvent, flushEvents } from './guest-api';
  * (`returnTo`), and a quest in progress is kept in this tab's storage.
  */
 export function SignupSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { config, pendingSignup, signInWithGoogle, status, error, clearError } = useAuth();
+  const { config, pendingSignup, cancelSignup, signInWithGoogle, status, error, clearError } = useAuth();
   const location = useLocation();
   const [devEmail, setDevEmail] = useState('');
   const [devName, setDevName] = useState('');
   const [devReady, setDevReady] = useState(false);
   const [tooYoung, setTooYoung] = useState(false);
+  // A refusal of the About-you step, kept here: the half-finished sign-up is dropped as it is shown.
+  const [refused, setRefused] = useState<{ code: AccessErrorCode; message: string } | null>(null);
   const [splash, setSplash] = useState(false);
   const here = location.pathname + location.search;
   const signInOff = config?.auth_enabled === false;
   const atForm = Boolean(pendingSignup) || devReady;
+
+  // A refusal is said once and left behind: closing the sheet drops the sign-up and the provider's refusal,
+  // so the guest page never reopens it by itself (UI audit J05 step 11, J02, J13).
+  function close() {
+    if (isAccessRefusal(error?.code)) clearError();
+    if (tooYoung || refused) {
+      setTooYoung(false);
+      setRefused(null);
+      setDevReady(false);
+    }
+    onClose();
+  }
 
   useEffect(() => {
     if (!splash) return;
@@ -45,7 +61,7 @@ export function SignupSheet({ open, onClose }: { open: boolean; onClose: () => v
   }, [open, status, splash, onClose]);
 
   return (
-    <Dialog open={open || splash} onOpenChange={(next) => !next && !splash && onClose()}>
+    <Dialog open={open || splash} onOpenChange={(next) => !next && !splash && close()}>
       <DialogContent data-testid="signup-sheet">
         {splash ? (
           <div className="grid justify-items-center gap-3 py-8" data-testid="signup-splash">
@@ -55,6 +71,9 @@ export function SignupSheet({ open, onClose }: { open: boolean; onClose: () => v
         ) : isAccessRefusal(error?.code) ? (
           // Phase 65: a provider sign-in that sign-up access stopped (not on the list, waiting, declined).
           <AccessRefused code={error.code} message={error.message} onBack={clearError} />
+        ) : refused ? (
+          // Phase 65: the About-you step refused (waiting for approval, declined, not on the list).
+          <AccessRefused code={refused.code} message={refused.message} />
         ) : tooYoung ? (
           <DialogHeader>
             <DialogTitle>Ask a parent to add you</DialogTitle>
@@ -77,7 +96,14 @@ export function SignupSheet({ open, onClose }: { open: boolean; onClose: () => v
                 flushEvents();
                 setSplash(true);
               }}
-              onTooYoung={() => setTooYoung(true)}
+              onTooYoung={() => {
+                setTooYoung(true);
+                cancelSignup();
+              }}
+              onRefused={(refusal) => {
+                setRefused(refusal);
+                cancelSignup();
+              }}
             />
           </>
         ) : (

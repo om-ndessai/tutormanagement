@@ -32,7 +32,8 @@ tags:
       id: org-assessments-switch
     direction: DOWN
     centerElement: true
-- assertVisible: 'Include questions not yet reviewed'
+# Since Phase 62 the platform sets "questions not yet reviewed" per space: the admin reads it, with no switch.
+- assertVisible: 'Questions not yet reviewed'
 - tapOn:
     id: org-assessments-switch
 - extendedWaitUntil:

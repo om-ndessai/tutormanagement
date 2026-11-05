@@ -178,6 +178,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P0. The app's Have a code button crashes
 
+> **Status (JF3):** done in the fix-up (2026-11-04). The dialog gets the toast through a bridge, the app has an error screen with Try again and Go to Home, and a Maestro flow taps the quick action.
+
+
 - **What:**
   - Render the home's "Have a code?" dialog inside the toast provider, or hand the box a toast function.
   - Give the app an error screen with a way home.
@@ -420,6 +423,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
     This is a side effect of two deliberate phases, not a choice anyone made.
 
 ### P1. Refusals give a next step and never reopen unasked
+
+> **Status (JF8):** in part, in the fix-up (2026-11-04): a refused sign-up no longer reopens by itself on the web (J05's repro is a spec). The next steps and words are Phase 70.
+
 
 - **What:**
   - **Clear the refused sign-up** when a refusal is shown. The "Almost there" form must never reopen by itself, with or
@@ -1025,6 +1031,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. The Dashboard opens on the wrong hat
 
+> **Status (JF24):** in part, in the fix-up (2026-11-04): the wizard's last button reads "Done". The rest is Phase 74.
+
+
 - **What:**
   - **The Dashboard** opens on the role of the home's leading hat, remembers the last role chosen per space, and labels
     the role switch ("Viewing as: Tutor").
@@ -1052,6 +1061,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   content ([member-home-plan.md:93](../member-home-plan.md)).
 
 ### P2. The tour covers what it introduces, and appears without Tutoring
+
+> **Status (JF25):** in part, in the fix-up (2026-11-04): the wizard offers the tour only where Tutoring is on, on both clients. The rest is Phase 74.
+
 
 - **What:**
   - **Tutoring only.** Apply `tourOffered` to the welcome wizard's "Take the tour" as well. This is a bug against the
@@ -1122,6 +1134,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 - **Owner decides:** no.
 
 ### P2. Phone-width layouts break on a dozen screens
+
+> **Status (JF28):** in part, in the fix-up (2026-11-04): the app's question card shows every answer choice (half the screen for a choice question, and a "More choices below" cue). The rest is Phase 78.
+
 
 - **What:**
   - **First, the app's question card.** Make every answer choice visible, or show a scroll cue. The fourth choice was

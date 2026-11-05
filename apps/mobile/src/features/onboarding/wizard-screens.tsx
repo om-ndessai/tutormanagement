@@ -2,7 +2,7 @@
 // done screens. An admin chooses: the tour, adding a student, adding a tutor. Everyone else takes
 // the tour and then confirms the details the office keeps on them. Closing it at any point is
 // fine -- whatever was added stays.
-import { featureAllowed, featureOn } from '@tmi/shared';
+import { featureAllowed, featureOn, tourOffered } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { View } from 'react-native';
 import { Button, Chip, Icon, Surface, Text } from 'react-native-paper';
@@ -41,6 +41,7 @@ export function WelcomeScreen() {
   // and tutor, are Tutoring's.
   const tutoring = featureAllowed(organization, 'tutoring');
   const assessment = featureOn(organization, 'assessment');
+  const tour = tourOffered(organization);
   const { close } = useWizardFrame();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const firstName = user?.full_name.split(' ')[0] ?? '';
@@ -52,27 +53,36 @@ export function WelcomeScreen() {
         title={`Welcome to ${brand.short}${firstName ? `, ${firstName}` : ''}`}
         description={
           isAdmin
-            ? tutoring
-              ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
-              : 'A quick tour of the portal, and guided setup for a new student.'
-            : 'A quick tour of the portal, then a check that the office has your details right.'
+            ? tour
+              ? tutoring
+                ? 'A quick tour of the portal, and guided setup for a new student or tutor.'
+                : 'A quick tour of the portal, and guided setup for a new student.'
+              : tutoring
+                ? 'Guided setup for a new student or tutor.'
+                : 'Guided setup for a new student.'
+            : tour
+              ? 'A quick tour of the portal, then a check that the office has your details right.'
+              : 'A check that the office has your details right.'
         }
       />
 
       <View style={{ gap: space.md }}>
-        <Choice
-          testID="onboarding-choice-tour"
-          icon="compass-outline"
-          title="Take the tour"
-          description="The dashboard and the menu, one part at a time, with what each is for."
-          badge={tourDone ? 'Done' : 'Tour'}
-          action="Take the tour"
-          onPress={() => {
-            // Marked first, so closing the wizard here is leaving for the tour, not closing it.
-            startTour();
-            close();
-          }}
-        />
+        {/* The tour is Tutoring's (owner, 2026-11-04): a new space without it never offers it (UI audit J06A). */}
+        {tour ? (
+          <Choice
+            testID="onboarding-choice-tour"
+            icon="compass-outline"
+            title="Take the tour"
+            description="The dashboard and the menu, one part at a time, with what each is for."
+            badge={tourDone ? 'Done' : 'Tour'}
+            action="Take the tour"
+            onPress={() => {
+              // Marked first, so closing the wizard here is leaving for the tour, not closing it.
+              startTour();
+              close();
+            }}
+          />
+        ) : null}
         {isAdmin ? (
           <>
             <Choice
@@ -161,7 +171,7 @@ export function DoneScreen() {
         <Text variant="bodyMedium">That’s everything. Welcome aboard.</Text>
       </View>
       <Button testID="onboarding-done-close" mode="contained" onPress={close}>
-        Go to my dashboard
+        Done
       </Button>
     </Screen>
   );

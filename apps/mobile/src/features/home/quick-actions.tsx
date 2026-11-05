@@ -7,12 +7,15 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal } from 'react-native-paper';
 
+import { ToastBridge, useToast } from '@/components/toast';
 import { HaveACode } from '@/features/play/play-home';
 import { haptics } from '@/lib/haptics';
 import { space } from '@/theme/tokens';
 import { QUICK_ACTION_META } from './member-home-model';
 
 export function QuickActions({ actions }: { actions: QuickAction[] }) {
+  // Read here, inside ToastProvider: the Portal below mounts its dialog above the provider (ToastBridge).
+  const toast = useToast();
   const [code, setCode] = useState(false);
   // A game code opens the join sheet over Home: the box closes as Home loses focus.
   useFocusEffect(useCallback(() => () => setCode(false), []));
@@ -39,16 +42,18 @@ export function QuickActions({ actions }: { actions: QuickAction[] }) {
         );
       })}
       <Portal>
-        <Dialog visible={code} onDismiss={() => setCode(false)} testID="home-code-dialog">
-          <Dialog.Content>
-            <HaveACode />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button testID="home-code-close" onPress={() => setCode(false)}>
-              Close
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
+        <ToastBridge toast={toast}>
+          <Dialog visible={code} onDismiss={() => setCode(false)} testID="home-code-dialog">
+            <Dialog.Content>
+              <HaveACode />
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button testID="home-code-close" onPress={() => setCode(false)}>
+                Close
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </ToastBridge>
       </Portal>
     </View>
   );

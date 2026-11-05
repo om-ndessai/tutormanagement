@@ -11,7 +11,7 @@ import type { CanvasStroke } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { Alert, AppState, ScrollView, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, Icon, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { IconButton } from '@/components/icon-button';
@@ -56,10 +56,20 @@ export function TakeAssessmentScreen() {
   const [index, setIndex] = useState(0);
   const [tool, setTool] = useState<CanvasTool>('pen');
   const [area, setArea] = useState({ width: 0, height: 0 });
+  // The question card's scroll on a phone: whether more of the question waits below its edge. Kept per
+  // question (its id), so a new question starts at the top without an effect resetting it.
+  const [cardScrollState, setCardScrollState] = useState({ id: '', view: 0, content: 0, offset: 0 });
 
   const assessment = detail.data?.data;
   const questions = useMemo(() => assessment?.questions ?? [], [assessment]);
   const question = questions[index];
+  const cardScroll =
+    question && cardScrollState.id === question.id ? cardScrollState : { id: question?.id ?? '', view: 0, content: 0, offset: 0 };
+  // Built from the latest state (onLayout and onContentSizeChange can land in one tick), started afresh per question.
+  const setCardScroll = (update: (s: typeof cardScroll) => typeof cardScroll) => {
+    const id = question?.id ?? '';
+    setCardScrollState((prev) => ({ ...update(prev.id === id ? prev : { id, view: 0, content: 0, offset: 0 }), id }));
+  };
   const strokes = (question && state.work.pages[question.id]) || NO_STROKES;
   const unanswered = unansweredCount(questions, state.work);
 
@@ -229,14 +239,33 @@ export function TakeAssessmentScreen() {
     </ScrollView>
   );
 
+  // On a phone the card shares the screen with the page for working. A choice question gets up to half of
+  // it, so its answers fit (the page is only for working there), and any card still taller than its space
+  // says so: the fourth choice once sat hidden below the card with nothing to show it was there (UI audit
+  // J06A step 37) -- and code marks the choice, so an unseen right answer is marked wrong.
+  const cardMax = Math.max(question.kind === 'choice' ? 220 : 160, window.height * (question.kind === 'choice' ? 0.5 : 0.34));
+  const showMore = !wide && cardScroll.content > cardScroll.view + 4 && cardScroll.offset + cardScroll.view < cardScroll.content - 4;
   const questionCard = (
     <OutlinedCard
       style={{ borderRadius: radius.lg, ...(wide ? { flex: 1 } : { flexShrink: 1 }) }}
       contentStyle={wide ? { flex: 1 } : undefined}
     >
       <ScrollView
-        style={wide ? { flex: 1 } : { maxHeight: Math.max(160, window.height * 0.34) }}
+        testID="assessment-question-card"
+        style={wide ? { flex: 1 } : { maxHeight: cardMax }}
         contentContainerStyle={{ padding: space.lg, gap: space.md }}
+        persistentScrollbar
+        scrollEventThrottle={64}
+        onLayout={(event) => {
+          // Read now: the event is released before a state update runs.
+          const height = event.nativeEvent.layout.height;
+          setCardScroll((s) => ({ ...s, view: height }));
+        }}
+        onContentSizeChange={(_w, h) => setCardScroll((s) => ({ ...s, content: h }))}
+        onScroll={(event) => {
+          const y = event.nativeEvent.contentOffset.y;
+          setCardScroll((s) => (Math.abs(s.offset - y) < 8 ? s : { ...s, offset: y }));
+        }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
           <BadgePill />
@@ -254,6 +283,27 @@ export function TakeAssessmentScreen() {
           onChoose={(choice) => dispatch({ type: 'choose', questionId: question.id, index: choice })}
         />
       </ScrollView>
+      {showMore ? (
+        <View
+          testID="assessment-more-below"
+          pointerEvents="none"
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: space.xs,
+            paddingVertical: space.xs,
+            borderTopWidth: 1,
+            borderTopColor: theme.tokens.border,
+            backgroundColor: theme.colors.elevation.level1,
+          }}
+        >
+          <Icon source="chevron-down" size={18} color={theme.tokens.mutedForeground} />
+          <Text variant="labelMedium" style={{ color: theme.tokens.mutedForeground }}>
+            {question.kind === 'choice' ? 'More choices below: scroll the question' : 'More below: scroll the question'}
+          </Text>
+        </View>
+      ) : null}
     </OutlinedCard>
   );
 
