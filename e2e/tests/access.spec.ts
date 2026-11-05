@@ -127,6 +127,11 @@ test.describe('sign-up access', () => {
     await expect(sheet.getByTestId('access-refused-title')).toHaveText('Waiting for approval');
     await expect(sheet.getByTestId('access-refused-message')).toContainText('Thanks, Wren.');
     await expect(sheet.getByRole('link', { name: /Contact us/ })).toHaveAttribute('href', 'mailto:om.ndessai@gmail.com');
+    // One heading, and a next step (UI audit JF2): Keep playing leads; the address is shown in full.
+    await expect(sheet.getByText('Almost there')).toHaveCount(0);
+    await expect(sheet.getByTestId('access-refused-keep-line')).toHaveText('You can keep playing without an account.');
+    await expect(sheet.getByTestId('access-refused-contact')).toHaveText('Contact us: om.ndessai@gmail.com');
+    await expect(sheet.getByTestId('access-refused-keep-playing')).toBeVisible();
 
     // The console: Sign-up access in Settings > Guest play, with the waiting count and the row.
     await platform.goto('/platform/settings');

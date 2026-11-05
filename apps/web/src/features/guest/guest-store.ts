@@ -18,7 +18,45 @@ interface GuestMemory {
   nudgeDismissedAt?: number;
   /** Today's 5 as played on this device: the day, the level, and which questions hit. */
   today?: GuestToday;
+  /**
+   * Accounts refused as under 13 on this device (owner, 2026-11-04): a short hash of the address, never the
+   * address, so the age question is not offered again to the same account here (UI audit J05).
+   */
+  tooYoung?: string[];
 }
+
+/** A short, one-way key for an address kept on this device only: 32-bit FNV-1a of the lowercased address. */
+export function addressKey(email: string): string {
+  let hash = 0x811c9dc5;
+  for (const char of email.trim().toLowerCase()) {
+    hash ^= char.codePointAt(0)!;
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash.toString(16).padStart(8, '0');
+}
+
+const DECLINED_KEY = 'aimtrue.declined';
+
+/**
+ * A declined sign-up (Phase 65's access_declined) stops this TAB offering sign-up again (UI audit J02): the
+ * tab's own storage, gone when the tab closes, and never sent.
+ */
+export const declinedTab = {
+  is: (): boolean => {
+    try {
+      return sessionStorage.getItem(DECLINED_KEY) === '1';
+    } catch {
+      return false;
+    }
+  },
+  mark: () => {
+    try {
+      sessionStorage.setItem(DECLINED_KEY, '1');
+    } catch {
+      // A private window: the tab simply forgets.
+    }
+  },
+};
 
 export interface GuestToday {
   day: string;
@@ -68,6 +106,13 @@ export const guestMemory = {
     return today && today.day === day && today.level === level ? today : undefined;
   },
   setToday: (today: GuestToday) => write((m) => ({ ...m, today })),
+  /** Whether this account was refused as under 13 on this device. */
+  refusedYoung: (email: string | null | undefined): boolean => Boolean(email) && (read().tooYoung ?? []).includes(addressKey(email!)),
+  rememberYoung: (email: string | null | undefined) => {
+    if (!email) return;
+    const key = addressKey(email);
+    write((m) => ({ ...m, tooYoung: [key, ...(m.tooYoung ?? []).filter((k) => k !== key)].slice(0, 10) }));
+  },
 };
 
 /**

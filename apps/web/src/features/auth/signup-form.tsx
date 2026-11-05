@@ -102,7 +102,9 @@ export function SignupForm({
             </SelectContent>
           </Select>
         </div>
-        <p className="text-muted-foreground text-xs">Only whether you are over 18 is kept, never the date.</p>
+        <p className="text-muted-foreground text-xs">
+          We keep only your age group, never the date.
+        </p>
       </div>
       <label className="flex items-start gap-2 text-sm">
         <input

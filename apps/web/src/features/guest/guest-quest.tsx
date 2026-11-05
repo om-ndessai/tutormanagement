@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { MathText } from '@/features/question-bank/math-text';
 import { useAuth } from '@/providers/auth-provider';
 import { countEvent, flushEvents, useGuestPool } from './guest-api';
-import { guestMemory, readQuestState, writeQuestState, type GuestQuestState } from './guest-store';
+import { declinedTab, guestMemory, readQuestState, writeQuestState, type GuestQuestState } from './guest-store';
 import { SignupSheet } from './signup-sheet';
 import { NudgeSheet, benefitsFor } from './nudge-sheet';
 
@@ -48,7 +48,7 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
   const pool = useGuestPool(guest.version, tile.level_id);
   const [state, setState] = useState<GuestQuestState | null>(() => readQuestState(tile.code));
   const [now, setNow] = useState(() => Date.now());
-  const [nudge, setNudge] = useState<{ right: boolean } | null>(null);
+  const [nudge, setNudge] = useState<{ right: boolean; question: GuestQuestion; given: string | null } | null>(null);
   const [typed, setTyped] = useState('');
   const [signingUp, setSigningUp] = useState(false);
   // P13: back from a redirect provider mid sign-up: the sheet opens at the age question.
@@ -121,7 +121,7 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
     const finished = answers.length >= state!.questionIds.length;
     if (after > 0 && answers.length === after && !state!.nudged && cooled && !finished) {
       next = { ...next, nudged: true, pausedAt: Date.now() };
-      setNudge({ right: correct });
+      setNudge({ right: correct, question, given });
       countEvent({ name: 'nudge_shown', tile: tile.code, variant: `n${after}` });
     }
     setState(next);
@@ -233,6 +233,19 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
       <NudgeSheet
         open={nudge !== null}
         headline={nudge?.right ? guest.settings.nudge_right : guest.settings.nudge_wrong}
+        mark={
+          nudge &&
+          (nudge.right ? (
+            <span className="flex items-center gap-1.5">
+              <CheckIcon className="text-primary size-4" aria-hidden /> Right.
+            </span>
+          ) : (
+            <span className="flex flex-wrap items-center gap-1.5">
+              <XIcon className="text-destructive size-4" aria-hidden />
+              {nudge.given === null ? 'Skipped.' : 'Not this time.'} The answer: <MathText text={nudge.question.answer} />
+            </span>
+          ))
+        }
         benefits={benefitsFor(tile.level_id, guest.member_counts)}
         onSignUp={() => {
           resume(true);
@@ -307,7 +320,7 @@ function Results({
           )}
           <div className="flex flex-wrap gap-2">
             <Button onClick={onSignUp} data-testid="guest-save-score">
-              {config?.signup_open ? 'Save this score: sign up free' : 'Sign in'}
+              {config?.signup_open && !declinedTab.is() ? 'Keep playing with a free account' : 'Sign in'}
             </Button>
             <Button variant="outline" onClick={() => void challenge()}>
               Challenge a friend

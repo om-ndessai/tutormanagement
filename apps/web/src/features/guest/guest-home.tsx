@@ -26,8 +26,8 @@ import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { isAccessRefusal } from '@/features/auth/access-refused';
 import { countEvent } from './guest-api';
-import { guestMemory, type GuestToday } from './guest-store';
-import { SignupSheet } from './signup-sheet';
+import { declinedTab, guestMemory, type GuestToday } from './guest-store';
+import { SignupSheet, type SignupSheetMode } from './signup-sheet';
 import { NudgeSheet, benefitsFor } from './nudge-sheet';
 import { GradeRow, QuestCard, TodayCard, type RingState } from '@/features/play/quest-card';
 
@@ -45,20 +45,23 @@ export function GuestHome() {
   const tiles = guest?.tiles ?? [];
   const [grade, setGrade] = useState<number>(() => guestGradeOf(guestMemory.grade()) ?? GUEST_DEFAULT_GRADE);
   const [locked, setLocked] = useState<GuestTile | null>(null);
-  const [signingUp, setSigningUp] = useState(false);
+  // The sheet, and how it opened: "Sign in" says Sign in (UI audit JF11), the calls to action Sign up free.
+  const [sheet, setSheet] = useState<SignupSheetMode | null>(null);
 
   useEffect(() => countEvent({ name: 'home_viewed', source: 'home' }), []);
   // P13: back from a redirect provider mid sign-up: the sheet opens at the age question.
   // Phase 65: back from a redirect provider with a sign-up access refusal: the sheet says it.
   useEffect(() => {
-    if (pendingSignup || isAccessRefusal(error?.code)) setSigningUp(true);
+    if (pendingSignup || isAccessRefusal(error?.code)) setSheet((open) => open ?? 'signup');
   }, [pendingSignup, error]);
 
   if (!guest) return null;
   const board = guestBoard(tiles, grade);
   const todayLevel = guestTodayLevel(tiles, grade);
-  const signUp = () => setSigningUp(true);
-  const signupOpen = config?.signup_open === true;
+  // A tab whose sign-up was declined is offered Sign in only (UI audit J02).
+  const signupOpen = config?.signup_open === true && !declinedTab.is();
+  const signIn = () => setSheet('signin');
+  const signUp = () => (signupOpen ? setSheet('signup') : signIn());
 
   function chooseGrade(next: number) {
     setGrade(next);
@@ -96,7 +99,7 @@ export function GuestHome() {
             <span className="font-display text-lg font-extrabold">{brand.short}</span>
             <button
               type="button"
-              onClick={signUp}
+              onClick={signIn}
               className="ml-auto inline-flex h-10 items-center rounded-full border border-white/70 px-4 text-sm font-semibold transition-colors hover:bg-white/10"
               data-testid="guest-sign-in"
             >
@@ -109,6 +112,9 @@ export function GuestHome() {
                 <span className="block">Math quests.</span>
                 <span className="text-warning block">Hit the target.</span>
               </h1>
+              <p className="text-[15px] font-semibold text-white/90" data-testid="guest-audience">
+                For kids, teens, grown-ups and classes.
+              </p>
               <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[15px] sm:w-fit" aria-label="What you get">
                 {GUEST_PROMISES.map((promise) => (
                   <li key={promise} className="flex items-center gap-2">
@@ -239,7 +245,7 @@ export function GuestHome() {
         </nav>
       </footer>
 
-      <SignupSheet open={signingUp} onClose={() => setSigningUp(false)} />
+      <SignupSheet open={sheet !== null} mode={sheet ?? 'signup'} onClose={() => setSheet(null)} />
       <NudgeSheet
         open={locked !== null}
         headline={locked ? `${guestTileTitle(locked)} is free with an account` : ''}
@@ -266,6 +272,10 @@ const FAQ: [string, string][] = [
     "Guests aren't tracked: no account, no ads, and answers stay on this device. Children under 13 join through a parent's account.",
   ],
   ['Which grades?', 'Grades 1 to 8, with harder Adv quests for a stretch.'],
+  [
+    'Can adults play?',
+    'Yes. Quests go from Grade 1 to Algebra and contest maths, so grown-ups, teens and classes play too. An account is free.',
+  ],
 ];
 
 /** The bullseye's rings, faint, in the band's top corner. */

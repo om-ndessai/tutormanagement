@@ -164,11 +164,10 @@ test.describe('signing up (Phase 52)', () => {
     expect((await admin.request.delete('/api/organization', { data: { confirm_name: 'Chapel Hill Math Institute' } })).status()).toBe(403);
     expect((await inSpace.request.delete('/api/organization', { data: { confirm_name: 'Something else' } })).status()).toBe(422);
     await inSpace.goto('/organization');
-    // A new space's admin meets the welcome wizard first (Phase 26); close it.
-    const wizard = inSpace.getByTestId('onboarding-wizard');
-    await expect(wizard).toBeVisible({ timeout: 10_000 });
-    await inSpace.keyboard.press('Escape');
-    await expect(wizard).toHaveCount(0);
+    // No Tutoring here, so no welcome wizard (the tour is Tutoring's, owner 2026-11-04; the space was made
+    // through the API, so its "Invite people" step is not this browser's either).
+    await expect(inSpace.getByTestId('space-delete-name')).toBeVisible({ timeout: 10_000 });
+    await expect(inSpace.getByTestId('onboarding-wizard')).toHaveCount(0);
     await inSpace.getByTestId('space-delete-name').fill('Olive’s practice');
     await inSpace.getByTestId('space-delete').click();
     // She is taken to the space she still has: her own, made at sign-up (P13).

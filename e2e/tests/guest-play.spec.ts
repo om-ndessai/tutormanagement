@@ -247,6 +247,22 @@ test.describe('guest play', () => {
     expect(listed.some((space) => space.personal)).toBe(false);
   });
 
+  test('Sign in opens a sign-in sheet, and Sign up free from it (UI audit JF11)', async ({ as }) => {
+    const page = await as('student', { org: null });
+    await signedOut(page);
+    await page.goto('/');
+    await page.getByTestId('guest-sign-in').click();
+    const sheet = page.getByTestId('signup-sheet');
+    await expect(sheet.getByRole('heading', { name: 'Sign in' })).toBeVisible();
+    await expect(sheet).toContainText('Welcome back. Use the account you signed up with.');
+    await sheet.getByTestId('signup-sheet-to-signup').click();
+    await expect(sheet.getByRole('heading', { name: 'Sign up free' })).toBeVisible();
+    // The guest page speaks to every visitor (JF10).
+    await page.keyboard.press('Escape');
+    await expect(page.getByTestId('guest-audience')).toHaveText('For kids, teens, grown-ups and classes.');
+    await expect(page.getByText('Can adults play?')).toBeVisible();
+  });
+
   test('a refused sign-up is said once: the sheet never reopens by itself on the guest page or a quest (UI audit J05)', async ({
     as,
   }) => {
@@ -269,7 +285,7 @@ test.describe('guest play', () => {
     await page.getByRole('option', { name: String(new Date().getFullYear() - 11), exact: true }).click();
     await sheet.getByTestId('signup-accept').check();
     await sheet.getByTestId('signup-submit').click();
-    await expect(sheet.getByText('Ask a parent to add you')).toBeVisible();
+    await expect(sheet.getByTestId('signup-too-young')).toContainText('Ask a grown-up to add you');
 
     // Closed, and then playing on: the form does not come back unasked -- not over a quest, not on the page.
     await page.keyboard.press('Escape');

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { guestLevelWords, type QuestionBankLevelId } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/providers/auth-provider';
 import { countEvent } from './guest-api';
+import { declinedTab } from './guest-store';
 
 /** "1,200+" -- a level's member count, rounded down, never more than is true. */
 export function roundedCount(n: number): string | null {
@@ -38,10 +39,13 @@ export function NudgeSheet({
   onClose,
   closeLabel = 'Keep playing',
   shareLink,
+  mark,
 }: {
   open: boolean;
   headline: string;
   description?: string;
+  /** After an answer: whether it was right, and the answer when it was not (UI audit JF10), before the pitch. */
+  mark?: ReactNode;
   benefits: string[];
   onSignUp: () => void;
   onClose: () => void;
@@ -50,7 +54,8 @@ export function NudgeSheet({
   shareLink: string;
 }) {
   const { config } = useAuth();
-  const signupOpen = config?.signup_open === true;
+  // A tab whose sign-up was declined is not offered sign-up again (UI audit J02): Sign in only.
+  const signupOpen = config?.signup_open === true && !declinedTab.is();
   const [askAdult, setAskAdult] = useState(false);
 
   async function ask() {
@@ -74,6 +79,11 @@ export function NudgeSheet({
           <DialogTitle>{headline}</DialogTitle>
           <DialogDescription>{description ?? (signupOpen ? 'With a free account:' : 'With an account:')}</DialogDescription>
         </DialogHeader>
+        {mark && (
+          <div className="bg-muted/60 rounded-lg px-3 py-2 text-sm" data-testid="guest-nudge-mark">
+            {mark}
+          </div>
+        )}
         <ul className="grid gap-1.5 text-sm">
           {benefits.map((line) => (
             <li key={line} className="flex gap-2">
