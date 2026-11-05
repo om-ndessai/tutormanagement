@@ -1,7 +1,7 @@
 // Phase 62 (P6-P8): the members' Play home, with the api client mocked at the network edge -- the tiles
 // in their curricula, each a game in one tap; a star keeps a tile as a favorite; a multiplayer favorite
 // starts with the host playing and its roster invited; the roster dialog lists first names and saves
-// them; Waiting for you joins through the join sheet; the code box tells a game from a space; and the
+// them; Waiting for you joins through the join sheet; the code box opens the one code sheet; and the
 // console's switch hides it all. Phase 64 (P17-P20): My progress, the Daily's button and a tile's best.
 // Phase 67 (H5-H8): the Quest board (the grade row, the grade's cards, "More levels", "Show your work"),
 // the Daily as rings and the week strip.
@@ -409,7 +409,7 @@ describe('Phase 64/67: My progress, the Daily and a tile’s best', () => {
 });
 
 describe('Have a code?', () => {
-  it('opens the join sheet for six characters, and asks to join a space for eight', async () => {
+  it('opens the one code sheet on what was typed, a game’s code or a space’s, and sends nothing itself (JF4)', async () => {
     serve();
     await renderWithProviders(<PlayHome />);
     const box = await screen.findByTestId('play-code');
@@ -419,15 +419,13 @@ describe('Have a code?', () => {
 
     await fireEvent.changeText(box, 'abc-234');
     await fireEvent.press(go);
-    expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/join-game', params: { code: 'ABC234' } });
-    expect(mockPost).not.toHaveBeenCalled();
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/have-a-code', params: { code: 'ABC234' } });
 
-    await fireEvent.changeText(box, 'fmxy-2345');
+    await fireEvent.changeText(screen.getByTestId('play-code'), 'fmxy-2345');
     await fireEvent.press(screen.getByTestId('play-code-go'));
-    await waitFor(() => expect(mockPost).toHaveBeenCalledWith('/spaces/join-requests', { code: 'FMXY2345' }));
-    await waitFor(() =>
-      expect(mockToast.success).toHaveBeenCalledWith('Asked to join. Its admins will let you in.'),
-    );
+    expect(mockPush).toHaveBeenLastCalledWith({ pathname: '/have-a-code', params: { code: 'FMXY2345' } });
+    expect(mockPost).not.toHaveBeenCalledWith('/spaces/join-requests', expect.anything());
+    expect(mockToast.success).not.toHaveBeenCalled();
   });
 });
 

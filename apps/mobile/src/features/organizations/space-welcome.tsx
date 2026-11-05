@@ -1,6 +1,7 @@
 // Ported from apps/web/src/features/organizations/welcome.tsx @ 9485a8e (Phase 60's "Requests sent" and
 // Delete my account's condition from the working tree on f96b984; Phase 61's two choices and the
-// invite step's mark likewise)
+// invite step's mark likewise; Phase 72's role and note before "Ask to join", and the 13-17 card, @ 98c40ab,
+// working tree)
 import { formatRelativeTime, type SpaceLookup } from '@tmi/shared';
 import { getCalendars } from 'expo-localization';
 import { router } from 'expo-router';
@@ -18,12 +19,15 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 import { useAskToJoin, useDeleteAccount, useLookupSpace, useMakeSpace, useWithdrawRequest } from './api';
+import { JoinAskFields, useJoinAsk } from './code-sheet';
+import { askedToJoinText, joinAskRequest } from './code-sheet-model';
 import { markInviteStep } from './invite-step';
 import { OrgAvatar } from './org-avatar';
 import {
   answeredRequests,
   canMake,
   codeReady,
+  showsTeenCard,
   deviceTimeZone,
   makeProblem,
   splitRequests,
@@ -44,8 +48,20 @@ type CodeInput = NativeTextInput;
  * Phase 61 (S11): two choices, Join with a code and Start a space (adults only; a 13-17 sees only
  * the first). A phone has no room side by side, so they stack, in that order. Starting one goes on
  * to "Invite people" (S12) inside the new space.
+ *
+ * Phase 72 (UI audit JF7, JF26): a found space asks the role and a note before "Ask to join"; a 13-17 who may not
+ * start a space reads the way forward (a club needs an adult to start it), and nobody else is told about ages.
+ * `focusStart` (the account sheet's and the (+)'s "Start a space") opens on the new space's name.
  */
-export function SpaceWelcome({ firstTime, focusJoin = false }: { firstTime: boolean; focusJoin?: boolean }) {
+export function SpaceWelcome({
+  firstTime,
+  focusJoin = false,
+  focusStart = false,
+}: {
+  firstTime: boolean;
+  focusJoin?: boolean;
+  focusStart?: boolean;
+}) {
   const { joinRequests, account, memberships, invitations, platformAdmin } = useAuth();
   const mayMake = canMake(account, memberships, platformAdmin);
   const codeRef = useRef<CodeInput>(null);
@@ -79,14 +95,26 @@ export function SpaceWelcome({ firstTime, focusJoin = false }: { firstTime: bool
         />
       ) : null}
       <View style={{ gap: space.lg }} testID="welcome-choices">
+        {/* Opened from "Start a space", that card comes first: the name field it focuses is in view above the
+            keyboard (Android does not scroll a focused field into view here). */}
+        {mayMake && focusStart && !focusJoin ? <MakeSpace autoFocus /> : null}
         <JoinWithCode inputRef={codeRef} autoFocus={focusJoin} />
-        {mayMake ? <MakeSpace /> : null}
+        {mayMake && !(focusStart && !focusJoin) ? <MakeSpace autoFocus={false} /> : null}
       </View>
-      {mayMake ? null : (
-        <Text testID="welcome-adults-only" variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-          To start a space of your own you need to be 18 or older.
-        </Text>
-      )}
+      {showsTeenCard(account, mayMake) ? (
+        // A teen who runs a club met only a grey "no" (J04): the way forward instead (UI audit JF7). An invited
+        // adult (no account of their own yet) is not told about ages at all (J09).
+        <OutlinedCard testID="welcome-adults-only" style={{ borderRadius: radius.lg }}>
+          <View style={{ padding: space.lg, gap: space.xs }}>
+            <Text variant="titleSmall" style={{ fontWeight: '700' }}>
+              A club needs an adult to start its space
+            </Text>
+            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+              Ask a teacher or a parent to start it, then join it with its code here.
+            </Text>
+          </View>
+        </OutlinedCard>
+      ) : null}
       {/* Only for someone who belongs nowhere and has nothing open (the API checks the same). */}
       {/* Not for a platform admin, whose account the API never deletes. */}
       {firstTime && !platformAdmin && memberships.length === 0 && invitations.length === 0 && open.length === 0 ? <DeleteAccount /> : null}
@@ -144,6 +172,7 @@ function JoinWithCode({ inputRef, autoFocus }: { inputRef: RefObject<CodeInput |
   const [code, setCode] = useState('');
   const [found, setFound] = useState<SpaceLookup | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
+  const joining = useJoinAsk(found);
   const ready = codeReady(code) && !lookup.isPending;
 
   async function find() {
@@ -160,8 +189,8 @@ function JoinWithCode({ inputRef, autoFocus }: { inputRef: RefObject<CodeInput |
 
   async function join() {
     try {
-      await ask.mutateAsync(code);
-      toast.success(`Asked to join ${found?.name}. Its administrators will let you in.`);
+      await ask.mutateAsync(joinAskRequest(code, joining.role, joining.note));
+      toast.success(askedToJoinText(found?.name ?? 'the space'));
       setFound(null);
       setCode('');
     } catch (caught) {
@@ -233,6 +262,12 @@ function JoinWithCode({ inputRef, autoFocus }: { inputRef: RefObject<CodeInput |
             <Text testID="welcome-found-name" variant="titleMedium" style={{ flex: 1, minWidth: 120 }}>
               {found.name}
             </Text>
+            {/* The role asked for and a note (Phase 72, JF26), read by the space's admins only. */}
+            {found.standing === null ? (
+              <View style={{ flexBasis: '100%' }}>
+                <JoinAskFields space={found} ask={joining} />
+              </View>
+            ) : null}
             {standing ? (
               <Text testID="welcome-found-standing" variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
                 {standing}
@@ -249,7 +284,7 @@ function JoinWithCode({ inputRef, autoFocus }: { inputRef: RefObject<CodeInput |
   );
 }
 
-function MakeSpace() {
+function MakeSpace({ autoFocus = false }: { autoFocus?: boolean }) {
   const make = useMakeSpace();
   const { chooseOrganization } = useAuth();
   const toast = useToast();
@@ -305,6 +340,7 @@ function MakeSpace() {
         </Text>
         <TextInput
           testID="welcome-space-name"
+          autoFocus={autoFocus}
           mode="outlined"
           label="Name your space"
           placeholder="The Patel family"

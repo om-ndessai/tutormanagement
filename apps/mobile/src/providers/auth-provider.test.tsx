@@ -72,6 +72,8 @@ const server = {
   accessRefusal: null as null | { code: string; message: string; details?: Record<string, string[]> },
   /** Phase 60: the person's memberships, when a test needs more than the one space. */
   memberships: null as null | { slug: string; name: string; status: 'active' | 'suspended'; is_default: boolean }[],
+  /** Phase 72 (JF12): someone a space added has not accepted the terms yet; POST /auth/legal clears it. */
+  legalDue: false,
   calls: [] as { method: string; path: string; init: RequestInit }[],
 };
 
@@ -156,6 +158,7 @@ function fakeFetch(url: string, init: RequestInit = {}) {
         invitations: [],
         platform_admin: false,
         account: { age_band: 'adult' },
+        ...(server.legalDue ? { legal_due: true } : {}),
         join_requests: !server.withRequest
           ? []
           : [
@@ -171,6 +174,10 @@ function fakeFetch(url: string, init: RequestInit = {}) {
             ],
       },
     });
+  }
+  if (path === '/auth/legal') {
+    server.legalDue = false;
+    return json(200, { data: { accepted: true } });
   }
   if (path === '/auth/enter') return json(200, { data: { first_visit: false } });
   if (path === '/dashboard') return json(200, { data: { ok: true } });
@@ -212,6 +219,7 @@ beforeEach(async () => {
   server.withRequest = false;
   server.accessRefusal = null;
   server.memberships = null;
+  server.legalDue = false;
   server.calls = [];
   globalThis.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
   Object.values(GoogleSignin).forEach((mock) => mock.mockClear());
@@ -693,5 +701,31 @@ describe('Phase 65: sign-up access refused', () => {
     expect(auth.status).toBe('unauthenticated');
     expect(auth.accessRefusal).toEqual({ ...PENDING, email: null, inSheet: false });
     expect(auth.statusMessage).toBeNull();
+  });
+});
+
+describe('Phase 72: the terms, once, for someone a space added (JF12)', () => {
+  it('says the session owes them, and no longer once accepted and read again; an older Worker owes nothing', async () => {
+    server.cookie = true;
+    server.legalDue = true;
+    await mount();
+    expect(auth.status).toBe('authenticated');
+    expect(auth.legalDue).toBe(true);
+    await act(async () => {
+      await apiClient.post('/auth/legal', { terms_version: 'v', privacy_version: 'v' });
+      await auth.refreshSession();
+    });
+    expect(auth.legalDue).toBe(false);
+  });
+
+  it('forgets it on signing out', async () => {
+    server.cookie = true;
+    server.legalDue = true;
+    await mount();
+    expect(auth.legalDue).toBe(true);
+    await act(async () => {
+      await auth.signOut();
+    });
+    expect(auth.legalDue).toBe(false);
   });
 });

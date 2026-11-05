@@ -733,7 +733,7 @@ export function answerQuestion(
   const question = held ? series[held.index] : undefined;
   if (!held || !question || question.id !== input.questionId) return { ok: false, reason: 'not_yours' };
   const skipped = input.skip || !input.answer;
-  const correct = !skipped && checkAnswer({ kind: question.kind, answer: question.answer }, input.answer!);
+  const correct = !skipped && checkAnswer({ kind: question.kind, answer: question.answer, stem: question.stem }, input.answer!);
   delete team.hands[input.userId];
   team.answers.push({
     index: held.index,

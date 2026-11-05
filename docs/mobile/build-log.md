@@ -4790,3 +4790,50 @@ that live under More → Dashboard since then, so those steps were skipped and `
 Dashboard step under More (new), Schedule under Sessions, the last "Your profile" under More, Finish → Confirm your
 details. **Jest:** `onboarding/tour-steps.test.ts` (each role's first steps, no `dash-`/`tabs` target, Dashboard under
 More), `home/member-home-screen.test.tsx` (the home registers its targets).
+
+## 82. Phase 72: codes and the spaces menu, in the app — build (2026-11-05)
+
+The app half of Phase 72 (`docs/journey-fixes-plan.md`: JF4, JF7, JF9, JF12, JF26's role and note, JF33, and the
+percent rule), on the web half and the Worker in the working tree (`apps/web/src/features/organizations/code-sheet.tsx`,
+`auth/legal-sheet.tsx` and the rest; same words and testIDs). No API, shared or web file changed here.
+
+- **One "Have a code?" sheet** (JF4): `/have-a-code?code=` in `(org)` (`organizations/code-sheet.tsx`, a fitted
+  `QuickSheet`; `titleTestID` added to QuickSheet for `code-sheet-space`). Eight characters look the space up and show
+  its NAME first, then `JoinAskFields` (role radios "You are joining <space> as" -- a parent by default, a 13-17 a
+  learner only so no radios, a tutor only where `offers_tutoring` -- and the note, at most `JOIN_NOTE_MAX`), then "Ask
+  to join"; the toast names the space; refusals inline (`code-sheet-error`, the server's words). Six characters give
+  way to `JoinGameSheet` in place: the one join path, whose `game-join-error` says the server's honest refusal for
+  another space's game. The home's quick action and the Quest board's Go open it (the dialog of the fix-up is gone).
+- **Signed out** (JF4, JF9): the guest page's "Have a code?" (`guest-have-code`) is `GuestCodeSheet`, a Paper dialog
+  that keeps the code on the phone (`guestMemory.keepCode`, never sent); the example "QF7K2M" is a dashed, muted
+  illustration marked EXAMPLE and hidden from screen readers. `PlayLink` keeps a tile a guest cannot play
+  (`keepSent`), named on the guest page (`guest-sent`). `KeptForYou` (`organizations/kept-for-you.tsx`) tops the first
+  member home: the kept code (Use it → the sheet, which forgets the code once looked up) or the sent quest (Play it →
+  `/quest/tile/<code>`); Not now forgets both.
+- **Spaces menu** (JF7): the account sheet adds "Join with a code" and, for adults (`canMake`), "Start a space"
+  (`/spaces?join=1` / `?start=1`; `SpaceWelcome`'s `focusStart` focuses the name). The (+) ends with "Start a space"
+  for an adult whose (+) already offers something -- it never makes a (+) of its own, so a parent or student keeps none
+  (`hasCreateActions` unchanged). "Space" is "Space settings" in the menu and its tour step. The Welcome's grey "18 or
+  older" line is the web's card ("A club needs an adult to start its space"), for a 13-17 only (`showsTeenCard`).
+- **Invitations and the terms** (JF12): "Invited as <roles> by <first name>" on Spaces (coordinator's wording,
+  2026-11-05), the banner "<first> invited you to <space>" / "You are invited to <space>"; the invitation text links to
+  `<server>/spaces` (`invitationAddress`). `legal_due` reaches `useAuth().legalDue`; `LegalSheet` covers the app from
+  the root layout (as the access refusal; Android's back is swallowed): the two links, the tick, "Accept and continue"
+  (`POST /auth/legal` with TERMS_VERSION/PRIVACY_VERSION, then the session again), Sign out.
+- **Requests** (JF26): People's request rows say "asked <time> · as <role>" and the note in quotes
+  (`join-request-note-<id>`); Let in starts on the asked role where it is a choice (`initialLetInRole`) and shows
+  `let-in-asked`. Role choices carry `selected` beside `checked`, as the grade row's, so a flow reads them on both systems.
+- **Just you** (JF33): a personal space's line on Spaces and in the account sheet (`membershipLine`, `accountSpaceLine`).
+
+**Not ported:** the web's `/?code=` game link (the lobby's QR code) is an https address that opens the web, so the app
+has no handler for it; `aimtrue://have-a-code?code=` reaches the sheet for a member as a side effect of the route.
+**Flows (written, not run here):** `home/quick-code` (the sheet; name, role, note, Ask; the request read back, withdrawn
+before and after), `spaces/let-in` (Jo asks as admin with a note; the list and the sheet say both; the sheet starts on
+Admin), `spaces/legal` (new: Ines invites a stamped address, a fake-Google first sign-in, `legal-due` checks the session
+before the app signs in), `spaces/start-a-space` (new), `guest/have-code` (new); words updated in `spaces/decline`,
+`sign-up`, `join`, `spaces-page`, `invitation`, `shell/navigation`, `organization/non-admin`,
+`exposure/student-controls`. `scripts/spaces.js`: `ask` takes ROLE/NOTE, `legal-due`, and `reset-newcomer` declines a
+waiting invitation. Tagged `feature`, none `smoke`.
+**Jest:** `code-sheet-model`, `code-sheet`, `kept-for-you`, `legal-sheet` (new); `space-welcome`, `spaces-screen`,
+`invite-people`, `let-in-sheet`, `join-requests-section`, `create-actions`, `nav-items`, `guest-home`, `guest-store`,
+`guest-model` (the percent rule), `play-home`, `auth-provider`, `maestro-scripts`.

@@ -22,7 +22,7 @@ tags:
     id: more-nav-organization
 - assertNotVisible:
     id: more-nav-locations
-- assertNotVisible: 'Space'
+- assertNotVisible: 'Space settings'
 - runFlow:
     file: ../../subflows/open-link.yaml
     env:

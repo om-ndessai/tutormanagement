@@ -5,6 +5,7 @@ import { LogoMark } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/providers/auth-provider';
 import { GuestHome } from '@/features/guest/guest-home';
+import { LegalSheet } from './legal-sheet';
 
 /**
  * Route guard for everything inside the portal.
@@ -13,7 +14,7 @@ import { GuestHome } from '@/features/guest/guest-home';
  * unauthenticated API calls regardless of what the SPA renders.
  */
 export function RequireAuth() {
-  const { status, statusMessage, config } = useAuth();
+  const { status, statusMessage, config, legalDue } = useAuth();
   const location = useLocation();
 
   // A 401 can land before the config does (the session's answer arrives first); wait for the config,
@@ -50,5 +51,10 @@ export function RequireAuth() {
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      {legalDue && <LegalSheet />}
+    </>
+  );
 }

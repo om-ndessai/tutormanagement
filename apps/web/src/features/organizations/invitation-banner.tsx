@@ -60,7 +60,9 @@ export function InvitationBanner() {
     >
       <MailIcon className="text-primary size-4 shrink-0" />
       <p className="min-w-0 flex-1">
-        <span className="font-medium">{invite.name} invited you</span>
+        <span className="font-medium">
+          {invite.invited_by_first_name ? `${invite.invited_by_first_name} invited you to ${invite.name}` : `You are invited to ${invite.name}`}
+        </span>
         {more > 0 && (
           <a href="/spaces" className="text-muted-foreground ml-2 underline-offset-2 hover:underline">
             and {more} more

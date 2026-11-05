@@ -220,6 +220,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Rank.</strong> J07A rated it sev3, because a second box works further down the home. It stays P0 under &quot;loses newcomers</li></ul>
 <p>at join&quot;: the quick action is on the first home of every new personal space in the app (<code>home.ts:525-527</code>).</p>
 <h3>P1. One Have a code door, from the guest page on</h3>
+<blockquote><strong>Status (JF4):</strong> done in Phase 72 (2026-11-05) on both clients: one sheet from the guest page, the home&#x27;s quick action and the Quest board (and, on the web, a shared game link); it names the space before &quot;Ask to join&quot;, and opens a game&#x27;s join choices; signed out it keeps the code on the device, and the first home offers it once. The Question Quest page keeps its game-only box, and the Spaces page its own join card, which names the space too.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>One &quot;Have a code?&quot; sheet</strong> on both clients. It opens from:</li><li>the guest page, signed out;</li><li>the home&#x27;s quick action;</li><li>the Quest board;</li><li>the Question Quest page;</li><li>the Spaces page.</li><li><strong>What it takes:</strong> a game or team code (6 characters) or a space code (8). It always shows what it found before</li></ul>
 <p>sending: the space&#x27;s name, or the game and the space it is in. Its toasts name the space.</p>
 <ul><li><strong>Signed out,</strong> it keeps the code on the device through sign-up and approval. The first home then offers it: &quot;You</li></ul>
@@ -300,6 +301,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Owner decides, besides the above.</strong> Whether a parent&#x27;s or an admin&#x27;s hat should lead over playing in a space</li></ul>
 <p>without Tutoring.</p>
 <h3>P1. Put Start a space where a teacher looks</h3>
+<blockquote><strong>Status (JF7):</strong> done in Phase 72 (2026-11-05): &quot;Join with a code&quot; and &quot;Start a space&quot; (adults) under the list of spaces (the web&#x27;s switcher, the app&#x27;s account sheet); the app&#x27;s (+) ends with Start a space for adults where it offers anything; &quot;Space settings&quot;; a teen&#x27;s club card in place of the age line.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Under the list of spaces,</strong> put &quot;Join with a code&quot; and &quot;Start a space&quot; (adults). On the web that is the switcher;</li></ul>
 <p>in the app, the account sheet.</p>
 <ul><li><strong>In the app&#x27;s (+),</strong> add &quot;Start a space&quot; for adults.</li><li><strong>Rename the menu&#x27;s &quot;Space&quot;</strong> to &quot;Space settings&quot;.</li><li><strong>For 13-17,</strong> replace the grey footnote with a card: &quot;A club needs an adult to start its space. Ask a teacher or</li></ul>
@@ -341,6 +343,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p>immediate, so the item&#x27;s word &quot;hole&quot; is fair. Whether to guard it on the device stays the owner&#x27;s decision.</p>
 <ul><li><strong>Code.</strong> <code>access-refused.tsx:36-37</code> is the <code>mailto:</code> as cited.</li></ul>
 <h3>P1. A friend&#x27;s game code and tile link reach the friend&#x27;s game</h3>
+<blockquote><strong>Status (JF9):</strong> done in Phase 72 (2026-11-05), as decided: a game code from another space gets the same honest answer as no game at all (&quot;ask your friend to invite you there, or start your own game&quot;), revealing nothing (R13 kept); a quest link a guest cannot play is kept on the device, named on the guest page and offered on the first home. A code admitting a non-member to one game is not scheduled.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Now:</strong></li><li>a game code from another space gets an honest answer, not &quot;No game or team has that code.&quot;: &quot;This game is in</li></ul>
 <p>another space. Ask your friend to invite you, or start your own game and share its code&quot;;</p>
 <ul><li>stop <code>/play/&lt;tile&gt;</code> dropping a tile that guests cannot play. The route exists, but a locked tile sends a</li></ul>
@@ -364,7 +367,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Confirmed: the code refusal.</strong> <a href="./assets/cuj-j08-step-12.png">J08 step 12</a> shows &quot;No game or team has that code.&quot;</li></ul>
 <p>That refusal is deliberate: game codes are found only in the person&#x27;s own spaces (CLAUDE.md, Phase 46; <a href="../stickiness-plan.html">stickiness-plan.md:395</a>). That is why it is the owner&#x27;s decision.</p>
 <h3>P2. The guest page speaks to every visitor and keeps its promises</h3>
-<blockquote><strong>Status (JF10):</strong> in part, in Phase 70 (2026-11-04): the audience line, &quot;Can adults play?&quot;, the offer marks the answer, no &quot;Save this score&quot;. Percent answers are Phase 72; levels above Grade 8 on the guest board are not scheduled.</blockquote>
+<blockquote><strong>Status (JF10):</strong> done in Phases 70 and 72 (2026-11-04/05): the audience line, &quot;Can adults play?&quot;, the offer marks the answer, no &quot;Save this score&quot;; and &quot;30%&quot; is right where the question asks for a percent (398 numeric questions of the bank; the blind solve stays exact). Levels above Grade 8 on the guest board are not scheduled.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>The hero:</strong> a line for adults, teens and classes, and &quot;Can adults play?&quot; in the FAQ.</li><li><strong>The guest board:</strong> levels above Grade 8 on it.</li><li><strong>A code door</strong> for &quot;Have a code from a tutor or club?&quot; (see the code item).</li><li><strong>An age note</strong> without &quot;18&quot;.</li><li><strong>The sign-up offer:</strong></li><li>mark the answer before pitching, as the app does (&quot;Nice! That one is right.&quot;);</li><li>accept &quot;30%&quot; as well as &quot;30&quot; (whether &quot;30%&quot; was marked right was not checked);</li><li>either carry the guest&#x27;s best score into the account (on the device, as the grade and tiles are) or stop saying</li></ul>
 <p>&quot;Save this score&quot;.</p>
 <ul><li><strong>Why:</strong></li><li><strong>C6 adults and teens</strong> read &quot;Grades 1-8&quot; and &quot;Is it safe for my child?&quot; as &quot;not for me&quot;, on the page that decides</li></ul>
@@ -392,6 +395,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p><figure class="shot"><img alt="J15 step 2: a returning parent is told &quot;Sign up free&quot;" src="./assets/cuj-j19-step-2.png"><figcaption>J15 step 2: a returning parent is told &quot;Sign up free&quot;</figcaption></figure></p>
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
 <h3>P2. An invitation link opens on the invitation</h3>
+<blockquote><strong>Status (JF12):</strong> done in Phase 72 (2026-11-05): the invitation text links to the Spaces page; the card wraps the space&#x27;s name and says who invited (&quot;Invited as Parent by Ines&quot;); no age line while an invitation waits; and, as decided, an invited person accepts the terms and the privacy notice once, at their first sign-in. The child is not named: a mistyped address would learn a child&#x27;s name (R32).</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>The link.</strong> The invitation text links to the invitation itself, naming the space and who invited, not to the</li></ul>
 <p>guest game page.</p>
 <ul><li><strong>The invitation card:</strong></li><li>wraps the space&#x27;s name (&quot;Rivera …&quot; today);</li><li>says who invited her and for which child;</li><li>drops &quot;you need to be 18 or older&quot; for an adult.</li><li><strong>Why:</strong></li><li><strong>The best moment in J09.</strong> For an invited C4/C7 parent, the invitation waiting on the first screen after Google,</li></ul>
@@ -622,7 +626,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p><figure class="shot"><img alt="J06 step 20: the tour offered in a club without Tutoring" src="./assets/cuj-j06-step-20.png"><figcaption>J06 step 20: the tour offered in a club without Tutoring</figcaption></figure></p>
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
 <h3>P2. Join requests say who is asking, and Decline can be undone</h3>
-<blockquote><strong>Status (JF26):</strong> in part, in Phase 71 (2026-11-04): the whole address and the time at every width, and Decline asks first on both clients. The role and a note are Phase 72.</blockquote>
+<blockquote><strong>Status (JF26):</strong> done in Phases 71 and 72 (2026-11-04/05): the whole address and the time at every width; Decline asks first; a request carries the role asked for and a note, read by the space&#x27;s admins only, and Let in starts on that role. Declined requests are not kept findable for the admins.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>A request shows:</strong></li><li>the role the person asks for;</li><li>a short note from them;</li><li>the full email and when they asked, at every width.</li><li><strong>Decline</strong> gets an Undo in its toast, or a confirmation.</li><li><strong>Declined requests</strong> stay findable for a while.</li><li><strong>Why:</strong></li><li><strong>C1 admins of spaces for children&#x27;s families</strong> decide who gets in on a name alone. On a phone, the email is cut</li></ul>
 <p>and the time is hidden.</p>
 <ul><li><strong>Decline</strong> is one tap, with no way back.</li><li><strong>Evidence:</strong></li><li><a href="J11-space-admin-decides.html">J11 steps 4-5, 9</a>.</li><li><a href="J10-space-code-declined.html">J10 steps 25-28</a>: the declined person&#x27;s history erased.</li><li><strong>Audit:</strong> workflows sev4,</li></ul>
@@ -692,6 +696,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p><figure class="shot"><img alt="J19 step 15: two games told apart only by their codes" src="./assets/cuj-j19-step-15.png"><figcaption>J19 step 15: two games told apart only by their codes</figcaption></figure></p>
 <ul><li><strong>Size:</strong> M.</li><li><strong>Owner decides:</strong></li><li>The glossary&#x27;s words: lesson or session; Quest or Question Quest.</li><li>Whether &quot;Beta&quot; stays on each question.</li></ul>
 <h3>P2. Each space looks like itself</h3>
+<blockquote><strong>Status (JF33):</strong> done in Phase 72 (2026-11-05): each new self-serve space takes the palette its maker&#x27;s other spaces wear least (never plum); a personal space stays slate and reads &quot;Just you&quot;; the mark&#x27;s gradient id is per instance.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>A palette per new space.</strong> Rotate through the palettes, or let the maker choose one in Start a space.</li><li><strong>Slate</strong> is kept for the platform, the guest page and personal spaces, and the personal space reads &quot;Just you&quot; in</li></ul>
 <p>the switcher.</p>
 <ul><li><strong>The mark</strong> gets a per-instance gradient id, so it shows in the phone drawer.</li><li><strong>Why:</strong></li><li><strong>Everyone with two spaces</strong> (C7 parents, C1 makers) holds two that look alike. That is part of why being let in</li></ul>

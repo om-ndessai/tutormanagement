@@ -86,6 +86,11 @@ export interface SessionResponse {
    * own personal one where nobody else is (which goes with it). Absent from older Workers: false.
    */
   account_deletable?: boolean;
+  /**
+   * Phase 72 (UI audit JF12, owner 2026-11-04): someone a space added has not accepted the terms and the privacy
+   * notice, which they do once, at their first sign-in (POST /api/auth/legal). Absent from older Workers: false.
+   */
+  legal_due?: boolean;
 }
 
 /** Body of POST /api/auth/google — the ID token from Google Identity Services. */

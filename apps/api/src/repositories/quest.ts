@@ -178,10 +178,10 @@ function award(
 export async function recordQuestAnswer(
   db: D1Database,
   org: OrgId,
-  input: { studentId: string; question: { id: string; kind: QuestionKind; key: string }; levelId: string; answer: string; timeZone: string },
+  input: { studentId: string; question: { id: string; kind: QuestionKind; key: string; stem?: string }; levelId: string; answer: string; timeZone: string },
 ): Promise<{ attemptId: string; correct: boolean; approvedByConsensus: boolean }> {
   const attemptId = crypto.randomUUID();
-  const correct = checkAnswer({ kind: input.question.kind, answer: input.question.key }, input.answer);
+  const correct = checkAnswer({ kind: input.question.kind, answer: input.question.key, stem: input.question.stem }, input.answer);
   const day = zonedClockParts(new Date().toISOString(), input.timeZone).day;
   await db.batch([
     db
@@ -258,11 +258,11 @@ export async function approveManyByConsensus(db: D1Database, lastAnswerer: Reado
 export async function questionKey(
   db: D1Database,
   questionId: string,
-): Promise<{ id: string; kind: QuestionKind; key: string; status: string } | null> {
+): Promise<{ id: string; kind: QuestionKind; key: string; stem: string; status: string } | null> {
   return db
     .prepare(
       // org-scope: the platform bank's own row, read to mark an answer; nothing of an organization's.
-      'SELECT id, kind, answer AS key, status FROM questions WHERE id = ?',
+      'SELECT id, kind, answer AS key, stem, status FROM questions WHERE id = ?',
     )
     .bind(questionId)
     .first();

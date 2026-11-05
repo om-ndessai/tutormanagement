@@ -123,9 +123,9 @@ export function clockText(ms: number): string {
   return `${Math.floor(ms / 60_000)}:${String(Math.floor((ms % 60_000) / 1000)).padStart(2, '0')}`;
 }
 
-/** Marked on the device with the shared rule; a skip is never right. */
-export function markGuestAnswer(question: Pick<GuestQuestion, 'kind' | 'answer'>, given: string | null): boolean {
-  return given !== null && checkAnswer({ kind: question.kind, answer: question.answer }, given);
+/** Marked on the device with the shared rule (with the stem, a trailing % counts where it asks a percent); a skip is never right. */
+export function markGuestAnswer(question: Pick<GuestQuestion, 'kind' | 'answer'> & { stem?: string }, given: string | null): boolean {
+  return given !== null && checkAnswer({ kind: question.kind, answer: question.answer, stem: question.stem }, given);
 }
 
 /**

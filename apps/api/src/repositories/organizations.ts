@@ -24,6 +24,8 @@ import {
   type OrganizationListItem,
   type OrganizationSettings,
   type OrgPalette,
+  nextSpacePalette,
+  type JoinRequestRole,
   type OrgTimeZone,
   type UpdateOrganizationPayload,
   type UpdateOrganizationSettingsPayload,
@@ -221,6 +223,7 @@ export async function listMemberships(db: D1Database, userId: string): Promise<M
     roles: parseRoles(row.roles_csv),
     status: row.member_status,
     is_default: row.member_is_default === 1,
+    personal: row.personal === 1,
   }));
 }
 
@@ -269,7 +272,8 @@ export async function listInvitations(db: D1Database, userId: string): Promise<I
         'FROM organizations o',
         `, m.created_at AS invited_at,
            (SELECT GROUP_CONCAT(r.role) FROM user_roles r
-            WHERE r.organization_id = o.id AND r.user_id = m.user_id) AS roles_csv
+            WHERE r.organization_id = o.id AND r.user_id = m.user_id) AS roles_csv,
+           (SELECT u.full_name FROM users u WHERE u.id = m.invited_by AND u.deleted_at IS NULL) AS invited_by_name
          FROM organizations o JOIN org_members m ON m.organization_id = o.id`,
       )}
        WHERE m.user_id = ? AND m.removed_at IS NULL AND m.status = 'invited'
@@ -277,12 +281,14 @@ export async function listInvitations(db: D1Database, userId: string): Promise<I
        ORDER BY m.created_at DESC`,
     )
     .bind(userId)
-    .all<OrgRow & { invited_at: string; roles_csv: string | null }>();
+    .all<OrgRow & { invited_at: string; roles_csv: string | null; invited_by_name: string | null }>();
 
   return (result.results ?? []).map((row) => ({
     ...toBrand(row),
     roles: parseRoles(row.roles_csv),
     invited_at: row.invited_at,
+    // First name only (R32): who added them, and nothing else about anyone.
+    invited_by_first_name: row.invited_by_name ? (row.invited_by_name.trim().split(/\s+/)[0] ?? null) : null,
   }));
 }
 
@@ -1033,8 +1039,16 @@ export async function countOpenRequests(db: D1Database, userId: string): Promise
   return row?.n ?? 0;
 }
 
-export async function createJoinRequest(db: D1Database, org: OrgId, userId: string): Promise<void> {
-  await db.prepare('INSERT INTO join_requests (organization_id, user_id) VALUES (?, ?)').bind(org, userId).run();
+export async function createJoinRequest(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+  ask: { role: JoinRequestRole | null; note: string | null } = { role: null, note: null },
+): Promise<void> {
+  await db
+    .prepare('INSERT INTO join_requests (organization_id, user_id, role, note) VALUES (?, ?, ?, ?)')
+    .bind(org, userId, ask.role, ask.note)
+    .run();
 }
 
 /**
@@ -1143,7 +1157,7 @@ export async function answerJoinRequest(
 export async function listJoinRequests(db: D1Database, org: OrgId): Promise<JoinRequest[]> {
   const result = await db
     .prepare(
-      `SELECT j.user_id, u.full_name, u.email, j.requested_at
+      `SELECT j.user_id, u.full_name, u.email, j.requested_at, j.role, j.note
        FROM join_requests j JOIN users u ON u.id = j.user_id AND u.deleted_at IS NULL
        WHERE j.organization_id = ? AND j.outcome IS NULL
        ORDER BY j.requested_at`,
@@ -1166,6 +1180,19 @@ export async function openJoinRequest(
     )
     .bind(org, userId)
     .first();
+}
+
+/** The palettes of the spaces a person belongs to now, for the next space's (Phase 72). */
+async function palettesOf(db: D1Database, userId: string): Promise<OrgPalette[]> {
+  const result = await db
+    .prepare(
+      // org-scope: the person's own memberships, across spaces -- their palettes only.
+      `SELECT o.palette FROM org_members m JOIN organizations o ON o.id = m.organization_id
+       WHERE m.user_id = ? AND m.removed_at IS NULL AND o.archived_at IS NULL`,
+    )
+    .bind(userId)
+    .all<{ palette: OrgPalette }>();
+  return (result.results ?? []).map((row) => row.palette);
 }
 
 /** How many self-serve spaces the person made (their lifetime cap counts the live ones). */
@@ -1203,6 +1230,9 @@ export async function createSpace(
     teen?: boolean;
   },
 ): Promise<Organization> {
+  // Phase 72 (UI audit JF33): a space of one's own stays slate ("Just you"); any other takes the palette the maker's
+  // other spaces wear least, in turn.
+  const palette: OrgPalette = input.personal ? 'platform' : nextSpacePalette(await palettesOf(db, input.makerId));
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const id = crypto.randomUUID();
     const code = newSpaceCode();
@@ -1217,13 +1247,14 @@ export async function createSpace(
                 canvas_assessments, canvas_assessments_unreviewed, gamify_question_quest,
                 feature_tutoring, feature_assessment, feature_quest,
                 created_via, quest_trusted, join_code, join_by_code, created_by_user_id, personal)
-             VALUES (?, ?, ?, ?, 'platform', ?, 0, ?, 1, 0, 1, 0, 1, 1, 'self_serve', 0, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, 0, ?, 1, 0, 1, 0, 1, 1, 'self_serve', 0, ?, ?, ?, ?)`,
           )
           .bind(
             id,
             slug,
             input.name,
             shortName,
+            palette,
             input.timeZone,
             `${slug}.${input.requestHost}`,
             // A teen's personal space has no code at all (P13), not merely joining off.

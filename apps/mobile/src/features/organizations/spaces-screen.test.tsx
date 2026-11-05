@@ -5,7 +5,14 @@ import { ApiRequestError } from '@/lib/api-client';
 import { renderWithProviders } from '@/test/render';
 import { InvitationBanner } from './invitation-banner';
 import { SpacesScreen } from './spaces-screen';
-import { invitationsWaiting, resetInvitationBanner } from './spaces-model';
+import {
+  accountSpaceLine,
+  invitationBannerLine,
+  invitationsWaiting,
+  invitedAsLine,
+  membershipLine,
+  resetInvitationBanner,
+} from './spaces-model';
 
 const mockToast = { success: jest.fn(), error: jest.fn(), info: jest.fn() };
 jest.mock('@/components/toast', () => ({ useToast: () => mockToast }));
@@ -45,8 +52,17 @@ const space = (slug: string, extra: Partial<Membership> = {}): Membership =>
     is_default: false,
     ...extra,
   }) as Membership;
-const invite = (slug: string): Invitation =>
-  ({ slug, name: `${slug} Space`, short_name: slug, palette: 'teal', logo_mark_url: null, roles: ['parent'], invited_at: '' }) as Invitation;
+const invite = (slug: string, extra: Partial<Invitation> = {}): Invitation =>
+  ({
+    slug,
+    name: `${slug} Space`,
+    short_name: slug,
+    palette: 'teal',
+    logo_mark_url: null,
+    roles: ['parent'],
+    invited_at: '',
+    ...extra,
+  }) as Invitation;
 
 const chooseOrganization = jest.fn(async () => undefined);
 const refreshSession = jest.fn(async () => undefined);
@@ -122,6 +138,18 @@ describe('SpacesScreen (Phase 60, S5 and S7)', () => {
     await fireEvent.press(screen.getByTestId('org-chmi'));
     await waitFor(() => expect(mockRouter.replace).toHaveBeenCalledWith('/dashboard'));
     expect(chooseOrganization).toHaveBeenCalledWith('chmi');
+  });
+
+  it('says who invited, and reads "Just you" for a space of one’s own (Phase 72, JF12, JF33)', async () => {
+    as({
+      memberships: [space('chmi'), space('mine', { personal: true, roles: ['admin'] })],
+      invitations: [invite('assess', { invited_by_first_name: 'Ines' }), invite('riverside', { invited_by_first_name: null })],
+    });
+    await renderWithProviders(<SpacesScreen />);
+    expect(screen.getByTestId('invitation-line-assess')).toHaveTextContent('Invited as Parent by Ines');
+    expect(screen.getByTestId('invitation-line-riverside')).toHaveTextContent(/^Invited as Parent$/);
+    expect(screen.getByTestId('org-roles-mine')).toHaveTextContent('Just you');
+    expect(screen.getByTestId('org-roles-chmi')).toHaveTextContent('Tutor');
   });
 
   it('accepts an invitation and enters that space at once; declines and re-reads the session', async () => {
@@ -214,7 +242,7 @@ describe('InvitationBanner (Phase 60, S6)', () => {
     as({ organization: { slug: 'chmi' }, invitations: [invite('assess'), invite('riverside')] });
     mockAnswer.mockResolvedValue(undefined);
     await renderWithProviders(<InvitationBanner />);
-    expect(screen.getByTestId('invitation-banner-text')).toHaveTextContent('assess Space invited you');
+    expect(screen.getByTestId('invitation-banner-text')).toHaveTextContent('You are invited to assess Space');
     expect(screen.getByTestId('invitation-banner-more')).toHaveTextContent('and 1 more');
     await fireEvent.press(screen.getByTestId('invitation-banner-accept'));
     await waitFor(() => expect(chooseOrganization).toHaveBeenCalledWith('assess'));
@@ -234,6 +262,30 @@ describe('InvitationBanner (Phase 60, S6)', () => {
     resetInvitationBanner();
     await renderWithProviders(<InvitationBanner />);
     expect(screen.getByTestId('invitation-banner')).toBeTruthy();
+  });
+});
+
+describe('the invitation and space lines (Phase 72)', () => {
+  it('names who invited, on the banner and the card, only when someone recorded did (JF12)', () => {
+    expect(invitationBannerLine({ name: 'Ferreira Family Practice', invited_by_first_name: 'Ines' })).toBe(
+      'Ines invited you to Ferreira Family Practice',
+    );
+    expect(invitationBannerLine({ name: 'Ferreira Family Practice', invited_by_first_name: null })).toBe(
+      'You are invited to Ferreira Family Practice',
+    );
+    expect(invitationBannerLine({ name: 'Older Worker' })).toBe('You are invited to Older Worker');
+    expect(invitedAsLine({ roles: ['parent', 'tutor'], invited_by_first_name: 'Ines' })).toBe('Invited as Parent · Tutor by Ines');
+    expect(invitedAsLine({ roles: [], invited_by_first_name: null })).toBe('Invited as a member');
+  });
+
+  it('reads "Just you" for a personal space, and the roles elsewhere (JF33)', () => {
+    expect(membershipLine({ roles: ['admin'], personal: true })).toBe('Just you');
+    expect(membershipLine({ roles: ['admin', 'parent'], personal: false })).toBe('Admin · Parent');
+    expect(membershipLine({ roles: ['tutor'] })).toBe('Tutor');
+    expect(accountSpaceLine({ roles: ['admin'], personal: true }, true)).toBe('Just you · You are here');
+    expect(accountSpaceLine({ roles: ['admin'], personal: true }, false)).toBe('Just you');
+    expect(accountSpaceLine({ roles: ['parent'] }, true)).toBe('You are here');
+    expect(accountSpaceLine({ roles: ['parent'] }, false)).toBe('Parent');
   });
 });
 

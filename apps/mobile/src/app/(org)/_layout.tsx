@@ -96,6 +96,17 @@ export default function OrgLayout() {
                 headerShown: false,
               }}
             />
+            {/* The one "Have a code?" sheet (UI audit JF4): a game's or a space's code, a fitted quick sheet; a game's
+                gives way to its join sheet's content in place. */}
+            <Stack.Screen
+              name="have-a-code"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: 'fitToContents',
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
             {/* Recording the lesson at hand from Next up: one decision, a fitted quick sheet (U4). */}
             <Stack.Screen
               name="record-as-planned"

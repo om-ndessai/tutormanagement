@@ -3,8 +3,9 @@
 // grouped by curriculum and "Have a code?", every one a quest in one tap. The same copy, testIDs and
 // requests as the web.
 //
-// Mobile: a code (six characters) and a waiting game's Join open the existing `quest/join-game` sheet,
-// which looks the code up and offers the join choices (JoinChoices), so there is one join path. The
+// Mobile: a waiting game's Join opens the existing `quest/join-game` sheet, which looks the code up and offers
+// the join choices (JoinChoices), so there is one join path. Phase 72 (UI audit JF4): the board's "Have a code?"
+// box opens the one code sheet (`/have-a-code`) on what was typed -- a game's code reaches the same join sheet. The
 // roster is a Paper dialog of tick rows. A tile is a card of two targets: the code starts it, the star
 // keeps it as a favorite named by its code.
 //
@@ -48,7 +49,7 @@ import {
   dailyRingsLabel,
   dailyTileFor,
 } from '@/features/habit/habit-model';
-import { useAskToJoin } from '@/features/organizations/api';
+import { CODE_SHEET_HINT } from '@/features/organizations/code-sheet-model';
 import { CODE_FONT } from '@/features/quest/game-style';
 import { useCreateGame, useGameFavorites, useSaveGameFavorite } from '@/features/quest/games-api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -364,30 +365,20 @@ export function PlayHome() {
   );
 }
 
-/** One box for both codes: six characters is a game here, eight a space to ask to join. */
+/**
+ * One box for both codes, on the board: Go opens the one "Have a code?" sheet on what was typed (UI audit JF4),
+ * which says what the code found -- the game's join choices, or the space's name -- before sending anything.
+ */
 export function HaveACode() {
   const theme = useAppTheme();
-  const toast = useToast();
-  const ask = useAskToJoin();
   const [code, setCode] = useState('');
   const kind = codeKind(code);
 
-  async function go() {
+  function go() {
     if (!kind) return;
-    const typed = tidyCode(code);
-    if (kind === 'game') {
-      joinByCode(typed);
-      setCode('');
-      return;
-    }
-    try {
-      await ask.mutateAsync(typed);
-      haptics.success();
-      toast.success('Asked to join. Its admins will let you in.');
-      setCode('');
-    } catch (caught) {
-      toast.error(failure(caught, 'Could not find that code.'));
-    }
+    haptics.selection();
+    router.push({ pathname: '/have-a-code', params: { code: tidyCode(code) } });
+    setCode('');
   }
 
   return (
@@ -411,22 +402,22 @@ export function HaveACode() {
             keyboardType={Platform.OS === 'android' ? 'visible-password' : 'default'}
             maxLength={12}
             returnKeyType="go"
-            onSubmitEditing={() => void go()}
+            onSubmitEditing={go}
             style={{ flexGrow: 1, minWidth: 180 }}
             contentStyle={{ fontFamily: CODE_FONT, letterSpacing: 3, fontSize: 18 }}
           />
           <Button
             testID="play-code-go"
             mode="outlined"
-            disabled={kind === null || ask.isPending}
-            onPress={() => void go()}
+            disabled={kind === null}
+            onPress={go}
             contentStyle={{ minHeight: 48 }}
           >
             Go
           </Button>
         </View>
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          Six characters join a game; eight ask to join a space.
+          {CODE_SHEET_HINT}
         </Text>
       </View>
     </OutlinedCard>

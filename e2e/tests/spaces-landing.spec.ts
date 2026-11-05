@@ -212,9 +212,10 @@ test.describe('selector', () => {
       const row = yours.getByTestId(`org-${space.slug}`);
       await expect(row).toBeVisible();
       await expect(row).toContainText(space.name);
-      // Its mark (no logo uploaded: its initials on its colour), and the person's roles there.
+      // Its mark (no logo uploaded: its initials on its colour), and the person's roles there -- or, for a space
+      // of their own, "Just you" (Phase 72, JF33).
       await expect(row).toContainText(initials(shortOf(space.slug)));
-      await expect(row).toContainText('Admin');
+      await expect(row).toContainText(space === first ? 'Just you' : 'Admin');
       await expect(row).not.toContainText('Here now');
     }
     // Nothing pending: no Invitations, no Requests sent.

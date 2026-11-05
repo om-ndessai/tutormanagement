@@ -12,7 +12,7 @@ import { visible } from '../support/ui.js';
  * other invitation -- a self-serve space's, or one reaching someone who has signed in before -- waits
  * for the person's Accept. Accept enters the space at once (it becomes the last choice, and the
  * welcome tour runs); Decline removes it. Someone already in a space lands by S4, with a banner
- * ("<space> invited you", Accept / Not now), a count on the switcher, and the Spaces page's list.
+ * ("<first name> invited you to <space>", Accept / Not now), a count on the switcher, and the Spaces page's list.
  *
  * Signing in is the real path: the suite's fake Google token (AUTH_FAKE_PROVIDERS, local only)
  * through POST /api/auth/google, which is where `recordSignIn` accepts a console space's invitations.
@@ -27,12 +27,18 @@ const fakeGoogle = (subject: string, email: string) => `fake:google:${subject}:$
 
 const session = async (page: Page) => unwrap<any>(await page.request.get('/api/auth/session'), 'the session');
 
-/** Signs the person in with Google (the fake token): their first sign-in, or a later one. */
+/**
+ * Signs the person in with Google (the fake token): their first sign-in, or a later one. A first sign-in of someone
+ * a space added owes the terms once (Phase 72), which journey-fixes-72.spec walks through on the
+ * page; here they are accepted at once, so these tests see the portal.
+ */
 async function signInWithGoogle(page: Page, subject: string, email: string) {
-  return unwrap<any>(
+  const signedIn = unwrap<any>(
     await page.request.post('/api/auth/google', { data: { credential: fakeGoogle(subject, email) } }),
     `signing ${email} in with Google`,
   );
+  await page.request.post('/api/auth/legal', { data: { terms_version: TERMS_VERSION, privacy_version: PRIVACY_VERSION } });
+  return signedIn;
 }
 
 /**
@@ -113,7 +119,7 @@ test.describe('an invitation is accepted by hand, then entered (S6)', () => {
     expect((await priya.request.delete(`/api/users/${added.id}?hard=true`)).ok()).toBe(true);
   });
 
-  test('a newcomer invited to a self-serve space: the selector with nothing entered; Accept lands them there, with the tour', async ({ page, as }) => {
+  test('a newcomer invited to a self-serve space: the selector with nothing entered; Accept lands them there', async ({ page, as }) => {
     // An adult makes a self-serve space.
     const ownerEmail = `s6.owner.${run}@example.com`;
     await unwrap(
@@ -170,11 +176,13 @@ test.describe('an invitation is accepted by hand, then entered (S6)', () => {
       await expect(nell.getByRole('region', { name: 'Your spaces' })).toHaveCount(0);
       await expect(nell.getByTestId('org-switcher')).toHaveCount(0);
 
-      // Accept: in at once, the last choice, and the welcome tour as for any first visit.
+      // Accept: in at once, the last choice. A self-serve space has no Tutoring, so no tour (the tour is
+      // Tutoring's, owner 2026-11-04).
       await card.getByRole('button', { name: 'Accept' }).click();
       await expect(nell.getByTestId('org-switcher').filter({ visible: true }).first()).toBeVisible();
       await expect(nell).not.toHaveURL(/\/spaces/);
-      await expect(nell.getByTestId('onboarding-wizard')).toBeVisible({ timeout: 15_000 });
+      await expect(nell.getByTestId('member-home')).toBeVisible({ timeout: 15_000 });
+      await expect(nell.getByTestId('onboarding-wizard')).toHaveCount(0);
       const after = await session(nell);
       expect(after.invitations).toEqual([]);
       expect(after.memberships.map((m: any) => [m.slug, m.status, m.is_default])).toEqual([[made.slug, 'active', true]]);
@@ -229,7 +237,7 @@ test.describe('an invitation is accepted by hand, then entered (S6)', () => {
     // The banner across the top of the portal.
     const banner = person.getByTestId('invitation-banner');
     await expect(banner).toBeVisible();
-    await expect(banner).toContainText(`${ORGS.a.name} invited you`);
+    await expect(banner).toContainText(`invited you to ${ORGS.a.name}`);
     await expect(banner.getByTestId('invitation-banner-accept')).toBeVisible();
     await expect(banner.getByTestId('invitation-banner-not-now')).toBeVisible();
 
@@ -257,7 +265,7 @@ test.describe('an invitation is accepted by hand, then entered (S6)', () => {
     const other = await as('parent', { email, org: null });
     await other.goto('/');
     await expect(other.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText(ORGS.b.short);
-    await expect(other.getByTestId('invitation-banner')).toContainText(`${ORGS.a.name} invited you`);
+    await expect(other.getByTestId('invitation-banner')).toContainText(`invited you to ${ORGS.a.name}`);
     await other.getByTestId('invitation-banner-accept').click();
     await expect(other.getByTestId('org-switcher').filter({ visible: true }).first()).toContainText(ORGS.a.short);
     await expect(other.locator('html')).toHaveAttribute('data-palette', 'indigo');

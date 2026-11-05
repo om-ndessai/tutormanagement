@@ -4,8 +4,9 @@
 // only (R21); nothing when there are none. Letting someone in is a short sheet (`/let-in?request=<id>`,
 // owner, 2026-11-04; UI audit JF1) that asks the role and, for a parent, which child is theirs -- the full
 // person form is one tap from it. A request shows the whole address and when it was asked at every width,
-// and Decline asks first (JF26).
-import { formatRelativeTime, type JoinRequest } from '@tmi/shared';
+// and Decline asks first (JF26). Phase 72 (JF26, @ 98c40ab, working tree): the role they asked for beside when, and
+// their note in quotes -- their own words, for the space's admins only (R32).
+import { type JoinRequest } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Alert, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
@@ -17,6 +18,7 @@ import { showProblem } from '@/lib/api-errors';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { requestAskedLine } from './let-in-model';
 
 export function JoinRequestsSection({ enabled }: { enabled: boolean }) {
   const theme = useAppTheme();
@@ -92,8 +94,13 @@ export function JoinRequestsSection({ enabled }: { enabled: boolean }) {
                 variant="bodySmall"
                 style={{ color: theme.tokens.mutedForeground }}
               >
-                {`asked ${formatRelativeTime(request.requested_at)}`}
+                {requestAskedLine(request)}
               </Text>
+              {request.note ? (
+                <Text testID={`join-request-note-${request.user_id}`} variant="bodyMedium" style={{ marginTop: space.xs }}>
+                  {`“${request.note}”`}
+                </Text>
+              ) : null}
             </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
               <Button

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
+  JoinRequestInput,
   ApiOk,
   CreateSpaceInput,
   CurriculumOffering,
@@ -101,7 +102,9 @@ export function useLookupSpace() {
 export function useAskToJoin() {
   const { refreshSession } = useAuth();
   return useMutation({
-    mutationFn: (code: string) => apiClient.post<ApiOk<{ requested: true; slug: string }>>('/spaces/join-requests', { code }),
+    // Phase 72: the role asked for and a note travel with the code (older callers send the code alone).
+    mutationFn: (input: string | JoinRequestInput) =>
+      apiClient.post<ApiOk<{ requested: true; slug: string }>>('/spaces/join-requests', typeof input === 'string' ? { code: input } : input),
     onSuccess: () => refreshSession(),
   });
 }

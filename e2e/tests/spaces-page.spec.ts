@@ -98,7 +98,8 @@ test.describe('the Spaces page (S7)', () => {
     // Inside the portal's frame, the one space marked as here.
     await expect(switcher(una)).toBeVisible();
     await expect(una.getByTestId(`org-${space.slug}`)).toContainText('Here now');
-    await expect(una.getByTestId(`org-${space.slug}`)).toContainText('Admin');
+    // Her own space reads "Just you" rather than her roles (Phase 72, JF33).
+    await expect(una.getByTestId(`org-${space.slug}`)).toContainText('Just you');
 
     // The user menu's Spaces.
     await una.goto('/profile');

@@ -50,7 +50,8 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
     invitationText({
       inviter: user?.full_name ?? 'Someone',
       space: organization?.name ?? 'a space',
-      address: window.location.origin,
+      // The link opens on the invitation (the person's Spaces page), not on the guest game page (UI audit JF12).
+      address: `${window.location.origin}/spaces`,
       email,
     });
 

@@ -175,6 +175,15 @@ provider yet). Not an organization's record: a person's own, like `users`. `revo
 sealed with the session secret) exists solely so Apple's token can be revoked when the account is
 deleted. `users.google_sub` predates it and is still written for Google.
 
+### `legal_acceptances` (Phase 72)
+
+The terms and the privacy notice, accepted once by someone a space added. A self sign-up accepts them at
+sign-up (`platform_accounts.terms_version`); a person a space added has no platform account, so this
+table records theirs. A row is made due (`accepted_at` NULL) at their first sign-in (`users.last_login_at`
+still NULL), and filled in with the versions they were shown by `POST /api/auth/legal`. Nobody who signed
+in before Phase 72 has a row, so nobody is asked again. A person's own, like `users`: no organization,
+read only by their own session (`legal_due`), and gone with the account.
+
 ### `user_roles`
 
 `(user_id, role)` primary key. `admin`, `tutor`, `student`, `parent`, enforced by a CHECK.

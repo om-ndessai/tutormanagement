@@ -31,6 +31,26 @@ export const ORG_PALETTES = [
 ] as const;
 export type OrgPalette = (typeof ORG_PALETTES)[number];
 
+/**
+ * The palettes a new self-serve space takes in turn (owner, 2026-11-04; UI audit JF33), so a person's spaces do not
+ * all look alike. Never plum (the institute's); slate stays the platform's, the guest page's and personal spaces'.
+ */
+export const SPACE_PALETTE_ROTATION = ['indigo', 'teal', 'forest', 'crimson', 'amber'] as const satisfies readonly OrgPalette[];
+
+/** The palette of the rotation the maker's other spaces wear least (the first of them on a tie). */
+export function nextSpacePalette(used: readonly OrgPalette[]): OrgPalette {
+  let best: OrgPalette = SPACE_PALETTE_ROTATION[0];
+  let fewest = Number.POSITIVE_INFINITY;
+  for (const palette of SPACE_PALETTE_ROTATION) {
+    const n = used.filter((u) => u === palette).length;
+    if (n < fewest) {
+      best = palette;
+      fewest = n;
+    }
+  }
+  return best;
+}
+
 export const ORG_PALETTE_LABELS: Record<OrgPalette, string> = {
   platform: 'Slate',
   indigo: 'Indigo',
@@ -361,6 +381,10 @@ export interface Membership extends OrganizationBrand {
    * still sets it, through PUT /api/auth/default-organization.)
    */
   is_default: boolean;
+  /**
+   * A personal space (Phase 63), which the switcher calls "Just you" (UI audit JF33). Absent from older Workers.
+   */
+  personal?: boolean;
 }
 
 /**
@@ -390,6 +414,11 @@ export type EnterSpaceInput = z.input<typeof enterSpaceSchema>;
 export interface Invitation extends OrganizationBrand {
   roles: UserRole[];
   invited_at: string;
+  /**
+   * The first name of the admin who added them (UI audit JF12; R32), null when nobody recorded is (an invitation
+   * from before Phase 72, or from the console). Absent from older Workers.
+   */
+  invited_by_first_name?: string | null;
 }
 
 /** A row on the platform console's spaces list. */

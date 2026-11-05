@@ -277,7 +277,13 @@ export const questGameRoutes = new Hono<AppEnv>()
   .post('/lookup', zValidator('json', gameCodeSchema), async (c) => {
     const org = c.get('org');
     const found = await findGameByCode(c.env.DB, org.id, c.req.valid('json').code);
-    if (!found) throw ApiError.notFound('No game or team has that code.');
+    // Honest, and revealing nothing (owner, 2026-11-04; UI audit JF9): the same words whether the code is another
+    // space's or nobody's (R13).
+    if (!found) {
+      throw ApiError.notFound(
+        'No game in this space has that code. Games are joined inside their own space: ask your friend to invite you there, or start your own game.',
+      );
+    }
     const body: ApiOk<GameLookup> = {
       data: unwrap(await gameStub(c.env, org.id, found.game_id).lookup(viewerOf(c.get('user')), found.team_id)),
     };

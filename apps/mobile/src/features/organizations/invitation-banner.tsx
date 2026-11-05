@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/organizations/invitation-banner.tsx @ f96b984 (the working tree's Phase 60)
+// Ported from apps/web/src/features/organizations/invitation-banner.tsx @ f96b984 (the working tree's Phase 60;
+// Phase 72's words, UI audit JF12, @ 98c40ab, working tree)
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -11,11 +12,11 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 import { useAnswerInvitation } from './api';
-import { dismissInvitationBanner, invitationBannerDismissed } from './spaces-model';
+import { dismissInvitationBanner, invitationBannerDismissed, invitationBannerLine } from './spaces-model';
 
 /**
  * Phase 60 (S6): someone inside a space who has been invited to another sees it on Home --
- * "<space> invited you", Accept (which enters it) and Not now (hidden for this app session). The
+ * "<first name> invited you to <space>" (Phase 72; "You are invited to <space>" when nobody recorded invited them), Accept (which enters it) and Not now (hidden for this app session). The
  * invitation comes from their own session; nothing else is read.
  */
 export function InvitationBanner() {
@@ -67,7 +68,7 @@ export function InvitationBanner() {
       <Icon source="email-outline" size={20} color={theme.colors.onPrimaryContainer} />
       <View style={{ flex: 1, minWidth: 160 }}>
         <Text variant="titleSmall" style={{ color: theme.colors.onPrimaryContainer }} testID="invitation-banner-text">
-          {`${invite.name} invited you`}
+          {invitationBannerLine(invite)}
         </Text>
         {more > 0 ? (
           <Text

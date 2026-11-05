@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   BarChart3Icon,
   HomeIcon,
@@ -50,6 +50,7 @@ import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { PlayFavorites, PlayHome, WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { useMemberTiles } from '@/features/play/play-api';
 import { SessionFormDialog } from '@/features/teaching/session-form-dialog';
+import { CodeSheet, KeptForYou } from '@/features/organizations/code-sheet';
 import { RequestOutcomes } from '@/features/organizations/request-outcomes';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
@@ -72,6 +73,16 @@ export function MemberHomePage() {
   const home = query.data?.data;
   const { item, putOff } = useNextUp(home);
   const [record, setRecord] = useState<{ open: boolean; lesson: RecordRequest | null }>({ open: false, lesson: null });
+  // The one "Have a code?" sheet (JF4): null is closed. A shared game link (`/?code=`, the lobby's QR) opens it.
+  const [params, setParams] = useSearchParams();
+  const [codeSheet, setCodeSheet] = useState<string | null>(() => params.get('code'));
+  const closeCodeSheet = () => {
+    setCodeSheet(null);
+    if (params.has('code')) {
+      params.delete('code');
+      setParams(params, { replace: true });
+    }
+  };
 
   if (!home) {
     return (
@@ -104,6 +115,8 @@ export function MemberHomePage() {
       {tutoring && <LessonReminderSheet />}
       {/* The person's requests to join spaces and the answers, until dismissed (owner, 2026-11-04; JF5). */}
       <RequestOutcomes />
+      <KeptForYou onCode={(code) => setCodeSheet(code)} />
+      {codeSheet !== null && <CodeSheet initialCode={codeSheet} onClose={closeCodeSheet} />}
       <div className="relative">
         <Band home={home} hat={hats[0] ?? null} />
         <div className="relative -mt-12 px-3 sm:px-6">
@@ -117,7 +130,7 @@ export function MemberHomePage() {
       </div>
 
       {actions.length > 0 && (
-        <QuickActions actions={actions} onRecord={() => setRecord({ open: true, lesson: null })} />
+        <QuickActions actions={actions} onRecord={() => setRecord({ open: true, lesson: null })} onCode={() => setCodeSheet('')} />
       )}
 
       {hats.map((hat) => (
@@ -244,7 +257,7 @@ const QUICK: Record<QuickAction, { label: string; icon: LucideIcon; to?: string 
   progress: { label: 'Progress', icon: TrendingUpIcon, to: '/progress' },
 };
 
-function QuickActions({ actions, onRecord }: { actions: QuickAction[]; onRecord: () => void }) {
+function QuickActions({ actions, onRecord, onCode }: { actions: QuickAction[]; onRecord: () => void; onCode: () => void }) {
   const navigate = useNavigate();
   return (
     <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" data-testid="home-quick-actions">
@@ -252,11 +265,8 @@ function QuickActions({ actions, onRecord }: { actions: QuickAction[]; onRecord:
         const { label, icon: Icon, to } = QUICK[action];
         const onClick = () => {
           if (action === 'record_lesson') onRecord();
-          else if (action === 'join_code') {
-            const box = document.getElementById('play-code');
-            box?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            box?.focus();
-          } else if (to) navigate(to);
+          else if (action === 'join_code') onCode();
+          else if (to) navigate(to);
         };
         return (
           <Button

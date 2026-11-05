@@ -1,0 +1,90 @@
+# Phase 72 (UI audit JF12; owner 2026-11-04): someone a space added never saw the terms or the privacy notice, which a
+# person who signs up accepts on the way in. At their first sign-in they read and accept both, once: until then the
+# app waits behind "Before you start" (Accept waits for the tick; Sign out is the other way out). Accepted, it is gone,
+# and a later sign-in asks nothing more. Their invitation waits beneath, naming who invited them.
+# Setup by HTTP against the local Worker (scripts/spaces.js): Ines, assess's admin, invites a new address as a parent
+# (POST /api/users, status invited); the suite's fake Google token makes their first sign-in (POST /api/auth/google),
+# which makes the terms due; `legal-due` checks the session says so before the app is opened. The app then signs in as
+# them with the developer sign-in. The address and the Google subject carry the run's stamp (as spaces/invitation's),
+# so no run depends on another's clean-up; the person is put back to nothing after (the invitation declined, then the
+# account deleted).
+appId: ${APP_ID}
+onFlowStart:
+  - evalScript: ${output.run = Date.now().toString(36)}
+  - runScript:
+      file: ../../scripts/spaces.js
+      env:
+        ACTION: add-person
+        EMAIL: 'spaces.legal.${output.run}@example.com'
+        NAME: Lena Legal
+        ROLES: parent
+        ACTOR: ines.ferreira.assess@gmail.com
+        ORG: assess
+        STATUS: invited
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: google-sign-in, EMAIL: 'spaces.legal.${output.run}@example.com', SUBJECT: 'spaces-legal-${output.run}', KEEP_TERMS: '1' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: legal-due, EMAIL: 'spaces.legal.${output.run}@example.com' }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: 'spaces.legal.${output.run}@example.com' }
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.legal.${output.run}@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: legal-sheet
+    timeout: 30000
+- assertVisible: 'Before you start'
+- assertVisible: 'You were added by a space, so you have not seen how the platform works yet\..*'
+- assertVisible:
+    id: legal-terms
+- assertVisible:
+    id: legal-privacy
+- assertVisible:
+    id: legal-sign-out
+# Accept waits for the tick.
+- assertVisible:
+    id: legal-accept
+    enabled: false
+- takeScreenshot: spaces-legal-sheet
+- tapOn:
+    id: legal-agree
+- assertVisible:
+    id: legal-accept
+    enabled: true
+- tapOn:
+    id: legal-accept
+- extendedWaitUntil:
+    notVisible:
+      id: legal-sheet
+    timeout: 15000
+# Beneath it: the selector, with the invitation that names who invited them (JF12).
+- extendedWaitUntil:
+    visible:
+      id: invitation-assess
+    timeout: 15000
+- assertVisible:
+    id: invitation-line-assess
+    text: 'Invited as Parent by Ines'
+- takeScreenshot: spaces-legal-accepted
+# Once: signing in again asks nothing more.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.legal.${output.run}@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: invitation-assess
+    timeout: 30000
+- assertNotVisible:
+    id: legal-sheet

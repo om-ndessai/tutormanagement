@@ -12,6 +12,9 @@
 // a short one-way key of each address (`addressKey`), never the address -- so the age question is not
 // offered to the same account again here; and, for this run only (memory, never stored), that a sign-up
 // was declined, so the guest screens stop offering sign-up.
+//
+// Phase 72 (UI audit JF4, JF9; owner 2026-11-04): a code typed signed out, and a friend's quest link a guest
+// cannot play, are kept here through sign-up and approval, and offered once on the first home. Never sent.
 import { parseTileCode, type QuestionBankLevelId } from '@tmi/shared';
 import { useSyncExternalStore } from 'react';
 
@@ -33,6 +36,13 @@ export interface GuestMemory {
    * the address, most recent first, at most `TOO_YOUNG_KEPT`.
    */
   tooYoung?: string[];
+  /**
+   * A code typed signed out (a space's or a game's), kept on this phone through sign-up and approval and offered
+   * once on the first home (owner, 2026-11-04; UI audit JF4). Never sent until the person uses it.
+   */
+  keptCode?: string;
+  /** A quest link a friend sent that a guest cannot play (JF9): kept for the first home, then opened there. */
+  sentTile?: string;
 }
 
 /** How many under-13 refusals the phone remembers. */
@@ -125,6 +135,22 @@ export const guestMemory = {
       ...m,
       tooYoung: [key, ...(m.tooYoung ?? []).filter((k) => k !== key)].slice(0, TOO_YOUNG_KEPT),
     }));
+  },
+  /** Phase 72 (JF4): a code typed signed out, for the first home. Read after the memory has loaded. */
+  keptCode: (): string | undefined => memory.keptCode,
+  keepCode: (code: string) => {
+    if (memory.keptCode !== code) write((m) => ({ ...m, keptCode: code }));
+  },
+  dropCode: () => {
+    if (memory.keptCode !== undefined) write((m) => ({ ...m, keptCode: undefined }));
+  },
+  /** Phase 72 (JF9): a friend's quest link a guest could not play, for the guest home and the first home. */
+  sentTile: (): string | undefined => memory.sentTile,
+  keepSent: (code: string) => {
+    if (memory.sentTile !== code) write((m) => ({ ...m, sentTile: code }));
+  },
+  dropSent: () => {
+    if (memory.sentTile !== undefined) write((m) => ({ ...m, sentTile: undefined }));
   },
 };
 

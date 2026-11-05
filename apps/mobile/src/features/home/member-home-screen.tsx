@@ -19,6 +19,7 @@ import { primaryRole } from '@/features/onboarding/onboarding-model';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { TourTarget, useTourScroller } from '@/features/onboarding/tour-targets';
 import { InvitationBanner } from '@/features/organizations/invitation-banner';
+import { KeptForYou } from '@/features/organizations/kept-for-you';
 import { YourRequestsCard } from '@/features/organizations/your-requests';
 import { PlayFavorites, WaitingForYou } from '@/features/play/play-home';
 import { useAuth } from '@/providers/auth-provider';
@@ -106,6 +107,8 @@ export function MemberHomeScreen() {
         <ErrorState error={query.error} onRetry={() => void refetch()} />
       ) : (
         <View testID="member-home" style={{ gap: space.lg }}>
+          {/* Phase 72 (UI audit JF4, JF9): a code kept on this phone signed out, or a quest a friend sent, offered once. */}
+          <KeptForYou />
           {/* The tour starts on the home's blocks (Phase 66, as the web's data-tour ids). */}
           <TourTarget id="home-band">
             <HomeBand greeting={homeGreeting(home)} strip={stripLine(home, hats[0], streak)} />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { featureOn, formatRelativeTime, type ApiOk, type JoinRequest, type UserDetail } from '@tmi/shared';
+import { JOIN_REQUEST_ROLE_LABELS, featureOn, formatRelativeTime, type ApiOk, type JoinRequest, type UserDetail } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -36,7 +36,9 @@ export function LetInSheet({
   const tutoring = featureOn(organization, 'tutoring');
   const create = useCreateUser();
   const update = useUpdateUser();
-  const [role, setRole] = useState<LetInRole>('parent');
+  // The sheet starts on the role they asked for (Phase 72, JF26), where it is one of its choices.
+  const asked = request.role ?? null;
+  const [role, setRole] = useState<LetInRole>(() => (asked === 'admin' || (asked === 'tutor' && tutoring) ? asked : 'parent'));
   const [step, setStep] = useState<'role' | 'child' | 'full' | 'add-child'>('role');
   const [member, setMember] = useState<UserDetail | null>(null);
   const [studentId, setStudentId] = useState('');
@@ -125,6 +127,17 @@ export function LetInSheet({
                 {request.email ?? 'No address'} · asked {formatRelativeTime(request.requested_at)}
               </DialogDescription>
             </DialogHeader>
+            {(asked || request.note) && (
+              <div className="bg-muted/60 grid gap-1 rounded-lg px-3 py-2 text-sm" data-testid="let-in-asked">
+                {asked && (
+                  <p>
+                    Asked as <strong>{JOIN_REQUEST_ROLE_LABELS[asked].toLowerCase()}</strong>
+                    {asked === 'student' ? '. A learner joins with their parent: use the full form.' : '.'}
+                  </p>
+                )}
+                {request.note && <p className="break-words">“{request.note}”</p>}
+              </div>
+            )}
             <fieldset className="grid gap-3">
               <legend className="sr-only">What they do here</legend>
               <LetInChoice value="parent" chosen={role} onChoose={setRole} title="Parent" hint="Their child is, or will be, in this space." />

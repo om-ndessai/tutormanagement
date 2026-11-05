@@ -16,6 +16,11 @@
 // UI audit (JF8, JF10; Phase 70): the page speaks to every visitor -- a line under the headline and "Can
 // adults play?" among the answers -- and once a sign-up has been declined in this run it offers Sign in
 // only.
+//
+// Phase 72 (UI audit JF4, JF9; owner 2026-11-04): "Have a code?" under Play together opens the code sheet, which
+// keeps the code on this phone for the first home; the example code is drawn as an illustration marked "Example"
+// (not a box to type in, and not read out); and a friend's quest link a guest cannot play is named at the top
+// ("You were sent ...") with the way to an account.
 import {
   GUEST_GRADES,
   GUEST_PROMISES,
@@ -28,6 +33,7 @@ import {
   guestTileName,
   guestTileTitle,
   guestTodayLevel,
+  parseTileCode,
   type GuestGrade,
   type GuestTile,
 } from '@tmi/shared';
@@ -44,6 +50,8 @@ import { LogoMark } from '@/components/logo';
 import { OutlinedCard } from '@/components/outlined-card';
 import { Screen } from '@/components/screen';
 import { openLegal } from '@/features/auth/legal-links';
+import { GuestCodeSheet } from '@/features/organizations/code-sheet';
+import { sentQuestText } from '@/features/organizations/code-sheet-model';
 import { haptics } from '@/lib/haptics';
 import { serverOrigin } from '@/lib/server';
 import { useAuth } from '@/providers/auth-provider';
@@ -82,8 +90,13 @@ export const GUEST_ANSWERS = [
 export const GUEST_AUDIENCE = 'For kids, teens, grown-ups and classes.';
 
 /** What this phone remembers that the board shows, re-read whenever the board comes back into view. */
-function readMemory(day: string): { today: GuestToday | undefined; bests: Record<string, number> } {
-  return { today: guestMemory.todayOn(day), bests: guestMemory.bests() };
+function readMemory(day: string): {
+  today: GuestToday | undefined;
+  bests: Record<string, number>;
+  sent: string | undefined;
+} {
+  // `sent`: a friend's quest link a guest could not play (JF9), kept by the play link.
+  return { today: guestMemory.todayOn(day), bests: guestMemory.bests(), sent: guestMemory.sentTile() };
 }
 
 export function GuestHome() {
@@ -99,6 +112,7 @@ export function GuestHome() {
   const tiles = guest?.tiles ?? [];
   const [grade, setGrade] = useState<GuestGrade>(() => boardGrade(guestMemory.grade()));
   const [locked, setLocked] = useState<GuestTile | null>(null);
+  const [codeSheet, setCodeSheet] = useState(false);
   const [day] = useState(() => guestDay());
   const [memory, setMemory] = useState(() => readMemory(day));
   const [bandSize, setBandSize] = useState({ width: 0, height: 0 });
@@ -121,6 +135,7 @@ export function GuestHome() {
   const board = guestBoard(tiles, grade);
   const todayLevel = guestTodayLevel(tiles, grade);
   const today = todayLevel && memory.today?.level === todayLevel ? memory.today : undefined;
+  const sent = memory.sent ? parseTileCode(memory.sent) : null;
   // A sign-up declined in this run: Sign in only, from here on (JF8).
   const signupOpen = config?.signup_open === true && !declined;
   const muted = { color: theme.tokens.mutedForeground };
@@ -303,6 +318,27 @@ export function GuestHome() {
           </View>
         ) : null}
 
+        {sent ? (
+          <View style={gutter}>
+            <OutlinedCard testID="guest-sent" style={{ borderRadius: radius.lg, borderColor: theme.tokens.primary }}>
+              <View style={{ padding: space.lg, gap: space.md }}>
+                <Text testID="guest-sent-line" variant="bodyMedium">
+                  {sentQuestText(guestTileName(sent))}
+                </Text>
+                <Button
+                  testID="guest-sent-signup"
+                  mode="contained"
+                  onPress={startAccount}
+                  style={{ alignSelf: 'flex-start' }}
+                  contentStyle={{ minHeight: 44 }}
+                >
+                  {signupOpen ? 'Sign up free' : 'Sign in'}
+                </Button>
+              </View>
+            </OutlinedCard>
+          </View>
+        ) : null}
+
         <View style={{ gap: space.sm }}>
           <Text
             variant="labelMedium"
@@ -356,7 +392,7 @@ export function GuestHome() {
         </View>
 
         <View style={{ ...gutter, gap: space.md, flexDirection: wide ? 'row' : 'column' }}>
-          <PlayTogether signupOpen={signupOpen} onStart={startAccount} />
+          <PlayTogether signupOpen={signupOpen} onStart={startAccount} onHaveCode={() => setCodeSheet(true)} />
         </View>
 
         <View style={{ ...gutter, gap: space.xs }}>
@@ -403,6 +439,7 @@ export function GuestHome() {
           closeLabel="Not now"
           shareLink={playLink(serverOrigin())}
         />
+        <GuestCodeSheet visible={codeSheet} onClose={() => setCodeSheet(false)} onSignUp={startAccount} />
       </ScrollView>
       {/* The status bar's own strip, in the band's blue: the light status text stays readable as the
           board scrolls beneath it. */}
@@ -500,10 +537,19 @@ function GuestQuestCard({
   );
 }
 
-/** "Play together": what family games look like, an example. */
-function PlayTogether({ signupOpen, onStart }: { signupOpen: boolean; onStart: () => void }) {
+/** "Play together": what family games look like, an example; and the door for a code (JF4). */
+function PlayTogether({
+  signupOpen,
+  onStart,
+  onHaveCode,
+}: {
+  signupOpen: boolean;
+  onStart: () => void;
+  onHaveCode: () => void;
+}) {
   const theme = useAppTheme();
   const { width } = useWindowDimensions();
+  const wide = width >= 700;
   const people = [
     { initial: 'M', color: theme.tokens.primary, ink: theme.tokens.primaryForeground },
     { initial: 'J', color: theme.tokens.warning, ink: theme.tokens.warningForeground },
@@ -512,31 +558,57 @@ function PlayTogether({ signupOpen, onStart }: { signupOpen: boolean; onStart: (
   return (
     <OutlinedCard
       testID="guest-parents"
-      style={{ borderRadius: radius.lg, flex: width >= 700 ? 1 : undefined }}
+      style={{ borderRadius: radius.lg, flex: wide ? 1 : undefined }}
     >
       <View style={{ padding: space.lg, gap: space.md }}>
         <Text variant="titleSmall" accessibilityRole="header" style={{ fontWeight: '700' }}>
           Play together · One code, everyone joins
         </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' }}>
-          <View
-            accessible
-            accessibilityLabel="Example game code Q F 7 K 2 M"
-            style={{
-              paddingHorizontal: space.md,
-              paddingVertical: space.sm,
-              borderRadius: radius.md,
-              backgroundColor: withAlpha(theme.tokens.primary, 0.1),
-            }}
-          >
-            <Text
-              variant="titleLarge"
-              style={{ fontWeight: '800', letterSpacing: 3, color: theme.tokens.primary }}
+        {/* An illustration, not a code to type (UI audit J04): dashed, muted, marked Example, and left out of
+            what a screen reader reads. */}
+        <View
+          testID="guest-example-code"
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden
+          style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' }}
+        >
+          <View style={{ paddingTop: space.xs }}>
+            <View
+              style={{
+                paddingHorizontal: space.md,
+                paddingVertical: space.sm,
+                borderRadius: radius.md,
+                borderWidth: 1.5,
+                borderStyle: 'dashed',
+                borderColor: theme.colors.outline,
+              }}
             >
-              QF7K2M
-            </Text>
+              <Text
+                variant="titleLarge"
+                style={{ fontWeight: '800', letterSpacing: 3, color: theme.tokens.mutedForeground }}
+              >
+                QF7K2M
+              </Text>
+            </View>
+            <View
+              style={{
+                position: 'absolute',
+                top: -2,
+                left: space.sm,
+                paddingHorizontal: 4,
+                borderRadius: radius.sm,
+                backgroundColor: theme.tokens.muted,
+              }}
+            >
+              <Text
+                variant="labelSmall"
+                style={{ fontSize: 10, fontWeight: '700', letterSpacing: 0.6, color: theme.tokens.mutedForeground }}
+              >
+                EXAMPLE
+              </Text>
+            </View>
           </View>
-          <View style={{ flexDirection: 'row' }} aria-hidden>
+          <View style={{ flexDirection: 'row' }}>
             {people.map((p, i) => (
               <View
                 key={p.initial}
@@ -560,16 +632,29 @@ function PlayTogether({ signupOpen, onStart }: { signupOpen: boolean; onStart: (
           </View>
         </View>
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          Family games with a free account. Example code.
+          Family games with a free account.
         </Text>
         <Button
           testID="guest-parents-start"
           mode="contained"
           onPress={onStart}
-          style={{ alignSelf: width >= 700 ? 'flex-start' : 'stretch' }}
-          contentStyle={{ minHeight: 48, paddingHorizontal: width >= 700 ? space.lg : 0 }}
+          style={{ alignSelf: wide ? 'flex-start' : 'stretch' }}
+          contentStyle={{ minHeight: 48, paddingHorizontal: wide ? space.lg : 0 }}
         >
           {signupOpen ? 'Create a free family space' : 'Sign in'}
+        </Button>
+        <Button
+          testID="guest-have-code"
+          mode="outlined"
+          icon="key-outline"
+          onPress={() => {
+            haptics.selection();
+            onHaveCode();
+          }}
+          style={{ alignSelf: wide ? 'flex-start' : 'stretch' }}
+          contentStyle={{ minHeight: 48, paddingHorizontal: wide ? space.lg : 0 }}
+        >
+          Have a code?
         </Button>
       </View>
     </OutlinedCard>

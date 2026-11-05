@@ -10,6 +10,7 @@ import {
   defaultOrganizationSchema,
   enterSpaceSchema,
   ACCEPTED_LEGAL_VERSIONS,
+  acceptLegalSchema,
   ageBandFor,
   signupSchema,
   type SignupStart,
@@ -94,6 +95,8 @@ import {
   deleteOwnAccount,
   getPersonByEmail,
   getPlatformAccount,
+  acceptLegal,
+  legalDue,
   createPerson,
   getPersonById,
   isPlatformAdmin,
@@ -130,12 +133,13 @@ async function sessionPayload(
   impersonated: boolean,
   slug: string | undefined,
 ): Promise<SessionResponse> {
-  const [memberships, invitations, account, joinRequests, deletable] = await Promise.all([
+  const [memberships, invitations, account, joinRequests, deletable, owesLegal] = await Promise.all([
     listMemberships(env.DB, person.id),
     listInvitations(env.DB, person.id),
     getPlatformAccount(env.DB, person.id),
     listMyJoinRequests(env.DB, person.id),
     accountDeletable(env.DB, person.id),
+    legalDue(env.DB, person.id),
   ]);
 
   let organization: SessionResponse['organization'] = null;
@@ -187,6 +191,8 @@ async function sessionPayload(
     account,
     join_requests: joinRequests,
     account_deletable: deletable,
+    // Phase 72: an invited person's terms, once.
+    legal_due: owesLegal,
   };
 }
 
@@ -716,6 +722,25 @@ export const authRoutes = new Hono<AppEnv>()
    * there -- once per sign-in, not on every reload. Phase 60: it also becomes their last
    * choice (`org_members.is_default`), where they land on signing in.
    */
+  // Phase 72 (UI audit JF12): an invited person accepts the terms and the privacy notice they were shown, once.
+  .post('/legal', requireAuth, zValidator('json', acceptLegalSchema), async (c) => {
+    const person = c.get('person');
+    const input = c.req.valid('json');
+    if (!ACCEPTED_LEGAL_VERSIONS.includes(input.terms_version) || !ACCEPTED_LEGAL_VERSIONS.includes(input.privacy_version)) {
+      throw ApiError.validation('Please correct the highlighted fields.', { terms_version: ['Read and accept the current terms.'] });
+    }
+    if (await acceptLegal(c.env.DB, person.id, input)) {
+      await recordAudit(c.env.DB, person, 'platform', {
+        action: 'auth.legal_accepted',
+        description: `${person.full_name} accepted the terms (${input.terms_version}) and the privacy notice (${input.privacy_version})`,
+        entity_type: 'user',
+        entity_id: person.id,
+      });
+    }
+    const body: ApiOk<{ accepted: true }> = { data: { accepted: true } };
+    return c.json(body);
+  })
+
   .post('/enter', requireAuth, async (c) => {
     // The body is optional: older clients (and the app) send none, which means "just opened".
     const text = await c.req.text();

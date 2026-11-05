@@ -1,0 +1,128 @@
+# Phase 72 (UI audit JF4, JF9; owner 2026-11-04): one "Have a code?" door from the guest page on. Signed out, a code
+# typed there is kept on this phone (nothing is sent), and so is a friend's link to a quest a guest cannot play
+# (G4T10, locked for guests), which the guest page then names. Signing in on the same phone (the developer link, so
+# the phone keeps its memory), the first home offers the kept code once: Use it opens the code sheet on it, which
+# looks it up at once and shows the space's name -- and asks nothing until "Ask to join", which Sofia does not tap.
+# The example code on the guest page is an illustration marked "Example", not a field.
+# Self-cleaning: guest play off and Grade 4's pool emptied before and after; Sofia's request to Ferreira Family
+# Practice (none is made) withdrawn before and after.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'on' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: withdraw, EMAIL: sofia.okafor@gmail.com, SLUG: assess }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/guest-play.js
+      env: { ACTION: 'off' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: withdraw, EMAIL: sofia.okafor@gmail.com, SLUG: assess }
+tags:
+  - feature
+---
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 30000
+# Play together: the example is drawn, marked Example, and the door for a real code sits under it.
+- scrollUntilVisible:
+    element:
+      id: guest-have-code
+    centerElement: true
+- assertVisible: 'Family games with a free account\.'
+- assertNotVisible: 'Example code\.'
+- tapOn:
+    id: guest-have-code
+- extendedWaitUntil:
+    visible:
+      id: code-sheet
+    timeout: 10000
+- assertVisible: 'Six characters join a game; eight ask to join a space\.'
+- tapOn:
+    id: code-sheet-code
+- waitForAnimationToEnd
+- inputText: 'fmxy-2345'
+- tapOn:
+    id: code-sheet-go
+- extendedWaitUntil:
+    visible:
+      id: code-sheet-kept
+      text: 'FMXY2345 will be waiting on your first screen once you have signed up or signed in\. Nothing is sent until you use it\.'
+    timeout: 10000
+- assertVisible:
+    id: code-sheet-sign-up
+- takeScreenshot: guest-code-kept
+- tapOn:
+    id: code-sheet-keep-playing
+- extendedWaitUntil:
+    notVisible:
+      id: code-sheet
+    timeout: 5000
+# A friend's link to a quest a guest cannot play: kept, and named at the top of the guest page.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://play/G4T10'
+- extendedWaitUntil:
+    visible:
+      id: screen-guest-home
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: guest-sent
+    direction: UP
+- assertVisible:
+    id: guest-sent-line
+    text: 'You were sent .*\. It needs a free account; it will be waiting once you are in\.'
+- assertVisible:
+    id: guest-sent-signup
+- takeScreenshot: guest-sent-quest
+# Signed in on this phone: the first home offers the code kept, once.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://dev/link?as=sofia.okafor@gmail.com&org=chmi&tour=seen'
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: home-kept
+    timeout: 15000
+- assertVisible:
+    id: home-kept-line
+    text: 'You kept a code on this device: FMXY2345'
+- takeScreenshot: home-kept-code
+- tapOn:
+    id: home-kept-use
+- extendedWaitUntil:
+    visible:
+      id: code-sheet-space
+      text: 'Ferreira Family Practice'
+    timeout: 15000
+- assertVisible:
+    id: code-sheet-ask
+# Not asked: Another code, then Cancel, back home -- and the offer is gone (used once).
+- tapOn:
+    id: code-sheet-another
+- extendedWaitUntil:
+    visible:
+      id: code-sheet-cancel
+    timeout: 5000
+- tapOn:
+    id: code-sheet-cancel
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- assertNotVisible:
+    id: home-kept

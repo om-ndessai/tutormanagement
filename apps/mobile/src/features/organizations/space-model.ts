@@ -33,6 +33,15 @@ export function shareText(name: string, code: string, origin?: string): string {
   return origin ? `${line} ${origin}` : line;
 }
 
+/**
+ * Where an invitation's text sends the person (UI audit JF12): the server's Spaces page, where the invitation waits
+ * -- not its guest game page. With no web address known (a production build without one), nothing.
+ */
+export function invitationAddress(origin: string | null | undefined): string {
+  const base = (origin ?? '').replace(/\/+$/, '');
+  return base ? `${base}/spaces` : '';
+}
+
 /** The device's zone when the platform keeps lessons on it, else nothing (the server's default). */
 export function deviceTimeZone(calendars: readonly { timeZone?: string | null }[]): OrgTimeZone | undefined {
   const zone = calendars[0]?.timeZone;
@@ -105,6 +114,14 @@ export function canMake(
   platformAdmin = false,
 ): boolean {
   return mayMakeSpace({ account, memberships, platform_admin: platformAdmin });
+}
+
+/**
+ * The Welcome's card for a 13-17 who may not start a space (UI audit JF7): the way forward, not a grey "no". Nobody
+ * else is told about ages -- an invited adult has no account of their own (J09).
+ */
+export function showsTeenCard(account: Pick<PlatformAccount, 'age_band'> | null | undefined, mayMake: boolean): boolean {
+  return !mayMake && account?.age_band === '13-17';
 }
 
 /** What a found space says when the person may not ask (again). */

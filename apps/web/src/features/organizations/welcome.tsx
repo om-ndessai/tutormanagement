@@ -16,6 +16,7 @@ import {
   useMakeSpace,
   useWithdrawRequest,
 } from './api';
+import { JoinAskFields, useJoinAsk } from './code-sheet';
 import { markInviteStep } from './invite-step';
 import { OrgAvatar } from './org-avatar';
 import { RequestOutcomes } from './request-outcomes';
@@ -60,9 +61,10 @@ export function Welcome({ firstTime }: { firstTime: boolean }) {
         <JoinWithCode />
         {canMake && <MakeSpace />}
       </div>
-      {!canMake && account?.age_band === '13-17' && (
-        // A teen who runs a club met only a grey "no" (J04): the way forward instead (UI audit JF7). An invited adult
-        // (no account of their own yet) is not told about ages at all (J09).
+      {!canMake && (account?.age_band === '13-17' || invitations.length === 0) && (
+        // A teen who runs a club met only a grey "no" (J04): the way forward instead, which names no age (UI audit
+        // JF7). Someone with an invitation waiting -- most often an adult a space added, with no account of their own
+        // yet -- is not told it at all (J09).
         <Card className="py-0" data-testid="welcome-adults-only">
           <CardContent className="grid gap-1 p-4 text-sm">
             <p className="font-semibold">A club needs an adult to start its space</p>
@@ -122,6 +124,7 @@ function JoinWithCode() {
   const [code, setCode] = useState('');
   const [found, setFound] = useState<SpaceLookup | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
+  const joining = useJoinAsk(found);
 
   async function find(event: React.FormEvent) {
     event.preventDefault();
@@ -136,8 +139,8 @@ function JoinWithCode() {
 
   async function join() {
     try {
-      await ask.mutateAsync(code);
-      toast.success(`Asked to join ${found?.name}. Its administrators will let you in.`);
+      await ask.mutateAsync({ code, role: joining.role, note: joining.note.trim() || null });
+      toast.success(`Asked to join ${found?.name}. Its admins will let you in.`);
       setFound(null);
       setCode('');
     } catch (caught) {
@@ -173,7 +176,12 @@ function JoinWithCode() {
         {found && (
           <div className="flex flex-wrap items-center gap-3 rounded-lg border p-3" data-testid="welcome-found">
             <OrgAvatar org={found} />
-            <p className="min-w-0 flex-1 truncate font-medium">{found.name}</p>
+            <p className="min-w-0 flex-1 font-medium break-words">{found.name}</p>
+            {found.standing === null && (
+              <div className="basis-full">
+                <JoinAskFields space={found} ask={joining} />
+              </div>
+            )}
             {found.standing === 'member' ? (
               <span className="text-muted-foreground text-sm">You already belong here.</span>
             ) : found.standing === 'requested' ? (

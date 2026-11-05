@@ -227,6 +227,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. One Have a code door, from the guest page on
 
+> **Status (JF4):** done in Phase 72 (2026-11-05) on both clients: one sheet from the guest page, the home's quick action and the Quest board (and, on the web, a shared game link); it names the space before "Ask to join", and opens a game's join choices; signed out it keeps the code on the device, and the first home offers it once. The Question Quest page keeps its game-only box, and the Spaces page its own join card, which names the space too.
+
+
 - **What:**
   - **One "Have a code?" sheet** on both clients. It opens from:
     - the guest page, signed out;
@@ -391,6 +394,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Put Start a space where a teacher looks
 
+> **Status (JF7):** done in Phase 72 (2026-11-05): "Join with a code" and "Start a space" (adults) under the list of spaces (the web's switcher, the app's account sheet); the app's (+) ends with Start a space for adults where it offers anything; "Space settings"; a teen's club card in place of the age line.
+
+
 - **What:**
   - **Under the list of spaces,** put "Join with a code" and "Start a space" (adults). On the web that is the switcher;
     in the app, the account sheet.
@@ -485,6 +491,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. A friend's game code and tile link reach the friend's game
 
+> **Status (JF9):** done in Phase 72 (2026-11-05), as decided: a game code from another space gets the same honest answer as no game at all ("ask your friend to invite you there, or start your own game"), revealing nothing (R13 kept); a quest link a guest cannot play is kept on the device, named on the guest page and offered on the first home. A code admitting a non-member to one game is not scheduled.
+
+
 - **What:**
   - **Now:**
     - a game code from another space gets an honest answer, not "No game or team has that code.": "This game is in
@@ -529,7 +538,7 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. The guest page speaks to every visitor and keeps its promises
 
-> **Status (JF10):** in part, in Phase 70 (2026-11-04): the audience line, "Can adults play?", the offer marks the answer, no "Save this score". Percent answers are Phase 72; levels above Grade 8 on the guest board are not scheduled.
+> **Status (JF10):** done in Phases 70 and 72 (2026-11-04/05): the audience line, "Can adults play?", the offer marks the answer, no "Save this score"; and "30%" is right where the question asks for a percent (398 numeric questions of the bank; the blind solve stays exact). Levels above Grade 8 on the guest board are not scheduled.
 
 
 - **What:**
@@ -603,6 +612,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 - **Owner decides:** no.
 
 ### P2. An invitation link opens on the invitation
+
+> **Status (JF12):** done in Phase 72 (2026-11-05): the invitation text links to the Spaces page; the card wraps the space's name and says who invited ("Invited as Parent by Ines"); no age line while an invitation waits; and, as decided, an invited person accepts the terms and the privacy notice once, at their first sign-in. The child is not named: a mistyped address would learn a child's name (R32).
+
 
 - **What:**
   - **The link.** The invitation text links to the invitation itself, naming the space and who invited, not to the
@@ -1112,7 +1124,7 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. Join requests say who is asking, and Decline can be undone
 
-> **Status (JF26):** in part, in Phase 71 (2026-11-04): the whole address and the time at every width, and Decline asks first on both clients. The role and a note are Phase 72.
+> **Status (JF26):** done in Phases 71 and 72 (2026-11-04/05): the whole address and the time at every width; Decline asks first; a request carries the role asked for and a note, read by the space's admins only, and Let in starts on that role. Declined requests are not kept findable for the admins.
 
 
 - **What:**
@@ -1336,6 +1348,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   - Whether "Beta" stays on each question.
 
 ### P2. Each space looks like itself
+
+> **Status (JF33):** done in Phase 72 (2026-11-05): each new self-serve space takes the palette its maker's other spaces wear least (never plum); a personal space stays slate and reads "Just you"; the mark's gradient id is per instance.
+
 
 - **What:**
   - **A palette per new space.** Rotate through the palettes, or let the maker choose one in Start a space.

@@ -57,7 +57,8 @@ tags:
 - tapOn: 'More'
 - assertVisible:
     id: screen-more
-- assertVisible: 'Space'
+# "Space settings" since UI audit JF7 (it was "Space").
+- assertVisible: 'Space settings'
 - takeScreenshot: shell-more
 - tapOn:
     id: more-nav-billing

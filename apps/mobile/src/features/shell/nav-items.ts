@@ -165,7 +165,8 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/organization',
-    label: 'Space',
+    // "Space settings", not "Space": a teacher looking to start a space met this as a dead end (UI audit JF7).
+    label: 'Space settings',
     icon: 'domain',
     keywords: ['settings', 'tin', 'payer', 'organization', 'code', 'join'],
     admin: true,

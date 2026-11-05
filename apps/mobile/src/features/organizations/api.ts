@@ -1,12 +1,14 @@
 // Ported from apps/web/src/features/organizations/api.ts @ 1132322 (the Phase 52 block @ 9485a8e; Phase 60's
 // leave and the star's removal from the working tree on f96b984; Phase 61's useInvitePerson likewise; Phase 71's
-// useDismissJoinOutcome from the working tree: POST /spaces/join-requests/:slug/dismiss)
+// useDismissJoinOutcome from the working tree: POST /spaces/join-requests/:slug/dismiss; Phase 72's useAskToJoin
+// input @ 98c40ab, working tree: the role asked for and a note travel with the code)
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
   CreateSpaceInput,
   CurriculumOffering,
   JoinRequest,
+  JoinRequestInput,
   SpaceCode,
   SpaceLookup,
   SpaceInviteRow,
@@ -103,8 +105,12 @@ export function useLookupSpace() {
 export function useAskToJoin() {
   const { refreshSession } = useAuth();
   return useMutation({
-    mutationFn: (code: string) =>
-      apiClient.post<ApiOk<{ requested: true; slug: string }>>('/spaces/join-requests', { code }),
+    // Phase 72: the role asked for and a note travel with the code (older callers send the code alone).
+    mutationFn: (input: string | JoinRequestInput) =>
+      apiClient.post<ApiOk<{ requested: true; slug: string }>>(
+        '/spaces/join-requests',
+        typeof input === 'string' ? { code: input } : input,
+      ),
     onSuccess: () => refreshSession(),
   });
 }

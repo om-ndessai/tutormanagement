@@ -133,13 +133,13 @@ tags:
 - extendedWaitUntil:
     visible: 'You have joined Owen family ${output.run}.'
     timeout: 15000
-# In at once, and the welcome wizard opens as for any first visit.
+# In at once, on the home. A self-serve space has no Tutoring, so no tour (the tour is Tutoring's, owner 2026-11-04).
 - extendedWaitUntil:
     visible:
-      id: screen-onboarding
+      id: screen-home
     timeout: 30000
-- assertVisible:
-    id: onboarding-title
+- assertNotVisible:
+    id: screen-onboarding
 
 # 3. In Riverside, invited by the institute: Riverside, with the banner.
 - runFlow:
@@ -157,9 +157,10 @@ tags:
     visible:
       id: invitation-banner
     timeout: 15000
+# Phase 72 (UI audit JF12): it names who invited them, and to where.
 - assertVisible:
     id: invitation-banner-text
-    text: 'Chapel Hill Math Institute invited you'
+    text: 'Priya invited you to Chapel Hill Math Institute'
 - assertVisible:
     id: invitation-banner-accept
 - assertVisible:

@@ -99,7 +99,7 @@ export const habitRoutes = new Hono<AppEnv>()
     }
     const marks = questions.map((q, i) => {
       const given = input.answers[i];
-      return given !== null && given !== undefined && checkAnswer({ kind: q.kind, answer: q.answer }, given);
+      return given !== null && given !== undefined && checkAnswer({ kind: q.kind, answer: q.answer, stem: q.stem }, given);
     });
     const saved = await saveDailyResult(c.env.DB, org.id, { userId: user.id, day, levelId: level, marks, seconds: input.seconds });
     if (!saved) throw new ApiError(409, 'conflict', 'You have played today’s Daily. A new one tomorrow.');

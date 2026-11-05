@@ -148,3 +148,31 @@ describe('UI audit (JF22): one rule for adding people', () => {
     expect(hasCreateActions(['admin'], { tutoring: false, assessment: false }, ADULT)).toBe(true);
   });
 });
+
+describe('UI audit (JF7): Start a space where a teacher looks', () => {
+  test('an adult’s list ends with Start a space, opening Spaces on the new space’s name', () => {
+    const all = createActions(['admin'], { mayMakeSpace: true }, { tutoring: false, assessment: true });
+    expect(all.map((action) => action.id)).toEqual(['start-assessment', 'add-student', 'add-person', 'start-space']);
+    const start = all.at(-1);
+    expect(start).toMatchObject({ title: 'Start a space' });
+    expect(start?.href).toEqual({ pathname: '/spaces', params: { start: '1' } });
+    expect(ids(['tutor'], { teaches: true, mayMakeSpace: true })).toEqual([
+      'record-session',
+      'start-lesson',
+      'schedule-lesson',
+      'start-space',
+    ]);
+  });
+
+  test('never for someone who may not start one (a 13-17, a student a space added)', () => {
+    expect(ids(['admin'], { account: { age_band: '13-17' }, mayMakeSpace: false })).not.toContain('start-space');
+    expect(ids(['admin'])).not.toContain('start-space');
+  });
+
+  test('never a (+) of its own: a reader who creates nothing here gets none', () => {
+    for (const roles of [['parent'], ['student'], []] as const) {
+      expect(ids([...roles], { mayMakeSpace: true })).toEqual([]);
+      expect(hasCreateActions([...roles])).toBe(false);
+    }
+  });
+});

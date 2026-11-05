@@ -416,7 +416,9 @@ tags:
 - scrollUntilVisible:
     element:
       id: welcome-adults-only
-- assertVisible: 'To start a space of your own you need to be 18 or older.'
+# The way forward for a 13-17 (UI audit JF7), not a grey no.
+- assertVisible: 'A club needs an adult to start its space'
+- assertVisible: 'Ask a teacher or a parent to start it, then join it with its code here\.'
 - takeScreenshot: spaces-welcome-teen
 # Phase 61 (S11) and Phase 63 (P13): an adult who has just signed up (Stella, made by the script)
 # lands in her own space and starts another from Spaces, then lands in it. A fresh device, so the
@@ -480,12 +482,15 @@ tags:
 - scrollUntilVisible:
     element:
       id: invite-skip
-- tapOn:
-    id: invite-skip
-- extendedWaitUntil:
-    visible:
-      id: screen-onboarding
-    timeout: 15000
+- retry:
+    maxRetries: 1
+    commands:
+      - tapOn:
+          id: invite-skip
+      - extendedWaitUntil:
+          visible:
+            id: screen-onboarding
+          timeout: 10000
 - waitForAnimationToEnd:
     timeout: 3000
 - retry:

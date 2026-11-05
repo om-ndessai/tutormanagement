@@ -3,6 +3,9 @@ import {
   DAILY_CAPS,
   DEFAULT_ORG_TIME_ZONE,
   createSpaceSchema,
+  featureOn,
+  joinAskRolesFor,
+  joinRequestSchema,
   mayMakeSpace,
   spaceCodeSchema,
   spaceNameProblem,
@@ -56,16 +59,18 @@ export const spacesRoutes = new Hono<AppEnv>()
         palette: org.palette,
         logo_mark_url: org.logo_mark_url,
         standing: await spaceStanding(c.env.DB, orgIdFromRow(org.id), person.id),
+        offers_tutoring: featureOn(org, 'tutoring'),
       },
     };
     return c.json(body);
   })
 
   /** Asks to join the space a code opens. The space's admins let the person in, or decline. */
-  .post('/join-requests', zValidator('json', spaceCodeSchema), async (c) => {
+  .post('/join-requests', zValidator('json', joinRequestSchema), async (c) => {
     const person = c.get('person');
     await rateLimit(c, 'space_write', person.id);
-    const org = await findSpaceByCode(c.env.DB, c.req.valid('json').code);
+    const input = c.req.valid('json');
+    const org = await findSpaceByCode(c.env.DB, input.code);
     if (!org) throw ApiError.notFound('No space has that code.');
     const orgId = orgIdFromRow(org.id);
     const standing = await spaceStanding(c.env.DB, orgId, person.id);
@@ -74,7 +79,16 @@ export const spacesRoutes = new Hono<AppEnv>()
     if ((await countOpenRequests(c.env.DB, person.id)) >= DAILY_CAPS.open_join_requests) {
       throw new ApiError(429, 'rate_limited', 'You have too many requests waiting. Wait for an answer, or withdraw one.');
     }
-    await createJoinRequest(c.env.DB, orgId, person.id);
+    // Phase 72 (JF26): the role asked for must be one this person may ask for here; older apps send none.
+    const role = input.role ?? null;
+    if (role) {
+      const account = await getPlatformAccount(c.env.DB, person.id);
+      const allowed = joinAskRolesFor({ teen: account?.age_band === '13-17', tutoring: featureOn(org, 'tutoring') });
+      if (!allowed.includes(role)) {
+        throw ApiError.validation('Please correct the highlighted fields.', { role: ['Choose one of the roles offered.'] });
+      }
+    }
+    await createJoinRequest(c.env.DB, orgId, person.id, { role, note: input.note ?? null });
     // In the space's own log: who asked. Its admins read it; the code itself is never logged.
     await recordAudit(c.env.DB, person, orgId, {
       action: 'membership.requested',

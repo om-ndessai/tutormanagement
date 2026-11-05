@@ -182,7 +182,8 @@ export const questionBankRoutes = new Hono<AppEnv>()
             lint,
             solve: {
               answer: verdict.final_answer,
-              agreed: checkAnswer(question, verdict.final_answer),
+              // Exact: the blind solve's agreement is a check, so no trailing % is read here.
+              agreed: checkAnswer({ kind: question.kind, answer: question.answer }, verdict.final_answer),
               single_answer: verdict.single_answer,
               aligned: verdict.aligned,
               grade_appropriate: verdict.grade_appropriate,

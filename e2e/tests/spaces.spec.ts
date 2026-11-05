@@ -85,7 +85,7 @@ test.describe('signing up (Phase 52)', () => {
     expect((await nina.request.post('/api/spaces/lookup', { data: { code: 'CHMX-2345' } })).status()).toBe(404);
     expect((await nina.request.post('/api/spaces/lookup', { data: { code: 'not a code' } })).status()).toBe(422);
     const found = await unwrap<any>(await nina.request.post('/api/spaces/lookup', { data: { code: 'fmxy 2345' } }), 'lookup');
-    expect(found).toEqual({ name: 'Ferreira Family Practice', short_name: 'Ferreira', palette: 'platform', logo_mark_url: null, standing: null });
+    expect(found).toEqual({ name: 'Ferreira Family Practice', short_name: 'Ferreira', palette: 'platform', logo_mark_url: null, standing: null, offers_tutoring: false });
 
     // Nina asks, through the Welcome page.
     await nina.goto('/');

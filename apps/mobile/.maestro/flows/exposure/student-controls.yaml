@@ -141,7 +141,7 @@ env:
     timeout: 15000
 - assertNotVisible:
     id: more-nav-organization
-- assertNotVisible: 'Space'
+- assertNotVisible: 'Space settings'
 - takeScreenshot: exposure-student-more
 - runFlow:
     file: ../../subflows/open-link.yaml

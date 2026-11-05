@@ -2,6 +2,8 @@
 // `/play/<code>` -- a tile in one tap, from the Play home or a link (`aimtrue://play/G4Q5`, which
 // expo-router maps here). A guest plays it on the phone while it is open to guests; a member's tap
 // starts it as a single player's game in their space; anything else lands on the home.
+// Phase 72 (UI audit JF9): a friend's link to a tile guests cannot play is kept on the phone (`keepSent`), named on
+// the guest page and offered on the first home after sign-up, rather than dropped.
 import { parseTileCode, tileCode, tileGameRequest, tileWords, type QuestionBankLevelId } from '@tmi/shared';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -19,7 +21,7 @@ import { space } from '@/theme/tokens';
 import { GuestAssessment } from './guest-assessment';
 import { GuestQuest } from './guest-quest';
 import { todayTile } from './guest-model';
-import { loadGuestMemory, readQuestState } from './guest-store';
+import { guestMemory, loadGuestMemory, readQuestState } from './guest-store';
 
 /** Waits for the phone's guest memory (read once per run) before anything that reads it draws. */
 export function useGuestMemoryReady(): boolean {
@@ -54,7 +56,11 @@ export function PlayLink() {
     if (!organization) return <Redirect href="/" />;
     return <Redirect href={{ pathname: '/quest/tile/[code]', params: { code: tileId } }} />;
   }
-  if (!tile) return <Redirect href="/" />;
+  if (!tile) {
+    // Signed out: kept for the guest page and the first home (idempotent: the same code is not written twice).
+    if (status !== 'authenticated') guestMemory.keepSent(tileId);
+    return <Redirect href="/" />;
+  }
   // P11: an assessment tile is the guest Assessment, on the phone.
   if (tile.kind === 'assessment') return <GuestAssessment key={tile.code} tile={tile} />;
   return <GuestQuest key={tile.code} tile={tile} />;

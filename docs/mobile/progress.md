@@ -591,6 +591,16 @@ native rebuild of both dev builds, so build only while the devices are free.
   until dismissed with the account button's badge, the access note before sign-up, the checked address on a not-on-the-list
   refusal. Jest 1384/1384; 39 touched flows on iOS (`spaces/*`, `people/*`, `home/*`, `features/*`, `shell/create`);
   the touched set on Android; `npm run smoke` on both.
+- [x] 87. Mobile: Phase 72's app half (2026-11-05, build-log entry 82) -- the one "Have a code?" sheet (`/have-a-code`:
+  a space's name, then the role and a note, then Ask; a game's code to its join sheet), the code and a friend's quest
+  kept on the device signed out and offered once on the first home, the guest page's door and its example drawn as an
+  illustration; Join with a code and Start a space in the account sheet and the (+), "Space settings", the 13-17 card;
+  the invitation's who and where, "Just you", the terms once for someone a space added; Let in on the asked role with
+  the note. Typecheck, lint, Jest and export green; the flows written (`home/quick-code`, `spaces/let-in`,
+  `spaces/legal`, `spaces/start-a-space`, `guest/have-code` and the touched ones), 13 in all, green on the iOS
+  simulator and the Android emulator. Found on the way: the guest page's code dialog lost fast-typed letters (its state
+  sat outside the Paper portal; it now lives inside), the join note is one line whose Return puts the keyboard away,
+  and Spaces opened from "Start a space" puts that card first (Android left the focused field under the keyboard).
 
 ## Phase 4 — Google sign-in
 

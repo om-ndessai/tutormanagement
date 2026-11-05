@@ -1,5 +1,6 @@
-// Ported from apps/web/src/features/organizations/spaces-page.tsx @ f96b984 (the working tree's Phase 60)
-import { PLATFORM_BRAND, USER_ROLE_LABELS, type Membership } from '@tmi/shared';
+// Ported from apps/web/src/features/organizations/spaces-page.tsx @ f96b984 (the working tree's Phase 60; Phase 72's
+// invitation line and "Just you" @ 98c40ab, working tree)
+import { PLATFORM_BRAND, type Membership } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -20,6 +21,7 @@ import { radius, space } from '@/theme/tokens';
 import { useAnswerInvitation, useLeaveSpace } from './api';
 import { OrgAvatar } from './org-avatar';
 import { SpaceWelcome } from './space-welcome';
+import { invitedAsLine, membershipLine } from './spaces-model';
 
 /** Into a space's Home, from the selector or from the Spaces screen pushed over a space. */
 function goHome() {
@@ -32,9 +34,10 @@ function goHome() {
  * from the account sheet, under the header "Spaces"; with no space chosen it is the selector ("Choose
  * a space", or "Welcome to Aimtrue" with nowhere to go), full screen. Everything on it comes from the
  * person's own session (memberships, invitations, requests) -- no other read. `focusJoin` (Home's "Ask
- * again", UI audit JF5) opens it on Join with a code.
+ * again", UI audit JF5; the account sheet's Join with a code, JF7) opens it on Join with a code; `focusStart` (the
+ * account sheet's and the (+)'s Start a space) on the new space's name.
  */
-export function SpacesScreen({ focusJoin = false }: { focusJoin?: boolean } = {}) {
+export function SpacesScreen({ focusJoin = false, focusStart = false }: { focusJoin?: boolean; focusStart?: boolean } = {}) {
   const { user, organization, memberships, invitations, platformAdmin, chooseOrganization, refreshSession, signOut } =
     useAuth();
   const theme = useAppTheme();
@@ -107,9 +110,14 @@ export function SpacesScreen({ focusJoin = false }: { focusJoin?: boolean } = {}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
                 <OrgAvatar org={invite} />
                 <View style={{ flex: 1 }}>
+                  {/* The whole name, wrapped (UI audit JF12), and who invited them. */}
                   <Text variant="titleMedium">{invite.name}</Text>
-                  <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-                    Invited as {invite.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') || 'a member'}
+                  <Text
+                    testID={`invitation-line-${invite.slug}`}
+                    variant="bodySmall"
+                    style={{ color: theme.colors.onSurfaceVariant }}
+                  >
+                    {invitedAsLine(invite)}
                   </Text>
                 </View>
               </View>
@@ -168,7 +176,7 @@ export function SpacesScreen({ focusJoin = false }: { focusJoin?: boolean } = {}
       ) : null}
 
       {/* Requests sent, Join with a code, Make a space -- and, belonging nowhere, Delete my account. */}
-      <SpaceWelcome firstTime={memberships.length === 0} focusJoin={focusJoin} />
+      <SpaceWelcome firstTime={memberships.length === 0} focusJoin={focusJoin} focusStart={focusStart} />
 
       {framed ? null : (
         <Button
@@ -194,7 +202,8 @@ export function SpaceRow({ org, current }: { org: Membership; current: boolean }
   const [opening, setOpening] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   const suspended = org.status === 'suspended';
-  const roles = org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ');
+  // A space of one's own reads "Just you" (UI audit JF33): its roles say nothing there.
+  const roles = membershipLine(org);
 
   async function open() {
     haptics.selection();
@@ -277,7 +286,7 @@ export function SpaceRow({ org, current }: { org: Membership; current: boolean }
                     </Chip>
                   ) : null}
                 </View>
-                <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
+                <Text testID={`org-roles-${org.slug}`} variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
                   {roles}
                 </Text>
               </View>

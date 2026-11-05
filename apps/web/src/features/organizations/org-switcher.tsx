@@ -69,7 +69,8 @@ export function OrgSwitcher({ className }: { className?: string }) {
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm">{org.name}</span>
               <span className="text-muted-foreground block truncate text-xs">
-                {org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+                {/* A space of one's own reads "Just you" (UI audit JF33): its roles say nothing there. */}
+                {org.personal ? 'Just you' : org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
               </span>
             </span>
             {org.slug === organization?.slug && <CheckIcon className="size-4" />}

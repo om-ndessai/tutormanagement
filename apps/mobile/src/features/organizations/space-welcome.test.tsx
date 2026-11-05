@@ -136,11 +136,47 @@ describe('SpaceWelcome (Phase 52)', () => {
     await fireEvent.press(screen.getByTestId('welcome-find'));
     expect(mockLookup).toHaveBeenCalledWith('fmxy2345');
     expect(await screen.findByTestId('welcome-found-name')).toHaveTextContent('Ferreira Family Practice');
+    // Phase 72 (JF26): the role asked for (a parent by default) and a note, before Ask to join.
+    expect(screen.getByText('You are joining Ferreira Family Practice as')).toBeTruthy();
+    expect(screen.getByTestId('join-ask-role-parent').props.accessibilityState).toMatchObject({ checked: true });
+    // No Tutoring there: nobody asks to be its tutor.
+    expect(screen.queryByTestId('join-ask-role-tutor')).toBeNull();
     await fireEvent.press(screen.getByTestId('welcome-ask'));
     await waitFor(() =>
-      expect(mockToast.success).toHaveBeenCalledWith('Asked to join Ferreira Family Practice. Its administrators will let you in.'),
+      expect(mockToast.success).toHaveBeenCalledWith('Asked to join Ferreira Family Practice. Its admins will let you in.'),
     );
+    expect(mockAsk).toHaveBeenCalledWith({ code: 'fmxy2345', role: 'parent', note: null });
     expect(screen.queryByTestId('welcome-found')).toBeNull();
+  });
+
+  it('asks with the role chosen and a note (Phase 72, JF26)', async () => {
+    as();
+    mockLookup.mockResolvedValue({ data: { ...FOUND, offers_tutoring: true } });
+    mockAsk.mockResolvedValue({ data: { requested: true, slug: 'assess' } });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    await fireEvent.changeText(screen.getByTestId('welcome-code'), 'FMXY-2345');
+    await fireEvent.press(screen.getByTestId('welcome-find'));
+    await screen.findByTestId('welcome-found-name');
+    await fireEvent.press(screen.getByTestId('join-ask-role-tutor'));
+    await fireEvent.changeText(screen.getByTestId('join-ask-note'), '  I teach Grade 4 on Tuesdays.  ');
+    await fireEvent.press(screen.getByTestId('welcome-ask'));
+    await waitFor(() =>
+      expect(mockAsk).toHaveBeenCalledWith({ code: 'FMXY-2345', role: 'tutor', note: 'I teach Grade 4 on Tuesdays.' }),
+    );
+  });
+
+  it('asks a 13-17 nothing about a role: a learner (Phase 72)', async () => {
+    as({ account: { age_band: '13-17' } });
+    mockLookup.mockResolvedValue({ data: FOUND });
+    mockAsk.mockResolvedValue({ data: { requested: true, slug: 'assess' } });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    await fireEvent.changeText(screen.getByTestId('welcome-code'), 'fmxy2345');
+    await fireEvent.press(screen.getByTestId('welcome-find'));
+    await screen.findByTestId('welcome-found-name');
+    expect(screen.queryByTestId('join-ask-role-parent')).toBeNull();
+    expect(screen.getByTestId('join-ask-note')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('welcome-ask'));
+    await waitFor(() => expect(mockAsk).toHaveBeenCalledWith({ code: 'fmxy2345', role: 'student', note: null }));
   });
 
   it('says the server’s sentence for no such code, and the standing of a known one', async () => {
@@ -156,25 +192,35 @@ describe('SpaceWelcome (Phase 52)', () => {
     expect(screen.queryByTestId('welcome-ask')).toBeNull();
   });
 
-  it('offers a 13-17 no space of their own', async () => {
+  it('offers a 13-17 no space of their own, and the way forward instead (UI audit JF7)', async () => {
     as({ account: { age_band: '13-17' } });
     await renderWithProviders(<SpaceWelcome firstTime />);
     expect(screen.queryByTestId('welcome-make')).toBeNull();
-    expect(screen.getByTestId('welcome-adults-only')).toHaveTextContent('To start a space of your own you need to be 18 or older.');
+    const card = screen.getByTestId('welcome-adults-only');
+    expect(card).toHaveTextContent(/A club needs an adult to start its space/);
+    expect(card).toHaveTextContent(/Ask a teacher or a parent to start it, then join it with its code here\./);
+    expect(screen.queryByText(/18 or older/)).toBeNull();
     expect(screen.getByTestId('welcome-join')).toBeTruthy();
   });
 
-  it('offers a student a space added, with no age given, no space of their own; nor anyone in no space (S11)', async () => {
+  it('offers a student a space added, with no age given, no space of their own -- nor anyone in no space -- and tells neither about ages (S11, JF7)', async () => {
     as({ account: null, memberships: [{ slug: 'chmi', name: 'Chapel Hill Math Institute', roles: ['student'], status: 'active' }] });
     await renderWithProviders(<SpaceWelcome firstTime={false} />);
     expect(screen.queryByTestId('welcome-make')).toBeNull();
-    expect(screen.getByTestId('welcome-adults-only')).toBeTruthy();
+    expect(screen.queryByTestId('welcome-adults-only')).toBeNull();
     expect(screen.getByTestId('welcome-join')).toBeTruthy();
     await screen.unmount();
     as({ account: null, memberships: [] });
     await renderWithProviders(<SpaceWelcome firstTime />);
     expect(screen.queryByTestId('welcome-make')).toBeNull();
-    expect(screen.getByTestId('welcome-adults-only')).toBeTruthy();
+    expect(screen.queryByTestId('welcome-adults-only')).toBeNull();
+  });
+
+  it('opens on the new space’s name from Start a space (JF7)', async () => {
+    as();
+    await renderWithProviders(<SpaceWelcome firstTime={false} focusStart />);
+    expect(screen.getByTestId('welcome-space-name').props.autoFocus).toBe(true);
+    expect(screen.getByTestId('welcome-code').props.autoFocus).toBe(false);
   });
 
   it('offers a parent a space added the form (their role vouches)', async () => {

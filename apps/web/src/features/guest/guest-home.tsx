@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CheckIcon, LockIcon } from 'lucide-react';
+import { CheckIcon, KeyRoundIcon, LockIcon } from 'lucide-react';
 import {
   GUEST_DEFAULT_GRADE,
   GUEST_GRADES,
@@ -14,6 +14,7 @@ import {
   guestTileDetail,
   guestTileName,
   guestTileTitle,
+  parseTileCode,
   guestTodayLevel,
   type GuestTile,
   type QuestionBankLevelId,
@@ -25,6 +26,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { isAccessRefusal } from '@/features/auth/access-refused';
+import { CodeSheet } from '@/features/organizations/code-sheet';
 import { countEvent } from './guest-api';
 import { declinedTab, guestMemory, type GuestToday } from './guest-store';
 import { SignupSheet, type SignupSheetMode } from './signup-sheet';
@@ -47,6 +49,14 @@ export function GuestHome() {
   const [locked, setLocked] = useState<GuestTile | null>(null);
   // The sheet, and how it opened: "Sign in" says Sign in (UI audit JF11), the calls to action Sign up free.
   const [sheet, setSheet] = useState<SignupSheetMode | null>(null);
+  // The one "Have a code?" sheet (JF4): signed out it keeps the code on this device. A shared game link
+  // (`/?code=`, the lobby's QR code) opens it on that code.
+  const [codeSheet, setCodeSheet] = useState<string | null>(() => new URLSearchParams(window.location.search).get('code'));
+  // A friend's quest link a guest cannot play (JF9), kept for after sign-up.
+  const [sent] = useState(() => {
+    const code = guestMemory.sentTile();
+    return code ? parseTileCode(code) : null;
+  });
 
   useEffect(() => countEvent({ name: 'home_viewed', source: 'home' }), []);
   // P13: back from a redirect provider mid sign-up: the sheet opens at the age question.
@@ -150,6 +160,17 @@ export function GuestHome() {
       </div>
 
       <main className="mx-auto grid max-w-5xl gap-6 px-4 pt-6 sm:px-8">
+        {sent && (
+          <section className="bg-card flex flex-wrap items-center gap-3 rounded-2xl border p-4 text-sm" data-testid="guest-sent">
+            <span className="min-w-0 flex-1">
+              You were sent <span className="font-semibold">{guestTileName(sent)}</span>. It needs a free account; it will be
+              waiting once you are in.
+            </span>
+            <Button size="sm" onClick={signUp} data-testid="guest-sent-signup">
+              {signupOpen ? 'Sign up free' : 'Sign in'}
+            </Button>
+          </section>
+        )}
         <section className="grid gap-2" aria-labelledby="guest-grade-label">
           <h2 id="guest-grade-label" className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             Your grade
@@ -184,7 +205,15 @@ export function GuestHome() {
             <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">Play together</span>
             <h2 className="font-display text-xl font-black">One code, everyone joins</h2>
             <div className="flex items-center gap-3">
-              <kbd className="font-display bg-card rounded-xl border px-3 py-2 text-2xl font-extrabold tracking-[0.12em]">QF7K2M</kbd>
+              {/* An illustration, not a code to type (UI audit J04): marked Example and left out of the reading order. */}
+              <span className="relative select-none" aria-hidden>
+                <span className="font-display bg-card text-muted-foreground block rounded-xl border border-dashed px-3 py-2 text-2xl font-extrabold tracking-[0.12em]">
+                  QF7K2M
+                </span>
+                <span className="bg-muted text-muted-foreground absolute -top-2 left-2 rounded px-1 text-[10px] font-semibold tracking-wide uppercase">
+                  Example
+                </span>
+              </span>
               <span className="flex" aria-hidden>
                 {[
                   ['M', 'bg-primary text-primary-foreground'],
@@ -204,11 +233,16 @@ export function GuestHome() {
                 ))}
               </span>
             </div>
-            <p className="text-muted-foreground text-sm">Family games with a free account. Example code.</p>
+            <p className="text-muted-foreground text-sm">Family games with a free account.</p>
           </div>
-          <Button size="lg" className="w-full md:w-fit" onClick={signUp} data-testid="guest-family-space">
-            {signupOpen ? 'Create a free family space' : 'Sign in'}
-          </Button>
+          <div className="grid gap-2 md:justify-items-end">
+            <Button size="lg" className="w-full md:w-fit" onClick={signUp} data-testid="guest-family-space">
+              {signupOpen ? 'Create a free family space' : 'Sign in'}
+            </Button>
+            <Button variant="outline" className="w-full md:w-fit" onClick={() => setCodeSheet('')} data-testid="guest-have-code">
+              <KeyRoundIcon /> Have a code?
+            </Button>
+          </div>
         </section>
 
         <section className="grid gap-2" aria-labelledby="guest-faq">
@@ -245,6 +279,16 @@ export function GuestHome() {
         </nav>
       </footer>
 
+      {codeSheet !== null && (
+        <CodeSheet
+          initialCode={codeSheet}
+          onClose={() => {
+            setCodeSheet(null);
+            if (window.location.search.includes('code=')) window.history.replaceState(null, '', window.location.pathname);
+          }}
+          onSignUp={signUp}
+        />
+      )}
       <SignupSheet open={sheet !== null} mode={sheet ?? 'signup'} onClose={() => setSheet(null)} />
       <NudgeSheet
         open={locked !== null}

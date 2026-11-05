@@ -174,3 +174,30 @@ describe('a declined sign-up, for this run only (UI audit JF8)', () => {
     expect(await AsyncStorage.getItem(STORAGE_KEYS.guest)).toBeNull();
   });
 });
+
+describe('a code typed signed out, and a quest a friend sent (Phase 72, JF4, JF9)', () => {
+  it('keeps each on this phone until dropped, written through, and never twice', async () => {
+    const store = await freshStore();
+    await store.loadGuestMemory();
+    expect(store.guestMemory.keptCode()).toBeUndefined();
+    store.guestMemory.keepCode('FMXY2345');
+    store.guestMemory.keepSent('G4T10');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const kept = JSON.parse((await AsyncStorage.getItem(STORAGE_KEYS.guest))!);
+    expect(kept).toMatchObject({ keptCode: 'FMXY2345', sentTile: 'G4T10' });
+    const writes = jest.spyOn(AsyncStorage, 'setItem');
+    writes.mockClear();
+    store.guestMemory.keepCode('FMXY2345');
+    store.guestMemory.keepSent('G4T10');
+    expect(writes).not.toHaveBeenCalled();
+    store.guestMemory.dropCode();
+    store.guestMemory.dropSent();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(store.guestMemory.keptCode()).toBeUndefined();
+    expect(store.guestMemory.sentTile()).toBeUndefined();
+    const after = JSON.parse((await AsyncStorage.getItem(STORAGE_KEYS.guest))!);
+    expect(after.keptCode).toBeUndefined();
+    expect(after.sentTile).toBeUndefined();
+    writes.mockRestore();
+  });
+});

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { formatRelativeTime, type JoinRequest } from '@tmi/shared';
+import { formatRelativeTime, type JoinRequest, JOIN_REQUEST_ROLE_LABELS } from '@tmi/shared';
 
 import {
   AlertDialog,
@@ -45,7 +45,16 @@ export function JoinRequestsPanel() {
             <div className="min-w-0 flex-1 basis-56">
               <p className="font-medium break-words">{r.full_name}</p>
               <p className="text-muted-foreground text-xs break-all">{r.email ?? 'No address'}</p>
-              <p className="text-muted-foreground text-xs">asked {formatRelativeTime(r.requested_at)}</p>
+              <p className="text-muted-foreground text-xs">
+                asked {formatRelativeTime(r.requested_at)}
+                {r.role ? ` · as ${JOIN_REQUEST_ROLE_LABELS[r.role].toLowerCase()}` : ''}
+              </p>
+              {/* Their own words, for the admins only (R32). */}
+              {r.note && (
+                <p className="mt-1 text-sm break-words" data-testid={`join-request-note-${r.user_id}`}>
+                  “{r.note}”
+                </p>
+              )}
             </div>
             <div className="flex gap-2">
               <Button size="sm" onClick={() => setLetting(r)} data-testid={`join-request-let-in-${r.user_id}`}>

@@ -8,6 +8,9 @@
 # Self-cleaning: Jo is put back to nothing, signed up and asking, before; nothing, after.
 # Phase 63 (P13): signing up now also makes a personal space; Jo drops theirs at once
 # (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
+# Phase 72 (UI audit JF26; owner 2026-11-04): Jo asks to help run the space, with a note. The request says the role
+# beside when they asked, and the note in quotes; the Let in sheet says both and starts on Admin, the role asked for.
+# Ines then chooses Parent, the short way this flow goes on with.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -18,7 +21,7 @@ onFlowStart:
       env: { ACTION: signup, EMAIL: spaces.joiner@example.com, NAME: Jo Joiner, PERSONAL: drop }
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: ask, EMAIL: spaces.joiner@example.com, CODE: FMXY2345 }
+      env: { ACTION: ask, EMAIL: spaces.joiner@example.com, CODE: FMXY2345, ROLE: admin, NOTE: 'I help Ines on Saturdays.' }
 onFlowComplete:
   - runScript:
       file: ../../scripts/spaces.js
@@ -44,9 +47,13 @@ tags:
       id: join-requests
     timeout: 20000
 - assertVisible: 'Jo Joiner'
-# The whole address, and when they asked, at every width (JF26).
+# The whole address, and when they asked, at every width (JF26); since Phase 72, as what, and their note.
 - assertVisible: 'spaces.joiner@example.com'
-- assertVisible: 'asked .*'
+- assertVisible: 'asked .* · as helping run it'
+- assertVisible:
+    id: join-request-note-.*
+    text: '“I help Ines on Saturdays\.”'
+- takeScreenshot: spaces-join-request-role-note
 - tapOn:
     id: join-request-let-in-.*
 - extendedWaitUntil:
@@ -55,11 +62,18 @@ tags:
     timeout: 15000
 - assertVisible: 'Let Jo Joiner in'
 - assertVisible: '.*spaces.joiner@example.com · asked.*'
+# What they asked, and the sheet starts there.
 - assertVisible:
-    id: let-in-role-parent
-- assertVisible: 'Parent. Their child is, or will be, in this space.'
+    id: let-in-asked
+- assertVisible: 'Asked as helping run it\.'
+- assertVisible: '“I help Ines on Saturdays\.”'
 - assertVisible:
     id: let-in-role-admin
+    selected: true
+- assertVisible:
+    id: let-in-role-parent
+    selected: false
+- assertVisible: 'Parent. Their child is, or will be, in this space.'
 - assertNotVisible:
     id: let-in-role-tutor
 - takeScreenshot: spaces-let-in-sheet
@@ -86,13 +100,21 @@ tags:
     visible:
       id: join-requests
     timeout: 15000
-# The short way: a parent, the default.
+# The short way: a parent (the sheet started on Admin, the role asked for).
 - tapOn:
     id: join-request-let-in-.*
 - extendedWaitUntil:
     visible:
       id: let-in-submit
     timeout: 15000
+- assertVisible:
+    id: let-in-role-admin
+    selected: true
+- tapOn:
+    id: let-in-role-parent
+- assertVisible:
+    id: let-in-role-parent
+    selected: true
 - tapOn:
     id: let-in-submit
 - extendedWaitUntil:

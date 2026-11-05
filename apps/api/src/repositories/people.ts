@@ -262,9 +262,42 @@ export async function recordSignIn(
              AND organization_id IN (SELECT o.id FROM organizations o WHERE o.created_via = 'console')`,
         )
         .bind(id),
+      // Phase 72 (UI audit JF12): someone a space added, signing in for the first time, accepts the terms and the
+      // privacy notice once. A self-registered person accepted them at sign-up (platform_accounts).
+      db
+        .prepare(
+          `INSERT OR IGNORE INTO legal_acceptances (user_id)
+           SELECT ? WHERE NOT EXISTS (SELECT 1 FROM platform_accounts WHERE user_id = ?)`,
+        )
+        .bind(id, id),
     );
   }
   await db.batch(statements);
+}
+
+/** Whether the person still owes the terms and the privacy notice (Phase 72). */
+export async function legalDue(db: D1Database, userId: string): Promise<boolean> {
+  const row = await db
+    .prepare('SELECT 1 AS due FROM legal_acceptances WHERE user_id = ? AND accepted_at IS NULL')
+    .bind(userId)
+    .first<{ due: number }>();
+  return Boolean(row);
+}
+
+/** Records the versions accepted. False when nothing was due. */
+export async function acceptLegal(
+  db: D1Database,
+  userId: string,
+  versions: { terms_version: string; privacy_version: string },
+): Promise<boolean> {
+  const result = await db
+    .prepare(
+      `UPDATE legal_acceptances SET terms_version = ?, privacy_version = ?, accepted_at = ${NOW}
+       WHERE user_id = ? AND accepted_at IS NULL`,
+    )
+    .bind(versions.terms_version, versions.privacy_version, userId)
+    .run();
+  return (result.meta.changes ?? 0) > 0;
 }
 
 export async function createPerson(

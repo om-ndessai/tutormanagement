@@ -72,3 +72,19 @@ it('asks before declining, and says so once declined', async () => {
   expect(mockSuccess).toHaveBeenCalledWith('Jo Joiner’s request declined.');
   alert.mockRestore();
 });
+
+it('says the role they asked for beside when, and their note in quotes (Phase 72, JF26)', async () => {
+  mockRows = [
+    { ...JO, role: 'parent', note: 'Noor’s mother.' },
+    { ...JO, user_id: 'max', full_name: 'Max Maker', role: 'admin', note: null },
+    { ...JO, user_id: 'old', full_name: 'Older App' },
+  ];
+  await renderWithProviders(<JoinRequestsSection enabled />);
+  expect(screen.getByTestId('join-request-asked-jo')).toHaveTextContent(/^asked .+ · as a parent$/);
+  expect(screen.getByTestId('join-request-note-jo')).toHaveTextContent('“Noor’s mother.”');
+  expect(screen.getByTestId('join-request-asked-max')).toHaveTextContent(/ · as helping run it$/);
+  expect(screen.queryByTestId('join-request-note-max')).toBeNull();
+  // An older app asked with the code alone: no role, no note.
+  expect(screen.getByTestId('join-request-asked-old')).toHaveTextContent(/^asked [^·]+$/);
+  expect(screen.queryByTestId('join-request-note-old')).toBeNull();
+});

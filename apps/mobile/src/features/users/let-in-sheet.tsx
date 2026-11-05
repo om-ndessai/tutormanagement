@@ -8,6 +8,8 @@
 // Anything else: the full person form on the request. The `/let-in?request=<userId>` route, a fitted quick
 // sheet; the request comes from the cached requests, never the link, and is held once they are in (it then
 // leaves the list). Adult admins only, as the API (`mayAddPeople`).
+// Phase 72 (UI audit JF26, @ 98c40ab, working tree): it starts on the role the person asked for, where it is one of
+// its choices, and says what they asked and their note (`let-in-asked`), which only the space's admins read (R32).
 import {
   featureOn,
   formatRelativeTime,
@@ -35,9 +37,10 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useCreateUser, useUpdateUser, useUsers } from './api';
 import {
-  DEFAULT_LET_IN_ROLE,
+  askedAsLine,
   firstNameOf,
   guardiansWith,
+  initialLetInRole,
   letInChoices,
   letInRequest,
   type LetInChoice,
@@ -106,11 +109,14 @@ export function LetInSheet({ requestId }: { requestId?: string }) {
 
 function LetInSteps({ request, onIn }: { request: JoinRequest; onIn: (request: JoinRequest) => void }) {
   const { organization } = useAuth();
+  const theme = useAppTheme();
   const toast = useToast();
   const tutoring = featureOn(organization, 'tutoring');
   const create = useCreateUser();
   const refreshRequests = useRefreshJoinRequests();
-  const [role, setRole] = useState<LetInRole>(DEFAULT_LET_IN_ROLE);
+  // The sheet starts on the role they asked for (Phase 72, JF26), where it is one of its choices.
+  const [role, setRole] = useState<LetInRole>(() => initialLetInRole(request.role, tutoring));
+  const asked = askedAsLine(request.role);
   const [member, setMember] = useState<UserDetail | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const first = firstNameOf(request.full_name);
@@ -144,6 +150,15 @@ function LetInSteps({ request, onIn }: { request: JoinRequest; onIn: (request: J
         }
       }}
     >
+      {asked || request.note ? (
+        <View
+          testID="let-in-asked"
+          style={{ gap: space.xs, padding: space.md, borderRadius: radius.md, backgroundColor: theme.tokens.muted }}
+        >
+          {asked ? <Text variant="bodyMedium">{asked}</Text> : null}
+          {request.note ? <Text variant="bodyMedium">{`“${request.note}”`}</Text> : null}
+        </View>
+      ) : null}
       <View accessibilityRole="radiogroup" accessibilityLabel="What they do here" style={{ gap: space.sm }}>
         {letInChoices(tutoring).map((choice) => (
           <RoleChoice key={choice.role} choice={choice} chosen={role} onChoose={setRole} />
@@ -182,7 +197,8 @@ function RoleChoice({
       testID={`let-in-role-${choice.role}`}
       accessibilityRole="radio"
       accessibilityLabel={`${choice.title}. ${choice.hint}`}
-      accessibilityState={{ checked: selected }}
+      // `selected` too, as the grade row's: what a flow reads on both systems.
+      accessibilityState={{ checked: selected, selected }}
       onPress={() => {
         haptics.selection();
         onChoose(choice.role);

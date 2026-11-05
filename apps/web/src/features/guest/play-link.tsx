@@ -16,7 +16,7 @@ import { useStartQuest } from '@/features/play/play-home';
 import { useAuth } from '@/providers/auth-provider';
 import { GuestAssessment } from './guest-assessment';
 import { GuestQuest } from './guest-quest';
-import { readQuestState } from './guest-store';
+import { guestMemory, readQuestState } from './guest-store';
 
 /**
  * Phase 63 (P14): `/play/<code>` -- a tile in one tap from a link, a QR code or a shared result. A
@@ -36,7 +36,12 @@ export function PlayLink() {
   if (status === 'authenticated' && !(tile && playing && !playing.finished)) {
     return <Navigate to={`/quest/tile/${tileCode(shape)}`} replace />;
   }
-  if (!tile) return <Navigate to="/" replace />;
+  if (!tile) {
+    // A friend's link to a tile guests cannot play is kept on the device, named on the guest page and opened on
+    // the first home after sign-up (UI audit JF9).
+    if (status === 'unauthenticated') guestMemory.keepSent(tileCode(shape));
+    return <Navigate to="/" replace />;
+  }
   // P11: an assessment tile is the guest Assessment, on the device.
   if (tile.kind === 'assessment') return <GuestAssessment key={tile.code} tile={tile} />;
   return <GuestQuest key={tile.code} tile={tile} />;

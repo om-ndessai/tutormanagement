@@ -18,6 +18,7 @@ import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { canMake } from '@/features/organizations/space-model';
 import { useActiveSession, useAssignments } from '@/features/teaching/api';
 import { createActions, createSetsOf, type CreateAction } from './create-actions';
 
@@ -25,8 +26,10 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
   const theme = useAppTheme();
   const reduced = useReducedMotion();
   const insets = useSafeAreaInsets();
-  const { user, organization, account } = useAuth();
+  const { user, organization, account, memberships, platformAdmin } = useAuth();
   const [open, setOpen] = useState(false);
+  // UI audit (JF7): an adult's list ends with "Start a space".
+  const mayMakeSpace = canMake(account, memberships, platformAdmin);
   const sets = createSetsOf(organization);
   // Phase 50: without Tutoring nobody is asked about pairings or a running lesson.
   const isTutor = sets.tutoring && (user?.roles.includes('tutor') ?? false);
@@ -84,16 +87,24 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
         {/* Only a tutor asks whether they teach anyone (and whether a lesson is running): Start
             needs both, and nobody else is offered it. */}
         {isTutor && user ? (
-          <TutorActions userId={user.id} onChoose={choose} />
+          <TutorActions userId={user.id} mayMakeSpace={mayMakeSpace} onChoose={choose} />
         ) : (
-          <ActionList actions={createActions(user?.roles, { account }, sets)} onChoose={choose} />
+          <ActionList actions={createActions(user?.roles, { account, mayMakeSpace }, sets)} onChoose={choose} />
         )}
       </BottomSheetScrollView>
     </BottomSheetModal>
   );
 }
 
-function TutorActions({ userId, onChoose }: { userId: string; onChoose: (action: CreateAction) => void }) {
+function TutorActions({
+  userId,
+  mayMakeSpace,
+  onChoose,
+}: {
+  userId: string;
+  mayMakeSpace: boolean;
+  onChoose: (action: CreateAction) => void;
+}) {
   const { user, account } = useAuth();
   // The same queries as Sessions' Start button, so the cache is shared.
   const pairings = useAssignments({ tutor_user_id: userId });
@@ -103,6 +114,7 @@ function TutorActions({ userId, onChoose }: { userId: string; onChoose: (action:
     // Unknown counts as running, as on Sessions: Start appears once the server says nothing is.
     lessonRunning: !active.isSuccess || active.data.data.mine !== null,
     account,
+    mayMakeSpace,
   });
   return <ActionList actions={actions} onChoose={onChoose} />;
 }

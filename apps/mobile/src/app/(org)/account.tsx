@@ -1,5 +1,7 @@
 // The web's user menu and space switcher, as one sheet (Phase 60: no star; "Spaces" opens the
 // person's own console, apps/web/src/features/organizations/{org-switcher,spaces-page}.tsx).
+// Phase 72 (UI audit JF7, JF33; the web's org-switcher.tsx @ 98c40ab, working tree): under the spaces, "Join with
+// a code" and, for adults, "Start a space" -- where a teacher looks first; a space of one's own reads "Just you".
 import { tourOffered, USER_ROLE_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { View } from 'react-native';
@@ -12,8 +14,8 @@ import { chooseHomeRole, useHomeRole } from '@/features/dashboard/home-role';
 import { RoleSelector } from '@/features/dashboard/role-selector';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
-import { answeredRequests, requestAnswersWaiting } from '@/features/organizations/space-model';
-import { invitationsWaiting } from '@/features/organizations/spaces-model';
+import { answeredRequests, canMake, requestAnswersWaiting } from '@/features/organizations/space-model';
+import { accountSpaceLine, invitationsWaiting } from '@/features/organizations/spaces-model';
 import { AppearanceControl } from '@/features/shell/appearance-control';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
@@ -28,6 +30,7 @@ export default function AccountSheet() {
     invitations,
     joinRequests,
     platformAdmin,
+    account,
     chooseOrganization,
     signOut,
   } = useAuth();
@@ -40,11 +43,14 @@ export default function AccountSheet() {
   // UI audit (JF5): the spaces' answers to the person's requests, until dismissed (on Home and Spaces).
   const answers = answeredRequests(joinRequests).length;
   const active = memberships.filter((m) => m.status === 'active');
+  const mayMake = canMake(account, memberships, platformAdmin);
 
-  function openSpaces() {
+  function openSpaces(focus?: 'join' | 'start') {
     haptics.selection();
     router.dismissAll();
-    router.push('/spaces');
+    if (focus === 'join') router.push({ pathname: '/spaces', params: { join: '1' } });
+    else if (focus === 'start') router.push({ pathname: '/spaces', params: { start: '1' } });
+    else router.push('/spaces');
   }
 
   async function switchTo(slug: string) {
@@ -90,7 +96,7 @@ export default function AccountSheet() {
                 key={slug}
                 testID={`account-org-${slug}`}
                 title={m.name}
-                description={current ? 'You are here' : m.roles.map((r) => USER_ROLE_LABELS[r]).join(' · ')}
+                description={accountSpaceLine(m, current)}
                 left={() => <OrgAvatar org={m} size={36} />}
                 onPress={current ? undefined : () => void switchTo(slug)}
                 style={{ paddingHorizontal: 0 }}
@@ -103,7 +109,7 @@ export default function AccountSheet() {
               testID="account-invitations"
               title={invitationsWaiting(invitations.length)}
               left={(props) => <List.Icon {...props} icon="email-outline" />}
-              onPress={openSpaces}
+              onPress={() => openSpaces()}
               style={{ paddingHorizontal: 0 }}
             />
           ) : null}
@@ -112,7 +118,7 @@ export default function AccountSheet() {
               testID="account-request-answers"
               title={requestAnswersWaiting(answers)}
               left={(props) => <List.Icon {...props} icon="account-check-outline" />}
-              onPress={openSpaces}
+              onPress={() => openSpaces()}
               style={{ paddingHorizontal: 0 }}
             />
           ) : null}
@@ -121,9 +127,26 @@ export default function AccountSheet() {
             title="All spaces"
             description="Invitations, codes, starting or leaving a space"
             left={(props) => <List.Icon {...props} icon="view-grid-outline" />}
-            onPress={openSpaces}
+            onPress={() => openSpaces()}
             style={{ paddingHorizontal: 0 }}
           />
+          {/* Where a teacher looks first (UI audit JF7: Start a space was found on the third try, or the fifth). */}
+          <ListItem
+            testID="account-join-code"
+            title="Join with a code"
+            left={(props) => <List.Icon {...props} icon="key-outline" />}
+            onPress={() => openSpaces('join')}
+            style={{ paddingHorizontal: 0 }}
+          />
+          {mayMake ? (
+            <ListItem
+              testID="account-start-space"
+              title="Start a space"
+              left={(props) => <List.Icon {...props} icon="plus" />}
+              onPress={() => openSpaces('start')}
+              style={{ paddingHorizontal: 0 }}
+            />
+          ) : null}
         </View>
       ) : null}
 

@@ -50,7 +50,7 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
 
   const question = questions[index]!;
   const strokes = pages[question.id] ?? [];
-  const marks = questions.map((q) => ({ q, given: answers[q.id] ?? null, right: answers[q.id] !== undefined && checkAnswer({ kind: q.kind, answer: q.answer }, answers[q.id]!) }));
+  const marks = questions.map((q) => ({ q, given: answers[q.id] ?? null, right: answers[q.id] !== undefined && checkAnswer({ kind: q.kind, answer: q.answer, stem: q.stem }, answers[q.id]!) }));
 
   function finish() {
     setFinished(true);

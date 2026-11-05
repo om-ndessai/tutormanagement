@@ -3,6 +3,10 @@
 > Status (2026-11-04): approved by the owner, all phases at once (the fix-up and Phases 70-78), built straight
 > through on `member-home-stickiness`, each phase's own decisions asked before it starts. No deploy to the test
 > Worker until the owner asks; then the last committed phase is deployed. Hourly status per phase with an ETA.
+>
+> Progress: the fix-up `8173a2a`; Phase 70 web `2b78590` and app `023ba00`; Phase 71 web `ab71793`; the 70+71
+> contract `98c40ab` (smoke green on the web, iOS and Android; `test:compat` green); Phase 72 (smoke green on all
+> three, `test:compat` green). Phase 73 next.
 
 The UI journey audit ([docs/userjourney/](userjourney/README.md)) played 24 journeys at commit `2d6e7d3` and merged
 its findings into 37 recommendations ([recommendations.md](userjourney/recommendations.md)). This plan fixes each
@@ -116,8 +120,39 @@ JF4, JF26's role and note (schema), JF9, JF7, JF12, JF33, and Phase 70's percent
 
 ### Phase 73: coming back to play, about 44 h
 JF13 with games listed with their progress (from JF32), JF14 and one Daily rule (from JF23), JF16, JF36.
-**Decisions:** Continue resumes the open game (reverses stickiness-plan's "the last settings"); asking a newcomer's
-grade once; the Daily's one name.
+**Decided (owner, 2026-11-05):**
+- **Continue resumes the open game**, running or in its lobby, read from the server and labelled in words with its
+  progress ("Grade 7 Quick 5 · question 3 of 5 · 2 points"); with none open, "Play Grade 7 Quick 5 again". A New
+  Quest game gets a Continue too. This reverses the stickiness plan's "the last settings, kept on the device";
+- **the grade is derived, and asked only when unknown**: the grade the space records for a student, else the last
+  level played (from the server), else for 13+ the top of the row; only when none exists, one question on first
+  Play ("Which grade?", with "Not in school");
+- **a grade picked on the row is remembered on the server, per space**: `org_members.quest_grade` (one additive
+  column, a `release=phase-73` block), read by nobody else;
+- **the members' Daily is "Today's Daily"** in Next up and on the board alike; "Today's 5" stays the guest page's
+  free set.
+
+**How (Phase 73 design, 2026-11-05):**
+- **Continue.** `GET /api/quest/games/open` reads, in one D1 query, the reader's newest game in its lobby or running
+  (else their newest finished one, for "again"), and makes at most one call to the game's Durable Object, through a new
+  read-only `progress` call that serves nothing and saves nothing, and only for a running game. The board, Next up and
+  the app's home-screen action open that game, or start its settings again. Labels come from shared `openGameLabel`, in
+  words, never codes. The device's "last quest" goes.
+- **The lead grade.** `GET /api/quest/tiles` carries `lead` (grade, level, where it came from) and `ask_grade`, from
+  shared `questLeadGrade`, in this order:
+  1. the grade picked on the row (`org_members.quest_grade`; 0 is "Not in school", which leads with the top of the row);
+  2. the level the space records for a student (`student_profiles.quest_level_id`);
+  3. the last level played (games, then Dailies);
+  4. for 13+, the top of the row.
+
+  `ask_grade` is set only when none of these exists. The device's guest grade is carried into `quest_grade` once.
+  `PUT /api/quest/grade` saves a pick (a preference, so no audit line, like `/home/pin`). One Daily rule on both
+  clients: the lead grade's first standard tile.
+- **An empty game earns nothing.** No place and no "wins!" for a team with no answers; games and family badges count
+  only games the person answered in; a best score skips empty games. A badge once earned is kept, and My progress
+  shows one headline from the current run.
+- **Leaving.** Exit returns to where the game was opened (home or Quest) on both clients; Cancel and End ask first on
+  the web, as in the app; the Daily page gets a close; results refresh the home.
 
 ### Phase 74: the first home, about 40 h
 JF6 (led from the person's hats: new arrival kinds would need a new privacy version), the band (JF16), JF23's

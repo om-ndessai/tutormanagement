@@ -268,7 +268,7 @@ export const SPACE_TOUR_STEPS: Record<UserRole, TourStep[]> = {
     { target: 'nav-activity', title: 'Activity', body: 'The audit log: who did what, and when.' },
     {
       target: 'nav-organization',
-      title: 'Space',
+      title: 'Space settings',
       body: 'What is switched on here, the curricula offered, and email notifications.',
     },
     {

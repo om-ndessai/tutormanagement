@@ -69,6 +69,11 @@ interface AuthContextValue {
    */
   accountDeletable: boolean;
   /**
+   * Phase 72 (UI audit JF12): someone a space added accepts the terms and the privacy notice once, at their first
+   * sign-in; until then the app waits behind the legal sheet. False from older Workers.
+   */
+  legalDue: boolean;
+  /**
    * Phase 52: a newcomer between their Google sign-in (or the developer's "Sign up as") and the
    * age question. Held in memory only -- never stored.
    */
@@ -193,6 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<PlatformAccount | null>(null);
   const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
   const [accountDeletable, setAccountDeletable] = useState(false);
+  const [legalDue, setLegalDue] = useState(false);
   const [pendingSignup, setPendingSignup] = useState<PendingSignup | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
   const [config, setConfig] = useState<AuthConfig | null>(null);
@@ -230,6 +236,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(session.account ?? null);
     setJoinRequests(session.join_requests ?? []);
     setAccountDeletable(session.account_deletable === true);
+    setLegalDue(session.legal_due === true);
 
     const landing = landingFor(session, { own: ownRef.current, linked: linkedRef.current });
     if (landing.kind !== 'enter' || landing.slug !== linkedRef.current) linkedRef.current = null;
@@ -275,6 +282,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(null);
     setJoinRequests([]);
     setAccountDeletable(false);
+    setLegalDue(false);
     setImpersonated(false);
     setStatus('unauthenticated');
   }, [queryClient]);
@@ -615,6 +623,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       account,
       joinRequests,
       accountDeletable,
+      legalDue,
       pendingSignup,
       startDevSignup,
       completeSignup,
@@ -651,6 +660,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       account,
       joinRequests,
       accountDeletable,
+      legalDue,
       pendingSignup,
       startDevSignup,
       completeSignup,

@@ -22,6 +22,7 @@ import { endLiveSurface } from '@/features/teaching/live-surface';
 import { ToastProvider } from '@/components/toast';
 import { AccessRefusedScreen } from '@/features/auth/access-refused-screen';
 import { BootScreen } from '@/features/auth/boot-screen';
+import { LegalSheet } from '@/features/auth/legal-sheet';
 import { navigationTheme } from '@/features/shell/navigation-theme';
 import { loadHapticsPreference } from '@/lib/haptics';
 import { AuthProvider, useAuth } from '@/providers/auth-provider';
@@ -38,7 +39,7 @@ void SplashScreen.preventAutoHideAsync();
  * guards (the server picker, developer screens) is reachable from anywhere.
  */
 function RootNavigator() {
-  const { status, organization, platformAdmin, accessRefusal, clearAccessRefusal, config } = useAuth();
+  const { status, organization, platformAdmin, accessRefusal, clearAccessRefusal, config, legalDue } = useAuth();
   const theme = useAppTheme();
   // The heading face (UI upgrades U1). A failure to load falls back to the system font rather than
   // holding the splash.
@@ -89,7 +90,16 @@ function RootNavigator() {
     });
     return () => subscription.remove();
   }, [covering, guestPlay, clearAccessRefusal]);
-  const covered = covering !== null;
+  // Phase 72 (UI audit JF12): someone a space added accepts the terms and the privacy notice once, at their first
+  // sign-in; until then the app waits behind the legal sheet (Sign out is the other way out).
+  const legalCover = signedIn && legalDue && covering === null;
+  // Android's back button does not move the screens beneath it either.
+  useEffect(() => {
+    if (!legalCover) return;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => subscription.remove();
+  }, [legalCover]);
+  const covered = covering !== null || legalCover;
 
   if (status === 'loading' || status === 'error' || !fontsReady) return <BootScreen />;
 
@@ -155,6 +165,12 @@ function RootNavigator() {
           />
         </Stack>
       </View>
+      {legalCover ? (
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: theme.colors.background }]} accessibilityViewIsModal>
+          <StatusBar style={theme.dark ? 'light' : 'dark'} />
+          <LegalSheet />
+        </View>
+      ) : null}
       {covering !== null ? (
         <View style={StyleSheet.absoluteFill} accessibilityViewIsModal>
           <StatusBar style={theme.dark ? 'light' : 'dark'} />

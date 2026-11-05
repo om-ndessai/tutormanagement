@@ -15,6 +15,8 @@ export const AUDIT_ACTIONS = [
   'identity.linked',
   'identity.removed',
   'auth.entered',
+  // Phase 72: an invited person accepts the terms and the privacy notice, once.
+  'auth.legal_accepted',
 
   'user.created',
   'user.updated',
@@ -179,6 +181,7 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'identity.linked': 'Way to sign in added',
   'identity.removed': 'Way to sign in removed',
   'auth.entered': 'Entered the space',
+  'auth.legal_accepted': 'Terms accepted',
 
   'user.created': 'User created',
   'user.updated': 'User updated',

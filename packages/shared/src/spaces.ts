@@ -5,6 +5,7 @@ import { featureAllowed, type FeatureState } from './features.js';
 import { ORG_TIME_ZONES, type OrgPalette } from './organizations.js';
 import { ARRIVALS } from './home.js';
 import { refuseSsn } from './tax.js';
+import { optionalText } from './users.js';
 
 // ---------------------------------------------------------------------------
 // Open sign-up and spaces (Phase 52, docs/open-signup-plan.md)
@@ -50,6 +51,43 @@ export const spaceCodeSchema = z.object({
     }),
 });
 export type SpaceCodeInput = z.input<typeof spaceCodeSchema>;
+
+/**
+ * The role a person asks for when they ask to join (owner, 2026-11-04; UI audit JF26). The space's admins decide;
+ * the Let in sheet starts on it. A teen asks only as a learner.
+ */
+export const JOIN_REQUEST_ROLES = ['parent', 'student', 'tutor', 'admin'] as const;
+export type JoinRequestRole = (typeof JOIN_REQUEST_ROLES)[number];
+
+export const JOIN_REQUEST_ROLE_LABELS: Record<JoinRequestRole, string> = {
+  parent: 'A parent',
+  student: 'A learner',
+  tutor: 'A tutor',
+  admin: 'Helping run it',
+};
+
+export const JOIN_REQUEST_ROLE_HINTS: Record<JoinRequestRole, string> = {
+  parent: 'My child is, or will be, in this space.',
+  student: 'I am here to practise.',
+  tutor: 'I teach students here.',
+  admin: 'I help run this space.',
+};
+
+/** The roles a person may ask for: a teen only a learner; a tutor only where the space has Tutoring. */
+export function joinAskRolesFor(input: { teen: boolean; tutoring: boolean }): JoinRequestRole[] {
+  if (input.teen) return ['student'];
+  return JOIN_REQUEST_ROLES.filter((role) => role !== 'tutor' || input.tutoring);
+}
+
+/** A request's note, read by the space's admins only (R32). */
+export const JOIN_NOTE_MAX = 200;
+
+/** POST /api/spaces/join-requests: the code, and (Phase 72) the role asked for and a note. Older apps send the code. */
+export const joinRequestSchema = spaceCodeSchema.extend({
+  role: z.enum(JOIN_REQUEST_ROLES).optional(),
+  note: optionalText(z.string().trim().max(JOIN_NOTE_MAX, `A note is at most ${JOIN_NOTE_MAX} characters.`)).optional(),
+});
+export type JoinRequestInput = z.input<typeof joinRequestSchema>;
 
 /** Words a self-serve space may not take in its name: it must never pass for the platform or an institute. */
 export const RESERVED_SPACE_WORDS = ['aimtrue', 'official', 'institute', 'platform', 'admin', 'support'];
@@ -145,6 +183,8 @@ export interface SpaceLookup {
   logo_mark_url: string | null;
   /** Whether the person already belongs, or already asked. */
   standing: 'member' | 'requested' | null;
+  /** Whether the space has Tutoring, so a person may ask to join as a tutor (Phase 72). Absent from older Workers. */
+  offers_tutoring?: boolean;
 }
 
 /** One of the signed-in person's own open requests. */
@@ -173,6 +213,9 @@ export interface JoinRequest {
   full_name: string;
   email: string | null;
   requested_at: string;
+  /** What they asked to be, and their note (Phase 72, R32): null from an older app. Absent from older Workers. */
+  role?: JoinRequestRole | null;
+  note?: string | null;
 }
 
 /** The space's code, for its admins. */

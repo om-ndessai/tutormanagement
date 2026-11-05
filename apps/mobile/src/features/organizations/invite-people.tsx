@@ -25,6 +25,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 import { useInvitePerson } from './api';
+import { invitationAddress } from './space-model';
 import { SpaceCodePanel } from './space-code-card';
 
 interface Row {
@@ -67,7 +68,8 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
     invitationText({
       inviter: user?.full_name ?? 'Someone',
       space: organization?.name ?? 'a space',
-      address: serverOrigin(),
+      // The link opens on the invitation (the person's Spaces page), not on the guest game page (UI audit JF12).
+      address: invitationAddress(serverOrigin()),
       email,
     });
 

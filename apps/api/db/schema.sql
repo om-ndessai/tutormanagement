@@ -39,6 +39,7 @@ DROP TABLE IF EXISTS platform_settings;
 DROP TABLE IF EXISTS guest_questions;
 DROP TABLE IF EXISTS consents;
 DROP TABLE IF EXISTS join_requests;
+DROP TABLE IF EXISTS legal_acceptances;
 DROP TABLE IF EXISTS access_list;
 DROP TABLE IF EXISTS platform_accounts;
 DROP TABLE IF EXISTS question_suggestions;
@@ -382,6 +383,10 @@ CREATE TABLE org_members (
   -- already had an account. Until they accept, every read here shows this and
   -- no phone, so adding an address never reveals whose it is. NULL otherwise.
   invited_name         TEXT,
+
+  -- Phase 72 (UI audit JF12): the admin who added them, so the invitation names them (first name only, R32).
+  -- NULL before Phase 72 and from the console; cleared if that admin's account goes.
+  invited_by           TEXT REFERENCES users (id) ON DELETE SET NULL,
 
   -- Phase 68 (docs/member-home-plan.md H4): "Make this my home" -- what this person's home leads with
   -- in this space (HOME_FOCUSES), or NULL for automatic. Their own choice; nobody else reads it.
@@ -2762,10 +2767,25 @@ CREATE TABLE join_requests (
   -- When the person dismissed the outcome: until then a let-in or a decline stays on their home (UI audit
   -- JF5, owner 2026-11-04). Its own column: older apps mark seen_at on every view.
   outcome_dismissed_at TEXT,
+  -- Phase 72 (UI audit JF26): the role the person asks for and their short note, read by the space's admins only
+  -- (R32). NULL from an older app.
+  role            TEXT CHECK (role IN ('parent', 'student', 'tutor', 'admin')),
+  note            TEXT,
 
   PRIMARY KEY (organization_id, user_id, requested_at)
 );
 CREATE INDEX join_requests_open_idx ON join_requests (organization_id, outcome, requested_at);
+
+-- Phase 72 (UI audit JF12, owner 2026-11-04): someone a space added has no platform account, so nothing records
+-- that they accepted the terms and the privacy notice. A row is made due (accepted_at NULL) at their first sign-in,
+-- and filled in when they accept, once. Nobody who signed in before Phase 72 has one, so nobody is asked again.
+CREATE TABLE legal_acceptances (
+  user_id         TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  due_since       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  terms_version   TEXT,
+  privacy_version TEXT,
+  accepted_at     TEXT
+);
 CREATE INDEX join_requests_person_idx ON join_requests (user_id, outcome);
 
 CREATE TRIGGER join_requests_organization_fixed

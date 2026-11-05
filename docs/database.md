@@ -1729,6 +1729,28 @@ are not shown again; newer ones show once more until dismissed (owner, 2026-11-0
 ALTER TABLE join_requests ADD COLUMN outcome_dismissed_at TEXT;
 ```
 
+Phase 72 (codes and the spaces menu, `docs/journey-fixes-plan.md` JF12, JF26) adds three things, all additive:
+- **What a request asks for.** `join_requests.role` and `join_requests.note`: the role the person asks for and a
+  short note from them, shown to the space's admins only (R31). Older apps send neither, so both are nullable.
+- **Who invited.** `org_members.invited_by`: the admin who added the person, so the invitation names them. Rows from
+  before stay NULL, and their invitation names nobody.
+- **The terms, once, for an invited person.** `legal_acceptances`: someone a space added has no platform account, so
+  nothing recorded their acceptance. A row is made due (`accepted_at` NULL) at their first sign-in and filled in when
+  they accept. Nobody who signed in before has a row, so nobody is asked again.
+
+```sql release=phase-72
+ALTER TABLE join_requests ADD COLUMN role TEXT CHECK (role IN ('parent', 'student', 'tutor', 'admin'));
+ALTER TABLE join_requests ADD COLUMN note TEXT;
+ALTER TABLE org_members ADD COLUMN invited_by TEXT REFERENCES users (id);
+CREATE TABLE legal_acceptances (
+  user_id         TEXT PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+  due_since       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  terms_version   TEXT,
+  privacy_version TEXT,
+  accepted_at     TEXT
+);
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

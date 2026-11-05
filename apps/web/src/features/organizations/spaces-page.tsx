@@ -103,9 +103,11 @@ export function SpacesPage() {
               <CardContent className="flex flex-wrap items-center gap-3 p-4">
                 <OrgAvatar org={invite} />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium">{invite.name}</p>
+                  {/* The whole name, wrapped: "Rivera …" was all J09 read (UI audit JF12). */}
+                  <p className="font-medium break-words">{invite.name}</p>
                   <p className="text-muted-foreground text-xs">
                     Invited as {invite.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') || 'a member'}
+                    {invite.invited_by_first_name ? ` by ${invite.invited_by_first_name}` : ''}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -219,7 +221,7 @@ function SpaceRow({ org, current }: { org: Membership; current: boolean }) {
                 )}
               </span>
               <span className="text-muted-foreground block text-xs">
-                {org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+                {org.personal ? 'Just you' : org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
               </span>
             </span>
             <ArrowRightIcon className="text-muted-foreground size-4" />

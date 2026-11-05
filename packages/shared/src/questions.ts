@@ -262,13 +262,45 @@ export function normalizeChoice(text: string): string {
  * exactly, in any equivalent form. A choice matches the key's text, or its
  * value when both are numbers ("0.5" for "1/2").
  */
+/**
+ * Whether a question asks for a percent (owner, 2026-11-04; UI audit JF10), so that "30%" is the answer 30. Read
+ * from the asking sentence (the last one ending in "?", else the last): a percent named there that is not a given
+ * number ("What percent of the class...", "By how many percentage points...") and not a count ("How many dollars
+ * ... at 5 percent?"). The bank's "Write just the number, without the % sign." counts too. On the bank (2026-11-04)
+ * this is 398 of the 835 numeric questions that mention a percent at all.
+ */
+export function asksForPercent(stem: string): boolean {
+  const sentences = stem
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/([.?!])\s+(?=[A-Z(])/g, '$1\u0000')
+    .split('\u0000');
+  if (sentences.some((s) => /without the % sign/i.test(s))) return true;
+  const asking = sentences.filter((s) => s.trimEnd().endsWith('?'));
+  const question = asking[asking.length - 1] ?? sentences[sentences.length - 1] ?? '';
+  if (/^(?:about |approximately |roughly )?how (?:many|much)\s+(?:more\s+|fewer\s+)?(?!percent)/i.test(question)) return false;
+  // A percent that is a unit asked for, not a number given ("50%", "5 percent"): nothing numeric right before it.
+  for (const match of question.matchAll(/\bpercent(?:age)?s?\b|%/gi)) {
+    if (!/[\d.]$/.test(question.slice(0, match.index).trimEnd())) return true;
+  }
+  return false;
+}
+
+/** "30%" or "30 percent" as 30, where the question asks for a percent; anything else unchanged. */
+function withoutPercent(stem: string | undefined, response: string): string {
+  const trimmed = response.trim();
+  if (!stem || !/(?:%|\bpercent)$/i.test(trimmed) || !asksForPercent(stem)) return response;
+  return trimmed.replace(/\s*(?:%|percent)$/i, '');
+}
+
 export function checkAnswer(
-  question: { kind: QuestionKind; answer: string },
+  /** `stem` lets a trailing % count where the question asks for a percent; without it, "30%" is not a number. */
+  question: { kind: QuestionKind; answer: string; stem?: string },
   response: string,
 ): boolean {
   if (question.kind === 'numeric') {
     const key = parseNumericAnswer(question.answer);
-    const given = parseNumericAnswer(response);
+    const given = parseNumericAnswer(withoutPercent(question.stem, response));
     return Boolean(key && given && fractionsEqual(key, given));
   }
   if (normalizeChoice(question.answer) === normalizeChoice(response)) return true;

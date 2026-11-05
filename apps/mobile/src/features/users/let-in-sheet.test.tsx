@@ -6,7 +6,7 @@ import type { UserDetail } from '@tmi/shared';
 import { act, fireEvent, screen } from '@testing-library/react-native';
 
 import { renderWithProviders } from '@/test/render';
-import { guardiansWith, letInChoices, letInRequest } from './let-in-model';
+import { askedAsLine, guardiansWith, initialLetInRole, letInChoices, letInRequest, requestAskedLine } from './let-in-model';
 import { LetInSheet } from './let-in-sheet';
 
 const mockRouter = { back: jest.fn(), push: jest.fn(), canGoBack: () => true };
@@ -31,7 +31,7 @@ const JO = {
   email: 'spaces.joiner@example.com',
   requested_at: new Date(Date.now() - 5 * 60_000).toISOString(),
 };
-const mockRequests = { rows: [JO] as (typeof JO)[] };
+const mockRequests = { rows: [JO] as (typeof JO & { role?: string | null; note?: string | null })[] };
 const mockRefresh = jest.fn();
 jest.mock('@/features/organizations/api', () => ({
   useJoinRequests: (enabled: boolean) => ({
@@ -90,6 +90,26 @@ describe('the Let in model', () => {
     });
   });
 
+  it('starts on the role asked for when the sheet offers it, else a parent (Phase 72, JF26)', () => {
+    expect(initialLetInRole('admin', false)).toBe('admin');
+    expect(initialLetInRole('tutor', true)).toBe('tutor');
+    // No Tutoring here: a tutor's ask starts on a parent, as a learner's does (they join with their parent).
+    expect(initialLetInRole('tutor', false)).toBe('parent');
+    expect(initialLetInRole('student', true)).toBe('parent');
+    expect(initialLetInRole(null, true)).toBe('parent');
+    expect(initialLetInRole(undefined, false)).toBe('parent');
+  });
+
+  it('says what they asked, and how a learner joins (the web’s words)', () => {
+    expect(askedAsLine('parent')).toBe('Asked as a parent.');
+    expect(askedAsLine('admin')).toBe('Asked as helping run it.');
+    expect(askedAsLine('student')).toBe('Asked as a learner. A learner joins with their parent: use the full form.');
+    expect(askedAsLine(null)).toBeNull();
+    const at = new Date(Date.now() - 5 * 60_000).toISOString();
+    expect(requestAskedLine({ requested_at: at, role: 'tutor' })).toMatch(/^asked .+ · as a tutor$/);
+    expect(requestAskedLine({ requested_at: at, role: null })).toMatch(/^asked [^·]+$/);
+  });
+
   it('keeps a student’s guardians and adds the parent, primary only when there was nobody', () => {
     const had = {
       guardians: [
@@ -111,11 +131,35 @@ describe('LetInSheet', () => {
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
     expect(screen.getByText('Let Jo Joiner in')).toBeTruthy();
     expect(screen.getByText(/spaces\.joiner@example\.com · asked/)).toBeTruthy();
-    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: true });
-    expect(screen.getByTestId('let-in-role-admin')).toHaveProp('accessibilityState', { checked: false });
+    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-role-admin')).toHaveProp('accessibilityState', { checked: false, selected: false });
     expect(screen.getByText('Their child is, or will be, in this space.')).toBeTruthy();
     expect(screen.queryByTestId('let-in-role-tutor')).toBeNull();
     expect(screen.getByTestId('let-in-submit')).toHaveTextContent(/Let in$/);
+  });
+
+  it('starts on the role they asked for, and shows it with their note (Phase 72, JF26)', async () => {
+    as({ tutoring: true });
+    mockRequests.rows = [{ ...JO, role: 'tutor', note: 'I teach Grade 4 on Tuesdays.' }];
+    await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    expect(screen.getByTestId('let-in-role-tutor')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: false, selected: false });
+    const asked = screen.getByTestId('let-in-asked');
+    expect(asked).toHaveTextContent(/Asked as a tutor\./);
+    expect(asked).toHaveTextContent(/“I teach Grade 4 on Tuesdays\.”/);
+  });
+
+  it('a learner’s ask starts on a parent and points to the full form; an older app’s ask says nothing', async () => {
+    mockRequests.rows = [{ ...JO, role: 'student', note: null }];
+    await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-asked')).toHaveTextContent(
+      'Asked as a learner. A learner joins with their parent: use the full form.',
+    );
+    await screen.unmount();
+    mockRequests.rows = [JO];
+    await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    expect(screen.queryByTestId('let-in-asked')).toBeNull();
   });
 
   it('offers Tutor where Tutoring is on', async () => {

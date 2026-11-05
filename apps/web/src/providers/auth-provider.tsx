@@ -64,6 +64,8 @@ interface AuthContextValue {
   joinRequests: MyJoinRequest[];
   /** Phase 63 (P13): the person may delete their account now (their own space goes with it). */
   accountDeletable: boolean;
+  /** Phase 72 (JF12): someone a space added accepts the terms and the privacy notice once, at first sign-in. */
+  legalDue: boolean;
   /**
    * Phase 52: a newcomer between their Google sign-in and the age question -- who Google says they
    * are, and the short-lived token that stands for it. Held in memory only.
@@ -149,6 +151,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<PlatformAccount | null>(null);
   const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
   const [accountDeletable, setAccountDeletable] = useState(false);
+  const [legalDue, setLegalDue] = useState(false);
   const [pendingSignup, setPendingSignup] = useState<SignupStart['signup'] | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
 
@@ -182,6 +185,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccount(session.account ?? null);
     setJoinRequests(session.join_requests ?? []);
     setAccountDeletable(session.account_deletable === true);
+    setLegalDue(session.legal_due === true);
 
     // The link is kept until the tab is in its space (or it cannot be entered): two loads racing
     // at boot must both honour it.
@@ -439,6 +443,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       account,
       joinRequests,
       accountDeletable,
+      legalDue,
       pendingSignup,
       completeSignup,
       cancelSignup,
@@ -466,6 +471,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       account,
       joinRequests,
       accountDeletable,
+      legalDue,
       pendingSignup,
       completeSignup,
       cancelSignup,

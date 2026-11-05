@@ -9,6 +9,10 @@
 // UI audit (JF22): adding people follows ONE rule, shared `mayAddPeople` -- the space's admins, and not a
 // 13-17 (Phase 63: a teen adds nobody) -- the same rule as People, the home and the add flows, so nobody is
 // offered a form the API would refuse at its end.
+//
+// UI audit (JF7): "Start a space" closes the list for an adult (shared `mayMakeSpace`), where the (+) already offers
+// something -- it opens Spaces on the new space's name. It never gives a (+) of its own to a reader who creates
+// nothing here (a parent, a student): they find it in the account sheet, under their spaces.
 import {
   featureOn,
   mayAddPeople,
@@ -26,7 +30,8 @@ export type CreateActionId =
   | 'add-tutor'
   | 'add-person'
   | 'record-payment'
-  | 'start-assessment';
+  | 'start-assessment'
+  | 'start-space';
 
 export interface CreateAction {
   id: CreateActionId;
@@ -99,6 +104,13 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
     icon: 'cash-plus',
     href: '/payment-form',
   },
+  'start-space': {
+    id: 'start-space',
+    title: 'Start a space',
+    description: 'A new space of your own, for a class, a club or a family.',
+    icon: 'plus-box-multiple-outline',
+    href: { pathname: '/spaces', params: { start: '1' } },
+  },
 };
 
 export interface CreateContext {
@@ -108,6 +120,8 @@ export interface CreateContext {
   lessonRunning?: boolean;
   /** The reader's platform account (their age band, when they signed up themselves): a 13-17 adds nobody. */
   account?: PlatformAccount | null;
+  /** The reader may start a space (shared `mayMakeSpace`: an adult): "Start a space" closes the list. */
+  mayMakeSpace?: boolean;
 }
 
 /** Phase 50: the feature sets on here that the sheet follows (fixed per session, so no flicker). */
@@ -127,9 +141,21 @@ export function createSetsOf(organization: Partial<FeatureState> | null | undefi
 /** The actions this reader may take, in the sheet's order. */
 export function createActions(
   roles: readonly Role[] | undefined,
-  { teaches = false, lessonRunning = false, account = null }: CreateContext = {},
+  { teaches = false, lessonRunning = false, account = null, mayMakeSpace = false }: CreateContext = {},
   sets: CreateSets = ALL_CREATE_SETS,
 ): CreateAction[] {
+  const ids = spaceActions(roles, { teaches, lessonRunning, account }, sets);
+  // JF7: last, for an adult, in a list that offers something already.
+  if (mayMakeSpace && ids.length > 0) ids.push('start-space');
+  return ids.map((id) => ACTIONS[id]);
+}
+
+/** What the reader may create inside this space, in the sheet's order. */
+function spaceActions(
+  roles: readonly Role[] | undefined,
+  { teaches, lessonRunning, account }: { teaches: boolean; lessonRunning: boolean; account: PlatformAccount | null },
+  sets: CreateSets,
+): CreateActionId[] {
   const isAdmin = roles?.includes('admin') ?? false;
   const isTutor = roles?.includes('tutor') ?? false;
   const addsPeople = mayAddPeople({ roles: roles ?? [], account });
@@ -138,7 +164,7 @@ export function createActions(
     // A space without Tutoring: an admin starts assessments and (an adult) adds people; nobody else creates.
     if (isAdmin && sets.assessment) ids.push('start-assessment');
     if (addsPeople) ids.push('add-student', 'add-person');
-    return ids.map((id) => ACTIONS[id]);
+    return ids;
   }
   // Sessions: recording is a tutor's or the office's.
   if (isTutor || isAdmin) ids.push('record-session');
@@ -149,7 +175,7 @@ export function createActions(
   // Users: the space's adult admins add people (JF22). Billing: its admins record payments.
   if (addsPeople) ids.push('add-student', 'add-tutor', 'add-person');
   if (isAdmin) ids.push('record-payment');
-  return ids.map((id) => ACTIONS[id]);
+  return ids;
 }
 
 /**

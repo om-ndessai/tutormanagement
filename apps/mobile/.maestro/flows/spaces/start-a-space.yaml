@@ -1,0 +1,101 @@
+# Phase 72 (UI audit JF7, JF33; owner 2026-11-04): Start a space where a teacher looks. Sam signs up (the script) and
+# lands in a space of his own, which the account sheet calls "Just you". Under his spaces the account sheet offers
+# "Join with a code" and "Start a space"; the (+) ends with "Start a space" too. Each opens Spaces on what it says:
+# the code field, or the new space's name.
+# Self-cleaning: Sam is put back to nothing before and after (his own space goes with him).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.doors@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.doors@example.com, NAME: Sam Doors }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.doors@example.com }
+tags:
+  - feature
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.doors@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# The (+): his own actions there, then Start a space, last.
+- tapOn:
+    id: create-button
+- extendedWaitUntil:
+    visible:
+      id: create-sheet
+    timeout: 10000
+- assertVisible:
+    id: create-action-start-space
+- assertVisible: 'Start a space'
+- takeScreenshot: spaces-create-start-space
+- tapOn:
+    id: create-action-start-space
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: welcome-space-name
+    timeout: 10000
+- assertVisible:
+    id: welcome-make-submit
+- hideKeyboard
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+# The account sheet: his own space reads "Just you", and under the spaces, the two doors.
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible: '.*Just you · You are here.*'
+- scrollUntilVisible:
+    element:
+      id: account-start-space
+- assertVisible:
+    id: account-join-code
+- takeScreenshot: spaces-account-doors
+- tapOn:
+    id: account-join-code
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- assertVisible:
+    id: welcome-code
+- hideKeyboard
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: account-start-space
+- tapOn:
+    id: account-start-space
+- extendedWaitUntil:
+    visible:
+      id: welcome-space-name
+    timeout: 10000

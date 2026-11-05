@@ -71,9 +71,11 @@ tags:
 - assertVisible: '.*Declined on .*'
 - assertVisible:
     id: welcome-ask-again-riverside
+# A 13-17 reads the way forward, not a grey no (UI audit JF7).
 - assertVisible:
     id: welcome-adults-only
-    text: 'To start a space of your own you need to be 18 or older.'
+- assertVisible: 'A club needs an adult to start its space'
+- assertVisible: 'Ask a teacher or a parent to start it, then join it with its code here\.'
 - assertNotVisible:
     id: welcome-make
 # Signing in again, it is still there: an answer stays until it is dismissed.

@@ -125,8 +125,9 @@ test.describe('starting a space, then inviting people (S12)', () => {
     expect(listed.find((p) => p.email === parentEmail).full_name).toMatch(/^Parent\b/);
 
     // Telling them: no email is sent, so the words are copied or shared by hand.
-    const expected = invitationText({ inviter: name, space, address: origin, email: adminEmail });
-    expect(expected).toBe(`${name} invited you to ${space} on Aimtrue. Sign in at ${origin} with ${adminEmail}.`);
+    // The link opens on the invitation, the person's Spaces page (UI audit JF12).
+    const expected = invitationText({ inviter: name, space, address: `${origin}/spaces`, email: adminEmail });
+    expect(expected).toBe(`${name} invited you to ${space} on Aimtrue. Sign in at ${origin}/spaces with ${adminEmail}.`);
     await maker.evaluate(() => {
       const w = window as any;
       w.__copied = null;
@@ -150,7 +151,7 @@ test.describe('starting a space, then inviting people (S12)', () => {
     await maker.getByTestId(`invite-share-${parentEmail}`).click();
     await expect
       .poll(() => maker.evaluate(() => (window as any).__shared?.text))
-      .toBe(invitationText({ inviter: name, space, address: origin, email: parentEmail }));
+      .toBe(invitationText({ inviter: name, space, address: `${origin}/spaces`, email: parentEmail }));
 
     // Continue goes on to the welcome, and the step does not come back. A new space has no Tutoring, so the
     // welcome offers no tour (the tour is Tutoring's, owner 2026-11-04; UI audit J06 step 20).

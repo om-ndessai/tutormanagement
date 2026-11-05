@@ -110,7 +110,7 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
   };
 
   function answer(question: GuestQuestion, given: string | null) {
-    const correct = given !== null && checkAnswer({ kind: question.kind, answer: question.answer }, given);
+    const correct = given !== null && checkAnswer({ kind: question.kind, answer: question.answer, stem: question.stem }, given);
     const answers = [...state!.answers, { id: question.id, answer: given, correct }];
     let next: GuestQuestState = { ...state!, answers };
     setTyped('');

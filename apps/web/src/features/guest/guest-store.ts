@@ -23,6 +23,13 @@ interface GuestMemory {
    * address, so the age question is not offered again to the same account here (UI audit J05).
    */
   tooYoung?: string[];
+  /**
+   * A code typed signed out (a space's or a game's), kept on this device through sign-up and approval and offered
+   * once on the first home (owner, 2026-11-04; UI audit JF4). Never sent until the person uses it.
+   */
+  keptCode?: string;
+  /** A quest link a friend sent that a guest cannot play (JF9): kept for the first home, then opened there. */
+  sentTile?: string;
 }
 
 /** A short, one-way key for an address kept on this device only: 32-bit FNV-1a of the lowercased address. */
@@ -106,6 +113,12 @@ export const guestMemory = {
     return today && today.day === day && today.level === level ? today : undefined;
   },
   setToday: (today: GuestToday) => write((m) => ({ ...m, today })),
+  keptCode: (): string | undefined => read().keptCode,
+  keepCode: (code: string) => write((m) => ({ ...m, keptCode: code })),
+  dropCode: () => write((m) => ({ ...m, keptCode: undefined })),
+  sentTile: (): string | undefined => read().sentTile,
+  keepSent: (code: string) => write((m) => ({ ...m, sentTile: code })),
+  dropSent: () => write((m) => ({ ...m, sentTile: undefined })),
   /** Whether this account was refused as under 13 on this device. */
   refusedYoung: (email: string | null | undefined): boolean => Boolean(email) && (read().tooYoung ?? []).includes(addressKey(email!)),
   rememberYoung: (email: string | null | undefined) => {

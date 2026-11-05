@@ -181,6 +181,43 @@ describe('GuestHome, the Quest board', () => {
     expect(screen.getByTestId('guest-sign-in')).toBeTruthy();
   });
 
+  it('has a door for a code that keeps it on this phone, and draws the example code as an illustration (Phase 72, JF4)', async () => {
+    await renderWithProviders(<GuestHome />);
+    // The example is marked, muted and left out of what a screen reader reads; the caption no longer says it.
+    const example = screen.getByTestId('guest-example-code', { includeHiddenElements: true });
+    // Not read out: a screen reader (and a query by what it reads) finds no code to type.
+    expect(screen.queryByText('QF7K2M')).toBeNull();
+    expect(example).toHaveProp('accessibilityElementsHidden', true);
+    expect(example).toHaveProp('importantForAccessibility', 'no-hide-descendants');
+    expect(example).toHaveTextContent(/QF7K2M/);
+    expect(example).toHaveTextContent(/EXAMPLE/);
+    expect(screen.getByText('Family games with a free account.')).toBeTruthy();
+    expect(screen.queryByText(/Example code\./)).toBeNull();
+
+    await fireEvent.press(screen.getByTestId('guest-have-code'));
+    await fireEvent.changeText(screen.getByTestId('code-sheet-code'), 'fmxy-2345');
+    await fireEvent.press(screen.getByTestId('code-sheet-go'));
+    expect(screen.getByTestId('code-sheet-kept')).toHaveTextContent(/^FMXY2345 will be waiting on your first screen/);
+    expect(guestMemory.keptCode()).toBe('FMXY2345');
+    expect(mockPost).not.toHaveBeenCalledWith('/spaces/lookup', expect.anything());
+    await fireEvent.press(screen.getByTestId('code-sheet-sign-up'));
+    expect(mockPush).toHaveBeenCalledWith('/sign-up-sheet');
+  });
+
+  it('names a quest a friend sent that needs an account, with the way to one (Phase 72, JF9)', async () => {
+    resetGuestMemoryForTests({ sentTile: 'G4T10' });
+    await renderWithProviders(<GuestHome />);
+    expect(screen.getByTestId('guest-sent-line')).toHaveTextContent(
+      /^You were sent .*Grade 4\. It needs a free account; it will be waiting once you are in\.$/,
+    );
+    await fireEvent.press(screen.getByTestId('guest-sent-signup'));
+    expect(mockPush).toHaveBeenCalledWith('/sign-up-sheet');
+    await screen.unmount();
+    resetGuestMemoryForTests({});
+    await renderWithProviders(<GuestHome />);
+    expect(screen.queryByTestId('guest-sent')).toBeNull();
+  });
+
   it('sends someone signed in on to their space', async () => {
     mockStatus = 'authenticated';
     await renderWithProviders(<GuestHome />);

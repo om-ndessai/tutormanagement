@@ -203,12 +203,12 @@ export function nextUpShowsLesson(item: NextUp | null, lesson: Pick<TutorHomeLes
 }
 
 /** The quick actions' words, icons and where they go. */
-export const QUICK_ACTION_META: Record<QuickAction, { label: string; icon: string; href: string | null }> = {
+export const QUICK_ACTION_META: Record<QuickAction, { label: string; icon: string; href: string }> = {
   record_lesson: { label: 'Record a lesson', icon: 'plus', href: '/record-lesson' },
   start_lesson: { label: 'Start a lesson', icon: 'play', href: '/start-lesson' },
   new_quest: { label: 'New Quest', icon: 'trophy-outline', href: '/quest/new-game' },
-  // "Have a code?": the Play home's box, in a dialog.
-  join_code: { label: 'Have a code?', icon: 'ticket-confirmation-outline', href: null },
+  // "Have a code?": the one code sheet (UI audit JF4), for a game's code or a space's.
+  join_code: { label: 'Have a code?', icon: 'ticket-confirmation-outline', href: '/have-a-code' },
   start_assessment: { label: 'Start an assessment', icon: 'draw-pen', href: '/assessments' },
   add_person: { label: 'Add someone', icon: 'account-plus-outline', href: '/person-form' },
   schedule: { label: 'Schedule', icon: 'calendar-month-outline', href: '/schedule' },

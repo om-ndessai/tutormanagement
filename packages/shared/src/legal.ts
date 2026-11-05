@@ -5,6 +5,8 @@
 // Written from what the code does. Phase 52 records which version a newcomer
 // accepted, so a change of wording is a new version, never an edit in place.
 
+import { z } from 'zod';
+
 /** The version a newcomer accepts (Phase 52 records it). A wording change gets a new date. */
 export const TERMS_VERSION: string = '2026-11-04';
 export const PRIVACY_VERSION: string = '2026-11-04';
@@ -17,6 +19,13 @@ export const PRIVACY_VERSION: string = '2026-11-04';
  * adds the days a person opens a space and how they first came (Phases 68-69).
  */
 export const ACCEPTED_LEGAL_VERSIONS: readonly string[] = ['2026-11-04', '2026-11-01', '2026-10-31', '2026-10-29'];
+
+/** POST /api/auth/legal: an invited person accepts the versions they were shown (Phase 72). */
+export const acceptLegalSchema = z.object({
+  terms_version: z.string().max(20),
+  privacy_version: z.string().max(20),
+});
+export type AcceptLegalInput = z.infer<typeof acceptLegalSchema>;
 
 /**
  * While true, both pages say they are a draft. The owner approved version 2026-10-29 on 2026-10-29

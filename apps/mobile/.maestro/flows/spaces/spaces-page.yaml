@@ -138,6 +138,13 @@ tags:
       id: welcome-found-name
       text: 'Quinn Host space'
     timeout: 10000
+# Phase 72 (UI audit JF26): the role asked for (a parent by default) and a note sit above Ask to join.
+- assertVisible:
+    id: join-ask
+# No hideKeyboard: Return already put it away, and on Android hideKeyboard is Back, which leaves the app.
+- scrollUntilVisible:
+    element:
+      id: welcome-ask
 - tapOn:
     id: welcome-ask
 - extendedWaitUntil:

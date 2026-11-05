@@ -4,9 +4,7 @@ import { toast } from 'sonner';
 import { PlayIcon, PlusIcon, StarIcon, UsersIcon } from 'lucide-react';
 import {
   DAILY_SET_SIZE,
-  GAME_CODE_LENGTH,
   GAME_LIMITS,
-  SPACE_CODE_LENGTH,
   tileGameRequest,
   gameLengthLabel,
   levelLabel,
@@ -31,7 +29,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { guestLeadLevel, guestMemory } from '@/features/guest/guest-store';
 import { MyProgressCard } from '@/features/habit/my-progress-card';
-import { useAskToJoin } from '@/features/organizations/api';
+import { CodeSheet, codeKind, tidyCode } from '@/features/organizations/code-sheet';
 import { JoinDialog } from '@/features/quest/games-card';
 import { useCreateGame, useGameFavorites, useLookupGame, useSaveGameFavorite } from '@/features/quest/games-api';
 import { ApiRequestError } from '@/lib/api-client';
@@ -314,31 +312,14 @@ function DailyCard({ level, tag }: { level: QuestionBankLevelId; tag: string }) 
   );
 }
 
-/** One box for both codes: six characters is a game here, eight a space to ask to join. */
+/**
+ * One box for both codes, on the board: Go opens the one "Have a code?" sheet on what was typed (JF4), which says
+ * what the code found -- the game's join choices, or the space's name -- before sending anything.
+ */
 function HaveACode() {
-  // A shared game link (`/?code=`, the lobby's QR code) fills the box in.
-  const [code, setCode] = useState(() => new URLSearchParams(window.location.search).get('code') ?? '');
-  const [found, setFound] = useState<GameLookup | null>(null);
-  const lookup = useLookupGame();
-  const ask = useAskToJoin();
-  const navigate = useNavigate();
-  const typed = code.replace(/[\s-]/g, '').toUpperCase();
-
-  async function go() {
-    try {
-      if (typed.length === GAME_CODE_LENGTH) {
-        const result = await lookup.mutateAsync(typed);
-        if (result.data.joined) navigate(`/quest/games/${result.data.game_id}`);
-        else setFound(result.data);
-      } else {
-        await ask.mutateAsync(typed);
-        toast.success('Asked to join. Its admins will let you in.');
-        setCode('');
-      }
-    } catch (caught) {
-      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not find that code.');
-    }
-  }
+  const [code, setCode] = useState('');
+  const [sheet, setSheet] = useState<string | null>(null);
+  const typed = tidyCode(code);
 
   return (
     <Card className="py-0">
@@ -353,16 +334,20 @@ function HaveACode() {
           value={code}
           onChange={(event) => setCode(event.target.value)}
         />
-        <Button
-          variant="outline"
-          disabled={(typed.length !== GAME_CODE_LENGTH && typed.length !== SPACE_CODE_LENGTH) || lookup.isPending || ask.isPending}
-          onClick={() => void go()}
-        >
+        <Button variant="outline" disabled={!codeKind(typed)} onClick={() => setSheet(typed)}>
           Go
         </Button>
         <span className="text-muted-foreground text-xs">Six characters join a game; eight ask to join a space.</span>
       </CardContent>
-      <JoinDialog lookup={found} onClose={() => setFound(null)} />
+      {sheet !== null && (
+        <CodeSheet
+          initialCode={sheet}
+          onClose={() => {
+            setSheet(null);
+            setCode('');
+          }}
+        />
+      )}
     </Card>
   );
 }

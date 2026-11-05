@@ -506,8 +506,10 @@ export async function createUser(
   db: D1Database,
   org: OrgId,
   input: CreateUserPayload,
-  options: { acceptRequest?: boolean } = {},
+  /** `invitedBy`: the admin adding them, named on the invitation (Phase 72). */
+  options: { acceptRequest?: boolean; invitedBy?: string | null } = {},
 ): Promise<CreateUserOutcome> {
+  const invitedBy = options.invitedBy ?? null;
   if (input.email) {
     const existing = await db
       .prepare('SELECT id FROM users WHERE lower(email) = ? AND deleted_at IS NULL')
@@ -537,11 +539,11 @@ export async function createUser(
                 .bind(org, existing.id)
             : db
                 .prepare(
-                  `UPDATE org_members SET status = 'invited', invited_name = ?, removed_at = NULL,
+                  `UPDATE org_members SET status = 'invited', invited_name = ?, invited_by = ?, removed_at = NULL,
                      created_at = ${NOW}, updated_at = ${NOW}
                    WHERE organization_id = ? AND user_id = ? AND removed_at IS NOT NULL`,
                 )
-                .bind(input.full_name, org, existing.id),
+                .bind(input.full_name, invitedBy, org, existing.id),
           db.prepare('DELETE FROM user_roles WHERE organization_id = ? AND user_id = ?').bind(org, existing.id),
           ...roleStatements(db, org, existing.id, input.roles),
           ...profileCleanupStatements(db, org, existing.id, input.roles),
@@ -563,9 +565,9 @@ export async function createUser(
               .bind(org, existing.id)
           : db
               .prepare(
-                "INSERT INTO org_members (organization_id, user_id, status, invited_name) VALUES (?, ?, 'invited', ?)",
+                "INSERT INTO org_members (organization_id, user_id, status, invited_name, invited_by) VALUES (?, ?, 'invited', ?, ?)",
               )
-              .bind(org, existing.id, input.full_name),
+              .bind(org, existing.id, input.full_name, invitedBy),
         ...roleStatements(db, org, existing.id, input.roles),
       ]);
 
@@ -583,8 +585,8 @@ export async function createUser(
       .prepare('INSERT INTO users (id, email, full_name, phone) VALUES (?, ?, ?, ?)')
       .bind(id, input.email, input.full_name, input.phone),
     db
-      .prepare('INSERT INTO org_members (organization_id, user_id, status) VALUES (?, ?, ?)')
-      .bind(org, id, input.status),
+      .prepare('INSERT INTO org_members (organization_id, user_id, status, invited_by) VALUES (?, ?, ?, ?)')
+      .bind(org, id, input.status, input.status === 'invited' ? invitedBy : null),
     ...roleStatements(db, org, id, input.roles),
   ]);
 

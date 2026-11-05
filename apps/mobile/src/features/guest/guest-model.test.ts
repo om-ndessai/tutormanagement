@@ -15,6 +15,7 @@ import {
   guestQuestName,
   guestScore,
   markAssessment,
+  markGuestAnswer,
   nudgeDue,
   pauseQuest,
   playLink,
@@ -220,5 +221,24 @@ describe('a guest Assessment, marked on the phone (P11)', () => {
       ['x', null, false],
     ]);
     expect(markAssessment([number], {}, { n: '   ' })[0]!.given).toBeNull();
+  });
+
+  it('counts a trailing % only where the question asks for a percent (Phase 72, owner 2026-11-04)', () => {
+    const percent = q('p', 1, {
+      kind: 'numeric',
+      choices: [],
+      answer: '30',
+      stem: 'Of 40 students, 12 walk to school. What percent of the students walk?',
+    });
+    const amount = q('m', 1, { kind: 'numeric', choices: [], answer: '7', stem: 'What is 10% of 70?' });
+    expect(markGuestAnswer(percent, '30%')).toBe(true);
+    expect(markGuestAnswer(percent, '30 percent')).toBe(true);
+    expect(markGuestAnswer(percent, '30')).toBe(true);
+    expect(markGuestAnswer(amount, '7%')).toBe(false);
+    expect(markGuestAnswer(amount, '7')).toBe(true);
+    // The quest and the Assessment both mark with the question's text.
+    const state = startQuest(COUNT, [percent], new Set(), T0);
+    expect(answerQuest(state, percent, '30%', SETTINGS, undefined, T0).correct).toBe(true);
+    expect(markAssessment([percent], {}, { p: '30%' })[0]!.right).toBe(true);
   });
 });

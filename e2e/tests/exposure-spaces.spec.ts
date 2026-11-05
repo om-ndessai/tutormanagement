@@ -15,8 +15,9 @@ const S13_STAMP = `${Date.now().toString(36)}${Math.floor(Math.random() * 1e4).t
 
 /** Exactly what a space's face is on the person's own lists (`toBrand`), and nothing more. */
 const BRAND_KEYS = ['blurb', 'builtin_logo', 'id', 'logo_full_url', 'logo_mark_url', 'name', 'palette', 'place', 'short_name', 'slug', 'tagline'];
-const MEMBERSHIP_KEYS = [...BRAND_KEYS, 'is_default', 'roles', 'status'].sort();
-const INVITATION_KEYS = [...BRAND_KEYS, 'invited_at', 'roles'].sort();
+// Phase 72: `personal` ("Just you"), and who invited, by first name (R32).
+const MEMBERSHIP_KEYS = [...BRAND_KEYS, 'is_default', 'personal', 'roles', 'status'].sort();
+const INVITATION_KEYS = [...BRAND_KEYS, 'invited_at', 'invited_by_first_name', 'roles'].sort();
 const JOIN_REQUEST_KEYS = ['answered_at', 'logo_mark_url', 'name', 'outcome', 'palette', 'requested_at', 'short_name', 'slug'];
 
 async function s13SignUp(page: import('@playwright/test').Page, email: string, name: string) {
@@ -85,7 +86,7 @@ test.describe('spaces: who sees what (R21)', () => {
     expect(own.join_by_code).toBe(true);
     const theo = await as('admin', { email: asker, org: null });
     const found = await unwrap<Record<string, unknown>>(await theo.request.post('/api/spaces/lookup', { data: { code: own.code } }), 'lookup');
-    expect(Object.keys(found).sort()).toEqual(['logo_mark_url', 'name', 'palette', 'short_name', 'standing']);
+    expect(Object.keys(found).sort()).toEqual(['logo_mark_url', 'name', 'offers_tutoring', 'palette', 'short_name', 'standing']);
 
     // Omar, a parent in the space, is not one of its admins.
     const omar = await as('assessParent', { org: ORGS.c.slug });
@@ -100,7 +101,8 @@ test.describe('spaces: who sees what (R21)', () => {
     // Riverside's admin sees Riverside's requests -- Theo's -- and only the face Google gave.
     const rosa = await as('orgBAdmin', { org: ORGS.b.slug });
     const requests = await unwrap<any[]>(await rosa.request.get('/api/organization/join-requests'), 'riverside requests');
-    for (const r of requests) expect(Object.keys(r).sort()).toEqual(['email', 'full_name', 'requested_at', 'user_id']);
+    // Phase 72 (R32): the role asked for and the note, for the space's admins only.
+    for (const r of requests) expect(Object.keys(r).sort()).toEqual(['email', 'full_name', 'note', 'requested_at', 'role', 'user_id']);
   });
 });
 
@@ -214,7 +216,7 @@ test.describe('spaces page, banner and leaving: who sees what (S13)', () => {
     await benIn.goto('/');
     const banner = benIn.getByTestId('invitation-banner');
     await expect(banner).toBeVisible({ timeout: 15_000 });
-    await expect(banner).toContainText(`Ada Circle ${S13_STAMP} invited you`);
+    await expect(banner).toContainText(`Ada invited you to Ada Circle ${S13_STAMP}`);
     await expect(banner).not.toContainText('Typed by Ada');
     await expect(banner).not.toContainText(ada.name);
     // Ada, inside hers, has no invitation and no banner.

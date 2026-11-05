@@ -31,6 +31,8 @@ export interface QuickSheetProps {
   /** Cancel's own testID, when it must be exactly that (Let in's `let-in-later`). */
   cancelTestID?: string;
   title: string;
+  /** The title's own testID, when a flow reads it (the code sheet's space name). */
+  titleTestID?: string;
   /** One line under the title. */
   description?: string;
   children: ReactNode;
@@ -58,6 +60,7 @@ export function QuickSheet({
   primaryTestID,
   cancelTestID,
   title,
+  titleTestID,
   description,
   children,
   primaryLabel = 'Save',
@@ -98,7 +101,7 @@ export function QuickSheet({
     >
       <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, gap: space.lg }}>
         <View style={{ gap: space.xs }}>
-          <Text variant="titleLarge" accessibilityRole="header">
+          <Text variant="titleLarge" accessibilityRole="header" testID={titleTestID}>
             {title}
           </Text>
           {description ? (

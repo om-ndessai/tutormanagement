@@ -1,7 +1,8 @@
 // Phase 52 (design 63): sets up and puts back what the spaces/* flows change, on the LOCAL Worker
 // only (sign-in off, X-Dev-User). env: ACTION and its arguments:
 //   reset-newcomer EMAIL         every space the address made is deleted, any other left, its open
-//                                requests withdrawn, then the account deleted (nothing there: fine)
+//                                requests withdrawn, its invitations declined (Phase 72: someone a space only
+//                                invited), then the account deleted (nothing there: fine)
 //   signup EMAIL NAME [YEAR] [PERSONAL]
 //                                POST /auth/signup with dev_email (an adult unless YEAR says otherwise).
 //                                Phase 63 (P13): sign-up also makes "<First name>'s space" and lands
@@ -11,7 +12,8 @@
 //                                (DELETE /organization, by its name), so they belong nowhere again and
 //                                reach the Welcome, as a person who deleted their own space would
 //   make-space EMAIL NAME        POST /spaces; outputs slug, code and codeShown (either way it reads)
-//   ask EMAIL CODE               POST /spaces/join-requests (already asked: fine)
+//   ask EMAIL CODE [ROLE] [NOTE] POST /spaces/join-requests (already asked: fine); Phase 72: the role asked for
+//                                (parent, student, tutor, admin) and a note, when given
 //   seen EMAIL                   POST /spaces/join-requests/seen (older apps; it no longer hides an answer)
 //   dismiss EMAIL [SLUG]         UI audit JF5: dismisses the spaces' answers to the person's requests (let in
 //                                or declined) -- SLUG's alone, or all -- POST /spaces/join-requests/:slug/dismiss
@@ -29,7 +31,12 @@
 //   decline EMAIL ACTOR ORG      Phase 60: ACTOR declines EMAIL's open request to join ORG
 //   leave EMAIL SLUG             Phase 61: the person leaves that space (POST /spaces/:slug/leave)
 //   google-sign-in EMAIL SUBJECT Phase 60: a real first (or later) sign-in, the suite's fake Google token
-//                                through POST /auth/google (AUTH_FAKE_PROVIDERS, local only)
+//                                through POST /auth/google (AUTH_FAKE_PROVIDERS, local only). Phase 72: someone a
+//                                space added owes the terms after their first (legal_due on the session); they are
+//                                accepted here at once, as the web suite's helper does, unless KEEP_TERMS is '1'
+//                                (spaces/legal, which walks through the sheet)
+//   legal-due EMAIL              Phase 72: fails unless the person's session says the terms are due (the setup
+//                                of spaces/legal), so a flow never waits on a sheet the server will not ask for
 // (The JSON bodies are built here: Maestro misreads a YAML value mixing JSON braces with ${...}.)
 // Errors are tolerated where it cleans. The server loosens its rate limits twenty times away from
 // production, so a 429 should not happen; signing up still waits one out, as a fallback.
@@ -103,6 +110,10 @@ if (ACTION === 'reset-newcomer') {
     (data.join_requests || []).forEach(function (r) {
       if (r.outcome === null) call(email, 'DELETE', '/spaces/join-requests/' + r.slug);
     });
+    // An invitation still waiting keeps the account from being deleted.
+    (data.invitations || []).forEach(function (i) {
+      call(email, 'POST', '/auth/invitations/' + i.slug + '/decline');
+    });
     call(email, 'DELETE', '/auth/account');
   }
 } else if (ACTION === 'signup') {
@@ -131,7 +142,10 @@ if (ACTION === 'reset-newcomer') {
   output.codeShown =
     '(' + output.code + '|Code ' + output.code.split('-').map(function (p) { return p.split('').join(' '); }).join(', ') + ')';
 } else if (ACTION === 'ask') {
-  var asked = call(email, 'POST', '/spaces/join-requests', { code: CODE });
+  var ask = { code: CODE };
+  if (typeof ROLE !== 'undefined' && ROLE) ask.role = String(ROLE);
+  if (typeof NOTE !== 'undefined' && NOTE) ask.note = String(NOTE);
+  var asked = call(email, 'POST', '/spaces/join-requests', ask);
   if (asked.status >= 300 && asked.status !== 409) must(asked, 'asking to join');
 } else if (ACTION === 'seen') {
   call(email, 'POST', '/spaces/join-requests/seen');
@@ -180,6 +194,12 @@ if (ACTION === 'reset-newcomer') {
     call(email, 'POST', '/auth/google', { credential: 'fake:google:' + SUBJECT + ':' + email + ':1' }),
     'signing in ' + email,
   );
+  if (typeof KEEP_TERMS === 'undefined' || KEEP_TERMS !== '1') {
+    must(call(email, 'POST', '/auth/legal', { terms_version: TERMS_VERSION, privacy_version: PRIVACY_VERSION }), email + ' accepting the terms');
+  }
+} else if (ACTION === 'legal-due') {
+  var owed = must(call(email, 'GET', '/auth/session'), 'the session of ' + email).body.data;
+  if (owed.legal_due !== true) throw new Error(email + ' owes no terms: legal_due is ' + JSON.stringify(owed.legal_due));
 } else if (ACTION === 'trust') {
   var list = must(call(PLATFORM_ADMIN, 'GET', '/platform/organizations'), 'the console').body.data;
   var target = list.filter(function (o) {

@@ -1,13 +1,21 @@
-# UI audit fix-up (docs/journey-fixes-plan.md, JF3): the home's "Have a code?" quick action opens the code box
-# in a dialog. It crashed the app (J07A step 14): Paper mounts a Portal's content above ToastProvider, so the
-# box's useToast() threw. Sofia, a student in chmi with Quest on, taps the quick action: the box shows in the
-# dialog, an unknown space code is refused with a toast from inside it, and Close returns to Home.
+# UI audit fix-up (docs/journey-fixes-plan.md, JF3): the home's "Have a code?" quick action opened the code box in a
+# dialog, and crashed the app (J07A step 14). Phase 72 (JF4, JF26; owner 2026-11-04): it opens the one "Have a code?"
+# sheet. Sofia, a student in chmi with Quest on, taps the quick action: the sheet shows (not a red Render Error); an
+# unknown space code is refused in the server's words, inside it; a real one (FMXY2345) shows the space's NAME first,
+# then the role she asks for and a note, and nothing is sent until "Ask to join"; the toast names the space, and she
+# is back on Home. Her request to Ferreira Family Practice is withdrawn before and after.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
   - runScript: ../../scripts/quest-games-start.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: withdraw, EMAIL: sofia.okafor@gmail.com, SLUG: assess }
 onFlowComplete:
   - runScript: ../../scripts/quest-games-end.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: withdraw, EMAIL: sofia.okafor@gmail.com, SLUG: assess }
 tags:
   - feature
 ---
@@ -26,28 +34,75 @@ tags:
     timeout: 15000
 - tapOn:
     id: quick-join_code
-# The dialog with the code box -- not a red Render Error.
+# The sheet with the code box -- not a red Render Error.
 - extendedWaitUntil:
     visible:
-      id: home-code-dialog
+      id: code-sheet
     timeout: 10000
+- assertVisible: 'Have a code?'
+- assertVisible: 'Six characters join a game; eight ask to join a space\.'
 - assertVisible:
-    id: play-code
+    id: code-sheet-code
 - assertNotVisible: 'Render Error'
-# An eight-character code no space has: refused with a toast, from inside the dialog.
+# An eight-character code no space has: refused in the server's words, inside the sheet.
 - tapOn:
-    id: play-code
+    id: code-sheet-code
 - inputText: 'ZZZZ9999'
+- hideKeyboard
 - tapOn:
-    id: play-code-go
+    id: code-sheet-go
 - extendedWaitUntil:
-    visible: 'No space has that code.'
+    visible:
+      id: code-sheet-error
+      text: 'No space has that code.'
     timeout: 10000
+# A real space's code: its name first, then what she asks to be and a note -- nothing sent yet.
 - tapOn:
-    id: home-code-close
+    id: code-sheet-code
+- eraseText: 12
+- inputText: 'fmxy-2345'
+- hideKeyboard
+- tapOn:
+    id: code-sheet-go
+- extendedWaitUntil:
+    visible:
+      id: code-sheet-space
+      text: 'Ferreira Family Practice'
+    timeout: 10000
+- assertVisible: 'Ask to join, and its admins let you in\.'
+- assertVisible:
+    id: join-ask
+- assertVisible: 'You are joining Ferreira Family Practice as'
+# A parent by default; no Tutoring there, so nobody asks to be its tutor.
+- assertVisible:
+    id: join-ask-role-parent
+    selected: true
+- assertNotVisible:
+    id: join-ask-role-tutor
+- takeScreenshot: home-code-sheet-space
+- tapOn:
+    id: join-ask-role-student
+- assertVisible:
+    id: join-ask-role-student
+    selected: true
+- tapOn:
+    id: join-ask-note
+- inputText: 'Sofia, from the Tuesday group'
+# Not hideKeyboard: on iOS it dismissed the sheet itself. The note is one line, and Return puts the keyboard away.
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: code-sheet-ask
+- tapOn:
+    id: code-sheet-ask
+- extendedWaitUntil:
+    visible: 'Asked to join Ferreira Family Practice\. Its admins will let you in\.'
+    timeout: 10000
 - extendedWaitUntil:
     visible:
       id: screen-home
     timeout: 10000
 - assertNotVisible:
-    id: home-code-dialog
+    id: code-sheet
+# The request was sent with what she chose (read back from the API, as the space's admins will see it).
+- evalScript: "${(function () { var r = http.get('http://localhost:8787/api/organization/join-requests', { headers: { 'X-Dev-User': 'ines.ferreira.assess@gmail.com', 'X-Organization': 'assess' } }); var mine = json(r.body).data.filter(function (j) { return j.email === 'sofia.okafor@gmail.com'; })[0]; if (!mine || mine.role !== 'student' || mine.note !== 'Sofia, from the Tuesday group') throw new Error('the request is ' + JSON.stringify(mine)); return true; })()}"

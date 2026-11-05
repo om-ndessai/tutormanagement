@@ -47,15 +47,15 @@ describe('visibleNavItems', () => {
     expect(items[at]).toMatchObject({ href: '/quest', tourId: 'nav-quest', badge: 'Beta' });
   });
 
-  it('calls the organization a Space, and still finds it by the old word (Phase 52)', () => {
+  it('calls the organization’s page Space settings (UI audit JF7), and still finds it by the old word (Phase 52)', () => {
     const item = visibleNavItems(['admin'], {}).find((entry) => entry.href === '/organization');
-    expect(item?.label).toBe('Space');
+    expect(item?.label).toBe('Space settings');
     expect(item?.keywords).toEqual(expect.arrayContaining(['settings', 'tin', 'payer', 'organization', 'code', 'join']));
   });
 
   it('still leaves admin pages to admins', () => {
-    expect(labels(['tutor'], true)).not.toContain('Space');
-    expect(labels(['admin'], true)).toContain('Space');
+    expect(labels(['tutor'], true)).not.toContain('Space settings');
+    expect(labels(['admin'], true)).toContain('Space settings');
   });
 
   it('lists the Dashboard (the role dashboards, Phase 66) for every role; Home is the tab', () => {
@@ -89,14 +89,14 @@ describe('visibleNavItems', () => {
       }
     });
 
-    it('gives an Assessment-only admin Home, Assessment, Users, Activity, My profile and Space', () => {
+    it('gives an Assessment-only admin Home, Assessment, Users, Activity, My profile and Space settings', () => {
       expect(visibleNavItems(['admin'], ASSESS_ONLY).map((item) => item.label)).toEqual([
         'Home',
         'Assessment',
         'Users',
         'Activity',
         'My profile',
-        'Space',
+        'Space settings',
       ]);
     });
 

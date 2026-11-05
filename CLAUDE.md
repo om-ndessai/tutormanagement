@@ -324,8 +324,10 @@ day from the log (`DAILY_CAPS`). A self-serve space runs no AI task and sends no
 Google account gets a signed 15-minute `signup` token (only from a client that sends `signup: true`, so
 older apps keep the 403); `POST /api/auth/signup` takes the birth month and year and the accepted terms
 -- under 13 is refused and nothing is stored; only the band is kept (`platform_accounts`). A newcomer
-joins a space by asking with its code (`POST /api/spaces/join-requests`; the space's admins let them in
--- since Phase 71 a short Let in sheet: the role, a parent by default, then "Which child is theirs?", a
+joins a space by asking with its code (`POST /api/spaces/join-requests`, since Phase 72 with the role they ask
+for and a short note, `join_requests.role`/`note`, read by the space's admins only, R32; a teen asks only as a
+learner, `joinAskRolesFor`; the space's admins let them in
+-- since Phase 71 a short Let in sheet, starting on the asked role: the role, a parent by default, then "Which child is theirs?", a
 student linked as their guardian or one added now; still the ordinary `POST /api/users` with
 `join_request_user_id` -- or decline, asked first). The answer, let in or declined, stays on the person's home
 until they dismiss it (`POST /api/spaces/join-requests/:slug/dismiss`, `join_requests.outcome_dismissed_at`,
@@ -620,6 +622,20 @@ actives, days per week, the 3-day rhythm kept, back after a missed week, the Dai
 space kind and arrival), stored as `platform_settings` 'stickiness' and shown on the console's Stickiness page; groups
 under `STICKINESS_MIN_GROUP` (5) are withheld; no route reads a person's rows. Visit rows are deleted after
 `VISIT_KEEP_DAYS`, with the space and with the account.
+
+**One "Have a code?" sheet, and a space says who it is** (Phase 72, `docs/journey-fixes-plan.md` JF4, JF7, JF9,
+JF12, JF26, JF33). Every code door -- the guest page, the home's quick action, the Quest board's box, a shared game
+link (`/?code=`) -- opens `CodeSheet`: six characters look a game up and open its join choices, eight look a space up
+and NAME it before "Ask to join" (with the role and the note). Signed out, a code is kept on the device, and so is a
+friend's quest link a guest cannot play (`guestMemory.keptCode`/`sentTile`, never sent); the first home offers either
+once (`KeptForYou`). A new self-serve space takes the palette the maker's other spaces wear least
+(`SPACE_PALETTE_ROTATION`, never plum); a personal space stays slate and reads "Just you" (`Membership.personal`). An
+invitation names the admin who added the person by first name (`org_members.invited_by`, R32), and its text links to
+`/spaces`. Someone a space added accepts the terms and the privacy notice once, at their first sign-in: a
+`legal_acceptances` row is made due then (never for a self sign-up, who accepted at sign-up, nor for anyone who signed
+in before Phase 72), the session says `legal_due`, and the portal waits behind a sheet until `POST /api/auth/legal`.
+A trailing % counts as the number only where the question asks for a percent (`asksForPercent`, `checkAnswer`'s
+`stem`); the bank's blind solve stays exact.
 
 **The tour is Tutoring's, and a new space is asked what it may use first** (owner, 2026-11-04). The welcome
 wizard's tour, its first-visit offer and "Getting started" appear only where Tutoring is on (`tourOffered` in
@@ -935,7 +951,8 @@ every tab landed unless `questLanding: true`). Plan and later phases: `docs/gami
 **Quest Games (Phase 46) run in a Durable Object, one per game; D1 is only the record.** Under Quest's
 switch, any member starts a game (a bank level, a count or a time limit, negative marking, a team size)
 and anyone joins with its code -- on their own, by starting a team (its own code), or by a team's code;
-codes are found only in their own organization (`docs/quest-games-plan.md`). `QuestGame`
+codes are found only in their own organization (`docs/quest-games-plan.md`), and a code from anywhere else gets
+the same honest 404 as no game at all, "ask your friend to invite you there" (Phase 72, R13). `QuestGame`
 (`durable/quest-game.ts`, bound `QUEST_GAMES` on all three Workers, SQLite-backed as the free plan
 requires) is named `<organization>:<game id>`, so another organization's id reaches an empty object
 (404). It holds the series WITH its keys, each team's queue and every player's hand in memory and in its

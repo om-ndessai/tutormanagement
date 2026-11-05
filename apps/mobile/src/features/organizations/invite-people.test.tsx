@@ -84,12 +84,12 @@ describe('InvitePeople (Phase 61, S12)', () => {
     expect(screen.getByTestId('invite-problem-0')).toHaveTextContent('Already in this space.');
     expect(screen.getByText('INVITED')).toBeTruthy();
     expect(screen.getByTestId('invite-text-maria.lopez@example.com')).toHaveTextContent(
-      'Mia Creator invited you to The Creator family on Aimtrue. Sign in at http://localhost:8787 with maria.lopez@example.com.',
+      'Mia Creator invited you to The Creator family on Aimtrue. Sign in at http://localhost:8787/spaces with maria.lopez@example.com.',
     );
     await fireEvent.press(screen.getByTestId('invite-share-maria.lopez@example.com'));
     expect(share).toHaveBeenCalledWith({
       message:
-        'Mia Creator invited you to The Creator family on Aimtrue. Sign in at http://localhost:8787 with maria.lopez@example.com.',
+        'Mia Creator invited you to The Creator family on Aimtrue. Sign in at http://localhost:8787/spaces with maria.lopez@example.com.',
     });
     await fireEvent.press(screen.getByTestId('invite-continue'));
     expect(onDone).toHaveBeenCalled();

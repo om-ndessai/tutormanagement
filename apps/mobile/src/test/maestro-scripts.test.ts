@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { DEFAULT_GUEST_SETTINGS, PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
+import { DEFAULT_GUEST_SETTINGS, JOIN_REQUEST_ROLES, PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
 
 const script = readFileSync(join(__dirname, '../../.maestro/scripts/spaces.js'), 'utf8');
 
@@ -16,6 +16,20 @@ describe('.maestro/scripts/spaces.js', () => {
   it('talks to the local Worker only', () => {
     const origins = script.match(/https?:\/\/[^'"/]+/g) ?? [];
     expect(new Set(origins)).toEqual(new Set(['http://localhost:8787']));
+  });
+
+  it('asks with a role among the shared ones, and checks the terms are due before spaces/legal (Phase 72)', () => {
+    expect(script).toContain("ask.role = String(ROLE)");
+    expect(script).toContain("ask.note = String(NOTE)");
+    expect(script).toContain("ACTION === 'legal-due'");
+    // reset-newcomer declines a waiting invitation, so someone a space only invited can be deleted.
+    expect(script).toContain("'/auth/invitations/' + i.slug + '/decline'");
+    const flows = ['home/quick-code.yaml', 'spaces/let-in.yaml'].map((flow) =>
+      readFileSync(join(__dirname, '../../.maestro/flows', flow), 'utf8'),
+    );
+    for (const role of flows.join('\n').match(/ROLE: (\w+)/g) ?? []) {
+      expect(JOIN_REQUEST_ROLES).toContain(role.replace('ROLE: ', ''));
+    }
   });
 });
 

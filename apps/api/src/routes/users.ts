@@ -252,7 +252,7 @@ export const usersRoutes = new Hono<AppEnv>()
     let outcome: Awaited<ReturnType<typeof createUser>>;
 
     try {
-      outcome = await createUser(c.env.DB, org, fields, { acceptRequest: Boolean(request) });
+      outcome = await createUser(c.env.DB, org, fields, { acceptRequest: Boolean(request), invitedBy: c.get('user').id });
     } catch (error) {
       if (isUniqueConstraintError(error)) throw ApiError.conflict(EMAIL_TAKEN);
       throw error;
