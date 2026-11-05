@@ -2,68 +2,98 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { formatRelativeTime, type JoinRequest } from '@tmi/shared';
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useDeclineJoinRequest, useJoinRequests, useRefreshJoinRequests } from '@/features/organizations/api';
-import { UserFormDialog } from './user-form-dialog';
+import { LetInSheet } from './let-in-sheet';
 
 /**
- * Phase 52: people who asked to join with the space's code. Letting someone in opens the usual
- * form, prefilled, to choose their roles -- the usual rules apply (a student needs a parent here).
- * Its admins only (R21).
+ * Phase 52: people who asked to join with the space's code. Its admins only (R21). Letting someone in is a
+ * short sheet that asks the role and, for a parent, which child is theirs (owner, 2026-11-04; UI audit JF1);
+ * a request shows the whole address and when it was asked at every width, and Decline asks first, as the
+ * app does (JF26).
  */
 export function JoinRequestsPanel() {
   const requests = useJoinRequests(true);
   const decline = useDeclineJoinRequest();
   const refresh = useRefreshJoinRequests();
   const [letting, setLetting] = useState<JoinRequest | null>(null);
+  const [declining, setDeclining] = useState<JoinRequest | null>(null);
   const rows = requests.data?.data ?? [];
-  if (rows.length === 0) return null;
+  if (rows.length === 0 && !letting) return null;
 
   return (
     <section className="mb-6 grid gap-2" aria-label="Requests to join" data-testid="join-requests">
-      <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
-        Requests to join <span className="bg-primary text-primary-foreground ml-1 rounded-full px-1.5">{rows.length}</span>
-      </h2>
+      {rows.length > 0 && (
+        <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+          Requests to join <span className="bg-primary text-primary-foreground ml-1 rounded-full px-1.5">{rows.length}</span>
+        </h2>
+      )}
       {rows.map((r) => (
         <Card key={r.user_id} className="py-0" data-testid={`join-request-${r.user_id}`}>
           <CardContent className="flex flex-wrap items-center gap-3 p-4">
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-medium">{r.full_name}</p>
-              <p className="text-muted-foreground truncate text-xs">
-                {r.email} · asked {formatRelativeTime(r.requested_at)}
-              </p>
+            <div className="min-w-0 flex-1 basis-56">
+              <p className="font-medium break-words">{r.full_name}</p>
+              <p className="text-muted-foreground text-xs break-all">{r.email ?? 'No address'}</p>
+              <p className="text-muted-foreground text-xs">asked {formatRelativeTime(r.requested_at)}</p>
             </div>
-            <Button size="sm" onClick={() => setLetting(r)} data-testid={`join-request-let-in-${r.user_id}`}>
-              Let in
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              disabled={decline.isPending}
-              onClick={() => decline.mutate(r.user_id, { onSuccess: () => toast.success(`${r.full_name}’s request declined.`) })}
-              data-testid={`join-request-decline-${r.user_id}`}
-            >
-              Decline
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => setLetting(r)} data-testid={`join-request-let-in-${r.user_id}`}>
+                Let in
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setDeclining(r)} data-testid={`join-request-decline-${r.user_id}`}>
+                Decline
+              </Button>
+            </div>
           </CardContent>
         </Card>
       ))}
       {letting && (
-        <UserFormDialog
-          open
-          onOpenChange={(open) => !open && setLetting(null)}
-          userId={null}
-          preset={{ roles: [], full_name: letting.full_name, email: letting.email ?? '' }}
-          joinRequestUserId={letting.user_id}
-          title={`Let ${letting.full_name} in`}
-          description="Choose what they do here. They are a member as soon as you save."
-          onSaved={() => {
+        <LetInSheet
+          request={letting}
+          onClose={() => setLetting(null)}
+          onLetIn={() => void refresh()}
+          onDone={() => {
             setLetting(null);
             void refresh();
           }}
         />
       )}
+      <AlertDialog open={declining !== null} onOpenChange={(open) => !open && setDeclining(null)}>
+        <AlertDialogContent data-testid="join-request-decline-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Decline {declining?.full_name}&apos;s request?</AlertDialogTitle>
+            <AlertDialogDescription>
+              They will see that this space did not let them in. They can ask again with the code.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep it</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={decline.isPending}
+              onClick={() => {
+                const who = declining;
+                if (!who) return;
+                decline.mutate(who.user_id, { onSuccess: () => toast.success(`${who.full_name}’s request declined.`) });
+                setDeclining(null);
+              }}
+              data-testid="join-request-decline-yes"
+            >
+              Decline
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }

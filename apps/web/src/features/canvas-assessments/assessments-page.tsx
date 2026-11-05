@@ -130,6 +130,15 @@ export function StartCard() {
             Start
           </Button>
         </div>
+        {!onlyStudent && !students.isPending && studentList.length === 0 && (
+          // A parent let in with no child linked once met an empty picker and a grey Start, with no reason
+          // (UI audit J07 steps 26-28, JF1).
+          <p className="bg-muted/60 rounded-lg px-3 py-2 text-sm" role="status" data-testid="assessment-no-students">
+            {user?.roles.includes('admin')
+              ? 'No students here yet. Add one from Users, then start an assessment for them here.'
+              : `No children are linked to you in ${organization?.name ?? 'this space'} yet. The space's admins add them: ask one to link your child, then start an assessment for them here.`}
+          </p>
+        )}
         <p className="text-muted-foreground text-xs">
           Up to {organization?.canvas_assessment_questions ?? 10} questions of the level, chosen at random
           {organization?.canvas_assessments_unreviewed

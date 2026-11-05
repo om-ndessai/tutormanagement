@@ -104,6 +104,16 @@ test.describe('each kind of user sees their own portal', { tag: '@smoke' }, () =
     await expect(visible(tutorPage, 'The students you teach.').first()).toBeVisible();
     await expect(tutorPage.getByRole('button', { name: 'Assign a student' })).toHaveCount(0);
 
+    // Users offers a tutor no Add user, and a row nothing but View details (UI audit JF22: the API refuses
+    // the rest, so they are not offered).
+    await tutorPage.goto('/users');
+    await expect(tutorPage.getByRole('heading', { name: 'Users' })).toBeVisible();
+    await expect(tutorPage.getByRole('button', { name: 'Add user' })).toHaveCount(0);
+    await tutorPage.getByRole('button', { name: /^Actions for / }).filter({ visible: true }).first().click();
+    await expect(tutorPage.getByRole('menuitem', { name: 'View details' })).toBeVisible();
+    await expect(tutorPage.getByRole('menuitem', { name: /Edit|Deactivate|Delete permanently/ })).toHaveCount(0);
+    await tutorPage.keyboard.press('Escape');
+
     // And the API refuses even if the button is bypassed.
     const response = await tutorPage.request.post('/api/users', {
       data: { email: 'sneaky@gmail.com', full_name: 'Sneaky', roles: ['tutor'] },

@@ -105,13 +105,27 @@ test.describe('signing up (Phase 52)', () => {
       data: { full_name: 'Nina', email: 'someone.else@example.com', roles: ['parent'], status: 'active', join_request_user_id: request.user_id },
     });
     expect(wrong.status()).toBe(422);
+    // Let in is a short sheet (owner, 2026-11-04; UI audit JF1): a parent by default, then her child.
     await ines.goto('/users');
+    await expect(ines.getByTestId(`join-request-${request.user_id}`)).toContainText('nina.newcomer@example.com');
     await ines.getByTestId(`join-request-let-in-${request.user_id}`).click();
-    await ines.getByRole('checkbox', { name: /Parent/ }).check();
-    await ines.getByRole('button', { name: /^Save|Add/ }).last().click();
+    const sheet = ines.getByTestId('let-in-sheet');
+    await expect(sheet.getByTestId('let-in-role-parent')).toBeChecked();
+    await expect(sheet.getByTestId('let-in-role-tutor')).toHaveCount(0); // no Tutoring here
+    await sheet.getByTestId('let-in-submit').click();
+    await expect(sheet.getByRole('heading', { name: "Which child is Nina's?" })).toBeVisible();
     await expect(ines.getByTestId(`join-request-${request.user_id}`)).toHaveCount(0);
     const ninaSession = await unwrap<any>(await nina.request.get('/api/auth/session'), 'nina after');
     expect(ninaSession.memberships.map((m: any) => m.slug)).toContain(ORGS.c.slug);
+    // Her child, added now through the usual student form, with Nina as the parent (J07: a parent let in
+    // with no child could not start the space's assessment).
+    await sheet.getByTestId('let-in-add-child').click();
+    await ines.getByLabel('Full name').fill('Nico Newcomer');
+    await ines.getByTestId('user-parent-consent').getByRole('checkbox').check();
+    await ines.getByRole('button', { name: /^Save|Add/ }).last().click();
+    const ninaInSpace = await as('admin', { email: 'nina.newcomer@example.com', org: ORGS.c.slug });
+    const kids = await unwrap<any[]>(await ninaInSpace.request.get('/api/users?role=student'), 'her children');
+    expect(kids.map((k) => k.full_name)).toContain('Nico Newcomer');
 
     // Riverside declines Theo; he sees it once.
     const rosa = await as('orgBAdmin', { org: ORGS.b.slug });

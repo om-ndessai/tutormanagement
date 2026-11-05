@@ -58,6 +58,11 @@ interface RowActions {
   onDeactivate: (user: User) => void;
   onRestore: (user: User) => void;
   onDelete: (user: User) => void;
+  /**
+   * Whether the reader may change people here (an admin). Anyone else sees View details only: a tutor was
+   * offered Edit, Deactivate and Delete permanently, which the API refuses (UI audit JF22).
+   */
+  canManage?: boolean;
 }
 
 interface Props extends RowActions {
@@ -80,6 +85,7 @@ function Avatar({ name }: { name: string }) {
 
 function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
   const isDeleted = user.deleted_at !== null;
+  const canManage = actions.canManage ?? true;
 
   return (
     <DropdownMenu>
@@ -94,7 +100,7 @@ function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
           View details
         </DropdownMenuItem>
 
-        {!isDeleted && (
+        {canManage && !isDeleted && (
           <>
             <DropdownMenuItem onSelect={() => actions.onEdit(user)}>
               <PencilIcon className="size-4" />
@@ -107,18 +113,22 @@ function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
           </>
         )}
 
-        {isDeleted && (
+        {canManage && isDeleted && (
           <DropdownMenuItem onSelect={() => actions.onRestore(user)}>
             <RotateCcwIcon className="size-4" />
             Restore
           </DropdownMenuItem>
         )}
 
-        <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onSelect={() => actions.onDelete(user)}>
-          <Trash2Icon className="size-4" />
-          Delete permanently
-        </DropdownMenuItem>
+        {canManage && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onSelect={() => actions.onDelete(user)}>
+              <Trash2Icon className="size-4" />
+              Delete permanently
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
