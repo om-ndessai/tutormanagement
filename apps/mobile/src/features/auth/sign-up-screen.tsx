@@ -1,5 +1,10 @@
 // Ported from apps/web/src/features/auth/signup-page.tsx @ 9485a8e
-import { useState } from 'react';
+//
+// UI audit (JF8, JF35; Phase 70): under 13 is "Ask a grown-up to add you", with Keep playing where guest
+// play is offered; this phone remembers the refusal (a key of the address, never the address: the guest
+// store), so the same account is not asked its age again here; the month list shows all twelve months.
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 
@@ -11,6 +16,7 @@ import { CheckRow } from '@/components/check-row';
 import { useLargeText } from '@/hooks/use-large-text';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
+import { guestMemory, guestMemoryReady, loadGuestMemory } from '@/features/guest/guest-store';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
@@ -20,19 +26,47 @@ import { birthYears, firstNameOf, MONTHS } from './sign-up-model';
 
 const MONTH_OPTIONS = MONTHS.map((name, i) => ({ id: String(i + 1), label: name }));
 
+/** The under-13 screen's words (the web's): with guest play, it says play goes on without an account. */
+export const TOO_YOUNG_TITLE = 'Ask a grown-up to add you';
+export const TOO_YOUNG_BODY =
+  'You need to be 13 or older for an account of your own. You can keep playing without one, and a grown-up can sign up and add you to their space. Nothing about you was stored on our side.';
+/** Where there is no guest play to go back to. */
+export const TOO_YOUNG_BODY_NO_PLAY =
+  'You need to be 13 or older for an account of your own. A grown-up can sign up and add you to their space. Nothing about you was stored on our side.';
+
+/** Whether this phone refused this account as under 13: null until the guest memory has been read. */
+function knownYoungNow(email: string | undefined): boolean | null {
+  return guestMemoryReady() ? guestMemory.refusedYoung(email) : null;
+}
+
 /**
  * Phase 52: a newcomer Google vouched for (or, with sign-in off, a typed address) says their
  * birth month and year -- only the band is kept, never the date; under 13, nothing at all -- and
  * accepts the terms. Then (Phase 63, P13) the app lands in the personal space the server made for
  * them -- no Welcome screen. The month and year live in this screen's state only. It is also the
  * sign-up sheet's second step (features/guest/signup-sheet.tsx), which hears a cancel through
- * `onCancelled`.
+ * `onCancelled` and closes itself for Keep playing (`onKeepPlaying`; the route goes to the Play home).
  */
-export function SignUpScreen({ onCancelled }: { onCancelled?: () => void } = {}) {
-  const { pendingSignup, completeSignup, cancelSignup: cancelPending } = useAuth();
+export function SignUpScreen({
+  onCancelled,
+  onKeepPlaying,
+}: { onCancelled?: () => void; onKeepPlaying?: () => void } = {}) {
+  const { pendingSignup, completeSignup, cancelSignup: cancelPending, config } = useAuth();
   const cancelSignup = async () => {
     await cancelPending();
     onCancelled?.();
+  };
+  const guestPlay = Boolean(config?.guest);
+  // Under 13, with guest play: back to it. The sheet closes over the quest (and forgets the sign-up as it
+  // goes); the route goes to the Play home, then forgets it (navigating first, so nothing redraws on the
+  // way out).
+  const keepPlaying = async () => {
+    if (onKeepPlaying) {
+      onKeepPlaying();
+      return;
+    }
+    router.dismissTo('/play');
+    await cancelSignup();
   };
   const theme = useAppTheme();
   const large = useLargeText();
@@ -44,8 +78,21 @@ export function SignUpScreen({ onCancelled }: { onCancelled?: () => void } = {})
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<{ code: string; message: string } | null>(null);
   const [years] = useState(() => birthYears(new Date()).map((y) => ({ id: String(y), label: String(y) })));
+  // This account was refused as under 13 on this phone: the answer straight away, not the age question.
+  const email = pendingSignup?.email;
+  const [knownYoung, setKnownYoung] = useState<boolean | null>(() => knownYoungNow(email));
+  useEffect(() => {
+    if (knownYoung !== null) return;
+    let live = true;
+    void loadGuestMemory().then(() => {
+      if (live) setKnownYoung(guestMemory.refusedYoung(email));
+    });
+    return () => {
+      live = false;
+    };
+  }, [knownYoung, email]);
 
-  if (!pendingSignup) return <Screen testID="screen-sign-up">{null}</Screen>;
+  if (!pendingSignup || knownYoung === null) return <Screen testID="screen-sign-up">{null}</Screen>;
   const who = pendingSignup;
   const shownName = who.dev ? devName.trim() || who.email.split('@')[0] || who.email : who.name;
 
@@ -64,27 +111,48 @@ export function SignUpScreen({ onCancelled }: { onCancelled?: () => void } = {})
           ? { code: caught.code, message: caught.message }
           : { code: 'internal_error', message: 'Could not sign you up. Please try again.' };
       if (refusal.code !== 'rate_limited' && refusal.code !== 'too_young') haptics.error();
+      // Remembered on this phone, by a key of the address only (owner, 2026-11-04).
+      if (refusal.code === 'too_young') {
+        await loadGuestMemory();
+        guestMemory.rememberYoung(who.email);
+      }
       setProblem(refusal);
     } finally {
       setBusy(false);
     }
   }
 
-  if (problem?.code === 'too_young') {
+  if (problem?.code === 'too_young' || knownYoung) {
     return (
       <Screen testID="screen-sign-up" edges={['top', 'bottom']}>
         <OutlinedCard testID="signup-too-young" style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg, gap: space.md }}>
-            <Text variant="titleLarge" accessibilityRole="header">
-              Ask a parent to add you
+            <Text testID="signup-too-young-title" variant="titleLarge" accessibilityRole="header">
+              {TOO_YOUNG_TITLE}
             </Text>
-            <Text variant="bodyMedium" style={muted}>
-              You need to be 13 or older to have an account of your own. A parent can make a space and add you to it.
-              Nothing about you has been kept.
+            <Text testID="signup-too-young-body" variant="bodyMedium" style={muted}>
+              {guestPlay ? TOO_YOUNG_BODY : TOO_YOUNG_BODY_NO_PLAY}
             </Text>
-            <Button testID="signup-too-young-back" mode="contained" onPress={() => void cancelSignup()}>
-              Back to sign-in
-            </Button>
+            {guestPlay ? (
+              <Button
+                testID="signup-too-young-keep-playing"
+                mode="contained"
+                icon="gamepad-variant-outline"
+                onPress={() => void keepPlaying()}
+                contentStyle={{ minHeight: 48 }}
+              >
+                Keep playing
+              </Button>
+            ) : (
+              <Button
+                testID="signup-too-young-back"
+                mode="contained"
+                onPress={() => void cancelSignup()}
+                contentStyle={{ minHeight: 48 }}
+              >
+                Back to sign-in
+              </Button>
+            )}
           </View>
         </OutlinedCard>
       </Screen>
@@ -124,34 +192,32 @@ export function SignUpScreen({ onCancelled }: { onCancelled?: () => void } = {})
 
       <View style={{ gap: space.sm }}>
         <Text variant="titleSmall">When were you born?</Text>
-        <View style={{ flexDirection: large ? 'column' : 'row', gap: space.sm, alignItems: 'flex-start' }}>
-          <View style={{ flex: large ? undefined : 1, alignSelf: 'stretch' }}>
-            <OptionPicker
-              testID="signup-month"
-              label="Month"
-              placeholder="Month"
-              options={MONTH_OPTIONS}
-              value={month}
-              onChange={setMonth}
-              defaultOpen={false}
-              scroll
-            />
-          </View>
-          <View style={{ flex: large ? undefined : 1, alignSelf: 'stretch' }}>
-            <OptionPicker
-              testID="signup-year"
-              label="Year"
-              placeholder="Year"
-              options={years}
-              value={year}
-              onChange={setYear}
-              defaultOpen={false}
-              searchPlaceholder="Type a year"
-            />
-          </View>
+        {/* One above the other, so the month's grid has the width for all twelve (JF35), and the year's
+            list never opens beside it. */}
+        <View style={{ gap: space.sm }}>
+          <OptionPicker
+            testID="signup-month"
+            label="Month"
+            placeholder="Month"
+            options={MONTH_OPTIONS}
+            value={month}
+            onChange={setMonth}
+            defaultOpen={false}
+            columns={large ? 2 : 3}
+          />
+          <OptionPicker
+            testID="signup-year"
+            label="Year"
+            placeholder="Year"
+            options={years}
+            value={year}
+            onChange={setYear}
+            defaultOpen={false}
+            searchPlaceholder="Type a year"
+          />
         </View>
         <Text variant="bodySmall" style={muted}>
-          Only whether you are over 18 is kept, never the date.
+          We keep only your age group, never the date.
         </Text>
       </View>
 

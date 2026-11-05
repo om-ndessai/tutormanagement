@@ -1,6 +1,8 @@
 # Phase 52 (design 63): signing up with developer sign-in. The legal line on sign-in; an address the
-# server does not know offers "Sign up as"; About you refuses a child (nothing kept, so the same
-# address still offers sign-up).
+# server does not know offers "Sign up as"; About you refuses a child (nothing kept by the server, so the
+# same address still offers sign-up). Phase 70 (UI audit JF8, owner 2026-11-04): the phone remembers the
+# refusal, so the same address goes straight to "Ask a grown-up to add you"; a fresh install (cleared state)
+# asks again, which is how the flow goes on to the adult sign-up.
 # Phase 63 (P13, docs/stickiness-plan.md): an adult who signs up lands in a space of their own, "Sam's
 # space", on its Play home -- no Welcome, no wizard. The Welcome is for someone who belongs nowhere:
 # once that space is gone (spaces.js drop-personal), it offers Join with a code and Start a space, and
@@ -75,7 +77,6 @@ tags:
 - tapOn:
     id: signup-dev-name
 - inputText: 'Sam Signup'
-- hideKeyboard
 - assertVisible: 'Welcome, Sam'
 # A child: June 2020.
 - tapOn:
@@ -87,10 +88,8 @@ tags:
 - tapOn:
     id: signup-year-search
 - inputText: '2020'
-# The year search's keyboard has a Search key, and hiding it sometimes fails on iOS; the year is
-# shown above the keyboard either way (2026-10-29).
-- hideKeyboard:
-    optional: true
+# The year is shown above the keyboard: it is tapped there. No hideKeyboard: on iOS its gesture lands on the
+# form (since the months became a grid it closed the year's list, or opened the privacy link).
 - tapOn:
     id: signup-year-2020
 # The year's list closes: let the form settle before the tick is tapped.
@@ -125,7 +124,13 @@ tags:
     visible:
       id: signup-too-young
     timeout: 15000
-- assertVisible: 'Ask a parent to add you'
+- assertVisible:
+    id: signup-too-young-title
+    text: 'Ask a grown-up to add you'
+# Guest play is off in this flow: no promise of play, and the way back is sign-in.
+- assertVisible:
+    id: signup-too-young-body
+    text: 'You need to be 13 or older for an account of your own. A grown-up can sign up.*'
 - takeScreenshot: spaces-too-young
 - tapOn:
     id: signup-too-young-back
@@ -133,7 +138,7 @@ tags:
     visible:
       id: screen-sign-in
     timeout: 15000
-# Nothing was kept: the same address is still unknown.
+# Nothing was kept on the server: the same address is still unknown.
 - scrollUntilVisible:
     element:
       id: sign-in-email
@@ -149,6 +154,41 @@ tags:
     timeout: 20000
 - tapOn:
     id: sign-in-signup
+# The phone remembers the refusal (a key of the address, never the address): no age question this time.
+- extendedWaitUntil:
+    visible:
+      id: signup-too-young
+    timeout: 15000
+- assertNotVisible:
+    id: signup-month
+- takeScreenshot: spaces-too-young-remembered
+# A fresh install remembers nothing: the adult sign-up, with the same address.
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: 'aimtrue://dev/link?tour=seen'
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+- tapOn:
+    id: sign-in-email
+- inputText: 'spaces.signup@example.com'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: sign-in-signup
+    timeout: 20000
+- tapOn:
+    id: sign-in-signup
 - extendedWaitUntil:
     visible:
       id: screen-sign-up
@@ -156,7 +196,6 @@ tags:
 - tapOn:
     id: signup-dev-name
 - inputText: 'Sam Signup'
-- hideKeyboard
 # An adult: June 1990.
 - tapOn:
     id: signup-month
@@ -167,10 +206,8 @@ tags:
 - tapOn:
     id: signup-year-search
 - inputText: '1990'
-# The year search's keyboard has a Search key, and hiding it sometimes fails on iOS; the year is
-# shown above the keyboard either way (2026-10-29).
-- hideKeyboard:
-    optional: true
+# The year is shown above the keyboard: it is tapped there. No hideKeyboard: on iOS its gesture lands on the
+# form (since the months became a grid it closed the year's list, or opened the privacy link).
 - tapOn:
     id: signup-year-1990
 # The year's list closes: let the form settle before the tick is tapped.
@@ -283,7 +320,6 @@ tags:
 - tapOn:
     id: signup-dev-name
 - inputText: 'Tam Teen'
-- hideKeyboard
 - assertVisible: 'Welcome, Tam'
 - tapOn:
     id: signup-month
@@ -294,8 +330,6 @@ tags:
 - tapOn:
     id: signup-year-search
 - inputText: '2011'
-- hideKeyboard:
-    optional: true
 - tapOn:
     id: signup-year-2011
 - waitForAnimationToEnd:

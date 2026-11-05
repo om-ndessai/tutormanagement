@@ -8,7 +8,10 @@
 // "Answer" (as the members' quest on the phone, so a stray tap while scrolling answers nothing); the
 // clock stays paused while the sign-up sheet is over the quest and runs again when it closes (the web
 // resumes it as the sheet opens); the results show one question at a time (guest-results.tsx); once
-// signed up, the results offer "Go to my space" in place of "Save this score".
+// signed up, the results offer "Go to my space" in place of the offer.
+//
+// UI audit (JF10, Phase 70): the results' offer is "Keep playing with a free account" -- the guest's score is
+// not carried into an account, so it no longer promises to save it. After a decline in this run, Sign in.
 import { guestDay, guestPoolUsedUp, type GuestQuestion, type GuestTile } from '@tmi/shared';
 import { useIsFocused } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -47,7 +50,7 @@ import {
 } from './guest-model';
 import { exitGuestPlay, openSignupSheet, toSpace } from './guest-nav';
 import { GuestResultPager, type GuestResultItem } from './guest-results';
-import { guestMemory, readQuestState, writeQuestState } from './guest-store';
+import { guestMemory, readQuestState, useSignupDeclined, writeQuestState } from './guest-store';
 import { NudgeSheet } from './nudge-sheet';
 
 /**
@@ -57,6 +60,7 @@ import { NudgeSheet } from './nudge-sheet';
 export function GuestQuest({ tile, today = false }: { tile: GuestTile; today?: boolean }) {
   const theme = useAppTheme();
   const { config, status } = useAuth();
+  const declined = useSignupDeclined();
   const guest = config?.guest;
   const signedIn = status === 'authenticated';
   const focused = useIsFocused();
@@ -187,7 +191,7 @@ export function GuestQuest({ tile, today = false }: { tile: GuestTile; today?: b
           usedUp={usedUp}
           benefits={benefits}
           signedIn={signedIn}
-          signupOpen={config?.signup_open === true}
+          signupOpen={config?.signup_open === true && !declined}
           onSignUp={() => signUp('results')}
           onAgain={() => {
             writeQuestState(null);
@@ -403,7 +407,7 @@ function Results({
               </Button>
             ) : (
               <Button testID="guest-save-score" mode="contained" onPress={onSignUp}>
-                {signupOpen ? 'Save this score: sign up free' : 'Sign in'}
+                {signupOpen ? 'Keep playing with a free account' : 'Sign in'}
               </Button>
             )}
             <Button testID="guest-challenge" mode="outlined" icon="share-variant" onPress={() => void challenge()}>

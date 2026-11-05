@@ -36,6 +36,10 @@ tags:
     text: 'Save your scores and unlock every quest.'
 - assertVisible: 'Math quests.'
 - assertVisible: 'Hit the target.'
+# Phase 70 (UI audit JF10): the page speaks to every visitor.
+- assertVisible:
+    id: guest-audience
+    text: 'For kids, teens, grown-ups and classes.'
 - assertVisible: 'No account to start'
 - assertVisible:
     id: guest-sign-in
@@ -130,8 +134,10 @@ tags:
 - assertVisible:
     id: guest-score
     text: '0 of 5 right'
+# The score is not carried into an account: the offer does not promise to save it (JF10).
 - assertVisible:
     id: guest-save-score
+    text: 'Keep playing with a free account'
 - assertVisible:
     id: guest-review-chip-1
 - takeScreenshot: guest-results
@@ -217,6 +223,15 @@ tags:
     id: guest-answer-0
 - assertVisible:
     id: guest-answer-0-text
+# Can adults play? (JF10), the last answer.
+- scrollUntilVisible:
+    element:
+      id: guest-answer-3
+- tapOn:
+    id: guest-answer-3
+- assertVisible:
+    id: guest-answer-3-text
+    text: 'Yes. Quests go from Grade 1 to Algebra and contest maths.*'
 - scrollUntilVisible:
     element:
       id: guest-contact

@@ -2,7 +2,7 @@ import '@/polyfills/intl';
 import '@/polyfills/intl-cache';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
+import { router, Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
 import {
   Nunito_600SemiBold_Italic,
   Nunito_700Bold,
@@ -12,6 +12,7 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo } from 'react';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -37,7 +38,7 @@ void SplashScreen.preventAutoHideAsync();
  * guards (the server picker, developer screens) is reachable from anywhere.
  */
 function RootNavigator() {
-  const { status, organization, platformAdmin, accessRefusal, clearAccessRefusal } = useAuth();
+  const { status, organization, platformAdmin, accessRefusal, clearAccessRefusal, config } = useAuth();
   const theme = useAppTheme();
   // The heading face (UI upgrades U1). A failure to load falls back to the system font rather than
   // holding the splash.
@@ -72,74 +73,114 @@ function RootNavigator() {
   }, [status, inOrganization]);
   const navTheme = useMemo(() => navigationTheme(theme), [theme]);
 
-  if (status === 'loading' || status === 'error' || !fontsReady) return <BootScreen />;
+  // Phase 65 (A4, A7): the server will not let this person in (yet). A refusal that arrived in the sign-up
+  // sheet is the sheet's to show (UI audit JF36: the quest beneath stays at its question). Any other covers
+  // the app, which stays mounted beneath it: signing out has already sent the guarded screens away, so what
+  // is beneath is the sign-in screen or the guest home.
+  const covering = accessRefusal && !accessRefusal.inSheet ? accessRefusal : null;
+  const guestPlay = Boolean(config?.guest);
+  // Android's back button acts as the refusal's own way back, rather than moving the screens beneath it.
+  useEffect(() => {
+    if (covering === null) return;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      clearAccessRefusal();
+      if (guestPlay) router.dismissTo('/play');
+      return true;
+    });
+    return () => subscription.remove();
+  }, [covering, guestPlay, clearAccessRefusal]);
+  const covered = covering !== null;
 
-  // Phase 65 (A4, A7): the server will not let this person in (yet). The refusal stands in for every
-  // screen -- the sign-up sheet included -- until Back, which lands afresh (the guest home or sign-in).
-  if (accessRefusal) {
-    return (
-      <NavigationThemeProvider value={navTheme}>
-        <StatusBar style={theme.dark ? 'light' : 'dark'} />
-        <AccessRefusedScreen code={accessRefusal.code} message={accessRefusal.message} onBack={clearAccessRefusal} />
-      </NavigationThemeProvider>
-    );
-  }
+  if (status === 'loading' || status === 'error' || !fontsReady) return <BootScreen />;
 
   return (
     <NavigationThemeProvider value={navTheme}>
       <StatusBar style={theme.dark ? 'light' : 'dark'} />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: theme.colors.background },
-        }}
+      <View
+        style={{ flex: 1 }}
+        // Covered by a refusal: hidden from screen readers too.
+        importantForAccessibility={covered ? 'no-hide-descendants' : 'auto'}
+        accessibilityElementsHidden={covered}
       >
-        {/* First, so a guard flipping (signing in or out, entering or leaving an organization)
-            falls back through the landing redirect rather than whichever screen comes next. */}
-        <Stack.Screen name="index" />
-        <Stack.Protected guard={!signedIn}>
-          <Stack.Screen name="sign-in" />
-          <Stack.Screen name="sign-up" />
-        </Stack.Protected>
-        <Stack.Protected guard={signedIn}>
-          {/* Phase 60 (S7): Spaces -- the selector, or pushed over a space from the account sheet. */}
-          <Stack.Screen name="spaces" />
-          <Stack.Screen name="select-organization" />
-          <Stack.Protected guard={organization !== null}>
-            <Stack.Screen name="(org)" />
-          </Stack.Protected>
-          <Stack.Protected guard={platformAdmin}>
-            <Stack.Screen name="(platform)" />
-          </Stack.Protected>
-        </Stack.Protected>
-        {/* Phase 63 (P10-P14): guest play -- the Play home, a tile by its code and the sign-up sheet --
-            outside both guards, so signing up over a quest never unmounts it. */}
-        <Stack.Screen name="play/index" />
-        <Stack.Screen name="play/[code]" options={{ gestureEnabled: false }} />
-        {/* The landing's Today's 5 (aimtrue://play/today?level=NC26.4), played as a guest quest. */}
-        <Stack.Screen name="play/today" options={{ gestureEnabled: false }} />
-        <Stack.Screen
-          name="sign-up-sheet"
-          options={{ presentation: 'formSheet', sheetAllowedDetents: [0.92], sheetGrabberVisible: true }}
-        />
-        <Stack.Screen
-          name="server"
-          options={{ presentation: 'formSheet', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }}
-        />
-        {/* Developer-only previews of the surface kit (UI upgrades U2); they redirect home in
-            production. A step flow is a full-screen modal, a quick sheet a form sheet fitted to its content. */}
-        <Stack.Screen name="dev/kit" options={{ presentation: 'fullScreenModal' }} />
-        {/* The production welcome screen, which a development build never reaches. */}
-        <Stack.Screen name="dev/welcome" options={{ presentation: 'fullScreenModal' }} />
-        <Stack.Screen
-          name="dev/kit-sheet"
-          options={{
-            presentation: 'formSheet',
-            sheetAllowedDetents: 'fitToContents',
-            sheetGrabberVisible: true,
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.background },
           }}
-        />
-      </Stack>
+        >
+          {/* First, so a guard flipping (signing in or out, entering or leaving an organization)
+            falls back through the landing redirect rather than whichever screen comes next. */}
+          <Stack.Screen name="index" />
+          <Stack.Protected guard={!signedIn}>
+            <Stack.Screen name="sign-in" />
+            <Stack.Screen name="sign-up" />
+          </Stack.Protected>
+          <Stack.Protected guard={signedIn}>
+            {/* Phase 60 (S7): Spaces -- the selector, or pushed over a space from the account sheet. */}
+            <Stack.Screen name="spaces" />
+            <Stack.Screen name="select-organization" />
+            <Stack.Protected guard={organization !== null}>
+              <Stack.Screen name="(org)" />
+            </Stack.Protected>
+            <Stack.Protected guard={platformAdmin}>
+              <Stack.Screen name="(platform)" />
+            </Stack.Protected>
+          </Stack.Protected>
+          {/* Phase 63 (P10-P14): guest play -- the Play home, a tile by its code and the sign-up sheet --
+            outside both guards, so signing up over a quest never unmounts it. */}
+          <Stack.Screen name="play/index" />
+          <Stack.Screen name="play/[code]" options={{ gestureEnabled: false }} />
+          {/* The landing's Today's 5 (aimtrue://play/today?level=NC26.4), played as a guest quest. */}
+          <Stack.Screen name="play/today" options={{ gestureEnabled: false }} />
+          <Stack.Screen
+            name="sign-up-sheet"
+            options={{ presentation: 'formSheet', sheetAllowedDetents: [0.92], sheetGrabberVisible: true }}
+          />
+          <Stack.Screen
+            name="server"
+            options={{ presentation: 'formSheet', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }}
+          />
+          {/* Developer-only previews of the surface kit (UI upgrades U2); they redirect home in
+            production. A step flow is a full-screen modal, a quick sheet a form sheet fitted to its content. */}
+          <Stack.Screen name="dev/kit" options={{ presentation: 'fullScreenModal' }} />
+          {/* The production welcome screen, which a development build never reaches. */}
+          <Stack.Screen name="dev/welcome" options={{ presentation: 'fullScreenModal' }} />
+          <Stack.Screen
+            name="dev/kit-sheet"
+            options={{
+              presentation: 'formSheet',
+              sheetAllowedDetents: 'fitToContents',
+              sheetGrabberVisible: true,
+            }}
+          />
+        </Stack>
+      </View>
+      {covering !== null ? (
+        <View style={StyleSheet.absoluteFill} accessibilityViewIsModal>
+          <StatusBar style={theme.dark ? 'light' : 'dark'} />
+          <AccessRefusedScreen
+            code={covering.code}
+            message={covering.message}
+            email={covering.email}
+            // Where guest play is offered: back to it (the guest home; a quest left is in its tile's
+            // memory). Otherwise Back, to the sign-in screen beneath.
+            onKeepPlaying={
+              guestPlay
+                ? () => {
+                    clearAccessRefusal();
+                    router.dismissTo('/play');
+                  }
+                : undefined
+            }
+            onBack={guestPlay ? undefined : clearAccessRefusal}
+            // Not on the list: the sign-in screen, for another account.
+            onUseAnother={() => {
+              clearAccessRefusal();
+              router.dismissTo('/sign-in');
+            }}
+          />
+        </View>
+      ) : null}
     </NavigationThemeProvider>
   );
 }

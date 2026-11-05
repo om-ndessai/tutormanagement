@@ -21,7 +21,12 @@ import { landingFor } from '@/features/auth/landing';
 import { resetInvitationBanner } from '@/features/organizations/spaces-model';
 import { offersGoogle, signInProviders, type UsableProvider } from '@/features/auth/provider-model';
 import { signupRequest, type PendingSignup, type SignupForm } from '@/features/auth/sign-up-model';
-import { guestMemory, loadGuestMemory } from '@/features/guest/guest-store';
+import {
+  declinedThisRun,
+  guestMemory,
+  loadGuestMemory,
+  signupSheetPresence,
+} from '@/features/guest/guest-store';
 import { ApiRequestError, apiClient, isAccessRefusal, setReauthenticator } from '@/lib/api-client';
 import { on } from '@/lib/events';
 import {
@@ -127,6 +132,16 @@ interface AuthContextValue {
 export interface AccessRefusal {
   code: string;
   message: string;
+  /**
+   * UI audit (JF8): the account that was checked, when this phone knows it (the address typed, Google's
+   * chosen account, or the sign-up's own) -- for "Ask for an invitation". Memory only, never stored.
+   */
+  email: string | null;
+  /**
+   * UI audit (JF36): it arrived while the sign-up sheet was on screen, so the sheet shows it (over the
+   * quest, which stays where it was); otherwise the root layout shows it over the app.
+   */
+  inSheet: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -185,6 +200,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<ApiRequestError | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [accessRefusal, setAccessRefusal] = useState<AccessRefusal | null>(null);
+  // The account the current sign-in or sign-up is for, when known: a refusal names it (JF8). Memory only.
+  const attemptEmail = useRef<string | null>(null);
   // Phase 55: whether this device offers Sign in with Apple (asked once; false unless the build's flag is on).
   const [appleReady, setAppleReady] = useState(false);
   useEffect(() => {
@@ -263,6 +280,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const boot = useCallback(async () => {
     await loadServerPrefs();
+    // The guest memory (read once per run): the sign-up's under-13 check reads it synchronously.
+    void loadGuestMemory();
+    attemptEmail.current = null;
     // The last space this device used names the first request's space (the web app's
     // tmi_last_org cookie), which saves a round trip when it is also the person's last choice.
     // It never decides: an arriving run lands by the rule, on the server's choice (Phase 60).
@@ -386,7 +406,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(
     () =>
       on('access-refused', (refusal) => {
-        setAccessRefusal(refusal);
+        setAccessRefusal({ ...refusal, email: attemptEmail.current, inSheet: signupSheetPresence.isOpen() });
+        // UI audit (JF8): declined -- the guest screens stop offering sign-up for the rest of this run.
+        if (refusal.code === 'access_declined') declinedThisRun.mark();
         setPendingSignup(null);
         setError(null);
         void setDevUser(null);
@@ -434,10 +456,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithGoogle = useCallback(async () => {
     setError(null);
+    attemptEmail.current = null;
     try {
       const result = await googleIdToken();
       // The person closed Google's sheet: nothing happened, so nothing is said.
       if (result.kind === 'cancelled') return;
+      attemptEmail.current = result.email;
       // Phase 52: this client can sign a newcomer up, so an unknown account is not refused: it
       // answers who Google says they are, and the age question comes next.
       const answer = await apiClient.post<ApiOk<SessionResponse | SignupStart>>('/auth/google', {
@@ -445,6 +469,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signup: true,
       });
       if ('signup' in answer.data) {
+        attemptEmail.current = answer.data.signup.email;
         setPendingSignup({ ...answer.data.signup, dev: false });
         setStatus('unauthenticated');
         return;
@@ -465,6 +490,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithProvider = useCallback(
     async (provider: UsableProvider) => {
       setError(null);
+      attemptEmail.current = null;
       try {
         const result = await providerToken(provider);
         // The person closed the browser or the sheet: nothing happened, so nothing is said.
@@ -474,6 +500,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           signup: true,
         });
         if ('signup' in answer.data) {
+          attemptEmail.current = answer.data.signup.email;
           setPendingSignup({ ...answer.data.signup, dev: false });
           setStatus('unauthenticated');
           return;
@@ -495,6 +522,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (email: string, org?: string | null) => {
       setError(null);
       if (APP_VARIANT === 'production') return;
+      attemptEmail.current = email.trim().toLowerCase() || null;
       await setDevUser(email);
       queryClient.clear();
       // Arriving; a linked space is entered ahead of the person's last one (as a web link is).
@@ -517,12 +545,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (APP_VARIANT === 'production') return;
     setError(null);
     const address = email.trim().toLowerCase();
+    attemptEmail.current = address;
     setPendingSignup({ token: null, email: address, name: name?.trim() || address, dev: true });
   }, []);
 
   const completeSignup = useCallback(
     async (form: SignupForm) => {
       if (!pendingSignup) return;
+      attemptEmail.current = pendingSignup.email;
       // Phase 68 (H4): how they arrived, from this phone's guest play (read here; only the one word is sent).
       await loadGuestMemory();
       const arrivedVia = arrivalFromGuest(guestMemory.played());
@@ -561,7 +591,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [config, resetSignedOut]);
 
   const clearError = useCallback(() => setError(null), []);
-  const clearAccessRefusal = useCallback(() => setAccessRefusal(null), []);
+  const clearAccessRefusal = useCallback(() => {
+    attemptEmail.current = null;
+    setAccessRefusal(null);
+  }, []);
 
   const value = useMemo<AuthContextValue>(
     () => ({

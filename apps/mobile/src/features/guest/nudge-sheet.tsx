@@ -15,6 +15,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { countEvent } from './guest-api';
 import { ASK_ADULT_TEXT } from './guest-model';
+import { useSignupDeclined } from './guest-store';
 
 export function NudgeSheet({
   open,
@@ -38,7 +39,9 @@ export function NudgeSheet({
 }) {
   const theme = useAppTheme();
   const { config } = useAuth();
-  const signupOpen = config?.signup_open === true;
+  // A sign-up declined in this run is not offered again (UI audit JF8): Sign in only.
+  const declined = useSignupDeclined();
+  const signupOpen = config?.signup_open === true && !declined;
 
   async function ask() {
     countEvent({ name: 'ask_grown_up' });

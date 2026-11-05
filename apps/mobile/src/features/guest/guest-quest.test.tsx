@@ -111,7 +111,9 @@ describe('GuestQuest (Phase 63)', () => {
 
     await waitFor(() => expect(screen.getByTestId('guest-results')).toBeTruthy());
     expect(screen.getByTestId('guest-score')).toHaveTextContent('1 of 3 right');
-    expect(screen.getByTestId('guest-save-score')).toHaveTextContent('Save this score: sign up free');
+    // The score is not carried into an account, so the offer does not promise to save it (JF10).
+    expect(screen.getByTestId('guest-save-score')).toHaveTextContent('Keep playing with a free account');
+    expect(screen.queryByText(/Save this score/)).toBeNull();
     expect(screen.getByTestId('guest-review-chip-1')).toBeTruthy();
     expect(screen.getByTestId('guest-review-chip-3')).toBeTruthy();
     // The phone remembers the questions and the best score; no answer was ever sent.

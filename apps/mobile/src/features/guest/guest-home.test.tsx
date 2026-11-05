@@ -10,7 +10,7 @@ import { GuestHome } from './guest-home';
 import { guestDay } from '@tmi/shared';
 import { Linking } from 'react-native';
 
-import { guestMemory, resetGuestMemoryForTests } from './guest-store';
+import { declinedThisRun, guestMemory, resetGuestMemoryForTests } from './guest-store';
 
 const mockPost = jest.fn(async (_path: string, _body?: unknown) => undefined);
 jest.mock('@/lib/api-client', () => ({
@@ -154,6 +154,31 @@ describe('GuestHome, the Quest board', () => {
     expect(starts[starts.length - 1]).toHaveTextContent('Sign in');
     await fireEvent.press(starts[starts.length - 1]!);
     expect(mockPush).toHaveBeenCalledWith('/sign-in');
+  });
+
+  it('speaks to every visitor: the line under the headline, and Can adults play? among the answers (JF10)', async () => {
+    await renderWithProviders(<GuestHome />);
+    expect(screen.getByTestId('guest-audience')).toHaveTextContent('For kids, teens, grown-ups and classes.');
+    expect(screen.getByTestId('guest-answer-3')).toHaveTextContent(/Can adults play\?/);
+    await fireEvent.press(screen.getByTestId('guest-answer-3'));
+    expect(screen.getByTestId('guest-answer-3-text')).toHaveTextContent(
+      'Yes. Quests go from Grade 1 to Algebra and contest maths, so grown-ups, teens and classes play too. An account is free.',
+    );
+  });
+
+  it('after a declined sign-up in this run, offers Sign in only, not sign-up (JF8)', async () => {
+    declinedThisRun.mark();
+    await renderWithProviders(<GuestHome />);
+    expect(screen.getByTestId('guest-band-signup')).toHaveTextContent('Sign in');
+    expect(screen.queryByText('Sign up free')).toBeNull();
+    expect(screen.getByTestId('guest-parents-start')).toHaveTextContent('Sign in');
+    await fireEvent.press(screen.getByTestId('guest-band-signup'));
+    expect(mockPush).toHaveBeenCalledWith('/sign-in');
+    expect(mockPush).not.toHaveBeenCalledWith('/sign-up-sheet');
+    // The locked card's offer says Sign in too.
+    await fireEvent.press(screen.getByTestId('guest-locked-G4T10'));
+    expect(screen.getByTestId('guest-nudge-signup')).toHaveTextContent('Sign in');
+    expect(screen.getByTestId('guest-sign-in')).toBeTruthy();
   });
 
   it('sends someone signed in on to their space', async () => {

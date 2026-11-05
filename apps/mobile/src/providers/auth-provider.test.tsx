@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, render, waitFor } from '@testing-library/react-native';
 import { useEffect } from 'react';
 
+import { declinedThisRun, resetGuestMemoryForTests, signupSheetPresence } from '@/features/guest/guest-store';
 import { apiClient } from '@/lib/api-client';
 import { emit } from '@/lib/events';
 import { clearActiveOrg, forgetLastOrg, getActiveOrg, setActiveOrg } from '@/lib/organization';
@@ -217,6 +218,7 @@ beforeEach(async () => {
   clearActiveOrg();
   await forgetLastOrg();
   await setDevUser(null);
+  resetGuestMemoryForTests({});
 });
 
 describe('auth provider: Google sign-in', () => {
@@ -566,7 +568,8 @@ describe('Phase 65: sign-up access refused', () => {
       });
     });
 
-    expect(auth.accessRefusal).toEqual(PENDING);
+    // The account it checked, from the sign-up; not in the sign-up sheet, so the root shows it.
+    expect(auth.accessRefusal).toEqual({ ...PENDING, email: 'sam.signup@example.com', inSheet: false });
     expect(auth.pendingSignup).toBeNull();
     expect(auth.status).toBe('unauthenticated');
     expect(auth.error).toBeNull();
@@ -585,8 +588,68 @@ describe('Phase 65: sign-up access refused', () => {
 
     expect(auth.status).toBe('unauthenticated');
     expect(auth.accessRefusal?.code).toBe('not_on_list');
+    // Google's sheet did not say which account: the invitation asks for "me".
+    expect(auth.accessRefusal?.email).toBeNull();
     expect(auth.error).toBeNull();
     expect(GoogleSignin.signOut).toHaveBeenCalled();
+  });
+
+  it('not on the list: names the Google account chosen, in memory only, until the refusal is cleared (JF8)', async () => {
+    server.accessRefusal = {
+      code: 'not_on_list',
+      message: 'Sign-up is by invitation for now. Ask us to add you.',
+    };
+    GoogleSignin.signIn.mockResolvedValue({
+      type: 'success',
+      data: { idToken: 'id-token-1', user: { email: 'pat.quinn@example.com' } },
+    });
+    await mount();
+
+    await act(() => auth.signInWithGoogle());
+
+    expect(auth.accessRefusal).toMatchObject({
+      code: 'not_on_list',
+      email: 'pat.quinn@example.com',
+      inSheet: false,
+    });
+    await act(async () => auth.clearAccessRefusal());
+    expect(auth.accessRefusal).toBeNull();
+  });
+
+  it('a refusal while the sign-up sheet is on screen is the sheet’s to show (JF36)', async () => {
+    server.authEnabled = false;
+    await mount();
+    signupSheetPresence.enter();
+    try {
+      await act(async () => auth.startDevSignup('Sam.Signup@example.com'));
+      server.signupRefusal = { status: 403, ...PENDING };
+      await act(async () => {
+        await auth.completeSignup({ birth_year: 1990, birth_month: 6 }).catch(() => undefined);
+      });
+      expect(auth.accessRefusal).toEqual({ ...PENDING, email: 'sam.signup@example.com', inSheet: true });
+    } finally {
+      signupSheetPresence.leave();
+    }
+  });
+
+  it('a decline stops sign-up being offered for the rest of the run, and only a decline (JF8)', async () => {
+    server.authEnabled = false;
+    await mount();
+    await act(async () => auth.startDevSignup('pia@example.com'));
+    server.signupRefusal = { status: 403, ...PENDING };
+    await act(async () => {
+      await auth.completeSignup({ birth_year: 1990, birth_month: 6 }).catch(() => undefined);
+    });
+    expect(declinedThisRun.is()).toBe(false);
+
+    await act(async () => auth.clearAccessRefusal());
+    await act(async () => auth.startDevSignup('pia@example.com'));
+    server.signupRefusal = { status: 403, code: 'access_declined', message: "Your access wasn't approved." };
+    await act(async () => {
+      await auth.completeSignup({ birth_year: 1990, birth_month: 6 }).catch(() => undefined);
+    });
+    expect(auth.accessRefusal?.code).toBe('access_declined');
+    expect(declinedThisRun.is()).toBe(true);
   });
 
   it('a revoked person is signed out on their next request, with the reason', async () => {
@@ -609,7 +672,7 @@ describe('Phase 65: sign-up access refused', () => {
     server.accessRefusal = PENDING;
     await mount();
     expect(auth.status).toBe('unauthenticated');
-    expect(auth.accessRefusal).toEqual(PENDING);
+    expect(auth.accessRefusal).toEqual({ ...PENDING, email: null, inSheet: false });
     expect(auth.statusMessage).toBeNull();
   });
 });

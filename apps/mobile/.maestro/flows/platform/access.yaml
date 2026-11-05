@@ -1,9 +1,12 @@
 # Phase 65 (docs/access-approval-plan.md, A4, A6, A7): who may sign up. Nav (a platform admin) opens the
-# console's Settings and, under Guest play's Sign-up access, chooses Post-approved. A newcomer then signs up
-# from the guest home's sign-up sheet (with sign-in off, the developer path) and, instead of the "You're in."
-# splash, meets the plain refusal screen: "Waiting for approval", with Contact us and Back. Back is the
-# guest home. Nav, signed in again, sees the gear's count, finds them under Waiting for approval and
-# approves them; they move to Recently decided. The newcomer can then sign in, into their own space.
+# console's Settings and, under Guest play's Sign-up access, chooses Post-approved. A newcomer then plays
+# G4Q5 as a guest and signs up from the offer's sign-up sheet (with sign-in off, the developer path) and,
+# instead of the "You're in." splash, meets the plain refusal screen: "Waiting for approval", saying play
+# goes on without an account, with Keep playing first and Contact us with the address in full (Phase 70,
+# UI audit JF2). Keep playing closes the sign-up sheet: the same question of the same quest (JF36, J01A
+# step 14); Exit is then the guest home. Nav, signed in again, sees the gear's count, finds them under
+# Waiting for approval and approves them; they move to Recently decided. The newcomer can then sign in,
+# into their own space.
 # Self-cleaning, before and after: the mode back to Open, the newcomer approved (so it may be deleted)
 # and deleted with its personal space, and guest play off.
 appId: ${APP_ID}
@@ -75,7 +78,7 @@ onFlowComplete:
     centerElement: true
 - takeScreenshot: access-console-postapproved
 
-# 2. A newcomer signs up from the guest home, and waits.
+# 2. A newcomer plays as a guest, signs up from the offer after question 1, and waits.
 - runScript:
     file: ../../scripts/guest-play.js
     env: { ACTION: 'on' }
@@ -84,8 +87,23 @@ onFlowComplete:
     visible:
       id: screen-guest-home
     timeout: 30000
+# The tiles sit under the grade chips: on a shorter phone below the fold.
+- scrollUntilVisible:
+    element:
+      id: guest-tile-G4Q5
+    direction: DOWN
 - tapOn:
-    id: guest-band-signup
+    id: guest-tile-G4Q5
+- extendedWaitUntil:
+    visible:
+      id: guest-question
+    timeout: 15000
+- runFlow:
+    file: ../../subflows/guest-skip.yaml
+    env:
+      NEXT: 'nudge'
+- tapOn:
+    id: guest-nudge-signup
 - extendedWaitUntil:
     visible:
       id: signup-sheet
@@ -122,8 +140,6 @@ onFlowComplete:
 - tapOn:
     id: signup-year-search
 - inputText: '1990'
-- hideKeyboard:
-    optional: true
 - tapOn:
     id: signup-year-1990
 - waitForAnimationToEnd:
@@ -162,10 +178,37 @@ onFlowComplete:
 - assertNotVisible:
     id: signup-splash
 - assertVisible:
-    id: access-refused-contact
-- takeScreenshot: access-refused-pending
-- tapOn:
+    id: access-refused-keep-line
+    text: 'You can keep playing without an account.'
+- assertVisible:
+    id: access-refused-keep-playing
+    text: '.*Keep playing'
+- assertNotVisible:
     id: access-refused-back
+- scrollUntilVisible:
+    element:
+      id: access-refused-contact
+- assertVisible:
+    id: access-refused-contact
+    text: '.*Contact us: .+@.+'
+- takeScreenshot: access-refused-pending
+- scrollUntilVisible:
+    element:
+      id: access-refused-keep-playing
+    direction: UP
+- tapOn:
+    id: access-refused-keep-playing
+# Back where they were: question 2 of the same quest, not the guest home (J01A step 14).
+- extendedWaitUntil:
+    visible:
+      id: guest-progress
+      text: '2 of 5'
+    timeout: 15000
+- assertNotVisible:
+    id: screen-access-refused
+- takeScreenshot: access-refused-kept-playing
+- tapOn:
+    id: quest-exit
 - extendedWaitUntil:
     visible:
       id: screen-guest-home

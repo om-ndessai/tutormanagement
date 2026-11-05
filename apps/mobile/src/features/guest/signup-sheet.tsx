@@ -7,6 +7,11 @@
 // guest's quest, which stay mounted beneath it. The providers are the app's native ones (the sign-in
 // screen's); the age and terms step is the app's own SignUpScreen (the same fields and testIDs as the
 // sign-up route); with sign-in off, the developer path asks for the address here and the name there.
+//
+// UI audit (JF2, JF8, JF36; Phase 70): a refusal that arrives here (waiting for approval, declined, not on
+// the list) is shown here, so the quest beneath stays mounted at its question: "Keep playing" closes the
+// sheet back to it; "Use another account" comes back to the buttons. An account this phone refused as
+// under 13 is not asked its age again (SignUpScreen). After a decline, the sheet says "Sign in".
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -25,6 +30,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { countEvent, flushEvents } from './guest-api';
+import { signupSheetPresence, useSignupDeclined } from './guest-store';
 
 /**
  * How long the "You're in." splash shows before the sheet goes. Outside production builds (the
@@ -61,7 +67,12 @@ export function SignupSheet() {
   // (from the moment the form is sent: the account is being made). Cancelling forgets it.
   const [signingUp, setSigningUp] = useState(false);
   if (pendingSignup && !signingUp) setSigningUp(true);
+  // A refusal ends the sign-up: closing over it (or leaving it) must not show "You're in."
+  const refusedHere = accessRefusal?.inSheet === true ? accessRefusal : null;
+  if (refusedHere && signingUp) setSigningUp(false);
   const signedIn = status === 'authenticated';
+  const declined = useSignupDeclined();
+  const signupOffered = config?.signup_open === true && !declined;
   // Phase 65: a sign-up that waits for approval (or is refused) never shows the splash.
   const splash = !accessRefusal && signingUp && (signedIn || !pendingSignup);
   const devSignUp = DEV_TOOLS && config?.auth_enabled === false;
@@ -97,17 +108,36 @@ export function SignupSheet() {
     [],
   );
 
+  // On screen: a refusal that arrives now is this sheet's to show (the root leaves it to us). Closed, by a
+  // button or a swipe, the refusal goes with it, so it never reappears by itself.
+  const refusal = useRef(refusedHere);
+  useEffect(() => {
+    refusal.current = refusedHere;
+  }, [refusedHere]);
+  const clearRefusal = useRef(clearAccessRefusal);
+  useEffect(() => {
+    clearRefusal.current = clearAccessRefusal;
+  }, [clearAccessRefusal]);
+  useEffect(() => {
+    signupSheetPresence.enter();
+    return () => {
+      signupSheetPresence.leave();
+      if (refusal.current) clearRefusal.current();
+    };
+  }, []);
+
   // Phase 65 (A4): waiting for approval, not approved, or not on the list -- the refusal screen, not
-  // "You're in." (The root shows it too, over every screen; this keeps the sheet's own render honest.)
-  if (accessRefusal) {
+  // "You're in." Keep playing closes the sheet: the quest (or the Play home) beneath is where it was.
+  if (refusedHere) {
+    // Closing clears the refusal as the sheet goes (above), so it stays on screen until then.
     return (
       <AccessRefusedScreen
-        code={accessRefusal.code}
-        message={accessRefusal.message}
-        onBack={() => {
-          clearAccessRefusal();
-          close();
-        }}
+        code={refusedHere.code}
+        message={refusedHere.message}
+        email={refusedHere.email}
+        onKeepPlaying={config?.guest ? close : undefined}
+        onBack={config?.guest ? undefined : close}
+        onUseAnother={clearAccessRefusal}
       />
     );
   }
@@ -125,8 +155,8 @@ export function SignupSheet() {
     );
   }
 
-  // The age question and the terms: the sign-up screen's own step.
-  if (pendingSignup) return <SignUpScreen onCancelled={() => setSigningUp(false)} />;
+  // The age question and the terms: the sign-up screen's own step. Under 13, Keep playing closes the sheet.
+  if (pendingSignup) return <SignUpScreen onCancelled={() => setSigningUp(false)} onKeepPlaying={close} />;
 
   async function google() {
     setBusy('google');
@@ -145,7 +175,7 @@ export function SignupSheet() {
     <Screen testID="screen-sign-up-sheet">
       <View testID="signup-sheet" style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header" style={{ fontWeight: '700' }}>
-          {config?.signup_open ? 'Sign up free' : 'Sign in'}
+          {signupOffered ? 'Sign up free' : 'Sign in'}
         </Text>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
           Keep your scores, unlock every quest and play with your family.

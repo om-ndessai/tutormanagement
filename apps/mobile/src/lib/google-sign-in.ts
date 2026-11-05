@@ -70,7 +70,13 @@ export function configureGoogle(webClientId: string): void {
   configuredFor = webClientId;
 }
 
-export type GoogleIdTokenResult = { kind: 'token'; idToken: string } | { kind: 'cancelled' };
+/**
+ * `email`: the address of the account chosen, as Google's sheet reports it -- not an identity (only the
+ * Worker's verifier makes one). Held in memory only, so a refusal can name the account it checked
+ * (UI audit JF8); never logged or stored.
+ */
+export type GoogleIdTokenResult =
+  { kind: 'token'; idToken: string; email: string | null } | { kind: 'cancelled' };
 
 /** Asks the person to choose a Google account. A cancellation is an answer, not an error. */
 export async function googleIdToken(): Promise<GoogleIdTokenResult> {
@@ -84,7 +90,7 @@ export async function googleIdToken(): Promise<GoogleIdTokenResult> {
     if (response.type !== 'success') return { kind: 'cancelled' };
     const idToken = response.data.idToken;
     if (!idToken) throw new GoogleSignInError(FAILED_MESSAGE);
-    return { kind: 'token', idToken };
+    return { kind: 'token', idToken, email: response.data.user?.email?.trim() || null };
   } catch (caught) {
     if (caught instanceof GoogleSignInError) throw caught;
     if (isErrorWithCode(caught)) {

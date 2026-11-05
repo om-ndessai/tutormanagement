@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react-native';
 import { Linking } from 'react-native';
 
 import { renderWithProviders } from '@/test/render';
-import { AccessRefusedScreen } from './access-refused-screen';
+import { AccessRefusedScreen, invitationMailto } from './access-refused-screen';
 
 describe('AccessRefusedScreen (Phase 65)', () => {
   it.each([
@@ -21,15 +21,97 @@ describe('AccessRefusedScreen (Phase 65)', () => {
     await renderWithProviders(<AccessRefusedScreen code="access_declined" message="" onBack={jest.fn()} />);
     expect(screen.getByTestId('access-refused-message')).toHaveTextContent(ACCESS_DECLINED_MESSAGE);
   });
+});
 
-  it('Contact us writes to the platform; Back goes back', async () => {
-    const open = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
+describe('AccessRefusedScreen: the next step (UI audit JF2, JF8, JF36)', () => {
+  let open: jest.SpyInstance;
+  beforeEach(() => {
+    open = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
+  });
+  afterEach(() => open.mockRestore());
+
+  it('with guest play: says play goes on, and Keep playing is the main button, in place of Back', async () => {
+    const keep = jest.fn();
+    await renderWithProviders(
+      <AccessRefusedScreen code="access_pending" message="Waiting." onKeepPlaying={keep} />,
+    );
+    expect(screen.getByTestId('access-refused-keep-line')).toHaveTextContent(
+      'You can keep playing without an account.',
+    );
+    expect(screen.getByTestId('access-refused-keep-playing')).toHaveTextContent(/Keep playing$/);
+    expect(screen.queryByTestId('access-refused-back')).toBeNull();
+    // Waiting or declined: nothing about invitations.
+    expect(screen.queryByTestId('access-refused-ask-invitation')).toBeNull();
+    expect(screen.queryByTestId('access-refused-use-another')).toBeNull();
+    await fireEvent.press(screen.getByTestId('access-refused-keep-playing'));
+    expect(keep).toHaveBeenCalled();
+  });
+
+  it('without guest play: no keep-playing line, and Back goes back', async () => {
     const onBack = jest.fn();
-    await renderWithProviders(<AccessRefusedScreen code="access_pending" message="Waiting." onBack={onBack} />);
-    await fireEvent.press(screen.getByTestId('access-refused-contact'));
-    expect(open).toHaveBeenCalledWith(`mailto:${PLATFORM_CONTACT_EMAIL}`);
+    await renderWithProviders(<AccessRefusedScreen code="access_declined" message="No." onBack={onBack} />);
+    expect(screen.queryByTestId('access-refused-keep-line')).toBeNull();
+    expect(screen.queryByTestId('access-refused-keep-playing')).toBeNull();
     await fireEvent.press(screen.getByTestId('access-refused-back'));
     expect(onBack).toHaveBeenCalled();
-    open.mockRestore();
+  });
+
+  it('Contact us shows the address in full and writes to it', async () => {
+    await renderWithProviders(
+      <AccessRefusedScreen code="access_pending" message="Waiting." onKeepPlaying={jest.fn()} />,
+    );
+    expect(screen.getByTestId('access-refused-contact')).toHaveTextContent(
+      `Contact us: ${PLATFORM_CONTACT_EMAIL}`,
+      {
+        exact: false,
+      },
+    );
+    await fireEvent.press(screen.getByTestId('access-refused-contact'));
+    expect(open).toHaveBeenCalledWith(`mailto:${PLATFORM_CONTACT_EMAIL}`);
+  });
+
+  it('not on the list: names the account, asks for an invitation with it, and offers another account', async () => {
+    const another = jest.fn();
+    await renderWithProviders(
+      <AccessRefusedScreen
+        code="not_on_list"
+        message={NOT_ON_LIST_MESSAGE}
+        email="pat.quinn@example.com"
+        onKeepPlaying={jest.fn()}
+        onUseAnother={another}
+      />,
+    );
+    expect(screen.getByTestId('access-refused-account')).toHaveTextContent('Checked: pat.quinn@example.com');
+    await fireEvent.press(screen.getByTestId('access-refused-ask-invitation'));
+    expect(open).toHaveBeenCalledWith(invitationMailto('pat.quinn@example.com'));
+    await fireEvent.press(screen.getByTestId('access-refused-use-another'));
+    expect(another).toHaveBeenCalled();
+  });
+
+  it('not on the list, the account unknown here: the invitation asks for "me", and no account line', async () => {
+    await renderWithProviders(
+      <AccessRefusedScreen code="not_on_list" message={NOT_ON_LIST_MESSAGE} onBack={jest.fn()} />,
+    );
+    expect(screen.queryByTestId('access-refused-account')).toBeNull();
+    // Without a way back to the buttons, no "Use another account".
+    expect(screen.queryByTestId('access-refused-use-another')).toBeNull();
+    await fireEvent.press(screen.getByTestId('access-refused-ask-invitation'));
+    expect(open).toHaveBeenCalledWith(invitationMailto(null));
+  });
+});
+
+describe('invitationMailto', () => {
+  it('writes to the platform, with the subject and the address in the body', () => {
+    const url = invitationMailto(' pat.quinn@example.com ');
+    expect(url.startsWith(`mailto:${PLATFORM_CONTACT_EMAIL}?`)).toBe(true);
+    const params = new URLSearchParams(url.slice(url.indexOf('?') + 1));
+    expect(params.get('subject')).toBe('An invitation to Aimtrue');
+    expect(params.get('body')).toBe('Please add pat.quinn@example.com to the sign-up list.');
+  });
+
+  it('asks for "me" when the address is not known', () => {
+    const url = invitationMailto(null);
+    const params = new URLSearchParams(url.slice(url.indexOf('?') + 1));
+    expect(params.get('body')).toBe('Please add me to the sign-up list.');
   });
 });

@@ -1,6 +1,7 @@
 // One choice from a list, inline in a form sheet: the web's Select, as a field that opens a list of
 // options below it. A search field appears once there are more options than fit at a glance. The
-// record sheet's PairingPicker is the same shape, specialised to pairings.
+// record sheet's PairingPicker is the same shape, specialised to pairings. A short fixed list (the twelve
+// months) can be laid out as a grid instead (`columns`): every option in view, no search, no inner scroll.
 import { useState, type ReactNode } from 'react';
 import { Keyboard, Pressable, ScrollView, View, type ViewStyle } from 'react-native';
 import { Divider, Icon, Searchbar, Text } from 'react-native-paper';
@@ -35,6 +36,7 @@ export function OptionPicker({
   searchPlaceholder = 'Search',
   defaultOpen,
   scroll = false,
+  columns,
 }: {
   /** The field's testID; each option is `<testID>-<id>`, the search field `<testID>-search`. */
   testID: string;
@@ -53,6 +55,11 @@ export function OptionPicker({
    * search: for a short, fixed list a reader scans (the Assessment's levels), not a long one of names.
    */
   scroll?: boolean;
+  /**
+   * Every option at once, in a grid of this many columns, with no search field and no inner scroll: for a
+   * short fixed list read at a glance (the birth month; UI audit JF35, where October hid below the edge).
+   */
+  columns?: number;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -112,7 +119,7 @@ export function OptionPicker({
               {emptyText}
             </Text>
           ) : null}
-          {options.length >= SEARCH_FROM ? (
+          {options.length >= SEARCH_FROM && !columns ? (
             <Searchbar
               testID={`${testID}-search`}
               placeholder={searchPlaceholder}
@@ -122,7 +129,20 @@ export function OptionPicker({
               returnKeyType="search"
             />
           ) : null}
-          {options.length > 0 ? (
+          {options.length > 0 && columns ? (
+            <OptionGrid
+              testID={testID}
+              columns={columns}
+              options={options}
+              value={value}
+              onChoose={(id) => {
+                haptics.selection();
+                onChange(id);
+                setOpen(false);
+              }}
+            />
+          ) : null}
+          {options.length > 0 && !columns ? (
             <ListFrame
               scroll={scroll}
               testID={`${testID}-list`}
@@ -180,13 +200,112 @@ export function OptionPicker({
               ) : null}
             </ListFrame>
           ) : null}
-          {!scroll && matching.length > SHOWN ? (
+          {!scroll && !columns && matching.length > SHOWN ? (
             <Text variant="bodySmall" style={{ color: muted }}>
               Showing {SHOWN} of {matching.length}. Type to narrow it down.
             </Text>
           ) : null}
         </View>
       ) : null}
+    </View>
+  );
+}
+
+/** Every option as a cell of a grid, `columns` to a row (the options' testIDs as in the list). */
+function OptionGrid({
+  testID,
+  columns,
+  options,
+  value,
+  onChoose,
+}: {
+  testID: string;
+  columns: number;
+  options: PickerOption[];
+  value: string;
+  onChoose: (id: string) => void;
+}) {
+  const theme = useAppTheme();
+  const rows: PickerOption[][] = [];
+  for (let i = 0; i < options.length; i += columns) rows.push(options.slice(i, i + columns));
+  return (
+    <View
+      testID={`${testID}-list`}
+      accessibilityRole="radiogroup"
+      style={{
+        borderWidth: 1,
+        borderColor: theme.colors.outlineVariant,
+        borderRadius: radius.md,
+        overflow: 'hidden',
+      }}
+    >
+      {rows.map((row, r) => (
+        <View
+          key={row[0]!.id}
+          style={{
+            flexDirection: 'row',
+            borderTopWidth: r > 0 ? 1 : 0,
+            borderTopColor: theme.colors.outlineVariant,
+          }}
+        >
+          {Array.from({ length: columns }, (_, c) => {
+            const option = row[c];
+            const edge = { borderLeftWidth: c > 0 ? 1 : 0, borderLeftColor: theme.colors.outlineVariant };
+            if (!option) return <View key={`empty-${c}`} style={{ flex: 1, ...edge }} />;
+            const selected = option.id === value;
+            return (
+              <Pressable
+                key={option.id}
+                testID={`${testID}-${option.id}`}
+                accessibilityRole="radio"
+                accessibilityLabel={option.label}
+                accessibilityState={{ checked: selected, disabled: Boolean(option.disabled) }}
+                disabled={option.disabled}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  onChoose(option.id);
+                }}
+                style={({ pressed }) => ({
+                  flex: 1,
+                  minHeight: ICON_TARGET, // 44pt iOS, 48dp Android
+                  paddingHorizontal: space.xs,
+                  paddingVertical: space.sm,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 2,
+                  backgroundColor: selected
+                    ? theme.colors.primaryContainer
+                    : pressed
+                      ? theme.tokens.muted
+                      : 'transparent',
+                  ...edge,
+                })}
+              >
+                <Text
+                  variant="bodyMedium"
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.8}
+                  style={{
+                    flexShrink: 1,
+                    textAlign: 'center',
+                    fontWeight: selected ? '700' : '400',
+                    color: option.disabled
+                      ? theme.tokens.mutedForeground
+                      : selected
+                        ? theme.colors.onPrimaryContainer
+                        : theme.colors.onSurface,
+                  }}
+                >
+                  {option.label}
+                </Text>
+                {selected ? <Icon source="check" size={16} color={theme.colors.primary} /> : null}
+              </Pressable>
+            );
+          })}
+        </View>
+      ))}
     </View>
   );
 }

@@ -12,6 +12,10 @@
 //
 // Phase 67 (H6): the card, Today's 5 and the grade row are the shared `features/play/quest-card.tsx`
 // pieces (the member Play home uses them too); the guest board keeps its mode colours and testIDs.
+//
+// UI audit (JF8, JF10; Phase 70): the page speaks to every visitor -- a line under the headline and "Can
+// adults play?" among the answers -- and once a sign-up has been declined in this run it offers Sign in
+// only.
 import {
   GUEST_GRADES,
   GUEST_PROMISES,
@@ -51,7 +55,7 @@ import { CardGrid, GradeRow, QuestCard, TodayCard } from '@/features/play/quest-
 import { countEvent } from './guest-api';
 import { benefitsFor, boardGrade, gradeLevel, playLink } from './guest-model';
 import { openSignupSheet } from './guest-nav';
-import { guestMemory, type GuestToday } from './guest-store';
+import { guestMemory, useSignupDeclined, type GuestToday } from './guest-store';
 import { NudgeSheet } from './nudge-sheet';
 
 /** The three short answers under the grown-ups' panels (owner, 2026-11-02). */
@@ -67,7 +71,15 @@ export const GUEST_ANSWERS = [
       'Guests aren’t tracked: no account, no ads, and answers stay on this device. Children under 13 join through a parent’s account.',
   },
   { question: 'Which grades?', answer: 'Grades 1 to 8, with harder Adv quests for a stretch.' },
+  {
+    question: 'Can adults play?',
+    answer:
+      'Yes. Quests go from Grade 1 to Algebra and contest maths, so grown-ups, teens and classes play too. An account is free.',
+  },
 ] as const;
+
+/** Under the headline: who the page is for (UI audit JF10, the web's words). */
+export const GUEST_AUDIENCE = 'For kids, teens, grown-ups and classes.';
 
 /** What this phone remembers that the board shows, re-read whenever the board comes back into view. */
 function readMemory(day: string): { today: GuestToday | undefined; bests: Record<string, number> } {
@@ -80,8 +92,9 @@ export function GuestHome() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const wide = width >= 700;
-  const { config, status } = useAuth();
+  const { config, status, accessRefusal } = useAuth();
   const focused = useIsFocused();
+  const declined = useSignupDeclined();
   const guest = config?.guest;
   const tiles = guest?.tiles ?? [];
   const [grade, setGrade] = useState<GuestGrade>(() => boardGrade(guestMemory.grade()));
@@ -108,7 +121,8 @@ export function GuestHome() {
   const board = guestBoard(tiles, grade);
   const todayLevel = guestTodayLevel(tiles, grade);
   const today = todayLevel && memory.today?.level === todayLevel ? memory.today : undefined;
-  const signupOpen = config?.signup_open === true;
+  // A sign-up declined in this run: Sign in only, from here on (JF8).
+  const signupOpen = config?.signup_open === true && !declined;
   const muted = { color: theme.tokens.mutedForeground };
   const gutter = { paddingHorizontal: space.lg };
   const onBand = theme.tokens.brand50;
@@ -145,7 +159,8 @@ export function GuestHome() {
         contentContainerStyle={{ gap: space.xl, paddingBottom: space.xxl + insets.bottom }}
         contentInsetAdjustmentBehavior="never"
       >
-        {focused ? <StatusBar style="light" /> : null}
+        {/* Not while a refusal covers the board: its own status bar shows. */}
+        {focused && !accessRefusal ? <StatusBar style="light" /> : null}
         {/* The band: the brand's deepest blues, the bullseye's rings faint at its top right. */}
         <View
           testID="guest-home"
@@ -227,6 +242,13 @@ export function GuestHome() {
               </Text>
               <Text variant="headlineLarge" style={{ fontWeight: '800', color: theme.tokens.warning }}>
                 Hit the target.
+              </Text>
+              <Text
+                testID="guest-audience"
+                variant="titleMedium"
+                style={{ color: onBand, marginTop: space.xs, fontWeight: '600' }}
+              >
+                {GUEST_AUDIENCE}
               </Text>
             </View>
             <View testID="guest-promises" style={{ flexDirection: 'row', flexWrap: 'wrap', rowGap: space.xs }}>
