@@ -110,6 +110,15 @@ export interface PlatformAccount {
 }
 
 /**
+ * Whether a person may add people to the space they are reading (UI audit JF22): its admins, and not a 13-17
+ * (Phase 63: a teen adds nobody). One rule for Users, People, the home and the app's (+), so the action is
+ * offered only to those the API lets through.
+ */
+export function mayAddPeople(reader: { roles: readonly string[]; account: PlatformAccount | null }): boolean {
+  return reader.roles.includes('admin') && reader.account?.age_band !== '13-17';
+}
+
+/**
  * Whether a person may start a space (adults only, S11). A self-registered person's age band
  * decides. Someone a space added gave no age: a space vouches for an adult only by giving them a
  * role a child does not hold there (admin, tutor, parent), and only while they belong to it -- a
@@ -146,9 +155,17 @@ export interface MyJoinRequest {
   palette: OrgPalette;
   logo_mark_url: string | null;
   requested_at: string;
-  /** Null while open; 'declined' is shown once so the person knows. */
-  outcome: 'declined' | null;
+  /**
+   * Null while open. An answer stays until the person dismisses it (owner, 2026-11-04; UI audit JF5): 'approved'
+   * (they are in) and 'declined', for JOIN_OUTCOME_SHOWN_DAYS. Older clients read only null and 'declined'.
+   */
+  outcome: 'declined' | 'approved' | null;
+  /** When the space answered (absent from older Workers, and null while open). */
+  answered_at?: string | null;
 }
+
+/** How long a space's answer to a request stays on the person's home until dismissed (UI audit JF5). */
+export const JOIN_OUTCOME_SHOWN_DAYS = 30;
 
 /** A request as the space's admins see it: who Google says the person is. */
 export interface JoinRequest {

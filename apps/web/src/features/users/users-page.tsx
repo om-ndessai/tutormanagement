@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  mayAddPeople,
   USER_ROLES,
   USER_ROLE_LABELS,
   USER_STATUSES,
@@ -58,7 +59,7 @@ export function UsersPage() {
   const isAdminViewer = Boolean(viewer?.roles.includes('admin'));
   // Adding people is for the space's adult admins (a 13-17 adds nobody, Phase 63): offered to no one else,
   // rather than refused after the whole form (UI audit JF22, J04 step 15, J07 steps 30-34).
-  const mayAddPeople = isAdminViewer && account?.age_band !== '13-17';
+  const mayAdd = mayAddPeople({ roles: viewer?.roles ?? [], account });
   const brand = useBrand();
   const [search, setSearch] = useState('');
   const [role, setRole] = useState<UserRole | typeof ANY>(ANY);
@@ -171,7 +172,7 @@ export function UsersPage() {
         title="Users"
         description={`Everyone at ${brand.name}. A person can hold more than one role.`}
         actions={
-          mayAddPeople ? (
+          mayAdd ? (
             <Button onClick={openCreate}>
               <PlusIcon />
               Add user

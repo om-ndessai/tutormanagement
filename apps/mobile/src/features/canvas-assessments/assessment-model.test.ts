@@ -6,6 +6,8 @@ import type { CanvasAssessment, CanvasAssessmentQuestion, CanvasStroke } from '@
 import {
   EMPTY_TAKE,
   levelOptionDetail,
+  namesWithOr,
+  noStudentsLine,
   pageLabel,
   pageMark,
   parseSavedWork,
@@ -206,5 +208,38 @@ describe('the sentences', () => {
       '7 of 10 questions written · multiple choice 3 of 4 correct · 2 not yet reviewed in the bank',
     );
     expect(reviewSummary({ ...ROW, choice_questions: 0, unreviewed_questions: 0 })).toBe('7 of 10 questions written');
+  });
+});
+
+describe('the empty student picker says why, and who adds children (UI audit JF1)', () => {
+  it('joins the admins’ names with "or"', () => {
+    expect(namesWithOr([])).toBe('');
+    expect(namesWithOr(['Ines Ferreira'])).toBe('Ines Ferreira');
+    expect(namesWithOr(['Ines Ferreira', 'Rosa Delgado'])).toBe('Ines Ferreira or Rosa Delgado');
+    expect(namesWithOr(['A', 'B', 'C'])).toBe('A, B or C');
+  });
+
+  it('an admin: add one from Users', () => {
+    expect(noStudentsLine({ isAdmin: true, spaceName: 'Ferreira Family Practice', adminNames: ['Ines Ferreira'] })).toBe(
+      'No students here yet. Add one from Users, then start an assessment for them here.',
+    );
+  });
+
+  it('anyone else: nobody linked to them here yet, and the admins by name', () => {
+    expect(noStudentsLine({ isAdmin: false, spaceName: 'Ferreira Family Practice', adminNames: ['Ines Ferreira'] })).toBe(
+      'No children are linked to you in Ferreira Family Practice yet. Ines Ferreira adds them: ask to link your child, then start an assessment for them here.',
+    );
+    expect(noStudentsLine({ isAdmin: false, spaceName: 'Riverside', adminNames: ['Rosa Delgado', 'Sam Lee'] })).toMatch(
+      /^No children are linked to you in Riverside yet\. Rosa Delgado or Sam Lee adds them: ask to link your child,/,
+    );
+  });
+
+  it('without the names (an older Worker): the space’s admins in general', () => {
+    for (const adminNames of [undefined, null, []]) {
+      expect(noStudentsLine({ isAdmin: false, spaceName: 'Riverside', adminNames })).toBe(
+        "No children are linked to you in Riverside yet. The space's admins add them: ask one to link your child, then start an assessment for them here.",
+      );
+    }
+    expect(noStudentsLine({ isAdmin: false, spaceName: null })).toMatch(/^No children are linked to you in this space yet\./);
   });
 });

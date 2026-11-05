@@ -6,6 +6,7 @@
 // end. The draft is the person form's `FormState`; each step's checks are the shared schema's.
 import {
   featureAllowed,
+  mayAddPeople,
   studentProfileSchema,
   formatDuration,
   type AvailabilitySlot,
@@ -69,13 +70,34 @@ export interface PresetGuardian {
   name: string;
 }
 
+/** Who the Family step starts with: the reader (`me`), a parent named by id and name, or nobody. */
+export function presetGuardian(
+  guardian: string | undefined,
+  guardianName: string | undefined,
+  reader: { id: string; full_name: string },
+): PresetGuardian | null {
+  if (guardian === 'me') return { id: reader.id, name: reader.full_name };
+  if (guardian && guardianName?.trim()) return { id: guardian, name: guardianName.trim() };
+  return null;
+}
+
 /**
- * The route's body: admins only, as the API (`requireAdmin`). `guardian: 'me'` (Phase 52, "This is
- * my child" in the welcome wizard) chooses the reader on the Family step.
+ * The route's body: adult admins only, as the API (`requireAdmin`; a 13-17 adds nobody, `mayAddPeople`).
+ * `guardian: 'me'` (Phase 52, "This is my child" in the welcome wizard) chooses the reader on the Family
+ * step; an id with `guardianName` (UI audit JF1, the Let in sheet) chooses the parent just let in. The
+ * server checks the guardian is a member here, as for any other.
  */
-export function AddStudentFlow({ fromWizard, guardian }: { fromWizard: boolean; guardian?: string }) {
-  const { user } = useAuth();
-  if (!user?.roles.includes('admin')) {
+export function AddStudentFlow({
+  fromWizard,
+  guardian,
+  guardianName,
+}: {
+  fromWizard: boolean;
+  guardian?: string;
+  guardianName?: string;
+}) {
+  const { user, account } = useAuth();
+  if (!user || !mayAddPeople({ roles: user.roles, account })) {
     return (
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <EmptyState
@@ -91,8 +113,7 @@ export function AddStudentFlow({ fromWizard, guardian }: { fromWizard: boolean; 
       </ScrollView>
     );
   }
-  const preset = guardian === 'me' ? { id: user.id, name: user.full_name } : null;
-  return <AddStudentSteps fromWizard={fromWizard} preset={preset} />;
+  return <AddStudentSteps fromWizard={fromWizard} preset={presetGuardian(guardian, guardianName, user)} />;
 }
 
 function AddStudentSteps({ fromWizard, preset }: { fromWizard: boolean; preset: PresetGuardian | null }) {

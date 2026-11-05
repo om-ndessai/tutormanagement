@@ -1,7 +1,10 @@
-# Phase 52 (design 63): an admin lets in someone who asked to join -- the person form opens with
-# their name and the address they asked with (not editable), roles to choose; a student in a
-# self-serve space would need the parent's consent. The last admin cannot leave. The person let in
-# lands straight in the space, leaves it from My profile, and deletes their account.
+# Phase 52 (design 63): an admin lets in someone who asked to join. UI audit JF1 (owner, 2026-11-04):
+# Let in is a short sheet -- the whole address and when they asked, the role (Parent by default, Admin;
+# no Tutor in a space without Tutoring), "Something else? The full form" one tap away (the person form on
+# the request: their name and address, not editable) -- then, for a parent, "Which child is Jo's?": a
+# student here, their child added now, or Later. The request leaves the list as soon as they are in.
+# The last admin cannot leave. The person let in lands straight in the space, leaves it from My profile,
+# and deletes their account.
 # Self-cleaning: Jo is put back to nothing, signed up and asking, before; nothing, after.
 # Phase 63 (P13): signing up now also makes a personal space; Jo drops theirs at once
 # (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
@@ -41,8 +44,28 @@ tags:
       id: join-requests
     timeout: 20000
 - assertVisible: 'Jo Joiner'
+# The whole address, and when they asked, at every width (JF26).
+- assertVisible: 'spaces.joiner@example.com'
+- assertVisible: 'asked .*'
 - tapOn:
     id: join-request-let-in-.*
+- extendedWaitUntil:
+    visible:
+      id: let-in-sheet
+    timeout: 15000
+- assertVisible: 'Let Jo Joiner in'
+- assertVisible: '.*spaces.joiner@example.com · asked.*'
+- assertVisible:
+    id: let-in-role-parent
+- assertVisible: 'Parent. Their child is, or will be, in this space.'
+- assertVisible:
+    id: let-in-role-admin
+- assertNotVisible:
+    id: let-in-role-tutor
+- takeScreenshot: spaces-let-in-sheet
+# Anything else: the full form, on the same request.
+- tapOn:
+    id: let-in-full-form
 - extendedWaitUntil:
     visible:
       id: person-form-title
@@ -54,25 +77,34 @@ tags:
 - assertVisible:
     id: person-form-email
     text: 'spaces.joiner@example.com'
-# A student here would need the parent's word.
-- tapOn:
-    id: person-role-student
 - scrollUntilVisible:
     element:
-      id: person-parent-consent
-- scrollUntilVisible:
-    element:
-      id: person-role-student
-    direction: UP
+      id: person-form-cancel
 - tapOn:
-    id: person-role-student
+    id: person-form-cancel
+- extendedWaitUntil:
+    visible:
+      id: join-requests
+    timeout: 15000
+# The short way: a parent, the default.
 - tapOn:
-    id: person-role-parent
-- scrollUntilVisible:
-    element:
-      id: person-form-save
+    id: join-request-let-in-.*
+- extendedWaitUntil:
+    visible:
+      id: let-in-submit
+    timeout: 15000
 - tapOn:
-    id: person-form-save
+    id: let-in-submit
+- extendedWaitUntil:
+    visible: "Which child is Jo's?"
+    timeout: 15000
+- assertVisible:
+    id: let-in-student
+- assertVisible:
+    id: let-in-add-child
+    text: ".*Add Jo's child now"
+- tapOn:
+    id: let-in-later
 - extendedWaitUntil:
     visible:
       id: screen-people

@@ -1,3 +1,5 @@
+import { useId } from 'react';
+
 import { cn } from '@/lib/utils';
 import { useBrand, useBrandReady } from '@/providers/brand-provider';
 
@@ -15,6 +17,9 @@ const LOGO_FULL_SRC = '/logo-full.png';
  * palette rather than from literals, so it follows dark mode for free.
  */
 function BullseyeMark({ className, bare = false }: { className?: string; bare?: boolean }) {
+  // One gradient id per mark: the page draws several (the hidden desktop sidebar, the phone drawer), and a shared
+  // id painted the drawer's mark with nothing -- white on pale, 1.13:1 (UI audit JF33).
+  const gradientId = `mark-tile-${useId().replace(/:/g, '')}`;
   // On a coloured panel the tile has nothing to sit against, so the glyph goes
   // on alone in white -- the institute's raster mark gets knocked out to white
   // for the same reason, and neither is achievable with the other's technique.
@@ -50,13 +55,13 @@ function BullseyeMark({ className, bare = false }: { className?: string; bare?: 
       className={cn('size-9 select-none', className)}
     >
       <defs>
-        <linearGradient id="chmi-tile" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="var(--brand-500)" />
           <stop offset="100%" stopColor="var(--brand-800)" />
         </linearGradient>
       </defs>
 
-      <rect x="1" y="1" width="46" height="46" rx="13" fill="url(#chmi-tile)" />
+      <rect x="1" y="1" width="46" height="46" rx="13" fill={`url(#${gradientId})`} />
 
       {glyph}
     </svg>

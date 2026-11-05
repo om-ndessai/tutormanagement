@@ -136,7 +136,11 @@ export function StartCard() {
           <p className="bg-muted/60 rounded-lg px-3 py-2 text-sm" role="status" data-testid="assessment-no-students">
             {user?.roles.includes('admin')
               ? 'No students here yet. Add one from Users, then start an assessment for them here.'
-              : `No children are linked to you in ${organization?.name ?? 'this space'} yet. The space's admins add them: ask one to link your child, then start an assessment for them here.`}
+              : `No children are linked to you in ${organization?.name ?? 'this space'} yet. ${
+                  organization?.admin_names?.length
+                    ? `${organization.admin_names.join(' or ')} adds them: ask to link your child`
+                    : "The space's admins add them: ask one to link your child"
+                }, then start an assessment for them here.`}
           </p>
         )}
         <p className="text-muted-foreground text-xs">

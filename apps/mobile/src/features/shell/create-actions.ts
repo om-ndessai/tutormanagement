@@ -5,7 +5,17 @@
 //
 // Phase 50: the actions follow the feature sets. Without Tutoring the lesson, tutor and payment
 // actions are gone, and an admin is offered Start an assessment instead while Assessment is on.
-import { featureOn, type FeatureState, type UserRole as Role } from '@tmi/shared';
+//
+// UI audit (JF22): adding people follows ONE rule, shared `mayAddPeople` -- the space's admins, and not a
+// 13-17 (Phase 63: a teen adds nobody) -- the same rule as People, the home and the add flows, so nobody is
+// offered a form the API would refuse at its end.
+import {
+  featureOn,
+  mayAddPeople,
+  type FeatureState,
+  type PlatformAccount,
+  type UserRole as Role,
+} from '@tmi/shared';
 import type { Href } from 'expo-router';
 
 export type CreateActionId =
@@ -96,6 +106,8 @@ export interface CreateContext {
   teaches?: boolean;
   /** The reader has a live lesson running: Start is the banner's business then. */
   lessonRunning?: boolean;
+  /** The reader's platform account (their age band, when they signed up themselves): a 13-17 adds nobody. */
+  account?: PlatformAccount | null;
 }
 
 /** Phase 50: the feature sets on here that the sheet follows (fixed per session, so no flicker). */
@@ -115,16 +127,17 @@ export function createSetsOf(organization: Partial<FeatureState> | null | undefi
 /** The actions this reader may take, in the sheet's order. */
 export function createActions(
   roles: readonly Role[] | undefined,
-  { teaches = false, lessonRunning = false }: CreateContext = {},
+  { teaches = false, lessonRunning = false, account = null }: CreateContext = {},
   sets: CreateSets = ALL_CREATE_SETS,
 ): CreateAction[] {
   const isAdmin = roles?.includes('admin') ?? false;
   const isTutor = roles?.includes('tutor') ?? false;
+  const addsPeople = mayAddPeople({ roles: roles ?? [], account });
   const ids: CreateActionId[] = [];
   if (!sets.tutoring) {
-    // A space without Tutoring: an admin starts assessments and adds people; nobody else creates.
+    // A space without Tutoring: an admin starts assessments and (an adult) adds people; nobody else creates.
     if (isAdmin && sets.assessment) ids.push('start-assessment');
-    if (isAdmin) ids.push('add-student', 'add-person');
+    if (addsPeople) ids.push('add-student', 'add-person');
     return ids.map((id) => ACTIONS[id]);
   }
   // Sessions: recording is a tutor's or the office's.
@@ -133,15 +146,20 @@ export function createActions(
   if (isTutor && teaches && !lessonRunning) ids.push('start-lesson');
   // Schedule: tutors and the office set up standing lessons.
   if (isTutor || isAdmin) ids.push('schedule-lesson');
-  // Users and Billing: only the organization's admins add people and record payments.
-  if (isAdmin) ids.push('add-student', 'add-tutor', 'add-person', 'record-payment');
+  // Users: the space's adult admins add people (JF22). Billing: its admins record payments.
+  if (addsPeople) ids.push('add-student', 'add-tutor', 'add-person');
+  if (isAdmin) ids.push('record-payment');
   return ids.map((id) => ACTIONS[id]);
 }
 
-/** Whether the reader gets a create button at all: from the roles alone, so the bar never flickers. */
+/**
+ * Whether the reader gets a create button at all: from the roles (and the account, known with the session)
+ * alone, so the bar never flickers.
+ */
 export function hasCreateActions(
   roles: readonly Role[] | undefined,
   sets: CreateSets = ALL_CREATE_SETS,
+  account: PlatformAccount | null = null,
 ): boolean {
-  return createActions(roles, { teaches: true }, sets).length > 0;
+  return createActions(roles, { teaches: true, account }, sets).length > 0;
 }

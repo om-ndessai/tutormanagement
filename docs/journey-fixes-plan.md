@@ -80,7 +80,10 @@ JF2, JF8, JF10, JF11, JF35's year list, JF36's app waiting-screen Back. **Decide
   as its main button; one heading;
 - **no "your account is ready" notice for now**: words and buttons only (no status route, no email);
 - "Contact us" keeps `om.ndessai@gmail.com` for now, shown in full (`PLATFORM_CONTACT_EMAIL`, one place);
-- marking accepts "30%" for a number key (shared `checkAnswer`; compared on a sample of the bank first);
+- marking accepts "30%" for a number key -- checked on the bank first, as asked: 835 numeric questions mention a
+  percent and about 373 ask for a non-percent amount ("What is 10% of 70?"), so the owner chose (2026-11-04) to
+  accept a trailing % only when the question asks for a percent. It needs the question's text at marking time,
+  so it moves to Phase 72's contract;
 - Post-approved stays the production mode;
 - the device remembers an under-13 refusal, so the age form is not offered again on that device;
 - no stored "Ask for an invitation": a mail with the person's address prefilled.
@@ -95,10 +98,21 @@ JF1, JF5, JF22, JF26's admin side. **Decided (owner, 2026-11-04):**
 - **an empty student picker says who adds children** ("Ines Ferreira adds them"): admins' names shown to members,
   with an exposure rule; no stored ask, and only admins add people.
 
-### Phase 72: codes and the spaces menu, about 42 h
-JF4, JF26's role and note (schema), JF9, JF7, JF12, JF33. **Decisions:** keeping a typed code through approval;
-whether a request asks a role and a note; a game across spaces (R13) or reworded refusal only; palettes rotated or
-chosen; whether invited people see the terms.
+### Phase 72: codes and the spaces menu, about 46 h
+JF4, JF26's role and note (schema), JF9, JF7, JF12, JF33, and Phase 70's percent marking. **Decided (owner,
+2026-11-04):**
+- a code typed signed out is **kept on the device** through sign-up and approval, and offered once on the first
+  home ("You have a code for Ferreira Family Practice: Ask to join"); one "Have a code?" box from the guest page on;
+- a join request carries **the role the person asks for and a short note** (two `join_requests` columns); the
+  Let in sheet preselects the role;
+- a friend's game code from another space gets an **honest refusal that reveals nothing**: "No game in your spaces
+  has that code. Games are joined inside their own space: ask your friend to invite you there, or start your own
+  game." (R13 kept);
+- each new self-serve space **takes the next palette automatically** (never the institute's plum); personal
+  spaces keep slate and read "Just you";
+- an **invited person sees and accepts the terms and the privacy notice once**, at their first sign-in (the
+  version recorded for them);
+- a trailing % is accepted only when the question asks for a percent.
 
 ### Phase 73: coming back to play, about 44 h
 JF13 with games listed with their progress (from JF32), JF14 and one Daily rule (from JF23), JF16, JF36.

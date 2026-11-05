@@ -1,5 +1,6 @@
 import {
   DEFAULT_CURRICULUM_ID,
+  JOIN_OUTCOME_SHOWN_DAYS,
   PERSONAL_SPACE_CURRICULA,
   SPACE_CODE_ALPHABET,
   SPACE_CODE_LENGTH,
@@ -1044,13 +1045,21 @@ export async function listMyJoinRequests(db: D1Database, userId: string): Promis
   const result = await db
     .prepare(
       // org-scope: the person's own requests across spaces, with each space's public face.
-      `${SELECT_ORG.replace('FROM organizations o', ', j.requested_at, j.outcome FROM organizations o JOIN join_requests j ON j.organization_id = o.id')}
+      `${SELECT_ORG.replace('FROM organizations o', ', j.requested_at, j.outcome, j.answered_at FROM organizations o JOIN join_requests j ON j.organization_id = o.id')}
        WHERE j.user_id = ? AND o.archived_at IS NULL
-         AND (j.outcome IS NULL OR (j.outcome = 'declined' AND j.seen_at IS NULL))
+         AND (j.outcome IS NULL
+              OR (j.outcome_dismissed_at IS NULL
+                  AND j.answered_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', ?)
+                  AND (j.outcome = 'declined'
+                       -- a let-in is news only while they are still in that space (left: nothing of it remains)
+                       OR (j.outcome = 'approved' AND EXISTS (
+                             SELECT 1 FROM org_members m
+                             WHERE m.organization_id = j.organization_id AND m.user_id = j.user_id
+                               AND m.removed_at IS NULL)))))
        ORDER BY j.requested_at DESC`,
     )
-    .bind(userId)
-    .all<OrgRow & { requested_at: string; outcome: string | null }>();
+    .bind(userId, `-${JOIN_OUTCOME_SHOWN_DAYS} days`)
+    .all<OrgRow & { requested_at: string; outcome: string | null; answered_at: string | null }>();
   return (result.results ?? []).map((row) => {
     const brand = toBrand(row);
     return {
@@ -1060,9 +1069,45 @@ export async function listMyJoinRequests(db: D1Database, userId: string): Promis
       palette: brand.palette,
       logo_mark_url: brand.logo_mark_url,
       requested_at: row.requested_at,
-      outcome: row.outcome === 'declined' ? 'declined' : null,
+      // An answer stays until the person dismisses it (owner, 2026-11-04; UI audit JF5).
+      outcome: row.outcome === 'declined' || row.outcome === 'approved' ? row.outcome : null,
+      answered_at: row.answered_at,
     };
   });
+}
+
+/**
+ * The person dismisses a space's answers to their requests (UI audit JF5). Its own column, never `seen_at`:
+ * older apps mark that whenever the Spaces page is viewed (`markDeclinesSeen`). False: nothing to dismiss.
+ */
+export async function dismissJoinOutcomes(db: D1Database, userId: string, orgId: OrgId): Promise<boolean> {
+  const result = await db
+    .prepare(
+      `UPDATE join_requests SET outcome_dismissed_at = ${NOW}
+       WHERE organization_id = ? AND user_id = ? AND outcome IN ('approved', 'declined') AND outcome_dismissed_at IS NULL`,
+    )
+    .bind(orgId, userId)
+    .run();
+  return (result.meta.changes ?? 0) > 0;
+}
+
+/**
+ * Up to three of a space's admins' names, for a member who is not one: who adds children, who lets people in
+ * (UI audit JF1). Names only (R31 in docs/data-exposure.md).
+ */
+export async function listAdminNames(db: D1Database, orgId: OrgId): Promise<string[]> {
+  const result = await db
+    .prepare(
+      `SELECT u.full_name FROM user_roles r
+       JOIN org_members m ON m.organization_id = r.organization_id AND m.user_id = r.user_id
+                         AND m.removed_at IS NULL AND m.status = 'active'
+       JOIN users u ON u.id = r.user_id AND u.deleted_at IS NULL
+       WHERE r.organization_id = ? AND r.role = 'admin'
+       ORDER BY u.full_name LIMIT 3`,
+    )
+    .bind(orgId)
+    .all<{ full_name: string }>();
+  return (result.results ?? []).map((row) => row.full_name);
 }
 
 /** Marks the person's declined requests as seen (they were shown once). */

@@ -7,6 +7,7 @@ import {
   ORG_TIME_ZONES,
   PLATFORM_BRAND,
   spaceNameProblem,
+  zonedClockParts,
   type MyJoinRequest,
   type OrgTimeZone,
   type PlatformAccount,
@@ -45,15 +46,53 @@ export function makeProblem(name: string): string | null {
   return spaceNameProblem(name);
 }
 
-/** The person's requests: those waiting, and those just declined (shown once). */
+/**
+ * The person's requests: those waiting, and the spaces' answers -- let in or declined -- which stay until the
+ * person dismisses them (owner, 2026-11-04; UI audit JF5).
+ */
 export function splitRequests(requests: readonly MyJoinRequest[]): {
   open: MyJoinRequest[];
+  approved: MyJoinRequest[];
   declined: MyJoinRequest[];
 } {
   return {
     open: requests.filter((r) => r.outcome === null),
+    approved: requests.filter((r) => r.outcome === 'approved'),
     declined: requests.filter((r) => r.outcome === 'declined'),
   };
+}
+
+/** The answers not yet dismissed (let in or declined), in the session's order. */
+export function answeredRequests(requests: readonly MyJoinRequest[]): MyJoinRequest[] {
+  return requests.filter((r) => r.outcome === 'approved' || r.outcome === 'declined');
+}
+
+/** The account button's count (UI audit JF5): invitations waiting, plus answers not yet dismissed. */
+export function accountBadgeCount(invitations: number, requests: readonly MyJoinRequest[]): number {
+  return invitations + answeredRequests(requests).length;
+}
+
+/** The account sheet's row: "1 answer to your request", "2 answers to your requests". */
+export function requestAnswersWaiting(count: number): string {
+  return count === 1 ? '1 answer to your request' : `${count} answers to your requests`;
+}
+
+/** What a request's row says, by its standing (the same words on Home and on Spaces, and the web's). */
+export function requestLine(request: Pick<MyJoinRequest, 'name' | 'outcome'>): string {
+  if (request.outcome === 'approved') return `You're in ${request.name}.`;
+  if (request.outcome === 'declined') return `${request.name} did not let you in.`;
+  return `Asked to join ${request.name} · waiting for its admins.`;
+}
+
+/** "Declined on Nov 4, 2026." -- the day the space answered, on the reader's space's clock; null when unknown. */
+export function declinedOnLine(answeredAt: string | null | undefined, timeZone: string): string | null {
+  if (!answeredAt || Number.isNaN(Date.parse(answeredAt))) return null;
+  const { day } = zonedClockParts(answeredAt, timeZone);
+  const date = new Date(`${day}T12:00:00Z`).toLocaleDateString('en-US', {
+    dateStyle: 'medium',
+    timeZone: 'UTC',
+  });
+  return `Declined on ${date}.`;
 }
 
 /**

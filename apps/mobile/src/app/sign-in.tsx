@@ -12,6 +12,7 @@ import { LegalLine } from '@/features/auth/legal-links';
 import { ProviderButtons, ProviderSignInButton } from '@/features/auth/provider-buttons';
 import { offersGoogle, signInHow, type UsableProvider } from '@/features/auth/provider-model';
 import { SignInError } from '@/features/auth/sign-in-error';
+import { SignupAccessNote } from '@/features/auth/signup-access-note';
 import { Welcome } from '@/features/auth/welcome';
 import { GoogleButton } from '@/lib/google-sign-in';
 import { haptics } from '@/lib/haptics';
@@ -68,6 +69,8 @@ export default function SignInScreen() {
       message={error.message}
       signUpEmail={devSignIn ? tried : null}
       onSignUp={tried ? () => startDevSignup(tried) : undefined}
+      // UI audit (JF2, JF8): the sign-up path says the wait or the list before its button.
+      signUpNote={<SignupAccessNote config={config} />}
     />
   ) : null;
 
@@ -224,6 +227,8 @@ export default function SignInScreen() {
                 ? 'Sign in the way your administrator set you up, or with an account you have added.'
                 : 'Sign in with the Google account your administrator added.'}
           </Text>
+          {/* UI audit (JF2, JF8): where a newcomer may sign up here, the wait or the list comes before the buttons. */}
+          {config?.signup_open ? <SignupAccessNote config={config} /> : null}
           {/* Google's button, drawn like the others (its "G" in Google's colours, as its branding asks). */}
           {googleAvailable && GoogleButton ? (
             <View style={{ alignItems: 'center' }}>

@@ -7,7 +7,7 @@
 // follow (the same params as the Assessment screen's StartCard, so one cache entry). Never
 // `/dashboard`, which is Tutoring's. Who may continue, review or open a PDF is the server's
 // (`can_continue`, `can_review`, R17): the home only links into the Assessment screens.
-import { levelLabel, type CanvasAssessment } from '@tmi/shared';
+import { levelLabel, mayAddPeople, type CanvasAssessment } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
@@ -71,8 +71,10 @@ function StudentsPanel({
   isAdmin: boolean;
   onlyStudent: boolean;
 }) {
-  const { user } = useAuth();
+  const { user, account } = useAuth();
   const isParent = user?.roles.includes('parent') ?? false;
+  // UI audit (JF22): adding a student is offered by the one shared rule (adult admins).
+  const addsPeople = isAdmin && mayAddPeople({ roles: user?.roles ?? [], account });
   const students = useUsers(
     { role: 'student', limit: 100, sort: 'full_name', order: 'asc' },
     { enabled: !onlyStudent },
@@ -102,7 +104,7 @@ function StudentsPanel({
       ) : people.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
           <EmptyNote>No students yet.</EmptyNote>
-          {isAdmin ? (
+          {addsPeople ? (
             <Button testID="assess-home-add-student" mode="contained-tonal" onPress={() => router.push('/add-student')}>
               Add a student
             </Button>

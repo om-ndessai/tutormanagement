@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/organizations/api.ts @ 1132322 (the Phase 52 block @ 9485a8e; Phase 60's
-// leave and the star's removal from the working tree on f96b984; Phase 61's useInvitePerson likewise)
+// leave and the star's removal from the working tree on f96b984; Phase 61's useInvitePerson likewise; Phase 71's
+// useDismissJoinOutcome from the working tree: POST /spaces/join-requests/:slug/dismiss)
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
@@ -116,8 +117,25 @@ export function useWithdrawRequest() {
   });
 }
 
+/**
+ * Older apps call this whenever a decline is on screen; since the answers stay until dismissed (UI audit JF5)
+ * the app no longer does. Kept as the web's copy has it.
+ */
 export function useMarkDeclinesSeen() {
   return useMutation({ mutationFn: () => apiClient.post('/spaces/join-requests/seen') });
+}
+
+/**
+ * UI audit (JF5; owner, 2026-11-04: "stay until dismissed"): dismisses a space's answer to the person's
+ * request -- let in or declined -- which stays on their home and Spaces until then.
+ */
+export function useDismissJoinOutcome() {
+  const { refreshSession } = useAuth();
+  return useMutation({
+    mutationFn: (slug: string) =>
+      apiClient.post<ApiOk<{ dismissed: true }>>(`/spaces/join-requests/${encodeURIComponent(slug)}/dismiss`),
+    onSuccess: () => refreshSession(),
+  });
 }
 
 export function useMakeSpace() {

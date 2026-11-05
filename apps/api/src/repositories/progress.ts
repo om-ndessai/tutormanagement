@@ -170,6 +170,27 @@ export async function canViewStudentProgress(
   return row !== null;
 }
 
+/**
+ * Whether the reader may follow ANY student here -- someone to start an assessment for (the same rule as
+ * canViewStudentProgress, which the start route checks). A parent let in with no child here has none, and is not
+ * offered "Start an assessment" (UI audit JF1, J07).
+ */
+export async function hasFollowableStudent(db: D1Database, org: OrgId, viewer: User): Promise<boolean> {
+  const scope = studentScopeSql(viewer, 'u.id', org);
+  const row = await db
+    .prepare(
+      `SELECT 1 AS ok FROM users u
+       JOIN org_members m ON m.organization_id = ? AND m.user_id = u.id AND m.removed_at IS NULL
+       JOIN user_roles r ON r.organization_id = m.organization_id AND r.user_id = u.id
+                        AND r.role = 'student'
+       WHERE u.deleted_at IS NULL AND ${scope.sql}
+       LIMIT 1`,
+    )
+    .bind(org, ...scope.values)
+    .first<{ ok: number }>();
+  return row !== null;
+}
+
 // ---------------------------------------------------------------------------
 // Assessments
 // ---------------------------------------------------------------------------

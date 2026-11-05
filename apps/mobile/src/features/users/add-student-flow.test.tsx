@@ -5,7 +5,7 @@ import { act, fireEvent, screen } from '@testing-library/react-native';
 
 import { renderWithProviders } from '@/test/render';
 import { GUARDIAN_REQUIRED_MESSAGE } from './add-person-model';
-import { AddStudentFlow, studentSteps } from './add-student-flow';
+import { AddStudentFlow, presetGuardian, studentSteps } from './add-student-flow';
 import { announceGuardianCreated } from './guardian-bridge';
 
 const mockCreate = jest.fn();
@@ -214,4 +214,30 @@ it('with guardian=me, starts with the reader chosen as the family', async () => 
   expect(mockCreate.mock.calls[0][0].guardians).toEqual([
     { guardian_user_id: INES, relationship: 'guardian', is_primary: true },
   ]);
+});
+
+it('from Let in (UI audit JF1), starts with the parent just let in, and keeps the consent step', async () => {
+  mockOrganization = { feature_tutoring: false, feature_assessment: true, created_via: 'self_serve' };
+  mockCreate.mockResolvedValue({ data: { id: 'kit', full_name: 'Kit Joiner' } });
+  await renderWithProviders(<AddStudentFlow fromWizard={false} guardian={HANNAH} guardianName="Jo Joiner" />);
+  expect(screen.getByTestId(`guardian-${HANNAH}`)).toBeTruthy();
+  expect(screen.getByText('Jo Joiner')).toBeTruthy();
+  await toReview(false);
+  // The consent the self-serve space asks for is still asked.
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  expect(mockCreate).not.toHaveBeenCalled();
+  await fireEvent.press(screen.getByTestId('add-student-consent'));
+  await fireEvent.press(screen.getByTestId('step-flow-next'));
+  expect(mockCreate.mock.calls[0][0].guardians).toEqual([
+    { guardian_user_id: HANNAH, relationship: 'guardian', is_primary: true },
+  ]);
+});
+
+it('presetGuardian: the reader, a named parent, or nobody', () => {
+  const reader = { id: INES, full_name: 'Ines Ferreira' };
+  expect(presetGuardian('me', undefined, reader)).toEqual({ id: INES, name: 'Ines Ferreira' });
+  expect(presetGuardian(HANNAH, ' Jo Joiner ', reader)).toEqual({ id: HANNAH, name: 'Jo Joiner' });
+  // An id without a name is not enough to say who they are.
+  expect(presetGuardian(HANNAH, undefined, reader)).toBeNull();
+  expect(presetGuardian(undefined, undefined, reader)).toBeNull();
 });

@@ -50,6 +50,7 @@ import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { PlayFavorites, PlayHome, WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { useMemberTiles } from '@/features/play/play-api';
 import { SessionFormDialog } from '@/features/teaching/session-form-dialog';
+import { RequestOutcomes } from '@/features/organizations/request-outcomes';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
@@ -90,11 +91,19 @@ export function MemberHomePage() {
   const tutoring = featureOn(organization, 'tutoring');
   const quest = featureOn(organization, 'quest');
   const assessment = featureOn(organization, 'assessment');
-  const actions = quickActionsFor(hats, { tutoring, quest, assessment, mayBringPeople: home.may_bring_people });
+  const actions = quickActionsFor(hats, {
+    tutoring,
+    quest,
+    assessment,
+    mayBringPeople: home.may_bring_people,
+    mayAssess: home.may_assess,
+  });
 
   return (
     <div className="mx-auto grid max-w-6xl gap-6" data-testid="member-home">
       {tutoring && <LessonReminderSheet />}
+      {/* The person's requests to join spaces and the answers, until dismissed (owner, 2026-11-04; JF5). */}
+      <RequestOutcomes />
       <div className="relative">
         <Band home={home} hat={hats[0] ?? null} />
         <div className="relative -mt-12 px-3 sm:px-6">

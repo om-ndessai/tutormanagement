@@ -325,7 +325,12 @@ Google account gets a signed 15-minute `signup` token (only from a client that s
 older apps keep the 403); `POST /api/auth/signup` takes the birth month and year and the accepted terms
 -- under 13 is refused and nothing is stored; only the band is kept (`platform_accounts`). A newcomer
 joins a space by asking with its code (`POST /api/spaces/join-requests`; the space's admins let them in
-through the ordinary user form, `join_request_user_id`, or decline), or an adult makes one
+-- since Phase 71 a short Let in sheet: the role, a parent by default, then "Which child is theirs?", a
+student linked as their guardian or one added now; still the ordinary `POST /api/users` with
+`join_request_user_id` -- or decline, asked first). The answer, let in or declined, stays on the person's home
+until they dismiss it (`POST /api/spaces/join-requests/:slug/dismiss`, `join_requests.outcome_dismissed_at`,
+30 days; a let-in only while they are still a member there; older apps' `/join-requests/seen` no longer hides
+it). Or an adult makes one
 (`POST /api/spaces`): self-serve, Assessment and Quest allowed and on (Phase 61, S10), no Tutoring,
 untrusted, no email, its maker its admin, its slug from its code. Since Phase 61 (`docs/spaces-plan.md`
 S10-S13) every space made -- in the console too -- starts with its admins' Assessment and Quest switches
@@ -551,7 +556,12 @@ sign-up and in `requireAuth`, so approving or revoking takes effect on the next 
 are gated: a person a space adds or invites has no platform account and is approved, as is every account
 from before. Decisions are `platform.access_*` on the platform log. Both platforms run Post-approved since the
 release (owner, 2026-11-03); it sits beside the sign-up switch below, which still decides whether anyone may
-sign up at all.
+sign up at all. Since Phase 70 (journey fixes, `docs/journey-fixes-plan.md`): the waiting words say a person
+checks every new account, usually within a day (`accessPendingMessage`, owner 2026-11-04; no notice is sent
+when it ends); `/api/auth/config` carries `signup_access`, so a sign-up says so before the provider's button
+(`SIGNUP_ACCESS_NOTES`); a `not_on_list` refusal carries the checked address in `details.email`; every
+refusal leads with Keep playing; and a device remembers an under-13 refusal as a one-way key of the address
+(FNV-1a, never the address), so the age question is not offered to that account again there.
 
 **One member home, one Next up** (Phase 66, `docs/member-home-plan.md` H1-H4, H9, H11). `/` (the app's Home tab)
 is the same home for every member, built from the same blocks: the band (the guest band, slimmer: greeting,

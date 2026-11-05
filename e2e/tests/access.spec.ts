@@ -114,6 +114,11 @@ test.describe('sign-up access', () => {
     await page.goto('/');
     await page.getByTestId('guest-sign-in').click();
     const sheet = page.getByTestId('signup-sheet');
+    // Signing up says, before the buttons, that a person checks new accounts (JF2) -- not after the whole form.
+    await sheet.getByTestId('signup-sheet-to-signup').click();
+    await expect(sheet.getByTestId('signup-access-note')).toHaveText(
+      'A person at Aimtrue checks every new account before you can sign in, usually within a day.',
+    );
     const email = `${fresh('wren')}@example.com`;
     await sheet.getByTestId('signup-dev-email').fill(email);
     await sheet.getByTestId('signup-dev-name').fill('Wren Waiting');
@@ -125,7 +130,9 @@ test.describe('sign-up access', () => {
     await sheet.getByTestId('signup-accept').check();
     await sheet.getByTestId('signup-submit').click();
     await expect(sheet.getByTestId('access-refused-title')).toHaveText('Waiting for approval');
-    await expect(sheet.getByTestId('access-refused-message')).toContainText('Thanks, Wren.');
+    await expect(sheet.getByTestId('access-refused-message')).toHaveText(
+      'Thanks, Wren. A person at Aimtrue checks every new account, usually within a day. Keep playing meanwhile, and sign in again tomorrow.',
+    );
     await expect(sheet.getByRole('link', { name: /Contact us/ })).toHaveAttribute('href', 'mailto:om.ndessai@gmail.com');
     // One heading, and a next step (UI audit JF2): Keep playing leads; the address is shown in full.
     await expect(sheet.getByText('Almost there')).toHaveCount(0);

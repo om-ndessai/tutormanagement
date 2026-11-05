@@ -54,6 +54,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P0. A parent let in by code cannot reach her child
 
+> **Status (JF1):** done in Phase 71 (2026-11-04). Let in is a short sheet (the role, a parent by default, then "Which child is theirs?": link, add now, later); "Start an assessment" is offered only with someone to assess (`may_assess`); an empty picker names the space's admins. Asking the role and a note in the request is Phase 72.
+
+
 - **What:**
   - **Let in.** Make it a short sheet, not the generic Add user form. Preselect the role the newcomer asked for. For a
     parent, ask "Which child is theirs?": pick a student here, or add one now with the family flow. Name the button
@@ -108,6 +111,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
     design, for the owner to decide, as the item's Owner decides already suggests.
 
 ### P0. Say what the approval wait means, and tell people when it ends
+
+> **Status (JF2):** done in Phase 70 (2026-11-04), as decided: one heading; who checks and "usually within a day"; Keep playing back to the question; the address in full; the same said before the sign-up buttons. No notice when the wait ends (the owner chose words only for now).
+
 
 - **What:**
   - **The waiting screen:**
@@ -280,6 +286,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Tell people the space's answer to their request
 
+> **Status (JF5):** done in Phase 71 (2026-11-04): a "Your requests" card on every home (waiting, "You're in" with Open, declined with its date and Ask again), each answer until dismissed; the switcher's and the account button's badge count them. Not as a Next up item.
+
+
 - **What:**
   - **A pending request** is a row on the home ("Asked to join Ferreira Family Practice · waiting for its admins") and a
     Next up item.
@@ -424,7 +433,7 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Refusals give a next step and never reopen unasked
 
-> **Status (JF8):** in part, in the fix-up (2026-11-04): a refused sign-up no longer reopens by itself on the web (J05's repro is a spec). The next steps and words are Phase 70.
+> **Status (JF8):** done in the fix-up and Phase 70 (2026-11-04): a refused sign-up never reopens by itself; every refusal leads with Keep playing; "Ask a grown-up", remembered on the device as a one-way key; under Pre-approved the note before Google, the checked address, Ask for an invitation (a prefilled mail) and Use another account; a decline stops offering sign-up in that tab. Not done: a reason category for a decline.
 
 
 - **What:**
@@ -520,6 +529,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. The guest page speaks to every visitor and keeps its promises
 
+> **Status (JF10):** in part, in Phase 70 (2026-11-04): the audience line, "Can adults play?", the offer marks the answer, no "Save this score". Percent answers are Phase 72; levels above Grade 8 on the guest board are not scheduled.
+
+
 - **What:**
   - **The hero:** a line for adults, teens and classes, and "Can adults play?" in the FAQ.
   - **The guest board:** levels above Grade 8 on it.
@@ -558,6 +570,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   - Whether the guest's best score may carry over on the device.
 
 ### P2. Sign in opens a sheet titled Sign up free
+
+> **Status (JF11):** done in Phase 70 (2026-11-04) on the web; the app already had its own sign-in screen.
+
 
 - **What:**
   - Open the sheet in a sign-in mode from "Sign in": titled "Sign in", "Welcome back", with the same Google button and
@@ -958,6 +973,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Offer adding people only to those who may add
 
+> **Status (JF22):** done in Phase 71 (2026-11-04): one shared rule (`mayAddPeople`) on Users, People, the home and the app's (+); a non-admin's row menu is View details only.
+
+
 - **What:**
   - **One shared rule,** "may add people here": an admin, and not aged 13-17. Today that is two checks: the office
     hat (an admin) and `may_bring_people` (not 13-17), which `quickActionsFor` combines (see Checked). Apply the one
@@ -1093,6 +1111,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 - **Owner decides:** no.
 
 ### P2. Join requests say who is asking, and Decline can be undone
+
+> **Status (JF26):** in part, in Phase 71 (2026-11-04): the whole address and the time at every width, and Decline asks first on both clients. The role and a note are Phase 72.
+
 
 - **What:**
   - **A request shows:**

@@ -24,7 +24,11 @@ jest.mock('@/components/toast', () => ({
 }));
 jest.mock('@/providers/brand-provider', () => {
   const { PLATFORM_BRAND } = jest.requireActual('@tmi/shared');
-  return { useBrand: () => ({ ...PLATFORM_BRAND, short: 'Chapel Hill' }) };
+  return {
+    useBrand: () => ({ ...PLATFORM_BRAND, short: 'Chapel Hill' }),
+    // The requests card's space marks (OrgAvatar): initials, with no logo.
+    brandLogoUrl: () => null,
+  };
 });
 
 const TUTORING = {
@@ -122,12 +126,20 @@ function allText(): string {
   return out.join(' | ');
 }
 
-async function show(home: MemberHome, roles: string[], organization: Record<string, unknown> = TUTORING) {
+async function show(
+  home: MemberHome,
+  roles: string[],
+  organization: Record<string, unknown> = TUTORING,
+  auth: Record<string, unknown> = {},
+) {
   mockHome.current = home;
   mockAuth.mockReturnValue({
     user: { id: 'me', full_name: `${home.first_name} Someone`, roles },
     organization,
     invitations: [],
+    joinRequests: [],
+    account: null,
+    ...auth,
   });
   await renderWithProviders(<MemberHomeScreen />);
 }
@@ -263,6 +275,53 @@ describe('MemberHomeScreen', () => {
     expect(screen.queryByTestId('home-dashboard-link')).toBeNull();
     expect(screen.queryByTestId('quick-schedule')).toBeNull();
     expect(allText()).not.toMatch(NO_MONEY);
+  });
+
+  it('may_assess false (nobody to assess here): no Start an assessment; the office adds people instead', async () => {
+    await show({ ...INES, may_assess: true }, ['student', 'admin', 'parent'], ASSESS);
+    expect(screen.getByTestId('quick-start_assessment')).toBeTruthy();
+    await show({ ...INES, may_assess: false }, ['student', 'admin', 'parent'], ASSESS);
+    expect(screen.queryByTestId('quick-start_assessment')).toBeNull();
+    expect(screen.getByTestId('quick-add_person')).toBeTruthy();
+  });
+
+  it('one rule for adding people (JF22): a 13-17 admin is not offered Add someone', async () => {
+    const office = { ...INES, hats: ['office'] as MemberHome['hats'], parent: null, learner: null };
+    await show(office, ['admin'], ASSESS, { account: { age_band: 'adult' } });
+    expect(screen.getByTestId('quick-add_person')).toBeTruthy();
+    await show(office, ['admin'], ASSESS, { account: { age_band: '13-17' } });
+    expect(screen.queryByTestId('quick-add_person')).toBeNull();
+  });
+
+  it('Your requests sits above Next up, and only when there is a request (JF5)', async () => {
+    await show(INES, ['student', 'admin', 'parent'], ASSESS);
+    expect(screen.queryByTestId('home-requests')).toBeNull();
+    await show(INES, ['student', 'admin', 'parent'], ASSESS, {
+      joinRequests: [
+        {
+          slug: 'riverside',
+          name: 'Riverside Tutoring',
+          short_name: 'Riverside',
+          palette: 'teal',
+          logo_mark_url: null,
+          requested_at: '2026-11-01T12:00:00Z',
+          outcome: 'declined',
+          answered_at: '2026-11-03T15:00:00Z',
+        },
+      ],
+    });
+    expect(screen.getByTestId('home-request-riverside')).toHaveTextContent(/Riverside Tutoring did not let you in/);
+    const ids: string[] = [];
+    const walk = (node: unknown): void => {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) return node.forEach(walk);
+      const id = (node as { props?: { testID?: string } }).props?.testID;
+      if (id) ids.push(id);
+      walk((node as { children?: unknown }).children);
+    };
+    walk(screen.toJSON());
+    expect(ids.indexOf('home-requests')).toBeGreaterThan(-1);
+    expect(ids.indexOf('home-requests')).toBeLessThan(ids.indexOf('next-up-none'));
   });
 
   it('says so in a space with nothing switched on', async () => {

@@ -67,7 +67,8 @@ const NAV_ITEMS: (PaletteDestination & {
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false, keywords: ['me', 'account'] },
   // The organization's own settings (its 1099 payer details): admins only.
-  { to: '/organization', label: 'Space', icon: Building2Icon, end: false, admin: true, keywords: ['settings', 'tin', 'payer', 'organization', 'code', 'join'] },
+  // "Space settings", not "Space": a teacher looking to start a space met this as a dead end (UI audit JF7).
+  { to: '/organization', label: 'Space settings', icon: Building2Icon, end: false, admin: true, keywords: ['settings', 'tin', 'payer', 'organization', 'code', 'join'] },
 ];
 
 /** The menu, less what this reader's roles do not reach. */

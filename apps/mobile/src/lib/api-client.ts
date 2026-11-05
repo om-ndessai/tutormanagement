@@ -160,7 +160,13 @@ async function request<T>(path: string, init: RequestInit = {}, retried = false)
     }
     if (isApiErrorBody(payload) && response.status === 403 && isAccessRefusalCode(payload.error.code)) {
       // Phase 65: waiting for approval, declined, or not on the list -- the refusal screen, wherever asked.
-      emit('access-refused', { code: payload.error.code, message: payload.error.message });
+      // A not_on_list refusal names the address it checked (`details.email`, UI audit JF8), when it knows it.
+      const checked = payload.error.details?.email?.[0]?.trim();
+      emit('access-refused', {
+        code: payload.error.code,
+        message: payload.error.message,
+        ...(checked ? { email: checked } : {}),
+      });
     }
     if (isApiErrorBody(payload)) {
       throw new ApiRequestError(

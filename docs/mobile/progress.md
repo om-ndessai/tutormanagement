@@ -577,6 +577,21 @@ native rebuild of both dev builds, so build only while the devices are free.
 - [x] 83. Mobile: the tour on the member home (build-log entry 81) -- the web's Phase 66 steps (the band, Next up, To
   record, the children, then Dashboard under More and the menu), the home's blocks registered as tour targets. 2026-11-04.
 
+## Journey fixes, the fix-up and Phases 70-71 (`docs/journey-fixes-plan.md`; parity: the web half is built by the lead)
+
+- [x] 84. Mobile: the fix-up (2026-11-04, `8173a2a`) -- the home's "Have a code?" quick action no longer crashes
+  (`ToastBridge`), an error screen with a way home (`RouteError`, the `(org)` layout's `ErrorBoundary`), every answer
+  choice in view, the tour only where Tutoring is on and the wizard's "Done". `home/quick-code` new; `canvas-assessments`,
+  `onboarding` green on iOS.
+- [x] 85. Mobile: Phase 70 UI (2026-11-04, `023ba00`) -- refusals over the app with Keep playing back to the question,
+  the address in full, Ask for an invitation, Use another account; an under-13 refusal remembered as a one-way key; the
+  months as a grid; the guest page's audience line and FAQ. `platform/access`, `spaces/sign-up`, `guest/*` green on iOS.
+- [x] 86. Mobile: Phase 71 and the 70+71 contract (2026-11-04) -- the Let in sheet (role, then the child: link, add now,
+  later), the empty student picker naming the space's admins, one `mayAddPeople` rule, the requests card on the home
+  until dismissed with the account button's badge, the access note before sign-up, the checked address on a not-on-the-list
+  refusal. Jest 1384/1384; 39 touched flows on iOS (`spaces/*`, `people/*`, `home/*`, `features/*`, `shell/create`);
+  the touched set on Android; `npm run smoke` on both.
+
 ## Phase 4 — Google sign-in
 
 > Status (2026-10-16): the core is done another way. G1 signs in through `POST /api/auth/google`

@@ -31,9 +31,10 @@ function goHome() {
  * Phase 60 (S7, docs/spaces-plan.md): Spaces, the person's own console. Inside a space it is pushed
  * from the account sheet, under the header "Spaces"; with no space chosen it is the selector ("Choose
  * a space", or "Welcome to Aimtrue" with nowhere to go), full screen. Everything on it comes from the
- * person's own session (memberships, invitations, requests) -- no other read.
+ * person's own session (memberships, invitations, requests) -- no other read. `focusJoin` (Home's "Ask
+ * again", UI audit JF5) opens it on Join with a code.
  */
-export function SpacesScreen() {
+export function SpacesScreen({ focusJoin = false }: { focusJoin?: boolean } = {}) {
   const { user, organization, memberships, invitations, platformAdmin, chooseOrganization, refreshSession, signOut } =
     useAuth();
   const theme = useAppTheme();
@@ -167,7 +168,7 @@ export function SpacesScreen() {
       ) : null}
 
       {/* Requests sent, Join with a code, Make a space -- and, belonging nowhere, Delete my account. */}
-      <SpaceWelcome firstTime={memberships.length === 0} />
+      <SpaceWelcome firstTime={memberships.length === 0} focusJoin={focusJoin} />
 
       {framed ? null : (
         <Button

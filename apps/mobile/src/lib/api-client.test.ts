@@ -148,6 +148,34 @@ describe('api client', () => {
     off();
   });
 
+  it('a not_on_list refusal carries the address it checked, and the error keeps its details (UI audit JF8)', async () => {
+    const refused = jest.fn();
+    const off = on('access-refused', refused);
+    fetchMock.mockReturnValueOnce(
+      respond(403, {
+        error: {
+          code: 'not_on_list',
+          message: 'Sign-up is by invitation for now. Ask us to add you.',
+          details: { email: ['pat@school.example.org'] },
+        },
+      }),
+    );
+    const error = (await apiClient.post('/auth/google', {}).catch((caught: unknown) => caught)) as ApiRequestError;
+    expect(error.details).toEqual({ email: ['pat@school.example.org'] });
+    expect(refused).toHaveBeenCalledWith({
+      code: 'not_on_list',
+      message: 'Sign-up is by invitation for now. Ask us to add you.',
+      email: 'pat@school.example.org',
+    });
+    // Without it (an older Worker), no address is made up.
+    fetchMock.mockReturnValueOnce(
+      respond(403, { error: { code: 'not_on_list', message: 'Sign-up is by invitation for now. Ask us to add you.' } }),
+    );
+    await apiClient.post('/auth/google', {}).catch(() => undefined);
+    expect(refused.mock.calls[1]![0]).not.toHaveProperty('email');
+    off();
+  });
+
   it('reports an unreachable server plainly', async () => {
     fetchMock.mockRejectedValue(new TypeError('Network request failed'));
     const error = (await apiClient.get('/health').catch((caught: unknown) => caught)) as ApiRequestError;

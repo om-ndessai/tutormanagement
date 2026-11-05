@@ -138,6 +138,33 @@ export function startNote(includesUnreviewed: boolean, questions = 10): string {
   );
 }
 
+/** "Ines Ferreira", "Ines Ferreira or Rosa Delgado", "A, B or C": who adds children here. */
+export function namesWithOr(names: readonly string[]): string {
+  const clean = names.map((name) => name.trim()).filter(Boolean);
+  if (clean.length <= 1) return clean[0] ?? '';
+  return `${clean.slice(0, -1).join(', ')} or ${clean[clean.length - 1]}`;
+}
+
+/**
+ * Why the start card's student picker is empty, and who fills it (UI audit JF1, J07 steps 26-28): an admin
+ * adds a student from Users; anyone else is told nobody is linked to them here yet and who adds children --
+ * the space's admins by name when the session carries them (`admin_names`, R31), else in general.
+ */
+export function noStudentsLine({
+  isAdmin,
+  spaceName,
+  adminNames,
+}: {
+  isAdmin: boolean;
+  spaceName: string | null | undefined;
+  adminNames?: readonly string[] | null;
+}): string {
+  if (isAdmin) return 'No students here yet. Add one from Users, then start an assessment for them here.';
+  const named = namesWithOr(adminNames ?? []);
+  const who = named ? `${named} adds them: ask to link your child` : "The space's admins add them: ask one to link your child";
+  return `No children are linked to you in ${spaceName || 'this space'} yet. ${who}, then start an assessment for them here.`;
+}
+
 /** The line under a row of the list. */
 export function rowSummary(row: CanvasAssessment, now?: Date): string {
   return (

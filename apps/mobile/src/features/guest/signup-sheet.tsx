@@ -24,6 +24,7 @@ import { ProviderButtons, ProviderSignInButton } from '@/features/auth/provider-
 import type { UsableProvider } from '@/features/auth/provider-model';
 import { SignInError } from '@/features/auth/sign-in-error';
 import { SignUpScreen } from '@/features/auth/sign-up-screen';
+import { SignupAccessNote } from '@/features/auth/signup-access-note';
 import { GoogleButton } from '@/lib/google-sign-in';
 import { APP_VARIANT, DEV_TOOLS } from '@/lib/variant';
 import { useAuth } from '@/providers/auth-provider';
@@ -181,6 +182,8 @@ export function SignupSheet() {
           Keep your scores, unlock every quest and play with your family.
         </Text>
       </View>
+      {/* UI audit (JF2, JF8): signing up, the wait or the list is said before the buttons, not after the form. */}
+      {signupOffered ? <SignupAccessNote config={config} /> : null}
       {devSignUp ? (
         <View style={{ gap: space.sm }} accessibilityLabel="Developer sign-up">
           <TextInput

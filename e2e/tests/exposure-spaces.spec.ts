@@ -17,7 +17,7 @@ const S13_STAMP = `${Date.now().toString(36)}${Math.floor(Math.random() * 1e4).t
 const BRAND_KEYS = ['blurb', 'builtin_logo', 'id', 'logo_full_url', 'logo_mark_url', 'name', 'palette', 'place', 'short_name', 'slug', 'tagline'];
 const MEMBERSHIP_KEYS = [...BRAND_KEYS, 'is_default', 'roles', 'status'].sort();
 const INVITATION_KEYS = [...BRAND_KEYS, 'invited_at', 'roles'].sort();
-const JOIN_REQUEST_KEYS = ['logo_mark_url', 'name', 'outcome', 'palette', 'requested_at', 'short_name', 'slug'];
+const JOIN_REQUEST_KEYS = ['answered_at', 'logo_mark_url', 'name', 'outcome', 'palette', 'requested_at', 'short_name', 'slug'];
 
 async function s13SignUp(page: import('@playwright/test').Page, email: string, name: string) {
   await unwrap(

@@ -189,8 +189,9 @@ tags:
     id: spaces-title
 
 # --- one space let in, another request declined: nothing pending, so straight in -----------------
-# Dee asks Sol's space and the host's asked space; Sol lets her in, the host declines. The decline is
-# kept in her session until seen, but it has been answered: one space and nothing pending.
+# Dee asks Sol's space and the host's asked space; Sol lets her in, the host declines. Both answers are
+# kept in her session until she dismisses them (UI audit JF5), but they are answered: one space and
+# nothing pending. Her home says them above Next up; dismissed, the decline goes.
 - runScript:
     file: ../../scripts/spaces.js
     env: { ACTION: ask, EMAIL: selector.declined@example.com, CODE: '${output.soloCode}' }
@@ -223,6 +224,25 @@ tags:
 - assertNotVisible:
     id: spaces-title
 - evalScript: "${(function () { var r = http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'selector.declined@example.com' } }); var last = json(r.body).data.memberships.filter(function (m) { return m.is_default; }).map(function (m) { return m.slug; }); if (last.length !== 1 || last[0] !== output.soloSlug) throw new Error('last choice is ' + JSON.stringify(last) + ', not ' + output.soloSlug); return true; })()}"
+- extendedWaitUntil:
+    visible:
+      id: home-requests
+    timeout: 15000
+- assertVisible:
+    id: home-request-${output.askedSlug}
+- assertVisible: '.*did not let you in.*'
+- assertVisible:
+    id: home-request-ask-again-${output.askedSlug}
+- assertVisible:
+    id: home-request-open-${output.soloSlug}
+- tapOn:
+    id: home-request-dismiss-${output.askedSlug}
+- extendedWaitUntil:
+    notVisible:
+      id: home-request-${output.askedSlug}
+    timeout: 15000
+- assertVisible:
+    id: home-request-${output.soloSlug}
 
 # --- one space and a request to a space since archived: nothing pending, so straight in ----------
 # Ari makes a space and asks Arch's; a platform admin archives Arch's space. It can no longer be
@@ -331,10 +351,11 @@ tags:
 - extendedWaitUntil:
     visible: 'You have joined Selector Inviting.'
     timeout: 15000
-# In at once, and the welcome wizard opens as for any first visit (S6).
+# In at once (S6). The space has no Tutoring, so no welcome wizard opens (the tour is Tutoring's, owner
+# 2026-11-04): Home.
 - extendedWaitUntil:
     visible:
-      id: screen-onboarding
+      id: screen-home
     timeout: 30000
-- assertVisible:
-    id: onboarding-title
+- assertNotVisible:
+    id: screen-onboarding

@@ -1,4 +1,9 @@
-import { ACCESS_DECLINED_MESSAGE, NOT_ON_LIST_MESSAGE, PLATFORM_CONTACT_EMAIL } from '@tmi/shared';
+import {
+  ACCESS_DECLINED_MESSAGE,
+  NOT_ON_LIST_MESSAGE,
+  PLATFORM_CONTACT_EMAIL,
+  accessPendingMessage,
+} from '@tmi/shared';
 import { fireEvent, screen } from '@testing-library/react-native';
 import { Linking } from 'react-native';
 
@@ -7,7 +12,8 @@ import { AccessRefusedScreen, invitationMailto } from './access-refused-screen';
 
 describe('AccessRefusedScreen (Phase 65)', () => {
   it.each([
-    ['access_pending', 'Waiting for approval', 'Thanks, Sam. Your access is waiting for approval.'],
+    // The server's words since 2026-11-04 (UI audit JF2): who checks, and how long it usually takes.
+    ['access_pending', 'Waiting for approval', accessPendingMessage('Sam Signup')],
     ['access_declined', 'Access not approved', ACCESS_DECLINED_MESSAGE],
     ['not_on_list', 'Sign-up is by invitation', NOT_ON_LIST_MESSAGE],
   ])('%s: its own title and the server’s words', async (code, title, message) => {
@@ -113,5 +119,13 @@ describe('invitationMailto', () => {
     const url = invitationMailto(null);
     const params = new URLSearchParams(url.slice(url.indexOf('?') + 1));
     expect(params.get('body')).toBe('Please add me to the sign-up list.');
+  });
+});
+
+describe('the waiting words (UI audit JF2)', () => {
+  it('say who checks, how long it usually takes, and to sign in again', () => {
+    expect(accessPendingMessage('Sam Signup')).toBe(
+      'Thanks, Sam. A person at Aimtrue checks every new account, usually within a day. Keep playing meanwhile, and sign in again tomorrow.',
+    );
   });
 });

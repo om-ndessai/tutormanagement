@@ -114,3 +114,37 @@ describe('Phase 50: without Tutoring', () => {
     );
   });
 });
+
+describe('UI audit (JF22): one rule for adding people', () => {
+  const TEEN = { age_band: '13-17' } as const;
+  const ADULT = { age_band: 'adult' } as const;
+
+  test('a 13-17 admin is offered no add action, with Tutoring or without; the rest stays', () => {
+    expect(ids(['admin'], { teaches: false, account: TEEN })).toEqual(['record-session', 'schedule-lesson', 'record-payment']);
+    expect(ids(['admin'], { account: TEEN }, { tutoring: false, assessment: true })).toEqual(['start-assessment']);
+  });
+
+  test('an adult admin, or one a space added (no account), adds people as before', () => {
+    for (const account of [ADULT, null, undefined]) {
+      expect(ids(['admin'], { account }, { tutoring: false, assessment: true })).toEqual([
+        'start-assessment',
+        'add-student',
+        'add-person',
+      ]);
+    }
+  });
+
+  test('nobody else adds people, whatever their account', () => {
+    for (const roles of [['tutor'], ['parent'], ['student'], ['parent', 'tutor']] as const) {
+      const offered = ids([...roles], { teaches: true, account: ADULT });
+      expect(offered).not.toContain('add-student');
+      expect(offered).not.toContain('add-tutor');
+      expect(offered).not.toContain('add-person');
+    }
+  });
+
+  test('a teen admin without Assessment has no create button at all', () => {
+    expect(hasCreateActions(['admin'], { tutoring: false, assessment: false }, TEEN)).toBe(false);
+    expect(hasCreateActions(['admin'], { tutoring: false, assessment: false }, ADULT)).toBe(true);
+  });
+});

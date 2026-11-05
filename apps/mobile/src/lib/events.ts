@@ -11,9 +11,10 @@ type EventMap = {
   'feature-unavailable': void;
   /**
    * Phase 65 (A4, A7): the person may not use the app -- their sign-up waits for approval or was
-   * declined, or sign-up is by invitation and they are not on the list. Carries the server's words.
+   * declined, or sign-up is by invitation and they are not on the list. Carries the server's words, and
+   * (not_on_list, UI audit JF8) the address the server checked, when it says (`details.email`).
    */
-  'access-refused': { code: string; message: string };
+  'access-refused': { code: string; message: string; email?: string };
 };
 
 type EventName = keyof EventMap;

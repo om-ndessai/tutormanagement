@@ -33,6 +33,7 @@ import { pairingInForce } from '../lib/scope.js';
 import { buildTutorHome, tutorSchedules } from './home.js';
 import { nextQuestReview } from './quest.js';
 import { getPlatformAccount } from './people.js';
+import { hasFollowableStudent } from './progress.js';
 import { listCancellationsForSchedules } from './schedule-cancellations.js';
 import { listSchedules } from './schedules.js';
 import { getVisibleSession } from './sessions.js';
@@ -560,11 +561,17 @@ export async function buildMemberHome(
     options: focusOptions,
   });
 
-  const [tutor, office, parent, learner] = await Promise.all([
+  const [tutor, office, parent, learner, mayAssess] = await Promise.all([
     hats.includes('tutor') ? tutorBlock(db, org, viewer, nowIso) : Promise.resolve(null),
     hats.includes('office') ? officeBlock(db, org, nowIso) : Promise.resolve(null),
     hats.includes('parent') ? parentBlock(db, org, viewer, kids, nowIso) : Promise.resolve(null),
     hats.includes('learner') ? learnerBlock(db, org, viewer, nowIso) : Promise.resolve(null),
+    // Someone to start an assessment for (UI audit JF1): oneself in a personal space, else a student they follow.
+    featureOn(org, 'assessment')
+      ? org.personal
+        ? Promise.resolve(true)
+        : hasFollowableStudent(db, org.id, viewer)
+      : Promise.resolve(false),
   ]);
 
   return {
@@ -578,6 +585,7 @@ export async function buildMemberHome(
     parent,
     learner,
     may_bring_people: account?.age_band !== '13-17',
+    may_assess: mayAssess,
     focus,
     pin,
     focus_options: focusOptions,

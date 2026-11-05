@@ -1,8 +1,10 @@
-// Ported from apps/web/src/features/users/join-requests-panel.tsx @ 9485a8e
+// Ported from apps/web/src/features/users/join-requests-panel.tsx @ ab71793
 //
-// Phase 52: people who asked to join with the space's code, at the head of the People list. Letting
-// someone in opens the person form, prefilled from the request (`/person-form?request=<id>`), to
-// choose their roles -- the usual rules apply. Its admins only (R21); nothing when there are none.
+// Phase 52: people who asked to join with the space's code, at the head of the People list. Its admins
+// only (R21); nothing when there are none. Letting someone in is a short sheet (`/let-in?request=<id>`,
+// owner, 2026-11-04; UI audit JF1) that asks the role and, for a parent, which child is theirs -- the full
+// person form is one tap from it. A request shows the whole address and when it was asked at every width,
+// and Decline asks first (JF26).
 import { formatRelativeTime, type JoinRequest } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Alert, View } from 'react-native';
@@ -13,13 +15,11 @@ import { useToast } from '@/components/toast';
 import { useDeclineJoinRequest, useJoinRequests } from '@/features/organizations/api';
 import { showProblem } from '@/lib/api-errors';
 import { haptics } from '@/lib/haptics';
-import { useBrand } from '@/providers/brand-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 export function JoinRequestsSection({ enabled }: { enabled: boolean }) {
   const theme = useAppTheme();
-  const brand = useBrand();
   const toast = useToast();
   const requests = useJoinRequests(enabled);
   const decline = useDeclineJoinRequest();
@@ -27,20 +27,24 @@ export function JoinRequestsSection({ enabled }: { enabled: boolean }) {
   if (!enabled || rows.length === 0) return null;
 
   function confirmDecline(request: JoinRequest) {
-    // A mis-tap on a phone is easy, and the person is told: ask first (the web acts on the click).
+    // A mis-tap on a phone is easy, and the person is told: ask first (as the web does since JF26).
     haptics.warning();
-    Alert.alert(`Decline ${request.full_name}’s request?`, `They will see that ${brand.name} didn’t accept.`, [
-      { text: 'Keep', style: 'cancel' },
-      {
-        text: 'Decline request',
-        style: 'destructive',
-        onPress: () =>
-          decline.mutate(request.user_id, {
-            onSuccess: () => toast.success(`${request.full_name}’s request declined.`),
-            onError: (caught) => showProblem(toast, caught, 'Could not decline the request.'),
-          }),
-      },
-    ]);
+    Alert.alert(
+      `Decline ${request.full_name}’s request?`,
+      'They will see that this space did not let them in. They can ask again with the code.',
+      [
+        { text: 'Keep', style: 'cancel' },
+        {
+          text: 'Decline request',
+          style: 'destructive',
+          onPress: () =>
+            decline.mutate(request.user_id, {
+              onSuccess: () => toast.success(`${request.full_name}’s request declined.`),
+              onError: (caught) => showProblem(toast, caught, 'Could not decline the request.'),
+            }),
+        },
+      ],
+    );
   }
 
   return (
@@ -73,12 +77,22 @@ export function JoinRequestsSection({ enabled }: { enabled: boolean }) {
       {rows.map((request) => (
         <OutlinedCard key={request.user_id} testID={`join-request-${request.user_id}`}>
           <Card.Content style={{ gap: space.sm, paddingVertical: space.md }}>
+            {/* The whole address and when they asked, at every width: never cut short (JF26). */}
             <View style={{ gap: 2 }}>
-              <Text variant="titleSmall" numberOfLines={1}>
-                {request.full_name}
+              <Text variant="titleSmall">{request.full_name}</Text>
+              <Text
+                testID={`join-request-email-${request.user_id}`}
+                variant="bodySmall"
+                style={{ color: theme.tokens.mutedForeground }}
+              >
+                {request.email ?? 'No address'}
               </Text>
-              <Text variant="bodySmall" numberOfLines={2} style={{ color: theme.tokens.mutedForeground }}>
-                {`${request.email ?? 'No email'} · asked ${formatRelativeTime(request.requested_at)}`}
+              <Text
+                testID={`join-request-asked-${request.user_id}`}
+                variant="bodySmall"
+                style={{ color: theme.tokens.mutedForeground }}
+              >
+                {`asked ${formatRelativeTime(request.requested_at)}`}
               </Text>
             </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
@@ -86,9 +100,7 @@ export function JoinRequestsSection({ enabled }: { enabled: boolean }) {
                 testID={`join-request-let-in-${request.user_id}`}
                 mode="contained"
                 compact
-                onPress={() =>
-                  router.push({ pathname: '/person-form', params: { request: request.user_id } })
-                }
+                onPress={() => router.push({ pathname: '/let-in', params: { request: request.user_id } })}
               >
                 Let in
               </Button>

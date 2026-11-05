@@ -1,3 +1,4 @@
+import type { AccessMode } from './access.js';
 import { z } from 'zod';
 import type { MyJoinRequest, PlatformAccount } from './spaces.js';
 import type { ApiErrorCode } from './api.js';
@@ -20,6 +21,11 @@ export interface AuthConfig {
   auth_enabled: boolean;
   /** Phase 52: whether a newcomer may sign up here (absent from older Workers: treat as false). */
   signup_open?: boolean;
+  /**
+   * The platform's Sign-up access (Phase 65), so a client can say before the provider's button that a person
+   * checks new accounts, or that sign-up is by invitation (UI audit JF2, JF8). Absent from older Workers.
+   */
+  signup_access?: AccessMode;
   /**
    * Phase 55: the ways to sign in this Worker offers, Google first. Absent from older Workers:
    * treat as Google alone. Empty while sign-in is off.
@@ -55,7 +61,16 @@ export interface SessionResponse {
    * an active member of it; null while choosing, or on the platform console.
    * Payer details are included for its admins only.
    */
-  organization: (Organization & { settings: OrganizationSettings | null }) | null;
+  organization:
+    | (Organization & {
+        settings: OrganizationSettings | null;
+        /**
+         * The space's admins' names, at most three, for a reader who is not one: who adds children, who lets
+         * people in (UI audit JF1; R31 in docs/data-exposure.md). Absent for its admins and from older Workers.
+         */
+        admin_names?: string[];
+      })
+    | null;
   /** Every organization the person may enter. */
   memberships: Membership[];
   /** Organizations waiting for the person to accept or decline. */

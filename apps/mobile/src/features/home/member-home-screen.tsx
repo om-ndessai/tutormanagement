@@ -2,7 +2,7 @@
 // space -- the band, ONE Next up, quick actions and a section per hat, all from one read (`GET /api/home`)
 // plus what only the device knows. The web's half is apps/web/src/features/home (same ids). It replaces
 // the role dashboard on Home (now More → Dashboard) and the Phase 50 space home. No money on it.
-import { featureOn, homeGreeting, orderHats, quickActionsFor } from '@tmi/shared';
+import { featureOn, homeGreeting, mayAddPeople, orderHats, quickActionsFor } from '@tmi/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -19,6 +19,7 @@ import { primaryRole } from '@/features/onboarding/onboarding-model';
 import { useOptionalOnboarding } from '@/features/onboarding/onboarding-provider';
 import { TourTarget, useTourScroller } from '@/features/onboarding/tour-targets';
 import { InvitationBanner } from '@/features/organizations/invitation-banner';
+import { YourRequestsCard } from '@/features/organizations/your-requests';
 import { PlayFavorites, WaitingForYou } from '@/features/play/play-home';
 import { useAuth } from '@/providers/auth-provider';
 import { space } from '@/theme/tokens';
@@ -32,7 +33,7 @@ import { QuickActions } from './quick-actions';
 import { SpaceNotes } from './space-notes';
 
 export function MemberHomeScreen() {
-  const { user, organization } = useAuth();
+  const { user, organization, account } = useAuth();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
   const query = useMemberHome();
@@ -88,7 +89,10 @@ export function MemberHomeScreen() {
         tutoring,
         quest,
         assessment: featureOn(organization, 'assessment'),
-        mayBringPeople: home.may_bring_people,
+        // Adding people: what the server says (a teen brings nobody) AND the one shared rule (JF22).
+        mayBringPeople: home.may_bring_people && mayAddPeople({ roles: user?.roles ?? [], account }),
+        // Someone to start an assessment for here (absent from older Workers: true).
+        mayAssess: home.may_assess,
       })
     : [];
 
@@ -106,6 +110,8 @@ export function MemberHomeScreen() {
           <TourTarget id="home-band">
             <HomeBand greeting={homeGreeting(home)} strip={stripLine(home, hats[0], streak)} />
           </TourTarget>
+          {/* UI audit (JF5): the person's requests to join other spaces, and the answers, until dismissed. */}
+          <YourRequestsCard />
           <TourTarget id="home-next-up">
             <NextUpCard home={home} next={next} />
           </TourTarget>

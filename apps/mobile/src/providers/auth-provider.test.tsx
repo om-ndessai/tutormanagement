@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, render, waitFor } from '@testing-library/react-native';
 import { useEffect } from 'react';
+import { accessPendingMessage } from '@tmi/shared';
 
 import { declinedThisRun, resetGuestMemoryForTests, signupSheetPresence } from '@/features/guest/guest-store';
 import { apiClient } from '@/lib/api-client';
@@ -68,7 +69,7 @@ const server = {
   signupRefusal: null as null | { status: number; code: string; message: string },
   withRequest: false,
   /** Phase 65: a refusal of the person's access, from the sign-in route and from every guarded request. */
-  accessRefusal: null as null | { code: string; message: string },
+  accessRefusal: null as null | { code: string; message: string; details?: Record<string, string[]> },
   /** Phase 60: the person's memberships, when a test needs more than the one space. */
   memberships: null as null | { slug: string; name: string; status: 'active' | 'suspended'; is_default: boolean }[],
   calls: [] as { method: string; path: string; init: RequestInit }[],
@@ -554,7 +555,8 @@ describe('Phase 60: landing in the last space chosen (S4)', () => {
 });
 
 describe('Phase 65: sign-up access refused', () => {
-  const PENDING = { code: 'access_pending', message: 'Thanks, Sam. Your access is waiting for approval.' };
+  // The server's words since 2026-11-04 (UI audit JF2): who checks, and how long it usually takes.
+  const PENDING = { code: 'access_pending', message: accessPendingMessage('Sam Signup') };
 
   it('a sign-up that waits for approval: no persona kept, signed out, and the refusal to show', async () => {
     server.authEnabled = false;
@@ -614,6 +616,23 @@ describe('Phase 65: sign-up access refused', () => {
     });
     await act(async () => auth.clearAccessRefusal());
     expect(auth.accessRefusal).toBeNull();
+  });
+
+  it('not on the list: the address the server says it checked comes first (details.email, JF8)', async () => {
+    server.accessRefusal = {
+      code: 'not_on_list',
+      message: 'Sign-up is by invitation for now. Ask us to add you.',
+      details: { email: ['pat@school.example.org'] },
+    };
+    GoogleSignin.signIn.mockResolvedValue({
+      type: 'success',
+      data: { idToken: 'id-token-1', user: { email: 'pat.quinn@example.com' } },
+    });
+    await mount();
+
+    await act(() => auth.signInWithGoogle());
+
+    expect(auth.accessRefusal).toMatchObject({ code: 'not_on_list', email: 'pat@school.example.org' });
   });
 
   it('a refusal while the sign-up sheet is on screen is the sheet’s to show (JF36)', async () => {

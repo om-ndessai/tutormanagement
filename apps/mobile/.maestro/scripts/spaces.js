@@ -12,7 +12,9 @@
 //                                reach the Welcome, as a person who deleted their own space would
 //   make-space EMAIL NAME        POST /spaces; outputs slug, code and codeShown (either way it reads)
 //   ask EMAIL CODE               POST /spaces/join-requests (already asked: fine)
-//   seen EMAIL                   POST /spaces/join-requests/seen
+//   seen EMAIL                   POST /spaces/join-requests/seen (older apps; it no longer hides an answer)
+//   dismiss EMAIL [SLUG]         UI audit JF5: dismisses the spaces' answers to the person's requests (let in
+//                                or declined) -- SLUG's alone, or all -- POST /spaces/join-requests/:slug/dismiss
 //   withdraw EMAIL SLUG          DELETE /spaces/join-requests/:slug (none: fine)
 //   tour-done EMAIL ORG          the person has been through the welcome wizard there (skipped)
 //   trust ORG_SLUG ON            as the platform admin, the space's Quest trust ('true' / 'false')
@@ -133,6 +135,14 @@ if (ACTION === 'reset-newcomer') {
   if (asked.status >= 300 && asked.status !== 409) must(asked, 'asking to join');
 } else if (ACTION === 'seen') {
   call(email, 'POST', '/spaces/join-requests/seen');
+} else if (ACTION === 'dismiss') {
+  var mine = call(email, 'GET', '/auth/session');
+  var answered = (mine.status < 300 && mine.body && mine.body.data && mine.body.data.join_requests) || [];
+  answered.forEach(function (r) {
+    if (r.outcome === null || r.outcome === undefined) return;
+    if (typeof SLUG !== 'undefined' && SLUG && r.slug !== String(SLUG)) return;
+    call(email, 'POST', '/spaces/join-requests/' + r.slug + '/dismiss');
+  });
 } else if (ACTION === 'withdraw') {
   call(email, 'DELETE', '/spaces/join-requests/' + SLUG);
 } else if (ACTION === 'tour-done') {

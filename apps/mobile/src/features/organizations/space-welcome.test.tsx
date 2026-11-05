@@ -19,16 +19,19 @@ jest.mock('expo-router', () => ({
 jest.mock('expo-localization', () => ({ getCalendars: () => [{ timeZone: 'America/New_York' }] }));
 
 const mockAuth = jest.fn();
-jest.mock('@/providers/auth-provider', () => ({ useAuth: () => mockAuth() }));
+jest.mock('@/providers/auth-provider', () => ({
+  useAuth: () => mockAuth(),
+  useOrgTimeZone: () => 'America/New_York',
+}));
 
-const mockSeen = jest.fn();
+const mockDismiss = jest.fn(async () => ({ data: { dismissed: true } }));
 const mockWithdraw = jest.fn();
 const mockLookup = jest.fn();
 const mockAsk = jest.fn();
 const mockMake = jest.fn();
 const mockDelete = jest.fn();
 jest.mock('./api', () => ({
-  useMarkDeclinesSeen: () => ({ mutate: mockSeen }),
+  useDismissJoinOutcome: () => ({ mutateAsync: mockDismiss, isPending: false }),
   useWithdrawRequest: () => ({ mutate: mockWithdraw, isPending: false }),
   useLookupSpace: () => ({ mutateAsync: mockLookup, isPending: false }),
   useAskToJoin: () => ({ mutateAsync: mockAsk, isPending: false }),
@@ -44,6 +47,7 @@ const request = (slug: string, outcome: MyJoinRequest['outcome']): MyJoinRequest
   logo_mark_url: null,
   requested_at: new Date().toISOString(),
   outcome,
+  answered_at: outcome ? '2026-11-03T15:00:00Z' : null,
 });
 const chooseOrganization = jest.fn(async () => undefined);
 const signOut = jest.fn(async () => undefined);
@@ -65,7 +69,7 @@ beforeEach(() => {
 });
 
 describe('SpaceWelcome (Phase 52)', () => {
-  it('shows a decline once, and tells the server only once across re-renders', async () => {
+  it('keeps a decline, with its day, until it is dismissed -- and viewing it marks nothing (JF5)', async () => {
     as({ joinRequests: [request('riverside', 'declined')] });
     function Harness() {
       const [, bump] = useState(0);
@@ -77,17 +81,45 @@ describe('SpaceWelcome (Phase 52)', () => {
       );
     }
     await renderWithProviders(<Harness />);
-    expect(screen.getByTestId('welcome-declined-riverside')).toHaveTextContent('riverside Space didn’t accept your request to join.');
+    const row = screen.getByTestId('welcome-declined-riverside');
+    expect(row).toHaveTextContent(/riverside Space did not let you in/);
+    expect(row).toHaveTextContent(/Declined on Nov 3, 2026\./);
     await fireEvent.press(screen.getByTestId('bump'));
     await fireEvent.press(screen.getByTestId('bump'));
-    expect(mockSeen).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId('welcome-declined-riverside')).toBeTruthy();
+    expect(mockDismiss).not.toHaveBeenCalled();
+    await act(async () => {
+      await fireEvent.press(screen.getByTestId('welcome-dismiss-riverside'));
+    });
+    expect(mockDismiss).toHaveBeenCalledWith('riverside');
+  });
+
+  it('a let in: "You\'re in", Open enters the space', async () => {
+    as({ joinRequests: [request('assess', 'approved')] });
+    await renderWithProviders(<SpaceWelcome firstTime={false} />);
+    expect(screen.getByTestId('welcome-approved-assess')).toHaveTextContent(/You're in assess Space\./);
+    expect(screen.queryByTestId('welcome-ask-again-assess')).toBeNull();
+    await act(async () => {
+      await fireEvent.press(screen.getByTestId('welcome-open-assess'));
+    });
+    expect(mockDismiss).not.toHaveBeenCalled();
+    expect(chooseOrganization).toHaveBeenCalledWith('assess');
+    expect(mockRouter.replace).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('Ask again goes to the code field', async () => {
+    as({ joinRequests: [request('riverside', 'declined')] });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.getByTestId('welcome-ask-again-riverside')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('welcome-ask-again-riverside'));
+    expect(screen.getByTestId('welcome-code')).toBeTruthy();
   });
 
   it('lists a request waiting, and withdraws it', async () => {
     as({ joinRequests: [request('assess', null)] });
     await renderWithProviders(<SpaceWelcome firstTime />);
     expect(screen.getByTestId('welcome-request-assess')).toBeTruthy();
-    expect(mockSeen).not.toHaveBeenCalled();
+    expect(mockDismiss).not.toHaveBeenCalled();
     await fireEvent.press(screen.getByTestId('welcome-withdraw-assess'));
     expect(mockWithdraw).toHaveBeenCalledWith('assess', expect.anything());
     mockWithdraw.mock.calls[0][1].onSuccess();

@@ -117,15 +117,26 @@ test.describe('signing up (Phase 52)', () => {
     await expect(ines.getByTestId(`join-request-${request.user_id}`)).toHaveCount(0);
     const ninaSession = await unwrap<any>(await nina.request.get('/api/auth/session'), 'nina after');
     expect(ninaSession.memberships.map((m: any) => m.slug)).toContain(ORGS.c.slug);
+    // In, with no child yet: no "Start an assessment" is offered her (JF1), and she knows who adds children.
+    const ninaHere = await as('admin', { email: 'nina.newcomer@example.com', org: ORGS.c.slug });
+    expect((await unwrap<any>(await ninaHere.request.get('/api/home'), 'her home')).may_assess).toBe(false);
+    const inSpace = await unwrap<any>(await ninaHere.request.get('/api/auth/session'), 'her session there');
+    expect(inSpace.organization.admin_names).toEqual(['Ines Ferreira']);
     // Her child, added now through the usual student form, with Nina as the parent (J07: a parent let in
     // with no child could not start the space's assessment).
     await sheet.getByTestId('let-in-add-child').click();
     await ines.getByLabel('Full name').fill('Nico Newcomer');
     await ines.getByTestId('user-parent-consent').getByRole('checkbox').check();
     await ines.getByRole('button', { name: /^Save|Add/ }).last().click();
-    const ninaInSpace = await as('admin', { email: 'nina.newcomer@example.com', org: ORGS.c.slug });
-    const kids = await unwrap<any[]>(await ninaInSpace.request.get('/api/users?role=student'), 'her children');
+    const kids = await unwrap<any[]>(await ninaHere.request.get('/api/users?role=student'), 'her children');
     expect(kids.map((k) => k.full_name)).toContain('Nico Newcomer');
+    expect((await unwrap<any>(await ninaHere.request.get('/api/home'), 'her home now')).may_assess).toBe(true);
+    // Her home says she is in, until she dismisses it (JF5).
+    await ninaHere.goto('/');
+    const card = ninaHere.getByTestId(`home-request-${ORGS.c.slug}`);
+    await expect(card).toContainText("You're in Ferreira Family Practice.");
+    await ninaHere.getByTestId(`home-request-dismiss-${ORGS.c.slug}`).click();
+    await expect(card).toHaveCount(0);
 
     // Riverside declines Theo; he sees it once.
     const rosa = await as('orgBAdmin', { org: ORGS.b.slug });
@@ -135,8 +146,15 @@ test.describe('signing up (Phase 52)', () => {
     expect((await unwrap<any>(await theo.request.get('/api/auth/session'), 'theo')).join_requests).toEqual([
       expect.objectContaining({ slug: ORGS.b.slug, outcome: 'declined' }),
     ]);
+    // Seen (an older app's call) no longer hides it: a decline stays until dismissed (owner, 2026-11-04; JF5).
     await unwrap(await theo.request.post('/api/spaces/join-requests/seen'), 'seen');
-    expect((await unwrap<any>(await theo.request.get('/api/auth/session'), 'theo again')).join_requests).toEqual([]);
+    expect((await unwrap<any>(await theo.request.get('/api/auth/session'), 'theo again')).join_requests).toEqual([
+      expect.objectContaining({ slug: ORGS.b.slug, outcome: 'declined' }),
+    ]);
+    await unwrap(await theo.request.post(`/api/spaces/join-requests/${ORGS.b.slug}/dismiss`), 'dismiss');
+    expect((await unwrap<any>(await theo.request.get('/api/auth/session'), 'theo dismissed')).join_requests).toEqual([]);
+    // Nothing left to dismiss there: 404.
+    expect((await theo.request.post(`/api/spaces/join-requests/${ORGS.b.slug}/dismiss`)).status()).toBe(404);
 
     // Asking, then withdrawing.
     await unwrap(await theo.request.post('/api/spaces/join-requests', { data: { code: 'FMXY2345' } }), 'theo asks');
@@ -267,7 +285,10 @@ test.describe('join requests are still the admins’ to answer (S9)', () => {
     );
     const inside = await unwrap<any>(await joiner.request.get('/api/auth/session'), 'joiner let in');
     expect(inside.memberships.map((m: any) => m.slug).sort()).toEqual([joinerOwn.slug, made.slug].sort());
-    expect(inside.join_requests).toEqual([]);
+    // Being let in is news until dismissed (JF5).
+    expect(inside.join_requests).toEqual([expect.objectContaining({ slug: made.slug, outcome: 'approved' })]);
+    await unwrap(await joiner.request.post(`/api/spaces/join-requests/${made.slug}/dismiss`), 'dismissed');
+    expect((await unwrap<any>(await joiner.request.get('/api/auth/session'), 'joiner dismissed')).join_requests).toEqual([]);
     const landed = await as('admin', { email: joinerEmail, org: null });
     await landed.goto('/spaces');
     await expect(landed.getByTestId(`org-${made.slug}`)).toContainText(name);

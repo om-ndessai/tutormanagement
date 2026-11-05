@@ -1,19 +1,21 @@
 # Phase 52 (design 63): an admin declines a request to join, behind a confirm; the person who asked
-# sees the decline once, on the Welcome, and as a 13-17 has no way to make a space of their own.
-# Self-cleaning: any old decline is marked seen, and Theo's request to Riverside (the seed's) is
-# asked again, before and after.
+# sees the decline on the Welcome, and as a 13-17 has no way to make a space of their own.
+# UI audit (JF5; owner, 2026-11-04): the decline stays, with its day and Ask again, until Theo dismisses it --
+# signing in again still shows it; dismissed, it is gone.
+# Self-cleaning: any old answer is dismissed, and Theo's request to Riverside (the seed's) is asked again,
+# before and after.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: seen, EMAIL: theo.teen@example.com }
+      env: { ACTION: dismiss, EMAIL: theo.teen@example.com }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: ask, EMAIL: theo.teen@example.com, CODE: RVRS2345 }
 onFlowComplete:
   - runScript:
       file: ../../scripts/spaces.js
-      env: { ACTION: seen, EMAIL: theo.teen@example.com }
+      env: { ACTION: dismiss, EMAIL: theo.teen@example.com }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: ask, EMAIL: theo.teen@example.com, CODE: RVRS2345 }
@@ -46,6 +48,7 @@ tags:
 - extendedWaitUntil:
     visible: 'Decline Theo Teen’s request?'
     timeout: 5000
+- assertVisible: 'They will see that this space did not let them in. They can ask again with the code.'
 - tapOn: 'Decline request'
 - extendedWaitUntil:
     visible: 'Theo Teen’s request declined.'
@@ -54,7 +57,7 @@ tags:
     notVisible:
       id: join-requests
     timeout: 15000
-# Theo sees it, once.
+# Theo sees it, with its day and Ask again.
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -64,12 +67,16 @@ tags:
     visible:
       id: welcome-declined-riverside
     timeout: 30000
-- assertVisible: 'Riverside Tutoring didn’t accept your request to join.'
+- assertVisible: '.*Riverside Tutoring did not let you in.*'
+- assertVisible: '.*Declined on .*'
+- assertVisible:
+    id: welcome-ask-again-riverside
 - assertVisible:
     id: welcome-adults-only
     text: 'To start a space of your own you need to be 18 or older.'
 - assertNotVisible:
     id: welcome-make
+# Signing in again, it is still there: an answer stays until it is dismissed.
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -77,7 +84,13 @@ tags:
       ORG: ''
 - extendedWaitUntil:
     visible:
-      id: welcome-join
+      id: welcome-declined-riverside
     timeout: 30000
-- assertNotVisible:
-    id: welcome-declined-riverside
+- tapOn:
+    id: welcome-dismiss-riverside
+- extendedWaitUntil:
+    notVisible:
+      id: welcome-declined-riverside
+    timeout: 15000
+- assertVisible:
+    id: welcome-join

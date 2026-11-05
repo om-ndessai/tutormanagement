@@ -25,7 +25,7 @@ test.describe('people in several organizations', () => {
     await expect(priya).toHaveTitle(/Riverside/);
 
     // A tutor here: no Users-wide admin powers, no Organization page.
-    await expect(priya.getByRole('link', { name: 'Space' })).toHaveCount(0);
+    await expect(priya.getByRole('link', { name: 'Space settings' })).toHaveCount(0);
     const session = await unwrap<any>(await priya.request.get('/api/auth/session', {
       headers: { 'X-Organization': ORGS.b.slug },
     }), 'session in B');

@@ -4,8 +4,8 @@
 import { formatRelativeTime, type SpaceLookup } from '@tmi/shared';
 import { getCalendars } from 'expo-localization';
 import { router } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { useRef, useState, type RefObject } from 'react';
+import { Alert, View, type TextInput as NativeTextInput } from 'react-native';
 import { Button, Icon, Text, TextInput } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
@@ -17,61 +17,56 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
-import {
-  useAskToJoin,
-  useDeleteAccount,
-  useLookupSpace,
-  useMakeSpace,
-  useMarkDeclinesSeen,
-  useWithdrawRequest,
-} from './api';
+import { useAskToJoin, useDeleteAccount, useLookupSpace, useMakeSpace, useWithdrawRequest } from './api';
 import { markInviteStep } from './invite-step';
 import { OrgAvatar } from './org-avatar';
-import { canMake, codeReady, deviceTimeZone, makeProblem, splitRequests, standingLine } from './space-model';
+import {
+  answeredRequests,
+  canMake,
+  codeReady,
+  deviceTimeZone,
+  makeProblem,
+  splitRequests,
+  standingLine,
+} from './space-model';
+import { RequestAnswerRow } from './your-requests';
+
+type CodeInput = NativeTextInput;
 
 /**
  * Phase 52: what a newcomer sees after signing in -- and anyone looking for another space. Join a
  * space with its code (by asking; its admins let you in), or make your own (adults). Requests
- * waiting for an answer are listed, and may be withdrawn; a decline is shown once.
- * `firstTime` adds "Delete my account" (the person is in no space).
+ * waiting for an answer are listed, and may be withdrawn; a space's answer (let in, or declined)
+ * stays until it is dismissed (owner, 2026-11-04; UI audit JF5) -- viewing it no longer marks it seen.
+ * `firstTime` adds "Delete my account" (the person is in no space); `focusJoin` (Home's "Ask again")
+ * opens on the code field.
  *
  * Phase 61 (S11): two choices, Join with a code and Start a space (adults only; a 13-17 sees only
  * the first). A phone has no room side by side, so they stack, in that order. Starting one goes on
  * to "Invite people" (S12) inside the new space.
  */
-export function SpaceWelcome({ firstTime }: { firstTime: boolean }) {
+export function SpaceWelcome({ firstTime, focusJoin = false }: { firstTime: boolean; focusJoin?: boolean }) {
   const { joinRequests, account, memberships, invitations, platformAdmin } = useAuth();
   const mayMake = canMake(account, memberships, platformAdmin);
-  const markSeen = useMarkDeclinesSeen();
+  const codeRef = useRef<CodeInput>(null);
   // Held here, not on the request's row: withdrawing refreshes the session, which unmounts the row
   // (and Requests sent with it) before a per-call onSuccess there would run, and TanStack drops the
   // callbacks of an unmounted observer -- so the toast would never show.
   const withdraw = useWithdrawRequest();
   const toast = useToast();
-  const { open, declined } = splitRequests(joinRequests);
+  const { open } = splitRequests(joinRequests);
+  const answers = answeredRequests(joinRequests);
   const theme = useAppTheme();
-
-  // A decline is shown once: told to the server once per visit, never again on a re-render. The
-  // session is not re-read, so the line stays for this visit.
-  const told = useRef(false);
-  const { mutate: tellSeen } = markSeen;
-  useEffect(() => {
-    if (declined.length === 0 || told.current) return;
-    told.current = true;
-    tellSeen();
-  }, [declined.length, tellSeen]);
 
   return (
     <View style={{ gap: space.lg }} testID="welcome">
-      {declined.map((r) => (
-        <View
-          key={r.slug}
-          testID={`welcome-declined-${r.slug}`}
-          style={{ backgroundColor: theme.tokens.muted, borderRadius: radius.md, padding: space.md }}
-        >
-          <Text variant="bodyMedium">{`${r.name} didn’t accept your request to join.`}</Text>
+      {answers.length > 0 ? (
+        <View style={{ gap: space.sm }} accessibilityLabel="Answers to your requests">
+          {answers.map((r) => (
+            <RequestAnswerRow key={r.slug} request={r} prefix="welcome" onAskAgain={() => codeRef.current?.focus()} />
+          ))}
         </View>
-      ))}
+      ) : null}
       {open.length > 0 ? (
         <OpenRequests
           pending={withdraw.isPending}
@@ -84,7 +79,7 @@ export function SpaceWelcome({ firstTime }: { firstTime: boolean }) {
         />
       ) : null}
       <View style={{ gap: space.lg }} testID="welcome-choices">
-        <JoinWithCode />
+        <JoinWithCode inputRef={codeRef} autoFocus={focusJoin} />
         {mayMake ? <MakeSpace /> : null}
       </View>
       {mayMake ? null : (
@@ -141,7 +136,7 @@ function OpenRequests({
   );
 }
 
-function JoinWithCode() {
+function JoinWithCode({ inputRef, autoFocus }: { inputRef: RefObject<CodeInput | null>; autoFocus: boolean }) {
   const lookup = useLookupSpace();
   const ask = useAskToJoin();
   const toast = useToast();
@@ -186,7 +181,9 @@ function JoinWithCode() {
           </Text>
         </View>
         <TextInput
+          ref={inputRef}
           testID="welcome-code"
+          autoFocus={autoFocus}
           mode="outlined"
           label="Space code"
           placeholder="K7QM-9XDA"

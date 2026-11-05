@@ -1,12 +1,17 @@
 import { PLATFORM_BRAND, type MyJoinRequest } from '@tmi/shared';
 
 import {
+  accountBadgeCount,
+  answeredRequests,
   canMake,
   codeReady,
+  declinedOnLine,
   deleteNameMatches,
   deviceTimeZone,
   makeProblem,
   mayDeleteSpace,
+  requestAnswersWaiting,
+  requestLine,
   shareText,
   splitRequests,
   spokenCode,
@@ -56,12 +61,53 @@ describe('space model (Phase 52)', () => {
     expect(makeProblem('The Creator family')).toBeNull();
   });
 
-  it('splits requests into open and declined', () => {
-    const { open, declined } = splitRequests([request('a', null), request('b', 'declined')]);
+  it('splits requests into open, let in and declined', () => {
+    const { open, approved, declined } = splitRequests([
+      request('a', null),
+      request('b', 'declined'),
+      request('c', 'approved'),
+    ]);
     expect(open.map((r) => r.slug)).toEqual(['a']);
+    expect(approved.map((r) => r.slug)).toEqual(['c']);
     expect(declined.map((r) => r.slug)).toEqual(['b']);
   });
+});
 
+describe('the spaces’ answers, until dismissed (UI audit JF5)', () => {
+  const all = [request('a', null), request('b', 'declined'), request('c', 'approved')];
+
+  it('the answers are the let in and the declined, in order; the waiting one is not', () => {
+    expect(answeredRequests(all).map((r) => r.slug)).toEqual(['b', 'c']);
+  });
+
+  it('the account button counts invitations and answers, not waiting requests', () => {
+    expect(accountBadgeCount(0, [])).toBe(0);
+    expect(accountBadgeCount(1, [request('a', null)])).toBe(1);
+    expect(accountBadgeCount(2, all)).toBe(4);
+    expect(requestAnswersWaiting(1)).toBe('1 answer to your request');
+    expect(requestAnswersWaiting(2)).toBe('2 answers to your requests');
+  });
+
+  it('says each standing in words', () => {
+    // The web's words (request-outcomes.tsx).
+    expect(requestLine({ name: 'Riverside', outcome: null })).toBe(
+      'Asked to join Riverside · waiting for its admins.',
+    );
+    expect(requestLine({ name: 'Riverside', outcome: 'approved' })).toBe("You're in Riverside.");
+    expect(requestLine({ name: 'Riverside', outcome: 'declined' })).toBe('Riverside did not let you in.');
+  });
+
+  it('dates a decline on the space’s clock, and says nothing without a date', () => {
+    // 02:00 UTC on the 4th is still the 3rd in New York.
+    expect(declinedOnLine('2026-11-04T02:00:00Z', 'America/New_York')).toBe('Declined on Nov 3, 2026.');
+    expect(declinedOnLine('2026-11-04T02:00:00Z', 'Europe/London')).toBe('Declined on Nov 4, 2026.');
+    expect(declinedOnLine(null, 'America/New_York')).toBeNull();
+    expect(declinedOnLine(undefined, 'America/New_York')).toBeNull();
+    expect(declinedOnLine('not a date', 'America/New_York')).toBeNull();
+  });
+});
+
+describe('space model, continued', () => {
   it('lets adults make a space, and those a space added only through an adult’s role (S11)', () => {
     expect(canMake({ age_band: 'adult' })).toBe(true);
     expect(canMake({ age_band: '13-17' })).toBe(false);

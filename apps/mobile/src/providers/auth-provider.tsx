@@ -133,8 +133,9 @@ export interface AccessRefusal {
   code: string;
   message: string;
   /**
-   * UI audit (JF8): the account that was checked, when this phone knows it (the address typed, Google's
-   * chosen account, or the sign-up's own) -- for "Ask for an invitation". Memory only, never stored.
+   * UI audit (JF8): the account that was checked -- the server's own word when it sends one (a not_on_list
+   * refusal's `details.email`), else what this phone knows (the address typed, Google's chosen account, or
+   * the sign-up's own) -- for "Checked:" and "Ask for an invitation". Memory only, never stored.
    */
   email: string | null;
   /**
@@ -406,7 +407,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(
     () =>
       on('access-refused', (refusal) => {
-        setAccessRefusal({ ...refusal, email: attemptEmail.current, inSheet: signupSheetPresence.isOpen() });
+        // The address the server says it checked comes first; what this phone knows of the attempt is the
+        // fallback (UI audit JF8).
+        setAccessRefusal({
+          code: refusal.code,
+          message: refusal.message,
+          email: refusal.email ?? attemptEmail.current,
+          inSheet: signupSheetPresence.isOpen(),
+        });
         // UI audit (JF8): declined -- the guest screens stop offering sign-up for the rest of this run.
         if (refusal.code === 'access_declined') declinedThisRun.mark();
         setPendingSignup(null);

@@ -28,6 +28,7 @@ import {
   getOrganizationBySlug,
   listMemberships,
   markDeclinesSeen,
+  dismissJoinOutcomes,
   spaceStanding,
 } from '../repositories/organizations.js';
 import { getPlatformAccount, isPlatformAdmin } from '../repositories/people.js';
@@ -103,10 +104,27 @@ export const spacesRoutes = new Hono<AppEnv>()
     return c.json({ data: { withdrawn: true } });
   })
 
-  /** The person has seen their declined requests: they are not shown again. */
+  /**
+   * Older apps: the person has seen their declined requests. Since 2026-11-04 an answer stays on the person's
+   * home until they dismiss it (below), so this no longer hides anything; it is kept so older apps' calls work.
+   */
   .post('/join-requests/seen', async (c) => {
     await markDeclinesSeen(c.env.DB, c.get('person').id);
     return c.json({ data: { seen: true } });
+  })
+
+  /**
+   * The person dismisses a space's answer to their request (let in, or declined): it leaves their home and the
+   * Spaces page (owner, 2026-11-04; UI audit JF5). A preference, like "Later" on Next up, so no log line.
+   * A space they never asked: 404.
+   */
+  .post('/join-requests/:slug/dismiss', async (c) => {
+    const org = await getOrganizationBySlug(c.env.DB, c.req.param('slug'));
+    const orgId = org ? orgIdFromRow(org.id) : null;
+    if (!orgId || !(await dismissJoinOutcomes(c.env.DB, c.get('person').id, orgId))) {
+      throw ApiError.notFound('No answer from that space to dismiss.');
+    }
+    return c.json({ data: { dismissed: true } });
   })
 
   /**

@@ -118,6 +118,15 @@ export function useMarkDeclinesSeen() {
   return useMutation({ mutationFn: () => apiClient.post('/spaces/join-requests/seen') });
 }
 
+/** Dismisses a space's answer to the person's request (let in, or declined): it leaves their home (JF5). */
+export function useDismissJoinOutcome() {
+  const { refreshSession } = useAuth();
+  return useMutation({
+    mutationFn: (slug: string) => apiClient.post(`/spaces/join-requests/${slug}/dismiss`),
+    onSuccess: () => refreshSession(),
+  });
+}
+
 export function useMakeSpace() {
   const { refreshSession } = useAuth();
   return useMutation({

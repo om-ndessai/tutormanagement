@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PLATFORM_BRAND } from './brand.js';
 import type { AgeBand } from './spaces.js';
 
 // ---------------------------------------------------------------------------
@@ -38,10 +39,24 @@ export const ACCESS_ERROR_CODES = ['not_on_list', 'access_pending', 'access_decl
 export type AccessErrorCode = (typeof ACCESS_ERROR_CODES)[number];
 
 export const NOT_ON_LIST_MESSAGE = 'Sign-up is by invitation for now. Ask us to add you.';
+/**
+ * What a self sign-up reads while it waits (Phase 65, A4), with the owner's promise of 2026-11-04 (UI audit
+ * JF2): who checks, and how long it usually takes. No notice is sent when it ends (decided: words only), so
+ * it says to sign in again.
+ */
 export function accessPendingMessage(fullName?: string | null): string {
   const first = fullName?.trim().split(/\s+/)[0];
-  return `${first ? `Thanks, ${first}. ` : ''}Your access is waiting for approval. You can sign in once it's approved.`;
+  return `${first ? `Thanks, ${first}. ` : ''}A person at ${PLATFORM_BRAND.name} checks every new account, usually within a day. Keep playing meanwhile, and sign in again tomorrow.`;
 }
+
+/**
+ * What a sign-up says BEFORE the provider's button, by the platform's Sign-up access (UI audit JF2, JF8): a
+ * newcomer learns of the wait or the list before the whole form, not after it (J02 step 9, J13).
+ */
+export const SIGNUP_ACCESS_NOTES: Partial<Record<AccessMode, string>> = {
+  postapproved: `A person at ${PLATFORM_BRAND.name} checks every new account before you can sign in, usually within a day.`,
+  preapproved: 'Sign-up is by invitation for now: only addresses on our list can join.',
+};
 export const ACCESS_DECLINED_MESSAGE = "Your access wasn't approved. Contact us if you think this is a mistake.";
 
 /** One entry of the platform's list: an email, a pattern of one (`*`, `?`), or a provider account's id. */

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { KeyRoundIcon, Loader2Icon, PlusIcon, XIcon } from 'lucide-react';
 import { ORG_TIME_ZONES, formatRelativeTime, mayMakeSpace, type SpaceLookup } from '@tmi/shared';
@@ -14,11 +14,11 @@ import {
   useDeleteAccount,
   useLookupSpace,
   useMakeSpace,
-  useMarkDeclinesSeen,
   useWithdrawRequest,
 } from './api';
 import { markInviteStep } from './invite-step';
 import { OrgAvatar } from './org-avatar';
+import { RequestOutcomes } from './request-outcomes';
 
 const message = (caught: unknown, fallback: string) => (caught instanceof ApiRequestError ? caught.message : fallback);
 
@@ -33,29 +33,18 @@ const message = (caught: unknown, fallback: string) => (caught instanceof ApiReq
  */
 export function Welcome({ firstTime }: { firstTime: boolean }) {
   const { joinRequests, account, memberships, invitations, platformAdmin } = useAuth();
-  const markSeen = useMarkDeclinesSeen();
   // Held here, not on the request's row: withdrawing refreshes the session, which unmounts the row
   // before a per-call onSuccess there would run (TanStack drops an unmounted observer's callbacks).
   const withdraw = useWithdrawRequest();
-  const declined = joinRequests.filter((r) => r.outcome === 'declined');
   const open = joinRequests.filter((r) => r.outcome === null);
   const canMake = mayMakeSpace({ account, memberships, platform_admin: platformAdmin });
   // A newcomer (nowhere to go yet) sees the two choices side by side.
   const sideBySide = canMake && firstTime && invitations.length === 0;
 
-  // A decline is shown once.
-  useEffect(() => {
-    if (declined.length > 0) markSeen.mutate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [declined.length]);
-
   return (
     <div className="grid gap-4" data-testid="welcome">
-      {declined.map((r) => (
-        <p key={r.slug} className="bg-muted rounded-md px-3 py-2 text-sm" data-testid={`welcome-declined-${r.slug}`}>
-          {r.name} didn’t accept your request to join.
-        </p>
-      ))}
+      {/* A space's answer (let in, or declined) stays until dismissed (owner, 2026-11-04; UI audit JF5). */}
+      <RequestOutcomes answersOnly />
       {open.length > 0 && (
         <OpenRequests
           pending={withdraw.isPending}
@@ -71,10 +60,17 @@ export function Welcome({ firstTime }: { firstTime: boolean }) {
         <JoinWithCode />
         {canMake && <MakeSpace />}
       </div>
-      {!canMake && (
-        <p className="text-muted-foreground text-xs" data-testid="welcome-adults-only">
-          To start a space of your own you need to be 18 or older.
-        </p>
+      {!canMake && account?.age_band === '13-17' && (
+        // A teen who runs a club met only a grey "no" (J04): the way forward instead (UI audit JF7). An invited adult
+        // (no account of their own yet) is not told about ages at all (J09).
+        <Card className="py-0" data-testid="welcome-adults-only">
+          <CardContent className="grid gap-1 p-4 text-sm">
+            <p className="font-semibold">A club needs an adult to start its space</p>
+            <p className="text-muted-foreground">
+              Ask a teacher or a parent to start it, then join it with its code here.
+            </p>
+          </CardContent>
+        </Card>
       )}
       {/* Only for someone who belongs nowhere, has nothing open and is no platform admin (the API checks the same). */}
       {firstTime && !platformAdmin && memberships.length === 0 && invitations.length === 0 && open.length === 0 && <DeleteAccount />}
@@ -150,7 +146,7 @@ function JoinWithCode() {
   }
 
   return (
-    <Card className="py-0" data-testid="welcome-join">
+    <Card className="scroll-mt-20 py-0" id="join" data-testid="welcome-join">
       <CardContent className="grid gap-3 p-5">
         <h2 className="flex items-center gap-2 font-medium">
           <KeyRoundIcon className="text-muted-foreground size-4" /> Join with a code
@@ -221,7 +217,7 @@ function MakeSpace() {
   }
 
   return (
-    <Card className="py-0" data-testid="welcome-make">
+    <Card className="scroll-mt-20 py-0" id="start" data-testid="welcome-make">
       <CardContent className="grid gap-3 p-5">
         <h2 className="flex items-center gap-2 font-medium">
           <PlusIcon className="text-muted-foreground size-4" /> Start a space

@@ -12,6 +12,7 @@ import { chooseHomeRole, useHomeRole } from '@/features/dashboard/home-role';
 import { RoleSelector } from '@/features/dashboard/role-selector';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { OrgAvatar } from '@/features/organizations/org-avatar';
+import { answeredRequests, requestAnswersWaiting } from '@/features/organizations/space-model';
 import { invitationsWaiting } from '@/features/organizations/spaces-model';
 import { AppearanceControl } from '@/features/shell/appearance-control';
 import { haptics } from '@/lib/haptics';
@@ -25,6 +26,7 @@ export default function AccountSheet() {
     organization,
     memberships,
     invitations,
+    joinRequests,
     platformAdmin,
     chooseOrganization,
     signOut,
@@ -35,6 +37,8 @@ export default function AccountSheet() {
   if (!user) return null;
 
   const others = memberships.filter((m) => m.status === 'active' && m.slug !== organization?.slug);
+  // UI audit (JF5): the spaces' answers to the person's requests, until dismissed (on Home and Spaces).
+  const answers = answeredRequests(joinRequests).length;
   const active = memberships.filter((m) => m.status === 'active');
 
   function openSpaces() {
@@ -99,6 +103,15 @@ export default function AccountSheet() {
               testID="account-invitations"
               title={invitationsWaiting(invitations.length)}
               left={(props) => <List.Icon {...props} icon="email-outline" />}
+              onPress={openSpaces}
+              style={{ paddingHorizontal: 0 }}
+            />
+          ) : null}
+          {answers > 0 ? (
+            <ListItem
+              testID="account-request-answers"
+              title={requestAnswersWaiting(answers)}
+              left={(props) => <List.Icon {...props} icon="account-check-outline" />}
               onPress={openSpaces}
               style={{ paddingHorizontal: 0 }}
             />

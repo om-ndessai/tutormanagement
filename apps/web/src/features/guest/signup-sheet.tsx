@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import type { AccessErrorCode } from '@tmi/shared';
+import { SIGNUP_ACCESS_NOTES, type AccessErrorCode } from '@tmi/shared';
 
 import { LogoMark } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
@@ -98,7 +98,13 @@ export function SignupSheet({
           </div>
         ) : isAccessRefusal(error?.code) ? (
           // Phase 65: a provider sign-in that sign-up access stopped (not on the list, waiting, declined).
-          <AccessRefused code={error.code} message={error.message} onKeepPlaying={close} onUseAnother={clearError} />
+          <AccessRefused
+            code={error.code}
+            message={error.message}
+            email={error.details?.email?.[0] ?? null}
+            onKeepPlaying={close}
+            onUseAnother={clearError}
+          />
         ) : refused ? (
           // Phase 65: the About-you step refused (waiting for approval, declined, not on the list).
           <AccessRefused
@@ -159,6 +165,12 @@ export function SignupSheet({
                   : 'Keep your scores, unlock every quest and play with your family.'}
               </DialogDescription>
             </DialogHeader>
+            {!signingIn && config?.signup_access && SIGNUP_ACCESS_NOTES[config.signup_access] && (
+              // Said before the provider's button, not after the whole form (UI audit JF2, JF8; J02 step 9, J13).
+              <p className="bg-muted/60 rounded-lg px-3 py-2 text-sm" data-testid="signup-access-note">
+                {SIGNUP_ACCESS_NOTES[config.signup_access]}
+              </p>
+            )}
             {signInOff ? (
               <form
                 className="grid gap-2"

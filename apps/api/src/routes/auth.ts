@@ -56,6 +56,7 @@ import {
 import { OAUTH_COOKIE, clearedStateCookie, randomToken, readState, safeReturnTo, stateCookie } from '../lib/oauth-state.js';
 import { seal, unseal } from '../lib/seal.js';
 import { assertAccess, assertMaySignUp, signUpWaits } from '../lib/access.js';
+import { getAccessSettings } from '../repositories/access.js';
 import { allowlistOn, assertInvited } from '../lib/invited.js';
 import { createSignupToken, readSignupToken } from '../lib/signup-token.js';
 import { orgIdFromRow } from '../lib/org.js';
@@ -80,6 +81,7 @@ import {
   getPublicBrand,
   listInvitations,
   listMemberships,
+  listAdminNames,
   listMyJoinRequests,
   setDefaultOrganization,
   recordEntry,
@@ -163,6 +165,9 @@ async function sessionPayload(
         ...org,
         // The payer details are the office's: its admins only.
         settings: isAdmin(member) ? await getOrganizationSettings(env.DB, orgId) : null,
+        // Who its admins are, for a member who is not one: who adds children, who lets people in (UI audit
+        // JF1; R31). Names only.
+        ...(isAdmin(member) ? {} : { admin_names: await listAdminNames(env.DB, orgId) }),
       };
     }
   }
@@ -468,6 +473,9 @@ export const authRoutes = new Hono<AppEnv>()
         google_client_id: enabled ? c.env.GOOGLE_CLIENT_ID : null,
         auth_enabled: enabled,
         signup_open: signIn.signup_open,
+        // The platform's Sign-up access, so a client says before the provider's button that a person checks
+        // new accounts, or that sign-up is by invitation (UI audit JF2, JF8). Memoised, like the switches.
+        signup_access: (await getAccessSettings(c.env.DB)).mode,
         // Phase 55: Google first, then whichever others are in force for this client and set up here.
         providers: enabled ? providerInfo(c.env, signIn.offered) : [],
         // Phase 63 (P10): guest play, while it is on at this address.

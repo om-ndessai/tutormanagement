@@ -166,6 +166,12 @@ export interface MemberHome {
   personal: boolean;
   /** False for a teen (13-17): adding people is for adults (Phase 63), so no such action is offered. */
   may_bring_people: boolean;
+  /**
+   * Whether the reader has someone to start an assessment for here (a student they may follow, or themselves
+   * in a personal space). False: no "Start an assessment" is offered -- a parent let in with no child once
+   * met it as a dead end (UI audit JF1, J07). Absent from older Workers: treat as true.
+   */
+  may_assess?: boolean;
   tutor: HomeTutor | null;
   office: HomeOffice | null;
   parent: { children: HomeChild[] } | null;
@@ -440,7 +446,10 @@ export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): N
   if (t?.now.next) out.push({ kind: 'lesson_next', hat: 'tutor', lesson: t.now.next, starts_in: t.next_starts_in });
   // Phase 68 (H4): with nothing else, the focus's own first step -- only where that set is on here
   // (with every set off, the focus is a fallback, and offering it would open a page that answers 403).
-  if ((home.focus === 'quest' || home.focus === 'assessment') && (home.focus_options ?? []).includes(home.focus)) {
+  if (
+    (home.focus === 'quest' || (home.focus === 'assessment' && home.may_assess !== false)) &&
+    (home.focus_options ?? []).includes(home.focus)
+  ) {
     out.push({ kind: 'focus_default', hat: 'learner', focus: home.focus });
   }
   const rank = (item: NextUp) => NEXT_UP_ORDER.indexOf(item.kind);
@@ -502,7 +511,14 @@ export type QuickAction = (typeof QUICK_ACTIONS)[number];
 
 export function quickActionsFor(
   hats: readonly HomeHat[],
-  options: { tutoring: boolean; quest: boolean; assessment: boolean; mayBringPeople: boolean },
+  options: {
+    tutoring: boolean;
+    quest: boolean;
+    assessment: boolean;
+    mayBringPeople: boolean;
+    /** MemberHome.may_assess: someone to start an assessment for (absent: true). */
+    mayAssess?: boolean;
+  },
 ): QuickAction[] {
   const out: QuickAction[] = [];
   const add = (action: QuickAction) => {
@@ -524,7 +540,7 @@ export function quickActionsFor(
     } else {
       if (options.quest) add('new_quest');
       if (options.quest) add('join_code');
-      if (options.assessment) add('start_assessment');
+      if (options.assessment && options.mayAssess !== false) add('start_assessment');
     }
   }
   return out.slice(0, 3);

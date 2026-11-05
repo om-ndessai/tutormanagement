@@ -1,5 +1,6 @@
 // Ported from apps/web/src/features/auth/login-page.tsx (SignInError) @ 1132322 (Phase 51/52 additions: entry 63)
 import { AUTH_ERROR_CODES } from '@tmi/shared';
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
@@ -20,12 +21,15 @@ export function SignInError({
   message,
   signUpEmail,
   onSignUp,
+  signUpNote,
 }: {
   code: string;
   message: string;
   /** The address just typed, when developer sign-in may sign it up. */
   signUpEmail?: string | null;
   onSignUp?: () => void;
+  /** UI audit (JF2, JF8): the platform's Sign-up access note, shown above "Sign up as" when it is offered. */
+  signUpNote?: ReactNode;
 }) {
   const theme = useAppTheme();
   const calm = code === 'rate_limited';
@@ -66,7 +70,8 @@ export function SignInError({
         </Text>
       ) : null}
       {offerSignUp ? (
-        <View style={{ paddingLeft: 18, alignItems: 'flex-start' }}>
+        <View style={{ paddingLeft: 18, alignItems: 'flex-start', gap: space.xs }}>
+          {signUpNote}
           <Button testID="sign-in-signup" mode="text" compact onPress={onSignUp} textColor={ink}>
             {`Sign up as ${signUpEmail}`}
           </Button>

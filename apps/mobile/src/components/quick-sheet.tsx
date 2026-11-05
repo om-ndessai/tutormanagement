@@ -28,6 +28,8 @@ export interface QuickSheetProps {
   actionTestID?: string;
   /** The action's own testID, when it must be exactly that (a game's `game-create`). */
   primaryTestID?: string;
+  /** Cancel's own testID, when it must be exactly that (Let in's `let-in-later`). */
+  cancelTestID?: string;
   title: string;
   /** One line under the title. */
   description?: string;
@@ -54,6 +56,7 @@ export function QuickSheet({
   testID = 'quick-sheet',
   actionTestID,
   primaryTestID,
+  cancelTestID,
   title,
   description,
   children,
@@ -123,7 +126,7 @@ export function QuickSheet({
         ) : null}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}>
           <Button
-            testID={`${actions}-cancel`}
+            testID={cancelTestID ?? `${actions}-cancel`}
             mode="text"
             onPress={cancel}
             disabled={loading}

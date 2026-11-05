@@ -25,7 +25,7 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
   const theme = useAppTheme();
   const reduced = useReducedMotion();
   const insets = useSafeAreaInsets();
-  const { user, organization } = useAuth();
+  const { user, organization, account } = useAuth();
   const [open, setOpen] = useState(false);
   const sets = createSetsOf(organization);
   // Phase 50: without Tutoring nobody is asked about pairings or a running lesson.
@@ -86,7 +86,7 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
         {isTutor && user ? (
           <TutorActions userId={user.id} onChoose={choose} />
         ) : (
-          <ActionList actions={createActions(user?.roles, {}, sets)} onChoose={choose} />
+          <ActionList actions={createActions(user?.roles, { account }, sets)} onChoose={choose} />
         )}
       </BottomSheetScrollView>
     </BottomSheetModal>
@@ -94,7 +94,7 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
 }
 
 function TutorActions({ userId, onChoose }: { userId: string; onChoose: (action: CreateAction) => void }) {
-  const { user } = useAuth();
+  const { user, account } = useAuth();
   // The same queries as Sessions' Start button, so the cache is shared.
   const pairings = useAssignments({ tutor_user_id: userId });
   const active = useActiveSession();
@@ -102,6 +102,7 @@ function TutorActions({ userId, onChoose }: { userId: string; onChoose: (action:
     teaches: (pairings.data?.data.length ?? 0) > 0,
     // Unknown counts as running, as on Sessions: Start appears once the server says nothing is.
     lessonRunning: !active.isSuccess || active.data.data.mine !== null,
+    account,
   });
   return <ActionList actions={actions} onChoose={onChoose} />;
 }

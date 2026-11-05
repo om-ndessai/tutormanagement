@@ -1,5 +1,5 @@
-import { CheckIcon, ChevronsUpDownIcon, LayoutGridIcon, MailIcon, ShieldCheckIcon } from 'lucide-react';
-import { USER_ROLE_LABELS } from '@tmi/shared';
+import { CheckIcon, ChevronsUpDownIcon, KeyRoundIcon, LayoutGridIcon, MailIcon, PlusIcon, ShieldCheckIcon } from 'lucide-react';
+import { USER_ROLE_LABELS, mayMakeSpace } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { Badge } from '@/components/ui/badge';
@@ -27,7 +27,11 @@ export function invitationsWaiting(count: number): string {
  * tabs stay where they are. There is no star: the last space opened is where they land.
  */
 export function OrgSwitcher({ className }: { className?: string }) {
-  const { organization, memberships, invitations, platformAdmin, chooseOrganization } = useAuth();
+  const { organization, memberships, invitations, joinRequests, platformAdmin, account, chooseOrganization } = useAuth();
+  const canMake = mayMakeSpace({ account, memberships, platform_admin: platformAdmin });
+  // Invitations, and spaces' answers to the person's requests not yet dismissed (JF5).
+  const answers = joinRequests.filter((r) => r.outcome !== null).length;
+  const waiting = invitations.length + answers;
   const active = memberships.filter((m) => m.status === 'active');
 
   return (
@@ -41,13 +45,17 @@ export function OrgSwitcher({ className }: { className?: string }) {
         data-testid="org-switcher"
       >
         <LogoLockup className="min-w-0 flex-1" />
-        {invitations.length > 0 && (
+        {waiting > 0 && (
           <Badge
             className="shrink-0 px-1.5 py-0 text-[10px] font-semibold"
-            aria-label={invitationsWaiting(invitations.length)}
+            aria-label={
+              answers > 0
+                ? `${invitations.length > 0 ? `${invitationsWaiting(invitations.length)}, ` : ''}${answers} answer${answers === 1 ? '' : 's'} to your requests`
+                : invitationsWaiting(invitations.length)
+            }
             data-testid="org-switcher-invitations"
           >
-            {invitations.length}
+            {waiting}
           </Badge>
         )}
         <ChevronsUpDownIcon className="text-sidebar-muted-foreground size-4 shrink-0" />
@@ -79,6 +87,17 @@ export function OrgSwitcher({ className }: { className?: string }) {
           <LayoutGridIcon className="size-4" />
           All spaces
         </DropdownMenuItem>
+        {/* Where a teacher looks first (UI audit JF7: Sam found Start a space on the third try). */}
+        <DropdownMenuItem onSelect={() => window.location.assign('/spaces#join')} data-testid="org-switcher-join">
+          <KeyRoundIcon className="size-4" />
+          Join with a code
+        </DropdownMenuItem>
+        {canMake && (
+          <DropdownMenuItem onSelect={() => window.location.assign('/spaces#start')} data-testid="org-switcher-start">
+            <PlusIcon className="size-4" />
+            Start a space
+          </DropdownMenuItem>
+        )}
         {platformAdmin && (
           <DropdownMenuItem onSelect={() => window.location.assign('/platform')}>
             <ShieldCheckIcon className="size-4" />

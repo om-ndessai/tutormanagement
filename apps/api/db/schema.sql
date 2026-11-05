@@ -2757,8 +2757,11 @@ CREATE TABLE join_requests (
   outcome         TEXT CHECK (outcome IN ('approved', 'declined', 'withdrawn')),
   answered_by     TEXT REFERENCES users (id),
   answered_at     TEXT,
-  -- Whether the person has seen the outcome (a decline is shown once).
+  -- Whether the person has seen the outcome (older apps mark it when the Spaces page is viewed).
   seen_at         TEXT,
+  -- When the person dismissed the outcome: until then a let-in or a decline stays on their home (UI audit
+  -- JF5, owner 2026-11-04). Its own column: older apps mark seen_at on every view.
+  outcome_dismissed_at TEXT,
 
   PRIMARY KEY (organization_id, user_id, requested_at)
 );

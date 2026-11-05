@@ -106,6 +106,16 @@ export default function OrgLayout() {
                 headerShown: false,
               }}
             />
+            {/* Letting in someone who asked with the code (UI audit JF1): the role, then their child -- a quick sheet. */}
+            <Stack.Screen
+              name="let-in"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: 'fitToContents',
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
             <Stack.Screen
               name="new-parent"
               options={{

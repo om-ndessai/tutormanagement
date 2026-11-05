@@ -39,7 +39,7 @@ import {
   useDiscardCanvasAssessment,
   useStartCanvasAssessment,
 } from './api';
-import { levelOptionDetail, rowSummary, startNote } from './assessment-model';
+import { levelOptionDetail, noStudentsLine, rowSummary, startNote } from './assessment-model';
 import { rowActions, statusLabel } from './review-model';
 
 export function AssessmentsScreen() {
@@ -125,10 +125,27 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
             options={studentList.map((student) => ({ id: student.id, label: student.full_name }))}
             value={pickedStudent}
             onChange={setStudentId}
-            emptyText={students.isPending ? undefined : 'No students to choose from.'}
             searchPlaceholder="Search students"
             defaultOpen={false}
           />
+        ) : null}
+        {!onlyStudent && students.isSuccess && studentList.length === 0 ? (
+          // A parent let in with no child linked once met an empty picker and a grey Start, with no reason
+          // (UI audit J07 steps 26-28, JF1): say why, and who adds children.
+          <View
+            testID="assessment-no-students"
+            accessibilityRole="text"
+            accessibilityLiveRegion="polite"
+            style={{ backgroundColor: theme.tokens.muted, borderRadius: radius.md, padding: space.md }}
+          >
+            <Text variant="bodyMedium">
+              {noStudentsLine({
+                isAdmin: user?.roles.includes('admin') ?? false,
+                spaceName: organization?.name,
+                adminNames: organization?.admin_names,
+              })}
+            </Text>
+          </View>
         ) : null}
         <OptionPicker
           testID="assessment-level"

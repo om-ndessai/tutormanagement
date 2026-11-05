@@ -1720,6 +1720,15 @@ BEGIN
 END;
 ```
 
+Phase 71 (journey fixes, `docs/journey-fixes-plan.md` JF5) keeps a space's answer to a join request on the
+person's home until they dismiss it, for 30 days (`JOIN_OUTCOME_SHOWN_DAYS`): `outcome_dismissed_at`, its own
+column, because older apps mark `seen_at` whenever the Spaces page is viewed. Answers already older than 30 days
+are not shown again; newer ones show once more until dismissed (owner, 2026-11-04: "stay until dismissed").
+
+```sql release=phase-71
+ALTER TABLE join_requests ADD COLUMN outcome_dismissed_at TEXT;
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

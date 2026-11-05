@@ -4,7 +4,7 @@
 // else the people they work with (`visibleUserIds`), and only an admin may ask for the deactivated.
 // The web pages with Previous/Next; on a phone the list grows as it is scrolled. Only an admin
 // deactivates, restores or deletes, and never their own account.
-import type { User } from '@tmi/shared';
+import { mayAddPeople, type User } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
@@ -38,11 +38,14 @@ const INITIAL: PeopleFilterState = {
 };
 
 export function PeopleScreen() {
-  const { user: viewer } = useAuth();
+  const { user: viewer, account } = useAuth();
   const brand = useBrand();
   const theme = useAppTheme();
   const bottomOverlap = useBottomOverlap();
   const isAdmin = viewer?.roles.includes('admin') ?? false;
+  // Adding people is for the space's adult admins (a 13-17 adds nobody): offered to no one else, rather than
+  // refused after the whole form (UI audit JF22; the shared rule the (+) sheet and the home use too).
+  const addsPeople = mayAddPeople({ roles: viewer?.roles ?? [], account });
   const [filters, setFilters] = useState<PeopleFilterState>(INITIAL);
   const debouncedSearch = useDebouncedValue(filters.search.trim());
   const [refreshing, setRefreshing] = useState(false);
@@ -190,7 +193,7 @@ export function PeopleScreen() {
               icon="account-search-outline"
               title="No users match these filters."
               action={
-                isAdmin ? (
+                addsPeople ? (
                   <Button testID="people-add-button" mode="contained" icon="plus" onPress={add.go}>
                     {add.label}
                   </Button>

@@ -4,7 +4,7 @@
 // someone who asked to join (Phase 52: their name and email come from the cached requests, never the
 // link). Admin only, as the API
 // (`requireAdmin`): the person themselves asks the office to change their record.
-import type { UserDetail } from '@tmi/shared';
+import { mayAddPeople, type UserDetail } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import type { ScrollView } from 'react-native';
@@ -47,8 +47,12 @@ export function PersonFormSheet({
   /** Phase 52: the id of the person whose request to join this lets in. */
   request?: string;
 }) {
-  const { user } = useAuth();
-  const isAdmin = user?.roles.includes('admin') ?? false;
+  const { user, account } = useAuth();
+  // Changing a record is an admin's; adding someone is an ADULT admin's (a 13-17 adds nobody, JF22).
+  const adding = !id;
+  const isAdmin =
+    (user?.roles.includes('admin') ?? false) &&
+    (!adding || mayAddPeople({ roles: user?.roles ?? [], account }));
   const detail = useUserDetail(isAdmin && id ? id : null);
   const letting = Boolean(request) && !id;
   const requests = useJoinRequests(isAdmin && letting);

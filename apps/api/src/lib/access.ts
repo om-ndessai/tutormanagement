@@ -22,7 +22,9 @@ export async function assertMaySignUp(
 ): Promise<void> {
   if ((await getAccessSettings(db)).mode !== 'preapproved') return;
   if (!invitedMatch(await accessListEntries(db), who)) {
-    throw new ApiError(403, 'not_on_list', NOT_ON_LIST_MESSAGE);
+    // The account checked travels with the refusal, so the person sees which address was not on the list and
+    // can ask for an invitation for it (UI audit JF8, J13).
+    throw new ApiError(403, 'not_on_list', NOT_ON_LIST_MESSAGE, who.email ? { email: [who.email] } : undefined);
   }
 }
 

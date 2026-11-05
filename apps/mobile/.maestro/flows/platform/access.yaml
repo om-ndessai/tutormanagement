@@ -3,7 +3,8 @@
 # G4Q5 as a guest and signs up from the offer's sign-up sheet (with sign-in off, the developer path) and,
 # instead of the "You're in." splash, meets the plain refusal screen: "Waiting for approval", saying play
 # goes on without an account, with Keep playing first and Contact us with the address in full (Phase 70,
-# UI audit JF2). Keep playing closes the sign-up sheet: the same question of the same quest (JF36, J01A
+# UI audit JF2); the sign-up sheet said the wait before the address (signup-access-note). Keep playing
+# closes the sign-up sheet: the same question of the same quest (JF36, J01A
 # step 14); Exit is then the guest home. Nav, signed in again, sees the gear's count, finds them under
 # Waiting for approval and approves them; they move to Recently decided. The newcomer can then sign in,
 # into their own space.
@@ -108,6 +109,10 @@ onFlowComplete:
     visible:
       id: signup-sheet
     timeout: 10000
+# Phase 70 (UI audit JF2, JF8): the wait is said before the address, not after the form.
+- assertVisible:
+    id: signup-access-note
+- assertVisible: '.*checks every new account before you can sign in, usually within a day.*'
 - tapOn:
     id: signup-sheet-email
 - inputText: 'access.pending@example.com'
@@ -174,7 +179,7 @@ onFlowComplete:
     text: 'Waiting for approval'
 - assertVisible:
     id: access-refused-message
-    text: 'Thanks, Pia. Your access is waiting for approval.*'
+    text: 'Thanks, Pia. A person at Aimtrue checks every new account, usually within a day.*'
 - assertNotVisible:
     id: signup-splash
 - assertVisible:

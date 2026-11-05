@@ -55,6 +55,6 @@ export function humpFillPath(width: number, height: number, edge: number = TAB_B
 
 /** Whether the reader's bar has a "+", and so the hump: anyone with something to create. */
 export function useTabBarHump(): boolean {
-  const { user, organization } = useAuth();
-  return hasCreateActions(user?.roles, createSetsOf(organization));
+  const { user, organization, account } = useAuth();
+  return hasCreateActions(user?.roles, createSetsOf(organization), account);
 }
