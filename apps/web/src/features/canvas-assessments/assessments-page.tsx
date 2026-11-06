@@ -4,10 +4,12 @@ import { toast } from 'sonner';
 import { FileTextIcon } from 'lucide-react';
 import {
   CANVAS_ASSESSMENT_STATUS_LABELS,
+  TILE_LEVEL_WORDS,
   formatRelativeTime,
   levelLabel,
   type CanvasAssessment,
   type CanvasAssessmentLevelId,
+  type QuestionBankLevelId,
 } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
@@ -63,6 +65,9 @@ export function StartCard() {
   const students = useUsers({ role: 'student', limit: 100, sort: 'full_name', order: 'asc' }, { enabled: !onlyStudent });
   const levels = useCanvasAssessmentLevels();
   const start = useStartCanvasAssessment();
+  // Phase 77 (JF20): the list already holds what Start warns about (shared with the list below through the cache).
+  const list = useCanvasAssessments();
+  const [inProgress, setInProgress] = useState<CanvasAssessment | null>(null);
 
   // Phase 50: "Start an assessment" elsewhere (the welcome wizard, the Assessment home) names the student.
   const [params] = useSearchParams();
@@ -73,7 +78,17 @@ export function StartCard() {
   const studentList = students.data?.data ?? [];
   const levelList = levels.data?.data ?? [];
 
+  /** Phase 77 (JF20): one already in progress for this student is offered first -- Continue it, or Start another. */
+  function tryBegin() {
+    const open = (list.data?.data ?? [])
+      .filter((row) => row.student_user_id === chosenStudent && row.status === 'in_progress')
+      .sort((a, b) => b.started_at.localeCompare(a.started_at))[0];
+    if (open) setInProgress(open);
+    else void begin();
+  }
+
   async function begin() {
+    setInProgress(null);
     try {
       const created = await start.mutateAsync({
         student_user_id: chosenStudent,
@@ -126,7 +141,7 @@ export function StartCard() {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={() => void begin()} disabled={!chosenStudent || !levelId || start.isPending} data-testid="assessment-begin">
+          <Button onClick={tryBegin} disabled={!chosenStudent || !levelId || start.isPending} data-testid="assessment-begin">
             Start
           </Button>
         </div>
@@ -152,8 +167,38 @@ export function StartCard() {
           changed until it is submitted.
         </p>
       </CardContent>
+      <AlertDialog open={inProgress !== null} onOpenChange={(open) => !open && setInProgress(null)}>
+        <AlertDialogContent data-testid="assessment-in-progress">
+          <AlertDialogHeader>
+            <AlertDialogTitle>One is already in progress</AlertDialogTitle>
+            <AlertDialogDescription data-testid="assessment-in-progress-words">
+              {inProgress && inProgressWords(inProgress, inProgress.student_user_id === user?.id)}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="assessment-in-progress-cancel">Not now</AlertDialogCancel>
+            <Button variant="outline" onClick={() => void begin()} disabled={start.isPending} data-testid="assessment-start-another">
+              Start another
+            </Button>
+            {inProgress?.can_continue && (
+              <AlertDialogAction onClick={() => navigate(`/assessments/${inProgress.id}`)} data-testid="assessment-continue-it">
+                Continue it
+              </AlertDialogAction>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
+}
+
+const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
+
+/** "Noor already has a Grade 4 assessment in progress (started 8 minutes ago)." */
+function inProgressWords(row: CanvasAssessment, own: boolean): string {
+  const level = TILE_LEVEL_WORDS[row.level_id as QuestionBankLevelId] ?? levelLabel(row.level_id);
+  const who = own ? 'You already have' : `${firstName(row.student_name)} already has`;
+  return `${who} ${/^[aeiou]/i.test(level) ? 'an' : 'a'} ${level} assessment in progress (started ${formatRelativeTime(row.started_at)}).`;
 }
 
 export function AssessmentList() {
@@ -211,14 +256,16 @@ export function AssessmentList() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {row.can_continue && (
-                      <>
-                        <Button asChild size="sm">
-                          <Link to={`/assessments/${row.id}`}>Continue</Link>
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={() => setDiscarding(row)}>
-                          Discard
-                        </Button>
-                      </>
+                      <Button asChild size="sm" data-testid={`assessment-continue-${row.id}`}>
+                        <Link to={`/assessments/${row.id}`}>Continue</Link>
+                      </Button>
+                    )}
+                    {/* Phase 77 (JF20): a guardian continues a child's; only its starter or an admin discards it
+                        (an older Worker sends no can_discard: the old rule). */}
+                    {(row.can_discard ?? row.can_continue) && (
+                      <Button size="sm" variant="outline" onClick={() => setDiscarding(row)} data-testid={`assessment-discard-${row.id}`}>
+                        Discard
+                      </Button>
                     )}
                     {row.can_review && (
                       <>

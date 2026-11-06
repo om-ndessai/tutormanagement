@@ -17,6 +17,9 @@
 // Phase 73 (JF13, JF16, JF36): the results refresh the member home (its Next up and counts) and Continue's
 // read, whoever played; an empty game -- nobody answered anything -- has no winner ("Nobody played"), no
 // confetti and no win line; Back returns where the game was opened (Home or Quest).
+// Phase 77 (JF15): a game on one device has each player's own result by name ("Ben: 3 right, 3 points · 1st", the
+// reader's "You: …") in place of
+// the reader's line, whoever won is celebrated, and the host reads either player's questions (keys only now, R20).
 import { useQueryClient } from '@tanstack/react-query';
 import { gameEndLabel, type GameResultItem, type GameView } from '@tmi/shared';
 import { useEffect, useMemo, useState } from 'react';
@@ -47,6 +50,9 @@ import {
   resultsLine,
   reviewHeading,
   reviewLine,
+  nobodyPlayed,
+  seatedGame,
+  seatedResultLine,
 } from './game-model';
 import { Scoreboard } from './game-scoreboard';
 import { gameKeys, useGameResults } from './games-api';
@@ -76,6 +82,7 @@ export function GameResults({ game, from }: { game: GameView; from?: string }) {
   const mine = myTeam(game);
   const ending = gameEndLabel(game.end_reason);
   const knockout = game.end_reason === 'knockout';
+  const seated = seatedGame(game);
 
   // The moment, once per game in this run of the app: the stamp (on a knockout), then the confetti.
   const [moment] = useState(() => !celebrated.has(game.id));
@@ -131,7 +138,19 @@ export function GameResults({ game, from }: { game: GameView; from?: string }) {
           >
             {resultsHeadline(game, mine)}
           </Text>
-          {mine ? (
+          {seated ? (
+            // Phase 77 (JF15): on one device, each player's own result by name -- the child's beside the parent's --
+            // in the order of the places, and nothing for a game nobody played.
+            nobodyPlayed(game) ? null : (
+              <View testID="game-seated-results" style={{ gap: 2 }}>
+                {game.teams.map((team) => (
+                  <Text key={team.id} testID={`game-seated-result-${team.name}`} variant="bodyLarge">
+                    {seatedResultLine(team, team.id === game.me.team_id)}
+                  </Text>
+                ))}
+              </View>
+            )
+          ) : mine ? (
             <Text testID="game-encouragement" variant="bodyLarge">
               {resultsLine(game, mine)}
             </Text>

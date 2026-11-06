@@ -5045,3 +5045,93 @@ the caller's (every length was 60 -- `record` now checks "Ended … 5:30 PM"). *
 fitted form sheet took its content's whole height and never scrolled, so the office could not reach "Another
 lesson" (`QuickSheet` now caps its root at the window under the status bar on Android, `quickSheetMaxHeight`, with
 its Jest).
+
+## 86. Phase 77: families at home, in the app — build (2026-11-05)
+
+The app half of Phase 77 (`docs/journey-fixes-plan.md`; owner 2026-11-05: JF15, JF20, R35), beside the web half, on the
+contract already in the tree (`createGameSchema.seat_user_ids`, `gameAnswerSchema.as_user_id`, `GameView.seats` /
+`invited`, `GameSeat`, `HomeChild.signs_in` / `grade` / `open_game_id`, `playTogetherRequest`, `CanvasAssessment.can_discard`
+and the widened `can_continue`). No API, shared or web file touched; `npm run smoke` is the contract's, with the web half.
+The words follow the web's (`member-home.tsx`, `game-page.tsx`, `assessments-page.tsx`, `take-assessment-page.tsx`),
+compared once the web half was done.
+
+**JF15, Play with on one device:**
+- **The child's card** (`home/home-sections.tsx` `ChildCard`): the level is `childPlayLevel` (the child's `grade` through
+  the board's rules -- `questLeadGrade` for the row, "Not in school" its top, `dailyLevelFor` for that grade's first card
+  -- else `play_level_id`, else the space's first tile), for both kinds of child. A child who signs in keeps "Play with
+  Sanjay" (the online invite, `playWithRequest` through `playTogetherRequest`); one who does not gets "Play with Ben on
+  this device" (`home-child-play-<id>`) -- or "Practise together before Saturday's lesson" with "Ben plays beside you, on
+  this device." under it (`home-child-on-device-<id>`) -- one request with `seat_user_ids: [ben]`, begun at once, opened
+  from Home. With `open_game_id`, "Continue with Ben" (`home-child-continue-<id>`) opens that game. Creating a game
+  invalidates the member home (`games-api.ts`), and Home re-reads on focus, so Continue shows on the way back.
+- **The game screen** (`quest/game-screen.tsx` routes a running game with `seats` to the new `quest/game-seated-play.tsx`):
+  `seatedTurn` is the hand furthest behind in the series, a child before the host on a tie (children in the order
+  seated), so leaving and coming back lands on the same turn. The turn card (`game-turn`, `game-turn-title`,
+  `game-hand-over`): "Ben's turn" / "Pass the device to Ben.", "Your turn" / "Ben has answered: take the device back." --
+  in words, the colour (primary or secondary container) only following them; Android reads it as a live region, iOS is
+  told with a queued announcement after the answer's notice; a light haptic when the device changes hands. Both scores
+  side by side by first name (`game-seat-scores`, `game-seat-score-<name>`, the turn's edged and said "answering"), the
+  scoreboard below. `QuestionPanel({ asUserId })` answers a child's hand with `as_user_id`, keeps its draft per hand (a
+  child's choice is never left standing for the parent on the same question), labels the field "Ben's answer" and says
+  "Ben: Right! +1" (`seatNotice`). Under the doors, "Get ready: Ben goes first."; with no hand, "Everyone has answered.
+  The results are on their way.". The status bar drops the reader's own score for a device game.
+- **The results** (`quest/game-results.tsx`): each player's own line in the places' order (`game-seated-result-<name>`:
+  "Ben: 1 right, 1 point · 1st", "You: 0 right, 0 points · 2nd"), no encouragement line and no team words (the rules say
+  "Ben and you, on this device"; ending early, "Everyone stops where they are…"); whoever wins is celebrated. Keys only
+  from `/results`, after the game, as before (R20).
+- **The lobby** (`quest/game-lobby.tsx`): "Invited: Sanjay", "Sanjay (joined)" once he is in (`game-lobby-invited`,
+  `GameView.invited`, the host's and admins' view).
+
+**JF20, a guardian continues the child's assessment:**
+- **Continue and Discard** (`review-model.ts` `rowActions`): Continue where `can_continue` (now a guardian's too), Discard
+  where `can_discard ?? can_continue`; a row shows its buttons when it has Discard alone (an admin who did not start it).
+  The Assessment home's Continue already followed `can_continue`.
+- **The hand-over** (`take-assessment-screen.tsx`): when the reader is not the student (`handsOver`), the questions wait
+  behind "Hand the device to Noor" (`assessment-hand-over`, `-title`, `-body`), "Noor answers on this device. Answers
+  written on another device stay there.", the row's line, then "Noor is ready" (`assessment-ready`) or "Not now"
+  (`assessment-hand-over-not-now`). Asked each time the screen opens (the web: once per tab). A submit by someone else
+  says "Submitted. Noor's tutor gets a PDF of the answers." (or "The space's admins get a PDF of Noor's answers." where
+  Tutoring is off), never a link; the student's own keeps "The tutor gets a PDF of your answers.". The screen that
+  cannot be taken says "…or it is not yours to continue.".
+- **Start warns** (`assessments-screen.tsx` `StartCard`): with the student's newest in progress (`inProgressFor`, from the
+  list's own query), Start shows "One is already in progress" in its place (`assessment-in-progress`):
+  "Noor already has a Grade 4 assessment in progress (started 8 minutes ago)." (`assessment-in-progress-words`; the
+  student's own "You already have…"; relative time), with Continue it (`assessment-continue-it`, only where that one's
+  `can_continue`), Start another (`assessment-start-another`) and Not now (`assessment-in-progress-cancel`).
+
+**Not ported / different:** the warning is a card in place of Start (the web's a dialog); the hand-over is asked on every
+opening; the scores are at the top of the page rather than in the frame's status bar.
+**Contract gap:** `GameSummary` carries no seat marker, so the Quest hub's games list (both clients) still shows a device
+game's code -- which finds nothing -- and "You host · 2 teams". A `seated` flag would let the row say "On this device".
+**Flows (written, not run here):** `play/play-on-device` (new: Tom and Ben -- the card, no lobby or code, Ben's turn and
+the hand-over, Ben answers, Your turn, Exit, Continue with Ben on the same turn, Tom skips, Ben's turn on question 2, End,
+each player's result, no team words, Ben's day counted on Home), `canvas-assessments/hand-over` (new: Omar continues the
+Grade 4 assessment Ines started for Noor -- the hand-over, writing, no Discard, Start's warning with Not now and Continue
+it, the writing kept on the device, submit, no PDF); updated `play/play-with-child` (no on-device line for Sanjay,
+"Invited: Sanjay" in the lobby), `play/family` ("Invited: Sofia"), `canvas-assessments/take` and `features/assess-start`
+(the hand-over before the questions). `scripts/seed-canvas-assessment.js` takes `SUBMIT=no` to leave one in progress.
+**Jest:** `quest/game-seated-play` (new), `canvas-assessments/hand-over` (new), `quest/game-model`,
+`home/member-focus-model`, `home/member-home-screen`, `canvas-assessments/review-model`,
+`canvas-assessments/assessment-model`. 191 suites, 1585 tests; typecheck and lint (0 errors) green; `mobile:export`
+bundles both platforms.
+**Verified (2026-11-06):** the 28 flows of Phase 77 -- `play/play-on-device` (new), `play/play-with-child`, `play/family`,
+`play/continue`, `play/play-home`, `play/habit`, `canvas-assessments/hand-over` (new), `canvas-assessments/take`,
+`menu`, `open`, `review`, `review-online`, `review-reopen`, `question-count`, `features/assess-start`,
+`features/assess-home`, `home/member-home-parent`, `home/parent-child-card`, `home/parent-no-activity`,
+`home/member-home-multirole`, `quest/game-start`, `game-single`, `game-team`, `game-join`, `game-play`, `game-knockout`,
+`finished` and `quest/menu` -- green on iOS 27 (iPhone 17) and Android 37 (Medium Phone); jest 191 suites / 1585 passed;
+screenshots reviewed light and dark on both (the child card, Ben's turn and Your turn, the seated results, the games
+list, the hand-over, Start's warning, "Invited: Sanjay"); exposure: no money on Home, the child card or the game, and
+Omar has Continue but no Discard, and no PDF once he submits. `play-on-device` now also checks Quest's games list ("On
+this device", no host line, no code). **The flows, not the app:** `quest/game-join` still expected the old "No game or
+team has that code." (the server's words since Phase 72, now shared `GAME_CODE_NOT_FOUND_MESSAGE`, asserted in full);
+`play/continue` stopped scrolling up with Continue under the header, where the tap landed on the header (now centred);
+`subflows/canvas-assessments/confirm-finish` tapped the screen's own "Save as reviewed" behind the alert on iOS
+(Maestro's `below` compares top edges, and `above` did no better) -- now the alert's, as the sibling of "Keep
+reviewing"; `quest/menu`'s scroll to the Space page's last card takes more than 20 s on iOS (45 s now);
+`features/assess-home` centres "Students" before its rows (after `hand-over` the office has an assessment to review, and
+on Android the heading sat just above the tab bar); `play-on-device`'s scroll back to the turn card at the page's top
+takes Maestro's default 20 s on Android, not 10. **No app defect found.** Noted, not changed: the results keep the play
+page's scroll, so after "End the game now" far down the headline can open under the header (every game,
+`quest/game-screen.tsx:142`); a row's "started N minutes ago" is computed when the list renders, so Start's warning can
+say a minute more than the row beneath it (`assessments-screen.tsx:389` vs `:212`).

@@ -1,9 +1,11 @@
 import { DurableObject } from 'cloudflare:workers';
 import {
+  GAME_CODE_NOT_FOUND_MESSAGE,
   GAME_COUNTDOWN_MS,
   GAME_LIMITS,
   answerQuestion,
   findTeamOf,
+  gameIsSeated,
   gameEndReason,
   gameEndsAt,
   gameOpenToJoin,
@@ -19,7 +21,9 @@ import {
   type GameAnswerInput,
   type GameEndReason,
   type GameLookup,
+  type GameQuestion,
   type GameResults,
+  type GameSeat,
   type GameSettings,
   type GameTeamView,
   type GameView,
@@ -53,6 +57,11 @@ import {
 // (GAME_COUNTDOWN_MS) that every screen shows, so the first question comes to
 // everyone at once; points for right and wrong; a knockout end; a single
 // player's game, begun as it is made; joining left open while it runs.
+//
+// Phase 77 (JF15, docs/journey-fixes-plan.md): a seated game is played on one device -- the host and the children they
+// seated (`game.seats`, child -> host), a solo team each, begun as it is made. Nobody joins it or finds it by its code;
+// the host's session answers for each child (`as_user_id`), checked here against the seats, with no D1 per answer; the
+// host's view carries every seat's hand. Credit follows the answer's person, so a child's days and counts are theirs.
 
 /** A lobby nobody starts is closed after a day; a count game nobody finishes, after three hours. */
 const LOBBY_TTL_MS = 24 * 60 * 60 * 1000;
@@ -148,8 +157,15 @@ export class QuestGame extends DurableObject<Env> {
   /**
    * Opens a new game, already recorded in D1. A single player's game is begun
    * here too: the host is its one player, and the countdown starts at once.
+   * Phase 77 (JF15): so is a seated game -- the host, then each child in
+   * `seated` (whom `game.seats` names), on a solo team of their own.
    */
-  async create(game: EngineGame, includeUnreviewed: boolean, hostPlays = false): Promise<GameReply<GameView>> {
+  async create(
+    game: EngineGame,
+    includeUnreviewed: boolean,
+    hostPlays = false,
+    seated: { id: string; first_name: string }[] = [],
+  ): Promise<GameReply<GameView>> {
     if (this.game) return conflict('That game already exists.');
     this.game = normalizeEngineGame(game);
     await this.save();
@@ -171,6 +187,15 @@ export class QuestGame extends DurableObject<Env> {
       );
       if (!team.ok) return team;
     }
+    // Phase 77 (JF15): the children beside the host, each on their own (named by first name, as every solo player is),
+    // and the game begun at once: there is nobody to wait for.
+    if (seated.length > 0 && gameIsSeated(this.game)) {
+      for (const child of seated) {
+        const team = await this.addTeam(this.game, child, null, Date.now());
+        if (!team.ok) return team;
+      }
+      return this.begin(host, includeUnreviewed);
+    }
     return ok(this.toView(this.game, host, Date.now()));
   }
 
@@ -179,7 +204,8 @@ export class QuestGame extends DurableObject<Env> {
     const now = Date.now();
     await this.settle(now);
     const game = this.game;
-    if (!game) return notFound('No game has that code.');
+    // Phase 77 (JF15): a game played on one device has nothing to join: its code reads as no game at all, to anyone.
+    if (!game || gameIsSeated(game)) return notFound(GAME_CODE_NOT_FOUND_MESSAGE);
     const team = teamId ? game.teams.find((t) => t.id === teamId) : undefined;
     if (teamId && !team) return notFound('No team has that code.');
     return ok({
@@ -222,13 +248,32 @@ export class QuestGame extends DurableObject<Env> {
     await this.settle(now);
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
-    const team = findTeamOf(game, viewer.id);
-    if (team && game.status === 'running') {
-      const before = team.hands[viewer.id]?.index;
-      const index = serveNext(game, team, viewer.id, now);
-      if (index !== null && index !== before) await this.save();
-    }
+    if (this.serveHands(game, viewer, now)) await this.save();
     return ok(this.toView(game, viewer, now));
+  }
+
+  /** Phase 77 (JF15): the children this viewer seated (none for anyone but a seated game's host). */
+  private seatsOf(game: EngineGame, viewer: GameViewer): string[] {
+    return Object.entries(game.seats ?? {})
+      .filter(([, host]) => host === viewer.id)
+      .map(([seat]) => seat);
+  }
+
+  /**
+   * While the game runs, hands the viewer their question -- and, Phase 77 (JF15), each child they seated theirs. True
+   * when a hand changed (and the game must be saved).
+   */
+  private serveHands(game: EngineGame, viewer: GameViewer, now: number): boolean {
+    if (game.status !== 'running') return false;
+    let changed = false;
+    for (const player of [viewer.id, ...this.seatsOf(game, viewer)]) {
+      const team = findTeamOf(game, player);
+      if (!team) continue;
+      const before = team.hands[player]?.index;
+      const index = serveNext(game, team, player, now);
+      if (index !== null && index !== before) changed = true;
+    }
+    return changed;
   }
 
   async join(
@@ -238,7 +283,8 @@ export class QuestGame extends DurableObject<Env> {
     const now = Date.now();
     await this.settle(now);
     const game = this.game;
-    if (!game) return notFound();
+    // Phase 77 (JF15): a game played on one device is nobody else's to join -- as if there were none.
+    if (!game || gameIsSeated(game)) return notFound();
     if (game.players === 'single') return conflict('This is a single-player game.');
     if (!gameOpenToJoin(game, now) || this.busy) {
       return conflict(game.status === 'finished' ? 'This game has ended.' : 'This game has started, so it cannot be joined now.');
@@ -325,6 +371,8 @@ export class QuestGame extends DurableObject<Env> {
         name: team.name,
         solo,
         userId: person.id,
+        // Phase 77 (JF15): a seated child's row names the host who seated them.
+        seatedBy: game.seats?.[person.id] ?? null,
       });
     } catch (error) {
       game.teams = game.teams.filter((t) => t.id !== team.id);
@@ -424,16 +472,23 @@ export class QuestGame extends DurableObject<Env> {
     return ok(this.toView(game, viewer, Date.now()));
   }
 
-  /** An answer (or a skip) to the question in hand; the reply carries the next one. */
+  /**
+   * An answer (or a skip) to the question in hand; the reply carries the next one. Phase 77 (JF15): `as_user_id` answers
+   * a seated child's hand instead -- only for the host who seated them; anyone else's is refused (not theirs to answer).
+   */
   async answer(viewer: GameViewer, input: GameAnswerInput): Promise<GameReply<GameView>> {
     const now = Date.now();
     await this.settle(now);
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
-    const team = findTeamOf(game, viewer.id);
+    const player = input.as_user_id ?? viewer.id;
+    if (player !== viewer.id && game.seats?.[player] !== viewer.id) {
+      return conflict('That player is not yours to answer for: only a child you are playing with on this device.');
+    }
+    const team = findTeamOf(game, player);
     if (!team) return conflict('You are not playing in this game.');
     const outcome = answerQuestion(game, team, this.series, {
-      userId: viewer.id,
+      userId: player,
       questionId: input.question_id,
       answer: input.answer ?? null,
       skip: input.skip === true,
@@ -450,7 +505,8 @@ export class QuestGame extends DurableObject<Env> {
     if (reason) {
       await this.finish(now, reason);
     } else {
-      serveNext(game, team, viewer.id, now);
+      // The reply carries the next question of every hand the viewer holds: their own and their seats'.
+      this.serveHands(game, viewer, now);
       await this.save();
     }
     return ok(this.toView(game, viewer, now));
@@ -538,7 +594,22 @@ export class QuestGame extends DurableObject<Env> {
     else if (game.status === 'running') teams.sort((a, b) => b.score - a.score || b.answered - a.answered);
 
     const hand = mine && game.status === 'running' ? mine.hands[viewer.id] : undefined;
-    const question = hand ? this.series[hand.index] : undefined;
+    // Phase 77 (JF15): each child the viewer seated, with their own hand -- the host's view only (R20).
+    const seats: GameSeat[] = this.seatsOf(game, viewer).flatMap((seat) => {
+      const team = findTeamOf(game, seat);
+      if (!team) return [];
+      const held = game.status === 'running' ? team.hands[seat] : undefined;
+      return [
+        {
+          user_id: seat,
+          first_name: team.players.find((p) => p.user_id === seat)?.first_name ?? team.name,
+          team_id: team.id,
+          question: this.questionIn(held),
+          last: team.last[seat] ?? null,
+          waiting: game.status === 'running' && !held && (game.started_at ?? 0) <= now,
+        },
+      ];
+    });
     return {
       id: game.id,
       code: game.code,
@@ -557,21 +628,28 @@ export class QuestGame extends DurableObject<Env> {
       teams,
       me: {
         team_id: mine?.id ?? null,
-        question:
-          hand && question
-            ? {
-                id: question.id,
-                kind: question.kind,
-                stem: question.stem,
-                choices: question.choices,
-                number: hand.index + 1,
-                beta: question.beta === true,
-              }
-            : null,
+        question: this.questionIn(hand),
         last: mine?.last[viewer.id] ?? null,
         // Not while the doors count down: that is the countdown, not waiting.
         waiting: Boolean(mine && game.status === 'running' && !hand && (game.started_at ?? 0) <= now),
       },
+      ...(seats.length > 0 ? { seats } : {}),
+      // Phase 77 (JF15): whom the roster invited, for the lobby -- the host and admins only.
+      ...(overseer ? { invited: game.invited ?? [] } : {}),
+    };
+  }
+
+  /** The question in a hand, as a player reads it: never its key. */
+  private questionIn(hand: { index: number } | undefined): GameQuestion | null {
+    const question = hand ? this.series[hand.index] : undefined;
+    if (!hand || !question) return null;
+    return {
+      id: question.id,
+      kind: question.kind,
+      stem: question.stem,
+      choices: question.choices,
+      number: hand.index + 1,
+      beta: question.beta === true,
     };
   }
 

@@ -1,5 +1,9 @@
 # "Save as reviewed"'s confirm (Phase 40) is a native alert over a screen with its own "Save as
 # reviewed": tap the alert's. Android's dialog draws its buttons in capitals.
+# On iOS the alert's button is picked as the sibling of its "Keep reviewing" (the two share a parent). Picking it by
+# position was not enough: with the screen scrolled to its top, the screen's own button sits behind the alert's
+# message, so "below the message" (Maestro compares top edges) and "above Keep reviewing" both matched the screen's
+# button first, and the tap landed on the alert's message.
 appId: ${APP_ID}
 ---
 - extendedWaitUntil:
@@ -11,8 +15,9 @@ appId: ${APP_ID}
     commands:
       - tapOn:
           text: 'Save as reviewed'
-          below: '.*You can reopen it later to change it.*'
-          index: 0
+          childOf:
+            containsChild:
+              text: 'Keep reviewing'
 - runFlow:
     when:
       platform: Android

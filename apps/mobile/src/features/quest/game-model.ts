@@ -7,6 +7,8 @@
 // board, the waiting card once a team is done, the results' headline and encouragement, who is
 // celebrated, and the doors' countdown words. What a Create sends is game-wizard-model.ts now. Pure: no
 // React, no api client. The game's own rules live in @tmi/shared.
+// Phase 77 (JF15, docs/journey-fixes-plan.md): a game on one device -- whose turn (the child first on each
+// question), the hand-over line, both scores by first name, each player's own result -- and the lobby's "Invited:".
 import {
   GAME_CODE_LENGTH,
   GAME_POLL_MS,
@@ -23,6 +25,7 @@ import {
   winnersLabel,
   type GameLookup,
   type GameMode,
+  type GameQuestion,
   type GameResultItem,
   type GameScoring,
   type GameStatus,
@@ -78,10 +81,14 @@ export function gameRowStatus(game: Pick<GameSummary, 'status' | 'place'>): stri
   return game.status === 'running' ? 'Playing now' : 'Waiting to start';
 }
 
-/** A games-list row's second line: "You host · 2 teams", "Priya hosts · 1 team", "Single player". */
+/**
+ * A games-list row's second line: "You host · 2 teams", "Priya hosts · 1 team", "Single player"; Phase 77 (JF15), a
+ * game on one device: "On this device" (its host), "On Tom's device" (the office).
+ */
 export function gameRowHost(
-  game: Pick<GameSummary, 'is_host' | 'host_first_name' | 'teams'> & Partial<Pick<GameSummary, 'players'>>,
+  game: Pick<GameSummary, 'is_host' | 'host_first_name' | 'teams'> & Partial<Pick<GameSummary, 'players' | 'seated'>>,
 ): string {
+  if (game.seated) return game.is_host ? 'On this device' : `On ${game.host_first_name}'s device`;
   if (game.players === 'single') return 'Single player';
   return `${game.is_host ? 'You host' : `${game.host_first_name} hosts`} · ${game.teams} ${game.teams === 1 ? 'team' : 'teams'}`;
 }
@@ -146,11 +153,14 @@ export function gameRulesLine(
     | 'knockout'
     | 'late_join'
     | 'unreviewed'
-  >,
+  > &
+    Partial<Pick<GameView, 'seats'>>,
 ): string {
+  // Phase 77 (JF15): a game on this device names who plays, never places or teams.
+  const players = seatedGame(game) ? seatedPlayersLabel(game) : gamePlayersLabel(game);
   return (
     `${gameLevelLabel(game, levelLabel)} · ${gameLengthLabel(game)} · ${gameMarkingLabel(game)} · ` +
-    `${gamePlayersLabel(game)}${game.knockout ? ' · knockout' : ''}` +
+    `${players}${game.knockout ? ' · knockout' : ''}` +
     `${game.late_join ? ' · joining open while it runs' : ''}` +
     `${game.unreviewed ? ' · may include questions not yet reviewed' : ''}`
   );
@@ -401,10 +411,15 @@ export function nobodyPlayed(game: Pick<GameView, 'teams'>): boolean {
 
 /**
  * Whether to celebrate (confetti and the success haptic): the game is finished and the reader's team
- * won -- or, a single player having nobody to beat, they got any answer right. Never an empty game.
+ * won -- or, a single player having nobody to beat, they got any answer right; on one device, whoever won.
+ * Never an empty game.
  */
-export function celebrates(game: Pick<GameView, 'status' | 'teams' | 'me' | 'players'>): boolean {
+export function celebrates(
+  game: Pick<GameView, 'status' | 'teams' | 'me' | 'players'> & Partial<Pick<GameView, 'seats'>>,
+): boolean {
   if (game.status !== 'finished' || nobodyPlayed(game)) return false;
+  // Phase 77 (JF15): on one device everyone watching played, so whoever won is celebrated -- a child's win too.
+  if (seatedGame(game)) return true;
   const mine = myTeam(game);
   if (!mine || mine.answered === 0) return false;
   return game.players === 'single' ? mine.correct > 0 : mine.place === 1;
@@ -446,4 +461,124 @@ export function countdownSpeech(ms: number): string {
   if (ms <= 1000) return 'Go!';
   const seconds = Math.ceil(ms / 1000);
   return `The Quest begins in ${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
+}
+
+// --- On one device (Phase 77, JF15) -----------------------------------------------------------
+
+/**
+ * A game played on this device: the host and the children they seated (`GameView.seats`, the host's view only). Every
+ * team plays the same series, so the screen takes turns -- the child first on each question.
+ */
+export function seatedGame(game: Pick<GameView, 'seats'>): boolean {
+  return (game.seats?.length ?? 0) > 0;
+}
+
+/** Whose turn it is on a seated game: a child's (`user_id`, answered with `as_user_id`) or the host's own (null). */
+export interface SeatTurn {
+  user_id: string | null;
+  first_name: string | null;
+  question: GameQuestion;
+}
+
+/**
+ * The hand to answer now: the one furthest behind in the series, a child before the host on the same question (and
+ * the children in the order they were seated). Null when nobody holds a question -- the doors, the end, or waiting.
+ * Leaving and coming back lands on the same turn: it is read from the hands the server keeps.
+ */
+export function seatedTurn(game: Pick<GameView, 'seats' | 'me'>): SeatTurn | null {
+  const hands: SeatTurn[] = [];
+  for (const seat of game.seats ?? []) {
+    if (seat.question) hands.push({ user_id: seat.user_id, first_name: seat.first_name, question: seat.question });
+  }
+  if (game.me.question) hands.push({ user_id: null, first_name: null, question: game.me.question });
+  let turn: SeatTurn | null = null;
+  for (const hand of hands) if (!turn || hand.question.number < turn.question.number) turn = hand;
+  return turn;
+}
+
+/** "Ben's turn" or "Your turn": always in words, never a colour alone. */
+export function turnTitle(turn: Pick<SeatTurn, 'first_name'>): string {
+  return turn.first_name ? `${turn.first_name}'s turn` : 'Your turn';
+}
+
+/** The children seated on this device, by first name, in the order they were seated. */
+function seatNames(game: Pick<GameView, 'seats'>): string[] {
+  return (game.seats ?? []).map((seat) => seat.first_name);
+}
+
+/**
+ * The hand-over line under it (the web's): "Pass the device to Ben.", or the host's "Ben has answered: take the device
+ * back." ("Ben and Mia have answered: …").
+ */
+export function handOverLine(turn: Pick<SeatTurn, 'first_name'>, game: Pick<GameView, 'seats'>): string {
+  if (turn.first_name) return `Pass the device to ${turn.first_name}.`;
+  const names = seatNames(game);
+  return `${listNames(names)} ${names.length === 1 ? 'has' : 'have'} answered: take the device back.`;
+}
+
+/** What a screen reader hears as the turn changes: "Ben's turn. Pass the device to Ben. Question 2 of 5." */
+export function turnSpeech(turn: SeatTurn, game: Pick<GameView, 'seats'>, total: number | null): string {
+  return `${turnTitle(turn)}. ${handOverLine(turn, game)} ${questionHeading(turn.question.number, total)}.`;
+}
+
+/** Under the doors of a game on this device: "Get ready: Ben goes first." */
+export function seatedReadyText(game: Pick<GameView, 'seats'>): string {
+  return `Get ready: ${seatNames(game)[0] ?? 'the first player'} goes first.`;
+}
+
+/** Nobody holds a question on this device: every hand is answered and the end is being written. */
+export const SEATED_WAITING_TEXT = 'Everyone has answered. The results are on their way.';
+
+/** The notice after a child's answer says whose it was: "Ben: Right! +1", "Ben: Skipped.". */
+export function seatNotice(notice: AnswerNotice, firstName: string | null): AnswerNotice {
+  return firstName ? { ...notice, text: `${firstName}: ${notice.text}` } : notice;
+}
+
+/** The last answer of the hand just answered: a seated child's (`as_user_id`), else the reader's own. */
+export function handLast(
+  game: Pick<GameView, 'seats' | 'me'>,
+  asUserId: string | null | undefined,
+): { correct: boolean; skipped: boolean } | null {
+  if (!asUserId) return game.me.last;
+  return game.seats?.find((seat) => seat.user_id === asUserId)?.last ?? null;
+}
+
+/** Both scores side by side, by first name: the children first (they answer first), then the host. */
+export function seatedScores(
+  game: Pick<GameView, 'seats' | 'teams' | 'me'>,
+): { team_id: string; name: string; score: number; mine: boolean }[] {
+  const order = [...(game.seats ?? []).map((seat) => seat.team_id), game.me.team_id];
+  return order.flatMap((teamId) => {
+    const team = game.teams.find((t) => t.id === teamId);
+    return team ? [{ team_id: team.id, name: team.name, score: team.score, mine: team.id === game.me.team_id }] : [];
+  });
+}
+
+/** "Ben and you, on this device": the rules' players for a seated game. */
+export function seatedPlayersLabel(game: Pick<GameView, 'seats'>): string {
+  return `${listNames([...seatNames(game), 'you'])}, on this device`;
+}
+
+/** Each player's own result, no team words (the web's): "Ben: 3 right, 3 points · 1st", the reader's "You: …". */
+export function seatedResultLine(team: Pick<GameTeamView, 'name' | 'correct' | 'score' | 'place'>, mine: boolean): string {
+  return `${mine ? 'You' : team.name}: ${team.correct} right, ${scoreLabel(team.score)}${team.place !== null ? ` · ${placeLabel(team.place)}` : ''}`;
+}
+
+/** Ending a game early, asked first; a seated game has no teams to speak of. */
+export function endGameBody(game: Pick<GameView, 'seats'>): string {
+  return seatedGame(game)
+    ? 'Everyone stops where they are, and the places are given.'
+    : 'Every team stops where it is, and the places are given.';
+}
+
+/**
+ * The lobby's "Invited: Sanjay", then "Invited: Sanjay (joined)" once he is in (the web's) -- whom the host's roster
+ * invited (`GameView.invited`, the host's and admins' view only). Null when nobody was, or from an older Worker.
+ */
+export function invitedLine(game: Pick<GameView, 'invited' | 'teams'>): string | null {
+  const joined = new Set(game.teams.flatMap((team) => team.players.map((player) => player.user_id)));
+  const names = (game.invited ?? []).map((person) =>
+    joined.has(person.user_id) ? `${person.first_name} (joined)` : person.first_name,
+  );
+  return names.length > 0 ? `Invited: ${names.join(', ')}` : null;
 }

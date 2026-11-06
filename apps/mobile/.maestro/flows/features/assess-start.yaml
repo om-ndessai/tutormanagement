@@ -1,7 +1,8 @@
 # Phase 50: a parent starts an assessment from the Assessment home. Omar (parent, `assess`) sees his
 # child's row, "No assessment yet", and no Waiting panel; Start an assessment opens the Assessment
-# screen with her chosen and the levels open; Grade 4 (the sample bank's level) begins. Back on
-# Home, the row is "In progress" with Continue. reset-features.js discards it afterwards.
+# screen with her chosen and the levels open; Grade 4 (the sample bank's level) begins -- Phase 77 (JF20): behind
+# "Hand the device to Noor", as he is not the student -- and "Noor is ready" shows question 1. Back on Home, the row
+# is "In progress" with Continue. reset-features.js discards it afterwards.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/reset-features.js
@@ -55,6 +56,13 @@ tags:
     visible:
       id: screen-assessment-take
     timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: assessment-hand-over-title
+      text: 'Hand the device to Noor'
+    timeout: 20000
+- tapOn:
+    id: assessment-ready
 - extendedWaitUntil:
     visible: 'Question 1 of .*'
     timeout: 15000

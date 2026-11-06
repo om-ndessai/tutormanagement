@@ -77,10 +77,28 @@ function forgetPages(id: string): void {
   }
 }
 
+const handedKey = (id: string) => `aimtrue.canvas-assessment-handed.${id}`;
+
+function wasHandedOver(id: string): boolean {
+  try {
+    return sessionStorage.getItem(handedKey(id)) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function markHandedOver(id: string): void {
+  try {
+    sessionStorage.setItem(handedKey(id), '1');
+  } catch {
+    // Storage blocked: asked again after a reload, and nothing else changes.
+  }
+}
+
 export function TakeAssessmentPage() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
   const detail = useCanvasAssessment(id);
   const submit = useSubmitCanvasAssessment(id);
 
@@ -90,6 +108,9 @@ export function TakeAssessmentPage() {
   const [index, setIndex] = useState(0);
   const [tool, setTool] = useState<CanvasTool>('pen');
   const [confirming, setConfirming] = useState(false);
+  // Phase 77 (JF20): taken on someone else's device -- a parent's, the tutor's -- it is handed to the student first;
+  // once per tab, so a reload carries on where they were.
+  const [handedOver, setHandedOver] = useState(() => wasHandedOver(id));
 
   useEffect(() => saveWork(id, { pages, choices }), [id, pages, choices]);
 
@@ -115,10 +136,52 @@ export function TakeAssessmentPage() {
     return (
       <Card className="py-0">
         <CardContent className="grid gap-3 p-6 text-sm">
-          <p>This assessment cannot be taken here: it has been submitted or discarded, or somebody else started it.</p>
+          <p>This assessment cannot be taken here: it has been submitted or discarded, or it is not yours to continue.</p>
           <Button asChild variant="outline" className="w-fit">
             <Link to="/assessments">Back to Assessment</Link>
           </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const student = assessment.student_name.split(/\s+/)[0] ?? assessment.student_name;
+  const forSomeoneElse = Boolean(user && assessment.student_user_id !== user.id);
+  if (forSomeoneElse && !handedOver) {
+    return (
+      <Card className="mx-auto w-full max-w-xl py-0" data-testid="assessment-hand-over">
+        <CardContent className="grid gap-4 p-6">
+          <div className="flex items-center gap-4">
+            <span
+              className="bg-primary text-primary-foreground font-display grid size-12 shrink-0 place-items-center rounded-full text-xl font-bold"
+              aria-hidden
+            >
+              {student[0]}
+            </span>
+            <h1 className="font-display text-2xl font-bold">Hand the device to {student}</h1>
+          </div>
+          <p className="text-sm">
+            {student} answers on this device. Answers written on another device stay there.
+          </p>
+          <p className="text-muted-foreground text-sm">
+            {assessment.student_name} · {levelLabel(assessment.level_id)} · {questions.length}{' '}
+            {questions.length === 1 ? 'question' : 'questions'}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              size="lg"
+              onClick={() => {
+                markHandedOver(id);
+                setHandedOver(true);
+              }}
+              data-testid="assessment-ready"
+            >
+              {student} is ready
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/assessments">Not now</Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     );
@@ -158,7 +221,14 @@ export function TakeAssessmentPage() {
         })),
       });
       forgetPages(id);
-      toast.success('Submitted. The tutor gets a PDF of your answers.');
+      // Phase 77 (JF20): handed over, the PDF is still the tutors' and the admins' -- say where it went, never link it.
+      toast.success(
+        forSomeoneElse
+          ? featureAllowed(organization, 'tutoring')
+            ? `Submitted. ${student}'s tutor gets a PDF of the answers.`
+            : `Submitted. The space's admins get a PDF of ${student}'s answers.`
+          : 'Submitted. The tutor gets a PDF of your answers.',
+      );
       navigate('/assessments');
     } catch (caught) {
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not submit the assessment.');

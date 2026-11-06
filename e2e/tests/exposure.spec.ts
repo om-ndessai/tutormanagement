@@ -48,6 +48,11 @@ import { pdfPageText } from '../support/pdf.js';
  *                    the lessons owed are the reader's own teaching, name the
  *                    place by name and kind only, carry no money, and a row's
  *                    draft is the reader's own (Phase 75)
+ *   R35 at home      a child's card says only whether they sign in and their
+ *                    grade, and Continue is a game the reader seated them in;
+ *                    a game's seats and invited list are its host's; a
+ *                    guardian continues an assessment in progress, never
+ *                    discards somebody else's, never reads its keys (Phase 77)
  */
 
 const PERSONAS: PersonKey[] = ['tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
@@ -230,9 +235,13 @@ test.describe('what each non-admin can see', () => {
         check(reader, '/api/quest/games/open', continued, problems);
         if (continued.open) {
           const game = await page.request.get(`/api/quest/games/${continued.open.game_id}`);
-          if (game.status() !== 200 || (await game.json()).data.me.team_id === null) {
+          const view = game.status() === 200 ? (await game.json()).data : null;
+          if (!view || view.me.team_id === null) {
             problems.push('R33: Continue named a game the reader does not play in');
           }
+          // R35 (Phase 77): a seated game's hands and a roster's invited list are the host's (and the office's) alone.
+          if (view && !view.is_host && view.seats !== undefined) problems.push('R35: the seats of a game the reader does not host');
+          if (view && !view.is_host && view.invited !== undefined) problems.push('R35: the invited list of a game the reader does not host');
         }
       }
       if (tilesRead.status() === 200) {
@@ -246,6 +255,22 @@ test.describe('what each non-admin can see', () => {
       if (JSON.stringify(home).match(/cents|amount|balance/i)) problems.push('R29: money on the member home');
       const asked = await get(page, `/api/home?user_id=${alexId}`);
       if (JSON.stringify(asked) !== JSON.stringify(home)) problems.push('R29: ?user_id changed the member home');
+      // R35 (Phase 77): a child's card says whether they sign in and at which grade they play, and "Continue with <child>"
+      // is a game the READER hosts and seated that child in -- never another guardian's.
+      for (const child of ((home as any).parent?.children ?? []) as any[]) {
+        if (!reader.family.has(child.student_user_id)) problems.push(`R35: a child card for ${child.student_user_id}`);
+        if ('signs_in' in child && typeof child.signs_in !== 'boolean') problems.push('R35: signs_in is not a yes or no');
+        if (child.grade != null && !(Number.isInteger(child.grade) && child.grade >= 0 && child.grade <= 8)) {
+          problems.push(`R35: a grade of ${child.grade}`);
+        }
+        if (child.open_game_id) {
+          const seated = await page.request.get(`/api/quest/games/${child.open_game_id}`);
+          const game = seated.status() === 200 ? (await seated.json()).data : null;
+          if (!game?.is_host || !(game.seats ?? []).some((s: any) => s.user_id === child.student_user_id)) {
+            problems.push('R35: Continue with a child names a game the reader did not seat them in');
+          }
+        }
+      }
 
       // R17 (Phase 38): a submitted Assessment reaches the student's audience as a row, but its
       // PDF -- which carries the answers -- only the student's current tutors and the admins.
@@ -272,6 +297,27 @@ test.describe('what each non-admin can see', () => {
       if (review.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the review answered ${review.status()}`);
       const notYet = await page.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`);
       if (notYet.status() !== 404) problems.push(`R17: an unreviewed assessment's review answered ${notYet.status()}`);
+      // R35 (Phase 77, JF20): one in progress is continued by its starter or a guardian of the student -- who is served
+      // its questions, never their keys -- and discarded only by its starter or an admin.
+      const inProgress = await unwrap<any>(
+        await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
+        'the office starting another',
+      );
+      const guardsSofia = reader.family.has(sofiaId) && id !== sofiaId;
+      const open = ((await get(page, '/api/canvas-assessments')) as any[]).find((row) => row.id === inProgress.id);
+      if (open && open.can_continue !== guardsSofia) problems.push(`R35: can_continue ${open.can_continue} on the office's assessment`);
+      if (open && open.can_discard !== false) problems.push("R35: may discard somebody else's assessment");
+      const opened = await page.request.get(`/api/canvas-assessments/${inProgress.id}`);
+      if (opened.status() === 200) {
+        const detail = (await opened.json()).data;
+        if ((detail.questions !== null) !== guardsSofia) problems.push(`R35: questions served to ${who}: ${detail.questions !== null}`);
+        if (/"(answer|solution)"/.test(JSON.stringify(detail.questions ?? []))) problems.push('R35: a question with its key');
+      } else if (open) {
+        problems.push(`R35: a listed assessment answered ${opened.status()}`);
+      }
+      const discard = await page.request.post(`/api/canvas-assessments/${inProgress.id}/discard`, { data: {} });
+      if (discard.status() !== 404) problems.push(`R35: somebody else's discard answered ${discard.status()}`);
+      await admin.request.post(`/api/canvas-assessments/${inProgress.id}/discard`, { data: {} });
 
       // R16 (Phase 33): a person's own list of locations is read only by them and their parents
       // (and the office). Anybody else's reads as empty.

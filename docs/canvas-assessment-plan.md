@@ -39,6 +39,10 @@ repository.
      The actions on each:
      - **Continue**: for whoever started it, while it is in progress.
      - **Discard**: the same.
+     - Phase 77 (2026-11-05, `docs/journey-fixes-plan.md` JF20, R35): **Continue** is also a guardian's of the
+       student, on their own device, after a "Hand the device to Noor" screen; they submit it too (`can_continue`).
+       **Discard** stays the starter's, and an admin's (`can_discard`). The submitted PDF is unchanged: the student's
+       tutors' and the admins' (R17). Start warns, on the client, when one is already in progress for the student.
      - **Open PDF**: for the student's tutors and the admins, once it is submitted.
 - **Taking it** (`/assessments/:id`). One question per page.
   - **The question.** Its text, typeset as in the bank, with choices lettered A–D.
@@ -149,10 +153,10 @@ Written by the Worker (`apps/api/src/lib/pdf.ts`), in US Letter.
 | Route | Who | What |
 | --- | --- | --- |
 | `GET /levels` | anyone | The grades, with how many approved questions each could draw on |
-| `GET /` | anyone | The visible assessments (R17), each with `can_review` and `can_continue` |
+| `GET /` | anyone | The visible assessments (R17), each with `can_review` and `can_continue` (and, Phase 77, `can_discard`) |
 | `POST /` `{student_user_id, level_id}` | the student's audience | Starts one. 404 for a student they cannot see; 409 `no_questions` when the grade has none |
-| `GET /:id` | its audience | The row; the questions (no answers) only for the person who started it, while in progress |
-| `POST /:id/submit` `{pages}` | the person who started it, while in progress | Validates, writes the PDF and the strokes, marks it submitted, all in one batch |
+| `GET /:id` | its audience | The row; the questions (no answers) only for the person who started it -- or, Phase 77, a guardian of the student -- while in progress |
+| `POST /:id/submit` `{pages}` | the person who started it, or (Phase 77) a guardian of the student, while in progress | Validates, writes the PDF and the strokes, marks it submitted, all in one batch |
 | `POST /:id/discard` | the person who started it, or an admin, while in progress | Marks it discarded |
 | `GET /:id/pdf` | the student's tutors and the admins | The PDF as a plain link (`?org=`), `Content-Disposition: inline` |
 

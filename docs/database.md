@@ -1758,6 +1758,17 @@ row, per space: 1-8, or 0 for "Not in school". Their own preference, like `home_
 ALTER TABLE org_members ADD COLUMN quest_grade INTEGER CHECK (quest_grade IS NULL OR quest_grade BETWEEN 0 AND 8);
 ```
 
+Phase 77 (families at home, `docs/journey-fixes-plan.md` JF15) lets a parent play with a child who does not sign in
+on the parent's own device: the child is a seat in the parent's game, a player row of their own whose
+`seated_by_user_id` names the parent who seated them (NULL for every other player, and for every row from before).
+It is written once, when the game is made; it lets the parent's home offer "Continue with Ben" and counts the game as
+a family game for both, without the game ever being an invitation. No index: it is read only beside
+`quest_game_players_user_idx` (the child's rows) and the primary key (a game's rows).
+
+```sql release=phase-77
+ALTER TABLE quest_game_players ADD COLUMN seated_by_user_id TEXT REFERENCES users (id);
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

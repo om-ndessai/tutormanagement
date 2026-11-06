@@ -10,12 +10,15 @@
 import {
   HOME_FOCUS_LABELS,
   STREAK_DAYS_PER_WEEK,
+  dailyLevelFor,
   lessonDayWords,
   lessonWhen,
   practiseBefore,
+  questLeadGrade,
   startsInWords,
   type ActiveSession,
   type HomeChild,
+  type MemberTile,
   type HomeFocus,
   type HomeHat,
   type HomeLesson,
@@ -389,9 +392,48 @@ export function childPlayedLine(child: Pick<HomeChild, 'days_played_this_week' |
   return `Played ${plural(child.days_played_this_week, 'day')} this week (aim: ${STREAK_DAYS_PER_WEEK})${daily}`;
 }
 
-/** "Play with Sanjay", or "Practise together before Thursday's lesson" when his lesson is close. */
-export function childPlayLabel(child: Pick<HomeChild, 'first_name' | 'next_lesson'>, today: string): string {
-  return practiseBefore(child.next_lesson, today)
-    ? `Practise together before ${lessonDayWords(child.next_lesson!.occurs_on, today)}`
-    : `Play with ${child.first_name}`;
+/**
+ * "Play with Sanjay", or "Practise together before Thursday's lesson" when his lesson is close. Phase 77 (JF15): a
+ * child who does not sign in (`signs_in === false`) plays on this device -- "Play with Ben on this device" -- and while
+ * a game the reader seated him in still runs (`open_game_id`, only ever a device game), "Continue with Ben". `signs_in`
+ * absent (an older Worker): the online invite's words, as before. The web's words.
+ */
+export function childPlayLabel(
+  child: Pick<HomeChild, 'first_name' | 'next_lesson'> & Partial<Pick<HomeChild, 'signs_in' | 'open_game_id'>>,
+  today: string,
+): string {
+  if (child.open_game_id) return `Continue with ${child.first_name}`;
+  if (practiseBefore(child.next_lesson, today)) {
+    return `Practise together before ${lessonDayWords(child.next_lesson!.occurs_on, today)}`;
+  }
+  return child.signs_in === false ? `Play with ${child.first_name} on this device` : `Play with ${child.first_name}`;
+}
+
+/**
+ * Phase 77 (JF15): under the button, where it is played, when its words do not say -- "Practise together before
+ * Saturday's lesson" for a child who plays on this device: "Ben plays beside you, on this device." (the web's). Null
+ * otherwise: a child who signs in, "Play with Ben on this device" itself, or a game already going.
+ */
+export function childPlayHint(
+  child: Pick<HomeChild, 'first_name' | 'next_lesson'> & Partial<Pick<HomeChild, 'signs_in' | 'open_game_id'>>,
+  today: string,
+): string | null {
+  if (child.signs_in !== false || child.open_game_id || !practiseBefore(child.next_lesson, today)) return null;
+  return `${child.first_name} plays beside you, on this device.`;
+}
+
+/**
+ * Phase 77 (JF15): the level "Play with" plays at -- the child's grade (`HomeChild.grade`, the server's `childGrade`)
+ * through the board's own rules (`questLeadGrade` for the row, "Not in school" its top; `dailyLevelFor` for that
+ * grade's first card); with no grade, or one the tiles do not reach, the level the card played before: the child's
+ * last, else this space's first tile.
+ */
+export function childPlayLevel(
+  child: Partial<Pick<HomeChild, 'grade' | 'play_level_id'>>,
+  tiles: readonly MemberTile[],
+): string | null {
+  const grade = child.grade ?? null;
+  const lead = grade !== null ? questLeadGrade(tiles, { picked: grade, recorded: null, played: null, grown: false }) : null;
+  const byGrade = lead ? dailyLevelFor(tiles, lead.grade) : null;
+  return byGrade ?? child.play_level_id ?? tiles[0]?.level_id ?? null;
 }

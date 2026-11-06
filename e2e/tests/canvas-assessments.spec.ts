@@ -103,6 +103,9 @@ test.describe('the Assessment menu (beta)', () => {
     await admin.getByTestId('assessment-begin').click();
     await expect(admin).toHaveURL(/\/assessments\/[0-9a-f-]{36}$/);
     const id = admin.url().split('/').at(-1)!;
+    // Phase 77 (JF20): started on the office's device, it is handed to Sofia before the questions (once per tab).
+    await expect(admin.getByTestId('assessment-hand-over')).toContainText('Hand the device to Sofia');
+    await admin.getByTestId('assessment-ready').click();
     await expect(admin.getByRole('heading', { name: /Question 1 of/ })).toBeVisible();
 
     // A multiple-choice question is answered by choosing, with the canvas for working.
@@ -270,7 +273,7 @@ test.describe('the Assessment menu (beta)', () => {
       expect(question).not.toHaveProperty('answer');
       expect(question).not.toHaveProperty('solution');
     }
-    // Only its taker submits it; a student cannot submit the office's.
+    // Only its taker (or, Phase 77, a guardian of the student) submits it; a student cannot submit the office's.
     const student = await as('student');
     expect((await student.request.post(`/api/canvas-assessments/${created.id}/submit`, { data: { pages: [] } })).status()).toBe(404);
     // A page for a question it did not ask, and a stroke off the page.

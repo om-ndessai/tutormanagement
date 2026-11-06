@@ -747,6 +747,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. Play with a child on one device, credited to the child
 
+> **Status (JF15):** done in Phase 77 (2026-11-05) on both clients, as decided: a child who does not sign in plays beside the parent on the parent's device ("Play with Ben on this device"), begun at once at the child's grade, taking turns ("Ben's turn", "Pass the device to Ben."), each with their own score; the child's days played and counts are the child's, and their answers do not approve questions; "Continue with Ben" picks it up again. A child who signs in keeps the online invite, and its lobby says who was invited.
+
 - **What:**
   - **For a child who does not sign in** (no email), "Play with <child>" and "Practise together" become a game on this
     device. The two play side by side, at the child's grade from the profile, and the child's days played count.
@@ -927,6 +929,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   - **Not deliberate.** No rule ties drafts to the home. The draft rules (CLAUDE.md) cover autosave and scope only.
 
 ### P1. A guardian cannot open her child's assessment
+
+> **Status (JF20):** done in Phase 77 (2026-11-05) on both clients, as decided: a guardian may continue and submit a child's assessment in progress, after a "Hand the device to Noor" screen; the PDF stays the tutor's and the admins'; only the starter or an admin discards it; Start warns when one is already in progress ("Continue it" or "Start another").
 
 - **What:**
   - **Opening it.** Let a guardian open a child's in-progress assessment on her own device ("Hand the device to Leo").

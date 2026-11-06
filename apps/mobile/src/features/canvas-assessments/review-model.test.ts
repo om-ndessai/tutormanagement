@@ -127,10 +127,27 @@ describe('a row of the list', () => {
   });
 
   it('offers whoever started one in progress Continue and Discard', () => {
+    // An older Worker sends no can_discard: the old rule, Discard wherever Continue.
     expect(rowActions({ ...ROW, can_continue: true, can_review: false })).toMatchObject({
       continue: true,
       discard: true,
       review: null,
+    });
+    expect(rowActions({ ...ROW, can_continue: true, can_discard: true, can_review: false })).toMatchObject({
+      continue: true,
+      discard: true,
+    });
+  });
+
+  // Phase 77 (JF20): a guardian continues her child's (and submits it), but only its starter or an admin discards it.
+  it("offers a guardian Continue without Discard, and an admin who did not start it Discard alone", () => {
+    expect(rowActions({ ...ROW, can_continue: true, can_discard: false, can_review: false })).toMatchObject({
+      continue: true,
+      discard: false,
+    });
+    expect(rowActions({ ...ROW, can_continue: false, can_discard: true })).toMatchObject({
+      continue: false,
+      discard: true,
     });
   });
 });

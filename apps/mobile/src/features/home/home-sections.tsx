@@ -9,13 +9,19 @@
 // and with none, one line, "Nothing needs you right now." (JF6); a child's card where Tutoring is off opens the child
 // (`/people/[id]`); lesson lines say where (JF17), and a tap on the learner's lesson line starts practice for it where
 // Quest is on; the board is told what Next up shows, so its own Daily or Continue is the quiet twin (JF23).
+//
+// Phase 77 (JF15, owner 2026-11-05): a child's "Play with" plays at the child's grade; a child who signs in is invited
+// online as before, one who does not plays on this device ("Play with Ben on this device", a seated game begun at
+// once; under "Practise together …", "Ben plays beside you, on this device."), and "Continue with Ben"
+// (`home-child-continue-<id>`) reopens the one still running. The web's words.
 import {
   featureOn,
   HOME_HAT_LABELS,
   lessonDayWords,
-  playWithRequest,
+  playTogetherRequest,
   practiseRequest,
   type HomeChild,
+  type MemberTile,
   type HomeHat,
   type MemberHome,
   type NextUp,
@@ -29,7 +35,7 @@ import { OutlinedCard } from '@/components/outlined-card';
 import { TourTarget } from '@/features/onboarding/tour-targets';
 import { AssessmentHome } from '@/features/dashboard/assessment-home';
 import { useMemberTiles } from '@/features/play/play-api';
-import { PlayHome, useStartQuest } from '@/features/play/play-home';
+import { PlayHome, openGameFromHome, useStartQuest } from '@/features/play/play-home';
 import { haptics } from '@/lib/haptics';
 import { draftSavedLine } from '@/features/teaching/lessons-owed-model';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
@@ -39,7 +45,9 @@ import {
   capitalise,
   CHILD_OFF_LINE,
   childCardFallback,
+  childPlayHint,
   childPlayLabel,
+  childPlayLevel,
   childPlayedLine,
   firstOf,
   LEARNER_EMPTY_LINE,
@@ -254,7 +262,7 @@ function ChildCard({
   tutoring,
   quest,
   assessment,
-  firstTileLevel,
+  tiles,
   start,
   pending,
 }: {
@@ -263,16 +271,20 @@ function ChildCard({
   tutoring: boolean;
   quest: boolean;
   assessment: boolean;
-  firstTileLevel: string | null;
+  tiles: readonly MemberTile[];
   start: ReturnType<typeof useStartQuest>['start'];
   pending: boolean;
 }) {
   const theme = useAppTheme();
   const id = child.student_user_id;
-  // Phase 68 (H10): what the child played this week (counts only, R29), and "Play with <child>" at their
-  // last level, else this space's first tile -- a game of two with the child invited, one tap.
+  // Phase 68 (H10): what the child played this week (counts only, R29), and "Play with <child>" -- one tap.
+  // Phase 77 (JF15): at the child's grade (the board's rules), else their last level, else this space's first tile;
+  // a child who signs in is invited online (a game of two), one who does not plays beside the parent on this device
+  // (`playTogetherRequest`: a seated game, begun at once), and "Continue with Ben" reopens the one still running.
   const played = quest ? childPlayedLine(child) : null;
-  const playLevel = quest ? (child.play_level_id ?? firstTileLevel) : null;
+  const playLevel = quest ? childPlayLevel(child, tiles) : null;
+  const continueGame = quest ? (child.open_game_id ?? null) : null;
+  const playHint = quest ? childPlayHint(child, today) : null;
   // With Tutoring and Quest off there are no lessons or quests to show: Assessments, else a word (as the web).
   const fallback = childCardFallback({ tutoring, quest, assessment });
   return (
@@ -332,23 +344,43 @@ function ChildCard({
           </Button>
         </View>
       ) : null}
-      {playLevel ? (
+      {continueGame ? (
         <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, flexDirection: 'row' }}>
           <Button
-            testID={`home-child-play-${id}`}
+            testID={`home-child-continue-${id}`}
             mode="contained-tonal"
-            icon="account-multiple-outline"
-            disabled={pending}
+            icon="play-circle-outline"
             contentStyle={{ minHeight: MIN_TARGET }}
-            onPress={() => void start(playWithRequest(playLevel, id))}
+            onPress={() => {
+              haptics.selection();
+              openGameFromHome(continueGame);
+            }}
           >
             {childPlayLabel(child, today)}
           </Button>
+        </View>
+      ) : playLevel ? (
+        <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, gap: space.xs }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              testID={`home-child-play-${id}`}
+              mode="contained-tonal"
+              icon="account-multiple-outline"
+              disabled={pending}
+              contentStyle={{ minHeight: MIN_TARGET }}
+              onPress={() => void start(playTogetherRequest(child, playLevel))}
+            >
+              {childPlayLabel(child, today)}
+            </Button>
+          </View>
+          {playHint ? <Muted testID={`home-child-on-device-${id}`}>{playHint}</Muted> : null}
         </View>
       ) : null}
     </OutlinedCard>
   );
 }
+
+const NO_TILES: readonly MemberTile[] = [];
 
 function ParentSection({
   home,
@@ -364,8 +396,8 @@ function ParentSection({
   assessmentOn: boolean;
 }) {
   const children = home.parent?.children ?? [];
-  const tiles = useMemberTiles(quest && children.length > 0);
-  const firstTileLevel = tiles.data?.data.tiles[0]?.level_id ?? null;
+  const tilesRead = useMemberTiles(quest && children.length > 0);
+  const tiles = tilesRead.data?.data.tiles ?? NO_TILES;
   const { start, pending } = useStartQuest();
   return (
     <TourTarget id="home-section-parent">
@@ -384,7 +416,7 @@ function ParentSection({
             tutoring={tutoring}
             quest={quest}
             assessment={assessmentOn}
-            firstTileLevel={firstTileLevel}
+            tiles={tiles}
             start={start}
             pending={pending}
           />

@@ -59,6 +59,8 @@ test.describe('P8: family rosters', () => {
       await admin.getByTestId('play-favorite-Family G5').click();
       await expect(admin.getByTestId('game-lobby-code')).toBeVisible();
       gameId = admin.url().split('/').pop()!;
+      // Phase 77 (JF15): the host's lobby says who was invited.
+      await expect(admin.getByTestId('game-lobby-invited')).toHaveText('Invited: Sofia');
 
       // Sofia sees it waiting and joins in one tap (no code typed).
       await sofia.goto('/');
@@ -75,9 +77,13 @@ test.describe('P8: family rosters', () => {
       expect(await unwrap<any[]>(await sofia.request.get('/api/quest/games/waiting'), 'Sofia waiting')).toEqual([]);
       expect(await unwrap<any[]>(await alex.request.get('/api/quest/games/waiting'), 'Alex waiting')).toEqual([]);
 
-      // The host starts whenever they like.
+      // The host starts whenever they like; the lobby says who of the invited is in.
       await admin.reload();
       await expect(admin.getByTestId('game-start')).toBeEnabled();
+      await expect(admin.getByTestId('game-lobby-invited')).toHaveText('Invited: Sofia (joined)');
+      // The invited list is the host's and the office's: Sofia, a player, reads none.
+      await expect(sofia.getByTestId('game-lobby-code')).toBeVisible();
+      await expect(sofia.getByTestId('game-lobby-invited')).toHaveCount(0);
     } finally {
       // Cancelled, so no lobby is left open for Continue in later specs (Phase 73).
       if (gameId) await admin.request.post(`/api/quest/games/${gameId}/end`);

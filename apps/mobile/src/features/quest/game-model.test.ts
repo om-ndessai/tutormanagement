@@ -2,7 +2,8 @@
 // notice, a team's progress -- with no "of 150" in a timed game -- who oversees, the clock on the
 // server's time, the results' native line, and the hub's line for a parent. Phase 47 (design 61): the
 // settings' words, the single-player and late-joining lookups, the lobby's board, the waiting card once
-// done, the results' headline and encouragement, who is celebrated, and the doors' words.
+// done, the results' headline and encouragement, who is celebrated, and the doors' words. Phase 77 (JF15): the turns
+// of a game on one device, its words and scores, and the lobby's "Invited:".
 import { GAME_POLL_MS, type GameResultItem, type GameTeamView, type GameView } from '@tmi/shared';
 
 import {
@@ -15,6 +16,7 @@ import {
   clockSpeech,
   countdownLabel,
   countdownSpeech,
+  endGameBody,
   gamePollInterval,
   gameRefetchInterval,
   gameRowHost,
@@ -22,6 +24,9 @@ import {
   gameRowTitle,
   gameRulesLine,
   gameTitle,
+  handLast,
+  handOverLine,
+  invitedLine,
   typedGameCode,
   isOverseer,
   joinClosedText,
@@ -34,12 +39,21 @@ import {
   reviewHeading,
   reviewLine,
   scoreLabel,
+  seatNotice,
+  seatedGame,
+  seatedPlayersLabel,
+  seatedReadyText,
+  seatedResultLine,
+  seatedScores,
+  seatedTurn,
   seriesTotal,
   shareText,
   spelledCode,
   teamProgress,
   teamRowSpeech,
   timeLeftMs,
+  turnSpeech,
+  turnTitle,
   waitingCopy,
   waitingText,
 } from './game-model';
@@ -142,6 +156,10 @@ describe('the hub', () => {
       'Grade 6 10-minute challenge',
     );
     expect(gameRowHost({ ...row, players: 'single' })).toBe('Single player');
+    // Phase 77 (JF15): a game on one device names the device, never teams or a code.
+    expect(gameRowHost({ ...row, is_host: true, teams: 2, seated: true })).toBe('On this device');
+    expect(gameRowHost({ ...row, host_first_name: 'Tom', teams: 2, seated: true })).toBe("On Tom's device");
+    expect(gameRowHost({ ...row, seated: false })).toBe('Priya hosts · 1 team');
   });
 
   it('shares the code and nothing else, and spells it out for a screen reader', () => {
@@ -519,3 +537,134 @@ describe('gameRefetchInterval (Phase 62, P4)', () => {
   });
 });
 
+
+// --- Phase 77 (JF15): on one device, and the lobby's invited ----------------------------------------------------
+
+describe('a game on one device (Phase 77)', () => {
+  const q = (id: string, number: number) => ({ id, kind: 'numeric' as const, stem: 'x', choices: [], number });
+  const seat = (over: Partial<NonNullable<GameView['seats']>[number]> = {}) => ({
+    user_id: 'ben',
+    first_name: 'Ben',
+    team_id: 't-ben',
+    question: null,
+    last: null,
+    waiting: false,
+    ...over,
+  });
+  const me = (question: ReturnType<typeof q> | null, last: { correct: boolean; skipped: boolean } | null = null) => ({
+    team_id: 't-tom',
+    question,
+    last,
+    waiting: false,
+  });
+
+  it('is a game with seats in the host’s view, and only then', () => {
+    expect(seatedGame({ seats: [seat()] })).toBe(true);
+    expect(seatedGame({ seats: [] })).toBe(false);
+    expect(seatedGame({})).toBe(false);
+  });
+
+  it('takes turns: the hand furthest behind, the child first on the same question', () => {
+    expect(seatedTurn({ seats: [seat({ question: q('a', 1) })], me: me(q('a', 1)) })).toMatchObject({ user_id: 'ben', first_name: 'Ben' });
+    expect(seatedTurn({ seats: [seat({ question: q('b', 2) })], me: me(q('a', 1)) })).toMatchObject({ user_id: null });
+    // The child done (no hand), the host plays on; nobody holding a question: no turn.
+    expect(seatedTurn({ seats: [seat()], me: me(q('c', 3)) })).toMatchObject({ user_id: null });
+    expect(seatedTurn({ seats: [seat()], me: me(null) })).toBeNull();
+    // Two children: in the order they were seated.
+    const two = [seat({ question: q('a', 1) }), seat({ user_id: 'mia', first_name: 'Mia', team_id: 't-mia', question: q('a', 1) })];
+    expect(seatedTurn({ seats: two, me: me(q('a', 1)) })?.first_name).toBe('Ben');
+  });
+
+  it('says whose turn in words, with the hand-over line', () => {
+    expect(turnTitle({ first_name: 'Ben' })).toBe("Ben's turn");
+    expect(turnTitle({ first_name: null })).toBe('Your turn');
+    const one = { seats: [seat()] };
+    expect(handOverLine({ first_name: 'Ben' }, one)).toBe('Pass the device to Ben.');
+    expect(handOverLine({ first_name: null }, one)).toBe('Ben has answered: take the device back.');
+    expect(
+      handOverLine({ first_name: null }, { seats: [seat(), seat({ user_id: 'mia', first_name: 'Mia', team_id: 't-mia' })] }),
+    ).toBe('Ben and Mia have answered: take the device back.');
+    expect(turnSpeech({ user_id: 'ben', first_name: 'Ben', question: q('a', 2) }, one, 5)).toBe(
+      "Ben's turn. Pass the device to Ben. Question 2 of 5.",
+    );
+    expect(seatedReadyText(one)).toBe('Get ready: Ben goes first.');
+  });
+
+  it('reads the notice from the hand just answered', () => {
+    const game = { seats: [seat({ last: { correct: true, skipped: false } })], me: me(null, { correct: false, skipped: true }) };
+    expect(handLast(game, 'ben')).toEqual({ correct: true, skipped: false });
+    expect(handLast(game, null)).toEqual({ correct: false, skipped: true });
+    expect(handLast(game, 'someone')).toBeNull();
+  });
+
+  it('puts both scores side by side by first name, the child first, and each result in words', () => {
+    const teams = [
+      team({ id: 't-tom', name: 'Tom', solo: true, score: 2 }),
+      team({ id: 't-ben', name: 'Ben', solo: true, score: 3 }),
+    ];
+    expect(seatedScores({ seats: [seat()], teams, me: me(null) })).toEqual([
+      { team_id: 't-ben', name: 'Ben', score: 3, mine: false },
+      { team_id: 't-tom', name: 'Tom', score: 2, mine: true },
+    ]);
+    expect(seatedResultLine({ name: 'Ben', correct: 1, score: 1, place: 1 }, false)).toBe('Ben: 1 right, 1 point · 1st');
+    expect(seatedResultLine({ name: 'Tom', correct: 0, score: 0, place: 2 }, true)).toBe('You: 0 right, 0 points · 2nd');
+    expect(seatedResultLine({ name: 'Tom', correct: 0, score: 0, place: null }, true)).toBe('You: 0 right, 0 points');
+    expect(seatNotice({ text: 'Right! +1', tone: 'success' }, 'Ben')).toEqual({ text: 'Ben: Right! +1', tone: 'success' });
+    expect(seatNotice({ text: 'Skipped.', tone: 'info' }, null)).toEqual({ text: 'Skipped.', tone: 'info' });
+    expect(seatedPlayersLabel({ seats: [seat()] })).toBe('Ben and you, on this device');
+  });
+
+  it('names no teams in its rules or when ending early', () => {
+    const rules = {
+      level_id: 'NC26.5',
+      level_scope: 'level' as const,
+      mode: 'count' as const,
+      question_count: 5,
+      duration_seconds: null,
+      right_points: 1,
+      wrong_points: 0,
+      players: 'multi' as const,
+      max_teams: 2,
+      max_team_size: 1,
+      knockout: false,
+      late_join: false,
+      unreviewed: false,
+    };
+    expect(gameRulesLine({ ...rules, seats: [seat()] })).toMatch(/· Ben and you, on this device$/);
+    expect(gameRulesLine(rules)).toMatch(/Up to 2 players, each on their own$/);
+    expect(endGameBody({ seats: [seat()] })).toBe('Everyone stops where they are, and the places are given.');
+    expect(endGameBody({})).toBe('Every team stops where it is, and the places are given.');
+  });
+
+  it('celebrates whoever won on one device -- a child’s win too -- but never an empty game', () => {
+    const finished = (benPlace: number, answered = 5) =>
+      ({
+        status: 'finished',
+        players: 'multi',
+        me: me(null),
+        seats: [seat()],
+        teams: [
+          team({ id: 't-tom', name: 'Tom', solo: true, place: 2, answered }),
+          team({ id: 't-ben', name: 'Ben', solo: true, place: benPlace, answered }),
+        ],
+      }) as Pick<GameView, 'status' | 'teams' | 'me' | 'players' | 'seats'>;
+    expect(celebrates(finished(1))).toBe(true);
+    expect(celebrates(finished(1, 0))).toBe(false);
+  });
+});
+
+describe("the lobby's invited (Phase 77)", () => {
+  it('lists whom the host invited, marking who has joined', () => {
+    const invited = [{ user_id: 'sanjay', first_name: 'Sanjay' }];
+    expect(invitedLine({ invited, teams: [team({ players: [{ user_id: 'anita', first_name: 'Anita' }] })] })).toBe('Invited: Sanjay');
+    expect(invitedLine({ invited, teams: [team({ players: [{ user_id: 'sanjay', first_name: 'Sanjay' }] })] })).toBe(
+      'Invited: Sanjay (joined)',
+    );
+    expect(invitedLine({ invited: [], teams: [] })).toBeNull();
+    // An older Worker sends nobody.
+    expect(invitedLine({ teams: [] })).toBeNull();
+    expect(invitedLine({ invited: [...invited, { user_id: 'arjun', first_name: 'Arjun' }], teams: [] })).toBe(
+      'Invited: Sanjay, Arjun',
+    );
+  });
+});

@@ -85,12 +85,17 @@ export interface RowActions {
   openReview: boolean;
 }
 
+/**
+ * Phase 77 (JF20): Continue is the starter's or a guardian's of the student (`can_continue`); Discard only the starter's
+ * or an admin's (`can_discard`) -- an older Worker sends no `can_discard`, and then the old rule, `can_continue`.
+ */
 export function rowActions(
-  row: Pick<CanvasAssessment, 'can_continue' | 'can_review' | 'reviewed_at' | 'review_draft'>,
+  row: Pick<CanvasAssessment, 'can_continue' | 'can_review' | 'reviewed_at' | 'review_draft'> &
+    Partial<Pick<CanvasAssessment, 'can_discard'>>,
 ): RowActions {
   return {
     continue: row.can_continue,
-    discard: row.can_continue,
+    discard: row.can_discard ?? row.can_continue,
     review: row.can_review
       ? row.reviewed_at
         ? 'Edit review'

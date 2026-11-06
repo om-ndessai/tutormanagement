@@ -60,11 +60,14 @@ tags:
     visible:
       id: screen-home
     timeout: 15000
-# Continue: the open game in words, with where she is in it -- never "G6Q5", never a replay.
+# Continue: the open game in words, with where she is in it -- never "G6Q5", never a replay. Scrolling up, it is
+# brought to the middle: stopped at the first sight of it, it can sit under the header, where a tap lands on the
+# header instead.
 - scrollUntilVisible:
     element:
       id: play-continue
     direction: UP
+    centerElement: true
     timeout: 15000
 - extendedWaitUntil:
     visible:

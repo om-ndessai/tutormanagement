@@ -6,6 +6,10 @@
 // and the list of those the reader may see. Who sees which row, who may continue or discard one and
 // who may open its PDF are the server's (R17: `can_continue`, `can_review`); the screen only offers
 // what it says.
+// Phase 77 (JF20, owner 2026-11-05): Start warns when the student already has one in progress -- "Noor already has a
+// Grade 4 assessment in progress (started 8 minutes ago)" -- with "Continue it" (where the reader may) and "Start
+// another"; Continue is also a guardian's of the student (`can_continue`), Discard only the starter's or an admin's
+// (`can_discard`).
 import {
   levelLabel,
   type CanvasAssessment,
@@ -32,14 +36,22 @@ import { writeCanvasWork } from '@/lib/storage';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
-import { radius, space } from '@/theme/tokens';
+import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import {
   useCanvasAssessmentLevels,
   useCanvasAssessments,
   useDiscardCanvasAssessment,
   useStartCanvasAssessment,
 } from './api';
-import { levelOptionDetail, noStudentsLine, rowSummary, startNote } from './assessment-model';
+import {
+  IN_PROGRESS_TITLE,
+  inProgressFor,
+  inProgressWarning,
+  levelOptionDetail,
+  noStudentsLine,
+  rowSummary,
+  startNote,
+} from './assessment-model';
 import { rowActions, statusLabel } from './review-model';
 
 export function AssessmentsScreen() {
@@ -88,9 +100,13 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
   );
   const levels = useCanvasAssessmentLevels();
   const start = useStartCanvasAssessment();
+  // The list below reads the same query: one request.
+  const assessments = useCanvasAssessments();
 
   const [studentId, setStudentId] = useState('');
   const [levelId, setLevelId] = useState('');
+  // Phase 77 (JF20): the assessment in progress Start has warned about (its id), until another is chosen.
+  const [warnedAbout, setWarnedAbout] = useState<string | null>(null);
 
   const studentList = students.data?.data ?? [];
   const levelList = levels.data?.data ?? [];
@@ -102,7 +118,17 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
   const chosenStudent = onlyStudent ? (user?.id ?? '') : pickedStudent;
   const studentChosen = Boolean(initialStudentId && (seeded || (onlyStudent && initialStudentId === user?.id)));
 
-  async function begin() {
+  const existing = chosenStudent ? inProgressFor(assessments.data?.data ?? [], chosenStudent) : null;
+  const warning = existing && warnedAbout === existing.id ? existing : null;
+
+  async function begin(another = false) {
+    // One already in progress for this student: say so first, with the choice of continuing it.
+    if (!another && existing) {
+      haptics.warning();
+      setWarnedAbout(existing.id);
+      return;
+    }
+    setWarnedAbout(null);
     try {
       const created = await start.mutateAsync({
         student_user_id: chosenStudent,
@@ -165,17 +191,74 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
           searchPlaceholder="Search levels"
           scroll
         />
-        <Button
-          testID="assessment-begin"
-          mode="contained"
-          icon="pen"
-          disabled={!chosenStudent || !levelId || start.isPending}
-          loading={start.isPending}
-          onPress={() => void begin()}
-          style={{ alignSelf: 'flex-start' }}
-        >
-          Start
-        </Button>
+        {warning ? (
+          // Phase 77 (JF20): the web's dialog, in place -- Continue it (only where the reader may), Start another, Not now.
+          <View
+            testID="assessment-in-progress"
+            accessibilityLiveRegion="polite"
+            style={{
+              gap: space.md,
+              padding: space.md,
+              borderRadius: radius.md,
+              borderWidth: 1,
+              borderColor: theme.colors.outline,
+              backgroundColor: theme.tokens.muted,
+            }}
+          >
+            <Text variant="titleSmall" accessibilityRole="header" style={{ fontWeight: '700' }}>
+              {IN_PROGRESS_TITLE}
+            </Text>
+            <Text testID="assessment-in-progress-words" variant="bodyMedium" accessibilityRole="alert">
+              {inProgressWarning(warning, warning.student_user_id === user?.id)}
+            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+              {warning.can_continue ? (
+                <Button
+                  testID="assessment-continue-it"
+                  mode="contained"
+                  contentStyle={{ minHeight: MIN_TARGET }}
+                  onPress={() => {
+                    haptics.selection();
+                    setWarnedAbout(null);
+                    router.push({ pathname: '/assessments/[id]', params: { id: warning.id } });
+                  }}
+                >
+                  Continue it
+                </Button>
+              ) : null}
+              <Button
+                testID="assessment-start-another"
+                mode="outlined"
+                contentStyle={{ minHeight: MIN_TARGET }}
+                disabled={!levelId || start.isPending}
+                loading={start.isPending}
+                onPress={() => void begin(true)}
+              >
+                Start another
+              </Button>
+              <Button
+                testID="assessment-in-progress-cancel"
+                mode="text"
+                contentStyle={{ minHeight: MIN_TARGET }}
+                onPress={() => setWarnedAbout(null)}
+              >
+                Not now
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <Button
+            testID="assessment-begin"
+            mode="contained"
+            icon="pen"
+            disabled={!chosenStudent || !levelId || start.isPending}
+            loading={start.isPending}
+            onPress={() => void begin()}
+            style={{ alignSelf: 'flex-start' }}
+          >
+            Start
+          </Button>
+        )}
         <Text testID="assessment-start-note" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
           {startNote(
             Boolean(organization?.canvas_assessments_unreviewed),
@@ -285,7 +368,8 @@ export function AssessmentRow({ row }: { row: CanvasAssessment }) {
   }
 
   const actions = rowActions(row);
-  const anyAction = actions.continue || actions.review !== null || actions.openReview;
+  // Phase 77: an admin who did not start it may discard it without continuing it.
+  const anyAction = actions.continue || actions.discard || actions.review !== null || actions.openReview;
   return (
     <OutlinedCard testID={`assessment-row-${row.id}`} style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.lg, gap: space.sm }}>

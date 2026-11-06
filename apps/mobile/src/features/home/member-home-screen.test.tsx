@@ -521,6 +521,53 @@ describe('Phase 68: focus and families', () => {
     expect(mockStart).toHaveBeenCalledWith(expect.objectContaining({ level_id: 'BA3' }));
   });
 
+  // Phase 77 (JF15): a child who does not sign in plays on this device, at their grade, in one request.
+  it('Play with a child who does not sign in is a game on this device, at the child’s grade', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }, { level_id: 'NC26.5' }];
+    const ben = child({ student_user_id: 'ben', first_name: 'Ben', signs_in: false, grade: 5, next_lesson: null, days_played_this_week: 0 });
+    await show({ ...ANITA, first_name: 'Tom', parent: { children: [ben] } }, ['parent']);
+    expect(screen.getByTestId('home-child-play-ben')).toHaveTextContent(/Play with Ben on this device$/);
+    // The button says where; the line under it is for "Practise together", which does not.
+    expect(screen.queryByTestId('home-child-on-device-ben')).toBeNull();
+    await fireEvent.press(screen.getByTestId('home-child-play-ben'));
+    expect(mockStart).toHaveBeenCalledWith(
+      expect.objectContaining({ level_id: 'NC26.5', players: 'multi', host_plays: true, seat_user_ids: ['ben'] }),
+    );
+    expect(mockStart.mock.calls[0]![0]).not.toHaveProperty('invite_user_ids');
+  });
+
+  it('Continue with Ben reopens the game still running, rather than starting another', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    const ben = child({ student_user_id: 'ben', first_name: 'Ben', signs_in: false, open_game_id: 'g-77', next_lesson: null });
+    await show({ ...ANITA, first_name: 'Tom', parent: { children: [ben] } }, ['parent']);
+    expect(screen.getByTestId('home-child-continue-ben')).toHaveTextContent(/Continue with Ben$/);
+    expect(screen.queryByTestId('home-child-play-ben')).toBeNull();
+    expect(screen.queryByTestId('home-child-on-device-ben')).toBeNull();
+    await fireEvent.press(screen.getByTestId('home-child-continue-ben'));
+    expect(mockOpenGame).toHaveBeenCalledWith('g-77');
+    expect(mockStart).not.toHaveBeenCalled();
+  });
+
+  it('Practise together with a child on this device says where under the button', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    const ben = child({ student_user_id: 'ben', first_name: 'Ben', signs_in: false });
+    await show({ ...ANITA, first_name: 'Tom', parent: { children: [ben] } }, ['parent']);
+    expect(screen.getByTestId('home-child-play-ben')).toHaveTextContent(/Practise together before Thursday's lesson$/);
+    expect(screen.getByTestId('home-child-on-device-ben')).toHaveTextContent('Ben plays beside you, on this device.');
+    await fireEvent.press(screen.getByTestId('home-child-play-ben'));
+    expect(mockStart).toHaveBeenCalledWith(expect.objectContaining({ seat_user_ids: ['ben'] }));
+  });
+
+  it('a child who signs in keeps the online invite, with no hint', async () => {
+    mockTiles.current = [{ level_id: 'NC26.4' }];
+    await show({ ...ANITA, parent: { children: [child({ signs_in: true, next_lesson: null })] } }, ['parent']);
+    expect(screen.getByTestId('home-child-play-sanjay')).toHaveTextContent(/Play with Sanjay$/);
+    expect(screen.queryByTestId('home-child-on-device-sanjay')).toBeNull();
+    await fireEvent.press(screen.getByTestId('home-child-play-sanjay'));
+    expect(mockStart).toHaveBeenCalledWith(expect.objectContaining({ invite_user_ids: ['sanjay'] }));
+    expect(mockStart.mock.calls[0]![0]).not.toHaveProperty('seat_user_ids');
+  });
+
   it('Quest off: no played line and no Play with', async () => {
     mockTiles.current = [{ level_id: 'NC26.4' }];
     const off = { ...TUTORING, feature_quest: false };

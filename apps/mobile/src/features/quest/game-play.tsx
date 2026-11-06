@@ -12,6 +12,8 @@
 // iPad the play sits beside the scoreboard. End the game asks first. Phase 47 (design 61): while the
 // doors count down, "Get ready" in place of the question; the waiting card is the game's status, with
 // the team's score once it is done; the notice carries the game's points ("Right! +2", "Not quite. −3").
+// Phase 77 (JF15): QuestionPanel also answers for a child seated on this device (`asUserId`, game-seated-play.tsx),
+// its draft kept per hand, since both answer the same question in turn.
 import { useQueryClient } from '@tanstack/react-query';
 import { gameAnswerSchema, type GameQuestion, type GameView } from '@tmi/shared';
 import { useMemo, useState } from 'react';
@@ -37,8 +39,11 @@ import {
   HOSTING_TEXT,
   WAITING_LABEL,
   answerNotice,
+  endGameBody,
+  handLast,
   myTeam,
   questionHeading,
+  seatNotice,
   seriesTotal,
   waitingCopy,
 } from './game-model';
@@ -74,6 +79,24 @@ export function confirmEnd({
   ]);
 }
 
+/** "End the game now?", asked first; the host's alone. */
+export function confirmEndGame(
+  game: GameView,
+  action: ReturnType<typeof useGameAction>,
+  notice: ReturnType<typeof useQuestNotice>,
+) {
+  confirmEnd({
+    title: 'End the game now?',
+    body: endGameBody(game),
+    confirm: 'End the game',
+    keep: 'Keep playing',
+    onConfirm: () =>
+      void action
+        .mutateAsync({ kind: 'end' })
+        .catch((caught) => notice.error(message(caught, 'Could not end the game.'))),
+  });
+}
+
 export function GamePlay({ game, counting = false }: { game: GameView; counting?: boolean }) {
   const { width } = useWindowDimensions();
   const action = useGameAction(game.id);
@@ -81,18 +104,7 @@ export function GamePlay({ game, counting = false }: { game: GameView; counting?
   const wide = questWide(width);
   const playing = game.me.team_id !== null;
 
-  function end() {
-    confirmEnd({
-      title: 'End the game now?',
-      body: 'Every team stops where it is, and the places are given.',
-      confirm: 'End the game',
-      keep: 'Keep playing',
-      onConfirm: () =>
-        void action
-          .mutateAsync({ kind: 'end' })
-          .catch((caught) => notice.error(message(caught, 'Could not end the game.'))),
-    });
-  }
+  const end = () => confirmEndGame(game, action, notice);
 
   const main = (
     <View style={{ gap: space.lg, ...(wide ? { flex: 3 } : null) }}>
@@ -179,14 +191,30 @@ function Waiting({ game }: { game: GameView }) {
   );
 }
 
-/** What has been given so far, for the question it was given to. */
+/**
+ * What has been given so far, for the question it was given to -- and, Phase 77, whose hand it is: on one device a
+ * child and the host answer the same question in turn, and the child's choice must not be left standing for the host.
+ */
 interface Draft {
+  holder: string;
   questionId: string;
   choice: number | null;
   number: string;
 }
 
-function QuestionPanel({ game, question }: { game: GameView; question: GameQuestion }) {
+/**
+ * The question in a hand, Submit and Skip. Phase 77 (JF15): `asUserId` answers a child seated on this device
+ * (`as_user_id`); the notice then reads that child's last answer.
+ */
+export function QuestionPanel({
+  game,
+  question,
+  asUserId = null,
+}: {
+  game: GameView;
+  question: GameQuestion;
+  asUserId?: string | null;
+}) {
   const theme = useAppTheme();
   const notice = useQuestNotice();
   const action = useGameAction(game.id);
@@ -200,9 +228,13 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
 
   // Not keyed on the question (which would make new web views for each): a draft for another
   // question is an empty one.
-  const [draft, setDraft] = useState<Draft>({ questionId: question.id, choice: null, number: '' });
+  const holder = asUserId ?? '';
+  const seatName = asUserId ? (game.seats?.find((seat) => seat.user_id === asUserId)?.first_name ?? null) : null;
+  const [draft, setDraft] = useState<Draft>({ holder, questionId: question.id, choice: null, number: '' });
   const current =
-    draft.questionId === question.id ? draft : { questionId: question.id, choice: null, number: '' };
+    draft.questionId === question.id && draft.holder === holder
+      ? draft
+      : { holder, questionId: question.id, choice: null, number: '' };
   const { choice, number } = current;
   const response = questResponse(question, choice, number);
   const stemHtml = useMemo(
@@ -212,9 +244,10 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
 
   async function send(skip: boolean) {
     if (action.isPending) return;
+    const whose = asUserId ? { as_user_id: asUserId } : {};
     const raw = skip
-      ? { question_id: question.id, skip: true }
-      : { question_id: question.id, answer: response };
+      ? { question_id: question.id, skip: true, ...whose }
+      : { question_id: question.id, answer: response, ...whose };
     const parsed = gameAnswerSchema.safeParse(raw);
     if (!parsed.success) {
       notice.error(parsed.error.issues[0]?.message ?? 'Give an answer, or skip.');
@@ -227,7 +260,8 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
     }
     try {
       const reply = await action.mutateAsync({ kind: 'answer', ...parsed.data });
-      const said = answerNotice(reply.data?.me.last, reply.data ?? game);
+      // On one device the notice says whose answer it was ("Ben: Right! +1").
+      const said = seatNotice(answerNotice(handLast(reply.data ?? game, asUserId), reply.data ?? game), seatName);
       notice[said.tone](said.text);
       if (!reduced) {
         shift.set(32);
@@ -294,7 +328,7 @@ function QuestionPanel({ game, question }: { game: GameView; question: GameQuest
         <TextInput
           testID="game-number"
           mode="outlined"
-          label="Your answer"
+          label={seatName ? `${seatName}'s answer` : 'Your answer'}
           value={number}
           onChangeText={(text) => setDraft({ ...current, number: text })}
           placeholder="A number, like 12, 3/4 or 2.5"

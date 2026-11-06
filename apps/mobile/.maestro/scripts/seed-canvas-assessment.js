@@ -3,6 +3,8 @@
 // multiple-choice question has choice A. Sets output.assessmentId.
 // Phase 50: optional env ORG, ADMIN and STUDENT_ID (the features/* flows submit one in `assess`);
 // without STUDENT_ID in another organization, the first student of GET /users?role=student.
+// Phase 77 (JF20): with env SUBMIT=no it is only started (as ADMIN_EMAIL), left in progress for someone else to
+// continue -- canvas-assessments/hand-over.yaml, where Ines starts Noor's and Omar, her other parent, takes it on.
 var ORG = typeof ORG_SLUG !== 'undefined' && ORG_SLUG ? ORG_SLUG : 'chmi';
 var ADMIN = typeof ADMIN_EMAIL !== 'undefined' && ADMIN_EMAIL ? ADMIN_EMAIL : 'priya.raghavan@gmail.com';
 var SOFIA_ID = '00000000-0000-4000-8000-000000000008';
@@ -22,13 +24,16 @@ if (!studentId && ORG === 'chmi') studentId = SOFIA_ID;
 if (!studentId) studentId = call('GET', '/users?role=student&limit=1').data[0].id;
 var started = call('POST', '/canvas-assessments', { student_user_id: studentId, level_id: 'NC26.4' });
 var id = started.data.id;
-var detail = call('GET', '/canvas-assessments/' + id);
-var pages = detail.data.questions.map(function (question, index) {
-  return {
-    question_id: question.id,
-    strokes: index === 0 ? ['4 100 100 200 150 300 120 400 200'] : [],
-    choice: question.kind === 'choice' ? 0 : null,
-  };
-});
-call('POST', '/canvas-assessments/' + id + '/submit', { pages: pages });
 output.assessmentId = id;
+var submit = typeof SUBMIT === 'undefined' || SUBMIT !== 'no';
+if (submit) {
+  var detail = call('GET', '/canvas-assessments/' + id);
+  var pages = detail.data.questions.map(function (question, index) {
+    return {
+      question_id: question.id,
+      strokes: index === 0 ? ['4 100 100 200 150 300 120 400 200'] : [],
+      choice: question.kind === 'choice' ? 0 : null,
+    };
+  });
+  call('POST', '/canvas-assessments/' + id + '/submit', { pages: pages });
+}

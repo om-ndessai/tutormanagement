@@ -56,6 +56,8 @@ export function useCreateGame() {
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
       // Phase 73 (JF13): Continue now names this game.
       queryClient.removeQueries({ queryKey: openGameKey });
+      // Phase 77 (JF15): and a child's card offers "Continue with <child>" for a game on this device.
+      void queryClient.invalidateQueries({ queryKey: memberHomeKey });
     },
   });
 }

@@ -90,10 +90,12 @@ tags:
     visible:
       id: screen-quest-join-game
     timeout: 10000
+# Phase 72 (JF9, R13): the same honest words whether the code is another space's or nobody's (shared
+# GAME_CODE_NOT_FOUND_MESSAGE).
 - extendedWaitUntil:
     visible:
       id: game-join-error
-      text: 'No game or team has that code\.'
+      text: 'No game in this space has that code\. Games are joined inside their own space: ask your friend to invite you there, or start your own game\.'
     timeout: 10000
 - tapOn:
     id: game-join-close

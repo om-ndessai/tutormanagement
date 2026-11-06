@@ -680,6 +680,28 @@ one chooser** (Phase 76, JF21, JF37): `addChoices`, `nextStepsAfterAdd`, `USER_S
 guardian gives them the parent role in the same batch (logged `user.roles_changed`), and their own address answers 409
 "That's you: add your child, and you'll be their parent."; a personal space's home offers `add_person`.
 
+**A child who does not sign in plays on the parent's device, and a guardian hands over the child's assessment**
+(Phase 77, `docs/journey-fixes-plan.md` JF15, JF20, R35; this changes H10's "each on their own" and the canvas plan's
+starter-only continue). "Play with <child>" is `playTogetherRequest`: a child who signs in (`HomeChild.signs_in`) keeps
+the online invite (`playWithRequest`, whose lobby now lists `GameView.invited`, host and admins only); one who does not
+is a SEAT -- `createGameSchema.seat_user_ids` (1-4), each a live dependent of the host here with no email (`checkSeats`:
+anyone else 422 on `seat_user_ids`, a child with an email 409 `seat_signs_in`, "Ben signs in: invite them instead."). A
+seated game is a solo team for the host and one per child, begun at once, `late_join` false, no invitation rows; its
+code finds nothing and nobody joins it (`GAME_CODE_NOT_FOUND_MESSAGE`, the same words as no game). `EngineGame.seats`
+(child -> host) is the Durable Object's check: the host's session answers for a child with `as_user_id` (anyone else's,
+409), no D1 per answer, and the host's view carries `seats` (each child's hand, no key, R20) -- every team plays the
+same series, the client alternates, the child first. Credit follows the answer's person (`activity_days`,
+`quest_game_seen`), so the child's days and games are the child's, but a seat's answer never counts toward the
+two-right-answers rule (`correctGameAnswers` drops them: a parent's device may be the parent answering).
+`quest_game_players.seated_by_user_id` (`release=phase-77`) marks the seat: `family_games` counts a game the person
+was seated in or seated someone in -- never through `quest_game_invites`, so no Waiting for you or Next up `game_invite`
+ever shows it -- and `HomeChild.open_game_id` is the newest running game the READER seated that child in ("Continue
+with Ben"), with `HomeChild.grade` (`childGrade`: picked > recorded level > the school course's "Grade N" > the last
+level played) in the same one read. An assessment in progress is continued and submitted by its starter OR a guardian
+of the student here (`guards_student`, `can_continue`), after the client's "Hand the device to Noor"; only its starter
+or an admin discards it (`can_discard`); the submitted PDF stays the tutors' and the admins' (R17): the guardian gets
+the row back, never the answers.
+
 **The tour is Tutoring's, and a new space is asked what it may use first** (owner, 2026-11-04). The welcome
 wizard's tour, its first-visit offer and "Getting started" appear only where Tutoring is on (`tourOffered` in
 shared `onboarding.ts`); a just-started space's "Invite people" step is not the tour and still opens. The

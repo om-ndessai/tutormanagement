@@ -5,6 +5,8 @@ import { formatClockTime, type LessonDraftRef, type SessionMode } from './teachi
 import { addDays, weekdayOf } from './schedules.js';
 import type { Rating } from './progress.js';
 import type { CreateGameRequest } from './quest-games.js';
+import type { QuestionBankLevelId } from './questions.js';
+import { levelGrade } from './tile-look.js';
 
 // ---------------------------------------------------------------------------
 // The tutor's Home (Phase 43, docs/tutor-home-plan.md)
@@ -170,6 +172,23 @@ export interface HomeChild {
   daily_done_today?: boolean | null;
   /** The level the child played last (a game or a Daily), for "Play with <child>"; null if none. */
   play_level_id?: string | null;
+  /**
+   * Phase 77 (JF15): whether the child signs in themselves (has an email). True: "Play with" invites them online, as
+   * before; false: it is a game on the parent's own device (`playTogetherRequest`). Absent from an older Worker: treat
+   * as true.
+   */
+  signs_in?: boolean;
+  /**
+   * Phase 77 (JF15): the grade "Play with" plays at (`childGrade`): the one picked for them here, else the grade of the
+   * level the space records, else one read from their school course ("Grade 5 Mathematics"), else the grade of what
+   * they played last. 0 is "Not in school" (picked). Null where nothing says, or where Quest is off.
+   */
+  grade?: number | null;
+  /**
+   * Phase 77 (JF15): the newest game the READER seated this child in that is still running, for "Continue with Ben";
+   * null for none (or where Quest is off). Never another guardian's.
+   */
+  open_game_id?: string | null;
 }
 
 export interface HomeLearner {
@@ -324,6 +343,53 @@ export function playWithRequest(levelId: string, childUserId: string): CreateGam
     host_plays: true,
     invite_user_ids: [childUserId],
   };
+}
+
+/**
+ * Phase 77 (JF15): "Play with <child>", by how the child takes part. A child who signs in keeps the online invite
+ * (`playWithRequest`, unchanged); one who does not plays beside the parent on the parent's own device -- a seated game,
+ * a solo team each, begun at once. `signs_in` absent (an older Worker) is the online invite, as before.
+ */
+export function playTogetherRequest(child: Pick<HomeChild, 'student_user_id' | 'signs_in'>, levelId: string): CreateGameRequest {
+  if (child.signs_in !== false) return playWithRequest(levelId, child.student_user_id);
+  return {
+    level_id: levelId as CreateGameRequest['level_id'],
+    mode: 'count',
+    question_count: 5,
+    players: 'multi',
+    // What the seats imply anyway; sent so an older Worker still makes a game the parent is playing in.
+    max_teams: 2,
+    max_team_size: 1,
+    late_join: false,
+    host_plays: true,
+    seat_user_ids: [child.student_user_id],
+  };
+}
+
+/** Phase 77 (JF15): a grade (1-8) from a school course's name -- "Grade 5 Mathematics" is 5; "AP Calculus BC" none. */
+export function courseGrade(course: string | null | undefined): number | null {
+  const match = /\bgrade\s*(\d{1,2})\b/i.exec(course ?? '');
+  const grade = match ? Number(match[1]) : NaN;
+  return grade >= 1 && grade <= 8 ? grade : null;
+}
+
+/**
+ * Phase 77 (JF15): the grade a child plays at with a parent, first to last: the grade picked for them here (0 is "Not
+ * in school"); the grade of the level the space records for them; a grade read from their school course; the grade of
+ * the level they played last. Null when none says.
+ */
+export function childGrade(input: {
+  picked: number | null;
+  recorded: string | null;
+  course: string | null;
+  played: string | null;
+}): number | null {
+  if (input.picked !== null) return input.picked;
+  const recorded = input.recorded ? levelGrade(input.recorded as QuestionBankLevelId) : null;
+  if (recorded !== null) return recorded;
+  const course = courseGrade(input.course);
+  if (course !== null) return course;
+  return input.played ? levelGrade(input.played as QuestionBankLevelId) : null;
 }
 
 /** A quick practice of five on one's own (Practise before a lesson). */

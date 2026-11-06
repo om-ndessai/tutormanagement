@@ -25,7 +25,10 @@ import {
 import {
   HOME_FOCUS_LABELS,
   HOME_HAT_LABELS,
+  QUEST_GRADE_NOT_IN_SCHOOL,
   STREAK_DAYS_PER_WEEK,
+  boardGrades,
+  dailyLevelFor,
   featureOn,
   tourOffered,
   homeGreeting,
@@ -33,7 +36,7 @@ import {
   lessonDayWords,
   mayMakeSpace,
   orderHats,
-  playWithRequest,
+  playTogetherRequest,
   practiseBefore,
   practiseRequest,
   quickActionsFor,
@@ -43,8 +46,10 @@ import {
   type HomeFocus,
   type HomeHat,
   type HomeOffice,
+  type CreateGameRequest,
   type HomeTutor,
   type MemberHome,
+  type MemberTile,
   type NextUp,
   type QuickAction,
 } from '@tmi/shared';
@@ -57,6 +62,7 @@ import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { TourOfferCard, useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { PlayFavorites, PlayHome, WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { useMemberTiles } from '@/features/play/play-api';
+import { useGoToGame } from '@/features/quest/play-origin';
 import { DraftMark, LessonRecorder, RECORD_CLOSED, type KnownLesson, type RecordFlow } from '@/features/teaching/record-lesson';
 import { StartLessonDialog } from '@/features/teaching/start-session-button';
 import { AddPersonDialog } from '@/features/users/add-person';
@@ -669,10 +675,12 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
   const tutoring = featureOn(organization, 'tutoring');
   const quest = featureOn(organization, 'quest');
   const assessment = featureOn(organization, 'assessment');
-  // Phase 68 (H10): "Play with <child>" starts at the child's last level, else this space's first tile.
+  // Phase 68 (H10): "Play with <child>" starts at the child's level -- since Phase 77 (JF15) their grade, through the
+  // Daily's rule; else the level they played last; else this space's first tile.
   const tiles = useMemberTiles(quest && kids.length > 0);
-  const firstTileLevel = tiles.data?.data.tiles[0]?.level_id ?? null;
+  const tileList = tiles.data?.data.tiles ?? [];
   const { start, pending } = useStartQuest();
+  const goToGame = useGoToGame();
   return (
     <SectionShell hat="parent">
       {kids.length === 0 && (
@@ -735,20 +743,15 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
                 </p>
               )}
               <div className="flex flex-wrap gap-2 empty:hidden">
-                {quest && (child.play_level_id ?? firstTileLevel) && (
-                  <Button
-                    size="sm"
-                    disabled={pending}
-                    onClick={() =>
-                      void start(playWithRequest((child.play_level_id ?? firstTileLevel)!, child.student_user_id))
-                    }
-                    data-testid={`home-child-play-${child.student_user_id}`}
-                  >
-                    <UsersIcon />
-                    {practiseBefore(child.next_lesson, home.day)
-                      ? `Practise together before ${lessonDayWords(child.next_lesson!.occurs_on, home.day)}`
-                      : `Play with ${child.first_name}`}
-                  </Button>
+                {quest && (
+                  <PlayTogether
+                    child={child}
+                    level={childPlayLevel(child, tileList)}
+                    today={home.day}
+                    pending={pending}
+                    onStart={start}
+                    onContinue={goToGame}
+                  />
                 )}
                 {tutoring && (
                   <Button asChild size="sm" variant="outline">
@@ -783,6 +786,69 @@ function ParentSection({ home, kids }: { home: MemberHome; kids: HomeChild[] }) 
         ))}
       </div>
     </SectionShell>
+  );
+}
+
+/**
+ * Phase 77 (JF15): the level "Play with <child>" plays at -- the child's grade through the Daily's rule (0, "Not in
+ * school", is the top of the row, as on one's own board); else the level they played last; else this space's first tile.
+ */
+function childPlayLevel(child: HomeChild, tiles: readonly MemberTile[]): string | null {
+  const grades = boardGrades(tiles) as readonly number[];
+  const grade = child.grade === QUEST_GRADE_NOT_IN_SCHOOL ? (grades.at(-1) ?? null) : (child.grade ?? null);
+  if (grade !== null && grades.includes(grade)) return dailyLevelFor(tiles, grade);
+  return child.play_level_id ?? tiles[0]?.level_id ?? null;
+}
+
+/**
+ * Phase 68 (H10), Phase 77 (JF15): "Play with <child>". A child who signs in is invited online, as before; one who does
+ * not plays beside the parent on this device -- one tap, the game begun at once, no code to share. A game the reader
+ * seated them in that still runs is "Continue with <child>", back on whoever's turn it is.
+ */
+function PlayTogether({
+  child,
+  level,
+  today,
+  pending,
+  onStart,
+  onContinue,
+}: {
+  child: HomeChild;
+  level: string | null;
+  today: string;
+  pending: boolean;
+  onStart: (request: CreateGameRequest) => Promise<void>;
+  onContinue: (gameId: string) => void;
+}) {
+  const id = child.student_user_id;
+  if (child.open_game_id) {
+    const gameId = child.open_game_id;
+    return (
+      <Button size="sm" onClick={() => onContinue(gameId)} data-testid={`home-child-continue-${id}`}>
+        <PlayIcon /> Continue with {child.first_name}
+      </Button>
+    );
+  }
+  if (!level) return null;
+  const onDevice = child.signs_in === false;
+  const practise = practiseBefore(child.next_lesson, today);
+  const label = practise
+    ? `Practise together before ${lessonDayWords(child.next_lesson!.occurs_on, today)}`
+    : onDevice
+      ? `Play with ${child.first_name} on this device`
+      : `Play with ${child.first_name}`;
+  return (
+    <>
+      <Button size="sm" disabled={pending} onClick={() => void onStart(playTogetherRequest(child, level))} data-testid={`home-child-play-${id}`}>
+        <UsersIcon />
+        {label}
+      </Button>
+      {onDevice && practise && (
+        <span className="text-muted-foreground basis-full text-xs" data-testid={`home-child-on-device-${id}`}>
+          {child.first_name} plays beside you, on this device.
+        </span>
+      )}
+    </>
   );
 }
 

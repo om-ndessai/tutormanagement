@@ -1,0 +1,280 @@
+# Phase 77 (JF15, owner 2026-11-05): "Play with" a child who does not sign in is a game on the parent's device. Quest on
+# in chmi (quest-games-start.js). Tom's card for Ben (no email, "Grade 5 Mathematics") offers to play on this device
+# -- "Play with Ben on this device", or "Practise together before <day>'s lesson" while Ben's Saturday lesson is in the
+# coming week, with "Ben plays beside you, on this device." under it. One tap: no lobby and no code, the doors ("Get
+# ready: Ben goes first."), then "Ben's turn" with "Pass the device to Ben." on question 1 of 5, at Ben's grade, and
+# both scores side by side by first name. Ben answers ("Ben: Right! +1" or "Ben: Not quite."); then "Your turn" with
+# "Ben has answered: take the device back." on the same question. Tom leaves to Home: the card says "Continue with
+# Ben", and it opens the same game on the same turn (no doors). Tom skips: Ben's turn on question 2. Tom ends the game:
+# each player's own result by name ("Ben: 1 right, 1 point · 1st", "You: 0 right, 0 points · 2nd"), no team words.
+# Back Home, Ben's played line counts the day (his answer was his). No money on Home. In Quest's games list the game
+# says "On this device" and shows no code (its code finds nothing for anyone). quest-games-end.js ends any game
+# left and switches Quest off. The words are the web's (game-page.tsx, member-home.tsx).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/quest-games-end.js
+  - runScript: ../../scripts/quest-games-start.js
+onFlowComplete:
+  - runScript: ../../scripts/quest-games-start.js
+  - runScript: ../../scripts/quest-games-end.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: tom.whitfield@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: home-child-play-00000000-0000-4000-8000-000000000009
+    centerElement: true
+    timeout: 30000
+- assertVisible:
+    id: home-child-play-00000000-0000-4000-8000-000000000009
+    text: "(Play with Ben on this device|Practise together before .*'s lesson)"
+# "Practise together" does not say where, so the line under it does; "Play with Ben on this device" says it itself.
+- runFlow:
+    when:
+      visible:
+        id: home-child-play-00000000-0000-4000-8000-000000000009
+        text: "Practise together before .*'s lesson"
+    commands:
+      - assertVisible:
+          id: home-child-on-device-00000000-0000-4000-8000-000000000009
+          text: 'Ben plays beside you, on this device\.'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: play-on-device-card
+- tapOn:
+    id: home-child-play-00000000-0000-4000-8000-000000000009
+    waitToSettleTimeoutMs: 500
+# Begun at once: no lobby, no code to share -- the doors, then Ben first.
+- extendedWaitUntil:
+    visible:
+      id: game-turn-title
+      text: "Ben's turn"
+    timeout: 25000
+- assertNotVisible:
+    id: game-lobby-code
+- assertNotVisible:
+    id: game-share
+- assertVisible:
+    id: game-hand-over
+    text: 'Pass the device to Ben\.'
+- assertVisible:
+    id: game-question-number
+    text: '(?i)Question 1 of 5'
+- assertVisible:
+    id: game-seat-score-Ben
+- assertVisible:
+    id: game-seat-score-Tom
+- assertNotVisible:
+    id: game-my-score
+- takeScreenshot: play-on-device-bens-turn
+# Ben answers: a choice where there are choices, else a number. The maths' web views mount as the doors open; wait for
+# the choices' native targets (a number question has none, so this waits its time out).
+- extendedWaitUntil:
+    visible:
+      id: game-choice-A
+    timeout: 5000
+    optional: true
+- evalScript: ${output.answered = false}
+- runFlow:
+    when:
+      visible:
+        id: game-choice-A
+    commands:
+      - tapOn:
+          id: game-choice-A
+      - scrollUntilVisible:
+          element:
+            id: game-submit
+          centerElement: true
+      - tapOn:
+          id: game-submit
+      - evalScript: ${output.answered = true}
+- runFlow:
+    when:
+      true: ${!output.answered}
+      visible:
+        id: game-number
+    commands:
+      - tapOn:
+          id: game-number
+      - inputText: '7'
+      - extendedWaitUntil:
+          visible:
+            id: game-submit
+            enabled: true
+          timeout: 5000
+      - pressKey: Enter
+# The notice says whose answer it was.
+- extendedWaitUntil:
+    visible: 'Ben: (Right! \+1|Not quite\.)'
+    timeout: 10000
+# Then the parent's turn, on the same question. At the page's top the card cannot reach the middle: Maestro tries to
+# centre it a few times before settling for "visible", which takes longer than 10 s on Android.
+- scrollUntilVisible:
+    element:
+      id: game-turn-title
+    direction: UP
+    centerElement: true
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: game-turn-title
+      text: 'Your turn'
+    timeout: 10000
+- assertVisible:
+    id: game-hand-over
+    text: 'Ben has answered: take the device back\.'
+- assertVisible:
+    id: game-question-number
+    text: '(?i)Question 1 of 5'
+- takeScreenshot: play-on-device-your-turn
+# Leave to Home: Continue with Ben reopens the same game, on the same turn.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: home-child-continue-00000000-0000-4000-8000-000000000009
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: home-child-continue-00000000-0000-4000-8000-000000000009
+    text: 'Continue with Ben'
+- assertNotVisible:
+    id: home-child-play-00000000-0000-4000-8000-000000000009
+- assertNotVisible:
+    id: home-child-on-device-00000000-0000-4000-8000-000000000009
+- takeScreenshot: play-on-device-continue
+- tapOn:
+    id: home-child-continue-00000000-0000-4000-8000-000000000009
+- extendedWaitUntil:
+    visible:
+      id: game-turn-title
+      text: 'Your turn'
+    timeout: 20000
+- assertNotVisible:
+    id: game-countdown-number
+- assertVisible:
+    id: game-question-number
+    text: '(?i)Question 1 of 5'
+# Tom skips: Ben's turn again, on question 2.
+- extendedWaitUntil:
+    visible:
+      id: game-choice-A
+    timeout: 5000
+    optional: true
+- retry:
+    maxRetries: 2
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: game-skip
+          centerElement: true
+      - tapOn:
+          id: game-skip
+      - scrollUntilVisible:
+          element:
+            id: game-turn-title
+          direction: UP
+          centerElement: true
+      - extendedWaitUntil:
+          visible:
+            id: game-turn-title
+            text: "Ben's turn"
+          timeout: 6000
+- assertVisible:
+    id: game-question-number
+    text: '(?i)Question 2 of 5'
+# End it, asked first: each player's own result, by name.
+- scrollUntilVisible:
+    element:
+      id: game-end
+    centerElement: true
+- tapOn:
+    id: game-end
+- extendedWaitUntil:
+    visible: 'End the game now\?'
+    timeout: 5000
+- assertVisible: 'Everyone stops where they are, and the places are given\.'
+- tapOn: 'End the game'
+- extendedWaitUntil:
+    visible:
+      id: game-winner
+      # Ben's answer right: his win; wrong (0 to 0, Tom having skipped): a shared first place.
+      text: '(Ben wins!|(Ben and Tom|Tom and Ben) share first place!)'
+    timeout: 15000
+- assertVisible:
+    id: game-seated-result-Ben
+    text: 'Ben: [01] right, [01] points? · 1st'
+- assertVisible:
+    id: game-seated-result-Tom
+    text: 'You: 0 right, 0 points · (1st|2nd)'
+- assertVisible:
+    id: game-rules
+    text: '.*Ben and you, on this device.*'
+- assertNotVisible: '(?i).*\bteams?\b.*'
+- assertNotVisible:
+    id: game-encouragement
+- takeScreenshot: play-on-device-results
+# Back Home: the day is Ben's (his answer was credited to him), and nothing is open now.
+- tapOn:
+    id: quest-exit
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: home-child-played-00000000-0000-4000-8000-000000000009
+    centerElement: true
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: home-child-played-00000000-0000-4000-8000-000000000009
+      text: 'Played [1-7] days? this week \(aim: 3\).*'
+    timeout: 15000
+- assertVisible:
+    id: home-child-play-00000000-0000-4000-8000-000000000009
+    text: "(Play with Ben on this device|Practise together before .*'s lesson)"
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: play-on-device-credited
+# Quest's games list: the game played here says "On this device", never a host line or a code to share.
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-quest
+    centerElement: true
+- tapOn:
+    id: more-nav-quest
+- extendedWaitUntil:
+    visible:
+      id: quest-games
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: game-list
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: 'game-row-.*'
+    text: '.*On this device.*'
+- assertNotVisible: '.*On this device · .*'
+- assertNotVisible: '.*code [A-Z0-9]{6}.*'
+- assertNotVisible: '.*You host.*'
+- takeScreenshot: play-on-device-games-list

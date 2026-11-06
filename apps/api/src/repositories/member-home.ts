@@ -2,6 +2,7 @@ import {
   HOME_FOCUS_ACTIVITY_DAYS,
   UNRECORDED_LOOKBACK_DAYS,
   addDays,
+  childGrade,
   deriveHomeFocus,
   homeFocusOptions,
   weekOf,
@@ -284,7 +285,7 @@ async function parentBlock(
   db: D1Database,
   org: OrgContext,
   viewer: User,
-  children: { id: string; full_name: string }[],
+  children: { id: string; full_name: string; has_email: number }[],
   nowIso: string,
 ): Promise<{ children: HomeChild[] }> {
   const { day: today, minutesOfDay: now } = zonedClockParts(nowIso, org.time_zone);
@@ -326,7 +327,9 @@ async function parentBlock(
     : [{ results: [] }, [], { results: [] }, { results: [] }];
 
   // Phase 68 (H10, R29): where Quest is on, this week's days played and today's Daily -- counts only --
-  // and the level each child played last, for "Play with <child>".
+  // and the level each child played last, for "Play with <child>". Phase 77 (JF15): in the same read as that level,
+  // what decides the grade they play at with a parent (`childGrade`), and the newest running game the READER seated
+  // them in, for "Continue with Ben" -- never another guardian's.
   const questOn = featureOn(org, 'quest');
   const childIds = JSON.stringify([...ids]);
   const [playedRows, dailyRows, levelRows] = questOn
@@ -349,17 +352,42 @@ async function parentBlock(
           .all<{ user_id: string }>(),
         db
           .prepare(
-            `SELECT user_id, level_id FROM (
-               SELECT p.user_id, g.level_id, ROW_NUMBER() OVER (PARTITION BY p.user_id ORDER BY g.created_at DESC) AS rn
-               FROM quest_game_players p
-               JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
-               WHERE p.organization_id = ? AND p.user_id IN (SELECT value FROM json_each(?))
-             ) WHERE rn = 1`,
+            `SELECT k.value AS user_id,
+                    (SELECT m.quest_grade FROM org_members m WHERE m.organization_id = ?1 AND m.user_id = k.value) AS picked,
+                    (SELECT s.quest_level_id FROM student_profiles s WHERE s.organization_id = ?1 AND s.user_id = k.value) AS recorded,
+                    (SELECT s.current_math_course FROM student_profiles s WHERE s.organization_id = ?1 AND s.user_id = k.value) AS course,
+                    (SELECT g.level_id FROM quest_game_players p
+                       JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+                      WHERE p.organization_id = ?1 AND p.user_id = k.value ORDER BY g.created_at DESC LIMIT 1) AS level_id,
+                    (SELECT g.created_at FROM quest_game_players p
+                       JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+                      WHERE p.organization_id = ?1 AND p.user_id = k.value ORDER BY g.created_at DESC LIMIT 1) AS game_at,
+                    (SELECT d.level_id FROM daily_results d
+                      WHERE d.organization_id = ?1 AND d.user_id = k.value ORDER BY d.created_at DESC LIMIT 1) AS daily_level_id,
+                    (SELECT d.created_at FROM daily_results d
+                      WHERE d.organization_id = ?1 AND d.user_id = k.value ORDER BY d.created_at DESC LIMIT 1) AS daily_at,
+                    (SELECT p.game_id FROM quest_game_players p
+                       JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id
+                      WHERE p.organization_id = ?1 AND p.user_id = k.value AND p.seated_by_user_id = ?2
+                        AND g.status = 'running' AND g.started_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-3 hours')
+                      ORDER BY g.created_at DESC LIMIT 1) AS open_game_id
+             FROM json_each(?3) AS k`,
           )
-          .bind(org.id, childIds)
-          .all<{ user_id: string; level_id: string }>(),
+          .bind(org.id, viewer.id, childIds)
+          .all<{
+            user_id: string;
+            picked: number | null;
+            recorded: string | null;
+            course: string | null;
+            level_id: string | null;
+            game_at: string | null;
+            daily_level_id: string | null;
+            daily_at: string | null;
+            open_game_id: string | null;
+          }>(),
       ])
     : [null, null, null];
+  const childFacts = new Map((levelRows?.results ?? []).map((row) => [row.user_id, row]));
 
   const taken = new Set((recorded.results ?? []).map((r) => upcomingTakenKey(r.tutor_user_id, r.student_user_id, r.occurred_on)));
   const out: HomeChild[] = [];
@@ -392,7 +420,16 @@ async function parentBlock(
       lessons_this_month: (monthRows.results ?? []).find((r) => r.student_user_id === child.id)?.n ?? 0,
       days_played_this_week: playedRows ? ((playedRows.results ?? []).find((r) => r.user_id === child.id)?.n ?? 0) : null,
       daily_done_today: dailyRows ? (dailyRows.results ?? []).some((r) => r.user_id === child.id) : null,
-      play_level_id: levelRows ? ((levelRows.results ?? []).find((r) => r.user_id === child.id)?.level_id ?? null) : null,
+      play_level_id: levelRows ? (childFacts.get(child.id)?.level_id ?? null) : null,
+      // Phase 77 (JF15): a child who signs in is invited online; one who does not plays on the parent's device.
+      signs_in: child.has_email === 1,
+      grade: (() => {
+        const facts = childFacts.get(child.id);
+        if (!facts) return null;
+        const played = (facts.daily_at ?? '') > (facts.game_at ?? '') ? facts.daily_level_id : facts.level_id;
+        return childGrade({ picked: facts.picked, recorded: facts.recorded, course: facts.course, played });
+      })(),
+      open_game_id: childFacts.get(child.id)?.open_game_id ?? null,
     });
   }
   return { children: out };
@@ -475,14 +512,14 @@ export async function buildMemberHome(
       .first<{ tutors: number }>(),
     db
       .prepare(
-        `SELECT u.id, u.full_name FROM guardianships g
+        `SELECT u.id, u.full_name, u.email IS NOT NULL AS has_email FROM guardianships g
          JOIN org_members m ON m.organization_id = g.organization_id AND m.user_id = g.dependent_user_id AND m.removed_at IS NULL
          JOIN users u ON u.id = g.dependent_user_id AND u.deleted_at IS NULL
          WHERE g.organization_id = ? AND g.guardian_user_id = ?
          ORDER BY u.full_name`,
       )
       .bind(org.id, viewer.id)
-      .all<{ id: string; full_name: string }>(),
+      .all<{ id: string; full_name: string; has_email: number }>(),
     getPlatformAccount(db, viewer.id),
   ]);
 

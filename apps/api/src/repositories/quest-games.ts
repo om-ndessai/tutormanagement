@@ -192,11 +192,14 @@ export async function findGameByCode(
     .first<{ game_id: string; team_id: string | null }>();
 }
 
-/** A team and its first player, in one batch. */
+/**
+ * A team and its first player, in one batch. Phase 77 (JF15): `seatedBy` is the host who seated a child on their own
+ * device (`quest_game_players.seated_by_user_id`); absent for everyone else.
+ */
 export async function insertTeamWithPlayer(
   db: D1Database,
   org: OrgId,
-  input: { gameId: string; teamId: string; code: string | null; name: string; solo: boolean; userId: string },
+  input: { gameId: string; teamId: string; code: string | null; name: string; solo: boolean; userId: string; seatedBy?: string | null },
 ): Promise<void> {
   await db.batch([
     db
@@ -206,9 +209,37 @@ export async function insertTeamWithPlayer(
       )
       .bind(input.teamId, org, input.gameId, input.code, input.name, input.solo ? 1 : 0, input.userId),
     db
-      .prepare('INSERT INTO quest_game_players (game_id, organization_id, team_id, user_id) VALUES (?, ?, ?, ?)')
-      .bind(input.gameId, org, input.teamId, input.userId),
+      .prepare('INSERT INTO quest_game_players (game_id, organization_id, team_id, user_id, seated_by_user_id) VALUES (?, ?, ?, ?, ?)')
+      .bind(input.gameId, org, input.teamId, input.userId, input.seatedBy ?? null),
   ]);
+}
+
+/**
+ * Phase 77 (JF15): the children a host asks to seat on their own device, as this space knows them: whether each is a
+ * live dependent of the host HERE (a guardianship in this space, a live member with the student role) and whether they
+ * sign in (have an email). One read; an id that is nobody here comes back as nothing.
+ */
+export async function seatCandidates(
+  db: D1Database,
+  org: OrgId,
+  hostId: string,
+  ids: readonly string[],
+): Promise<{ id: string; full_name: string; has_email: number; own_child: number }[]> {
+  const result = await db
+    .prepare(
+      `SELECT u.id, u.full_name, u.email IS NOT NULL AS has_email,
+              (EXISTS (SELECT 1 FROM guardianships g
+                        WHERE g.organization_id = m.organization_id AND g.guardian_user_id = ?2 AND g.dependent_user_id = u.id)
+               AND EXISTS (SELECT 1 FROM user_roles r
+                            WHERE r.organization_id = m.organization_id AND r.user_id = u.id AND r.role = 'student')
+               AND m.status = 'active' AND m.removed_at IS NULL) AS own_child
+       FROM org_members m
+       JOIN users u ON u.id = m.user_id AND u.deleted_at IS NULL
+       WHERE m.organization_id = ?1 AND m.user_id IN (SELECT value FROM json_each(?3))`,
+    )
+    .bind(org, hostId, JSON.stringify([...new Set(ids)]))
+    .all<{ id: string; full_name: string; has_email: number; own_child: number }>();
+  return result.results ?? [];
 }
 
 export async function insertPlayer(
@@ -372,11 +403,16 @@ export async function writeGameResults(db: D1Database, org: OrgId, game: EngineG
   }
 }
 
-/** Each correct, unskipped answer of a game: who gave it, to which question, in the order given. */
+/**
+ * Each correct, unskipped answer of a game: who gave it, to which question, in the order given. Phase 77 (JF15): never a
+ * seated child's -- a parent's device may be the parent answering -- so seat answers count toward no two-right-answers
+ * approval (they still count as the child's days and games).
+ */
 export function correctGameAnswers(game: EngineGame): { userId: string; questionId: string }[] {
+  const seated = new Set(Object.keys(game.seats ?? {}));
   return game.teams
     .flatMap((team) => team.answers)
-    .filter((answer) => answer.correct && !answer.skipped)
+    .filter((answer) => answer.correct && !answer.skipped && !seated.has(answer.user_id))
     .sort((a, b) => a.at - b.at)
     .map((answer) => ({ userId: answer.user_id, questionId: answer.question_id }));
 }
@@ -393,7 +429,10 @@ export async function listGames(
               u.full_name AS host_name, g.host_user_id = ?2 AS is_host,
               (SELECT COUNT(*) FROM quest_game_teams t WHERE t.organization_id = g.organization_id AND t.game_id = g.id) AS teams,
               (SELECT t.place FROM quest_game_players p JOIN quest_game_teams t ON t.id = p.team_id
-                WHERE p.organization_id = g.organization_id AND p.game_id = g.id AND p.user_id = ?2) AS place
+                WHERE p.organization_id = g.organization_id AND p.game_id = g.id AND p.user_id = ?2) AS place,
+              EXISTS (SELECT 1 FROM quest_game_players p
+                      WHERE p.organization_id = g.organization_id AND p.game_id = g.id
+                        AND p.seated_by_user_id IS NOT NULL) AS seated
        FROM quest_games g
        JOIN users u ON u.id = g.host_user_id
        WHERE g.organization_id = ?1
@@ -419,6 +458,7 @@ export async function listGames(
       is_host: number;
       teams: number;
       place: number | null;
+      seated: number;
     }>();
   return (result.results ?? []).map((row) => ({
     id: row.id,
@@ -435,6 +475,7 @@ export async function listGames(
     created_at: row.created_at,
     place: row.place,
     teams: row.teams,
+    seated: row.seated === 1,
   }));
 }
 

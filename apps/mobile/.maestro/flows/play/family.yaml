@@ -5,7 +5,7 @@
 # "Waiting for you" says Priya started Grade 6 Quick 2 (Phase 73, JF32: in words, never a code), and Join --
 # with no code typed -- opens the join sheet,
 # and "Join the game" puts her in the lobby. quest-games-end.js ends the game, deletes the favorite and
-# turns the switches off.
+# turns the switches off. Phase 77 (JF15): the host's lobby says whom it waits for, "Invited: Sofia".
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -72,6 +72,14 @@ tags:
     id: game-lobby-qr
 - assertVisible:
     id: game-share
+- scrollUntilVisible:
+    element:
+      id: game-lobby-invited
+    centerElement: true
+    timeout: 10000
+- assertVisible:
+    id: game-lobby-invited
+    text: 'Invited: Sofia'
 - takeScreenshot: play-family-lobby
 - runFlow:
     file: ../../subflows/sign-in-as.yaml

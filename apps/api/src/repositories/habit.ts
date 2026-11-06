@@ -81,13 +81,20 @@ export async function habitFacts(db: D1Database, org: OrgId, userId: string): Pr
            JOIN quest_game_teams t ON t.organization_id = p.organization_id AND t.id = p.team_id
            WHERE p.organization_id = ?1 AND p.user_id = ?2 AND g.status = 'finished'
              AND COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0) AS quests_finished,
-         -- A family game is one with invitations that the person played in (invited or hosting), not one merely sent.
-         (SELECT COUNT(DISTINCT i.game_id) FROM quest_game_invites i
-           JOIN quest_games g ON g.organization_id = i.organization_id AND g.id = i.game_id AND g.status = 'finished'
-           JOIN quest_game_players p ON p.organization_id = i.organization_id AND p.game_id = i.game_id AND p.user_id = ?2
+         -- A family game is one the person played in (their team answered) that was either sent to a family -- with
+         -- invitations, the person invited or hosting -- or (Phase 77, JF15) played on one device: they were seated in
+         -- it, or seated a child in it. Counted by the seat marker, so a seated game is never an invitation anywhere.
+         (SELECT COUNT(DISTINCT p.game_id) FROM quest_game_players p
+           JOIN quest_games g ON g.organization_id = p.organization_id AND g.id = p.game_id AND g.status = 'finished'
            JOIN quest_game_teams t ON t.organization_id = p.organization_id AND t.id = p.team_id
-           WHERE i.organization_id = ?1 AND (i.user_id = ?2 OR g.host_user_id = ?2)
-             AND COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0) AS family_games,
+           WHERE p.organization_id = ?1 AND p.user_id = ?2
+             AND COALESCE(t.correct, 0) + COALESCE(t.wrong, 0) + COALESCE(t.skipped, 0) > 0
+             AND (EXISTS (SELECT 1 FROM quest_game_invites i
+                           WHERE i.organization_id = p.organization_id AND i.game_id = p.game_id
+                             AND (i.user_id = ?2 OR g.host_user_id = ?2))
+                  OR EXISTS (SELECT 1 FROM quest_game_players s
+                              WHERE s.organization_id = p.organization_id AND s.game_id = p.game_id
+                                AND (s.user_id = ?2 OR s.seated_by_user_id = ?2) AND s.seated_by_user_id IS NOT NULL))) AS family_games,
          (SELECT COUNT(DISTINCT day) FROM daily_results d WHERE d.organization_id = ?1 AND d.user_id = ?2) AS dailies`,
     )
     .bind(org, userId)

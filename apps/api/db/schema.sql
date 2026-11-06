@@ -2524,6 +2524,10 @@ CREATE TABLE quest_game_players (
   team_id         TEXT NOT NULL REFERENCES quest_game_teams (id),
   user_id         TEXT NOT NULL REFERENCES users (id),
   joined_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  -- Phase 77 (JF15): a child playing on a parent's own device -- the parent (the game's host) who seated them and
+  -- answers for them. NULL for everyone who plays from their own sign-in. Written once, at the game's start; it lets
+  -- the parent's home offer "Continue with Ben", and counts the game as a family game for both.
+  seated_by_user_id TEXT REFERENCES users (id),
 
   PRIMARY KEY (game_id, user_id)
 );

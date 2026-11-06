@@ -21,7 +21,9 @@ tags:
       id: screen-home
     timeout: 30000
 # Phase 66: the member home; the Assessment home is in Ines's "Your learning" -- since Phase 74 (JF6) after her
-# child's card and the office (what she came for leads), so it is scrolled to.
+# child's card and the office (what she came for leads), so it is scrolled to -- to the middle, as its rows follow it and
+# the heading alone can sit just above the tab bar (it does once the office has an assessment to review, as after
+# canvas-assessments/hand-over).
 - extendedWaitUntil:
     visible:
       id: home-band
@@ -29,6 +31,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: assess-home-students
+    centerElement: true
     timeout: 15000
 - assertVisible:
     id: 'assess-home-student-.*'

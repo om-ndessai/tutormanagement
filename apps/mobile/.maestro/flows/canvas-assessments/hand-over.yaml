@@ -1,0 +1,196 @@
+# Phase 77 (JF20, owner 2026-11-05): a guardian continues her child's assessment on her own device. In `assess` Ines
+# (admin, and Noor's mother) has started Noor's Grade 4 assessment (seed-canvas-assessment.js, SUBMIT=no). Omar, Noor's
+# father, did not start it: on his Assessment home Noor's row is "In progress" with Continue, which opens "Hand the
+# device to Noor" -- "Noor answers on this device. Answers written on another device stay there." -- before any
+# question; "Noor is ready" shows question 1, and Noor writes on it. On the Assessment screen the row offers him
+# Continue but no Discard (only its starter or an admin discards). Start for Noor at Grade 4 warns first, "One is
+# already in progress": "Noor already has a Grade 4 assessment in progress (started …).", with Continue it, Start
+# another and Not now; Not now puts it away, and "Continue it" opens the same one -- the hand-over again, page
+# 1's writing still there (kept on this device). He submits it; the row is Submitted, and he gets no PDF (R17: the
+# PDF is the tutors' and the admins'). reset-features.js discards anything left in progress.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/reset-features.js
+onFlowComplete:
+  - runScript: ../../scripts/reset-features.js
+tags:
+  - feature
+  - exposure
+---
+- runScript:
+    file: ../../scripts/seed-canvas-assessment.js
+    env:
+      ORG_SLUG: assess
+      ADMIN_EMAIL: ines.ferreira.assess@gmail.com
+      STUDENT_ID: 0d100000-0000-4000-8000-000000000003
+      SUBMIT: 'no'
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: omar.haddad.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: assess-home-students
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: assess-home-continue-0d100000-0000-4000-8000-000000000003
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: assess-home-status-0d100000-0000-4000-8000-000000000003
+    text: 'In progress.*'
+- takeScreenshot: hand-over-home
+# Continue: the hand-over first, no question yet.
+- tapOn:
+    id: assess-home-continue-0d100000-0000-4000-8000-000000000003
+- extendedWaitUntil:
+    visible:
+      id: assessment-hand-over
+    timeout: 20000
+- assertVisible:
+    id: assessment-hand-over-title
+    text: 'Hand the device to Noor'
+- assertVisible:
+    id: assessment-hand-over-body
+    text: 'Noor answers on this device\. Answers written on another device stay there\.'
+- assertNotVisible:
+    id: assessment-canvas
+- takeScreenshot: hand-over-screen
+- tapOn:
+    id: assessment-ready
+- extendedWaitUntil:
+    visible: 'Question 1 of 10'
+    timeout: 15000
+- assertVisible:
+    id: assessment-canvas
+# Noor writes on page 1 (a choice too, where the question has choices).
+- runFlow:
+    when:
+      visible:
+        id: assessment-choice-A
+    commands:
+      - tapOn:
+          id: assessment-choice-A
+- runFlow:
+    file: ../../subflows/canvas-assessments/write-right.yaml
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-1
+      text: 'Question 1, has writing.*'
+    timeout: 5000
+- takeScreenshot: hand-over-written
+# Back Home, then the Assessment screen: Continue is his, Discard is not.
+- runFlow: ../../subflows/go-back.yaml
+- extendedWaitUntil:
+    visible:
+      id: assess-home-students
+    timeout: 15000
+- tapOn: 'More'
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: more-nav-assessments
+    centerElement: true
+- tapOn:
+    id: more-nav-assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-continue-${output.assessmentId}
+    centerElement: true
+    timeout: 15000
+- assertNotVisible:
+    id: assessment-discard-${output.assessmentId}
+# Start another for Noor at Grade 4: warned first, with the one in progress to continue.
+- scrollUntilVisible:
+    element:
+      id: assessment-student
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: assessment-student
+- tapOn:
+    id: assessment-student-0d100000-0000-4000-8000-000000000003
+- tapOn:
+    id: assessment-level
+- extendedWaitUntil:
+    visible:
+      id: assessment-level-list
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: assessment-level-NC26.4
+    direction: DOWN
+    speed: 30
+    visibilityPercentage: 100
+    timeout: 20000
+- tapOn:
+    id: assessment-level-NC26.4
+- scrollUntilVisible:
+    element:
+      id: assessment-begin
+    centerElement: true
+- tapOn:
+    id: assessment-begin
+- extendedWaitUntil:
+    visible:
+      id: assessment-in-progress-words
+      text: 'Noor already has a Grade 4 assessment in progress \(started .*\)\.'
+    timeout: 10000
+- assertVisible:
+    id: assessment-start-another
+    text: 'Start another'
+- takeScreenshot: hand-over-start-warning
+# Not now: the warning goes, Start is back; asked again, it warns again.
+- tapOn:
+    id: assessment-in-progress-cancel
+- assertNotVisible:
+    id: assessment-in-progress
+- tapOn:
+    id: assessment-begin
+- extendedWaitUntil:
+    visible:
+      id: assessment-continue-it
+    timeout: 10000
+- tapOn:
+    id: assessment-continue-it
+# The same assessment: the hand-over again, and page 1's writing kept on this device.
+- extendedWaitUntil:
+    visible:
+      id: assessment-hand-over-title
+      text: 'Hand the device to Noor'
+    timeout: 20000
+- tapOn:
+    id: assessment-ready
+- extendedWaitUntil:
+    visible:
+      id: assessment-page-1
+      text: '.*has writing.*'
+    timeout: 15000
+# Submitted by her father: the row says so, and the PDF stays the tutors' and the admins'.
+- tapOn:
+    id: assessment-submit
+- runFlow: ../../subflows/canvas-assessments/confirm-submit.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: assessment-status-${output.assessmentId}
+      text: 'Submitted'
+    centerElement: true
+    timeout: 15000
+- assertNotVisible:
+    id: assessment-open-pdf-${output.assessmentId}
+- assertNotVisible:
+    id: assessment-continue-${output.assessmentId}
+- takeScreenshot: hand-over-submitted

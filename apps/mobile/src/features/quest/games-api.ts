@@ -9,6 +9,7 @@
 // (`refetchIntervalInBackground` stays false), and a finished game is never polled again.
 // Phase 73 (JF13): `gameKeys.open` is Continue's read (play-api.ts `useOpenGame`); a start, a join and
 // every action mark it stale, so Home reads it again when it is back in front -- never while a game is.
+// Phase 77 (JF15): a start marks the member home stale too, for a child's "Continue with <child>".
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
@@ -24,6 +25,7 @@ import type {
   JoinGameInput,
 } from '@tmi/shared';
 
+import { memberHomeKey } from '@/features/home/api';
 import { ApiRequestError, apiClient } from '@/lib/api-client';
 import { gameRefetchInterval } from './game-model';
 
@@ -66,6 +68,8 @@ export function useCreateGame() {
       queryClient.setQueryData(gameKeys.game(game.data.id), game);
       void queryClient.invalidateQueries({ queryKey: gameKeys.list });
       void queryClient.invalidateQueries({ queryKey: gameKeys.open });
+      // Phase 77 (JF15): and a child's card offers "Continue with <child>" for a game on this device (the web's).
+      void queryClient.invalidateQueries({ queryKey: memberHomeKey });
     },
   });
 }

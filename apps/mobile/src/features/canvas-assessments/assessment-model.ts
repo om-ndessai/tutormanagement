@@ -2,13 +2,19 @@
 // assessments-page.tsx, review-assessment-page.tsx} @ 37bdad1 (with Phase 40), kept pure so they are tested without a
 // screen: what counts as unanswered, choosing and un-choosing, what a page button shows, the request
 // a submission sends, the work saved on the device, and the sentences under a row and a review.
+// Phase 77 (JF20, owner 2026-11-05): the hand-over before the questions when the reader is not the student ("Hand the
+// device to Noor"), Start's warning when the student already has one in progress, and what a submit by someone else
+// says (the PDF is the tutor's; never linked to the guardian).
 import {
+  TILE_LEVEL_WORDS,
   formatRelativeTime,
   formatStroke,
+  levelLabel,
   type CanvasAssessment,
   type CanvasAssessmentLevel,
   type CanvasAssessmentQuestion,
   type CanvasStroke,
+  type QuestionBankLevelId,
   type SubmitCanvasAssessmentInput,
 } from '@tmi/shared';
 
@@ -176,6 +182,81 @@ export function rowSummary(row: CanvasAssessment, now?: Date): string {
       : `${row.question_count} questions · started ${formatRelativeTime(row.started_at, now)}`) +
     (row.started_by_name ? ` · started by ${row.started_by_name}` : '')
   );
+}
+
+// --- Families at home (Phase 77, JF20) --------------------------------------------------------
+
+/** "Noor" from "Noor Haddad". */
+export function firstName(name: string | null | undefined): string {
+  const trimmed = (name ?? '').trim();
+  return trimmed.split(/\s+/)[0] || trimmed;
+}
+
+/** "Grade 4", "Beast Academy 3": a level in words, else its short label. */
+export function levelWords(levelId: string): string {
+  return TILE_LEVEL_WORDS[levelId as QuestionBankLevelId] ?? levelLabel(levelId);
+}
+
+/** The student's assessment already in progress (the newest), for Start's warning; null for none. */
+export function inProgressFor(rows: readonly CanvasAssessment[], studentId: string): CanvasAssessment | null {
+  let newest: CanvasAssessment | null = null;
+  for (const row of rows) {
+    if (row.student_user_id !== studentId || row.status !== 'in_progress') continue;
+    if (!newest || row.started_at > newest.started_at) newest = row;
+  }
+  return newest;
+}
+
+/** The warning's title (the web's). */
+export const IN_PROGRESS_TITLE = 'One is already in progress';
+
+/**
+ * "Noor already has a Grade 4 assessment in progress (started 8 minutes ago).", or "You already have …" for the
+ * student's own -- the web's words.
+ */
+export function inProgressWarning(
+  row: Pick<CanvasAssessment, 'student_name' | 'level_id' | 'started_at'>,
+  own = false,
+  now?: Date,
+): string {
+  const level = levelWords(row.level_id);
+  const who = own ? 'You already have' : `${firstName(row.student_name)} already has`;
+  return `${who} ${/^[aeiou]/i.test(level) ? 'an' : 'a'} ${level} assessment in progress (started ${formatRelativeTime(row.started_at, now)}).`;
+}
+
+/** Whether the questions wait for the hand-over: whoever opened it is not the student who answers. */
+export function handsOver(assessment: Pick<CanvasAssessment, 'student_user_id'>, readerId: string | null | undefined): boolean {
+  return Boolean(readerId) && assessment.student_user_id !== readerId;
+}
+
+/** The hand-over screen's words, for the student's first name (the web's). */
+export function handOverWords(studentName: string): { title: string; body: string; ready: string } {
+  const first = firstName(studentName);
+  return {
+    title: `Hand the device to ${first}`,
+    body: `${first} answers on this device. Answers written on another device stay there.`,
+    ready: `${first} is ready`,
+  };
+}
+
+/**
+ * What a submit says. The student's own: as before. Anyone else's (a guardian, or whoever started it for them): where
+ * the PDF goes -- the student's tutor, or where there is no Tutoring the space's admins -- never a link to it (R17).
+ */
+export function submittedMessage({
+  own,
+  studentName,
+  tutoring,
+}: {
+  own: boolean;
+  studentName: string;
+  tutoring: boolean;
+}): string {
+  if (own) return 'Submitted. The tutor gets a PDF of your answers.';
+  const first = firstName(studentName);
+  return tutoring
+    ? `Submitted. ${first}'s tutor gets a PDF of the answers.`
+    : `Submitted. The space's admins get a PDF of ${first}'s answers.`;
 }
 
 /** The review screen's line: written, multiple choice correct, and not yet reviewed in the bank. */

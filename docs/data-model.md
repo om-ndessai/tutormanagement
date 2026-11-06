@@ -852,6 +852,13 @@ and `wrong_points` (`negative_marking` stays, derived as `wrong_points < 0`), `k
 describes a Phase 46 game as it was. The levels a Random game draws from are worked out when it is made
 and kept in the game's Durable Object, not here.
 
+Phase 77 (`docs/journey-fixes-plan.md` JF15) adds `quest_game_players.seated_by_user_id`: a child who does not
+sign in, playing on a parent's own device, is a player row like any other (their own solo team, so their answers
+and score are theirs), and this column names the host who seated them and answers for them; NULL for everyone who
+plays from their own sign-in. The database cannot say who may be seated -- a live dependent of the host in this
+organization, with no email -- so the route does (`checkSeats`), and the game's Durable Object keeps the same
+pairs (`seats`) to check every answer given for a seat.
+
 ### `quest_game_favorites` (Phase 47)
 
 A person's named settings for a game, saved from the wizard's review and offered on its first step.

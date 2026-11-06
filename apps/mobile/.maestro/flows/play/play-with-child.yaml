@@ -3,6 +3,8 @@
 # "Practise together before <day>'s lesson" while his lesson is within three days, else "Play with
 # Sanjay". One tap makes a game of two with Anita playing and Sanjay invited: its lobby opens. No money
 # on Home. quest-games-end.js ends the game and switches Quest back off.
+# Phase 77 (JF15): Sanjay signs in himself, so it stays the online invite -- never "on this device" -- and the lobby
+# says whom it waits for: "Invited: Sanjay".
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/quest-games-end.js
@@ -38,6 +40,8 @@ tags:
 - assertVisible:
     id: home-child-play-00000000-0000-4000-8000-000000000006
     text: "(Play with Sanjay|Practise together before .*'s lesson)"
+- assertNotVisible:
+    id: home-child-on-device-00000000-0000-4000-8000-000000000006
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: play-with-child-card
 - tapOn:
@@ -47,4 +51,12 @@ tags:
     visible:
       id: game-lobby-code
     timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: game-lobby-invited
+    centerElement: true
+    timeout: 10000
+- assertVisible:
+    id: game-lobby-invited
+    text: 'Invited: Sanjay'
 - takeScreenshot: play-with-child-lobby

@@ -1,9 +1,18 @@
 // Phase 68 (docs/member-home-plan.md H4, H10): focus and families -- the pin's choices and words, the
-// parent card's played line and Play with label, and the two new Next up items as the phone gathers them.
+// parent card's played line and Play with label, and the two new Next up items as the phone gathers them. Phase 77
+// (JF15): a child who does not sign in plays on this device, at their grade, and "Continue with Ben" reopens it.
 import { chooseNextUp, nextUpCandidates, orderHats, type MemberHome } from '@tmi/shared';
 
 import { ANITA, DAY, MARIA, PRIYA, SOFIA, child, homeLesson } from './member-home-fixtures';
-import { childPlayLabel, childPlayedLine, deviceExtras, pinChoices, pinLabel } from './member-home-model';
+import {
+  childPlayHint,
+  childPlayLabel,
+  childPlayLevel,
+  childPlayedLine,
+  deviceExtras,
+  pinChoices,
+  pinLabel,
+} from './member-home-model';
 
 describe('Make this my home', () => {
   it('offers Automatic and each option, only with two or more', () => {
@@ -56,6 +65,39 @@ describe("a parent's child card", () => {
       "Practise together before today's lesson",
     );
     expect(childPlayLabel(child({ next_lesson: homeLesson({ occurs_on: DAY, starts_in: 30 }) }), DAY)).toBe('Play with Sanjay');
+  });
+});
+
+describe('Play with, on this device (Phase 77)', () => {
+  const ben = (over: Parameters<typeof child>[0] = {}) =>
+    child({ student_user_id: 'ben', first_name: 'Ben', signs_in: false, next_lesson: null, ...over });
+
+  it('says where it is played, keeps the online words for a child who signs in, and continues a game still running', () => {
+    expect(childPlayLabel(ben(), DAY)).toBe('Play with Ben on this device');
+    expect(childPlayHint(ben(), DAY)).toBeNull();
+    expect(childPlayLabel(child({ signs_in: true, next_lesson: null }), DAY)).toBe('Play with Sanjay');
+    // An older Worker sends no signs_in: the online invite's words.
+    expect(childPlayLabel(child({ next_lesson: null }), DAY)).toBe('Play with Sanjay');
+    // A lesson in the coming week: practice together -- on this device too, which the line under it says.
+    expect(childPlayLabel(ben({ next_lesson: homeLesson() }), DAY)).toBe("Practise together before Thursday's lesson");
+    expect(childPlayHint(ben({ next_lesson: homeLesson() }), DAY)).toBe('Ben plays beside you, on this device.');
+    expect(childPlayHint(child(), DAY)).toBeNull();
+    expect(childPlayHint(child({ signs_in: true }), DAY)).toBeNull();
+    // The game the reader seated him in, still running: Continue, whatever the lesson.
+    expect(childPlayLabel(ben({ open_game_id: 'g-1', next_lesson: homeLesson() }), DAY)).toBe('Continue with Ben');
+    expect(childPlayHint(ben({ open_game_id: 'g-1', next_lesson: homeLesson() }), DAY)).toBeNull();
+  });
+
+  it("plays at the child's grade through the board's rules, else the level the card played before", () => {
+    const tiles = [{ level_id: 'NC26.3' }, { level_id: 'NC26.5' }, { level_id: 'BA5' }, { level_id: 'NC26.6' }] as never[];
+    expect(childPlayLevel({ grade: 5, play_level_id: 'NC26.3' }, tiles)).toBe('NC26.5');
+    // "Not in school" (0): the top of the row, as the board leads.
+    expect(childPlayLevel({ grade: 0 }, tiles)).toBe('NC26.6');
+    // A grade the tiles do not reach, or none: the child's last level, else the first tile.
+    expect(childPlayLevel({ grade: 8, play_level_id: 'NC26.3' }, tiles)).toBe('NC26.3');
+    expect(childPlayLevel({ grade: null, play_level_id: 'BA5' }, tiles)).toBe('BA5');
+    expect(childPlayLevel({}, tiles)).toBe('NC26.3');
+    expect(childPlayLevel({}, [])).toBeNull();
   });
 });
 

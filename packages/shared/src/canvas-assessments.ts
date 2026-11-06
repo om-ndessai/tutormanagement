@@ -245,8 +245,17 @@ export interface CanvasAssessment {
   submitted_at: string | null;
   /** The viewer may open the PDF: the student's current tutor, or an admin. */
   can_review: boolean;
-  /** The viewer started it and it is still in progress. */
+  /**
+   * It is still in progress and the viewer may take it on: they started it, or -- Phase 77 (JF20) -- they are a guardian
+   * of the student here, opening it on their own device to hand it over ("Hand the device to Noor"). Its questions come
+   * with it (GET /:id) and its submit is theirs; the submitted PDF stays the tutors' and the admins' (R17).
+   */
   can_continue: boolean;
+  /**
+   * Phase 77 (JF20): still in progress, and the viewer started it or is an admin -- only they discard it (a guardian who
+   * continues one somebody else started does not). Absent from an older Worker: the old rule, `can_continue`.
+   */
+  can_discard?: boolean;
   /**
    * Phase 40: when a tutor saved it as reviewed, and who. The reviewed PDF is
    * then readable by the student's whole audience (R17).

@@ -6,6 +6,10 @@
 // Mobile: the screen never scrolls while writing -- the question scrolls in its own box, and the
 // canvas is the largest 5:4 page that fits what is left (beside the question on a wide screen, an
 // iPad in landscape). The swipe back is off here, so an edge stroke never leaves the page.
+// Phase 77 (JF20, owner 2026-11-05): when whoever opened it is not the student -- a guardian continuing her child's,
+// or whoever started it for them -- the questions wait behind "Hand the device to Noor" ("Noor answers on this device.
+// Answers written on another device stay there.", then "Noor is ready"); a submit then says where the PDF goes, never
+// linking it (R17: the PDF is the tutors' and the admins').
 import { featureAllowed, levelLabel } from '@tmi/shared';
 import type { CanvasStroke } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
@@ -29,11 +33,14 @@ import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useCanvasAssessment, useSubmitCanvasAssessment } from './api';
 import {
   EMPTY_TAKE,
+  handOverWords,
+  handsOver,
   pageLabel,
   pageMark,
   parseSavedWork,
   submitMessage,
   submitPages,
+  submittedMessage,
   takeReducer,
   unansweredCount,
 } from './assessment-model';
@@ -44,7 +51,7 @@ import { QuestionView } from './question-view';
 const NO_STROKES: CanvasStroke[] = [];
 
 export function TakeAssessmentScreen() {
-  const { organization } = useAuth();
+  const { organization, user } = useAuth();
   const { id = '' } = useLocalSearchParams<{ id: string }>();
   const theme = useAppTheme();
   const toast = useToast();
@@ -55,6 +62,8 @@ export function TakeAssessmentScreen() {
 
   const [state, dispatch] = useReducer(takeReducer, EMPTY_TAKE);
   const [loaded, setLoaded] = useState(false);
+  // Phase 77 (JF20): the device handed to the student, once per opening.
+  const [handedOver, setHandedOver] = useState(false);
   const [index, setIndex] = useState(0);
   const [tool, setTool] = useState<CanvasTool>('pen');
   const [area, setArea] = useState({ width: 0, height: 0 });
@@ -143,7 +152,13 @@ export function TakeAssessmentScreen() {
       await submit.mutateAsync(submitPages(questions, state.work));
       keep.current = false;
       await writeCanvasWork(id, null);
-      toast.success('Submitted. The tutor gets a PDF of your answers.');
+      toast.success(
+        submittedMessage({
+          own: !assessment || assessment.student_user_id === user?.id,
+          studentName: assessment?.student_name ?? '',
+          tutoring: featureAllowed(organization, 'tutoring'),
+        }),
+      );
       if (router.canGoBack()) router.back();
       else router.replace('/assessments');
     } catch (caught) {
@@ -184,7 +199,7 @@ export function TakeAssessmentScreen() {
         <OutlinedCard testID="assessment-unavailable">
           <View style={{ gap: space.md, padding: space.lg }}>
             <Text variant="bodyMedium">
-              This assessment cannot be taken here: it has been submitted or discarded, or somebody else started it.
+              This assessment cannot be taken here: it has been submitted or discarded, or it is not yours to continue.
             </Text>
             <Button
               mode="outlined"
@@ -193,6 +208,58 @@ export function TakeAssessmentScreen() {
             >
               Back to Assessment
             </Button>
+          </View>
+        </OutlinedCard>
+      </Screen>
+    );
+  }
+
+  if (handsOver(assessment, user?.id) && !handedOver) {
+    const words = handOverWords(assessment.student_name);
+    return (
+      <Screen testID="screen-assessment-take">
+        <Stack.Screen options={{ title: 'Assessment' }} />
+        <OutlinedCard testID="assessment-hand-over" style={{ borderRadius: radius.lg }}>
+          <View style={{ gap: space.lg, padding: space.xl, alignItems: 'flex-start' }}>
+            <Icon source="hand-extended-outline" size={40} color={theme.colors.primary} />
+            <Text
+              testID="assessment-hand-over-title"
+              variant="headlineSmall"
+              accessibilityRole="header"
+              style={{ fontWeight: '700' }}
+            >
+              {words.title}
+            </Text>
+            <Text testID="assessment-hand-over-body" variant="bodyLarge">
+              {words.body}
+            </Text>
+            <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+              {`${assessment.student_name} · ${levelLabel(assessment.level_id)} · ${questions.length} ${
+                questions.length === 1 ? 'question' : 'questions'
+              }`}
+            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+              <Button
+                testID="assessment-ready"
+                mode="contained"
+                icon="pen"
+                contentStyle={{ minHeight: MIN_TARGET }}
+                onPress={() => {
+                  haptics.selection();
+                  setHandedOver(true);
+                }}
+              >
+                {words.ready}
+              </Button>
+              <Button
+                testID="assessment-hand-over-not-now"
+                mode="outlined"
+                contentStyle={{ minHeight: MIN_TARGET }}
+                onPress={() => (router.canGoBack() ? router.back() : router.replace('/assessments'))}
+              >
+                Not now
+              </Button>
+            </View>
           </View>
         </OutlinedCard>
       </Screen>

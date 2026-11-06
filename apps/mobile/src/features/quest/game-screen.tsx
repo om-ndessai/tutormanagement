@@ -13,6 +13,8 @@
 // at the next poll.
 // Phase 73 (JF36): `from` reaches the lobby and the results too, so leaving, a cancelled game and Back after
 // the results all return where the game was opened (Home or Quest), as Exit does.
+// Phase 77 (JF15): a game on one device (the host's view carries `seats`) is played turn by turn (SeatedPlay), its
+// scores on the page by name rather than the reader's alone in the status.
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsFocused } from 'expo-router';
 import { useCallback, useEffect } from 'react';
@@ -26,8 +28,9 @@ import { radius, space } from '@/theme/tokens';
 import { GameClock } from './game-clock';
 import { DoorsCountdown, useGameCountdown } from './game-effects';
 import { GameLobby } from './game-lobby';
-import { MISSING_TEXT, RECONNECTING_TEXT, UNREACHABLE_TEXT, gameTitle, scoreLabel } from './game-model';
+import { MISSING_TEXT, RECONNECTING_TEXT, UNREACHABLE_TEXT, gameTitle, scoreLabel, seatedGame } from './game-model';
 import { GamePlay } from './game-play';
+import { SeatedPlay } from './game-seated-play';
 import { GameResults } from './game-results';
 import { gameIsMissing, gameKeys, useGame } from './games-api';
 import { QuestFrame, QuestStatus, exitGame, exitQuest } from './quest-frame';
@@ -62,7 +65,9 @@ export function GameScreen({ gameId, from }: { gameId: string; from?: string }) 
             {game.status === 'running' && game.ends_at && !counting ? (
               <GameClock endsAt={game.ends_at} serverNow={game.now} receivedAt={query.dataUpdatedAt} />
             ) : null}
-            {myTeam && game.status !== 'lobby' ? (
+            {/* On one device both scores are on the page, by name: the reader's alone up here would be the wrong one
+                half the time (Phase 77). */}
+            {myTeam && game.status !== 'lobby' && !seatedGame(game) ? (
               <QuestStatus testID="game-my-score" strong>
                 {scoreLabel(myTeam.score)}
               </QuestStatus>
@@ -129,6 +134,8 @@ export function GameScreen({ gameId, from }: { gameId: string; from?: string }) 
           ) : null}
           {game.status === 'lobby' ? (
             <GameLobby game={game} from={from} />
+          ) : game.status === 'running' && seatedGame(game) ? (
+            <SeatedPlay game={game} counting={counting} />
           ) : game.status === 'running' ? (
             <GamePlay game={game} counting={counting} />
           ) : (

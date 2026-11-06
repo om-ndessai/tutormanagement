@@ -1,11 +1,17 @@
 // The take screen's pure rules (from the web's take-assessment-page.tsx): what counts as
 // unanswered, choosing and un-choosing, the page buttons, the request a submission sends, the work
-// kept on the device, Undo, and the sentences the list and the review show.
+// kept on the device, Undo, and the sentences the list and the review show. Phase 77 (JF20): the hand-over, Start's
+// in-progress warning and what a submit by someone else says.
 import type { CanvasAssessment, CanvasAssessmentQuestion, CanvasStroke } from '@tmi/shared';
 
 import {
   EMPTY_TAKE,
+  handOverWords,
+  handsOver,
+  inProgressFor,
+  inProgressWarning,
   levelOptionDetail,
+  levelWords,
   namesWithOr,
   noStudentsLine,
   pageLabel,
@@ -16,6 +22,7 @@ import {
   startNote,
   submitMessage,
   submitPages,
+  submittedMessage,
   takeReducer,
   toggleChoice,
   unansweredCount,
@@ -241,5 +248,61 @@ describe('the empty student picker says why, and who adds children (UI audit JF1
       );
     }
     expect(noStudentsLine({ isAdmin: false, spaceName: null })).toMatch(/^No children are linked to you in this space yet\./);
+  });
+});
+
+describe('families at home (Phase 77)', () => {
+  const NOW = new Date('2026-11-05T15:08:00Z');
+  const base = {
+    id: 'a-1',
+    student_user_id: 'noor',
+    student_name: 'Noor Haddad',
+    level_id: 'NC26.4',
+    status: 'in_progress',
+    started_at: '2026-11-05T15:00:00Z',
+  } as CanvasAssessment;
+
+  it('finds the student’s newest assessment in progress, and nobody else’s', () => {
+    const rows = [
+      base,
+      { ...base, id: 'a-2', started_at: '2026-11-05T15:05:00Z' },
+      { ...base, id: 'a-3', status: 'submitted', started_at: '2026-11-05T15:07:00Z' },
+      { ...base, id: 'a-4', student_user_id: 'sofia', started_at: '2026-11-05T15:07:30Z' },
+    ] as CanvasAssessment[];
+    expect(inProgressFor(rows, 'noor')?.id).toBe('a-2');
+    expect(inProgressFor(rows, 'leo')).toBeNull();
+  });
+
+  it('warns in words, with how long ago it was started', () => {
+    expect(inProgressWarning(base, false, NOW)).toBe(
+      'Noor already has a Grade 4 assessment in progress (started 8 minutes ago).',
+    );
+    expect(inProgressWarning(base, true, NOW)).toBe('You already have a Grade 4 assessment in progress (started 8 minutes ago).');
+    expect(inProgressWarning({ ...base, level_id: 'NC26.ALR' }, false, NOW)).toMatch(/^Noor already has an Applied Logic assessment/);
+    expect(levelWords('BA3')).toBe('Beast Academy 3');
+    expect(levelWords('NC26.M1')).toBe('Math 1');
+  });
+
+  it('hands the device over whenever the reader is not the student', () => {
+    expect(handsOver(base, 'omar')).toBe(true);
+    expect(handsOver(base, 'noor')).toBe(false);
+    expect(handsOver(base, null)).toBe(false);
+    expect(handOverWords('Noor Haddad')).toEqual({
+      title: 'Hand the device to Noor',
+      body: 'Noor answers on this device. Answers written on another device stay there.',
+      ready: 'Noor is ready',
+    });
+  });
+
+  it('says where the PDF goes after someone else submits, never linking it', () => {
+    expect(submittedMessage({ own: true, studentName: 'Noor Haddad', tutoring: true })).toBe(
+      'Submitted. The tutor gets a PDF of your answers.',
+    );
+    expect(submittedMessage({ own: false, studentName: 'Noor Haddad', tutoring: true })).toBe(
+      "Submitted. Noor's tutor gets a PDF of the answers.",
+    );
+    expect(submittedMessage({ own: false, studentName: 'Noor Haddad', tutoring: false })).toBe(
+      "Submitted. The space's admins get a PDF of Noor's answers.",
+    );
   });
 });

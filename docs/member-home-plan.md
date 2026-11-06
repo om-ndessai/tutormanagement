@@ -130,6 +130,13 @@ stickiness mechanics and metrics, production usage, the current homes).
   - Those last two are counts only; this amends R18 as R29.
   - The parent's actions on it are **Play with <child>** (an existing game favorite with the child invited) and
     **Practise before <day>'s lesson** (for the student).
+  - Phase 77 (2026-11-05, `docs/journey-fixes-plan.md` JF15, R35): "each on their own" changes for a child who does
+    not sign in. **Play with <child>** is then a game on the parent's own device -- the child a seat, a solo team of
+    their own beside the parent's, begun at once with no lobby or code, the parent's session answering for them
+    (`playTogetherRequest`, `seat_user_ids`, `as_user_id`), at the child's grade (`HomeChild.grade`), with **Continue
+    with <child>** while it runs (`HomeChild.open_game_id`, the reader's own seated game). The child's answers are
+    credited to the child (days played, a family game) and never count toward the two-right-answers rule. A child who
+    signs in (`HomeChild.signs_in`) keeps the online invite, and its lobby lists who was invited.
 - **H11. One read for the home.** `GET /api/home` (`buildMemberHome`) makes one batch per hat present.
   - Expected cost: about 50-350 rows for a learner and 200-500 for a tutor.
   - The office block is memoised 60 s per space.

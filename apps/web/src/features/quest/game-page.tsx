@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { CheckIcon, CopyIcon, CrownIcon, FlagIcon, PlayIcon, SkipForwardIcon, TimerIcon, XIcon } from 'lucide-react';
+import { ArrowRightLeftIcon, CheckIcon, CopyIcon, CrownIcon, FlagIcon, PlayIcon, SkipForwardIcon, TimerIcon, XIcon } from 'lucide-react';
 import {
   clockLabel,
   gameEncouragement,
@@ -59,6 +59,56 @@ const message = (caught: unknown, fallback: string) => (caught instanceof ApiReq
 function nobodyPlayed(game: Pick<GameView, 'teams'>): boolean {
   return game.teams.every((team) => team.answered === 0);
 }
+
+/** Phase 77 (JF15): a game played on this device, by the reader and the children they seated (the host's view only). */
+function isSeated(game: Pick<GameView, 'seats'>): boolean {
+  return (game.seats?.length ?? 0) > 0;
+}
+
+/** One player's hand in a seated game: a child's (answered with `as_user_id`) or the reader's own. */
+interface Hand {
+  /** Null for the reader's own hand. */
+  seat: string | null;
+  name: string;
+  team_id: string | null;
+  question: GameQuestion | null;
+}
+
+/** The children first, in the order they were seated, then the reader: the child goes first on each question. */
+function handsOf(game: GameView): Hand[] {
+  const mine = game.teams.find((team) => team.id === game.me.team_id);
+  return [
+    ...(game.seats ?? []).map((seat) => ({
+      seat: seat.user_id,
+      name: seat.first_name,
+      team_id: seat.team_id,
+      question: seat.question,
+    })),
+    { seat: null, name: mine?.name ?? game.host.first_name, team_id: game.me.team_id, question: game.me.question },
+  ];
+}
+
+/**
+ * Whose turn it is: whoever is furthest behind in the series (every team plays the same one), the child before the
+ * reader on a tie. Derived from the game alone, so leaving and coming back resumes on the same turn.
+ */
+function turnOf(hands: readonly Hand[]): Hand | null {
+  let turn: Hand | null = null;
+  for (const hand of hands) {
+    if (hand.question && (!turn || hand.question.number < turn.question!.number)) turn = hand;
+  }
+  return turn;
+}
+
+const turnTitle = (hand: Hand) => (hand.seat ? `${hand.name}'s turn` : 'Your turn');
+
+/** "Ben", "Ben and you", "Ben, Leo and you". */
+function andList(names: readonly string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  return `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`;
+}
+
+const pointWords = (n: number) => `${n} ${n === 1 ? 'point' : 'points'}`;
 
 /**
  * Phase 73 (JF36): ending a game asks first, as the app does -- "Cancel the game" in the lobby, "End the game now"
@@ -170,10 +220,16 @@ export function GamePage() {
                 <TimerIcon className="size-4" /> {clockLabel(left)}
               </span>
             )}
-            {myTeam && game.status !== 'lobby' && (
-              <span className="text-foreground font-medium tabular-nums" data-testid="game-my-score">
-                {myTeam.score} {myTeam.score === 1 ? 'point' : 'points'}
-              </span>
+            {/* Phase 77 (JF15): on one device, every player's score side by side, by first name. */}
+            {isSeated(game) && game.status !== 'lobby' ? (
+              <SeatScores game={game} />
+            ) : (
+              myTeam &&
+              game.status !== 'lobby' && (
+                <span className="text-foreground font-medium tabular-nums" data-testid="game-my-score">
+                  {myTeam.score} {myTeam.score === 1 ? 'point' : 'points'}
+                </span>
+              )
             )}
           </>
         ) : null
@@ -218,9 +274,13 @@ export function GamePage() {
 }
 
 function Rules({ game }: { game: GameView }) {
+  // Phase 77 (JF15): a game on this device names who plays it, rather than how many may.
+  const players = isSeated(game)
+    ? `${andList([...(game.seats ?? []).map((seat) => seat.first_name), 'you'])}, on this device`
+    : gamePlayersLabel(game);
   return (
     <p className="text-muted-foreground text-sm">
-      {gameLevelLabel(game, levelLabel)} · {gameLengthLabel(game)} · {gameMarkingLabel(game)} · {gamePlayersLabel(game)}
+      {gameLevelLabel(game, levelLabel)} · {gameLengthLabel(game)} · {gameMarkingLabel(game)} · {players}
       {game.knockout && ' · knockout'}
       {game.late_join && ' · joining open while it runs'}
       {game.unreviewed && ' · may include questions not yet reviewed'}
@@ -273,6 +333,19 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
                 {mine.code}
               </span>
               . Teammates type it to join you.
+            </p>
+          )}
+          {/* Phase 77 (JF15): whom the roster invited -- the host's and the admins' to read. */}
+          {(game.invited?.length ?? 0) > 0 && (
+            <p className="text-sm" data-testid="game-lobby-invited">
+              <span className="font-medium">Invited:</span>{' '}
+              {game.invited!
+                .map((person) =>
+                  game.teams.some((team) => team.players.some((p) => p.user_id === person.user_id))
+                    ? `${person.first_name} (joined)`
+                    : person.first_name,
+                )
+                .join(', ')}
             </p>
           )}
           {!mine && (
@@ -423,6 +496,11 @@ function TeamRow({
 }
 
 function Play({ game, counting }: { game: GameView; counting: boolean }) {
+  if (isSeated(game)) return <SeatedPlay game={game} counting={counting} />;
+  return <TeamPlay game={game} counting={counting} />;
+}
+
+function TeamPlay({ game, counting }: { game: GameView; counting: boolean }) {
   const action = useGameAction(game.id);
   const [ending, setEnding] = useState(false);
   const playing = game.me.team_id !== null;
@@ -501,7 +579,123 @@ function Play({ game, counting }: { game: GameView; counting: boolean }) {
   );
 }
 
-function QuestionPanel({ gameId, question, total }: { gameId: string; question: GameQuestion; total: number | null }) {
+/** Phase 77 (JF15): every player's score on one device, side by side by first name; the turn said in words too. */
+function SeatScores({ game }: { game: GameView }) {
+  const hands = handsOf(game);
+  const turn = game.status === 'running' ? turnOf(hands) : null;
+  return (
+    <span className="flex items-center gap-1.5 font-medium tabular-nums sm:gap-3" data-testid="game-seat-scores">
+      {hands.map((hand) => {
+        const team = game.teams.find((t) => t.id === hand.team_id);
+        const now = turn === hand;
+        return (
+          <span
+            key={hand.seat ?? 'me'}
+            className={cn('rounded-full border px-2.5 py-0.5', now ? 'border-primary bg-primary/10' : 'border-transparent')}
+            data-testid={`game-seat-score-${hand.name}`}
+          >
+            {hand.name}
+            {!hand.seat && <span className="max-sm:sr-only"> (you)</span>} {team?.score ?? 0}
+            {now && <span className="sr-only">, whose turn it is</span>}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+/**
+ * Phase 77 (JF15): a game on this device -- the reader and the children they seated, a solo team each, playing the same
+ * series. Turns on one screen: the child first on each question ("Ben's turn", answered for Ben), then the reader
+ * ("Your turn"); each says whose turn it is in words, with a hand-over line.
+ */
+function SeatedPlay({ game, counting }: { game: GameView; counting: boolean }) {
+  const action = useGameAction(game.id);
+  const [ending, setEnding] = useState(false);
+  const hands = handsOf(game);
+  const turn = turnOf(hands);
+  const children = hands.filter((hand) => hand.seat).map((hand) => hand.name);
+  const total = game.mode === 'count' ? game.series_length : null;
+  return (
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start">
+      <div className="grid gap-4">
+        {counting ? (
+          <Card className="py-0">
+            <CardContent className="grid gap-2 p-6 text-sm">
+              <p className="font-medium">Get ready: {children[0]} goes first.</p>
+            </CardContent>
+          </Card>
+        ) : turn ? (
+          <div key={`${turn.seat ?? 'me'}-${turn.question!.id}`} className="quest-enter grid gap-4">
+            <Card className="py-0" data-testid="game-turn" data-turn={turn.seat ? turn.name : 'you'}>
+              <CardContent className="flex items-center gap-4 p-5">
+                <span
+                  className="bg-primary text-primary-foreground font-display grid size-12 shrink-0 place-items-center rounded-full text-xl font-bold"
+                  aria-hidden
+                >
+                  {turn.name[0]}
+                </span>
+                <div className="grid min-w-0 gap-0.5">
+                  <h2 className="font-display text-2xl font-bold" data-testid="game-turn-title">
+                    {turnTitle(turn)}
+                  </h2>
+                  <p className="text-muted-foreground flex items-center gap-1.5 text-sm" data-testid="game-hand-over">
+                    <ArrowRightLeftIcon className="size-4 shrink-0" aria-hidden />
+                    {turn.seat
+                      ? `Pass the device to ${turn.name}.`
+                      : `${andList(children)} ${children.length === 1 ? 'has' : 'have'} answered: take the device back.`}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+            <QuestionPanel
+              gameId={game.id}
+              question={turn.question!}
+              total={total}
+              seat={turn.seat ? { user_id: turn.seat, name: turn.name } : null}
+            />
+          </div>
+        ) : (
+          <Card className="py-0" data-testid="game-waiting">
+            <CardContent className="grid gap-2 p-6 text-sm">
+              <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Game status</p>
+              <p className="font-medium">Everyone has answered. The results are on their way.</p>
+            </CardContent>
+          </Card>
+        )}
+        <Button variant="outline" className="w-fit" onClick={() => setEnding(true)} data-testid="game-end">
+          <FlagIcon /> End the game now
+        </Button>
+        <ConfirmEnd
+          open={ending}
+          onOpenChange={setEnding}
+          title="End the game now?"
+          body="Everyone stops where they are, and the places are given."
+          confirm="End the game"
+          keep="Keep playing"
+          onConfirm={() =>
+            void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the game.')))
+          }
+          testId="game-end-confirm"
+        />
+      </div>
+      <Scoreboard game={game} title="Scores" />
+    </div>
+  );
+}
+
+function QuestionPanel({
+  gameId,
+  question,
+  total,
+  seat = null,
+}: {
+  gameId: string;
+  question: GameQuestion;
+  total: number | null;
+  /** Phase 77 (JF15): a child playing on this device, whose hand this answers. */
+  seat?: { user_id: string; name: string } | null;
+}) {
   const action = useGameAction(gameId);
   const [choice, setChoice] = useState<number | null>(null);
   const [number, setNumber] = useState('');
@@ -509,17 +703,20 @@ function QuestionPanel({ gameId, question, total }: { gameId: string; question: 
 
   async function send(skip: boolean) {
     try {
+      const whose = seat ? { as_user_id: seat.user_id } : {};
       const reply = await action.mutateAsync(
         skip
-          ? { kind: 'answer', question_id: question.id, skip: true }
-          : { kind: 'answer', question_id: question.id, answer: response },
+          ? { kind: 'answer', question_id: question.id, skip: true, ...whose }
+          : { kind: 'answer', question_id: question.id, answer: response, ...whose },
       );
-      const last = reply.data?.me.last;
-      if (last?.skipped) toast('Skipped.', { duration: 1200 });
-      else if (last?.correct) toast.success(`Right! ${pointsLabel(reply.data?.right_points ?? 1)}`, { duration: 1200 });
+      const last = seat ? reply.data?.seats?.find((s) => s.user_id === seat.user_id)?.last : reply.data?.me.last;
+      // On one device, the toast says whose answer it was.
+      const who = seat ? `${seat.name}: ` : '';
+      if (last?.skipped) toast(`${who}Skipped.`, { duration: 1200 });
+      else if (last?.correct) toast.success(`${who}Right! ${pointsLabel(reply.data?.right_points ?? 1)}`, { duration: 1200 });
       else
         toast.error(
-          reply.data && reply.data.wrong_points < 0 ? `Not quite. ${pointsLabel(reply.data.wrong_points)}` : 'Not quite.',
+          reply.data && reply.data.wrong_points < 0 ? `${who}Not quite. ${pointsLabel(reply.data.wrong_points)}` : `${who}Not quite.`,
           { duration: 1200 },
         );
     } catch (caught) {
@@ -559,7 +756,7 @@ function QuestionPanel({ gameId, question, total }: { gameId: string; question: 
         }}
       >
         {question.kind === 'choice' ? (
-          <div role="radiogroup" aria-label="Your answer" className="grid gap-2">
+          <div role="radiogroup" aria-label={seat ? `${seat.name}'s answer` : 'Your answer'} className="grid gap-2">
             {question.choices.map((text, i) => {
               const selected = choice === i;
               return (
@@ -603,7 +800,7 @@ function QuestionPanel({ gameId, question, total }: { gameId: string; question: 
             enterKeyHint="done"
             placeholder="A number, like 12, 3/4 or 2.5"
             className="h-14 text-lg"
-            aria-label="Your answer"
+            aria-label={seat ? `${seat.name}'s answer` : 'Your answer'}
             data-testid="game-number"
             autoFocus
           />
@@ -636,10 +833,13 @@ function Results({ game, exitTo }: { game: GameView; exitTo: string }) {
   const shownTeam = game.teams.find((t) => t.id === (data?.team_id ?? null));
   const mine = game.teams.find((t) => t.id === game.me.team_id);
   const single = game.players === 'single';
+  // Phase 77 (JF15): on one device, each player's own result, and no "team" words.
+  const seated = isSeated(game);
   // Phase 73 (JF16): a game nobody answered in is not a result -- "Nobody played", and nothing to celebrate.
   const empty = nobodyPlayed(game);
-  // A single player has nobody to beat: confetti for any right answer, and their score as the headline.
-  const won = !empty && (single ? (mine?.correct ?? 0) > 0 : mine?.place === 1);
+  // A single player has nobody to beat: confetti for any right answer, and their score as the headline. A family on
+  // one device celebrates whoever wins.
+  const won = !empty && (seated || (single ? (mine?.correct ?? 0) > 0 : mine?.place === 1));
   const ending = gameEndLabel(game.end_reason);
 
   return (
@@ -670,7 +870,18 @@ function Results({ game, exitTo }: { game: GameView; exitTo: string }) {
                   ? `${mine.correct} right, ${mine.score} ${mine.score === 1 ? 'point' : 'points'}`
                   : winnersLabel(game.teams)}
             </h2>
-            {mine && (
+            {seated && !empty && (
+              <ul className="grid gap-1 text-base" data-testid="game-seated-results">
+                {game.teams.map((t) => (
+                  <li key={t.id} data-testid={`game-seated-result-${t.name}`}>
+                    <span className="font-medium">{t.id === game.me.team_id ? 'You' : t.name}:</span> {t.correct} right,{' '}
+                    {pointWords(t.score)}
+                    {t.place !== null && <span className="text-muted-foreground"> · {placeLabel(t.place)}</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {mine && !seated && (
               <p className="text-base" data-testid="game-encouragement">
                 {single
                   ? gameEncouragement(mine)

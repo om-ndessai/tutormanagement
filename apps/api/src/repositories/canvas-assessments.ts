@@ -42,6 +42,7 @@ interface AssessmentRow {
   reviewed_by_name: string | null;
   review_status: 'draft' | 'final' | null;
   tutors_student: number;
+  guards_student: number;
 }
 
 /** The row as stored, for the routes that act on it. */
@@ -59,11 +60,17 @@ export interface StoredCanvasAssessment {
   reviewed_at: string | null;
   /** The viewer may open its PDF: an admin, or one of the student's current tutors. */
   can_review: boolean;
+  /**
+   * Phase 77 (JF20): the viewer may take it on while it is in progress -- they started it, or they are a guardian of the
+   * student here (handing their own device over). Whatever its status: the routes say 409 for one no longer in progress.
+   */
+  may_take: boolean;
 }
 
 /**
- * Every column a reader is shown, and whether the viewer currently tutors the
- * student -- which decides the PDF and the name of whoever started it.
+ * Every column a reader is shown, whether the viewer currently tutors the student -- which decides the PDF and the name
+ * of whoever started it -- and (Phase 77, JF20) whether the viewer is a guardian of the student here, who may continue
+ * it. Binds the viewer's id twice, first.
  */
 const SELECT_ROWS = `
   SELECT c.id, c.student_user_id, s.full_name AS student_name, c.started_by_user_id,
@@ -73,7 +80,10 @@ const SELECT_ROWS = `
          r.full_name AS reviewed_by_name, v.status AS review_status,
          EXISTS (SELECT 1 FROM assignments a
                  WHERE a.organization_id = c.organization_id AND a.student_user_id = c.student_user_id
-                   AND a.tutor_user_id = ? AND ${pairingInForce('a')}) AS tutors_student
+                   AND a.tutor_user_id = ? AND ${pairingInForce('a')}) AS tutors_student,
+         EXISTS (SELECT 1 FROM guardianships g
+                 WHERE g.organization_id = c.organization_id AND g.dependent_user_id = c.student_user_id
+                   AND g.guardian_user_id = ?) AS guards_student
   FROM canvas_assessments c
   JOIN users s ON s.id = c.student_user_id
   JOIN users b ON b.id = c.started_by_user_id
@@ -82,6 +92,11 @@ const SELECT_ROWS = `
 
 function canReview(viewer: User, row: AssessmentRow): boolean {
   return isAdmin(viewer) || row.tutors_student === 1;
+}
+
+/** Phase 77 (JF20): who may take it on -- its starter, or a guardian of the student (status aside). */
+function mayTake(viewer: User, row: AssessmentRow): boolean {
+  return row.started_by_user_id === viewer.id || row.guards_student === 1;
 }
 
 function toStored(viewer: User, row: AssessmentRow): StoredCanvasAssessment {
@@ -98,6 +113,7 @@ function toStored(viewer: User, row: AssessmentRow): StoredCanvasAssessment {
     submitted_at: row.submitted_at,
     reviewed_at: row.reviewed_at,
     can_review: canReview(viewer, row),
+    may_take: mayTake(viewer, row),
   };
 }
 
@@ -122,7 +138,10 @@ export function toCanvasAssessment(viewer: User, row: AssessmentRow): CanvasAsse
     started_at: row.started_at,
     submitted_at: row.submitted_at,
     can_review: review && row.status === 'submitted',
-    can_continue: mine && row.status === 'in_progress',
+    // Phase 77 (JF20): a guardian of the student continues it too, on their own device; only its starter or an admin
+    // discards it.
+    can_continue: mayTake(viewer, row) && row.status === 'in_progress',
+    can_discard: (mine || isAdmin(viewer)) && row.status === 'in_progress',
     // Phase 40: once saved as reviewed, the student's whole audience reads the review.
     reviewed_at: row.reviewed_at,
     reviewed_by_name: row.reviewed_at ? row.reviewed_by_name : null,
@@ -144,7 +163,7 @@ export async function listCanvasAssessments(
        ORDER BY c.started_at DESC
        LIMIT ?`,
     )
-    .bind(viewer.id, org, ...scope.values, limit)
+    .bind(viewer.id, viewer.id, org, ...scope.values, limit)
     .all<AssessmentRow>();
   return (result.results ?? []).map((row) => toCanvasAssessment(viewer, row));
 }
@@ -159,7 +178,7 @@ export async function getVisibleCanvasAssessment(
   const scope = studentScopeSql(viewer, 'c.student_user_id', org);
   const row = await db
     .prepare(`${SELECT_ROWS} WHERE c.id = ? AND c.organization_id = ? AND ${scope.sql}`)
-    .bind(viewer.id, id, org, ...scope.values)
+    .bind(viewer.id, viewer.id, id, org, ...scope.values)
     .first<AssessmentRow>();
   return row ? { shown: toCanvasAssessment(viewer, row), stored: toStored(viewer, row) } : null;
 }

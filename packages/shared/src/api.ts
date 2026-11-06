@@ -85,6 +85,8 @@ export const ERROR_CODES = [
   'last_admin',
   // Phase 69: visit recording waits for the privacy notice that says visits are kept.
   'privacy_pending',
+  // Phase 77 (JF15): a child who signs in is invited to play online, never seated on a parent's device.
+  'seat_signs_in',
 ] as const;
 
 export type ApiErrorCode = (typeof ERROR_CODES)[number];

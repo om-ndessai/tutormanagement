@@ -1,5 +1,6 @@
 import { Hono, type Context } from 'hono';
 import {
+  GAME_CODE_NOT_FOUND_MESSAGE,
   GAME_LIMITS,
   createGameSchema,
   gameAnswerSchema,
@@ -51,6 +52,7 @@ import {
   listGames,
   rosterMembers,
   saveFavorite,
+  seatCandidates,
   waitingGames,
 } from '../repositories/quest-games.js';
 
@@ -89,6 +91,39 @@ async function playableLevels(db: D1Database, org: { id: OrgId; checked_question
   // Phase 62 (P4): the platform's cached counts, not a count of the bank on every start.
   const levels = await cachedDrawableCounts(db, checkedQuestionsOn(org), live);
   return levels.map((level) => ({ level_id: level.level_id, label: level.label, available: level.available }));
+}
+
+/** "Ben", "Ben and Leo", "Ben, Leo and Mia": the children a seated game is played with, by first name. */
+function namesInWords(names: readonly string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  return `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`;
+}
+
+/** Phase 77 (JF15): the refusal of a seat that is not the host's own child here. */
+const NOT_YOUR_CHILD = 'Only your own child can play on your device.';
+
+/**
+ * Phase 77 (JF15): the children a host seats on their own device, checked -- each a live dependent of the host HERE
+ * (their guardianship in this space, a live member with the student role) with no email. Anyone else, the host
+ * included, is 422 on `seat_user_ids`; a child who signs in is 409 `seat_signs_in` -- invited online instead.
+ */
+async function checkSeats(
+  db: D1Database,
+  org: OrgId,
+  host: User,
+  ids: readonly string[],
+): Promise<{ id: string; first_name: string; full_name: string }[]> {
+  if (ids.length === 0) return [];
+  const refuse = () => ApiError.validation('Please correct the highlighted fields.', { seat_user_ids: [NOT_YOUR_CHILD] });
+  if (ids.includes(host.id)) throw refuse();
+  const found = new Map((await seatCandidates(db, org, host.id, ids)).map((row) => [row.id, row]));
+  const rows = ids.map((id) => found.get(id));
+  if (rows.some((row) => !row || row.own_child !== 1)) throw refuse();
+  const signsIn = rows.find((row) => row!.has_email === 1);
+  if (signsIn) {
+    throw new ApiError(409, 'seat_signs_in', `${firstNameOf(signsIn.full_name)} signs in: invite them instead.`);
+  }
+  return rows.map((row) => ({ id: row!.id, first_name: firstNameOf(row!.full_name), full_name: row!.full_name }));
 }
 
 /** "a G5 Quest game", "a G5-and-up Quest game", "a single-player G5 Quest game": for the log. */
@@ -235,6 +270,16 @@ export const questGameRoutes = new Hono<AppEnv>()
     if (input.mode === 'count' && available < input.question_count!) {
       throw ApiError.conflict(`${named} has only ${available} questions to play. Choose fewer.`);
     }
+    // Phase 77 (JF15): the children playing on the host's own device, if any -- checked before anything is made.
+    const seated = await checkSeats(c.env.DB, org.id, user, input.seat_user_ids);
+    // Phase 62 (P8): a roster favorite's people, as the host may name them (R27); Phase 77 lists them in the lobby.
+    let invitedPeople: { user_id: string; first_name: string }[] = [];
+    if (input.invite_user_ids.length > 0) {
+      const allowed = new Map((await rosterMembers(c.env.DB, org.id, readerOf(c))).map((m) => [m.id, m.full_name]));
+      invitedPeople = input.invite_user_ids
+        .filter((invitee) => invitee !== user.id && allowed.has(invitee))
+        .map((invitee) => ({ user_id: invitee, first_name: firstNameOf(allowed.get(invitee)!) }));
+    }
 
     let code: string | null = null;
     for (let tries = 0; tries < 6 && code === null; tries += 1) {
@@ -291,22 +336,40 @@ export const questGameRoutes = new Hono<AppEnv>()
       end_reason: null,
       series_length: 0,
       teams: [],
+      // Phase 77 (JF15): child -> the host who answers for them; and whom the roster invited, for the lobby.
+      seats: Object.fromEntries(seated.map((child) => [child.id, user.id])),
+      invited: invitedPeople,
     };
-    // A single player's game is begun as it is made (the object draws its series now).
-    const view = unwrap(await gameStub(c.env, org.id, id).create(game, checkedQuestionsOn(org), input.host_plays));
+    // A single player's game is begun as it is made (the object draws its series now), and so is a seated one.
+    const view = unwrap(
+      await gameStub(c.env, org.id, id).create(
+        game,
+        checkedQuestionsOn(org),
+        input.host_plays,
+        seated.map((child) => ({ id: child.id, first_name: child.first_name })),
+      ),
+    );
     // Phase 62 (P8): a roster favorite's people see it under "Waiting for you" (R27: only those the
-    // host may name).
+    // host may name). A seated game invites nobody (Phase 77).
     let invited = 0;
-    if (input.invite_user_ids.length > 0) {
-      const allowed = new Set((await rosterMembers(c.env.DB, org.id, readerOf(c))).map((m) => m.id));
-      invited = await inviteToGame(c.env.DB, org.id, { gameId: id, hostId: user.id, userIds: input.invite_user_ids, allowed });
+    if (invitedPeople.length > 0) {
+      invited = await inviteToGame(c.env.DB, org.id, {
+        gameId: id,
+        hostId: user.id,
+        userIds: invitedPeople.map((p) => p.user_id),
+        allowed: new Set(invitedPeople.map((p) => p.user_id)),
+      });
     }
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_created',
       description:
-        input.players === 'single'
-          ? `Started ${gameWords(input)}`
-          : `Started ${gameWords(input)} (code ${code})${invited > 0 ? `, inviting ${invited} ${invited === 1 ? 'person' : 'people'}` : ''}`,
+        seated.length > 0
+          ? // Phase 77 (JF15): the child, by first name, and where: never the code, which nobody can use.
+            `Started ${gameWords(input)} to play with ${namesInWords(seated.map((child) => child.first_name))} on this device`
+          : input.players === 'single'
+            ? `Started ${gameWords(input)}`
+            : `Started ${gameWords(input)} (code ${code})${invited > 0 ? `, inviting ${invited} ${invited === 1 ? 'person' : 'people'}` : ''}`,
+      subject: seated.length === 1 ? { id: seated[0]!.id, full_name: seated[0]!.full_name } : null,
       entity_type: 'quest_game',
       entity_id: id,
     });
@@ -320,11 +383,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const found = await findGameByCode(c.env.DB, org.id, c.req.valid('json').code);
     // Honest, and revealing nothing (owner, 2026-11-04; UI audit JF9): the same words whether the code is another
     // space's or nobody's (R13).
-    if (!found) {
-      throw ApiError.notFound(
-        'No game in this space has that code. Games are joined inside their own space: ask your friend to invite you there, or start your own game.',
-      );
-    }
+    if (!found) throw ApiError.notFound(GAME_CODE_NOT_FOUND_MESSAGE);
     const body: ApiOk<GameLookup> = {
       data: unwrap(await gameStub(c.env, org.id, found.game_id).lookup(viewerOf(c.get('user')), found.team_id)),
     };

@@ -645,6 +645,22 @@ native rebuild of both dev builds, so build only while the devices are free.
   scrolled, so the office's long owed list hid "Another lesson" (fixed: `quickSheetMaxHeight` caps it under the status
   bar, with a Jest test); `subflows/record-choose-when` overrode its caller's length (fixed, and `sessions/record` now
   checks the end time).
+- [x] 91. Mobile: Phase 77's app half (2026-11-05, build-log entry 86) -- families at home (JF15, JF20). Play with, on
+  one device: a child who does not sign in (`HomeChild.signs_in === false`) gets "Play with Ben on this device" (or
+  "Practise together before Saturday's lesson" with "Ben plays beside you, on this device." under it) -- one request
+  (`playTogetherRequest`, `seat_user_ids`), begun at once at the child's grade (`childPlayLevel`: `grade` through the
+  board's rules, else the last level, else the first tile), no lobby, no code; the game screen takes turns
+  (`SeatedPlay`): "Ben's turn" / "Pass the device to Ben." (answered with `as_user_id`), then "Your turn" / "Ben has
+  answered: take the device back.", the child first on each question, both scores by first name, "Ben: Right! +1",
+  each player's own result ("You: 0 right, 0 points · 2nd"); "Continue with Ben" (`open_game_id`) reopens it on the
+  same turn; a child who signs in keeps the online invite, and the lobby says "Invited: Sanjay" ("(joined)" once in).
+  A guardian continues the child's assessment: Continue for a guardian (`can_continue`), Discard only where
+  `can_discard` (older Worker: `can_continue`); "Hand the device to Noor" before the questions ("Noor is ready", "Not
+  now"); after a submit "Noor's tutor gets a PDF…" / "The space's admins get a PDF of Noor's answers.", no PDF link;
+  Start warns "Noor already has a Grade 4 assessment in progress (started 8 minutes ago)." with Continue it, Start
+  another and Not now. Typecheck, lint, Jest (191 suites, 1585 tests) and export green; flows written, not yet run on
+  the iOS simulator or the Android emulator (`play/play-on-device`, `canvas-assessments/hand-over` new;
+  `play/play-with-child`, `play/family`, `canvas-assessments/take`, `features/assess-start` updated).
 
 ## Phase 4 — Google sign-in
 

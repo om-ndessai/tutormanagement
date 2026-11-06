@@ -111,11 +111,16 @@ export function GamesCard() {
                   <span className="font-medium" data-testid={`game-row-words-${game.code}`}>
                     {gameWords(game as GameShapeRow)}
                   </span>
-                  <span className="text-muted-foreground font-mono text-xs">{game.code}</span>
-                  <span className="text-muted-foreground">
-                    {game.players === 'single'
-                      ? 'Single player'
-                      : `${game.is_host ? 'You host' : `${game.host_first_name} hosts`} · ${game.teams} ${game.teams === 1 ? 'team' : 'teams'}`}
+                  {/* Phase 77 (JF15): a game on one device has no code anyone could use, so none is shown. */}
+                  {game.seated ? null : <span className="text-muted-foreground font-mono text-xs">{game.code}</span>}
+                  <span className="text-muted-foreground" data-testid={`game-row-host-${game.code}`}>
+                    {game.seated
+                      ? game.is_host
+                        ? 'On this device'
+                        : `On ${game.host_first_name}'s device`
+                      : game.players === 'single'
+                        ? 'Single player'
+                        : `${game.is_host ? 'You host' : `${game.host_first_name} hosts`} · ${game.teams} ${game.teams === 1 ? 'team' : 'teams'}`}
                   </span>
                   <span className="ml-auto text-xs font-medium">
                     {game.status === 'finished'

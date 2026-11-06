@@ -72,6 +72,16 @@ export const GAME_POLL_MS = 2000;
 /** Phase 62 (P8): the most people one roster favorite may invite. */
 export const GAME_ROSTER_MAX = 20;
 
+/** Phase 77 (JF15): the most children one parent seats beside them on their own device. */
+export const GAME_SEATS_MAX = 4;
+
+/**
+ * A code no game here answers to -- or one that names a game played on one device (Phase 77), which nobody joins: the
+ * same honest words either way, revealing nothing (owner, 2026-11-04; UI audit JF9; R13, R20).
+ */
+export const GAME_CODE_NOT_FOUND_MESSAGE =
+  'No game in this space has that code. Games are joined inside their own space: ask your friend to invite you there, or start your own game.';
+
 /** Codes: six of these, none that can be misread (no 0/O, 1/I/L). */
 export const GAME_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 export const GAME_CODE_LENGTH = 6;
@@ -134,6 +144,18 @@ export const createGameSchema = z
      * and joins with no code. Members of this space only (the route drops anyone else).
      */
     invite_user_ids: z.array(z.string().min(1).max(64)).max(GAME_ROSTER_MAX).optional(),
+    /**
+     * Phase 77 (JF15): children who play on the host's own device -- "Play with Ben" for a child who does not sign in.
+     * Each is a live dependent of the host here with no email (the route checks; 409 `seat_signs_in` for one who signs
+     * in), never the host. A seated game is a solo team for the host and one per child, begun at once: no lobby, no
+     * joining, no invitations; the host's session answers for each child (`gameAnswerSchema.as_user_id`). Absent or
+     * empty (older apps): no seats.
+     */
+    seat_user_ids: z
+      .array(z.string().min(1).max(64))
+      .max(GAME_SEATS_MAX, `At most ${GAME_SEATS_MAX} children can play on one device.`)
+      .refine((ids) => new Set(ids).size === ids.length, 'Each child plays once.')
+      .optional(),
   })
   .refine((value) => value.mode !== 'count' || value.question_count !== undefined, {
     message: `Choose how many questions (${GAME_LIMITS.minQuestions}-${GAME_LIMITS.maxQuestions}).`,
@@ -148,6 +170,27 @@ export const createGameSchema = z
     { message: `A game of several teams allows at least ${GAME_LIMITS.minTeams}.`, path: ['max_teams'] },
   )
   .transform((value) => {
+    const seats = value.seat_user_ids ?? [];
+    if (seats.length > 0) {
+      // Phase 77 (JF15): the host's own device -- a solo team each, all playing from the start, nobody else let in.
+      return {
+        level_id: value.level_id,
+        level_scope: value.level_scope,
+        mode: value.mode,
+        question_count: value.mode === 'count' ? value.question_count : undefined,
+        duration_minutes: value.mode === 'timed' ? value.duration_minutes : undefined,
+        right_points: value.right_points ?? 1,
+        wrong_points: value.wrong_points ?? (value.negative_marking ? -1 : 0),
+        knockout: value.knockout,
+        players: 'multi' as GamePlayerMode,
+        max_teams: 1 + seats.length,
+        max_team_size: 1,
+        late_join: false,
+        host_plays: true,
+        invite_user_ids: [] as string[],
+        seat_user_ids: seats,
+      };
+    }
     const single = value.players === 'single';
     return {
       level_id: value.level_id,
@@ -165,6 +208,7 @@ export const createGameSchema = z
       late_join: single ? false : value.late_join,
       host_plays: single ? false : value.host_plays === true,
       invite_user_ids: single ? [] : [...new Set(value.invite_user_ids ?? [])],
+      seat_user_ids: [] as string[],
     };
   });
 /** What a client sends: the wizard's settings (the defaults are filled in by the schema). */
@@ -239,6 +283,11 @@ export const gameAnswerSchema = z
     question_id: z.string().uuid(),
     answer: refuseSsn(z.string().trim().max(120, 'That answer is too long.')).optional(),
     skip: z.boolean().optional(),
+    /**
+     * Phase 77 (JF15): whose hand this answers -- a child seated on the host's device (`GameView.seats`). Only the host
+     * who seated them may (`EngineGame.seats`); anyone else's is refused, 409. Absent: the reader's own hand.
+     */
+    as_user_id: z.string().min(1).max(64).optional(),
   })
   .refine((value) => value.skip === true || (value.answer ?? '').length > 0, {
     message: 'Give an answer, or skip.',
@@ -305,6 +354,18 @@ export interface GameSettings {
   late_join: boolean;
 }
 
+/** Phase 77 (JF15): a child playing on the host's device, as the host's view carries them (R20: no key before the results). */
+export interface GameSeat {
+  user_id: string;
+  first_name: string;
+  /** Their own solo team: their score is their own. */
+  team_id: string;
+  /** Their question now, as `me.question` is the host's. Every team plays the same series: the client alternates. */
+  question: GameQuestion | null;
+  last: { correct: boolean; skipped: boolean } | null;
+  waiting: boolean;
+}
+
 export interface GameView extends GameSettings {
   id: string;
   code: string;
@@ -335,6 +396,16 @@ export interface GameView extends GameSettings {
     /** True while the game runs but the team has no question left to hand them. */
     waiting: boolean;
   };
+  /**
+   * Phase 77 (JF15): the children the reader seated on their own device, each with their own hand -- the host's view
+   * only, and only of a seated game. Absent for anyone else, for any other game and from an older Worker.
+   */
+  seats?: GameSeat[];
+  /**
+   * Phase 77 (JF15): whom the host's roster invited (first names), for the lobby's "Waiting for Sanjay". The host and
+   * admins only; absent for anyone else and from an older Worker.
+   */
+  invited?: GamePlayer[];
 }
 
 /**
@@ -436,6 +507,11 @@ export interface GameSummary {
   /** Their team's place, once finished. */
   place: number | null;
   teams: number;
+  /**
+   * Phase 77 (JF15): a game played on its host's device with a child they seated -- its code finds nothing, so a
+   * list says "On this device" instead (absent from older Workers).
+   */
+  seated?: boolean;
 }
 
 /** A bank level a game may draw from, with how many questions it has to draw. */
@@ -525,6 +601,13 @@ export interface EngineGame {
   end_reason: GameEndReason | null;
   series_length: number;
   teams: EngineTeam[];
+  /**
+   * Phase 77 (JF15): the children seated on a host's device, child -> the host who answers for them. Empty or absent for
+   * every other game (`normalizeEngineGame` fills {} for a game stored before Phase 77).
+   */
+  seats?: Record<string, string>;
+  /** Phase 77 (JF15): whom the roster invited, for the lobby (host and admins). Empty or absent when none. */
+  invited?: GamePlayer[];
 }
 
 /**
@@ -546,7 +629,14 @@ export function normalizeEngineGame(stored: EngineGame): EngineGame {
     max_teams: game.max_teams ?? GAME_LIMITS.maxTeams,
     late_join: game.late_join ?? false,
     end_reason: game.end_reason ?? null,
+    seats: game.seats ?? {},
+    invited: game.invited ?? [],
   };
+}
+
+/** Phase 77 (JF15): whether a game is played on one device, by a host and the children they seated. */
+export function gameIsSeated(game: Pick<EngineGame, 'seats'>): boolean {
+  return Object.keys(game.seats ?? {}).length > 0;
 }
 
 /**

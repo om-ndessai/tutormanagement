@@ -3,6 +3,8 @@
 # pages -- choosing A or B wherever the question is multiple choice (the draw is random), drawing a
 # stroke, Undo and the eraser each taking it away again. Leaving and continuing keeps the work on
 # the device. Submit asks first, then the list shows it submitted. Nothing is marked on the way.
+# Phase 77 (JF20): Priya opens it for Sofia, so the questions wait behind "Hand the device to Sofia" ("Sofia is
+# ready"), on starting and again on continuing.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-canvas-assessments.js
@@ -80,6 +82,16 @@ tags:
     visible:
       id: screen-assessment-take
     timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: assessment-hand-over-title
+      text: 'Hand the device to Sofia'
+    timeout: 20000
+- assertVisible:
+    id: assessment-hand-over-body
+    text: 'Sofia answers on this device\. Answers written on another device stay there\.'
+- tapOn:
+    id: assessment-ready
 - extendedWaitUntil:
     visible: 'Question 1 of 10'
     timeout: 15000
@@ -188,6 +200,12 @@ tags:
     centerElement: true
 - tapOn:
     id: 'assessment-continue-.*'
+- extendedWaitUntil:
+    visible:
+      id: assessment-ready
+    timeout: 15000
+- tapOn:
+    id: assessment-ready
 - extendedWaitUntil:
     visible:
       id: assessment-page-2

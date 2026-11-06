@@ -101,8 +101,13 @@ export function GamesPanel() {
                   testID={`game-row-${game.code}`}
                   title={gameRowTitle(game)}
                   titleStyle={{ fontWeight: '600' }}
-                  description={`${gameRowHost(game)} · ${game.code}`}
-                  accessibilityLabel={`${gameRowTitle(game)}, ${gameRowHost(game)}, code ${game.code}, ${gameRowStatus(game)}`}
+                  // Phase 77 (JF15): a game on one device has no code anyone could use, so none is shown.
+                  description={game.seated ? gameRowHost(game) : `${gameRowHost(game)} · ${game.code}`}
+                  accessibilityLabel={
+                    game.seated
+                      ? `${gameRowTitle(game)}, ${gameRowHost(game)}, ${gameRowStatus(game)}`
+                      : `${gameRowTitle(game)}, ${gameRowHost(game)}, code ${game.code}, ${gameRowStatus(game)}`
+                  }
                   onPress={() =>
                     router.push({ pathname: '/quest/games/[gameId]', params: { gameId: game.id } })
                   }

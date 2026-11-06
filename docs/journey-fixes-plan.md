@@ -7,7 +7,8 @@
 > Progress: the fix-up `8173a2a`; Phase 70 web `2b78590` and app `023ba00`; Phase 71 web `ab71793`; the 70+71
 > contract `98c40ab` (smoke green on the web, iOS and Android; `test:compat` green); Phase 72 (smoke green on all
 > three, `test:compat` green); Phases 73 and 74 (one smoke and one commit, as planned); Phases 75 and 76 (one smoke
-> and one commit; smoke green on the web, iOS and Android, `test:compat` green). Phase 77 next.
+> and one commit; smoke green on the web, iOS and Android, `test:compat` green); Phase 77 (smoke green on the web,
+> iOS and Android, `test:compat` green). Phase 78 next.
 
 The UI journey audit ([docs/userjourney/](userjourney/README.md)) played 24 journeys at commit `2d6e7d3` and merged
 its findings into 37 recommendations ([recommendations.md](userjourney/recommendations.md)). This plan fixes each
@@ -229,6 +230,13 @@ Carried here from Phase 75 (found by its flows): in the app, the office's lesson
 and the sheet then scrolls with "Another lesson" at its end -- QuickSheet's documented fallback, but not the thumb zone
 it promises. The phone-width pass decides whether to pin the action (QuickSheet's root must stay a ScrollView on iOS)
 or to show the newest few rows with "Show all".
+
+Carried here from Phase 77 (found by its flows): in the app, a game's results open at the play page's scroll
+position, so after "End the game now" far down the headline and each player's line can sit under the header (every
+game, not only one on a device: `QuestFrame` takes a `scrollRef` the game screen does not pass; scroll to the top when
+the game finishes); and Start's warning on Assessments can say "started 2 minutes ago" while the row below says "1
+minute ago", because the row's relative time is worked out once when the list renders -- the one date formatter
+should give both the same words.
 
 ## How it is committed
 

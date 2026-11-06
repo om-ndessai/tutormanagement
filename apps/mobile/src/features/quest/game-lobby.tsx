@@ -8,6 +8,7 @@
 // opens no sheet, U3); Cancel asks first, natively. Leaving goes back to the hub with "You left the
 // game.". On an iPad the code and the choices sit beside the teams. Phase 47 (design 61): the label is
 // "Game code" (owner, 2026-10-23), the host joins by starting a team, the host's action is "Start the Quest", and the board counts the places taken.
+// Phase 77 (JF15): "Invited: Sanjay" under the actions while someone the host invited has not joined (`GameView.invited`).
 import type { GameView } from '@tmi/shared';
 import { Share, View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
@@ -26,6 +27,7 @@ import { JoinChoices } from './game-join-choices';
 import {
   LOBBY_LABEL,
   gameRulesLine,
+  invitedLine,
   lobbyBoardTitle,
   playerCount,
   shareText,
@@ -67,6 +69,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
   const wide = questWide(width);
   const players = playerCount(game);
   const mine = game.teams.find((team) => team.id === game.me.team_id);
+  const invited = invitedLine(game);
 
   async function run(kind: 'start' | 'leave' | 'end') {
     try {
@@ -209,6 +212,12 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
             </Button>
           ) : null}
         </View>
+        {/* Phase 77 (JF15): whom the host's roster invited and who has not come yet -- the host's and admins' view. */}
+        {invited ? (
+          <Text testID="game-lobby-invited" variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
+            {invited}
+          </Text>
+        ) : null}
         {!game.is_host ? (
           <Text
             testID="game-waiting-host"

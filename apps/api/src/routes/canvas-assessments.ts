@@ -201,8 +201,8 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
     const found = await getVisibleCanvasAssessment(c.env.DB, org.id, user, c.req.param('id'));
     if (!found) throw ApiError.notFound('Assessment not found.');
 
-    // The questions go to the person taking it, while they take it -- and
-    // never with an answer or a solution.
+    // The questions go to the person taking it, while they take it -- its starter or (Phase 77, JF20) a guardian of the
+    // student handing their device over -- and never with an answer or a solution.
     let questions: CanvasAssessmentDetail['questions'] = null;
     if (found.shown.can_continue) {
       const full = await getQuestions(c.env.DB, found.stored.question_ids);
@@ -236,8 +236,10 @@ export const canvasAssessmentRoutes = new Hono<AppEnv>()
       throw ApiError.validation('Please correct the highlighted fields.', { pages: ['The pages could not be read.'] });
     }
 
+    // Its starter submits it -- or, Phase 77 (JF20), a guardian of the student who took it on on their own device. The
+    // PDF it makes stays the tutors' and the admins' (R17): the guardian gets the row back, never the answers.
     const found = await getVisibleCanvasAssessment(c.env.DB, org.id, user, c.req.param('id'));
-    if (!found || found.stored.started_by_user_id !== user.id) throw ApiError.notFound('Assessment not found.');
+    if (!found || !found.stored.may_take) throw ApiError.notFound('Assessment not found.');
     if (found.stored.status !== 'in_progress') throw ApiError.conflict('This assessment has already been submitted or discarded.');
 
     // Every page must be one of its own questions; a missing page is blank.

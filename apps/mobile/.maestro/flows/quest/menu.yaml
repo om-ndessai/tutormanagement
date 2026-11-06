@@ -60,11 +60,13 @@ tags:
     visible:
       id: org-tin
     timeout: 20000
-# The Quest card ("Quest in this space", Phase 59) is the page's last: scrolled into view, never centred.
+# The Quest card ("Quest in this space", Phase 59) is the page's last: scrolled into view, never centred. The page is
+# long and each swipe reads a large hierarchy (3.5-7 s on iOS): six swipes need more than the default 20 s.
 - scrollUntilVisible:
     element:
       id: org-quest-switch
     direction: DOWN
+    timeout: 45000
 - assertVisible: 'Quest in this space'
 - tapOn:
     id: org-quest-switch
@@ -117,6 +119,7 @@ tags:
     element:
       id: org-quest-switch
     direction: DOWN
+    timeout: 45000
 - tapOn:
     id: org-quest-switch
 - extendedWaitUntil:
