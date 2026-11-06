@@ -12,6 +12,7 @@ Nothing here is scheduled. Features are chosen by ID and become phases in
 | [think-aloud-canvas.md](think-aloud-canvas.md) | The research behind AI-13 (2026-10-18): a canvas where the student's working is their thinking aloud, answered on the canvas with approved hints. No audio. |
 | [open-to-public.md](open-to-public.md) | Opening sign-in to anyone (2026-10-23): where a stranger lands (join codes, family and tutor spaces), the blockers to fix first, Apple, Microsoft and email sign-in, and sharing Quest results on social media. Stages O0–O5 |
 | [stickiness-later.md](stickiness-later.md) | What Phases 62-64 (`docs/stickiness-plan.md`, play first, sign up second) left for later (2026-10-31) |
+| [quest-invites.md](quest-invites.md) | How a quest is started and others are asked to join (2026-11-06): the code, the QR, rosters and seats on both clients; what QR scanning, universal links and NFC can do for someone standing next to the starter, and what needs the paid Apple account; six ranked recommendations |
 
 ---
 
