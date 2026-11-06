@@ -22,6 +22,11 @@
 // Grade 7 Quick 5 again"), only with no game open: one tap starts its settings as a tile does (JF13). The
 // Daily is "Today's Daily", its level the board's (`dailyLevelFor` of the lead grade, JF14/JF23). An
 // invitation's game in words (JF32). New Quest opens with `from=home` (JF36).
+//
+// Phase 75 (docs/journey-fixes-plan.md JF19, JF30; owner 2026-11-05): a lesson under way leads Next up
+// (`lesson_running`, from the client's own `GET /sessions/active`), with Stop and how long it has run; a finished one
+// with the reader's draft says "Draft saved 12:43 PM" and continues it; the office's lessons to record open the list
+// of lessons still owed. "Lesson" and "Record" on every one.
 import {
   DAILY_NAME,
   START_LEAD_MINUTES,
@@ -35,11 +40,13 @@ import {
   nextUpCandidates,
   nextUpKey,
   practiseRequest,
+  SESSION_MODE_LABELS,
   type MemberHome,
   type NextUp,
+  type NextUpExtras,
 } from '@tmi/shared';
 import { router, useIsFocused, type Href } from 'expo-router';
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
@@ -52,6 +59,8 @@ import { shownGrade } from '@/features/play/play-model';
 import { useQuestState } from '@/features/quest/api';
 import { gameWordsOf } from '@/features/quest/game-model';
 import { questRoles } from '@/features/quest/quest-model';
+import { useActiveSession } from '@/features/teaching/api';
+import { runningLine } from '@/features/teaching/lessons-owed-model';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -75,6 +84,9 @@ export function useNextUp(home: MemberHome | undefined) {
   const slug = organization?.slug;
   const focused = useIsFocused();
   const quest = featureOn(organization, 'quest');
+  // Phase 75 (JF30): the reader's own running lesson (the banner's read, shared; polled only where Tutoring is on).
+  const active = useActiveSession();
+  const running = featureOn(organization, 'tutoring') ? (active.data?.data.mine ?? null) : null;
   const learner = Boolean(home?.hats.includes('learner'));
   // The waiting poll is read only while Home is in front, as the Play home's (at most once a minute).
   const waiting = useWaitingGames(quest && focused);
@@ -107,6 +119,7 @@ export function useNextUp(home: MemberHome | undefined) {
     // Phase 68 (H10): practice before a lesson starts at the board's lead level.
     practiceLevelId: learner && quest ? leadLevel : null,
     playedToday: habit.data?.data.played_today ?? false,
+    running,
   });
   const item = home ? chooseNextUp(nextUpCandidates(home, extras), later) : null;
   const waitingGame = item?.kind === 'game_invite' ? waitingList.find((g) => g.game_id === item.game.game_id) : undefined;
@@ -238,6 +251,32 @@ function Primary({ label, icon, onPress, testID = 'next-up-action', mode = 'cont
 
 const go = (href: Href) => () => router.navigate(href);
 
+/** A clock that moves once a minute, for "Running 12 min". */
+function useMinuteClock() {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(timer);
+  }, []);
+  return now;
+}
+
+/** Phase 75 (JF30): the lesson under way, first, with Stop -- the stop sheet records it (no money: the length only). */
+function RunningLesson({ running }: { running: NonNullable<NextUpExtras['running']> }) {
+  const now = useMinuteClock();
+  return (
+    <Shell
+      kind="lesson_running"
+      icon="timer-outline"
+      eyebrow="Lesson under way"
+      title={`Your lesson with ${firstOf(running.student_name)} is running.`}
+      detail={`${runningLine(running.started_at, now)} · ${SESSION_MODE_LABELS[running.mode]}`}
+    >
+      <Primary label="Stop and record" icon="stop" onPress={go('/stop-lesson')} />
+    </Shell>
+  );
+}
+
 export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<typeof useNextUp> }) {
   const { start, pending } = useStartQuest();
   const clock = useOrgClock();
@@ -251,6 +290,8 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
   }
 
   switch (item.kind) {
+    case 'lesson_running':
+      return <RunningLesson running={item.running} />;
     case 'lesson_unrecorded':
       return (
         <View testID="next-up" collapsable={false}>
@@ -361,7 +402,8 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           }
           onLater={later}
         >
-          <Primary label="Open sessions" icon="pencil-outline" onPress={go('/sessions')} />
+          {/* Phase 75 (JF30): the list of lessons still owed, each with Record. */}
+          <Primary label="Record them" icon="pencil-outline" onPress={go('/lessons-owed')} />
         </Shell>
       );
     }

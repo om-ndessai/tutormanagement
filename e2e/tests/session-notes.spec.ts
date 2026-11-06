@@ -220,11 +220,16 @@ test.describe('session write-ups and assessments', () => {
     const marker = `UI write-up ${Date.now()}`;
 
     await tutor.goto('/sessions');
-    await tutor.getByRole('button', { name: /Record a session/i }).click();
+    // Phase 75 (JF30): through the lessons still owed; "Another lesson" is dated by hand.
+    await tutor.getByTestId('sessions-record').click();
+    await tutor.getByTestId('owed-another').click();
 
     const dialog = tutor.getByRole('dialog');
     await dialog.getByRole('combobox').first().click();
     await tutor.getByRole('option', { name: /Sofia/ }).click();
+    await dialog.locator('#date').fill('2026-09-22');
+    await dialog.locator('#start').fill('16:00');
+    await dialog.locator('#end').fill('17:00');
 
     await dialog.getByLabel('What was planned', { exact: true }).fill('Fractions on a number line.');
     await dialog.getByLabel('Previous session review', { exact: true }).fill('Word problems stuck.');
@@ -239,7 +244,7 @@ test.describe('session write-ups and assessments', () => {
       .getByRole('radiogroup', { name: 'How did the lesson go?' })
       .getByRole('radio', { name: /^4/ })
       .click();
-    await dialog.getByRole('button', { name: 'Record session' }).click();
+    await dialog.getByRole('button', { name: 'Record lesson' }).click();
     await expect(dialog).toHaveCount(0);
 
     const recent = await unwrap<any[]>(

@@ -1,6 +1,8 @@
 // Ported from apps/web/src/features/schedules/schedules-page.tsx @ 1132322 (one slot's card).
 // Everyone who can see a schedule can download it; only its tutor (or an admin) can change it.
 // Expanding the card lists its coming dates. No money: a schedule carries none.
+// Phase 75 (JF18, R34): "No price set" where the student has no price for the schedule's mode (the server's
+// `price_missing`, never an amount) -- so a tutor knows before Start refuses the lesson.
 import {
   SESSION_MODE_LABELS,
   describeLocation,
@@ -9,7 +11,7 @@ import {
   type VisibleSchedule,
 } from '@tmi/shared';
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, Icon, Text } from 'react-native-paper';
 import { OutlinedCard } from '@/components/outlined-card';
 
 import { formatPlainDay } from '@/features/teaching/session-format';
@@ -20,6 +22,11 @@ import { Tag } from '@/features/teaching/session-card';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { ScheduleDates } from './schedule-dates';
+
+/** Whether the student has no price for this schedule's own mode (only that mode matters to its lessons). */
+export function schedulePriceMissing(schedule: Pick<VisibleSchedule, 'mode' | 'price_missing'>): boolean {
+  return (schedule.price_missing ?? []).includes(schedule.mode);
+}
 
 export function ScheduleCard({
   schedule,
@@ -64,6 +71,17 @@ export function ScheduleCard({
               {described}
             </Text>
             <Tag label={SESSION_MODE_LABELS[schedule.mode]} />
+            {schedulePriceMissing(schedule) ? (
+              <View
+                testID={`schedule-price-missing-${schedule.id}`}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+              >
+                <Icon source="alert-circle-outline" size={14} color={theme.colors.primary} />
+                <Text variant="bodySmall" style={{ fontWeight: '600' }}>
+                  No price set
+                </Text>
+              </View>
+            ) : null}
           </View>
           <Text variant="bodySmall" style={{ color: muted }}>
             from {formatPlainDay(schedule.starts_on, today)}

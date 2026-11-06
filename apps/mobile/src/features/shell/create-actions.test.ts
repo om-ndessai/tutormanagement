@@ -8,9 +8,7 @@ test('an admin who does not teach: record, schedule, add people, record a paymen
   expect(ids(['admin'], { teaches: false })).toEqual([
     'record-session',
     'schedule-lesson',
-    'add-student',
-    'add-tutor',
-    'add-person',
+    'add-people',
     'record-payment',
   ]);
 });
@@ -31,9 +29,7 @@ test('an admin who also tutors gets everything', () => {
     'record-session',
     'start-lesson',
     'schedule-lesson',
-    'add-student',
-    'add-tutor',
-    'add-person',
+    'add-people',
     'record-payment',
   ]);
 });
@@ -55,42 +51,41 @@ test('a parent, a student, or nobody: no actions, so no create button', () => {
   expect(hasCreateActions(['admin'])).toBe(true);
 });
 
-test('Record opens the Tutoring step flow, never the money; each action routes to a screen that exists', () => {
+test('Record opens the lessons still owed, never the money; each action routes to a screen that exists', () => {
   const all = createActions(['admin', 'tutor'], { teaches: true });
   const record = all.find((action) => action.id === 'record-session');
-  // The record step flow (UI upgrades U4) has no money preview at all; Finance keeps the sheet.
-  expect(record?.href).toBe('/record-lesson');
+  // Phase 75 (JF30): the lessons owed first; "Another lesson" there is the record step flow (U4), with no money.
+  expect(record?.href).toBe('/lessons-owed');
   const paths = all.map((action) => (typeof action.href === 'string' ? action.href : action.href.pathname));
-  expect(paths).toEqual([
-    '/record-lesson',
-    '/start-lesson',
-    '/schedule-lesson',
-    '/add-student',
-    '/add-tutor',
-    '/person-form',
-    '/payment-form',
-  ]);
-  // Adding a student or a tutor is a step flow (U3); anyone else is the full person form.
-  expect(all.find((action) => action.id === 'add-student')?.href).toBe('/add-student');
-  expect(all.find((action) => action.id === 'add-tutor')?.href).toBe('/add-tutor');
-  expect(all.find((action) => action.id === 'add-person')?.href).toBe('/person-form');
+  expect(paths).toEqual(['/lessons-owed', '/start-lesson', '/schedule-lesson', '/add', '/payment-form']);
+});
+
+describe('Phase 76 (JF21): one Add chooser', () => {
+  test('one "Add people" row, opening the chooser -- never three separate add rows', () => {
+    const all = createActions(['admin'], {});
+    const add = all.filter((action) => action.id.startsWith('add-'));
+    expect(add).toHaveLength(1);
+    expect(add[0]).toMatchObject({ id: 'add-people', title: 'Add people', href: '/add' });
+  });
+
+  test('in a personal space it reads "Add my child"', () => {
+    const all = createActions(['admin'], { personal: true }, { tutoring: false, assessment: true });
+    expect(all.find((action) => action.id === 'add-people')).toMatchObject({ title: 'Add my child', href: '/add' });
+    expect(createActions(['admin'], {}).find((action) => action.id === 'add-people')?.title).toBe('Add people');
+  });
 });
 
 describe('Phase 50: without Tutoring', () => {
   const ASSESS = { tutoring: false, assessment: true };
   const NONE = { tutoring: false, assessment: false };
 
-  test('an admin starts an assessment, adds a student or someone else', () => {
-    expect(ids(['admin'], { teaches: true }, ASSESS)).toEqual(['start-assessment', 'add-student', 'add-person']);
-    expect(ids(['admin', 'tutor'], { teaches: true }, ASSESS)).toEqual([
-      'start-assessment',
-      'add-student',
-      'add-person',
-    ]);
+  test('an admin starts an assessment, or adds people', () => {
+    expect(ids(['admin'], { teaches: true }, ASSESS)).toEqual(['start-assessment', 'add-people']);
+    expect(ids(['admin', 'tutor'], { teaches: true }, ASSESS)).toEqual(['start-assessment', 'add-people']);
   });
 
   test('without Assessment as well, only adding people', () => {
-    expect(ids(['admin'], {}, NONE)).toEqual(['add-student', 'add-person']);
+    expect(ids(['admin'], {}, NONE)).toEqual(['add-people']);
   });
 
   test('a parent, a student and a kept tutor get none', () => {
@@ -126,20 +121,14 @@ describe('UI audit (JF22): one rule for adding people', () => {
 
   test('an adult admin, or one a space added (no account), adds people as before', () => {
     for (const account of [ADULT, null, undefined]) {
-      expect(ids(['admin'], { account }, { tutoring: false, assessment: true })).toEqual([
-        'start-assessment',
-        'add-student',
-        'add-person',
-      ]);
+      expect(ids(['admin'], { account }, { tutoring: false, assessment: true })).toEqual(['start-assessment', 'add-people']);
     }
   });
 
   test('nobody else adds people, whatever their account', () => {
     for (const roles of [['tutor'], ['parent'], ['student'], ['parent', 'tutor']] as const) {
       const offered = ids([...roles], { teaches: true, account: ADULT });
-      expect(offered).not.toContain('add-student');
-      expect(offered).not.toContain('add-tutor');
-      expect(offered).not.toContain('add-person');
+      expect(offered).not.toContain('add-people');
     }
   });
 
@@ -152,7 +141,7 @@ describe('UI audit (JF22): one rule for adding people', () => {
 describe('UI audit (JF7): Start a space where a teacher looks', () => {
   test('an adult’s list ends with Start a space, opening Spaces on the new space’s name', () => {
     const all = createActions(['admin'], { mayMakeSpace: true }, { tutoring: false, assessment: true });
-    expect(all.map((action) => action.id)).toEqual(['start-assessment', 'add-student', 'add-person', 'start-space']);
+    expect(all.map((action) => action.id)).toEqual(['start-assessment', 'add-people', 'start-space']);
     const start = all.at(-1);
     expect(start).toMatchObject({ title: 'Start a space' });
     expect(start?.href).toEqual({ pathname: '/spaces', params: { start: '1' } });

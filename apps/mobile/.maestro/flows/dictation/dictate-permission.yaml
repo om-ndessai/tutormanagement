@@ -97,11 +97,13 @@ tags:
     visible:
       id: screen-account
     timeout: 10000
+# Alex's sheet lists two spaces, so My profile sits below the sheet's first detent. Not centred (as in
+# profile/appearance.yaml): on a tall phone the sheet opens at full height, and a sheet scrolled to its end cannot
+# bring it to the middle.
 - scrollUntilVisible:
     element:
       id: account-profile
     direction: DOWN
-    centerElement: true
     timeout: 10000
 - tapOn:
     id: account-profile

@@ -154,7 +154,7 @@ test.describe('the welcome wizard', () => {
     await expect(wizard(anita).getByRole('button', { name: 'Add a tutor' })).toHaveCount(0);
   });
 
-  test('an admin adds a student: family first, then assessment, plan and a tutor', async ({ as }) => {
+  test('an admin adds a student: family first, then the next steps -- a tutor, a weekly lesson, an assessment', async ({ as }) => {
     const admin = await as('admin');
     const stamp = Date.now();
     const parentName = `Wizard Family ${stamp}`;
@@ -167,7 +167,7 @@ test.describe('the welcome wizard', () => {
       await admin.getByRole('button', { name: 'Getting started' }).click();
       await wizard(admin).getByRole('button', { name: 'Add a student' }).click();
 
-      // The family, through the portal's own user form.
+      // The family, through the portal's own user form -- the office's usual case leads (Phase 76, JF21).
       await wizard(admin).getByRole('button', { name: 'Create a family account' }).click();
       const family = admin.getByRole('dialog', { name: 'New family account' });
       await family.locator('#full_name').fill(parentName);
@@ -182,22 +182,27 @@ test.describe('the welcome wizard', () => {
       await student.getByRole('button', { name: 'Add user' }).click();
       await expect(student).toHaveCount(0);
 
-      await wizard(admin).getByRole('button', { name: 'Record the assessment' }).click();
+      // Then what next (nextStepsAfterAdd), each the portal's own dialog, preset.
+      await expect(wizard(admin).getByRole('heading', { name: `${studentName} is added` })).toBeVisible();
+      await wizard(admin).getByRole('button', { name: 'Record an assessment' }).click();
       // An assessment needs a write-up or a rated topic; the dialog holds that line.
       await admin.locator('#summary').fill('Solid on whole numbers; fractions need work.');
       await admin.getByRole('button', { name: 'Record assessment' }).click();
 
-      await wizard(admin).getByRole('button', { name: 'Set the learning plan' }).click();
-      await admin.locator('#goal').fill('Confident with fractions by June.');
-      await admin.getByRole('button', { name: 'Create plan' }).click();
-
-      await wizard(admin).getByRole('button', { name: 'Pair with a tutor' }).click();
-      const pairing = admin.getByRole('dialog').last();
-      await pairing.getByRole('combobox').first().click();
+      await wizard(admin).getByRole('button', { name: 'Pair Wizard with a tutor' }).click();
+      const pairing = admin.getByRole('dialog', { name: 'Pair a tutor with a student' });
+      await expect(pairing.locator('#student')).toContainText(studentName);
+      await pairing.locator('#tutor').click();
       await admin.getByRole('option', { name: PEOPLE.tutor.name }).click();
+      await pairing.getByTestId('pairing-locations').getByRole('checkbox').first().check();
       await pairing.getByRole('button', { name: 'Assign', exact: true }).click();
+      await expect(pairing).toHaveCount(0);
 
-      await expect(wizard(admin).getByRole('heading', { name: `${studentName} is set up` })).toBeVisible();
+      await wizard(admin).getByRole('button', { name: 'Set a weekly lesson' }).click();
+      const lesson = admin.getByRole('dialog', { name: 'Set a weekly lesson' });
+      await expect(lesson.locator('#who')).toContainText(studentName);
+      await lesson.getByRole('button', { name: 'Schedule', exact: true }).click();
+      await expect(lesson).toHaveCount(0);
 
       // Real records, all of them.
       parentId = await idOf(admin, parentName);
@@ -206,14 +211,20 @@ test.describe('the welcome wizard', () => {
       expect(record.guardians.map((link: any) => link.user_id)).toEqual([parentId]);
       const progress = await unwrap<any>(await admin.request.get(`/api/progress/${studentId}`), 'progress');
       expect(progress.assessments).toHaveLength(1);
-      expect(progress.plan.goal).toBe('Confident with fractions by June.');
       const pairings = await unwrap<any[]>(
         await admin.request.get(`/api/assignments?student_user_id=${studentId}`),
         'pairings',
       );
       expect(pairings.map((row) => row.tutor_name)).toEqual([PEOPLE.tutor.name]);
+      const schedules = await unwrap<any[]>(await admin.request.get(`/api/schedules?student_user_id=${studentId}`), 'schedules');
+      expect(schedules.map((row) => row.tutor_name)).toEqual([PEOPLE.tutor.name]);
     } finally {
-      if (studentId) await admin.request.delete(`/api/users/${studentId}?hard=true`);
+      if (studentId) {
+        for (const row of await unwrap<any[]>(await admin.request.get(`/api/schedules?student_user_id=${studentId}`), 'schedules')) {
+          await admin.request.delete(`/api/schedules/${row.id}`);
+        }
+        await admin.request.delete(`/api/users/${studentId}?hard=true`);
+      }
       if (parentId) await admin.request.delete(`/api/users/${parentId}?hard=true`);
     }
   });

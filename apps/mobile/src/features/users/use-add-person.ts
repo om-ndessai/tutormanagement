@@ -2,7 +2,7 @@
 // -- a student with their guardians, so the guardian rule holds -- checked first against the shared
 // schema, so an SSN typed into a note never leaves the phone. Refusals come back by field, and the
 // step flow opens the step that owns the first of them.
-import { createUserRequestSchema, featureAllowed } from '@tmi/shared';
+import { createUserRequestSchema, featureAllowed, type UserRole } from '@tmi/shared';
 import { useCallback, useState } from 'react';
 
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
@@ -15,6 +15,8 @@ import { toRequest, todayIso, type FormState } from './person-form-model';
 export interface AddedPerson {
   id: string;
   name: string;
+  /** The roles they hold now, for the next steps (Phase 76, `nextStepsAfterAdd`). */
+  roles: UserRole[];
 }
 
 export function useAddPerson() {
@@ -45,7 +47,7 @@ export function useAddPerson() {
       }
       try {
         const saved = await createUser.mutateAsync(parsed.data as never);
-        const person = { id: saved.data.id, name: saved.data.full_name };
+        const person = { id: saved.data.id, name: saved.data.full_name, roles: saved.data.roles ?? form.roles };
         // The welcome wizard, when it opened this flow, carries on from the saved record.
         announceFormSaved({ form: 'person', id: person.id, name: person.name });
         return person;

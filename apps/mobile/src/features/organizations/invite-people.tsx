@@ -2,16 +2,18 @@
 // One difference, as the space code card already has it (the lead's answer, 2026-10-24): no Copy
 // button -- the app has no clipboard module, and the system share sheet offers Copy on both systems.
 // The invitation's words are shown under each sent row, selectable, so they can be copied by hand too.
+//
+// Phase 76 (JF21, JF37): opened from the one Add chooser too ("Invite by email", `/invite-people`), at any time; the
+// words say what the space is for (`invitationText` with its sets) and a share is confirmed.
 import {
   USER_ROLE_LABELS,
-  invitationText,
   inviteRolesFor,
   spaceInviteRowSchema,
   type SpaceInviteRole,
   type SpaceInviteRow,
 } from '@tmi/shared';
 import { useState } from 'react';
-import { Share, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Icon, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 
 import { IconButton } from '@/components/icon-button';
@@ -19,13 +21,12 @@ import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
-import { serverOrigin } from '@/lib/server';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
+import { useShareInvitation } from '@/features/users/share-invitation';
 import { useInvitePerson } from './api';
-import { invitationAddress } from './space-model';
 import { SpaceCodePanel } from './space-code-card';
 
 interface Row {
@@ -53,8 +54,15 @@ export function inviteProblem(caught: unknown): string {
  * cap apply, and the person is invited and accepts. A self-serve space sends no email, so each
  * invitation is shared by hand; the space's code is shown too.
  */
-export function InvitePeople({ onDone }: { onDone: () => void }) {
-  const { user, organization } = useAuth();
+export function InvitePeople({
+  onDone,
+  doneLabel,
+}: {
+  onDone: () => void;
+  /** The last button's words once someone is invited ("Continue" in the wizard, "Done" from the chooser). */
+  doneLabel?: string;
+}) {
+  const { organization } = useAuth();
   const invite = useInvitePerson();
   const toast = useToast();
   const theme = useAppTheme();
@@ -64,14 +72,8 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
   const [sent, setSent] = useState<SpaceInviteRow[]>([]);
   const [sending, setSending] = useState(false);
 
-  const textFor = (email: string) =>
-    invitationText({
-      inviter: user?.full_name ?? 'Someone',
-      space: organization?.name ?? 'a space',
-      // The link opens on the invitation (the person's Spaces page), not on the guest game page (UI audit JF12).
-      address: invitationAddress(serverOrigin()),
-      email,
-    });
+  // Phase 76 (JF37): the words with what the space is for, and a share that says it went.
+  const { textFor, share } = useShareInvitation();
 
   const update = (key: number, patch: Partial<Row>) =>
     setRows((current) => current.map((row) => (row.key === key ? { ...row, ...patch, problem: null } : row)));
@@ -106,15 +108,6 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
     setRows(left.length > 0 ? left : [blankRow()]);
     if (left.length > 0) haptics.error();
     if (done.length > 0) toast.success(done.length === 1 ? 'Invitation made.' : `${done.length} invitations made.`);
-  }
-
-  async function share(email: string) {
-    try {
-      // A closed sheet says nothing.
-      await Share.share({ message: textFor(email) });
-    } catch {
-      // Nothing to do.
-    }
   }
 
   const anyTyped = rows.some((row) => row.email.trim() || row.full_name.trim());
@@ -267,7 +260,7 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
       <View style={{ alignItems: 'flex-end' }}>
         {sent.length > 0 ? (
           <Button testID="invite-continue" mode="contained" onPress={onDone}>
-            Continue
+            {doneLabel ?? 'Continue'}
           </Button>
         ) : (
           <Button testID="invite-skip" mode="text" onPress={onDone}>

@@ -35,6 +35,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
+import { NoPriceBadge } from '@/features/teaching/price-missing';
 import { ScheduleDates } from './schedule-dates';
 import { ScheduleDialog } from './schedule-dialog';
 import { calendarHref, useDeleteSchedule, useSchedules } from './api';
@@ -191,6 +192,8 @@ export function SchedulesPage() {
                             <Badge variant="secondary" className="text-[10px]">
                               {SESSION_MODE_LABELS[schedule.mode]}
                             </Badge>
+                            {/* Phase 75 (JF18): its lessons could not be priced -- said before Start refuses. */}
+                            <NoPriceBadge missing={schedule.price_missing} mode={schedule.mode} testId={`no-price-${schedule.id}`} />
                             <span>
                               from {schedule.starts_on}
                               {schedule.ends_on ? ` to ${schedule.ends_on}` : ', ongoing'}

@@ -110,8 +110,8 @@ export function SessionFormDialog({
    */
   showMoney?: boolean;
   /**
-   * Phase 66 (H9): a scheduled lesson being recorded from the home ("Record it now"): its pairing,
-   * date, times and mode fill the form, instead of today at 16:00-17:00.
+   * Phase 66 (H9): a scheduled lesson being written up ("Write up the lesson"): its pairing, date,
+   * times and mode fill the form. Without one the form starts blank (Phase 75).
    */
   fromSchedule?: {
     tutor_user_id: string;
@@ -128,9 +128,11 @@ export function SessionFormDialog({
   const isAdmin = user?.roles.includes('admin') ?? false;
 
   const [assignmentId, setAssignmentId] = useState('');
-  const [occurredOn, setOccurredOn] = useState(todayIso);
-  const [startedAt, setStartedAt] = useState('16:00');
-  const [endedAt, setEndedAt] = useState('17:00');
+  // Phase 75 (JF30): a lesson typed in from nothing has no date or times until they are given -- never "today at
+  // 4:00-5:00 PM" by default, which dated lessons wrongly.
+  const [occurredOn, setOccurredOn] = useState('');
+  const [startedAt, setStartedAt] = useState('');
+  const [endedAt, setEndedAt] = useState('');
   const [mode, setMode] = useState<SessionMode>('in_person');
   const [notes, setNotes] = useState('');
   const [goalRating, setGoalRating] = useState<Rating | null>(null);
@@ -240,9 +242,9 @@ export function SessionFormDialog({
       setMyAssessment('');
     } else {
       setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
-      setOccurredOn(todayIso());
-      setStartedAt('16:00');
-      setEndedAt('17:00');
+      setOccurredOn('');
+      setStartedAt('');
+      setEndedAt('');
       setMode('in_person');
       setNotes('');
       setGoalRating(null);
@@ -457,7 +459,11 @@ export function SessionFormDialog({
     setErrors({});
 
     if (!assignment && !draft) {
-      setErrors({ assignment: 'Choose which student this session was with.' });
+      setErrors({ assignment: 'Choose which student this lesson was with.' });
+      return;
+    }
+    if (!occurredOn) {
+      setErrors({ occurred_on: 'Choose the date of the lesson.' });
       return;
     }
 
@@ -467,8 +473,7 @@ export function SessionFormDialog({
       toast.success(draft ? 'Draft saved.' : 'Saved as a draft. Only you can see it.');
       onOpenChange(false);
     } catch (error) {
-      if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
-      toast.error(error instanceof ApiRequestError ? error.message : 'Could not save the draft.');
+      refused(error, 'Could not save the draft.');
     }
   }
 
@@ -482,11 +487,10 @@ export function SessionFormDialog({
       // and is what the log records.
       await autosave.mutateAsync({ id: draft!.id, input: formBody() as never });
       await postDraft.mutateAsync(draft!.id);
-      toast.success('Session recorded. Everyone concerned can see it now.');
+      toast.success('Lesson recorded. Everyone concerned can see it now.');
       onOpenChange(false);
     } catch (error) {
-      if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
-      toast.error(error instanceof ApiRequestError ? error.message : 'Could not post the draft.');
+      refused(error, 'Could not record the draft.');
     }
   }
 
@@ -501,7 +505,11 @@ export function SessionFormDialog({
     setErrors({});
 
     if (!isEdit && !assignment) {
-      setErrors({ assignment: 'Choose which student this session was with.' });
+      setErrors({ assignment: 'Choose which student this lesson was with.' });
+      return;
+    }
+    if (!occurredOn) {
+      setErrors({ occurred_on: 'Choose the date of the lesson.' });
       return;
     }
 
@@ -529,7 +537,7 @@ export function SessionFormDialog({
                 : {}),
           } as never,
         });
-        toast.success('Session updated.');
+        toast.success('Lesson updated.');
       } else {
         await record.mutateAsync({
           tutor_user_id: assignment!.tutor_user_id,
@@ -544,19 +552,28 @@ export function SessionFormDialog({
           ...(assessmentBody ? { assessment: assessmentBody } : {}),
           ...(draftIdRef.current ? { from_draft_id: draftIdRef.current } : {}),
         } as never);
-        toast.success('Session recorded.');
+        toast.success('Lesson recorded.');
       }
       onOpenChange(false);
     } catch (error) {
       // Not recorded, so keep the write-up safe again.
       stoppedRef.current = false;
-      if (error instanceof ApiRequestError) {
-        setErrors(error.fieldErrors);
-        toast.error(error.message);
-        return;
-      }
-      toast.error('Could not save the session.');
+      refused(error, 'Could not save the lesson.');
     }
+  }
+
+  /**
+   * A refusal, said once (Phase 75, JF18): beside the field it is about -- a price or a rate missing is said under
+   * the mode, in the reader's words -- and in a toast only when no field on screen says it.
+   */
+  function refused(error: unknown, fallback: string) {
+    if (!(error instanceof ApiRequestError)) {
+      toast.error(fallback);
+      return;
+    }
+    const fields = error.fieldErrors;
+    setErrors(fields);
+    if (!Object.values(fields).includes(error.message)) toast.error(error.message);
   }
 
   return (
@@ -565,7 +582,7 @@ export function SessionFormDialog({
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
             <DialogTitle>
-              {isEdit ? 'Edit session' : isDraft ? 'Finish this draft' : 'Record a session'}
+              {isEdit ? 'Edit lesson' : isDraft ? 'Finish this draft' : 'Record a lesson'}
             </DialogTitle>
             <DialogDescription>
               {isEdit
@@ -617,14 +634,23 @@ export function SessionFormDialog({
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
-                <Label htmlFor="date">Date</Label>
+                <Label htmlFor="date" className={errors.occurred_on ? 'text-destructive' : ''}>
+                  Date
+                </Label>
                 <Input
                   id="date"
                   type="date"
+                  required
                   value={occurredOn}
                   max={todayIso()}
                   onChange={(event) => setOccurredOn(event.target.value)}
+                  aria-invalid={Boolean(errors.occurred_on)}
                 />
+                {errors.occurred_on && (
+                  <p role="alert" className="text-destructive text-xs">
+                    {errors.occurred_on}
+                  </p>
+                )}
               </div>
 
               <div className="grid gap-2">
@@ -646,14 +672,23 @@ export function SessionFormDialog({
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
-                <Label htmlFor="start">Started</Label>
+                <Label htmlFor="start" className={errors.started_at ? 'text-destructive' : ''}>
+                  Started
+                </Label>
                 <Input
                   id="start"
                   type="time"
                   step={300}
+                  required
                   value={startedAt}
                   onChange={(event) => setStartedAt(event.target.value)}
+                  aria-invalid={Boolean(errors.started_at)}
                 />
+                {errors.started_at && (
+                  <p role="alert" className="text-destructive text-xs">
+                    {errors.started_at}
+                  </p>
+                )}
               </div>
 
               <div className="grid gap-2">
@@ -689,6 +724,8 @@ export function SessionFormDialog({
                     variant={active ? 'default' : 'outline'}
                     size="sm"
                     className="h-7 px-2 text-xs"
+                    // A length needs a start to count from.
+                    disabled={parseClockTime(startedAt) === null}
                     onClick={() => setEndedAt(addMinutes(startedAt, minutes))}
                   >
                     {formatDuration(minutes)}
@@ -819,7 +856,7 @@ export function SessionFormDialog({
 
             <Button type="submit" disabled={saving}>
               {saving && <Loader2Icon className="animate-spin" />}
-              {isEdit ? 'Save changes' : isDraft ? 'Post session' : 'Record session'}
+              {isEdit ? 'Save changes' : 'Record lesson'}
             </Button>
           </DialogFooter>
         </form>

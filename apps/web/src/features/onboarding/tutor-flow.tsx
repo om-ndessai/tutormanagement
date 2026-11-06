@@ -158,6 +158,7 @@ export function TutorFlow({
         sections={['identity', 'tutor-background']}
         title="New tutor"
         description="They sign in with this Google address. Pay and availability come next."
+        announce={false}
         onSaved={(user) => {
           setTutor({ id: user.id, name: user.full_name });
           complete('tutor', 'financials');

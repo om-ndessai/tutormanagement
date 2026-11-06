@@ -4,6 +4,9 @@
 // else the people they work with (`visibleUserIds`), and only an admin may ask for the deactivated.
 // The web pages with Previous/Next; on a phone the list grows as it is scrolled. Only an admin
 // deactivates, restores or deletes, and never their own account.
+//
+// Phase 76 (JF21): adding people is the one Add chooser (`/add`): the header's button and the empty directory's
+// both open it, as the home's quick action and the (+) row do. An invited row shares its invitation (JF37).
 import { mayAddPeople, type User } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
@@ -12,6 +15,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
+import { IconButton } from '@/components/icon-button';
 import { PageIntro } from '@/components/page-intro';
 import { useBottomOverlap } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
@@ -91,7 +95,7 @@ export function PeopleScreen() {
   // Phase 52: the requests to join (admins only) are refreshed with the list.
   const joinRequests = useJoinRequests(isAdmin);
 
-  const { deactivate, deactivateNow, restore, hardDelete, dialog } = useUserActions();
+  const { deactivate, deactivateNow, restore, hardDelete, shareInvitation, dialog } = useUserActions();
   const actions: RowActions = {
     onView: (user: User) => router.push({ pathname: '/people/[id]', params: { id: user.id } }),
     onEdit: (user: User) => router.push({ pathname: '/person-form', params: { id: user.id } }),
@@ -99,6 +103,7 @@ export function PeopleScreen() {
     onDeactivateNow: deactivateNow,
     onRestore: restore,
     onDelete: hardDelete,
+    onShareInvitation: shareInvitation,
   };
 
   const renderItem = ({ item }: { item: User }) => (
@@ -116,14 +121,8 @@ export function PeopleScreen() {
     }
   }
 
-  // Filtered to students or tutors, the empty directory's next step is that role's own step flow
-  // (UI upgrades U3); anyone else is the full person form.
-  const add =
-    filters.role === 'student'
-      ? { label: 'Add a student', go: () => router.push('/add-student') }
-      : filters.role === 'tutor'
-        ? { label: 'Add a tutor', go: () => router.push('/add-tutor') }
-        : { label: 'Add user', go: () => router.push('/person-form') };
+  // Phase 76 (JF21): every way to add people is the one chooser.
+  const openAdd = () => router.push('/add');
 
   const header = (
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
@@ -133,8 +132,8 @@ export function PeopleScreen() {
       </PageIntro>
       {/* Phase 52: people who asked to join with the space's code. */}
       <JoinRequestsSection enabled={isAdmin} />
-      {/* Adding is the tab bar's create button (UI upgrades U2); the in-page button is the empty
-          directory's next step only (ux-audit F-15). */}
+      {/* Adding is the header's button and the tab bar's create button, both the one Add chooser (Phase 76); the
+          in-page button is the empty directory's next step only (ux-audit F-15). */}
       <PeopleFilters
         value={filters}
         onChange={(next) => setFilters((current) => ({ ...current, ...next }))}
@@ -176,6 +175,18 @@ export function PeopleScreen() {
       <Stack.Screen
         options={{
           title: 'Users',
+          headerRight: addsPeople
+            ? () => (
+                <IconButton
+                  testID="people-add"
+                  icon="account-plus-outline"
+                  size={22}
+                  iconColor={theme.colors.onSurface}
+                  accessibilityLabel="Add people"
+                  onPress={openAdd}
+                />
+              )
+            : undefined,
         }}
       />
       <FlashList
@@ -194,8 +205,8 @@ export function PeopleScreen() {
               title="No users match these filters."
               action={
                 addsPeople ? (
-                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={add.go}>
-                    {add.label}
+                  <Button testID="people-add-button" mode="contained" icon="plus" onPress={openAdd}>
+                    Add people
                   </Button>
                 ) : undefined
               }

@@ -1,12 +1,21 @@
 # Record a lesson from the tab bar's create button (UI upgrades U4) up to the write-up's first card:
-# the step flow rises, the student (env PAIRING, their pairing's id) is chosen, the times are left as
-# they are, and Planned is on screen. No money on the way: the flow is Tutoring's.
+# Phase 75 (JF30): the create button's "Record a lesson" opens the lessons still owed, whose "Another lesson" is the
+# step flow; the student (env PAIRING, their pairing's id) is chosen, the day and times -- blank, never today by
+# default -- are chosen (today, 4:00-5:00 PM), and Planned is on screen. No money on the way: the flow is Tutoring's.
 appId: ${APP_ID}
 ---
 - tapOn:
     id: create-button
 - tapOn:
     id: create-action-record-session
+- extendedWaitUntil:
+    visible:
+      id: lessons-owed-another
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: lessons-owed-another
 - extendedWaitUntil:
     visible:
       id: record-student-row-${PAIRING}
@@ -23,6 +32,7 @@ appId: ${APP_ID}
       id: step-flow-title
       text: '.*When was it\?.*'
     timeout: 10000
+- runFlow: record-choose-when.yaml
 - assertNotVisible: '.*\$[0-9].*'
 - tapOn:
     id: step-flow-next

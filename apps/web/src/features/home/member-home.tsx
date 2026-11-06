@@ -57,7 +57,9 @@ import { LessonReminderSheet } from '@/features/locations/lesson-reminder';
 import { TourOfferCard, useOnboarding } from '@/features/onboarding/onboarding-provider';
 import { PlayFavorites, PlayHome, WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { useMemberTiles } from '@/features/play/play-api';
-import { SessionFormDialog } from '@/features/teaching/session-form-dialog';
+import { DraftMark, LessonRecorder, RECORD_CLOSED, type KnownLesson, type RecordFlow } from '@/features/teaching/record-lesson';
+import { StartLessonDialog } from '@/features/teaching/start-session-button';
+import { AddPersonDialog } from '@/features/users/add-person';
 import { CodeSheet, KeptForYou } from '@/features/organizations/code-sheet';
 import { RequestOutcomes } from '@/features/organizations/request-outcomes';
 import { cn } from '@/lib/utils';
@@ -65,7 +67,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
 import { useMemberHome, usePinHome } from './api';
 import { lessonLine } from './lesson-words';
-import { NextUpCard, useNextUp, type RecordRequest } from './next-up';
+import { NextUpCard, useNextUp } from './next-up';
 
 const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -80,10 +82,14 @@ export function MemberHomePage() {
   const { organization } = useAuth();
   const query = useMemberHome();
   const home = query.data?.data;
-  const { item, putOff, practiceLevel } = useNextUp(home);
+  const { item, putOff, practiceLevel, active } = useNextUp(home);
   // The learner's habit (shared with the band and My progress through the query cache).
   const habit = useHabit(Boolean(home && orderHats(home)[0] === 'learner') && featureOn(organization, 'quest'));
-  const [record, setRecord] = useState<{ open: boolean; lesson: RecordRequest | null }>({ open: false, lesson: null });
+  // Phase 75 (JF30): one way to record -- the lessons owed, a known lesson, or its draft -- and Start in place.
+  const [recordFlow, setRecordFlow] = useState<RecordFlow>(RECORD_CLOSED);
+  const [starting, setStarting] = useState(false);
+  // Phase 76 (JF21): the one Add chooser.
+  const [adding, setAdding] = useState(false);
   // The one "Have a code?" sheet (JF4): null is closed. A shared game link (`/?code=`, the lobby's QR) opens it.
   const [params, setParams] = useSearchParams();
   const [codeSheet, setCodeSheet] = useState<string | null>(() => params.get('code'));
@@ -126,7 +132,9 @@ export function MemberHomePage() {
     mayAssess: home.may_assess,
     board: boardShown,
     doors: newcomer,
+    personal: home.personal,
   });
+  const openLesson = (lesson: KnownLesson) => setRecordFlow({ kind: 'lesson', lesson });
 
   return (
     <div className="mx-auto grid max-w-6xl gap-6" data-testid="member-home">
@@ -143,15 +151,22 @@ export function MemberHomePage() {
           <NextUpCard
             home={home}
             item={item}
+            active={active}
             onLater={(next: NextUp) => putOff(next)}
-            onRecord={(lesson) => setRecord({ open: true, lesson })}
+            onRecord={openLesson}
             practiceLevel={practiceLevel}
           />
         </div>
       </div>
 
       {actions.length > 0 && (
-        <QuickActions actions={actions} onRecord={() => setRecord({ open: true, lesson: null })} onCode={() => setCodeSheet('')} />
+        <QuickActions
+          actions={actions}
+          onRecord={() => setRecordFlow({ kind: 'owed' })}
+          onStart={() => setStarting(true)}
+          onAdd={() => setAdding(true)}
+          onCode={() => setCodeSheet('')}
+        />
       )}
 
       {hats.map((hat) => (
@@ -161,7 +176,8 @@ export function MemberHomePage() {
           home={home}
           nextUp={item}
           practiceLevel={practiceLevel}
-          onRecord={(lesson) => setRecord({ open: true, lesson })}
+          onRecord={openLesson}
+          onOwed={() => setRecordFlow({ kind: 'owed' })}
         />
       ))}
 
@@ -175,15 +191,14 @@ export function MemberHomePage() {
 
       {(home.focus_options?.length ?? 0) > 1 && <PinHome home={home} />}
 
-      {tutoring && (
-        <SessionFormDialog
-          open={record.open}
-          onOpenChange={(open) => setRecord((now) => ({ ...now, open }))}
-          existing={null}
-          fromSchedule={record.lesson}
-          showMoney={false}
-        />
+      {/* A tutor's doors only: nobody else's home reads lessons owed, drafts or pairings. */}
+      {tutoring && hats.includes('tutor') && (
+        <>
+          <LessonRecorder flow={recordFlow} onFlow={setRecordFlow} showMoney={false} />
+          {starting && <StartLessonDialog open onOpenChange={setStarting} />}
+        </>
       )}
+      {home.may_bring_people && <AddPersonDialog open={adding} onOpenChange={setAdding} />}
     </div>
   );
 }
@@ -378,23 +393,40 @@ function Rings() {
 
 const QUICK: Record<QuickAction, { label: string; icon: LucideIcon; to?: string }> = {
   record_lesson: { label: 'Record a lesson', icon: PencilLineIcon },
-  start_lesson: { label: 'Start a lesson', icon: PlayIcon, to: '/sessions' },
+  start_lesson: { label: 'Start a lesson', icon: PlayIcon },
   new_quest: { label: 'New quest', icon: PlusIcon, to: '/quest/games/new' },
   join_code: { label: 'Have a code?', icon: KeyRoundIcon },
   start_assessment: { label: 'Start an assessment', icon: ClipboardCheckIcon, to: '/assessments' },
-  add_person: { label: 'Add a person', icon: UserPlusIcon, to: '/users' },
+  add_person: { label: 'Add a person', icon: UserPlusIcon },
   schedule: { label: 'Schedule', icon: CalendarDaysIcon, to: '/schedule' },
   progress: { label: 'Progress', icon: TrendingUpIcon, to: '/progress' },
 };
 
-function QuickActions({ actions, onRecord, onCode }: { actions: QuickAction[]; onRecord: () => void; onCode: () => void }) {
+function QuickActions({
+  actions,
+  onRecord,
+  onStart,
+  onAdd,
+  onCode,
+}: {
+  actions: QuickAction[];
+  onRecord: () => void;
+  onStart: () => void;
+  onAdd: () => void;
+  onCode: () => void;
+}) {
   const navigate = useNavigate();
+  const { organization } = useAuth();
   return (
     <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" data-testid="home-quick-actions">
       {actions.map((action) => {
-        const { label, icon: Icon, to } = QUICK[action];
+        const { icon: Icon, to } = QUICK[action];
+        // In a personal space the person added is one's child (Phase 76, JF21).
+        const label = action === 'add_person' && organization?.personal ? 'Add my child' : QUICK[action].label;
         const onClick = () => {
           if (action === 'record_lesson') onRecord();
+          else if (action === 'start_lesson') onStart();
+          else if (action === 'add_person') onAdd();
           else if (action === 'join_code') onCode();
           // A full-screen Quest page goes back home (JF36).
           else if (to) navigate(to, to.startsWith('/quest/') ? { state: { from: '/' } } : undefined);
@@ -436,16 +468,18 @@ function HatSection({
   nextUp,
   practiceLevel,
   onRecord,
+  onOwed,
 }: {
   hat: HomeHat;
   home: MemberHome;
   nextUp: NextUp | null;
   practiceLevel: string | null;
-  onRecord: (lesson: RecordRequest) => void;
+  onRecord: (lesson: KnownLesson) => void;
+  onOwed: () => void;
 }) {
   switch (hat) {
     case 'tutor':
-      return <TutorSection home={home} tutor={home.tutor!} nextUp={nextUp} onRecord={onRecord} />;
+      return <TutorSection home={home} tutor={home.tutor!} nextUp={nextUp} onRecord={onRecord} onOwed={onOwed} />;
     case 'office':
       return <OfficeSection home={home} office={home.office!} />;
     case 'parent':
@@ -471,11 +505,13 @@ function TutorSection({
   tutor,
   nextUp,
   onRecord,
+  onOwed,
 }: {
   home: MemberHome;
   tutor: HomeTutor;
   nextUp: NextUp | null;
-  onRecord: (lesson: RecordRequest) => void;
+  onRecord: (lesson: KnownLesson) => void;
+  onOwed: () => void;
 }) {
   const { user } = useAuth();
   const next = tutor.now.next;
@@ -505,41 +541,42 @@ function TutorSection({
             <p className="text-muted-foreground">Every lesson of the last week is recorded. Nice work.</p>
           ) : (
             <ul className="grid gap-2">
-              {tutor.to_record.map((lesson) => (
-                <li
-                  key={`${lesson.schedule_id}-${lesson.occurs_on}`}
-                  className="flex flex-wrap items-center gap-2"
-                  data-testid={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}`}
-                >
-                  <span className="min-w-0 flex-1">
-                    <span className="font-medium">{lesson.student_name}</span>{' '}
-                    <span className="text-muted-foreground">· {capital(lessonWhen(lesson.occurs_on, lesson.start_time, home.day))}</span>
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() =>
-                      onRecord({
-                        tutor_user_id: user!.id,
-                        student_user_id: lesson.student_user_id,
-                        occurs_on: lesson.occurs_on,
-                        start_time: lesson.start_time,
-                        end_time: lesson.end_time,
-                        mode: lesson.mode,
-                      })
-                    }
-                    data-testid={`home-record-${lesson.schedule_id}-${lesson.occurs_on}`}
-                  >
-                    <PencilLineIcon /> Record
-                  </Button>
-                </li>
-              ))}
+              {tutor.to_record.map((lesson) => {
+                const key = `${lesson.schedule_id}-${lesson.occurs_on}`;
+                const known: KnownLesson = {
+                  tutor_user_id: user!.id,
+                  student_user_id: lesson.student_user_id,
+                  student_name: lesson.student_name,
+                  occurs_on: lesson.occurs_on,
+                  start_time: lesson.start_time,
+                  end_time: lesson.end_time,
+                  mode: lesson.mode,
+                  place: lesson.place ? { name: lesson.place.name, kind: lesson.place.kind } : null,
+                  draft: lesson.draft ?? null,
+                };
+                return (
+                  <li key={key} className="flex flex-wrap items-center gap-2" data-testid={`home-to-record-${key}`}>
+                    <span className="min-w-0 flex-1">
+                      <span className="font-medium">{lesson.student_name}</span>{' '}
+                      <span className="text-muted-foreground">· {capital(lessonWhen(lesson.occurs_on, lesson.start_time, home.day))}</span>
+                    </span>
+                    {/* Phase 75 (JF19): a draft of it is continued from here. */}
+                    {lesson.draft ? (
+                      <DraftMark draft={lesson.draft} onContinue={() => onRecord(known)} testId={`home-draft-${key}`} />
+                    ) : (
+                      <Button size="sm" variant="outline" onClick={() => onRecord(known)} data-testid={`home-record-${key}`}>
+                        <PencilLineIcon /> Record
+                      </Button>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
           {tutor.to_record_count > tutor.to_record.length && (
-            <Link to="/sessions" className="text-primary text-sm font-medium">
-              +{tutor.to_record_count - tutor.to_record.length} more on the Sessions page
-            </Link>
+            <button type="button" onClick={onOwed} className="text-primary justify-self-start text-sm font-medium" data-testid="home-to-record-more">
+              +{tutor.to_record_count - tutor.to_record.length} more to record
+            </button>
           )}
         </CardContent>
       </Card>

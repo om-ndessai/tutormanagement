@@ -24,7 +24,7 @@ describe('the live lesson', () => {
       charge_amount_cents: 6750,
     };
     const text = stopToast(recorded);
-    expect(text).toBe('Session recorded: 4:00 PM–4:45 PM, 45 min.');
+    expect(text).toBe('Lesson recorded: 4:00 PM–4:45 PM, 45 min.');
     expect(text).not.toMatch(/\$/);
   });
 

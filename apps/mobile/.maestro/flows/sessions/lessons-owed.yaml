@@ -1,0 +1,257 @@
+# Phase 75 (docs/journey-fixes-plan.md JF19, JF30; owner 2026-11-05): one way to record a lesson. Alex opens the app
+# half an hour after a lesson with Sofia he has not recorded (seed-home-now.js, MODE ended). The home's "Record a
+# lesson" opens the lessons still owed; the lesson's row opens "Record a lesson" filled in from the schedule, with
+# "It ran as planned" and "Write up the lesson". A write-up kept as a draft is then reachable from every door --
+# Next up, Sessions' To record, the owed list -- as "Draft saved <time>" and Continue, never a second draft. With
+# the draft discarded, the row records the lesson as planned in one tap, and it leaves the list. "Another lesson" is
+# a blank record with NO day filled in: Next asks for it. No money anywhere. The cleaners put the seed back.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-home-now.js
+  - runScript: ../../scripts/clean-schedules.js
+  - runScript:
+      file: ../../scripts/seed-home-now.js
+      env:
+        MODE: ended
+onFlowComplete:
+  - runScript: ../../scripts/clean-sessions.js
+  - runScript: ../../scripts/clean-home-now.js
+  - runScript: ../../scripts/clean-schedules.js
+tags:
+  - feature
+  - exposure
+---
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: alex.chen.math@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+# 1. The quick action opens the lessons still owed: Sofia's lesson, with Record.
+- extendedWaitUntil:
+    visible:
+      id: quick-record_lesson
+    timeout: 30000
+- tapOn:
+    id: quick-record_lesson
+- extendedWaitUntil:
+    visible:
+      id: lessons-owed-another
+    timeout: 15000
+- assertVisible: 'Record a lesson'
+- assertVisible:
+    id: 'lessons-owed-${output.scheduleId}-.*'
+- assertVisible: '${output.studentName}'
+- assertVisible:
+    id: 'lessons-owed-${output.scheduleId}-.*-record'
+    text: '.*Record.*'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: lessons-owed-list
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'lessons-owed-${output.scheduleId}-.*-record'
+# "Record a lesson", filled in from the schedule: one tap as planned, or the full write-up.
+- extendedWaitUntil:
+    visible:
+      id: record-quick-save
+      text: 'It ran as planned'
+    timeout: 15000
+- assertVisible: 'Record a lesson'
+- assertVisible:
+    id: record-quick-student
+    text: '${output.studentName}'
+- assertVisible:
+    id: record-quick-write-up
+    text: '.*Write up the lesson.*'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: lessons-owed-record-sheet
+- waitForAnimationToEnd:
+    timeout: 3000
+# 2. Write it up, and keep it as a draft.
+- tapOn:
+    id: record-quick-write-up
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was planned\?.*'
+    timeout: 15000
+- assertVisible: 'Record a lesson'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: record-planned
+- inputText: 'Owed lesson, kept as a draft'
+- pressKey: Enter
+- tapOn:
+    id: record-save-draft
+- extendedWaitUntil:
+    visible: 'Saved as a draft. Only you can see it.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 15000
+# 3. Every door now continues that draft: Next up ...
+- extendedWaitUntil:
+    visible:
+      id: home-now-celebrate-draft
+      text: 'Draft saved .*[0-9]{1,2}:[0-9]{2} (AM|PM)'
+    timeout: 20000
+- assertVisible:
+    id: next-up-action
+    text: 'Continue'
+- takeScreenshot: lessons-owed-next-up-draft
+# ... Sessions' To record, at the top of the Tutoring tab ...
+- tapOn: 'Sessions'
+- extendedWaitUntil:
+    visible:
+      id: sessions-to-record
+    timeout: 20000
+- assertVisible:
+    id: 'sessions-to-record-${output.scheduleId}-.*-draft'
+    text: 'Draft saved .*'
+- assertVisible:
+    id: 'sessions-to-record-${output.scheduleId}-.*-record'
+    text: '.*Continue.*'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: lessons-owed-sessions-to-record
+# ... and the owed list, whose Continue opens the draft itself (never a second one).
+- tapOn:
+    id: sessions-record-button
+- extendedWaitUntil:
+    visible:
+      id: 'lessons-owed-${output.scheduleId}-.*-draft'
+    timeout: 15000
+- assertVisible:
+    id: 'lessons-owed-${output.scheduleId}-.*-record'
+    text: '.*Continue.*'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'lessons-owed-${output.scheduleId}-.*-record'
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*What was planned\?.*'
+    timeout: 15000
+- assertVisible: 'Finish this draft'
+- assertVisible: 'Owed lesson, kept as a draft'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: step-flow-close
+# 4. With the draft discarded, the row records the lesson as planned, in one tap.
+- extendedWaitUntil:
+    visible:
+      id: drafts-panel
+    timeout: 20000
+# The drafts panel can sit under the (+): bring the button to the middle first.
+- scrollUntilVisible:
+    element:
+      id: 'draft-discard-.*'
+    centerElement: true
+- tapOn:
+    id: 'draft-discard-.*'
+- extendedWaitUntil:
+    visible: 'Discard this draft?'
+    timeout: 10000
+- tapOn: 'Discard'
+- extendedWaitUntil:
+    visible: 'Draft discarded.'
+    timeout: 15000
+# The discard was scrolled to: back up to the page's own Record a lesson.
+- scrollUntilVisible:
+    element:
+      id: sessions-record-button
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: sessions-record-button
+- extendedWaitUntil:
+    visible:
+      id: 'lessons-owed-${output.scheduleId}-.*-record'
+      text: '.*Record.*'
+    timeout: 15000
+- assertNotVisible:
+    id: 'lessons-owed-${output.scheduleId}-.*-draft'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'lessons-owed-${output.scheduleId}-.*-record'
+- extendedWaitUntil:
+    visible:
+      id: record-quick-save
+      text: 'It ran as planned'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: record-quick-save
+- extendedWaitUntil:
+    visible: 'Lesson recorded.'
+    timeout: 15000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: lessons-owed-recorded
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: record-quick-done-cancel
+# Recorded, it is owed no longer.
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: sessions-record-button
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: sessions-record-button
+- extendedWaitUntil:
+    visible:
+      id: lessons-owed-another
+    timeout: 15000
+- assertNotVisible:
+    id: 'lessons-owed-${output.scheduleId}-.*'
+# 5. "Another lesson": a blank record -- no day filled in, and Next asks for it.
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: lessons-owed-another
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who was the lesson with\?.*'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: record-student-row-a0000000-0000-4000-8000-000000000001
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When was it\?.*'
+    timeout: 10000
+- assertVisible: '.*Choose a date.*'
+- assertNotVisible: 'Today'
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'Choose the day of the lesson.'
+    timeout: 10000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: lessons-owed-another-blank
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: screen-sessions
+    timeout: 15000

@@ -10,6 +10,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useDeleteUser, useRestoreUser } from './api';
 import { HardDeleteDialog } from './hard-delete-dialog';
+import { useShareInvitation } from './share-invitation';
 
 type Person = Pick<User, 'id' | 'full_name'>;
 
@@ -18,6 +19,8 @@ export function useUserActions({ onDeleted }: { onDeleted?: (person: Person) => 
   const deleteUser = useDeleteUser();
   const restoreUser = useRestoreUser();
   const [doomed, setDoomed] = useState<Person | null>(null);
+  // Phase 76 (JF37): an invited person's invitation, told by hand through the share sheet.
+  const invitation = useShareInvitation();
 
   async function restore(person: Person) {
     try {
@@ -91,6 +94,10 @@ export function useUserActions({ onDeleted }: { onDeleted?: (person: Person) => 
     },
     restore: (person: Person) => void restore(person),
     hardDelete,
+    /** Phase 76 (JF37): share an invited person's invitation (the sheet offers Copy), with a confirmation. */
+    shareInvitation: (person: Pick<User, 'email'>) => {
+      if (person.email) void invitation.share(person.email);
+    },
     dialog,
   };
 }

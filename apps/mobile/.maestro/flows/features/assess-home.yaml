@@ -59,9 +59,12 @@ tags:
     timeout: 10000
 - assertVisible:
     id: create-action-start-assessment
+# Phase 76 (JF21): one "Add people" row, the one Add chooser -- never separate student / tutor / someone rows.
 - assertVisible:
+    id: create-action-add-people
+- assertNotVisible:
     id: create-action-add-student
-- assertVisible:
+- assertNotVisible:
     id: create-action-add-person
 - assertNotVisible:
     id: create-action-record-session

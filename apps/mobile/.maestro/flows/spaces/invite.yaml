@@ -3,7 +3,8 @@
 # Tutor (a newcomer's space has no Tutoring). He invites a new address as Admin, and Rhea -- who
 # already has a space of her own -- as Parent under a name he types. Each sent row shows the words to
 # hand over (no email is sent from a self-serve space) and Share opens the system sheet; the space's
-# code is there too. Continue goes on to the wizard.
+# code is there too. Continue goes on to the wizard. Phase 76 (JF37): the words say what the space is for and where
+# the invitation waits; on People each invited row has "Share invitation", and the header its Add button.
 # Then Vera (the new address) signs in: no About you, no Welcome, the selector with the invitation;
 # she accepts and lands in the space as its admin, where Rhea still reads as the typed name. Then Rhea
 # accepts from the selector and lands there too.
@@ -172,13 +173,13 @@ tags:
 - assertVisible: 'No email is sent from this space. Copy each invitation, or share it, so they know to sign in.'
 - assertVisible:
     id: invite-text-spaces.invited-admin@example.com
-    text: 'Ivo Inviter invited you to The Inviter family on Aimtrue\. Sign in at .+ with spaces\.invited-admin@example\.com\.'
+    text: 'Ivo Inviter invited you to The Inviter family on Aimtrue, a space for practice and assessments\. Open .+/spaces and sign in with Google using spaces\.invited-admin@example\.com: your invitation is waiting there\.'
 - scrollUntilVisible:
     element:
       id: invite-text-spaces.elsewhere@example.com
 - assertVisible:
     id: invite-text-spaces.elsewhere@example.com
-    text: 'Ivo Inviter invited you to The Inviter family on Aimtrue\. Sign in at .+ with spaces\.elsewhere@example\.com\.'
+    text: 'Ivo Inviter invited you to The Inviter family on Aimtrue, a space for practice and assessments\. Open .+/spaces and sign in with Google using spaces\.elsewhere@example\.com: your invitation is waiting there\.'
 - assertVisible:
     id: invite-sent-line-spaces.elsewhere@example.com
     text: '.*spaces\.elsewhere@example\.com.*Parent.*'
@@ -244,6 +245,32 @@ tags:
     visible: '.*Auntie Typed.*'
     timeout: 15000
 - assertNotVisible: '.*Rhea Elsewhere.*'
+# Phase 76 (JF21, JF37): the header's Add (the one chooser), and each invited row's invitation to share again.
+- assertVisible:
+    id: people-add
+- scrollUntilVisible:
+    element: 'Share invitation'
+    direction: DOWN
+    timeout: 10000
+- assertVisible: 'Share invitation'
+- takeScreenshot: spaces-invite-people-share
+- tapOn: 'Share invitation'
+- takeScreenshot: spaces-invite-people-share-sheet
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: '50%,12%'
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 10000
 
 # --- Vera, a new address: signs in, accepts, lands as an admin ---------------------------------
 - runFlow:

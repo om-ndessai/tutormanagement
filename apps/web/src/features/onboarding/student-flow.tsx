@@ -11,24 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useStudentProgress } from '@/features/progress/api';
-import { AssessmentDialog } from '@/features/progress/assessment-dialog';
-import { PlanDialog } from '@/features/progress/plan-dialog';
-import { AssignmentDialog } from '@/features/teaching/assignment-dialog';
-import { useUpdateUser, useUsers } from '@/features/users/api';
+import { useUsers } from '@/features/users/api';
+import { NextStepsAfterAdd, type AddedPerson } from '@/features/users/next-steps';
 import { UserFormDialog } from '@/features/users/user-form-dialog';
 import { useAuth } from '@/providers/auth-provider';
 import { FlowSteps, StepPanel } from './flow-steps';
 
-type Step = 'family' | 'student' | 'assessment' | 'plan' | 'pairing' | 'done';
-
-const STEPS: { key: Step; label: string }[] = [
-  { key: 'family', label: 'Family' },
-  { key: 'student', label: 'Student' },
-  { key: 'assessment', label: 'Assessment' },
-  { key: 'plan', label: 'Learning plan' },
-  { key: 'pairing', label: 'Tutor' },
-];
+type Step = 'family' | 'student' | 'next' | 'done';
 
 interface Person {
   id: string;
@@ -37,48 +26,45 @@ interface Person {
 
 /**
  * Adding a student, in the order that works (Phase 26): the family first --
- * a student cannot exist without a parent on file -- then the student, their
- * assessment, their plan, and a tutor. Every step opens the portal's own
+ * a student cannot exist without a parent on file -- then the student, then
+ * what to do next with them (Phase 76, JF21: "Pair Yusuf with a tutor", "Set a
+ * weekly lesson", "Record an assessment"). Every step opens the portal's own
  * dialog, preset; nothing here is a second copy of a form. Any step may be
  * skipped, and whatever was already added stays.
+ *
+ * `start="my-child"` (a personal space's "My child"): the signed-in adult is
+ * the parent, so the flow starts with the child; saving names them the
+ * guardian and the API gives them the parent role in the same request.
  */
 export function StudentFlow({
   onNavigate,
   onBack,
+  start = 'family',
 }: {
   /** Leaves the wizard for a page, to carry on there. */
   onNavigate: (path: string) => void;
-  /** Back to the wizard's welcome. */
+  /** Back to the start (the wizard's welcome, or the Add chooser). */
   onBack: () => void;
+  start?: 'family' | 'my-child';
 }) {
-  // Phase 50: without Tutoring the flow is the family and the student, then an assessment.
   const { organization, user, refreshSession } = useAuth();
   const tutoring = featureOn(organization, 'tutoring');
-  const updateUser = useUpdateUser();
+  const myChild = start === 'my-child';
+  const me: Person | null = user ? { id: user.id, name: user.full_name } : null;
 
-  /** Phase 52: "This is my child" -- the admin becomes the family, gaining the parent role if need be. */
-  async function iAmTheParent() {
-    if (!user) return;
-    if (!user.roles.includes('parent')) {
-      await updateUser.mutateAsync({ id: user.id, input: { roles: [...user.roles, 'parent'] } });
-      await refreshSession();
-    }
-    setParent({ id: user.id, name: user.full_name });
-    complete('family', 'student');
-  }
-  const steps = tutoring ? STEPS : STEPS.filter((s) => s.key === 'family' || s.key === 'student');
-  const [step, setStep] = useState<Step>('family');
+  const steps: { key: Step; label: string }[] = [
+    ...(myChild ? [] : [{ key: 'family' as const, label: 'Family' }]),
+    { key: 'student', label: myChild ? 'Your child' : 'Student' },
+    { key: 'next', label: 'Next steps' },
+  ];
+  const [step, setStep] = useState<Step>(myChild ? 'student' : 'family');
   const [done, setDone] = useState(new Set<string>());
-  const [parent, setParent] = useState<Person | null>(null);
+  const [parent, setParent] = useState<Person | null>(myChild ? me : null);
   const [chosenParent, setChosenParent] = useState('');
-  const [student, setStudent] = useState<Person | null>(null);
-  const [open, setOpen] = useState<'parent' | 'student' | 'assessment' | 'plan' | 'pairing' | null>(
-    null,
-  );
+  const [student, setStudent] = useState<AddedPerson | null>(null);
+  const [open, setOpen] = useState<'parent' | 'student' | null>(null);
 
-  const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' });
-  const progress = useStudentProgress(tutoring ? student?.id : undefined);
-  const assessment = progress.data?.data.assessments[0] ?? null;
+  const parents = useUsers({ role: 'parent', limit: 100, sort: 'full_name' }, { enabled: !myChild });
 
   function complete(key: Step, next: Step) {
     setDone((previous) => new Set(previous).add(key));
@@ -86,28 +72,41 @@ export function StudentFlow({
   }
 
   function restart() {
-    setStep('family');
+    setStep(myChild ? 'student' : 'family');
     setDone(new Set());
-    setParent(null);
+    setParent(myChild ? me : null);
     setChosenParent('');
     setStudent(null);
   }
 
+  /**
+   * Phase 52: "This is my child" -- the admin is the family. Since Phase 76 the API makes them the parent as the
+   * child is saved, naming them the guardian; nothing is changed until then.
+   */
+  function iAmTheParent() {
+    if (!me) return;
+    setParent(me);
+    complete('family', 'student');
+  }
+
+  const parentIsMe = Boolean(parent && user && parent.id === user.id);
+
   return (
     <div className="grid gap-4">
-      <FlowSteps steps={steps} current={step} done={done} />
+      <FlowSteps steps={steps} current={step === 'done' ? 'next' : step} done={done} />
 
       {step === 'family' && (
         <StepPanel
           title="First, the family"
           actions={
             <>
-              <Button onClick={() => void iAmTheParent()} disabled={updateUser.isPending} data-testid="onboarding-i-am-parent">
-                This is my child
-              </Button>
-              <Button variant="outline" onClick={() => setOpen('parent')}>
+              {/* Phase 76 (JF21): the office's usual case leads. */}
+              <Button onClick={() => setOpen('parent')} data-testid="onboarding-new-family">
                 <PlusIcon />
                 Create a family account
+              </Button>
+              <Button variant="outline" onClick={iAmTheParent} data-testid="onboarding-i-am-parent">
+                This is my child
               </Button>
               <Button variant="ghost" onClick={() => setStep('done')}>
                 Skip
@@ -120,7 +119,7 @@ export function StudentFlow({
             {tutoring
               ? 'Every student needs a parent or guardian on file, who is billed and kept informed.'
               : 'Who looks after this student? Every student needs a parent or guardian here, who is kept informed.'}{' '}
-            Choose an existing family, or create their account.
+            Create their account, or choose a family already here.
           </p>
           <div className="grid gap-1.5 sm:max-w-sm">
             <Label htmlFor="onboarding-parent">An existing parent</Label>
@@ -156,99 +155,58 @@ export function StudentFlow({
 
       {step === 'student' && parent && (
         <StepPanel
-          title="Now the student"
+          title={myChild ? 'Your child' : 'Now the student'}
           actions={
             <>
-              <Button onClick={() => setOpen('student')}>
+              <Button onClick={() => setOpen('student')} data-testid="onboarding-add-student">
                 <PlusIcon />
-                Add the student
+                {myChild ? 'Add your child' : 'Add the student'}
               </Button>
-              <Button variant="ghost" onClick={() => setStep('done')}>
-                Skip
-              </Button>
-            </>
-          }
-        >
-          <p>
-            {tutoring
-              ? `Linked to ${parent.name}. Their school, course, goal for the year and what the family is charged per hour. A child with no email of their own needs none.`
-              : `Linked to ${parent.name}. Their school, course and goal for the year. A child with no email of their own needs none.`}
-          </p>
-        </StepPanel>
-      )}
-
-      {step === 'assessment' && student && (
-        <StepPanel
-          title={`Where ${student.name} stands`}
-          actions={
-            <>
-              <Button onClick={() => setOpen('assessment')}>Record the assessment</Button>
-              <Button variant="ghost" onClick={() => setStep('plan')}>
-                Skip
+              <Button variant="ghost" onClick={() => (myChild ? onBack() : setStep('done'))}>
+                {myChild ? 'Back' : 'Skip'}
               </Button>
             </>
           }
         >
           <p>
-            The initial assessment: a write-up, the level you recommend, and a 1–5 score on any
-            topic you checked. The learning plan starts from it.
+            {myChild
+              ? 'You are their parent here. Their name, school and goal for the year; a child with no email of their own needs none.'
+              : tutoring
+                ? `Linked to ${parent.name}. Their school, course, goal for the year and what the family is charged per hour. A child with no email of their own needs none.`
+                : `Linked to ${parent.name}. Their school, course and goal for the year. A child with no email of their own needs none.`}
           </p>
         </StepPanel>
       )}
 
-      {step === 'plan' && student && (
+      {step === 'next' && student && (
         <StepPanel
-          title={`${student.name}’s learning plan`}
+          title={`${student.full_name} is added`}
           actions={
             <>
-              <Button onClick={() => setOpen('plan')}>Set the learning plan</Button>
-              <Button variant="ghost" onClick={() => setStep('pairing')}>
-                Skip
+              <Button variant="outline" onClick={() => onNavigate(`/users?view=${student.id}`)}>
+                Open their record
+              </Button>
+              <Button variant="outline" onClick={restart}>
+                {myChild ? 'Add another child' : 'Add another student'}
+              </Button>
+              <Button variant="ghost" onClick={onBack} data-testid="onboarding-next-done">
+                Done
               </Button>
             </>
           }
         >
-          <p>
-            The goal and its date, the topics that lead there, and how often to meet. Progress is
-            tracked against it lesson by lesson.
-          </p>
-        </StepPanel>
-      )}
-
-      {step === 'pairing' && student && (
-        <StepPanel
-          title={`A tutor for ${student.name}`}
-          actions={
-            <>
-              <Button onClick={() => setOpen('pairing')}>Pair with a tutor</Button>
-              <Button variant="ghost" onClick={() => setStep('done')}>
-                Skip
-              </Button>
-            </>
-          }
-        >
-          <p>Which tutor teaches them, and at what rate. Lessons can be recorded once they are paired.</p>
+          <p>Next, when you are ready. Anything you leave can be done from their record later.</p>
+          <NextStepsAfterAdd person={student} onNavigate={onNavigate} />
         </StepPanel>
       )}
 
       {step === 'done' && (
         <StepPanel
-          title={student ? `${student.name} is set up` : 'Nothing added yet'}
+          title="Nothing added yet"
           actions={
             <>
-              {student && tutoring && (
-                <Button variant="outline" onClick={() => onNavigate(`/progress/${student.id}`)}>
-                  Open their progress
-                </Button>
-              )}
-              {student && featureOn(organization, 'assessment') && (
-                <Button onClick={() => onNavigate(`/assessments?student=${student.id}`)}>Start an assessment</Button>
-              )}
-              <Button variant="outline" onClick={() => onNavigate('/users')}>
-                Go to Users
-              </Button>
               <Button variant="outline" onClick={restart}>
-                Add another student
+                Start again
               </Button>
               <Button variant="ghost" onClick={onBack}>
                 Back to the start
@@ -256,15 +214,7 @@ export function StudentFlow({
             </>
           }
         >
-          {student ? (
-            <p>
-              {tutoring
-                ? 'Anything you skipped can be done from their record, their progress page or Pairings.'
-                : 'Their record is on the Users page.'}
-            </p>
-          ) : (
-            <p>You can add a family and a student from Users at any time.</p>
-          )}
+          <p>You can add a family and a student from Users at any time.</p>
         </StepPanel>
       )}
 
@@ -281,8 +231,9 @@ export function StudentFlow({
             ? 'The parent or guardian: they sign in with this Google address, and are billed for the lessons.'
             : 'The parent or guardian: they sign in with this Google address.'
         }
-        onSaved={(user) => {
-          setParent({ id: user.id, name: user.full_name });
+        announce={false}
+        onSaved={(saved) => {
+          setParent({ id: saved.id, name: saved.full_name });
           complete('family', 'student');
         }}
       />
@@ -294,44 +245,24 @@ export function StudentFlow({
           preset={{
             roles: ['student'],
             guardians: [{ guardian_user_id: parent.id, relationship: 'guardian', is_primary: true }],
+            // The adult is not a parent until the child is saved: the picker is told their name.
+            guardian_names: { [parent.id]: parent.name },
           }}
           sections={tutoring ? ['identity', 'student', 'guardians', 'availability'] : ['identity', 'student', 'guardians']}
-          title="New student"
-          description={`Linked to ${parent.name}. Change the relationship below if they are the mother or father.`}
-          onSaved={(user) => {
-            setStudent({ id: user.id, name: user.full_name });
-            complete('student', tutoring ? 'assessment' : 'done');
+          title={myChild ? 'Your child' : 'New student'}
+          description={
+            parentIsMe
+              ? 'You are their parent. Change the relationship below if you are their mother or father.'
+              : `Linked to ${parent.name}. Change the relationship below if they are the mother or father.`
+          }
+          announce={false}
+          onSaved={(saved) => {
+            setStudent({ id: saved.id, full_name: saved.full_name, roles: saved.roles });
+            complete('student', 'next');
+            // Naming themselves the guardian made the adult a parent here (Phase 76): their menus follow.
+            if (parentIsMe && !user?.roles.includes('parent')) void refreshSession();
           }}
         />
-      )}
-      {student && (
-        <>
-          <AssessmentDialog
-            open={open === 'assessment'}
-            onOpenChange={(next) => !next && setOpen(null)}
-            studentId={student.id}
-            studentName={student.name}
-            existing={null}
-            onSaved={() => complete('assessment', 'plan')}
-          />
-          <PlanDialog
-            open={open === 'plan'}
-            onOpenChange={(next) => !next && setOpen(null)}
-            studentId={student.id}
-            studentName={student.name}
-            existing={null}
-            assessment={assessment}
-            defaultGoal={progress.data?.data.student.academic_year_goal ?? null}
-            onSaved={() => complete('plan', 'pairing')}
-          />
-          <AssignmentDialog
-            open={open === 'pairing'}
-            onOpenChange={(next) => !next && setOpen(null)}
-            existing={null}
-            preset={{ student_user_id: student.id }}
-            onSaved={() => complete('pairing', 'done')}
-          />
-        </>
       )}
     </div>
   );

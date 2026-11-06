@@ -126,8 +126,15 @@ test.describe('starting a space, then inviting people (S12)', () => {
 
     // Telling them: no email is sent, so the words are copied or shared by hand.
     // The link opens on the invitation, the person's Spaces page (UI audit JF12).
-    const expected = invitationText({ inviter: name, space, address: `${origin}/spaces`, email: adminEmail });
-    expect(expected).toBe(`${name} invited you to ${space} on Aimtrue. Sign in at ${origin}/spaces with ${adminEmail}.`);
+    // Phase 76 (JF37): the owner's wording -- what the space is for, how to accept, and where the invitation waits.
+    const org = (
+      await unwrap<any>(await maker.request.get('/api/auth/session', { headers: { 'X-Organization': slug } }), 'the new space')
+    ).organization;
+    const expected = invitationText({ inviter: name, space, address: `${origin}/spaces`, email: adminEmail, org });
+    expect(expected).toBe(
+      `${name} invited you to ${space} on Aimtrue, a space for practice and assessments. Open ${origin}/spaces and sign ` +
+        `in with Google using ${adminEmail}: your invitation is waiting there.`,
+    );
     await maker.evaluate(() => {
       const w = window as any;
       w.__copied = null;
@@ -151,7 +158,7 @@ test.describe('starting a space, then inviting people (S12)', () => {
     await maker.getByTestId(`invite-share-${parentEmail}`).click();
     await expect
       .poll(() => maker.evaluate(() => (window as any).__shared?.text))
-      .toBe(invitationText({ inviter: name, space, address: `${origin}/spaces`, email: parentEmail }));
+      .toBe(invitationText({ inviter: name, space, address: `${origin}/spaces`, email: parentEmail, org }));
 
     // Continue goes on to the welcome, and the step does not come back. A new space has no Tutoring, so the
     // welcome offers no tour (the tour is Tutoring's, owner 2026-11-04; UI audit J06 step 20).
@@ -396,8 +403,12 @@ test.describe('starting a space, then inviting people (S12)', () => {
     await expect(maker.getByTestId('onboarding-wizard')).toBeVisible();
     await unwrap(await maker.request.post('/api/onboarding/tour', { data: { outcome: 'skipped' }, headers: { 'X-Organization': slug } }), 'past the wizard');
     await maker.goto('/users');
-    await maker.getByRole('button', { name: /^Add (user|person)$/ }).click();
-    const dialog = maker.getByRole('dialog');
+    // Phase 76 (JF21): the one Add chooser offers no tutor here, and neither does its person form.
+    await maker.getByRole('button', { name: 'Add a person' }).click();
+    await expect(maker.getByTestId('add-choices')).toBeVisible();
+    await expect(maker.getByTestId('add-choice-tutor')).toHaveCount(0);
+    await maker.getByTestId('add-choice-someone').click();
+    const dialog = maker.getByRole('dialog', { name: 'Add a person' });
     await expect(dialog.getByRole('checkbox', { name: /Admin/ })).toBeVisible();
     await expect(dialog.getByRole('checkbox', { name: /Parent/ })).toBeVisible();
     await expect(dialog.getByRole('checkbox', { name: /Tutor/ })).toHaveCount(0);

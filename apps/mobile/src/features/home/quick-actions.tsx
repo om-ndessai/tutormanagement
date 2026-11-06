@@ -1,6 +1,7 @@
 // The member home's quick actions (Phase 66, H4): `quickActionsFor` (shared) picks at most three for the
 // hats worn and what this person may do; here they are a row of tonal buttons (`quick-<action>`). "Have
 // a code?" opens the one "Have a code?" sheet (`/have-a-code`, UI audit JF4), as the web's opens its CodeSheet.
+// Phase 76 (JF21): "Add someone" opens the one Add chooser; in a personal space it reads "Add my child".
 import { type QuickAction } from '@tmi/shared';
 import { router, type Href } from 'expo-router';
 import { View } from 'react-native';
@@ -10,7 +11,12 @@ import { haptics } from '@/lib/haptics';
 import { space } from '@/theme/tokens';
 import { QUICK_ACTION_META } from './member-home-model';
 
-export function QuickActions({ actions }: { actions: QuickAction[] }) {
+/** A quick action's words: in a personal space the add door is for one's child (Phase 76, JF21). */
+export function quickActionLabel(action: QuickAction, personal = false): string {
+  return personal && action === 'add_person' ? 'Add my child' : QUICK_ACTION_META[action].label;
+}
+
+export function QuickActions({ actions, personal = false }: { actions: QuickAction[]; personal?: boolean }) {
   if (actions.length === 0) return null;
   return (
     <View testID="home-quick" style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
@@ -28,7 +34,7 @@ export function QuickActions({ actions }: { actions: QuickAction[] }) {
               router.navigate(meta.href as Href);
             }}
           >
-            {meta.label}
+            {quickActionLabel(action, personal)}
           </Button>
         );
       })}

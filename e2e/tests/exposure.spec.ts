@@ -44,6 +44,10 @@ import { pdfPageText } from '../support/pdf.js';
  *   R33 Continue     the open game is one the reader plays in, with their own
  *                    team's progress; the lead grade and the grade picked are
  *                    the reader's own (Phase 73)
+ *   R34 owed, prices a missing price is said by WHICH mode, never an amount;
+ *                    the lessons owed are the reader's own teaching, name the
+ *                    place by name and kind only, carry no money, and a row's
+ *                    draft is the reader's own (Phase 75)
  */
 
 const PERSONAS: PersonKey[] = ['tutor', 'parentTutor', 'parent', 'student', 'studentTutor'];
@@ -133,6 +137,14 @@ function check(reader: Reader, source: string, value: unknown, problems: string[
       if (typeof id !== 'string' || ACTOR_KEYS.has(key)) continue;
       if ((key === 'user_id' || key.endsWith('_user_id')) && !reader.visible.has(id)) {
         fail(`${where}.${key}`, `R7 unknown person ${id}`);
+      }
+    }
+
+    // R34: which price is missing, never an amount.
+    if ('price_missing' in row) {
+      const flags = row.price_missing;
+      if (!Array.isArray(flags) || flags.some((mode: unknown) => mode !== 'in_person' && mode !== 'virtual')) {
+        fail(where, 'R34 price_missing carries something other than a mode');
       }
     }
 
@@ -274,6 +286,38 @@ test.describe('what each non-admin can see', () => {
 
       const drafts = (await get(page, '/api/sessions/drafts')) as any[];
       check(reader, '/api/sessions/drafts', drafts, problems);
+
+      // R34 (Phase 75): the lessons owed are the reader's own teaching (a non-admin's), with the place by name and
+      // kind only, no money, and only the reader's own draft -- the office drafting the first of them changes nothing.
+      const owedRead = async () => (await get(page, '/api/sessions/to-record')) as any[];
+      const owed = await owedRead();
+      check(reader, '/api/sessions/to-record', owed, problems);
+      const myDraftIds = new Set(drafts.map((draft) => draft.id));
+      for (const row of owed) {
+        if (row.tutor_user_id !== id) problems.push(`R34 a lesson owed by another tutor ${row.schedule_id}`);
+        if (row.place && Object.keys(row.place).sort().join() !== 'kind,name') problems.push('R34 a place with more than its name');
+        if (Object.keys(row).some((key) => key.endsWith('_cents'))) problems.push('R34 a lesson owed carries money');
+        if (row.draft && !myDraftIds.has(row.draft.id)) problems.push(`R34 somebody else's draft on ${row.schedule_id}`);
+      }
+      if (owed[0]) {
+        const first = owed[0];
+        const officeDraft = await unwrap<any>(
+          await admin.request.post('/api/sessions/drafts?autosave=true', {
+            data: {
+              tutor_user_id: first.tutor_user_id,
+              student_user_id: first.student_user_id,
+              occurred_on: first.occurs_on,
+              started_at: first.start_time,
+              ended_at: first.end_time,
+              mode: first.mode,
+            },
+          }),
+          'the office drafting a lesson owed',
+        );
+        const again = (await owedRead()).find((row) => row.schedule_id === first.schedule_id && row.occurs_on === first.occurs_on);
+        if (again?.draft?.id === officeDraft.id) problems.push('R34 the office’s draft on the reader’s lesson owed');
+        await admin.request.delete(`/api/sessions/drafts/${officeDraft.id}`);
+      }
       for (const draft of drafts) {
         if (draft.author_user_id !== id) problems.push(`R10 somebody else's draft ${draft.id}`);
       }

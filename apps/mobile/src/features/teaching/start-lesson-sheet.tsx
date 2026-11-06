@@ -1,5 +1,10 @@
 // Ported from apps/web/src/features/teaching/start-session-button.tsx @ 1132322 (the dialog). The
 // dialog becomes a form sheet, `(org)/start-lesson`, opened from the Sessions tab's "Start a lesson".
+//
+// Phase 75 (docs/journey-fixes-plan.md JF18, JF30): every Start opens this sheet in place (the quick action, Next up's
+// Start lesson, Sessions, the (+)), with the lesson's student and mode chosen; the server refuses a lesson it cannot
+// price up front, in the reader's words ("Ask the office to set Yusuf's price."), said here once -- never a toast
+// under the sheet; with a lesson running it says which, and offers to stop it. "Lesson", never "session".
 import { SESSION_MODES, SESSION_MODE_LABELS, type SessionMode } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -10,13 +15,13 @@ import { Screen } from '@/components/screen';
 import { ErrorState } from '@/components/state-views';
 import { ListSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
-import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments, useStartSession } from './api';
 import { askForLiveSurfacePermission } from './live-surface';
+import { failureLines } from './refusal';
 
 function close() {
   if (router.canGoBack()) router.back();
@@ -41,7 +46,7 @@ export function StartLessonSheet({
 
   const [picked, setStudentId] = useState('');
   const [mode, setMode] = useState<SessionMode>(initialMode ?? 'in_person');
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const active = useActiveSession();
   const assignments = useAssignments({ tutor_user_id: user?.id });
@@ -51,30 +56,28 @@ export function StartLessonSheet({
   const studentId =
     picked ||
     (initialStudent && students.some((a) => a.student_user_id === initialStudent) ? initialStudent : '');
-  const running = Boolean(active.data?.data.mine);
+  const runningLesson = active.data?.data.mine ?? null;
+  const running = Boolean(runningLesson);
 
   async function handleStart() {
     if (!studentId) {
-      setError('Choose a student.');
+      setErrors(['Choose a student.']);
       haptics.error();
       return;
     }
-    setError(null);
+    setErrors([]);
     try {
       await start.mutateAsync({ student_user_id: studentId, mode });
       // A physical cue that the clock is running; the banner takes it from here.
       haptics.impact();
-      toast.info('Session started.');
+      toast.info('Lesson started.');
       close();
       // The moment to ask for Android's notification permission (#45): never at launch.
       void askForLiveSurfacePermission();
     } catch (failure) {
-      const message =
-        failure instanceof ApiRequestError
-          ? (failure.fieldErrors.student_user_id ?? failure.message)
-          : 'Could not start the session.';
-      setError(message);
-      toast.error(message);
+      // Said here, once (JF18): a toast would sit under the sheet, and the mode's detail repeats the message.
+      haptics.error();
+      setErrors(failureLines(failure, 'Could not start the lesson.'));
     }
   }
 
@@ -84,9 +87,23 @@ export function StartLessonSheet({
     body = <ErrorState error={assignments.error} onRetry={() => void assignments.refetch()} />;
   } else if (running) {
     body = (
-      <Text variant="bodyMedium" style={{ color: muted }}>
-        You already have a session running. Stop it before starting another.
-      </Text>
+      <View testID="start-running" style={{ gap: space.md }}>
+        <Text variant="bodyMedium" style={{ color: muted }}>
+          {`Your lesson with ${runningLesson!.student_name} is still running. Stop it before starting another.`}
+        </Text>
+        <Button
+          testID="start-stop-running"
+          mode="contained-tonal"
+          icon="stop"
+          contentStyle={{ minHeight: 48 }}
+          onPress={() => {
+            haptics.selection();
+            router.replace('/stop-lesson');
+          }}
+        >
+          Stop that lesson
+        </Button>
+      </View>
     );
   } else {
     body = (
@@ -116,7 +133,7 @@ export function StartLessonSheet({
                       onPress={() => {
                         haptics.selection();
                         setStudentId(assignment.student_user_id);
-                        setError(null);
+                        setErrors([]);
                       }}
                       style={({ pressed }) => ({
                         minHeight: MIN_TARGET + 4,
@@ -154,6 +171,8 @@ export function StartLessonSheet({
             onValueChange={(value) => {
               haptics.selection();
               setMode(value as SessionMode);
+              // A price missing for one mode may be set for the other.
+              setErrors([]);
             }}
             buttons={SESSION_MODES.map((value) => ({
               value,
@@ -163,10 +182,14 @@ export function StartLessonSheet({
           />
         </View>
 
-        {error ? (
-          <HelperText testID="start-error" type="error" padding="none">
-            {error}
-          </HelperText>
+        {errors.length > 0 ? (
+          <View testID="start-error">
+            {errors.map((line) => (
+              <HelperText key={line} type="error" padding="none">
+                {line}
+              </HelperText>
+            ))}
+          </View>
         ) : null}
         <Button
           testID="start-submit"
@@ -186,7 +209,7 @@ export function StartLessonSheet({
     <Screen testID="screen-start-lesson" edges={['bottom']} contentStyle={{ paddingTop: space.xl }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          Start a session
+          Start a lesson
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           The clock starts now. Both the start and the end are recorded to the nearest quarter hour.

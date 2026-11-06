@@ -117,11 +117,15 @@ test.describe('session money, per reader', () => {
   test('recording a lesson from the Tutoring tab previews its length, not the pay', async ({ as }) => {
     const tutor = await as('tutor');
     await tutor.goto('/sessions');
-    await tutor.getByRole('button', { name: /record a session/i }).first().click();
+    // Phase 75 (JF30): the lessons still owed carry no money either; "Another lesson" is the blank form.
+    await tutor.getByTestId('sessions-record').click();
+    expect(await tutor.getByTestId('lessons-owed').innerText()).not.toMatch(/\$\s?\d/);
+    await tutor.getByTestId('owed-another').click();
 
     const dialog = tutor.getByRole('dialog');
     await dialog.getByRole('combobox').first().click();
     await tutor.getByRole('option', { name: /Sofia Okafor/ }).click();
+    await dialog.locator('#start').fill('16:00');
     await dialog.getByRole('button', { name: '1 hr', exact: true }).click();
 
     await expect(dialog.getByText('1 hr', { exact: true }).last()).toBeVisible();

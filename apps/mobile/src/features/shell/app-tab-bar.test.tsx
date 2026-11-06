@@ -150,11 +150,13 @@ test('the create button opens the sheet, and an action routes to its sheet', asy
   await fireEvent.press(screen.getByTestId('create-button'));
   expect(mockPresent).toHaveBeenCalledTimes(1);
 
-  expect(screen.getByTestId('create-action-add-student')).toBeTruthy();
+  // Phase 76 (JF21): one "Add people" row, opening the one Add chooser.
+  expect(screen.getByTestId('create-action-add-people')).toBeTruthy();
+  expect(screen.queryByTestId('create-action-add-student')).toBeNull();
   expect(screen.queryByTestId('create-action-start-lesson')).toBeNull();
-  await fireEvent.press(screen.getByTestId('create-action-add-student'));
+  await fireEvent.press(screen.getByTestId('create-action-add-people'));
   expect(mockDismiss).toHaveBeenCalled();
-  expect(mockPush).toHaveBeenCalledWith('/add-student');
+  expect(mockPush).toHaveBeenCalledWith('/add');
 });
 
 test("a tutor's sheet: record, start and schedule; Start only with students of their own", async () => {
@@ -163,7 +165,7 @@ test("a tutor's sheet: record, start and schedule; Start only with students of t
   expect(screen.getByTestId('create-action-start-lesson')).toBeTruthy();
   expect(screen.getByTestId('create-action-record-session')).toBeTruthy();
   expect(screen.getByTestId('create-action-schedule-lesson')).toBeTruthy();
-  expect(screen.queryByTestId('create-action-add-student')).toBeNull();
+  expect(screen.queryByTestId('create-action-add-people')).toBeNull();
   expect(screen.queryByTestId('create-action-record-payment')).toBeNull();
   // No money anywhere in the sheet.
   expect(screen.queryByText(/\$[0-9]/)).toBeNull();
@@ -194,10 +196,9 @@ describe('Phase 50: the bar follows the feature sets', () => {
     expect(slots()).toEqual(['tab-dashboard', 'create-button', 'tab-more']);
     expect(screen.queryByTestId('tab-sessions')).toBeNull();
     expect(screen.getByTestId('create-action-start-assessment')).toBeTruthy();
-    expect(screen.getByTestId('create-action-add-student')).toBeTruthy();
-    expect(screen.getByTestId('create-action-add-person')).toBeTruthy();
+    expect(screen.getByTestId('create-action-add-people')).toBeTruthy();
     expect(screen.queryByTestId('create-action-record-session')).toBeNull();
-    expect(screen.queryByTestId('create-action-add-tutor')).toBeNull();
+    expect(screen.queryByTestId('create-action-add-student')).toBeNull();
   });
 
   test('a parent there gets a flat bar of two', async () => {

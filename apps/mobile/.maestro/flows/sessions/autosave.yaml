@@ -43,6 +43,15 @@ tags:
     visible:
       id: record-pairing-a0000000-0000-4000-8000-000000000002
     timeout: 15000
+# Phase 75 (JF30): a blank record dates nothing by default, and is kept only once dated -- so the day and times
+# are chosen first (no pairing yet, so still nothing autosaves).
+- scrollUntilVisible:
+    element:
+      id: record-length-60
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- runFlow: ../../subflows/record-choose-when.yaml
 - scrollUntilVisible:
     element:
       id: record-planned
@@ -134,6 +143,13 @@ tags:
     visible:
       id: drafts-panel
     timeout: 10000
+# The panel sits under To record (Phase 75): bring its actions to mid-screen, off the tab bar.
+- scrollUntilVisible:
+    element:
+      id: 'draft-continue-.*'
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
 - assertVisible: 'Your drafts.*Only you can see it'
 - assertVisible:
     id: 'draft-continue-.*'
@@ -167,29 +183,26 @@ tags:
 - extendedWaitUntil:
     visible:
       id: step-flow-next
-      text: 'Post session'
+      text: 'Record lesson'
     timeout: 10000
 - tapOn:
     id: step-flow-next
 - extendedWaitUntil:
-    visible: 'Session recorded. Everyone concerned can see it now.'
+    visible: 'Lesson recorded. Everyone concerned can see it now.'
     timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: drafts-panel
     timeout: 10000
-- extendedWaitUntil:
-    visible: 'Autosaved from the phone'
-    timeout: 15000
-- takeScreenshot: autosave-posted
-# Put the data back: delete the lesson from its detail.
-# The "Session recorded." toast sits over the list's foot, right above the bar's hump, where the
-# new lesson's notes line lands: bring the card to mid-screen before tapping it.
+# The lesson is in the list, under To record and the totals (Phase 75), and the "Lesson recorded." toast sits
+# over the list's foot: bring the card to mid-screen.
 - scrollUntilVisible:
     element: 'Autosaved from the phone'
     direction: DOWN
     centerElement: true
-    timeout: 15000
+    timeout: 20000
+- takeScreenshot: autosave-posted
+# Put the data back: delete the lesson from its detail.
 - tapOn: 'Autosaved from the phone'
 - scrollUntilVisible:
     element:

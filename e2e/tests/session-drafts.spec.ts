@@ -177,13 +177,18 @@ test.describe('session drafts', () => {
     }
 
     await tutor.goto('/sessions');
-    await tutor.getByRole('button', { name: /Record a session/i }).click();
+    // Phase 75 (JF30): the lessons still owed first; "Another lesson" is the blank form, dated by hand.
+    await tutor.getByTestId('sessions-record').click();
+    await tutor.getByTestId('owed-another').click();
 
-    const dialog = tutor.getByRole('dialog');
+    const dialog = tutor.getByRole('dialog', { name: 'Record a lesson' });
     await expect(dialog.getByRole('button', { name: 'Save draft' })).toBeVisible();
 
     await dialog.getByRole('combobox').first().click();
     await tutor.getByRole('option').first().click();
+    await dialog.locator('#date').fill('2026-09-21');
+    await dialog.locator('#start').fill('16:00');
+    await dialog.locator('#end').fill('17:00');
     await dialog.getByLabel(/notes/i).first().fill('Saved from the form.');
     await dialog.getByRole('button', { name: 'Save draft' }).click();
 
@@ -193,10 +198,11 @@ test.describe('session drafts', () => {
 
     // Picking it back up says what it is, and keeps what was written.
     await tutor.getByRole('button', { name: 'Edit' }).first().click();
-    await expect(dialog.getByRole('heading', { name: 'Finish this draft' })).toBeVisible();
-    await expect(dialog.getByLabel(/notes/i).first()).toHaveValue('Saved from the form.');
+    const draft = tutor.getByRole('dialog', { name: 'Finish this draft' });
+    await expect(draft.getByRole('heading', { name: 'Finish this draft' })).toBeVisible();
+    await expect(draft.getByLabel(/notes/i).first()).toHaveValue('Saved from the form.');
 
-    await dialog.getByRole('button', { name: 'Post session' }).click();
+    await draft.getByRole('button', { name: 'Record lesson' }).click();
     await expect(tutor.getByText('Your drafts')).toHaveCount(0);
   });
 });

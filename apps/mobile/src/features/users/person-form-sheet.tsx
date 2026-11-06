@@ -4,6 +4,9 @@
 // someone who asked to join (Phase 52: their name and email come from the cached requests, never the
 // link). Admin only, as the API
 // (`requireAdmin`): the person themselves asks the office to change their record.
+//
+// Phase 76 (JF21): `?from=add` is "Someone else" from the one Add chooser: once the new person is saved the sheet
+// shows the next steps (shared `nextStepsAfterAdd`) in place of a toast, with "Add someone else" to start again.
 import { featureAllowed, mayAddPeople, type UserDetail } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
@@ -20,6 +23,8 @@ import { useAuth } from '@/providers/auth-provider';
 import { space } from '@/theme/tokens';
 import { useUserDetail } from './api';
 import { announceGuardianCreated } from './guardian-bridge';
+import { AddPersonDone } from './add-person-done';
+import type { AddedPersonRef } from './add-person-model';
 import { PersonForm } from './person-form';
 import { guardianFormLine, parsePreset, parseSections } from './person-form-model';
 import { recordSection } from './record-sections';
@@ -36,6 +41,7 @@ export function PersonFormSheet({
   section,
   forGuardian,
   request,
+  fromAdd = false,
 }: {
   id?: string;
   preset?: string;
@@ -46,6 +52,8 @@ export function PersonFormSheet({
   forGuardian: boolean;
   /** Phase 52: the id of the person whose request to join this lets in. */
   request?: string;
+  /** Phase 76: opened from the Add chooser ("Someone else"): a new person ends on the next steps. */
+  fromAdd?: boolean;
 }) {
   const { user, account, organization } = useAuth();
   // Changing a record is an admin's; adding someone is an ADULT admin's (a 13-17 adds nobody, JF22).
@@ -70,6 +78,10 @@ export function PersonFormSheet({
   // A half-filled record is not lost to a swipe or Back (ux-audit F-3).
   const [dirty, setDirty] = useState(false);
   const { leave } = useUnsavedChangesGuard(dirty);
+  // Phase 76: from the Add chooser, the person just added, and a fresh form for "Add someone else".
+  const [added, setAdded] = useState<AddedPersonRef | null>(null);
+  const [round, setRound] = useState(0);
+  const endsOnNextSteps = fromAdd && !id && !forGuardian && !request;
 
   function saved(person: UserDetail) {
     // A parent added from a student's form goes back to that form, chosen.
@@ -79,11 +91,28 @@ export function PersonFormSheet({
     if (joinRequest) void refreshJoinRequests();
     // The welcome wizard, when it opened this sheet, carries on from the saved record.
     announceFormSaved({ form: 'person', id: person.id, name: person.full_name });
+    if (endsOnNextSteps) {
+      setDirty(false);
+      setAdded({ id: person.id, name: person.full_name, roles: person.roles });
+      return;
+    }
     leave(close);
   }
 
   let body;
-  if (!isAdmin) {
+  if (added) {
+    body = (
+      <AddPersonDone
+        person={added}
+        variant="sheet"
+        againLabel="Add someone else"
+        onAgain={() => {
+          setAdded(null);
+          setRound((n) => n + 1);
+        }}
+      />
+    );
+  } else if (!isAdmin) {
     body = (
       <EmptyState
         icon="lock-outline"
@@ -134,8 +163,9 @@ export function PersonFormSheet({
     const taxSetup = Boolean(shown?.includes('tutor-tax'));
     body = (
       <PersonForm
-        key={record?.id ?? 'new'}
+        key={record?.id ?? `new-${round}`}
         detail={record}
+        quiet={endsOnNextSteps}
         preset={{
           roles: parsePreset(preset),
           guardians: guardian

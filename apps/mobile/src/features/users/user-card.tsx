@@ -1,9 +1,12 @@
 // Ported from the phone layout of apps/web/src/features/users/users-table.tsx @ 1132322: one card
 // per person, nothing hidden off-screen, and the actions menu beside the name.
+//
+// Phase 76 (JF37): an invited row says how they join and carries "Share invitation" (the share sheet offers Copy),
+// on the card, in its menu and as a swipe.
 import { USER_ROLES, USER_ROLE_LABELS, USER_STATUS_LABELS, type User } from '@tmi/shared';
 import { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Divider, Menu, Text } from 'react-native-paper';
+import { Button, Divider, Menu, Text } from 'react-native-paper';
 import { OutlinedCard } from '@/components/outlined-card';
 
 import { AdaptiveRow } from '@/components/adaptive-row';
@@ -23,6 +26,13 @@ export interface RowActions {
   onDeactivateNow?: (user: User) => void;
   onRestore: (user: User) => void;
   onDelete: (user: User) => void;
+  /** Phase 76 (JF37): share an invited person's invitation. */
+  onShareInvitation?: (user: User) => void;
+}
+
+/** Whether a row offers its invitation: invited, live, with an address to sign in with, to someone who may act. */
+export function sharesInvitation(user: Pick<User, 'status' | 'deleted_at' | 'email'>): boolean {
+  return user.status === 'invited' && user.deleted_at === null && Boolean(user.email);
 }
 
 export const UserCard = memo(function UserCard({
@@ -104,6 +114,23 @@ export const UserCard = memo(function UserCard({
               </View>
             ) : null}
           </View>
+          {/* A sibling of the card's button, as the menu is: nested in it, it would be unreachable. */}
+          {canAct && actions.onShareInvitation && sharesInvitation(user) ? (
+            <View style={{ paddingLeft: large ? space.md : 48 + space.md, paddingBottom: space.md }}>
+              <Button
+                testID={`people-share-${user.id}`}
+                mode="outlined"
+                compact
+                icon="share-variant"
+                style={{ alignSelf: 'flex-start' }}
+                contentStyle={{ minHeight: 44 }}
+                accessibilityLabel={`Share ${user.full_name}'s invitation`}
+                onPress={() => actions.onShareInvitation?.(user)}
+              >
+                Share invitation
+              </Button>
+            </View>
+          ) : null}
         </OutlinedCard>
       )}
     </SwipeRow>
@@ -121,6 +148,10 @@ export function personRowActions(user: User, actions: RowActions, isSelf: boolea
   const onEdit = actions.onEdit;
   if (!isDeleted && onEdit) {
     list.push({ key: 'edit', label: 'Edit', icon: 'pencil-outline', onPress: () => onEdit(user) });
+  }
+  const share = actions.onShareInvitation;
+  if (share && sharesInvitation(user)) {
+    list.push({ key: 'share', label: 'Share invitation', icon: 'share-variant', onPress: () => share(user) });
   }
   if (isSelf) return list;
   if (isDeleted) {
@@ -178,6 +209,14 @@ function ActionsMenu({ user, actions, isSelf }: { user: User; actions: RowAction
         title="View details"
         onPress={run(actions.onView)}
       />
+      {actions.onShareInvitation && sharesInvitation(user) ? (
+        <Menu.Item
+          testID="people-action-share"
+          leadingIcon="share-variant"
+          title="Share invitation"
+          onPress={run(actions.onShareInvitation)}
+        />
+      ) : null}
       {!isDeleted && actions.onEdit ? (
         <Menu.Item
           testID="people-action-edit"

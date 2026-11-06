@@ -661,6 +661,25 @@ home's hat (`dashboardRoleForHat`) unless a role was asked for or remembered for
 is offered once per PERSON (`tour_finished_at`), inline on the home. Users, Pairings and Billing are in the menu only for
 admins and tutors (`seesPeoplePages`); deep links still open.
 
+**A lesson that cannot be priced is refused at Start, in its reader's words, and the lessons owed are one list**
+(Phase 75, `docs/journey-fixes-plan.md` JF18, JF19, JF30, R34). `POST /api/sessions/active` runs `resolveSessionRates`
+before anything starts (a mode switch on `PATCH /active` too); every pricing refusal (Start, Stop, Record, a correction,
+posting a draft) keeps the 422 `validation_failed` with `details.mode`, and its MESSAGE is `missingRateMessage` -- a
+tutor reads "Ask the office to set Yusuf's price." (or "...virtual price", "...your pay rate"), the office "Yusuf
+Haddad's in-person price is not set." -- since older apps show only the message. No new fallback: each mode is priced
+on its own, and a space paid directly reads no student price. The stop saves the typed note onto the running lesson
+BEFORE pricing, so a refused stop loses nothing. A pairing, a schedule and a student's record carry `price_missing`
+(`missingPriceModes`, computed in SQL beside the prices, never an amount) so "No price set" survives `scopeStudentCharges`.
+`GET /api/sessions/to-record` (`listLessonsOwed`, `repositories/lessons-owed.ts`) is the scheduled lessons of the last
+`UNRECORDED_LOOKBACK_DAYS` never recorded, cancelled or left running -- a tutor's own, an admin's every tutor's -- as
+`LessonOwed` rows with the READER's own draft (`myDraftsByLesson`, matched by tutor, student and date); the member home's
+"to record" uses the same occurrences and rule, and its rows carry the same `draft`. A running lesson leads Next up
+(`lesson_running`, fed by the client's own `GET /api/sessions/active` through `NextUpExtras.running`). **Adding people is
+one chooser** (Phase 76, JF21, JF37): `addChoices`, `nextStepsAfterAdd`, `USER_STATUS_DESCRIPTIONS` and `invitationText`
+(with `spaceWhat`: "a space for practice and assessments") are shared; `POST /api/users` naming the signed-in adult as a
+guardian gives them the parent role in the same batch (logged `user.roles_changed`), and their own address answers 409
+"That's you: add your child, and you'll be their parent."; a personal space's home offers `add_person`.
+
 **The tour is Tutoring's, and a new space is asked what it may use first** (owner, 2026-11-04). The welcome
 wizard's tour, its first-visit offer and "Getting started" appear only where Tutoring is on (`tourOffered` in
 shared `onboarding.ts`); a just-started space's "Invite people" step is not the tour and still opens. The

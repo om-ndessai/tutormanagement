@@ -35,6 +35,12 @@ export interface ScheduledSession {
   is_active: boolean;
   /** Phase 33: the schedule's places, from its pairing's -- at least one, at most one of each kind. */
   locations: Location[];
+  /**
+   * Phase 75 (JF18, R34): which of the student's prices the office has not set -- never an amount.
+   * "No price set" shows where it holds the schedule's `mode`. Empty where families pay each tutor
+   * directly. Absent from an older Worker.
+   */
+  price_missing?: SessionMode[];
   created_at: string;
   updated_at: string;
 }

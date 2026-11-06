@@ -40,10 +40,10 @@ export function DraftsPanel({ onEdit }: { onEdit: (draft: SessionDraft) => void 
   async function publish(draft: SessionDraft) {
     try {
       await post.mutateAsync(draft.id);
-      toast.success(`Session with ${draft.student_name} recorded.`);
+      toast.success(`Lesson with ${draft.student_name} recorded.`);
     } catch (error) {
       toast.error(
-        error instanceof ApiRequestError ? error.message : 'Could not post that draft.',
+        error instanceof ApiRequestError ? error.message : 'Could not record that draft.',
       );
     }
   }
@@ -85,7 +85,7 @@ export function DraftsPanel({ onEdit }: { onEdit: (draft: SessionDraft) => void 
                   </Button>
                   <Button size="sm" disabled={post.isPending} onClick={() => publish(draft)}>
                     {post.isPending ? <Loader2Icon className="animate-spin" /> : <SendIcon />}
-                    Post
+                    Record
                   </Button>
                   <Button
                     variant="ghost"

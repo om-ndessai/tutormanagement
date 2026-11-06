@@ -6,6 +6,7 @@ import {
   requiresEmail,
   SESSION_LIMIT_CHOICES,
   USER_STATUSES,
+  USER_STATUS_DESCRIPTIONS,
   USER_STATUS_LABELS,
   centsToInput,
   formatDuration,
@@ -297,12 +298,22 @@ export function UserFormDialog({
   title,
   description,
   onSaved,
+  announce = true,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   userId: string | null;
-  /** A new person's roles and guardians, chosen already. Create mode only. */
-  preset?: { roles: UserRole[]; guardians?: GuardianValue[]; full_name?: string; email?: string };
+  /**
+   * A new person's roles and guardians, chosen already. Create mode only. `guardian_names` names a guardian who is
+   * not a parent yet (the adult adding their own child, Phase 76).
+   */
+  preset?: {
+    roles: UserRole[];
+    guardians?: GuardianValue[];
+    guardian_names?: Record<string, string>;
+    full_name?: string;
+    email?: string;
+  };
   /** Phase 52: saving lets in the person who asked to join (their request, by their id). */
   joinRequestUserId?: string;
   /** Show only these blocks; every block when absent. */
@@ -311,6 +322,11 @@ export function UserFormDialog({
   description?: string;
   /** Called with the saved record, before the dialog closes. */
   onSaved?: (user: UserDetail) => void;
+  /**
+   * Whether a saved new person is announced with a toast. Phase 76 (JF21): a flow that shows the next steps after an
+   * add says it there instead.
+   */
+  announce?: boolean;
 }) {
   const isEdit = userId !== null;
   const { data: detail, isPending: loadingDetail } = useUserDetail(open && isEdit ? userId : null);
@@ -405,7 +421,7 @@ export function UserFormDialog({
         onSaved?.(saved.data);
       } else {
         const saved = await createUser.mutateAsync(parsed.data as never);
-        toast.success(`${form.full_name} added.`);
+        if (announce) toast.success(`${form.full_name} added.`);
         onSaved?.(saved.data);
       }
       onOpenChange(false);
@@ -440,6 +456,7 @@ export function UserFormDialog({
       excludeUserId={userId ?? undefined}
       error={errors.guardians}
       required={isStudent}
+      knownNames={isEdit ? undefined : preset?.guardian_names}
     />
   );
 
@@ -557,6 +574,14 @@ export function UserFormDialog({
                     ))}
                   </SelectContent>
                 </Select>
+                {/* Phase 76 (JF21): what each status means, beside the choice. */}
+                <ul className="text-muted-foreground grid gap-0.5 text-xs" data-testid="user-status-descriptions">
+                  {USER_STATUSES.map((status) => (
+                    <li key={status} className={cn(status === form.status && 'text-foreground')}>
+                      <span className="font-medium">{USER_STATUS_LABELS[status]}:</span> {USER_STATUS_DESCRIPTIONS[status]}
+                    </li>
+                  ))}
+                </ul>
               </Field>
               </>
               )}
@@ -727,10 +752,11 @@ export function UserFormDialog({
                       assignment beats these. Not what the family is charged --
                       that is priced on the student, below. */}
                   <div className="grid gap-4 sm:grid-cols-2">
+                    {/* Phase 75 (JF18): visibly empty until set -- a realistic placeholder read as a rate already set. */}
                     <Field
                       id="t_rate_ip"
                       label="In-person rate / hr"
-                      hint="Used unless an assignment overrides it."
+                      hint="For example 75.00. Used unless a pairing sets its own."
                     >
                       <Input
                         id="t_rate_ip"
@@ -739,10 +765,9 @@ export function UserFormDialog({
                         onChange={(e) =>
                           set('tutor', { ...form.tutor, rate_in_person: e.target.value })
                         }
-                        placeholder="75.00"
                       />
                     </Field>
-                    <Field id="t_rate_v" label="Virtual rate / hr" optional>
+                    <Field id="t_rate_v" label="Virtual rate / hr" optional hint="For example 65.00.">
                       <Input
                         id="t_rate_v"
                         inputMode="decimal"
@@ -750,7 +775,6 @@ export function UserFormDialog({
                         onChange={(e) =>
                           set('tutor', { ...form.tutor, rate_virtual: e.target.value })
                         }
-                        placeholder="65.00"
                       />
                     </Field>
                   </div>
@@ -793,14 +817,13 @@ export function UserFormDialog({
                       id="t_topup"
                       label="Top up below"
                       optional
-                      hint="Blank means this tutor is paid for work already done, never in advance."
+                      hint="For example 100.00. Blank means this tutor is paid for work already done, never in advance."
                     >
                       <Input
                         id="t_topup"
                         inputMode="decimal"
                         value={form.tutor.topup}
                         onChange={(e) => set('tutor', { ...form.tutor, topup: e.target.value })}
-                        placeholder="100.00"
                       />
                     </Field>
                     )}
@@ -872,10 +895,12 @@ export function UserFormDialog({
                       rate is the price the family pays the tutor. */}
                   {!direct && (
                   <div className="grid gap-4 sm:grid-cols-2">
+                    {/* Phase 75 (JF18): visibly empty until set, with an example beside it rather than a
+                        placeholder that reads as a price already set. A lesson cannot start without it. */}
                     <Field
                       id="s_charge_ip"
                       label="In-person price / hr"
-                      hint="Charged to the family. A session cannot be recorded without it."
+                      hint="For example 95.00. Charged to the family; a lesson cannot be started or recorded without it."
                     >
                       <Input
                         id="s_charge_ip"
@@ -884,10 +909,14 @@ export function UserFormDialog({
                         onChange={(e) =>
                           set('student', { ...form.student, charge_in_person: e.target.value })
                         }
-                        placeholder="95.00"
                       />
                     </Field>
-                    <Field id="s_charge_v" label="Virtual price / hr" optional>
+                    <Field
+                      id="s_charge_v"
+                      label="Virtual price / hr"
+                      optional
+                      hint="For example 85.00. Needed for virtual lessons."
+                    >
                       <Input
                         id="s_charge_v"
                         inputMode="decimal"
@@ -895,7 +924,6 @@ export function UserFormDialog({
                         onChange={(e) =>
                           set('student', { ...form.student, charge_virtual: e.target.value })
                         }
-                        placeholder="85.00"
                       />
                     </Field>
                   </div>

@@ -1,0 +1,33 @@
+# Phase 75 (JF30): "Another lesson" dates nothing by default. On the record flow's When step the day and the start
+# are chosen here, deliberately -- today (the latest day allowed) and the picker's 4:00 PM -- and a length chip
+# (env LENGTH, default 60) sets the end. iOS: the field's "Choose" button fills it in; Android: the system dialog
+# opens on it and OK fills it in. The default is read in the step, not set in an `env:` block here: a subflow's own
+# env wins over its caller's, which made every LENGTH 60.
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      # iOS reads the field and its label as one ("Date, Choose a date"): the id alone.
+      - assertVisible:
+          id: record-date-choose
+      - tapOn:
+          id: record-date-choose
+      - tapOn:
+          id: record-start-choose
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible: '.*Choose a date.*'
+      - tapOn:
+          id: record-date
+      - tapOn:
+          id: android:id/button1
+      - tapOn:
+          id: record-start
+      - tapOn:
+          id: android:id/button1
+- tapOn:
+    id: "record-length-${typeof LENGTH === 'undefined' ? '60' : LENGTH}"

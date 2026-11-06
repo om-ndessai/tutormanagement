@@ -1,6 +1,7 @@
-# Phase 50: the person form without Tutoring. Ines (`assess`), More → Users, then the "+" → Add someone
-# else: no Tutor role; ticking Student shows no charge rate or session limit. The Users filter has
-# no Tutor chip. Unsaved.
+# Phase 50: the person form without Tutoring. Ines (`assess`), More → Users, then the "+" → Add people → the one Add
+# chooser (Phase 76: a family, someone else, an invitation -- no tutor here) → Someone else: no Tutor role; ticking
+# Student shows no charge rate or session limit; the status says what it means. The Users filter has no Tutor chip.
+# Unsaved.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/reset-features.js
@@ -48,11 +49,30 @@ tags:
       id: create-sheet
     timeout: 10000
 - tapOn:
-    id: create-action-add-person
+    id: create-action-add-people
+- extendedWaitUntil:
+    visible:
+      id: add-chooser
+    timeout: 15000
+- assertVisible:
+    id: add-choice-family
+- assertVisible:
+    id: add-choice-invite
+- assertNotVisible:
+    id: add-choice-tutor
+- takeScreenshot: features-add-chooser
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-someone
 - extendedWaitUntil:
     visible:
       id: person-role-student
     timeout: 15000
+# Phase 76 (JF21): the status says what it means.
+- assertVisible:
+    id: person-status-description
+    text: 'In the space now\.'
 - assertNotVisible:
     id: person-role-tutor
 - tapOn:

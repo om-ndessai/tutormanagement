@@ -199,7 +199,9 @@ test.describe('progress tracking', () => {
   test('a tutor scores a lesson against the plan from the session form', async ({ as }) => {
     const tutor = await as('tutor');
     await tutor.goto('/sessions');
-    await tutor.getByRole('button', { name: /record a session/i }).first().click();
+    // Phase 75 (JF30): through the lessons still owed, to the blank form.
+    await tutor.getByTestId('sessions-record').click();
+    await tutor.getByTestId('owed-another').click();
 
     const dialog = tutor.getByRole('dialog');
     await dialog.getByRole('combobox').first().click();

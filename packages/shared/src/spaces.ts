@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { PLATFORM_BRAND } from './brand.js';
-import { featureAllowed, type FeatureState } from './features.js';
+import { featureAllowed, featureOn, type FeatureSet, type FeatureState } from './features.js';
 import { ORG_TIME_ZONES, type OrgPalette } from './organizations.js';
 import { ARRIVALS } from './home.js';
 import { refuseSsn } from './tax.js';
@@ -333,11 +333,47 @@ export function inviteRowRequest(row: SpaceInviteRow): {
   };
 }
 
+/** Phase 76 (JF37): what each set makes a space for, in the order the invitation says it. */
+const SPACE_WHAT: readonly [FeatureSet, string][] = [
+  ['quest', 'practice'],
+  ['assessment', 'assessments'],
+  ['tutoring', 'lessons'],
+];
+
+/**
+ * Phase 76 (JF37): what a space is for, from the sets that are on there, in words -- "practice and
+ * assessments", "practice, assessments and lessons" ("lessons" only where Tutoring is on). Null
+ * when none is on.
+ */
+export function spaceWhat(org: Partial<FeatureState> | null | undefined): string | null {
+  const words = SPACE_WHAT.filter(([set]) => featureOn(org, set)).map(([, word]) => word);
+  if (words.length === 0) return null;
+  if (words.length === 1) return words[0]!;
+  return `${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`;
+}
+
 /**
  * The words "Copy invitation" and "Share" hand over: a self-serve space sends no email (Phase 51),
- * so the inviter tells them. Names only the inviter, the space, the address and the invitee's own
- * email -- never a code, a role or anything else about the space.
+ * so the inviter tells them. Names only the inviter, the space, what the space is for (its sets,
+ * Phase 76), the address and the invitee's own email -- never a code, a role or anything else
+ * about the space. `address` is the link as given (both clients pass `<origin>/spaces`, where the
+ * invitation waits). Without `org` (an older caller) the "a space for ..." clause is left out.
+ *
+ * "Ines invited you to Ferreira Family Practice on Aimtrue, a space for practice and assessments.
+ * Open https://…/spaces and sign in with Google using ana@example.com: your invitation is waiting there."
  */
-export function invitationText(input: { inviter: string; space: string; address: string; email: string }): string {
-  return `${input.inviter} invited you to ${input.space} on ${PLATFORM_BRAND.name}. Sign in at ${input.address} with ${input.email}.`;
+export function invitationText(input: {
+  inviter: string;
+  space: string;
+  address: string;
+  email: string;
+  /** The space's feature state (its sets and switches), for what it is for. */
+  org?: Partial<FeatureState> | null;
+}): string {
+  const what = input.org ? spaceWhat(input.org) : null;
+  return (
+    `${input.inviter} invited you to ${input.space} on ${PLATFORM_BRAND.name}` +
+    `${what ? `, a space for ${what}` : ''}. ` +
+    `Open ${input.address} and sign in with Google using ${input.email}: your invitation is waiting there.`
+  );
 }

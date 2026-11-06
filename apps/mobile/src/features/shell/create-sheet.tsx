@@ -89,7 +89,10 @@ export function CreateSheet({ sheetRef }: { sheetRef: RefObject<BottomSheetModal
         {isTutor && user ? (
           <TutorActions userId={user.id} mayMakeSpace={mayMakeSpace} onChoose={choose} />
         ) : (
-          <ActionList actions={createActions(user?.roles, { account, mayMakeSpace }, sets)} onChoose={choose} />
+          <ActionList
+            actions={createActions(user?.roles, { account, mayMakeSpace, personal: organization?.personal }, sets)}
+            onChoose={choose}
+          />
         )}
       </BottomSheetScrollView>
     </BottomSheetModal>
@@ -105,7 +108,7 @@ function TutorActions({
   mayMakeSpace: boolean;
   onChoose: (action: CreateAction) => void;
 }) {
-  const { user, account } = useAuth();
+  const { user, account, organization } = useAuth();
   // The same queries as Sessions' Start button, so the cache is shared.
   const pairings = useAssignments({ tutor_user_id: userId });
   const active = useActiveSession();
@@ -115,6 +118,7 @@ function TutorActions({
     lessonRunning: !active.isSuccess || active.data.data.mine !== null,
     account,
     mayMakeSpace,
+    personal: organization?.personal,
   });
   return <ActionList actions={actions} onChoose={onChoose} />;
 }

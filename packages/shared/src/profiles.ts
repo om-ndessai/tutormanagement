@@ -3,6 +3,7 @@ import {
   MAX_SESSION_MINUTES_LIMIT,
   QUARTER_HOUR,
   formatTimeRange,
+  type SessionMode,
 } from './teaching.js';
 import { optionalText, userSchema, type UserRole } from './users.js';
 
@@ -172,6 +173,16 @@ export const studentProfileSchema = z.object({
 
 export type StudentProfileInput = z.input<typeof studentProfileSchema>;
 export type StudentProfile = z.output<typeof studentProfileSchema>;
+
+/**
+ * A student's profile as the API returns it. Phase 75 (JF18, R34): `price_missing` says which of
+ * their prices the office has not set ("No price set") -- never an amount, so a tutor, whose view
+ * blanks the prices (R4), can tell "not set" from "not yours to see". Empty where families pay each
+ * tutor directly. Read-only: the profile's schema strips it from a PATCH. Absent from an older Worker.
+ */
+export interface StudentProfileView extends StudentProfile {
+  price_missing?: SessionMode[];
+}
 
 // ---------------------------------------------------------------------------
 // Payment handles
@@ -343,7 +354,7 @@ export interface UserDetail extends z.infer<typeof userSchema> {
   /** When they last entered THIS organization. Admins only. */
   last_entered_at: string | null;
   tutor_profile: TutorProfile | null;
-  student_profile: StudentProfile | null;
+  student_profile: StudentProfileView | null;
   payment_handles: PaymentHandle[];
   availability: AvailabilitySlot[];
   /** People responsible for this user (their parents). */

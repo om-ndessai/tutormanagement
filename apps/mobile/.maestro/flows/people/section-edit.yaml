@@ -4,7 +4,7 @@
 # the record shows it, and his price and his parents are as they were (a scoped edit saves the whole
 # record). Lessons and price's Edit opens only its own fields. The record's menu keeps the whole form
 # ("Edit everything") and starts a payment for him, already filled with his primary guardian. She
-# puts his school back. Cleans up after itself.
+# puts his school back. Phase 76: his record names his tutors and weekly lessons. Cleans up after itself.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-people.js
@@ -178,3 +178,17 @@ tags:
 - extendedWaitUntil:
     visible: 'Ephesus Elementary'
     timeout: 15000
+# Phase 76 (JF21): below the sections, who teaches him and when -- his tutors by name (Alex among them).
+- scrollUntilVisible:
+    element:
+      id: person-section-tutoring
+    direction: DOWN
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: person-lessons
+    direction: DOWN
+    timeout: 10000
+- assertVisible:
+    id: person-tutor-00000000-0000-4000-8000-000000000003
+- takeScreenshot: section-edit-tutors-lessons

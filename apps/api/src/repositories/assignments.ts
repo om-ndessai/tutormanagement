@@ -1,9 +1,10 @@
-import type {
-  Assignment,
-  AssignmentPayload,
-  AssignmentUpdatePayload,
-  ListAssignmentsParams,
-  User,
+import {
+  missingPriceModes,
+  type Assignment,
+  type AssignmentPayload,
+  type AssignmentUpdatePayload,
+  type ListAssignmentsParams,
+  type User,
 } from '@tmi/shared';
 
 import type { OrgId } from '../lib/org.js';
@@ -30,12 +31,19 @@ const SELECT_ASSIGNMENT = `
          a.is_active,
          a.notes,
          a.created_at,
-         a.updated_at
+         a.updated_at,
+         sp.charge_rate_in_person_cents AS student_price_in_person_cents,
+         sp.charge_rate_virtual_cents   AS student_price_virtual_cents,
+         sp.user_id IS NOT NULL         AS student_priced_profile,
+         o.business_id IS NULL          AS paid_directly
   FROM assignments a
   JOIN users t ON t.id = a.tutor_user_id
   JOIN users s ON s.id = a.student_user_id
+  JOIN organizations o ON o.id = a.organization_id
   LEFT JOIN tutor_profiles tp ON tp.organization_id = a.organization_id
                              AND tp.user_id = a.tutor_user_id
+  LEFT JOIN student_profiles sp ON sp.organization_id = a.organization_id
+                               AND sp.user_id = a.student_user_id
 `;
 
 interface AssignmentRow {
@@ -52,10 +60,33 @@ interface AssignmentRow {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  /** Phase 75: the student's prices, read only to say which is missing -- never returned. */
+  student_price_in_person_cents: number | null;
+  student_price_virtual_cents: number | null;
+  student_priced_profile: number;
+  paid_directly: number;
 }
 
 function toAssignment(row: AssignmentRow): Assignment {
-  return { ...row, is_active: row.is_active === 1, locations: [] };
+  const {
+    student_price_in_person_cents,
+    student_price_virtual_cents,
+    student_priced_profile,
+    paid_directly,
+    ...rest
+  } = row;
+  return {
+    ...rest,
+    is_active: row.is_active === 1,
+    locations: [],
+    // Phase 75 (JF18, R34): WHICH price is missing, never an amount (a tutor's view blanks them).
+    price_missing: missingPriceModes(
+      student_priced_profile === 1
+        ? { charge_rate_in_person_cents: student_price_in_person_cents, charge_rate_virtual_cents: student_price_virtual_cents }
+        : null,
+      paid_directly === 1,
+    ),
+  };
 }
 
 /** Phase 33: each pairing with its allowed locations. */

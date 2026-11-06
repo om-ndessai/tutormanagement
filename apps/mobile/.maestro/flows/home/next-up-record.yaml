@@ -1,6 +1,8 @@
 # Record the lesson at hand from Home (#43; UI upgrades U4): the Next up card's Record opens a quick
 # sheet filled with the student, today, the schedule's times and its place, so "It ran as planned"
 # is the second tap. Recorded, the sheet offers the write-up, whose cards save onto the new lesson.
+# Phase 75 (JF30): the sheet is "Record a lesson", with "Write up the lesson" (the full form) beside "It ran as
+# planned"; "Lesson recorded." -- one noun, one verb.
 # No money anywhere. The lesson leaves the upcoming strip; clean-sessions.js deletes it afterwards.
 appId: ${APP_ID}
 onFlowStart:
@@ -40,7 +42,7 @@ tags:
     visible:
       id: record-quick-save
     timeout: 15000
-- assertVisible: 'Record this lesson'
+- assertVisible: 'Record a lesson'
 - assertVisible:
     id: record-quick-student
     text: '${output.studentName}'
@@ -57,6 +59,9 @@ tags:
 - assertVisible:
     id: record-quick-save
     text: 'It ran as planned'
+- assertVisible:
+    id: record-quick-write-up
+    text: '.*Write up the lesson.*'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: next-up-record-sheet
 # The fitted sheet settles before its action is tapped (U2).
@@ -67,7 +72,7 @@ tags:
     id: record-quick-save
 # Recorded: the sheet says so, and offers the write-up for the new lesson.
 - extendedWaitUntil:
-    visible: 'Session recorded.'
+    visible: 'Lesson recorded.'
     timeout: 15000
 - assertVisible:
     id: record-quick-done-save

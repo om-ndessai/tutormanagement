@@ -3,6 +3,8 @@
 # by", and no money. It follows him to Home and Schedule. Stop with a note: the toast says the
 # times and the LENGTH, never the pay, and the lesson is in the list. A second one is discarded
 # with a confirmation. The recorded lesson is deleted at the end, so other flows see the seed.
+# Phase 75 (JF18, JF30): "lesson" on every surface; a running lesson leads Home's Next up, with Stop; Start from the
+# home's quick action while one runs says which and offers to stop it; "Keep going" keeps a typed note.
 appId: ${APP_ID}
 # Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
 # one) are removed before this flow, and whatever this flow leaves is removed after it.
@@ -36,7 +38,7 @@ tags:
     visible:
       id: start-student-00000000-0000-4000-8000-000000000008
     timeout: 15000
-- assertVisible: 'Start a session'
+- assertVisible: 'Start a lesson'
 - assertNotVisible: '.*\$[0-9].*'
 - tapOn:
     id: start-student-00000000-0000-4000-8000-000000000008
@@ -45,7 +47,7 @@ tags:
 - tapOn:
     id: start-submit
 - extendedWaitUntil:
-    visible: 'Session started.'
+    visible: 'Lesson started.'
     timeout: 15000
 - extendedWaitUntil:
     visible:
@@ -91,6 +93,44 @@ tags:
     timeout: 15000
 - assertVisible:
     id: live-banner
+# Next up leads with the lesson under way, and its Stop (no money).
+- extendedWaitUntil:
+    visible:
+      id: next-up-lesson_running
+    timeout: 15000
+- assertVisible: 'Your lesson with Sofia is running\.'
+- assertVisible:
+    id: next-up-detail
+    text: 'Running [0-9]+ min · Virtual'
+- assertNotVisible:
+    id: next-up-later
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: live-next-up-running
+# Start while one runs: the sheet says which, and offers to stop it.
+- runFlow:
+    when:
+      visible:
+        id: quick-start_lesson
+    commands:
+      - tapOn:
+          id: quick-start_lesson
+      - extendedWaitUntil:
+          visible:
+            id: start-running
+          timeout: 15000
+      - assertVisible: 'Your lesson with Sofia Okafor is still running\. Stop it before starting another\.'
+      - assertVisible:
+          id: start-stop-running
+      - assertNotVisible:
+          id: start-submit
+      - waitForAnimationToEnd:
+          timeout: 3000
+      - tapOn:
+          id: start-cancel
+      - extendedWaitUntil:
+          visible:
+            id: screen-home
+          timeout: 10000
 - takeScreenshot: live-banner-home
 - runFlow: ../../subflows/open-schedule.yaml
 - extendedWaitUntil:
@@ -109,17 +149,33 @@ tags:
     visible:
       id: stop-notes
     timeout: 15000
-- assertVisible: 'End the session with Sofia Okafor\?'
+- assertVisible: 'End the lesson with Sofia Okafor\?'
 - assertNotVisible: '.*\$[0-9].*'
 - tapOn:
     id: stop-notes
 - inputText: 'Stopped from the phone'
 # A tap on the heading closes the keyboard.
-- tapOn: 'End the session with Sofia Okafor\?'
+- tapOn: 'End the lesson with Sofia Okafor\?'
+# "Keep going" keeps the note on the running lesson: the sheet opens on it again.
+- tapOn:
+    id: stop-keep-going
+- extendedWaitUntil:
+    notVisible:
+      id: stop-notes
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: live-stop
+- extendedWaitUntil:
+    visible:
+      id: stop-notes
+      text: '.*Stopped from the phone.*'
+    timeout: 15000
 - tapOn:
     id: stop-submit
 - extendedWaitUntil:
-    visible: 'Session recorded: .*, [0-9]+ (min|hr).*\.'
+    visible: 'Lesson recorded: .*, [0-9]+ (min|hr).*\.'
     timeout: 15000
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: live-stopped
@@ -127,19 +183,21 @@ tags:
     notVisible:
       id: live-banner
     timeout: 10000
-- extendedWaitUntil:
-    visible: 'Stopped from the phone'
-    timeout: 15000
+# The lesson list sits below To record now: scroll to the note.
+- scrollUntilVisible:
+    element: 'Stopped from the phone'
+    timeout: 20000
 # Stopped: the system surface is gone too.
 - runFlow:
     file: ../../subflows/live-surface-state.yaml
     env:
       STATE: none
-# Start again, and discard it.
-- extendedWaitUntil:
-    visible:
+# Start again, and discard it. The page kept its place by the note: back up to Start a lesson.
+- scrollUntilVisible:
+    element:
       id: sessions-start
-    timeout: 15000
+    direction: UP
+    timeout: 20000
 # Let the stop sheet finish sliding away first.
 - waitForAnimationToEnd:
     timeout: 5000
@@ -178,9 +236,10 @@ tags:
     file: ../../subflows/live-surface-state.yaml
     env:
       STATE: none
-- extendedWaitUntil:
-    visible: 'Stopped from the phone'
-    timeout: 15000
+# The lesson list sits below To record now: scroll to the note.
+- scrollUntilVisible:
+    element: 'Stopped from the phone'
+    timeout: 20000
 # Put the data back: delete the recorded lesson from its detail.
 - tapOn: 'Stopped from the phone'
 - scrollUntilVisible:

@@ -164,7 +164,7 @@ function SessionForm({
     <View style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          {isEdit ? 'Edit session' : isDraft ? 'Finish this draft' : 'Record a session'}
+          {isEdit ? 'Edit lesson' : isDraft ? 'Finish this draft' : 'Record a lesson'}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {existing
@@ -211,6 +211,7 @@ function SessionForm({
           testID="record-end"
           label="Ended"
           value={values.endedAt}
+          startAt={values.startedAt ? addMinutes(values.startedAt, 60) : undefined}
           onChange={(time) => set('endedAt', time)}
           error={Boolean(errors.ended_at)}
         />
@@ -233,6 +234,7 @@ function SessionForm({
                 selected={active}
                 showSelectedCheck={false}
                 mode={active ? 'flat' : 'outlined'}
+                disabled={!values.startedAt}
                 onPress={() => {
                   haptics.selection();
                   set('endedAt', addMinutes(values.startedAt, minutes));
@@ -257,7 +259,8 @@ function SessionForm({
           testID: `record-mode-${mode}`,
         }))}
       />
-      {errorText('mode')}
+      {/* The mode's refusal repeats the message said by the button (JF18): once only. */}
+      {errors.mode && !failure?.includes(errors.mode) ? errorText('mode') : null}
 
       <SessionMoneyPreview
         preview={preview}
@@ -377,11 +380,11 @@ function SessionForm({
           // Saving a lesson offline would only fail; the draft keeps it meanwhile (F-16).
           disabled={saving || offline}
         >
-          {isEdit ? 'Save changes' : isDraft ? 'Post session' : 'Record session'}
+          {isEdit ? 'Save changes' : 'Record lesson'}
         </Button>
         <OfflineSaveNote offline={offline} />
         {/* Offered while writing up a lesson, and while picking a draft back up. Not while
-            editing a session already on the record: that one has been posted. */}
+            editing a lesson already on the record: that one has been recorded. */}
         {!isEdit ? (
           <Button
             testID="record-save-draft"

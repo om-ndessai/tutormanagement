@@ -1,7 +1,8 @@
 # The office pairs a tutor with a student, changes the pairing's rate, and removes it. Priya assigns
-# Adeline Quintero to Alex: the rate fields arrive filled from Alex's own defaults, she raises the
-# in-person one (an override, so "custom"), then edits it, then removes the pairing. Changes data:
-# reset the database afterwards.
+# Adeline Quintero to Alex. Phase 75 (JF27): the rate fields arrive EMPTY -- following Alex's default, which they
+# name -- never a copy of it; she types an in-person rate (an override, so "custom"), then edits it, then removes
+# the pairing. "No price set" reads on a pairing whose student has no price (JF18). Changes data: reset the
+# database afterwards.
 appId: ${APP_ID}
 tags:
   - feature
@@ -43,14 +44,19 @@ tags:
     timeout: 10000
 - tapOn:
     id: assignment-student-33333333-0000-4000-8000-000000000042
-# Prefilled from Alex's profile.
+# Never prefilled: empty fields follow Alex's default, and say so.
 - extendedWaitUntil:
-    visible: '75.00'
+    visible:
+      id: assignment-rate-hint
+      text: "Blank follows Alex's default\\. Type a rate only for a different one\\."
     timeout: 10000
-- assertVisible: "From Alex Chen's profile.*"
+- assertVisible: 'Tutor pay, in person'
+- assertVisible: 'Tutor pay, virtual'
+- assertNotVisible: '75\.00'
+- assertNotVisible: "From Alex Chen's profile.*"
+- takeScreenshot: pairings-admin-empty-rates
 - tapOn:
     id: assignment-rate-in-person
-- eraseText: 10
 - inputText: '80'
 - pressKey: Enter
 # Phase 33's locations checklist sits between the rates and Save: bring Save into view first.
@@ -73,6 +79,9 @@ tags:
     direction: DOWN
     timeout: 30000
 - assertVisible: 'Adeline Quintero'
+# Her own rate is the pairing's ("custom"); the virtual one follows Alex's default.
+- assertVisible:
+    id: 'pairing-custom-in-person-.*'
 - takeScreenshot: pairings-admin-created
 - tapOn: "Edit Adeline Quintero's assignment"
 - extendedWaitUntil:

@@ -3,7 +3,8 @@
 # with one hour added in the exact grid, Pay (rates), the Review and Add. No mailing address or SSN
 # is asked: the new record carries a "Finish tax setup" card, which opens the person form scoped to
 # the address and the SSN tick (a tick, never the number); with both set the card is gone and the
-# record shows the pay, the address and the hours. Cleans up after itself.
+# record shows the pay, the address and the hours. Opened from the (+) sheet's "Add people" through the one Add chooser
+# (Phase 76), and ends on the next steps: "Pair Ravi with a student" and "Finish tax setup". Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -27,10 +28,19 @@ tags:
     id: create-button
 - extendedWaitUntil:
     visible:
-      id: create-action-add-tutor
+      id: create-action-add-people
     timeout: 10000
 - tapOn:
-    id: create-action-add-tutor
+    id: create-action-add-people
+# Phase 76 (JF21): the (+) sheet's "Add people" opens the one Add chooser; "A tutor" is the tutor flow.
+- extendedWaitUntil:
+    visible:
+      id: add-choice-tutor
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-tutor
 # Basics.
 - extendedWaitUntil:
     visible:
@@ -140,8 +150,12 @@ tags:
       id: add-person-done
     timeout: 15000
 - assertVisible: 'Ravi Shah is added'
+# Phase 76 (JF21): the next steps of shared `nextStepsAfterAdd` -- the pairing, and the tax setup (the space pays its tutors).
 - assertVisible:
-    id: add-person-done-tax
+    id: add-done-next-pair_student
+- assertVisible: 'Pair Ravi with a student'
+- assertVisible:
+    id: add-done-next-tax_setup
 - tapOn:
     id: add-person-done-record
 # The record: Finish tax setup, until the address and the SSN fact are both on file.

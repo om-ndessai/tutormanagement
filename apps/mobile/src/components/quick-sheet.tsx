@@ -7,12 +7,14 @@
 // root is a ScrollView on purpose: react-native-screens sizes a form sheet's content natively and
 // only resizes a root ScrollView (`RNSScreenContentWrapper`), so a View with a flex body and a
 // separate footer collapses its body to nothing (checked on the iOS 27 simulator, U2). When the
-// content outgrows the screen -- the largest text sizes -- the sheet stops at full height and
-// scrolls, action included. Leaving with unsaved work asks first (`dirty`); `onPrimary` gets
-// `leave` to close after a save without being asked.
+// content outgrows the screen -- the largest text sizes, a long list -- the sheet stops at full height and
+// scrolls, action included. On Android a fitted sheet takes the content's whole height, past the screen's edge, and
+// then never scrolls (the office's lessons owed, Phase 75): there the root is capped at the window's height under the
+// status bar (`quickSheetMaxHeight`). Leaving with unsaved work asks first (`dirty`); `onPrimary` gets `leave` to
+// close after a save without being asked.
 import { router } from 'expo-router';
 import { useRef, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Button, HelperText, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -54,6 +56,14 @@ export interface QuickSheetProps {
   dirty?: boolean;
 }
 
+/**
+ * The most a quick sheet's root may take: on Android, the window under the status bar, so content taller than the
+ * screen scrolls inside the sheet instead of running off it; iOS sizes its form sheet itself (undefined: no cap).
+ */
+export function quickSheetMaxHeight(os: string, windowHeight: number, topInset: number): number | undefined {
+  return os === 'android' ? Math.max(0, windowHeight - topInset) : undefined;
+}
+
 export function QuickSheet({
   testID = 'quick-sheet',
   actionTestID,
@@ -75,6 +85,8 @@ export function QuickSheet({
 }: QuickSheetProps) {
   const theme = useAppTheme();
   const insets = useSafeAreaInsets();
+  const window = useWindowDimensions();
+  const maxHeight = quickSheetMaxHeight(Platform.OS, window.height, insets.top);
   const { leave } = useUnsavedChangesGuard(dirty);
   const actions = actionTestID ?? testID;
   const scrollRef = useRef<ScrollView>(null);
@@ -87,7 +99,7 @@ export function QuickSheet({
     <ScrollView
       ref={scrollRef}
       testID={testID}
-      style={{ backgroundColor: theme.colors.background }}
+      style={{ backgroundColor: theme.colors.background, maxHeight }}
       contentContainerStyle={{ paddingTop: space.xl, paddingBottom: insets.bottom + space.md }}
       // It fits at the default text size, so it does not scroll (or bounce) unless it must.
       alwaysBounceVertical={false}

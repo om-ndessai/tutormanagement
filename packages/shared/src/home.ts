@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Location } from './locations.js';
 import type { HomeworkStatus, SessionAssessment } from './session-notes.js';
-import { formatClockTime, type SessionMode } from './teaching.js';
+import { formatClockTime, type LessonDraftRef, type SessionMode } from './teaching.js';
 import { addDays, weekdayOf } from './schedules.js';
 import type { Rating } from './progress.js';
 import type { CreateGameRequest } from './quest-games.js';
@@ -53,8 +53,11 @@ export interface TutorHomeBrief {
 export interface TutorHome {
   /** "morning" | "afternoon" | "evening", on the organization's clock, for the greeting. */
   part_of_day: PartOfDay;
-  /** Lessons that ended in the last 24 hours and are not recorded (nor cancelled, nor running), latest first. */
-  unrecorded: (TutorHomeLesson & { homework_last: string | null })[];
+  /**
+   * Lessons that ended in the last 24 hours and are not recorded (nor cancelled, nor running), latest first.
+   * Phase 75 (JF19): on the member home each carries the reader's own draft of it (`draft`, R10).
+   */
+  unrecorded: TutorUnrecordedLesson[];
   /** The next lesson that is not cancelled (it may be under way). */
   next: TutorHomeLesson | null;
   /** The brief for `next`. */
@@ -62,6 +65,17 @@ export interface TutorHome {
 }
 
 export type PartOfDay = 'morning' | 'afternoon' | 'evening';
+
+/** A lesson still to record, as the tutor's Home and the member home list it. */
+export type TutorUnrecordedLesson = TutorHomeLesson & {
+  homework_last: string | null;
+  /**
+   * Phase 75 (JF19): the reader's own draft of this lesson (same tutor, student and date; the newest), so "Record"
+   * continues it ("Draft saved 12:43 PM · Continue") instead of starting a second one. Only the member home
+   * (`GET /api/home`) fills it; null for none; absent from an older Worker and from `GET /api/home/tutor`.
+   */
+  draft?: LessonDraftRef | null;
+};
 
 // ---------------------------------------------------------------------------
 // The member home (Phase 66, docs/member-home-plan.md H1-H4, H9, H11)
@@ -114,8 +128,11 @@ export interface HomeTutor {
   next_starts_in: number | null;
   lessons_today: number;
   lessons_this_week: number;
-  /** Lessons of the last UNRECORDED_LOOKBACK_DAYS that ended and were never recorded or cancelled, latest first (at most 5). */
-  to_record: (TutorHomeLesson & { homework_last: string | null })[];
+  /**
+   * Lessons of the last UNRECORDED_LOOKBACK_DAYS that ended and were never recorded or cancelled, latest first (at most
+   * 5); each with the reader's own draft of it (Phase 75, JF19). The whole list is `GET /api/sessions/to-record`.
+   */
+  to_record: TutorUnrecordedLesson[];
   to_record_count: number;
   /** Work waiting for this tutor: assessments submitted and not reviewed, Quest answers to review. */
   reviews: { assessments: number; quest: number };
@@ -350,10 +367,16 @@ export interface NextUpExtras {
   /** Phase 68: the level a learner's practice starts at (the board's lead), and whether they played today. */
   practice_level_id?: string | null;
   played_today?: boolean;
+  /**
+   * Phase 75 (JF30): the reader's lesson running now, from the client's own `GET /api/sessions/active` (`mine`); it
+   * leads Next up, with Stop. Absent or null: none.
+   */
+  running?: { student_name: string; started_at: string; mode: SessionMode } | null;
 }
 
 export type NextUp =
-  | { kind: 'lesson_unrecorded'; hat: 'tutor'; lesson: TutorHomeLesson & { homework_last: string | null } }
+  | { kind: 'lesson_running'; hat: 'tutor'; running: NonNullable<NextUpExtras['running']> }
+  | { kind: 'lesson_unrecorded'; hat: 'tutor'; lesson: TutorUnrecordedLesson }
   | { kind: 'lesson_now'; hat: 'tutor'; lesson: TutorHomeLesson; starts_in: number }
   | { kind: 'child_change'; hat: 'parent'; child: HomeChild }
   | { kind: 'game_invite'; hat: 'learner'; game: NonNullable<NextUpExtras['game_invite']> }
@@ -376,6 +399,7 @@ export type NextUpKind = NextUp['kind'];
 
 /** The order Next up is chosen in: time-bound first (H2). */
 export const NEXT_UP_ORDER: readonly NextUpKind[] = [
+  'lesson_running',
   'lesson_unrecorded',
   'lesson_now',
   'child_change',
@@ -399,6 +423,8 @@ export const NEXT_UP_ORDER: readonly NextUpKind[] = [
 /** A stable key per item, so "Later" can put one off for the day. */
 export function nextUpKey(item: NextUp): string {
   switch (item.kind) {
+    case 'lesson_running':
+      return `${item.kind}:${item.running.started_at}`;
     case 'lesson_unrecorded':
     case 'lesson_now':
     case 'lesson_next':
@@ -428,6 +454,8 @@ export function nextUpKey(item: NextUp): string {
 /** Every candidate for Next up, in NEXT_UP_ORDER. */
 export function nextUpCandidates(home: MemberHome, extras: NextUpExtras = {}): NextUp[] {
   const out: NextUp[] = [];
+  // Phase 75 (JF30): a lesson under way comes first, whatever the hats say -- only a tutor has one.
+  if (extras.running) out.push({ kind: 'lesson_running', hat: 'tutor', running: extras.running });
   const t = home.tutor;
   if (t) {
     for (const lesson of t.now.unrecorded) out.push({ kind: 'lesson_unrecorded', hat: 'tutor', lesson });
@@ -548,6 +576,11 @@ export function quickActionsFor(
      */
     board?: boolean;
     doors?: boolean;
+    /**
+     * Phase 76 (JF21): a personal space (`MemberHome.personal`). Its adult has no office hat there, yet needs a door to
+     * add their child, so `add_person` is offered (where `mayBringPeople`) and kept within the three.
+     */
+    personal?: boolean;
   },
 ): QuickAction[] {
   const out: QuickAction[] = [];
@@ -572,6 +605,9 @@ export function quickActionsFor(
       if (options.quest && !options.doors) add('join_code');
       if (options.assessment && options.mayAssess !== false) add('start_assessment');
     }
+  }
+  if (options.personal && options.mayBringPeople && !out.includes('add_person')) {
+    return [...out.slice(0, 2), 'add_person'];
   }
   return out.slice(0, 3);
 }

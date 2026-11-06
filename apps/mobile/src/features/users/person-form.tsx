@@ -7,6 +7,7 @@
 import { CheckRow } from '@/components/check-row';
 import {
   USER_STATUSES,
+  USER_STATUS_DESCRIPTIONS,
   USER_STATUS_LABELS,
   createUserRequestSchema,
   featureAllowed,
@@ -65,6 +66,7 @@ export function PersonForm({
   onCancel,
   onFailedSave,
   onDirtyChange,
+  quiet = false,
 }: {
   /** The record being edited; absent to add someone. */
   detail?: UserDetail;
@@ -86,6 +88,8 @@ export function PersonForm({
   onFailedSave?: () => void;
   /** Whether the record differs from how it opened, for the sheet's unsaved-changes guard (F-3). */
   onDirtyChange?: (dirty: boolean) => void;
+  /** Phase 76: no toast on a save -- the host says it (the next steps after adding someone). */
+  quiet?: boolean;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -186,7 +190,7 @@ export function PersonForm({
       const saved = detail
         ? await updateUser.mutateAsync({ id: detail.id, input: parsed.data as never })
         : await createUser.mutateAsync(parsed.data as never);
-      toast.success(`${form.full_name.trim()} ${isEdit ? 'updated' : 'added'}.`);
+      if (!quiet) toast.success(`${form.full_name.trim()} ${isEdit ? 'updated' : 'added'}.`);
       onSaved(saved.data);
     } catch (error) {
       setFailures((n) => n + 1);
@@ -296,6 +300,15 @@ export function PersonForm({
                   />
                 ))}
               </View>
+              {/* Phase 76 (JF21): what the chosen status means -- an existing account is always invited. */}
+              <Text
+                testID="person-status-description"
+                variant="bodySmall"
+                accessibilityLiveRegion="polite"
+                style={{ color: muted }}
+              >
+                {USER_STATUS_DESCRIPTIONS[form.status]}
+              </Text>
             </View>
           ) : null}
         </View>

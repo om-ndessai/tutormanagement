@@ -20,6 +20,7 @@ import {
   sessionUpdateSchema,
   type ApiList,
   type ApiOk,
+  type LessonOwed,
   type SessionMode,
   type SessionProgressPayload,
   type SessionTotals,
@@ -46,7 +47,7 @@ import { mailerFor, notify, sessionRecordedEvent } from '../lib/email.js';
 import { buildCsv, csvMoney, csvResponse, datedFilename } from '../lib/csv.js';
 import { ApiError } from '../lib/errors.js';
 import { autoStopExpired, recordRunningSession } from '../lib/live-sessions.js';
-import { priceSession } from '../lib/pricing.js';
+import { priceSession, resolveSessionRates } from '../lib/pricing.js';
 import {
   familyStudentIds,
   isAdmin,
@@ -66,6 +67,7 @@ import {
   toActiveSession,
   updateActive,
 } from '../repositories/active-sessions.js';
+import { listLessonsOwed } from '../repositories/lessons-owed.js';
 import { findUnknownCurriculumIds, saveSessionProgress } from '../repositories/progress.js';
 import {
   createDraft,
@@ -318,6 +320,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       input.mode,
       input.started_at,
       input.ended_at,
+      { reader: viewer },
     );
 
     await assertProgressTopics(c.env.DB, c.get('org').id, input.progress);
@@ -492,6 +495,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       draft.mode,
       draft.started_at,
       draft.ended_at,
+      { reader: viewer },
     );
 
     // Checked BEFORE the session exists: a refusal after the insert would
@@ -547,6 +551,21 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, c.get('org').id, viewer, session) };
     return c.json(body, 201);
+  })
+
+  /**
+   * Phase 75 (JF30, R34): the lessons still owed a record -- the scheduled
+   * lessons of the last UNRECORDED_LOOKBACK_DAYS that ended and were never
+   * recorded, cancelled or left running. A tutor's own; an admin's, every
+   * tutor's here. Newest first, each with the READER's own draft of it (R10,
+   * matched by tutor, student and date). No money. Declared above /:id.
+   */
+  .get('/to-record', async (c) => {
+    const org = c.get('org');
+    const body: ApiOk<LessonOwed[]> = {
+      data: await listLessonsOwed(c.env.DB, { id: org.id, time_zone: org.time_zone }, c.get('user')),
+    };
+    return c.json(body);
   })
 
   /**
@@ -723,6 +742,14 @@ export const sessionsRoutes = new Hono<AppEnv>()
       });
     }
 
+    // Phase 75 (JF18): priced up front by the rule the stop uses, so a lesson
+    // that could not be recorded is never started. Refused in the reader's
+    // words ("Ask the office to set Yusuf's price."); nothing is written.
+    await resolveSessionRates(c.env.DB, c.get('org').id, viewer.id, student_user_id, mode, {
+      reader: viewer,
+      assignment,
+    });
+
     await startActive(c.env.DB, c.get('org').id, viewer.id, student_user_id, mode);
 
     const row = await getActiveRow(c.env.DB, c.get('org').id, viewer.id);
@@ -734,11 +761,19 @@ export const sessionsRoutes = new Hono<AppEnv>()
   .patch('/active', zValidator('json', updateActiveSessionSchema), async (c) => {
     const viewer = c.get('user');
 
-    if (!(await getActiveRow(c.env.DB, c.get('org').id, viewer.id))) {
-      throw ApiError.notFound('You have no session running.');
+    const running = await getActiveRow(c.env.DB, c.get('org').id, viewer.id);
+    if (!running) throw ApiError.notFound('You have no session running.');
+
+    const input = c.req.valid('json');
+    // Phase 75 (JF18): switching to a mode with no price would only fail at
+    // the stop, so it is refused now, in the same words as Start.
+    if (input.mode && input.mode !== running.mode) {
+      await resolveSessionRates(c.env.DB, c.get('org').id, viewer.id, running.student_user_id, input.mode, {
+        reader: viewer,
+      });
     }
 
-    await updateActive(c.env.DB, c.get('org').id, viewer.id, c.req.valid('json'));
+    await updateActive(c.env.DB, c.get('org').id, viewer.id, input);
 
     const row = await getActiveRow(c.env.DB, c.get('org').id, viewer.id);
     const body: ApiOk<ActiveSession> = { data: toActiveSession(row!, null, null, viewer) };
@@ -758,11 +793,18 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     if (!row) throw ApiError.notFound('You have no session running.');
 
-    const session = await recordRunningSession(c.env.DB, row, {
+    // Phase 75 (JF18): the typed note is kept on the running lesson BEFORE it
+    // is priced, so a refused stop loses nothing -- the lesson keeps running
+    // with the note on it, for the next try or for GET /active to give back.
+    const notes = c.req.valid('json').notes ?? row.notes;
+    if (notes !== row.notes) await updateActive(c.env.DB, c.get('org').id, viewer.id, { notes });
+
+    const session = await recordRunningSession(c.env.DB, { ...row, notes }, {
       actor: viewer,
-      notes: c.req.valid('json').notes ?? row.notes,
+      notes,
       mailer: mailerFor(c),
       org: c.get('org'),
+      reader: viewer,
     });
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, c.get('org').id, viewer, session) };
@@ -837,6 +879,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
           mode,
           startedAt,
           endedAt,
+          { reader: viewer },
         );
 
         // Correcting the times re-derives both amounts, but the rates stay

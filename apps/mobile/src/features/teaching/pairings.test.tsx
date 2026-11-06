@@ -7,6 +7,8 @@ import { copyFor, PairingsScreen } from './pairings-screen';
 
 const mockAuth = jest.fn();
 const mockAssignments = jest.fn();
+const mockDefaults = jest.fn((): Record<string, { in_person: number | null; virtual: number | null }> => ({}));
+const mockUserDetail = jest.fn((): { data: unknown; isPending?: boolean } => ({ data: undefined }));
 const mockCreate = jest.fn();
 const mockUpdate = jest.fn();
 jest.mock('@/providers/auth-provider', () => ({ useAuth: () => mockAuth() }));
@@ -23,6 +25,7 @@ jest.mock('./api', () => ({
   useDeleteAssignment: () => ({ mutate: jest.fn(), isPending: false }),
   useCreateAssignment: () => ({ mutateAsync: mockCreate, isPending: false }),
   useUpdateAssignment: () => ({ mutateAsync: mockUpdate, isPending: false }),
+  useTutorDefaults: () => mockDefaults(),
 }));
 const mockLocations = jest.fn();
 const mockSetLocations = jest.fn();
@@ -32,7 +35,7 @@ jest.mock('@/features/locations/api', () => ({
 }));
 jest.mock('@/features/users/api', () => ({
   useUsers: () => ({ data: { data: [] } }),
-  useUserDetail: () => ({ data: undefined }),
+  useUserDetail: () => mockUserDetail(),
 }));
 
 const TUTOR_ID = '00000000-0000-4000-8000-000000000003';
@@ -68,6 +71,22 @@ const blanked = (row: Assignment): Assignment => ({
 
 beforeEach(() => {
   mockLocations.mockReturnValue({ isPending: false, data: { data: [] } });
+  mockDefaults.mockReturnValue({});
+  mockUserDetail.mockReturnValue({ data: undefined });
+  mockUpdate.mockReset();
+  mockCreate.mockReset();
+});
+
+/** The tutor's record as the form reads it: their current default rates. */
+const tutorRecord = (inPerson: number | null, virtual: number | null) => ({
+  isPending: false,
+  data: {
+    data: {
+      id: TUTOR_ID,
+      full_name: 'Alex Chen',
+      tutor_profile: { default_rate_in_person_cents: inPerson, default_rate_virtual_cents: virtual },
+    },
+  },
 });
 
 describe('pairings', () => {
@@ -118,6 +137,42 @@ describe('pairings', () => {
     expect(screen.queryByTestId('pairing-rates-a1')).toBeNull();
     expect(screen.queryByText(/No rate set/)).toBeNull();
     expect(screen.queryByText(/\$/)).toBeNull();
+  });
+
+  it('an override equal to the tutor’s current default reads as the default, not "custom" (JF27)', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'admin-1', roles: ['admin'] } });
+    mockAssignments.mockReturnValue({
+      data: {
+        data: [
+          pairing({ rate_in_person_cents: 7500, effective_rate_in_person_cents: 7500 }),
+          pairing({ id: 'a2', rate_in_person_cents: 8000, effective_rate_in_person_cents: 8000 }),
+        ],
+      },
+      isPending: false,
+    });
+    mockDefaults.mockReturnValue({ [TUTOR_ID]: { in_person: 7500, virtual: 6500 } });
+    await renderWithProviders(<PairingsScreen />);
+    expect(screen.queryByTestId('pairing-custom-in-person-a1')).toBeNull();
+    expect(screen.getByTestId('pairing-custom-in-person-a2')).toBeOnTheScreen();
+    expect(screen.getAllByText('Tutor pay, virtual:')).toHaveLength(2);
+  });
+
+  it('says "No price set" where the student has no price -- to a tutor too, never an amount (JF18)', async () => {
+    mockAuth.mockReturnValue({ user: { id: TUTOR_ID, roles: ['tutor'] } });
+    mockAssignments.mockReturnValue({
+      data: {
+        data: [
+          pairing({ price_missing: ['in_person', 'virtual'] }),
+          pairing({ id: 'a2', price_missing: ['virtual'] }),
+          pairing({ id: 'a3', price_missing: [] }),
+        ],
+      },
+      isPending: false,
+    });
+    await renderWithProviders(<PairingsScreen />);
+    expect(screen.getByTestId('pairing-price-missing-a1')).toHaveTextContent('No price set');
+    expect(screen.getByTestId('pairing-price-missing-a2')).toHaveTextContent('No virtual price set');
+    expect(screen.queryByTestId('pairing-price-missing-a3')).toBeNull();
   });
 
   it('labels the rate as the tutor’s pay for the office, with the admin’s actions', async () => {
@@ -183,6 +238,35 @@ describe('pairings', () => {
     await fireEvent.press(screen.getByTestId('assignment-save'));
     await waitFor(() =>
       expect(mockSetLocations).toHaveBeenCalledWith({ assignmentId: 'a1', locationIds: ['room', 'online'] }),
+    );
+  });
+
+  it('never copies the tutor’s default into a new pairing: the field is empty and names it (JF27)', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'admin-1', roles: ['admin'] } });
+    mockUserDetail.mockReturnValue(tutorRecord(7500, null));
+    await renderWithProviders(
+      <AssignmentForm existing={null} preset={{ tutor_user_id: TUTOR_ID, student_user_id: 'student-1' }} />,
+    );
+    expect(screen.getByTestId('assignment-rate-in-person')).toHaveDisplayValue('');
+    expect(screen.getByTestId('assignment-rate-virtual')).toHaveDisplayValue('');
+    expect(screen.getByPlaceholderText("Alex's default, $75.00")).toBeOnTheScreen();
+    expect(screen.getByPlaceholderText('Alex has no default rate')).toBeOnTheScreen();
+    expect(screen.getAllByText('Tutor pay, in person').length).toBeGreaterThan(0);
+  });
+
+  it('an edited override equal to the default shows as the default, and stays as stored on save', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'admin-1', roles: ['admin'] } });
+    mockUserDetail.mockReturnValue(tutorRecord(7500, 6500));
+    mockUpdate.mockResolvedValue({});
+    await renderWithProviders(
+      <AssignmentForm existing={pairing({ rate_in_person_cents: 7500, rate_virtual_cents: 6000 })} />,
+    );
+    expect(screen.getByTestId('assignment-rate-in-person')).toHaveDisplayValue('');
+    expect(screen.getByDisplayValue('60.00')).toBeOnTheScreen();
+    await fireEvent.press(screen.getByTestId('assignment-save'));
+    // No data change: the in-person override is not sent, so it stays as stored.
+    await waitFor(() =>
+      expect(mockUpdate).toHaveBeenCalledWith({ id: 'a1', input: { rate_virtual_cents: 6000, notes: 'Weekly' } }),
     );
   });
 

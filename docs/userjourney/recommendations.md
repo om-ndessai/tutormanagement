@@ -843,6 +843,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P1. A missing price hides behind 95.00 until a live lesson cannot end
 
+> **Status (JF18):** done in Phase 75 (2026-11-05) on both clients, as decided: the price stays optional, its field empty with helper text ("For example 95.00"); "No price set" on the student, the pairing and the schedule (to a tutor too, by a flag that carries no amount); Start refuses up front in the reader's words ("Ask the office to set Yusuf's price."); the Stop dialog prints the reason and keeps the typed note.
+
+
 - **What:**
   - **The price field.** Use helper text ("For example 95.00") in place of a realistic placeholder, and leave the field
     visibly empty.
@@ -888,6 +891,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   - **Rank.** P1 holds: the block depends on the office's data (Ben's lesson recorded, J16 step 31), not on the path.
 
 ### P1. A saved draft disappears from the home
+
+> **Status (JF19):** done in Phase 75 (2026-11-05): a saved draft shows "Draft saved 12:43 PM · Continue" on the home's To record, Next up, Sessions and the lessons owed, and opening that lesson opens the draft, never a second one; recording refreshes the home.
+
 
 - **What:**
   - **Every door for one lesson** (Next up, To record, the Dashboard's carousel, Stop) opens the writer's draft for that
@@ -952,6 +958,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
     decide: who may open it, and whether a guardian may see who started it.
 
 ### P1. One Add chooser, led by A family
+
+> **Status (JF21):** done in Phase 76 (2026-11-05) on both clients: one Add chooser (A family / My child, A tutor, Someone else, Invite by email) from the home, the People header and the app's (+); in a personal space the adult adding "My child" becomes the parent; after a save, the next steps (Pair with a tutor, Set a weekly lesson, Record an assessment) open their forms preset; the student's record shows their tutors and weekly lessons.
+
 
 - **What:**
   - **One "Add" chooser** on both clients, opened by the home's quick action, the Users header and the app's (+). It
@@ -1176,6 +1185,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P2. A pairing that keeps the tutor's rates is saved as custom
 
+> **Status (JF27):** done in Phase 75 (2026-11-05): the pairing form no longer copies the tutor's default into the override ("Tess's default, $60.00"; "Tutor pay, in person/virtual"), and an override equal to the current default reads as the default (no data change).
+
+
 - **What:**
   - **Empty by default.** Leave the pairing's rate fields empty, with the tutor's default as a labelled placeholder
     ("Alex's default, $75.00"). An untouched pairing then follows the default, and only a typed value is custom.
@@ -1267,6 +1279,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 ## Consistency
 
 ### P2. Record and start a lesson one way, on both clients
+
+> **Status (JF30):** done in Phase 75 (2026-11-05), adopted on the web as decided: a known lesson opens "Record a lesson" with "It ran as planned" and "Write up the lesson"; the quick action and the Sessions button open the lessons still owed with "Another lesson" (a blank form with no date); To record at the top of Sessions; every Start opens the Start dialog in place; a running lesson leads Next up with Stop; "lesson" and "Record" on these screens.
+
 
 - **What:** adopt the app's two-stage model on the web, and cut the doors.
   - **A known lesson** (Next up, To record, the carousel, Stop) opens "Record a lesson", prefilled. It offers "It ran as
@@ -1500,6 +1515,9 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 - **Owner decides:** no.
 
 ### P2. Invite people at any time, with Copy and Share on both
+
+> **Status (JF37):** done in Phase 76 (2026-11-05): Invite by email at any time from the chooser; every invited row has Copy invitation and Share (the app: Share, whose sheet copies), each confirmed; the invitation says how to sign in and what the space is for; the form explains Active, Invited and Suspended.
+
 
 - **What:**
   - **Invite by email** is an option of the Add chooser, at any time.

@@ -27,8 +27,11 @@ import {
   formatDuration,
   formatMailingAddress,
   formatTimeRange,
+  describeSchedule,
   featureAllowed,
   groupSlotsByDay,
+  paidDirectly,
+  SESSION_MODE_LABELS,
   type UserDetail,
 } from '@tmi/shared';
 
@@ -44,6 +47,9 @@ import { SsnReceiptButton } from './ssn-receipt-button';
 import { ActivityFeed } from '@/features/audit/activity-feed';
 import { CommentThread } from '@/features/comments/comment-thread';
 import { LocationsList } from '@/features/locations/locations-list';
+import { useSchedules } from '@/features/schedules/api';
+import { useAssignments } from '@/features/teaching/api';
+import { priceMissingWords } from '@/features/teaching/price-missing';
 import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 
 function initials(name: string) {
@@ -84,6 +90,8 @@ export function UserDetailView({
   // else. "Not set" or "Not received" would be a false claim to a family, so
   // for them the rows are left out rather than shown empty.
   const seesTutorPay = (viewer?.roles.includes('admin') ?? false) || viewer?.id === user.id;
+  // Phase 54: families pay each tutor directly here, so no student price is asked for.
+  const direct = organization ? paidDirectly(organization) : false;
   const availabilityByDay = groupSlotsByDay(user.availability);
 
   return (
@@ -216,16 +224,38 @@ export function UserDetailView({
             )}
             {/* The API sends these to an admin and to the student's own
                 family -- it is what they pay -- and blanks them for a tutor,
-                who knows their own rate and would learn the margin. */}
-            {student.charge_rate_in_person_cents != null && (
-              <Detail icon={<WalletIcon className="size-4" />} label="In-person price">
-                {`${formatCents(student.charge_rate_in_person_cents)} / hr`}
+                who knows their own rate and would learn the margin. Phase 75
+                (JF18): one the office has not set says "No price set", to a
+                tutor too -- the flag, never an amount. */}
+            {tutoring && !direct && (student.price_missing?.length ?? 0) > 1 ? (
+              <Detail icon={<WalletIcon className="size-4" />} label="Price">
+                <NoPrice />
               </Detail>
-            )}
-            {student.charge_rate_virtual_cents != null && (
-              <Detail icon={<WalletIcon className="size-4" />} label="Virtual price">
-                {`${formatCents(student.charge_rate_virtual_cents)} / hr`}
-              </Detail>
+            ) : (
+              <>
+                {student.charge_rate_in_person_cents != null ? (
+                  <Detail icon={<WalletIcon className="size-4" />} label="In-person price">
+                    {`${formatCents(student.charge_rate_in_person_cents)} / hr`}
+                  </Detail>
+                ) : (
+                  tutoring && !direct && priceMissingWords(student.price_missing, 'in_person') && (
+                    <Detail icon={<WalletIcon className="size-4" />} label="In-person price">
+                      <NoPrice />
+                    </Detail>
+                  )
+                )}
+                {student.charge_rate_virtual_cents != null ? (
+                  <Detail icon={<WalletIcon className="size-4" />} label="Virtual price">
+                    {`${formatCents(student.charge_rate_virtual_cents)} / hr`}
+                  </Detail>
+                ) : (
+                  tutoring && !direct && priceMissingWords(student.price_missing, 'virtual') && (
+                    <Detail icon={<WalletIcon className="size-4" />} label="Virtual price">
+                      <NoPrice />
+                    </Detail>
+                  )
+                )}
+              </>
             )}
             {tutoring && (
               <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
@@ -239,6 +269,9 @@ export function UserDetailView({
           </dl>
         </Section>
       )}
+
+      {/* Phase 76 (JF21): who teaches them and when, where Tutoring is on (the app's model, parity U2). */}
+      {student && tutoring && <StudentTeaching studentId={user.id} />}
 
       {user.availability.length > 0 && (
         <Section title="Availability" icon={<CalendarClockIcon className="size-4" />}>
@@ -313,6 +346,54 @@ export function UserDetailView({
         </>
       )}
     </div>
+  );
+}
+
+/** "No price set", as the record says it (Phase 75, JF18). */
+function NoPrice() {
+  return (
+    <span className="text-warning-foreground dark:text-warning font-medium" data-testid="user-no-price">
+      No price set
+    </span>
+  );
+}
+
+/**
+ * A student's tutors and their weekly lessons (Phase 76, JF21), from the reader's own lists -- the pairings and
+ * schedules they may see -- so nobody learns of a lesson they could not list. No money.
+ */
+function StudentTeaching({ studentId }: { studentId: string }) {
+  const pairings = useAssignments({ student_user_id: studentId });
+  const schedules = useSchedules({ student_user_id: studentId });
+  const tutors = (pairings.data?.data ?? []).filter((row) => row.student_user_id === studentId && row.is_active);
+  const lessons = (schedules.data?.data ?? []).filter((row) => row.student_user_id === studentId && row.is_active);
+  if (pairings.isPending && schedules.isPending) return null;
+  return (
+    <Section title="Lessons" icon={<CalendarClockIcon className="size-4" />}>
+      <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+        <Detail icon={<GraduationCapIcon className="size-4" />} label={tutors.length === 1 ? 'Tutor' : 'Tutors'}>
+          <span data-testid="user-detail-tutors">
+            {tutors.length === 0 ? <Muted>Not paired with a tutor yet</Muted> : tutors.map((row) => row.tutor_name).join(', ')}
+          </span>
+        </Detail>
+        <Detail icon={<CalendarClockIcon className="size-4" />} label="Weekly lessons">
+          {lessons.length === 0 ? (
+            <Muted>
+              <span data-testid="user-detail-lessons">None scheduled</span>
+            </Muted>
+          ) : (
+            <ul className="grid gap-1" data-testid="user-detail-lessons">
+              {lessons.map((row) => (
+                <li key={row.id}>
+                  {describeSchedule(row)} with {row.tutor_name}
+                  <span className="text-muted-foreground"> · {SESSION_MODE_LABELS[row.mode]}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Detail>
+      </dl>
+    </Section>
   );
 }
 

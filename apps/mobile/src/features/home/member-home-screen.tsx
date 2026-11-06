@@ -123,6 +123,8 @@ export function MemberHomeScreen() {
         // The board's own New Quest and the band's own Join with a code (JF23), left out before the cut to three.
         board,
         doors: doors.includes('code'),
+        // Phase 76 (JF21): a personal space's adult has no office hat, yet adds their child from here.
+        personal: home.personal,
       })
     : [];
 
@@ -166,7 +168,7 @@ export function MemberHomeScreen() {
           <TourTarget id="home-next-up">
             <NextUpCard home={home} next={next} />
           </TourTarget>
-          <QuickActions actions={actions} />
+          <QuickActions actions={actions} personal={home.personal} />
           <HomeSections home={home} hats={hats} item={next.item} practiceLevelId={next.practiceLevelId} />
           <SpaceNotes learner={learner} />
           {/* Phase 62 (P6): where Quest is on, staff and parents keep their favorites and Waiting for you. */}

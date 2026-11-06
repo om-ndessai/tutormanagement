@@ -491,6 +491,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> the &quot;Practise before&quot; window.</li></ul>
 <p>## Usability</p>
 <h3>P1. A missing price hides behind 95.00 until a live lesson cannot end</h3>
+<blockquote><strong>Status (JF18):</strong> done in Phase 75 (2026-11-05) on both clients, as decided: the price stays optional, its field empty with helper text (&quot;For example 95.00&quot;); &quot;No price set&quot; on the student, the pairing and the schedule (to a tutor too, by a flag that carries no amount); Start refuses up front in the reader&#x27;s words (&quot;Ask the office to set Yusuf&#x27;s price.&quot;); the Stop dialog prints the reason and keeps the typed note.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>The price field.</strong> Use helper text (&quot;For example 95.00&quot;) in place of a realistic placeholder, and leave the field</li></ul>
 <p>visibly empty.</p>
 <ul><li><strong>A missing price</strong> shows as &quot;No price set&quot; on the student&#x27;s record and wherever the student is paired or</li></ul>
@@ -517,6 +518,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p>(<code>live-sessions.ts:120-123</code>), so it cannot close an unpriced lesson either.</p>
 <ul><li><strong>Rank.</strong> P1 holds: the block depends on the office&#x27;s data (Ben&#x27;s lesson recorded, J16 step 31), not on the path.</li></ul>
 <h3>P1. A saved draft disappears from the home</h3>
+<blockquote><strong>Status (JF19):</strong> done in Phase 75 (2026-11-05): a saved draft shows &quot;Draft saved 12:43 PM · Continue&quot; on the home&#x27;s To record, Next up, Sessions and the lessons owed, and opening that lesson opens the draft, never a second one; recording refreshes the home.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Every door for one lesson</strong> (Next up, To record, the Dashboard&#x27;s carousel, Stop) opens the writer&#x27;s draft for that</li></ul>
 <p>pairing and date, when there is one.</p>
 <ul><li><strong>Mark the lesson on the home:</strong> &quot;Draft saved 12:43 PM · Continue&quot;.</li><li><strong>In the app,</strong> move &quot;Finish write-up&quot; from More → Dashboard to the home.</li><li><strong>Why:</strong></li><li><strong>The question.</strong> C2&#x27;s is &quot;did I record the last one?&quot;.</li><li><strong>What happens today.</strong> After a draft is saved, the home is unchanged. &quot;Record it now&quot; opens an empty form for the</li></ul>
@@ -550,6 +552,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Deliberate.</strong> &quot;Continue: for whoever started it, while it is in progress&quot;</li></ul>
 <p>(<a href="../canvas-assessment-plan.html">canvas-assessment-plan.md:40</a>). Both halves of What are therefore the owner&#x27;s to decide: who may open it, and whether a guardian may see who started it.</p>
 <h3>P1. One Add chooser, led by A family</h3>
+<blockquote><strong>Status (JF21):</strong> done in Phase 76 (2026-11-05) on both clients: one Add chooser (A family / My child, A tutor, Someone else, Invite by email) from the home, the People header and the app&#x27;s (+); in a personal space the adult adding &quot;My child&quot; becomes the parent; after a save, the next steps (Pair with a tutor, Set a weekly lesson, Record an assessment) open their forms preset; the student&#x27;s record shows their tutors and weekly lessons.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>One &quot;Add&quot; chooser</strong> on both clients, opened by the home&#x27;s quick action, the Users header and the app&#x27;s (+). It</li></ul>
 <p>offers:</p>
 <ul><li>&quot;A family (parent and child)&quot;;</li><li>&quot;A tutor&quot; (where Tutoring is on);</li><li>&quot;Someone else&quot;;</li><li>&quot;Invite by email&quot;.</li><li><strong>&quot;A family&quot;</strong> is the wizard&#x27;s guided flow, in every space.</li><li>In a personal space it starts with &quot;This is my child&quot;, which makes the signed-in adult the parent.</li><li>For an office it leads with &quot;Create a family account&quot;.</li><li><strong>After each save,</strong> offer the next step (&quot;Pair Yusuf with a tutor&quot;, &quot;Set a weekly lesson&quot;) rather than a toast.</li><li><strong>The student&#x27;s details</strong> show the tutor and the lessons.</li><li><strong>Why:</strong></li><li><strong>C1 offices</strong> add families every week, and the first door they meet sets the habit. Priya&#x27;s was a list called</li></ul>
@@ -641,6 +644,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p><figure class="shot"><img alt="J11 step 4: two requests, a name and a cut email each" src="./assets/cuj-j11-step-5.png"><figcaption>J11 step 4: two requests, a name and a cut email each</figcaption></figure></p>
 <ul><li><strong>Size:</strong> S to M.</li><li><strong>Owner decides:</strong> whether the join request asks for a role and a note. This is shared with the first P0.</li></ul>
 <h3>P2. A pairing that keeps the tutor&#x27;s rates is saved as custom</h3>
+<blockquote><strong>Status (JF27):</strong> done in Phase 75 (2026-11-05): the pairing form no longer copies the tutor&#x27;s default into the override (&quot;Tess&#x27;s default, $60.00&quot;; &quot;Tutor pay, in person/virtual&quot;), and an override equal to the current default reads as the default (no data change).</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Empty by default.</strong> Leave the pairing&#x27;s rate fields empty, with the tutor&#x27;s default as a labelled placeholder</li></ul>
 <p>(&quot;Alex&#x27;s default, $75.00&quot;). An untouched pairing then follows the default, and only a typed value is custom.</p>
 <ul><li><strong>Labels.</strong> Name the fields &quot;Tutor pay, in person&quot; and &quot;Tutor pay, virtual&quot;.</li><li><strong>Why:</strong></li><li><strong>C1 offices.</strong> Accepting the prefilled default freezes it as an override, marked &quot;custom&quot;. If the tutor&#x27;s rate</li></ul>
@@ -669,6 +673,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
 <p>## Consistency</p>
 <h3>P2. Record and start a lesson one way, on both clients</h3>
+<blockquote><strong>Status (JF30):</strong> done in Phase 75 (2026-11-05), adopted on the web as decided: a known lesson opens &quot;Record a lesson&quot; with &quot;It ran as planned&quot; and &quot;Write up the lesson&quot;; the quick action and the Sessions button open the lessons still owed with &quot;Another lesson&quot; (a blank form with no date); To record at the top of Sessions; every Start opens the Start dialog in place; a running lesson leads Next up with Stop; &quot;lesson&quot; and &quot;Record&quot; on these screens.</blockquote>
 <ul><li><strong>What:</strong> adopt the app&#x27;s two-stage model on the web, and cut the doors.</li><li><strong>A known lesson</strong> (Next up, To record, the carousel, Stop) opens &quot;Record a lesson&quot;, prefilled. It offers &quot;It ran as</li></ul>
 <p>planned&quot;, then &quot;Write up the lesson&quot;.</p>
 <ul><li><strong>The quick action and the Sessions button</strong> open a list of lessons still owed, with &quot;Another lesson&quot; for a blank</li></ul>
@@ -744,6 +749,7 @@ border:1px solid var(--line);border-radius:7px;display:block}
 <p><figure class="shot"><img alt="J19 step 10: Exit lands on Question Quest" src="./assets/cuj-j19-step-10.png"><figcaption>J19 step 10: Exit lands on Question Quest</figcaption></figure></p>
 <ul><li><strong>Size:</strong> S.</li><li><strong>Owner decides:</strong> no.</li></ul>
 <h3>P2. Invite people at any time, with Copy and Share on both</h3>
+<blockquote><strong>Status (JF37):</strong> done in Phase 76 (2026-11-05): Invite by email at any time from the chooser; every invited row has Copy invitation and Share (the app: Share, whose sheet copies), each confirmed; the invitation says how to sign in and what the space is for; the form explains Active, Invited and Suspended.</blockquote>
 <ul><li><strong>What:</strong></li><li><strong>Invite by email</strong> is an option of the Add chooser, at any time.</li><li><strong>Every invited row,</strong> on Users and People, has &quot;Copy invitation&quot; and &quot;Share&quot;, with a confirmation.</li><li><strong>The invitation text</strong> says how to sign in (Google, with which address), what the space is, and who sent it.</li><li><strong>The form</strong> explains Active, Invited and Suspended.</li><li><strong>Why:</strong></li><li><strong>Once only.</strong> C1 owners of self-serve spaces get the ready-made invitation only right after starting the space.</li></ul>
 <p>Such spaces send no email (CLAUDE.md, Phase 51), so a second family later means writing their own message.</p>
 <ul><li><strong>A link that misleads.</strong> The text Ana received led to a children&#x27;s game page (<a href="J09-invited-by-space.html">J09 step 1</a>).</li><li><strong>Uneven controls.</strong> The app has no Copy, and its Share sheet&#x27;s Copy gives no confirmation.</li><li><strong>Evidence:</strong></li><li><strong>Web:</strong> <a href="J06-start-a-space.html">J06 steps 16-19</a>; <a href="J14-office-adds-family.html">J14 step 7</a>, where &quot;Invited&quot; is not</li></ul>

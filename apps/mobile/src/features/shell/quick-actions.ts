@@ -61,12 +61,12 @@ export function quickActionRoute(
   id: string | undefined,
   roles: readonly Role[] | undefined,
   organization: Org,
-): '/start-lesson' | '/record-lesson' | '/quest/play-last' | null {
+): '/start-lesson' | '/lessons-owed' | '/quest/play-last' | null {
   if (id === 'play-last') return roles && featureOn(organization, 'quest') ? '/quest/play-last' : null;
   if (!roles?.includes('tutor') || !featureOn(organization, 'tutoring')) return null;
   if (id === 'start-lesson') return '/start-lesson';
-  // The record step flow (UI upgrades U4); the action's id stays, as phones have it set.
-  if (id === 'record-session') return '/record-lesson';
+  // Phase 75 (JF30): the lessons still owed, as every "Record a lesson" door; the action's id stays, as phones have it set.
+  if (id === 'record-session') return '/lessons-owed';
   return null;
 }
 

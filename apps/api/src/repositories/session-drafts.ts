@@ -3,6 +3,7 @@ import {
   sessionProgressInputSchema,
   sessionWriteUpInputSchema,
   isWriteUpEmpty,
+  upcomingTakenKey,
 } from '@tmi/shared';
 import type {
   Rating,
@@ -241,4 +242,32 @@ export async function countMyDrafts(
     .first<{ total: number }>();
 
   return Number(row?.total ?? 0);
+}
+
+/**
+ * Phase 75 (JF19, JF30): the reader's own drafts of lessons from `from` on, keyed `tutor|student|date`
+ * (`upcomingTakenKey`) -- the newest of each, since a draft has no schedule of its own. Only the author's,
+ * as every draft read (R10), so a lesson's "Draft saved · Continue" is never somebody else's.
+ */
+export async function myDraftsByLesson(
+  db: D1Database,
+  org: OrgId,
+  authorUserId: string,
+  from: string,
+): Promise<Map<string, { id: string; updated_at: string }>> {
+  const result = await db
+    .prepare(
+      `SELECT id, tutor_user_id, student_user_id, occurred_on, updated_at FROM session_drafts
+       WHERE organization_id = ? AND author_user_id = ? AND occurred_on >= ?
+       ORDER BY updated_at DESC`,
+    )
+    .bind(org, authorUserId, from)
+    .all<{ id: string; tutor_user_id: string; student_user_id: string; occurred_on: string; updated_at: string }>();
+
+  const out = new Map<string, { id: string; updated_at: string }>();
+  for (const row of result.results ?? []) {
+    const key = upcomingTakenKey(row.tutor_user_id, row.student_user_id, row.occurred_on);
+    if (!out.has(key)) out.set(key, { id: row.id, updated_at: row.updated_at });
+  }
+  return out;
 }

@@ -6,8 +6,11 @@
 // sheet announces what it saved just before it closes, as `guardian-bridge` does for the student
 // form. Nothing is stored: a listener that is gone simply misses it, and the sheets behave the
 // same whether anyone listens or not.
+//
+// Phase 76 (JF21): the schedule step flow announces 'schedule', so "Set a weekly lesson" -- a next step after
+// adding someone -- is ticked once it saves.
 
-export type SavedForm = 'person' | 'assessment' | 'plan' | 'assignment';
+export type SavedForm = 'person' | 'assessment' | 'plan' | 'assignment' | 'schedule';
 
 export interface FormSaved {
   form: SavedForm;

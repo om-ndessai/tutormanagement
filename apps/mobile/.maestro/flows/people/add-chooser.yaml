@@ -1,0 +1,310 @@
+# Phase 76 (JF21, JF37; docs/journey-fixes-plan.md, owner 2026-11-05): one way to add people.
+# 1. The office (Priya, chmi): People's header button opens the one Add chooser -- "A family (parent and child)",
+#    "A tutor", "Someone else", "Invite by email". A family is the guided flow (family first, Anita chosen); once
+#    added, the next steps instead of a toast: "Pair Noa with a tutor", then "Set a weekly lesson", which waits for
+#    the pairing and, once Noa is paired with Alex, opens the schedule flow on that pairing at "When is it?".
+# 2. Invite by email, from the chooser at any time: the invitation sheet.
+# 3. A newcomer in their own (personal) space: the home's "Add my child" opens the chooser on "My child" (no tutor);
+#    the flow asks only for the child -- the reader is the parent -- with the consent box on the Review.
+# Self-cleaning: the people the office added are removed before and after (clean-people), and the newcomer with their
+# space (and the child in it).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.chooser@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.chooser@example.com, NAME: Cass Chooser }
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.chooser@example.com }
+tags:
+  - feature
+---
+# --- 1. The office: People's header → the chooser → a family → the next steps ------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: people-add
+    timeout: 20000
+- tapOn:
+    id: people-add
+- extendedWaitUntil:
+    visible:
+      id: add-chooser
+    timeout: 15000
+- assertVisible:
+    id: add-chooser-title
+    text: 'Add people'
+- assertVisible:
+    id: add-choice-family
+- assertVisible: 'A family \(parent and child\)'
+- assertVisible:
+    id: add-choice-tutor
+- assertVisible:
+    id: add-choice-someone
+- assertVisible:
+    id: add-choice-invite
+- takeScreenshot: add-chooser-office
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-family
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is their family\?.*'
+    timeout: 15000
+- tapOn:
+    id: add-student-parents-input
+- inputText: 'Anita'
+- extendedWaitUntil:
+    visible:
+      id: add-student-parents-row-00000000-0000-4000-8000-000000000007
+    timeout: 15000
+- tapOn:
+    id: add-student-parents-row-00000000-0000-4000-8000-000000000007
+- extendedWaitUntil:
+    visible:
+      id: guardian-00000000-0000-4000-8000-000000000007
+    timeout: 10000
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is the student\?.*'
+    timeout: 5000
+- tapOn:
+    id: add-student-name
+- inputText: 'Noa Chooser'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+# School and goal, and the week: skipped; the lessons and the price as they are.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-skip
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When can they learn\?.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-skip
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Their lessons.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*The price.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+- tapOn:
+    id: step-flow-next
+# The next steps, not a toast.
+- extendedWaitUntil:
+    visible:
+      id: add-person-done
+    timeout: 15000
+- assertVisible: 'Noa Chooser is added'
+- assertVisible:
+    id: add-done-next-pair_tutor
+- assertVisible: 'Pair Noa with a tutor'
+- assertVisible:
+    id: add-done-next-weekly_lesson
+- assertVisible:
+    id: add-done-next-weekly_lesson-line
+    text: 'Pair them with a tutor first\.'
+- takeScreenshot: add-chooser-next-steps
+# Pair: the pairing form, the student chosen already; Alex teaches.
+- tapOn:
+    id: add-done-next-pair_tutor
+- extendedWaitUntil:
+    visible:
+      id: assignment-tutor-00000000-0000-4000-8000-000000000003
+    timeout: 15000
+- tapOn:
+    id: assignment-tutor-00000000-0000-4000-8000-000000000003
+- scrollUntilVisible:
+    element:
+      id: assignment-save
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: assignment-save
+- extendedWaitUntil:
+    visible:
+      id: add-done-next-pair_tutor-line
+      text: 'Done\.'
+    timeout: 15000
+# Paired: the weekly lesson opens the schedule flow on that pairing, at When.
+- assertVisible:
+    id: add-done-next-weekly_lesson-line
+    text: 'The same day and time each week\.'
+- tapOn:
+    id: add-done-next-weekly_lesson
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When is it\?.*'
+    timeout: 15000
+- takeScreenshot: add-chooser-weekly-lesson
+- waitForAnimationToEnd:
+    timeout: 3000
+# Nothing changed: it closes without asking, back on the next steps.
+- tapOn:
+    id: step-flow-close
+- extendedWaitUntil:
+    visible:
+      id: add-person-done
+    timeout: 10000
+- tapOn:
+    id: add-person-done-close
+
+# --- 2. Invite by email, from the chooser --------------------------------------------------------------------------
+- extendedWaitUntil:
+    visible:
+      id: people-add
+    timeout: 15000
+- tapOn:
+    id: people-add
+- extendedWaitUntil:
+    visible:
+      id: add-choice-invite
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-invite
+- extendedWaitUntil:
+    visible:
+      id: screen-invite-people
+    timeout: 15000
+- assertVisible:
+    id: invite-people-title
+    text: 'Invite by email'
+- assertVisible:
+    id: invite-email-0
+- takeScreenshot: add-chooser-invite
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-invite-people
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 10000
+
+# --- 3. A newcomer's own space: "Add my child" → "My child" ------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.chooser@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: quick-add_person
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: quick-add_person
+    text: '.*Add my child.*'
+- tapOn:
+    id: quick-add_person
+- extendedWaitUntil:
+    visible:
+      id: add-chooser
+    timeout: 15000
+- assertVisible:
+    id: add-chooser-title
+    text: 'Add my child'
+- assertVisible: 'My child'
+- assertNotVisible:
+    id: add-choice-tutor
+- takeScreenshot: add-chooser-personal
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-family
+# No Family step: the reader is the parent.
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*Who is your child\?.*'
+    timeout: 15000
+- tapOn:
+    id: add-student-name
+- inputText: 'Pip Chooser'
+- hideKeyboard
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*School and goal.*'
+    timeout: 5000
+- tapOn:
+    id: step-flow-skip
+- extendedWaitUntil:
+    visible:
+      id: step-flow-review
+    timeout: 5000
+# The consent is the explicit box, here as in any self-serve space.
+- scrollUntilVisible:
+    element:
+      id: add-student-consent
+- tapOn:
+    id: add-student-consent
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: add-person-done
+    timeout: 20000
+- assertVisible: 'Pip Chooser is added'
+- assertVisible:
+    id: add-person-done-again
+    text: '.*Add another child.*'
+- takeScreenshot: add-chooser-my-child-done
+- tapOn:
+    id: add-person-done-close
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 10000

@@ -9,6 +9,10 @@
 // pairing's locations, at most one in person and one online; with both, the lesson's usual mode is
 // asked, otherwise it follows the place. No money anywhere in it. No toast while the flow is up (U3):
 // a refusal is said in the footer, and "Session scheduled." once the flow has gone.
+//
+// Phase 76 (JF21): `?assignment=<pairing id>` -- "Set a weekly lesson", a next step after adding someone -- opens on
+// that pairing, chosen, at the When step; a save announces `{ form: 'schedule', id }` (`form-bridge`) so the step that
+// opened it is ticked.
 import {
   DAYS_OF_WEEK,
   LOCATION_KIND_LABELS,
@@ -43,6 +47,7 @@ import { studentItems } from '@/features/teaching/session-form/record-lesson-flo
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { NoteField } from '@/features/teaching/session-notes';
 import { ApiRequestError } from '@/lib/api-client';
+import { announceFormSaved } from '@/lib/form-bridge';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -103,8 +108,14 @@ function close() {
   if (router.canGoBack()) router.back();
 }
 
+/** The pairing a `?assignment=` names, when it is one the reader may schedule; else none (the Who step asks). */
+export function presetPairing(assignments: readonly Assignment[], assignmentId: string | undefined): Assignment | null {
+  if (!assignmentId) return null;
+  return assignments.find((candidate) => candidate.id === assignmentId) ?? null;
+}
+
 /** The route's body: waits for the reader's pairings, then starts the flow from them once. */
-export function ScheduleLessonFlow() {
+export function ScheduleLessonFlow({ assignmentId }: { assignmentId?: string } = {}) {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isTutor = user?.roles.includes('tutor') ?? false;
@@ -118,7 +129,10 @@ export function ScheduleLessonFlow() {
       </FlowFrame>
     );
   }
-  if (pairings.isPending) {
+  // A pairing made a moment ago (Phase 76) may not be in the cached list yet: wait for the fresh one.
+  const waitingForPreset =
+    Boolean(assignmentId) && !presetPairing(pairings.data?.data ?? [], assignmentId) && pairings.isFetching;
+  if (pairings.isPending || waitingForPreset) {
     return (
       <FlowFrame>
         <FormSkeleton label="Loading…" fields={4} />
@@ -132,7 +146,7 @@ export function ScheduleLessonFlow() {
       </FlowFrame>
     );
   }
-  return <ScheduleSteps assignments={pairings.data?.data ?? []} isAdmin={isAdmin} />;
+  return <ScheduleSteps assignments={pairings.data?.data ?? []} isAdmin={isAdmin} assignmentId={assignmentId} />;
 }
 
 /** The flow's frame before it can start: a close button over the loading or error state. */
@@ -152,15 +166,25 @@ function FlowFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function ScheduleSteps({ assignments, isAdmin }: { assignments: Assignment[]; isAdmin: boolean }) {
+function ScheduleSteps({
+  assignments,
+  isAdmin,
+  assignmentId,
+}: {
+  assignments: Assignment[];
+  isAdmin: boolean;
+  /** Phase 76: the pairing to open on ("Set a weekly lesson"). */
+  assignmentId?: string;
+}) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const toast = useToast();
   const today = organizationToday(useOrgTimeZone());
   const create = useCreateSchedule();
 
-  // With one pairing to choose from, it is chosen, with its default places.
-  const only = assignments.length === 1 ? assignments[0]! : null;
+  // A pairing named by the link (Phase 76), else the only one there is, is chosen, with its default places.
+  const preset = presetPairing(assignments, assignmentId);
+  const only = preset ?? (assignments.length === 1 ? assignments[0]! : null);
   const [draft, setDraft] = useState<ScheduleDraft>(() => ({
     assignmentId: only?.id ?? '',
     dayOfWeek: 2,
@@ -448,8 +472,10 @@ function ScheduleSteps({ assignments, isAdmin }: { assignments: Assignment[]; is
       return;
     }
     try {
-      await create.mutateAsync(parsed.data);
+      const saved = await create.mutateAsync(parsed.data);
       haptics.success();
+      // Whoever opened the flow and listens (the next steps after adding someone) ticks its step.
+      announceFormSaved({ form: 'schedule', id: saved.data.id });
       leave(close);
       toast.success('Session scheduled.');
     } catch (error) {
@@ -468,6 +494,8 @@ function ScheduleSteps({ assignments, isAdmin }: { assignments: Assignment[]; is
       title="Schedule a lesson"
       steps={steps}
       draft={draft}
+      // The pairing is chosen already: start on When (Back still reaches Who).
+      initialStep={preset ? 'when' : undefined}
       review={{
         title: 'Does this look right?',
         description: 'Everyone involved can add it to their calendar once it is scheduled.',

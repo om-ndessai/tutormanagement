@@ -1,5 +1,6 @@
 # A tutor records a lesson from the create button (Alex, tutor in chmi), a step flow (UI upgrades
-# U4): Student, When, then the write-up cards. It shows the length and never a figure. Next with no
+# U4): Student, When, then the write-up cards. Phase 75 (JF30): "Record a lesson" opens the lessons still owed;
+# "Another lesson" is the step flow, with NO day or time filled in (never today at 4:00 PM by default). It shows the length and never a figure. Next with no
 # student says why. He records a lesson with Ben (an hour and a half, notes, homework done, a goal
 # rating and his own assessment); it is in the list; he edits it on the record sheet (editing stays
 # the full form), then deletes it, which also puts the data back for other flows.
@@ -35,6 +36,18 @@ tags:
     id: create-button
 - tapOn:
     id: create-action-record-session
+# The lessons still owed, then "Another lesson".
+- extendedWaitUntil:
+    visible:
+      id: lessons-owed-another
+    timeout: 15000
+- assertVisible: 'Record a lesson'
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: record-lessons-owed
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: lessons-owed-another
 - extendedWaitUntil:
     visible:
       id: step-flow-title
@@ -55,7 +68,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: record-student-error
-      text: 'Choose which student this session was with.'
+      text: 'Choose which student this lesson was with.'
     timeout: 10000
 - assertVisible: 'Step 1 of 6'
 # Only his own pairings: Ben, never another tutor's students.
@@ -67,17 +80,27 @@ tags:
     id: record-student-error
 - tapOn:
     id: step-flow-next
-# When: an hour and a half, in one tap. The length, never a figure.
+# When: nothing is filled in, so Next asks for the day; then the day and start are chosen and an hour and a half
+# set in one tap. The length, never a figure.
 - extendedWaitUntil:
     visible:
       id: step-flow-title
       text: '.*When was it\?.*'
     timeout: 10000
 - tapOn:
-    id: record-length-90
+    id: step-flow-next
+- extendedWaitUntil:
+    visible: 'Choose the day of the lesson.'
+    timeout: 10000
+- runFlow:
+    file: ../../subflows/record-choose-when.yaml
+    env:
+      LENGTH: '90'
 - assertVisible:
     id: record-preview
 - assertVisible: '1 hr 30 min'
+# The chip set the end an hour and a half after the start (the chip's own label also reads "1 hr 30 min").
+- assertVisible: '.*Ended.*5:30 PM.*'
 - assertNotVisible:
     id: record-money
 - assertNotVisible: '.*\$[0-9].*'
@@ -149,21 +172,17 @@ tags:
 - tapOn:
     id: step-flow-next
 - extendedWaitUntil:
-    visible: 'Session recorded.'
+    visible: 'Lesson recorded.'
     timeout: 15000
-# It leads the list (today is the newest day), with its notes.
-- extendedWaitUntil:
-    visible: 'Recorded from the phone: long division'
-    timeout: 15000
-- assertNotVisible: '.*\$[0-9].*'
-- takeScreenshot: record-in-list
-# The "Session recorded." toast sits over the list's foot, right above the bar's hump, where the
-# new lesson's notes line lands: bring the card to mid-screen before tapping it.
+# It leads the list (today is the newest day), with its notes. The list sits under To record and the totals
+# (Phase 75), and the "Lesson recorded." toast over its foot: bring the card to mid-screen.
 - scrollUntilVisible:
     element: 'Recorded from the phone: long division'
     direction: DOWN
     centerElement: true
-    timeout: 15000
+    timeout: 20000
+- assertNotVisible: '.*\$[0-9].*'
+- takeScreenshot: record-in-list
 - tapOn: 'Recorded from the phone: long division'
 - extendedWaitUntil:
     visible:
@@ -174,7 +193,7 @@ tags:
 - tapOn:
     id: session-edit
 - extendedWaitUntil:
-    visible: 'Edit session'
+    visible: 'Edit lesson'
     timeout: 15000
 - assertNotVisible:
     id: record-pairing
@@ -199,7 +218,7 @@ tags:
 - tapOn:
     id: record-submit
 - extendedWaitUntil:
-    visible: 'Session updated.'
+    visible: 'Lesson updated.'
     timeout: 15000
 - extendedWaitUntil:
     visible: 'Edited from the phone: five problems'

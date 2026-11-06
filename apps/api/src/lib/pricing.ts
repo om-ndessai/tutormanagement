@@ -1,13 +1,17 @@
 import {
   computeAmountCents,
   elapsedMinutes,
+  missingRateMessage,
   resolveChargeRateCents,
   resolveRateCents,
   roundToQuarterHour,
+  type Assignment,
   type SessionMode,
+  type User,
 } from '@tmi/shared';
 
 import { ApiError } from './errors.js';
+import { isAdmin } from './scope.js';
 import { getActiveAssignmentFor } from '../repositories/assignments.js';
 import { getStudentChargeRates } from '../repositories/users.js';
 import type { OrgId } from './org.js';
@@ -40,10 +44,23 @@ export async function spacePaidDirectly(db: D1Database, org: OrgId): Promise<boo
   return !row?.business_id;
 }
 
+/** Who is told a lesson cannot be priced, which decides the words (Phase 75, JF18). */
+export interface PricingOptions {
+  /** The person recording, starting or stopping: a tutor is told whom to ask, the office what is missing. */
+  reader?: User | null;
+  /** The live pairing, when the caller has read it already. */
+  assignment?: Assignment | null;
+}
+
 /**
  * Both halves matter: a tutor can only bill for a student who was actually
  * assigned to them, and the rate comes from the assignment (or the tutor's
  * default) rather than from anything the client sent.
+ *
+ * Phase 75 (JF18): the same rule refuses at Start, before a lesson that could
+ * not be recorded is under way, and every refusal's MESSAGE is in the reader's
+ * words (`missingRateMessage`), the `mode` detail saying the same -- an older
+ * app shows only the message.
  */
 export async function resolveSessionRates(
   db: D1Database,
@@ -51,10 +68,11 @@ export async function resolveSessionRates(
   tutorUserId: string,
   studentUserId: string,
   mode: SessionMode,
+  options: PricingOptions = {},
 ): Promise<SessionRates> {
   // This organization's pairing and this organization's prices: the same two
   // people paired elsewhere authorise and price nothing here.
-  const assignment = await getActiveAssignmentFor(db, org, tutorUserId, studentUserId);
+  const assignment = options.assignment ?? (await getActiveAssignmentFor(db, org, tutorUserId, studentUserId));
 
   if (!assignment) {
     throw ApiError.validation('Please correct the highlighted fields.', {
@@ -62,7 +80,16 @@ export async function resolveSessionRates(
     });
   }
 
-  const label = mode === 'virtual' ? 'virtual' : 'in-person';
+  const refuse = (missing: 'price' | 'pay_rate') => {
+    const message = missingRateMessage({
+      missing,
+      mode,
+      reader: options.reader && !isAdmin(options.reader) ? 'tutor' : 'office',
+      student_name: assignment.student_name,
+      tutor_name: assignment.tutor_name,
+    });
+    return ApiError.validation(message, { mode: [message] });
+  };
 
   // What the tutor is paid: the pairing's override, else the tutor's default.
   const tutorRateCents = resolveRateCents(
@@ -74,14 +101,7 @@ export async function resolveSessionRates(
     },
   );
 
-  if (tutorRateCents == null) {
-    throw ApiError.validation('Please correct the highlighted fields.', {
-      mode: [
-        `No ${label} rate is set for this tutor. ` +
-          'Set a default rate on their profile, or a rate on the assignment.',
-      ],
-    });
-  }
+  if (tutorRateCents == null) throw refuse('pay_rate');
 
   // Phase 54: paid directly, the pairing's rate IS the price -- what the family
   // pays the tutor. The student's price belongs to the organization model.
@@ -94,14 +114,7 @@ export async function resolveSessionRates(
   const studentRates = await getStudentChargeRates(db, org, studentUserId);
   const chargeRateCents = studentRates && resolveChargeRateCents(mode, studentRates);
 
-  if (chargeRateCents == null) {
-    throw ApiError.validation('Please correct the highlighted fields.', {
-      mode: [
-        `No ${label} price is set for this student. ` +
-          "Set it on the student's profile before recording the session.",
-      ],
-    });
-  }
+  if (chargeRateCents == null) throw refuse('price');
 
   return { tutorRateCents, chargeRateCents, paidDirectly: false };
 }
@@ -115,6 +128,7 @@ export async function priceSession(
   mode: SessionMode,
   startedAt: string,
   endedAt: string,
+  options: PricingOptions = {},
 ) {
   const { tutorRateCents, chargeRateCents, paidDirectly } = await resolveSessionRates(
     db,
@@ -122,6 +136,7 @@ export async function priceSession(
     tutorUserId,
     studentUserId,
     mode,
+    options,
   );
 
   const elapsed = elapsedMinutes(startedAt, endedAt);

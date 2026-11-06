@@ -47,14 +47,14 @@ tags:
     visible:
       id: start-submit
     timeout: 15000
-- assertVisible: 'Start a session'
+- assertVisible: 'Start a lesson'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: next-up-start-sheet
 # Tap 2: nothing to choose, the student is already picked.
 - tapOn:
     id: start-submit
 - extendedWaitUntil:
-    visible: 'Session started.'
+    visible: 'Lesson started.'
     timeout: 15000
 - extendedWaitUntil:
     visible:

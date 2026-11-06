@@ -57,7 +57,8 @@ describe('InvitePeople (Phase 61, S12)', () => {
   });
 
   it('sends each row as the ordinary add-person request, keeps a refused one, and shares the sent', async () => {
-    as();
+    // Phase 76 (JF37): the words say what the space is for, from its sets.
+    as({ gamify_question_quest: true, canvas_assessments: true });
     const onDone = jest.fn();
     const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: 'sharedAction' });
     mockInvite.mockImplementation(async (row: { email: string }) => {
@@ -84,15 +85,36 @@ describe('InvitePeople (Phase 61, S12)', () => {
     expect(screen.getByTestId('invite-problem-0')).toHaveTextContent('Already in this space.');
     expect(screen.getByText('INVITED')).toBeTruthy();
     expect(screen.getByTestId('invite-text-maria.lopez@example.com')).toHaveTextContent(
-      'Mia Creator invited you to The Creator family on Aimtrue. Sign in at http://localhost:8787/spaces with maria.lopez@example.com.',
+      'Mia Creator invited you to The Creator family on Aimtrue, a space for practice and assessments. Open http://localhost:8787/spaces and sign in with Google using maria.lopez@example.com: your invitation is waiting there.',
     );
     await fireEvent.press(screen.getByTestId('invite-share-maria.lopez@example.com'));
     expect(share).toHaveBeenCalledWith({
       message:
-        'Mia Creator invited you to The Creator family on Aimtrue. Sign in at http://localhost:8787/spaces with maria.lopez@example.com.',
+        'Mia Creator invited you to The Creator family on Aimtrue, a space for practice and assessments. Open http://localhost:8787/spaces and sign in with Google using maria.lopez@example.com: your invitation is waiting there.',
     });
+    // A share that went is confirmed (Phase 76, JF37).
+    await waitFor(() => expect(mockToast.success).toHaveBeenCalledWith('Invitation shared.'));
     await fireEvent.press(screen.getByTestId('invite-continue'));
     expect(onDone).toHaveBeenCalled();
+    share.mockRestore();
+  });
+
+  it('says nothing when the share sheet is closed without sending (Phase 76)', async () => {
+    as();
+    const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: 'dismissedAction' });
+    mockInvite.mockResolvedValue({ data: {} });
+    await renderWithProviders(<InvitePeople onDone={jest.fn()} doneLabel="Done" />);
+    await fireEvent.changeText(screen.getByTestId('invite-email-0'), 'ana@example.com');
+    await fireEvent.press(screen.getByTestId('invite-send'));
+    await waitFor(() => expect(mockToast.success).toHaveBeenCalledWith('Invitation made.'));
+    // Without Quest or Assessment on, there is no "a space for …" clause.
+    expect(screen.getByTestId('invite-text-ana@example.com')).toHaveTextContent(
+      'Mia Creator invited you to The Creator family on Aimtrue. Open http://localhost:8787/spaces and sign in with Google using ana@example.com: your invitation is waiting there.',
+    );
+    await fireEvent.press(screen.getByTestId('invite-share-ana@example.com'));
+    await waitFor(() => expect(share).toHaveBeenCalled());
+    expect(mockToast.success).not.toHaveBeenCalledWith('Invitation shared.');
+    expect(screen.getByTestId('invite-continue')).toHaveTextContent('Done');
     share.mockRestore();
   });
 

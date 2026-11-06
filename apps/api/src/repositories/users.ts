@@ -1,5 +1,6 @@
 import {
   USER_ROLES,
+  missingPriceModes,
   type AvailabilitySlot,
   type CreateUserPayload,
   type GuardianLink,
@@ -7,6 +8,7 @@ import {
   type ListUsersParams,
   type PaymentHandle,
   type StudentProfile,
+  type StudentProfileView,
   type TutorProfile,
   type UpdateUserPayload,
   type UpdateUserSectionsPayload,
@@ -299,10 +301,11 @@ export async function getUserDetail(
         .bind(org, id),
       db
         .prepare(
-          `SELECT school, current_math_course, academic_year_goal, virtual_available,
-                  charge_rate_in_person_cents, charge_rate_virtual_cents,
-                  max_session_minutes
-           FROM student_profiles WHERE organization_id = ? AND user_id = ?`,
+          `SELECT sp.school, sp.current_math_course, sp.academic_year_goal, sp.virtual_available,
+                  sp.charge_rate_in_person_cents, sp.charge_rate_virtual_cents,
+                  sp.max_session_minutes,
+                  (SELECT o.business_id IS NULL FROM organizations o WHERE o.id = sp.organization_id) AS paid_directly
+           FROM student_profiles sp WHERE sp.organization_id = ? AND sp.user_id = ?`,
         )
         .bind(org, id),
       db
@@ -384,24 +387,29 @@ export async function getUserDetail(
           ssn_received_on: (rawTutor.ssn_received_on as string | null) ?? null,
         } satisfies TutorProfile)
       : null,
-    student_profile: rawStudent
-      ? ({
-          school: (rawStudent.school as string | null) ?? null,
-          current_math_course: (rawStudent.current_math_course as string | null) ?? null,
-          academic_year_goal: (rawStudent.academic_year_goal as string | null) ?? null,
-          virtual_available: rawStudent.virtual_available === 1,
-          charge_rate_in_person_cents:
-            (rawStudent.charge_rate_in_person_cents as number | null) ?? null,
-          charge_rate_virtual_cents:
-            (rawStudent.charge_rate_virtual_cents as number | null) ?? null,
-          max_session_minutes: (rawStudent.max_session_minutes as number | null) ?? null,
-        } satisfies StudentProfile)
-      : null,
+    student_profile: rawStudent ? toStudentProfileView(rawStudent) : null,
     payment_handles: (payRes?.results ?? []) as unknown as PaymentHandle[],
     availability: (availRes?.results ?? []) as unknown as AvailabilitySlot[],
     guardians: toGuardianLinks(guardiansRes?.results ?? []),
     dependents: toGuardianLinks(dependentsRes?.results ?? []),
   };
+}
+
+/**
+ * A student's profile as read, with Phase 75's `price_missing` (JF18, R34): WHICH of their prices is
+ * not set, worked out before any scope helper blanks the prices for a reader who may not see them.
+ */
+function toStudentProfileView(raw: Record<string, unknown>): StudentProfileView {
+  const profile = {
+    school: (raw.school as string | null) ?? null,
+    current_math_course: (raw.current_math_course as string | null) ?? null,
+    academic_year_goal: (raw.academic_year_goal as string | null) ?? null,
+    virtual_available: raw.virtual_available === 1,
+    charge_rate_in_person_cents: (raw.charge_rate_in_person_cents as number | null) ?? null,
+    charge_rate_virtual_cents: (raw.charge_rate_virtual_cents as number | null) ?? null,
+    max_session_minutes: (raw.max_session_minutes as number | null) ?? null,
+  } satisfies StudentProfile;
+  return { ...profile, price_missing: missingPriceModes(profile, raw.paid_directly === 1) };
 }
 
 /**
@@ -703,6 +711,13 @@ export async function updateUserSections(
   org: OrgId,
   id: string,
   sections: UpdateUserSectionsPayload,
+  /**
+   * Phase 76 (JF21): a guardian named here who is to hold the parent role from now on -- the adult
+   * adding their own child -- given it in the same batch as the guardianship, so they are never a
+   * guardian without it. A role they already hold is left alone. A parent has no profile, so the
+   * profile rule has nothing to add.
+   */
+  options: { parentRoleFor?: string } = {},
 ): Promise<void> {
   const statements = [];
 
@@ -833,6 +848,21 @@ export async function updateUserSections(
              VALUES (?, ?, ?, ?, ?)`,
           )
           .bind(org, link.guardian_user_id, id, link.relationship, link.is_primary ? 1 : 0),
+      );
+    }
+    const parent = options.parentRoleFor;
+    if (parent && sections.guardians.some((link) => link.guardian_user_id === parent)) {
+      statements.push(
+        db
+          .prepare(
+            `INSERT INTO user_roles (organization_id, user_id, role)
+             SELECT ?1, ?2, 'parent'
+             WHERE NOT EXISTS (SELECT 1 FROM user_roles WHERE organization_id = ?1 AND user_id = ?2 AND role = 'parent')`,
+          )
+          .bind(org, parent),
+        db
+          .prepare(`UPDATE org_members SET updated_at = ${NOW} WHERE organization_id = ? AND user_id = ?`)
+          .bind(org, parent),
       );
     }
   }

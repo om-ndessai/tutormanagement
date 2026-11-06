@@ -377,8 +377,18 @@ env:
 - waitForAnimationToEnd:
     timeout: 3000
 - assertNotVisible: ${BAD}
+# Phase 76 (JF21): "Add people" opens the one Add chooser, whose words are checked too; Someone else is the form.
 - tapOn:
-    id: create-action-add-person
+    id: create-action-add-people
+- extendedWaitUntil:
+    visible:
+      id: add-chooser
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: ${BAD}
+- tapOn:
+    id: add-choice-someone
 - extendedWaitUntil:
     visible:
       id: person-role-student

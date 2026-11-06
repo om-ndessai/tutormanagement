@@ -6,7 +6,8 @@
 >
 > Progress: the fix-up `8173a2a`; Phase 70 web `2b78590` and app `023ba00`; Phase 71 web `ab71793`; the 70+71
 > contract `98c40ab` (smoke green on the web, iOS and Android; `test:compat` green); Phase 72 (smoke green on all
-> three, `test:compat` green); Phases 73 and 74 (one smoke and one commit, as planned). Phase 75 next.
+> three, `test:compat` green); Phases 73 and 74 (one smoke and one commit, as planned); Phases 75 and 76 (one smoke
+> and one commit; smoke green on the web, iOS and Android, `test:compat` green). Phase 77 next.
 
 The UI journey audit ([docs/userjourney/](userjourney/README.md)) played 24 journeys at commit `2d6e7d3` and merged
 its findings into 37 recommendations ([recommendations.md](userjourney/recommendations.md)). This plan fixes each
@@ -201,6 +202,16 @@ JF15, JF20. **Decided (owner, 2026-11-05):**
   Leo"); the submitted PDF stays the tutor's and the admins' (R17 unchanged for answers); Start warns when one is in
   progress.
 
+**How (Phase 77 design, 2026-11-05):** a "seat": the parent's game carries the child (a live dependent here with no
+email -- the server refuses otherwise, "Leo signs in: invite him instead.") as a second solo team, begun at once with no
+lobby or code; the parent's session answers for the seat (`as_user_id`, checked against the game's seats in the Durable
+Object, no D1 per answer), the child first on each question; credit already follows the answer's person, so the child's
+days and counts are the child's; seat answers do not count toward the two-right-answers rule; `quest_game_players.
+seated_by_user_id` (a `release=phase-77` block) lets the parent's home offer "Continue with Leo". A child who signs in
+keeps the online invite, and the lobby lists who was invited. For assessments: a guardian of the student may continue
+and submit an in-progress one (`can_continue`), after a "Hand the device to Leo" screen; only the starter or an admin
+discards (`can_discard`); Start warns on the client when one is in progress.
+
 ### Phase 78: the look, about 30 h
 JF32's rest, JF34, JF29, JF28's rest (with `responsive.spec.ts` additions), JF35's rest. **Decided (owner,
 2026-11-05):**
@@ -213,6 +224,11 @@ JF32's rest, JF34, JF29, JF28's rest (with `responsive.spec.ts` additions), JF35
   becomes People, as in the app), "space"; API and code names unchanged;
 - **grade hues on both boards, amber for action only**: the guest page takes the grade hues (mode shown by its icon),
   reversing the member-home plan's Decision 1; the Daily's button takes the space's primary.
+
+Carried here from Phase 75 (found by its flows): in the app, the office's lessons owed can be longer than the screen,
+and the sheet then scrolls with "Another lesson" at its end -- QuickSheet's documented fallback, but not the thumb zone
+it promises. The phone-width pass decides whether to pin the action (QuickSheet's root must stay a ScrollView on iOS)
+or to show the newest few rows with "Show all".
 
 ## How it is committed
 

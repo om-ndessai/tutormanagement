@@ -2,10 +2,13 @@
 // The dialog becomes a form sheet, `(org)/assignment-form` (`?id=<assignment>` to edit; `?student=` or
 // `?tutor=` preset one side of a new pairing, as the welcome wizard's `preset` does).
 //
-// "Admin, when assigning a student to the tutor can specify the hourly rate." Choosing a tutor
-// fills both rate fields with that tutor's current defaults, so the admin adjusts from a real
-// number rather than from nothing. A filled field is an OVERRIDE stored on the pairing, captured as
-// of now; clearing it restores the inherit-from-tutor behaviour.
+// "Admin, when assigning a student to the tutor can specify the hourly rate." A filled field is an
+// OVERRIDE stored on the pairing; an empty one follows the tutor's default.
+//
+// Phase 75 (docs/journey-fixes-plan.md JF27; owner 2026-11-05): choosing a tutor no longer COPIES their default into
+// the override (which froze it: a later change to the default never reached the pairing). The fields start empty
+// and say what they follow ("Alex's default, $75.00"); an override equal to the current default says so; the labels
+// say whose pay it is ("Tutor pay, in person" / "Tutor pay, virtual").
 import {
   assignmentInputSchema,
   assignmentUpdateSchema,
@@ -37,7 +40,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useAssignments, useCreateAssignment, useUpdateAssignment } from './api';
-import { rateFallbackHint } from './pairing-rates';
+import { overrideShown, rateFallbackHint } from './pairing-rates';
 import { NoteField } from './session-notes';
 import { issuesToErrors } from './session-form/use-session-form';
 
@@ -115,12 +118,21 @@ export function AssignmentForm({
     existing?.locations.map((location) => location.id) ?? [],
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
-  // Which tutor's defaults have already been written into the fields: once per choice, and never
-  // over the admin's typing. An existing pairing already carries its own rates.
-  const [prefilledFor, setPrefilledFor] = useState<string | null>(existing ? existing.tutor_user_id : null);
+  // JF27: a saved override equal to the tutor's current default, shown as the default (empty) once that default is
+  // known -- and left as stored unless the admin types a rate (no data change).
+  const [shownAsDefault, setShownAsDefault] = useState<{ in_person: boolean; virtual: boolean } | null>(null);
+  const inPersonAsStored = shownAsDefault?.in_person && inPerson === '' ? centsToInput(existing?.rate_in_person_cents) : inPerson;
+  const virtualAsStored = shownAsDefault?.virtual && virtual === '' ? centsToInput(existing?.rate_virtual_cents) : virtual;
 
   // What was typed is not lost to a swipe or Back (ux-audit F-3); offline, Save waits (F-16).
-  const dirty = useDirty({ tutorId, studentId, inPerson, virtual, notes, locationIds });
+  const dirty = useDirty({
+    tutorId,
+    studentId,
+    inPerson: inPersonAsStored,
+    virtual: virtualAsStored,
+    notes,
+    locationIds,
+  });
   const { leave } = useUnsavedChangesGuard(dirty);
   const offline = useOffline();
 
@@ -159,35 +171,23 @@ export function AssignmentForm({
   ];
 
   const selectedTutor = tutorRows.find((candidate) => candidate.id === tutorId);
-  // The list rows carry no rates, so the chosen tutor's profile is fetched for them. Skipped while
-  // editing, where the pairing's own rates win.
-  const tutorDetail = useUserDetail(!isEdit && tutorId ? tutorId : null);
+  // The list rows carry no rates, so the tutor's profile is read for their CURRENT defaults -- what an empty field
+  // follows, new pairing or old. Never copied into the fields (JF27).
+  const tutorDetail = useUserDetail(tutorId || null);
   const tutorDefaults = tutorDetail.data?.data.tutor_profile ?? null;
+  const tutorName = selectedTutor?.full_name ?? existing?.tutor_name ?? null;
+  const rateHint = rateHintFor(tutorName, tutorDefaults);
+  const fallbackInPerson = tutorDefaults?.default_rate_in_person_cents ?? null;
+  const fallbackVirtual = tutorDefaults?.default_rate_virtual_cents ?? null;
 
-  // Adjusting state while rendering (not in an effect): the fields take the tutor's defaults the
-  // moment they arrive, in the same pass.
-  if (!isEdit && tutorId && tutorDefaults && prefilledFor !== tutorId) {
-    setPrefilledFor(tutorId);
-    setInPerson(centsToInput(tutorDefaults.default_rate_in_person_cents));
-    setVirtual(centsToInput(tutorDefaults.default_rate_virtual_cents));
+  // Adjusting state while rendering (not in an effect), once, when an edited pairing's tutor's defaults arrive.
+  if (existing && tutorDefaults && shownAsDefault === null) {
+    const inPersonFollows = overrideShown(existing.rate_in_person_cents, fallbackInPerson) === null && existing.rate_in_person_cents != null;
+    const virtualFollows = overrideShown(existing.rate_virtual_cents, fallbackVirtual) === null && existing.rate_virtual_cents != null;
+    setShownAsDefault({ in_person: inPersonFollows, virtual: virtualFollows });
+    if (inPersonFollows && inPerson === centsToInput(existing.rate_in_person_cents)) setInPerson('');
+    if (virtualFollows && virtual === centsToInput(existing.rate_virtual_cents)) setVirtual('');
   }
-
-  const hasAnyDefault =
-    tutorDefaults != null &&
-    (tutorDefaults.default_rate_in_person_cents != null || tutorDefaults.default_rate_virtual_cents != null);
-  const rateHint =
-    isEdit || !selectedTutor
-      ? "Blank uses the tutor's default."
-      : hasAnyDefault
-        ? `From ${selectedTutor.full_name}'s profile. Clear to follow their default instead.`
-        : `${selectedTutor.full_name} has no default rate — set one here, or sessions cannot be priced.`;
-
-  const fallbackInPerson = existing
-    ? existing.effective_rate_in_person_cents
-    : (tutorDefaults?.default_rate_in_person_cents ?? null);
-  const fallbackVirtual = existing
-    ? existing.effective_rate_virtual_cents
-    : (tutorDefaults?.default_rate_virtual_cents ?? null);
 
   async function handleSave() {
     setErrors({});
@@ -203,9 +203,10 @@ export function AssignmentForm({
       return;
     }
 
+    // A field shown as the default it equals, and left so, keeps what is stored (JF27: no data change).
     const rates = {
-      rate_in_person_cents: parseCentsInput(inPerson),
-      rate_virtual_cents: parseCentsInput(virtual),
+      ...(shownAsDefault?.in_person && inPerson === '' ? {} : { rate_in_person_cents: parseCentsInput(inPerson) }),
+      ...(shownAsDefault?.virtual && virtual === '' ? {} : { rate_virtual_cents: parseCentsInput(virtual) }),
       notes: notes.trim() || null,
     };
 
@@ -306,18 +307,18 @@ export function AssignmentForm({
       <View style={{ gap: space.sm }}>
         <RateField
           testID="assignment-rate-in-person"
-          label="In-person rate"
+          label="Tutor pay, in person"
           value={inPerson}
           onChange={setInPerson}
-          placeholder={rateFallbackHint(fallbackInPerson, '75.00')}
+          placeholder={tutorDetail.isPending && tutorId ? '' : rateFallbackHint(fallbackInPerson, tutorName)}
           error={errors.rate_in_person_cents}
         />
         <RateField
           testID="assignment-rate-virtual"
-          label="Virtual rate"
+          label="Tutor pay, virtual"
           value={virtual}
           onChange={setVirtual}
-          placeholder={rateFallbackHint(fallbackVirtual, '65.00')}
+          placeholder={tutorDetail.isPending && tutorId ? '' : rateFallbackHint(fallbackVirtual, tutorName)}
           error={errors.rate_virtual_cents}
         />
         <Text testID="assignment-rate-hint" variant="bodySmall" style={{ color: muted }}>
@@ -360,6 +361,22 @@ export function AssignmentForm({
       </View>
     </View>
   );
+}
+
+/**
+ * What the rate fields follow, said once under them: the tutor's default (named), or that there is none -- then a
+ * lesson cannot be priced until one is set, here or on their record.
+ */
+export function rateHintFor(
+  tutorName: string | null,
+  defaults: { default_rate_in_person_cents: number | null; default_rate_virtual_cents: number | null } | null,
+): string {
+  if (!tutorName) return "Blank follows the tutor's default.";
+  const first = tutorName.trim().split(/\s+/)[0] || tutorName;
+  if (defaults && defaults.default_rate_in_person_cents == null && defaults.default_rate_virtual_cents == null) {
+    return `${tutorName} has no default rate — set one here, or lessons cannot be priced.`;
+  }
+  return `Blank follows ${first}'s default. Type a rate only for a different one.`;
 }
 
 function RateField({

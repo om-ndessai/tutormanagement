@@ -5,6 +5,8 @@
 // reader may see is the server's: the rates, advance, mailing address, handles, SSN receipt and
 // family links arrive blanked for anyone who may not see them (R4-R7), and the rows that would
 // claim "Not set" to a family are left out on top of that.
+//
+// Phase 76 (JF21): a student's record says who teaches them and their weekly lessons (Tutoring only, no money).
 import {
   DAYS_OF_WEEK,
   DEFAULT_MAX_SESSION_MINUTES,
@@ -38,6 +40,7 @@ import { formatInstant, telUrl } from './people-model';
 import { PersonAvatar } from './person-avatar';
 import { RECORD_SECTIONS, recordSections, type RecordSectionKey } from './record-sections';
 import { SsnReceiptButton } from './ssn-receipt-button';
+import { StudentTeaching } from './student-teaching';
 import { TaxSetupCard, needsTaxSetup } from './tax-setup-card';
 import { DeletedBadge, EmailOrNone, RoleBadges, StatusBadge } from './user-badges';
 import { StudentPrices, TutorPayRates, TutorTopup } from './user-rates';
@@ -298,6 +301,9 @@ export function UserDetailView({
           </Section>
         );
       })}
+
+      {/* Phase 76 (JF21): who teaches this student, and when -- the server scopes both lists. */}
+      {!compact && tutoring && student && !user.deleted_at ? <StudentTeaching studentId={user.id} /> : null}
 
       {/* Phase 33: where they like to have lessons -- for the office, the person, and a student's
           parents (R16; the server answers anyone else with an empty list). */}

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useQueries } from '@tanstack/react-query';
 import { PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
-import { formatCents, type Assignment, type UserRole } from '@tmi/shared';
+import { formatCents, type ApiOk, type Assignment, type UserDetail, type UserRole } from '@tmi/shared';
 
 import { FocusNotice } from '@/components/layout/focus-notice';
 import { PageHeader } from '@/components/layout/page-header';
@@ -28,9 +29,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { CommentsButton } from '@/features/comments/comments-button';
-import { ApiRequestError } from '@/lib/api-client';
+import { ApiRequestError, apiClient } from '@/lib/api-client';
+import { userKeys } from '@/features/users/api';
 import { useAuth } from '@/providers/auth-provider';
 import { AssignmentDialog } from './assignment-dialog';
+import { NoPriceBadge } from './price-missing';
 
 /**
  * A pairing's thread. Named once so the phone cards and the table above them
@@ -76,6 +79,28 @@ export function AssignmentsPage() {
   const seesPay = (row: Assignment) => isAdmin || row.tutor_user_id === user?.id;
   const showRates = all.some(seesPay);
   const assignments = focusId ? all.filter((row) => row.id === focusId) : all;
+
+  // Phase 75 (JF27): a saved override is "custom" only while it differs from the tutor's CURRENT default, so the
+  // defaults of the tutors whose pairings carry one are read (the reader may see them: they see that pay).
+  const withOverride = [
+    ...new Set(
+      all
+        .filter((row) => seesPay(row) && (row.rate_in_person_cents != null || row.rate_virtual_cents != null))
+        .map((row) => row.tutor_user_id),
+    ),
+  ];
+  const tutorDetails = useQueries({
+    queries: withOverride.map((id) => ({
+      queryKey: userKeys.detail(id),
+      queryFn: () => apiClient.get<ApiOk<UserDetail>>(`/users/${id}`),
+      staleTime: 60_000,
+    })),
+  });
+  const defaultsOf = (tutorId: string) => {
+    const index = withOverride.indexOf(tutorId);
+    const detail = index >= 0 ? tutorDetails[index]?.data?.data : undefined;
+    return detail ? (detail.tutor_profile ?? { default_rate_in_person_cents: null, default_rate_virtual_cents: null }) : undefined;
+  };
   const clearFocus = () =>
     setSearchParams(
       (current) => {
@@ -138,6 +163,7 @@ export function AssignmentsPage() {
                 <span className="text-muted-foreground block truncate text-xs">
                   with {assignment.tutor_name}
                 </span>
+                <NoPriceBadge missing={assignment.price_missing} testId={`no-price-${assignment.id}`} />
               </span>
               <span className="flex shrink-0 items-center gap-1">
                 <AssignmentComments assignment={assignment} />
@@ -174,6 +200,7 @@ export function AssignmentsPage() {
                 <RateCell
                   effective={assignment.effective_rate_in_person_cents}
                   override={assignment.rate_in_person_cents}
+                  defaultCents={defaultsOf(assignment.tutor_user_id)?.default_rate_in_person_cents}
                 />
               </span>
               <span className="flex items-center gap-1.5">
@@ -181,6 +208,7 @@ export function AssignmentsPage() {
                 <RateCell
                   effective={assignment.effective_rate_virtual_cents}
                   override={assignment.rate_virtual_cents}
+                  defaultCents={defaultsOf(assignment.tutor_user_id)?.default_rate_virtual_cents}
                 />
               </span>
             </div>
@@ -237,7 +265,12 @@ export function AssignmentsPage() {
             {assignments.map((assignment) => (
               <TableRow key={assignment.id}>
                 <TableCell className="font-medium">{assignment.tutor_name}</TableCell>
-                <TableCell>{assignment.student_name}</TableCell>
+                <TableCell>
+                  <span className="flex flex-wrap items-center gap-2">
+                    {assignment.student_name}
+                    <NoPriceBadge missing={assignment.price_missing} testId={`no-price-${assignment.id}`} />
+                  </span>
+                </TableCell>
                 {showRates &&
                   (seesPay(assignment) ? (
                     <>
@@ -245,12 +278,14 @@ export function AssignmentsPage() {
                         <RateCell
                           effective={assignment.effective_rate_in_person_cents}
                           override={assignment.rate_in_person_cents}
+                          defaultCents={defaultsOf(assignment.tutor_user_id)?.default_rate_in_person_cents}
                         />
                       </TableCell>
                       <TableCell>
                         <RateCell
                           effective={assignment.effective_rate_virtual_cents}
                           override={assignment.rate_virtual_cents}
+                          defaultCents={defaultsOf(assignment.tutor_user_id)?.default_rate_virtual_cents}
                         />
                       </TableCell>
                     </>
@@ -374,19 +409,33 @@ function sentence(parts: string[]): string {
   return `${joined[0]!.toUpperCase()}${joined.slice(1)}.`;
 }
 
-/** Shows the rate in force, and whether it overrides the tutor's default. */
-function RateCell({ effective, override }: { effective: number | null; override: number | null }) {
+/**
+ * Shows the rate in force, and whether it overrides the tutor's default. An override equal to the tutor's current
+ * default reads as the default (Phase 75, JF27; the stored rate is unchanged). `defaultCents` is undefined until known.
+ */
+function RateCell({
+  effective,
+  override,
+  defaultCents,
+}: {
+  effective: number | null;
+  override: number | null;
+  defaultCents: number | null | undefined;
+}) {
   if (effective == null) {
     return <span className="text-muted-foreground text-xs">No rate set</span>;
   }
 
+  const custom = override != null && defaultCents !== undefined && override !== defaultCents;
   return (
-    <span className="flex items-center gap-2">
+    <span className="flex items-center gap-2" data-rate={custom ? 'custom' : override == null || defaultCents !== undefined ? 'default' : 'unknown'}>
       <span className="tabular-nums">{formatCents(effective)}</span>
-      {override != null && (
+      {custom ? (
         <Badge variant="secondary" className="text-[10px]">
           custom
         </Badge>
+      ) : (
+        (override == null || defaultCents !== undefined) && <span className="text-muted-foreground text-[10px]">default</span>
       )}
     </span>
   );

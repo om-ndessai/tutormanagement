@@ -13,6 +13,13 @@
 // UI audit (JF7): "Start a space" closes the list for an adult (shared `mayMakeSpace`), where the (+) already offers
 // something -- it opens Spaces on the new space's name. It never gives a (+) of its own to a reader who creates
 // nothing here (a parent, a student): they find it in the account sheet, under their spaces.
+//
+// Phase 75 (JF30): "Record a lesson" opens the lessons still owed (each recorded as planned, "Another lesson" for the
+// rest), as the home's quick action and the Sessions page's button do.
+//
+// Phase 76 (JF21): adding people is ONE row, "Add people", opening the one Add chooser (a family, a tutor, someone else,
+// an invitation) -- the same chooser as the home's quick action, People's header and its empty state. In a personal
+// space it reads "Add my child".
 import {
   featureOn,
   mayAddPeople,
@@ -26,9 +33,7 @@ export type CreateActionId =
   | 'record-session'
   | 'start-lesson'
   | 'schedule-lesson'
-  | 'add-student'
-  | 'add-tutor'
-  | 'add-person'
+  | 'add-people'
   | 'record-payment'
   | 'start-assessment'
   | 'start-space';
@@ -49,9 +54,9 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
     title: 'Record a lesson',
     description: 'Write up a lesson that has happened.',
     icon: 'book-plus-outline',
-    // The record step flow (UI upgrades U4): Tutoring, the length and never money, wherever the + was
-    // tapped.
-    href: '/record-lesson',
+    // Phase 75 (JF30): the lessons still owed first; "Another lesson" there opens the record step flow (U4):
+    // Tutoring, the length and never money, wherever the + was tapped.
+    href: '/lessons-owed',
   },
   'start-lesson': {
     id: 'start-lesson',
@@ -75,27 +80,13 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
     icon: 'draw-pen',
     href: '/assessments',
   },
-  'add-student': {
-    id: 'add-student',
-    title: 'Add a student',
-    description: 'With their parent or guardian.',
-    icon: 'account-school-outline',
-    // Family first (UI upgrades U3): the parent is chosen, or added, before the student.
-    href: '/add-student',
-  },
-  'add-tutor': {
-    id: 'add-tutor',
-    title: 'Add a tutor',
-    description: 'Someone who teaches here.',
-    icon: 'human-male-board',
-    href: '/add-tutor',
-  },
-  'add-person': {
-    id: 'add-person',
-    title: 'Add someone else',
-    description: 'A parent, an admin, or several roles at once.',
+  'add-people': {
+    id: 'add-people',
+    title: 'Add people',
+    description: 'A family, a tutor, someone else, or an invitation by email.',
     icon: 'account-plus-outline',
-    href: '/person-form',
+    // Phase 76 (JF21): the one Add chooser; each of its choices opens the flow that does the work (family first, U3).
+    href: '/add',
   },
   'record-payment': {
     id: 'record-payment',
@@ -122,6 +113,8 @@ export interface CreateContext {
   account?: PlatformAccount | null;
   /** The reader may start a space (shared `mayMakeSpace`: an adult): "Start a space" closes the list. */
   mayMakeSpace?: boolean;
+  /** Phase 76 (JF21): a personal space, where adding people is adding one's child ("Add my child"). */
+  personal?: boolean;
 }
 
 /** Phase 50: the feature sets on here that the sheet follows (fixed per session, so no flicker). */
@@ -141,13 +134,17 @@ export function createSetsOf(organization: Partial<FeatureState> | null | undefi
 /** The actions this reader may take, in the sheet's order. */
 export function createActions(
   roles: readonly Role[] | undefined,
-  { teaches = false, lessonRunning = false, account = null, mayMakeSpace = false }: CreateContext = {},
+  { teaches = false, lessonRunning = false, account = null, mayMakeSpace = false, personal = false }: CreateContext = {},
   sets: CreateSets = ALL_CREATE_SETS,
 ): CreateAction[] {
   const ids = spaceActions(roles, { teaches, lessonRunning, account }, sets);
   // JF7: last, for an adult, in a list that offers something already.
   if (mayMakeSpace && ids.length > 0) ids.push('start-space');
-  return ids.map((id) => ACTIONS[id]);
+  return ids.map((id) =>
+    personal && id === 'add-people'
+      ? { ...ACTIONS[id], title: 'Add my child', description: 'Your child, with you as their parent.' }
+      : ACTIONS[id],
+  );
 }
 
 /** What the reader may create inside this space, in the sheet's order. */
@@ -163,7 +160,7 @@ function spaceActions(
   if (!sets.tutoring) {
     // A space without Tutoring: an admin starts assessments and (an adult) adds people; nobody else creates.
     if (isAdmin && sets.assessment) ids.push('start-assessment');
-    if (addsPeople) ids.push('add-student', 'add-person');
+    if (addsPeople) ids.push('add-people');
     return ids;
   }
   // Sessions: recording is a tutor's or the office's.
@@ -173,7 +170,7 @@ function spaceActions(
   // Schedule: tutors and the office set up standing lessons.
   if (isTutor || isAdmin) ids.push('schedule-lesson');
   // Users: the space's adult admins add people (JF22). Billing: its admins record payments.
-  if (addsPeople) ids.push('add-student', 'add-tutor', 'add-person');
+  if (addsPeople) ids.push('add-people');
   if (isAdmin) ids.push('record-payment');
   return ids;
 }

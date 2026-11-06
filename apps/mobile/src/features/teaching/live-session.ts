@@ -27,7 +27,7 @@ export function stopToast(
   session: Pick<TutoringSession, 'started_at' | 'ended_at' | 'duration_minutes'>,
 ): string {
   return (
-    `Session recorded: ${formatClockTime(session.started_at)}–` +
+    `Lesson recorded: ${formatClockTime(session.started_at)}–` +
     `${formatClockTime(session.ended_at)}, ${formatDuration(session.duration_minutes)}.`
   );
 }

@@ -8,7 +8,6 @@ import {
   cancellationKey,
   expandUpcoming,
   featureOn,
-  isOccurrenceOf,
   parseClockTime,
   partOfDay,
   upcomingTakenKey,
@@ -37,6 +36,8 @@ import { hasFollowableStudent } from './progress.js';
 import { listCancellationsForSchedules } from './schedule-cancellations.js';
 import { listSchedules } from './schedules.js';
 import { getVisibleSession } from './sessions.js';
+import { clock, daysBetween, occurrences, unrecordedOf, type Occurrence } from './lessons-owed.js';
+import { myDraftsByLesson } from './session-drafts.js';
 
 // The member home (Phase 66, docs/member-home-plan.md H1-H4, H9, H11): one read
 // for the band, Next up and every hat's section. Each part is narrowed like its
@@ -45,17 +46,6 @@ import { getVisibleSession } from './sessions.js';
 // Nothing returned carries money.
 
 const firstName = (name: string) => name.trim().split(/\s+/)[0] ?? name;
-
-function clock(minutes: number): string {
-  const m = ((minutes % 1440) + 1440) % 1440;
-  return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
-}
-
-/** Whole days from `a` to `b` (calendar dates). */
-function daysBetween(a: string, b: string): number {
-  const at = (d: string) => Date.UTC(Number(d.slice(0, 4)), Number(d.slice(5, 7)) - 1, Number(d.slice(8, 10)));
-  return Math.round((at(b) - at(a)) / 86_400_000);
-}
 
 /** Monday of the week `day` falls in. */
 function mondayOf(day: string): string {
@@ -88,45 +78,7 @@ function homeLesson(schedule: ScheduledSession, occursOn: string, today: string,
   };
 }
 
-interface Occurrence {
-  schedule: ScheduledSession;
-  date: string;
-  /** Minutes since it ended (negative before then). */
-  endedAgo: number;
-}
-
-/** Every occurrence of the schedules from `from` to `to` (inclusive), with how long ago each ended. */
-function occurrences(schedules: ScheduledSession[], from: string, to: string, today: string, now: number): Occurrence[] {
-  const out: Occurrence[] = [];
-  for (const schedule of schedules) {
-    if (!schedule.is_active) continue;
-    const start = parseClockTime(schedule.start_time);
-    if (start === null) continue;
-    for (let date = from; date <= to; date = addDays(date, 1)) {
-      if (!isOccurrenceOf(schedule, date)) continue;
-      const end = start + schedule.duration_minutes;
-      out.push({ schedule, date, endedAgo: daysBetween(date, today) * 1440 + now - end });
-    }
-  }
-  return out;
-}
-
-/**
- * Lessons that ended within the lookback and were never recorded, cancelled or left running: the
- * "to record" flag (H9). `taken` holds `student|date` (and `tutor|student|date` for the office).
- */
-function unrecordedOf(
-  list: Occurrence[],
-  taken: (o: Occurrence) => boolean,
-  cancelled: ReadonlySet<string>,
-  live: (o: Occurrence) => boolean,
-): Occurrence[] {
-  return list
-    .filter((o) => o.endedAgo >= 0 && o.endedAgo <= UNRECORDED_LOOKBACK_DAYS * 1440)
-    .filter((o) => !taken(o) && !cancelled.has(cancellationKey(o.schedule.id, o.date)) && !live(o))
-    .sort((a, b) => a.endedAgo - b.endedAgo);
-}
-
+// The occurrences and the "to record" rule are lessons-owed.ts's, shared with GET /api/sessions/to-record (Phase 75).
 function lessonCounts(list: Occurrence[], cancelled: ReadonlySet<string>, today: string) {
   const monday = mondayOf(today);
   const sunday = addDays(monday, 6);
@@ -145,7 +97,7 @@ async function tutorBlock(db: D1Database, org: OrgContext, viewer: User, nowIso:
   const monday = mondayOf(today);
   const schedules = await tutorSchedules(db, org.id, viewer);
 
-  const [nowCard, recorded, running, cancellations, assessments, quest] = await Promise.all([
+  const [nowCard, recorded, running, cancellations, assessments, quest, drafts] = await Promise.all([
     buildTutorHome(db, { id: org.id, time_zone: org.time_zone }, viewer, nowIso, schedules),
     db
       .prepare('SELECT student_user_id, occurred_on FROM sessions WHERE organization_id = ? AND tutor_user_id = ? AND occurred_on >= ?')
@@ -168,7 +120,11 @@ async function tutorBlock(db: D1Database, org: OrgContext, viewer: User, nowIso:
           .first<{ n: number }>()
       : Promise.resolve(null),
     featureOn(org, 'quest') ? nextQuestReview(db, org.id, { id: viewer.id, admin: false }) : Promise.resolve(null),
+    // Phase 75 (JF19): the reader's own drafts of these lessons (R10), so Record continues one.
+    myDraftsByLesson(db, org.id, viewer.id, from),
   ]);
+  const draftOf = (o: { student_user_id: string; occurs_on: string }) =>
+    drafts.get(upcomingTakenKey(viewer.id, o.student_user_id, o.occurs_on)) ?? null;
 
   const taken = new Set((recorded.results ?? []).map((r) => `${r.student_user_id}|${r.occurred_on}`));
   const live = new Set((running.results ?? []).map((r) => r.student_user_id));
@@ -196,11 +152,11 @@ async function tutorBlock(db: D1Database, org: OrgContext, viewer: User, nowIso:
       lessons_together: 0,
       together_since: null,
     };
-    return { ...base, homework_last: homeworkFor.get(`${o.schedule.id}|${o.date}`) ?? null };
+    return { ...base, homework_last: homeworkFor.get(`${o.schedule.id}|${o.date}`) ?? null, draft: draftOf(base) };
   });
 
   return {
-    now: nowCard,
+    now: { ...nowCard, unrecorded: nowCard.unrecorded.map((lesson) => ({ ...lesson, draft: draftOf(lesson) })) },
     next_starts_in: nowCard.next ? startsIn(today, now, nowCard.next.occurs_on, nowCard.next.start_time) : null,
     ...lessonCounts(all, cancelled, today),
     to_record: toRecord,

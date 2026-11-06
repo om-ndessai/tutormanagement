@@ -1,6 +1,8 @@
 # The create button (UI upgrades U2): the "+" in the middle of the tab bar opens the reader's own
 # actions, each into the sheet that already does the work. The office (Priya, who also tutors)
-# gets all seven; a tutor records, starts and schedules; a parent has nothing to create and no "+".
+# gets all five; a tutor records, starts and schedules; a parent has nothing to create and no "+".
+# Phase 75 (JF30): "Record a lesson" opens the lessons still owed, with "Another lesson" (a blank record).
+# Phase 76 (JF21): adding people is ONE row, "Add people", opening the one Add chooser.
 appId: ${APP_ID}
 tags:
   - shell
@@ -28,10 +30,12 @@ tags:
 - assertVisible:
     id: create-action-schedule-lesson
 - assertVisible:
+    id: create-action-add-people
+- assertNotVisible:
     id: create-action-add-student
-- assertVisible:
+- assertNotVisible:
     id: create-action-add-tutor
-- assertVisible:
+- assertNotVisible:
     id: create-action-add-person
 - assertVisible:
     id: create-action-record-payment
@@ -39,9 +43,27 @@ tags:
 - assertVisible:
     id: create-action-start-lesson
 - takeScreenshot: create-sheet-admin
-# Add a student: the step flow, family first (U3); nothing typed, so it closes without asking.
+# Add people: the one Add chooser (a fitted sheet); "A family" gives way to the family flow (U3), family first;
+# nothing typed, so it closes without asking.
 - tapOn:
-    id: create-action-add-student
+    id: create-action-add-people
+- extendedWaitUntil:
+    visible:
+      id: add-chooser
+    timeout: 15000
+- assertVisible:
+    id: add-choice-family
+- assertVisible:
+    id: add-choice-tutor
+- assertVisible:
+    id: add-choice-someone
+- assertVisible:
+    id: add-choice-invite
+- takeScreenshot: create-add-chooser
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-family
 - extendedWaitUntil:
     visible:
       id: step-flow-title
@@ -57,15 +79,23 @@ tags:
     visible:
       id: screen-home
     timeout: 10000
-# Add a tutor: its own step flow.
+# A tutor: the chooser's own row, its own step flow.
 - tapOn:
     id: create-button
 - extendedWaitUntil:
     visible:
-      id: create-action-add-tutor
+      id: create-action-add-people
     timeout: 10000
 - tapOn:
-    id: create-action-add-tutor
+    id: create-action-add-people
+- extendedWaitUntil:
+    visible:
+      id: add-choice-tutor
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-tutor
 - extendedWaitUntil:
     visible:
       id: step-flow-title
@@ -115,6 +145,28 @@ tags:
     timeout: 10000
 - tapOn:
     id: create-action-record-session
+# The lessons still owed (Phase 75): each with Record, then "Another lesson" -- no money on it. An admin owes every
+# tutor's, so "Another lesson" is under the list.
+- extendedWaitUntil:
+    visible:
+      id: lessons-owed
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'lessons-owed-.*-record'
+    timeout: 15000
+- assertVisible: 'Record a lesson'
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: lessons-owed-another
+    direction: DOWN
+    timeout: 30000
+- assertNotVisible: '.*\$[0-9].*'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: lessons-owed-another
 # The record step flow (UI upgrades U4).
 - extendedWaitUntil:
     visible:
@@ -154,9 +206,7 @@ tags:
 - assertVisible:
     id: create-action-schedule-lesson
 - assertNotVisible:
-    id: create-action-add-student
-- assertNotVisible:
-    id: create-action-add-person
+    id: create-action-add-people
 - assertNotVisible:
     id: create-action-record-payment
 - takeScreenshot: create-sheet-tutor

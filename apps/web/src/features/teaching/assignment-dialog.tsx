@@ -35,14 +35,12 @@ import { useLocations, useSetPairingLocations } from '@/features/locations/api';
 /**
  * "Admin, when assigning a student to the tutor can specify the hourly rate."
  *
- * Choosing a tutor fills both rate fields with that tutor's current defaults,
- * so the admin can see what this pairing will cost without leaving the dialog,
- * and adjust from a real number rather than from nothing.
- *
- * Note what this means: a filled field is an OVERRIDE stored on the assignment,
- * so the rate is captured as of the moment the pairing was made and a later
- * change to the tutor's default will not move it. Clearing a field restores the
- * inherit-from-tutor behaviour.
+ * A filled field is an OVERRIDE stored on the pairing, so it is captured as
+ * typed and a later change to the tutor's default will not move it; an empty
+ * field follows the tutor's default. Phase 75 (JF27): the form never copies the
+ * default into the override -- that froze every new pairing at the rate of the
+ * day -- and says the default in the placeholder instead ("Alex's default,
+ * $75.00").
  */
 export function AssignmentDialog({
   open,
@@ -56,8 +54,8 @@ export function AssignmentDialog({
   existing: Assignment | null;
   /** A new pairing's tutor or student, chosen already (the onboarding wizard). */
   preset?: { tutor_user_id?: string; student_user_id?: string };
-  /** Called once it has saved. */
-  onSaved?: () => void;
+  /** Called once it has saved, with the pairing (Phase 76: the next step after an add sets its weekly lesson). */
+  onSaved?: (assignment: Assignment) => void;
 }) {
   const isEdit = existing !== null;
 
@@ -69,10 +67,6 @@ export function AssignmentDialog({
   // Phase 33: where this pair may have lessons, from the tutor's and the student's own places.
   const [locationIds, setLocationIds] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // Which tutor's defaults have already been written into the fields. Guards
-  // the prefill so it happens once per choice and never overwrites typing.
-  const [prefilledFor, setPrefilledFor] = useState<string | null>(null);
 
   const tutors = useUsers({ role: 'tutor', limit: 100, sort: 'full_name' });
   const students = useUsers({ role: 'student', limit: 100, sort: 'full_name' });
@@ -100,9 +94,6 @@ export function AssignmentDialog({
     setVirtual(centsToInput(existing?.rate_virtual_cents));
     setNotes(existing?.notes ?? '');
     setLocationIds(existing?.locations.map((location) => location.id) ?? []);
-    // An existing assignment already carries its own rates; only a new pairing
-    // takes them from the tutor.
-    setPrefilledFor(existing ? existing.tutor_user_id : null);
     // The preset's ids, not the object: a new object each render would reset
     // the form under the admin's typing.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,33 +102,25 @@ export function AssignmentDialog({
   const selectedTutor = tutors.data?.data.find((candidate) => candidate.id === tutorId);
 
   // The list rows carry no rates, so the chosen tutor's profile is fetched for
-  // them. Skipped while editing, where the assignment's own rates win.
-  const tutorDetail = useUserDetail(!isEdit && tutorId ? tutorId : null);
+  // their defaults: said in the placeholders, never copied into the fields.
+  const tutorDetail = useUserDetail(tutorId || null);
   const tutorDefaults = tutorDetail.data?.data.tutor_profile ?? null;
+  const tutorName = existing?.tutor_name ?? selectedTutor?.full_name ?? null;
+  const tutorFirst = tutorName ? (tutorName.split(/\s+/)[0] ?? tutorName) : null;
 
-  useEffect(() => {
-    if (isEdit || !tutorId || !tutorDefaults || prefilledFor === tutorId) return;
+  /** What an empty field follows, named: "Alex's default, $75.00". */
+  const placeholderFor = (defaultCents: number | null | undefined) =>
+    !tutorFirst ? '' : defaultCents != null ? `${tutorFirst}'s default, ${formatCents(defaultCents)}` : `${tutorFirst} has no default`;
 
-    setInPerson(centsToInput(tutorDefaults.default_rate_in_person_cents));
-    setVirtual(centsToInput(tutorDefaults.default_rate_virtual_cents));
-    setPrefilledFor(tutorId);
-  }, [isEdit, tutorId, tutorDefaults, prefilledFor]);
-
-  // Both fields say the same thing, so the wording stays short enough to read
-  // twice. Once a tutor is chosen the fields hold real numbers, and the useful
-  // fact becomes what clearing one does -- or, if the tutor has no rate at all,
-  // that this pairing cannot record a session until one is set somewhere.
-  const hasAnyDefault =
-    tutorDefaults != null &&
-    (tutorDefaults.default_rate_in_person_cents != null ||
-      tutorDefaults.default_rate_virtual_cents != null);
-
-  const rateHint =
-    isEdit || !selectedTutor
-      ? "Blank uses the tutor's default."
-      : hasAnyDefault
-        ? `From ${selectedTutor.full_name}'s profile. Clear to follow their default instead.`
-        : `${selectedTutor.full_name} has no default rate — set one here, or sessions cannot be priced.`;
+  /** Below a field: what empty means, or that it is the same as the default, or that nothing would price it. */
+  const hintFor = (typed: string, defaultCents: number | null | undefined) => {
+    if (!tutorFirst) return 'Empty follows the tutor’s default.';
+    const cents = parseCentsInput(typed);
+    if (cents != null) return cents === defaultCents ? `The same as ${tutorFirst}'s default.` : 'Set for this pairing only.';
+    return defaultCents != null
+      ? `Empty follows ${tutorFirst}'s default.`
+      : `${tutorFirst} has no default rate: set one here, or lessons cannot be priced.`;
+  };
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -161,12 +144,13 @@ export function AssignmentDialog({
       // Only places still offered: one of a person no longer chosen falls away.
       const chosenLocations = locationIds.filter((id) => offered.some((location) => location.id === id));
       if (isEdit) {
-        await update.mutateAsync({ id: existing.id, input: rates as never });
+        const saved = await update.mutateAsync({ id: existing.id, input: rates as never });
         const before = existing.locations.map((location) => location.id).sort().join();
         if (before !== [...chosenLocations].sort().join()) {
           await setLocations.mutateAsync({ assignmentId: existing.id, locationIds: chosenLocations });
         }
         toast.success('Pairing updated.');
+        onSaved?.(saved.data);
       } else {
         const created = await create.mutateAsync({
           tutor_user_id: tutorId,
@@ -178,8 +162,8 @@ export function AssignmentDialog({
           await setLocations.mutateAsync({ assignmentId: created.data.id, locationIds: chosenLocations });
         }
         toast.success('Student assigned.');
+        onSaved?.(created.data);
       }
-      onSaved?.();
       onOpenChange(false);
     } catch (error) {
       if (error instanceof ApiRequestError) {
@@ -244,41 +228,33 @@ export function AssignmentDialog({
             <div className="grid gap-4 sm:grid-cols-2">
               <Field
                 id="rate_ip"
-                label="In-person rate"
+                label="Tutor pay, in person"
                 error={errors.rate_in_person_cents}
-                hint={rateHint}
+                hint={hintFor(inPerson, tutorDefaults?.default_rate_in_person_cents)}
+                optional
               >
                 <Input
                   id="rate_ip"
                   inputMode="decimal"
                   value={inPerson}
                   onChange={(event) => setInPerson(event.target.value)}
-                  placeholder={fallbackHint(
-                    existing
-                      ? existing.effective_rate_in_person_cents
-                      : (tutorDefaults?.default_rate_in_person_cents ?? null),
-                    '75.00',
-                  )}
+                  placeholder={placeholderFor(tutorDefaults?.default_rate_in_person_cents)}
                 />
               </Field>
 
               <Field
                 id="rate_v"
-                label="Virtual rate"
+                label="Tutor pay, virtual"
                 error={errors.rate_virtual_cents}
-                hint={rateHint}
+                hint={hintFor(virtual, tutorDefaults?.default_rate_virtual_cents)}
+                optional
               >
                 <Input
                   id="rate_v"
                   inputMode="decimal"
                   value={virtual}
                   onChange={(event) => setVirtual(event.target.value)}
-                  placeholder={fallbackHint(
-                    existing
-                      ? existing.effective_rate_virtual_cents
-                      : (tutorDefaults?.default_rate_virtual_cents ?? null),
-                    '65.00',
-                  )}
+                  placeholder={placeholderFor(tutorDefaults?.default_rate_virtual_cents)}
                 />
               </Field>
             </div>
@@ -345,12 +321,6 @@ export function AssignmentDialog({
       </DialogContent>
     </Dialog>
   );
-}
-
-/** What a cleared field will fall back to, named rather than implied. */
-function fallbackHint(fallbackCents: number | null, example: string): string {
-  if (fallbackCents == null) return example;
-  return `${formatCents(fallbackCents)} (default)`;
 }
 
 function Field({

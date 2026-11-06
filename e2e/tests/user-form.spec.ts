@@ -16,9 +16,11 @@ test('an admin can give a new student a parent from the form', async ({ as }) =>
   const name = `E2E Form Student ${stamp}`;
 
   await page.goto('/users');
-  await page.getByRole('button', { name: 'Add user' }).click();
+  // Phase 76 (JF21): one Add chooser; "Someone else" is the person form.
+  await page.getByRole('button', { name: 'Add a person' }).click();
+  await page.getByTestId('add-choice-someone').click();
 
-  const dialog = page.getByRole('dialog');
+  const dialog = page.getByRole('dialog', { name: 'Add a person' });
   await dialog.getByLabel('Email').fill(`e2e.form.${stamp}@gmail.com`);
   await dialog.getByLabel('Full name').fill(name);
   await dialog.getByText('Student', { exact: true }).click();
@@ -51,8 +53,9 @@ test('a new student starts with the family, and a new parent is added in place',
   const parent = `E2E New Parent ${stamp}`;
 
   await page.goto('/users');
-  await page.getByRole('button', { name: 'Add user' }).click();
-  const dialog = page.getByRole('dialog', { name: 'Add user' });
+  await page.getByRole('button', { name: 'Add a person' }).click();
+  await page.getByTestId('add-choice-someone').click();
+  const dialog = page.getByRole('dialog', { name: 'Add a person' });
   await dialog.getByText('Student', { exact: true }).click();
 
   // The family comes before the student's name.
@@ -87,8 +90,9 @@ test('a new student starts with the family, and a new parent is added in place',
 test('editing keeps the usual order', async ({ as }) => {
   const page = await as('admin');
   await page.goto('/users');
-  await page.getByRole('button', { name: 'Add user' }).click();
-  const dialog = page.getByRole('dialog', { name: 'Add user' });
+  await page.getByRole('button', { name: 'Add a person' }).click();
+  await page.getByTestId('add-choice-someone').click();
+  const dialog = page.getByRole('dialog', { name: 'Add a person' });
   // A tutor gets no family-first section.
   await dialog.getByText('Tutor', { exact: true }).click();
   await expect(dialog.getByTestId('family-first')).toHaveCount(0);

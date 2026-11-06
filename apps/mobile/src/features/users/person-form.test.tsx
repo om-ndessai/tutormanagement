@@ -1,5 +1,5 @@
 import type { UserDetail } from '@tmi/shared';
-import { fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 
 import { renderWithProviders } from '@/test/render';
 import { AvailabilityPicker, toggleSlot } from './availability-picker';
@@ -15,8 +15,9 @@ beforeEach(() => {
   mockOrganization = {};
 });
 jest.mock('expo-router', () => ({ router: { push: jest.fn(), back: jest.fn(), canGoBack: () => true } }));
+const mockToastSuccess = jest.fn();
 jest.mock('@/components/toast', () => ({
-  useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
+  useToast: () => ({ success: mockToastSuccess, error: jest.fn(), info: jest.fn() }),
 }));
 jest.mock('@/features/progress/api', () => ({ useStudentProgress: () => ({ data: undefined }) }));
 const mockCreate = jest.fn();
@@ -225,4 +226,28 @@ it('never asks for consent outside a self-serve space, nor on an edit', async ()
     <PersonForm detail={{ ...alex, roles: ['student'], shared_fields_locked: false }} onSaved={noop} onCancel={noop} />,
   );
   expect(screen.queryByTestId('person-parent-consent')).toBeNull();
+});
+
+// Phase 76 (JF21): what each status means, said under the choice.
+it('explains Active, Invited and Suspended under the status, and follows the choice', async () => {
+  await renderWithProviders(<PersonForm preset={{ roles: ['parent'] }} onSaved={noop} onCancel={noop} />);
+  expect(screen.getByTestId('person-status-description')).toHaveTextContent('In the space now.');
+  await fireEvent.press(screen.getByTestId('person-status-invited'));
+  expect(screen.getByTestId('person-status-description')).toHaveTextContent(
+    'They join when they sign in -- someone who already has an account always accepts by hand.',
+  );
+  await fireEvent.press(screen.getByTestId('person-status-suspended'));
+  expect(screen.getByTestId('person-status-description')).toHaveTextContent('Kept on the books, but cannot open the space.');
+});
+
+it('quiet: says nothing on a save, for a host that shows the next steps (Phase 76)', async () => {
+  mockToastSuccess.mockClear();
+  const onSaved = jest.fn();
+  mockCreate.mockResolvedValue({ data: { ...alex, id: 'new', shared_fields_locked: false, roles: ['parent'] } });
+  await renderWithProviders(<PersonForm preset={{ roles: ['parent'] }} quiet onSaved={onSaved} onCancel={noop} />);
+  await fireEvent.changeText(screen.getByTestId('person-form-name'), 'Pat Parent');
+  await fireEvent.changeText(screen.getByTestId('person-form-email'), 'pat@example.com');
+  await fireEvent.press(screen.getByTestId('person-form-save'));
+  await waitFor(() => expect(onSaved).toHaveBeenCalled());
+  expect(mockToastSuccess).not.toHaveBeenCalled();
 });

@@ -57,7 +57,9 @@ tags:
     visible:
       id: record-quick-save
     timeout: 15000
-- assertVisible: 'Record this lesson'
+- assertVisible: 'Record a lesson'
+- assertVisible:
+    id: record-quick-write-up
 - assertVisible:
     id: record-quick-student
     text: '${output.studentName}'
@@ -80,7 +82,7 @@ tags:
 - tapOn:
     id: record-quick-save
 - extendedWaitUntil:
-    visible: 'Session recorded.'
+    visible: 'Lesson recorded.'
     timeout: 15000
 - tapOn:
     id: record-quick-done-cancel

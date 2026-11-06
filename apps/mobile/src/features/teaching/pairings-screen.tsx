@@ -5,6 +5,11 @@
 // rates are what its tutor is paid, so they reach only that tutor and the office (R5): the API
 // blanks them for everyone else and this screen renders a rate line only for a reader who may see
 // one. Only an admin changes pairings.
+//
+// Phase 75 (JF18, JF27): "No price set" on a pairing whose student has no price for a mode (any reader of the
+// pairing: a flag, never an amount); an override equal to the tutor's current default reads as the default. The
+// pairing carries no default, so a tutor's own profile -- or, for the office, the profile of each tutor whose pairing
+// has an override (only those need comparing) -- is read for it, from the cache the record already uses.
 import type { Assignment, UserRole } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -28,8 +33,21 @@ import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { useAssignments, useDeleteAssignment } from './api';
-import { PairingRates, seesPairingPay } from './pairing-rates';
+import { useAssignments, useDeleteAssignment, useTutorDefaults } from './api';
+import { PairingPriceMissing, PairingRates, seesPairingPay, type TutorDefaults } from './pairing-rates';
+
+/** The tutors whose defaults a list needs: those with an override the reader sees (only an override can equal one). */
+export function tutorsToCompare(
+  assignments: readonly Pick<Assignment, 'tutor_user_id' | 'rate_in_person_cents' | 'rate_virtual_cents'>[],
+  viewer: { id: string; isAdmin: boolean } | null,
+): string[] {
+  const ids = new Set<string>();
+  for (const row of assignments) {
+    if (row.rate_in_person_cents == null && row.rate_virtual_cents == null) continue;
+    if (seesPairingPay(row, viewer)) ids.add(row.tutor_user_id);
+  }
+  return [...ids];
+}
 
 export function PairingsScreen() {
   const { user } = useAuth();
@@ -51,6 +69,7 @@ export function PairingsScreen() {
   const all = data?.data ?? [];
   const assignments = focusId ? all.filter((row) => row.id === focusId) : all;
   const clearFocus = () => router.setParams({ focus: undefined });
+  const defaults = useTutorDefaults(tutorsToCompare(assignments, viewer));
 
   const openForm = (assignment?: Assignment) =>
     router.push(
@@ -176,6 +195,7 @@ export function PairingsScreen() {
             assignment={assignment}
             isAdmin={isAdmin}
             seesPay={seesPairingPay(assignment, viewer)}
+            defaults={defaults[assignment.tutor_user_id] ?? null}
             onEdit={() => openForm(assignment)}
             onRemove={() => confirmRemove(assignment)}
           />
@@ -189,12 +209,14 @@ function PairingCard({
   assignment,
   isAdmin,
   seesPay,
+  defaults,
   onEdit,
   onRemove,
 }: {
   assignment: Assignment;
   isAdmin: boolean;
   seesPay: boolean;
+  defaults: TutorDefaults | null;
   onEdit: () => void;
   onRemove: () => void;
 }) {
@@ -240,7 +262,8 @@ function PairingCard({
             ) : null}
           </View>
         </AdaptiveRow>
-        {seesPay ? <PairingRates assignment={assignment} isAdmin={isAdmin} /> : null}
+        {seesPay ? <PairingRates assignment={assignment} isAdmin={isAdmin} defaults={defaults} /> : null}
+        <PairingPriceMissing assignment={assignment} />
         {assignment.notes ? (
           <Text testID={`pairing-notes-${assignment.id}`} variant="bodySmall" style={{ color: muted }}>
             {assignment.notes}

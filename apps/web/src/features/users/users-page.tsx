@@ -41,6 +41,8 @@ import { useDeleteUser, useRestoreUser, useUsers } from './api';
 import { UserDetailDialog } from './user-detail-dialog';
 import { useAuth } from '@/providers/auth-provider';
 import { UserFormDialog } from './user-form-dialog';
+import { AddPersonDialog } from './add-person';
+import { copyInvitation, shareInvitation, useInvitationText } from '@/features/organizations/invite-people';
 import { JoinRequestsPanel } from './join-requests-panel';
 import { UsersTable } from './users-table';
 import { useBrand } from '@/providers/brand-provider';
@@ -55,7 +57,7 @@ type PendingAction =
   | null;
 
 export function UsersPage() {
-  const { user: viewer, account } = useAuth();
+  const { user: viewer, account, organization } = useAuth();
   const isAdminViewer = Boolean(viewer?.roles.includes('admin'));
   // Adding people is for the space's adult admins (a 13-17 adds nobody, Phase 63): offered to no one else,
   // rather than refused after the whole form (UI audit JF22, J04 step 15, J07 steps 30-34).
@@ -73,6 +75,9 @@ export function UsersPage() {
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  // Phase 76 (JF21): adding is one chooser; the form above is for editing.
+  const [adding, setAdding] = useState(false);
+  const invitationFor = useInvitationText();
   /**
    * Which record is open lives in the URL, so a comment in the feed -- or a
    * link somebody pastes to a colleague -- can open a person directly, and
@@ -127,11 +132,6 @@ export function UsersPage() {
     };
   }
 
-  function openCreate() {
-    setEditingId(null);
-    setFormOpen(true);
-  }
-
   function openEdit(user: User) {
     setEditingId(user.id);
     setFormOpen(true);
@@ -173,9 +173,9 @@ export function UsersPage() {
         description={`Everyone at ${brand.name}. A person can hold more than one role.`}
         actions={
           mayAdd ? (
-            <Button onClick={openCreate}>
+            <Button onClick={() => setAdding(true)} data-testid="users-add">
               <PlusIcon />
-              Add user
+              Add a person
             </Button>
           ) : undefined
         }
@@ -260,6 +260,11 @@ export function UsersPage() {
             onRestore={handleRestore}
             onDelete={(user) => setPendingAction({ kind: 'delete', user })}
             canManage={isAdminViewer}
+            // Phase 76 (JF37): an invited person is told by hand -- a self-serve space sends no email.
+            onCopyInvitation={(user) => user.email && void copyInvitation(invitationFor(user.email))}
+            onShareInvitation={(user) =>
+              user.email && void shareInvitation(invitationFor(user.email), organization?.name ?? brand.name)
+            }
           />
 
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -292,7 +297,8 @@ export function UsersPage() {
         </>
       )}
 
-      <UserFormDialog open={formOpen} onOpenChange={setFormOpen} userId={editingId} />
+      {formOpen && editingId && <UserFormDialog open={formOpen} onOpenChange={setFormOpen} userId={editingId} />}
+      <AddPersonDialog open={adding} onOpenChange={setAdding} />
 
       <UserDetailDialog userId={viewingId} onOpenChange={(open) => !open && setViewingId(null)} />
 

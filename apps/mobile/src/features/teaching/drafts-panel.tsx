@@ -1,4 +1,5 @@
 // Ported from apps/web/src/features/teaching/drafts-panel.tsx @ 1132322.
+// Phase 75 (JF30): one verb -- a draft is recorded ("Record"), never "posted".
 import { SESSION_MODE_LABELS, type SessionDraft } from '@tmi/shared';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
@@ -51,9 +52,9 @@ export function DraftsList({
     setPosting(draft.id);
     try {
       await post.mutateAsync(draft.id);
-      toast.success(`Session with ${draft.student_name} recorded.`);
+      toast.success(`Lesson with ${draft.student_name} recorded.`);
     } catch (error) {
-      toast.error(error instanceof ApiRequestError ? error.message : 'Could not post that draft.');
+      toast.error(error instanceof ApiRequestError ? error.message : 'Could not record that draft.');
     } finally {
       setPosting(null);
     }
@@ -109,7 +110,7 @@ export function DraftsList({
                   onPress: () => onEdit(draft),
                 },
                 ...(posting === null
-                  ? [{ key: 'post', label: 'Post', icon: 'send', onPress: () => void publish(draft) }]
+                  ? [{ key: 'post', label: 'Record', icon: 'check', onPress: () => void publish(draft) }]
                   : []),
                 {
                   key: 'discard',
@@ -149,13 +150,13 @@ export function DraftsList({
                   <Button
                     testID={`draft-post-${draft.id}`}
                     mode="contained"
-                    icon="send"
+                    icon="check"
                     compact
                     loading={posting === draft.id}
                     disabled={posting !== null}
                     onPress={() => void publish(draft)}
                   >
-                    Post
+                    Record
                   </Button>
                   <View style={{ flex: 1 }} />
                   <IconButton

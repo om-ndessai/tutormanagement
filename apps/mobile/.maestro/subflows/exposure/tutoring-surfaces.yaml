@@ -36,10 +36,18 @@ appId: ${APP_ID}
     visible:
       id: tabs-tutoring
     timeout: 20000
-- extendedWaitUntil:
-    visible:
+# Loaded: a lesson is in the list -- under To record for a tutor or the office (Phase 75) -- then back to the top,
+# where the walk for money starts.
+- scrollUntilVisible:
+    element:
       id: 'session-card-.*'
       index: 0
+    direction: DOWN
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: tabs-tutoring
+    direction: UP
     timeout: 20000
 - assertNotVisible:
     id: sessions-export
@@ -97,6 +105,23 @@ appId: ${APP_ID}
           id: create-button
       - tapOn:
           id: create-action-record-session
+      # Phase 75 (JF30): the lessons still owed first -- no figure on it either -- then "Another lesson", under the
+      # list (the office owes every tutor's).
+      - extendedWaitUntil:
+          visible:
+            id: lessons-owed
+          timeout: 15000
+      - runFlow: no-money.yaml
+      - scrollUntilVisible:
+          element:
+            id: lessons-owed-another
+          direction: DOWN
+          timeout: 30000
+      - runFlow: no-money.yaml
+      - waitForAnimationToEnd:
+          timeout: 3000
+      - tapOn:
+          id: lessons-owed-another
       # The record step flow (UI upgrades U4): its first two steps, where the pairings and the
       # length are -- the write-up cards carry no figures at all.
       - extendedWaitUntil:
@@ -119,6 +144,13 @@ appId: ${APP_ID}
                 index: 0
             - tapOn:
                 id: step-flow-next
+            # A blank record dates nothing by default: the day and times are chosen first.
+            - extendedWaitUntil:
+                visible:
+                  id: step-flow-title
+                  text: '.*When was it\?.*'
+                timeout: 15000
+            - runFlow: ../record-choose-when.yaml
             - extendedWaitUntil:
                 visible:
                   id: record-preview

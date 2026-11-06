@@ -1,13 +1,15 @@
-import type { SessionTotals, TutoringSession } from '@tmi/shared';
-import { screen } from '@testing-library/react-native';
+import type { LessonOwed, SessionTotals, TutoringSession } from '@tmi/shared';
+import { fireEvent, screen } from '@testing-library/react-native';
+import { router } from 'expo-router';
 
 import { session } from '@/test/fixtures';
 import { renderWithProviders } from '@/test/render';
 import { SessionsScreen } from './sessions-screen';
 
 const mockParams = jest.fn();
+const mockOwed = jest.fn((): LessonOwed[] => []);
 jest.mock('expo-router', () => ({
-  router: { push: jest.fn(), setParams: jest.fn() },
+  router: { push: jest.fn(), navigate: jest.fn(), replace: jest.fn(), setParams: jest.fn() },
   Stack: { Screen: () => null },
   useLocalSearchParams: () => mockParams(),
 }));
@@ -32,6 +34,7 @@ jest.mock('./api', () => ({
   usePostDraft: () => ({ mutateAsync: jest.fn(), isPending: false }),
   useDiscardDraft: () => ({ mutate: jest.fn(), isPending: false }),
   useDeleteSession: () => ({ mutate: jest.fn(), isPending: false }),
+  useLessonsOwed: () => ({ data: { data: mockOwed() }, isPending: false, isError: false }),
 }));
 const mockPages = jest.fn();
 jest.mock('./use-session-pages', () => ({
@@ -75,6 +78,77 @@ const allTotals: SessionTotals = {
 function signedInAs(roles: string[]) {
   mockAuth.mockReturnValue({ user: { id: 'me', full_name: 'Me', roles }, organization: null });
 }
+
+function owed(overrides: Partial<LessonOwed> = {}): LessonOwed {
+  return {
+    schedule_id: 'sch-1',
+    occurs_on: '2026-11-03',
+    start_time: '16:00',
+    end_time: '17:00',
+    mode: 'in_person',
+    tutor_user_id: 'me',
+    tutor_name: 'Me Tutor',
+    student_user_id: 'stu-1',
+    student_name: 'Yusuf Haddad',
+    place: { name: 'Institute, room 2', kind: 'physical' },
+    draft: null,
+    ...overrides,
+  };
+}
+
+beforeEach(() => {
+  mockOwed.mockReturnValue([]);
+  jest.mocked(router.push).mockClear();
+  jest.mocked(router.navigate).mockClear();
+});
+
+describe('Phase 75 (JF19, JF30): To record leads the Tutoring tab', () => {
+  it('lists the lessons still owed, each with Record -- or its draft’s Continue -- and no money', async () => {
+    signedInAs(['tutor']);
+    mockParams.mockReturnValue({});
+    givePages([], allTotals);
+    mockOwed.mockReturnValue([
+      owed(),
+      owed({ schedule_id: 'sch-2', student_name: 'Ben Whitfield', draft: { id: 'd-1', updated_at: '2026-11-03T17:43:00Z' } }),
+    ]);
+    await renderWithProviders(<SessionsScreen />);
+    expect(screen.getByTestId('sessions-to-record')).toBeTruthy();
+    expect(screen.getByTestId('sessions-to-record-sch-1-2026-11-03-record')).toHaveTextContent('Record');
+    expect(screen.getByTestId('sessions-to-record-sch-2-2026-11-03-draft')).toHaveTextContent(/^Draft saved .*12:43 PM$/);
+    expect(screen.getByTestId('sessions-to-record-sch-2-2026-11-03-record')).toHaveTextContent('Continue');
+    expect(screen.queryByText(/\$/)).toBeNull();
+
+    // A lesson the schedule knows opens "Record a lesson" filled in from it; one with a draft opens that draft.
+    await fireEvent.press(screen.getByTestId('sessions-to-record-sch-1-2026-11-03-record'));
+    expect(router.navigate).toHaveBeenCalledWith({
+      pathname: '/record-as-planned',
+      params: expect.objectContaining({ student: 'stu-1', tutor: 'me', date: '2026-11-03', start: '16:00', end: '17:00' }),
+    });
+    await fireEvent.press(screen.getByTestId('sessions-to-record-sch-2-2026-11-03-record'));
+    expect(router.navigate).toHaveBeenCalledWith({ pathname: '/record-lesson', params: { draft: 'd-1' } });
+  });
+
+  it('"Record a lesson" opens the lessons still owed; Finance keeps its record sheet', async () => {
+    signedInAs(['tutor']);
+    mockParams.mockReturnValue({});
+    givePages([], allTotals);
+    await renderWithProviders(<SessionsScreen />);
+    expect(screen.getByTestId('sessions-record-button')).toHaveTextContent(/Record a lesson/);
+    // Nothing owed: no card at all.
+    expect(screen.queryByTestId('sessions-to-record')).toBeNull();
+    await fireEvent.press(screen.getByTestId('sessions-record-button'));
+    expect(router.push).toHaveBeenCalledWith('/lessons-owed');
+  });
+
+  it('a parent sees no To record', async () => {
+    signedInAs(['parent']);
+    mockParams.mockReturnValue({});
+    givePages([], allTotals);
+    mockOwed.mockReturnValue([owed()]);
+    await renderWithProviders(<SessionsScreen />);
+    expect(screen.queryByTestId('sessions-to-record')).toBeNull();
+  });
+});
 
 describe('sessions list', () => {
   it('shows no money at all on Tutoring, even with admin money on the rows', async () => {

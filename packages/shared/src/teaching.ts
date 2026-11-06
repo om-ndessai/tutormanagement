@@ -327,6 +327,12 @@ export interface Assignment {
   notes: string | null;
   /** Phase 33: where this pair may have lessons, chosen from the tutor's and the student's own. */
   locations: Location[];
+  /**
+   * Phase 75 (JF18, R34): which of the student's prices the office has not set ("No price set") --
+   * never an amount, which a tutor's view blanks. Empty where families pay each tutor directly.
+   * Absent from an older Worker.
+   */
+  price_missing?: SessionMode[];
   created_at: string;
   updated_at: string;
 }
@@ -359,6 +365,51 @@ export function resolveChargeRateCents(
   return mode === 'virtual'
     ? student.charge_rate_virtual_cents
     : student.charge_rate_in_person_cents;
+}
+
+/**
+ * Phase 75 (JF18): which of a student's prices the office has not set, as a pairing, a schedule
+ * and the student's record say it (`price_missing`) -- never an amount. Empty where families pay
+ * each tutor directly, since the student's price is not read there.
+ */
+export function missingPriceModes(
+  student: {
+    charge_rate_in_person_cents: number | null;
+    charge_rate_virtual_cents: number | null;
+  } | null,
+  paidDirectly: boolean,
+): SessionMode[] {
+  if (paidDirectly) return [];
+  return SESSION_MODES.filter((mode) => (student ? resolveChargeRateCents(mode, student) : null) == null);
+}
+
+/**
+ * Phase 75 (JF18): why a lesson cannot be priced, in its reader's words. It is the MESSAGE of the
+ * 422 that Start, Stop, Record, a correction and posting a draft answer, so an older app build,
+ * which shows only the message, says it too. A tutor is told whom to ask ("Ask the office to set
+ * Yusuf's price."); the office what is missing ("Yusuf Haddad's in-person price is not set.").
+ * A virtual lesson names the virtual price or rate. Never an amount.
+ */
+export function missingRateMessage(input: {
+  /** The family's price (the student's), or what the tutor is paid (the pairing's or their default). */
+  missing: 'price' | 'pay_rate';
+  mode: SessionMode;
+  /** `tutor`: the lesson's own tutor, not an admin; `office`: an admin (or the sweep). */
+  reader: 'tutor' | 'office';
+  student_name: string;
+  tutor_name: string;
+}): string {
+  const virtual = input.mode === 'virtual';
+  if (input.reader === 'tutor') {
+    const first = input.student_name.trim().split(/\s+/)[0] || input.student_name;
+    return input.missing === 'price'
+      ? `Ask the office to set ${first}'s ${virtual ? 'virtual price' : 'price'}.`
+      : `Ask the office to set your ${virtual ? 'virtual pay rate' : 'pay rate'}.`;
+  }
+  const kind = virtual ? 'virtual' : 'in-person';
+  return input.missing === 'price'
+    ? `${input.student_name}'s ${kind} price is not set.`
+    : `${input.tutor_name}'s ${kind} pay rate is not set.`;
 }
 
 export const listAssignmentsQuerySchema = z.object({
@@ -765,4 +816,39 @@ export interface SessionDraft {
   assessment: SessionAssessmentContent | null;
   created_at: string;
   updated_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Lessons owed (Phase 75, JF30)
+// ---------------------------------------------------------------------------
+
+/**
+ * The reader's own draft of a lesson (R10: a draft is its author's alone), matched by tutor,
+ * student and date: enough for "Draft saved 12:43 PM · Continue", and to open it.
+ */
+export interface LessonDraftRef {
+  id: string;
+  updated_at: string;
+}
+
+/**
+ * A scheduled lesson of the last UNRECORDED_LOOKBACK_DAYS that ended and was never recorded,
+ * cancelled or left running (`GET /api/sessions/to-record`, R34): a tutor's own, or -- for an
+ * admin -- every tutor's here, newest first. It carries no money.
+ */
+export interface LessonOwed {
+  schedule_id: string;
+  occurs_on: string;
+  /** The schedule's clock times that day ("16:00", "17:00"). */
+  start_time: string;
+  end_time: string;
+  mode: SessionMode;
+  tutor_user_id: string;
+  tutor_name: string;
+  student_user_id: string;
+  student_name: string;
+  /** The schedule's place for the lesson's mode, by NAME and kind only (R16); null when it names none. */
+  place: { name: string; kind: 'physical' | 'virtual' } | null;
+  /** The reader's own draft of this lesson, the newest if several; null for none. */
+  draft: LessonDraftRef | null;
 }

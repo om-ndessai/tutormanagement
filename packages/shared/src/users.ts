@@ -200,6 +200,17 @@ export const USER_STATUS_LABELS: Record<UserStatus, string> = {
   suspended: 'Suspended',
 };
 
+/**
+ * Phase 76 (JF21): what each status means, said beside the choice on both clients. "Invited" is
+ * how an existing account is always added (it accepts by hand), so the words say so rather than
+ * letting "Active" look like a way round it.
+ */
+export const USER_STATUS_DESCRIPTIONS: Record<UserStatus, string> = {
+  active: 'In the space now.',
+  invited: 'They join when they sign in -- someone who already has an account always accepts by hand.',
+  suspended: 'Kept on the books, but cannot open the space.',
+};
+
 export function hasRole(user: Pick<User, 'roles'>, role: UserRole): boolean {
   return user.roles.includes(role);
 }

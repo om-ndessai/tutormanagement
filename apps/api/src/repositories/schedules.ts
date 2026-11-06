@@ -1,9 +1,10 @@
-import type {
-  ListSchedulesParams,
-  SchedulePayload,
-  ScheduleUpdatePayload,
-  ScheduledSession,
-  User,
+import {
+  missingPriceModes,
+  type ListSchedulesParams,
+  type SchedulePayload,
+  type ScheduleUpdatePayload,
+  type ScheduledSession,
+  type User,
 } from '@tmi/shared';
 
 import type { OrgId } from '../lib/org.js';
@@ -19,20 +20,45 @@ const SELECT_SCHEDULE = `
          ss.student_user_id, st.full_name AS student_name,
          ss.day_of_week, ss.start_time, ss.duration_minutes, ss.mode,
          ss.starts_on, ss.ends_on, ss.location, ss.notes, ss.is_active,
-         ss.created_at, ss.updated_at
+         ss.created_at, ss.updated_at,
+         sp.charge_rate_in_person_cents AS student_price_in_person_cents,
+         sp.charge_rate_virtual_cents   AS student_price_virtual_cents,
+         sp.user_id IS NOT NULL         AS student_priced_profile,
+         o.business_id IS NULL          AS paid_directly
   FROM scheduled_sessions ss
   JOIN users t  ON t.id  = ss.tutor_user_id
   JOIN users st ON st.id = ss.student_user_id
+  JOIN organizations o ON o.id = ss.organization_id
+  LEFT JOIN student_profiles sp ON sp.organization_id = ss.organization_id
+                               AND sp.user_id = ss.student_user_id
 `;
 
-interface ScheduleRow extends Omit<ScheduledSession, 'is_active' | 'locations'> {
+interface ScheduleRow extends Omit<ScheduledSession, 'is_active' | 'locations' | 'price_missing'> {
   is_active: number;
+  /** Phase 75: the student's prices, read only to say which is missing -- never returned. */
+  student_price_in_person_cents: number | null;
+  student_price_virtual_cents: number | null;
+  student_priced_profile: number;
+  paid_directly: number;
 }
 
-const toSchedule = (row: ScheduleRow): ScheduledSession => ({
+const toSchedule = ({
+  student_price_in_person_cents,
+  student_price_virtual_cents,
+  student_priced_profile,
+  paid_directly,
+  ...row
+}: ScheduleRow): ScheduledSession => ({
   ...row,
   is_active: row.is_active === 1,
   locations: [],
+  // Phase 75 (JF18, R34): WHICH price is missing, never an amount.
+  price_missing: missingPriceModes(
+    student_priced_profile === 1
+      ? { charge_rate_in_person_cents: student_price_in_person_cents, charge_rate_virtual_cents: student_price_virtual_cents }
+      : null,
+    paid_directly === 1,
+  ),
 });
 
 /** Phase 33: each schedule with its locations. */

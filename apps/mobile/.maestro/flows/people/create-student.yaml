@@ -3,8 +3,10 @@
 # rule, said before the server does); Anita Patel is found by search, her row naming her children,
 # and chosen as Mother. Then the student -- a name, no email, since a child who never signs in needs
 # none -- the two optional steps skipped, the lessons and the price left as they are, the Review, and Add:
-# the student and the link are created in ONE request. What next offers the assessment, the plan
-# and a tutor; Open their record shows her as the primary contact. Cleans up after itself.
+# the student and the link are created in ONE request. What next (Phase 76, shared `nextStepsAfterAdd`) offers
+# "Pair Mila with a tutor", "Set a weekly lesson" (which waits for the pairing) and "Record an assessment"; Open
+# their record shows her as the primary contact. The flow is opened from the (+) sheet's "Add people", through the
+# one Add chooser's "A family (parent and child)". Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -28,10 +30,19 @@ tags:
     id: create-button
 - extendedWaitUntil:
     visible:
-      id: create-action-add-student
+      id: create-action-add-people
     timeout: 10000
 - tapOn:
-    id: create-action-add-student
+    id: create-action-add-people
+# Phase 76 (JF21): the one Add chooser; a family is the guided flow.
+- extendedWaitUntil:
+    visible:
+      id: add-chooser
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-family
 # The family comes first.
 - extendedWaitUntil:
     visible:
@@ -121,6 +132,10 @@ tags:
     timeout: 5000
 - assertVisible:
     id: person-student-price-in-person
+# Phase 75 (JF18): an empty price LOOKS empty -- the example is the helper text, never a realistic placeholder.
+- assertVisible: 'For example 95\.00\. Charged to the family.*'
+- assertVisible: 'For example 85\.00\..*'
+- assertNotVisible: '95\.00'
 - tapOn:
     id: step-flow-next
 # The Review, then Add.
@@ -140,11 +155,14 @@ tags:
     timeout: 15000
 - assertVisible: 'Mila Novak is added'
 - assertVisible:
-    id: add-person-done-assess
+    id: add-done-next-pair_tutor
+- assertVisible: 'Pair Mila with a tutor'
 - assertVisible:
-    id: add-person-done-plan
+    id: add-done-next-weekly_lesson
+- assertVisible: 'Pair them with a tutor first\.'
 - assertVisible:
-    id: add-person-done-pair
+    id: add-done-next-assessment
+- assertNotVisible: 'Set the learning plan'
 - takeScreenshot: add-student-done
 - tapOn:
     id: add-person-done-record

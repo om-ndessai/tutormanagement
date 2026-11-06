@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/teaching/api.ts @ 1132322
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { featureOn } from '@tmi/shared';
 import type {
   ActiveSession,
@@ -17,8 +17,10 @@ import type {
   UpdateActiveSessionPayload,
   SessionUpdatePayload,
   TutoringSession,
+  UserDetail,
   SessionDraft,
   SessionDraftInput,
+  LessonOwed,
   SessionAssessmentInput,
   SessionReflectionInput,
 } from '@tmi/shared';
@@ -30,6 +32,8 @@ import { auditKeys } from '@/features/audit/api';
 export const teachingKeys = {
   assignments: (params: Partial<ListAssignmentsParams>) => ['assignments', params] as const,
   sessions: (params: Partial<ListSessionsParams>) => ['sessions', params] as const,
+  /** Phase 75 (JF30): under 'sessions', so every recording, start and stop marks it stale with the rest. */
+  lessonsOwed: ['sessions', 'to-record'] as const,
 };
 
 /** Sessions and assignments both feed the activity log, so both invalidate it. */
@@ -145,6 +149,26 @@ export function useAssignments(params: Partial<ListAssignmentsParams> = {}) {
   });
 }
 
+/**
+ * Phase 75 (JF27): each tutor's CURRENT default pay rates, by tutor id, read from their record -- the same cache key
+ * as `useUserDetail` (`['users', 'detail', id]`), so a record already open costs nothing. A pairing carries no
+ * default, and an override equal to one is shown as the default. Only the tutors asked for (those with an override).
+ */
+export function useTutorDefaults(ids: readonly string[]): Record<string, { in_person: number | null; virtual: number | null }> {
+  const results = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ['users', 'detail', id] as const,
+      queryFn: () => apiClient.get<ApiOk<UserDetail>>(`/users/${id}`),
+    })),
+  });
+  const out: Record<string, { in_person: number | null; virtual: number | null }> = {};
+  results.forEach((result, index) => {
+    const tutor = result.data?.data.tutor_profile;
+    if (tutor) out[ids[index]!] = { in_person: tutor.default_rate_in_person_cents, virtual: tutor.default_rate_virtual_cents };
+  });
+  return out;
+}
+
 export function useCreateAssignment() {
   const invalidate = useTeachingInvalidation();
 
@@ -225,6 +249,23 @@ export function useDeleteSession() {
 }
 
 // ---------------------------------------------------------------------------
+// Lessons owed (Phase 75, JF30)
+// ---------------------------------------------------------------------------
+
+/**
+ * The scheduled lessons of the last week that ended and were never recorded, cancelled or left running -- the
+ * reader's own (an admin: every tutor's), newest first, each with the reader's own draft of it. No money.
+ * Tutoring only: the route answers 403 elsewhere, so the caller enables it only where Tutoring is on.
+ */
+export function useLessonsOwed(enabled = true) {
+  return useQuery({
+    queryKey: teachingKeys.lessonsOwed,
+    queryFn: () => apiClient.get<ApiOk<LessonOwed[]>>('/sessions/to-record'),
+    enabled,
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Drafts
 // ---------------------------------------------------------------------------
 
@@ -238,7 +279,12 @@ export function useMyDrafts() {
 
 function useDraftInvalidation() {
   const queryClient = useQueryClient();
-  return () => void queryClient.invalidateQueries({ queryKey: ['session-drafts'] });
+  return () => {
+    void queryClient.invalidateQueries({ queryKey: ['session-drafts'] });
+    // Phase 75 (JF19): a lesson owed carries the reader's draft of it -- on Home, Next up and the owed list.
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
+    void queryClient.invalidateQueries({ queryKey: teachingKeys.lessonsOwed });
+  };
 }
 
 export function useSaveDraft() {

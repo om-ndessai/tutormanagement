@@ -1,6 +1,8 @@
 # A draft is its author's alone (R10). Alex saves a write-up with Sofia as a draft (Save draft, the
 # explicit, logged save). Maria -- a tutor and Sofia's own parent -- and Priya, the admin, see no
-# Drafts panel. Alex discards it, with a confirmation, and the panel goes.
+# Drafts panel. Alex discards it, with a confirmation, and the panel goes. Phase 75 (JF30): the record is
+# "Another lesson" from the lessons still owed, dated by hand (nothing by default); a draft's own action is
+# Record (one verb), never "Post".
 appId: ${APP_ID}
 # Self-cleaning: leftover lessons, drafts and running lessons from any earlier run (even a failed
 # one) are removed before this flow, and whatever this flow leaves is removed after it.
@@ -46,7 +48,18 @@ tags:
     visible:
       id: drafts-panel
     timeout: 10000
+# The panel sits under To record (Phase 75): bring its actions to mid-screen, off the tab bar.
+- scrollUntilVisible:
+    element:
+      id: 'draft-post-.*'
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
 - assertVisible: 'Sofia Okafor'
+- assertVisible:
+    id: 'draft-post-.*'
+    text: '.*Record.*'
+- assertNotVisible: 'Post'
 - assertNotVisible: '.*\$[0-9].*'
 - takeScreenshot: drafts-alex
 # Maria (Sofia's parent, and a tutor) never sees it.
@@ -60,9 +73,18 @@ tags:
       id: screen-home
     timeout: 30000
 - tapOn: 'Sessions'
-- extendedWaitUntil:
-    visible:
+# Loaded: the lessons are there (under To record and the totals since Phase 75) ...
+- scrollUntilVisible:
+    element:
       id: 'session-card-.*'
+    direction: DOWN
+    timeout: 20000
+# ... and back to the totals, with the place a Drafts panel would take (just above them) on screen.
+- scrollUntilVisible:
+    element:
+      id: stat-sessions
+    direction: UP
+    centerElement: true
     timeout: 20000
 - assertNotVisible:
     id: drafts-panel
@@ -78,9 +100,18 @@ tags:
       id: screen-home
     timeout: 30000
 - tapOn: 'Sessions'
-- extendedWaitUntil:
-    visible:
+# Loaded: the lessons are there (under To record and the totals since Phase 75) ...
+- scrollUntilVisible:
+    element:
       id: 'session-card-.*'
+    direction: DOWN
+    timeout: 20000
+# ... and back to the totals, with the place a Drafts panel would take (just above them) on screen.
+- scrollUntilVisible:
+    element:
+      id: stat-sessions
+    direction: UP
+    centerElement: true
     timeout: 20000
 - assertNotVisible:
     id: drafts-panel
@@ -98,6 +129,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: drafts-panel
+    timeout: 20000
+# The panel sits under To record (Phase 75): bring the discard to mid-screen, off the tab bar.
+- scrollUntilVisible:
+    element:
+      id: 'draft-discard-.*'
+    direction: DOWN
+    centerElement: true
     timeout: 20000
 - tapOn:
     id: 'draft-discard-.*'

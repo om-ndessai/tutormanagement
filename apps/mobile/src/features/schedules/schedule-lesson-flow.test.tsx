@@ -3,8 +3,9 @@
 import type { Assignment, Location } from '@tmi/shared';
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 
+import { onFormSaved, type FormSaved } from '@/lib/form-bridge';
 import { renderWithProviders } from '@/test/render';
-import { ScheduleLessonFlow, scheduleMode, togglePlace } from './schedule-lesson-flow';
+import { ScheduleLessonFlow, presetPairing, scheduleMode, togglePlace } from './schedule-lesson-flow';
 
 const mockAssignments = jest.fn();
 const mockCreate = jest.fn();
@@ -85,7 +86,7 @@ describe('Schedule a lesson', () => {
 
   it('walks to a Review said as a sentence, then sends one schedule', async () => {
     mockAssignments.mockReturnValue({ isPending: false, isError: false, data: { data: [pairing] } });
-    mockCreate.mockResolvedValue({});
+    mockCreate.mockResolvedValue({ data: { id: 'schedule-1' } });
     await renderWithProviders(<ScheduleLessonFlow />);
     // The only pairing is chosen already.
     await fireEvent.press(screen.getByTestId('step-flow-next'));
@@ -125,5 +126,36 @@ describe('Schedule a lesson', () => {
     await fireEvent.press(screen.getByTestId('step-flow-next'));
     expect(await screen.findByText('Choose at least one location.')).toBeTruthy();
     expect(screen.queryByTestId('schedule-review-sentence')).toBeNull();
+  });
+
+  // Phase 76 (JF21): "Set a weekly lesson" after adding someone opens on their pairing, and says when it is saved.
+  it('?assignment= opens on that pairing at When, and announces the schedule it made', async () => {
+    const other: Assignment = { ...pairing, id: 'a2', student_name: 'Leo Marsh', student_user_id: 'student-2' };
+    mockAssignments.mockReturnValue({ isPending: false, isError: false, isFetching: false, data: { data: [other, pairing] } });
+    mockCreate.mockResolvedValue({ data: { id: 'schedule-9' } });
+    const heard: FormSaved[] = [];
+    const stop = onFormSaved((event) => heard.push(event));
+    await renderWithProviders(<ScheduleLessonFlow assignmentId="a1" />);
+    // Straight to When: the pairing is chosen, though there are two.
+    expect(screen.getByText('When is it?')).toBeTruthy();
+    for (let step = 0; step < 3; step += 1) await fireEvent.press(screen.getByTestId('step-flow-next'));
+    expect(screen.getByTestId('schedule-review-sentence')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('step-flow-next'));
+    await waitFor(() => expect(mockCreate).toHaveBeenCalled());
+    expect(mockCreate.mock.calls[0][0]).toMatchObject({ tutor_user_id: TUTOR, student_user_id: STUDENT });
+    await waitFor(() => expect(heard).toEqual([{ form: 'schedule', id: 'schedule-9' }]));
+    stop();
+  });
+
+  it('waits for the fresh list when the named pairing is not in the cached one yet', async () => {
+    mockAssignments.mockReturnValue({ isPending: false, isError: false, isFetching: true, data: { data: [] } });
+    await renderWithProviders(<ScheduleLessonFlow assignmentId="a1" />);
+    expect(screen.getByTestId('schedule-lesson-loading')).toBeTruthy();
+  });
+
+  it('presetPairing: the named pairing, or none for one the reader may not schedule', () => {
+    expect(presetPairing([pairing], 'a1')).toBe(pairing);
+    expect(presetPairing([pairing], 'nope')).toBeNull();
+    expect(presetPairing([pairing], undefined)).toBeNull();
   });
 });

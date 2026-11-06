@@ -32,7 +32,8 @@ describe('home-screen quick actions', () => {
 
   it('lead to their sheet only while the reader still teaches in this organization', () => {
     expect(quickActionRoute('start-lesson', ['tutor'], ORG)).toBe('/start-lesson');
-    expect(quickActionRoute('record-session', ['tutor'], ORG)).toBe('/record-lesson');
+    // Phase 75 (JF30): the lessons still owed, as every "Record a lesson" door.
+    expect(quickActionRoute('record-session', ['tutor'], ORG)).toBe('/lessons-owed');
     expect(quickActionRoute('start-lesson', ['parent'], ORG)).toBeNull();
     expect(quickActionRoute('anything-else', ['tutor'], ORG)).toBeNull();
     expect(quickActionRoute(undefined, ['tutor'], ORG)).toBeNull();

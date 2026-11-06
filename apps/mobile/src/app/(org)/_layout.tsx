@@ -117,6 +117,38 @@ export default function OrgLayout() {
                 headerShown: false,
               }}
             />
+            {/* Phase 75 (JF30): the lessons still owed -- each recorded as planned -- and "Another lesson". A fitted
+                quick sheet that stops at full height and scrolls; a row gives way to its record sheet or its draft. */}
+            <Stack.Screen
+              name="lessons-owed"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: 'fitToContents',
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
+            {/* Phase 76 (JF21): the one Add chooser -- a family, a tutor, someone else, an invitation -- a fitted quick
+                sheet; a choice gives way to its flow in place. */}
+            <Stack.Screen
+              name="add"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: 'fitToContents',
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
+            {/* Phase 76 (JF21, JF37): Invite by email, from the chooser at any time (the wizard's InvitePeople). */}
+            <Stack.Screen
+              name="invite-people"
+              options={{
+                presentation: 'formSheet',
+                sheetAllowedDetents: [0.9, 1],
+                sheetGrabberVisible: true,
+                headerShown: false,
+              }}
+            />
             {/* Letting in someone who asked with the code (UI audit JF1): the role, then their child -- a quick sheet. */}
             <Stack.Screen
               name="let-in"

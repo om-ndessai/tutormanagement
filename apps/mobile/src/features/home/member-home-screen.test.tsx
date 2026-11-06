@@ -119,7 +119,11 @@ jest.mock('@/features/quest/api', () => ({
   },
 }));
 jest.mock('./brief-cards', () => ({ BriefCards: () => null }));
-jest.mock('@/features/teaching/api', () => ({ useActiveSession: () => ({ data: { data: { mine: null } } }) }));
+// Phase 75 (JF30): the reader's running lesson, which leads Next up.
+const mockActive = { current: null as null | { student_name: string; started_at: string; mode: 'in_person' | 'virtual' } };
+jest.mock('@/features/teaching/api', () => ({
+  useActiveSession: () => ({ data: { data: { mine: mockActive.current } } }),
+}));
 jest.mock('@/features/locations/lesson-reminder', () => ({ LessonReminderSheet: () => null }));
 jest.mock('@/features/organizations/invitation-banner', () => ({ InvitationBanner: () => null }));
 jest.mock('@/features/onboarding/onboarding-provider', () => ({ useOptionalOnboarding: () => null, TourOfferCard: () => null }));
@@ -196,6 +200,7 @@ beforeEach(() => {
   mockTiles.current = [];
   mockOpen.current = null;
   mockOpen.enabled = [];
+  mockActive.current = null;
   mockPin.mockClear();
   mockStart.mockClear();
   mockOpenGame.mockClear();
@@ -761,5 +766,79 @@ describe('Phase 74: the first home', () => {
     await show({ ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null } }, ['student']);
     expect(screen.getByTestId('next-up-open_game')).toBeTruthy();
     expect(screen.getByTestId('play-home')).toHaveTextContent('Play open_game');
+  });
+});
+
+describe('Phase 75 (JF19, JF30): the lessons owed, one way, from Home', () => {
+  const DRAFT = { id: 'draft-7', updated_at: '2026-11-03T17:43:00Z' };
+
+  it('a running lesson leads Next up, with Stop and how long it has run -- no money', async () => {
+    mockActive.current = { student_name: 'Sofia Okafor', started_at: '2026-11-03T18:48:00Z', mode: 'in_person' };
+    await show(ALEX, ['tutor']);
+    expect(screen.getByTestId('next-up-lesson_running')).toHaveTextContent(/Your lesson with Sofia is running\./);
+    expect(screen.getByTestId('next-up-detail')).toHaveTextContent('Running 12 min · In person');
+    // It cannot be put off: it is under way.
+    expect(screen.queryByTestId('next-up-later')).toBeNull();
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(router.navigate).toHaveBeenCalledWith('/stop-lesson');
+    expect(allText()).not.toMatch(NO_MONEY);
+  });
+
+  it('a To record row with the reader’s draft says when it was kept, and Continue opens that draft', async () => {
+    const home = {
+      ...ALEX,
+      tutor: { ...ALEX.tutor!, to_record: [{ ...ALEX.tutor!.to_record[0]!, draft: DRAFT }, ALEX.tutor!.to_record[1]!] },
+    };
+    await show(home, ['tutor']);
+    expect(screen.getByTestId('home-to-record-sch-2-2026-10-31-draft')).toHaveTextContent('Draft saved 12:43 PM');
+    expect(screen.getByTestId('home-to-record-sch-2-2026-10-31-record')).toHaveTextContent('Continue');
+    await fireEvent.press(screen.getByTestId('home-to-record-sch-2-2026-10-31-record'));
+    expect(router.navigate).toHaveBeenLastCalledWith({ pathname: '/record-lesson', params: { draft: 'draft-7' } });
+    // A row without one still records it as planned; "+5 more" opens the whole list of lessons owed.
+    expect(screen.getByTestId('home-to-record-sch-1-2026-10-27-record')).toHaveTextContent('Record');
+    await fireEvent.press(screen.getByTestId('home-to-record-more'));
+    expect(router.navigate).toHaveBeenLastCalledWith('/lessons-owed');
+  });
+
+  it('Next up’s finished lesson with a draft continues it, never a second one', async () => {
+    const lesson = { ...ALEX.tutor!.to_record[0]!, occurs_on: '2026-11-03', draft: DRAFT };
+    const home = { ...ALEX, tutor: { ...ALEX.tutor!, now: { ...ALEX.tutor!.now, unrecorded: [lesson] } } };
+    await show(home, ['tutor']);
+    expect(screen.getByTestId('next-up-lesson_unrecorded')).toBeTruthy();
+    expect(screen.getByTestId('home-now-celebrate-draft')).toHaveTextContent('Draft saved 12:43 PM');
+    expect(screen.getByTestId('next-up-action')).toHaveTextContent('Continue');
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(router.navigate).toHaveBeenCalledWith({ pathname: '/record-lesson', params: { draft: 'draft-7' } });
+  });
+
+  it('"Record a lesson" opens the lessons still owed; the office’s to-record does too', async () => {
+    await show(ALEX, ['tutor']);
+    await fireEvent.press(screen.getByTestId('quick-record_lesson'));
+    expect(router.navigate).toHaveBeenLastCalledWith('/lessons-owed');
+    await show(PRIYA, ['tutor', 'admin']);
+    expect(screen.getByTestId('next-up-action')).toHaveTextContent(/Record them/);
+    await fireEvent.press(screen.getByTestId('next-up-action'));
+    expect(router.navigate).toHaveBeenLastCalledWith('/lessons-owed');
+    await fireEvent.press(screen.getByTestId('home-office-to-record'));
+    expect(router.navigate).toHaveBeenLastCalledWith('/lessons-owed');
+  });
+});
+
+describe('Phase 76 (JF21): one Add chooser from Home', () => {
+  it('the office’s "Add someone" opens the chooser', async () => {
+    const office = { ...INES, hats: ['office'] as MemberHome['hats'], parent: null, learner: null };
+    await show(office, ['admin'], ASSESS, { account: { age_band: 'adult' } });
+    await fireEvent.press(screen.getByTestId('quick-add_person'));
+    expect(router.navigate).toHaveBeenLastCalledWith('/add');
+  });
+
+  it('a personal space’s adult is offered "Add my child" (no office hat there); a teen is not', async () => {
+    const mine: MemberHome = { ...SOFIA, first_name: 'Nina', personal: true, focus: 'quest' };
+    await show(mine, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: 'adult' } });
+    expect(screen.getByTestId('quick-add_person')).toHaveTextContent(/Add my child$/);
+    await fireEvent.press(screen.getByTestId('quick-add_person'));
+    expect(router.navigate).toHaveBeenLastCalledWith('/add');
+    await show(mine, ['admin'], { ...ASSESS, personal: true }, { account: { age_band: '13-17' } });
+    expect(screen.queryByTestId('quick-add_person')).toBeNull();
   });
 });

@@ -84,7 +84,11 @@ test.describe('feature sets (Phase 50) @smoke', () => {
     expect(student.roles).toEqual(['student']);
     // The form offers no tutor role here.
     await ines.goto('/users');
-    await ines.getByRole('button', { name: /Add user/ }).first().click();
+    // Phase 76 (JF21): the chooser offers no tutor here either.
+    await ines.getByRole('button', { name: 'Add a person' }).first().click();
+    await expect(ines.getByTestId('add-choice-tutor')).toHaveCount(0);
+    await ines.getByTestId('add-choice-someone').click();
+    await expect(ines.getByRole('dialog', { name: 'Add a person' })).toBeVisible();
     await expect(ines.getByRole('checkbox', { name: /Tutor/ })).toHaveCount(0);
   });
 

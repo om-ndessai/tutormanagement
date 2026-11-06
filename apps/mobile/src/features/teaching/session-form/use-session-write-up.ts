@@ -27,6 +27,7 @@ import { useTopicIndex } from '@/features/progress/api';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAutosaveDraft, usePostDraft, useRecordSession, useSaveDraft, useUpdateSession } from '../api';
+import { refusalLines } from '../refusal';
 import { likelyAssessorRole } from '../session-notes';
 import { organizationToday } from '../session-ranges';
 import { useDraftAutosave, withDraft } from './use-draft-autosave';
@@ -41,13 +42,14 @@ import {
   toUpdatePayload,
   type RecordPrefill,
   useSessionForm,
+  whenMissing,
 } from './use-session-form';
 
 /** The shared schema's limits: each part of the write-up, and the notes (P3's length refusal). */
 export const PART_MAX = 2000;
 export const NOTES_MAX = 4000;
 
-export const CHOOSE_STUDENT = 'Choose which student this session was with.';
+export const CHOOSE_STUDENT = 'Choose which student this lesson was with.';
 
 /** What a save did, for the caller to say. */
 export type WriteUpOutcome =
@@ -84,7 +86,7 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
         ? formFromDraft(draft, assignments)
         : prefill
           ? prefilledForm(today, assignments, prefill)
-          : emptyForm(today, assignments),
+          : emptyForm(assignments),
   );
   const [submitErrors, setErrors] = useState<Record<string, string>>({});
   // What the draft schema said about the last body the autosave looked at; answered by an edit.
@@ -121,7 +123,8 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
     getBody: () => {
       // Only what is settled: interim dictation never reaches form state (P3).
       const now = current();
-      return pair && (isDraft || hasContent(now)) ? (formBody(now, pair) as SessionDraftInput) : null;
+      // A blank record is kept once its day and times are chosen (Phase 75): before that it would only be refused.
+      return pair && (isDraft || hasContent(now)) && !whenMissing(now) ? (formBody(now, pair) as SessionDraftInput) : null;
     },
     save: async (id, input) => {
       const result = await autosaveDraft.mutateAsync({ id, input });
@@ -176,6 +179,12 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
       fail(CHOOSE_STUDENT, { assignment: CHOOSE_STUDENT });
       return null;
     }
+    // A blank record (Phase 75) is dated by the person: a draft needs its day and times too.
+    const missingWhen = whenMissing(now);
+    if (missingWhen) {
+      fail(Object.values(missingWhen)[0]!, missingWhen);
+      return null;
+    }
     const input = formBody(now, pair) as SessionDraftInput;
     const parsed = sessionDraftInputSchema.safeParse(input);
     if (!parsed.success) {
@@ -212,8 +221,8 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
       return { kind: 'posted' };
     } catch (error) {
       autosave.resume();
-      if (error instanceof ApiRequestError) fail(error.message, error.fieldErrors);
-      else fail('Could not post the draft.', {});
+      if (error instanceof ApiRequestError) fail(failureMessage(error), error.fieldErrors);
+      else fail('Could not record the draft.', {});
       return null;
     }
   }
@@ -243,6 +252,12 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
         const result = await update.mutateAsync({ id: existing.id, input });
         return { kind: 'updated', session: result.data };
       }
+      // A blank record (Phase 75): its day and times are the person's to choose, and said so in words.
+      const missingWhen = whenMissing(now);
+      if (missingWhen) {
+        fail(Object.values(missingWhen)[0]!, missingWhen);
+        return null;
+      }
       const input = formBody(now, {
         tutor_user_id: assignment!.tutor_user_id,
         student_user_id: assignment!.student_user_id,
@@ -267,8 +282,8 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
     } catch (error) {
       // Not recorded, so keep the write-up safe again.
       if (!isEdit) autosave.resume();
-      if (error instanceof ApiRequestError) fail(error.message, error.fieldErrors);
-      else fail('Could not save the session.', {});
+      if (error instanceof ApiRequestError) fail(failureMessage(error), error.fieldErrors);
+      else fail('Could not record the lesson.', {});
       return null;
     }
   }
@@ -301,15 +316,39 @@ export function useSessionWriteUp({ assignments, existing, draft, prefill, onFai
 
 export type SessionWriteUp = ReturnType<typeof useSessionWriteUp>;
 
-/** What each outcome says, once the screen it came from has gone. */
+/**
+ * A refusal's words for the footer, once (Phase 75, JF18): the message, then any field's words it does not already
+ * say and no step shows under a field of its own (the mode's detail repeats the message: "Ask the office to set
+ * Yusuf's price.").
+ */
+function failureMessage(error: ApiRequestError): string {
+  return refusalLines(error.message, error.fieldErrors, FIELDS_UNDER_INPUTS).join('\n');
+}
+
+/** The fields the forms show under their own input; anything else is said in the footer. */
+const FIELDS_UNDER_INPUTS = [
+  'assignment',
+  'student_user_id',
+  'tutor_user_id',
+  'occurred_on',
+  'started_at',
+  'ended_at',
+  'notes',
+  'write_up.planned',
+  'write_up.previous_review',
+  'write_up.homework_review',
+  'write_up.homework_assigned',
+];
+
+/** What each outcome says, once the screen it came from has gone. "Lesson", never "session" (Phase 75). */
 export function outcomeMessage(outcome: WriteUpOutcome): string {
   switch (outcome.kind) {
     case 'recorded':
-      return 'Session recorded.';
+      return 'Lesson recorded.';
     case 'updated':
-      return 'Session updated.';
+      return 'Lesson updated.';
     case 'posted':
-      return 'Session recorded. Everyone concerned can see it now.';
+      return 'Lesson recorded. Everyone concerned can see it now.';
     case 'draft-saved':
       return outcome.picked ? 'Draft saved.' : 'Saved as a draft. Only you can see it.';
   }

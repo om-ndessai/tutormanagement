@@ -7,6 +7,12 @@
 // Tutoring: no money anywhere (the length only). The place is shown, not sent -- a lesson on the
 // record has a mode, not a location. The record is the ordinary `POST /sessions`; the write-up that
 // follows is an edit of a lesson on the record, so it is never a draft.
+//
+// Phase 75 (docs/journey-fixes-plan.md JF19, JF30; owner 2026-11-05): the one "Record a lesson" for a lesson the
+// schedule knows (Next up, To record, the lessons owed, the dashboard's carousel), now on the web too: "It ran as
+// planned" records it in one tap, "Write up the lesson" opens the full step flow filled in from the schedule. A
+// lesson the reader has a draft of opens on that draft ("Draft saved 12:43 PM", Continue) -- never a second one. A
+// refusal (a price not set: "Ask the office to set Yusuf's price.") is said once, in the sheet.
 import {
   SESSION_MODE_LABELS,
   formatDuration,
@@ -32,7 +38,9 @@ import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
-import { useAssignments, useRecordSession } from '../api';
+import { useAssignments, useMyDrafts, useRecordSession } from '../api';
+import { draftForLesson, draftSavedLine } from '../lessons-owed-model';
+import { refusalLines } from '../refusal';
 import { formatSessionDay, formatSessionTimes } from '../session-format';
 import { organizationToday } from '../session-ranges';
 import { previewFigures } from './session-money-preview';
@@ -57,14 +65,32 @@ function SheetState({ children }: { children: ReactNode }) {
   );
 }
 
+/** The full step flow for this lesson, filled in from its schedule (the as-planned sheet's "Write up the lesson"). */
+export function writeUpHref(prefill: RecordPrefill) {
+  return {
+    pathname: '/record-lesson' as const,
+    params: {
+      student: prefill.student,
+      ...(prefill.tutor ? { tutor: prefill.tutor } : {}),
+      ...(prefill.date ? { date: prefill.date } : {}),
+      ...(prefill.start ? { start: prefill.start } : {}),
+      ...(prefill.end ? { end: prefill.end } : {}),
+      ...(prefill.mode ? { mode: prefill.mode } : {}),
+      ...(prefill.homeworkReview ? { homework: prefill.homeworkReview } : {}),
+    },
+  };
+}
+
 export function RecordAsPlannedSheet({ prefill, place }: { prefill: RecordPrefill; place?: string }) {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const assignments = useAssignments(isAdmin ? {} : { tutor_user_id: user?.id });
+  // Phase 75 (JF19): the reader's own draft of this lesson, if any, is where it continues.
+  const drafts = useMyDrafts();
   const [recorded, setRecorded] = useState<TutoringSession | null>(null);
 
   if (recorded) return <RecordedSheet session={recorded} />;
-  if (assignments.isPending) {
+  if (assignments.isPending || drafts.isPending) {
     return (
       <SheetState>
         <FormSkeleton label="Loading…" fields={2} />
@@ -98,6 +124,12 @@ export function RecordAsPlannedSheet({ prefill, place }: { prefill: RecordPrefil
       </SheetState>
     );
   }
+  const draft = draftForLesson(drafts.data?.data ?? [], {
+    student: prefill.student,
+    tutor: prefill.tutor ?? match.tutor_user_id,
+    date: prefill.date,
+  });
+  if (draft) return <DraftWaiting draftId={draft.id} updatedAt={draft.updated_at} studentName={match.student_name} />;
   return (
     <AsPlanned
       assignments={list}
@@ -106,6 +138,31 @@ export function RecordAsPlannedSheet({ prefill, place }: { prefill: RecordPrefil
       place={place}
       onRecorded={setRecorded}
     />
+  );
+}
+
+/** The reader has a draft of this lesson: continue it, rather than record it a second way. */
+function DraftWaiting({ draftId, updatedAt, studentName }: { draftId: string; updatedAt: string; studentName: string }) {
+  const theme = useAppTheme();
+  const timeZone = useOrgTimeZone();
+  const today = organizationToday(timeZone);
+  return (
+    <QuickSheet
+      testID="record-quick"
+      actionTestID="record-quick-draft"
+      title="Record a lesson"
+      description={`You started writing up this lesson with ${studentName}. Pick it up where you left off.`}
+      primaryLabel="Continue"
+      primaryIcon="pencil-outline"
+      onPrimary={() => {
+        haptics.selection();
+        router.replace({ pathname: '/record-lesson', params: { draft: draftId } });
+      }}
+    >
+      <Text testID="record-quick-draft-saved" variant="labelLarge" style={{ color: theme.colors.primary }}>
+        {draftSavedLine({ updated_at: updatedAt }, timeZone, today)}
+      </Text>
+    </QuickSheet>
   );
 }
 
@@ -158,7 +215,8 @@ function AsPlanned({
       haptics.error();
       if (error instanceof ApiRequestError) {
         setErrors(error.fieldErrors);
-        setFailure(error.message);
+        // Once (JF18): the message, then any other field's words not under a field here (the mode's repeats it).
+        setFailure(refusalLines(error.message, error.fieldErrors, ['started_at', 'ended_at']).join('\n'));
       } else {
         setFailure('Could not record the lesson.');
       }
@@ -168,7 +226,7 @@ function AsPlanned({
   return (
     <QuickSheet
       testID="record-quick"
-      title="Record this lesson"
+      title="Record a lesson"
       description="Check it is the lesson you taught."
       primaryLabel={different ? 'Record lesson' : 'It ran as planned'}
       primaryIcon="check"
@@ -247,8 +305,22 @@ function AsPlanned({
           maxLength={PART_MAX}
         />
       ) : null}
+      {/* Phase 75 (JF30): the full form, filled in from the schedule -- the write-up before recording. */}
+      <Button
+        testID="record-quick-write-up"
+        mode="text"
+        icon="pencil-outline"
+        disabled={record.isPending}
+        onPress={() => {
+          haptics.selection();
+          router.replace(writeUpHref(prefill));
+        }}
+        contentStyle={{ minHeight: 48 }}
+      >
+        Write up the lesson
+      </Button>
       <Text variant="bodySmall" style={{ color: muted }}>
-        You can add notes, homework and progress once it is recorded.
+        Or record it now, and add notes, homework and progress afterwards.
       </Text>
     </QuickSheet>
   );
@@ -272,7 +344,7 @@ function RecordedSheet({ session }: { session: TutoringSession }) {
   return (
     <QuickSheet
       testID="record-quick-done"
-      title="Session recorded."
+      title="Lesson recorded."
       description={`${session.student_name}, ${
         session.occurred_on === today ? 'today' : formatSessionDay(session.occurred_on, today)
       }, ${formatSessionTimes(session.started_at, session.ended_at)}. Add the write-up now, or later from the lesson.`}

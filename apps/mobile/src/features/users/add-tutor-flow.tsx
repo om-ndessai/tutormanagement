@@ -56,8 +56,8 @@ export function AddTutorFlow({ fromWizard }: { fromWizard: boolean }) {
   if (added) {
     return (
       <AddPersonDone
-        kind="tutor"
         person={added}
+        againLabel="Add another tutor"
         onAgain={() => {
           setAdded(null);
           setRound((n) => n + 1);

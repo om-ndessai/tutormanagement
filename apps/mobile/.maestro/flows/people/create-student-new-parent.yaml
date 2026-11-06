@@ -3,7 +3,8 @@
 # adding her (her own request) brings her back to the Family step, chosen. Then the student, their
 # school, a week of bands with one hour fine-tuned off (the band then reads "some hours"), online
 # lessons, a longest lesson and the price; the Review says all of it, and Add sends the student with her in ONE
-# request. The record lists the new parent. Cleans up after itself.
+# request. The record lists the new parent, and (Phase 76) says she has no tutor or weekly lesson yet. Opened from the
+# (+) sheet's "Add people" through the one Add chooser. Cleans up after itself.
 appId: ${APP_ID}
 # Self-cleaning: people an earlier run created (even a failed one) are removed before this flow,
 # and whatever this flow creates or changes is put back after it.
@@ -27,10 +28,19 @@ tags:
     id: create-button
 - extendedWaitUntil:
     visible:
-      id: create-action-add-student
+      id: create-action-add-people
     timeout: 10000
 - tapOn:
-    id: create-action-add-student
+    id: create-action-add-people
+# Phase 76 (JF21): the (+) sheet's "Add people" opens the one Add chooser; a family is the guided flow.
+- extendedWaitUntil:
+    visible:
+      id: add-choice-family
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: add-choice-family
 - extendedWaitUntil:
     visible:
       id: step-flow-title
@@ -189,6 +199,10 @@ tags:
       id: add-person-done
     timeout: 15000
 - assertVisible: 'Zuri Marsh is added'
+# Phase 76 (JF21): what next, from shared `nextStepsAfterAdd`.
+- assertVisible:
+    id: add-done-next-pair_tutor
+- assertVisible: 'Pair Zuri with a tutor'
 - tapOn:
     id: add-person-done-record
 - extendedWaitUntil:
@@ -196,7 +210,25 @@ tags:
       id: person-name
     timeout: 15000
 - assertVisible: 'Culbreth Middle'
+# Phase 75 (JF18): her in-person price is set; the virtual one is not, and her record says so.
+- scrollUntilVisible:
+    element:
+      id: person-price-virtual
+    direction: DOWN
+    timeout: 20000
+- assertVisible: 'No price set'
+- assertVisible: '\$95\.00 / hr'
 - scrollUntilVisible:
     element: 'Hannah Marsh, Guardian, Primary contact.*'
     direction: DOWN
     timeout: 20000
+# Phase 76 (JF21): the record says who teaches her and when -- nobody yet.
+- scrollUntilVisible:
+    element:
+      id: person-section-tutoring
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: person-tutors
+- assertVisible: 'No tutor yet\.'
+- assertVisible: 'No weekly lesson yet\.'

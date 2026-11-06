@@ -19,6 +19,7 @@ import type {
   SessionDraftInput,
   SessionAssessmentInput,
   SessionReflectionInput,
+  LessonOwed,
 } from '@tmi/shared';
 
 import { apiClient, toQueryString } from '@/lib/api-client';
@@ -44,6 +45,10 @@ function useTeachingInvalidation() {
     void queryClient.invalidateQueries({ queryKey: ['progress'] });
     void queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     void queryClient.invalidateQueries({ queryKey: auditKeys.all });
+    // Phase 75 (JF19, JF30): the home's To record and Next up, and the lessons still owed (under ['sessions']), move
+    // with every lesson recorded, started or stopped; the upcoming strip skips a recorded lesson.
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
+    void queryClient.invalidateQueries({ queryKey: ['schedules', 'upcoming'] });
   };
 }
 
@@ -59,12 +64,13 @@ interface ActiveSessionResponse {
  * so it survives a refresh, and a tutor may start on a phone and stop on a
  * laptop. Polling keeps those views honest with each other.
  */
-export function useActiveSession() {
+export function useActiveSession(enabled = true) {
   return useQuery({
     queryKey: ['active-session'],
     queryFn: () => apiClient.get<ApiOk<ActiveSessionResponse>>('/sessions/active'),
     refetchInterval: 30_000,
     refetchOnWindowFocus: true,
+    enabled,
   });
 }
 
@@ -234,9 +240,31 @@ export function useMyDrafts() {
   });
 }
 
+/**
+ * A draft appearing, going or being posted moves the drafts list, and the "Draft saved · Continue" marks on the home's
+ * To record and on the lessons still owed (Phase 75, JF19).
+ */
 function useDraftInvalidation() {
   const queryClient = useQueryClient();
-  return () => void queryClient.invalidateQueries({ queryKey: ['session-drafts'] });
+  return () => {
+    void queryClient.invalidateQueries({ queryKey: ['session-drafts'] });
+    void queryClient.invalidateQueries({ queryKey: ['home'] });
+    void queryClient.invalidateQueries({ queryKey: lessonsOwedKey });
+  };
+}
+
+/**
+ * Phase 75 (JF30): the scheduled lessons of the last week still owed a record -- a tutor's own, an admin's every
+ * tutor's -- each with the reader's own draft of it. Under ['sessions'], so recording one refreshes it.
+ */
+export const lessonsOwedKey = ['sessions', 'to-record'] as const;
+
+export function useLessonsOwed(enabled = true) {
+  return useQuery({
+    queryKey: lessonsOwedKey,
+    queryFn: () => apiClient.get<ApiOk<LessonOwed[]>>('/sessions/to-record'),
+    enabled,
+  });
 }
 
 export function useSaveDraft() {

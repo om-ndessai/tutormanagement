@@ -10,6 +10,11 @@
 // so leaving that one asks. Tutoring only: no money anywhere in it (the Finance path keeps the
 // record sheet and its money preview). No toast while the flow is up -- it would take the next tap
 // (U3) -- so refusals are said in the footer and the outcome once the flow has gone.
+//
+// Phase 75 (docs/journey-fixes-plan.md JF30; owner 2026-11-05): opened from a lesson the schedule knows ("Write up the
+// lesson" on the as-planned sheet) it starts filled in, on the write-up; opened as "Another lesson" it starts blank
+// with NO date (nor times) filled in -- the When step asks for them, so nothing is dated today at 4:00 PM by default.
+// "Lesson" and "Record" throughout: a draft is recorded ("Record lesson"), never "posted".
 import {
   SESSION_MODES,
   SESSION_MODE_LABELS,
@@ -42,7 +47,13 @@ import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import { useAssignments, useMyDrafts, usePreviousSession, useSession } from '../api';
 import { AutosaveStatus } from './autosave-status';
 import { SessionMoneyPreview, previewFigures } from './session-money-preview';
-import { QUICK_LENGTHS, addMinutes, type SessionFormValues } from './use-session-form';
+import {
+  QUICK_LENGTHS,
+  addMinutes,
+  whenMissing,
+  type RecordPrefill,
+  type SessionFormValues,
+} from './use-session-form';
 import {
   CHOOSE_STUDENT,
   outcomeMessage,
@@ -68,8 +79,13 @@ export function studentItems(assignments: readonly Assignment[], showTutor: bool
   }));
 }
 
-/** The When step's own check: the shared schema's sentence for an end before the start. */
-export function whenIssues(values: Pick<SessionFormValues, 'startedAt' | 'endedAt'>) {
+/**
+ * The When step's own check: a day and both times chosen (a blank record has none, Phase 75), then the shared
+ * schema's sentence for an end before the start.
+ */
+export function whenIssues(values: Pick<SessionFormValues, 'occurredOn' | 'startedAt' | 'endedAt'>) {
+  const missing = whenMissing(values);
+  if (missing) return missing;
   return elapsedMinutes(values.startedAt, values.endedAt) === null
     ? { ended_at: 'The end time must be after the start time.' }
     : null;
@@ -83,7 +99,16 @@ function close() {
  * The route's body: waits for the pairings (and the draft or the lesson being written up), then
  * starts the flow from them once -- a refetch never stomps on what is being typed.
  */
-export function RecordLessonFlow({ sessionId, draftId }: { sessionId?: string; draftId?: string }) {
+export function RecordLessonFlow({
+  sessionId,
+  draftId,
+  prefill,
+}: {
+  sessionId?: string;
+  draftId?: string;
+  /** Phase 75 (JF30): a lesson the schedule knows, written up before it is recorded. */
+  prefill?: RecordPrefill;
+}) {
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   // A tutor only ever sees their own pairings; an admin sees all of them.
@@ -125,10 +150,11 @@ export function RecordLessonFlow({ sessionId, draftId }: { sessionId?: string; d
   }
   return (
     <RecordSteps
-      key={sessionId ?? draftId ?? 'new'}
+      key={sessionId ?? draftId ?? (prefill ? `planned-${prefill.student}-${prefill.date ?? ''}` : 'new')}
       assignments={assignments.data?.data ?? []}
       existing={sessionId ? (existing.data?.data ?? null) : null}
       draft={draft}
+      prefill={prefill}
     />
   );
 }
@@ -154,14 +180,18 @@ function RecordSteps({
   assignments,
   existing,
   draft,
+  prefill,
 }: {
   assignments: Assignment[];
   existing: TutoringSession | null;
   draft: SessionDraft | null;
+  prefill?: RecordPrefill;
 }) {
   const toast = useToast();
-  const w = useSessionWriteUp({ assignments, existing, draft });
+  const w = useSessionWriteUp({ assignments, existing, draft, prefill: existing || draft ? undefined : prefill });
   const { values, isEdit, isDraft } = w;
+  // A lesson the schedule knows, with its pairing found: straight to the write-up (Student and When stay a Back away).
+  const planned = !isEdit && !isDraft && Boolean(prefill) && Boolean(values.assignmentId) && Boolean(values.occurredOn);
   // Only a lesson on the record can lose work by leaving: a new write-up is kept as a draft.
   const editDirty = useDirty(values);
   const dirty = isEdit && editDirty;
@@ -263,8 +293,8 @@ function RecordSteps({
       title={isEdit ? 'Write up the lesson' : isDraft ? 'Finish this draft' : 'Record a lesson'}
       steps={steps}
       draft={values}
-      initialStep={isDraft ? 'planned' : undefined}
-      submitLabel={isEdit ? 'Save write-up' : isDraft ? 'Post session' : 'Record lesson'}
+      initialStep={isDraft || planned ? 'planned' : undefined}
+      submitLabel={isEdit ? 'Save write-up' : 'Record lesson'}
       dirty={dirty}
       submitting={w.saving}
       fieldErrors={w.errors}
@@ -359,6 +389,8 @@ function WhenStep({ w, errors }: { w: SessionWriteUp; errors: Record<string, str
           testID="record-end"
           label="Ended"
           value={values.endedAt}
+          // A blank record: the end picker starts an hour after the start chosen.
+          startAt={values.startedAt ? addMinutes(values.startedAt, 60) : undefined}
           onChange={(time) => set('endedAt', time)}
           error={Boolean(errors.ended_at)}
         />
@@ -376,6 +408,8 @@ function WhenStep({ w, errors }: { w: SessionWriteUp; errors: Record<string, str
               selected={active}
               showSelectedCheck={false}
               mode={active ? 'flat' : 'outlined'}
+              // A length needs a start to count from (a blank record has none until it is chosen).
+              disabled={!values.startedAt}
               onPress={() => {
                 haptics.selection();
                 set('endedAt', addMinutes(values.startedAt, minutes));

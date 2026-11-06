@@ -56,6 +56,7 @@ import {
   ReflectionView,
 } from './session-reflection';
 import { StartSessionButton } from './start-session-button';
+import { LessonRecorder, RECORD_CLOSED, ToRecordPanel, type RecordFlow } from './record-lesson';
 import { useDeleteSession, useSession, useSessions } from './api';
 import { withOrg } from '@/lib/organization';
 import { useBrand } from '@/providers/brand-provider';
@@ -89,6 +90,8 @@ export function SessionsPage() {
   const [assessing, setAssessing] = useState<TutoringSession | null>(null);
   const [reflecting, setReflecting] = useState<TutoringSession | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
+  // Phase 75 (JF30): recording goes through the lessons still owed, or one known lesson; the form is the last step.
+  const [recordFlow, setRecordFlow] = useState<RecordFlow>(RECORD_CLOSED);
   const [tab] = useTutoringFinanceTab();
   const showMoney = tab === 'finance';
 
@@ -143,10 +146,10 @@ export function SessionsPage() {
 
     try {
       await remove.mutateAsync(removing.id);
-      toast.success('Session deleted.');
+      toast.success('Lesson deleted.');
     } catch (error) {
       toast.error(
-        error instanceof ApiRequestError ? error.message : 'Could not delete the session.',
+        error instanceof ApiRequestError ? error.message : 'Could not delete the lesson.',
       );
     } finally {
       setRemoving(null);
@@ -157,6 +160,9 @@ export function SessionsPage() {
   function renderView(money: boolean) {
     return (
       <>
+        {/* Phase 75 (JF30): what is still owed a record leads the teaching view, for tutors and the office. */}
+        {!money && !focusId && (isTutor || isAdmin) && <ToRecordPanel onFlow={setRecordFlow} />}
+
         {/* The running totals lead. Each money tile is one side, labelled from
             the reader's point of view, and appears only when the reader sees
             that side on some lesson: a tutor who is also a parent gets both
@@ -360,7 +366,7 @@ export function SessionsPage() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              aria-label="Edit session"
+                              aria-label="Edit lesson"
                               onClick={() => {
                                 setEditing(session);
                                 setFormOpen(true);
@@ -371,7 +377,7 @@ export function SessionsPage() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              aria-label="Delete session"
+                              aria-label="Delete lesson"
                               onClick={() => setRemoving(session)}
                             >
                               <Trash2Icon />
@@ -490,15 +496,10 @@ export function SessionsPage() {
           (isTutor || isAdmin) && (
             <div className="flex flex-wrap items-center gap-2">
               <StartSessionButton />
-              <Button
-                onClick={() => {
-                  setEditing(null);
-                  setEditingDraft(null);
-                  setFormOpen(true);
-                }}
-              >
+              {/* The lessons still owed first; "Another lesson" there is the blank form (JF30). */}
+              <Button onClick={() => setRecordFlow({ kind: 'owed' })} data-testid="sessions-record">
                 <PlusIcon />
-                Record a session
+                Record a lesson
               </Button>
             </div>
           )
@@ -530,6 +531,8 @@ export function SessionsPage() {
         showMoney={showMoney}
       />
 
+      <LessonRecorder flow={recordFlow} onFlow={setRecordFlow} showMoney={showMoney} />
+
       <SessionAssessmentDialog
         session={assessing}
         onOpenChange={(open) => !open && setAssessing(null)}
@@ -540,9 +543,9 @@ export function SessionsPage() {
       <AlertDialog open={removing !== null} onOpenChange={(open) => !open && setRemoving(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete this session?</AlertDialogTitle>
+            <AlertDialogTitle>Delete this lesson?</AlertDialogTitle>
             <AlertDialogDescription>
-              The {removing?.occurred_on} session with {removing?.student_name}, and{' '}
+              The {removing?.occurred_on} lesson with {removing?.student_name}, and{' '}
               {removing && showMoney ? describeSessionMoney(removing) : 'its record'}, will be removed. This
               cannot be undone.
             </AlertDialogDescription>

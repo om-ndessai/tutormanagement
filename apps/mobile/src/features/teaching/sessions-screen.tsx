@@ -5,6 +5,10 @@
 // (Phase 19). A tutor keeps this open during a lesson to read the last session's notes, with the
 // student beside them, so Tutoring -- the default -- carries no money at all: no totals, no
 // amounts on the lessons, no export, none in the screens it opens.
+//
+// Phase 75 (docs/journey-fixes-plan.md JF19, JF30): To record leads the Tutoring tab for tutors and the office -- the
+// lessons still owed, each with Record (or its draft's Continue) -- and "Record a lesson" opens the whole list, with
+// "Another lesson" for one the schedule does not know. Finance keeps its record sheet and the money preview.
 import { formatDuration, type TutoringSession } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
 import { useQueryClient } from '@tanstack/react-query';
@@ -38,6 +42,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useActiveSession, useAssignments, useSession } from './api';
 import { DraftsPanel } from './drafts-panel';
+import { SessionsToRecord } from './lessons-owed';
 import { SessionCard } from './session-card';
 import { sessionRowActions, useConfirmDeleteSession } from './session-row-actions';
 import { SessionFilters } from './session-filters';
@@ -99,11 +104,12 @@ export function SessionsScreen() {
 
   // Recording is for tutors and the office. The sheet shows money only when opened from Finance.
   const mayRecord = isTutor || isAdmin;
-  // Tutoring records through the step flow (UI upgrades U4); Finance keeps the sheet and its money.
+  // Tutoring opens the lessons still owed (Phase 75, JF30), whose "Another lesson" is the step flow (U4); Finance
+  // keeps the sheet and its money.
   const openRecord = () =>
     tab === 'finance'
       ? router.push({ pathname: '/record-session', params: { tab } })
-      : router.push('/record-lesson');
+      : router.push('/lessons-owed');
   // A live lesson is a tutor's, one at a time: hidden while one is running (the banner has it).
   const active = useActiveSession();
   // The Start sheet's own query: a tutor with no student of their own (a tutor who only parents
@@ -185,12 +191,14 @@ export function SessionsScreen() {
             </Button>
           ) : null}
           <Button testID="sessions-record-button" mode="contained" icon="plus" onPress={openRecord}>
-            Record a session
+            Record a lesson
           </Button>
         </View>
       ) : null}
       <TutoringFinanceSwitch />
       {money ? <SecureMoney tag="sessions-finance" /> : null}
+      {/* Phase 75 (JF30): what is still owed comes first, for the tutor and the office; no money on it. */}
+      {!money && !focusId && mayRecord ? <SessionsToRecord /> : null}
       {/* A draft is the author's alone (R10), so it sits above the list rather than in it -- the
           totals do not count it and never should. Tutoring only: a draft is a write-up. */}
       {!money && !focusId ? (

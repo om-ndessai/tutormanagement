@@ -29,7 +29,7 @@ export type WizardScreen = 'invite' | 'welcome' | 'student' | 'tutor' | 'confirm
 const HEADINGS: Record<Exclude<WizardScreen, 'welcome' | 'invite'>, { title: string; description: string }> = {
   student: {
     title: 'Add a student',
-    description: 'The family first, then the student, their assessment, their plan and a tutor.',
+    description: 'The family first, then the student, then what comes next: a tutor, a weekly lesson.',
   },
   tutor: {
     title: 'Add a tutor',
@@ -140,7 +140,7 @@ export function OnboardingWizard({
                   title="Add a student"
                   description={
                     tutoring
-                      ? 'Create or pick the family, add the student, then their assessment, learning plan and tutor.'
+                      ? 'Create or pick the family, add the student, then pair them with a tutor and set a weekly lesson.'
                       : 'Create or pick the family, then add the student.'
                   }
                   action="Add a student"

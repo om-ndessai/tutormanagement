@@ -1,7 +1,7 @@
 # A tutor's Home offers the write-up they left today (UI upgrades U6): after Next up, a "Finish
 # write-up" card for Alex's draft of his lesson with Sofia (seeded), which opens the record step
-# flow on that draft ("Finish this draft", its covered note kept). No money anywhere. An older
-# draft, or somebody else's, is never offered (jest); clean-sessions.js removes the draft.
+# flow on that draft ("Finish this draft", its covered note kept; its last step "Record lesson", Phase 75). No
+# money anywhere. An older draft, or somebody else's, is never offered (jest); clean-sessions.js removes it.
 appId: ${APP_ID}
 onFlowStart:
   - runScript: ../../scripts/clean-sessions.js
@@ -64,3 +64,15 @@ tags:
     timeout: 10000
 - assertVisible: 'Fractions on the number line.'
 - takeScreenshot: home-finish-write-up-flow
+# Phase 75 (JF30): one verb -- the draft's last step records it ("Record lesson"), never "Post session".
+- tapOn:
+    id: step-flow-next
+- tapOn:
+    id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-next
+      text: 'Record lesson'
+    timeout: 10000
+- assertNotVisible: '.*Post session.*'
+- assertNotVisible: '.*\$[0-9].*'

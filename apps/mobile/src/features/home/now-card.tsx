@@ -7,7 +7,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 
-import { useAuth } from '@/providers/auth-provider';
+import { draftSavedLine, knownLessonHref } from '@/features/teaching/lessons-owed-model';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { haptics } from '@/lib/haptics';
 import { withAlpha } from '@/theme/alpha';
@@ -29,22 +30,23 @@ import {
 } from './now-model';
 import { openDirections, openMeetingLink } from './place-links';
 
-/** The record-as-planned sheet for this lesson, filled in from its schedule (mockup 4). */
+/**
+ * The record-as-planned sheet for this lesson, filled in from its schedule (mockup 4) -- or, when the reader has a
+ * draft of it (Phase 75, JF19: `lesson.draft`), that draft, never a second one.
+ */
 export function recordUnrecordedHref(lesson: UnrecordedLesson, tutorUserId: string | undefined) {
   const homework = homeworkReviewPrefill(lesson.homework_last);
-  return {
-    pathname: '/record-as-planned' as const,
-    params: {
-      student: lesson.student_user_id,
-      ...(tutorUserId ? { tutor: tutorUserId } : {}),
-      date: lesson.occurs_on,
-      start: lesson.start_time,
-      end: lesson.end_time,
-      mode: lesson.mode,
-      ...(lesson.place ? { place: lesson.place.name } : {}),
-      ...(homework ? { homework } : {}),
-    },
-  };
+  return knownLessonHref({
+    student_user_id: lesson.student_user_id,
+    tutor_user_id: tutorUserId,
+    occurs_on: lesson.occurs_on,
+    start_time: lesson.start_time,
+    end_time: lesson.end_time,
+    mode: lesson.mode,
+    place: lesson.place,
+    draft: lesson.draft ?? null,
+    ...(homework ? { homework } : {}),
+  });
 }
 
 function CardFrame({
@@ -94,8 +96,11 @@ export function CelebrateCard({
 }) {
   const theme = useAppTheme();
   const { user } = useAuth();
+  const timeZone = useOrgTimeZone();
   const ink = theme.tokens.successForeground;
   const key = lessonKey(lesson);
+  // Phase 75 (JF19): the reader's draft of this lesson is continued, never started again.
+  const draft = lesson.draft ?? null;
   const [confetti, setConfetti] = useState(false);
 
   // Once per lesson per device: the confetti and a success haptic, the first time it is shown here.
@@ -134,6 +139,11 @@ export function CelebrateCard({
         >
           {`${togetherLine(lesson, today)} ${endedLine(lesson, today)} Record it while it's fresh.`}
         </Text>
+        {draft ? (
+          <Text testID="home-now-celebrate-draft" variant="labelLarge" style={{ color: ink, textAlign: 'center' }}>
+            {draftSavedLine(draft, timeZone, today)}
+          </Text>
+        ) : null}
       </View>
       <View style={{ flexDirection: 'row', gap: space.sm }}>
         <Button
@@ -148,7 +158,7 @@ export function CelebrateCard({
             router.navigate(recordUnrecordedHref(lesson, user?.id));
           }}
         >
-          Record it now
+          {draft ? 'Continue' : 'Record it now'}
         </Button>
         <Button
           testID={laterTestID}

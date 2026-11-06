@@ -37,6 +37,10 @@ const SHEET_ROUTES = new Set([
   'reflection',
   'record-session',
   'record-as-planned',
+  // Phase 75 (JF30): the lessons still owed; Phase 76 (JF21): the Add chooser and Invite by email -- sheets like the others.
+  'lessons-owed',
+  'add',
+  'invite-people',
   // The record step flow's footer sits where the banner would (UI upgrades U4).
   'record-lesson',
   'view-as',

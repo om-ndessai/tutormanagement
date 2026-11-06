@@ -126,6 +126,21 @@ describe('Next up per persona', () => {
     expect(chooseNextUp(nextUpCandidates(SOFIA))?.kind).toBe('learner_lesson');
   });
 
+  it('Phase 75 (JF30): the reader’s running lesson leads Next up, before anything the home holds', () => {
+    const { extras } = deviceExtras({
+      waiting: [{ game_id: 'g1', code: 'ABC123', host_first_name: 'Maria' }],
+      daily: null,
+      running: { student_name: 'Sofia Okafor', started_at: '2026-11-03T18:48:00Z', mode: 'virtual' },
+    });
+    expect(extras.running).toEqual({ student_name: 'Sofia Okafor', started_at: '2026-11-03T18:48:00Z', mode: 'virtual' });
+    expect(chooseNextUp(nextUpCandidates(ALEX, extras))).toMatchObject({ kind: 'lesson_running', hat: 'tutor' });
+    // None running (or Tutoring off, where it is never read): nothing changes.
+    expect(deviceExtras({ waiting: [], daily: null }).extras.running).toBeNull();
+    expect(chooseNextUp(nextUpCandidates(ALEX, deviceExtras({ waiting: [], daily: null }).extras))?.kind).not.toBe(
+      'lesson_running',
+    );
+  });
+
   it('Phase 73: an open game is Next up right after an invitation -- before the Daily -- and "again" is not offered with it', () => {
     const { extras } = deviceExtras({ waiting: [], open: OPEN, daily: { level_id: 'NC26.4', done: false } });
     expect(extras.open_game).toEqual({ game_id: 'g-open', title: 'Grade 4 10-minute challenge · 3 points' });

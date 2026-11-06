@@ -1,6 +1,11 @@
 // The step flows' validation is the shared schema's, cut per step (UI upgrades U3).
 import {
+  ADD_CHOICE_ICONS,
   GUARDIAN_REQUIRED_MESSAGE,
+  addChoiceHref,
+  addPersonNextSteps,
+  chooserChoices,
+  nextStepSets,
   STUDENT_STEP_FIELDS,
   TUTOR_STEP_FIELDS,
   childrenByParent,
@@ -103,5 +108,99 @@ describe('consent in a self-serve space (Phase 52)', () => {
     );
     expect(consentIssue({ roles: ['student'] }, selfServe, true)).toBeNull();
     expect(consentIssue({ roles: ['student'] }, console_, false)).toBeNull();
+  });
+});
+
+// --- Phase 76 (JF21): one Add chooser, and the next steps ----------------------------------------------------
+
+describe('the Add chooser (Phase 76)', () => {
+  const admin = { roles: ['admin'] as const, account: null };
+
+  test('four choices for an adult admin where Tutoring is on, in order', () => {
+    const choices = chooserChoices({}, { roles: [...admin.roles], account: null });
+    expect(choices.map((c) => c.id)).toEqual(['family', 'tutor', 'someone', 'invite']);
+    expect(choices.map((c) => c.label)).toEqual([
+      'A family (parent and child)',
+      'A tutor',
+      'Someone else',
+      'Invite by email',
+    ]);
+    for (const choice of choices) expect(ADD_CHOICE_ICONS[choice.id]).toBeTruthy();
+  });
+
+  test('no tutor where Tutoring is off; "My child" in a personal space', () => {
+    expect(chooserChoices({ feature_tutoring: false }, { roles: ['admin'], account: null }).map((c) => c.id)).toEqual([
+      'family',
+      'someone',
+      'invite',
+    ]);
+    const personal = chooserChoices({ feature_tutoring: false, personal: true }, { roles: ['admin'], account: null });
+    expect(personal[0]).toMatchObject({ id: 'family', label: 'My child' });
+  });
+
+  test('nothing for a reader who may not add people: not an admin, or a 13-17', () => {
+    expect(chooserChoices({}, { roles: ['tutor', 'parent'], account: null })).toEqual([]);
+    expect(chooserChoices({}, { roles: ['admin'], account: { age_band: '13-17' } as never })).toEqual([]);
+    expect(chooserChoices({}, null)).toEqual([]);
+  });
+
+  test('each choice opens its flow; "My child" names the reader as the parent', () => {
+    expect(addChoiceHref('family', { personal: false })).toBe('/add-student');
+    expect(addChoiceHref('family', { personal: true })).toEqual({ pathname: '/add-student', params: { guardian: 'me' } });
+    expect(addChoiceHref('tutor', { personal: false })).toBe('/add-tutor');
+    expect(addChoiceHref('someone', { personal: false })).toEqual({ pathname: '/person-form', params: { from: 'add' } });
+    expect(addChoiceHref('invite', { personal: true })).toBe('/invite-people');
+  });
+});
+
+describe('the next steps after adding someone (Phase 76)', () => {
+  const yusuf = { id: 'yusuf', name: 'Yusuf Haddad', roles: ['student'] as const };
+  const alex = { id: 'alex', name: 'Alex Chen', roles: ['tutor'] as const };
+  const ALL = { tutoring: true, assessment: true, paysTutors: true };
+
+  test('a student: pair with a tutor, a weekly lesson once paired, an assessment', () => {
+    const before = addPersonNextSteps({ ...yusuf, roles: [...yusuf.roles] }, ALL);
+    expect(before.map((step) => step.label)).toEqual([
+      'Pair Yusuf with a tutor',
+      'Set a weekly lesson',
+      'Record an assessment',
+    ]);
+    expect(before[0]).toMatchObject({ href: { pathname: '/assignment-form', params: { student: 'yusuf' } }, form: 'assignment' });
+    // Before the pairing there is nothing to schedule.
+    expect(before[1]).toMatchObject({ href: null, description: 'Pair them with a tutor first.' });
+    expect(before[2]).toMatchObject({ href: { pathname: '/assessment-form', params: { student: 'yusuf' } }, form: 'assessment' });
+
+    const after = addPersonNextSteps({ ...yusuf, roles: [...yusuf.roles] }, ALL, 'pairing-1');
+    expect(after[1]).toMatchObject({
+      href: { pathname: '/schedule-lesson', params: { assignment: 'pairing-1' } },
+      form: 'schedule',
+    });
+  });
+
+  test('without Tutoring, only the handwritten assessment (where it is on), and it leaves the screen', () => {
+    const steps = addPersonNextSteps({ ...yusuf, roles: [...yusuf.roles] }, { ...ALL, tutoring: false });
+    expect(steps.map((step) => step.id)).toEqual(['assessment']);
+    expect(steps[0]).toMatchObject({ href: { pathname: '/assessments', params: { student: 'yusuf' } }, leave: true });
+    expect(addPersonNextSteps({ ...yusuf, roles: [...yusuf.roles] }, { tutoring: false, assessment: false, paysTutors: true })).toEqual([]);
+  });
+
+  test('a tutor: pair with a student, and tax setup only where the space pays its tutors', () => {
+    const steps = addPersonNextSteps({ ...alex, roles: [...alex.roles] }, ALL);
+    expect(steps.map((step) => step.label)).toEqual(['Pair Alex with a student', 'Finish tax setup']);
+    expect(steps[1]).toMatchObject({ href: { pathname: '/person-form', params: { id: 'alex', sections: 'tutor-tax' } }, form: 'person' });
+    expect(addPersonNextSteps({ ...alex, roles: [...alex.roles] }, { ...ALL, paysTutors: false }).map((s) => s.id)).toEqual([
+      'pair_student',
+    ]);
+  });
+
+  test('a parent or an admin: none', () => {
+    expect(addPersonNextSteps({ id: 'p', name: 'Pat', roles: ['parent', 'admin'] }, ALL)).toEqual([]);
+  });
+
+  test("the space's sets: paid directly means no tax setup; an older session pays its tutors", () => {
+    expect(nextStepSets({ business: null })).toMatchObject({ tutoring: true, paysTutors: false });
+    expect(nextStepSets({ business: { id: 'b' } as never })).toMatchObject({ paysTutors: true });
+    expect(nextStepSets({})).toMatchObject({ paysTutors: true });
+    expect(nextStepSets({ canvas_assessments: true })).toMatchObject({ assessment: true });
   });
 });

@@ -4943,3 +4943,105 @@ this student?"), `home/dashboard-analytics`, `shell/navigation` and the office's
 **Jest:** `dashboard/dashboard-role` (new), `home/member-home-model`, `home/member-focus-model`,
 `home/member-home-screen`, `onboarding/onboarding-model`, `onboarding/onboarding-provider`, `shell/nav-items`,
 `shell/search-screen`, `dashboard/view-as`, `organizations/spaces-screen`.
+
+## 85. Phases 75 and 76: the tutor's record, and adding people one way, in the app — build (2026-11-05)
+
+The app half of Phases 75 and 76 (`docs/journey-fixes-plan.md`; owner 2026-11-05: JF18, JF19, JF27, JF30, JF21,
+JF37), beside the web half, on the contract already in the tree (`price_missing` on pairings, schedules and the
+student's profile, `missingRateMessage` refusals, `GET /sessions/to-record` → `LessonOwed[]`, the `draft` on the home's
+lessons to record, `lesson_running` / `NextUpExtras.running`, `addChoices`, `nextStepsAfterAdd`,
+`USER_STATUS_DESCRIPTIONS`, `invitationText({ org })`, `quickActionsFor({ personal })`). No API, shared or web file
+touched; `npm run smoke` is the contract's, with the web half.
+
+**Phase 75, the tutor's record:**
+- **One way to record** (JF30): every "Record a lesson" door -- the home's quick action, the (+), the Sessions page's
+  button, the phone's home-screen action -- opens `/lessons-owed` (`LessonsOwedSheet`, a fitted quick sheet): the
+  lessons still owed, each with Record (`lessons-owed-<schedule>-<date>-record`), then "Another lesson"
+  (`lessons-owed-another`), a blank step flow with NO day or times (`emptyForm` blank; `whenMissing`: "Choose the day
+  of the lesson." / "… started." / "… ended."; `DateTimeField` takes an empty value -- "Choose a date", iOS a Choose
+  button that fills in `startAt`, Android the dialog's OK; length chips wait for a start; nothing autosaves until
+  dated). To record (`SessionsToRecord`, three rows and "+N more") leads the Sessions page's Tutoring tab for tutors and
+  the office. A known lesson opens `/record-as-planned`, now "Record a lesson" with "It ran as planned" and "Write up
+  the lesson" (`record-quick-write-up` → the step flow filled in from the schedule, on its write-up), "Lesson
+  recorded.". The office's Next up says "Record them" → the owed list; Home's "+N more" and the office's count too.
+- **Drafts from every door** (JF19): `knownLessonHref` -- a lesson with the reader's draft opens `/record-lesson?draft=`;
+  Home's To record rows (`home-to-record-<…>-draft`), Next up's celebration (`home-now-celebrate-draft`, Continue), the
+  owed list and Sessions' To record say "Draft saved 12:43 PM" (`draftSavedLine`, the space's clock, the day in front
+  when not today). The as-planned sheet, opened any other way, finds the reader's draft (`draftForLesson`: tutor,
+  student, date, newest) and offers Continue instead (`DraftWaiting`). Saving, discarding or recording a draft
+  invalidates `['home']` and the owed list.
+- **Running and Start** (JF30): `useNextUp` reads the banner's `GET /sessions/active` and passes `running` to
+  `deviceExtras`; `lesson_running` leads Next up ("Your lesson with Sofia is running.", "Running 12 min · Virtual", a
+  minute clock, Stop → `/stop-lesson`, no Later). The Start sheet: "Start a lesson", a refusal once in place
+  (`start-error`, never a toast), cleared on a mode change; with a lesson running it names it and offers "Stop that
+  lesson" (`start-stop-running`).
+- **Prices** (JF18): no realistic placeholder on the student's prices or the tutor's rates and top-up -- "For example
+  95.00" is the helper text; "No price set" on the student's record (`priceRows`: per mode, one line when both),
+  on the pairing (`pairing-price-missing-<id>`: "No price set", "No virtual price set") and the schedule
+  (`schedule-price-missing-<id>`, only for its own mode). Refusals are said once (`refusalLines`: the message, then any
+  other field's words not under a field). The stop sheet prints every line (`stop-error`), and "Keep going" saves a
+  changed note with `PATCH /sessions/active` before it closes (a refused stop re-reads the running lesson, whose note
+  the server kept).
+- **Pairing rates** (JF27): the form never copies the tutor's default (the render-time prefill is gone); the fields read
+  "Alex's default, $75.00" / "Alex has no default rate", labelled "Tutor pay, in person" / "Tutor pay, virtual", with
+  "Blank follows Alex's default. Type a rate only for a different one."; an edited override equal to the current
+  default shows empty and is left out of the PATCH unless typed (no data change); the list's "custom" only where the
+  override differs from the tutor's current default (`useTutorDefaults` reads the records of the tutors whose pairings
+  have an override, on `useUserDetail`'s cache key).
+- **Words**: "Lesson recorded/updated/started", "Record a lesson", "Record lesson" (a draft's last step and the
+  Finance sheet), a draft's Record (never "Post"), "End the lesson with …", "Lesson notes", "You have no lesson running".
+
+**Phase 76, adding people one way** (built in a fork, same tree): the Add chooser (`/add`, `users/add-chooser.tsx`,
+`add-choice-<family|tutor|someone|invite>`) from the home's `add_person` ("Add my child" in a personal space, where
+`quickActionsFor({ personal })` offers it), the (+)'s ONE "Add people" row (`create-action-add-people`), People's
+header (`people-add`) and empty state; "My child" opens the family flow with `guardian=me` ("Who is your child?",
+consent still the box, the server's "That's you…" 409 shown as given, the session re-read for the parent role); after
+each save `AddPersonDone` lists `nextStepsAfterAdd` (`add-done-next-<id>`; "Set a weekly lesson" waits for the pairing's
+`FormSaved`, then `/schedule-lesson?assignment=`, which preselects it and announces `'schedule'`); Invite by email
+(`/invite-people`); "Share invitation" on invited rows (`people-share-<id>`, the system sheet's Copy, "Invitation
+shared."); `person-status-description`; the student's "Tutors and lessons" (`person-tutors`, `person-lessons`).
+
+**Not ported / different:** the draft's time is its own line and the button says Continue (the web's one link
+"Draft saved 12:43 PM · Continue"); the wizard's "This is my child" still adds the parent role itself first (now
+redundant); "Set the learning plan" is no longer a next step (not in `nextStepsAfterAdd`); Share invitation is on
+People's rows only, not the record's menu; "Session scheduled.", the Sessions stat cards and "Users" wait for Phase 78's
+glossary.
+**Contract gaps:** (1) a pairing carries no tutor default, so "an override equal to the default" costs a record read
+per tutor with an override -- a flag or the default on `Assignment` would remove it; (2) `nextStepsAfterAdd` offers
+"Record an assessment" only where Assessment is on, so a Tutoring space with Assessment off no longer offers the
+progress assessment the app's done screen used to.
+**Flows (written, not run here):** `sessions/lessons-owed` (new: the quick action → the owed list → "Record a lesson" →
+Write up → Save draft → "Draft saved" on Next up, Sessions' To record and the owed list → Continue opens it → discard →
+"It ran as planned" → gone from the list → "Another lesson" asks for the day), `people/add-chooser` (new),
+`subflows/record-choose-when` (new: the blank When step on both platforms); updated `sessions/record`, `sessions/live`
+(Next up's running lesson, Start while one runs, Keep going keeps the note), `sessions/record-finance`,
+`sessions/autosave`, `sessions/drafts`, `home/next-up-record`, `home/next-up-start`, `home/now-celebrate-record`,
+`home/finish-write-up`, `shell/create`, `pairings/admin`, `pairings/list`, `exposure/live-surfaces`,
+`dictation/dictate-notes`, `subflows/record-lesson-start`, `subflows/exposure/tutoring-surfaces`, `people/create-student`,
+`people/create-student-new-parent`, `people/create-tutor`, `people/section-edit`, `features/person-form`,
+`features/assess-home`, `spaces/invite`, `spaces/words`.
+**Jest:** `teaching/lessons-owed-model` (new), `teaching/live-lesson-sheets` (new), `users/user-rates` (new),
+`users/add-chooser` (new), `users/person-form-sheet` (new), `teaching/pairings`, `teaching/sessions-views`,
+`teaching/session-form/record-as-planned-sheet`, `teaching/session-form/session-form`, `teaching/live-session`,
+`dictation/dictation-autosave`, `schedules/schedules-views`, `schedules/schedule-lesson-flow`, `home/member-home-model`,
+`home/member-home-screen`, `shell/create-actions`, `shell/quick-actions`, `shell/app-tab-bar`, `users/add-person-model`,
+`users/add-student-flow`, `users/person-form`, `users/people-views`, `organizations/invite-people`.
+
+**Verified (2026-11-05):** flows `sessions/lessons-owed`, `people/add-chooser`, `sessions/record`, `sessions/live`,
+`sessions/record-finance`, `sessions/autosave`, `sessions/drafts`, `home/next-up-record`, `home/next-up-start`,
+`home/now-celebrate-record`, `home/finish-write-up`, `pairings/admin`, `pairings/list`, `shell/create`,
+`exposure/live-surfaces`, `dictation/dictate-notes`, `people/create-student`, `people/create-student-new-parent`,
+`people/create-tutor`, `people/section-edit`, `features/person-form`, `features/assess-home`, `spaces/invite`,
+`spaces/words` green on iOS 27 (iPhone 17) and Android 37 (Medium Phone), with `exposure/money-tutoring`,
+`dictation/dictate-ssn` and `dictation/dictate-permission` (users of the changed subflows) and, on Android, the other
+quick sheets' flows (`shell/surface-kit`, `forms/errors-in-view`, `forms/unsaved-guard`, `spaces/let-in`,
+`billing/admin`, `home/quick-code`); jest 189 suites / 1555 passed; typecheck and lint (0 errors) green; screenshots
+reviewed light (both) and dark (Android owed sheet, iOS Sessions); exposure checks: no money on the owed sheet, To
+record, the blank record or Next up's running lesson, `money-tutoring` for all five readers. **The flows, not the
+app:** To record and the totals put the lesson list under the fold, so the notes, the cards and the page's own buttons
+are scrolled to (`scrollUntilVisible`, never a weaker assertion); the office owes every tutor's lessons, so "Another
+lesson" is scrolled to in its sheet; `subflows/record-choose-when` set `LENGTH` in its own `env:` block, which beat
+the caller's (every length was 60 -- `record` now checks "Ended … 5:30 PM"). **An app defect, fixed:** on Android a
+fitted form sheet took its content's whole height and never scrolled, so the office could not reach "Another
+lesson" (`QuickSheet` now caps its root at the window under the status bar on Android, `quickSheetMaxHeight`, with
+its Jest).

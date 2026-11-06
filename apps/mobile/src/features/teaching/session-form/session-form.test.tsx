@@ -12,6 +12,8 @@ import {
   issuesToErrors,
   prefilledForm,
   toUpdatePayload,
+  whenMissing,
+  type SessionFormValues,
 } from './use-session-form';
 
 jest.mock('react-native-reanimated', () => ({
@@ -57,11 +59,26 @@ const existing = session({
   reflection: null,
 } as Partial<TutoringSession>);
 
+/** A blank form once its day and times have been chosen. */
+const dated = (form: SessionFormValues): SessionFormValues => ({
+  ...form,
+  occurredOn: '2026-10-08',
+  startedAt: '16:00',
+  endedAt: '17:00',
+});
+
 describe('session form state', () => {
-  it('starts a new lesson today, with the only pairing chosen', () => {
-    const form = emptyForm('2026-10-08', [{ id: 'a1' }]);
-    expect(form).toMatchObject({ assignmentId: 'a1', occurredOn: '2026-10-08', startedAt: '16:00' });
-    expect(emptyForm('2026-10-08', [{ id: 'a1' }, { id: 'a2' }]).assignmentId).toBe('');
+  it('starts "Another lesson" with NO day or times filled in, the only pairing chosen (Phase 75, JF30)', () => {
+    const form = emptyForm([{ id: 'a1' }]);
+    expect(form).toMatchObject({ assignmentId: 'a1', occurredOn: '', startedAt: '', endedAt: '', mode: 'in_person' });
+    expect(emptyForm([{ id: 'a1' }, { id: 'a2' }]).assignmentId).toBe('');
+    // Nothing is dated today at 4:00 PM by default: the day and both times are asked for, in words.
+    expect(whenMissing(form)).toEqual({
+      occurred_on: 'Choose the day of the lesson.',
+      started_at: 'Choose when it started.',
+      ended_at: 'Choose when it ended.',
+    });
+    expect(whenMissing({ occurredOn: '2026-10-08', startedAt: '16:00', endedAt: '17:00' })).toBeNull();
   });
 
   it('round-trips a lesson on the record, with the editor’s own assessment', () => {
@@ -81,7 +98,7 @@ describe('session form state', () => {
   });
 
   it('records progress only when scored, an assessment only when given', () => {
-    const body = formBody(emptyForm('2026-10-08', [assignment]), pair);
+    const body = formBody(dated(emptyForm([assignment])), pair);
     expect(body).not.toHaveProperty('progress');
     expect(body).not.toHaveProperty('assessment');
     expect(body.write_up).toEqual({
@@ -93,7 +110,7 @@ describe('session form state', () => {
     });
     expect(sessionInputSchema.safeParse(body).success).toBe(true);
 
-    const scored = formBody({ ...emptyForm('2026-10-08', []), goalRating: 2, myAssessment: ' ok ' }, pair);
+    const scored = formBody({ ...dated(emptyForm([])), goalRating: 2, myAssessment: ' ok ' }, pair);
     expect(scored.progress).toEqual({ goal_rating: 2, topic_ratings: [] });
     expect(scored.assessment).toEqual({ rating: null, body: 'ok' });
   });
@@ -117,7 +134,7 @@ describe('session form state', () => {
   });
 
   it('keys errors as the server does, and refuses an SSN in a note before it is sent', () => {
-    const body = formBody({ ...emptyForm('2026-10-08', []), planned: 'SSN 123-45-6789' }, pair);
+    const body = formBody({ ...dated(emptyForm([])), planned: 'SSN 123-45-6789' }, pair);
     const parsed = sessionInputSchema.safeParse(body);
     expect(parsed.success).toBe(false);
     const errors = issuesToErrors(parsed.error!.issues);
@@ -154,7 +171,7 @@ describe("a lesson filled in from Home's Next up card (#43)", () => {
     });
   });
 
-  it('never dates it after today, and leaves what does not fit at the defaults', () => {
+  it('never dates it after today, and leaves what does not fit empty, for the person to choose', () => {
     const values = prefilledForm('2026-10-10', [other, assignment], {
       student: 'nobody',
       date: '2026-10-17',
@@ -164,10 +181,12 @@ describe("a lesson filled in from Home's Next up card (#43)", () => {
     expect(values).toMatchObject({
       assignmentId: '',
       occurredOn: '2026-10-10',
-      startedAt: '16:00',
-      endedAt: '17:00',
+      startedAt: '',
+      endedAt: '09:00',
       mode: 'in_person',
     });
+    // No date given: none is filled in (never today by default).
+    expect(prefilledForm('2026-10-10', [assignment], { student: STUDENT }).occurredOn).toBe('');
   });
 });
 

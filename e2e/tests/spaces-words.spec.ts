@@ -194,7 +194,9 @@ test.describe('S1: "Organization" leaves every screen (Phase 59)', () => {
     const create = platform.getByRole('dialog');
     await expect(create).toBeVisible();
     expect(await problemsOn(platform)).toEqual([]);
-    // Both payment models, with the payer details showing.
+    // Both payment models, with the payer details showing -- asked only once the space may use Tutoring (owner,
+    // 2026-11-04: a new space starts with Quest alone).
+    await create.locator('#org-feature-tutoring').check();
     const who = create.getByRole('radiogroup', { name: 'Who families pay' });
     await who.getByRole('radio', { name: /The space/ }).check();
     expect(await problemsOn(platform)).toEqual([]);
@@ -214,8 +216,12 @@ test.describe('S1: "Organization" leaves every screen (Phase 59)', () => {
   test("an admin's dialogs and menus: adding a person, the account menu, the command palette", async ({ as }) => {
     const admin = await as('admin');
     await admin.goto('/users');
-    await admin.getByRole('button', { name: 'Add user' }).click();
-    const dialog = admin.getByRole('dialog');
+    // Phase 76 (JF21): the one Add chooser, then the person form.
+    await admin.getByRole('button', { name: 'Add a person' }).click();
+    await expect(admin.getByTestId('add-choices')).toBeVisible();
+    expect(await problemsOn(admin)).toEqual([]);
+    await admin.getByTestId('add-choice-someone').click();
+    const dialog = admin.getByRole('dialog', { name: 'Add a person' });
     await expect(dialog).toBeVisible();
     // The role hints: "Runs the space", never "Owns the institute".
     await expect(dialog).toContainText(USER_ROLE_DESCRIPTIONS.admin);

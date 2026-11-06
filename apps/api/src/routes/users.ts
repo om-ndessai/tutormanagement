@@ -68,6 +68,8 @@ const deleteQuerySchema = z.object({
 });
 
 const EMAIL_TAKEN = 'Someone in this space already has that email address.';
+/** Phase 76 (JF21): the adult typed their own address -- as a parent, most likely, while adding their child. */
+const EMAIL_IS_YOURS = "That's you: add your child, and you'll be their parent.";
 
 /**
  * The shared fields of a person who belongs to another organization as well.
@@ -250,18 +252,38 @@ export const usersRoutes = new Hono<AppEnv>()
     await assertGuardiansExist(c.env.DB, org, null, sections.guardians);
 
     let outcome: Awaited<ReturnType<typeof createUser>>;
+    const actor = c.get('user');
+    // Phase 76 (JF21): the adult's own address is not "someone in this space" to them.
+    const ownEmail = Boolean(fields.email && actor.email && fields.email.toLowerCase() === actor.email.toLowerCase());
+    const taken = () => ApiError.conflict(ownEmail ? EMAIL_IS_YOURS : EMAIL_TAKEN);
 
     try {
-      outcome = await createUser(c.env.DB, org, fields, { acceptRequest: Boolean(request), invitedBy: c.get('user').id });
+      outcome = await createUser(c.env.DB, org, fields, { acceptRequest: Boolean(request), invitedBy: actor.id });
     } catch (error) {
-      if (isUniqueConstraintError(error)) throw ApiError.conflict(EMAIL_TAKEN);
+      if (isUniqueConstraintError(error)) throw taken();
       throw error;
     }
 
-    if (outcome.kind === 'already_member') throw ApiError.conflict(EMAIL_TAKEN);
+    if (outcome.kind === 'already_member') throw taken();
     const created = outcome.user;
 
-    await updateUserSections(c.env.DB, org, created.id, sections);
+    // Phase 76 (JF21): naming themselves as the guardian makes the adult this child's parent here --
+    // the role comes in the same batch as the guardianship, logged as a role change as it was when
+    // the clients asked for it separately.
+    const becomesParent =
+      !actor.roles.includes('parent') && (sections.guardians ?? []).some((link) => link.guardian_user_id === actor.id);
+    await updateUserSections(c.env.DB, org, created.id, sections, becomesParent ? { parentRoleFor: actor.id } : {});
+    // Written after the line that says who was added, so the log reads in the order it happened.
+    const logParentRole = async () => {
+      if (!becomesParent) return;
+      await recordAudit(c.env.DB, actor, org, {
+        action: 'user.roles_changed',
+        description: `Changed ${actor.full_name}'s roles to ${[...actor.roles, 'parent'].join(' and ')}`,
+        subject: actor,
+        entity_type: 'user',
+        entity_id: actor.id,
+      });
+    };
 
     if (requestUserId && request) {
       await answerJoinRequest(c.env.DB, org, requestUserId, 'approved', c.get('user').id);
@@ -272,14 +294,14 @@ export const usersRoutes = new Hono<AppEnv>()
         entity_type: 'user',
         entity_id: created.id,
       });
+      await logParentRole();
       const detail = await getUserDetail(c.env.DB, org, created.id);
       return c.json({ data: detail! } satisfies ApiOk<UserDetail>, 201);
     }
 
     if (space.created_via === 'self_serve' && created.roles.includes('student')) {
       const guardians = sections.guardians ?? [];
-      const actor = c.get('user').id;
-      const guardian = guardians.find((g) => g.guardian_user_id === actor)?.guardian_user_id ?? guardians[0]?.guardian_user_id;
+      const guardian = guardians.find((g) => g.guardian_user_id === actor.id)?.guardian_user_id ?? guardians[0]?.guardian_user_id;
       if (guardian) {
         await recordConsent(c.env.DB, org, { studentId: created.id, guardianId: guardian, version: PRIVACY_VERSION });
         await recordAudit(c.env.DB, c.get('user'), org, {
@@ -306,6 +328,7 @@ export const usersRoutes = new Hono<AppEnv>()
       entity_type: 'user',
       entity_id: created.id,
     });
+    await logParentRole();
 
     // Phase 32: the person, a student's parents, and the organization's admins.
     notify(mailerFor(c), c.get('org'), {

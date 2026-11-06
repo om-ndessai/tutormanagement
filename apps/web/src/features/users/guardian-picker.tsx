@@ -49,6 +49,7 @@ export function GuardianPicker({
   excludeUserId,
   error,
   required,
+  knownNames,
 }: {
   value: GuardianValue[];
   onChange: (links: GuardianValue[]) => void;
@@ -56,6 +57,11 @@ export function GuardianPicker({
   excludeUserId?: string | undefined;
   error?: string;
   required?: boolean;
+  /**
+   * Names of guardians chosen already who may not be parents yet -- the adult adding their own child (Phase 76,
+   * JF21), who becomes the parent as the child is saved.
+   */
+  knownNames?: Record<string, string>;
 }) {
   const { data, isPending } = useUsers({ role: 'parent', limit: 100, sort: 'full_name' });
   const [creating, setCreating] = useState(false);
@@ -68,7 +74,7 @@ export function GuardianPicker({
   );
 
   const nameFor = (id: string) =>
-    data?.data.find((candidate) => candidate.id === id)?.full_name ?? added[id] ?? 'Unknown';
+    data?.data.find((candidate) => candidate.id === id)?.full_name ?? added[id] ?? knownNames?.[id] ?? 'Unknown';
 
   function add(guardianUserId: string) {
     onChange([

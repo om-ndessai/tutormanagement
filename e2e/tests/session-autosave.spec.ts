@@ -26,12 +26,20 @@ async function draftActions(admin: Page, draftId: string) {
   return events.filter((event) => event.entity_id === draftId).map((event) => event.action);
 }
 
+/**
+ * Phase 75 (JF30): the Sessions page's Record opens the lessons still owed; "Another lesson" is the blank form, which
+ * is dated by hand (nothing is dated today by itself).
+ */
 async function openRecordForm(tutor: Page) {
   await tutor.goto('/sessions');
-  await tutor.getByRole('button', { name: /Record a session/i }).click();
+  await tutor.getByTestId('sessions-record').click();
+  await tutor.getByTestId('owed-another').click();
   const dialog = tutor.getByRole('dialog');
   await dialog.getByRole('combobox').first().click();
   await tutor.getByRole('option').first().click();
+  await dialog.locator('#date').fill('2026-09-21');
+  await dialog.locator('#start').fill('16:00');
+  await dialog.locator('#end').fill('17:00');
   return dialog;
 }
 
@@ -61,7 +69,7 @@ test.describe('autosaving a write-up', () => {
       .toEqual([`${marker} and more`]);
     expect(await draftActions(admin, draftId)).toEqual([]);
 
-    await dialog.getByRole('button', { name: 'Record session' }).click();
+    await dialog.getByRole('button', { name: 'Record lesson' }).click();
     await expect(dialog).toBeHidden();
 
     drafts = await unwrap<any[]>(await tutor.request.get('/api/sessions/drafts'), 'drafts');
@@ -113,7 +121,7 @@ test.describe('autosaving a write-up', () => {
 
     await tutor.getByRole('button', { name: 'Edit' }).first().click();
     await expect(dialog.getByLabel('Session notes', { exact: true })).toHaveValue(`${marker} and finished`);
-    await dialog.getByRole('button', { name: 'Post session' }).click();
+    await dialog.getByRole('button', { name: 'Record lesson' }).click();
     await expect(tutor.getByText('Your drafts')).toHaveCount(0);
 
     const sessions = await unwrap<any[]>(

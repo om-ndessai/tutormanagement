@@ -31,6 +31,47 @@ let nextKey = 1;
 const blankRow = (): Row => ({ key: nextKey++, email: '', full_name: '', role: 'parent', problem: null });
 
 /**
+ * The words an invitation hands over, for `email` (Phase 76, JF37): who invites, the space and what it is for, where
+ * to go and the address to sign in with. Shared by this step and the Users page's invited rows.
+ */
+export function useInvitationText() {
+  const { user, organization } = useAuth();
+  return (email: string) =>
+    invitationText({
+      inviter: user?.full_name ?? 'Someone',
+      space: organization?.name ?? 'a space',
+      // The link opens on the invitation (the person's Spaces page), not on the guest game page (UI audit JF12).
+      address: `${window.location.origin}/spaces`,
+      email,
+      org: organization,
+    });
+}
+
+/** Copy an invitation's words, said so (JF37). */
+export async function copyInvitation(text: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.success('Invitation copied.');
+  } catch {
+    toast.error('Could not copy. Select the text and copy it instead.');
+  }
+}
+
+/** Share an invitation's words through the device's own sheet, else copy them; said either way (JF37). */
+export async function shareInvitation(text: string, title: string): Promise<void> {
+  if (!navigator.share) {
+    await copyInvitation(text);
+    return;
+  }
+  try {
+    await navigator.share({ title, text });
+    toast.success('Invitation shared.');
+  } catch {
+    // Closed the sheet: nothing to do.
+  }
+}
+
+/**
  * Phase 61 (S12, docs/spaces-plan.md): "Invite people", right after starting a space and before
  * the welcome tour. Rows of email and role (Admin, Parent, and Tutor only where Tutoring is
  * allowed); each row is the ordinary add-person request, so the per-minute limit and the daily cap
@@ -38,22 +79,14 @@ const blankRow = (): Row => ({ key: nextKey++, email: '', full_name: '', role: '
  * invitation is copied or shared by hand; the space's code is shown too. Students are added in the
  * wizard's "Add a student", and the same rows are always on People -> Add person.
  */
-export function InvitePeople({ onDone }: { onDone: () => void }) {
-  const { user, organization } = useAuth();
+export function InvitePeople({ onDone, doneLabel }: { onDone: () => void; doneLabel?: string }) {
+  const { organization } = useAuth();
   const invite = useInvitePerson();
   const roles = inviteRolesFor(organization);
   const [rows, setRows] = useState<Row[]>(() => [blankRow()]);
   const [sent, setSent] = useState<SpaceInviteRow[]>([]);
   const [sending, setSending] = useState(false);
-
-  const textFor = (email: string) =>
-    invitationText({
-      inviter: user?.full_name ?? 'Someone',
-      space: organization?.name ?? 'a space',
-      // The link opens on the invitation (the person's Spaces page), not on the guest game page (UI audit JF12).
-      address: `${window.location.origin}/spaces`,
-      email,
-    });
+  const textFor = useInvitationText();
 
   const update = (key: number, patch: Partial<Row>) =>
     setRows((current) => current.map((row) => (row.key === key ? { ...row, ...patch, problem: null } : row)));
@@ -94,26 +127,8 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
     if (done.length > 0) toast.success(done.length === 1 ? 'Invitation made.' : `${done.length} invitations made.`);
   }
 
-  async function copy(email: string) {
-    try {
-      await navigator.clipboard.writeText(textFor(email));
-      toast.success('Invitation copied.');
-    } catch {
-      toast.error('Could not copy. Select the text and copy it instead.');
-    }
-  }
-
-  async function share(email: string) {
-    if (!navigator.share) {
-      await copy(email);
-      return;
-    }
-    try {
-      await navigator.share({ title: organization?.name ?? 'Aimtrue', text: textFor(email) });
-    } catch {
-      // Closed the sheet: nothing to do.
-    }
-  }
+  const copy = (email: string) => copyInvitation(textFor(email));
+  const share = (email: string) => shareInvitation(textFor(email), organization?.name ?? 'Aimtrue');
 
   const anyTyped = rows.some((row) => row.email.trim() || row.full_name.trim());
 
@@ -225,11 +240,11 @@ export function InvitePeople({ onDone }: { onDone: () => void }) {
       <div className="flex justify-end">
         {sent.length > 0 ? (
           <Button onClick={onDone} data-testid="invite-continue">
-            Continue
+            {doneLabel ?? 'Continue'}
           </Button>
         ) : (
           <Button variant="ghost" onClick={onDone} data-testid="invite-skip">
-            Skip
+            {doneLabel ? 'Close' : 'Skip'}
           </Button>
         )}
       </div>

@@ -626,6 +626,25 @@ native rebuild of both dev builds, so build only while the devices are free.
   yet run on the iOS simulator or the Android emulator. The 22 Phase 74 flows (`home/first-home` and the updated home, dashboard, onboarding, spaces and finance flows)
   green on the iOS simulator and the Android emulator; found on the way: a role chosen on the Dashboard did not stick
   after "Back to mine" (fixed in `dashboard-role.ts`).
+- [x] 90. Mobile: Phases 75 and 76's app half (2026-11-05, build-log entry 85) -- the tutor's record (JF18, JF19, JF27,
+  JF30): every "Record a lesson" door opens the lessons still owed (`GET /sessions/to-record`) with "Another lesson",
+  a blank record with no day or times filled in; To record leads Sessions' Tutoring tab; a known lesson opens "Record a
+  lesson" ("It ran as planned" / "Write up the lesson"), or the reader's draft of it ("Draft saved 12:43 PM",
+  Continue) from Home, Next up, Sessions and the owed list; a running lesson leads Next up with Stop; Start and Stop
+  say a price refusal once, in the reader's words, and Keep going keeps the note; "No price set" on the student, the
+  pairing and the schedule; the price fields' example is helper text; the pairing form never copies the tutor's
+  default and an override equal to it reads as the default; "lesson" and "Record" on these surfaces. Adding people one
+  way (JF21, JF37): the Add chooser (`/add`) from the home's quick action ("Add my child" in a personal space), the
+  (+)'s "Add people", People's header and empty state; "My child"; the next steps after each save (`nextStepsAfterAdd`,
+  "Set a weekly lesson" on the schedule flow's `?assignment=`); Invite by email at any time; Share invitation on invited
+  rows with a confirmation; the status words; the student's tutors and weekly lessons. Typecheck, lint, Jest and export
+  green; flows written (`sessions/lessons-owed`, `people/add-chooser`, `subflows/record-choose-when` new; the session,
+  home, pairings, people, shell, spaces and exposure flows listed in entry 85 updated). The 24 flows (and
+  `exposure/money-tutoring`, `dictation/dictate-ssn`, `dictation/dictate-permission`) green on the iOS simulator and the
+  Android emulator; found on the way: on Android a fitted quick sheet took its content's whole height and never
+  scrolled, so the office's long owed list hid "Another lesson" (fixed: `quickSheetMaxHeight` caps it under the status
+  bar, with a Jest test); `subflows/record-choose-when` overrode its caller's length (fixed, and `sessions/record` now
+  checks the end time).
 
 ## Phase 4 — Google sign-in
 

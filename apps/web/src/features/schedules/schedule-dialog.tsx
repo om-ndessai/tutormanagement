@@ -49,10 +49,19 @@ export function ScheduleDialog({
   open,
   onOpenChange,
   existing,
+  preset,
+  onSaved,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   existing: ScheduledSession | null;
+  /**
+   * Phase 76 (JF21): a new schedule's pairing, chosen already -- "Set a weekly lesson" after adding a student. The
+   * pairing by id, else the student's first pairing.
+   */
+  preset?: { assignment_id?: string | null; student_user_id?: string | null };
+  /** Called once it has saved, with the schedule. */
+  onSaved?: (schedule: ScheduledSession) => void;
 }) {
   const isEdit = existing !== null;
   const { user } = useAuth();
@@ -120,7 +129,7 @@ export function ScheduleDialog({
       setPhysicalId(existing.locations.find((l) => l.kind === 'physical')?.id ?? '');
       setVirtualId(existing.locations.find((l) => l.kind === 'virtual')?.id ?? '');
     } else {
-      setAssignmentId(assignments.length === 1 ? assignments[0]!.id : '');
+      setAssignmentId(presetPairing()?.id ?? (assignments.length === 1 ? assignments[0]!.id : ''));
       setDayOfWeek('2');
       setStartTime('16:00');
       setDuration('60');
@@ -133,6 +142,24 @@ export function ScheduleDialog({
     // `assignments` excluded on purpose: a refetch mid-edit would reset the form.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, existing]);
+
+  /** The preset's pairing, among the reader's. */
+  function presetPairing() {
+    if (!preset) return undefined;
+    return preset.assignment_id
+      ? assignments.find((candidate) => candidate.id === preset.assignment_id)
+      : preset.student_user_id
+        ? assignments.find((candidate) => candidate.student_user_id === preset.student_user_id)
+        : undefined;
+  }
+
+  // The pairings may arrive after the form opens: pick the preset's then.
+  useEffect(() => {
+    if (!open || existing || assignmentId || !preset) return;
+    const match = presetPairing();
+    if (match) setAssignmentId(match.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, existing, assignmentId, assignments, preset?.assignment_id, preset?.student_user_id]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -166,15 +193,17 @@ export function ScheduleDialog({
 
     try {
       if (isEdit) {
-        await update.mutateAsync({ id: existing.id, input: shared as never });
+        const saved = await update.mutateAsync({ id: existing.id, input: shared as never });
         toast.success('Schedule updated.');
+        onSaved?.(saved.data);
       } else {
-        await create.mutateAsync({
+        const saved = await create.mutateAsync({
           tutor_user_id: assignment!.tutor_user_id,
           student_user_id: assignment!.student_user_id,
           ...shared,
         } as never);
-        toast.success('Session scheduled.');
+        toast.success('Weekly lesson set.');
+        onSaved?.(saved.data);
       }
       onOpenChange(false);
     } catch (error) {
@@ -192,7 +221,7 @@ export function ScheduleDialog({
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-lg">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
-            <DialogTitle>{isEdit ? 'Edit schedule' : 'Schedule a session'}</DialogTitle>
+            <DialogTitle>{isEdit ? 'Edit schedule' : 'Set a weekly lesson'}</DialogTitle>
             <DialogDescription>
               {isEdit
                 ? `${existing.tutor_name} with ${existing.student_name}, every week.`

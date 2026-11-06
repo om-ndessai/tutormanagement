@@ -1,7 +1,25 @@
 // The pure half of the Add a student and Add a tutor step flows (UI upgrades U3; build log #48).
 // The draft is the person form's own `FormState`, and the request is its `toRequest`: the flows ask
 // the same things in a different order, so validation is the shared schema's, cut per step.
-import { createUserRequestSchema, type Organization, type StudentBalance } from '@tmi/shared';
+import {
+  addChoices,
+  createUserRequestSchema,
+  featureAllowed,
+  featureOn,
+  mayAddPeople,
+  nextStepsAfterAdd,
+  paidDirectly,
+  type AddChoice,
+  type AddChoiceOption,
+  type NextStepAfterAddId,
+  type Organization,
+  type PlatformAccount,
+  type StudentBalance,
+  type UserRole,
+} from '@tmi/shared';
+import type { Href } from 'expo-router';
+
+import type { SavedForm } from '@/lib/form-bridge';
 
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
 import { addGuardian, removeGuardian, toRequest, type FormState, type GuardianValue } from './person-form-model';
@@ -135,4 +153,150 @@ export function consentIssue(
   consent: boolean,
 ): string | null {
   return consentNeeded(form, org) && !consent ? CONSENT_MESSAGE : null;
+}
+
+// --- Phase 76 (JF21): one Add chooser, and the next step after each save ------------------------------------
+
+/** The space as the chooser and the next steps read it (the session's organization). */
+type SpaceSets = Partial<Organization> | null | undefined;
+
+/**
+ * The chooser's rows for this reader here: shared `addChoices` -- "A family (parent and child)" (in a personal space
+ * "My child"), "A tutor" where Tutoring is on, "Someone else", "Invite by email" -- or none for a reader who may not add
+ * people (not an admin, or a 13-17).
+ */
+export function chooserChoices(
+  org: SpaceSets,
+  reader: { roles: readonly UserRole[]; account: PlatformAccount | null } | null,
+): AddChoiceOption[] {
+  return addChoices({
+    tutoring: featureAllowed(org, 'tutoring'),
+    personal: org?.personal ?? false,
+    mayAdd: reader ? mayAddPeople(reader) : false,
+  });
+}
+
+/** Each choice's icon, as the (+) sheet draws its rows. */
+export const ADD_CHOICE_ICONS: Record<AddChoice, string> = {
+  family: 'account-child-outline',
+  tutor: 'human-male-board',
+  someone: 'account-plus-outline',
+  invite: 'email-fast-outline',
+};
+
+/**
+ * Where a choice leads: the family flow (in a personal space with the reader as the parent, `guardian=me`), the
+ * tutor flow, the person form (`from=add`, so it ends on the next steps), or the invitation sheet.
+ */
+export function addChoiceHref(choice: AddChoice, { personal }: { personal: boolean }): Href {
+  switch (choice) {
+    case 'family':
+      return personal ? { pathname: '/add-student', params: { guardian: 'me' } } : '/add-student';
+    case 'tutor':
+      return '/add-tutor';
+    case 'someone':
+      return { pathname: '/person-form', params: { from: 'add' } };
+    case 'invite':
+      return '/invite-people';
+  }
+}
+
+/** Shown when the chooser has nothing to offer this reader. */
+export const ADD_CHOOSER_LOCKED = "Only the space's admins add people.";
+
+/** Someone just added, as the next steps need them. */
+export interface AddedPersonRef {
+  id: string;
+  name: string;
+  roles: readonly UserRole[];
+}
+
+/** One next step on the "<name> is added" screen: shared `nextStepsAfterAdd`'s words, and where each goes here. */
+export interface NextStepView {
+  id: NextStepAfterAddId;
+  label: string;
+  description: string;
+  icon: string;
+  /** Null while it cannot be taken yet (a weekly lesson before the pairing). */
+  href: Href | null;
+  /** A sheet or flow that announces its save, ticked here (`form-bridge`); absent for a step that leaves. */
+  form?: SavedForm;
+  /** Close the screen, then go (Start an assessment, where there is no Tutoring). */
+  leave?: boolean;
+}
+
+/** The space's sets for the next steps. */
+export function nextStepSets(org: SpaceSets): { tutoring: boolean; assessment: boolean; paysTutors: boolean } {
+  return {
+    tutoring: featureAllowed(org, 'tutoring'),
+    assessment: featureOn(org, 'assessment'),
+    // A space whose families pay each tutor directly files no 1099s: no tax setup to finish.
+    // (A session from an older Worker carries no `business`: counted as paying its tutors.)
+    paysTutors: org?.business === undefined ? true : !paidDirectly({ business: org.business }),
+  };
+}
+
+/**
+ * What to do next with someone just added (shared `nextStepsAfterAdd`): "Pair Yusuf with a tutor", then "Set a
+ * weekly lesson" -- which needs the pairing first (`pairingId`, from the pairing form's save) -- and "Record an
+ * assessment"; for a tutor "Pair Alex with a student" and "Finish tax setup".
+ */
+export function addPersonNextSteps(
+  person: AddedPersonRef,
+  sets: { tutoring: boolean; assessment: boolean; paysTutors: boolean },
+  pairingId: string | null = null,
+): NextStepView[] {
+  return nextStepsAfterAdd({ full_name: person.name, roles: person.roles }, sets).map((step): NextStepView => {
+    switch (step.id) {
+      case 'pair_tutor':
+        return {
+          ...step,
+          description: 'Lessons can be recorded once they are paired.',
+          icon: 'account-switch-outline',
+          href: { pathname: '/assignment-form', params: { student: person.id } },
+          form: 'assignment',
+        };
+      case 'weekly_lesson':
+        return {
+          ...step,
+          description: pairingId ? 'The same day and time each week.' : 'Pair them with a tutor first.',
+          icon: 'calendar-sync-outline',
+          href: pairingId ? { pathname: '/schedule-lesson', params: { assignment: pairingId } } : null,
+          form: 'schedule',
+        };
+      case 'assessment':
+        // With Tutoring, the progress assessment (the level and a score per topic); without, the handwritten one.
+        return sets.tutoring
+          ? {
+              ...step,
+              description: 'Where they stand: the level you recommend and a score per topic.',
+              icon: 'clipboard-text-outline',
+              href: { pathname: '/assessment-form', params: { student: person.id } },
+              form: 'assessment',
+            }
+          : {
+              ...step,
+              description: 'Handwritten, one question a page.',
+              icon: 'draw-pen',
+              href: { pathname: '/assessments', params: { student: person.id } },
+              leave: true,
+            };
+      case 'pair_student':
+        return {
+          ...step,
+          description: 'Which student they teach, and at what rate.',
+          icon: 'account-switch-outline',
+          href: { pathname: '/assignment-form', params: { tutor: person.id } },
+          form: 'assignment',
+        };
+      case 'tax_setup':
+        return {
+          ...step,
+          description: 'Their mailing address for the 1099, and whether the office holds their SSN.',
+          icon: 'file-document-outline',
+          href: { pathname: '/person-form', params: { id: person.id, sections: 'tutor-tax' } },
+          form: 'person',
+        };
+    }
+  });
 }

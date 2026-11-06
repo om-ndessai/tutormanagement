@@ -35,6 +35,8 @@ export async function recordRunningSession(
     mailer?: Mailer;
     /** The organization, when the caller has it; otherwise it is read once more. */
     org?: NotifyingOrg;
+    /** Phase 75 (JF18): whoever pressed stop, for the words of a pricing refusal (the sweep has none). */
+    reader?: User;
   },
 ): Promise<StoredSession> {
   const { actor, now = new Date() } = options;
@@ -44,7 +46,9 @@ export async function recordRunningSession(
   // prices, whoever is reading -- the sweep reads every organization's.
   const org = orgIdFromRow(row.organization_id);
   const times = resolveTimes(row.started_at, now, maxMinutesFor(row), row.time_zone);
-  const rates = await resolveSessionRates(db, org, row.tutor_user_id, row.student_user_id, row.mode);
+  const rates = await resolveSessionRates(db, org, row.tutor_user_id, row.student_user_id, row.mode, {
+    reader: options.reader ?? null,
+  });
 
   const session = await createSession(db, org, {
     tutor_user_id: row.tutor_user_id,

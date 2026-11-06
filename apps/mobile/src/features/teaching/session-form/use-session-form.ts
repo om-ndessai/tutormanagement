@@ -40,13 +40,16 @@ export interface SessionFormValues {
   myAssessment: string;
 }
 
-/** A new lesson: today on the organization's clock, 4–5 PM, in person. */
-export function emptyForm(today: string, assignments: Pick<Assignment, 'id'>[]): SessionFormValues {
+/**
+ * A new lesson the schedule does not know ("Another lesson"): NO day and no times filled in -- the person chooses
+ * them, so nothing is dated today at 4:00 PM by default (Phase 75, JF30) -- in person, with the only pairing chosen.
+ */
+export function emptyForm(assignments: Pick<Assignment, 'id'>[]): SessionFormValues {
   return {
     assignmentId: assignments.length === 1 ? assignments[0]!.id : '',
-    occurredOn: today,
-    startedAt: '16:00',
-    endedAt: '17:00',
+    occurredOn: '',
+    startedAt: '',
+    endedAt: '',
     mode: 'in_person',
     notes: '',
     planned: '',
@@ -59,6 +62,19 @@ export function emptyForm(today: string, assignments: Pick<Assignment, 'id'>[]):
     myRating: null,
     myAssessment: '',
   };
+}
+
+export const CHOOSE_DATE = 'Choose the day of the lesson.';
+export const CHOOSE_START = 'Choose when it started.';
+export const CHOOSE_END = 'Choose when it ended.';
+
+/** Phase 75 (JF30): what a blank record still needs chosen -- its day and both times -- keyed as the server's fields. */
+export function whenMissing(values: Pick<SessionFormValues, 'occurredOn' | 'startedAt' | 'endedAt'>): Record<string, string> | null {
+  const missing: Record<string, string> = {};
+  if (!values.occurredOn) missing.occurred_on = CHOOSE_DATE;
+  if (!values.startedAt) missing.started_at = CHOOSE_START;
+  if (!values.endedAt) missing.ended_at = CHOOSE_END;
+  return Object.keys(missing).length > 0 ? missing : null;
 }
 
 /** A new lesson as Home's Next up card opens it (#43): the scheduled lesson's pairing and times. */
@@ -80,25 +96,25 @@ const DAY = /^\d{4}-\d{2}-\d{2}$/;
 /**
  * The empty form with the scheduled lesson filled in: the pairing that matches (none when the
  * reader has no such pairing; the server would refuse it anyway), the date (never after today, the
- * form's own limit), the times and the mode. Anything malformed is left at the default.
+ * form's own limit), the times and the mode. Anything malformed is left empty, for the person to choose.
  */
 export function prefilledForm(
   today: string,
   assignments: Pick<Assignment, 'id' | 'tutor_user_id' | 'student_user_id'>[],
   prefill: RecordPrefill,
 ): SessionFormValues {
-  const base = emptyForm(today, assignments);
+  const base = emptyForm(assignments);
   const match = assignments.find(
     (a) => a.student_user_id === prefill.student && (!prefill.tutor || a.tutor_user_id === prefill.tutor),
   );
   const startedAt = prefill.start && CLOCK.test(prefill.start) ? prefill.start : base.startedAt;
   const endedAt =
     prefill.end && CLOCK.test(prefill.end) && prefill.end > startedAt ? prefill.end : base.endedAt;
-  const day = prefill.date && DAY.test(prefill.date) ? prefill.date : today;
+  const day = prefill.date && DAY.test(prefill.date) ? prefill.date : '';
   return {
     ...base,
     assignmentId: match?.id ?? base.assignmentId,
-    occurredOn: day > today ? today : day,
+    occurredOn: day && day > today ? today : day,
     startedAt,
     endedAt,
     mode: prefill.mode ?? base.mode,

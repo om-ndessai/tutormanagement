@@ -24,7 +24,7 @@ const submitted: SessionDraftInput[] = [];
 
 /** The record sheet's wiring, cut down: one dictated field, the autosave, and Record. */
 function Sheet() {
-  const { values, set, current } = useSessionForm(() => emptyForm('2026-10-08', []));
+  const { values, set, current } = useSessionForm(() => ({ ...emptyForm([]), occurredOn: '2026-10-08', startedAt: '16:00', endedAt: '17:00' }));
   const dictation = useDictationSession();
   useDraftAutosave({
     enabled: true,

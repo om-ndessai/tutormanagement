@@ -105,6 +105,18 @@ describe('the schedule', () => {
     expect(screen.queryByText(/\$/)).toBeNull();
   });
 
+  it('says "No price set" where the student has no price for the schedule’s own mode (Phase 75, JF18)', async () => {
+    mockOccurrences.mockReturnValue(dates([]));
+    await renderWithProviders(card(schedule({ mode: 'virtual', price_missing: ['virtual'] })));
+    expect(screen.getByTestId(`schedule-price-missing-${ID}`)).toHaveTextContent(/No price set/);
+    expect(screen.queryByText(/\$/)).toBeNull();
+    // A missing virtual price says nothing about an in-person schedule; an older Worker sends no flag at all.
+    await renderWithProviders(card(schedule({ mode: 'in_person', price_missing: ['virtual'] })));
+    expect(screen.queryByTestId(`schedule-price-missing-${ID}`)).toBeNull();
+    await renderWithProviders(card(schedule()));
+    expect(screen.queryByTestId(`schedule-price-missing-${ID}`)).toBeNull();
+  });
+
   it('shows a cancelled date struck through with who and why, and Restore only where allowed', async () => {
     const flagged = (can_restore: boolean) =>
       upcoming({

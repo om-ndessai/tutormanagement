@@ -6,7 +6,8 @@ import { PersonFormSheet } from '@/features/users/person-form-sheet';
  * Add a person, or edit one (`?id=`), as a form sheet. `?preset=` roles, `?guardian=` a guardian
  * already chosen and `?sections=` the blocks to show are for the welcome wizard; `?for=guardian`
  * adds a parent from a student's form; `?request=` lets in someone who asked to join (Phase 52). `?section=` is one section of a person's record (UI upgrades
- * U5): its blocks alone, under its own title. Admin only.
+ * U5): its blocks alone, under its own title. `?from=add` is the Add chooser's "Someone else" (Phase 76): a new
+ * person ends on the next steps. Admin only.
  */
 export default function PersonFormRoute() {
   const params = useLocalSearchParams<{
@@ -17,6 +18,7 @@ export default function PersonFormRoute() {
     section?: string;
     for?: string;
     request?: string;
+    from?: string;
   }>();
   return (
     <PersonFormSheet
@@ -27,6 +29,7 @@ export default function PersonFormRoute() {
       section={params.section}
       forGuardian={params.for === 'guardian'}
       request={params.request}
+      fromAdd={params.from === 'add'}
     />
   );
 }

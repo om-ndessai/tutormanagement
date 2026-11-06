@@ -51,6 +51,14 @@ tags:
 - pressKey: Enter
 - tapOn:
     id: record-pairing-a0000000-0000-4000-8000-000000000004
+# Phase 75 (JF30): a blank record dates nothing by default -- the day and times are chosen, then the money shows.
+- scrollUntilVisible:
+    element:
+      id: record-length-60
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- runFlow: ../../subflows/record-choose-when.yaml
 - extendedWaitUntil:
     visible:
       id: record-money
@@ -84,6 +92,28 @@ tags:
     id: tabs-tutoring
 - tapOn:
     id: sessions-record-button
+# Phase 75 (JF30): the lessons still owed, then "Another lesson" -- no money on either. The office owes every
+# tutor's, so "Another lesson" is under the list.
+- extendedWaitUntil:
+    visible:
+      id: lessons-owed
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: 'lessons-owed-.*-record'
+    timeout: 15000
+- assertVisible: 'Record a lesson'
+- assertNotVisible: '.*\$[0-9].*'
+- scrollUntilVisible:
+    element:
+      id: lessons-owed-another
+    direction: DOWN
+    timeout: 30000
+- assertNotVisible: '.*\$[0-9].*'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: lessons-owed-another
 - extendedWaitUntil:
     visible:
       id: record-student-input
@@ -104,6 +134,12 @@ tags:
 - assertNotVisible: '.*\$[0-9].*'
 - tapOn:
     id: step-flow-next
+- extendedWaitUntil:
+    visible:
+      id: step-flow-title
+      text: '.*When was it\?.*'
+    timeout: 10000
+- runFlow: ../../subflows/record-choose-when.yaml
 - extendedWaitUntil:
     visible:
       id: record-preview

@@ -1,7 +1,9 @@
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  CopyIcon,
   EyeIcon,
+  Share2Icon,
   MoreHorizontalIcon,
   PencilIcon,
   RotateCcwIcon,
@@ -63,6 +65,9 @@ interface RowActions {
    * offered Edit, Deactivate and Delete permanently, which the API refuses (UI audit JF22).
    */
   canManage?: boolean;
+  /** Phase 76 (JF37): an invited person's invitation, copied or shared by hand. */
+  onCopyInvitation?: (user: User) => void;
+  onShareInvitation?: (user: User) => void;
 }
 
 interface Props extends RowActions {
@@ -99,6 +104,24 @@ function ActionsMenu({ user, actions }: { user: User; actions: RowActions }) {
           <EyeIcon className="size-4" />
           View details
         </DropdownMenuItem>
+
+        {canManage && !isDeleted && user.status === 'invited' && user.email && (
+          <>
+            {actions.onCopyInvitation && (
+              <DropdownMenuItem onSelect={() => actions.onCopyInvitation!(user)}>
+                <CopyIcon className="size-4" />
+                Copy invitation
+              </DropdownMenuItem>
+            )}
+            {actions.onShareInvitation && (
+              <DropdownMenuItem onSelect={() => actions.onShareInvitation!(user)}>
+                <Share2Icon className="size-4" />
+                Share
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+          </>
+        )}
 
         {canManage && !isDeleted && (
           <>

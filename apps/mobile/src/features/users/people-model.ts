@@ -1,7 +1,17 @@
 // The directory's and the record's pure rules, kept apart from the screens so they can be tested.
 // `initials` and the sort fields from apps/web/src/features/users/{users-table,user-detail-view}.tsx
 // @ 1132322.
-import type { User, UserDetail, UserRole, UserSortField } from '@tmi/shared';
+import {
+  DAYS_OF_WEEK,
+  formatTimeRange,
+  parseClockTime,
+  type Assignment,
+  type ScheduledSession,
+  type User,
+  type UserDetail,
+  type UserRole,
+  type UserSortField,
+} from '@tmi/shared';
 
 /** "Sofia Okafor" -> "SO". */
 export function initials(name: string): string {
@@ -120,4 +130,42 @@ export function personPaymentPrefills(
     }
   }
   return out;
+}
+
+// --- Phase 76 (JF21): the student's tutors and weekly lessons, on their record (Tutoring only, no money) ------
+
+/** A student's tutors from their pairings: one row per tutor, active pairings only, by name. */
+export function studentTutors(
+  pairings: readonly Pick<Assignment, 'tutor_user_id' | 'tutor_name' | 'is_active'>[],
+): { id: string; name: string }[] {
+  const seen = new Map<string, string>();
+  for (const pairing of pairings) {
+    if (pairing.is_active && !seen.has(pairing.tutor_user_id)) seen.set(pairing.tutor_user_id, pairing.tutor_name);
+  }
+  return [...seen].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * One weekly lesson in words: "Mondays, 4:00–5:00 PM with Alex Chen · Institute, room 2" -- the place for the
+ * lesson's mode by NAME only (R16), never an address or a link.
+ */
+export function weeklyLessonLine(
+  schedule: Pick<ScheduledSession, 'day_of_week' | 'start_time' | 'duration_minutes' | 'tutor_name' | 'mode' | 'locations'>,
+): string {
+  const day = DAYS_OF_WEEK[schedule.day_of_week]?.label ?? '';
+  const start = parseClockTime(schedule.start_time) ?? 0;
+  const kind = schedule.mode === 'virtual' ? 'virtual' : 'physical';
+  const place = schedule.locations.find((location) => location.kind === kind) ?? schedule.locations[0];
+  return `${day}s, ${formatTimeRange(start, start + schedule.duration_minutes)} with ${schedule.tutor_name}${
+    place ? ` · ${place.name}` : ''
+  }`;
+}
+
+/** The student's standing lessons that are on, in the week's order. */
+export function studentWeeklyLessons<T extends Pick<ScheduledSession, 'is_active' | 'day_of_week' | 'start_time'>>(
+  schedules: readonly T[],
+): T[] {
+  return schedules
+    .filter((schedule) => schedule.is_active)
+    .sort((a, b) => a.day_of_week - b.day_of_week || a.start_time.localeCompare(b.start_time));
 }

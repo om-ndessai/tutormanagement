@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 import {
   CalendarClockIcon,
   CalendarXIcon,
@@ -8,6 +7,7 @@ import {
   ClipboardCheckIcon,
   PencilLineIcon,
   PlayIcon,
+  SquareIcon,
   HandHeartIcon,
   TargetIcon,
   TrophyIcon,
@@ -31,8 +31,9 @@ import {
   type MemberHome,
   type NextUp,
   type NextUpExtras,
+  type ActiveSession,
   type QuestionBankLevelId,
-  type SessionMode,
+  SESSION_MODE_LABELS,
 } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
@@ -41,27 +42,25 @@ import { questRoles, useQuestState } from '@/features/quest/api';
 import { useGoToGame, type PlayOriginState } from '@/features/quest/play-origin';
 import { WaitingForYou, useStartQuest } from '@/features/play/play-home';
 import { leadGradeOf, useMemberTiles, useOpenGame, useWaitingGames } from '@/features/play/play-api';
-import { useStartSession } from '@/features/teaching/api';
-import { ApiRequestError } from '@/lib/api-client';
+import { useActiveSession } from '@/features/teaching/api';
+import { RunningFor, StopLessonFlow } from '@/features/teaching/live-session-bar';
+import { DraftMark, type KnownLesson } from '@/features/teaching/record-lesson';
+import { StartLessonDialog, type StartPreset } from '@/features/teaching/start-session-button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { putOff, readPutOff } from './api';
 import { lessonLine } from './lesson-words';
 
-export interface RecordRequest {
-  tutor_user_id: string;
-  student_user_id: string;
-  occurs_on: string;
-  start_time: string;
-  end_time: string;
-  mode: SessionMode;
-}
-
-/** What the home's own read does not carry (H2): a game waiting, the open game (or "again"), today's Daily. */
-function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: string | null } {
+/**
+ * What the home's own read does not carry (H2): a game waiting, the open game (or "again"), today's Daily -- and,
+ * since Phase 75 (JF30), the reader's lesson running now, from the live lesson's own read.
+ */
+function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: string | null; active: ActiveSession | null } {
   const { organization, user } = useAuth();
   const learner = Boolean(home?.hats.includes('learner'));
   const quest = featureOn(organization, 'quest');
+  const live = useActiveSession(featureOn(organization, 'tutoring') && Boolean(home?.hats.includes('tutor')));
+  const active = live.data?.data.mine ?? null;
   const waiting = useWaitingGames(quest);
   const tiles = useMemberTiles(quest && learner);
   // Phase 73 (JF13): Continue is the server's -- the open game, else the last one's settings again.
@@ -89,7 +88,9 @@ function useExtras(home: MemberHome | undefined): NextUpExtras & { dailyLevel: s
     // Phase 68 (H10): practice before a lesson starts at the board's lead level.
     practice_level_id: learner && quest ? ruled : null,
     played_today: habit.data?.data.played_today ?? false,
+    running: active ? { student_name: active.student_name, started_at: active.started_at, mode: active.mode } : null,
     dailyLevel,
+    active,
   };
 }
 
@@ -103,9 +104,11 @@ export function useNextUp(home: MemberHome | undefined) {
     void later;
     return chooseNextUp(nextUpCandidates(home, extras), readPutOff(organization?.slug, home.day));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [home, extras.game_invite?.game_id, extras.open_game?.game_id, extras.open_game?.title, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, extras.practice_level_id, extras.played_today, later, organization?.slug]);
+  }, [home, extras.running?.started_at, extras.game_invite?.game_id, extras.open_game?.game_id, extras.open_game?.title, extras.continue_quest?.code, extras.daily?.done, extras.daily?.level_id, extras.question_quest?.level_id, Boolean(extras.question_quest), extras.welcome_back, extras.practice_level_id, extras.played_today, later, organization?.slug]);
   return {
     item,
+    /** Phase 75 (JF30): the running lesson itself, for Stop. */
+    active: extras.active,
     /** Phase 74 (JF17): the level a learner's practice starts at, where Quest is on (the board's lead). */
     practiceLevel: extras.practice_level_id ?? null,
     putOff(next: NextUp) {
@@ -130,7 +133,7 @@ function Shell({
   icon: LucideIcon;
   eyebrow: string;
   title: string;
-  detail?: string | null;
+  detail?: React.ReactNode;
   children?: React.ReactNode;
   onLater?: () => void;
   tone?: 'default' | 'celebrate';
@@ -177,34 +180,67 @@ function Shell({
 export function NextUpCard({
   home,
   item,
+  active = null,
   onLater,
   onRecord,
   practiceLevel = null,
 }: {
   home: MemberHome;
   item: NextUp | null;
+  /** The reader's running lesson (Phase 75), for Stop. */
+  active?: ActiveSession | null;
   onLater: (item: NextUp) => void;
-  onRecord: (lesson: RecordRequest) => void;
+  /** A known lesson to record: "Record a lesson", or its draft (Phase 75, JF19, JF30). */
+  onRecord: (lesson: KnownLesson) => void;
   /** Where Quest is on, the level a learner's practice for their lesson starts at. */
   practiceLevel?: string | null;
 }) {
+  // Start and Stop open in place (Phase 75, JF30), held here so they outlive the item that opened them.
+  const [starting, setStarting] = useState<StartPreset | null>(null);
+  const [stopping, setStopping] = useState<ActiveSession | null>(null);
+  return (
+    <>
+      <NextUpBody
+        home={home}
+        item={item}
+        active={active}
+        onLater={onLater}
+        onRecord={onRecord}
+        onStart={setStarting}
+        onStop={setStopping}
+        practiceLevel={practiceLevel}
+      />
+      {/* Mounted only while asked for: a learner's home reads nothing of a tutor's. */}
+      {starting && <StartLessonDialog open onOpenChange={(open) => !open && setStarting(null)} preset={starting} />}
+      {stopping && <StopLessonFlow active={stopping} onClose={() => setStopping(null)} />}
+    </>
+  );
+}
+
+function NextUpBody({
+  home,
+  item,
+  active,
+  onLater,
+  onRecord,
+  onStart,
+  onStop,
+  practiceLevel,
+}: {
+  home: MemberHome;
+  item: NextUp | null;
+  active: ActiveSession | null;
+  onLater: (item: NextUp) => void;
+  onRecord: (lesson: KnownLesson) => void;
+  onStart: (preset: StartPreset) => void;
+  onStop: (active: ActiveSession) => void;
+  practiceLevel: string | null;
+}) {
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const startSession = useStartSession();
   const { start, pending } = useStartQuest();
   const goToGame = useGoToGame();
   const later = item ? () => onLater(item) : undefined;
   const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
-
-  async function startLesson(studentId: string, mode: SessionMode) {
-    try {
-      await startSession.mutateAsync({ student_user_id: studentId, mode } as never);
-      toast.success('Lesson started.');
-      navigate('/sessions');
-    } catch (caught) {
-      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not start the lesson.');
-    }
-  }
 
   if (!item) {
     // The office's own section says "Nothing needs you right now" (JF6): not twice.
@@ -234,8 +270,37 @@ export function NextUpCard({
   );
 
   switch (item.kind) {
+    case 'lesson_running': {
+      const r = item.running;
+      return (
+        <Shell
+          kind={item.kind}
+          icon={PlayIcon}
+          eyebrow="Lesson under way"
+          title={`Your lesson with ${firstName(r.student_name)} is running.`}
+          detail={
+            <>
+              Running <RunningFor startedAt={r.started_at} /> · {SESSION_MODE_LABELS[r.mode]}
+            </>
+          }
+        >
+          {primary('Stop', () => active && onStop(active), SquareIcon)}
+        </Shell>
+      );
+    }
     case 'lesson_unrecorded': {
       const l = item.lesson;
+      const lesson: KnownLesson = {
+        tutor_user_id: user!.id,
+        student_user_id: l.student_user_id,
+        student_name: l.student_name,
+        occurs_on: l.occurs_on,
+        start_time: l.start_time,
+        end_time: l.end_time,
+        mode: l.mode,
+        place: l.place ? { name: l.place.name, kind: l.place.kind } : null,
+        draft: l.draft ?? null,
+      };
       return (
         <Shell
           kind={item.kind}
@@ -246,9 +311,11 @@ export function NextUpCard({
           detail={`${lessonWhen(l.occurs_on, l.start_time, home.day)} · not recorded yet`}
           onLater={later}
         >
-          {primary('Record it now', () =>
-            onRecord({ tutor_user_id: user!.id, student_user_id: l.student_user_id, occurs_on: l.occurs_on, start_time: l.start_time, end_time: l.end_time, mode: l.mode }),
-            PencilLineIcon,
+          {/* Its draft, when the reader has begun one (JF19): continued, never a second. */}
+          {l.draft ? (
+            <DraftMark draft={l.draft} size="lg" onContinue={() => onRecord(lesson)} testId="next-up-draft" />
+          ) : (
+            primary('Record it now', () => onRecord(lesson), PencilLineIcon)
           )}
         </Shell>
       );
@@ -271,7 +338,7 @@ export function NextUpCard({
           onLater={soon ? later : undefined}
         >
           {soon
-            ? primary(startSession.isPending ? 'Starting…' : 'Start lesson', () => void startLesson(l.student_user_id, l.mode))
+            ? primary('Start lesson', () => onStart({ student_user_id: l.student_user_id, mode: l.mode }))
             : link('See the schedule', '/schedule', CalendarClockIcon)}
         </Shell>
       );
@@ -337,7 +404,7 @@ export function NextUpCard({
           detail={item.office.to_record[0] ? `Latest: ${firstName(item.office.to_record[0].student_name)} with ${firstName(item.office.to_record[0].tutor_name)}, ${lessonWhen(item.office.to_record[0].occurs_on, item.office.to_record[0].start_time, home.day)}.` : null}
           onLater={later}
         >
-          {link('Open sessions', '/sessions', PencilLineIcon)}
+          {link('See the lessons', '/sessions', PencilLineIcon)}
         </Shell>
       );
     case 'daily':

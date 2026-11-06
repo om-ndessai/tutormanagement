@@ -4,6 +4,11 @@
 // first." So the Family step leads, with "New parent" inside it (a quick sheet that creates the
 // parent and hands them back chosen); the student and their guardians are still ONE request at the
 // end. The draft is the person form's `FormState`; each step's checks are the shared schema's.
+//
+// Phase 76 (JF21): opened from the one Add chooser ("A family (parent and child)"); in a personal space "My child"
+// opens it with `guardian=me`, and there the flow asks only for the child -- the reader is the parent, fixed, with no
+// Family step; the server gives them the parent role in the same request. The consent stays the explicit box on the
+// Review. After the save, the next steps (shared `nextStepsAfterAdd`) instead of a toast.
 import {
   featureAllowed,
   mayAddPeople,
@@ -65,9 +70,18 @@ import { StudentPrices } from './user-rates';
 /** Phase 50: the steps that belong to Tutoring, left out where the space has no Tutoring (R23). */
 export const TUTORING_STUDENT_STEPS: readonly string[] = ['availability', 'lessons', 'price'];
 
-/** The add-student steps for this space: family, student, school, then (with Tutoring) the rest. */
-export function studentSteps<T extends { key: string }>(steps: T[], tutoring: boolean): T[] {
-  return tutoring ? steps : steps.filter((step) => !TUTORING_STUDENT_STEPS.includes(step.key));
+/**
+ * The add-student steps for this space: family, student, school, then (with Tutoring) the rest. For "My child" in a
+ * personal space (Phase 76) the family is the reader, so the Family step is left out.
+ */
+export function studentSteps<T extends { key: string }>(
+  steps: T[],
+  tutoring: boolean,
+  { mine = false }: { mine?: boolean } = {},
+): T[] {
+  return steps.filter(
+    (step) => (tutoring || !TUTORING_STUDENT_STEPS.includes(step.key)) && !(mine && step.key === 'family'),
+  );
 }
 
 const INITIAL: FormState = { ...EMPTY, roles: ['student'] };
@@ -104,7 +118,7 @@ export function AddStudentFlow({
   guardian?: string;
   guardianName?: string;
 }) {
-  const { user, account } = useAuth();
+  const { user, account, organization } = useAuth();
   if (!user || !mayAddPeople({ roles: user.roles, account })) {
     return (
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
@@ -121,19 +135,31 @@ export function AddStudentFlow({
       </ScrollView>
     );
   }
-  return <AddStudentSteps fromWizard={fromWizard} preset={presetGuardian(guardian, guardianName, user)} />;
+  const preset = presetGuardian(guardian, guardianName, user);
+  // "My child" (Phase 76): in a personal space, the reader is the child's parent and the Family step is left out.
+  const mine = guardian === 'me' && Boolean(organization?.personal);
+  return <AddStudentSteps fromWizard={fromWizard} preset={preset} mine={mine} />;
 }
 
-function AddStudentSteps({ fromWizard, preset }: { fromWizard: boolean; preset: PresetGuardian | null }) {
+function AddStudentSteps({
+  fromWizard,
+  preset,
+  mine,
+}: {
+  fromWizard: boolean;
+  preset: PresetGuardian | null;
+  mine: boolean;
+}) {
   const toast = useToast();
+  const { user, refreshSession } = useAuth();
   const [round, setRound] = useState(0);
   const [added, setAdded] = useState<AddedPerson | null>(null);
 
   if (added) {
     return (
       <AddPersonDone
-        kind="student"
         person={added}
+        againLabel={mine ? 'Add another child' : 'Add another student'}
         onAgain={() => {
           setAdded(null);
           setRound((n) => n + 1);
@@ -145,7 +171,11 @@ function AddStudentSteps({ fromWizard, preset }: { fromWizard: boolean; preset: 
     <StudentSteps
       key={round}
       preset={preset}
+      mine={mine}
       onAdded={(person, leave) => {
+        // The reader named as the guardian became a parent here in the same request (Phase 76): read the session
+        // again, so the parent's home and menu follow.
+        if (preset && preset.id === user?.id && !user.roles.includes('parent')) void refreshSession();
         // Back in the wizard, a toast says so; otherwise the next screen says it, in its title (a
         // toast there would sit over its buttons).
         if (fromWizard) {
@@ -163,9 +193,12 @@ function AddStudentSteps({ fromWizard, preset }: { fromWizard: boolean; preset: 
 function StudentSteps({
   onAdded,
   preset,
+  mine,
 }: {
   onAdded: (person: AddedPerson, leave: (close?: () => void) => void) => void;
   preset: PresetGuardian | null;
+  /** "My child" in a personal space: the reader is the parent, so there is no Family step. */
+  mine: boolean;
 }) {
   const [form, setForm] = useState<FormState>(() =>
     preset ? { ...INITIAL, guardians: addGuardian([], preset.id) } : INITIAL,
@@ -236,7 +269,7 @@ function StudentSteps({
     },
     {
       key: 'student',
-      title: 'Who is the student?',
+      title: mine ? 'Who is your child?' : 'Who is the student?',
       fields: STUDENT_STEP_FIELDS.student,
       validate: (draft) => stepIssues(draft, today, STUDENT_STEP_FIELDS.student),
       render: ({ draft, errors }) => (
@@ -377,15 +410,17 @@ function StudentSteps({
       summary: (draft) => <PriceSummary form={draft} today={today} />,
     },
   ];
-  const steps = studentSteps(allSteps, tutoring);
+  const steps = studentSteps(allSteps, tutoring, { mine });
 
   return (
     <StepFlow
-      title="Add a student"
+      title={mine ? 'Add my child' : 'Add a student'}
       steps={steps}
       draft={form}
       review={{
-        description: 'Check the details, then add the student.',
+        description: mine
+          ? 'Check the details, then add your child. You are their parent here.'
+          : 'Check the details, then add the student.',
         trail: needsConsent
           ? () => (
               <View style={{ gap: space.xs }}>
@@ -406,7 +441,7 @@ function StudentSteps({
             )
           : undefined,
       }}
-      submitLabel="Add student"
+      submitLabel={mine ? 'Add my child' : 'Add student'}
       dirty={dirty}
       submitting={submitting}
       fieldErrors={fieldErrors}

@@ -31,7 +31,8 @@ import { AssessmentHome } from '@/features/dashboard/assessment-home';
 import { useMemberTiles } from '@/features/play/play-api';
 import { PlayHome, useStartQuest } from '@/features/play/play-home';
 import { haptics } from '@/lib/haptics';
-import { useAuth } from '@/providers/auth-provider';
+import { draftSavedLine } from '@/features/teaching/lessons-owed-model';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import {
@@ -117,6 +118,7 @@ const plural = (count: number, one: string, many = `${one}s`) => `${count} ${cou
 
 function TutorSection({ home, item }: { home: MemberHome; item: NextUp | null }) {
   const { user } = useAuth();
+  const timeZone = useOrgTimeZone();
   const tutor = home.tutor!;
   const more = tutor.to_record_count - tutor.to_record.length;
   return (
@@ -128,31 +130,36 @@ function TutorSection({ home, item }: { home: MemberHome; item: NextUp | null })
             <Text variant="titleSmall" accessibilityRole="header">
               To record
             </Text>
-            {tutor.to_record.map((lesson) => (
-              <View
-                key={`${lesson.schedule_id}-${lesson.occurs_on}`}
-                testID={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}`}
-                style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}
-              >
-                <Text variant="bodyMedium" style={{ flex: 1 }}>
-                  {capitalise(lessonWithStudent(lesson, home.day))}
-                </Text>
-                <Button
-                  testID={`home-to-record-${lesson.schedule_id}-${lesson.occurs_on}-record`}
-                  mode="contained-tonal"
-                  compact
-                  contentStyle={{ minHeight: 40 }}
-                  onPress={() => {
-                    haptics.selection();
-                    router.navigate(recordUnrecordedHref(lesson, user?.id));
-                  }}
-                >
-                  Record
-                </Button>
-              </View>
-            ))}
+            {tutor.to_record.map((lesson) => {
+              const row = `home-to-record-${lesson.schedule_id}-${lesson.occurs_on}`;
+              // Phase 75 (JF19): the reader's draft of it is continued from here, never started again.
+              const draft = lesson.draft ?? null;
+              return (
+                <View key={row} testID={row} style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+                  <View style={{ flex: 1, minWidth: 0 }}>
+                    <Text variant="bodyMedium">{capitalise(lessonWithStudent(lesson, home.day))}</Text>
+                    {draft ? (
+                      <Muted testID={`${row}-draft`}>{draftSavedLine(draft, timeZone, home.day)}</Muted>
+                    ) : null}
+                  </View>
+                  <Button
+                    testID={`${row}-record`}
+                    mode="contained-tonal"
+                    compact
+                    contentStyle={{ minHeight: 40 }}
+                    onPress={() => {
+                      haptics.selection();
+                      router.navigate(recordUnrecordedHref(lesson, user?.id));
+                    }}
+                  >
+                    {draft ? 'Continue' : 'Record'}
+                  </Button>
+                </View>
+              );
+            })}
+            {/* Phase 75 (JF30): the whole list of lessons still owed, each with Record. */}
             {more > 0 ? (
-              <LinkRow testID="home-to-record-more" label={`+${more} more`} to="/sessions" icon="dots-horizontal" />
+              <LinkRow testID="home-to-record-more" label={`+${more} more`} to="/lessons-owed" icon="dots-horizontal" />
             ) : null}
           </Card>
         </TourTarget>
@@ -192,7 +199,7 @@ function OfficeSection({ home, assessment }: { home: MemberHome; assessment: boo
           <LinkRow
             testID="home-office-to-record"
             label={`${plural(office.to_record_count, 'lesson')} to record`}
-            to="/sessions"
+            to="/lessons-owed"
             icon="pencil-outline"
           />
         ) : null}

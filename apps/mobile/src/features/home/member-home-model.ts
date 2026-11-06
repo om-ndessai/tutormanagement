@@ -14,6 +14,7 @@ import {
   lessonWhen,
   practiseBefore,
   startsInWords,
+  type ActiveSession,
   type HomeChild,
   type HomeFocus,
   type HomeHat,
@@ -269,6 +270,7 @@ export function deviceExtras({
   welcomeBack = false,
   practiceLevelId = null,
   playedToday = false,
+  running = null,
 }: {
   waiting: readonly Pick<WaitingGame, 'game_id' | 'code' | 'host_first_name'>[];
   /** GET /quest/games/open, where Quest is on for a learner; null elsewhere or before it has loaded. */
@@ -281,6 +283,11 @@ export function deviceExtras({
   /** Phase 68 (H10): where a learner's practice before a lesson starts (the board's lead), and whether they played today. */
   practiceLevelId?: string | null;
   playedToday?: boolean;
+  /**
+   * Phase 75 (JF30): the reader's own lesson running now (`GET /sessions/active`'s `mine`, read where Tutoring is on);
+   * it leads Next up, with Stop.
+   */
+  running?: Pick<ActiveSession, 'student_name' | 'started_at' | 'mode'> | null;
 }): { extras: NextUpExtras; codes: Record<string, string> } {
   const game = waiting[0];
   const codes: Record<string, string> = {};
@@ -295,6 +302,7 @@ export function deviceExtras({
       welcome_back: welcomeBack,
       practice_level_id: practiceLevelId,
       played_today: playedToday,
+      running: running ? { student_name: running.student_name, started_at: running.started_at, mode: running.mode } : null,
     },
     codes,
   };
@@ -346,14 +354,16 @@ export function nextUpShowsLesson(item: NextUp | null, lesson: Pick<TutorHomeLes
 
 /** The quick actions' words, icons and where they go. */
 export const QUICK_ACTION_META: Record<QuickAction, { label: string; icon: string; href: string }> = {
-  record_lesson: { label: 'Record a lesson', icon: 'plus', href: '/record-lesson' },
+  // Phase 75 (JF30): the lessons still owed, each recorded as planned, and "Another lesson" for the rest.
+  record_lesson: { label: 'Record a lesson', icon: 'plus', href: '/lessons-owed' },
   start_lesson: { label: 'Start a lesson', icon: 'play', href: '/start-lesson' },
   // Phase 73 (JF36): from Home, so the game it makes exits back here.
   new_quest: { label: 'New Quest', icon: 'trophy-outline', href: '/quest/new-game?from=home' },
   // "Have a code?": the one code sheet (UI audit JF4), for a game's code or a space's.
   join_code: { label: 'Have a code?', icon: 'ticket-confirmation-outline', href: '/have-a-code' },
   start_assessment: { label: 'Start an assessment', icon: 'draw-pen', href: '/assessments' },
-  add_person: { label: 'Add someone', icon: 'account-plus-outline', href: '/person-form' },
+  // Phase 76 (JF21): the one Add chooser (a family, a tutor, someone else, an invitation).
+  add_person: { label: 'Add someone', icon: 'account-plus-outline', href: '/add' },
   schedule: { label: 'Schedule', icon: 'calendar-month-outline', href: '/schedule' },
   progress: { label: 'Progress', icon: 'chart-timeline-variant', href: '/progress' },
 };

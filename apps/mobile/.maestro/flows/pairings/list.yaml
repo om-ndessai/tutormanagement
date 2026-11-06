@@ -2,6 +2,8 @@
 # rate"), "custom" on Ben's (an override) and not on Sofia's, and none of the admin's actions.
 # Anita, a parent: who teaches Sanjay, with no rate line at all (R5: the API blanks the tutor's
 # pay); a link to a pairing that is not hers reads as "no longer here", not forbidden (R9).
+# Phase 75 (JF18, JF27): "custom" only where the override differs from Alex's current default (Ben's 70.00 against
+# his 75.00); both students have their prices, so no "No price set" on either.
 appId: ${APP_ID}
 tags:
   - feature
@@ -35,6 +37,11 @@ tags:
     id: pairing-custom-in-person-a0000000-0000-4000-8000-000000000001
 - assertVisible:
     id: pairing-custom-in-person-a0000000-0000-4000-8000-000000000002
+- assertNotVisible:
+    id: pairing-price-missing-a0000000-0000-4000-8000-000000000001
+- assertNotVisible:
+    id: pairing-price-missing-a0000000-0000-4000-8000-000000000002
+- assertVisible: 'Your rate, virtual:.*'
 - assertVisible: 'Weekly, building towards the accelerated track.'
 - assertNotVisible: 'Tutor pay.*'
 - assertNotVisible:

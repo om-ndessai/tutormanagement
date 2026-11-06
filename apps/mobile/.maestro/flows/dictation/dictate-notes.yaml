@@ -106,19 +106,15 @@ tags:
 - tapOn:
     id: step-flow-next
 - extendedWaitUntil:
-    visible: 'Session recorded.'
+    visible: 'Lesson recorded.'
     timeout: 15000
-# The posted lesson carries the dictated words (Android cannot read a multi-line field's text).
-- extendedWaitUntil:
-    visible: 'Factorised quadratics by grouping'
-    timeout: 15000
-# The "Session recorded." toast sits over the list's foot, right above the bar's hump, where the
-# new lesson's notes line lands: bring the card to mid-screen before tapping it.
+# The posted lesson carries the dictated words (Android cannot read a multi-line field's text). The list sits under
+# To record and the totals (Phase 75), and the "Lesson recorded." toast over its foot: bring the card to mid-screen.
 - scrollUntilVisible:
     element: 'Factorised quadratics by grouping'
     direction: DOWN
     centerElement: true
-    timeout: 15000
+    timeout: 20000
 - tapOn: 'Factorised quadratics by grouping'
 - scrollUntilVisible:
     element:

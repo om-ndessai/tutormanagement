@@ -136,7 +136,7 @@ tags:
 - tapOn:
     id: stop-submit
 - extendedWaitUntil:
-    visible: 'Session recorded: .*, [0-9]+ (min|hr).*\.'
+    visible: 'Lesson recorded: .*, [0-9]+ (min|hr).*\.'
     timeout: 15000
 - runFlow: ../../subflows/exposure/no-money.yaml
 - takeScreenshot: exposure-live-stopped

@@ -74,13 +74,18 @@ test.describe('the member home (Phase 66)', () => {
     await expect(page.getByTestId('home-section-tutor')).toBeVisible();
 
     const home = await unwrap<any>(await page.request.get('/api/home'), 'home');
-    const lesson = home.tutor.to_record[0];
+    const lesson = home.tutor.to_record.find((row: any) => !row.draft);
     test.skip(!lesson, 'nothing to record in the last week');
+    // Phase 75 (JF30): a known lesson opens "Record a lesson" -- "It ran as planned", or the write-up, prefilled.
     await page.getByTestId(`home-record-${lesson.schedule_id}-${lesson.occurs_on}`).click();
-    const dialog = page.getByRole('dialog');
+    const quick = page.getByTestId('record-lesson');
+    await expect(quick.getByTestId('record-lesson-summary')).toContainText(lesson.student_name);
+    await expect(quick.getByTestId('record-lesson-as-planned')).toBeVisible();
+    await quick.getByTestId('record-lesson-write-up').click();
+    const dialog = page.getByRole('dialog', { name: 'Record a lesson' });
     await expect(dialog.locator('#date')).toHaveValue(lesson.occurs_on);
     await expect(dialog.locator('#pairing')).toContainText(lesson.student_name);
-    await expect(dialog.getByText(/Starts?/).first()).toBeVisible();
+    await expect(dialog.locator('#start')).toHaveValue(lesson.start_time);
   });
 
   test('a parent sees their child’s next lesson and no money; the dashboard keeps the figures', async ({ as }) => {
