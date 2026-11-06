@@ -36,6 +36,15 @@ const days = (day: string, n: number) => new Date(Date.parse(`${day}T12:00:00Z`)
 const weekday = (day: string) => new Date(`${day}T12:00:00Z`).getUTCDay();
 const clock = (minutes: number) => `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
 
+// Each test's tutor is removed after it (as the API spec does), so no later spec meets a tutor with no SSN on file --
+// tax.spec.ts asserts the office's chase panel is empty once its own tutor's is recorded.
+const tutorsMade: string[] = [];
+test.afterEach(async ({ as }) => {
+  if (tutorsMade.length === 0) return;
+  const admin = await as('admin');
+  for (const id of tutorsMade.splice(0)) await admin.request.delete(`/api/users/${id}`);
+});
+
 /** The space's clock now: its day and minutes. */
 async function orgNow(page: Page): Promise<{ day: string; minutes: number }> {
   const session = await unwrap<any>(await page.request.get('/api/auth/session'), 'the session');
@@ -97,6 +106,7 @@ async function cast(
     }),
     'a tutor',
   );
+  tutorsMade.push(tutor.id);
   const pairing = await unwrap<any>(
     await admin.request.post('/api/assignments', { data: { tutor_user_id: tutor.id, student_user_id: student.id } }),
     'pairing them',
@@ -407,6 +417,7 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
       }),
       'a tutor',
     );
+    tutorsMade.push(tutor.id);
     const parent = await unwrap<any>(
       await admin.request.post('/api/users', { data: { full_name: `Pia P${t}`, email: `jf27.parent.${t}@example.com`, roles: ['parent'] } }),
       'a parent',

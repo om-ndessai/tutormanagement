@@ -383,9 +383,10 @@ test.describe('Phase 74: the first home', () => {
       await expect(kit.getByTestId('next-up-practise_before')).toHaveCount(0);
 
       // The lesson line opens practice for it (Quest is on): from the learner's card, or from Next up's lesson.
-      const line = kit.getByTestId('home-learner-practise');
-      if (await line.count()) await line.click();
-      else await kit.getByTestId('next-up-practise').click();
+      // Either door appears once the board's tiles have loaded (they name the level); wait for one, never race the load.
+      const door = kit.getByTestId('home-learner-practise').or(kit.getByTestId('next-up-practise')).first();
+      await expect(door).toBeVisible({ timeout: 15_000 });
+      await door.click();
       await expect(kit).toHaveURL(/\/quest\/games\/[0-9a-f-]+$/, { timeout: 15_000 });
     } finally {
       await endOpenGames(kit);
