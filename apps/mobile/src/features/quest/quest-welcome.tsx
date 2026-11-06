@@ -121,11 +121,8 @@ export function QuestWelcome({ summary, onClose }: { summary: QuestSummary; onCl
                 backgroundColor: theme.tokens.muted,
               }}
             >
-              <Text
-                variant="labelSmall"
-                numberOfLines={1}
-                style={{ color: theme.tokens.mutedForeground, textAlign: 'center' }}
-              >
+              {/* Wraps rather than being cut: "Left in Beast Academy 3" (the level in words, Phase 78). */}
+              <Text variant="labelSmall" style={{ color: theme.tokens.mutedForeground, textAlign: 'center' }}>
                 {stat.label}
               </Text>
               <Text

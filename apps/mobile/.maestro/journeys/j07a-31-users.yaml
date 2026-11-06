@@ -1,6 +1,7 @@
 # J07A step 31: Elena taps Users, looking for her child.
 appId: ${APP_ID}
 ---
-- tapOn: 'Users'
+# Phase 78 (the glossary): the menu item reads People.
+- tapOn: 'People'
 - waitForAnimationToEnd:
     timeout: 3000

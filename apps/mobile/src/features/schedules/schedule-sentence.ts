@@ -5,21 +5,12 @@
 import {
   DAYS_OF_WEEK,
   firstOccurrence,
+  formatDay,
   formatTimeRange,
   parseClockTime,
   type Location,
   type SessionMode,
 } from '@tmi/shared';
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
-
-/** "2026-10-19" -> "Oct 19", with the year when it is not `thisYear` ("Jan 4, 2027"). */
-export function shortDate(date: string, thisYear: string): string {
-  const [year, month, day] = date.split('-');
-  const name = MONTHS[Number(month) - 1] ?? month;
-  const text = `${name} ${Number(day)}`;
-  return year === thisYear ? text : `${text}, ${year}`;
-}
 
 /** "at Institute, room 2" / "online in Online room". */
 export function placePhrase(place: Pick<Location, 'kind' | 'name'>): string {
@@ -77,9 +68,8 @@ export function scheduleSentence({
   const where = placesPhrase(places, mode);
   if (where) parts.push(where);
 
-  const thisYear = today.slice(0, 4);
   const first = firstOccurrence(startsOn, dayOfWeek);
-  parts.push(`starting ${shortDate(first, thisYear)}`);
-  if (endsOn) parts.push(`until ${shortDate(endsOn, thisYear)}`);
+  parts.push(`starting ${formatDay(first, today)}`);
+  if (endsOn) parts.push(`until ${formatDay(endsOn, today)}`);
   return `${parts.join(', ')}.`;
 }

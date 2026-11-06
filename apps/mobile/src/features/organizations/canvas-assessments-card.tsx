@@ -5,12 +5,11 @@
 // save refreshes the session, so the menu and the start card follow at once for the admin.
 // Phase 62 (P1, docs/stickiness-plan.md; the web @ 0e3ec7a working tree): "Include questions not yet
 // reviewed" is the platform's per-space switch now, so its switch here is a read-only note.
-import { CANVAS_LIMITS } from '@tmi/shared';
+import { CANVAS_LIMITS, CHECKED_QUESTIONS_COPY } from '@tmi/shared';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { Switch, Text } from 'react-native-paper';
 
-import { BadgePill } from '@/components/badge-pill';
 import { Panel } from '@/components/section';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
@@ -29,7 +28,7 @@ export const QUESTION_COUNT_SAVE_MS = 600;
 
 
 /**
- * Phase 38: the Assessment menu (beta); Phase 40: how many questions an assessment draws; Phase 62:
+ * Phase 38: the Assessment menu (in beta until Phase 78); Phase 40: how many questions an assessment draws; Phase 62:
  * whether questions not yet reviewed are included, as the platform set it (`unreviewed`, read-only).
  */
 export function CanvasAssessmentsCard({
@@ -103,9 +102,6 @@ export function CanvasAssessmentsCard({
       <View style={{ gap: space.lg }}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
           <View style={{ flex: 1, gap: space.xs }}>
-            <View style={{ flexDirection: 'row' }}>
-              <BadgePill />
-            </View>
             <Text variant="bodySmall" style={{ color: muted }}>
               When on, everyone here sees an Assessment menu. A student answers questions by hand on a canvas, one
               question per page, with nothing marked while they work; on submitting, their tutors and the
@@ -134,9 +130,7 @@ export function CanvasAssessmentsCard({
         >
           <Text variant="labelLarge">Questions not yet reviewed</Text>
           <Text variant="bodySmall" style={{ color: muted }}>
-            {unreviewed
-              ? 'Included: assessments and games here also draw questions that passed every automatic check but that no person has approved yet, each marked Beta (the tutor’s PDF marks it “not yet reviewed”). The platform sets this.'
-              : 'Not included: assessments and games here draw approved questions only. The platform sets this.'}
+            {unreviewed ? CHECKED_QUESTIONS_COPY.included : CHECKED_QUESTIONS_COPY.excluded}
           </Text>
         </View>
         <View

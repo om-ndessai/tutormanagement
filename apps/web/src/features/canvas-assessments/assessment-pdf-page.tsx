@@ -1,12 +1,13 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeftIcon, DownloadIcon } from 'lucide-react';
-import { formatRelativeTime, levelLabel } from '@tmi/shared';
+import { formatRelativeTime } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { canvasAssessmentPdfUrl, useCanvasAssessmentSummary } from './api';
 import { PdfViewer } from './pdf-viewer';
+import { levelWords } from '@/features/quest/level-words';
 
 // Phase 38 and 40: an assessment's PDF, shown in the portal rather than
 // downloaded. The submitted one (with the answers) is for the student's current
@@ -52,7 +53,7 @@ export function AssessmentPdfPage() {
           </Button>
           <h1 className="text-2xl font-semibold">
             {kind === 'reviewed' ? 'Review: ' : ''}
-            {assessment.student_name} · {levelLabel(assessment.level_id)}
+            {assessment.student_name} · {levelWords(assessment.level_id)}
           </h1>
           <p className="text-muted-foreground text-sm">
             {kind === 'reviewed'

@@ -3,7 +3,7 @@
 // is the API's: Edit and Delete for the office or the lesson's own tutor (the 403 in
 // `DELETE /sessions/:id` and `PATCH /sessions/:id`), Assess and Reflect exactly where the card's
 // own buttons show.
-import type { TutoringSession, User } from '@tmi/shared';
+import { formatDay, todayIn, type TutoringSession, type User } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useCallback } from 'react';
 import { Alert } from 'react-native';
@@ -12,6 +12,7 @@ import type { RowAction } from '@/components/swipe-row';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useDeleteSession } from './api';
 import { assessLabel, reflectLabel } from './session-actions';
 import { describeSessionMoney } from './session-money';
@@ -40,12 +41,13 @@ export function sessionRowVerbs(session: TutoringSession, user: Reader) {
 export function useConfirmDeleteSession(showMoney: boolean, onDeleted?: () => void) {
   const toast = useToast();
   const remove = useDeleteSession();
+  const timeZone = useOrgTimeZone();
   const confirm = useCallback(
     (session: TutoringSession) => {
       haptics.warning();
       Alert.alert(
-        'Delete this session?',
-        `The ${session.occurred_on} session with ${session.student_name}, and ${
+        'Delete this lesson?',
+        `The ${formatDay(session.occurred_on, todayIn(timeZone))} lesson with ${session.student_name}, and ${
           showMoney ? describeSessionMoney(session) : 'its record'
         }, will be removed. This cannot be undone.`,
         [
@@ -56,12 +58,12 @@ export function useConfirmDeleteSession(showMoney: boolean, onDeleted?: () => vo
             onPress: () => {
               remove.mutate(session.id, {
                 onSuccess: () => {
-                  toast.success('Session deleted.');
+                  toast.success('Lesson deleted.');
                   onDeleted?.();
                 },
                 onError: (error) =>
                   toast.error(
-                    error instanceof ApiRequestError ? error.message : 'Could not delete the session.',
+                    error instanceof ApiRequestError ? error.message : 'Could not delete the lesson.',
                   ),
               });
             },
@@ -69,7 +71,7 @@ export function useConfirmDeleteSession(showMoney: boolean, onDeleted?: () => vo
         ],
       );
     },
-    [remove, toast, showMoney, onDeleted],
+    [remove, toast, showMoney, onDeleted, timeZone],
   );
   return { confirm, isPending: remove.isPending };
 }

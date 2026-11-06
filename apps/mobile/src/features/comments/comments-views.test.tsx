@@ -105,7 +105,7 @@ describe('CommentThread', () => {
     mockThread.mockReturnValue({
       data: undefined,
       isPending: false,
-      error: new ApiRequestError(404, 'not_found', 'That session does not exist.'),
+      error: new ApiRequestError(404, 'not_found', 'That lesson does not exist.'),
       refetch: jest.fn(),
     });
     await renderWithProviders(<CommentThread target={SESSION} />);

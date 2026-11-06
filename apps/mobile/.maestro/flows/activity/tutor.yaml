@@ -26,7 +26,7 @@ tags:
     env:
       LINK: aimtrue://activity
 - extendedWaitUntil:
-    visible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+    visible: 'Commented on the Sep 15(, 2026)? lesson with Sofia Okafor'
     timeout: 20000
 - assertVisible: 'Your activity in the portal, newest first.'
 - assertNotVisible: "Confirmed .* has Maria Okafor's SSN on file"

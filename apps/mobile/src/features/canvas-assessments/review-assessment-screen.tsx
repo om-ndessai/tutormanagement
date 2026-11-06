@@ -15,7 +15,6 @@
 import {
   REVIEW_LIMITS,
   REVIEW_PAGE,
-  levelLabel,
   type CanvasReview,
   type CanvasStroke,
 } from '@tmi/shared';
@@ -26,6 +25,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { levelWords } from '@/features/quest/level-words';
 import { IconButton } from '@/components/icon-button';
 import { OutlinedCard } from '@/components/outlined-card';
 import { Screen } from '@/components/screen';
@@ -103,7 +103,7 @@ export function ReviewAssessmentScreen() {
       key={id}
       id={id}
       review={review.data.data}
-      title={`${assessment.student_name} · ${levelLabel(assessment.level_id)}`}
+      title={`${assessment.student_name} · ${levelWords(assessment.level_id)}`}
     />
   );
 }

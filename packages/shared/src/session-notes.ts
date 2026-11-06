@@ -64,7 +64,7 @@ export interface SessionWriteUp {
 /** The parts in the order a lesson runs, with the heading each is shown under. */
 export const SESSION_WRITE_UP_PARTS = [
   { key: 'planned', label: 'Planned' },
-  { key: 'previous_review', label: 'Previous session review' },
+  { key: 'previous_review', label: 'Previous lesson review' },
   { key: 'homework_review', label: 'Homework review' },
   { key: 'homework_assigned', label: 'Homework set' },
 ] as const satisfies readonly { key: keyof SessionWriteUp; label: string }[];

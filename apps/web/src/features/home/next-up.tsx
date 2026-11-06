@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import {
   DAILY_NAME,
+  QUICK_ACTION_LABELS,
   START_LEAD_MINUTES,
   TILE_LEVEL_WORDS,
   chooseNextUp,
@@ -158,7 +159,7 @@ function Shell({
           <Icon className="size-6" aria-hidden />
         </span>
         <div className="grid min-w-0 gap-1">
-          <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">{eyebrow}</span>
+          <span className="text-muted-foreground text-[13px] font-bold">{eyebrow}</span>
           <h2 className="font-display text-xl leading-tight font-black sm:text-2xl">{title}</h2>
           {detail && <p className="text-muted-foreground text-sm">{detail}</p>}
         </div>
@@ -366,7 +367,7 @@ function NextUpBody({
       );
     case 'game_invite':
       return (
-        <Shell kind={item.kind} icon={TargetIcon} eyebrow="Waiting for you" title={`${item.game.host_first_name} started a game.`} onLater={later}>
+        <Shell kind={item.kind} icon={TargetIcon} eyebrow="Waiting for you" title={`${item.game.host_first_name} started a quest.`} onLater={later}>
           <div className="w-full">
             <WaitingForYou />
           </div>
@@ -468,7 +469,7 @@ function NextUpBody({
         </Shell>
       ) : (
         <Shell kind={item.kind} icon={PlayIcon} eyebrow="Quest" title="Start a quest." detail="Pick a level and go.">
-          {link('New quest', '/quest/games/new', PlayIcon)}
+          {link(QUICK_ACTION_LABELS.new_quest, '/quest/games/new', PlayIcon)}
         </Shell>
       );
     case 'continue_quest':

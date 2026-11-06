@@ -10,7 +10,7 @@ import {
   UsersIcon,
   type LucideIcon,
 } from 'lucide-react';
-import { addChoices, featureOn, mayAddPeople, type AddChoice } from '@tmi/shared';
+import { COMMON_COPY, addChoices, featureOn, mayAddPeople, type AddChoice } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -77,7 +77,7 @@ export function AddPersonDialog({ open, onOpenChange }: { open: boolean; onOpenC
           else onOpenChange(false);
         }}
         userId={null}
-        title="Add a person"
+        title={COMMON_COPY.add_person}
         announce={false}
         onSaved={(saved) => {
           savedRef.current = true;
@@ -96,8 +96,8 @@ export function AddPersonDialog({ open, onOpenChange }: { open: boolean; onOpenC
         : screen === 'invite'
           ? { title: 'Invite by email', description: 'They join when they sign in with that address. Copy or share each invitation to tell them.' }
           : screen === 'added' && added
-            ? { title: `${added.full_name} is added`, description: steps.length > 0 ? 'Next, when you are ready.' : 'They are on the Users page.' }
-            : { title: 'Add a person', description: 'Who are you adding?' };
+            ? { title: `${added.full_name} is added`, description: steps.length > 0 ? 'Next, when you are ready.' : 'They are on the People page.' }
+            : { title: COMMON_COPY.add_person, description: 'Who are you adding?' };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

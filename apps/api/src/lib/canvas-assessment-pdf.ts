@@ -4,7 +4,7 @@
 import {
   CANVAS_LIMITS,
   formatMinutesOfDay,
-  levelLabel,
+  levelInWords,
   mathTextToPlain,
   zonedClockParts,
   type CanvasStroke,
@@ -84,7 +84,7 @@ function writeLines(
 
 function questionHeader(page: PdfPage, input: AssessmentPdfInput, index: number): void {
   const top = PAGE_HEIGHT - MARGIN;
-  page.text(MARGIN, top, `${input.studentName} · ${levelLabel(input.levelId)}`, 9, 'bold', MUTED);
+  page.text(MARGIN, top, `${input.studentName} · ${levelInWords(input.levelId)}`, 9, 'bold', MUTED);
   const right = `Question ${index + 1} of ${input.pages.length}`;
   page.text(PAGE_WIDTH - MARGIN - textWidth(right, 9), top, right, 9, 'regular', MUTED);
   page.line(MARGIN, top - 8, PAGE_WIDTH - MARGIN, top - 8, RULE);
@@ -95,7 +95,7 @@ function cover(doc: PdfDocument, input: AssessmentPdfInput): void {
   let y = PAGE_HEIGHT - MARGIN - 10;
   page.text(MARGIN, y, input.organizationName, 10, 'regular', MUTED);
   y -= 30;
-  page.text(MARGIN, y, 'Assessment (beta)', 22, 'bold');
+  page.text(MARGIN, y, 'Assessment', 22, 'bold');
   y -= 18;
   page.text(MARGIN, y, 'Answers written by hand, for the tutor to review.', 11, 'regular', MUTED);
   y -= 34;
@@ -103,7 +103,7 @@ function cover(doc: PdfDocument, input: AssessmentPdfInput): void {
   const written = input.pages.filter((p) => p.strokes.length > 0).length;
   const facts: [string, string][] = [
     ['Student', input.studentName],
-    ['Grade', levelLabel(input.levelId)],
+    ['Grade', levelInWords(input.levelId)],
     ['Started by', input.startedByName],
     ['Started', when(input.startedAt, input.timeZone)],
     ['Submitted', when(input.submittedAt, input.timeZone)],
@@ -176,7 +176,7 @@ function reviewCover(doc: PdfDocument, input: AssessmentPdfInput): void {
   y -= 34;
   const facts: [string, string][] = [
     ['Student', input.studentName],
-    ['Grade', levelLabel(input.levelId)],
+    ['Grade', levelInWords(input.levelId)],
     ['Submitted', when(input.submittedAt, input.timeZone)],
     ['Reviewed by', review.reviewerName],
     ['Reviewed', when(review.reviewedAt, input.timeZone)],
@@ -313,7 +313,7 @@ function questionPage(doc: PdfDocument, input: AssessmentPdfInput, index: number
 /** The whole document, as bytes. */
 export async function buildAssessmentPdf(input: AssessmentPdfInput): Promise<Uint8Array> {
   const doc = new PdfDocument(
-    `${input.review ? 'Assessment review' : 'Assessment'}: ${input.studentName}, ${levelLabel(input.levelId)}`,
+    `${input.review ? 'Assessment review' : 'Assessment'}: ${input.studentName}, ${levelInWords(input.levelId)}`,
   );
   if (input.review) reviewCover(doc, input);
   else cover(doc, input);

@@ -13,8 +13,11 @@
 // capped at 720 pt and centred on an iPad. Nothing worth guarding is lost on Close (`dirty` false).
 // Phase 73 (JF36): opened from Home (`from=home`), the game it makes says so too, so its Exit comes back Home
 // rather than to the Quest hub it never passed through; and Home's Continue finds it (from the server).
+// Phase 78 (owner 2026-11-05; JF35): titled "New quest" (QUICK_ACTION_LABELS), it opens on "Single player"
+// (WIZARD_START), and a game is a "quest" in its words.
 import {
   GAME_LIMITS,
+  QUICK_ACTION_LABELS,
   createGameSchema,
   gameFavoriteSchema,
   pointsLabel,
@@ -42,6 +45,7 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { GameTile, TileGrid } from './game-tile';
+import { levelWords } from './level-words';
 import {
   WIZARD_START,
   favoriteDetail,
@@ -108,7 +112,7 @@ export function StartGameFlow({ from }: { from?: string } = {}) {
     const parsed = createGameSchema.safeParse(request);
     if (!parsed.success) {
       haptics.error();
-      setRefusal(parsed.error.issues[0]?.message ?? 'Could not start the game.');
+      setRefusal(parsed.error.issues[0]?.message ?? 'Could not start the quest.');
       return;
     }
     try {
@@ -121,7 +125,7 @@ export function StartGameFlow({ from }: { from?: string } = {}) {
       });
     } catch (caught) {
       haptics.error();
-      setRefusal(message(caught, 'Could not start the game.'));
+      setRefusal(message(caught, 'Could not start the quest.'));
     }
   }
 
@@ -189,7 +193,7 @@ export function StartGameFlow({ from }: { from?: string } = {}) {
     <View testID="screen-quest-new-game" style={{ flex: 1 }}>
       <StepFlow
         ref={flow}
-        title="New Quest"
+        title={QUICK_ACTION_LABELS.new_quest}
         steps={steps}
         draft={draft}
         review={{
@@ -319,7 +323,8 @@ function QuestionsStep({
     <GameTile
       key={level.level_id}
       testID={`game-tile-${level.level_id}`}
-      title={level.label}
+      // Phase 78 (JF32): the level in words ("Grade 6"), never the server's short label ("G6").
+      title={levelWords(level.level_id)}
       compact
       selected={!draft.random && draft.level_id === level.level_id}
       onPress={() => set({ level_id: level.level_id, random: false })}
@@ -341,7 +346,7 @@ function QuestionsStep({
     <>
       {favorites.length > 0 ? (
         <View style={{ gap: space.md }}>
-          <SubHeading title="Your favorites" hint="Your saved games: one tap fills in every step." />
+          <SubHeading title="Your favorites" hint="Your saved quests: one tap fills in every step." />
           <View testID="game-favorites">
             <TileGrid columns={columns}>
               {favorites.map((favorite) => (
@@ -392,7 +397,7 @@ function QuestionsStep({
             testID="game-random-start"
             label="Starting at"
             placeholder="Choose the lowest level"
-            options={levels.map((level) => ({ id: level.level_id, label: level.label }))}
+            options={levels.map((level) => ({ id: level.level_id, label: levelWords(level.level_id) }))}
             value={draft.level_id}
             onChange={(level_id) => set({ level_id })}
             searchPlaceholder="Search levels"
@@ -415,7 +420,7 @@ function ScoreSetupStep({ draft, set }: { draft: WizardDraft; set: Patch }) {
   return (
     <>
       <View testID="game-limit" style={{ gap: space.md }}>
-        <SubHeading title="Game limit" hint="A number of questions, or as many as you can in the time." />
+        <SubHeading title="Quest limit" hint="A number of questions, or as many as you can in the time." />
         <SegmentedTabs<GameMode>
           tabs={MODE_TABS}
           value={draft.mode}
@@ -476,7 +481,7 @@ function ScoreSetupStep({ draft, set }: { draft: WizardDraft; set: Patch }) {
       <Pressable
         testID="game-knockout"
         accessibilityRole="checkbox"
-        accessibilityLabel="Knockout. End the game as soon as nobody can catch the leader, even mid-play. For games with two teams or more."
+        accessibilityLabel="Knockout. End the quest as soon as nobody can catch the leader, even mid-play. For quests with two teams or more."
         accessibilityState={{ checked: draft.knockout }}
         onPress={() => {
           haptics.selection();
@@ -503,7 +508,7 @@ function ScoreSetupStep({ draft, set }: { draft: WizardDraft; set: Patch }) {
         <View style={{ flex: 1, gap: space.xs, paddingTop: space.sm }}>
           <Text variant="titleSmall">Knockout</Text>
           <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-            End the game as soon as nobody can catch the leader, even mid-play. For games with two teams or
+            End the quest as soon as nobody can catch the leader, even mid-play. For quests with two teams or
             more.
           </Text>
         </View>

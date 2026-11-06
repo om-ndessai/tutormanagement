@@ -9,7 +9,7 @@
 // server's message, shown inline.
 // Owner, 2026-10-23: one action, "Join the game". A player chooses Join a team or New team on a tab
 // bar (New team first while the game has no teams); the host only ever starts a team. A new team's
-// name is filled in as "Team <first name>".
+// name is filled in as "Team <first name>". Phase 78: "Join the quest" (a game is a quest on screen).
 import {
   GAME_CODE_LENGTH,
   defaultTeamName,
@@ -66,7 +66,7 @@ export function JoinChoices({
   async function go(raw: JoinGameInput) {
     const parsed = joinGameSchema.safeParse(raw);
     if (!parsed.success) {
-      setRefusal(parsed.error.issues[0]?.message ?? 'Could not join the game.');
+      setRefusal(parsed.error.issues[0]?.message ?? 'Could not join the quest.');
       return;
     }
     setRefusal(null);
@@ -74,7 +74,7 @@ export function JoinChoices({
       await join.mutateAsync({ gameId, ...parsed.data });
       onJoined?.(gameId);
     } catch (caught) {
-      setRefusal(caught instanceof ApiRequestError ? caught.message : 'Could not join the game.');
+      setRefusal(caught instanceof ApiRequestError ? caught.message : 'Could not join the quest.');
     }
   }
 
@@ -100,7 +100,7 @@ export function JoinChoices({
           loading={join.isPending}
           contentStyle={{ minHeight: 48 }}
         >
-          Join the game
+          Join the quest
         </Button>
         {refused}
       </View>
@@ -119,7 +119,7 @@ export function JoinChoices({
           loading={join.isPending}
           contentStyle={{ minHeight: 48 }}
         >
-          Join the game
+          Join the quest
         </Button>
         {refused}
       </View>
@@ -195,7 +195,7 @@ export function JoinChoices({
         onPress={submit}
         contentStyle={{ minHeight: 48 }}
       >
-        Join the game
+        Join the quest
       </Button>
       {refused}
     </View>

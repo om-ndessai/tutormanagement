@@ -81,7 +81,7 @@ describe('Tutoring tab views carry no money', () => {
     expect(screen.getByTestId('stat-students-value')).toHaveTextContent('50');
     expect(screen.getByTestId('stat-sessions-running')).toHaveProp(
       'accessibilityLabel',
-      'Sessions running: 1',
+      'Lessons running: 1',
     );
     expect(allText()).not.toMatch(/\$/);
   });

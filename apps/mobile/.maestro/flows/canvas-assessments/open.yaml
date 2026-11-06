@@ -47,7 +47,7 @@ tags:
     timeout: 20000
 - assertVisible:
     id: assessment-level-NC26.4
-    text: 'G4 .*10 questions.*'
+    text: 'Grade 4 .*10 questions.*'
 # The list scrolls: swipes inside it reach AoPS Algebra, the 21st of 22 (chmi offers Beast Academy).
 - repeat:
     while:

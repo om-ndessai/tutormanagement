@@ -8,14 +8,14 @@
 // per student, the level a picker (every level in a short scrolling list) over its counts.
 // Phase 46 (design 60): the Games panel for every role, in the web's order -- after Your Quest, before
 // Answers to review -- and for a parent the only panel, with a line under the title meant for them.
-// Phase 47 (design 61): in beta, the pill beside the intro (the Assessment screen's pattern).
+// Phase 47 (design 61): in beta, the pill beside the intro (the Assessment screen's pattern); gone since Phase 78
+// (owner 2026-11-05: checked questions are served like any other).
 import type { QuestStudent } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
-import { BadgePill } from '@/components/badge-pill';
 import { OptionPicker } from '@/components/option-picker';
 import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
@@ -70,12 +70,7 @@ export function QuestScreen() {
   return (
     <Screen testID="screen-quest" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ title: 'Question Quest' }} />
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}>
-        <View style={{ flex: 1 }}>
-          <PageIntro>{questIntro(user?.roles)}</PageIntro>
-        </View>
-        <BadgePill testID="quest-beta" />
-      </View>
+      <PageIntro>{questIntro(user?.roles)}</PageIntro>
       {roles.plays ? <PlayCard /> : null}
       {/* Phase 46: games are for everyone here. */}
       <GamesPanel />

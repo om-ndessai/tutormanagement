@@ -41,7 +41,7 @@ tags:
     visible:
       id: game-missing
     timeout: 15000
-- assertVisible: 'This game was not found, or you are not in it\..*'
+- assertVisible: 'This quest was not found, or you are not in it\..*'
 - assertNotVisible: '.*[Ff]orbidden.*'
 - assertNotVisible:
     id: game-lobby-code
@@ -95,7 +95,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-join-error
-      text: 'No game in this space has that code\. Games are joined inside their own space: ask your friend to invite you there, or start your own game\.'
+      text: 'No quest in this space has that code\. Quests are joined inside their own space: ask your friend to invite you there, or start your own quest\.'
     timeout: 10000
 - tapOn:
     id: game-join-close
@@ -138,11 +138,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-join-title
-      text: 'G6 · 2 questions'
+      text: 'Grade 6 · 2 questions'
     timeout: 10000
 - assertVisible:
     id: game-join-line
-    text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 teams, at most 2 players per team'
+    text: 'Priya’s quest · Right \+1, wrong 0 · Up to 20 teams, at most 2 players per team'
 # A game of teams: a tab bar of Join a team and New team -- never on your own. Priya's game has no team
 # yet, so New team is open, named for Sofia, and the one action is Join the game.
 - assertNotVisible:
@@ -156,7 +156,7 @@ tags:
     id: game-team-code
 - assertVisible:
     id: game-join-go
-    text: '.*Join the game.*'
+    text: '.*Join the quest.*'
     enabled: true
 - assertNotVisible: 'Start a team'
 - takeScreenshot: game-join-sheet
@@ -214,7 +214,7 @@ tags:
       id: screen-quest
     timeout: 10000
 - extendedWaitUntil:
-    visible: 'You left the game\.'
+    visible: 'You left the quest\.'
     timeout: 10000
 # A team's code: that team, and nothing else to choose.
 - runScript:
@@ -251,7 +251,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-join-team-named
-      text: '.*Join the game.*'
+      text: '.*Join the quest.*'
     timeout: 10000
 - assertVisible: '.*1 of 2 so far.*'
 - assertNotVisible:

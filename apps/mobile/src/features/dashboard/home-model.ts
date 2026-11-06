@@ -3,6 +3,7 @@
 // celebration, and the draft a tutor left today. Nothing here carries money.
 import {
   addDays,
+  formatDay,
   formatMinutesOfDay,
   parseClockTime,
   type SessionDraft,
@@ -178,15 +179,7 @@ export function lessonWhen(
   today: string,
 ): string {
   const start = formatMinutesOfDay(parseClockTime(occurrence.start_time) ?? 0);
-  if (occurrence.occurs_on === today) return `Today at ${start}`;
-  if (occurrence.occurs_on === addDays(today, 1)) return `Tomorrow at ${start}`;
-  const date = new Date(`${occurrence.occurs_on}T12:00:00Z`).toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-  return `${date} at ${start}`;
+  return `${formatDay(occurrence.occurs_on, today, { relative: true, weekday: true })} at ${start}`;
 }
 
 // ---------------------------------------------------------------------------

@@ -50,6 +50,11 @@ test.describe('signing up (Phase 52)', () => {
     await page.getByTestId('signup-month').click();
     await page.getByRole('option', { name: 'March' }).click();
     await page.getByTestId('signup-year').click();
+    // Phase 78 (JF35): the list opens on an adult's year (30 years back), focused, not on this year.
+    const opensOn = String(new Date().getFullYear() - 30);
+    await expect(page.getByRole('option', { name: opensOn, exact: true })).toBeFocused();
+    await expect(page.getByRole('option', { name: opensOn, exact: true })).toBeInViewport();
+    await expect(page.getByRole('option', { name: String(new Date().getFullYear()), exact: true })).not.toBeInViewport();
     await page.getByRole('option', { name: '1985' }).click();
     await page.getByTestId('signup-accept').check();
     await page.getByTestId('signup-submit').click();

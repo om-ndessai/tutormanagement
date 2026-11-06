@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import {
   PLAN_STATUSES,
   PLAN_STATUS_LABELS,
+  formatDay,
   formatDuration,
   type Assessment,
   type LearningPlan,
@@ -191,7 +192,7 @@ export function PlanDialog({
             </DialogTitle>
             <DialogDescription>
               {assessment && !existing
-                ? `Answers the ${assessment.assessed_on} assessment. Topics it rated 3 or below are chosen for you.`
+                ? `Answers the ${formatDay(assessment.assessed_on, assessment.assessed_on, { year: 'always' })} assessment. Topics it rated 3 or below are chosen for you.`
                 : 'The goal, when it is due, what to cover, and how often to meet.'}
             </DialogDescription>
           </DialogHeader>
@@ -251,7 +252,7 @@ export function PlanDialog({
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="grid gap-2">
-                <Label htmlFor="per-week">Sessions a week</Label>
+                <Label htmlFor="per-week">Lessons a week</Label>
                 <Select value={String(perWeek)} onValueChange={(v) => setPerWeek(Number(v))}>
                   <SelectTrigger id="per-week" className="w-full">
                     <SelectValue />
@@ -266,7 +267,7 @@ export function PlanDialog({
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="session-minutes">Each session</Label>
+                <Label htmlFor="session-minutes">Each lesson</Label>
                 <Select value={String(minutes)} onValueChange={(v) => setMinutes(Number(v))}>
                   <SelectTrigger id="session-minutes" className="w-full">
                     <SelectValue />

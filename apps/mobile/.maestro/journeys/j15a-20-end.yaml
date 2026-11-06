@@ -1,6 +1,6 @@
 # J15A step 20: Ken has to go to dinner; Hana taps "End the game now".
 appId: ${APP_ID}
 ---
-- tapOn: 'End the game now'
+- tapOn: 'End the quest now'
 - waitForAnimationToEnd:
     timeout: 3000

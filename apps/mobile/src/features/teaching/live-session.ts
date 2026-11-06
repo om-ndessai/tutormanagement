@@ -1,8 +1,13 @@
 // Ported from apps/web/src/features/teaching/live-session-bar.tsx @ 1132322 (the stop toast, the
 // "from" and "ends by" badges) -- pure, so the banner and the tests share them.
-import { formatClockTime, formatDuration, type ActiveSession, type TutoringSession } from '@tmi/shared';
+import {
+  formatClockTime,
+  formatDuration,
+  formatInstantTime,
+  type ActiveSession,
+  type TutoringSession,
+} from '@tmi/shared';
 
-import { formatInstantClock } from './session-format';
 
 /**
  * What the banner says about the lesson's clock: the start it will be recorded from (the server
@@ -15,7 +20,7 @@ export function liveTimes(
 ): { from: string; endsBy: string } {
   return {
     from: formatClockTime(active.rounded_start),
-    endsBy: formatInstantClock(active.auto_stop_at, timeZone),
+    endsBy: formatInstantTime(active.auto_stop_at, timeZone),
   };
 }
 

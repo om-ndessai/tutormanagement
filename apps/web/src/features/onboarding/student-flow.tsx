@@ -123,9 +123,10 @@ export function StudentFlow({
           </p>
           <div className="grid gap-1.5 sm:max-w-sm">
             <Label htmlFor="onboarding-parent">An existing parent</Label>
-            <div className="flex gap-2">
+            {/* Phase 78 (JF28): wraps on a phone, so the button never pushes the dialog wider than the screen. */}
+            <div className="flex flex-wrap gap-2">
               <Select value={chosenParent} onValueChange={setChosenParent}>
-                <SelectTrigger id="onboarding-parent" className="w-full">
+                <SelectTrigger id="onboarding-parent" className="min-w-0 flex-1 basis-44">
                   <SelectValue placeholder="Choose a parent" />
                 </SelectTrigger>
                 <SelectContent>
@@ -214,7 +215,7 @@ export function StudentFlow({
             </>
           }
         >
-          <p>You can add a family and a student from Users at any time.</p>
+          <p>You can add a family and a student from People at any time.</p>
         </StepPanel>
       )}
 

@@ -6,6 +6,9 @@ import {
   TOPUP_PROJECTION_WEEKS,
   TUTOR_PAYMENT_URGENCIES,
   formatCents,
+  formatDay,
+  formatInstant,
+  todayIn,
   topupDueCents,
   tutorAdvanceCents,
   type TutorPaymentOutlook,
@@ -22,7 +25,7 @@ import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
 import { radius, space } from '@/theme/tokens';
 import { viewAs } from './view-as';
-import { daysAway, formatLessonDay, formatPaidOn, orgToday } from './finance-format';
+import { daysAway } from './finance-format';
 
 export const URGENCY_LABELS: Record<TutorPaymentUrgency, string> = {
   past_due: 'Below top-up',
@@ -108,7 +111,7 @@ function NextPayment({ tutor, today }: { tutor: TutorPaymentOutlook; today: stri
             color: tutor.urgency === 'due_soon' ? warn : theme.colors.onSurface,
           }}
         >
-          {formatLessonDay(tutor.next_topup_on)}
+          {formatDay(tutor.next_topup_on, today, { weekday: true })}
         </Text>
         <Muted>{daysAway(tutor.next_topup_on, today)}</Muted>
       </View>
@@ -202,7 +205,7 @@ function TutorCard({
         </Row>
         {tutor.last_paid_at ? (
           <Row label="Last paid on">
-            <Figure>{formatPaidOn(tutor.last_paid_at, timeZone, today)}</Figure>
+            <Figure>{formatInstant(tutor.last_paid_at, timeZone, { time: false, today })}</Figure>
           </Row>
         ) : null}
       </View>
@@ -220,7 +223,7 @@ function TutorCard({
 export function TutorPayments({ tutors }: { tutors: TutorPaymentOutlook[] }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
-  const today = orgToday(timeZone);
+  const today = todayIn(timeZone);
 
   const counts = Object.fromEntries(
     TUTOR_PAYMENT_URGENCIES.map((urgency) => [urgency, tutors.filter((t) => t.urgency === urgency).length]),

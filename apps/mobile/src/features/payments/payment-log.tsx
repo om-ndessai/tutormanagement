@@ -3,7 +3,7 @@
 // a payment to correct it and delete it; everybody else reads the payments the server scoped to
 // them (the party, or one of their children). Phase 54: in a space paid directly a payment names the
 // tutor the family paid ("· to Diego Ramos"), and that tutor may correct and delete it too.
-import { PAYMENT_FORM_LABELS, formatCents, type Payment } from '@tmi/shared';
+import { PAYMENT_FORM_LABELS, formatCents, formatInstant, todayIn, type Payment } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Alert, Pressable, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
@@ -13,7 +13,6 @@ import { EmptyNote, Panel } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
 import { SwipeRow } from '@/components/swipe-row';
 import { useToast } from '@/components/toast';
-import { formatPaidOn, orgToday } from '@/features/dashboard/finance-format';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
@@ -70,7 +69,7 @@ export function PaymentLog({
   const { user } = useAuth();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const timeZone = useOrgTimeZone();
-  const today = orgToday(timeZone);
+  const today = todayIn(timeZone);
   const confirmDelete = useConfirmDeletePayment();
   const muted = theme.tokens.mutedForeground;
 
@@ -95,16 +94,16 @@ export function PaymentLog({
         const row = (
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingVertical: 10 }}>
             <View style={{ flex: 1, minWidth: 0 }}>
-              <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
+              <Text variant="bodyMedium" style={{ fontWeight: '500' }}>
                 {payment.party_name}
               </Text>
-              <Text variant="bodySmall" numberOfLines={1} style={{ color: muted }}>
+              <Text variant="bodySmall" style={{ color: muted }}>
                 {direction}
                 {payment.student_name ? ` · for ${payment.student_name}` : ''}
                 {paymentPayeeText(payment, user?.id, isAdmin)}
               </Text>
               <Text variant="bodySmall" style={{ color: muted }}>
-                {formatPaidOn(payment.paid_at, timeZone, today, true)} · {PAYMENT_FORM_LABELS[payment.method]}
+                {formatInstant(payment.paid_at, timeZone, { time: false, today, year: 'always' })} · {PAYMENT_FORM_LABELS[payment.method]}
               </Text>
             </View>
             <Text

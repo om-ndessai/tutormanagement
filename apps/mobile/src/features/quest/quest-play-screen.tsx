@@ -14,7 +14,7 @@
 // GET /quest/me/summary, read fresh), and on a saved answer a "+1" that flies from Submit to the
 // points, which bump as they tick up (quest-burst.tsx, quest-points.tsx), while the question eases
 // out and the next eases in. Nothing is ever marked right or wrong. Reduce motion stills all of it.
-import { questLevelLabel, type QuestQuestion } from '@tmi/shared';
+import { type QuestQuestion } from '@tmi/shared';
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { Platform, ScrollView, View, useWindowDimensions } from 'react-native';
 import { Button, Icon, Portal, Text, TextInput } from 'react-native-paper';
@@ -33,6 +33,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
+import { questLevelWords } from './level-words';
 import { useAnswerQuest, useQuestState, useQuestSummary } from './api';
 import { useQuestBurst } from './quest-burst';
 import { QuestChoices } from './quest-choices';
@@ -76,7 +77,7 @@ export function QuestPlayScreen() {
       status={
         data ? (
           <>
-            <QuestStatus testID="quest-level">{questLevelLabel(data.level_id)}</QuestStatus>
+            <QuestStatus testID="quest-level">{questLevelWords(data.level_id)}</QuestStatus>
             <QuestPoints points={data.points} live />
           </>
         ) : null
@@ -227,7 +228,7 @@ function QuestionCard({
         <View style={{ padding: space.lg, gap: space.md }}>
           <Text
             variant="labelMedium"
-            style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+            style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
           >
             {`Question ${answered + 1}`}
           </Text>

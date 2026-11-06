@@ -35,7 +35,7 @@ notifications (32), tutoring locations with an in-app reminder (33), curricula, 
 Beast Academy alone, read through each organization's own list (34), North Carolina's
 standards in both editions, with each organization's admins choosing what it offers (35), and
 the AI layer with the question bank it writes, in the platform console (36). Phase 38, the
-Assessment menu in beta (answers written on a canvas, a PDF for the tutor), and Phase 40, the tutor's
+Assessment menu (answers written on a canvas, a PDF for the tutor; in beta until Phase 78), and Phase 40, the tutor's
 review of it online, are built ahead of 37.
 
 Two of those shape everything else. **Sign-in is the only way in** — every `/api` route except
@@ -353,14 +353,25 @@ the demo and in `.dev.vars`. **`tmi-portal` never takes sign-ups and never offer
 (`signInFor`, `guestPlayOn`). Everywhere else (`tutoring`, the demo, both apps) the console decides. Closed, an unknown Google account is refused as before and
 `POST /api/auth/signup` answers 403; `/api/auth/config` reports `signup_open`.
 
-**One word on screen: space** (Phase 59, `docs/spaces-plan.md`, S1). What a person reads -- the web,
-the app, the API's error messages, audit labels and new audit descriptions, notification labels, the
-brand blurb, the tour -- says "space", never "organization" (nor "institute" as a generic word). The
-CODE keeps `organization` (`organizations`, `OrgId`, `X-Organization`, `/organization`, audit keys
-such as `organization.created`); old audit lines are never rewritten; proper names stay.
-`scripts/check-ui-words.mjs`, run by `npm run typecheck`, fails on the word in JSX text, in prose
-strings, and in strings given to labels, titles, messages, toasts, `ApiError`s, Zod messages and
-`*_LABELS` tables; a `ui-words:` comment marks a deliberate exception. The terms and privacy reworded
+**One word per thing on screen: lesson, person, quest, space** (Phase 59, `docs/spaces-plan.md` S1, for "space";
+Phase 78, `docs/journey-fixes-plan.md` JF32, for the rest). The glossary is `packages/shared/src/words.ts` (`TERMS`,
+`countOf`, `COMMON_COPY`, `SIGNED_OUT_MESSAGE`), and both clients read it -- with `QUICK_ACTION_LABELS` (shared
+`home.ts`) -- rather than keeping copies. What a person reads -- the web, the app, the API's error messages, audit labels
+and new audit descriptions, notification labels, PDFs, the brand blurb, the tour -- says **"lesson"**, never
+"session" (the sign-in sense too: "You were signed out"); **"person"/"people"**, never "user(s)" (the web's Users page
+is People, as in the app); **"quest"** for anything played on the board, named in words (`gameWords`: "Grade 7 Quick
+5"), never "Quest game" or a tile code -- "game" stays only in "Play with" and in codes ("game code"), and "Question
+Quest" is a proper name; **"space"**, never "organization" (nor "institute" as a generic word); and no "Beta" (checked
+questions are served like any other). The CODE keeps its names (`organizations`, `OrgId`, `X-Organization`,
+`/organization`, the `sessions` and `users` tables, `/api/sessions`, `tmi_session`, `user_id`, `useUsers`,
+`X-Dev-User`, testIDs, query keys, audit KEYS such as `session.recorded`, API error CODES, the API's `beta` fields);
+old audit lines are never rewritten; proper names stay. `scripts/check-ui-words.mjs`, run by `npm run typecheck`, is
+a table of rules (organization -> space, session(s) -> lesson(s), user(s) -> person/people, Quest game -> the quest in
+words, Beta -> nothing), each failing on its word in JSX text, in prose strings, and in strings given to labels,
+titles, badges, messages, toasts, `ApiError`s, Zod messages and `*_LABELS` / `*_COPY` tables -- and, for the last
+three, in any capitalised one-word string ("Sessions", "Users", "Beta") outside a type -- and saying the word to use;
+log lines and the Worker's internal `new Error(...)` are not read. A `ui-words:` comment marks a deliberate exception
+(the console's own Beta labels, the versioned terms). The terms and privacy reworded
 the same way are version 2026-10-31, approved by the owner on 2026-11-01; version 2026-11-01 (guest play and
 anonymous counts, Phase 63) was approved the same day, and version 2026-11-04 (the days a person opens a space and
 how they first came, Phases 68-69) on 2026-11-04 and is the current one. A sign-up still accepts 2026-11-01, 2026-10-31
@@ -511,7 +522,8 @@ their dashboard with a favorites row. A tile or favorite is the existing one-req
 multiplayer favorite sends `host_plays` (the host plays from the start) and its roster as `invite_user_ids`
 (`quest_game_invites`, R27). Checked questions are a PLATFORM admin's per-space switch
 (`organizations.checked_questions`, on everywhere for the soft launch; read through `checkedQuestionsOn`,
-never the column; `canvas_assessments_unreviewed` now only reports it), each served with `beta`. Game answers
+never the column; `canvas_assessments_unreviewed` now only reports it), each served with `beta` -- kept for older app
+builds; since Phase 78 no client shows it (no pill, rules line or menu badge). Game answers
 feed the two-right-answers rule: `quest_game_seen.correct` marks the answering player, and
 `approveManyByConsensus` counts them beside Quest's attempts -- same threshold, same trusted spaces. Playable
 counts are the platform's, cached (`platform_settings` 'level_counts', refreshed daily by the cron); a status
@@ -701,6 +713,22 @@ level played) in the same one read. An assessment in progress is continued and s
 of the student here (`guards_student`, `can_continue`), after the client's "Hand the device to Noor"; only its starter
 or an admin discards it (`can_discard`); the submitted PDF stays the tutors' and the admins' (R17): the guardian gets
 the row back, never the answers.
+
+**Words rather than codes, one date formatter, and no Beta** (Phase 78, `docs/journey-fixes-plan.md` JF28, JF29, JF32,
+JF34, JF35; owner 2026-11-05). The glossary above is shared (`words.ts`), and so are the quick actions' words
+(`QUICK_ACTION_LABELS`, `quickActionLabel`: "Add my child" in a personal space). Dates go through ONE formatter,
+`packages/shared/src/dates.ts`, in en-US: `formatDay(day, today, { weekday, relative, year })` reads a CALENDAR day as
+the day it names wherever the reader is (composed from its digits, exactly as a Date at UTC noon prints it: "Nov 5",
+"Tue, Nov 5", "Nov 5, 2025" in another year, "Today"/"Tomorrow"/"Yesterday"); `formatInstant(iso, timeZone, { time,
+today, ... })` reads an INSTANT on the space's clock through `zonedClockParts` ("Nov 5, 4:05 PM", "Today, 4:05 PM");
+`formatInstantTime`, `instantDay`, `todayIn`, `formatDaySpan` ("from Sep 1 to Dec 20" / "from Sep 1, ongoing") and
+`readableDates` (a server sentence's ISO days made readable) sit beside them. `dayInWords`, `lessonWhen`,
+`lessonDayWords` and `formatMonthShort` route through its tables and print what they did; `formatRelativeTime` stays in
+`audit.ts`, given one `now` per screen so two lines agree. Checked questions are served like any other: the clients
+show no Beta pill, rules line, menu badge or "In beta."; the API keeps its `beta` fields for older apps; the
+assessment PDF is titled "Assessment", and the reviewer keeps its per-question "Not yet reviewed" mark and count. A
+tile and a favorite are named in words, never by code (codes stay in the console and for support); the guest board and
+the member board both wear the grade hues (`levelGrade`), amber is for action and for warnings, always with a word.
 
 **The tour is Tutoring's, and a new space is asked what it may use first** (owner, 2026-11-04). The welcome
 wizard's tour, its first-visit offer and "Getting started" appear only where Tutoring is on (`tourOffered` in
@@ -973,7 +1001,7 @@ its coverage and lists scan every question in D1, so an approval writes into the
 the queue pages by `questions_status_idx` -- refetching after each approval would spend the
 account's daily reads in one session (`docs/ai-platform-plan.md`, "Reads").
 
-**An Assessment (Phase 38, beta) is written by hand, and its PDF is the tutor's.** While an
+**An Assessment (Phase 38; out of beta since Phase 78) is written by hand, and its PDF is the tutor's.** While an
 organization's `canvas_assessments` is on (its admins' switch; on in a space made since Phase 61), the Assessment menu
 lets anyone who may follow a student's progress start one for them: up to 10 approved bank questions
 of a level (an NC grade, or -- where the organization offers Beast Academy -- a Beast Academy or AoPS

@@ -30,23 +30,26 @@ export function JoinRequestsPanel() {
   const [letting, setLetting] = useState<JoinRequest | null>(null);
   const [declining, setDeclining] = useState<JoinRequest | null>(null);
   const rows = requests.data?.data ?? [];
+  // One `now` for every row (Phase 78), so two requests asked together read alike.
+  const now = new Date();
   if (rows.length === 0 && !letting) return null;
 
   return (
     <section className="mb-6 grid gap-2" aria-label="Requests to join" data-testid="join-requests">
       {rows.length > 0 && (
-        <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+        <h2 className="text-muted-foreground text-[13px] font-semibold">
           Requests to join <span className="bg-primary text-primary-foreground ml-1 rounded-full px-1.5">{rows.length}</span>
         </h2>
       )}
       {rows.map((r) => (
         <Card key={r.user_id} className="py-0" data-testid={`join-request-${r.user_id}`}>
-          <CardContent className="flex flex-wrap items-center gap-3 p-4">
-            <div className="min-w-0 flex-1 basis-56">
+          {/* Phase 78 (JF28): below sm the words come first and the actions take a line of their own. */}
+          <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="min-w-0 sm:flex-1 sm:basis-56">
               <p className="font-medium break-words">{r.full_name}</p>
-              <p className="text-muted-foreground text-xs break-all">{r.email ?? 'No address'}</p>
+              <p className="text-muted-foreground text-xs [overflow-wrap:anywhere]">{r.email ?? 'No address'}</p>
               <p className="text-muted-foreground text-xs">
-                asked {formatRelativeTime(r.requested_at)}
+                asked {formatRelativeTime(r.requested_at, now)}
                 {r.role ? ` · as ${JOIN_REQUEST_ROLE_LABELS[r.role].toLowerCase()}` : ''}
               </p>
               {/* Their own words, for the admins only (R32). */}
@@ -56,7 +59,7 @@ export function JoinRequestsPanel() {
                 </p>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2" data-testid={`join-request-actions-${r.user_id}`}>
               <Button size="sm" onClick={() => setLetting(r)} data-testid={`join-request-let-in-${r.user_id}`}>
                 Let in
               </Button>

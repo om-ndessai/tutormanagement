@@ -40,7 +40,7 @@ export function SpaceCodeCard() {
   return (
     <Card className="py-0" data-testid="space-code">
       <CardContent className="grid gap-3 p-5">
-        <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Space code</h2>
+        <h2 className="text-muted-foreground text-[13px] font-semibold">Space code</h2>
         {value?.code ? (
           <p className="font-mono text-2xl font-semibold tracking-widest" data-testid="space-code-value">
             {value.code}
@@ -111,7 +111,7 @@ export function SpaceDangerCard() {
     <Card className="border-destructive/30 py-0" data-testid="space-danger">
       <CardContent className="grid gap-4 p-5 text-sm">
         <div className="grid gap-2">
-          <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Leave</h2>
+          <h2 className="text-muted-foreground text-[13px] font-semibold">Leave</h2>
           <p className="text-muted-foreground">You stop being a member of {organization.name}. Its records of you stay.</p>
           <div>
             <Button
@@ -127,7 +127,7 @@ export function SpaceDangerCard() {
         </div>
         {selfServe && (
           <div className="grid gap-2 border-t pt-3">
-            <h2 className="text-destructive text-xs font-semibold tracking-wide uppercase">Delete the space</h2>
+            <h2 className="text-destructive text-[13px] font-semibold">Delete the space</h2>
             <p className="text-muted-foreground">
               Everything in it goes: its people’s places, its assessments and their PDFs, its activity. Children added here
               with no account of their own are removed too. This cannot be undone. Type its name to confirm.

@@ -8,8 +8,11 @@ import {
   WalletIcon,
 } from 'lucide-react';
 import {
+  COMMON_COPY,
   PAYMENT_FORM_LABELS,
+  TERMS,
   SESSION_MODE_LABELS,
+  countOf,
   formatCents,
   needsTopup,
   formatDuration,
@@ -41,6 +44,7 @@ import { TutorPayments } from './tutor-payments';
 import { YearEndPanel } from './year-end-panel';
 import { useMonthlyFinance } from './api';
 import { cn } from '@/lib/utils';
+import { useDates } from '@/hooks/use-dates';
 import { useBrand } from '@/providers/brand-provider';
 
 // ---------------------------------------------------------------------------
@@ -48,8 +52,10 @@ import { useBrand } from '@/providers/brand-provider';
 // ---------------------------------------------------------------------------
 
 /**
- * Sessions newest-first, which is how every role wants to read them. On a
+ * Lessons newest-first, which is how every role wants to read them. On a
  * Tutoring tab it is passed `hideMoney`: that half carries no money at all.
+ * Below `sm` a row stacks (Phase 78, JF28): the names first, wrapping, and the
+ * day, length and marks on a line of their own -- never "wi2026-09-15".
  */
 function SessionList({
   sessions,
@@ -60,33 +66,36 @@ function SessionList({
   showTutor?: boolean;
   hideMoney?: boolean;
 }) {
-  if (sessions.length === 0) return <EmptyNote>No sessions recorded yet.</EmptyNote>;
+  const dates = useDates();
+  if (sessions.length === 0) return <EmptyNote>{COMMON_COPY.no_lessons_yet}</EmptyNote>;
 
   return (
     <ul className="divide-border divide-y">
       {sessions.map((session) => (
-        <li key={session.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
-          <span className="min-w-0 flex-1 text-sm">
+        <li key={session.id} className="grid gap-1 py-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-3">
+          <span className="min-w-0 text-sm break-words sm:flex-1">
             <span className="font-medium">{session.student_name}</span>
             {showTutor && (
               <span className="text-muted-foreground"> with {session.tutor_name}</span>
             )}
           </span>
-          <span className="text-muted-foreground text-xs">
-            {session.occurred_on} · {formatDuration(session.duration_minutes)}
-          </span>
-          <Badge variant="secondary" className="text-[10px]">
-            {SESSION_MODE_LABELS[session.mode]}
-          </Badge>
-          {session.auto_stopped && (
-            <Badge
-              variant="outline"
-              className="border-warning/60 text-warning-foreground dark:text-warning text-[10px]"
-            >
-              Auto-stopped
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="text-muted-foreground text-xs">
+              {dates.day(session.occurred_on, { weekday: true })} · {formatDuration(session.duration_minutes)}
+            </span>
+            <Badge variant="secondary" className="text-xs">
+              {SESSION_MODE_LABELS[session.mode]}
             </Badge>
-          )}
-          {!hideMoney && <SessionMoney session={session} compact className="w-24" />}
+            {session.auto_stopped && (
+              <Badge
+                variant="outline"
+                className="border-warning/60 text-warning-foreground dark:text-warning text-xs"
+              >
+                Auto-stopped
+              </Badge>
+            )}
+            {!hideMoney && <SessionMoney session={session} compact className="w-24" />}
+          </span>
         </li>
       ))}
     </ul>
@@ -94,24 +103,26 @@ function SessionList({
 }
 
 function PaymentList({ payments }: { payments: Payment[] }) {
+  const dates = useDates();
   if (payments.length === 0) return <EmptyNote>No payments recorded yet.</EmptyNote>;
 
   return (
     <ul className="divide-border divide-y">
       {payments.map((payment) => (
-        <li key={payment.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
-          <span className="min-w-0 flex-1 text-sm">
+        <li key={payment.id} className="grid gap-1 py-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-x-3">
+          <span className="min-w-0 text-sm break-words sm:flex-1">
             <span className="font-medium">{payment.party_name}</span>
             {payment.student_name && (
               <span className="text-muted-foreground"> for {payment.student_name}</span>
             )}
           </span>
-          <span className="text-muted-foreground text-xs">
-            {new Date(payment.paid_at).toLocaleDateString(undefined, { dateStyle: 'medium' })} ·{' '}
-            {PAYMENT_FORM_LABELS[payment.method]}
-          </span>
-          <span className="w-16 text-right text-sm font-medium tabular-nums">
-            {formatCents(payment.amount_cents)}
+          <span className="flex items-center justify-between gap-x-3">
+            <span className="text-muted-foreground text-xs">
+              {dates.instant(payment.paid_at, { time: false })} · {PAYMENT_FORM_LABELS[payment.method]}
+            </span>
+            <span className="text-right text-sm font-medium tabular-nums sm:w-16">
+              {formatCents(payment.amount_cents)}
+            </span>
           </span>
         </li>
       ))}
@@ -133,9 +144,10 @@ function BalanceRow({
 }) {
   const inner = (
     <>
+      {/* Names wrap rather than truncate (Phase 78, JF28). */}
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-medium">{name}</span>
-        <span className="text-muted-foreground block truncate text-xs">{detail}</span>
+        <span className="block text-sm font-medium break-words">{name}</span>
+        <span className="text-muted-foreground block text-xs break-words">{detail}</span>
       </span>
       <span
         className={cn(
@@ -187,7 +199,7 @@ function DirectBalancesPanel({
               name={of === 'family' ? row.tutor_name : row.student_name}
               detail={
                 (of === 'admin' ? `with ${row.tutor_name} · ` : of === 'family' ? `for ${row.student_name} · ` : '') +
-                `${row.session_count} lessons · ${formatCents(row.paid_cents)} paid`
+                `${countOf(row.session_count, 'lesson')} · ${formatCents(row.paid_cents)} paid`
               }
               balance={row.balance_cents}
             />
@@ -227,7 +239,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
               <StatCard
                 compact
                 index={3}
-                label="Sessions running"
+                label={COMMON_COPY.lessons_running}
                 value={data.counts.live_sessions}
                 icon={RadioIcon}
                 tone={data.counts.live_sessions > 0 ? 'success' : 'default'}
@@ -235,7 +247,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
             </div>
           </DashboardSection>
 
-          <DashboardSection index={4} tourId="dash-sessions" title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+          <DashboardSection index={4} tourId="dash-sessions" title={COMMON_COPY.lessons_section} action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}>
             <SessionsCarousel past={data.recent_sessions} showTutor />
           </DashboardSection>
 
@@ -280,7 +292,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
                 value={data.totals.billed_all_time_cents}
                 money
                 icon={BookOpenIcon}
-                hint={`${data.totals.session_count} sessions`}
+                hint={countOf(data.totals.session_count, 'lesson')}
                 to="/sessions?tab=finance"
               />
             </div>
@@ -314,7 +326,7 @@ export function AdminView({ data }: { data: AdminDashboard }) {
               value={data.totals.billed_all_time_cents}
               money
               icon={BookOpenIcon}
-              hint={`${data.totals.session_count} sessions`}
+              hint={countOf(data.totals.session_count, 'lesson')}
               to="/sessions?tab=finance"
             />
             <StatCard
@@ -376,7 +388,7 @@ function SsnPanel({ tutors }: { tutors: { user_id: string; full_name: string }[]
     <Panel
       index={7}
       title={`SSN not on file · ${tutors.length}`}
-      action={{ label: 'Users', to: '/users' }}
+      action={{ label: COMMON_COPY.people_page, to: '/users' }}
     >
       <p className="text-muted-foreground mb-3 text-sm">
         A tax document cannot be issued without it. Collect it from each tutor directly — never
@@ -430,11 +442,11 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
           <DashboardSection index={0} tourId="dash-analytics" title="Analytics">
             <div className="grid grid-cols-2 items-stretch gap-3 lg:grid-cols-4">
               <StatCard compact index={0} label="Students" value={data.students.length} icon={ROLE_ICONS.student} to="/assignments" />
-              <StatCard compact index={1} label="Sessions" value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
+              <StatCard compact index={1} label={TERMS.lesson.Many} value={data.earnings.session_count} icon={BookOpenIcon} to="/sessions" />
               <StatCard
                 compact
                 index={2}
-                label="Sessions running"
+                label={COMMON_COPY.lessons_running}
                 value={data.live_sessions}
                 icon={RadioIcon}
                 tone={data.live_sessions > 0 ? 'success' : 'default'}
@@ -442,7 +454,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
             </div>
           </DashboardSection>
 
-          <DashboardSection index={3} tourId="dash-sessions" title="Tutoring Sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+          <DashboardSection index={3} tourId="dash-sessions" title={COMMON_COPY.lessons_section} action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}>
             {/* Only lessons they teach, even for an admin viewing as them. */}
             <SessionsCarousel
               past={data.recent_sessions}
@@ -453,7 +465,7 @@ export function TutorView({ data, subjectId }: { data: TutorDashboard; subjectId
 
           {/* Phase 25: what their students made of recent lessons, beside the
               lessons themselves. Teaching, so here; and never money. */}
-          <DashboardSection index={4} tourId="dash-reflections" title="Student Reflections" action={{ label: 'All sessions', to: '/sessions' }}>
+          <DashboardSection index={4} tourId="dash-reflections" title="Student Reflections" action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}>
             <Card className="py-0">
               <CardContent className="px-4 py-2">
                 <RecentReflections digests={data.recent_reflections} />
@@ -627,7 +639,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
                 <BalanceRow
                   key={child.student_user_id}
                   name={child.student_name}
-                  detail={`${lessons} sessions · ${formatCents(child.charged_cents + mine.charged)} charged`}
+                  detail={`${countOf(lessons, 'lesson')} · ${formatCents(child.charged_cents + mine.charged)} charged`}
                   balance={child.balance_cents + (mine.charged - mine.paid)}
                 />
               );
@@ -651,7 +663,7 @@ export function ParentView({ data }: { data: ParentDashboard }) {
       ))}
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel index={4} tourId="dash-recent-sessions" title="Recent sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+        <Panel index={4} tourId="dash-recent-sessions" title={COMMON_COPY.recent_lessons} action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}>
           <SessionList sessions={data.recent_sessions} showTutor />
         </Panel>
 
@@ -673,7 +685,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
       {/* The learning plan's goal replaces the one-line ambition once there is one. */}
       {data.goal && !data.progress?.plan && (
         <div className={cn('brand-gradient rounded-lg p-5 text-white', ENTER)} style={stagger(0)}>
-          <p className="flex items-center gap-2 text-xs font-medium tracking-wide text-white/80 uppercase">
+          <p className="flex items-center gap-2 text-sm font-medium text-white/80">
             <TargetIcon className="size-4" />
             Your goal this year
           </p>
@@ -685,7 +697,7 @@ export function StudentView({ data }: { data: StudentDashboard }) {
       )}
 
       <div className="grid gap-4 sm:grid-cols-3" data-tour="dash-my-stats">
-        <StatCard index={1} label="Sessions" value={data.totals.session_count} icon={BookOpenIcon} to="/sessions" />
+        <StatCard index={1} label={TERMS.lesson.Many} value={data.totals.session_count} icon={BookOpenIcon} to="/sessions" />
         <StatCard
           index={2}
           label="Time tutored"
@@ -710,10 +722,10 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         ) : (
           <ul className="divide-border divide-y">
             {data.tutors.map((tutor) => (
-              <li key={tutor.user_id} className="flex items-center justify-between py-2.5">
-                <span className="text-sm font-medium">{tutor.full_name}</span>
+              <li key={tutor.user_id} className="flex items-center justify-between gap-2 py-2.5">
+                <span className="min-w-0 text-sm font-medium break-words">{tutor.full_name}</span>
                 <Badge variant="secondary" className="text-xs">
-                  {tutor.session_count} sessions
+                  {countOf(tutor.session_count, 'lesson')}
                 </Badge>
               </li>
             ))}
@@ -721,8 +733,8 @@ export function StudentView({ data }: { data: StudentDashboard }) {
         )}
       </Panel>
 
-      {/* No money, as in the app: a student's prices are on the Sessions page's Finance tab. */}
-      <Panel index={5} tourId="dash-my-sessions" title="Your sessions" action={{ label: 'All sessions', to: '/sessions' }}>
+      {/* No money, as in the app: a student's prices are on the Lessons page's Finance tab. */}
+      <Panel index={5} tourId="dash-my-sessions" title="Your lessons" action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}>
         <SessionList sessions={data.recent_sessions} showTutor hideMoney />
       </Panel>
     </div>

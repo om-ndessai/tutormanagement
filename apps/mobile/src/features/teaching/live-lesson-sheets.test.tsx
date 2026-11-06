@@ -176,6 +176,26 @@ describe('the lessons still owed', () => {
     expect(router.replace).toHaveBeenLastCalledWith('/record-lesson');
   });
 
+  it('shows the newest five, then "Show all" for the rest (Phase 78: "Another lesson" stays in reach)', async () => {
+    const days = ['2026-11-05', '2026-11-04', '2026-11-03', '2026-11-02', '2026-11-01', '2026-10-31', '2026-10-30'];
+    mockOwedRows = days.map((day) => row({ occurs_on: day }));
+    await renderWithProviders(<LessonsOwedSheet />);
+    expect(screen.getByTestId('lessons-owed-sch-1-2026-11-01-record')).toBeTruthy();
+    expect(screen.queryByTestId('lessons-owed-sch-1-2026-10-31-record')).toBeNull();
+    expect(screen.getByTestId('lessons-owed-show-all')).toHaveTextContent(/Show all$/);
+    expect(screen.getByLabelText('Show all 7 lessons')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('lessons-owed-show-all'));
+    expect(screen.getByTestId('lessons-owed-sch-1-2026-10-30-record')).toBeTruthy();
+    expect(screen.queryByTestId('lessons-owed-show-all')).toBeNull();
+    expect(screen.getByTestId('lessons-owed-another')).toBeTruthy();
+  });
+
+  it('five or fewer: all of them, and no "Show all"', async () => {
+    mockOwedRows = [row(), row({ schedule_id: 'sch-2' })];
+    await renderWithProviders(<LessonsOwedSheet />);
+    expect(screen.queryByTestId('lessons-owed-show-all')).toBeNull();
+  });
+
   it('with nothing owed, says so, and still offers Another lesson', async () => {
     await renderWithProviders(<LessonsOwedSheet />);
     expect(screen.getByTestId('lessons-owed-empty')).toBeTruthy();

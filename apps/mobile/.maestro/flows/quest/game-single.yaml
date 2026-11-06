@@ -63,14 +63,14 @@ tags:
       text: 'Choose the lowest level\.'
     timeout: 5000
 # Its list is open while no level is chosen. The bank has about 20 levels since round four (2026-10-22),
-# so the flow searches for G6 rather than swiping the list, which a swipe could carry past it.
+# so the flow searches for Grade 6 (its words since Phase 78) rather than swiping the list, which a swipe could carry past it.
 - scrollUntilVisible:
     element:
       id: game-random-start-search
     centerElement: true
 - tapOn:
     id: game-random-start-search
-- inputText: 'G6'
+- inputText: 'Grade 6'
 # The one match sits under the keyboard: the search key puts it away (hideKeyboard does not on iOS 27),
 # then the match is brought into view.
 - pressKey: Enter
@@ -83,7 +83,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-random-start
-      text: '.*G6.*'
+      text: '.*Grade 6.*'
     timeout: 5000
 - assertVisible: 'Questions come at random from this level and the ones above it, never below\.'
 - tapOn:
@@ -120,7 +120,7 @@ tags:
     timeout: 5000
 - assertVisible:
     id: game-summary-questions
-    text: 'G6 and up, at random'
+    text: 'Grade 6 and up, at random'
 - assertVisible:
     id: game-summary-scoring
     text: 'Right \+1, wrong 0'
@@ -130,10 +130,10 @@ tags:
 # The step's title, question and hint are one header element (StepFlow's step-flow-title).
 - assertVisible:
     id: step-flow-title
-    text: '.*The game starts as soon as you press Start game\..*'
+    text: '.*The quest starts as soon as you press Start quest\..*'
 - assertVisible:
     id: game-create
-    text: '.*Start game.*'
+    text: '.*Start quest.*'
 - takeScreenshot: game-single-review
 # Started at once: the doors, then her first question.
 - tapOn:

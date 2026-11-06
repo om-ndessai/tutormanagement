@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import { toast } from 'sonner';
 import { Share2Icon } from 'lucide-react';
+import { PLATFORM_BRAND } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 
-/** Where a game's code leads: the Play home, with the code filled in (`?code=`). */
+/** Where a game code leads: the Play home, with the code filled in (`?code=`). */
 export function gameInviteUrl(code: string): string {
   return `${window.location.origin}/?code=${encodeURIComponent(code)}`;
 }
@@ -17,7 +18,8 @@ export function gameInviteUrl(code: string): string {
 export function LobbyInvite({ code, title }: { code: string; title: string }) {
   const [qr, setQr] = useState<string | null>(null);
   const url = gameInviteUrl(code);
-  const text = `Join my Aimtrue game: code ${code}`;
+  // Phase 78 (JF32): the quest in words, and "game code" for the code.
+  const text = `Join my ${title} quest on ${PLATFORM_BRAND.name}: game code ${code}`;
 
   useEffect(() => {
     let live = true;
@@ -45,7 +47,7 @@ export function LobbyInvite({ code, title }: { code: string; title: string }) {
 
   return (
     <div className="flex items-center gap-4" data-testid="game-lobby-invite">
-      {qr && <img src={qr} alt={`QR code for game ${code}`} className="size-24 rounded-md border bg-white p-1" data-testid="game-lobby-qr" />}
+      {qr && <img src={qr} alt={`QR code for game code ${code}`} className="size-24 rounded-md border bg-white p-1" data-testid="game-lobby-qr" />}
       <Button variant="outline" onClick={() => void share()} data-testid="game-lobby-share">
         <Share2Icon /> Share
       </Button>

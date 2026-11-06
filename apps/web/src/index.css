@@ -186,12 +186,17 @@
   --sidebar: oklch(0.278 0.072 275);
   --sidebar-foreground: oklch(0.93 0.017 274);
   --sidebar-muted-foreground: oklch(0.8 0.028 274);
-  --sidebar-primary: var(--accent-teal-400);
-  --sidebar-primary-foreground: oklch(0.2 0.04 275);
+  /*
+   * Phase 78 (JF29): the warm foundation below turns this rail cream (and restates its neutrals and accent), so the
+   * bar beside the page you are on and the focus ring take the brand's, as every other light palette's do -- light
+   * teal was for the dark rail, and on cream it read at 1.7:1.
+   */
+  --sidebar-primary: var(--brand-700);
+  --sidebar-primary-foreground: oklch(0.985 0.004 274);
   --sidebar-accent: oklch(0.36 0.086 275);
   --sidebar-accent-foreground: oklch(0.97 0.01 274);
   --sidebar-border: oklch(0.36 0.06 275);
-  --sidebar-ring: var(--accent-teal-400);
+  --sidebar-ring: var(--brand-600);
 }
 
 .dark:root[data-palette='indigo'] {
@@ -694,6 +699,14 @@
   --sidebar-foreground: oklch(0.285 0.012 67);
   --sidebar-muted-foreground: oklch(0.504 0.017 71);
   --sidebar-border: oklch(0.898 0.02 77);
+  /*
+   * Phase 78 (JF29): the drawer's accent -- the page you are on, and the hover a tap leaves behind -- is restated
+   * here, warm, for every palette. Each palette's own was made for its rail, and Indigo's (a dark rail) put the
+   * space's tagline at 1.15:1 once this foundation turned the rail cream. On it: ink 12:1, the muted tagline
+   * 4.65:1 (more at the hover's 60%). The dark block below restates it too, so no palette's dark rail is lost.
+   */
+  --sidebar-accent: oklch(0.92 0.022 76);
+  --sidebar-accent-foreground: oklch(0.255 0.01 67);
 
   --highlight: oklch(0.818 0.148 79);
   --highlight-foreground: oklch(0.255 0.021 67);
@@ -726,6 +739,9 @@
   --sidebar-foreground: oklch(0.934 0.013 71);
   --sidebar-muted-foreground: oklch(0.788 0.019 70);
   --sidebar-border: oklch(1 0 0 / 12%);
+  /* Phase 78 (JF29): the accent, warm for every palette: ink 11.8:1 on it, the muted tagline 7:1. */
+  --sidebar-accent: oklch(0.3 0.014 62);
+  --sidebar-accent-foreground: oklch(0.949 0.011 72);
 
   --highlight: oklch(0.834 0.125 78);
   --highlight-foreground: oklch(0.23 0.024 72);
@@ -817,7 +833,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Poppins matches the geometric sans in the institute's wordmark. */
+  /* Nunito (loaded in index.html), rounded and friendly, for headings and numbers; Inter for the text. */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
@@ -911,6 +927,14 @@
   background-color: color-mix(in oklch, var(--background) 72%, transparent);
   backdrop-filter: blur(18px) saturate(1.6);
   -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  transition: background-color 200ms ease-out;
+  /*
+   * Phase 78 (JF35): once the page scrolls, the bar is all but solid (95%), so the words passing under it never
+   * show through behind the space's name (the design audit's glass header). `data-scrolled` is set by AppShell.
+   */
+  &[data-scrolled='true'] {
+    background-color: color-mix(in oklch, var(--background) 95%, transparent);
+  }
 }
 
 /* An icon that answers the pointer: a small spring when its row is hovered. */

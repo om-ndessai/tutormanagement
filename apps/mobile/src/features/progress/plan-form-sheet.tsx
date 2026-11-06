@@ -7,6 +7,7 @@
 import {
   PLAN_STATUSES,
   PLAN_STATUS_LABELS,
+  formatDay,
   formatDuration,
   planInputSchema,
   planUpdateSchema,
@@ -199,7 +200,7 @@ export function PlanForm({
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {assessment && !existing
-            ? `Answers the ${assessment.assessed_on} assessment. Topics it rated 3 or below are chosen for you.`
+            ? `Answers the ${formatDay(assessment.assessed_on, today, { year: 'always' })} assessment. Topics it rated 3 or below are chosen for you.`
             : 'The goal, when it is due, what to cover, and how often to meet.'}
         </Text>
       </View>
@@ -259,7 +260,7 @@ export function PlanForm({
         ) : null}
       </View>
 
-      <Field label="Sessions a week" error={errors.sessions_per_week}>
+      <Field label="Lessons a week" error={errors.sessions_per_week}>
         <View style={{ flexDirection: 'row', gap: space.xs }} accessibilityRole="radiogroup">
           {PER_WEEK.map((n) => (
             <Choice
@@ -274,7 +275,7 @@ export function PlanForm({
         </View>
       </Field>
 
-      <Field label="Each session" error={errors.session_minutes}>
+      <Field label="Each lesson" error={errors.session_minutes}>
         <View
           style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs }}
           accessibilityRole="radiogroup"

@@ -75,7 +75,7 @@ describe('welcomeContent', () => {
       { key: 'answered', label: 'Answered', value: '9' },
       { key: 'approved', label: 'Approved', value: '3' },
       { key: 'today', label: 'Today', value: '2' },
-      { key: 'left', label: 'Left in BA3', value: '57' },
+      { key: 'left', label: 'Left in Beast Academy 3', value: '57' },
     ]);
   });
   it('welcomes a first-timer by name, with no streak', () => {

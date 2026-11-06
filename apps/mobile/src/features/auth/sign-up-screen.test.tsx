@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
-import { Linking } from 'react-native';
+import { Linking, ScrollView } from 'react-native';
 
 import { addressKey, guestMemory, resetGuestMemoryForTests } from '@/features/guest/guest-store';
 import { ApiRequestError } from '@/lib/api-client';
 import { STORAGE_KEYS } from '@/lib/storage';
 import { renderWithProviders } from '@/test/render';
+import { birthYearStart } from './sign-up-model';
 import { SignUpScreen, TOO_YOUNG_BODY, TOO_YOUNG_BODY_NO_PLAY } from './sign-up-screen';
 
 const mockAuth = jest.fn();
@@ -74,6 +75,29 @@ describe('SignUpScreen (Phase 52)', () => {
     // The year keeps its search.
     await fireEvent.press(screen.getByTestId('signup-year'));
     expect(screen.getByTestId('signup-year-search')).toBeTruthy();
+  });
+
+  // Phase 78 (UI audit JF35): the year list opens near an adult's year, not at this year; every year stays a scroll
+  // (or a typed year) away, a child's too.
+  it('opens the year list near an adult’s year, with every year in it', async () => {
+    as(GOOGLE);
+    await renderWithProviders(<SignUpScreen />);
+    await fireEvent.press(screen.getByTestId('signup-year'));
+    const start = String(birthYearStart(new Date()));
+    const thisYear = String(new Date().getFullYear());
+    expect(screen.getByTestId(`signup-year-${thisYear}`)).toBeTruthy();
+    expect(screen.getByTestId(`signup-year-${Number(thisYear) - 99}`)).toBeTruthy();
+    expect(screen.queryByText(/Showing 8 of/)).toBeNull();
+    const scrollTo = jest.spyOn(ScrollView.prototype, 'scrollTo').mockImplementation(() => undefined);
+    const row = screen.getByTestId(`signup-year-${start}`).parent;
+    // The row's wrapper reports where it sits: the list scrolls there, once.
+    let wrapper = row;
+    while (wrapper && !wrapper.props.onLayout) wrapper = wrapper.parent;
+    await fireEvent(wrapper!, 'layout', { nativeEvent: { layout: { x: 0, y: 1488, width: 300, height: 48 } } });
+    await fireEvent(wrapper!, 'layout', { nativeEvent: { layout: { x: 0, y: 9, width: 300, height: 48 } } });
+    expect(scrollTo).toHaveBeenCalledTimes(1);
+    expect(scrollTo).toHaveBeenCalledWith({ y: 1488, animated: false });
+    scrollTo.mockRestore();
   });
 
   it('under 13, with guest play: asks a grown-up, Keep playing goes back to the Play home and clears the sign-up', async () => {

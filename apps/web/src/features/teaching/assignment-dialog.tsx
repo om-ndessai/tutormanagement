@@ -184,7 +184,7 @@ export function AssignmentDialog({
             <DialogDescription>
               {isEdit
                 ? `${existing.tutor_name} teaches ${existing.student_name}.`
-                : 'Pair a tutor with a student. Only assigned pairs can record sessions.'}
+                : 'Pair a tutor with a student. Only assigned pairs can record lessons.'}
             </DialogDescription>
           </DialogHeader>
 

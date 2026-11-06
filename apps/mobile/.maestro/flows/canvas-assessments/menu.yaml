@@ -79,7 +79,8 @@ tags:
     element:
       id: more-nav-assessments
     centerElement: true
-- assertVisible:
+# Phase 78 (owner, 2026-11-05): the item carries no Beta badge.
+- assertNotVisible:
     id: more-nav-assessments-badge
 # A student: the menu, and her own assessment only.
 - runFlow:

@@ -68,7 +68,7 @@ tags:
       id: game-waiting
     timeout: 10000
 - assertVisible: 'Your team has no more questions to hand out\.'
-- assertVisible: '(?i)Game status'
+- assertVisible: '(?i)Quest status'
 - assertNotVisible:
     id: game-submit
 - takeScreenshot: game-team-waiting

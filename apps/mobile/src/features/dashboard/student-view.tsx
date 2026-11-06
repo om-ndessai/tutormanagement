@@ -1,10 +1,9 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 (StudentView). No money
 // in this file -- the rules script refuses formatCents here.
-import { formatDuration, type StudentDashboard } from '@tmi/shared';
+import { countOf, COMMON_COPY, formatDuration, type StudentDashboard } from '@tmi/shared';
 import { View } from 'react-native';
 import { Divider, Icon, Text } from 'react-native-paper';
 
-import { countOf } from '@/lib/plural';
 import { EmptyNote, Panel } from '@/components/section';
 import { FigureRow } from '@/components/figure-row';
 import { StudentProgressCard } from '@/features/progress/progress-card';
@@ -74,7 +73,7 @@ export function StudentView({
       <FigureRow
         tourId="dash-my-stats"
         figures={[
-          { label: 'Sessions', value: data.totals.session_count, to: '/sessions' },
+          { testID: 'stat-sessions', label: 'Lessons', value: data.totals.session_count, to: '/sessions' },
           { label: 'Time tutored', value: data.totals.total_minutes, formatValue: formatDuration },
           { label: 'Tutors', value: data.tutors.length },
         ]}
@@ -128,7 +127,7 @@ export function StudentView({
                     backgroundColor: theme.tokens.muted,
                   }}
                 >
-                  <Text style={{ fontSize: 12 }}>{countOf(tutor.session_count, 'session')}</Text>
+                  <Text style={{ fontSize: 12 }}>{countOf(tutor.session_count, 'lesson')}</Text>
                 </View>
               </View>
             </View>
@@ -139,8 +138,8 @@ export function StudentView({
       <Panel
         testID="student-sessions"
         tourId="dash-my-sessions"
-        title="Your sessions"
-        action={{ label: 'All sessions', to: '/sessions' }}
+        title="Your lessons"
+        action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
       >
         <SessionList sessions={data.recent_sessions} showTutor hideMoney />
       </Panel>

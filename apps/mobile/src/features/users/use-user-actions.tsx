@@ -27,7 +27,7 @@ export function useUserActions({ onDeleted }: { onDeleted?: (person: Person) => 
       await restoreUser.mutateAsync(person.id);
       toast.success(`${person.full_name} restored.`);
     } catch (caught) {
-      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not restore that user.');
+      toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not restore that person.');
     }
   }
 

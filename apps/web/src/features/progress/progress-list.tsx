@@ -1,17 +1,9 @@
 import { Link } from 'react-router-dom';
 import type { ProgressOverview } from '@tmi/shared';
 
+import { useDates } from '@/hooks/use-dates';
 import { cn } from '@/lib/utils';
 import { ProgressStatusBadge } from './rating';
-
-function shortDate(iso: string) {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
-}
 
 /**
  * A meter: how much of the plan is mastered, with a tick where the pace line
@@ -64,6 +56,9 @@ export function ProgressList({
   empty: string;
   limit?: number;
 }) {
+  const dates = useDates();
+  // A plan's and an assessment's days keep their year: they are read across years (Phase 78).
+  const shortDate = (iso: string) => dates.day(iso, { year: 'always' });
   if (rows.length === 0) {
     return <p className="text-muted-foreground py-6 text-center text-sm">{empty}</p>;
   }
@@ -77,8 +72,8 @@ export function ProgressList({
             className="hover:bg-accent/40 -mx-2 grid gap-2 rounded-md px-2 py-2.5 transition-colors sm:grid-cols-[minmax(0,1fr)_10rem_auto] sm:items-center sm:gap-4"
           >
             <span className="min-w-0">
-              <span className="block truncate text-sm font-medium">{row.student_name}</span>
-              <span className="text-muted-foreground block truncate text-xs">
+              <span className="block text-sm font-medium break-words">{row.student_name}</span>
+              <span className="text-muted-foreground block text-xs break-words">
                 {row.goal
                   ? `${row.goal}${row.target_on ? ` · by ${shortDate(row.target_on)}` : ''}`
                   : row.last_assessed_on

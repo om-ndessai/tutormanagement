@@ -1,4 +1,4 @@
-import { createUserRequestSchema, type UserDetail } from '@tmi/shared';
+import { createUserRequestSchema, todayIn, type UserDetail } from '@tmi/shared';
 
 import {
   EMPTY,
@@ -10,7 +10,6 @@ import {
   removeGuardian,
   setHandle,
   toRequest,
-  todayIso,
   updateGuardian,
   type FormState,
 } from './person-form-model';
@@ -147,9 +146,9 @@ it('holds one payment id per method and drops a cleared one', () => {
   expect(handlesHint(['tutor', 'parent'])).toMatch(/both/);
 });
 
-it('dates on the organization clock', () => {
+it('dates on the organization clock, through the shared formatter (Phase 78)', () => {
   // 03:00 UTC is still the previous evening in New York.
-  expect(todayIso('America/New_York', new Date('2026-10-09T03:00:00Z'))).toBe('2026-10-08');
+  expect(todayIn('America/New_York', new Date('2026-10-09T03:00:00Z'))).toBe('2026-10-08');
 });
 
 it('without Tutoring, leaves its sections out of the request and keeps a held tutor role (Phase 50)', () => {

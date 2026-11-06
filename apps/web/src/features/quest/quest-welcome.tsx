@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FlameIcon, TrophyIcon, XIcon } from 'lucide-react';
-import { QUEST_LEFT_CAP, QUEST_WELCOME_MS, questLevelLabel, questWelcome, type QuestSummary } from '@tmi/shared';
+import { QUEST_LEFT_CAP, QUEST_WELCOME_MS, questWelcome, type QuestSummary } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
+import { questLevelWords } from './level-words';
 
 // The welcome when a student opens Quest (owner, 2026-10-21): a personal
 // popup with confetti, a few numbers and one line to bring them back. It
@@ -20,7 +21,7 @@ function prefersLessMotion(): boolean {
 }
 
 export function QuestWelcome({ summary, onClose }: { summary: QuestSummary; onClose: () => void }) {
-  const level = questLevelLabel(summary.level_id);
+  const level = questLevelWords(summary.level_id);
   const { title, line } = questWelcome(summary, level);
   const [still] = useState(prefersLessMotion);
 
@@ -115,7 +116,7 @@ export function QuestWelcome({ summary, onClose }: { summary: QuestSummary; onCl
         <dl className="mt-4 grid grid-cols-4 gap-2 text-center">
           {stats.map((stat) => (
             <div key={stat.label} className="bg-muted rounded-lg px-1 py-2">
-              <dt className="text-muted-foreground text-[11px] leading-tight">{stat.label}</dt>
+              <dt className="text-muted-foreground text-xs leading-tight">{stat.label}</dt>
               <dd className="mt-0.5 flex items-center justify-center gap-1 text-lg font-semibold tabular-nums">
                 {stat.label === 'Points' && <TrophyIcon className="size-4" />}
                 {stat.value}

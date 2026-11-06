@@ -50,12 +50,17 @@ tags:
 - tapOn:
     id: play-tile-star-G6Q5
 - extendedWaitUntil:
-    visible: 'G6Q5 is in your favorites\.'
+    visible: 'Grade 6 Quick 5 is in your favorites\.'
     timeout: 10000
 - scrollUntilVisible:
     element:
       id: play-favorite-G6Q5
     direction: UP
+# Phase 78 (JF32): the favorite keeps its tile's code as its key, and reads in words.
+- assertVisible:
+    id: play-favorite-G6Q5
+    text: '.*Grade 6 Quick 5.*'
+- assertNotVisible: 'G6Q5'
 - takeScreenshot: play-favorites
 - tapOn:
     id: play-favorite-G6Q5

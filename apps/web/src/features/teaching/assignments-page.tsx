@@ -149,7 +149,7 @@ export function AssignmentsPage() {
       <FocusNotice
         active={Boolean(focusId)}
         found={assignments.length > 0}
-        what="assignment"
+        what="pairing"
         onClear={clearFocus}
       />
 
@@ -159,8 +159,8 @@ export function AssignmentsPage() {
           <li key={assignment.id} className="border-border bg-card rounded-lg border p-3">
             <div className="flex items-start gap-2">
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-medium">{assignment.student_name}</span>
-                <span className="text-muted-foreground block truncate text-xs">
+                <span className="block font-medium break-words">{assignment.student_name}</span>
+                <span className="text-muted-foreground block text-xs break-words">
                   with {assignment.tutor_name}
                 </span>
                 <NoPriceBadge missing={assignment.price_missing} testId={`no-price-${assignment.id}`} />
@@ -256,7 +256,7 @@ export function AssignmentsPage() {
                 <TableCell colSpan={showRates ? 5 : 3} className="h-28 text-center">
                   <p className="text-muted-foreground text-sm">
                     {empty}
-                    {isAdmin && ' Assign one to let their tutor record sessions.'}
+                    {isAdmin && ' Assign one to let their tutor record lessons.'}
                   </p>
                 </TableCell>
               </TableRow>
@@ -338,7 +338,7 @@ export function AssignmentsPage() {
               Remove {removing?.student_name} from {removing?.tutor_name}?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              They will no longer be able to record sessions for this student. Sessions already
+              They will no longer be able to record lessons for this student. Lessons already
               taught are kept, along with their billing.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -431,11 +431,11 @@ function RateCell({
     <span className="flex items-center gap-2" data-rate={custom ? 'custom' : override == null || defaultCents !== undefined ? 'default' : 'unknown'}>
       <span className="tabular-nums">{formatCents(effective)}</span>
       {custom ? (
-        <Badge variant="secondary" className="text-[10px]">
+        <Badge variant="secondary" className="text-xs">
           custom
         </Badge>
       ) : (
-        (override == null || defaultCents !== undefined) && <span className="text-muted-foreground text-[10px]">default</span>
+        (override == null || defaultCents !== undefined) && <span className="text-muted-foreground text-xs">default</span>
       )}
     </span>
   );

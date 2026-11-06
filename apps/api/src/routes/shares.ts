@@ -32,7 +32,7 @@ import {
 const idSchema = z.object({ id: z.string().regex(/^[A-Za-z0-9]{8,32}$/, 'Not a share.') });
 
 const DESCRIBE: Record<ShareCard['kind'], string> = {
-  game_result: 'a Quest game result',
+  game_result: 'a quest result',
   level_finished: 'a Quest level finished',
   challenge: 'a Quest question to solve',
 };

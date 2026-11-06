@@ -30,7 +30,7 @@ export function NoPriceBadge({
   return (
     <Badge
       variant="outline"
-      className="border-warning/60 text-warning-foreground dark:text-warning gap-1 text-[10px]"
+      className="border-warning/60 text-warning-foreground dark:text-warning gap-1 text-xs"
       data-testid={testId}
     >
       <CircleAlertIcon className="size-3" aria-hidden />

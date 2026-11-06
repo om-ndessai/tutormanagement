@@ -394,15 +394,18 @@ export function OrganizationDialog({
               <div className="flex items-start gap-3 border-t pt-2">
                 <div className="grid flex-1 gap-0.5">
                   <label htmlFor="org-checked-questions" className="text-sm">
+                    {/* ui-words: the console's own name for the platform's switch; no member reads it. */}
                     Checked questions (Beta)
                   </label>
                   <p className="text-muted-foreground text-xs">
-                    Games, tiles and assessments here also draw questions the
-                    bank has checked but no person has approved, each marked
-                    Beta. Off: approved questions only.
+                    Quests, tiles and assessments here also draw questions the
+                    bank has checked but no person has approved yet. They are
+                    served like any other, and the bank approves them as
+                    players answer them right. Off: approved questions only.
                   </p>
                 </div>
                 <NotificationsSwitch
+                  // ui-words: the console's own name for the platform's switch.
                   label="Checked questions (Beta)"
                   id="org-checked-questions"
                   checked={form.checked_questions}
@@ -646,7 +649,7 @@ export function OrganizationDialog({
                 </label>
                 <p className="text-muted-foreground text-xs">
                   Emails the people concerned when someone is added, a plan or
-                  assessment is added, lessons are scheduled, or a session is
+                  assessment is added, lessons are scheduled, or a lesson is
                   recorded. Its own admins can switch it too.
                 </p>
               </div>

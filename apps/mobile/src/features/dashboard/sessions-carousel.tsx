@@ -2,6 +2,7 @@
 import {
   SESSION_MODE_LABELS,
   formatClockTime,
+  formatDay,
   formatDuration,
   formatMinutesOfDay,
   parseClockTime,
@@ -17,7 +18,6 @@ import { IconButton } from '@/components/icon-button';
 import { EmptyNote } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
 import { useUpcomingSessions } from '@/features/schedules/api';
-import { formatLessonDay } from '@/features/schedules/lesson-cancellation';
 import { useActiveSession } from '@/features/teaching/api';
 import { useLines } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
@@ -33,7 +33,6 @@ import {
   countdown,
   nearestIndex,
   occurrenceKey,
-  relativeDay,
   type CarouselItem,
 } from './carousel-model';
 import { useOrgClock } from './home-data';
@@ -118,7 +117,7 @@ export function SessionsCarousel({
           />
         );
       case 'past-empty':
-        return <NoteCard width={item.width} height={cardHeight} text="No sessions recorded yet" />;
+        return <NoteCard width={item.width} height={cardHeight} text="No lessons recorded yet" />;
       case 'now':
         return <NowMarker width={item.width} />;
       case 'skeleton':
@@ -169,7 +168,7 @@ export function SessionsCarousel({
           <Pressable
             testID="carousel-load-more"
             accessibilityRole="button"
-            accessibilityLabel="Later sessions"
+            accessibilityLabel="Later lessons"
             onPress={() => void upcoming.fetchNextPage()}
             style={({ pressed }) => ({
               width: item.width,
@@ -466,14 +465,14 @@ function PastCard({
   height: number;
 }) {
   const theme = useAppTheme();
-  const day = relativeDay(session.occurred_on, today);
+  const day = formatDay(session.occurred_on, today, { relative: true, weekday: true });
   return (
     <CardFrame
       width={width}
       height={height}
       variant="past"
       testID={`carousel-past-${session.id}`}
-      label={`Past session: ${session.student_name}, ${day}`}
+      label={`Past lesson: ${session.student_name}, ${day}`}
       onPress={() => router.navigate(`/sessions?focus=${session.id}`)}
     >
       <Overline>{day}</Overline>
@@ -532,14 +531,14 @@ function UpcomingCard({
 }) {
   const theme = useAppTheme();
   const start = parseClockTime(occurrence.start_time) ?? 0;
-  const day = relativeDay(occurrence.occurs_on, today);
+  const day = formatDay(occurrence.occurs_on, today, { relative: true, weekday: true });
   return (
     <CardFrame
       width={width}
       height={height}
       variant="upcoming"
       testID={`carousel-upcoming-${occurrenceKey(occurrence)}`}
-      label={`Upcoming session: ${occurrence.student_name}, ${day}`}
+      label={`Upcoming lesson: ${occurrence.student_name}, ${day}`}
       onPress={() => router.navigate(`/schedule?focus=${occurrence.schedule_id}`)}
     >
       <Overline color={theme.colors.onSurface}>{day}</Overline>
@@ -571,14 +570,14 @@ function CancelledCard({
 }) {
   const theme = useAppTheme();
   const start = parseClockTime(occurrence.start_time) ?? 0;
-  const day = relativeDay(occurrence.occurs_on, today);
+  const day = formatDay(occurrence.occurs_on, today, { relative: true, weekday: true });
   return (
     <CardFrame
       width={width}
       height={height}
       variant="cancelled"
       testID={`carousel-cancelled-${occurrenceKey(occurrence)}`}
-      label={`Cancelled session: ${occurrence.student_name}, ${day}`}
+      label={`Cancelled lesson: ${occurrence.student_name}, ${day}`}
       onPress={() => router.navigate(`/schedule?focus=${occurrence.schedule_id}&on=${occurrence.occurs_on}`)}
     >
       <View
@@ -644,9 +643,9 @@ function NextCard({
       height={height}
       variant="next"
       testID="carousel-next"
-      label={`Next session: ${occurrence.student_name}, ${left}`}
+      label={`Next lesson: ${occurrence.student_name}, ${left}`}
       onPress={() => router.navigate(`/schedule?focus=${occurrence.schedule_id}`)}
-      footer={any ? <NextUpButtons occurrence={occurrence} actions={actions} /> : undefined}
+      footer={any ? <NextUpButtons occurrence={occurrence} actions={actions} today={today} /> : undefined}
     >
       <View
         style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm }}
@@ -677,7 +676,7 @@ function NextCard({
           color: theme.colors.onPrimary,
         }}
       >
-        {relativeDay(occurrence.occurs_on, today)} · {formatMinutesOfDay(start)}
+        {formatDay(occurrence.occurs_on, today, { relative: true, weekday: true })} · {formatMinutesOfDay(start)}
       </Text>
       <Text style={{ fontSize: 12, color: soft, fontVariant: ['tabular-nums'] }}>
         until {formatClockTime(occurrence.end_time)} · {formatDuration(occurrence.duration_minutes)}
@@ -692,9 +691,17 @@ function NextCard({
  * Start, Record and Cancel on the Next up card (#43): two taps to start the lesson at hand, two (and
  * a scroll) to write it up, two to call the date off. No money: each opens a Tutoring sheet.
  */
-function NextUpButtons({ occurrence, actions }: { occurrence: UpcomingSession; actions: NextUpActions }) {
+function NextUpButtons({
+  occurrence,
+  actions,
+  today,
+}: {
+  occurrence: UpcomingSession;
+  actions: NextUpActions;
+  today: string;
+}) {
   const theme = useAppTheme();
-  const day = formatLessonDay(occurrence.occurs_on);
+  const day = formatDay(occurrence.occurs_on, today, { weekday: true });
   return (
     <View
       testID="carousel-next-actions"

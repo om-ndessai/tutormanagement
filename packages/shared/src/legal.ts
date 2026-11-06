@@ -151,6 +151,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   {
     heading: 'The service',
     paragraphs: [
+      // ui-words: the published, versioned terms; a wording change is a new version (the owner's to approve).
       'Aimtrue is provided as it is, while it is in beta, without warranties. Features may change.',
       'To the extent the law allows, we are not liable for indirect losses, or for lost data or records, arising from using Aimtrue.',
       'These terms are governed by the laws of North Carolina, United States.',

@@ -65,7 +65,7 @@ tags:
     speed: 15
 - assertNotVisible:
     id: play-tile-G4Q5
-- assertVisible: 'Start G6Q5: Quick 5, Grade 6, 5 questions'
+- assertVisible: 'Start Quick 5, Grade 6, 5 questions'
 - takeScreenshot: play-quest-board
 # The Play home is long since Phase 64 (My progress, the Daily): a slow scroll, and its momentum let to
 # end, so the tile does not drift on under the header (where a tap lands on the account button).
@@ -121,7 +121,7 @@ tags:
 # its last line, which can be brought on screen but not centred.
 - scrollUntilVisible:
     element:
-      text: 'Six characters join a game; eight ask to join a space\.'
+      text: 'Six characters join a quest; eight ask to join a space\.'
     timeout: 90000
 - assertVisible:
     id: play-code

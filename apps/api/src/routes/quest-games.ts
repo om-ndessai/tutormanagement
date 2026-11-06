@@ -9,6 +9,7 @@ import {
   gameClimbLevelIds,
   gameLevelIds,
   gameLevelLabel,
+  gameWords,
   joinGameSchema,
   levelLabel,
   makeGameCode,
@@ -126,10 +127,13 @@ async function checkSeats(
   return rows.map((row) => ({ id: row!.id, first_name: firstNameOf(row!.full_name), full_name: row!.full_name }));
 }
 
-/** "a G5 Quest game", "a G5-and-up Quest game", "a single-player G5 Quest game": for the log. */
-function gameWords(game: { level_id: string; level_scope?: 'level' | 'upward'; players?: 'single' | 'multi' }): string {
-  const level = game.level_scope === 'upward' ? `${levelLabel(game.level_id)}-and-up` : levelLabel(game.level_id);
-  return game.players === 'single' ? `a single-player ${level} Quest game` : `a ${level} Quest game`;
+/**
+ * "a Grade 5 Quick 5 quest", "a Grade 5 and up 5-minute dash quest", "a single-player Grade 5 Quick 5 quest": for the
+ * log, in the quest's words (Phase 78, JF32: never "Quest game", never a code).
+ */
+function questInWords(game: Omit<GameShapeRow, 'level_id'> & { level_id: string; players?: 'single' | 'multi' }): string {
+  const words = gameWords({ ...game, level_id: game.level_id as GameShapeRow['level_id'] });
+  return game.players === 'single' ? `a single-player ${words} quest` : `a ${words} quest`;
 }
 
 export const questGameRoutes = new Hono<AppEnv>()
@@ -217,8 +221,8 @@ export const questGameRoutes = new Hono<AppEnv>()
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_favorite_saved',
       description: saved.created
-        ? `Saved the Quest game favorite "${saved.favorite.name}"`
-        : `Updated the Quest game favorite "${saved.favorite.name}"`,
+        ? `Saved the quest favorite "${saved.favorite.name}"`
+        : `Updated the quest favorite "${saved.favorite.name}"`,
       entity_type: 'quest_game_favorite',
       entity_id: saved.favorite.id,
     });
@@ -234,7 +238,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     if (name === null) throw ApiError.notFound('That favorite was not found.');
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_favorite_deleted',
-      description: `Deleted the Quest game favorite "${name}"`,
+      description: `Deleted the quest favorite "${name}"`,
       entity_type: 'quest_game_favorite',
       entity_id: id,
     });
@@ -365,10 +369,10 @@ export const questGameRoutes = new Hono<AppEnv>()
       description:
         seated.length > 0
           ? // Phase 77 (JF15): the child, by first name, and where: never the code, which nobody can use.
-            `Started ${gameWords(input)} to play with ${namesInWords(seated.map((child) => child.first_name))} on this device`
+            `Started ${questInWords(game)} to play with ${namesInWords(seated.map((child) => child.first_name))} on this device`
           : input.players === 'single'
-            ? `Started ${gameWords(input)}`
-            : `Started ${gameWords(input)} (code ${code})${invited > 0 ? `, inviting ${invited} ${invited === 1 ? 'person' : 'people'}` : ''}`,
+            ? `Started ${questInWords(game)}`
+            : `Started ${questInWords(game)} (code ${code})${invited > 0 ? `, inviting ${invited} ${invited === 1 ? 'person' : 'people'}` : ''}`,
       subject: seated.length === 1 ? { id: seated[0]!.id, full_name: seated[0]!.full_name } : null,
       entity_type: 'quest_game',
       entity_id: id,
@@ -406,7 +410,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const joined = unwrap(
       await gameStub(c.env, org.id, id).join({ id: user.id, first_name: firstNameOf(user.full_name) }, c.req.valid('json')),
     );
-    const game = gameWords(joined.view);
+    const game = questInWords(joined.view);
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_joined',
       description: joined.team.solo
@@ -430,7 +434,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     if (left.left_lobby) {
       await recordAudit(c.env.DB, user, org.id, {
         action: 'quest.game_left',
-        description: 'Left a Quest game before it began',
+        description: 'Left a quest before it began',
         entity_type: 'quest_game',
         entity_id: id,
       });
@@ -448,7 +452,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const view = unwrap(await gameStub(c.env, org.id, id).start(viewerOf(user), checkedQuestionsOn(org)));
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_started',
-      description: `Began ${gameWords(view)} with ${view.teams.length} ${view.teams.length === 1 ? 'team' : 'teams'}`,
+      description: `Began ${questInWords(view)} with ${view.teams.length} ${view.teams.length === 1 ? 'team' : 'teams'}`,
       entity_type: 'quest_game',
       entity_id: id,
     });
@@ -463,7 +467,7 @@ export const questGameRoutes = new Hono<AppEnv>()
     const view = unwrap(await gameStub(c.env, org.id, id).end(viewerOf(user)));
     await recordAudit(c.env.DB, user, org.id, {
       action: 'quest.game_ended',
-      description: `Ended ${gameWords(view)}`,
+      description: `Ended ${questInWords(view)}`,
       entity_type: 'quest_game',
       entity_id: id,
     });

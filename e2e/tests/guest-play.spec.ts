@@ -165,7 +165,15 @@ test.describe('guest play', () => {
     // Grade 2: its own quest, then the advanced track's, named by grade alone.
     await home.getByRole('radio', { name: 'Grade 2' }).click();
     await expect(home.getByTestId('guest-tile-G2Q5')).toContainText('Quick 5');
-    await expect(home.getByTestId('guest-tile-BA2Q5')).toContainText('Adv G2 · 5 questions');
+    await expect(home.getByTestId('guest-tile-BA2Q5')).toContainText('Adv Grade 2 · 5 questions');
+    // Phase 78 (owner, 2026-11-05): the guest board wears the grade hues, as the member's does -- the mode is the
+    // icon, never a colour, and amber is for action only. The chosen grade's chip is hued and ringed.
+    await expect(home.getByTestId('guest-tile-G2Q5').locator('.bg-grade-2')).toHaveCount(1);
+    await expect(home.getByTestId('guest-tile-BA2Q5').locator('.bg-grade-2')).toHaveCount(1);
+    await expect(home.locator('[data-testid^="guest-tile-"] .bg-warning')).toHaveCount(0);
+    await expect(home.getByRole('radio', { name: 'Grade 2' })).toHaveClass(/bg-grade-2/);
+    await expect(home.getByRole('radio', { name: 'Grade 2' })).toHaveClass(/ring-2/);
+    await expect(page.getByTestId('guest-today-play')).not.toHaveClass(/bg-warning/);
     for (const grade of ['Grade 2', 'Grade 6', 'Grade 4']) {
       await home.getByRole('radio', { name: grade }).click();
       const text = await home.innerText();

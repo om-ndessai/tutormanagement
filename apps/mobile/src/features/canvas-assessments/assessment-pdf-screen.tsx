@@ -5,12 +5,13 @@
 // key) is for the student's current tutors and the admins; the reviewed one (`?kind=reviewed`) for
 // the student's whole audience, once a tutor has saved it as reviewed (R17). Mobile: the web's
 // Download button is left out -- a PDF is never written to the device.
-import { levelLabel } from '@tmi/shared';
+
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { levelWords } from '@/features/quest/level-words';
 import { OutlinedCard } from '@/components/outlined-card';
 import { Screen } from '@/components/screen';
 import { DetailSkeleton } from '@/components/skeletons';
@@ -63,7 +64,7 @@ export function AssessmentPdfScreen() {
     );
   }
 
-  const title = `${kind === 'reviewed' ? 'Review: ' : ''}${assessment.student_name} · ${levelLabel(assessment.level_id)}`;
+  const title = `${kind === 'reviewed' ? 'Review: ' : ''}${assessment.student_name} · ${levelWords(assessment.level_id)}`;
   return (
     <Screen
       testID="screen-assessment-pdf"

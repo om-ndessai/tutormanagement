@@ -215,7 +215,7 @@ export function CommandPaletteProvider({
             )}
           </CommandGroup>
         </CommandList>
-        <div className="text-muted-foreground flex items-center justify-between border-t px-3 py-2 text-[11px]">
+        <div className="text-muted-foreground flex items-center justify-between border-t px-3 py-2 text-xs">
           <span>↑↓ to move · ↵ to open · esc to close</span>
           <CommandShortcut>{IS_MAC ? '⌘K' : 'Ctrl K'}</CommandShortcut>
         </div>
@@ -246,7 +246,7 @@ export function CommandPaletteButton({ className }: { className?: string }) {
     >
       <SearchIcon className="icon-pop size-4" />
       <span className="hidden md:inline">Search or jump to…</span>
-      <kbd className="bg-muted text-muted-foreground hidden rounded px-1.5 py-0.5 font-sans text-[10px] font-medium md:inline">
+      <kbd className="bg-muted text-muted-foreground hidden rounded px-1.5 py-0.5 font-sans text-xs font-medium md:inline">
         {IS_MAC ? '⌘K' : 'Ctrl K'}
       </kbd>
     </button>

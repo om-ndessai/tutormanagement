@@ -5,13 +5,14 @@
 // sends at the end. `toRequest` and `fromConfig` are the web's, line for line: a single player sends no
 // knockout, no late join and no most teams, with a team size of 1; "Everyone on their own" sends 1.
 // Pure: no React, no api client.
+// Phase 78 (JF35, owner 2026-11-05): the wizard starts on "Single player" (a solo quest is the common case); the level
+// is said in words ("Grade 6"), and a game is a "quest" on screen ("Start quest"; "Generate game code" keeps the code's
+// word).
 import {
   GAME_LIMITS,
   gameLengthLabel,
-  gameLevelLabel,
   gameMarkingLabel,
   gamePlayersLabel,
-  levelLabel,
   type CreateGameInput,
   type CreateGameRequest,
   type GameFavorite,
@@ -19,6 +20,8 @@ import {
   type GameMode,
   type GamePlayerMode,
 } from '@tmi/shared';
+
+import { gameLevelWords, levelWords } from './level-words';
 
 /** What the wizard holds; the request is built from it at the end. */
 export interface WizardDraft {
@@ -48,7 +51,7 @@ export const WIZARD_START: WizardDraft = {
   right_points: 1,
   wrong_points: 0,
   knockout: false,
-  players: 'multi',
+  players: 'single',
   max_teams: GAME_LIMITS.defaultTeams,
   teams: true,
   max_team_size: GAME_LIMITS.defaultTeamSize,
@@ -105,7 +108,7 @@ export function summaryOf(request: CreateGameRequest) {
     max_team_size: request.max_team_size,
   };
   return {
-    level: gameLevelLabel(view, levelLabel),
+    level: gameLevelWords(view),
     length: gameLengthLabel(view),
     scoring: gameMarkingLabel({
       right_points: request.right_points ?? 1,
@@ -134,7 +137,7 @@ export function reviewLines(request: CreateGameRequest): Record<WizardStepKey, s
   };
 }
 
-/** A favorite's tile, under its name: "G6 · 10 questions · Up to 10 teams, at most 4 players per team". */
+/** A favorite's tile, under its name: "Grade 6 · 10 questions · Up to 10 teams, at most 4 players per team". */
 export function favoriteDetail(favorite: Pick<GameFavorite, 'config'>): string {
   const words = summaryOf(favorite.config);
   return `${words.level} · ${words.length} · ${words.players}`;
@@ -148,9 +151,9 @@ export function favoritePlayable(
   return levels.some((level) => level.level_id === favorite.config.level_id && level.available > 0);
 }
 
-/** Said when an unplayable favorite is tapped: "G6 has no questions to play here now." */
+/** Said when an unplayable favorite is tapped: "Grade 6 has no questions to play here now." */
 export function favoriteRefusal(favorite: Pick<GameFavorite, 'config'>): string {
-  return `${levelLabel(favorite.config.level_id)} has no questions to play here now.`;
+  return `${levelWords(favorite.config.level_id)} has no questions to play here now.`;
 }
 
 /** The first step's refusal: no level, or (Random) no lowest level; null when chosen. */
@@ -161,12 +164,12 @@ export function levelProblem(draft: Pick<WizardDraft, 'level_id' | 'random'>): s
 
 /** The last action: a multiplayer game gets its code first; a single player's starts at once. */
 export function submitLabel(players: GamePlayerMode): string {
-  return players === 'multi' ? 'Generate game code' : 'Start game';
+  return players === 'multi' ? 'Generate game code' : 'Start quest';
 }
 
 /** The Review's line under "Ready?". */
 export function reviewHint(players: GamePlayerMode): string {
   return players === 'multi'
     ? 'Once you generate the code, the settings are fixed.'
-    : 'The game starts as soon as you press Start game.';
+    : 'The quest starts as soon as you press Start quest.';
 }

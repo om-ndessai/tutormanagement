@@ -51,7 +51,7 @@ test.describe('autosaving a write-up', () => {
 
     const dialog = await openRecordForm(tutor);
     const marker = `Autosaved notes ${Date.now()}`;
-    await dialog.getByLabel('Session notes', { exact: true }).fill(marker);
+    await dialog.getByLabel('Lesson notes', { exact: true }).fill(marker);
     await expect(dialog.getByTestId('autosave-status')).toContainText('Draft autosaved', { timeout: 10_000 });
 
     let drafts = await unwrap<any[]>(await tutor.request.get('/api/sessions/drafts'), 'drafts');
@@ -60,7 +60,7 @@ test.describe('autosaving a write-up', () => {
     const draftId = drafts[0].id;
 
     // Typing on updates the same draft, still without a word in the log.
-    await dialog.getByLabel('Session notes', { exact: true }).fill(`${marker} and more`);
+    await dialog.getByLabel('Lesson notes', { exact: true }).fill(`${marker} and more`);
     await expect
       .poll(async () => {
         const list = await unwrap<any[]>(await tutor.request.get('/api/sessions/drafts'), 'drafts');
@@ -89,7 +89,7 @@ test.describe('autosaving a write-up', () => {
 
     const dialog = await openRecordForm(tutor);
     const marker = `Left mid-lesson ${Date.now()}`;
-    await dialog.getByLabel('Session notes', { exact: true }).fill(marker);
+    await dialog.getByLabel('Lesson notes', { exact: true }).fill(marker);
     // Closed at once, before the next tick: the closing save keeps it.
     await dialog.getByRole('button', { name: 'Cancel' }).click();
 
@@ -107,7 +107,7 @@ test.describe('autosaving a write-up', () => {
     await clearDrafts(tutor);
 
     const dialog = await openRecordForm(tutor);
-    const notes = dialog.getByLabel('Session notes', { exact: true });
+    const notes = dialog.getByLabel('Lesson notes', { exact: true });
     const marker = `Half typed ${Date.now()}`;
     await notes.fill(marker);
     await expect(dialog.getByTestId('autosave-status')).toContainText('Draft autosaved', { timeout: 10_000 });
@@ -120,7 +120,7 @@ test.describe('autosaving a write-up', () => {
     await dialog.getByRole('button', { name: 'Cancel' }).click();
 
     await tutor.getByRole('button', { name: 'Edit' }).first().click();
-    await expect(dialog.getByLabel('Session notes', { exact: true })).toHaveValue(`${marker} and finished`);
+    await expect(dialog.getByLabel('Lesson notes', { exact: true })).toHaveValue(`${marker} and finished`);
     await dialog.getByRole('button', { name: 'Record lesson' }).click();
     await expect(tutor.getByText('Your drafts')).toHaveCount(0);
 

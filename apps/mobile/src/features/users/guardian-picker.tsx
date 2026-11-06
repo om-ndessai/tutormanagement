@@ -189,7 +189,7 @@ export function GuardianLinkCard({
     <OutlinedCard testID={`guardian-${link.guardian_user_id}`} style={{ borderRadius: radius.md }}>
       <View style={{ padding: space.md, gap: space.sm }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-          <Text variant="bodyMedium" style={{ flex: 1, fontWeight: '600' }} numberOfLines={1}>
+          <Text variant="bodyMedium" style={{ flex: 1, fontWeight: '600' }}>
             {name}
           </Text>
           <IconButton

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   describeLocation,
   DAYS_OF_WEEK,
   SESSION_MODE_LABELS,
@@ -34,6 +35,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { ApiRequestError } from '@/lib/api-client';
+import { useDates } from '@/hooks/use-dates';
 import { useAuth } from '@/providers/auth-provider';
 import { NoPriceBadge } from '@/features/teaching/price-missing';
 import { ScheduleDates } from './schedule-dates';
@@ -47,6 +49,7 @@ import { calendarHref, useDeleteSchedule, useSchedules } from './api';
  */
 export function SchedulesPage() {
   const { user } = useAuth();
+  const dates = useDates();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isTutor = user?.roles.includes('tutor') ?? false;
 
@@ -121,7 +124,7 @@ export function SchedulesPage() {
                 }}
               >
                 <CalendarPlusIcon />
-                Schedule a session
+                {COMMON_COPY.schedule_lesson}
               </Button>
             )}
           </div>
@@ -131,7 +134,7 @@ export function SchedulesPage() {
       <FocusNotice
         active={Boolean(focusId)}
         found={schedules.length > 0}
-        what="scheduled session"
+        what="scheduled lesson"
         onClear={clearFocus}
       />
 
@@ -148,8 +151,8 @@ export function SchedulesPage() {
           <CardContent className="py-12 text-center">
             <p className="text-muted-foreground text-sm">
               {isTutor || isAdmin
-                ? 'No recurring sessions scheduled yet.'
-                : 'No recurring sessions have been scheduled for you.'}
+                ? 'No recurring lessons scheduled yet.'
+                : 'No recurring lessons have been scheduled for you.'}
             </p>
           </CardContent>
         </Card>
@@ -158,7 +161,7 @@ export function SchedulesPage() {
       <div className="space-y-6">
         {byDay.map(({ day, items }) => (
           <section key={day.value}>
-            <h2 className="text-muted-foreground mb-2 text-xs font-semibold tracking-wide uppercase">
+            <h2 className="text-muted-foreground mb-2 text-sm font-semibold">
               {day.label}
             </h2>
 
@@ -178,9 +181,10 @@ export function SchedulesPage() {
                 return (
                   <li key={schedule.id}>
                     <Card>
-                      <CardContent className="flex flex-wrap items-center gap-3 py-4">
-                        <div className="min-w-0 flex-1">
-                          <p className="font-medium">
+                      {/* Below sm the row stacks (Phase 78, JF28): the lesson first, its actions on a line of their own. */}
+                      <CardContent className="grid gap-3 py-4 sm:flex sm:flex-wrap sm:items-center">
+                        <div className="min-w-0 sm:flex-1">
+                          <p className="font-medium break-words">
                             {schedule.student_name}
                             <span className="text-muted-foreground font-normal">
                               {' '}
@@ -189,29 +193,26 @@ export function SchedulesPage() {
                           </p>
                           <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-2 text-xs">
                             <span>{describeSchedule(schedule)}</span>
-                            <Badge variant="secondary" className="text-[10px]">
+                            <Badge variant="secondary" className="text-xs">
                               {SESSION_MODE_LABELS[schedule.mode]}
                             </Badge>
                             {/* Phase 75 (JF18): its lessons could not be priced -- said before Start refuses. */}
                             <NoPriceBadge missing={schedule.price_missing} mode={schedule.mode} testId={`no-price-${schedule.id}`} />
-                            <span>
-                              from {schedule.starts_on}
-                              {schedule.ends_on ? ` to ${schedule.ends_on}` : ', ongoing'}
-                            </span>
+                            <span>{dates.span(schedule.starts_on, schedule.ends_on)}</span>
                           </p>
                           {schedule.locations.length > 0 && (
-                            <p className="text-muted-foreground mt-1 truncate text-xs" data-testid="schedule-locations">
+                            <p className="text-muted-foreground mt-1 text-xs break-words" data-testid="schedule-locations">
                               {schedule.locations.map((location) => describeLocation(location)).join(' · ')}
                             </p>
                           )}
                           {schedule.location && (
-                            <p className="text-muted-foreground mt-1 truncate text-xs">
+                            <p className="text-muted-foreground mt-1 text-xs break-words">
                               {schedule.location}
                             </p>
                           )}
                         </div>
 
-                        <div className="flex items-center gap-1">
+                        <div className="-ml-2 flex flex-wrap items-center gap-1 sm:ml-0">
                           <Button
                             variant="ghost"
                             size="sm"
@@ -219,12 +220,12 @@ export function SchedulesPage() {
                             onClick={toggleDates}
                           >
                             <CalendarDaysIcon />
-                            <span className="max-sm:sr-only">Dates</span>
+                            Dates
                           </Button>
 
                           <CommentsButton
                             target={{ target_type: 'scheduled_session', target_id: schedule.id }}
-                            title={`${schedule.student_name}’s recurring session`}
+                            title={`${schedule.student_name}’s recurring lesson`}
                             description={`${describeSchedule(schedule)}, with ${schedule.tutor_name}.`}
                           />
 
@@ -282,11 +283,11 @@ export function SchedulesPage() {
       <AlertDialog open={removing !== null} onOpenChange={(open) => !open && setRemoving(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove this recurring session?</AlertDialogTitle>
+            <AlertDialogTitle>Remove this recurring lesson?</AlertDialogTitle>
             <AlertDialogDescription>
               {removing?.student_name}&apos;s {removing && describeSchedule(removing)} slot will no
               longer appear, and any of its lessons that were cancelled go with it — so they stop
-              counting as cancelled in the student&apos;s progress. Sessions already taught are
+              counting as cancelled in the student&apos;s progress. Lessons already taught are
               unaffected. To stop a series but keep its record, give it an end date instead.
             </AlertDialogDescription>
           </AlertDialogHeader>

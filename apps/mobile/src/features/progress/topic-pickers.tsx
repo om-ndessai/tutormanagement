@@ -151,7 +151,8 @@ function TopicRows({
                   paddingVertical: 4,
                   color: theme.tokens.mutedForeground,
                   backgroundColor: withAlpha(theme.tokens.muted, 0.4),
-                  textTransform: 'uppercase',
+                  // Phase 78 (JF35): the unit as written, in sentence case, never all-caps.
+                  fontWeight: '600',
                 }}
               >
                 {group.unit}

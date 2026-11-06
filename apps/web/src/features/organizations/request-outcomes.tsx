@@ -7,12 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
+import { useDates } from '@/hooks/use-dates';
 import { useDismissJoinOutcome, useWithdrawRequest } from './api';
 
-/** "Nov 4": the day a space answered. */
-function answeredOn(iso: string | null | undefined): string {
-  return iso ? new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '';
-}
 
 /**
  * The person's own requests to join spaces and the spaces' answers (owner, 2026-11-04; UI audit JF5): a request
@@ -22,6 +19,9 @@ function answeredOn(iso: string | null | undefined): string {
  */
 export function RequestOutcomes({ answersOnly = false }: { answersOnly?: boolean }) {
   const { joinRequests, chooseOrganization } = useAuth();
+  const dates = useDates();
+  /** "Nov 4": the day a space answered, through the shared formatter (Phase 78). */
+  const answeredOn = (iso: string | null | undefined) => (iso ? dates.instant(iso, { time: false }) : '');
   const dismiss = useDismissJoinOutcome();
   const withdraw = useWithdrawRequest();
   const rows = joinRequests.filter((r) => (answersOnly ? r.outcome !== null : true));

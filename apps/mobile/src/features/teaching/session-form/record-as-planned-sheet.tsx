@@ -15,6 +15,7 @@
 // refusal (a price not set: "Ask the office to set Yusuf's price.") is said once, in the sheet.
 import {
   SESSION_MODE_LABELS,
+  formatDay,
   formatDuration,
   sessionInputSchema,
   type Assignment,
@@ -41,7 +42,7 @@ import { space } from '@/theme/tokens';
 import { useAssignments, useMyDrafts, useRecordSession } from '../api';
 import { draftForLesson, draftSavedLine } from '../lessons-owed-model';
 import { refusalLines } from '../refusal';
-import { formatSessionDay, formatSessionTimes } from '../session-format';
+import { formatSessionTimes } from '../session-format';
 import { organizationToday } from '../session-ranges';
 import { previewFigures } from './session-money-preview';
 import { formBody, issuesToErrors, prefilledForm, type RecordPrefill } from './use-session-form';
@@ -242,7 +243,7 @@ function AsPlanned({
             {assignment.student_name}
           </SummaryLine>
           <SummaryLine icon="calendar-outline" testID="record-quick-day">
-            {values.occurredOn === today ? 'Today' : formatSessionDay(values.occurredOn, today)}
+            {values.occurredOn === today ? 'Today' : formatDay(values.occurredOn, today, { weekday: true })}
           </SummaryLine>
           <SummaryLine icon="clock-outline" testID="record-quick-times">
             {`${formatSessionTimes(values.startedAt, values.endedAt)}${
@@ -346,7 +347,7 @@ function RecordedSheet({ session }: { session: TutoringSession }) {
       testID="record-quick-done"
       title="Lesson recorded."
       description={`${session.student_name}, ${
-        session.occurred_on === today ? 'today' : formatSessionDay(session.occurred_on, today)
+        session.occurred_on === today ? 'today' : formatDay(session.occurred_on, today, { weekday: true })
       }, ${formatSessionTimes(session.started_at, session.ended_at)}. Add the write-up now, or later from the lesson.`}
       primaryLabel="Write up the lesson"
       primaryIcon="pencil-outline"

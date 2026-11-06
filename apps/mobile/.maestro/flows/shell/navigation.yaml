@@ -19,11 +19,17 @@ tags:
 - assertVisible:
     id: create-button
 - takeScreenshot: shell-home
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`, and no tab says Sessions.
+- assertVisible:
+    id: tab-sessions
+    text: 'Lessons'
+- assertNotVisible: 'Sessions'
+- tapOn:
+    id: tab-sessions
 - assertVisible:
     id: screen-sessions
-# Schedule lives inside Sessions (the tab bar, revised 2026-10-15): Lessons | Schedule heads both,
-# and the Sessions tab brings Lessons back.
+# Schedule lives inside Lessons (the tab bar, revised 2026-10-15): Lessons | Schedule heads both,
+# and the Lessons tab brings the lessons back.
 - tapOn:
     id: sessions-switch-schedule
 - extendedWaitUntil:

@@ -408,7 +408,7 @@ export const schedulesRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     if (!isAdmin(viewer) && viewer.id !== input.tutor_user_id) {
-      throw new ApiError(403, 'forbidden', 'You can only schedule your own sessions.');
+      throw new ApiError(403, 'forbidden', 'You can only schedule your own lessons.');
     }
 
     // The same rule as recording a session: only for a student given to you.

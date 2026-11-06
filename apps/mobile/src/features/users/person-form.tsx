@@ -6,13 +6,16 @@
 // Validation is the shared schema's, run here first so an SSN in a note never leaves the phone.
 import { CheckRow } from '@/components/check-row';
 import {
-  USER_STATUSES,
-  USER_STATUS_DESCRIPTIONS,
-  USER_STATUS_LABELS,
+  COMMON_COPY,
   createUserRequestSchema,
   featureAllowed,
+  formatDay,
   requiresEmail,
+  todayIn,
   updateUserRequestSchema,
+  USER_STATUS_DESCRIPTIONS,
+  USER_STATUS_LABELS,
+  USER_STATUSES,
   type UserDetail,
   type UserRole,
 } from '@tmi/shared';
@@ -42,7 +45,6 @@ import {
   EMPTY,
   fromDetail,
   handlesHint,
-  todayIso,
   toRequest,
   type FormState,
   type GuardianValue,
@@ -173,7 +175,7 @@ export function PersonForm({
   async function handleSave() {
     setFormError(null);
     const request = {
-      ...toRequest(form, todayIso(timeZone), { tutoring }),
+      ...toRequest(form, todayIn(timeZone), { tutoring }),
       ...(letIn ? { join_request_user_id: joinRequestUserId } : {}),
       ...(needsConsent ? { parent_consent: parentConsent } : {}),
     };
@@ -200,8 +202,8 @@ export function PersonForm({
         toast.error(error.message);
         return;
       }
-      setFormError('Could not save the user.');
-      toast.error('Could not save the user.');
+      setFormError(COMMON_COPY.could_not_save_person);
+      toast.error(COMMON_COPY.could_not_save_person);
     }
   }
 
@@ -216,7 +218,7 @@ export function PersonForm({
     <DismissKeyboard style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text testID="person-form-title" variant="titleLarge" accessibilityRole="header">
-          {title ?? (isEdit ? 'Edit user' : 'Add user')}
+          {title ?? (isEdit ? COMMON_COPY.edit_person : COMMON_COPY.add_person)}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {description ?? DEFAULT_DESCRIPTION}
@@ -460,7 +462,7 @@ export function PersonForm({
               />
               {form.tutor.ssn_received && form.tutor.ssn_received_on ? (
                 <Text variant="bodySmall" style={{ color: muted, marginTop: -space.sm }}>
-                  {`Confirmed on ${form.tutor.ssn_received_on}.`}
+                  {`Confirmed on ${formatDay(form.tutor.ssn_received_on, todayIn(timeZone))}.`}
                 </Text>
               ) : null}
             </>
@@ -471,7 +473,7 @@ export function PersonForm({
               testID="person-tutor-limit"
               value={form.tutor.max_minutes}
               onChange={(value) => setTutor({ ...form.tutor, max_minutes: value })}
-              hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
+              hint="A running lesson that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
             />
           ) : null}
           {show('tutor-financials') ? (
@@ -617,7 +619,7 @@ export function PersonForm({
           loading={saving}
           disabled={saving || offline}
         >
-          {isEdit ? 'Save changes' : 'Add user'}
+          {isEdit ? 'Save changes' : COMMON_COPY.add_person}
         </Button>
         <OfflineSaveNote offline={offline} />
         <Button testID="person-form-cancel" mode="outlined" onPress={onCancel} disabled={saving}>

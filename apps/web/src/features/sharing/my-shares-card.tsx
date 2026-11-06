@@ -3,7 +3,7 @@ import { shareHeadline, shareUrl } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatTimestamp } from '@/lib/utils';
+import { useDates } from '@/hooks/use-dates';
 import { useMyShares, useWithdrawShare } from './api';
 
 /**
@@ -13,6 +13,7 @@ import { useMyShares, useWithdrawShare } from './api';
 export function MySharesCard() {
   const shares = useMyShares();
   const withdraw = useWithdrawShare();
+  const dates = useDates();
   const live = (shares.data?.data ?? []).filter((share) => !share.withdrawn_at);
   if (live.length === 0) return null;
   return (
@@ -27,7 +28,7 @@ export function MySharesCard() {
                   {shareHeadline(share.card)}
                 </a>
                 <span className="text-muted-foreground block text-xs">
-                  Shared {formatTimestamp(share.created_at, '')}
+                  Shared {dates.instant(share.created_at)}
                 </span>
               </span>
               <Button

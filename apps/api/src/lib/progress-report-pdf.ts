@@ -356,7 +356,7 @@ function drawStatCards(flow: Flow, input: ProgressReportInput, brand: Rgb): void
     );
   }
   cards.push(
-    { label: 'Sessions held', value: String(input.sessionCount), hint: 'in this range' },
+    { label: 'Lessons held', value: String(input.sessionCount), hint: 'in this range' },
     { label: 'Total hours', value: formatHoursMinutes(input.totalMinutes), hint: 'in this range' },
   );
 
@@ -733,7 +733,7 @@ function drawSessions(flow: Flow, input: ProgressReportInput, brand: Rgb): void 
   const subtitle =
     `${input.sessionCount} in this range, newest first` +
     (shown < input.sessionCount ? ` · the latest ${shown} listed` : '');
-  flow.heading('Sessions', brand, 60, subtitle);
+  flow.heading('Lessons', brand, 60, subtitle);
 
   if (shown === 0) {
     flow.lines(['No lessons were recorded in this range.'], MARGIN, 10, 14, 'italic', MUTED);

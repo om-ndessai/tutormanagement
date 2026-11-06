@@ -65,6 +65,9 @@ tags:
     visible:
       id: game-step-3
     timeout: 5000
+# Phase 78 (JF35): the wizard starts on Single player (Jest holds the default); this favorite is a multiplayer one.
+- tapOn:
+    id: game-players-multi
 - tapOn:
     id: step-flow-next
 - extendedWaitUntil:
@@ -114,7 +117,7 @@ tags:
     timeout: 10000
 - assertVisible:
     id: 'game-fav-Friday G6'
-    text: 'Friday G6, G6 · 10 questions · Up to 10 teams, at most 4 players per team'
+    text: 'Friday G6, Grade 6 · 10 questions · Up to 10 teams, at most 4 players per team'
 - takeScreenshot: game-favorites
 - tapOn:
     id: 'game-fav-Friday G6'
@@ -124,7 +127,7 @@ tags:
     timeout: 5000
 - assertVisible:
     id: game-summary-questions
-    text: 'G6'
+    text: 'Grade 6'
 - assertVisible:
     id: game-summary-length
     text: '10 questions'

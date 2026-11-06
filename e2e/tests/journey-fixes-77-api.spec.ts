@@ -131,7 +131,9 @@ test.describe('Phase 77 (JF15): playing with a child on one device', () => {
       // One line in the log, naming the child, never the code nobody can use.
       const log = await unwrap<any[]>(await admin.request.get('/api/audit?limit=20'), 'the log');
       const line = log.find((row) => row.action === 'quest.game_created' && row.entity_id === gameId);
-      expect(line.description).toMatch(/^Started a .+ Quest game to play with Ben on this device$/);
+      // Phase 78 (JF32): the quest in words, never "Quest game" -- "Started a Grade 5 Quick 2 quest to play with Ben...".
+      expect(line.description).toMatch(/^Started a .+ Quick 2 quest to play with Ben on this device$/);
+      expect(line.description).not.toContain('Quest game');
       expect(line.description).not.toContain(game.code);
       expect(line.subject_user_id).toBe(ben);
 

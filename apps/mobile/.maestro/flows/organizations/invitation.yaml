@@ -16,7 +16,7 @@ tags:
       id: screen-spaces
     timeout: 20000
 - assertVisible: 'Choose a space'
-- assertVisible: 'INVITATIONS'
+- assertVisible: 'Invitations'
 - assertVisible:
     id: invitation-chmi
 - tapOn:

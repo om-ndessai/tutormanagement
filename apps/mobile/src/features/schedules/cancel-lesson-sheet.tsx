@@ -5,7 +5,7 @@
 // coming dates, or without one to pick any date -- a later week, or (for the tutor and the office)
 // one already past. Who may cancel, and which dates, is the server's: the sheet only narrows the
 // picker to what it would accept and shows its refusal under the field.
-import { describeSchedule, scheduleCancellationInputSchema, type VisibleSchedule } from '@tmi/shared';
+import { describeSchedule, formatDay, scheduleCancellationInputSchema, type VisibleSchedule } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -29,7 +29,6 @@ import { useCancelLesson, useSchedules } from './api';
 import {
   cancelDateBounds,
   defaultCancelDate,
-  formatLessonDay,
   organizationToday,
 } from './lesson-cancellation';
 import { useRestoreNow } from './use-restore-lesson';
@@ -115,7 +114,7 @@ export function CancelLessonForm({
       await cancel.mutateAsync({ scheduleId: schedule.id, input });
       const target = { scheduleId: schedule.id, occursOn: date, studentName: schedule.student_name };
       // Undo puts it straight back; the server still decides whether this reader may.
-      toast.success(`The ${formatLessonDay(date)} lesson is cancelled.`, {
+      toast.success(`The ${formatDay(date, today, { weekday: true })} lesson is cancelled.`, {
         label: 'Undo',
         onPress: () => void restoreNow(target),
       });
@@ -130,7 +129,7 @@ export function CancelLessonForm({
     <View style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          {presetDate ? `Cancel the lesson on ${formatLessonDay(presetDate)}?` : 'Cancel a lesson'}
+          {presetDate ? `Cancel the lesson on ${formatDay(presetDate, today, { weekday: true })}?` : 'Cancel a lesson'}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {schedule.student_name} with {schedule.tutor_name}, {describeSchedule(schedule)}. Only this date is

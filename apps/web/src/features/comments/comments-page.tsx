@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import {
   COMMENT_TARGET_TYPES,
-  COMMENT_TARGET_LABELS,
+  TERMS,
   type CommentFeedEntry,
   type CommentTargetType,
 } from '@tmi/shared';
@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useDates } from '@/hooks/use-dates';
 import { CommentDeleteButton } from './comment-delete-button';
 import { useCommentFeed } from './api';
 
@@ -40,10 +41,18 @@ const TARGET_ICONS: Record<CommentTargetType, typeof UserIcon> = {
 };
 
 const FILTER_LABELS: Record<CommentTargetType, string> = {
-  user: 'People',
-  session: 'Sessions',
+  user: TERMS.person.Many,
+  session: TERMS.lesson.Many,
   assignment: 'Pairings',
   scheduled_session: 'Schedule',
+};
+
+/** "No comments on people yet." -- the glossary's plurals (a person's is people, never "persons"). */
+const EMPTY_LABELS: Record<CommentTargetType, string> = {
+  user: TERMS.person.many,
+  session: TERMS.lesson.many,
+  assignment: 'pairings',
+  scheduled_session: `scheduled ${TERMS.lesson.many}`,
 };
 
 /**
@@ -64,10 +73,6 @@ export function commentTargetHref(entry: CommentFeedEntry): string {
     case 'scheduled_session':
       return `/schedule?focus=${entry.target_id}`;
   }
-}
-
-function formatWhen(iso: string): string {
-  return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 }
 
 /**
@@ -156,7 +161,7 @@ export function CommentsPage() {
               <MessageSquareIcon className="size-5" />
               {targetType === ANY
                 ? 'Nothing has been commented on yet.'
-                : `No comments on ${COMMENT_TARGET_LABELS[targetType as CommentTargetType]}s yet.`}
+                : `No comments on ${EMPTY_LABELS[targetType as CommentTargetType]} yet.`}
             </p>
           ) : (
             <ul className="divide-border divide-y">
@@ -199,6 +204,7 @@ export function CommentsPage() {
 
 function FeedRow({ entry }: { entry: CommentFeedEntry }) {
   const Icon = TARGET_ICONS[entry.target_type];
+  const dates = useDates();
 
   return (
     <li className="flex items-start gap-3 py-3">
@@ -207,7 +213,7 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
       </span>
 
       <div className="min-w-0 flex-1">
-        <p className="text-sm">
+        <p className="text-sm break-words">
           {/* Both ends of a comment lead somewhere: who said it, and what
               about. Reading the feed is otherwise a dead end. */}
           <Link
@@ -221,10 +227,10 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
             to={commentTargetHref(entry)}
             className="hover:text-primary underline-offset-4 transition-colors hover:underline"
           >
-            {entry.target_label}
+            {dates.text(entry.target_label)}
           </Link>
         </p>
-        <p className="text-muted-foreground text-xs">{formatWhen(entry.created_at)}</p>
+        <p className="text-muted-foreground text-xs">{dates.instant(entry.created_at)}</p>
         <p className="mt-1.5 text-sm whitespace-pre-wrap">{entry.body}</p>
       </div>
 

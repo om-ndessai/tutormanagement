@@ -9,7 +9,7 @@
 // The sheets say what they saved (`form-bridge`), which moves the flow on. Any step may be
 // skipped, and whatever was already added stays. Phase 52 (@ 9485a8e): "This is my child" makes the
 // reader the family -- gaining the parent role if need be -- and opens the flow with them chosen.
-import { featureAllowed, featureOn, type User, type UserRole } from '@tmi/shared';
+import { COMMON_COPY, featureAllowed, featureOn, type User, type UserRole } from '@tmi/shared';
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-native-paper';
@@ -335,7 +335,7 @@ export function StudentFlow() {
                 </Button>
               ) : null}
               <Button testID="student-flow-users" mode="outlined" onPress={() => leaveFor('/people')}>
-                Go to Users
+                {COMMON_COPY.go_to_people}
               </Button>
               <Button testID="student-flow-again" mode="outlined" onPress={restart}>
                 Add another student
@@ -350,8 +350,8 @@ export function StudentFlow() {
             {student
               ? tutoring
                 ? 'Anything you skipped can be done from their record, their progress page or Pairings.'
-                : 'Their record is on the Users page.'
-              : 'You can add a family and a student from Users at any time.'}
+                : 'Their record is on the People page.'
+              : 'You can add a family and a student from People at any time.'}
           </StepText>
         </StepPanel>
       ) : null}

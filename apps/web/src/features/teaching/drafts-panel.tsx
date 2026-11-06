@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ApiRequestError } from '@/lib/api-client';
+import { useDates } from '@/hooks/use-dates';
 import { useDiscardDraft, useMyDrafts, usePostDraft } from './api';
 
 /**
@@ -29,6 +30,7 @@ import { useDiscardDraft, useMyDrafts, usePostDraft } from './api';
  */
 export function DraftsPanel({ onEdit }: { onEdit: (draft: SessionDraft) => void }) {
   const { data } = useMyDrafts();
+  const dates = useDates();
   const drafts = data?.data ?? [];
 
   const post = usePostDraft();
@@ -65,14 +67,14 @@ export function DraftsPanel({ onEdit }: { onEdit: (draft: SessionDraft) => void 
             {drafts.map((draft) => (
               <li key={draft.id} className="flex flex-wrap items-center gap-3 py-2.5">
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium">
+                  <span className="block text-sm font-medium break-words">
                     {draft.student_name}
-                    <Badge variant="secondary" className="ml-2 text-[10px]">
+                    <Badge variant="secondary" className="ml-2 text-xs">
                       Draft
                     </Badge>
                   </span>
                   <span className="text-muted-foreground text-xs">
-                    {draft.occurred_on} · {formatClockTime(draft.started_at)}–
+                    {dates.day(draft.occurred_on, { relative: true, weekday: true })} · {formatClockTime(draft.started_at)}–
                     {formatClockTime(draft.ended_at)} · {SESSION_MODE_LABELS[draft.mode]}
                     {draft.notes || draft.write_up ? '' : ' · no notes yet'}
                   </span>
@@ -107,7 +109,7 @@ export function DraftsPanel({ onEdit }: { onEdit: (draft: SessionDraft) => void 
           <AlertDialogHeader>
             <AlertDialogTitle>Discard this draft?</AlertDialogTitle>
             <AlertDialogDescription>
-              The write-up for {discarding?.student_name} on {discarding?.occurred_on} is deleted.
+              The write-up for {discarding?.student_name} on {discarding && dates.day(discarding.occurred_on)} is deleted.
               Nothing was billed or recorded, so nothing else changes.
             </AlertDialogDescription>
           </AlertDialogHeader>

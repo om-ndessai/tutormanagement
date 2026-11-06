@@ -64,17 +64,17 @@ describe('a payment worded from the reader', () => {
 
 describe('ledger summaries', () => {
   it('leaves the advance out for a tutor paid after the work', () => {
-    expect(tutorLedgerSummary(tutor())).toBe('3 sessions · $242.50 earned · $360.00 paid');
+    expect(tutorLedgerSummary(tutor())).toBe('3 lessons · $242.50 earned · $360.00 paid');
   });
 
   it('says what an advanced tutor holds and the top-up due', () => {
     // Holds 117.50 of a 200.00 level: 82.50 to top up.
     expect(tutorLedgerSummary(tutor({ topup_amount_cents: 20000 }))).toBe(
-      '3 sessions · $242.50 earned · $360.00 paid · holds $117.50 of $200.00 · top up $82.50',
+      '3 lessons · $242.50 earned · $360.00 paid · holds $117.50 of $200.00 · top up $82.50',
     );
     // Above the level: nothing due.
     expect(tutorLedgerSummary(tutor({ topup_amount_cents: 10000 }))).toBe(
-      '3 sessions · $242.50 earned · $360.00 paid · holds $117.50 of $100.00',
+      '3 lessons · $242.50 earned · $360.00 paid · holds $117.50 of $100.00',
     );
   });
 

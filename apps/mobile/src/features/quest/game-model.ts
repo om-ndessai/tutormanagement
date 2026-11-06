@@ -9,15 +9,16 @@
 // React, no api client. The game's own rules live in @tmi/shared.
 // Phase 77 (JF15, docs/journey-fixes-plan.md): a game on one device -- whose turn (the child first on each
 // question), the hand-over line, both scores by first name, each player's own result -- and the lobby's "Invited:".
+// Phase 78 (owner 2026-11-05; JF32): a game is a "quest" on screen ("game" only in "game code" and "Play with"), its
+// level in words ("Grade 6", never "G6"), its header the quest in words (`gameWords`); and the rules line no longer
+// says "may include questions not yet reviewed" (checked questions are served like any other).
 import {
   GAME_CODE_LENGTH,
   GAME_POLL_MS,
   gameEncouragement,
   gameLengthLabel,
-  gameLevelLabel,
   gameMarkingLabel,
   gamePlayersLabel,
-  levelLabel,
   normalizeGameCode,
   placeLabel,
   // Quest's own `pointsLabel` (quest-model.ts) means a count of points; this one is "+2" / "−3".
@@ -39,6 +40,7 @@ import {
 
 import { gameShareText } from '@/features/play/play-model';
 
+import { gameLevelWords } from './level-words';
 import { questChoiceText } from './quest-html';
 
 // --- Polling ----------------------------------------------------------------------------------
@@ -119,11 +121,11 @@ export function gameRowTitle(
 }
 
 /**
- * The share sheet's text: the code and nothing else (no name, no organization). Phase 62 (P7): the
- * web's LobbyInvite words, "Join my Aimtrue game: code ABC234".
+ * The share sheet's text: the code and the quest in words, no name and no organization. Phase 62 (P7), Phase 78: the
+ * web's LobbyInvite words, "Join my Grade 6 Quick 5 quest on Aimtrue: game code ABC234".
  */
-export function shareText(code: string): string {
-  return gameShareText(code);
+export function shareText(code: string, title?: string): string {
+  return gameShareText(code, title);
 }
 
 /** A code spelled out for a screen reader: "A B C 2 3 4". */
@@ -134,8 +136,8 @@ export function spelledCode(code: string): string {
 // --- The rules of a game ----------------------------------------------------------------------
 
 /**
- * The web's Rules: "G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout ·
- * joining open while it runs · may include questions not yet reviewed".
+ * The rules: "Grade 6 · 2 questions · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout ·
+ * joining open while it runs". (`unreviewed` is still read by older apps; this one no longer says it.)
  */
 export function gameRulesLine(
   game: Pick<
@@ -152,21 +154,19 @@ export function gameRulesLine(
     | 'max_team_size'
     | 'knockout'
     | 'late_join'
-    | 'unreviewed'
   > &
     Partial<Pick<GameView, 'seats'>>,
 ): string {
   // Phase 77 (JF15): a game on this device names who plays, never places or teams.
   const players = seatedGame(game) ? seatedPlayersLabel(game) : gamePlayersLabel(game);
   return (
-    `${gameLevelLabel(game, levelLabel)} · ${gameLengthLabel(game)} · ${gameMarkingLabel(game)} · ` +
+    `${gameLevelWords(game)} · ${gameLengthLabel(game)} · ${gameMarkingLabel(game)} · ` +
     `${players}${game.knockout ? ' · knockout' : ''}` +
-    `${game.late_join ? ' · joining open while it runs' : ''}` +
-    `${game.unreviewed ? ' · may include questions not yet reviewed' : ''}`
+    `${game.late_join ? ' · joining open while it runs' : ''}`
   );
 }
 
-/** The join sheet's line: "Priya’s game · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team · knockout". */
+/** The join sheet's line: "Priya’s quest · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team · knockout". */
 export function lookupLine(
   lookup: Pick<
     GameLookup,
@@ -179,7 +179,7 @@ export function lookupLine(
     | 'knockout'
   >,
 ): string {
-  return `${lookup.host_first_name}’s game · ${gameMarkingLabel(lookup)} · ${gamePlayersLabel(lookup)}${lookup.knockout ? ' · knockout' : ''}`;
+  return `${lookup.host_first_name}’s quest · ${gameMarkingLabel(lookup)} · ${gamePlayersLabel(lookup)}${lookup.knockout ? ' · knockout' : ''}`;
 }
 
 /**
@@ -190,21 +190,23 @@ export function joinClosedText(
   lookup: Pick<GameLookup, 'players' | 'open' | 'status' | 'host_first_name'>,
 ): string | null {
   if (lookup.players === 'single') {
-    return `This is ${lookup.host_first_name}’s single-player game, so it cannot be joined.`;
+    return `This is ${lookup.host_first_name}’s single-player quest, so it cannot be joined.`;
   }
   if (lookup.open) return null;
-  return `This game has ${lookup.status === 'finished' ? 'ended' : 'started'}, so it cannot be joined now.`;
+  return `This quest has ${lookup.status === 'finished' ? 'ended' : 'started'}, so it cannot be joined now.`;
 }
 
 /** Over the join choices when a game left open is already under way. */
 export const JOIN_RUNNING_TEXT =
-  'This game is under way: you can still join, and start from its first question.';
+  'This quest is under way: you can still join, and start from its first question.';
 
 // --- In the game ------------------------------------------------------------------------------
 
-/** "Quest game · G6", "Quest game · G5 and up, at random", or "Quest game" before it is read. */
-export function gameTitle(game: Pick<GameView, 'level_id' | 'level_scope'> | undefined): string {
-  return game ? `Quest game · ${gameLevelLabel(game, levelLabel)}` : 'Quest game';
+/** The header: the quest in words, "Grade 6 Quick 2", "Grade 5 and up 5-minute dash"; "Quest" before it is read. */
+export function gameTitle(
+  game: Pick<GameView, 'level_id' | 'level_scope' | 'mode' | 'question_count' | 'duration_seconds'> | undefined,
+): string {
+  return game ? gameWordsOf(game) : 'Quest';
 }
 
 /** "1 point", "3 points", "-1 points" (a score may go below zero with negative marking). */
@@ -298,13 +300,13 @@ export function answerNotice(
 
 export const HOSTING_TEXT = 'You are hosting. The scores update as the teams play.';
 export const MISSING_TEXT =
-  'This game was not found, or you are not in it. Join it with its code from the Quest page.';
+  'This quest was not found, or you are not in it. Join it with its code from the Quest page.';
 /** No game yet and the server not reached: a connection, not a missing game. */
-export const UNREACHABLE_TEXT = 'Could not reach the game just now. Check your connection, then try again.';
+export const UNREACHABLE_TEXT = 'Could not reach the quest just now. Check your connection, then try again.';
 /** While a poll is failing: the game stays as it was. */
-export const RECONNECTING_TEXT = 'Reconnecting to the game…';
+export const RECONNECTING_TEXT = 'Reconnecting to the quest…';
 /** The waiting card's label (Phase 47: it is the game's status page). */
-export const WAITING_LABEL = 'Game status';
+export const WAITING_LABEL = 'Quest status';
 /** Under the doors while they count down. */
 export const GETTING_READY_TEXT = 'Get ready: the doors are opening…';
 
@@ -331,7 +333,7 @@ export function waitingCopy(
 }
 
 export function waitingText(mode: GameMode): string {
-  return `Your teammates are answering the last ones. The game ends when every team is done${mode === 'timed' ? ' or the time is up' : ''}.`;
+  return `Your teammates are answering the last ones. The quest ends when every team is done${mode === 'timed' ? ' or the time is up' : ''}.`;
 }
 
 // --- The clock --------------------------------------------------------------------------------
@@ -456,11 +458,11 @@ export function countdownLabel(ms: number): string {
   return String(seconds - 1);
 }
 
-/** What a screen reader is told: "The Quest begins in 5 seconds" on showing, and "Go!" at the end. */
+/** What a screen reader is told: "The quest begins in 5 seconds" on showing, and "Go!" at the end. */
 export function countdownSpeech(ms: number): string {
   if (ms <= 1000) return 'Go!';
   const seconds = Math.ceil(ms / 1000);
-  return `The Quest begins in ${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
+  return `The quest begins in ${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
 }
 
 // --- On one device (Phase 77, JF15) -----------------------------------------------------------

@@ -56,8 +56,8 @@ export function FinishWriteUp({ tutorUserId }: { tutorUserId: string }) {
       {others > 0 ? (
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
           {others === 1
-            ? 'Another draft from today is on Sessions.'
-            : `${others} more drafts from today are on Sessions.`}
+            ? 'Another draft from today is on Lessons.'
+            : `${others} more drafts from today are on Lessons.`}
         </Text>
       ) : null}
       <Button

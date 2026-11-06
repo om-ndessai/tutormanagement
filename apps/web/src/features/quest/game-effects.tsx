@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 // Phase 47 (docs/quest-games-g2-plan.md): the moments of a game. The doors
-// that open on 3, 2, 1, Go! when the host starts the Quest (every screen
+// that open on 3, 2, 1, Go! when the host starts the quest (every screen
 // counts to the same instant, the server's), the knockout stamp when a game
 // ends early, and confetti for the winners. Under reduced motion there is no
 // animation: the countdown is its numbers, the rest is the words beside it.
@@ -46,12 +46,13 @@ export function DoorsCountdown({ msLeft }: { msLeft: number }) {
       className="fixed inset-0 z-50 overflow-hidden bg-black/60"
       role="alert"
       aria-live="assertive"
-      aria-label={`The game starts in ${seconds} seconds`}
+      aria-label={`The quest starts in ${seconds} seconds`}
       data-testid="game-countdown"
     >
       <div className="absolute inset-0 flex items-center justify-center">
+        {/* Phase 78 (JF28): sized to the screen with clamp(), so it never runs off a phone's edge. */}
         <span
-          className={'text-7xl font-black tracking-tight text-white drop-shadow-lg sm:text-9xl ' + (opening ? 'quest-go' : '')}
+          className={'px-4 text-[clamp(3rem,20vw,8rem)] font-black tracking-tight text-white drop-shadow-lg ' + (opening ? 'quest-go' : '')}
         >
           {opening ? 'Go!' : ''}
         </span>
@@ -63,11 +64,11 @@ export function DoorsCountdown({ msLeft }: { msLeft: number }) {
         </>
       ) : null}
       {!opening && (
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-white">
-          <span className="text-sm font-semibold tracking-[0.3em] uppercase opacity-80">The Quest begins</span>
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center text-white">
+          <span className="text-sm font-semibold opacity-80">The quest begins</span>
           <span
             key={label}
-            className="quest-count-pop text-8xl font-black tabular-nums drop-shadow-lg sm:text-[10rem]"
+            className="quest-count-pop max-w-full text-[clamp(3rem,16vw,10rem)] leading-none font-black tabular-nums drop-shadow-lg"
             data-testid="game-countdown-number"
           >
             {label}
@@ -158,7 +159,7 @@ export function KnockoutBurst() {
       aria-hidden
       data-testid="game-knockout-burst"
     >
-      <span className="quest-ko bg-destructive rounded-2xl px-10 py-6 text-7xl font-black tracking-tight text-white shadow-2xl sm:text-9xl">
+      <span className="quest-ko bg-destructive rounded-2xl px-[clamp(1.5rem,6vw,2.5rem)] py-6 text-[clamp(3rem,18vw,8rem)] font-black tracking-tight text-white shadow-2xl">
         K.O.!
       </span>
     </div>

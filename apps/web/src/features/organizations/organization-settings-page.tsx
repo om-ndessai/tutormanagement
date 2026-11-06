@@ -7,6 +7,7 @@ import {
   featureAllowed,
   ORG_PALETTE_LABELS,
   ORG_TIME_ZONE_LABELS,
+  CHECKED_QUESTIONS_COPY,
   formatRelativeTime,
   type OrganizationSettings,
 } from '@tmi/shared';
@@ -144,7 +145,7 @@ export function OrganizationSettingsPage() {
         {featureAllowed(organization, 'tutoring') && !organization.business && (
           <Card className="py-0" data-testid="paid-directly-card">
             <CardContent className="grid gap-2 p-5 text-sm">
-              <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+              <h2 className="text-muted-foreground text-[13px] font-semibold">
                 Payments
               </h2>
               <p className="font-medium">Families pay each tutor directly</p>
@@ -160,7 +161,7 @@ export function OrganizationSettingsPage() {
         <Card className="py-0">
           <CardContent className="p-5">
             <form className="grid gap-4" onSubmit={save} aria-label="1099 payer details">
-              <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+              <h2 className="text-muted-foreground text-[13px] font-semibold">
                 1099 payer
               </h2>
               <p className="text-sm" data-testid="space-business-name">
@@ -195,7 +196,7 @@ export function OrganizationSettingsPage() {
 
         <Card className="py-0 lg:row-span-2">
           <CardContent className="grid gap-3 p-5 text-sm">
-            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+            <h2 className="text-muted-foreground text-[13px] font-semibold">
               Set by the platform
             </h2>
             <LogoLockup />
@@ -288,12 +289,8 @@ function CanvasAssessmentsCard({
       <CardContent className="grid gap-4 p-5 text-sm">
         <div className="flex items-start gap-4">
           <div className="grid flex-1 gap-1">
-            <h2 className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-              Assessment in this space
-              <Badge variant="secondary" className="px-1.5 py-0 text-[10px] tracking-normal normal-case">
-                Beta
-              </Badge>
-            </h2>
+            {/* No "Beta" mark since Phase 78 (owner, 2026-11-05). */}
+            <h2 className="text-muted-foreground text-[13px] font-semibold">Assessment in this space</h2>
             <p className="text-muted-foreground text-xs">
               When on, everyone here sees an Assessment menu. A student answers questions by hand on a canvas, one
               question per page, with nothing marked while they work; on submitting, their tutors and the admins get a
@@ -317,9 +314,7 @@ function CanvasAssessmentsCard({
         <div className="grid gap-1 border-t pt-4" data-testid="checked-questions-note">
           <h3 className="text-xs font-medium">Questions not yet reviewed</h3>
           <p className="text-muted-foreground text-xs">
-            {unreviewed
-              ? 'Included: assessments and games here also draw questions that passed every automatic check but that no person has approved yet, each marked Beta (the tutor’s PDF marks it “not yet reviewed”). The platform sets this.'
-              : 'Not included: assessments and games here draw approved questions only. The platform sets this.'}
+            {unreviewed ? CHECKED_QUESTIONS_COPY.included : CHECKED_QUESTIONS_COPY.excluded}
           </p>
         </div>
         <div className="flex items-start gap-4 border-t pt-4">
@@ -379,7 +374,7 @@ function GamificationCard({ questQuest }: { questQuest: boolean }) {
       <CardContent className="grid gap-4 p-5 text-sm">
         <div className="flex items-start gap-4">
           <div className="grid flex-1 gap-1">
-            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Quest in this space</h2>
+            <h2 className="text-muted-foreground text-[13px] font-semibold">Quest in this space</h2>
             <h3 className="text-xs font-medium">Question Quest</h3>
             <p className="text-muted-foreground text-xs">
               When on, a student who signs in answers the question bank’s questions that no person has approved yet,
@@ -409,6 +404,8 @@ function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
   const update = useUpdateOrganizationSettings();
   const log = useOrganizationNotifications(true);
   const entries = log.data?.data ?? [];
+  // One `now` for the whole list (Phase 78), so two lines never disagree about the same moment.
+  const now = new Date();
 
   async function toggle(next: boolean) {
     try {
@@ -424,12 +421,12 @@ function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
       <CardContent className="grid gap-4 p-5 text-sm">
         <div className="flex items-start gap-4">
           <div className="grid flex-1 gap-1">
-            <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+            <h2 className="text-muted-foreground text-[13px] font-semibold">
               Email notifications
             </h2>
             <p className="text-muted-foreground text-xs">
               When on, the people concerned are emailed when someone is added, a plan or assessment
-              is added, lessons are scheduled, or a session is recorded. An email says what happened
+              is added, lessons are scheduled, or a lesson is recorded. An email says what happened
               and links here — never money, notes or scores. On Cloudflare’s free plan only verified
               addresses receive mail; the others show as not delivered below.
             </p>
@@ -451,7 +448,7 @@ function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
                     {entry.subject_name && entry.subject_name !== entry.recipient_name
                       ? ` · ${entry.subject_name}`
                       : ''}{' '}
-                    · {formatRelativeTime(entry.created_at)}
+                    · {formatRelativeTime(entry.created_at, now)}
                   </span>
                   <Badge
                     variant={entry.status === 'failed' ? 'destructive' : 'secondary'}

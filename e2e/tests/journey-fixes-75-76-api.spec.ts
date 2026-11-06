@@ -64,6 +64,17 @@ async function family(admin: Page, tag: string, prices: { in_person?: number | n
   return { studentId: student.id, parentId: parent.id };
 }
 
+/**
+ * The tutors made here, removed after each test: left in the space, each would sit in the office's "SSN not on file"
+ * panel and the year-end list of every later spec (tax.spec.ts asserts the panel clears once its own tutor's is in).
+ */
+const tutorsMade: string[] = [];
+test.afterEach(async ({ as }) => {
+  if (tutorsMade.length === 0) return;
+  const admin = await as('admin');
+  for (const id of tutorsMade.splice(0)) await admin.request.delete(`/api/users/${id}`);
+});
+
 /** A tutor of the office's, paid in person only unless told otherwise, paired with the student. */
 async function tutorFor(admin: Page, tag: string, studentId: string, rates: { in_person?: number | null; virtual?: number | null } = {}) {
   const email = `p75.tutor.${tag}.${run}@example.com`;
@@ -83,6 +94,7 @@ async function tutorFor(admin: Page, tag: string, studentId: string, rates: { in
     }),
     'a tutor',
   );
+  tutorsMade.push(tutor.id);
   await unwrap(await admin.request.post('/api/assignments', { data: { tutor_user_id: tutor.id, student_user_id: studentId } }), 'pairing them');
   return { id: tutor.id as string, email };
 }

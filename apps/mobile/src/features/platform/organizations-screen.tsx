@@ -108,7 +108,7 @@ export function OrganizationsScreen() {
                     <View
                       style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}
                     >
-                      <Text variant="titleSmall" numberOfLines={1} style={{ flexShrink: 1 }}>
+                      <Text variant="titleSmall" style={{ flexShrink: 1 }}>
                         {org.name}
                       </Text>
                       {org.archived_at ? (

@@ -26,8 +26,13 @@ jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));
 jest.mock('@/lib/download', () => ({ downloadAndShare: jest.fn() }));
+const mockFocused = jest.fn((): { data?: { data: TutoringSession }; isPending: boolean; isError: boolean } => ({
+  data: undefined,
+  isPending: false,
+  isError: false,
+}));
 jest.mock('./api', () => ({
-  useSession: () => ({ data: undefined, isPending: false, isError: false }),
+  useSession: () => mockFocused(),
   useActiveSession: () => ({ isSuccess: true, data: { data: { mine: null, all: [] } } }),
   useAssignments: () => ({ data: { data: [] } }),
   useMyDrafts: () => ({ data: undefined }),
@@ -98,6 +103,7 @@ function owed(overrides: Partial<LessonOwed> = {}): LessonOwed {
 
 beforeEach(() => {
   mockOwed.mockReturnValue([]);
+  mockFocused.mockReturnValue({ data: undefined, isPending: false, isError: false });
   jest.mocked(router.push).mockClear();
   jest.mocked(router.navigate).mockClear();
 });
@@ -147,6 +153,32 @@ describe('Phase 75 (JF19, JF30): To record leads the Tutoring tab', () => {
     mockOwed.mockReturnValue([owed()]);
     await renderWithProviders(<SessionsScreen />);
     expect(screen.queryByTestId('sessions-to-record')).toBeNull();
+  });
+});
+
+describe('Phase 78 (the glossary): a lesson linked from a comment', () => {
+  it('says "lesson", never "session", in the focus notice', async () => {
+    signedInAs(['tutor']);
+    mockParams.mockReturnValue({ focus: 's1' });
+    givePages([], allTotals);
+    mockFocused.mockReturnValue({ data: { data: withMoney('none') }, isPending: false, isError: false });
+    await renderWithProviders(<SessionsScreen />);
+    expect(screen.getByTestId('focus-notice')).toBeTruthy();
+    expect(screen.getByText('Showing one lesson, linked from a comment.')).toBeTruthy();
+    expect(screen.queryByText(/session/i)).toBeNull();
+  });
+
+  it('says the lesson is gone when the comment outlived it', async () => {
+    signedInAs(['tutor']);
+    mockParams.mockReturnValue({ focus: 's9' });
+    givePages([], allTotals);
+    mockFocused.mockReturnValue({ data: undefined, isPending: false, isError: false });
+    await renderWithProviders(<SessionsScreen />);
+    expect(screen.getByTestId('focus-notice')).toBeTruthy();
+    expect(
+      screen.getByText('That lesson is no longer here — it may have been removed since the comment was written.'),
+    ).toBeTruthy();
+    expect(screen.queryByText(/session/i)).toBeNull();
   });
 });
 

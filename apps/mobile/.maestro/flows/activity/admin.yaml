@@ -24,7 +24,7 @@ tags:
     env:
       LINK: aimtrue://activity
 - extendedWaitUntil:
-    visible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+    visible: 'Commented on the Sep 15(, 2026)? lesson with Sofia Okafor'
     timeout: 20000
 - assertVisible: 'Everything that has happened in the portal, newest first.'
 - assertVisible: "Confirmed .* has Maria Okafor's SSN on file"
@@ -70,7 +70,7 @@ tags:
     notVisible: 'Commented on Sanjay Patel'
     timeout: 10000
 - assertVisible: "Confirmed .* has Maria Okafor's SSN on file"
-- assertNotVisible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+- assertNotVisible: 'Commented on the Sep 15(, 2026)? lesson with Sofia Okafor'
 - tapOn:
     id: activity-clear
 - extendedWaitUntil:
@@ -106,6 +106,6 @@ tags:
 - extendedWaitUntil:
     notVisible: 'Commented on Sanjay Patel'
     timeout: 10000
-- assertVisible: 'Commented on the 2026-09-15 session with Sofia Okafor'
+- assertVisible: 'Commented on the Sep 15(, 2026)? lesson with Sofia Okafor'
 - assertNotVisible: "Confirmed .* has Maria Okafor's SSN on file"
 - takeScreenshot: activity-admin-person

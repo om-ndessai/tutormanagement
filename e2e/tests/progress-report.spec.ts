@@ -90,7 +90,7 @@ test.describe('the progress report', () => {
     // Sanjay's lessons are on the admin's report and nowhere in Alex's.
     expect(tutorStrings.some((text) => text.includes('Sanjay Patel  ·'))).toBe(false);
     expect(adminStrings.some((text) => text.includes('Sanjay Patel  ·'))).toBe(true);
-    // "Sessions held" counts what is listed.
+    // "Lessons held" counts what is listed.
     expect(tutorStrings).toContain(`${own.length} in this range, newest first`);
     expect(adminStrings).toContain(`${all.length} in this range, newest first`);
   });
@@ -103,7 +103,9 @@ test.describe('the progress report', () => {
     const strings = pdfStrings(await response.body());
     expect(strings).toContain('No learning plan yet');
     expect(strings).not.toContain('Timeline towards the goal');
-    expect(strings).toContain('Sessions');
+    // Phase 78 (JF32): the PDF's section is "Lessons", never "Sessions".
+    expect(strings).toContain('Lessons');
+    expect(strings).not.toContain('Sessions');
   });
 
   test('a lesson names the place of the schedule it fell on, and the calendar marks the schedules', async ({ as }) => {

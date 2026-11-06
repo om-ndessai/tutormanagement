@@ -14,6 +14,7 @@ import type { ComponentType } from 'react';
 import { AUDIT_ACTION_LABELS, formatRelativeTime, type AuditEvent } from '@tmi/shared';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { useDates } from '@/hooks/use-dates';
 import { cn } from '@/lib/utils';
 
 /**
@@ -41,10 +42,6 @@ const ACTION_TONE: Record<string, string> = {
   'user.created': 'bg-success/15 text-success',
 };
 
-function absoluteTime(iso: string) {
-  return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
-
 export function ActivityFeed({
   events,
   isLoading,
@@ -57,6 +54,9 @@ export function ActivityFeed({
   emptyMessage?: string;
   showActor?: boolean;
 }) {
+  const dates = useDates();
+  // One `now` for the whole feed (Phase 78): two lines written a moment apart never disagree about "ago".
+  const now = new Date();
   if (isLoading) {
     return (
       <ul className="space-y-4">
@@ -95,14 +95,15 @@ export function ActivityFeed({
             </span>
 
             <div className="min-w-0 flex-1">
-              <p className="text-sm leading-snug">{event.description}</p>
+              {/* The log keeps its ISO days; the reader gets them in words (`readableDates`). */}
+              <p className="text-sm leading-snug break-words">{dates.text(event.description)}</p>
               <p className="text-muted-foreground mt-0.5 text-xs">
                 {showActor && <span className="font-medium">{event.actor_name}</span>}
                 {showActor && ' · '}
                 <span>{AUDIT_ACTION_LABELS[event.action as never] ?? event.action}</span>
                 {' · '}
-                <time dateTime={event.created_at} title={absoluteTime(event.created_at)}>
-                  {formatRelativeTime(event.created_at)}
+                <time dateTime={event.created_at} title={dates.instant(event.created_at)}>
+                  {formatRelativeTime(event.created_at, now)}
                 </time>
               </p>
             </div>

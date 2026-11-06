@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { formatDay } from '@tmi/shared';
 
 import { expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
@@ -227,7 +228,7 @@ test.describe('the student’s reflection on a lesson', () => {
     try {
       const sofia = await as('student');
       await sofia.goto(`/sessions?focus=${lesson.id}`);
-      await sofia.getByRole('button', { name: 'Reflect on this session' }).click();
+      await sofia.getByRole('button', { name: 'Reflect on this lesson' }).click();
 
       const dialog = sofia.getByRole('dialog');
       await expect(dialog.getByRole('heading', { name: 'How did this lesson go for you?' })).toBeVisible();
@@ -243,8 +244,8 @@ test.describe('the student’s reflection on a lesson', () => {
 
       // The card shows it, and she no longer has an Assess button.
       await expect(sofia.getByText('Student reflected')).toBeVisible();
-      await expect(sofia.getByRole('button', { name: 'Assess this session' })).toHaveCount(0);
-      await sofia.getByRole('button', { name: /^(Session notes|Reflection)$/ }).click();
+      await expect(sofia.getByRole('button', { name: 'Assess this lesson' })).toHaveCount(0);
+      await sofia.getByRole('button', { name: /^(Lesson notes|Reflection)$/ }).click();
       await expect(sofia.getByText('Page two took ages.')).toBeVisible();
 
       // Her tutor's Tutoring tab flags the pace.
@@ -266,9 +267,10 @@ test.describe('the student’s reflection on a lesson', () => {
     try {
       const maria = await as('parentTutor');
       await maria.goto('/dashboard?role=parent');
-      // Named by date and time, so another lesson of hers today cannot be taken for it.
+      // Named by date and time, so another lesson of hers today cannot be taken for it. The day reads in words
+      // ("Nov 6"), through the shared formatter (Phase 78).
       await maria
-        .getByRole('button', { name: `Reflect with Sofia on the ${lesson.occurred_on} 7:00 AM lesson` })
+        .getByRole('button', { name: `Reflect with Sofia on the ${formatDay(lesson.occurred_on, instituteToday())} 7:00 AM lesson` })
         .click();
 
       const dialog = maria.getByRole('dialog');

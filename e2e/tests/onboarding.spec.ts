@@ -172,14 +172,14 @@ test.describe('the welcome wizard', () => {
       const family = admin.getByRole('dialog', { name: 'New family account' });
       await family.locator('#full_name').fill(parentName);
       await family.locator('#email').fill(`wizard.family.${stamp}@gmail.com`);
-      await family.getByRole('button', { name: 'Add user' }).click();
+      await family.getByRole('button', { name: 'Add a person' }).click();
       await expect(family).toHaveCount(0);
 
       // The student, linked to them in the same request.
       await wizard(admin).getByRole('button', { name: 'Add the student' }).click();
       const student = admin.getByRole('dialog', { name: 'New student' });
       await student.locator('#full_name').fill(studentName);
-      await student.getByRole('button', { name: 'Add user' }).click();
+      await student.getByRole('button', { name: 'Add a person' }).click();
       await expect(student).toHaveCount(0);
 
       // Then what next (nextStepsAfterAdd), each the portal's own dialog, preset.
@@ -246,7 +246,7 @@ test.describe('the welcome wizard', () => {
       await create.locator('#email').fill(`wizard.tutor.${stamp}@gmail.com`);
       // Only this step's fields: no pay rate on screen yet.
       await expect(create.locator('#t_rate_ip')).toHaveCount(0);
-      await create.getByRole('button', { name: 'Add user' }).click();
+      await create.getByRole('button', { name: 'Add a person' }).click();
       await expect(create).toHaveCount(0);
 
       await wizard(admin).getByRole('button', { name: 'Set up financials' }).click();

@@ -146,6 +146,34 @@ describe("Start, when one is in progress", () => {
     expect(router.push).toHaveBeenCalledWith({ pathname: '/assessments/[id]', params: { id: 'a-1' } });
   });
 
+  // The Phase 77 carry (Phase 78): the warning and the row below say the same relative time, from one `now` taken as
+  // the warning is raised -- the row no longer keeps the moment the list first rendered.
+  it('says the same "started N minutes ago" in the warning and in the row below', async () => {
+    mockAuth.mockReturnValue({ user: { id: 'omar', roles: ['parent'] }, organization: ORG });
+    // Only the clock is faked: renders and presses run as usual.
+    jest.useFakeTimers({
+      doNotFake: [
+        'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'setImmediate', 'clearImmediate',
+        'queueMicrotask', 'nextTick', 'hrtime', 'performance', 'requestAnimationFrame', 'cancelAnimationFrame',
+        'requestIdleCallback', 'cancelIdleCallback',
+      ],
+    });
+    try {
+      const start = Date.now();
+      mockState.list = [row({ id: 'a-1', started_at: new Date(start - 8 * 60_000).toISOString() })];
+      await renderWithProviders(<AssessmentsScreen />);
+      expect(screen.getByTestId('assessment-summary-a-1')).toHaveTextContent(/started 8 minutes ago/);
+      await chooseNoorAndGrade4();
+      // Two minutes pass before Start is pressed.
+      jest.setSystemTime(start + 2 * 60_000);
+      await fireEvent.press(screen.getByTestId('assessment-begin'));
+      expect(screen.getByTestId('assessment-in-progress-words')).toHaveTextContent(/started 10 minutes ago/);
+      expect(screen.getByTestId('assessment-summary-a-1')).toHaveTextContent(/started 10 minutes ago/);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
   it('Start another starts a second one', async () => {
     mockAuth.mockReturnValue({ user: { id: 'omar', roles: ['parent'] }, organization: ORG });
     mockState.list = [row({ id: 'a-1' })];

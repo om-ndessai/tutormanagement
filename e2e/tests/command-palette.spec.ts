@@ -50,7 +50,7 @@ test.describe('command palette', () => {
     await tutor.goto('/');
     await expect(tutor.getByTestId('member-home')).toBeVisible();
     await tutor.keyboard.press('ControlOrMeta+k');
-    await expect(palette(tutor).getByRole('option', { name: 'Sessions', exact: true })).toBeVisible();
+    await expect(palette(tutor).getByRole('option', { name: 'Lessons', exact: true })).toBeVisible();
     await expect(palette(tutor).getByRole('option', { name: 'Space settings', exact: true })).toHaveCount(0);
   });
 });

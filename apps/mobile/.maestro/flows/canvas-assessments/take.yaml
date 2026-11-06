@@ -31,7 +31,8 @@ tags:
     element:
       id: more-nav-assessments
     centerElement: true
-- assertVisible:
+# Phase 78 (owner, 2026-11-05): no Beta beside the menu item or on the page.
+- assertNotVisible:
     id: more-nav-assessments-badge
 - tapOn:
     id: more-nav-assessments
@@ -39,8 +40,9 @@ tags:
     visible:
       id: screen-assessments
     timeout: 15000
-- assertVisible:
+- assertNotVisible:
     id: assessment-beta
+- assertNotVisible: '.*\bBeta\b.*'
 # Start one: Sofia, Grade 4.
 - tapOn:
     id: assessment-student

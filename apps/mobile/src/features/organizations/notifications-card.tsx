@@ -55,7 +55,7 @@ export function EmailNotificationsCard({ enabled }: { enabled: boolean }) {
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
           <Text variant="bodySmall" style={{ flex: 1, color: muted }}>
             When on, the people concerned are emailed when someone is added, a plan or assessment is added,
-            lessons are scheduled, or a session is recorded. An email says what happened and links here —
+            lessons are scheduled, or a lesson is recorded. An email says what happened and links here —
             never money, notes or scores. On Cloudflare’s free plan only verified addresses receive mail; the
             others show as not delivered below.
           </Text>

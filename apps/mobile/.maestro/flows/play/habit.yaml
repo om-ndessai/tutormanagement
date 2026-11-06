@@ -4,7 +4,7 @@
 # results. Exit brings her Home, where My progress says she played today and shows the First quest badge
 # and (Phase 67) the week's dots. The Daily is a card of five rings (Phase 67), filled once played.
 # "Today's Daily" is that level's (the level last played on this phone): five questions, one at a time,
-# skipped through -- the answers go to the server once, at the end -- and the result: "<tag>D #n · 0 of 5"
+# skipped through -- the answers go to the server once, at the end -- and the result: "Grade <n> · 0 of 5"
 # and the grid ✗✗✗✗✗, with Share and Back to Play; Home again, the tile shows her best. The switches are
 # off again at the end.
 # Phase 73 (JF14, JF16, JF23): the grade she taps is kept on the server, and the Daily is its grade's -- the one
@@ -278,9 +278,11 @@ tags:
     visible:
       id: daily-result
     timeout: 15000
+# Its level in words since Phase 78, never the "G4D #n" code.
 - assertVisible:
     id: daily-heading
-    text: '${output.habitTag}D #\d+ · 0 of 5'
+    text: 'Grade ${output.habitGrade} · 0 of 5'
+- assertNotVisible: '.*${output.habitTag}D #.*'
 - assertVisible:
     id: daily-grid
     text: '✗✗✗✗✗'

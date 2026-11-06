@@ -4,14 +4,14 @@
 // the brand's deepest blues (the mark, Sign in, the headline, the console's home bar), Today's 5 over its
 // foot, a grade row (1-8, remembered on this phone), the grade's quests as game cards (the locked ones
 // the offer), the advanced ones, two panels for grown-ups, three short answers, and the footer. A level
-// is "Grade 4" or "Adv G4" to a guest: never a code or a curriculum's name.
+// is "Grade 4" or "Adv Grade 4" to a guest: never a code or a curriculum's name.
 //
 // Mobile: Sign in opens the sign-in screen; "Create a free family space" and the offer's Sign up open the
 // sign-up sheet over this screen. Once signed in (by either), the app lands as usual. Two columns of
 // cards on a phone, four (and the panels side by side) on a wide screen.
 //
 // Phase 67 (H6): the card, Today's 5 and the grade row are the shared `features/play/quest-card.tsx`
-// pieces (the member Play home uses them too); the guest board keeps its mode colours and testIDs.
+// pieces (the member Play home uses them too); the guest board keeps its testIDs.
 //
 // UI audit (JF8, JF10; Phase 70): the page speaks to every visitor -- a line under the headline and "Can
 // adults play?" among the answers -- and once a sign-up has been declined in this run it offers Sign in
@@ -21,6 +21,11 @@
 // keeps the code on this phone for the first home; the example code is drawn as an illustration marked "Example"
 // (not a box to type in, and not read out); and a friend's quest link a guest cannot play is named at the top
 // ("You were sent ...") with the way to an account.
+//
+// Phase 78 (owner 2026-11-05, reversing H6's "mode colours"): the guest board wears the grade hues too (`levelGrade`),
+// its chosen grade chip in its hue, the mode shown by the card's icon alone; amber stays on the hero's "Hit the
+// target." and leaves the cards and the Play together example; the "Example" mark and the grade row's label are
+// sentence case at 12pt.
 import {
   GUEST_GRADES,
   GUEST_PROMISES,
@@ -33,6 +38,7 @@ import {
   guestTileName,
   guestTileTitle,
   guestTodayLevel,
+  levelGrade,
   parseTileCode,
   type GuestGrade,
   type GuestTile,
@@ -342,7 +348,7 @@ export function GuestHome() {
         <View style={{ gap: space.sm }}>
           <Text
             variant="labelMedium"
-            style={{ ...gutter, ...muted, letterSpacing: 0.6, textTransform: 'uppercase' }}
+            style={{ ...gutter, ...muted, fontWeight: '700' }}
           >
             Your grade
           </Text>
@@ -351,6 +357,7 @@ export function GuestHome() {
             value={grade}
             onChange={(g) => chooseGrade(g as GuestGrade)}
             testIDPrefix="guest-grade-"
+            hued
             gutter={space.lg}
           />
         </View>
@@ -492,7 +499,7 @@ function GuestTodayCard({
   );
 }
 
-/** A guest's quest card: the mode's colour, its title and detail; locked, the offer. */
+/** A guest's quest card: its grade's hue (the mode is its icon), its title and detail; locked, the offer. */
 function GuestQuestCard({
   tile,
   best,
@@ -516,7 +523,7 @@ function GuestQuestCard({
       title={title}
       detail={detail}
       icon={tile.kind === 'assessment' ? 'pencil' : tile.mode === 'timed' ? 'timer' : 'target'}
-      tone={{ mode: tile.kind === 'quest' && tile.mode === 'timed' ? 'timed' : 'count' }}
+      tone={{ grade: levelGrade(tile.level_id) }}
       locked={tile.locked}
       onPress={onPress}
       footer={
@@ -552,7 +559,8 @@ function PlayTogether({
   const wide = width >= 700;
   const people = [
     { initial: 'M', color: theme.tokens.primary, ink: theme.tokens.primaryForeground },
-    { initial: 'J', color: theme.tokens.warning, ink: theme.tokens.warningForeground },
+    // Not amber, which is kept for the call to notice first (Phase 78).
+    { initial: 'J', color: theme.tokens.info, ink: theme.tokens.infoForeground },
     { initial: 'A', color: theme.tokens.success, ink: theme.tokens.successForeground },
   ];
   return (
@@ -600,11 +608,8 @@ function PlayTogether({
                 backgroundColor: theme.tokens.muted,
               }}
             >
-              <Text
-                variant="labelSmall"
-                style={{ fontSize: 10, fontWeight: '700', letterSpacing: 0.6, color: theme.tokens.mutedForeground }}
-              >
-                EXAMPLE
+              <Text variant="labelSmall" style={{ fontWeight: '700', color: theme.tokens.mutedForeground }}>
+                Example
               </Text>
             </View>
           </View>

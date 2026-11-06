@@ -17,11 +17,11 @@ test.describe('the Tutoring tab’s sections', () => {
     const panel = admin.getByRole('tabpanel');
     await expect(panel.getByRole('heading', { name: 'Recent Activity' })).toBeVisible();
     const headings = await panel.getByRole('heading', { level: 2 }).allTextContents();
-    expect(headings).toEqual(['Analytics', 'Tutoring Sessions', 'Progress', 'Recent Activity']);
+    expect(headings).toEqual(['Analytics', 'Lessons', 'Progress', 'Recent Activity']);
 
     // No card for the number of admins, and no hint line to push one card taller.
     const analytics = admin.getByRole('region', { name: 'Analytics' });
-    await expect(analytics.getByText('Sessions running')).toBeVisible();
+    await expect(analytics.getByText('Lessons running')).toBeVisible();
     await expect(analytics.getByText('Admins', { exact: true })).toHaveCount(0);
     await expect(admin.getByText('None in progress')).toHaveCount(0);
 
@@ -36,15 +36,15 @@ test.describe('the Tutoring tab’s sections', () => {
     const admin = await as('admin');
     await admin.goto('/dashboard');
 
-    const sessions = admin.getByRole('region', { name: 'Tutoring Sessions' });
-    await expect(sessions.getByRole('link', { name: /^Next session:/ })).toBeVisible();
-    await expect(sessions.getByRole('link', { name: /^Past session:/ })).toHaveCount(5);
+    const sessions = admin.getByRole('region', { name: 'Lessons', exact: true });
+    await expect(sessions.getByRole('link', { name: /^Next lesson:/ })).toBeVisible();
+    await expect(sessions.getByRole('link', { name: /^Past lesson:/ })).toHaveCount(5);
 
     // A cancelled date keeps its card (Phase 24), so it counts as one of the
     // five: seeded cancellations come into range as the real clock moves on.
-    const upcoming = sessions.getByRole('link', { name: /^(Upcoming|Cancelled) session:/ });
+    const upcoming = sessions.getByRole('link', { name: /^(Upcoming|Cancelled) lesson:/ });
     await expect(upcoming).toHaveCount(4);
-    await sessions.getByRole('button', { name: 'Later sessions' }).click();
+    await sessions.getByRole('button', { name: 'Later lessons' }).click();
     await expect(upcoming).toHaveCount(9);
   });
 
@@ -119,8 +119,8 @@ test.describe('the Tutoring tab’s sections', () => {
     }
 
     await tutor.goto('/dashboard');
-    const sessions = tutor.getByRole('region', { name: 'Tutoring Sessions' });
-    await expect(sessions.getByRole('link', { name: /^Next session:/ })).toBeVisible();
+    const sessions = tutor.getByRole('region', { name: 'Lessons', exact: true });
+    await expect(sessions.getByRole('link', { name: /^Next lesson:/ })).toBeVisible();
     await expect(sessions.getByText('Sanjay Patel')).toHaveCount(0);
   });
 });

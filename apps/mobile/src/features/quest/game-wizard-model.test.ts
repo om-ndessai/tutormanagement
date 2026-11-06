@@ -1,6 +1,7 @@
 // The start wizard's model (Phase 47, design 61): what each kind of game sends, checked against the
 // shared schema; a favorite's settings back into every step; the Review's lines; a favorite's tile and
-// whether it can be played here; the first step's refusal; the last action's words.
+// whether it can be played here; the first step's refusal; the last action's words. Phase 78 (JF35): the wizard
+// opens on "Single player"; the level in words ("Grade 6"); "Start quest".
 import { createGameSchema, type GameFavorite, type GameLevel } from '@tmi/shared';
 
 import {
@@ -18,10 +19,21 @@ import {
   type WizardDraft,
 } from './game-wizard-model';
 
-const g6: WizardDraft = { ...WIZARD_START, level_id: 'NC26.6' };
+// A multiplayer draft: the wizard's own start is a single player since Phase 78.
+const g6: WizardDraft = { ...WIZARD_START, level_id: 'NC26.6', players: 'multi' };
+
+describe('WIZARD_START', () => {
+  it('preselects "Single player" (JF35): a solo quest needs no code and no teams', () => {
+    expect(WIZARD_START.players).toBe('single');
+    const request = toRequest({ ...WIZARD_START, level_id: 'NC26.6' });
+    expect(request).toMatchObject({ players: 'single', max_team_size: 1, knockout: false, late_join: false });
+    expect(request).not.toHaveProperty('max_teams');
+    expect(createGameSchema.safeParse(request).success).toBe(true);
+  });
+});
 
 describe('toRequest', () => {
-  it('starts as the web does: 10 questions, right +1, wrong 0, up to 10 teams, at most 4 players per team, joining closed', () => {
+  it('sends a multiplayer game as the web does: 10 questions, right +1, wrong 0, up to 10 teams, at most 4 players per team, joining closed', () => {
     expect(toRequest(g6)).toEqual({
       level_id: 'NC26.6',
       level_scope: 'level',
@@ -113,7 +125,7 @@ describe('fromConfig', () => {
 describe('the words', () => {
   it("says each step's lines on the Review, with Knockout and Joining for a multiplayer game only", () => {
     expect(reviewLines(toRequest({ ...g6, knockout: true, late_join: true }))).toEqual({
-      questions: ['G6'],
+      questions: ['Grade 6'],
       length: ['10 questions'],
       scoring: ['Right +1, wrong 0', 'Knockout: On'],
       players: ['Up to 10 teams, at most 4 players per team', 'Joining: Open while it runs'],
@@ -129,13 +141,13 @@ describe('the words', () => {
     expect(
       reviewLines(toRequest({ ...g6, players: 'single', random: true, mode: 'timed', duration_minutes: 1 })),
     ).toEqual({
-      questions: ['G6 and up, at random'],
+      questions: ['Grade 6 and up, at random'],
       length: ['1 minute'],
       scoring: ['Right +1, wrong 0'],
       players: ['Single player'],
     });
     expect(summaryOf(toRequest(g6))).toEqual({
-      level: 'G6',
+      level: 'Grade 6',
       length: '10 questions',
       scoring: 'Right +1, wrong 0',
       players: 'Up to 10 teams, at most 4 players per team',
@@ -145,7 +157,7 @@ describe('the words', () => {
   const favorite: Pick<GameFavorite, 'config'> = { config: createGameSchema.parse(toRequest(g6)) };
 
   it("says a favorite's tile, and whether its level can be played here", () => {
-    expect(favoriteDetail(favorite)).toBe('G6 · 10 questions · Up to 10 teams, at most 4 players per team');
+    expect(favoriteDetail(favorite)).toBe('Grade 6 · 10 questions · Up to 10 teams, at most 4 players per team');
     const levels: GameLevel[] = [
       { level_id: 'NC26.6', label: 'G6', available: 412 },
       { level_id: 'NC26.7', label: 'G7', available: 0 },
@@ -153,7 +165,7 @@ describe('the words', () => {
     expect(favoritePlayable(favorite, levels)).toBe(true);
     expect(favoritePlayable(favorite, [levels[1]!])).toBe(false);
     expect(favoritePlayable({ config: { ...favorite.config, level_id: 'NC26.7' } }, levels)).toBe(false);
-    expect(favoriteRefusal(favorite)).toBe('G6 has no questions to play here now.');
+    expect(favoriteRefusal(favorite)).toBe('Grade 6 has no questions to play here now.');
   });
 
   it('refuses the first step without a level, or (Random) a lowest one', () => {
@@ -164,8 +176,8 @@ describe('the words', () => {
 
   it('names the last action and the Review’s hint by who plays', () => {
     expect(submitLabel('multi')).toBe('Generate game code');
-    expect(submitLabel('single')).toBe('Start game');
+    expect(submitLabel('single')).toBe('Start quest');
     expect(reviewHint('multi')).toBe('Once you generate the code, the settings are fixed.');
-    expect(reviewHint('single')).toBe('The game starts as soon as you press Start game.');
+    expect(reviewHint('single')).toBe('The quest starts as soon as you press Start quest.');
   });
 });

@@ -5,6 +5,7 @@ import {
   ACCESS_MODE_DESCRIPTIONS,
   ACCESS_MODE_LABELS,
   accessListEntrySchema,
+  formatInstant,
   type AccessAccount,
   type AccessMode,
 } from '@tmi/shared';
@@ -14,10 +15,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ApiRequestError } from '@/lib/api-client';
-import { cn } from '@/lib/utils';
+import { browserTimeZone, cn } from '@/lib/utils';
 import { useAccessConsole, useAddAccessEntry, useDecideAccess, useRemoveAccessEntry, useSaveAccessMode } from './api';
 
-const when = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '');
+/** "Nov 4, 2026": the day, through the shared formatter (Phase 78), on the console's own clock. */
+const when = (iso: string | null) => (iso ? formatInstant(iso, browserTimeZone(), { time: false, year: 'always' }) : '');
 const failed = (caught: unknown, fallback: string) => toast.error(caught instanceof ApiRequestError ? caught.message : fallback);
 
 /**
@@ -138,7 +140,7 @@ function Waiting({ accounts }: { accounts: AccessAccount[] }) {
   }
   return (
     <section className="grid gap-2" aria-label="Waiting for approval">
-      <h4 className="text-xs font-semibold tracking-wide uppercase">Waiting for approval ({accounts.length})</h4>
+      <h4 className="text-[13px] font-semibold">Waiting for approval ({accounts.length})</h4>
       {accounts.length === 0 ? (
         <p className="text-muted-foreground text-xs">Nobody is waiting.</p>
       ) : (
@@ -184,7 +186,7 @@ function Decided({ accounts }: { accounts: AccessAccount[] }) {
   }
   return (
     <details className="grid gap-2">
-      <summary className="cursor-pointer text-xs font-semibold tracking-wide uppercase">Recently decided ({accounts.length})</summary>
+      <summary className="cursor-pointer text-[13px] font-semibold">Recently decided ({accounts.length})</summary>
       <ul className="grid gap-1 pt-2">
         {accounts.map((account) => (
           <li key={account.user_id} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs" data-testid={`access-decided-${account.user_id}`}>
@@ -238,7 +240,7 @@ function AccessList({ entries }: { entries: { id: string; email: string | null; 
 
   return (
     <section className="grid gap-2" aria-label="Who may sign up">
-      <h4 className="text-xs font-semibold tracking-wide uppercase">Who may sign up ({entries.length})</h4>
+      <h4 className="text-[13px] font-semibold">Who may sign up ({entries.length})</h4>
       <form className="flex flex-wrap items-start gap-2" onSubmit={(event) => void submit(event)}>
         <Input
           aria-label="Email or pattern"

@@ -156,9 +156,14 @@ export function gameInviteUrl(origin: string | null | undefined, code: string): 
   return /^https?:\/\//.test(base) ? `${base}/?code=${encodeURIComponent(code)}` : code;
 }
 
-/** The share sheet's words (the web's LobbyInvite): the code, and nobody's name. */
-export function gameShareText(code: string): string {
-  return `Join my ${PLATFORM_BRAND.name} game: code ${code}`;
+/**
+ * The share sheet's words (the web's LobbyInvite): the code, and nobody's name. Phase 78: a "quest" named in words when
+ * the caller knows it ("Join my Grade 6 Quick 5 quest on Aimtrue: game code ABC234"), its "game code".
+ */
+export function gameShareText(code: string, title?: string): string {
+  return title
+    ? `Join my ${title} quest on ${PLATFORM_BRAND.name}: game code ${code}`
+    : `Join my ${PLATFORM_BRAND.name} quest: game code ${code}`;
 }
 
 /** The roster sheet's toast after saving. */

@@ -77,9 +77,11 @@ export function ActivityPage() {
         }
       />
 
-      <div className="mb-4 flex flex-wrap items-end gap-3">
+      {/* Below sm the filters sit on a two-column grid (Phase 78, JF28): the person and the action a row each, the
+          two dates side by side -- never squeezed into one line, where the date fields ran over each other. */}
+      <div className="mb-4 grid grid-cols-2 items-end gap-3 sm:flex sm:flex-wrap" data-testid="activity-filters">
         {isAdmin && (
-          <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
+          <div className="col-span-2 grid min-w-0 gap-1.5">
             <Label htmlFor="who" className="text-muted-foreground text-xs">
               Person
             </Label>
@@ -99,7 +101,7 @@ export function ActivityPage() {
           </div>
         )}
 
-        <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
+        <div className="col-span-2 grid min-w-0 gap-1.5">
           <Label htmlFor="what" className="text-muted-foreground text-xs">
             Action
           </Label>
@@ -121,7 +123,7 @@ export function ActivityPage() {
           </Select>
         </div>
 
-        <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
+        <div className="grid min-w-0 gap-1.5">
           <Label htmlFor="from" className="text-muted-foreground text-xs">
             From
           </Label>
@@ -130,11 +132,11 @@ export function ActivityPage() {
             type="date"
             value={from}
             onChange={(event) => reset(setFrom)(event.target.value)}
-            className="w-full sm:w-40"
+            className="w-full min-w-0 sm:w-40"
           />
         </div>
 
-        <div className="grid min-w-0 flex-1 gap-1.5 sm:flex-none">
+        <div className="grid min-w-0 gap-1.5">
           <Label htmlFor="to" className="text-muted-foreground text-xs">
             To
           </Label>
@@ -143,13 +145,14 @@ export function ActivityPage() {
             type="date"
             value={to}
             onChange={(event) => reset(setTo)(event.target.value)}
-            className="w-full sm:w-40"
+            className="w-full min-w-0 sm:w-40"
           />
         </div>
 
         {hasFilters && (
           <Button
             variant="ghost"
+            className="col-span-2 justify-self-start"
             onClick={() => {
               setUserId(ANY);
               setAction(ANY);

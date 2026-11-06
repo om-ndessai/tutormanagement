@@ -38,9 +38,15 @@ tags:
     timeout: 30000
 - takeScreenshot: features-review
 - runFlow: ../../subflows/go-back.yaml
+# Back on Home, where it was left: scrolled down to the review row, the band above the screen.
 - extendedWaitUntil:
     visible:
+      id: assess-home-review-${output.assessmentId}
+    timeout: 15000
+- scrollUntilVisible:
+    element:
       id: home-band
+    direction: UP
     timeout: 15000
 - scrollUntilVisible:
     element:

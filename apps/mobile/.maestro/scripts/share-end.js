@@ -32,4 +32,19 @@ if (games.status < 300) {
 }
 var off = call(ADMIN, 'PATCH', '/organization/settings', { gamify_question_quest: false, canvas_assessments_unreviewed: false });
 if (off.status >= 300) problems.push('could not switch Question Quest back off: ' + off.status);
+// Checked questions back on for chmi (the platform's switch, on by default; share-game.js turned it off).
+var spaces = call('ndessai@gmail.com', 'GET', '/platform/organizations');
+if (spaces.status < 300) {
+  var rows2 = json(spaces.body).data;
+  for (var o = 0; o < rows2.length; o++) {
+    if (rows2[o].slug !== ORG || rows2[o].checked_questions) continue;
+    var back = call('ndessai@gmail.com', 'PUT', '/platform/organizations/' + rows2[o].id + '/features', {
+      feature_tutoring: rows2[o].feature_tutoring,
+      feature_assessment: rows2[o].feature_assessment,
+      feature_quest: rows2[o].feature_quest,
+      checked_questions: true,
+    });
+    if (back.status >= 300) problems.push('could not switch checked questions back on: ' + back.status);
+  }
+} else problems.push('could not list the spaces: ' + spaces.status);
 if (problems.length > 0) throw new Error('Sharing clean-up: ' + problems.join('; '));

@@ -1,6 +1,6 @@
 import { PRIVACY_VERSION, TERMS_VERSION, arrivalFromGuest } from '@tmi/shared';
 
-import { birthYears, firstNameOf, legalUrl, MONTHS, signupRequest } from './sign-up-model';
+import { BIRTH_YEAR_OPENS_AT_AGE, birthYears, birthYearStart, firstNameOf, legalUrl, MONTHS, signupRequest } from './sign-up-model';
 
 describe('sign-up model (Phase 52)', () => {
   it('sends Google’s token with the current versions', () => {
@@ -47,6 +47,13 @@ describe('sign-up model (Phase 52)', () => {
     expect(years.at(-1)).toBe(1927);
     expect(MONTHS).toHaveLength(12);
     expect(MONTHS[5]).toBe('June');
+  });
+
+  it('opens the year list at an adult’s year (Phase 78, JF35), inside the list', () => {
+    const now = new Date(2026, 9, 24);
+    expect(BIRTH_YEAR_OPENS_AT_AGE).toBeGreaterThanOrEqual(18);
+    expect(birthYearStart(now)).toBe(2026 - BIRTH_YEAR_OPENS_AT_AGE);
+    expect(birthYears(now)).toContain(birthYearStart(now));
   });
 
   it('greets by first name, or an address’s local part', () => {

@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 -- the Tutoring halves
 // of AdminView and TutorView. The Finance halves are in finance-views.tsx.
-import type { AdminDashboard, TutorDashboard } from '@tmi/shared';
+import { COMMON_COPY, type AdminDashboard, type TutorDashboard } from '@tmi/shared';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
@@ -27,7 +27,9 @@ export function AdminFigures({ data }: { data: AdminDashboard }) {
         { label: 'Tutors', value: data.counts.tutors, to: '/people' },
         { label: 'Parents', value: data.counts.parents, to: '/people' },
         {
-          label: 'Sessions running',
+          // Phase 78: the glossary's word on screen; the testID stays the old one.
+          testID: 'stat-sessions-running',
+          label: COMMON_COPY.lessons_running,
           value: data.counts.live_sessions,
           tone: data.counts.live_sessions > 0 ? 'success' : 'default',
         },
@@ -43,9 +45,11 @@ export function TutorFigures({ data }: { data: TutorDashboard }) {
       tourId="dash-analytics"
       figures={[
         { label: 'Students', value: data.students.length, to: '/pairings' },
-        { label: 'Sessions', value: data.earnings.session_count, to: '/sessions' },
+        { testID: 'stat-sessions', label: 'Lessons', value: data.earnings.session_count, to: '/sessions' },
         {
-          label: 'Sessions running',
+          // Phase 78: the glossary's word on screen; the testID stays the old one.
+          testID: 'stat-sessions-running',
+          label: COMMON_COPY.lessons_running,
           value: data.live_sessions,
           tone: data.live_sessions > 0 ? 'success' : 'default',
         },
@@ -79,8 +83,9 @@ export function AdminTutoring({
       ) : null}
       <DashboardSection
         tourId="dash-sessions"
-        title="Tutoring Sessions"
-        action={{ label: 'All sessions', to: '/sessions' }}
+        title={COMMON_COPY.lessons_section}
+        testID="dashboard-section-tutoring-sessions"
+        action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
       >
         <SessionsCarousel past={data.recent_sessions} showTutor />
       </DashboardSection>
@@ -133,8 +138,9 @@ export function TutorTutoring({
       ) : null}
       <DashboardSection
         tourId="dash-sessions"
-        title="Tutoring Sessions"
-        action={{ label: 'All sessions', to: '/sessions' }}
+        title={COMMON_COPY.lessons_section}
+        testID="dashboard-section-tutoring-sessions"
+        action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
       >
         {/* Only lessons they teach, even for an admin viewing as them. */}
         <SessionsCarousel past={data.recent_sessions} tutorUserId={data.earnings.user_id} showTutor={false} />
@@ -146,7 +152,7 @@ export function TutorTutoring({
       <DashboardSection
         tourId="dash-reflections"
         title="Student Reflections"
-        action={{ label: 'All sessions', to: '/sessions' }}
+        action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
       >
         <Panel>
           <RecentReflections digests={data.recent_reflections} />

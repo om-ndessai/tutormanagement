@@ -1,8 +1,9 @@
 // Ported from apps/web/src/features/teaching/session-form-dialog.tsx @ 1132322 (PreviousLesson).
-import type { TutoringSession } from '@tmi/shared';
+import { formatDay, todayIn, type TutoringSession } from '@tmi/shared';
 import { View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
@@ -12,6 +13,7 @@ import { radius, space } from '@/theme/tokens';
  */
 export function PreviousLesson({ session, showTutor }: { session: TutoringSession; showTutor: boolean }) {
   const theme = useAppTheme();
+  const today = todayIn(useOrgTimeZone());
   const muted = theme.tokens.mutedForeground;
   const homework = session.write_up?.homework_assigned;
   return (
@@ -28,7 +30,7 @@ export function PreviousLesson({ session, showTutor }: { session: TutoringSessio
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
         <Icon source="history" size={14} color={muted} />
         <Text variant="bodySmall" style={{ color: muted, fontWeight: '600', flexShrink: 1 }}>
-          Last lesson, {session.occurred_on}
+          Last lesson, {formatDay(session.occurred_on, today, { weekday: true })}
           {showTutor ? ` with ${session.tutor_name}` : ''}
         </Text>
       </View>

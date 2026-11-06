@@ -47,7 +47,7 @@ tags:
 - assertNotVisible:
     id: person-menu
 - scrollUntilVisible:
-    element: 'Longest session'
+    element: 'Longest lesson'
     direction: DOWN
     timeout: 20000
 - assertNotVisible:
@@ -88,7 +88,7 @@ tags:
       id: person-section-school
     timeout: 15000
 - scrollUntilVisible:
-    element: 'Longest session'
+    element: 'Longest lesson'
     direction: DOWN
     timeout: 20000
 - assertNotVisible:

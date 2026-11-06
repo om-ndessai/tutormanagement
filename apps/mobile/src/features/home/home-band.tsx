@@ -73,7 +73,7 @@ export function HomeBand({
       >
         {greeting}
       </Text>
-      <Text testID="home-org" variant="labelLarge" numberOfLines={1} style={{ color: onBand, opacity: 0.8 }}>
+      <Text testID="home-org" variant="labelLarge" style={{ color: onBand, opacity: 0.8 }}>
         {brand.short}
       </Text>
       {strip ? (

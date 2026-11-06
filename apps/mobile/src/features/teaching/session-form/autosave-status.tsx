@@ -1,11 +1,11 @@
 // Ported from apps/web/src/features/teaching/session-form-dialog.tsx @ 1132322 (AutosaveStatus).
+import { formatInstantTime } from '@tmi/shared';
 import { View } from 'react-native';
 import { ActivityIndicator, Icon, Text } from 'react-native-paper';
 import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { formatInstantClock } from '../session-format';
 import type { AutosaveState } from './use-draft-autosave';
 
 /**
@@ -25,7 +25,7 @@ export function AutosaveStatus({ state }: { state: AutosaveState }) {
     text = 'Saving draft…';
   } else if (state.kind === 'saved') {
     icon = <Icon source="check" size={14} color={theme.tokens.success} />;
-    text = `Draft autosaved ${formatInstantClock(state.at, timeZone)}`;
+    text = `Draft autosaved ${formatInstantTime(state.at.toISOString(), timeZone)}`;
   } else if (state.kind === 'offline') {
     icon = <Icon source="wifi-off" size={14} color={theme.colors.error} />;
     text = 'Not saved — offline';

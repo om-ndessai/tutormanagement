@@ -7,6 +7,8 @@
 // it marks `can_restore`.
 import {
   formatClockTime,
+  formatDay,
+  todayIn,
   type ScheduleCancellation,
   type UpcomingSession,
   type VisibleSchedule,
@@ -25,7 +27,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { useScheduleCancellations, useScheduleOccurrences } from './api';
-import { cancelledByText, formatLessonDay, organizationToday } from './lesson-cancellation';
+import { cancelledByText, organizationToday } from './lesson-cancellation';
 import { useConfirmRestore } from './use-restore-lesson';
 
 export function ScheduleDates({
@@ -213,7 +215,7 @@ function DateRow({
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const cancelled = date.cancellation;
-  const day = formatLessonDay(date.occurs_on);
+  const day = formatDay(date.occurs_on, todayIn(useOrgTimeZone()), { weekday: true });
   const key = `${scheduleId}-${date.occurs_on}`;
 
   return (
@@ -302,7 +304,7 @@ function PastCancellationRow({
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
-  const day = formatLessonDay(row.occurs_on);
+  const day = formatDay(row.occurs_on, todayIn(useOrgTimeZone()), { weekday: true });
   const key = `${scheduleId}-${row.occurs_on}`;
 
   return (

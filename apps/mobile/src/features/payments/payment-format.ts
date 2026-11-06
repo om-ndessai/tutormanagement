@@ -2,6 +2,7 @@
 // summary lines -- with the payment's direction worded from the reader's side (Phase 17): the
 // office reads "Received" / "Paid out", a tutor "Paid to you", a parent "Paid by you".
 import {
+  countOf,
   formatCents,
   topupDueCents,
   tutorAdvanceCents,
@@ -27,11 +28,11 @@ export function paymentDirectionText(
   return `Paid by ${payment.party_name}`;
 }
 
-/** "12 sessions · $900.00 earned · $800.00 paid · holds $50.00 of $200.00 · top up $150.00" */
+/** "12 lessons · $900.00 earned · $800.00 paid · holds $50.00 of $200.00 · top up $150.00" */
 export function tutorLedgerSummary(tutor: TutorBalance): string {
   const due = topupDueCents(tutor);
   return (
-    `${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned · ` +
+    `${countOf(tutor.session_count, 'lesson')} · ${formatCents(tutor.earned_cents)} earned · ` +
     `${formatCents(tutor.paid_cents)} paid` +
     (tutor.topup_amount_cents == null
       ? ''

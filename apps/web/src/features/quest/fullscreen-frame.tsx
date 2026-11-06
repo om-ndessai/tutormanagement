@@ -58,7 +58,8 @@ export function QuestFrame({
   return (
     <div className="bg-background text-foreground flex min-h-dvh flex-col" data-testid={testId}>
       <header className="flex items-center gap-3 border-b px-4 py-3 sm:px-6">
-        <h1 className="min-w-0 flex-1 truncate text-lg font-semibold">
+        {/* Phase 78 (JF28): a long title wraps rather than being cut. */}
+        <h1 className="min-w-0 flex-1 text-lg font-semibold break-words">
           <span className="sm:hidden">{shortTitle}</span>
           <span className="hidden sm:inline">{title}</span>
         </h1>

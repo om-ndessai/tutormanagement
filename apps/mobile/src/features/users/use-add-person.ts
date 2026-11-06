@@ -2,7 +2,7 @@
 // -- a student with their guardians, so the guardian rule holds -- checked first against the shared
 // schema, so an SSN typed into a note never leaves the phone. Refusals come back by field, and the
 // step flow opens the step that owns the first of them.
-import { createUserRequestSchema, featureAllowed, type UserRole } from '@tmi/shared';
+import { createUserRequestSchema, featureAllowed, todayIn, type UserRole } from '@tmi/shared';
 import { useCallback, useState } from 'react';
 
 import { issuesToErrors } from '@/features/teaching/session-form/use-session-form';
@@ -10,7 +10,7 @@ import { ApiRequestError } from '@/lib/api-client';
 import { announceFormSaved } from '@/lib/form-bridge';
 import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useCreateUser } from './api';
-import { toRequest, todayIso, type FormState } from './person-form-model';
+import { toRequest, type FormState } from './person-form-model';
 
 export interface AddedPerson {
   id: string;
@@ -21,7 +21,7 @@ export interface AddedPerson {
 
 export function useAddPerson() {
   const timeZone = useOrgTimeZone();
-  const today = todayIso(timeZone);
+  const today = todayIn(timeZone);
   const createUser = useCreateUser();
   // Phase 50: Tutoring's sections are left out of the request where the space has no Tutoring.
   const { organization } = useAuth();

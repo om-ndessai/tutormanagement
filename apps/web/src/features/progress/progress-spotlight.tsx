@@ -49,10 +49,10 @@ function ProgressSpotlightCard({ progress, index }: { progress: StudentProgress;
       <Card className="hover:border-primary/40 h-full gap-0 py-0 transition-all hover:-translate-y-0.5 hover:shadow-md">
         <CardContent className="flex h-full flex-col px-3.5 py-3">
           <div className="flex items-start justify-between gap-2">
-            <p className="truncate text-sm font-medium">{student.full_name}</p>
+            <p className="min-w-0 text-sm font-medium break-words">{student.full_name}</p>
             <ProgressStatusBadge status={summary.status} />
           </div>
-          <p className="text-muted-foreground mt-0.5 truncate text-xs">
+          <p className="text-muted-foreground mt-0.5 text-xs">
             {plan
               ? `${summary.mastered_count} of ${summary.topic_count} topics · ${summary.percent}%`
               : 'No learning plan yet'}

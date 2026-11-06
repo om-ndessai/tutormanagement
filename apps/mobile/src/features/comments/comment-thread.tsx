@@ -6,6 +6,7 @@ import {
   MAX_COMMENT_LENGTH,
   commentAudienceHint,
   commentInputSchema,
+  formatInstant,
   type Comment,
   type CommentTarget,
 } from '@tmi/shared';
@@ -21,7 +22,6 @@ import { haptics } from '@/lib/haptics';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { formatInstant } from '@/features/users/people-model';
 import { useAddComment, useComments } from './api';
 import { CommentDeleteButton, useConfirmDeleteComment } from './comment-delete-button';
 
@@ -200,7 +200,7 @@ function CommentRow({ comment, target, first }: { comment: Comment; target: Comm
           <Text variant="bodyMedium">
             <Text style={{ fontWeight: '700' }}>{comment.author_name}</Text>
             <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-              {` · ${formatInstant(comment.created_at, timeZone, '')}`}
+              {` · ${formatInstant(comment.created_at, timeZone)}`}
             </Text>
           </Text>
           <Text variant="bodyMedium">{comment.body}</Text>

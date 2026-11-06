@@ -87,12 +87,8 @@ export function QuestFrame({
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-                <Text
-                  variant="titleLarge"
-                  accessibilityRole="header"
-                  numberOfLines={1}
-                  style={{ flex: 1, fontWeight: '700' }}
-                >
+                {/* Phase 78 (JF28): a quest's title in words wraps rather than being cut ("Grade 5 and up 5-minute dash"). */}
+                <Text variant="titleLarge" accessibilityRole="header" style={{ flex: 1, fontWeight: '700' }}>
                   {title}
                 </Text>
                 <Button testID="quest-exit" mode="outlined" icon="close" compact onPress={onExit}>

@@ -6,12 +6,10 @@ import {
   CANVAS_LIMITS,
   featureAllowed,
   formatStroke,
-  levelLabel,
   type CanvasAssessmentQuestion,
   type CanvasStroke,
 } from '@tmi/shared';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -31,6 +29,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { MathText } from '@/features/question-bank/math-text';
 import { useCanvasAssessment, useSubmitCanvasAssessment } from './api';
 import { DrawingCanvas, pageSize, type CanvasTool } from './drawing-canvas';
+import { levelWords } from '@/features/quest/level-words';
 
 // Phase 38: taking an assessment. One question per page, written by hand, with
 // nothing checked or marked; any page can be revisited and edited, and it can
@@ -164,7 +163,7 @@ export function TakeAssessmentPage() {
             {student} answers on this device. Answers written on another device stay there.
           </p>
           <p className="text-muted-foreground text-sm">
-            {assessment.student_name} · {levelLabel(assessment.level_id)} · {questions.length}{' '}
+            {assessment.student_name} · {levelWords(assessment.level_id)} · {questions.length}{' '}
             {questions.length === 1 ? 'question' : 'questions'}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -239,12 +238,11 @@ export function TakeAssessmentPage() {
     <div className="grid gap-4" data-testid="take-assessment">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold">
+          <h1 className="text-2xl font-semibold">
             Question {index + 1} of {questions.length}
-            <Badge variant="secondary">Beta</Badge>
           </h1>
           <p className="text-muted-foreground text-sm">
-            {assessment.student_name} · {levelLabel(assessment.level_id)} ·{' '}
+            {assessment.student_name} · {levelWords(assessment.level_id)} ·{' '}
             {question?.kind === 'choice'
               ? 'Choose your answer, and use the page below for your working.'
               : 'Write your working and your answer below.'}{' '}

@@ -16,6 +16,7 @@ import {
   guestTileTitle,
   parseTileCode,
   guestTodayLevel,
+  levelGrade,
   type GuestTile,
   type QuestionBankLevelId,
 } from '@tmi/shared';
@@ -37,7 +38,7 @@ import { GradeRow, QuestCard, TodayCard, type RingState } from '@/features/play/
  * The guest Play home, "Quest board" (docs/landing-page-proposal.md, direction C): the page a
  * signed-out visitor lands on while guest play is on. A deep band with the headline and Today's 5, a
  * grade row (1-8, remembered on this device), the grade's quests as game cards, previews for grown-ups,
- * three short answers and a three-link footer. Curricula are never named here: "Grade 4", "Adv G4".
+ * three short answers and a three-link footer. Curricula are never named here: "Grade 4", "Adv Grade 4".
  */
 export function GuestHome() {
   const { config, pendingSignup, error } = useAuth();
@@ -172,10 +173,11 @@ export function GuestHome() {
           </section>
         )}
         <section className="grid gap-2" aria-labelledby="guest-grade-label">
-          <h2 id="guest-grade-label" className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+          <h2 id="guest-grade-label" className="text-muted-foreground text-[13px] font-semibold">
             Your grade
           </h2>
-          <GradeRow grades={GUEST_GRADES} value={grade} onChange={chooseGrade} labelId="guest-grade-label" testIdPrefix="guest-grade-" />
+          {/* Phase 78 (JF34): the grade hues, as the member's board wears them, so sign-up changes no colour. */}
+          <GradeRow grades={GUEST_GRADES} value={grade} onChange={chooseGrade} labelId="guest-grade-label" testIdPrefix="guest-grade-" hued />
         </section>
 
         <section className="grid gap-3" aria-label={`Grade ${grade} quests`}>
@@ -188,7 +190,7 @@ export function GuestHome() {
               <CardGrid tiles={board.standard} onOpen={openTile} />
               {board.advanced.length > 0 && (
                 <>
-                  <h2 className="text-muted-foreground mt-2 text-xs font-semibold tracking-wider uppercase">Advanced</h2>
+                  <h2 className="text-muted-foreground mt-2 text-[13px] font-semibold">Advanced</h2>
                   <CardGrid tiles={board.advanced} onOpen={openTile} advanced />
                 </>
               )}
@@ -202,7 +204,7 @@ export function GuestHome() {
           data-testid="guest-parents"
         >
           <div className="grid gap-2.5">
-            <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">Play together</span>
+            <span className="text-muted-foreground text-[13px] font-semibold">Play together</span>
             <h2 className="font-display text-xl font-black">One code, everyone joins</h2>
             <div className="flex items-center gap-3">
               {/* An illustration, not a code to type (UI audit J04): marked Example and left out of the reading order. */}
@@ -210,14 +212,15 @@ export function GuestHome() {
                 <span className="font-display bg-card text-muted-foreground block rounded-xl border border-dashed px-3 py-2 text-2xl font-extrabold tracking-[0.12em]">
                   QF7K2M
                 </span>
-                <span className="bg-muted text-muted-foreground absolute -top-2 left-2 rounded px-1 text-[10px] font-semibold tracking-wide uppercase">
+                <span className="bg-muted text-muted-foreground absolute -top-2.5 left-2 rounded px-1 text-xs font-semibold">
                   Example
                 </span>
               </span>
               <span className="flex" aria-hidden>
                 {[
                   ['M', 'bg-primary text-primary-foreground'],
-                  ['A', 'bg-warning text-warning-foreground'],
+                  // Amber is for action only (Phase 78, JF34): the players are drawn in the brand's tones.
+                  ['A', 'bg-brand-300 text-brand-950'],
                   ['J', 'bg-brand-500 text-white'],
                 ].map(([initial, tone], index) => (
                   <i
@@ -365,8 +368,9 @@ function CardGrid({ tiles, onOpen, advanced = false }: { tiles: GuestTile[]; onO
             title={guestTileTitle(tile)}
             detail={`${advanced ? `${guestLevelWords(tile.level_id)} · ` : ''}${guestTileDetail(tile)}`}
             icon={tile.kind === 'assessment' ? 'pencil' : tile.mode === 'timed' ? 'timer' : 'target'}
-            // The guest board keeps its mode colours (H5: grade hues are the member home's).
-            tone={tile.locked ? 'locked' : { mode: tile.mode }}
+            // Phase 78 (owner, 2026-11-05): the grade's hue, as on the member's board (reversing H5's Decision 1); the
+            // mode is the icon. A harder track says "Adv" in its detail line.
+            tone={tile.locked ? 'locked' : { grade: levelGrade(tile.level_id) }}
             locked={tile.locked}
             onOpen={() => onOpen(tile)}
             label={tile.locked ? `${guestTileName(tile)} is free with an account` : `Play ${guestTileName(tile)}`}

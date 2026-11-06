@@ -31,7 +31,7 @@ tags:
     visible: 'Anita Patel on Sanjay Patel.*'
     timeout: 10000
 - assertNotVisible: '.* on the Tuesday 4:00 PM slot with Sofia Okafor.*'
-- assertNotVisible: '.* on the .* session with .*'
+- assertNotVisible: '.* on the .* lesson with .*'
 # A recurring slot opens the schedule narrowed to it.
 - tapOn:
     id: comments-filter-scheduled_session
@@ -44,7 +44,7 @@ tags:
     visible:
       id: focus-notice
     timeout: 15000
-- assertVisible: 'Showing one scheduled session, linked from a comment.'
+- assertVisible: 'Showing one scheduled lesson, linked from a comment.'
 - assertVisible:
     id: schedule-comments-70000000-0000-4000-8000-000000000001
 - takeScreenshot: comments-feed-schedule
@@ -60,9 +60,9 @@ tags:
 - tapOn:
     id: comments-filter-session
 - extendedWaitUntil:
-    visible: 'Alex Chen on .*session with Sofia Okafor.*'
+    visible: 'Alex Chen on .*lesson with Sofia Okafor.*'
     timeout: 10000
-- tapOn: 'Alex Chen on .*session with Sofia Okafor.*'
+- tapOn: 'Alex Chen on .*lesson with Sofia Okafor.*'
 - extendedWaitUntil:
     visible:
       id: screen-session

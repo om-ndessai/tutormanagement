@@ -1,7 +1,7 @@
-// The app's tab bar (UI upgrades U2, revised 2026-10-15): Home, Sessions, Progress and More for
-// everyone, the create button in a hump between Sessions and Progress only for a reader with
+// The app's tab bar (UI upgrades U2, revised 2026-10-15): Home, Lessons, Progress and More for
+// everyone, the create button in a hump between Lessons and Progress only for a reader with
 // something to create, and its sheet listing that reader's own actions. Schedule is a route of the
-// tabs but not a tab: it lights Sessions.
+// tabs but not a tab: it lights Lessons (Phase 78's word for the `sessions` tab).
 import { fireEvent, screen } from '@testing-library/react-native';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 
@@ -97,9 +97,11 @@ test('a parent: four tabs on a flat bar, no Schedule, no create button and no hu
   expect(screen.queryByTestId('create-button')).toBeNull();
   expect(screen.queryByTestId('tab-bar-hump')).toBeNull();
   expect(slots()).toEqual(['tab-dashboard', 'tab-sessions', 'tab-progress', 'tab-more']);
-  for (const label of ['Home', 'Sessions', 'Progress', 'More']) {
+  for (const label of ['Home', 'Lessons', 'Progress', 'More']) {
     expect(screen.getByText(label)).toBeTruthy();
   }
+  // Phase 78 (the glossary): the tab says Lessons; its route and testID keep `sessions`.
+  expect(screen.queryByText('Sessions')).toBeNull();
   expect(screen.queryByText('Schedule')).toBeNull();
   expect(screen.queryByTestId('create-sheet')).toBeNull();
 });
@@ -116,7 +118,7 @@ test('an admin: two tabs either side of the create button, in its hump', async (
   expect(slots()).toEqual(['tab-dashboard', 'tab-sessions', 'create-button', 'tab-progress', 'tab-more']);
 });
 
-test('on Schedule, Sessions shows as chosen, and tapping it goes back to Lessons', async () => {
+test('on Schedule, the Lessons tab shows as chosen, and tapping it goes back to the lessons', async () => {
   as(['tutor']);
   const { navigation, props: barProps } = props(2);
   await renderWithProviders(<AppTabBar {...barProps} />);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   DEFAULT_MAX_SESSION_MINUTES,
   requiresEmail,
   SESSION_LIMIT_CHOICES,
@@ -22,6 +23,7 @@ import {
   paidDirectly,
 } from '@tmi/shared';
 import { useAuth } from '@/providers/auth-provider';
+import { useDates } from '@/hooks/use-dates';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -329,6 +331,7 @@ export function UserFormDialog({
   announce?: boolean;
 }) {
   const isEdit = userId !== null;
+  const dates = useDates();
   const { data: detail, isPending: loadingDetail } = useUserDetail(open && isEdit ? userId : null);
   const sharedLocked = Boolean(isEdit && detail?.data.shared_fields_locked);
   // A student's goal is also their active learning plan's goal, kept in step
@@ -431,7 +434,7 @@ export function UserFormDialog({
         toast.error(error.message);
         return;
       }
-      toast.error('Could not save the user.');
+      toast.error(COMMON_COPY.could_not_save_person);
     }
   }
 
@@ -465,7 +468,7 @@ export function UserFormDialog({
       <DialogContent className="max-h-[92dvh] gap-0 overflow-y-auto sm:max-w-2xl">
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
-            <DialogTitle>{title ?? (isEdit ? 'Edit user' : 'Add user')}</DialogTitle>
+            <DialogTitle>{title ?? (isEdit ? COMMON_COPY.edit_person : COMMON_COPY.add_person)}</DialogTitle>
             <DialogDescription>
               {description ??
                 'One person, one record. Check every role they hold — the rest of the form follows.'}
@@ -792,7 +795,7 @@ export function UserFormDialog({
                   />
                   {form.tutor.ssn_received && form.tutor.ssn_received_on && (
                     <p className="text-muted-foreground -mt-2 text-xs">
-                      Confirmed on {form.tutor.ssn_received_on}.
+                      Confirmed on {dates.day(form.tutor.ssn_received_on, { year: 'always' })}.
                     </p>
                   )}
                   </>
@@ -804,7 +807,7 @@ export function UserFormDialog({
                       id="t_max_session"
                       value={form.tutor.max_minutes}
                       onChange={(value) => set('tutor', { ...form.tutor, max_minutes: value })}
-                      hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
+                      hint="A running lesson that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
                     />
                     )}
 
@@ -1019,7 +1022,7 @@ export function UserFormDialog({
             </Button>
             <Button type="submit" disabled={saving || (isEdit && loadingDetail)}>
               {saving && <Loader2Icon className="animate-spin" />}
-              {isEdit ? 'Save changes' : 'Add user'}
+              {isEdit ? 'Save changes' : COMMON_COPY.add_person}
             </Button>
           </DialogFooter>
         </form>
@@ -1029,7 +1032,7 @@ export function UserFormDialog({
 }
 
 function SectionHeading({ title }: { title: string }) {
-  return <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{title}</h3>;
+  return <h3 className="text-muted-foreground text-[13px] font-semibold">{title}</h3>;
 }
 
 function Checkbox({
@@ -1060,7 +1063,7 @@ function Checkbox({
 /**
  * The longest a single lesson may run. Offered as a choice rather than a typed
  * number because the value has to be a multiple of a quarter hour, which is
- * the unit sessions are recorded in.
+ * the unit lessons are recorded in.
  */
 function SessionLimitField({
   id,
@@ -1074,7 +1077,7 @@ function SessionLimitField({
   hint: string;
 }) {
   return (
-    <Field id={id} label="Longest session" hint={hint} optional>
+    <Field id={id} label={COMMON_COPY.longest_lesson} hint={hint} optional>
       <Select value={value || NO_LIMIT} onValueChange={(v) => onChange(v === NO_LIMIT ? '' : v)}>
         <SelectTrigger id={id} className="w-full sm:w-56">
           <SelectValue />

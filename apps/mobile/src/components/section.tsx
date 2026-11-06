@@ -52,13 +52,19 @@ export function DashboardSection({
   action,
   children,
   tourId,
+  testID,
 }: {
   title: string;
   action?: SectionAction;
   children: ReactNode;
   tourId?: string;
+  /**
+   * Its testID, when it must outlive a change of words (Phase 78: "Tutoring Sessions" reads "Lessons" and keeps
+   * `dashboard-section-tutoring-sessions`). Default `dashboard-section-<slug of the title>`.
+   */
+  testID?: string;
 }) {
-  const id = `dashboard-section-${slug(title)}`;
+  const id = testID ?? `dashboard-section-${slug(title)}`;
   const tourRef = useTourTarget(tourId);
   return (
     <View ref={tourRef} testID={id} nativeID={tourId} collapsable={false} style={{ minWidth: 0 }}>

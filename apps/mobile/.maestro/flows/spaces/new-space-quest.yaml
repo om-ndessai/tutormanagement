@@ -220,7 +220,7 @@ tags:
 - tapOn:
     id: 'quest-level-[0-9a-f-]{36}-BA3'
 - extendedWaitUntil:
-    visible: 'Kit Questmaker starts at BA3\.'
+    visible: 'Kit Questmaker starts at Beast Academy 3\.'
     timeout: 10000
 # Kit has never been through the welcome wizard, which would open over Home; that is not this flow's
 # subject, so it is skipped for him there.
@@ -246,7 +246,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: quest-level
-    text: 'BA3'
+    text: 'Beast Academy 3'
 - runFlow:
     when:
       visible:

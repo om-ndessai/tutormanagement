@@ -258,17 +258,25 @@ test.describe('Phase 77 (JF20): a guardian continues the child’s assessment', 
         await omar.getByLabel('Student').click();
         await omar.getByRole('option', { name: 'Noor Haddad' }).click();
         await omar.getByLabel('Level').click();
-        await omar.getByRole('option', { name: /^G3\b/ }).click();
+        await omar.getByRole('option', { name: /^Grade 3 ·/ }).click();
         await omar.getByTestId('assessment-begin').click();
       };
 
-      // The warning names the one in progress, its grade and when it was started.
+      // The warning names the one in progress, its grade and when it was started -- in the same words as its row,
+      // even once time has passed since the list was drawn (Phase 78, the Phase 77 carry: one `now` for the screen).
+      await omar.clock.install();
       await begin();
+      await omar.getByTestId('assessment-in-progress-cancel').click();
+      await omar.clock.fastForward(70_000);
+      await omar.getByTestId('assessment-begin').click();
       const warning = omar.getByTestId('assessment-in-progress');
       await expect(warning).toBeVisible();
       await expect(omar.getByTestId('assessment-in-progress-words')).toHaveText(
         /^Noor already has a Grade 4 assessment in progress \(started (just now|\d+ minutes? ago)\)\.$/,
       );
+      const said = (await omar.getByTestId('assessment-in-progress-words').textContent())!.match(/\(started (.+)\)\.$/)![1]!;
+      expect(said).not.toBe('just now');
+      await expect(omar.getByTestId(`assessment-${started.id}`)).toContainText(`started ${said}`);
       // Continue it: the one in progress, handed to Noor.
       await omar.getByTestId('assessment-continue-it').click();
       await expect(omar).toHaveURL(new RegExp(`/assessments/${started.id}$`));

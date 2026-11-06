@@ -201,7 +201,9 @@ describe('OrganizationSettingsScreen', () => {
     asAdmin();
     await renderWithProviders(<OrganizationSettingsScreen />);
     expect(screen.getByText('Maria Okafor')).toBeTruthy();
-    expect(screen.getByText(/Session recorded · Sofia Okafor/)).toBeTruthy();
+    // Phase 78 (the glossary): the shared label says lesson.
+    expect(screen.getByText(/Lesson recorded · Sofia Okafor/)).toBeTruthy();
+    expect(screen.queryByText(/Session recorded/)).toBeNull();
     expect(screen.getByText('Not sent here')).toBeTruthy();
     expect(screen.getByText('Not delivered')).toBeTruthy();
     // The subject is not repeated when the email went to them.
@@ -225,16 +227,18 @@ describe('OrganizationSettingsScreen', () => {
     asAdmin(true, { ...ORGANIZATION, feature_tutoring: true, feature_assessment: true, feature_quest: true });
     await renderWithProviders(<OrganizationSettingsScreen />);
     const note = screen.getByTestId('checked-questions-note');
-    expect(within(note).getByText(/^Not included: assessments and games here draw approved questions only/)).toBeTruthy();
+    expect(within(note).getByText(/^Not included: assessments and quests here draw approved questions only/)).toBeTruthy();
     expect(screen.queryByTestId('org-assessments-unreviewed-switch')).toBeNull();
 
   });
 
-  it('says they are included when the platform includes them (Phase 62, P1)', async () => {
+  it('says they are included when the platform includes them (Phase 62, P1), served like any other (Phase 78)', async () => {
     await renderWithProviders(<CanvasAssessmentsCard enabled unreviewed questions={10} />);
-    expect(
-      within(screen.getByTestId('checked-questions-note')).getByText(/^Included: .*each marked Beta.*The platform sets this\.$/),
-    ).toBeTruthy();
+    const note = within(screen.getByTestId('checked-questions-note'));
+    expect(note.getByText(/^Included: .*served like any other.*The platform sets this\.$/)).toBeTruthy();
+    expect(note.queryByText(/Beta/)).toBeNull();
+    // The Assessment switch carries no Beta pill any more.
+    expect(within(screen.getByTestId('org-assessments')).queryByText('Beta')).toBeNull();
   });
 
   it('shows only the allowed sets’ cards: Assessment alone has no payer and no money', async () => {

@@ -135,7 +135,7 @@ function OpenRequests({
   return (
     <View style={{ gap: space.sm }} accessibilityLabel="Requests sent">
       <Text variant="labelLarge" accessibilityRole="header" style={{ color: theme.colors.onSurfaceVariant }}>
-        REQUESTS SENT
+        Requests sent
       </Text>
       {open.map((r) => (
         <OutlinedCard key={r.slug} testID={`welcome-request-${r.slug}`} style={{ borderRadius: radius.lg }}>

@@ -29,7 +29,26 @@ const PAIRS = [
   ['a link on the page', 'primary', 'background', 4.5],
   // Phase 67 (H5): a level tile's label on its grade's hue.
   ...[1, 2, 3, 4, 5, 6, 7, 8].map((g) => [`grade ${g}'s label`, `grade${g}Foreground`, `grade${g}`, 4.5]),
+  // Phase 78 (JF29): the drawer's words on its accent (the page you are on): the web restates the accent in the warm
+  // foundation for every palette, where Indigo's own put the tagline at 1.15:1.
+  ['the drawer\'s text on its accent', 'sidebarForeground', 'sidebarAccent', 4.5],
+  ['the drawer\'s muted text on its accent', 'sidebarMutedForeground', 'sidebarAccent', 4.5],
+  ['the drawer\'s chosen item on its accent', 'sidebarAccentForeground', 'sidebarAccent', 4.5],
+  // Phase 78 (JF29): the chosen grade chip's 2pt ring, drawn in the ink over the card: a control's edge, 3:1.
+  ['the chosen grade chip\'s ring on a card', 'foreground', 'card', 3],
 ];
+
+/** `top` at `alpha` over `base`, as the screen composites it (sRGB, per channel). */
+const over = (top, alpha, base) =>
+  '#' +
+  [1, 3, 5]
+    .map((i) => {
+      const value = Math.round(parseInt(top.slice(i, i + 2), 16) * alpha + parseInt(base.slice(i, i + 2), 16) * (1 - alpha));
+      return value.toString(16).padStart(2, '0');
+    })
+    .join('');
+/** Phase 78 (JF29): the Adv pill -- white words on Paper's `scrim` (black) at 55% over each grade's hue (`AdvPill`, play/quest-card.tsx). */
+const ADV_PILL_ALPHA = 0.55;
 
 const failures = [];
 for (const [palette, schemes] of Object.entries(palettes)) {
@@ -38,6 +57,11 @@ for (const [palette, schemes] of Object.entries(palettes)) {
     for (const [what, fg, bg, min] of pairs) {
       const value = ratio(t[fg], t[bg]);
       if (value < min) failures.push(`${palette} ${scheme}: ${what} is ${value.toFixed(2)}:1, needs ${min}:1`);
+    }
+    for (const g of [1, 2, 3, 4, 5, 6, 7, 8]) {
+      const pill = over('#000000', ADV_PILL_ALPHA, t[`grade${g}`]);
+      const value = ratio('#FFFFFF', pill);
+      if (value < 4.5) failures.push(`${palette} ${scheme}: the Adv pill on grade ${g} is ${value.toFixed(2)}:1, needs 4.5:1`);
     }
   }
 }

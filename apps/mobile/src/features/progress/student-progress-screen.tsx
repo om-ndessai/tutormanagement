@@ -7,6 +7,7 @@ import {
   GOAL_RATING_LABELS,
   PLAN_STATUS_LABELS,
   formatCadence,
+  formatDay,
   type Assessment,
   type LearningPlan,
   type Rating,
@@ -32,7 +33,6 @@ import { LessonList } from './lesson-list';
 import { ProgressChart } from './progress-chart';
 import { ProgressMeter } from './progress-meter';
 import { ProgressReportPanel } from './progress-report-panel';
-import { longDate } from './progress-model';
 import { ProgressStatusBadge, RatingChip, RatingLegend, TopicName } from './rating';
 import { useConfirmDelete } from './use-confirm-delete';
 
@@ -174,7 +174,7 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
                 {plan.goal}
               </Text>
               <Text variant="bodyMedium" style={{ color: theme.colors.onPrimary, opacity: 0.9 }}>
-                {longDate(plan.starts_on)} → {longDate(plan.target_on)} ·{' '}
+                {formatDay(plan.starts_on, progress.today, { year: 'always' })} → {formatDay(plan.target_on, progress.today, { year: 'always' })} ·{' '}
                 {formatCadence(plan.sessions_per_week, plan.session_minutes)}
                 {plan.target_level_id ? ` · towards ${levelName(plan.target_level_id)}` : ''}
               </Text>
@@ -197,11 +197,12 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
                 formatValue={(value) => `${value}%`}
                 icon="flag-outline"
                 tone={summary.status === 'behind' ? 'warning' : 'default'}
-                hint={`On a straight line to ${longDate(plan.target_on)}`}
+                hint={`On a straight line to ${formatDay(plan.target_on, progress.today, { year: 'always' })}`}
               />,
               <StatCard
                 key="held"
-                label="Sessions held"
+                testID="stat-sessions-held"
+                label="Lessons held"
                 value={summary.sessions_held}
                 icon="clipboard-check-outline"
                 hint={
@@ -275,7 +276,7 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
                             </View>
                           ) : (
                             <Text variant="bodySmall" style={{ color: muted }}>
-                              {row.last_rated_on ? longDate(row.last_rated_on) : 'Not yet'}
+                              {row.last_rated_on ? formatDay(row.last_rated_on, progress.today, { year: 'always' }) : 'Not yet'}
                             </Text>
                           )}
                         </View>
@@ -339,6 +340,7 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
         topicName={(id) => topics.get(id)}
         onEdit={(row) => assess(row)}
         onDelete={(row) => confirmDelete({ kind: 'assessment', row })}
+        today={progress.today}
       />
 
       {progress.timeline.length > 0 || progress.cancellations.length > 0 ? (
@@ -369,7 +371,7 @@ export function StudentProgressView({ progress }: { progress: StudentProgress })
                     {past.goal}
                   </Text>
                   <Text variant="bodySmall" style={{ color: muted }}>
-                    {longDate(past.starts_on)} → {longDate(past.target_on)} · {past.topic_ids.length} topics ·{' '}
+                    {formatDay(past.starts_on, progress.today, { year: 'always' })} → {formatDay(past.target_on, progress.today, { year: 'always' })} · {past.topic_ids.length} topics ·{' '}
                     {PLAN_STATUS_LABELS[past.status]}
                   </Text>
                 </View>

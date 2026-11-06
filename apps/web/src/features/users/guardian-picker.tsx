@@ -129,7 +129,7 @@ export function GuardianPicker({
               key={link.guardian_user_id}
               className="flex flex-wrap items-center gap-2 rounded-md border p-2"
             >
-              <span className="min-w-32 flex-1 truncate text-sm font-medium">
+              <span className="min-w-32 flex-1 text-sm font-medium [overflow-wrap:anywhere]">
                 {nameFor(link.guardian_user_id)}
               </span>
 

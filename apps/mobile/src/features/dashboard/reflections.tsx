@@ -1,12 +1,11 @@
 // Ported from apps/web/src/features/dashboard/reflections.tsx @ 1132322
-import { formatClockTime, zonedClockParts, type ReflectionDigest, type ReflectionPrompt } from '@tmi/shared';
+import { COMMON_COPY, formatClockTime, formatDay, zonedClockParts, type ReflectionDigest, type ReflectionPrompt } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
 import { EmptyNote, Panel } from '@/components/section';
 import { firstName } from '@/features/teaching/reflection-logic';
-import { formatPlainDay } from '@/features/teaching/session-format';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { ReflectionChips, ReflectionFlags } from '@/features/teaching/reflection-chips';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -23,7 +22,7 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
   if (digests.length === 0) {
     return (
       <EmptyNote testID="reflections-empty">
-        No reflections yet. A student, their parent or you can add one from a lesson on the sessions page.
+        No reflections yet. A student, their parent or you can add one from a lesson on the Lessons page.
       </EmptyNote>
     );
   }
@@ -36,7 +35,7 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
           <Pressable
             testID={`reflection-${session_id}`}
             accessibilityRole="link"
-            accessibilityLabel={`${student_name}'s reflection on the ${formatPlainDay(occurred_on, today)} lesson`}
+            accessibilityLabel={`${student_name}'s reflection on the ${formatDay(occurred_on, today)} lesson`}
             onPress={() => router.navigate(`/sessions?focus=${session_id}`)}
             style={({ pressed }) => ({ paddingVertical: space.md, gap: 6, opacity: pressed ? 0.7 : 1 })}
           >
@@ -53,7 +52,7 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
                 {student_name}
               </Text>
               <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                {formatPlainDay(occurred_on, today)}
+                {formatDay(occurred_on, today)}
               </Text>
               <ReflectionFlags reflection={reflection} />
             </View>
@@ -91,7 +90,7 @@ export function ReflectionPrompts({
       testID="reflection-prompts"
       tourId="dash-reflect"
       title={forChildren ? 'Reflect with your children' : 'How did your lessons go?'}
-      action={{ label: 'All sessions', to: '/sessions' }}
+      action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
     >
       <Text
         variant="bodySmall"
@@ -110,7 +109,7 @@ export function ReflectionPrompts({
               style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm }}
             >
               <View style={{ flex: 1, minWidth: 0 }}>
-                <Text variant="bodyMedium" numberOfLines={1}>
+                <Text variant="bodyMedium">
                   {forChildren ? <Text style={{ fontWeight: '500' }}>{prompt.student_name} </Text> : null}
                   <Text style={forChildren ? { color: theme.tokens.mutedForeground } : { fontWeight: '500' }}>
                     {forChildren ? 'with ' : 'With '}
@@ -118,7 +117,7 @@ export function ReflectionPrompts({
                   </Text>
                 </Text>
                 <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                  {formatPlainDay(prompt.occurred_on, today)} · {time}
+                  {formatDay(prompt.occurred_on, today)} · {time}
                 </Text>
               </View>
               <Button
@@ -132,8 +131,8 @@ export function ReflectionPrompts({
                 // The date and the time: two lessons on one day stay distinct.
                 accessibilityLabel={
                   (forChildren
-                    ? `Reflect with ${firstName(prompt.student_name)} on the ${prompt.occurred_on}`
-                    : `Reflect on the ${prompt.occurred_on}`) + ` ${time} lesson`
+                    ? `Reflect with ${firstName(prompt.student_name)} on the ${formatDay(prompt.occurred_on, today)}`
+                    : `Reflect on the ${formatDay(prompt.occurred_on, today)}`) + ` ${time} lesson`
                 }
               >
                 Reflect

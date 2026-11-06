@@ -4,7 +4,6 @@ import { CheckIcon, EraserIcon, PenLineIcon, XIcon } from 'lucide-react';
 import { checkAnswer, guestSeries, guestTileName, type CanvasStroke, type GuestTile } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -131,10 +130,8 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
     <Frame right={<span className="text-muted-foreground text-sm">Page {index + 1} of {questions.length}</span>}>
       <Card className="py-0" data-testid="guest-assessment-page">
         <CardContent className="grid gap-3 p-6">
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{guestTileName(tile)}</span>
-            {question.beta && <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">Beta</Badge>}
-          </div>
+          {/* Phase 78: no Beta mark -- a checked question is served like any other. */}
+          <span className="text-muted-foreground text-[13px] font-medium">{guestTileName(tile)}</span>
           <MathText text={question.stem} className="text-lg leading-relaxed" />
           {question.kind === 'choice' ? (
             <div className="grid gap-2" role="radiogroup" aria-label="Your answer">

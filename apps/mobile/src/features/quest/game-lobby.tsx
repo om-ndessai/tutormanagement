@@ -9,6 +9,8 @@
 // game.". On an iPad the code and the choices sit beside the teams. Phase 47 (design 61): the label is
 // "Game code" (owner, 2026-10-23), the host joins by starting a team, the host's action is "Start the Quest", and the board counts the places taken.
 // Phase 77 (JF15): "Invited: Sanjay" under the actions while someone the host invited has not joined (`GameView.invited`).
+// Phase 78 (owner 2026-11-05): a game is a "quest" on screen ("Join this quest", "Start the quest", "Cancel the quest");
+// "Game code" stays, a code being the one place "game" is the word; the rules say the level in words.
 import type { GameView } from '@tmi/shared';
 import { Share, View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
@@ -27,6 +29,7 @@ import { JoinChoices } from './game-join-choices';
 import {
   LOBBY_LABEL,
   gameRulesLine,
+  gameTitle,
   invitedLine,
   lobbyBoardTitle,
   playerCount,
@@ -42,9 +45,10 @@ import { questWide } from './quest-model';
 import { useQuestNotice } from './quest-notice';
 
 /** The share sheet's words, and the link to the Play home with the code when the server's origin is known. */
-function inviteMessage(code: string): string {
-  const url = gameInviteUrl(serverOrigin(), code);
-  return url === code ? shareText(code) : `${shareText(code)} ${url}`;
+function inviteMessage(game: GameView): string {
+  const url = gameInviteUrl(serverOrigin(), game.code);
+  const text = shareText(game.code, gameTitle(game));
+  return url === game.code ? text : `${text} ${url}`;
 }
 
 const message = (caught: unknown, fallback: string) =>
@@ -79,7 +83,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
       const gone = reply.data === null || (!reply.data.is_host && reply.data.me.team_id === null);
       if (kind === 'leave' && gone) {
         exitGame(from);
-        toast.success('You left the game.');
+        toast.success('You left the quest.');
       }
     } catch (caught) {
       notice.error(message(caught, 'That did not work.'));
@@ -88,10 +92,10 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
 
   function cancel() {
     confirmEnd({
-      title: 'Cancel the game?',
+      title: 'Cancel the quest?',
       body: 'Nobody will be able to play it.',
-      confirm: 'Cancel the game',
-      keep: 'Keep the game',
+      confirm: 'Cancel the quest',
+      keep: 'Keep the quest',
       onConfirm: () => void run('end'),
     });
   }
@@ -102,7 +106,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
         <View style={{ gap: space.xs }}>
           <Text
             variant="labelMedium"
-            style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+            style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
           >
             {LOBBY_LABEL}
           </Text>
@@ -121,7 +125,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
               icon="share-variant-outline"
               accessibilityLabel="Share the code"
               mode="outlined"
-              onPress={() => void Share.share({ message: inviteMessage(game.code) }).catch(() => undefined)}
+              onPress={() => void Share.share({ message: inviteMessage(game) }).catch(() => undefined)}
             />
           </View>
           <GameRules game={game} />
@@ -165,7 +169,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
         {!mine ? (
           <View style={{ gap: space.sm }}>
             <Text variant="titleSmall" accessibilityRole="header">
-              Join this game
+              Join this quest
             </Text>
             <JoinChoices
               gameId={game.id}
@@ -186,7 +190,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
               disabled={players === 0 || action.isPending}
               contentStyle={{ minHeight: 52 }}
             >
-              Start the Quest
+              Start the quest
             </Button>
           ) : null}
           {mine ? (
@@ -208,7 +212,7 @@ export function GameLobby({ game, from }: { game: GameView; from?: string }) {
               disabled={action.isPending}
               contentStyle={{ minHeight: 48 }}
             >
-              Cancel the game
+              Cancel the quest
             </Button>
           ) : null}
         </View>

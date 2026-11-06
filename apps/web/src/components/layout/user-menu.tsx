@@ -41,7 +41,7 @@ export function UserMenu() {
         <Button variant="ghost" size="icon" aria-label="Account menu">
           <span
             aria-hidden
-            className="bg-brand-100 text-brand-800 dark:bg-brand-900/60 dark:text-brand-200 flex size-7 items-center justify-center rounded-full text-[11px] font-semibold"
+            className="bg-brand-100 text-brand-800 dark:bg-brand-900/60 dark:text-brand-200 flex size-7 items-center justify-center rounded-full text-xs font-semibold"
           >
             {initials(user.full_name)}
           </span>
@@ -50,8 +50,9 @@ export function UserMenu() {
 
       <DropdownMenuContent align="end" className="w-60">
         <DropdownMenuLabel className="font-normal">
-          <p className="truncate text-sm font-medium">{user.full_name}</p>
-          <p className="text-muted-foreground truncate text-xs">{user.email}</p>
+          {/* Phase 78 (JF28): the name and the address wrap, never cut. */}
+          <p className="text-sm font-medium break-words">{user.full_name}</p>
+          <p className="text-muted-foreground text-xs break-all">{user.email}</p>
             <p className="text-muted-foreground mt-1 text-xs">
             {user.roles.map((role) => USER_ROLE_LABELS[role]).join(" \u00b7 ")}
             {organization ? ` at ${organization.short_name}` : ''}

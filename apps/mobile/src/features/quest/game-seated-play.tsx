@@ -92,7 +92,7 @@ export function SeatedPlay({ game, counting = false }: { game: GameView; countin
         style={{ alignSelf: 'flex-start' }}
         contentStyle={{ minHeight: 48 }}
       >
-        End the game now
+        End the quest now
       </Button>
       <Scoreboard game={game} title="Scores" />
     </View>
@@ -107,7 +107,7 @@ function SeatedWaiting() {
       <View style={{ padding: space.lg, gap: space.sm }}>
         <Text
           variant="labelMedium"
-          style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+          style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
         >
           {WAITING_LABEL}
         </Text>
@@ -186,7 +186,7 @@ function SeatedScores({ game, turn }: { game: GameView; turn: SeatTurn | null })
               gap: 2,
             }}
           >
-            <Text variant="bodyLarge" numberOfLines={1} style={{ fontWeight: '600' }}>
+            <Text variant="bodyLarge" style={{ fontWeight: '600' }}>
               {row.name}
               {row.mine ? <Text style={{ color: theme.tokens.mutedForeground, fontWeight: '400' }}> (you)</Text> : null}
             </Text>

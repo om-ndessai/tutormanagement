@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2Icon, SmileIcon } from 'lucide-react';
 import {
+  COMMON_COPY,
   formatClockTime,
   type ReflectionDigest,
   type ReflectionPrompt,
@@ -15,6 +16,7 @@ import {
   ReflectionDialog,
   ReflectionFlags,
 } from '@/features/teaching/session-reflection';
+import { useDates } from '@/hooks/use-dates';
 import { EmptyNote, Panel } from './stat-card';
 
 // ---------------------------------------------------------------------------
@@ -41,6 +43,7 @@ export function ReflectionPrompts({
   index: number;
   forChildren?: boolean;
 }) {
+  const dates = useDates();
   const [openingId, setOpeningId] = useState<string | null>(null);
   const [reflecting, setReflecting] = useState<TutoringSession | null>(null);
 
@@ -62,7 +65,7 @@ export function ReflectionPrompts({
         index={index}
         tourId="dash-reflect"
         title={forChildren ? 'Reflect with your children' : 'How did your lessons go?'}
-        action={{ label: 'All sessions', to: '/sessions' }}
+        action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
       >
         <p className="text-muted-foreground -mt-2 mb-2 text-xs">
           {forChildren
@@ -72,14 +75,14 @@ export function ReflectionPrompts({
         <ul className="divide-border divide-y">
           {prompts.map((prompt) => (
             <li key={prompt.session_id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
-              <span className="min-w-0 flex-1 text-sm">
+              <span className="min-w-0 flex-1 text-sm break-words">
                 {forChildren && <span className="font-medium">{prompt.student_name} </span>}
                 <span className={forChildren ? 'text-muted-foreground' : 'font-medium'}>
                   {forChildren ? 'with ' : 'With '}
                   {prompt.tutor_name}
                 </span>
                 <span className="text-muted-foreground block text-xs">
-                  {prompt.occurred_on} · {formatClockTime(prompt.started_at)}
+                  {dates.day(prompt.occurred_on, { relative: true, weekday: true })} · {formatClockTime(prompt.started_at)}
                 </span>
               </span>
               <Button
@@ -90,8 +93,8 @@ export function ReflectionPrompts({
                 // The date and the time: two lessons on one day stay distinct.
                 aria-label={
                   (forChildren
-                    ? `Reflect with ${firstName(prompt.student_name)} on the ${prompt.occurred_on}`
-                    : `Reflect on the ${prompt.occurred_on}`) +
+                    ? `Reflect with ${firstName(prompt.student_name)} on the ${dates.day(prompt.occurred_on)}`
+                    : `Reflect on the ${dates.day(prompt.occurred_on)}`) +
                   ` ${formatClockTime(prompt.started_at)} lesson`
                 }
               >
@@ -113,11 +116,12 @@ export function ReflectionPrompts({
  * each one missed ("Too fast", "Little new") -- so the next lesson can adjust.
  */
 export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) {
+  const dates = useDates();
   if (digests.length === 0) {
     return (
       <EmptyNote>
         No reflections yet. A student, their parent or you can add one from a lesson on the
-        sessions page.
+        Lessons page.
       </EmptyNote>
     );
   }
@@ -130,7 +134,7 @@ export function RecentReflections({ digests }: { digests: ReflectionDigest[] }) 
             <Link to={`/sessions?focus=${session_id}`} className="text-sm font-medium hover:underline">
               {student_name}
             </Link>
-            <span className="text-muted-foreground text-xs">{occurred_on}</span>
+            <span className="text-muted-foreground text-xs">{dates.day(occurred_on, { relative: true, weekday: true })}</span>
             <span className="flex flex-wrap gap-1">
               <ReflectionFlags reflection={reflection} />
             </span>

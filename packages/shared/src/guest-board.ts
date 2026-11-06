@@ -8,7 +8,7 @@ import type { QuestionBankLevelId } from './questions.js';
 // ---------------------------------------------------------------------------
 // A signed-out visitor picks a grade (1-8) and sees that grade's quests as game cards, with a daily
 // "Today's 5". Curricula are never named to a guest (owner, 2026-11-02): a level is "Grade 4", and
-// a harder curriculum's level is "Adv G4". Pure, so the web and the app agree.
+// a harder curriculum's level is "Adv Grade 4". Pure, so the web and the app agree.
 
 /** The grades on the board's row, in order (owner, 2026-11-02: 1-8). */
 export const GUEST_GRADES = [1, 2, 3, 4, 5, 6, 7, 8] as const;
@@ -46,10 +46,10 @@ export function guestLevelPlace(level: QuestionBankLevelId): GuestLevelPlace | n
   return grades ? { grades, advanced: true } : null;
 }
 
-/** A level's name for a guest: "Grade 4", "Adv G2", "Adv G3-4"; never a curriculum's name. */
+/** A level's name for a guest: "Grade 4", "Adv Grade 2", "Adv Grades 3–4" (Phase 78: words, not a code); never a curriculum's name. */
 export function guestLevelWords(level: QuestionBankLevelId): string {
   const place = guestLevelPlace(level);
-  if (place?.advanced) return `Adv G${place.grades.join('–')}`;
+  if (place?.advanced) return `Adv ${place.grades.length > 1 ? 'Grades' : 'Grade'} ${place.grades.join('–')}`;
   if (place) return `Grade ${place.grades[0]}`;
   // Off the row (Kindergarten, Math 1, ...): the level's own words, without the edition.
   return TILE_LEVEL_WORDS[level].replace(/ \(2017\)$/, '');
@@ -73,14 +73,14 @@ export function guestTileDetail(tile: TileShape): string {
   return tile.mode === 'timed' ? 'Beat the clock' : plural(tile.value, 'question');
 }
 
-/** A guest tile's words, as /api/auth/config serves them: "Adv G2 · 5 questions". */
+/** A guest tile's words, as /api/auth/config serves them: "Adv Grade 2 · 5 questions". */
 export function guestTileWords(tile: TileShape): string {
   const level = guestLevelWords(tile.level_id);
   if (tile.kind === 'assessment') return `${level} · Show your work, ${plural(tile.value, 'question')}`;
   return `${level} · ${tile.mode === 'timed' ? plural(tile.value, 'minute') : plural(tile.value, 'question')}`;
 }
 
-/** A tile's name in a sentence ("Quick 5, Adv G2"): what a guest reads instead of its code. */
+/** A tile's name in a sentence ("Quick 5, Adv Grade 2"): what a guest reads instead of its code. */
 export function guestTileName(tile: TileShape): string {
   return `${guestTileTitle(tile)}, ${guestLevelWords(tile.level_id)}`;
 }

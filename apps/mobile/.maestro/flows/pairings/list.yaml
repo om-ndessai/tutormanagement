@@ -89,7 +89,7 @@ tags:
     visible:
       id: focus-notice
     timeout: 15000
-- assertVisible: 'That assignment is no longer here.*'
+- assertVisible: 'That pairing is no longer here.*'
 - assertNotVisible: 'Sofia Okafor'
 - tapOn:
     id: focus-show-all

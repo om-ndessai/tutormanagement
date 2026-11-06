@@ -8,7 +8,8 @@
 > contract `98c40ab` (smoke green on the web, iOS and Android; `test:compat` green); Phase 72 (smoke green on all
 > three, `test:compat` green); Phases 73 and 74 (one smoke and one commit, as planned); Phases 75 and 76 (one smoke
 > and one commit; smoke green on the web, iOS and Android, `test:compat` green); Phase 77 (smoke green on the web,
-> iOS and Android, `test:compat` green). Phase 78 next.
+> iOS and Android, `test:compat` green); Phase 78 (smoke green on the web, iOS and Android, `test:compat` green).
+> Every phase is built; the test deploy waits for the owner.
 
 The UI journey audit ([docs/userjourney/](userjourney/README.md)) played 24 journeys at commit `2d6e7d3` and merged
 its findings into 37 recommendations ([recommendations.md](userjourney/recommendations.md)). This plan fixes each
@@ -237,6 +238,11 @@ game, not only one on a device: `QuestFrame` takes a `scrollRef` the game screen
 the game finishes); and Start's warning on Assessments can say "started 2 minutes ago" while the row below says "1
 minute ago", because the row's relative time is worked out once when the list renders -- the one date formatter
 should give both the same words.
+
+Left after Phase 78 (found by its flows, older than it, cosmetic; not scheduled): the app's parent dashboard reads
+"1 Children" and "1 Tutors" (a label beside a count, `dashboard/parent-balance-view.tsx`); the app's door animation
+sits over "Get ready" and the countdown (`quest/game-effects.tsx`); and the clients' own `levelWords` helpers
+(`quest/level-words.ts`, web and app) could read shared `levelInWords`, which the assessment PDF now uses.
 
 ## How it is committed
 

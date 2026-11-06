@@ -13,9 +13,9 @@ export type CommentTargetType = (typeof COMMENT_TARGET_TYPES)[number];
 
 export const COMMENT_TARGET_LABELS: Record<CommentTargetType, string> = {
   user: 'person',
-  session: 'session',
+  session: 'lesson',
   assignment: 'assignment',
-  scheduled_session: 'scheduled session',
+  scheduled_session: 'scheduled lesson',
 };
 
 /** Long enough for a paragraph of context, short enough to stay a comment. */

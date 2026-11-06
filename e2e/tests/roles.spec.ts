@@ -12,7 +12,7 @@ test.describe('each kind of user sees their own portal', { tag: '@smoke' }, () =
     const page = await as('admin');
     await page.goto('/users');
 
-    await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
 
     // People from unrelated families and an unassigned tutor: an admin can
     // reach everyone, including those no scoped role would ever be shown.
@@ -21,7 +21,7 @@ test.describe('each kind of user sees their own portal', { tag: '@smoke' }, () =
     // large enough to paginate, so "is this name on screen" would depend on
     // alphabetical luck. Searching is also how an admin actually finds
     // somebody.
-    const search = page.getByLabel('Search users');
+    const search = page.getByLabel('Search people');
 
     for (const name of ['Johan Lindqvist', 'Grace Lee', 'Ben Whitfield', 'Sofia Okafor']) {
       await search.fill(name);
@@ -39,7 +39,8 @@ test.describe('each kind of user sees their own portal', { tag: '@smoke' }, () =
     const page = await as('tutor');
     await page.goto('/sessions');
 
-    await expect(page.getByRole('heading', { name: 'Sessions' })).toBeVisible();
+    // Exact: "Cancelled lessons" is a heading on this page too.
+    await expect(page.getByRole('heading', { name: 'Lessons', exact: true })).toBeVisible();
     await expect(visible(page, 'Lessons you have taught, and what you have earned.').first()).toBeVisible();
 
     // Alex teaches Sofia and Ben, and nobody else.
@@ -107,7 +108,7 @@ test.describe('each kind of user sees their own portal', { tag: '@smoke' }, () =
     // Users offers a tutor no Add a person, and a row nothing but View details (UI audit JF22: the API refuses
     // the rest, so they are not offered).
     await tutorPage.goto('/users');
-    await expect(tutorPage.getByRole('heading', { name: 'Users' })).toBeVisible();
+    await expect(tutorPage.getByRole('heading', { name: 'People' })).toBeVisible();
     await expect(tutorPage.getByRole('button', { name: 'Add a person' })).toHaveCount(0);
     await tutorPage.getByRole('button', { name: /^Actions for / }).filter({ visible: true }).first().click();
     await expect(tutorPage.getByRole('menuitem', { name: 'View details' })).toBeVisible();

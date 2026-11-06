@@ -35,6 +35,21 @@ function call(as, method, path, body) {
 }
 
 call(ADMIN, 'PATCH', '/organization/settings', { gamify_question_quest: true, canvas_assessments_unreviewed: false });
+// Phase 62 (P1): whether a space draws checked questions is the platform admins' switch now
+// (`checked_questions`, on by default; the admins' canvas_assessments_unreviewed above is still accepted and
+// no longer applied). Off for chmi, as sharing.spec.ts does, so the game draws the twelve approved questions;
+// share-end.js puts it back on.
+var PLATFORM_ADMIN = 'ndessai@gmail.com';
+var spaces = call(PLATFORM_ADMIN, 'GET', '/platform/organizations').data;
+var chmi = null;
+for (var o = 0; o < spaces.length; o++) if (spaces[o].slug === ORG) chmi = spaces[o];
+if (!chmi) throw new Error('The console does not list ' + ORG);
+call(PLATFORM_ADMIN, 'PUT', '/platform/organizations/' + chmi.id + '/features', {
+  feature_tutoring: chmi.feature_tutoring,
+  feature_assessment: chmi.feature_assessment,
+  feature_quest: chmi.feature_quest,
+  checked_questions: false,
+});
 var games = call(ADMIN, 'GET', '/quest/games').data;
 for (var i = 0; i < games.length; i++) {
   if (games[i].status !== 'finished') call(ADMIN, 'POST', '/quest/games/' + games[i].id + '/end');

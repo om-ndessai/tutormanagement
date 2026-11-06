@@ -291,7 +291,9 @@ describe('SpaceWelcome (Phase 52)', () => {
   it('keeps Delete my account away while anything is open: a request sent or an invitation (Phase 60)', async () => {
     as({ joinRequests: [request('assess', null)] });
     await renderWithProviders(<SpaceWelcome firstTime />);
-    expect(screen.getByText('REQUESTS SENT')).toBeTruthy();
+    // Phase 78 (JF35): a heading in sentence case, as on the web.
+    expect(screen.getByText('Requests sent')).toBeTruthy();
+    expect(screen.queryByText('REQUESTS SENT')).toBeNull();
     expect(screen.queryByTestId('welcome-delete-account')).toBeNull();
     await screen.unmount();
     as({ invitations: [{ slug: 'chmi' }] });

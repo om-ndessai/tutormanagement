@@ -122,11 +122,11 @@ tags:
       id: screen-spaces
     timeout: 30000
 - assertVisible: 'Choose a space'
-- assertVisible: 'INVITATIONS'
+- assertVisible: 'Invitations'
 - assertVisible:
     id: invitation-${output.slug}
 - assertVisible: 'Owen family ${output.run}'
-- assertNotVisible: 'YOUR SPACES'
+- assertNotVisible: 'Your spaces'
 - takeScreenshot: spaces-invitation-selector
 - tapOn:
     id: invitation-accept-${output.slug}

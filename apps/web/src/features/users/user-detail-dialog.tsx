@@ -24,7 +24,7 @@ export function UserDetailDialog({
     <Dialog open={userId !== null} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader className="sr-only">
-          <DialogTitle>User details</DialogTitle>
+          <DialogTitle>Their details</DialogTitle>
           <DialogDescription>Everything on file for this person.</DialogDescription>
         </DialogHeader>
 

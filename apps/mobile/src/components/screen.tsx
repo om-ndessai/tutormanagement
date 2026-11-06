@@ -86,6 +86,9 @@ export function Screen({
       nestedScrollEnabled
       contentInsetAdjustmentBehavior="automatic"
       automaticallyAdjustKeyboardInsets
+      // Phase 78 (JF28, J06A step 40): the foot's inset clears the tab bar's "+" and the live banner (`padded`
+      // above), and the scroll bar stops above them too, so neither the last row nor the bar rests under them.
+      scrollIndicatorInsets={{ bottom: bottomOverlap }}
       onScroll={(event) => errors.onScroll(event.nativeEvent.contentOffset.y)}
       scrollEventThrottle={64}
       refreshControl={

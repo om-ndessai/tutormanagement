@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   mayAddPeople,
   USER_ROLES,
   USER_ROLE_LABELS,
@@ -161,7 +162,7 @@ export function UsersPage() {
       toast.success(`${user.full_name} restored.`);
     } catch (caught) {
       toast.error(
-        caught instanceof ApiRequestError ? caught.message : 'Could not restore that user.',
+        caught instanceof ApiRequestError ? caught.message : 'Could not restore that person.',
       );
     }
   }
@@ -169,13 +170,13 @@ export function UsersPage() {
   return (
     <div className="mx-auto max-w-6xl">
       <PageHeader
-        title="Users"
+        title={COMMON_COPY.people_page}
         description={`Everyone at ${brand.name}. A person can hold more than one role.`}
         actions={
           mayAdd ? (
             <Button onClick={() => setAdding(true)} data-testid="users-add">
               <PlusIcon />
-              Add a person
+              {COMMON_COPY.add_person}
             </Button>
           ) : undefined
         }
@@ -193,7 +194,7 @@ export function UsersPage() {
       <div className="mb-4 grid gap-3 sm:flex sm:flex-wrap sm:items-end">
         <div className="sm:min-w-56 sm:flex-1">
           <Label htmlFor="user-search" className="sr-only">
-            Search users
+            {COMMON_COPY.search_people}
           </Label>
           <div className="relative">
             <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
@@ -244,7 +245,7 @@ export function UsersPage() {
       {isError ? (
         <div className="border-destructive/40 bg-destructive/5 rounded-lg border p-8 text-center">
           <p className="text-destructive text-sm font-medium">
-            {error instanceof ApiRequestError ? error.message : 'Could not load users.'}
+            {error instanceof ApiRequestError ? error.message : 'Could not load the people here.'}
           </p>
         </div>
       ) : (
@@ -270,7 +271,7 @@ export function UsersPage() {
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-muted-foreground text-sm" aria-live="polite">
               {total === 0
-                ? 'No users'
+                ? 'Nobody to show'
                 : `Showing ${page * PAGE_SIZE + 1}–${Math.min((page + 1) * PAGE_SIZE, total)} of ${total}`}
               {isFetching && !isPending && ' · updating…'}
             </p>

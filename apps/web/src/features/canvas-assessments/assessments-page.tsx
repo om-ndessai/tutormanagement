@@ -4,12 +4,10 @@ import { toast } from 'sonner';
 import { FileTextIcon } from 'lucide-react';
 import {
   CANVAS_ASSESSMENT_STATUS_LABELS,
-  TILE_LEVEL_WORDS,
+  COMMON_COPY,
   formatRelativeTime,
-  levelLabel,
   type CanvasAssessment,
   type CanvasAssessmentLevelId,
-  type QuestionBankLevelId,
 } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
@@ -32,6 +30,8 @@ import {
 import { ApiRequestError } from '@/lib/api-client';
 import { useAuth } from '@/providers/auth-provider';
 import { useUsers } from '@/features/users/api';
+import { levelWords } from '@/features/quest/level-words';
+import { useScreenNow } from './screen-now';
 import {
   useCanvasAssessmentLevels,
   useCanvasAssessments,
@@ -39,15 +39,15 @@ import {
   useStartCanvasAssessment,
 } from './api';
 
-// Phase 38: the Assessment menu (beta), docs/canvas-assessment-plan.md.
+// Phase 38: the Assessment menu, docs/canvas-assessment-plan.md. Since Phase 78 (owner, 2026-11-05) it carries no
+// Beta mark: checked questions are served like any other.
 
 export function AssessmentsPage() {
   return (
     <>
       <PageHeader
         title="Assessment"
-        description="In beta. A student answers questions by hand, one per page, with nothing marked while they work. When it is submitted, their tutors get a PDF of the questions and the handwriting."
-        actions={<Badge variant="secondary">Beta</Badge>}
+        description="A student answers questions by hand, one per page, with nothing marked while they work. When it is submitted, their tutors get a PDF of the questions and the handwriting."
       />
       <div className="grid gap-6">
         <StartCard />
@@ -68,6 +68,8 @@ export function StartCard() {
   // Phase 77 (JF20): the list already holds what Start warns about (shared with the list below through the cache).
   const list = useCanvasAssessments();
   const [inProgress, setInProgress] = useState<CanvasAssessment | null>(null);
+  // Phase 78: the same `now` as the list's rows, so the warning and the row say the same time.
+  const now = useScreenNow();
 
   // Phase 50: "Start an assessment" elsewhere (the welcome wizard, the Assessment home) names the student.
   const [params] = useSearchParams();
@@ -103,7 +105,7 @@ export function StartCard() {
   return (
     <Card className="py-0" data-testid="assessment-start">
       <CardContent className="grid gap-4 p-5">
-        <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Start an assessment</h2>
+        <h2 className="text-muted-foreground text-[13px] font-semibold">Start an assessment</h2>
         <div className="grid gap-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           {!onlyStudent && (
             <div className="grid gap-1.5">
@@ -131,11 +133,11 @@ export function StartCard() {
               <SelectContent>
                 {levelList.map((level) => (
                   <SelectItem key={level.level_id} value={level.level_id} disabled={level.available === 0}>
-                    {level.label} ·{' '}
+                    {/* Phase 78 (JF32): the level in words, and no "includes unreviewed": checked questions are like any other. */}
+                    {levelWords(level.level_id)} ·{' '}
                     {level.available === 0
                       ? 'no approved questions yet'
-                      : `${Math.min(level.available, organization?.canvas_assessment_questions ?? 10)} question${level.available === 1 ? '' : 's'}` +
-                        (level.unreviewed > 0 ? ' · includes unreviewed' : '')}
+                      : `${Math.min(level.available, organization?.canvas_assessment_questions ?? 10)} question${level.available === 1 ? '' : 's'}`}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -150,7 +152,7 @@ export function StartCard() {
           // (UI audit J07 steps 26-28, JF1).
           <p className="bg-muted/60 rounded-lg px-3 py-2 text-sm" role="status" data-testid="assessment-no-students">
             {user?.roles.includes('admin')
-              ? 'No students here yet. Add one from Users, then start an assessment for them here.'
+              ? `No students here yet. Add one from ${COMMON_COPY.people_page}, then start an assessment for them here.`
               : `No children are linked to you in ${organization?.name ?? 'this space'} yet. ${
                   organization?.admin_names?.length
                     ? `${organization.admin_names.join(' or ')} adds them: ask to link your child`
@@ -159,11 +161,8 @@ export function StartCard() {
           </p>
         )}
         <p className="text-muted-foreground text-xs">
-          Up to {organization?.canvas_assessment_questions ?? 10} questions of the level, chosen at random
-          {organization?.canvas_assessments_unreviewed
-            ? ', including questions not yet reviewed in the bank (your space is trying them out)'
-            : ' from the approved ones'}
-          . Multiple-choice questions are answered by choosing; the canvas is there for working. Work can be revisited and
+          Up to {organization?.canvas_assessment_questions ?? 10} questions of the level, chosen at random from the question
+          bank. Multiple-choice questions are answered by choosing; the canvas is there for working. Work can be revisited and
           changed until it is submitted.
         </p>
       </CardContent>
@@ -172,7 +171,7 @@ export function StartCard() {
           <AlertDialogHeader>
             <AlertDialogTitle>One is already in progress</AlertDialogTitle>
             <AlertDialogDescription data-testid="assessment-in-progress-words">
-              {inProgress && inProgressWords(inProgress, inProgress.student_user_id === user?.id)}
+              {inProgress && inProgressWords(inProgress, inProgress.student_user_id === user?.id, now)}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -195,10 +194,10 @@ export function StartCard() {
 const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
 
 /** "Noor already has a Grade 4 assessment in progress (started 8 minutes ago)." */
-function inProgressWords(row: CanvasAssessment, own: boolean): string {
-  const level = TILE_LEVEL_WORDS[row.level_id as QuestionBankLevelId] ?? levelLabel(row.level_id);
+function inProgressWords(row: CanvasAssessment, own: boolean, now: Date): string {
+  const level = levelWords(row.level_id);
   const who = own ? 'You already have' : `${firstName(row.student_name)} already has`;
-  return `${who} ${/^[aeiou]/i.test(level) ? 'an' : 'a'} ${level} assessment in progress (started ${formatRelativeTime(row.started_at)}).`;
+  return `${who} ${/^[aeiou]/i.test(level) ? 'an' : 'a'} ${level} assessment in progress (started ${formatRelativeTime(row.started_at, now)}).`;
 }
 
 export function AssessmentList() {
@@ -206,6 +205,7 @@ export function AssessmentList() {
   const discard = useDiscardCanvasAssessment();
   const [discarding, setDiscarding] = useState<CanvasAssessment | null>(null);
   const rows = list.data?.data ?? [];
+  const now = useScreenNow();
 
   async function confirmDiscard() {
     if (!discarding) return;
@@ -221,7 +221,7 @@ export function AssessmentList() {
 
   return (
     <section className="grid gap-3" aria-label="Assessments">
-      <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Assessments</h2>
+      <h2 className="text-muted-foreground text-[13px] font-semibold">Assessments</h2>
       {list.isPending ? (
         <Skeleton className="h-24 w-full" />
       ) : rows.length === 0 ? (
@@ -235,7 +235,7 @@ export function AssessmentList() {
                   <div className="grid min-w-0 gap-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium">{row.student_name}</span>
-                      <span className="text-muted-foreground text-sm">{levelLabel(row.level_id)}</span>
+                      <span className="text-muted-foreground text-sm">{levelWords(row.level_id)}</span>
                       <Badge
                         variant={row.status === 'submitted' ? 'default' : 'secondary'}
                         data-testid={`assessment-status-${row.id}`}
@@ -248,9 +248,9 @@ export function AssessmentList() {
                       {row.status === 'submitted'
                         ? `${row.questions_written} of ${row.question_count} questions written` +
                           (row.choice_questions ? ` · ${row.choices_correct} of ${row.choice_questions} choices correct` : '') +
-                          ` · submitted ${formatRelativeTime(row.submitted_at ?? row.started_at)}` +
+                          ` · submitted ${formatRelativeTime(row.submitted_at ?? row.started_at, now)}` +
                           (row.reviewed_at && row.reviewed_by_name ? ` · reviewed by ${row.reviewed_by_name}` : '')
-                        : `${row.question_count} questions · started ${formatRelativeTime(row.started_at)}`}
+                        : `${row.question_count} questions · started ${formatRelativeTime(row.started_at, now)}`}
                       {row.started_by_name ? ` · started by ${row.started_by_name}` : ''}
                     </p>
                   </div>

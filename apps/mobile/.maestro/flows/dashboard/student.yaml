@@ -61,7 +61,7 @@ tags:
     element:
       id: student-sessions-action
     direction: DOWN
-- assertVisible: 'Your sessions'
+- assertVisible: 'Your lessons'
 - assertNotVisible:
     id: session-money
 - assertNotVisible: '.*\$[0-9].*'

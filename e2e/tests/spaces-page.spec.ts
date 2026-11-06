@@ -168,6 +168,9 @@ test.describe('the Spaces page (S7)', () => {
     // Leave the other space from here, while inside her own: she carries on where she is.
     await pia.goto('/spaces');
     await expect(pia.getByTestId(`org-${own.slug}`)).toContainText('Here now');
+    // Phase 78 (JF35): Leave says so in a word beside its icon, and names the space to a screen reader.
+    await expect(pia.getByTestId(`space-leave-${hosted.slug}`)).toHaveText('Leave');
+    await expect(pia.getByTestId(`space-leave-${hosted.slug}`)).toHaveAccessibleName(`Leave ${hosted.name}`);
     await pia.getByTestId(`space-leave-${hosted.slug}`).click();
     const confirm = pia.getByTestId(`space-leave-confirm-${hosted.slug}`);
     await expect(confirm).toContainText(`You stop being a member of ${hosted.name}. Its records of you stay.`);

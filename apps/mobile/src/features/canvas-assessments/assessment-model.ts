@@ -6,17 +6,16 @@
 // device to Noor"), Start's warning when the student already has one in progress, and what a submit by someone else
 // says (the PDF is the tutor's; never linked to the guardian).
 import {
-  TILE_LEVEL_WORDS,
   formatRelativeTime,
   formatStroke,
-  levelLabel,
   type CanvasAssessment,
   type CanvasAssessmentLevel,
   type CanvasAssessmentQuestion,
   type CanvasStroke,
-  type QuestionBankLevelId,
   type SubmitCanvasAssessmentInput,
 } from '@tmi/shared';
+
+import { levelWords } from '@/features/quest/level-words';
 
 export const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
@@ -123,24 +122,22 @@ export function parseSavedWork(raw: string | null): SavedWork {
 
 /**
  * A grade as the picker offers it (the web's SelectItem): "Grade 4 · 10 questions", at most the
- * organization's own count (Phase 40).
+ * organization's own count (Phase 40). Phase 78 (owner 2026-11-05): no " · includes unreviewed" -- checked
+ * questions are served like any other.
  */
 export function levelOptionDetail(level: CanvasAssessmentLevel, questions = 10): string {
   if (level.available === 0) return 'no approved questions yet';
-  return (
-    `${Math.min(level.available, questions)} question${level.available === 1 ? '' : 's'}` +
-    (level.unreviewed > 0 ? ' · includes unreviewed' : '')
-  );
+  return `${Math.min(level.available, questions)} question${level.available === 1 ? '' : 's'}`;
 }
 
-/** The start card's note under the pickers, with the organization's count (Phase 40). */
-export function startNote(includesUnreviewed: boolean, questions = 10): string {
+/**
+ * The start card's note under the pickers, with the organization's count (Phase 40). Phase 78: the same words
+ * whether or not the space draws checked questions (the tutor's PDF still marks each one "not yet reviewed").
+ */
+export function startNote(questions = 10): string {
   return (
-    `Up to ${questions} questions of the level, chosen at random` +
-    (includesUnreviewed
-      ? ', including questions not yet reviewed in the bank (your space is trying them out)'
-      : ' from the approved ones') +
-    '. Multiple-choice questions are answered by choosing; the canvas is there for working. Work can be revisited and changed until it is submitted.'
+    `Up to ${questions} questions of the level, chosen at random. Multiple-choice questions are answered by ` +
+    'choosing; the canvas is there for working. Work can be revisited and changed until it is submitted.'
   );
 }
 
@@ -153,7 +150,7 @@ export function namesWithOr(names: readonly string[]): string {
 
 /**
  * Why the start card's student picker is empty, and who fills it (UI audit JF1, J07 steps 26-28): an admin
- * adds a student from Users; anyone else is told nobody is linked to them here yet and who adds children --
+ * adds a student from People; anyone else is told nobody is linked to them here yet and who adds children --
  * the space's admins by name when the session carries them (`admin_names`, R31), else in general.
  */
 export function noStudentsLine({
@@ -165,7 +162,7 @@ export function noStudentsLine({
   spaceName: string | null | undefined;
   adminNames?: readonly string[] | null;
 }): string {
-  if (isAdmin) return 'No students here yet. Add one from Users, then start an assessment for them here.';
+  if (isAdmin) return 'No students here yet. Add one from People, then start an assessment for them here.';
   const named = namesWithOr(adminNames ?? []);
   const who = named ? `${named} adds them: ask to link your child` : "The space's admins add them: ask one to link your child";
   return `No children are linked to you in ${spaceName || 'this space'} yet. ${who}, then start an assessment for them here.`;
@@ -192,10 +189,8 @@ export function firstName(name: string | null | undefined): string {
   return trimmed.split(/\s+/)[0] || trimmed;
 }
 
-/** "Grade 4", "Beast Academy 3": a level in words, else its short label. */
-export function levelWords(levelId: string): string {
-  return TILE_LEVEL_WORDS[levelId as QuestionBankLevelId] ?? levelLabel(levelId);
-}
+/** "Grade 4", "Beast Academy 3": a level in words (one helper for Quest, quests and Assessments). */
+export { levelWords };
 
 /** The student's assessment already in progress (the newest), for Start's warning; null for none. */
 export function inProgressFor(rows: readonly CanvasAssessment[], studentId: string): CanvasAssessment | null {

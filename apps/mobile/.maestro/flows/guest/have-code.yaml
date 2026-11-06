@@ -45,7 +45,7 @@ tags:
     visible:
       id: code-sheet
     timeout: 10000
-- assertVisible: 'Six characters join a game; eight ask to join a space\.'
+- assertVisible: 'Six characters join a quest; eight ask to join a space\.'
 - tapOn:
     id: code-sheet-code
 - waitForAnimationToEnd

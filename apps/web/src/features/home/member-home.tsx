@@ -39,6 +39,7 @@ import {
   playTogetherRequest,
   practiseBefore,
   practiseRequest,
+  quickActionLabel,
   quickActionsFor,
   startsInWords,
   type HabitSummary,
@@ -397,15 +398,16 @@ function Rings() {
   );
 }
 
-const QUICK: Record<QuickAction, { label: string; icon: LucideIcon; to?: string }> = {
-  record_lesson: { label: 'Record a lesson', icon: PencilLineIcon },
-  start_lesson: { label: 'Start a lesson', icon: PlayIcon },
-  new_quest: { label: 'New quest', icon: PlusIcon, to: '/quest/games/new' },
-  join_code: { label: 'Have a code?', icon: KeyRoundIcon },
-  start_assessment: { label: 'Start an assessment', icon: ClipboardCheckIcon, to: '/assessments' },
-  add_person: { label: 'Add a person', icon: UserPlusIcon },
-  schedule: { label: 'Schedule', icon: CalendarDaysIcon, to: '/schedule' },
-  progress: { label: 'Progress', icon: TrendingUpIcon, to: '/progress' },
+/** Each quick action's icon and where it goes; its words are shared with the app (`QUICK_ACTION_LABELS`, Phase 78). */
+const QUICK: Record<QuickAction, { icon: LucideIcon; to?: string }> = {
+  record_lesson: { icon: PencilLineIcon },
+  start_lesson: { icon: PlayIcon },
+  new_quest: { icon: PlusIcon, to: '/quest/games/new' },
+  join_code: { icon: KeyRoundIcon },
+  start_assessment: { icon: ClipboardCheckIcon, to: '/assessments' },
+  add_person: { icon: UserPlusIcon },
+  schedule: { icon: CalendarDaysIcon, to: '/schedule' },
+  progress: { icon: TrendingUpIcon, to: '/progress' },
 };
 
 function QuickActions({
@@ -428,7 +430,7 @@ function QuickActions({
       {actions.map((action) => {
         const { icon: Icon, to } = QUICK[action];
         // In a personal space the person added is one's child (Phase 76, JF21).
-        const label = action === 'add_person' && organization?.personal ? 'Add my child' : QUICK[action].label;
+        const label = quickActionLabel(action, { personal: organization?.personal });
         const onClick = () => {
           if (action === 'record_lesson') onRecord();
           else if (action === 'start_lesson') onStart();

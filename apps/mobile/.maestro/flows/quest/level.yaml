@@ -1,6 +1,6 @@
 # Question Quest (Phase 42), where a student starts. With chmi's switch on (through the local API),
 # Priya, an admin, finds Quest under More, and on the Quest page the queue's card and every student
-# with their level. She sets Sofia's to G5 from the level picker (every level in a short scrolling
+# with their level. She sets Sofia's to Grade 5 from the level picker (every level in a short scrolling
 # list): the toast says so, and the picker shows it, read back from the server. "Not set" clears it.
 # An admin is never taken into Quest on signing in. The switch is off again at the end.
 appId: ${APP_ID}
@@ -55,46 +55,52 @@ tags:
     timeout: 60000
 - assertVisible:
     id: quest-level-00000000-0000-4000-8000-000000000008
-    text: 'Sofia Okafor’s level: BA3\. Change'
+    text: 'Sofia Okafor’s level: Beast Academy 3\. Change'
 # The same after the long scroll to her row: once it missed her field and the list never opened.
 - waitForAnimationToEnd:
     timeout: 3000
 - tapOn:
     id: quest-level-00000000-0000-4000-8000-000000000008
+# The list is open: its search field, and (Phase 78) the list scrolled to the level she holds (BA3 is far
+# below an unscrolled list's first eight rows).
 - extendedWaitUntil:
     visible:
-      id: quest-level-00000000-0000-4000-8000-000000000008-none
+      id: quest-level-00000000-0000-4000-8000-000000000008-search
     timeout: 5000
-# Her list opens below her field (in the middle of the screen) and scrolls within itself. A swipe
-# from the middle starts INSIDE that list and scrolls it, not the page, carrying G5 (its sixth row)
-# up out of sight while the search went on down the page -- the flake of Phases 46-47 on both
-# platforms. So the page is moved with a swipe that starts above her field, outside the list, which
-# brings the list's first rows up into view; then G5 is found without another swipe.
-- swipe:
-    start: 50%, 40%
-    end: 50%, 15%
-    duration: 600
-- waitForAnimationToEnd:
-    timeout: 3000
+- assertVisible:
+    id: quest-level-00000000-0000-4000-8000-000000000008-BA3
+# Her list opens below her field (in the middle of the screen) and scrolls within itself. Since Phase 78
+# it opens at the level she holds (BA3, low in the list), so Grade 5 sits above the list's window, where
+# a swipe inside the list or a tap on its clipped row misses (a swipe from the middle also scrolls the
+# list, not the page: the flake of Phases 46-47). The search narrows the list to Grade 5 (its words since
+# Phase 78), as game-single's Random does; the search key puts the keyboard away.
+- tapOn:
+    id: quest-level-00000000-0000-4000-8000-000000000008-search
+- inputText: 'Grade 5'
+- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: quest-level-00000000-0000-4000-8000-000000000008-NC26.5
+    centerElement: true
+- assertNotVisible:
+    id: quest-level-00000000-0000-4000-8000-000000000008-BA3
 - takeScreenshot: quest-level-picker
 - tapOn:
     id: quest-level-00000000-0000-4000-8000-000000000008-NC26.5
 - extendedWaitUntil:
-    visible: 'Sofia Okafor starts at G5\.'
+    visible: 'Sofia Okafor starts at Grade 5\.'
     timeout: 10000
 # The list closes and the page settles where it will: back up to her row, read from the server.
 - scrollUntilVisible:
     element:
       id: quest-level-00000000-0000-4000-8000-000000000008
-      text: 'Sofia Okafor’s level: G5\. Change'
+      text: 'Sofia Okafor’s level: Grade 5\. Change'
     direction: UP
     centerElement: true
     timeout: 30000
-# Not set clears it. Choosing G5 left the field at the top, under the header (the list was scrolled
-# into view below it): back up, to the middle. The list opens below it, Not set first.
+# Not set clears it. Choosing Grade 5 left the field at the top, under the header (the list was scrolled
+# into view below it): back up, to the middle. The list opens below it at Grade 5 (Phase 78), with Not set,
+# its first row, above the list's window: the search finds it.
 - scrollUntilVisible:
     element:
       id: quest-level-00000000-0000-4000-8000-000000000008
@@ -102,9 +108,14 @@ tags:
     centerElement: true
 - tapOn:
     id: quest-level-00000000-0000-4000-8000-000000000008
+- tapOn:
+    id: quest-level-00000000-0000-4000-8000-000000000008-search
+- inputText: 'Not set'
+- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: quest-level-00000000-0000-4000-8000-000000000008-none
+    centerElement: true
 - tapOn:
     id: quest-level-00000000-0000-4000-8000-000000000008-none
 - extendedWaitUntil:

@@ -4,8 +4,10 @@ import { toast } from 'sonner';
 import {
   DAYS_OF_WEEK,
   SCHEDULE_CANCELLER_LABELS,
+  addDays,
   describeSchedule,
-  zonedClockParts,
+  formatDay,
+  todayIn,
   type ScheduleCancellerRole,
   type VisibleSchedule,
 } from '@tmi/shared';
@@ -43,23 +45,20 @@ import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 
 /** Today on the organization's clock -- the one the API checks "past" against. */
 export function organizationToday(timeZone: string): string {
-  return zonedClockParts(new Date().toISOString(), timeZone).day;
+  return todayIn(timeZone);
 }
 
 /** A calendar date moved by whole days, as YYYY-MM-DD. */
 export function shiftDay(iso: string, days: number): string {
-  const [year, month, day] = iso.split('-').map(Number);
-  return new Date(Date.UTC(year!, (month ?? 1) - 1, (day ?? 1) + days)).toISOString().slice(0, 10);
+  return addDays(iso, days);
 }
 
-/** "Tue, Sep 29", read as a calendar date wherever the reader is. */
-export function formatLessonDay(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+/**
+ * "Tue, Sep 29" ("Tue, Sep 29, 2025" in another year), read as a calendar date wherever the reader is: the one
+ * shared formatter (Phase 78). `today` is the space's day.
+ */
+export function formatLessonDay(iso: string, today: string): string {
+  return formatDay(iso, today, { weekday: true });
 }
 
 /** "by Maria Okafor (the family)", or just the capacity once they are gone. */
@@ -123,7 +122,7 @@ export function CancelLessonDialog({
         scheduleId: schedule.id,
         input: { occurs_on: date, note: note.trim() || null },
       });
-      toast.success(`The ${formatLessonDay(date)} lesson is cancelled.`);
+      toast.success(`The ${formatLessonDay(date, today)} lesson is cancelled.`);
       onClose();
     } catch (error) {
       if (error instanceof ApiRequestError) setErrors(error.fieldErrors);
@@ -137,7 +136,7 @@ export function CancelLessonDialog({
         <form onSubmit={handleSubmit} noValidate>
           <DialogHeader>
             <DialogTitle>
-              {target?.date ? `Cancel the lesson on ${formatLessonDay(target.date)}?` : 'Cancel a lesson'}
+              {target?.date ? `Cancel the lesson on ${formatLessonDay(target.date, today)}?` : 'Cancel a lesson'}
             </DialogTitle>
             <DialogDescription>
               {schedule && (
@@ -210,13 +209,14 @@ export function RestoreLessonDialog({
   onClose: () => void;
 }) {
   const restore = useRestoreLesson();
+  const today = organizationToday(useOrgTimeZone());
 
   async function handleRestore() {
     if (!target) return;
 
     try {
       await restore.mutateAsync({ scheduleId: target.scheduleId, occursOn: target.occursOn });
-      toast.success(`The ${formatLessonDay(target.occursOn)} lesson is back on.`);
+      toast.success(`The ${formatLessonDay(target.occursOn, today)} lesson is back on.`);
       onClose();
     } catch (error) {
       toast.error(
@@ -230,7 +230,7 @@ export function RestoreLessonDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Restore the lesson on {target && formatLessonDay(target.occursOn)}?
+            Restore the lesson on {target && formatLessonDay(target.occursOn, today)}?
           </AlertDialogTitle>
           <AlertDialogDescription>
             {target?.studentName}&apos;s lesson that day goes back into the schedule, the dashboard

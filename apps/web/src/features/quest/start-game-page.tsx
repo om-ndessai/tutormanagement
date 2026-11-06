@@ -7,8 +7,8 @@ import {
   gameLevelLabel,
   gameMarkingLabel,
   gamePlayersLabel,
-  levelLabel,
   pointsLabel,
+  QUICK_ACTION_LABELS,
   type CreateGameInput,
   type CreateGameRequest,
   type GameFavorite,
@@ -28,8 +28,10 @@ import { QuestFrame } from './fullscreen-frame';
 import { Toggle } from './games-card';
 import { useCreateGame, useDeleteGameFavorite, useGameFavorites, useGameLevels, useSaveGameFavorite } from './games-api';
 import { useExitTo, useGoToGame } from './play-origin';
+import { levelWords } from './level-words';
+import { favoriteWords } from '@/features/play/favorite-words';
 
-// Phase 47 (docs/quest-games-g2-plan.md): starting a game is a wizard -- since
+// Phase 47 (docs/quest-games-g2-plan.md): starting a quest is a wizard -- since
 // 2026-10-23 (owner) of four steps: Select level (compact level tiles, Random
 // from a level upward, and the person's favorites), Score Setup (the game limit
 // and the points), the players, the review -- full screen like the game itself. Its last action replaces the wizard with
@@ -66,7 +68,8 @@ const START: Draft = {
   right_points: 1,
   wrong_points: 0,
   knockout: false,
-  players: 'multi',
+  // Phase 78 (JF35): a solo quest is the common case, so "Single player" is chosen until Multiplayer is.
+  players: 'single',
   max_teams: GAME_LIMITS.defaultTeams,
   teams: true,
   max_team_size: GAME_LIMITS.defaultTeamSize,
@@ -121,7 +124,7 @@ function summaryOf(request: CreateGameRequest) {
     max_team_size: request.max_team_size,
   };
   return {
-    level: gameLevelLabel(view, levelLabel),
+    level: gameLevelLabel(view, levelWords),
     length: gameLengthLabel(view),
     scoring: gameMarkingLabel({ right_points: request.right_points ?? 1, wrong_points: request.wrong_points ?? 0 }),
     players: gamePlayersLabel(view),
@@ -146,7 +149,7 @@ export function StartGamePage() {
 
   function pickFavorite(favorite: GameFavorite) {
     if (!playable.some((level) => level.level_id === favorite.config.level_id)) {
-      toast.error(`${levelLabel(favorite.config.level_id)} has no questions to play here now.`);
+      toast.error(`${levelWords(favorite.config.level_id)} has no questions to play here now.`);
       return;
     }
     setDraft(fromConfig(favorite.config));
@@ -159,12 +162,12 @@ export function StartGamePage() {
       // Replace the wizard: Back leads to where it was opened, never into a made game's settings.
       goToGame(game.data.id, { replace: true });
     } catch (caught) {
-      toast.error(message(caught, 'Could not start the game.'));
+      toast.error(message(caught, 'Could not start the quest.'));
     }
   }
 
   return (
-    <QuestFrame title="New Quest" shortTitle="New Quest" testId="game-wizard" exitTo={exitTo}>
+    <QuestFrame title={QUICK_ACTION_LABELS.new_quest} shortTitle={QUICK_ACTION_LABELS.new_quest} testId="game-wizard" exitTo={exitTo}>
       <ol className="flex flex-wrap gap-2 text-xs" aria-label="Steps">
         {STEPS.map((label, i) => (
           <li
@@ -201,7 +204,7 @@ export function StartGamePage() {
           {step === 1 && (
             <Section title="Score Setup">
               <div className="grid gap-4" data-testid="game-limit">
-                <SubHeading title="Game limit" hint="A number of questions, or as many as you can in the time." />
+                <SubHeading title="Quest limit" hint="A number of questions, or as many as you can in the time." />
                 <Toggle
                   value={draft.mode}
                   onChange={(mode) => set({ mode })}
@@ -267,7 +270,7 @@ export function StartGamePage() {
                   <span className="grid gap-1 text-sm">
                     <span className="font-medium">Knockout</span>
                     <span className="text-muted-foreground">
-                      End the game as soon as nobody can catch the leader, even mid-play. For games with two teams or more.
+                      End the quest as soon as nobody can catch the leader, even mid-play. For quests with two teams or more.
                     </span>
                   </span>
                 </label>
@@ -361,7 +364,7 @@ export function StartGamePage() {
           </Button>
         ) : (
           <Button size="lg" onClick={() => void go()} disabled={create.isPending} data-testid="game-create">
-            {multi ? 'Generate game code' : 'Start game'}
+            {multi ? 'Generate game code' : 'Start the quest'}
           </Button>
         )}
       </div>
@@ -450,7 +453,7 @@ function QuestionsStep({
   return (
     <>
       {favorites.length > 0 && (
-        <Section title="Your favorites" hint="Your saved games: one tap fills in every step.">
+        <Section title="Your favorites" hint="Your saved quests: one tap fills in every step.">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" data-testid="game-favorites">
             {favorites.map((favorite) => {
               const words = summaryOf(favorite.config);
@@ -460,7 +463,7 @@ function QuestionsStep({
                     selected={false}
                     onClick={() => onFavorite(favorite)}
                     icon={<StarIcon className="text-primary" />}
-                    title={favorite.name}
+                    title={favoriteWords(favorite.name)}
                     detail={`${words.level} · ${words.length} · ${words.players}`}
                     testId={`game-fav-${favorite.name}`}
                   />
@@ -468,11 +471,11 @@ function QuestionsStep({
                     variant="ghost"
                     size="icon"
                     className="absolute top-1 right-1 size-7"
-                    aria-label={`Delete the favorite ${favorite.name}`}
+                    aria-label={`Delete the favorite ${favoriteWords(favorite.name)}`}
                     onClick={() =>
                       void remove
                         .mutateAsync(favorite.id)
-                        .then(() => toast.success(`Deleted “${favorite.name}”.`))
+                        .then(() => toast.success(`Deleted “${favoriteWords(favorite.name)}”.`))
                         .catch((caught) => toast.error(message(caught, 'Could not delete it.')))
                     }
                     data-testid={`game-fav-delete-${favorite.name}`}
@@ -497,7 +500,7 @@ function QuestionsStep({
                 key={level.level_id}
                 selected={!draft.random && draft.level_id === level.level_id}
                 onClick={() => set({ level_id: level.level_id, random: false })}
-                title={level.label}
+                title={levelWords(level.level_id)}
                 testId={`game-tile-${level.level_id}`}
                 compact
               />
@@ -522,7 +525,7 @@ function QuestionsStep({
               <SelectContent>
                 {levels.map((level) => (
                   <SelectItem key={level.level_id} value={level.level_id}>
-                    {level.label}
+                    {levelWords(level.level_id)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -562,7 +565,7 @@ function ReviewStep({ request, multi }: { request: CreateGameRequest; multi: boo
   return (
     <Section
       title="Ready?"
-      hint={multi ? 'Once you generate the code, the settings are fixed.' : 'The game starts as soon as you press Start game.'}
+      hint={multi ? 'Once you generate the code, the settings are fixed.' : 'The quest starts as soon as you press Start the quest.'}
     >
       <Card className="py-0">
         <CardContent className="p-0">
@@ -589,7 +592,7 @@ function ReviewStep({ request, multi }: { request: CreateGameRequest; multi: boo
             id="game-fav-name"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="A name, like Friday G5 race"
+            placeholder="A name, like Friday Grade 5 race"
             maxLength={40}
             className="sm:max-w-xs"
             data-testid="game-fav-name"

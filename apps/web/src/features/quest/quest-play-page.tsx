@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { SparklesIcon, TrophyIcon } from 'lucide-react';
-import { QUEST_POINTS, questLevelLabel, type QuestQuestion } from '@tmi/shared';
+import { QUEST_POINTS, type QuestQuestion } from '@tmi/shared';
 import { ShareButton } from '@/features/sharing/share-button';
 
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { MathText } from '@/features/question-bank/math-text';
 import { useAnswerQuest, useQuestState, useQuestSummary } from './api';
 import { QuestFrame } from './fullscreen-frame';
 import { QuestWelcome } from './quest-welcome';
+import { questLevelWords } from './level-words';
 
 // Phase 42: a student's Question Quest, full screen. One question at a time,
 // answered once: no going back, no skipping. Nothing is marked here -- the
@@ -52,7 +53,7 @@ export function QuestPlayPage() {
       status={
         data ? (
           <>
-            <span data-testid="quest-level">{questLevelLabel(data.level_id)}</span>
+            <span data-testid="quest-level">{questLevelWords(data.level_id)}</span>
             <span className="relative flex items-center">
               <span
                 key={burst?.id ?? 'still'}
@@ -97,8 +98,8 @@ export function QuestPlayPage() {
               className="bg-primary/10 text-primary flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium"
               data-testid="quest-moved-up"
             >
-              <SparklesIcon className="size-4" /> You finished {questLevelLabel(data.moved_up_from)}. On to{' '}
-              {questLevelLabel(data.level_id)}!
+              <SparklesIcon className="size-4" /> You finished {questLevelWords(data.moved_up_from)}. On to{' '}
+              {questLevelWords(data.level_id)}!
               {/* Phase 56: the level finished, as a public card. */}
               <span className="ml-auto">
                 <ShareButton input={{ kind: 'level_finished', level_id: data.moved_up_from }} testId="share-level" />
@@ -148,9 +149,7 @@ function QuestionCard({ question, answered }: { question: QuestQuestion; answere
     <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start">
       <Card className="py-0" data-testid="quest-question">
         <CardContent className="grid gap-3 p-6">
-          <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-            Question {answered + 1}
-          </p>
+          <p className="text-muted-foreground text-[13px] font-medium">Question {answered + 1}</p>
           <MathText text={question.stem} className="text-lg leading-relaxed" />
         </CardContent>
       </Card>

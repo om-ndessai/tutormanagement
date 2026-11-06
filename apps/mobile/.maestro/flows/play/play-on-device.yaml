@@ -205,10 +205,10 @@ tags:
 - tapOn:
     id: game-end
 - extendedWaitUntil:
-    visible: 'End the game now\?'
+    visible: 'End the quest now\?'
     timeout: 5000
 - assertVisible: 'Everyone stops where they are, and the places are given\.'
-- tapOn: 'End the game'
+- tapOn: 'End the quest'
 - extendedWaitUntil:
     visible:
       id: game-winner

@@ -158,14 +158,15 @@ test.describe('Phase 73: coming back to play', () => {
 
       // A game made in New Quest, from the board: Exit goes home, and Continue names it.
       await kit.goto('/');
-      await home.getByRole('button', { name: 'New Quest' }).click();
+      await home.getByRole('button', { name: 'New quest' }).click();
       await expect(kit.getByTestId('game-wizard')).toBeVisible();
       await kit.getByTestId('game-tile-NC26.6').click();
       await kit.getByTestId('game-next').click();
       await kit.getByTestId('game-amount').fill('3');
       await kit.getByTestId('game-amount').blur();
       await kit.getByTestId('game-next').click();
-      await kit.getByTestId('game-players-single').click();
+      // Phase 78 (JF35): "Single player" is chosen already.
+      await expect(kit.getByTestId('game-players-single')).toHaveAttribute('aria-checked', 'true');
       await kit.getByTestId('game-next').click();
       await kit.getByTestId('game-create').click();
       await expect(kit.getByTestId('game-question')).toContainText('of 3', { timeout: 15_000 });
@@ -268,7 +269,9 @@ test.describe('Phase 73: coming back to play', () => {
       expect(level).toBe('NC26.5');
 
       await kit.goto('/');
-      await expect(kit.getByTestId('play-daily')).toContainText("Today's Daily · Grade 5 · G5D");
+      // Phase 78 (JF32): words alone -- no "G5D #4".
+      await expect(kit.getByTestId('play-daily')).toContainText("Today's Daily · Grade 5");
+      await expect(kit.getByTestId('play-daily')).not.toContainText('G5D');
       await expect(kit.getByTestId('next-up-daily')).toContainText("Today's Daily");
       await expect(kit.getByTestId('next-up-daily')).toContainText('Grade 5');
       await expect(kit.getByTestId('next-up').getByRole('link', { name: "Play today's Daily" })).toHaveAttribute('href', `/quest/daily/${level}`);
@@ -279,6 +282,7 @@ test.describe('Phase 73: coming back to play', () => {
       await kit.getByTestId('play-daily-play').click();
       await expect(kit).toHaveURL(new RegExp(`/quest/daily/${level!.replace('.', '\\.')}$`));
       await expect(kit.getByTestId('daily-play')).toContainText("Today's Daily · Grade 5");
+      await expect(kit.getByTestId('daily-play')).not.toContainText('G5D');
       await expect(kit.getByTestId('daily-close-note')).toContainText('nothing is kept');
       await kit.getByTestId('daily-close').click();
       await expect(kit).toHaveURL(HOME);
@@ -308,7 +312,7 @@ test.describe('Phase 73: coming back to play', () => {
       await kit.goto(`/quest/games/${lobby.id}`);
       await expect(kit.getByTestId('game-lobby-code')).toBeVisible();
       await kit.getByTestId('game-cancel').click();
-      await expect(kit.getByTestId('game-cancel-confirm')).toContainText('Cancel the game?');
+      await expect(kit.getByTestId('game-cancel-confirm')).toContainText('Cancel the quest?');
       await kit.getByTestId('game-cancel-confirm-keep').click();
       await expect(kit.getByTestId('game-cancel-confirm')).toHaveCount(0);
       await expect(kit.getByTestId('game-lobby-code')).toBeVisible();
@@ -320,14 +324,19 @@ test.describe('Phase 73: coming back to play', () => {
       const cancelled = await unwrap<any>(await kit.request.get(`/api/quest/games/${lobby.id}`), 'the cancelled game');
       expect(cancelled.teams.every((team: any) => team.place === null)).toBe(true);
 
-      // A single player's game ended at once: "End the game now" asks first too.
+      // A single player's game ended at once: "End the quest now" asks first too.
       const solo = await unwrap<any>(await kit.request.post('/api/quest/games', { data: single('NC26.5', 3) }), 'a solo game');
       await kit.goto(`/quest/games/${solo.id}`);
       await expect(kit.getByTestId('game-question')).toBeVisible({ timeout: 15_000 });
+      // On a phone, ended from far down the play page: the results open at the top (Phase 78, the Phase 77 carry).
+      await kit.setViewportSize({ width: 390, height: 480 });
+      await kit.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      expect(await kit.evaluate(() => window.scrollY)).toBeGreaterThan(0);
       await kit.getByTestId('game-end').click();
-      await expect(kit.getByTestId('game-end-confirm')).toContainText('End the game now?');
+      await expect(kit.getByTestId('game-end-confirm')).toContainText('End the quest now?');
       await kit.getByTestId('game-end-confirm-yes').click();
       await expect(kit.getByTestId('game-winner')).toHaveText('Nobody played');
+      await expect.poll(() => kit.evaluate(() => window.scrollY)).toBe(0);
       await expect(kit.getByTestId('game-confetti')).toHaveCount(0);
 
       // Nothing earned: neither game counts as a quest finished, nor as a family game.

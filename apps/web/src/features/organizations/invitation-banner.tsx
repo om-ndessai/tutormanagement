@@ -55,21 +55,24 @@ export function InvitationBanner() {
     <div
       role="region"
       aria-label="Invitation"
-      className="bg-primary/10 border-primary/20 flex flex-wrap items-center gap-3 border-b px-4 py-2 text-sm lg:px-8"
+      // Phase 78 (JF28): two lines on a phone -- who invited them where, whole, then the answers.
+      className="bg-primary/10 border-primary/20 flex flex-col gap-2 border-b px-4 py-2 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-3 lg:px-8"
       data-testid="invitation-banner"
     >
-      <MailIcon className="text-primary size-4 shrink-0" />
-      <p className="min-w-0 flex-1">
-        <span className="font-medium">
-          {invite.invited_by_first_name ? `${invite.invited_by_first_name} invited you to ${invite.name}` : `You are invited to ${invite.name}`}
-        </span>
-        {more > 0 && (
-          <a href="/spaces" className="text-muted-foreground ml-2 underline-offset-2 hover:underline">
-            and {more} more
-          </a>
-        )}
-      </p>
-      <div className="flex gap-2">
+      <div className="flex min-w-0 items-start gap-3 sm:flex-1 sm:items-center">
+        <MailIcon className="text-primary mt-0.5 size-4 shrink-0 sm:mt-0" />
+        <p className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+          <span className="font-medium">
+            {invite.invited_by_first_name ? `${invite.invited_by_first_name} invited you to ${invite.name}` : `You are invited to ${invite.name}`}
+          </span>
+          {more > 0 && (
+            <a href="/spaces" className="text-muted-foreground ml-2 underline-offset-2 hover:underline">
+              and {more} more
+            </a>
+          )}
+        </p>
+      </div>
+      <div className="flex gap-2 pl-7 sm:pl-0">
         <Button size="sm" disabled={answer.isPending} onClick={() => void accept()} data-testid="invitation-banner-accept">
           Accept
         </Button>

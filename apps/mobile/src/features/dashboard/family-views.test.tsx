@@ -94,7 +94,7 @@ describe('family dashboards', () => {
     const text = allText();
     expect(text).toContain('You pay');
     expect(text).not.toMatch(/Your pay(?!ments)/);
-    expect(text.replace(/ \| /g, '')).toContain('2 sessions · $180.00 charged');
+    expect(text.replace(/ \| /g, '')).toContain('2 lessons · $180.00 charged');
   });
 });
 
@@ -135,7 +135,7 @@ describe("a parent's dashboard in a space paid directly (Phase 54)", () => {
     expect(screen.getByTestId('direct-balance-student-1-diego')).toBeTruthy();
     expect(screen.getByText(/^for Sofia Okafor · 1 lesson · \$0\.00 paid$/)).toBeTruthy();
     expect(screen.getByTestId('stat-outstanding-value')).toHaveTextContent('$50.00');
-    expect(allText().replace(/ \| /g, '')).toContain('2 sessions · $110.00 charged');
+    expect(allText().replace(/ \| /g, '')).toContain('2 lessons · $110.00 charged');
   });
 
   it('shows no such panel in a space run by an organization', async () => {

@@ -80,7 +80,8 @@ test.describe('Phase 72', () => {
       expect(nowhere.status()).toBe(404);
       const words = (await elsewhere.json()).error.message;
       expect(words).toBe((await nowhere.json()).error.message);
-      expect(words).toContain('ask your friend to invite you there, or start your own game');
+      // Phase 78 (JF32): a quest, in the glossary's word.
+      expect(words).toContain('ask your friend to invite you there, or start your own quest');
     } finally {
       await admin.request.patch('/api/organization/settings', { data: { gamify_question_quest: false } });
       await rosa.request.patch('/api/organization/settings', { data: { gamify_question_quest: false } });

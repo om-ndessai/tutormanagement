@@ -63,7 +63,9 @@ test.describe('P6: the Play home', () => {
       await expect(home.getByTestId('play-grade-4')).toHaveAttribute('aria-checked', 'true');
       await expect(home.getByTestId('play-tile-G4Q5')).toContainText('Quick 5');
       await expect(home.getByTestId('play-tile-G4Q5')).toContainText('Grade 4');
-      await home.getByRole('button', { name: /^Start G4Q5/ }).click();
+      // Phase 78 (JF32): a card says its quest in words; its code is gone from the card and from its name.
+      await expect(home.getByTestId('play-tile-G4Q5')).not.toContainText('G4Q5');
+      await home.getByRole('button', { name: /^Start Quick 5, Grade 4/ }).click();
       // One tap: the doors, then the first question.
       await expect(sofia).toHaveURL(/\/quest\/games\/[0-9a-f-]+$/);
       await expect(sofia.getByTestId('game-question')).toBeVisible({ timeout: 15_000 });
@@ -86,8 +88,10 @@ test.describe('P6: the Play home', () => {
       await home.getByTestId('play-grade-3').click();
       await expect(home.getByTestId('play-tile-BA3Q5')).toContainText('Beast Academy 3');
       await expect(home.getByTestId('play-tile-BA3Q5')).toContainText('Adv');
-      await home.getByRole('button', { name: 'Add BA3Q5 to favorites' }).click();
+      await home.getByRole('button', { name: 'Add Beast Academy 3 Quick 5 to favorites' }).click();
       await expect(home.getByTestId('play-favorite-BA3Q5')).toBeVisible();
+      // Phase 78 (JF32): the favorite is named in words, never by the tile's code.
+      await expect(home.getByTestId('play-favorite-BA3Q5')).toHaveText('Beast Academy 3 Quick 5');
       await home.getByTestId('play-favorite-BA3Q5').click();
       await expect(sofia.getByTestId('game-question')).toBeVisible({ timeout: 15_000 });
 
@@ -133,7 +137,9 @@ test.describe('P6: the Play home', () => {
       await kit.evaluate(() => localStorage.setItem('aimtrue.guest', JSON.stringify({ grade: 'NC26.5', played: ['G4T10', 'BA3Q5'] })));
       await kit.reload();
       const home = kit.getByTestId('play-home');
-      await expect(home.getByTestId('play-daily')).toContainText(/G5D/);
+      // Phase 78 (JF32): the Daily's eyebrow in words, with no set code ("G5D #4").
+      await expect(home.getByTestId('play-daily')).toContainText("Today's Daily · Grade 5");
+      await expect(home.getByTestId('play-daily')).not.toContainText(/G5D/);
       // Phase 67: the guest's grade leads the board too -- and answers "Which grade?", so it is not asked.
       await expect(home.getByTestId('play-grade-5')).toHaveAttribute('aria-checked', 'true');
       await expect(home.getByTestId('play-ask-grade')).toHaveCount(0);

@@ -3,7 +3,7 @@
 // Every student the reader may follow, and where each stands against their plan. An admin sees the
 // organization; a tutor their students; a parent their children; a student themselves -- all
 // decided by the server. The filters only narrow what it sent.
-import { PROGRESS_STATUS_LABELS, type ProgressOverview, type ProgressStatus } from '@tmi/shared';
+import { PROGRESS_STATUS_LABELS, todayIn, type ProgressOverview, type ProgressStatus } from '@tmi/shared';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
@@ -18,7 +18,7 @@ import { Skeleton } from '@/components/skeleton';
 import { ErrorState } from '@/components/state-views';
 import { useAssignments } from '@/features/teaching/api';
 import { haptics } from '@/lib/haptics';
-import { useAuth } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { CHIP_HIT_SLOP, MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useProgressOverview } from './api';
@@ -36,6 +36,7 @@ export function ProgressScreen() {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const { user } = useAuth();
+  const today = todayIn(useOrgTimeZone());
   const isAdmin = user?.roles.includes('admin') ?? false;
   const { data, isPending, error, refetch } = useProgressOverview();
   const [refreshing, setRefreshing] = useState(false);
@@ -231,7 +232,7 @@ export function ProgressScreen() {
             {rows.map((row, index) => (
               <View key={row.student_user_id}>
                 {index > 0 ? <Divider /> : null}
-                <ProgressRow row={row} />
+                <ProgressRow row={row} today={today} />
               </View>
             ))}
           </OutlinedCard>
@@ -242,7 +243,7 @@ export function ProgressScreen() {
 }
 
 /** One line per student: goal, status, and how far along. Opens their page. */
-export function ProgressRow({ row }: { row: ProgressOverview }) {
+export function ProgressRow({ row, today }: { row: ProgressOverview; today: string }) {
   const theme = useAppTheme();
   const large = useLargeText();
   const { summary } = row;
@@ -251,7 +252,7 @@ export function ProgressRow({ row }: { row: ProgressOverview }) {
       testID={`progress-row-${row.student_user_id}`}
       accessibilityRole="link"
       accessibilityLabel={
-        `${row.student_name}. ${overviewLine(row)}. ` +
+        `${row.student_name}. ${overviewLine(row, today)}. ` +
         (summary.topic_count > 0 ? `${summary.percent}% mastered. ` : '') +
         PROGRESS_STATUS_LABELS[summary.status]
       }
@@ -276,7 +277,7 @@ export function ProgressRow({ row }: { row: ProgressOverview }) {
             numberOfLines={large ? undefined : 2}
             style={{ color: theme.tokens.mutedForeground }}
           >
-            {overviewLine(row)}
+            {overviewLine(row, today)}
           </Text>
         </View>
         <ProgressStatusBadge status={summary.status} />

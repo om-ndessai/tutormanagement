@@ -217,7 +217,7 @@ function Choice({
         <p className="flex items-center gap-2 text-sm font-medium">
           {title}
           {badge && (
-            <Badge variant={badge === 'Done' ? 'secondary' : 'outline'} className="text-[10px]">
+            <Badge variant={badge === 'Done' ? 'secondary' : 'outline'} className="text-xs">
               {badge === 'Done' && <CheckIcon />}
               {badge}
             </Badge>

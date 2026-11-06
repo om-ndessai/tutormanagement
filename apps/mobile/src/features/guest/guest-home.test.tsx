@@ -5,10 +5,11 @@
 import { fireEvent, screen } from '@testing-library/react-native';
 import type { GuestConfig, GuestTile } from '@tmi/shared';
 
+import { PALETTE_TOKENS } from '@/theme/palettes.generated';
 import { renderWithProviders } from '@/test/render';
 import { GuestHome } from './guest-home';
 import { guestDay } from '@tmi/shared';
-import { Linking } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 
 import { declinedThisRun, guestMemory, resetGuestMemoryForTests } from './guest-store';
 
@@ -51,7 +52,7 @@ const mockGuest: GuestConfig = {
     tile('G3Q5', 'NC26.3', false, 'Grade 3 · 5 questions'),
     tile('G4Q5', 'NC26.4', false, 'Grade 4 · 5 questions'),
     { ...tile('G4T10', 'NC26.4', true, 'Grade 4 · 10 minutes'), mode: 'timed', value: 10 },
-    tile('BA4Q5', 'BA4', false, 'Adv G4 · 5 questions'),
+    tile('BA4Q5', 'BA4', false, 'Adv Grade 4 · 5 questions'),
   ],
   member_counts: { 'NC26.4': 1234 },
 };
@@ -83,7 +84,7 @@ describe('GuestHome, the Quest board', () => {
     expect(screen.getByTestId('guest-tile-G4Q5')).toHaveTextContent(/5 questions/);
     expect(screen.getByTestId('guest-locked-G4T10')).toHaveTextContent(/10-minute challenge.*Free account/);
     expect(screen.getByText('Advanced')).toBeTruthy();
-    expect(screen.getByTestId('guest-tile-BA4Q5')).toHaveTextContent(/Adv G4 · 5 questions/);
+    expect(screen.getByTestId('guest-tile-BA4Q5')).toHaveTextContent(/Adv Grade 4 · 5 questions/);
     expect(screen.queryByTestId('guest-tile-G3Q5')).toBeNull();
     // Never a code or a curriculum's name on the board.
     expect(screen.queryByText(/G4Q5|BA4|Beast/)).toBeNull();
@@ -101,6 +102,21 @@ describe('GuestHome, the Quest board', () => {
     expect(screen.getByLabelText('Grade 3')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('guest-grade-3'));
     expect(guestMemory.grade()).toBe('NC26.3');
+    // Phase 78 (owner 2026-11-05): the guest's cards and chosen chip wear the grade's hue, never a mode colour.
+    const light = PALETTE_TOKENS.platform.light;
+    const fills: string[] = [];
+    const walk = (n: unknown): void => {
+      if (!n || typeof n !== 'object') return;
+      const style = StyleSheet.flatten((n as { props?: { style?: never } }).props?.style) as
+        | { backgroundColor?: string }
+        | undefined;
+      if (style?.backgroundColor) fills.push(style.backgroundColor);
+      for (const child of (n as { children?: unknown[] }).children ?? []) walk(child);
+    };
+    walk(screen.getByTestId('guest-tile-G3Q5'));
+    expect(fills).toContain(light.grade3);
+    expect(fills).not.toContain(light.warning);
+    expect(StyleSheet.flatten(screen.getByTestId('guest-grade-3-chip').props.style).backgroundColor).toBe(light.grade3);
     await fireEvent.press(screen.getByTestId('guest-tile-G3Q5'));
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/play/[code]', params: { code: 'G3Q5' } });
     await fireEvent.press(screen.getByTestId('guest-sign-in'));
@@ -190,7 +206,9 @@ describe('GuestHome, the Quest board', () => {
     expect(example).toHaveProp('accessibilityElementsHidden', true);
     expect(example).toHaveProp('importantForAccessibility', 'no-hide-descendants');
     expect(example).toHaveTextContent(/QF7K2M/);
-    expect(example).toHaveTextContent(/EXAMPLE/);
+    // Sentence case at 12pt (Phase 78, JF35).
+    expect(example).toHaveTextContent(/Example/);
+    expect(example).not.toHaveTextContent(/EXAMPLE/);
     expect(screen.getByText('Family games with a free account.')).toBeTruthy();
     expect(screen.queryByText(/Example code\./)).toBeNull();
 

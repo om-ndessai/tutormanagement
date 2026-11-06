@@ -137,8 +137,8 @@ export function UserPicker({
                     />
                     <RoleIcons roles={candidate.roles} size="md" />
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate">{candidate.full_name}</span>
-                      <span className="text-muted-foreground block truncate text-xs">
+                      <span className="block break-words">{candidate.full_name}</span>
+                      <span className="text-muted-foreground block text-xs break-words">
                         {candidate.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') ||
                           'No role'}
                       </span>

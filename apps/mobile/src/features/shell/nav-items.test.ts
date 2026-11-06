@@ -1,6 +1,6 @@
-// The menu follows the organization's switches as the web's does (Phase 38): the Assessment item,
-// with its Beta badge, only while the organization has it on -- for every role; and (Phase 42) Quest,
-// only while the organization has Question Quest on.
+// The menu follows the organization's switches as the web's does (Phase 38): the Assessment item
+// only while the organization has it on -- for every role; and (Phase 42) Quest, only while the
+// organization has Question Quest on. Phase 78 (owner, 2026-11-05): neither carries a Beta badge.
 import { featureSetOfPath, seesPeoplePages } from '@tmi/shared';
 
 import { NAV_ITEMS, PEOPLE_PAGE_ROLES, visibleNavItems } from './nav-items';
@@ -17,11 +17,12 @@ describe('visibleNavItems', () => {
     expect(visibleNavItems(['admin'], null).map((item) => item.label)).not.toContain('Assessment');
   });
 
-  it('places it after Progress, with its badge', () => {
+  it('places it after Progress, with no Beta badge (Phase 78)', () => {
     const items = visibleNavItems(['tutor'], { canvas_assessments: true });
     const at = items.findIndex((item) => item.label === 'Assessment');
     expect(items[at - 1]?.label).toBe('Progress');
-    expect(items[at]).toMatchObject({ href: '/assessments', badge: 'Beta', tourId: 'nav-assessments' });
+    expect(items[at]).toMatchObject({ href: '/assessments', tourId: 'nav-assessments' });
+    expect(items[at]?.badge).toBeUndefined();
   });
 
   it('lists Quest only while the organization has Question Quest on, for every role', () => {
@@ -40,11 +41,24 @@ describe('visibleNavItems', () => {
     expect(questOnly).not.toContain('Assessment');
   });
 
-  it('places Quest after Assessment, as the web does, in beta (Phase 47)', () => {
+  it('places Quest after Assessment, as the web does, with no Beta badge (Phase 78)', () => {
     const items = visibleNavItems(['tutor'], { canvas_assessments: true, gamify_question_quest: true });
     const at = items.findIndex((item) => item.label === 'Quest');
     expect(items[at - 1]?.label).toBe('Assessment');
-    expect(items[at]).toMatchObject({ href: '/quest', tourId: 'nav-quest', badge: 'Beta' });
+    expect(items[at]).toMatchObject({ href: '/quest', tourId: 'nav-quest' });
+    expect(items[at]?.badge).toBeUndefined();
+  });
+
+  it('carries no badge on any item (Phase 78: Beta went)', () => {
+    expect(NAV_ITEMS.filter((item) => item.badge)).toEqual([]);
+  });
+
+  it('says Lessons and People (the glossary, Phase 78), on the routes and tour ids they had', () => {
+    const all = visibleNavItems(['admin'], { canvas_assessments: true });
+    expect(all.find((item) => item.href === '/sessions')).toMatchObject({ label: 'Lessons', tourId: 'nav-sessions' });
+    expect(all.find((item) => item.href === '/people')).toMatchObject({ label: 'People', tourId: 'nav-users' });
+    expect(all.map((item) => item.label)).not.toEqual(expect.arrayContaining(['Sessions']));
+    expect(all.map((item) => item.label)).not.toContain('Users');
   });
 
   it('calls the organization’s page Space settings (UI audit JF7), and still finds it by the old word (Phase 52)', () => {
@@ -58,10 +72,10 @@ describe('visibleNavItems', () => {
     expect(labels(['admin'], true)).toContain('Space settings');
   });
 
-  // Phase 74 (JF31, owner 2026-11-05): the menu is built from the reader's hats -- Users, Pairings and Billing are for
+  // Phase 74 (JF31, owner 2026-11-05): the menu is built from the reader's hats -- People, Pairings and Billing are for
   // admins and tutors (shared `seesPeoplePages`); a student or a parent never sees them (the routes still open by link).
-  it('lists Users, Pairings and Billing only for admins and tutors', () => {
-    const people = ['Users', 'Pairings', 'Billing'];
+  it('lists People, Pairings and Billing only for admins and tutors', () => {
+    const people = ['People', 'Pairings', 'Billing'];
     const shown = (roles: string[]) => visibleNavItems(roles, {}).map((item) => item.label);
     for (const roles of [['admin'], ['tutor'], ['tutor', 'parent'], ['student', 'admin']]) {
       expect(shown(roles)).toEqual(expect.arrayContaining(people));
@@ -107,18 +121,18 @@ describe('visibleNavItems', () => {
       }
     });
 
-    it('gives an Assessment-only admin Home, Assessment, Users, Activity, My profile and Space settings', () => {
+    it('gives an Assessment-only admin Home, Assessment, People, Activity, My profile and Space settings', () => {
       expect(visibleNavItems(['admin'], ASSESS_ONLY).map((item) => item.label)).toEqual([
         'Home',
         'Assessment',
-        'Users',
+        'People',
         'Activity',
         'My profile',
         'Space settings',
       ]);
     });
 
-    // Phase 74 (JF31, owner 2026-11-05): a parent's menu has no Users (they reach their child from the home).
+    // Phase 74 (JF31, owner 2026-11-05): a parent's menu has no People (they reach their child from the home).
     it('gives a parent there Home, Assessment, Activity and My profile', () => {
       expect(visibleNavItems(['parent'], ASSESS_ONLY).map((item) => item.label)).toEqual([
         'Home',
@@ -130,7 +144,7 @@ describe('visibleNavItems', () => {
 
     it('treats an organization from before Phase 50 (no feature_* columns) as allowed everything', () => {
       expect(visibleNavItems(['admin'], { canvas_assessments: true }).map((item) => item.label)).toContain(
-        'Sessions',
+        'Lessons',
       );
     });
 

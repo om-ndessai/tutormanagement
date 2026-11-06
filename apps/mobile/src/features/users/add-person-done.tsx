@@ -30,7 +30,7 @@ export function AddPersonDone({
   person: AddedPersonRef;
   /** Start the flow again, empty. */
   onAgain: () => void;
-  /** "Add another student", "Add another tutor", "Add someone else". */
+  /** "Add another student", "Add another tutor", "Add another person". */
   againLabel: string;
   /** `sheet`: inside the person form's sheet (no safe-area top, the sheet's own scroll). */
   variant?: 'screen' | 'sheet';

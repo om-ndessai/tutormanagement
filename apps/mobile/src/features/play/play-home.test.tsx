@@ -198,16 +198,17 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
     expect(screen.queryByTestId('play-tile-BA3Q5')).toBeNull();
     // Phase 73 (JF14): the grade tapped is kept on the server here, so it holds on reload and other devices.
     await waitFor(() => expect(mockPut).toHaveBeenCalledWith('/quest/grade', { grade: 4 }));
-    // Each card: a human title, its detail, its level in words, its code small; Beta while checked.
+    // Each card: a human title, its detail and its level in words. Phase 78 (owner 2026-11-05; JF32): no tile
+    // code on a card or in its label, and no Beta pill on a tile whose level draws checked questions.
     expect(screen.getByText('Quick 5')).toBeTruthy();
     expect(screen.getByText('10-minute challenge')).toBeTruthy();
     expect(screen.getAllByText('Grade 4')).toHaveLength(2);
-    expect(screen.getByText('G4T10')).toBeTruthy();
+    expect(screen.queryByText('G4T10')).toBeNull();
     expect(screen.getByTestId('play-tile-start-G4T10').props.accessibilityLabel).toBe(
-      'Start G4T10: 10-minute challenge, Grade 4, Beat the clock',
+      'Start 10-minute challenge, Grade 4, Beat the clock',
     );
-    expect(screen.getByTestId('play-tile-beta-G4Q5')).toBeTruthy();
-    expect(screen.queryByTestId('play-tile-beta-G4T10')).toBeNull();
+    expect(screen.queryByTestId('play-tile-beta-G4Q5')).toBeNull();
+    expect(screen.queryByText('Beta')).toBeNull();
     // Nothing open and nothing played (the server says): no Continue.
     expect(screen.queryByTestId('play-continue')).toBeNull();
   });
@@ -321,7 +322,7 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
     expect(mockPush).toHaveBeenCalledWith({ pathname: '/quest/games/[gameId]', params: { gameId: 'g-new', from: 'home' } });
   });
 
-  it('keeps a starred tile as a favorite named by its code', async () => {
+  it('keeps a starred tile as a favorite keyed by its code, said in words (JF32, as on the web)', async () => {
     serve({ favorites: [SOLO] });
     await renderWithProviders(<PlayHome />);
     // A tile already a favorite cannot be starred twice.
@@ -336,7 +337,9 @@ describe('PlayHome: the Quest board (Phase 67)', () => {
         config: tileGameRequest(member('G4Q5')),
       }),
     );
-    expect(mockToast.success).toHaveBeenCalledWith('G4Q5 is in your favorites.');
+    expect(mockToast.success).toHaveBeenCalledWith('Grade 4 Quick 5 is in your favorites.');
+    expect(screen.getByTestId('play-tile-star-G4Q5').props.accessibilityLabel).toMatch(/Grade 4 Quick 5/);
+    expect(screen.getByTestId('play-tile-star-G4Q5').props.accessibilityLabel).not.toMatch(/G4Q5/);
   });
 
   it('is nothing at all while the console has the Play home off', async () => {
@@ -570,6 +573,9 @@ describe('PlayFavorites', () => {
         invite_user_ids: ['u-sofia'],
       }),
     );
+    // A starred tile's favorite keeps its code as the key (and testID), and reads in words.
+    expect(screen.getByTestId('play-favorite-BA3Q5')).toHaveTextContent(/Beast Academy 3 Quick 5$/);
+    expect(screen.getByTestId('play-favorite-BA3Q5')).not.toHaveTextContent(/BA3Q5/);
     await fireEvent.press(screen.getByTestId('play-favorite-BA3Q5'));
     await waitFor(() => expect(mockPost).toHaveBeenLastCalledWith('/quest/games', SOLO.config));
     // Only a multiplayer favorite has players to choose.

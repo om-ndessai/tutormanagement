@@ -17,12 +17,15 @@
 // Phase 75 (JF30): "Record a lesson" opens the lessons still owed (each recorded as planned, "Another lesson" for the
 // rest), as the home's quick action and the Sessions page's button do.
 //
-// Phase 76 (JF21): adding people is ONE row, "Add people", opening the one Add chooser (a family, a tutor, someone else,
-// an invitation) -- the same chooser as the home's quick action, People's header and its empty state. In a personal
-// space it reads "Add my child".
+// Phase 76 (JF21): adding people is ONE row, "Add a person" since Phase 78, opening the one Add chooser (a family, a
+// tutor, someone else, an invitation) -- the same chooser as the home's quick action, People's header and its empty
+// state. In a personal space it reads "Add my child". Phase 78 (JF32): the rows the home's quick actions share take
+// their words from shared `quickActionLabel`, so the two never differ again.
 import {
+  COMMON_COPY,
   featureOn,
   mayAddPeople,
+  quickActionLabel,
   type FeatureState,
   type PlatformAccount,
   type UserRole as Role,
@@ -51,7 +54,7 @@ export interface CreateAction {
 const ACTIONS: Record<CreateActionId, CreateAction> = {
   'record-session': {
     id: 'record-session',
-    title: 'Record a lesson',
+    title: quickActionLabel('record_lesson'),
     description: 'Write up a lesson that has happened.',
     icon: 'book-plus-outline',
     // Phase 75 (JF30): the lessons still owed first; "Another lesson" there opens the record step flow (U4):
@@ -60,14 +63,14 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
   },
   'start-lesson': {
     id: 'start-lesson',
-    title: 'Start a lesson',
+    title: quickActionLabel('start_lesson'),
     description: 'Run the timer while you teach.',
     icon: 'play-circle-outline',
     href: '/start-lesson',
   },
   'schedule-lesson': {
     id: 'schedule-lesson',
-    title: 'Schedule a lesson',
+    title: COMMON_COPY.schedule_lesson,
     description: 'A standing weekly lesson.',
     icon: 'calendar-plus',
     // The schedule step flow (UI upgrades U5); editing one stays the sheet.
@@ -75,14 +78,14 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
   },
   'start-assessment': {
     id: 'start-assessment',
-    title: 'Start an assessment',
+    title: quickActionLabel('start_assessment'),
     description: 'Handwritten, one question a page.',
     icon: 'draw-pen',
     href: '/assessments',
   },
   'add-people': {
     id: 'add-people',
-    title: 'Add people',
+    title: quickActionLabel('add_person'),
     description: 'A family, a tutor, someone else, or an invitation by email.',
     icon: 'account-plus-outline',
     // Phase 76 (JF21): the one Add chooser; each of its choices opens the flow that does the work (family first, U3).
@@ -142,7 +145,7 @@ export function createActions(
   if (mayMakeSpace && ids.length > 0) ids.push('start-space');
   return ids.map((id) =>
     personal && id === 'add-people'
-      ? { ...ACTIONS[id], title: 'Add my child', description: 'Your child, with you as their parent.' }
+      ? { ...ACTIONS[id], title: quickActionLabel('add_person', { personal: true }), description: 'Your child, with you as their parent.' }
       : ACTIONS[id],
   );
 }
@@ -169,7 +172,7 @@ function spaceActions(
   if (isTutor && teaches && !lessonRunning) ids.push('start-lesson');
   // Schedule: tutors and the office set up standing lessons.
   if (isTutor || isAdmin) ids.push('schedule-lesson');
-  // Users: the space's adult admins add people (JF22). Billing: its admins record payments.
+  // People: the space's adult admins add people (JF22). Billing: its admins record payments.
   if (addsPeople) ids.push('add-people');
   if (isAdmin) ids.push('record-payment');
   return ids;

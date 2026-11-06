@@ -76,7 +76,7 @@ export function HomeworkStatusBadge({ status }: { status: HomeworkStatus }) {
   );
 }
 
-/** A small uppercase heading over a part of the write-up. */
+/** A small heading over a part of the write-up, in sentence case at 12pt (never all-caps, Phase 78). */
 export function PartHeading({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   const theme = useAppTheme();
   return (

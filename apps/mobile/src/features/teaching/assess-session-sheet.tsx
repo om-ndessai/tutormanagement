@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/teaching/session-notes.tsx @ 1132322 (SessionAssessmentDialog).
 // The dialog becomes a form sheet, `(org)/assess-session?session=<id>`.
-import { sessionAssessmentInputSchema, type Rating, type TutoringSession } from '@tmi/shared';
+import { COMMON_COPY, formatDay, sessionAssessmentInputSchema, todayIn, type Rating, type TutoringSession } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -14,7 +14,7 @@ import { FormSkeleton } from '@/components/skeletons';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
-import { useAuth } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useSaveSessionAssessment, useSession, useWithdrawSessionAssessment } from './api';
@@ -52,6 +52,7 @@ export function AssessSessionSheet({ sessionId }: { sessionId: string | undefine
 
 export function AssessForm({ session }: { session: TutoringSession }) {
   const { user } = useAuth();
+  const today = todayIn(useOrgTimeZone());
   const theme = useAppTheme();
   const toast = useToast();
   const save = useSaveSessionAssessment();
@@ -106,10 +107,10 @@ export function AssessForm({ session }: { session: TutoringSession }) {
     <View style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          {mine ? 'Your assessment' : 'Assess this session'}
+          {mine ? 'Your assessment' : COMMON_COPY.assess_lesson}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
-          {session.student_name} with {session.tutor_name}, {session.occurred_on}. Everyone this lesson
+          {session.student_name} with {session.tutor_name}, {formatDay(session.occurred_on, today, { weekday: true })}. Everyone this lesson
           concerns can read it: its tutor, the student, their parents and the office.
         </Text>
       </View>

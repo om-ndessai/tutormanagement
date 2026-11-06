@@ -15,10 +15,13 @@
 // the results all return where the game was opened (Home or Quest), as Exit does.
 // Phase 77 (JF15): a game on one device (the host's view carries `seats`) is played turn by turn (SeatedPlay), its
 // scores on the page by name rather than the reader's alone in the status.
+// Phase 78 (the Phase 77 carry): the frame's scroll is this screen's (`scrollRef`), and it goes back to the top as the
+// game finishes, so the results open on their headline -- never at the play's scroll position, under the header.
+// The header is the quest in words ("Grade 6 Quick 2", `gameTitle`).
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsFocused } from 'expo-router';
-import { useCallback, useEffect } from 'react';
-import { View } from 'react-native';
+import { useCallback, useEffect, useRef } from 'react';
+import { ScrollView, View } from 'react-native';
 import { Button, Portal, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
@@ -47,6 +50,13 @@ export function GameScreen({ gameId, from }: { gameId: string; from?: string }) 
   const opened = useCallback(() => void refetch(), [refetch]);
   const countdown = useGameCountdown(game, query.dataUpdatedAt, opened);
   const counting = countdown > 0;
+  const scroller = useRef<ScrollView>(null);
+
+  // The results start at the top: "End the quest now" far down the play would otherwise leave the headline and each
+  // player's line under the header (every game, not only one on a device).
+  useEffect(() => {
+    if (status === 'finished') scroller.current?.scrollTo({ y: 0, animated: false });
+  }, [status]);
 
   // The hub stays mounted under this modal, with its list of games: a game that begins or ends by
   // someone else's hand (seen here by the poll) would still read "Playing now" there on Exit.
@@ -59,6 +69,7 @@ export function GameScreen({ gameId, from }: { gameId: string; from?: string }) 
       title={gameTitle(game)}
       onExit={() => exitGame(from)}
       testID="screen-quest-game"
+      scrollRef={scroller}
       status={
         game ? (
           <>
@@ -77,7 +88,7 @@ export function GameScreen({ gameId, from }: { gameId: string; from?: string }) 
       }
     >
       {query.isPending ? (
-        <DetailSkeleton label="Loading the game…" rows={4} />
+        <DetailSkeleton label="Loading the quest…" rows={4} />
       ) : !game && !gameIsMissing(query.error) ? (
         <OutlinedCard testID="game-unreachable" style={{ borderRadius: radius.lg }}>
           <View style={{ padding: space.lg, gap: space.lg }}>

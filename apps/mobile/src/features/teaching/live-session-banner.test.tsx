@@ -53,7 +53,7 @@ describe('the live lesson banner', () => {
     expect(screen.getByTestId('live-ends-by')).toHaveTextContent('ends by 1:30 PM');
     expect(screen.getByText(/Sofia Okafor/)).toBeOnTheScreen();
     expect(screen.queryByText(/\$/)).toBeNull();
-    expect(screen.getByLabelText('Discard this session')).toBeOnTheScreen();
+    expect(screen.getByLabelText('Discard this lesson')).toBeOnTheScreen();
     await act(async () => {
       jest.advanceTimersByTime(2000);
     });

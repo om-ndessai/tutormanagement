@@ -311,7 +311,7 @@ export const paymentsRoutes = new Hono<AppEnv>()
         throw new ApiError(403, 'forbidden', 'Only an administrator can view another rundown.');
       }
       const other = await getLiveUserById(c.env.DB, c.get('org').id, user_id);
-      if (!other) throw ApiError.notFound('That user does not exist.');
+      if (!other) throw ApiError.notFound('That person does not exist.');
       subject = other;
     }
 

@@ -204,7 +204,7 @@ function TutorSteps({
             testID="add-tutor-limit"
             value={draft.tutor.max_minutes}
             onChange={(max_minutes) => setTutor({ ...draft.tutor, max_minutes })}
-            hint="A running session that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
+            hint="A running lesson that reaches this is recorded at it and flagged, so a timer left on does not bill the rest of the night."
           />
         </>
       ),

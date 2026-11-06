@@ -7,6 +7,7 @@ import {
   SESSION_MODE_LABELS,
   describeLocation,
   describeSchedule,
+  formatDaySpan,
   zonedClockParts,
   type VisibleSchedule,
 } from '@tmi/shared';
@@ -14,7 +15,6 @@ import { View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
 import { OutlinedCard } from '@/components/outlined-card';
 
-import { formatPlainDay } from '@/features/teaching/session-format';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { IconButton } from '@/components/icon-button';
 import { CommentsButton } from '@/features/comments/comments-button';
@@ -84,8 +84,7 @@ export function ScheduleCard({
             ) : null}
           </View>
           <Text variant="bodySmall" style={{ color: muted }}>
-            from {formatPlainDay(schedule.starts_on, today)}
-            {schedule.ends_on ? ` to ${formatPlainDay(schedule.ends_on, today)}` : ', ongoing'}
+            {formatDaySpan(schedule.starts_on, schedule.ends_on, today)}
           </Text>
           {schedule.locations.length > 0 ? (
             <Text testID={`schedule-locations-${schedule.id}`} variant="bodySmall" style={{ color: muted }}>
@@ -114,7 +113,7 @@ export function ScheduleCard({
           <CommentsButton
             testID={`schedule-comments-${schedule.id}`}
             target={{ target_type: 'scheduled_session', target_id: schedule.id }}
-            title={`${schedule.student_name}’s recurring session`}
+            title={`${schedule.student_name}’s recurring lesson`}
             description={`${described}, with ${schedule.tutor_name}.`}
           />
           <IconButton

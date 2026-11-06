@@ -11,13 +11,14 @@ import {
   DAILY_SET_SIZE,
   STREAK_DAYS_PER_WEEK,
   TILE_LEVEL_TAGS,
-  TILE_LEVEL_WORDS,
   type DailySet,
   type HabitSummary,
   type NextBadge,
   type WeekDot,
   type QuestionBankLevelId,
 } from '@tmi/shared';
+
+import { levelWords } from '@/features/quest/level-words';
 
 // --- My progress (P17-P18) -------------------------------------------------
 
@@ -108,9 +109,7 @@ export function levelTag(levelId: string): string {
   return TILE_LEVEL_TAGS[levelId as QuestionBankLevelId] ?? levelId;
 }
 
-export function levelWords(levelId: string): string {
-  return TILE_LEVEL_WORDS[levelId as QuestionBankLevelId] ?? levelId;
-}
+export { levelWords };
 
 /** "Today's Daily · Grade 4": the members' Daily by its one name, its level in words (JF23, JF32). */
 export function dailyButtonLabel(levelId: string): string {
@@ -139,9 +138,9 @@ export function dailyRingsLabel(result: Pick<DailySet, 'result'>['result'], size
   return result ? `${result.right} hit of ${result.of}` : `${size} targets, not played yet`;
 }
 
-/** "G4D #42 · 4 of 5". */
-export function dailyHeading(levelId: string, number: number, right: number, of: number): string {
-  return `${levelTag(levelId)}D #${number} · ${right} of ${of}`;
+/** "Grade 4 · 4 of 5": the result's heading, its level in words (Phase 78, JF32; it was "G4D #42 · 4 of 5"). */
+export function dailyHeading(levelId: string, right: number, of: number): string {
+  return `${levelWords(levelId)} · ${right} of ${of}`;
 }
 
 /** The status under the title while playing: "Grade 4 · question 2 of 5". */

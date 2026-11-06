@@ -5,10 +5,12 @@ import {
   SESSION_MODE_LABELS,
   formatClockTime,
   formatDuration,
-  formatMinutesOfDay,
+  formatInstant,
+  formatInstantTime,
+  instantDay,
   lessonWhen,
   sessionInputSchema,
-  zonedClockParts,
+  todayIn,
   type LessonDraftRef,
   type LessonOwed,
   type SessionDraft,
@@ -89,19 +91,14 @@ function draftFor(lesson: KnownLesson, drafts: readonly SessionDraft[]): Session
 
 /** Today on the space's clock. */
 export function useOrgToday(): string {
-  const timeZone = useOrgTimeZone();
-  return zonedClockParts(new Date().toISOString(), timeZone).day;
+  return todayIn(useOrgTimeZone());
 }
 
-/** "12:43 PM" today, else "Nov 3, 12:43 PM" -- on the space's clock. */
+/** "12:43 PM" today, else "Nov 3, 12:43 PM" -- on the space's clock, through the shared formatter (Phase 78). */
 function useSavedWhen(iso: string): string {
   const timeZone = useOrgTimeZone();
   const today = useOrgToday();
-  const parts = zonedClockParts(iso, timeZone);
-  const time = formatMinutesOfDay(parts.minutesOfDay);
-  if (parts.day === today) return time;
-  const date = new Date(`${parts.day}T12:00:00Z`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' });
-  return `${date}, ${time}`;
+  return instantDay(iso, timeZone) === today ? formatInstantTime(iso, timeZone) : formatInstant(iso, timeZone, { today });
 }
 
 /** Phase 75 (JF19): "Draft saved 12:43 PM · Continue" -- the reader's own draft of this lesson, one tap away. */
@@ -408,7 +405,7 @@ function OwedRows({
         const key = `${row.schedule_id}-${row.occurs_on}`;
         return (
           <li key={key} className="flex flex-wrap items-center gap-2 py-2.5 text-sm" data-testid={`${testPrefix}-${key}`}>
-            <span className="min-w-0 flex-1">
+            <span className="min-w-0 flex-1 break-words">
               <span className="font-medium">{row.student_name}</span>
               {row.tutor_user_id !== user?.id && <span className="text-muted-foreground"> with {row.tutor_name}</span>}
               <span className="text-muted-foreground block text-xs">

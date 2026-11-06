@@ -47,7 +47,7 @@ export function CommentsButton({
       >
         <MessageSquareIcon />
         {count > 0 && (
-          <span className="bg-primary text-primary-foreground absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full text-[10px] font-medium tabular-nums">
+          <span className="bg-primary text-primary-foreground absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-medium tabular-nums">
             {count > 9 ? '9+' : count}
           </span>
         )}

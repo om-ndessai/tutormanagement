@@ -22,7 +22,9 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: session-card-50000000-0000-4000-8000-000000000002
@@ -139,7 +141,7 @@ tags:
     visible:
       id: sessions-empty
     timeout: 10000
-- assertVisible: 'No sessions recorded in this period.'
+- assertVisible: 'No lessons recorded in this period.'
 - tapOn:
     id: sessions-range-all
 - extendedWaitUntil:
@@ -162,6 +164,8 @@ tags:
     visible:
       id: focus-notice
     timeout: 15000
+# Phase 78 (the glossary): the notice says lesson, as the web's does.
+- assertVisible: 'Showing one lesson, linked from a comment\.'
 - assertVisible:
     id: session-card-50000000-0000-4000-8000-000000000003
 - assertNotVisible:

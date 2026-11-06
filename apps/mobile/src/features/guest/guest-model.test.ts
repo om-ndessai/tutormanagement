@@ -156,8 +156,8 @@ describe('the offer’s words (P12)', () => {
     );
     expect(challengeText(8, 10, '10 in a row, Grade 4')).toBe('I got 8/10 on 10 in a row, Grade 4 on Aimtrue. Can you beat it?');
     // An advanced level is masked: never its curriculum's name.
-    expect(usedUpText({ level_id: 'BA2' }, ['x'])).toBe('You’ve played all the free Adv G2 questions. x with a free account.');
-    expect(benefitsFor('MK34', { MK34: 40 })[0]).toBe('40+ more Adv G3–4 questions, never repeated');
+    expect(usedUpText({ level_id: 'BA2' }, ['x'])).toBe('You’ve played all the free Adv Grade 2 questions. x with a free account.');
+    expect(benefitsFor('MK34', { MK34: 40 })[0]).toBe('40+ more Adv Grades 3–4 questions, never repeated');
     expect(playLink('https://tutoring.example.dev/', 'G4Q5')).toBe('https://tutoring.example.dev/play/G4Q5');
     expect(playLink('http://localhost:8787')).toBe('http://localhost:8787/');
   });
@@ -194,7 +194,7 @@ describe('the Quest board (landing, direction C)', () => {
     const today = todayTile('NC26.4');
     expect(today).toMatchObject({ code: 'G4D5', kind: 'quest', mode: 'count', value: 5, locked: false });
     expect(guestQuestName(today, true)).toBe('Today’s 5, Grade 4');
-    expect(guestQuestName(tile('BA2Q5', 'BA2'))).toBe('Quick 5, Adv G2');
+    expect(guestQuestName(tile('BA2Q5', 'BA2'))).toBe('Quick 5, Adv Grade 2');
   });
   it('serves the same five that day, whatever the phone has seen', () => {
     const pool = [...POOL, q('g', 1), q('h', 2)];

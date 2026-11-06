@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/progress/progress-card.tsx @ 1132322
-import { formatCadence, type StudentProgress } from '@tmi/shared';
+import { formatCadence, formatDay, type StudentProgress } from '@tmi/shared';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
@@ -11,20 +11,11 @@ import { space } from '@/theme/tokens';
 import { ProgressChart } from './progress-chart';
 import { ProgressStatusBadge } from './rating';
 
-function shortDate(iso: string) {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
-}
-
-/** The line under the goal: topics mastered, sessions held against planned, cancellations. */
+/** The line under the goal: topics mastered, lessons held against planned, cancellations. */
 export function progressSummaryLine(summary: StudentProgress['summary']): string {
   let line =
     `${summary.mastered_count} of ${summary.topic_count} topics mastered · ${summary.sessions_held} ` +
-    `of ${summary.sessions_planned_to_date} planned sessions held`;
+    `of ${summary.sessions_planned_to_date} planned lessons held`;
   if (summary.sessions_cancelled_to_date > 0) line += ` · ${summary.sessions_cancelled_to_date} cancelled`;
   if (summary.sessions_cancelled_upcoming > 0) {
     line += ` · ${summary.sessions_cancelled_upcoming} upcoming ${
@@ -78,7 +69,8 @@ export function StudentProgressCard({
             {plan.goal}
           </Text>
           <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-            {shortDate(plan.starts_on)} → {shortDate(plan.target_on)} ·{' '}
+            {formatDay(plan.starts_on, progress.today, { year: 'always' })} →{' '}
+            {formatDay(plan.target_on, progress.today, { year: 'always' })} ·{' '}
             {formatCadence(plan.sessions_per_week, plan.session_minutes)}
           </Text>
         </View>

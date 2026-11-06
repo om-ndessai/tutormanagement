@@ -61,13 +61,14 @@ describe('words', () => {
     expect(reviewToast('approve', true)).toBe('Approved. The question is in the bank.');
     expect(reviewToast('approve', false)).toBe('Sent to the platform to approve.');
     expect(reviewToast('flag', false)).toBe('Flagged for the platform.');
-    expect(playSummary(STATE)).toBe('BA3 · 3 answered');
+    // Phase 78 (JF32): a level in words, never its code.
+    expect(playSummary(STATE)).toBe('Beast Academy 3 · 3 answered');
     expect(playSummary(undefined)).toBe('No level yet · 0 answered');
     expect(startLabel(0)).toBe('Start');
     expect(startLabel(undefined)).toBe('Start');
     expect(startLabel(4)).toBe('Carry on');
-    expect(movedUpText('BA3', 'BA4')).toBe('You finished BA3. On to BA4!');
-    expect(movedUpText('NC26.8', 'NC26.M1')).toBe('You finished G8. On to Math 1!');
+    expect(movedUpText('BA3', 'BA4')).toBe('You finished Beast Academy 3. On to Beast Academy 4!');
+    expect(movedUpText('NC26.8', 'NC26.M1')).toBe('You finished Grade 8. On to Math 1!');
     expect(finishedText(40)).toBe(
       'You have answered every question there is to answer for now. 40 answered in all.',
     );
@@ -88,12 +89,12 @@ describe('words', () => {
 });
 
 describe('the level picker', () => {
-  it('offers Not set, then every level of the bank in order, by its short name', () => {
+  it('offers Not set, then every level of the bank in order, in words (Phase 78, JF32)', () => {
     const options = levelOptions(new Set(['ba', 'nc-2017', 'mk']));
     expect(options[0]).toEqual({ id: NOT_SET, label: 'Not set' });
     expect(options.slice(1).map((option) => option.id)).toEqual([...QUESTION_BANK_LEVEL_IDS]);
-    expect(options.find((option) => option.id === 'NC26.4')?.label).toBe('G4');
-    expect(options.find((option) => option.id === 'NC17.4')?.label).toBe('G4 (2017)');
+    expect(options.find((option) => option.id === 'NC26.4')?.label).toBe('Grade 4');
+    expect(options.find((option) => option.id === 'NC17.4')?.label).toBe('Grade 4 (2017)');
     expect(options.find((option) => option.id === 'PRE')?.label).toBe('AoPS Prealgebra');
   });
 
@@ -110,7 +111,7 @@ describe('the level picker', () => {
   it('sends null for Not set, and says what changed', () => {
     expect(levelInput(NOT_SET)).toBeNull();
     expect(levelInput('BA3')).toBe('BA3');
-    expect(levelToast('Sofia Okafor', 'BA4')).toBe('Sofia Okafor starts at BA4.');
+    expect(levelToast('Sofia Okafor', 'BA4')).toBe('Sofia Okafor starts at Beast Academy 4.');
     expect(levelToast('Sofia Okafor', NOT_SET)).toBe('Sofia Okafor’s level is cleared.');
   });
 });

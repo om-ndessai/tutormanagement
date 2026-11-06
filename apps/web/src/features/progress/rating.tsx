@@ -160,7 +160,7 @@ export function RatingLegend({ labels = TOPIC_RATING_LABELS }: { labels?: Record
     <ul className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
       {RATINGS.map((rating) => (
         <li key={rating} className="flex items-center gap-1.5">
-          <RatingChip rating={rating} labels={labels} className="size-5 text-[10px]" />
+          <RatingChip rating={rating} labels={labels} className="size-5 text-xs" />
           {labels[rating]}
         </li>
       ))}
@@ -221,7 +221,7 @@ export function TopicName({
 }) {
   return (
     <span className={cn('min-w-0', className)}>
-      <span className="text-muted-foreground mr-1.5 font-mono text-[11px]">{code}</span>
+      <span className="text-muted-foreground mr-1.5 font-mono text-xs">{code}</span>
       <span>{name ?? 'Unknown topic'}</span>
       {unit && <span className="text-muted-foreground ml-1 text-xs">({unit})</span>}
     </span>

@@ -4,7 +4,7 @@
 // 2026-10-30) is the web's download link here: the report is fetched again, written to the cache,
 // handed to the share sheet and deleted when it closes (lib/download.ts), as CSV exports are. A
 // refused range or a student this reader cannot follow shows the server's own words.
-import { progressReportPath } from '@tmi/shared';
+import { formatDay, progressReportPath, todayIn } from '@tmi/shared';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -13,11 +13,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Screen } from '@/components/screen';
 import { PdfViewer } from '@/features/canvas-assessments/pdf-viewer';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { downloadAndShare } from '@/lib/download';
 import { space } from '@/theme/tokens';
 import { fetchProgressReportPdf, useStudentProgress } from './api';
-import { longDate } from './progress-model';
 
 export function ProgressReportScreen() {
   const params = useLocalSearchParams<{ studentId: string; from?: string; to?: string; original?: string }>();
@@ -31,7 +31,11 @@ export function ProgressReportScreen() {
   const progress = useStudentProgress(studentId);
   const name = progress.data?.data.student.full_name;
 
-  const range = from && to ? `${longDate(from)} → ${longDate(to)}` : 'From the plan’s start to today';
+  const today = todayIn(useOrgTimeZone());
+  const range =
+    from && to
+      ? `${formatDay(from, today, { year: 'always' })} → ${formatDay(to, today, { year: 'always' })}`
+      : 'From the plan’s start to today';
   const options = { from, to, original };
   const [sharing, setSharing] = useState(false);
   const [shareError, setShareError] = useState<string | null>(null);

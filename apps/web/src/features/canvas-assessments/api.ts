@@ -13,7 +13,7 @@ import type {
 import { apiClient } from '@/lib/api-client';
 import { withOrg } from '@/lib/organization';
 
-// Phase 38: the Assessment menu (beta). docs/canvas-assessment-plan.md.
+// Phase 38: the Assessment menu. docs/canvas-assessment-plan.md.
 
 export const canvasAssessmentKeys = {
   all: ['canvas-assessments'] as const,

@@ -17,6 +17,7 @@ appId: ${APP_ID}
     id: tab-more
 - waitForAnimationToEnd:
     timeout: 2000
-- tapOn: 'Users'
+# Phase 78 (the glossary): the menu item reads People.
+- tapOn: 'People'
 - waitForAnimationToEnd:
     timeout: 3000

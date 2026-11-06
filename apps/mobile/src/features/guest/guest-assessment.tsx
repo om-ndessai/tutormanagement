@@ -15,7 +15,6 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'r
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 
-import { BadgePill } from '@/components/badge-pill';
 import { IconButton } from '@/components/icon-button';
 import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
@@ -229,11 +228,10 @@ export function GuestAssessment({ tile }: { tile: GuestTile }) {
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
             <Text
               variant="labelMedium"
-              style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+              style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
             >
               {guestTileName(tile)}
             </Text>
-            {question.beta ? <BadgePill testID="guest-assessment-beta" /> : null}
           </View>
           <QuestionView
             question={{ ...question, skill: null }}

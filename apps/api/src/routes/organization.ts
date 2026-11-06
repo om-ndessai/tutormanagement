@@ -142,7 +142,7 @@ export const organizationRoutes = new Hono<AppEnv>()
             : `Turned ${org.name}'s email notifications ${notifications ? 'on' : 'off'}`,
           assessments === undefined
             ? null
-            : `Turned ${org.name}'s Assessment menu (beta) ${assessments ? 'on' : 'off'}`,
+            : `Turned ${org.name}'s Assessment menu ${assessments ? 'on' : 'off'}`,
           questionCount === undefined
             ? null
             : `Set ${org.name}'s assessments to ${questionCount} question${questionCount === 1 ? '' : 's'}`,

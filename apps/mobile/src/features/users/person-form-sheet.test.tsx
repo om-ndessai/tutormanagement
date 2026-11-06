@@ -45,7 +45,8 @@ it('from the Add chooser, a new person ends on the next steps, quietly', async (
   expect(screen.getByText('Yusuf Haddad is added')).toBeTruthy();
   expect(screen.getByTestId('add-done-next-pair_tutor')).toBeTruthy();
   expect(screen.getByTestId('add-done-next-assessment')).toBeTruthy();
-  // "Add someone else" starts a fresh form.
+  // "Add another person" starts a fresh form.
+  expect(screen.getByTestId('add-person-done-again')).toHaveTextContent(/Add another person$/);
   await fireEvent.press(screen.getByTestId('add-person-done-again'));
   expect(screen.getByTestId('stub-save')).toBeTruthy();
 });

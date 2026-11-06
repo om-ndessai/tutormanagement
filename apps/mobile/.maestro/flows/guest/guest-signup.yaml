@@ -170,9 +170,12 @@ tags:
 # no grade chosen otherwise -- its Daily, and the Quest board on Grade 4 (Phase 67). Phase 73 (JF14): an
 # adult with nothing played here would be led by age (the top of the row); the grade played as a guest says
 # more, so the phone carries it once into the grade the server keeps. The Daily is "Today's Daily · Grade 4".
-- extendedWaitUntil:
-    visible:
+# The Play home is in "Your learning", under the band's doors and Next up: on an iPhone 17 it starts at the
+# foot of the screen, so it is scrolled to (as play/play-home does).
+- scrollUntilVisible:
+    element:
       id: play-home
+    visibilityPercentage: 1
     timeout: 20000
 - scrollUntilVisible:
     element:

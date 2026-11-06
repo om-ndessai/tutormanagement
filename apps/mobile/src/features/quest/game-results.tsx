@@ -113,9 +113,9 @@ export function GameResults({ game, from }: { game: GameView; from?: string }) {
         <View style={{ padding: space.lg, gap: space.sm }}>
           <Text
             variant="labelMedium"
-            style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+            style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
           >
-            The game is over
+            The quest is over
           </Text>
           {ending ? (
             <Text

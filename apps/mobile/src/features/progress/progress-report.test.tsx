@@ -15,6 +15,8 @@ jest.mock('expo-router', () => ({
   Stack: { Screen: () => null },
   useLocalSearchParams: () => mockParams(),
 }));
+// The range reads on the space's clock (Phase 78: the shared formatter).
+jest.mock('@/providers/auth-provider', () => ({ useOrgTimeZone: () => 'America/New_York' }));
 jest.mock('./api', () => ({
   fetchProgressReportPdf: jest.fn(),
   useStudentProgress: () => ({ data: { data: { student: { full_name: 'Sofia Okafor' } } } }),

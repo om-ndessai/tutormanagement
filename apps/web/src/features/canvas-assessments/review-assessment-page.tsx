@@ -7,7 +7,6 @@ import {
   REVIEW_PAGE,
   formatRelativeTime,
   formatStroke,
-  levelLabel,
   parseStroke,
   type CanvasReview,
   type CanvasStroke,
@@ -40,6 +39,7 @@ import {
 } from './api';
 import { DrawingCanvas, pageSize, type CanvasTool } from './drawing-canvas';
 import { usePdfPageImages } from './use-pdf-pages';
+import { levelWords } from '@/features/quest/level-words';
 
 // Phase 40: the tutor reviews a submitted assessment online. The submitted
 // PDF's pages, each with a layer of the tutor's red ink and a note, and an
@@ -94,7 +94,7 @@ export function ReviewAssessmentPage() {
     <ReviewEditor
       id={id}
       review={review.data.data}
-      title={`${assessment.student_name} · ${levelLabel(assessment.level_id)}`}
+      title={`${assessment.student_name} · ${levelWords(assessment.level_id)}`}
     />
   );
 }

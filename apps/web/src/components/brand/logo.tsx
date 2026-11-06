@@ -173,9 +173,10 @@ export function LogoLockup({ className }: { className?: string }) {
   return (
     <div className={cn('flex items-center gap-3', className)}>
       <LogoMark className="size-10" />
+      {/* Phase 78 (JF28): a space's name and tagline wrap rather than being cut on a phone. */}
       <div className="min-w-0 leading-tight">
-        <p className="font-display truncate text-sm font-semibold">{brand.short}</p>
-        <p className="text-sidebar-muted-foreground truncate text-xs">{brand.tagline}</p>
+        <p className="font-display text-sm font-semibold break-words">{brand.short}</p>
+        <p className="text-sidebar-muted-foreground text-xs break-words">{brand.tagline}</p>
       </div>
     </div>
   );

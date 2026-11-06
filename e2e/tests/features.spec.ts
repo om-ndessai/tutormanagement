@@ -36,7 +36,7 @@ test.describe('feature sets (Phase 50) @smoke', () => {
     await expect(ines.getByTestId('assessment-home')).toBeVisible();
     const nav = ines.getByRole('navigation', { name: 'Main' }).filter({ visible: true }).first();
     await expect(nav.getByRole('link', { name: /Assessment/ })).toBeVisible();
-    for (const name of ['Pairings', 'Sessions', 'Progress', 'Schedule', 'Billing', 'Comments', 'Quest']) {
+    for (const name of ['Pairings', 'Lessons', 'Progress', 'Schedule', 'Billing', 'Comments', 'Quest']) {
       await expect(nav.getByRole('link', { name, exact: true })).toHaveCount(0);
     }
     // A link into Tutoring meets a calm page, not an error.

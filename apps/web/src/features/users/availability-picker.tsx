@@ -49,7 +49,7 @@ export function AvailabilityPicker({
       </div>
 
       <div className="overflow-x-auto">
-        <table className="border-separate border-spacing-0.5 text-[10px]">
+        <table className="border-separate border-spacing-0.5 text-xs">
           <thead>
             <tr>
               <th className="w-10" />

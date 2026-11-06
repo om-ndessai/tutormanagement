@@ -7,8 +7,16 @@
 // the Sessions page's button, the phone's home-screen action), with "Another lesson" for one the schedule does not
 // know -- a blank record with NO date filled in; and the To record card at the top of the Sessions page's Tutoring
 // tab. No money anywhere: these are Tutoring surfaces.
+//
+// Phase 78 (the note carried from Phase 75): the office's list can outgrow the screen, and the sheet then scrolls with
+// "Another lesson" at its end. The action cannot be pinned below a scrolling list: QuickSheet's root must stay a
+// ScrollView, the only root react-native-screens resizes in an iOS form sheet (a View with a flex body and a separate
+// footer collapses its body to nothing, U2). So the sheet shows the newest `LESSONS_OWED_SHOWN` rows (the server
+// sends them newest first) and "Show all" for the rest, which keeps "Another lesson" in the thumb zone until the
+// reader asks for the whole list.
 import type { LessonOwed } from '@tmi/shared';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
@@ -26,6 +34,9 @@ import { organizationToday } from './session-ranges';
 
 /** How many the Sessions page's card lists before "+N more" opens the whole list. */
 export const SESSIONS_TO_RECORD_SHOWN = 3;
+
+/** How many the `/lessons-owed` sheet lists before "Show all": the newest, so "Another lesson" stays in reach. */
+export const LESSONS_OWED_SHOWN = 5;
 
 /** The row's key and testID suffix: one lesson of a series, on one date. */
 export const owedKey = (row: Pick<LessonOwed, 'schedule_id' | 'occurs_on'>) => `${row.schedule_id}-${row.occurs_on}`;
@@ -98,6 +109,9 @@ function openAnotherLesson(replace: boolean) {
 export function LessonsOwedSheet() {
   const owed = useLessonsOwed();
   const rows = owed.data?.data ?? [];
+  const [all, setAll] = useState(false);
+  const shown = all ? rows : rows.slice(0, LESSONS_OWED_SHOWN);
+  const hidden = rows.length - shown.length;
   return (
     <QuickSheet
       testID="lessons-owed"
@@ -125,7 +139,25 @@ export function LessonsOwedSheet() {
           body="Every lesson on the schedule this past week is recorded. For one that is not on it, choose Another lesson."
         />
       ) : (
-        <OwedLessonRows rows={rows} testPrefix="lessons-owed" replace />
+        <View style={{ gap: space.sm }}>
+          <OwedLessonRows rows={shown} testPrefix="lessons-owed" replace />
+          {hidden > 0 ? (
+            <Button
+              testID="lessons-owed-show-all"
+              mode="text"
+              icon="chevron-down"
+              style={{ alignSelf: 'flex-start' }}
+              contentStyle={{ minHeight: 44 }}
+              accessibilityLabel={`Show all ${rows.length} lessons`}
+              onPress={() => {
+                haptics.selection();
+                setAll(true);
+              }}
+            >
+              Show all
+            </Button>
+          ) : null}
+        </View>
       )}
     </QuickSheet>
   );

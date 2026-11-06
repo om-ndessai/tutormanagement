@@ -2,15 +2,12 @@ import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ClipboardCheckIcon, PlayIcon, TrophyIcon } from 'lucide-react';
 import {
-  levelLabel,
   offeredBankLevelIds,
-  questLevelLabel,
   type QuestLevelInput,
   type QuestStudent,
 } from '@tmi/shared';
 
 import { PageHeader } from '@/components/layout/page-header';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -22,6 +19,7 @@ import { useCurricula } from '@/features/progress/api';
 import { questRoles, useQuestReview, useQuestState, useQuestStudents, useSetQuestLevel } from './api';
 import { GamesCard } from './games-card';
 import { MySharesCard } from '@/features/sharing/my-shares-card';
+import { levelWords, questLevelWords } from './level-words';
 
 // Phase 42: Question Quest's page in the portal. A student starts their Quest
 // here; a tutor or admin sees what waits for review, starts reviewing, and
@@ -39,11 +37,10 @@ export function QuestPage() {
       <PageHeader
         title="Question Quest"
         description="Answer the question bank’s new questions, one at a time, and earn points. Tutors check each answer and approve the question for everyone."
-        actions={<Badge variant="secondary">Beta</Badge>}
       />
       <div className="grid gap-6">
         {roles.plays && <PlayCard />}
-        {/* Phase 46: games are for everyone here. */}
+        {/* Phase 46: quests to play together are for everyone here. */}
         <GamesCard />
         {roles.reviews && <ReviewCard />}
         {roles.reviews && <StudentsCard />}
@@ -66,7 +63,7 @@ function PlayCard() {
             <Skeleton className="h-4 w-48" />
           ) : (
             <p className="text-muted-foreground">
-              {questLevelLabel(data?.level_id ?? null)} · {data?.answered ?? 0} answered ·{' '}
+              {questLevelWords(data?.level_id ?? null)} · {data?.answered ?? 0} answered ·{' '}
               <span className="text-foreground inline-flex items-center gap-1 font-medium">
                 <TrophyIcon className="size-3.5" /> {data?.points ?? 0} points
               </span>
@@ -161,7 +158,7 @@ function StudentRow({ row }: { row: QuestStudent }) {
   async function change(value: string) {
     try {
       await setLevel.mutateAsync({ studentId: row.user_id, level_id: value === NOT_SET ? null : (value as QuestLevelInput['level_id']) });
-      toast.success(value === NOT_SET ? `${row.full_name}’s level is cleared.` : `${row.full_name} starts at ${levelLabel(value)}.`);
+      toast.success(value === NOT_SET ? `${row.full_name}’s level is cleared.` : `${row.full_name} starts at ${levelWords(value)}.`);
     } catch (caught) {
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not set the level.');
     }
@@ -178,7 +175,7 @@ function StudentRow({ row }: { row: QuestStudent }) {
             <SelectItem value={NOT_SET}>Not set</SelectItem>
             {levels.map((id) => (
               <SelectItem key={id} value={id}>
-                {levelLabel(id)}
+                {levelWords(id)}
               </SelectItem>
             ))}
           </SelectContent>

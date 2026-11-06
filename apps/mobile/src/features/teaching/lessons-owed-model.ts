@@ -3,10 +3,19 @@
 // list. A lesson with the reader's own draft opens that draft ("Draft saved 12:43 PM · Continue"), never a second
 // one; one without opens "Record a lesson" filled in from the schedule ("It ran as planned" / "Write up the
 // lesson"). No money in any of it: these doors are on Tutoring surfaces.
-import type { LessonDraftRef, LessonOwed, SessionDraft, SessionMode } from '@tmi/shared';
+import {
+  formatDay,
+  formatInstant,
+  formatInstantTime,
+  instantDay,
+  type LessonDraftRef,
+  type LessonOwed,
+  type SessionDraft,
+  type SessionMode,
+} from '@tmi/shared';
 import type { Href } from 'expo-router';
 
-import { formatInstantClock, formatSessionDay, formatSessionTimes } from './session-format';
+import { formatSessionTimes } from './session-format';
 
 /** A lesson the schedule knows about, as each door has it (a `LessonOwed`, a home lesson to record). */
 export interface KnownLesson {
@@ -28,11 +37,8 @@ export interface KnownLesson {
  * day in front when it was not today ("Draft saved Tue, Nov 3, 12:43 PM").
  */
 export function draftSavedLine(draft: Pick<LessonDraftRef, 'updated_at'>, timeZone: string, today: string): string {
-  const time = formatInstantClock(draft.updated_at, timeZone);
-  const day = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(
-    new Date(draft.updated_at),
-  );
-  return day === today ? `Draft saved ${time}` : `Draft saved ${formatSessionDay(day, today)}, ${time}`;
+  if (instantDay(draft.updated_at, timeZone) === today) return `Draft saved ${formatInstantTime(draft.updated_at, timeZone)}`;
+  return `Draft saved ${formatInstant(draft.updated_at, timeZone, { today, weekday: true })}`;
 }
 
 /** Where a known lesson's Record leads: its draft when the reader has one, else the record-as-planned sheet. */
@@ -71,7 +77,7 @@ export function owedAsKnown(row: LessonOwed): KnownLesson {
 
 /** "Today, 4:00–5:00 PM · Institute, room 2" (the place by name only, R16), with "with Alex" for the office. */
 export function owedLine(row: LessonOwed, today: string, withTutor: boolean): string {
-  const day = row.occurs_on === today ? 'Today' : formatSessionDay(row.occurs_on, today);
+  const day = row.occurs_on === today ? 'Today' : formatDay(row.occurs_on, today, { weekday: true });
   const tutor = withTutor ? ` with ${row.tutor_name}` : '';
   const place = row.place ? ` · ${row.place.name}` : '';
   return `${day}, ${formatSessionTimes(row.start_time, row.end_time)}${tutor}${place}`;

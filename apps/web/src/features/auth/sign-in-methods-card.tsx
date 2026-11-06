@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ApiRequestError, apiClient } from '@/lib/api-client';
 import { formatTimestamp } from '@/lib/utils';
-import { useAuth } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { GoogleSignInButton } from './google-sign-in-button';
 import { ProviderGlyph, providerStartHref } from './provider-buttons';
 
@@ -29,6 +29,7 @@ interface IdentitiesResponse {
  */
 export function SignInMethodsCard() {
   const { config, impersonated } = useAuth();
+  const timeZone = useOrgTimeZone();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: KEY,
@@ -77,7 +78,7 @@ export function SignInMethodsCard() {
                 <span className="font-medium">{AUTH_PROVIDER_LABELS[row.provider]}</span>
                 {row.email_at_link && <span className="text-muted-foreground"> · {row.email_at_link}</span>}
                 <span className="text-muted-foreground block text-xs">
-                  {row.last_used_at ? `Last used ${formatTimestamp(row.last_used_at, '')}` : 'Not used yet'}
+                  {row.last_used_at ? `Last used ${formatTimestamp(row.last_used_at, '', timeZone)}` : 'Not used yet'}
                 </span>
               </span>
               <Button

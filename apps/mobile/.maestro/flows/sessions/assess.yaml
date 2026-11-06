@@ -53,7 +53,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: session-assess
-    text: 'Assess( this session)?'
+    text: 'Assess( this lesson)?'
 - tapOn:
     id: session-assess
 - extendedWaitUntil:

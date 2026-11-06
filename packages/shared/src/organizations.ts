@@ -345,7 +345,7 @@ export const NOTIFICATION_KIND_LABELS: Record<NotificationKind, string> = {
   plan_added: 'Learning plan added',
   assessment_added: 'Assessment added',
   schedule_added: 'Lesson scheduled',
-  session_recorded: 'Session recorded',
+  session_recorded: 'Lesson recorded',
 };
 
 /**

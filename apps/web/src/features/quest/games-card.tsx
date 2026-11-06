@@ -10,8 +10,8 @@ import {
   gameMarkingLabel,
   gamePlayersLabel,
   gameWords,
-  levelLabel,
   normalizeGameCode,
+  QUICK_ACTION_LABELS,
   placeLabel,
   type GameLookup,
   type GameShapeRow,
@@ -28,9 +28,10 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useGames, useJoinGame, useLookupGame } from './games-api';
 import { useGoToGame, usePlayFrom, type PlayOriginState } from './play-origin';
+import { levelWords } from './level-words';
 
-// Phase 46: Quest Games on the Quest page -- for everyone in the organization.
-// Start a game (Phase 47: the wizard, /quest/games/new), or type a code to
+// Phase 46: quests to play together on the Quest page -- for everyone in the space.
+// Start one (Phase 47: the wizard, /quest/games/new), or type a game code to
 // join one. docs/quest-games-plan.md, docs/quest-games-g2-plan.md.
 
 const message = (caught: unknown, fallback: string) => (caught instanceof ApiRequestError ? caught.message : fallback);
@@ -60,15 +61,16 @@ export function GamesCard() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
           <div className="grid flex-1 gap-1">
             <h2 className="flex items-center gap-2 font-semibold">
-              <Gamepad2Icon className="size-4" /> Games
+              <Gamepad2Icon className="size-4" /> Quests
             </h2>
             <p className="text-muted-foreground text-xs">
-              Play the question bank together. Start a game and share its code, or type a code to join, on your own or in a team.
+              Play the question bank together. Start a quest and share its game code, or type a code to join, on your own or in
+              a team.
             </p>
           </div>
           <Button asChild data-testid="game-new">
             <Link to="/quest/games/new">
-              <PlusIcon /> New Quest
+              <PlusIcon /> {QUICK_ACTION_LABELS.new_quest}
             </Link>
           </Button>
         </div>
@@ -107,11 +109,11 @@ export function GamesCard() {
                   className="hover:bg-muted flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2"
                   data-testid={`game-row-${game.code}`}
                 >
-                  {/* Phase 73 (JF32): a game in words first ("Grade 6 Quick 5"); its code follows, small. */}
+                  {/* Phase 73 (JF32): a quest in words first ("Grade 6 Quick 5"); its code follows, small. */}
                   <span className="font-medium" data-testid={`game-row-words-${game.code}`}>
                     {gameWords(game as GameShapeRow)}
                   </span>
-                  {/* Phase 77 (JF15): a game on one device has no code anyone could use, so none is shown. */}
+                  {/* Phase 77 (JF15): a quest on one device has no code anyone could use, so none is shown. */}
                   {game.seated ? null : <span className="text-muted-foreground font-mono text-xs">{game.code}</span>}
                   <span className="text-muted-foreground" data-testid={`game-row-host-${game.code}`}>
                     {game.seated
@@ -184,23 +186,23 @@ export function JoinDialog({ lookup, onClose }: { lookup: GameLookup | null; onC
           <>
             <DialogHeader>
               <DialogTitle>
-                {gameLevelLabel(lookup, levelLabel)} · {gameLengthLabel(lookup)}
+                {gameLevelLabel(lookup, levelWords)} · {gameLengthLabel(lookup)}
               </DialogTitle>
               <DialogDescription>
-                {lookup.host_first_name}’s game · {gameMarkingLabel(lookup)} · {gamePlayersLabel(lookup)}
+                {lookup.host_first_name}’s quest · {gameMarkingLabel(lookup)} · {gamePlayersLabel(lookup)}
                 {lookup.knockout ? ' · knockout' : ''}
               </DialogDescription>
             </DialogHeader>
             {lookup.players === 'single' ? (
-              <p className="text-sm">This is {lookup.host_first_name}’s single-player game, so it cannot be joined.</p>
+              <p className="text-sm">This is {lookup.host_first_name}’s single-player quest, so it cannot be joined.</p>
             ) : !lookup.open ? (
               <p className="text-sm">
-                This game has {lookup.status === 'finished' ? 'ended' : 'started'}, so it cannot be joined now.
+                This quest has {lookup.status === 'finished' ? 'ended' : 'started'}, so it cannot be joined now.
               </p>
             ) : (
               <>
                 {lookup.status === 'running' && (
-                  <p className="text-sm">This game is under way: you can still join, and start from its first question.</p>
+                  <p className="text-sm">This quest is under way: you can still join, and start from its first question.</p>
                 )}
                 <JoinChoices
                   gameId={lookup.game_id}
@@ -222,7 +224,7 @@ export function JoinDialog({ lookup, onClose }: { lookup: GameLookup | null; onC
  * How to join, in the dialog and the lobby. Everyone on their own: one Join.
  * Teams (Phase 47): start a team -- which gets its own code to share -- or
  * type a team's code, so a teammate types two codes, the game's then the team's.
- * Owner, 2026-10-23: one action, "Join the game". A player chooses Join a team
+ * Owner, 2026-10-23: one action, "Join the quest" (Phase 78's word). A player chooses Join a team
  * or New team on a tab bar (New team first while the game has no teams); the
  * host only ever starts a team. A new team is named "Team <first name>".
  */
@@ -259,7 +261,7 @@ export function JoinChoices({
       // In the game's own lobby already: stay, keeping where it was opened from.
       goToGame(gameId, { replace: pathname === `/quest/games/${gameId}` });
     } catch (caught) {
-      toast.error(message(caught, 'Could not join the game.'));
+      toast.error(message(caught, 'Could not join the quest.'));
     }
   }
 
@@ -274,7 +276,7 @@ export function JoinChoices({
           disabled={join.isPending}
           data-testid="game-join-team-named"
         >
-          <LogInIcon /> Join the game
+          <LogInIcon /> Join the quest
         </Button>
       </div>
     );
@@ -284,7 +286,7 @@ export function JoinChoices({
     return (
       <div className="grid gap-4 text-sm">
         <Button onClick={() => void go({ as: 'solo' })} disabled={join.isPending} data-testid="game-join-solo">
-          Join the game
+          Join the quest
         </Button>
       </div>
     );
@@ -343,7 +345,7 @@ export function JoinChoices({
         />
       )}
       <Button type="submit" disabled={!chosen || join.isPending} data-testid="game-join-go">
-        <LogInIcon /> Join the game
+        <LogInIcon /> Join the quest
       </Button>
     </form>
   );

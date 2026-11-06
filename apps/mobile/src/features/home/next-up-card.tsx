@@ -34,9 +34,6 @@ import {
   dailyLevelFor,
   featureOn,
   lessonDayWords,
-  levelLabel,
-  TILE_LEVEL_WORDS,
-  type QuestionBankLevelId,
   nextUpCandidates,
   nextUpKey,
   practiseRequest,
@@ -187,10 +184,8 @@ function Shell({
           <Icon source={icon} size={24} color={theme.colors.primary} />
         </View>
         <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
-          <Text
-            variant="labelMedium"
-            style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
-          >
+          {/* Phase 78: the eyebrow in sentence case at 12-13pt, never all-caps (JF35). */}
+          <Text variant="labelMedium" style={{ color: theme.tokens.mutedForeground, fontWeight: '600' }}>
             {eyebrow}
           </Text>
           <Text testID="next-up-title" variant="titleLarge" accessibilityRole="header" style={{ fontWeight: '800' }}>
@@ -346,7 +341,7 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           kind={item.kind}
           icon="target"
           eyebrow="Waiting for you"
-          title={`${item.game.host_first_name} started a game.`}
+          title={`${item.game.host_first_name} started a quest.`}
           detail={waitingGame ? gameWordsOf(waitingGame) : null}
           onLater={later}
         >
@@ -431,7 +426,7 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           icon="help-circle-outline"
           eyebrow="Your Quest"
           title="Your Quest has a question waiting."
-          detail={item.level_id ? levelLabel(item.level_id) : null}
+          detail={item.level_id ? levelWords(item.level_id) : null}
           onLater={later}
         >
           <Primary label="Answer it" icon="play" onPress={() => router.push('/quest/play')} />
@@ -465,7 +460,7 @@ export function NextUpCard({ home, next }: { home: MemberHome; next: ReturnType<
           icon="target"
           eyebrow="Before your lesson"
           title={`Practise before ${lessonDayWords(item.lesson.occurs_on, home.day)}.`}
-          detail={`Five questions at ${TILE_LEVEL_WORDS[item.level_id as QuestionBankLevelId] ?? levelLabel(item.level_id)}, warm-up for ${firstOf(item.lesson.tutor_name)}'s lesson${placeWords(item.lesson)}.`}
+          detail={`Five questions at ${levelWords(item.level_id)}, warm-up for ${firstOf(item.lesson.tutor_name)}'s lesson${placeWords(item.lesson)}.`}
           onLater={later}
         >
           <Button

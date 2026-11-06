@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { CheckCircle2Icon, Loader2Icon, PencilLineIcon, SquareIcon, XIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   SESSION_MODE_LABELS,
   elapsedSince,
   formatDuration,
   formatClockTime,
+  formatInstantTime,
   formatStopwatch,
   type ActiveSession,
   type TutoringSession,
@@ -33,6 +35,7 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { ApiRequestError } from '@/lib/api-client';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import {
   useActiveSession,
   useCancelActiveSession,
@@ -41,11 +44,6 @@ import {
 } from './api';
 import { ProblemLines, refusalLines } from './record-lesson';
 import { SessionFormDialog } from './session-form-dialog';
-
-/** An instant as the clock time the reader is looking at. */
-function formatInstantTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-}
 
 /** Ticks once a second, driven off the server's start instant rather than a local one. */
 function useStopwatch(startedAt: string | undefined) {
@@ -67,6 +65,7 @@ function useStopwatch(startedAt: string | undefined) {
  * running, so it cannot be forgotten about on another screen.
  */
 export function LiveSessionBar() {
+  const timeZone = useOrgTimeZone();
   const { data } = useActiveSession();
   const active = data?.data.mine ?? null;
 
@@ -91,7 +90,7 @@ export function LiveSessionBar() {
 
             <Stopwatch startedAt={active.started_at} />
 
-            <span className="min-w-0 text-sm">
+            <span className="min-w-0 text-sm break-words">
               <span className="font-medium">{active.student_name}</span>
               <span className="text-muted-foreground"> · {SESSION_MODE_LABELS[active.mode]}</span>
             </span>
@@ -103,7 +102,7 @@ export function LiveSessionBar() {
             {/* The limit is the tutor's safety net, so it should not be a
                 surprise when it fires. */}
             <Badge variant="outline" className="hidden text-xs md:inline-flex">
-              ends by {formatInstantTime(active.auto_stop_at)}
+              ends by {formatInstantTime(active.auto_stop_at, timeZone)}
             </Badge>
 
             <div className="ml-auto flex items-center gap-2">
@@ -274,7 +273,7 @@ function StopDialog({
             </DialogHeader>
 
             <div className="grid gap-2 py-2">
-              <Label htmlFor="live-notes">Session notes</Label>
+              <Label htmlFor="live-notes">{COMMON_COPY.lesson_notes}</Label>
               <textarea
                 id="live-notes"
                 value={notes}

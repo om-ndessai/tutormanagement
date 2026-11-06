@@ -10,11 +10,13 @@
 // refused save (409: played elsewhere, or the day turned) reads the Daily again; any other failure takes
 // the last answer back, so it can be given again.
 // Phase 73 (JF23): called by its one name, `DAILY_NAME` ("Today's Daily"), as on the board and in Next up.
+// Phase 78 (owner 2026-11-05; JF32): no Beta chip on a question (checked questions are served like any other),
+// and the level in words where "G4D #42" was; the share grid keeps its tag, as a code to share.
 import { useQueryClient } from '@tanstack/react-query';
 import { DAILY_NAME, dailyShareText, type DailyQuestion, type DailySet } from '@tmi/shared';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Share, View } from 'react-native';
-import { Button, Chip, Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
 import { ErrorState, LoadingState } from '@/components/state-views';
@@ -50,7 +52,6 @@ const backToPlay = () => exitGame('home');
 export function DailyScreen({ level }: { level: string }) {
   const daily = useDaily(level);
   const data = daily.data?.data;
-  const tag = levelTag(level);
   // 403 (the console has the Daily off) and 404 (a level this space does not offer) are the web's one
   // calm line; anything else can be tried again.
   const missing =
@@ -60,7 +61,7 @@ export function DailyScreen({ level }: { level: string }) {
     <QuestFrame
       testID="screen-quest-daily"
       title={DAILY_NAME}
-      status={data ? <QuestStatus strong>{`${tag}D #${data.number}`}</QuestStatus> : undefined}
+      status={data ? <QuestStatus strong>{levelWords(data.level_id)}</QuestStatus> : undefined}
       onExit={backToPlay}
     >
       {daily.isPending ? (
@@ -149,17 +150,6 @@ function DailyPlay({ data, level }: { data: DailySet; level: string }) {
       </Text>
       <OutlinedCard testID="daily-question" style={{ borderRadius: radius.lg }}>
         <View style={{ padding: space.lg, gap: space.md }}>
-          {question.beta ? (
-            <Chip
-              testID="daily-question-beta"
-              compact
-              accessibilityLabel="Beta: a new question no person has approved yet"
-              textStyle={{ fontSize: 11, marginVertical: 0 }}
-              style={{ alignSelf: 'flex-start', backgroundColor: theme.colors.secondaryContainer }}
-            >
-              Beta
-            </Chip>
-          ) : null}
           <MathBody
             testID="daily-stem"
             html={stemHtml}
@@ -254,7 +244,7 @@ function DailyResult({ data, result }: { data: DailySet; result: NonNullable<Dai
       <OutlinedCard style={{ borderRadius: radius.lg }}>
         <View style={{ padding: space.lg, gap: space.md }}>
           <Text testID="daily-heading" variant="headlineSmall" accessibilityRole="header" style={{ fontWeight: '700' }}>
-            {dailyHeading(data.level_id, data.number, result.right, result.of)}
+            {dailyHeading(data.level_id, result.right, result.of)}
           </Text>
           <Text
             testID="daily-grid"

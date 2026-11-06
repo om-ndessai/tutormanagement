@@ -2,11 +2,10 @@
 // the money rule: a parent's dashboard carries the family's balances. Phase 54 (@ 24066d9, working
 // tree): what is owed to tutors directly counts beside what is owed to the organization, and "What you
 // owe each tutor" lists it.
-import { formatCents, type DirectBalance, type ParentDashboard, type StudentBalance } from '@tmi/shared';
+import { countOf, COMMON_COPY, formatCents, type DirectBalance, type ParentDashboard, type StudentBalance } from '@tmi/shared';
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
-import { countOf } from '@/lib/plural';
 import { SecureMoney } from '@/components/secure-money';
 import { EmptyNote, Panel } from '@/components/section';
 import { FigureRow } from '@/components/figure-row';
@@ -58,11 +57,11 @@ function ChildBalanceRow({ child }: { child: StudentBalance }) {
       style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10 }}
     >
       <View style={{ flex: 1, minWidth: 0 }}>
-        <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
+        <Text variant="bodyMedium" style={{ fontWeight: '500' }}>
           {child.student_name}
         </Text>
-        <Text variant="bodySmall" numberOfLines={1} style={{ color: theme.tokens.mutedForeground }}>
-          {countOf(child.session_count, 'session')} · {formatCents(child.charged_cents)} charged
+        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+          {countOf(child.session_count, 'lesson')} · {formatCents(child.charged_cents)} charged
         </Text>
       </View>
       <Text
@@ -168,8 +167,8 @@ export function ParentView({ data }: { data: ParentDashboard }) {
       <Panel
         testID="recent-sessions"
         tourId="dash-recent-sessions"
-        title="Recent sessions"
-        action={{ label: 'All sessions', to: '/sessions' }}
+        title={COMMON_COPY.recent_lessons}
+        action={{ label: COMMON_COPY.all_lessons, to: '/sessions' }}
       >
         <SessionList sessions={data.recent_sessions} showTutor />
       </Panel>

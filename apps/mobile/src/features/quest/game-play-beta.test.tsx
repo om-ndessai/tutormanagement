@@ -1,6 +1,6 @@
-// Phase 62 (P3): a game's question that no person has approved yet ("checked") wears a small Beta
-// chip, labelled for a screen reader; an approved one, and a series from before Phase 62 (no `beta`),
-// do not.
+// Phase 62 (P3) gave a game's question that no person had approved yet ("checked") a small Beta chip. Phase 78
+// (owner 2026-11-05): "Beta" goes altogether -- a checked question is served like any other, so no question wears
+// a chip or a label, whatever its `beta` field says (the API still sends it, for older apps).
 import { screen } from '@testing-library/react-native';
 import type { GameQuestion, GameView } from '@tmi/shared';
 
@@ -74,12 +74,13 @@ const QUESTION: GameQuestion = {
   number: 1,
 };
 
-describe('the game question’s Beta chip', () => {
-  it('shows on a checked question, labelled for a screen reader', async () => {
+describe('no Beta chip on a quest’s question (Phase 78)', () => {
+  it('is absent on a checked question, and nothing says Beta to a screen reader', async () => {
     await renderWithProviders(<GamePlay game={running({ ...QUESTION, beta: true })} />);
-    const chip = screen.getByTestId('game-question-beta');
-    expect(chip).toHaveTextContent(/Beta/);
-    expect(screen.getByLabelText('Beta: a new question no person has approved yet')).toBeTruthy();
+    expect(screen.getByTestId('game-question-number')).toBeTruthy();
+    expect(screen.queryByTestId('game-question-beta')).toBeNull();
+    expect(screen.queryByText(/Beta/)).toBeNull();
+    expect(screen.queryByLabelText(/Beta/)).toBeNull();
   });
 
   it('is absent on an approved question', async () => {

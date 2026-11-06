@@ -3,6 +3,7 @@ import type { Location } from './locations.js';
 import type { HomeworkStatus, SessionAssessment } from './session-notes.js';
 import { formatClockTime, type LessonDraftRef, type SessionMode } from './teaching.js';
 import { addDays, weekdayOf } from './schedules.js';
+import { WEEKDAY_LONG, WEEKDAY_SHORT, formatDay } from './dates.js';
 import type { Rating } from './progress.js';
 import type { CreateGameRequest } from './quest-games.js';
 import type { QuestionBankLevelId } from './questions.js';
@@ -413,8 +414,7 @@ export function practiseBefore(lesson: Pick<HomeLesson, 'occurs_on' | 'starts_in
 /** "Thursday's lesson", "tomorrow's lesson", "today's lesson". */
 export function lessonDayWords(occursOn: string, today: string): string {
   if (occursOn === today || occursOn === addDays(today, 1)) return `${dayInWords(occursOn, today)}'s lesson`;
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  return `${days[weekdayOf(occursOn)] ?? dayInWords(occursOn, today)}'s lesson`;
+  return `${WEEKDAY_LONG[weekdayOf(occursOn)] ?? dayInWords(occursOn, today)}'s lesson`;
 }
 
 // --- Next up (H2) ------------------------------------------------------------
@@ -627,6 +627,30 @@ export const QUICK_ACTIONS = [
 ] as const;
 export type QuickAction = (typeof QUICK_ACTIONS)[number];
 
+/**
+ * Phase 78 (JF32): each quick action's words, one for both clients (the web said "New quest" and "Add a person",
+ * the app "New Quest" and "Add someone"; the glossary's words won). In a personal space `add_person` reads
+ * `PERSONAL_ADD_PERSON_LABEL`: see `quickActionLabel`.
+ */
+export const QUICK_ACTION_LABELS: Record<QuickAction, string> = {
+  record_lesson: 'Record a lesson',
+  start_lesson: 'Start a lesson',
+  new_quest: 'New quest',
+  join_code: 'Have a code?',
+  start_assessment: 'Start an assessment',
+  add_person: 'Add a person',
+  schedule: 'Schedule',
+  progress: 'Progress',
+};
+
+/** Phase 76 (JF21): in a personal space, adding people is adding one's child. */
+export const PERSONAL_ADD_PERSON_LABEL = 'Add my child';
+
+/** A quick action's words, for this space: "Add my child" in a personal one. */
+export function quickActionLabel(action: QuickAction, options: { personal?: boolean } = {}): string {
+  return action === 'add_person' && options.personal ? PERSONAL_ADD_PERSON_LABEL : QUICK_ACTION_LABELS[action];
+}
+
 export function quickActionsFor(
   hats: readonly HomeHat[],
   options: {
@@ -699,17 +723,16 @@ export function googleMapsUrl(address: string): string {
 }
 
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-/** A day in words from `today`: "today", "tomorrow", "yesterday", "Thu" within the week, else "Thu, Nov 5". */
+/**
+ * A day in words from `today`: "today", "tomorrow", "yesterday", "Thu" within the week, else "Thu, Nov 5" (never a
+ * year: it says when something is coming up or just was). Through dates.ts since Phase 78, printing what it did.
+ */
 export function dayInWords(date: string, today: string): string {
   if (date === today) return 'today';
   if (date === addDays(today, 1)) return 'tomorrow';
   if (date === addDays(today, -1)) return 'yesterday';
-  const weekday = WEEKDAYS[weekdayOf(date)] ?? '';
-  if (date > today && date <= addDays(today, 6)) return weekday;
-  return `${weekday}, ${MONTHS[Number(date.slice(5, 7)) - 1] ?? ''} ${Number(date.slice(8, 10))}`;
+  if (date > today && date <= addDays(today, 6)) return WEEKDAY_SHORT[weekdayOf(date)] ?? '';
+  return formatDay(date, today, { weekday: true, year: 'never' });
 }
 
 /** "today at 4:00 PM", "Thu at 5:00 PM". */

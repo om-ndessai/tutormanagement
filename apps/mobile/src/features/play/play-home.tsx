@@ -6,8 +6,8 @@
 // Mobile: a waiting game's Join opens the existing `quest/join-game` sheet, which looks the code up and offers
 // the join choices (JoinChoices), so there is one join path. Phase 72 (UI audit JF4): the board's "Have a code?"
 // box opens the one code sheet (`/have-a-code`) on what was typed -- a game's code reaches the same join sheet. The
-// roster is a Paper dialog of tick rows. A tile is a card of two targets: the code starts it, the star
-// keeps it as a favorite named by its code.
+// roster is a Paper dialog of tick rows. A tile is a card of two targets: the card starts it, the star
+// keeps it as a favorite keyed by its code and said in words ("Grade 4 Quick 5": `favoriteWords`, Phase 78, JF32).
 //
 // Phase 64 (P17-P20): My progress under Continue, "Today's Daily · <tag>D" (while the console has the
 // Daily on) for the level last played or the first tile's, and a tile's "Best N".
@@ -28,7 +28,12 @@
 // Phase 74 (JF23, owner 2026-11-05): the board is told what Next up shows (`nextUp`); while Next up offers the Daily
 // (or welcome back's Daily) the board's Daily card is the quiet twin -- an outlined button, not the amber full-width
 // one -- and while Next up offers Continue (`open_game`) or "again" (`continue_quest`), so is the board's Continue.
+//
+// Phase 78 (owner 2026-11-05; JF32, JF35): no Beta pill on a tile; no tile code on a card, in a toast or a label (a
+// favorite keeps its tile code as its key, as on the web, and reads in words: `favoriteWords`); "New quest"
+// (QUICK_ACTION_LABELS); the groups' sub-labels in sentence case.
 import {
+  QUICK_ACTION_LABELS,
   boardGrades,
   dailyLevelFor,
   memberBoard,
@@ -45,7 +50,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Platform, View, useWindowDimensions } from 'react-native';
 import { Button, Dialog, Portal, Text, TextInput } from 'react-native-paper';
 
-import { BadgePill } from '@/components/badge-pill';
 import { CheckRow } from '@/components/check-row';
 import { IconButton } from '@/components/icon-button';
 import { OutlinedCard } from '@/components/outlined-card';
@@ -71,6 +75,7 @@ import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
+import { favoriteWords } from './favorite-words';
 import {
   useCarryGuestTiles,
   useGuestLeadLevel,
@@ -145,7 +150,7 @@ function GroupHeading({ children }: { children: string }) {
     <Text
       variant="labelMedium"
       accessibilityRole="header"
-      style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+      style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
     >
       {children}
     </Text>
@@ -250,9 +255,11 @@ export function PlayHome({ nextUp = null }: { nextUp?: NextUpKind | null } = {})
   async function star(tile: MemberTile) {
     haptics.selection();
     try {
+      // The tile's code stays the favorite's key (both clients and the guest carry match on it); it is said in words
+      // (Phase 78, JF32: the web's `favoriteWords`).
       await saveFavorite.mutateAsync({ name: tile.code, config: tileGameRequest(tile) });
       haptics.success();
-      toast.success(`${tile.code} is in your favorites.`);
+      toast.success(`${favoriteWords(tile.code)} is in your favorites.`);
     } catch (caught) {
       toast.error(failure(caught, 'Could not save that favorite.'));
     }
@@ -279,23 +286,17 @@ export function PlayHome({ nextUp = null }: { nextUp?: NextUpKind | null } = {})
       <QuestCard
         testID={`play-tile-${tile.code}`}
         pressTestID={`play-tile-start-${tile.code}`}
-        label={`Start ${tile.code}: ${tileSpoken(tile)}`}
+        label={`Start ${tileSpoken(tile)}`}
         title={look.title}
         detail={look.detail}
         level={look.level}
         icon={look.icon}
         tone={{ grade: look.grade }}
         advanced={look.advanced}
-        code={tile.code}
         disabled={pending || startAssessment.isPending}
         onPress={() => void (assessment ? showYourWork(tile) : start(tileGameRequest(tile)))}
         footer={
           <>
-            {tile.beta ? (
-              <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                <BadgePill testID={`play-tile-beta-${tile.code}`} />
-              </View>
-            ) : null}
             {/* Phase 64 (P20): the reader's best score of this tile's shape. */}
             {tile.best != null ? (
               <Text
@@ -316,7 +317,9 @@ export function PlayHome({ nextUp = null }: { nextUp?: NextUpKind | null } = {})
               icon={isStarred ? 'star' : 'star-outline'}
               size={20}
               iconColor={isStarred ? theme.colors.primary : theme.tokens.mutedForeground}
-              accessibilityLabel={isStarred ? `${tile.code} is a favorite` : `Add ${tile.code} to favorites`}
+              accessibilityLabel={
+                isStarred ? `${favoriteWords(tile.code)} is a favorite` : `Add ${favoriteWords(tile.code)} to favorites`
+              }
               accessibilityState={{ selected: isStarred, disabled: isStarred || saveFavorite.isPending }}
               disabled={isStarred || saveFavorite.isPending}
               onPress={() => void star(tile)}
@@ -342,7 +345,7 @@ export function PlayHome({ nextUp = null }: { nextUp?: NextUpKind | null } = {})
           icon="plus"
           onPress={openNewQuestFromHome}
         >
-          New Quest
+          {QUICK_ACTION_LABELS.new_quest}
         </Button>
       </View>
 
@@ -588,11 +591,11 @@ export function PlayFavorites({ compact = false }: { compact?: boolean }) {
               // A favorite with its players wears people beside the star (the web's users icon).
               icon={favorite.roster?.length ? 'account-star' : 'star'}
               disabled={pending}
-              accessibilityLabel={`Start ${favorite.name}${favorite.roster?.length ? ', with its players' : ''}`}
+              accessibilityLabel={`Start ${favoriteWords(favorite.name)}${favorite.roster?.length ? ', with its players' : ''}`}
               onPress={() => void start(favorite.config, favorite.roster)}
               contentStyle={{ minHeight: 44 }}
             >
-              {favorite.name}
+              {favoriteWords(favorite.name)}
             </Button>
             {favorite.config.players === 'multi' ? (
               <Button
@@ -689,7 +692,7 @@ export function RosterDialog({ favorite, onClose }: { favorite: GameFavorite | n
         roster: chosen.size ? [...chosen] : null,
       });
       haptics.success();
-      toast.success(rosterSavedText(favorite.name, chosen.size));
+      toast.success(rosterSavedText(favoriteWords(favorite.name), chosen.size));
       close();
     } catch (caught) {
       toast.error(failure(caught, 'The players could not be saved.'));
@@ -702,7 +705,7 @@ export function RosterDialog({ favorite, onClose }: { favorite: GameFavorite | n
   return (
     <Portal>
       <Dialog visible={favorite !== null} onDismiss={close} testID="play-roster-dialog">
-        <Dialog.Title>{`Players for ${favorite?.name ?? ''}`}</Dialog.Title>
+        <Dialog.Title>{`Players for ${favorite ? favoriteWords(favorite.name) : ''}`}</Dialog.Title>
         <Dialog.ScrollArea style={{ maxHeight: 360, paddingHorizontal: space.xl }}>
           <View style={{ paddingVertical: space.sm }}>
             <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground, marginBottom: space.sm }}>

@@ -13,6 +13,9 @@ import {
   resolveRateCents,
   roundToQuarterHour,
   GOAL_RATING_LABELS,
+  COMMON_COPY,
+  SESSION_WRITE_UP_PARTS,
+  formatInstantTime,
   type Assignment,
   type HomeworkStatus,
   type Rating,
@@ -42,7 +45,8 @@ import {
 } from '@/components/ui/select';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/providers/auth-provider';
+import { useDates } from '@/hooks/use-dates';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useStudentProgress, useTopicIndex } from '@/features/progress/api';
 import { useUserDetail } from '@/features/users/api';
 import { RatingPicker, TopicName } from '@/features/progress/rating';
@@ -65,6 +69,12 @@ import { useBrand } from '@/providers/brand-provider';
 
 /** Common lesson lengths, offered as one tap rather than clock arithmetic. */
 const QUICK_LENGTHS = [45, 60, 75, 90, 120];
+
+/** The write-up parts' names, as shared code words them (the form says "What was planned" for the first). */
+const WRITE_UP_LABELS = Object.fromEntries(SESSION_WRITE_UP_PARTS.map((part) => [part.key, part.label])) as Record<
+  (typeof SESSION_WRITE_UP_PARTS)[number]['key'],
+  string
+>;
 
 function todayIso() {
   const now = new Date();
@@ -764,7 +774,7 @@ export function SessionFormDialog({
               />
               <NoteField
                 id="previous-review"
-                label="Previous session review"
+                label={WRITE_UP_LABELS.previous_review}
                 value={previousReview}
                 onChange={setPreviousReview}
                 placeholder="How much of last time had stuck"
@@ -773,7 +783,7 @@ export function SessionFormDialog({
               <div className="grid gap-1.5">
                 <NoteField
                   id="homework-review"
-                  label="Homework review"
+                  label={WRITE_UP_LABELS.homework_review}
                   value={homeworkReview}
                   onChange={setHomeworkReview}
                   placeholder="How the homework from last time went"
@@ -786,7 +796,7 @@ export function SessionFormDialog({
             <FormSection title="This lesson">
               <NoteField
                 id="notes"
-                label="Session notes"
+                label={COMMON_COPY.lesson_notes}
                 value={notes}
                 onChange={setNotes}
                 rows={5}
@@ -795,7 +805,7 @@ export function SessionFormDialog({
               />
               <NoteField
                 id="homework-assigned"
-                label="Homework set"
+                label={WRITE_UP_LABELS.homework_assigned}
                 value={homeworkAssigned}
                 onChange={setHomeworkAssigned}
                 placeholder="What they are to do before next time"
@@ -871,6 +881,7 @@ function AutosaveStatus({
 }: {
   state: { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; at: Date } | { kind: 'failed' };
 }) {
+  const timeZone = useOrgTimeZone();
   return (
     <p
       role="status"
@@ -886,7 +897,7 @@ function AutosaveStatus({
       {state.kind === 'saved' && (
         <>
           <CheckIcon className="text-success size-3.5" /> Draft autosaved{' '}
-          {state.at.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+          {formatInstantTime(state.at.toISOString(), timeZone)}
         </>
       )}
       {state.kind === 'failed' && (
@@ -946,7 +957,7 @@ function SessionPreview({
         {preview.amount != null ? (
           showMoney && (
             <span className="text-right">
-              <span className="text-muted-foreground block text-[10px] font-medium tracking-wide uppercase">
+              <span className="text-muted-foreground block text-xs font-medium">
                 {isAdmin ? 'Tutor pay' : 'Your pay'}
               </span>
               <span className="font-display text-lg font-semibold tabular-nums">
@@ -1115,13 +1126,14 @@ function FormSection({
  * the homework that was set, and what was covered. Read-only, and never money.
  */
 function PreviousLesson({ session, showTutor }: { session: TutoringSession; showTutor: boolean }) {
+  const dates = useDates();
   const homework = session.write_up?.homework_assigned;
 
   return (
     <div className="bg-muted/50 grid gap-1 rounded-md px-3 py-2.5 text-xs">
       <p className="text-muted-foreground flex items-center gap-1.5 font-medium">
         <HistoryIcon className="size-3.5" />
-        Last lesson, {session.occurred_on}
+        Last lesson, {dates.day(session.occurred_on, { weekday: true })}
         {showTutor && ` with ${session.tutor_name}`}
       </p>
       {homework ? (

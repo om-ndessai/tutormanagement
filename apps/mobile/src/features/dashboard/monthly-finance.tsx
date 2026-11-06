@@ -1,6 +1,7 @@
 // Ported from apps/web/src/features/dashboard/monthly-finance.tsx @ 1132322 (the phone layout:
 // one line per month with the figure that matters most, plus the year's total line).
 import {
+  countOf,
   formatMonthShort,
   monthlyNetCents,
   type MonthlyFinanceResponse,
@@ -9,7 +10,6 @@ import {
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
-import { countOf } from '@/lib/plural';
 import { Panel } from '@/components/section';
 import { Skeleton } from '@/components/skeleton';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -110,7 +110,7 @@ export function MonthlyFinance({
               <MonthLine
                 testID={`monthly-finance-${row.month}`}
                 label={formatMonthShort(row.month)}
-                detail={`${countOf(row.session_count, 'session')} · ${hours(row.minutes)} hrs`}
+                detail={`${countOf(row.session_count, 'lesson')} · ${hours(row.minutes)} hrs`}
                 second={second(row)}
                 figure={headline(row)}
               />
@@ -120,7 +120,7 @@ export function MonthlyFinance({
           <MonthLine
             testID="monthly-finance-year"
             label="Year"
-            detail={`${countOf(totals.session_count, 'session')} · ${hours(totals.minutes)} hrs`}
+            detail={`${countOf(totals.session_count, 'lesson')} · ${hours(totals.minutes)} hrs`}
             second={second(totals)}
             figure={headline(totals)}
             strong

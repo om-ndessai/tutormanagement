@@ -449,7 +449,8 @@ test.describe('S1: "Organization" leaves every screen (Phase 59)', () => {
     const repo = fileURLToPath(new URL('../../', import.meta.url));
     // It throws on a non-zero exit, with the offending lines in its output.
     const output = execFileSync(process.execPath, ['scripts/check-ui-words.mjs'], { cwd: repo, encoding: 'utf8' });
-    expect(output).toContain('no screen says');
+    // Phase 78: the check is a rules table (space, lesson, person, quest, no Beta), and says so when green.
+    expect(output).toContain('every screen says space, lesson, person, quest, and no Beta.');
   });
 
   test("the shared words: audit labels, notification labels, role hints, the brand blurb, the next terms", () => {

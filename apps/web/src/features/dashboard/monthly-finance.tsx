@@ -1,4 +1,6 @@
 import {
+  TERMS,
+  countOf,
   formatCents,
   formatMonthShort,
   monthlyNetCents,
@@ -85,8 +87,8 @@ export function MonthlyFinance({
   );
 
   const columns = institute
-    ? ['Month', 'Sessions', 'Hours', 'Billed', 'Received', 'Tutor cost', 'Net']
-    : ['Month', 'Sessions', 'Hours', 'Earned', 'Paid to you'];
+    ? ['Month', TERMS.lesson.Many, 'Hours', 'Billed', 'Received', 'Tutor cost', 'Net']
+    : ['Month', TERMS.lesson.Many, 'Hours', 'Earned', 'Paid to you'];
 
   const cells = (row: MonthlyFinanceRow) =>
     institute
@@ -129,7 +131,7 @@ export function MonthlyFinance({
               <li key={row.month} className="flex items-center justify-between gap-3 py-2">
                 <span className="text-sm font-medium">{formatMonthShort(row.month)}</span>
                 <span className="text-muted-foreground text-xs">
-                  {row.session_count} sessions · {hours(row.minutes)} hrs
+                  {countOf(row.session_count, 'lesson')} · {hours(row.minutes)} hrs
                 </span>
                 <span className="text-sm font-semibold tabular-nums">
                   {institute ? money(monthlyNetCents(row)) : money(row.earned_cents)}

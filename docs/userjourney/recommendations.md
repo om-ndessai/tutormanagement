@@ -1210,6 +1210,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 > **Status (JF28):** in part, in the fix-up (2026-11-04): the app's question card shows every answer choice (half the screen for a choice question, and a "More choices below" cue). The rest is Phase 78.
 
+> **Status (JF28, Phase 78):** the rest done in Phase 78 (2026-11-06) on both clients: the rows the audit found stack on a phone (text first, actions on their own line), names and emails wrap rather than truncate, the grade row fades at the edge that still scrolls and brings the chosen grade into view, the countdown is sized to the screen, the app's (+) stays clear of the last row, and the office's lessons owed sheet in the app shows the newest five with "Show all"; responsive.spec.ts checks the new pages at 390 and 360 px.
+
 
 - **What:**
   - **First, the app's question card.** Make every answer choice visible, or show a scroll cue. The fourth choice was
@@ -1255,6 +1257,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
     the item stays P2. Its counts are left as they are.
 
 ### P2. Contrast and accessibility gaps
+
+> **Status (JF29):** done in Phase 78 (2026-11-06) on both clients: the chosen grade chip has a 2 px ring; the Adv pill is 12 px, white on a dark pill, in sentence case; the drawer's highlight is restated in the warm foundation for every palette (the app's contrast check covers it); the parent rows in Add a student have an accessible name and say what they are (checkboxes, since a student may have several guardians).
 
 - **What:**
   - **The selected grade chip:** a 2 px ring or a tick.
@@ -1358,6 +1362,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 > **Status (JF32):** in part, in Phase 73 (2026-11-05): games and "Waiting for you" are said in words, the code after. The glossary and the rest are Phase 78.
 
+> **Status (JF32, Phase 78):** the rest done in Phase 78 (2026-11-06) on both clients, from one glossary in shared code: "lesson" (never "session", the sign-in sense too: "You were signed out"), "person" and "people" (the web's Users page is People, "Add a person"), "quest" for anything played on the board ("game" only in "Play with" and "game code"), and "space"; levels and quests in words ("Grade 6 Quick 5") on favorites, the Daily, the game header, the lobby and the assessment's levels; tile codes are gone from cards; "Beta" is gone from everything a member reads (the tutor's "not yet reviewed" mark stays); the words check fails a build that says otherwise.
+
 
 - **What:**
   - **Words.** Name every surface with the words `tileLook` already builds ("Quick 5 · Grade 8"). This covers
@@ -1428,6 +1434,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
 
 ### P3. Amber does one job
 
+> **Status (JF34):** done in Phase 78 (2026-11-06) on both clients, as decided: the guest page's tiles take the grade hues (the mode shown by its icon), the Daily's and Today's 5 buttons and the hit rings take the space's primary, and amber is left to warnings, always with a word.
+
 - **What:**
   - **One meaning.** Keep amber for the call to action ("notice this first").
   - **Grade 3 and the Daily.** Move Grade 3's hue, or draw the Daily and Today's 5 buttons in the space's primary.
@@ -1450,6 +1458,8 @@ One P2 part, the app's hidden answer choice, should be treated as P1.
   keeps its mode colours", [member-home-plan.md:155](../member-home-plan.md)).
 
 ### P3. Small type, all-caps labels, year lists and dates
+
+> **Status (JF35):** done in Phase 78 (2026-11-06) on both clients: nothing under 12 px, the all-caps eyebrows are sentence case, the birth year opens near an adult's year (every year still a scroll or a typed year away), the app's month list shows all twelve, and every date goes through one shared formatter.
 
 - **What:**
   - **Labels.** Make the all-caps eyebrows sentence case at 12-13 px, or drop them where the heading says it, and set a

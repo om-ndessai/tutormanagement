@@ -4,7 +4,7 @@
 // where Tutoring is on, "Someone else" and "Invite by email". A choice gives way to its flow in place: the add-student
 // flow (family first; `guardian=me` for "My child"), the add-tutor flow, the person form (which ends on the next
 // steps), or InvitePeople in a sheet. A fitted sheet: its root is a ScrollView, as QuickSheet explains.
-import type { AddChoice } from '@tmi/shared';
+import { COMMON_COPY, PERSONAL_ADD_PERSON_LABEL, type AddChoice } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-paper';
@@ -48,7 +48,7 @@ export function AddChooser() {
       <View style={{ paddingHorizontal: space.lg, paddingBottom: space.lg, gap: space.lg }}>
         <View style={{ gap: space.xs }}>
           <Text testID="add-chooser-title" variant="titleLarge" accessibilityRole="header">
-            {personal ? 'Add my child' : 'Add people'}
+            {personal ? PERSONAL_ADD_PERSON_LABEL : COMMON_COPY.add_person}
           </Text>
           {choices.length > 0 ? (
             <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>

@@ -137,13 +137,13 @@ import {
 const orgParamSchema = z.object({ id: z.uuid({ message: 'Not a valid space id.' }) });
 const adminParamSchema = z.object({
   id: z.uuid({ message: 'Not a valid space id.' }),
-  userId: z.uuid({ message: 'Not a valid user id.' }),
+  userId: z.uuid({ message: 'Not a valid person id.' }),
 });
 const logoParamSchema = z.object({
   id: z.uuid({ message: 'Not a valid space id.' }),
   kind: z.enum(LOGO_KINDS),
 });
-const personParamSchema = z.object({ id: z.uuid({ message: 'Not a valid user id.' }) });
+const personParamSchema = z.object({ id: z.uuid({ message: 'Not a valid person id.' }) });
 const businessParamSchema = z.object({ id: z.string().min(1).max(64) });
 
 /**
@@ -368,8 +368,8 @@ export const platformRoutes = new Hono<AppEnv>()
           (input.checked_questions === undefined || input.checked_questions === before.checked_questions
             ? ''
             : input.checked_questions
-              ? '; its games, tiles and assessments now draw checked questions'
-              : '; its games, tiles and assessments now draw approved questions only'),
+              ? '; its quests, tiles and assessments now draw checked questions'
+              : '; its quests, tiles and assessments now draw approved questions only'),
         entity_type: 'organization',
         entity_id: id,
       });

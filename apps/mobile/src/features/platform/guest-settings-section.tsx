@@ -247,6 +247,7 @@ function PoolEditor({ level }: { level: string }) {
       return (
         <Text key={q.id} variant="bodySmall">
           <Text variant="bodySmall" style={muted}>
+            {/* ui-words: the platform console marks a checked question it is choosing for the guest pool (Phase 78 keeps it). */}
             {`D${q.difficulty}${q.status === 'checked' ? ' · Beta' : ''}  `}
           </Text>
           {stem.length > 140 ? `${stem.slice(0, 140)}…` : stem}

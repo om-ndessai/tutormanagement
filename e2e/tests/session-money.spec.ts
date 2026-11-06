@@ -74,7 +74,7 @@ test.describe('session money, per reader', () => {
     await student.goto('/sessions?tab=finance');
     await expect(visible(student, 'You pay').first()).toBeVisible();
     await student.goto('/dashboard');
-    await expect(student.getByTestId('dash-my-sessions').or(student.getByText('Your sessions'))).not.toHaveCount(0);
+    await expect(student.getByTestId('dash-my-sessions').or(student.getByText('Your lessons'))).not.toHaveCount(0);
     await expect(student.getByText(/You pay|\$\d/)).toHaveCount(0);
 
     const admin = await as('admin');

@@ -34,10 +34,10 @@ test('an admin can give a new student a parent from the form', async ({ as }) =>
 
   await expect(dialog.getByRole('button', { name: `Remove ${parentName}` })).toBeVisible();
 
-  await dialog.getByRole('button', { name: 'Add user' }).click();
+  await dialog.getByRole('button', { name: 'Add a person' }).click();
   await expect(dialog).toBeHidden();
 
-  await page.getByLabel('Search users').fill(name);
+  await page.getByLabel('Search people').fill(name);
   await expect(visible(page, name).first()).toBeVisible();
 });
 
@@ -78,7 +78,7 @@ test('a new student starts with the family, and a new parent is added in place',
 
   // Then the child, and one save.
   await dialog.getByLabel('Full name').fill(student);
-  await dialog.getByRole('button', { name: 'Add user' }).click();
+  await dialog.getByRole('button', { name: 'Add a person' }).click();
   await expect(dialog).toBeHidden();
 
   const created = await page.request.get(`/api/users?search=${encodeURIComponent(student)}`);

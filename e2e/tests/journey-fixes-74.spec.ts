@@ -117,8 +117,8 @@ test.describe('Phase 74: the first home', () => {
     const record = ines.getByRole('dialog');
     await expect(record.getByRole('heading', { name: /Noor/ })).toBeVisible();
     // Tutoring's fields and sections stay out of a space without it (R23).
-    await expect(record).not.toContainText('Virtual sessions');
-    await expect(record).not.toContainText('Longest session');
+    await expect(record).not.toContainText('Virtual lessons');
+    await expect(record).not.toContainText('Longest lesson');
     await expect(record.getByRole('heading', { name: 'Locations' })).toHaveCount(0);
     await expect(record.getByRole('heading', { name: 'Comments' })).toHaveCount(0);
     await ines.keyboard.press('Escape');
@@ -217,21 +217,21 @@ test.describe('Phase 74: the first home', () => {
     }
   });
 
-  test("JF31: a parent's and a student's menu has no Users, Pairings or Billing; a link still opens Users", async ({ as }) => {
+  test("JF31: a parent's and a student's menu has no People, Pairings or Billing; a link still opens People", async ({ as }) => {
     for (const who of ['parent', 'student'] as const) {
       const page = await as(who);
       await page.goto('/');
       const menu = page.getByRole('navigation', { name: 'Main' });
       await expect(menu.getByRole('link', { name: 'Home' })).toBeVisible();
-      for (const name of ['Users', 'Pairings', 'Billing']) await expect(menu.getByRole('link', { name, exact: true })).toHaveCount(0);
+      for (const name of ['People', 'Pairings', 'Billing']) await expect(menu.getByRole('link', { name, exact: true })).toHaveCount(0);
       await page.goto('/users');
-      await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
     }
     // Admins and tutors keep them.
     const tutor = await as('tutor');
     await tutor.goto('/');
     const menu = tutor.getByRole('navigation', { name: 'Main' });
-    for (const name of ['Users', 'Pairings', 'Billing']) await expect(menu.getByRole('link', { name, exact: true })).toBeVisible();
+    for (const name of ['People', 'Pairings', 'Billing']) await expect(menu.getByRole('link', { name, exact: true })).toBeVisible();
   });
 
   test('JF24: Maria’s Dashboard opens on Parent, says "Viewing as", and remembers a choice for the space', async ({ as }) => {

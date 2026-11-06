@@ -87,10 +87,11 @@ export function AccountButton() {
             position: 'absolute',
             top: 2,
             right: 0,
-            minWidth: 18,
-            height: 18,
+            // Phase 78 (JF35): the count at the 12pt floor, in a disc that holds it.
+            minWidth: 20,
+            height: 20,
             paddingHorizontal: 4,
-            borderRadius: 9,
+            borderRadius: 10,
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: theme.colors.error,
@@ -101,7 +102,7 @@ export function AccountButton() {
           <Text
             variant="labelSmall"
             maxFontSizeMultiplier={1}
-            style={{ color: theme.colors.onError, fontSize: 10, lineHeight: 12, fontWeight: '700' }}
+            style={{ color: theme.colors.onError, fontSize: 12, lineHeight: 14, fontWeight: '700' }}
           >
             {waiting > 9 ? '9+' : String(waiting)}
           </Text>

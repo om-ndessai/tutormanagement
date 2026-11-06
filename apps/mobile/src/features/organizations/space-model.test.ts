@@ -5,7 +5,6 @@ import {
   answeredRequests,
   canMake,
   codeReady,
-  declinedOnLine,
   deleteNameMatches,
   deviceTimeZone,
   makeProblem,
@@ -95,15 +94,6 @@ describe('the spaces’ answers, until dismissed (UI audit JF5)', () => {
     );
     expect(requestLine({ name: 'Riverside', outcome: 'approved' })).toBe("You're in Riverside.");
     expect(requestLine({ name: 'Riverside', outcome: 'declined' })).toBe('Riverside did not let you in.');
-  });
-
-  it('dates a decline on the space’s clock, and says nothing without a date', () => {
-    // 02:00 UTC on the 4th is still the 3rd in New York.
-    expect(declinedOnLine('2026-11-04T02:00:00Z', 'America/New_York')).toBe('Declined on Nov 3, 2026.');
-    expect(declinedOnLine('2026-11-04T02:00:00Z', 'Europe/London')).toBe('Declined on Nov 4, 2026.');
-    expect(declinedOnLine(null, 'America/New_York')).toBeNull();
-    expect(declinedOnLine(undefined, 'America/New_York')).toBeNull();
-    expect(declinedOnLine('not a date', 'America/New_York')).toBeNull();
   });
 });
 

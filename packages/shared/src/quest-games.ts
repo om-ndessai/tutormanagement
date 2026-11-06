@@ -80,7 +80,7 @@ export const GAME_SEATS_MAX = 4;
  * same honest words either way, revealing nothing (owner, 2026-11-04; UI audit JF9; R13, R20).
  */
 export const GAME_CODE_NOT_FOUND_MESSAGE =
-  'No game in this space has that code. Games are joined inside their own space: ask your friend to invite you there, or start your own game.';
+  'No quest in this space has that code. Quests are joined inside their own space: ask your friend to invite you there, or start your own quest.';
 
 /** Codes: six of these, none that can be misread (no 0/O, 1/I/L). */
 export const GAME_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -167,7 +167,7 @@ export const createGameSchema = z
   })
   .refine(
     (value) => value.players === 'single' || value.max_teams === undefined || value.max_teams >= GAME_LIMITS.minTeams,
-    { message: `A game of several teams allows at least ${GAME_LIMITS.minTeams}.`, path: ['max_teams'] },
+    { message: `A quest of several teams allows at least ${GAME_LIMITS.minTeams}.`, path: ['max_teams'] },
   )
   .transform((value) => {
     const seats = value.seat_user_ids ?? [];
@@ -922,8 +922,8 @@ export function gamePlayersLabel(game: Pick<GameSettings, 'players' | 'max_teams
 export function gameEndLabel(reason: GameEndReason | null): string | null {
   if (reason === 'knockout') return 'Knockout! Nobody could catch the leader.';
   if (reason === 'time') return 'Time is up.';
-  if (reason === 'host') return 'The host ended the game.';
-  if (reason === 'expired') return 'The game was closed.';
+  if (reason === 'host') return 'The host ended the quest.';
+  if (reason === 'expired') return 'The quest was closed.';
   return null;
 }
 
@@ -933,9 +933,9 @@ export function gameEndLabel(reason: GameEndReason | null): string | null {
  */
 export function gameEncouragement(team: Pick<GameTeamView, 'correct' | 'answered' | 'solo'>): string {
   const you = team.solo ? 'You' : 'Your team';
-  if (team.correct === 0) return team.answered === 0 ? 'Next game is yours. Jump in early!' : 'Every question you try makes the next one easier. Go again!';
+  if (team.correct === 0) return team.answered === 0 ? 'Next quest is yours. Jump in early!' : 'Every question you try makes the next one easier. Go again!';
   if (team.answered > 0 && team.correct === team.answered) return `${you} got every one you answered right. Brilliant!`;
-  return `${you} got ${team.correct} right. Great effort, and every game makes you sharper!`;
+  return `${you} got ${team.correct} right. Great effort, and every quest makes you sharper!`;
 }
 
 /** "1st", "2nd", "3rd", "4th". */

@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/users/user-detail-dialog.tsx @ 1132322 -- the dialog becomes a
 // pushed screen, with the directory's row actions in its header for an admin.
-import { featureAllowed } from '@tmi/shared';
+import { featureAllowed, TERMS } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Divider, Menu } from 'react-native-paper';
@@ -51,7 +51,7 @@ export function UserDetailScreen() {
     <Screen testID="screen-person" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen
         options={{
-          title: person?.full_name ?? 'User',
+          title: person?.full_name ?? TERMS.person.One,
           headerRight:
             person && isAdmin && (canAct || !isDeleted)
               ? () => (

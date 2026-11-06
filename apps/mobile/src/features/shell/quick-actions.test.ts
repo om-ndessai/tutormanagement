@@ -55,7 +55,7 @@ describe('home-screen quick actions', () => {
     };
     const again: OpenGameResponse = { open: null, again: playAgain(shape) };
     expect(quickActionItems(['student'], QUEST, open)).toEqual([
-      { id: 'play-last', title: 'Continue your game', icon: 'symbol:play.fill' },
+      { id: 'play-last', title: 'Continue your quest', icon: 'symbol:play.fill' },
     ]);
     expect(quickActionItems(['student'], QUEST, again)).toEqual([
       { id: 'play-last', title: 'Play Grade 4 10-minute challenge again', icon: 'symbol:play.fill' },

@@ -2,7 +2,7 @@
 # dimmed with one part lit and a card ("1 of N") -- since Phase 66 the home's own blocks first (the
 # band, Next up, To record), then Dashboard under More and the menu; Back and Next move between steps, and
 # Finish brings the wizard back on confirming his details (a non-admin's last step). Schedule's
-# step lights Sessions, where Schedule lives now. Closing it
+# step lights Lessons (the `sessions` tab, Phase 78's word), where Schedule lives now. Closing it
 # changes nothing: he had been through it already.
 # Phase 74 (JF25, owner 2026-11-05): the tour is offered once per PERSON, the server's record deciding -- Alex on a
 # fresh device is offered nothing. The one offer left, a first visit to a space by somebody who has been through it
@@ -148,12 +148,12 @@ tags:
     id: tour-title
     text: 'Dashboard'
 - assertVisible: '.*You will find it under More\..*'
-# Schedule is inside Sessions (the tab bar, revised 2026-10-15): its step lights the Sessions tab
-# and says where to find it.
+# Schedule is inside Lessons (the tab bar, revised 2026-10-15; the tab's word since Phase 78): its step lights the
+# Lessons tab and says where to find it.
 - repeat:
     times: 12
     while:
-      notVisible: '.*You will find it under Sessions\..*'
+      notVisible: '.*You will find it under Lessons\..*'
     commands:
       - tapOn:
           id: tour-next

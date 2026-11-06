@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ArrowRightLeftIcon, CheckIcon, CopyIcon, CrownIcon, FlagIcon, PlayIcon, SkipForwardIcon, TimerIcon, XIcon } from 'lucide-react';
@@ -10,13 +10,14 @@ import {
   gameLevelLabel,
   gameMarkingLabel,
   gamePlayersLabel,
-  levelLabel,
+  gameWords,
   placeLabel,
   pointsLabel,
   winnersLabel,
   type GameQuestion,
   type GameTeamView,
   type GameView,
+  type QuestionBankLevelId,
 } from '@tmi/shared';
 
 import { LobbyInvite } from './lobby-invite';
@@ -43,9 +44,10 @@ import { Confetti, DoorsCountdown, KnockoutBurst, useCountdown } from './game-ef
 import { JoinChoices } from './games-card';
 import { gameIsMissing, useGame, useGameAction, useGameResults } from './games-api';
 import { backLabel, useExitTo } from './play-origin';
+import { levelWords } from './level-words';
 import { ShareButton } from '@/features/sharing/share-button';
 
-// Phase 46: one Quest game, full screen -- the lobby while players join, the
+// Phase 46: one quest, full screen -- the lobby while players join, the
 // play with the scoreboard beside it, then the results. Polled every couple of
 // seconds; the next question comes back with each answer. docs/quest-games-plan.md.
 // Phase 47 (docs/quest-games-g2-plan.md): the doors' countdown when the host
@@ -111,8 +113,8 @@ function andList(names: readonly string[]): string {
 const pointWords = (n: number) => `${n} ${n === 1 ? 'point' : 'points'}`;
 
 /**
- * Phase 73 (JF36): ending a game asks first, as the app does -- "Cancel the game" in the lobby, "End the game now"
- * while it runs.
+ * Phase 73 (JF36): ending a quest asks first, as the app does -- "Cancel the quest" in the lobby, "End the quest now"
+ * while it runs (Phase 78's words).
  */
 function ConfirmEnd({
   open,
@@ -181,7 +183,7 @@ function Reconnecting({ show }: { show: boolean }) {
       className="bg-muted text-muted-foreground mb-3 rounded-md px-3 py-2 text-center text-sm"
       data-testid="game-reconnecting"
     >
-      Reconnecting to the game…
+      Reconnecting to the quest…
     </p>
   );
 }
@@ -202,11 +204,20 @@ export function GamePage() {
     if (!counting && game?.status === 'running') void refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counting]);
+  // Phase 78 (the Phase 77 carry): the results open at the top -- the headline and each player's line -- however far
+  // down the play page was scrolled (after "End the quest now", say).
+  const status = game?.status;
+  const lastStatus = useRef(status);
+  useEffect(() => {
+    if (status === 'finished' && lastStatus.current !== undefined && lastStatus.current !== 'finished') window.scrollTo({ top: 0 });
+    lastStatus.current = status;
+  }, [status]);
 
   return (
     <QuestFrame
-      title={game ? `Quest game · ${gameLevelLabel(game, levelLabel)}` : 'Quest game'}
-      shortTitle="Game"
+      // Phase 78 (JF32): the quest in words ("Grade 7 Quick 5"), never "Quest game" or a code.
+      title={game ? gameWords({ ...game, level_id: game.level_id as QuestionBankLevelId }) : 'Quest'}
+      shortTitle="Quest"
       testId="game-page"
       exitTo={exitTo}
       status={
@@ -240,7 +251,7 @@ export function GamePage() {
       ) : !game && !gameIsMissing(query.error) ? (
         <Card className="py-0" data-testid="game-unreachable">
           <CardContent className="grid gap-4 p-6 text-sm">
-            <p>Could not reach the game just now. Check your connection, then try again.</p>
+            <p>Could not reach the quest just now. Check your connection, then try again.</p>
             <Button variant="outline" className="w-fit" onClick={() => void query.refetch()} disabled={query.isFetching}>
               Try again
             </Button>
@@ -249,7 +260,7 @@ export function GamePage() {
       ) : !game || gameIsMissing(query.error) ? (
         <Card className="py-0" data-testid="game-missing">
           <CardContent className="grid gap-4 p-6 text-sm">
-            <p>This game was not found, or you are not in it. Join it with its code from the Quest page.</p>
+            <p>This quest was not found, or you are not in it. Join it with its code from the Quest page.</p>
             <Button asChild variant="outline" className="w-fit">
               <Link to="/quest">Back to Quest</Link>
             </Button>
@@ -274,16 +285,15 @@ export function GamePage() {
 }
 
 function Rules({ game }: { game: GameView }) {
-  // Phase 77 (JF15): a game on this device names who plays it, rather than how many may.
+  // Phase 77 (JF15): a quest on this device names who plays it, rather than how many may.
   const players = isSeated(game)
     ? `${andList([...(game.seats ?? []).map((seat) => seat.first_name), 'you'])}, on this device`
     : gamePlayersLabel(game);
   return (
     <p className="text-muted-foreground text-sm">
-      {gameLevelLabel(game, levelLabel)} · {gameLengthLabel(game)} · {gameMarkingLabel(game)} · {players}
+      {gameLevelLabel(game, levelWords)} · {gameLengthLabel(game)} · {gameMarkingLabel(game)} · {players}
       {game.knockout && ' · knockout'}
       {game.late_join && ' · joining open while it runs'}
-      {game.unreviewed && ' · may include questions not yet reviewed'}
     </p>
   );
 }
@@ -302,7 +312,7 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
       // back to where it was opened, as in the app. A host who leaves their team stays to run it.
       const gone = reply.data === null || (!reply.data.is_host && reply.data.me.team_id === null);
       if (kind === 'leave' && gone) {
-        toast.success('You left the game.');
+        toast.success('You left the quest.');
         navigate(exitTo);
       }
     } catch (caught) {
@@ -315,7 +325,7 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
       <Card className="py-0">
         <CardContent className="grid gap-4 p-6">
           <div className="grid gap-1">
-            <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Game code</p>
+            <p className="text-muted-foreground text-[13px] font-medium">Game code</p>
             <div className="flex items-center gap-3">
               <span className="font-mono text-5xl font-bold tracking-[0.2em]" data-testid="game-lobby-code">
                 {game.code}
@@ -324,7 +334,9 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
             </div>
             <Rules game={game} />
             {/* Phase 62 (P7): a QR code and Share, so the people at the table join in a tap. */}
-            {game.status === 'lobby' && <LobbyInvite code={game.code} title="Aimtrue Quest game" />}
+            {game.status === 'lobby' && (
+              <LobbyInvite code={game.code} title={gameWords({ ...game, level_id: game.level_id as QuestionBankLevelId })} />
+            )}
           </div>
           {mine?.code && (
             <p className="bg-primary/10 rounded-lg px-4 py-3 text-sm">
@@ -350,7 +362,7 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
           )}
           {!mine && (
             <div className="grid gap-2">
-              <p className="text-sm font-medium">Join this game</p>
+              <p className="text-sm font-medium">Join this quest</p>
               <JoinChoices gameId={game.id} maxTeamSize={game.max_team_size} host={game.is_host} teamCount={game.teams.length} />
             </div>
           )}
@@ -362,7 +374,7 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
                 disabled={players === 0 || action.isPending}
                 data-testid="game-start"
               >
-                <PlayIcon /> Start the Quest
+                <PlayIcon /> Start the quest
               </Button>
             )}
             {mine && (
@@ -372,17 +384,17 @@ function Lobby({ game, exitTo }: { game: GameView; exitTo: string }) {
             )}
             {game.is_host && (
               <Button variant="ghost" onClick={() => setCancelling(true)} disabled={action.isPending} data-testid="game-cancel">
-                Cancel the game
+                Cancel the quest
               </Button>
             )}
           </div>
           <ConfirmEnd
             open={cancelling}
             onOpenChange={setCancelling}
-            title="Cancel the game?"
+            title="Cancel the quest?"
             body="Nobody will be able to play it."
-            confirm="Cancel the game"
-            keep="Keep the game"
+            confirm="Cancel the quest"
+            keep="Keep the quest"
             onConfirm={() => void run('end')}
             testId="game-cancel-confirm"
           />
@@ -465,12 +477,12 @@ function TeamRow({
         </span>
       )}
       <div className="grid min-w-0 flex-1 gap-0.5">
-        <span className="truncate font-medium">
+        <span className="font-medium break-words">
           {team.name}
           {mine && <span className="text-muted-foreground font-normal"> (you)</span>}
         </span>
         {!team.solo && (
-          <span className="text-muted-foreground truncate text-xs">{team.players.map((p) => p.first_name).join(', ')}</span>
+          <span className="text-muted-foreground text-xs break-words">{team.players.map((p) => p.first_name).join(', ')}</span>
         )}
       </div>
       {showScore && (
@@ -531,7 +543,7 @@ function TeamPlay({ game, counting }: { game: GameView; counting: boolean }) {
         ) : (
           <Card className="py-0" data-testid="game-waiting">
             <CardContent className="grid gap-2 p-6 text-sm">
-              <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Game status</p>
+              <p className="text-muted-foreground text-[13px] font-medium">Quest status</p>
               {mine?.finished_at ? (
                 <>
                   <p className="text-xl font-semibold">
@@ -546,7 +558,7 @@ function TeamPlay({ game, counting }: { game: GameView; counting: boolean }) {
                 <>
                   <p className="font-medium">Your team has no more questions to hand out.</p>
                   <p className="text-muted-foreground">
-                    Your teammates are answering the last ones. The game ends when every team is done
+                    Your teammates are answering the last ones. The quest ends when every team is done
                     {game.mode === 'timed' ? ' or the time is up' : ''}.
                   </p>
                 </>
@@ -557,17 +569,17 @@ function TeamPlay({ game, counting }: { game: GameView; counting: boolean }) {
         {(game.is_host || false) && (
           <>
             <Button variant="outline" className="w-fit" onClick={() => setEnding(true)} data-testid="game-end">
-              <FlagIcon /> End the game now
+              <FlagIcon /> End the quest now
             </Button>
             <ConfirmEnd
               open={ending}
               onOpenChange={setEnding}
-              title="End the game now?"
+              title="End the quest now?"
               body="Every team stops where it is, and the places are given."
-              confirm="End the game"
+              confirm="End the quest"
               keep="Keep playing"
               onConfirm={() =>
-                void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the game.')))
+                void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the quest.')))
               }
               testId="game-end-confirm"
             />
@@ -658,23 +670,23 @@ function SeatedPlay({ game, counting }: { game: GameView; counting: boolean }) {
         ) : (
           <Card className="py-0" data-testid="game-waiting">
             <CardContent className="grid gap-2 p-6 text-sm">
-              <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Game status</p>
+              <p className="text-muted-foreground text-[13px] font-medium">Quest status</p>
               <p className="font-medium">Everyone has answered. The results are on their way.</p>
             </CardContent>
           </Card>
         )}
         <Button variant="outline" className="w-fit" onClick={() => setEnding(true)} data-testid="game-end">
-          <FlagIcon /> End the game now
+          <FlagIcon /> End the quest now
         </Button>
         <ConfirmEnd
           open={ending}
           onOpenChange={setEnding}
-          title="End the game now?"
+          title="End the quest now?"
           body="Everyone stops where they are, and the places are given."
-          confirm="End the game"
+          confirm="End the quest"
           keep="Keep playing"
           onConfirm={() =>
-            void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the game.')))
+            void action.mutateAsync({ kind: 'end' }).catch((caught) => toast.error(message(caught, 'Could not end the quest.')))
           }
           testId="game-end-confirm"
         />
@@ -728,23 +740,12 @@ function QuestionPanel({
     <div className="grid gap-4">
       <Card className="py-0" data-testid="game-question">
         <CardContent className="grid gap-3 p-6">
-          <div className="flex items-center gap-2">
-            <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-              Question {question.number}
-              {total !== null ? ` of ${total}` : ''}
-            </p>
-            {/* Phase 62 (P3): a checked question no person has approved yet. */}
-            {question.beta && (
-              <Badge
-                variant="secondary"
-                className="px-1.5 py-0 text-[10px]"
-                data-testid="game-question-beta"
-                title="A new question: it passed every automatic check, and no person has approved it yet."
-              >
-                Beta
-              </Badge>
-            )}
-          </div>
+          {/* Phase 78: no Beta mark -- a checked question is served like any other, and the bank's two right
+              answers approve it. */}
+          <p className="text-muted-foreground text-[13px] font-medium">
+            Question {question.number}
+            {total !== null ? ` of ${total}` : ''}
+          </p>
           <MathText text={question.stem} className="text-lg leading-relaxed" />
         </CardContent>
       </Card>
@@ -849,7 +850,7 @@ function Results({ game, exitTo }: { game: GameView; exitTo: string }) {
       <div className="grid gap-4">
         <Card className="py-0">
           <CardContent className="grid gap-2 p-6">
-            <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">The game is over</p>
+            <p className="text-muted-foreground text-[13px] font-medium">The quest is over</p>
             {ending && (
               <p
                 className={cn('text-sm font-semibold', game.end_reason === 'knockout' && 'text-destructive')}
@@ -928,7 +929,8 @@ function Results({ game, exitTo }: { game: GameView; exitTo: string }) {
             <ol className="grid gap-3">
               {data.items.map((item) => (
                 <li key={item.number} className="grid gap-2 rounded-lg border p-4" data-testid={`game-review-${item.number}`}>
-                  <div className="flex items-center gap-2">
+                  {/* Phase 78 (JF28): wraps on a phone, so Challenge a friend never pushes the page wider. */}
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="text-muted-foreground text-xs font-medium">Question {item.number}</span>
                     {item.skipped ? (
                       <Badge variant="outline">Skipped</Badge>

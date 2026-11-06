@@ -199,19 +199,19 @@ test.describe('Quest Games (Phase 46)', () => {
     await withGames(admin, async () => {
       // Priya starts a game from the Quest page: the wizard, step by step.
       await admin.goto('/quest');
-      await expect(admin.getByTestId('game-new')).toHaveText('New Quest');
+      await expect(admin.getByTestId('game-new')).toHaveText('New quest');
       await admin.getByTestId('game-new').click();
       await expect(admin.getByTestId('game-wizard')).toBeVisible();
       await expect(admin.getByRole('heading', { name: 'Select level' })).toBeVisible();
       await expect(admin.getByTestId('game-next')).toBeDisabled();
-      // A level's tile is its name alone: no count of questions.
-      await expect(admin.getByTestId('game-tile-NC26.6')).toHaveText('G6');
+      // A level's tile is its name alone, in words (Phase 78: never "G6"): no count of questions.
+      await expect(admin.getByTestId('game-tile-NC26.6')).toHaveText('Grade 6');
       await admin.getByTestId('game-tile-NC26.6').click();
       await admin.getByTestId('game-next').click();
       // Score Setup, one step: the game limit (two questions, stepped down from ten with the counter
       // and typed), then the points (right +2, wrong 0).
       await expect(admin.getByRole('heading', { name: 'Score Setup' })).toBeVisible();
-      await expect(admin.getByRole('heading', { name: 'Game limit' })).toBeVisible();
+      await expect(admin.getByRole('heading', { name: 'Quest limit' })).toBeVisible();
       await expect(admin.getByRole('heading', { name: 'Points' })).toBeVisible();
       await admin.getByTestId('game-amount-minus').click();
       await expect(admin.getByTestId('game-amount')).toHaveValue('9');
@@ -221,7 +221,9 @@ test.describe('Quest Games (Phase 46)', () => {
       await expect(admin.getByTestId('game-right')).toHaveValue('+2');
       await admin.getByTestId('game-next').click();
       // Players: teams of two, at most three teams. How people play comes first, then the numbers,
-      // each saying what it counts.
+      // each saying what it counts. Phase 78 (JF35): "Single player" is chosen until Multiplayer is.
+      await expect(admin.getByTestId('game-players-single')).toHaveAttribute('aria-checked', 'true');
+      await expect(admin.getByText('How do people play?')).toHaveCount(0);
       await admin.getByTestId('game-players-multi').click();
       await expect(admin.getByText('How do people play?')).toBeVisible();
       await expect(admin.getByText('Teams, at most')).toBeVisible();
@@ -247,14 +249,14 @@ test.describe('Quest Games (Phase 46)', () => {
       expect(code).toMatch(/^[A-Z2-9]{6}$/);
       // The lobby's label is the code's alone, and the host may only start a team, named for them.
       await expect(admin.getByText('Game code', { exact: true })).toBeVisible();
-      await expect(admin.getByText(/Game status/i)).toHaveCount(0);
+      await expect(admin.getByText(/Quest status/i)).toHaveCount(0);
       await expect(admin.getByTestId('game-join-tabs')).toHaveCount(0);
       await expect(admin.getByTestId('game-team-code')).toHaveCount(0);
       await expect(admin.getByTestId('game-team-name')).toHaveValue(/^Team \S+$/);
-      await expect(admin.getByTestId('game-join-go')).toHaveText('Join the game');
+      await expect(admin.getByTestId('game-join-go')).toHaveText('Join the quest');
 
       // Alex types the game's code and starts a team: no "on my own" in a game of teams. With no team
-      // yet, New team opens, named for him; one action, Join the game.
+      // yet, New team opens, named for him; one action, Join the quest.
       await alex.goto('/quest');
       await alex.getByTestId('game-code').fill(code);
       await alex.getByTestId('game-join').click();
@@ -325,16 +327,17 @@ test.describe('Quest Games (Phase 46)', () => {
       await sofia.getByTestId('game-tile-random').click();
       await expect(sofia.getByTestId('game-next')).toBeDisabled();
       await sofia.getByTestId('game-random-start').click();
-      await sofia.getByRole('option', { name: 'G5' }).click();
+      await sofia.getByRole('option', { name: 'Grade 5', exact: true }).click();
       await sofia.getByTestId('game-next').click();
       await sofia.getByTestId('game-amount').fill('3');
       await sofia.getByTestId('game-amount').blur();
       await sofia.getByTestId('game-next').click();
+      await expect(sofia.getByTestId('game-players-single')).toHaveAttribute('aria-checked', 'true');
       await sofia.getByTestId('game-players-single').click();
       await sofia.getByTestId('game-next').click();
-      await expect(sofia.getByTestId('game-review-summary')).toContainText('G5 and up, at random');
+      await expect(sofia.getByTestId('game-review-summary')).toContainText('Grade 5 and up, at random');
       await expect(sofia.getByTestId('game-review-summary')).toContainText('Single player');
-      await expect(sofia.getByTestId('game-create')).toHaveText('Start game');
+      await expect(sofia.getByTestId('game-create')).toHaveText('Start the quest');
       await sofia.getByTestId('game-create').click();
 
       // No lobby: the doors, then the first question.

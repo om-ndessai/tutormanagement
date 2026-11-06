@@ -4,6 +4,7 @@
 import {
   HOMEWORK_STATUS_LABELS,
   SESSION_MODE_LABELS,
+  formatDay,
   formatDuration,
   type TutoringSession,
 } from '@tmi/shared';
@@ -19,7 +20,7 @@ import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
 import { ReflectionFlags } from './reflection-chips';
 import { AssessButton, ReflectButton, assessLabel, reflectLabel } from './session-actions';
-import { formatSessionDay, formatSessionTimes } from './session-format';
+import { formatSessionTimes } from './session-format';
 import { AssessmentChips, HomeworkStatusBadge } from './session-notes';
 
 export function Tag({ label, tone, testID }: { label: string; tone?: 'warning'; testID?: string }) {
@@ -51,7 +52,7 @@ export function writeUpPreview(session: Pick<TutoringSession, 'notes' | 'write_u
 
 /** The sentence an auto-stopped lesson carries wherever it is shown. */
 export const AUTO_STOPPED_NOTE =
-  'The timer ran past the session limit, so this was recorded at it. Edit it if the lesson was a different length.';
+  'The timer ran past the lesson limit, so this was recorded at it. Edit it if the lesson was a different length.';
 
 /**
  * What a screen reader says for the card, which is one accessible element (ux-audit F-20): who,
@@ -102,7 +103,7 @@ export const SessionCard = memo(function SessionCard({
   const theme = useAppTheme();
   const { user } = useAuth();
   const muted = theme.tokens.mutedForeground;
-  const day = formatSessionDay(session.occurred_on, today);
+  const day = formatDay(session.occurred_on, today, { weekday: true });
   const hasActions = Boolean(assessLabel(session, user) || reflectLabel(session, user));
   const preview = writeUpPreview(session);
   const homework = session.write_up?.homework_status;

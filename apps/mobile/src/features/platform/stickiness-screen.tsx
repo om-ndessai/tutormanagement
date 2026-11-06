@@ -278,7 +278,7 @@ function BarCard({ testID, title, bars, empty }: { testID: string; title: string
           </View>
           <View style={{ flexDirection: 'row', gap: 2 }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
             {bars.map((bar) => (
-              <Text key={bar.label} numberOfLines={1} style={[muted, { flex: 1, fontSize: 10, textAlign: 'center' }]}>
+              <Text key={bar.label} numberOfLines={1} style={[muted, { flex: 1, fontSize: 12, textAlign: 'center' }]}>
                 {bar.label}
               </Text>
             ))}

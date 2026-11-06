@@ -1,7 +1,7 @@
 # Quest Games (Phase 46; the wizard, Phase 47), starting one. Anita, a parent, finds Quest under More
 # (chmi's switch on, through the local API): her Quest page is the Games panel alone -- no Your Quest, no
 # review. New Quest, the four-step wizard (owner, 2026-10-23): Select level, G6's tile its name alone;
-# Score Setup, one step: Game limit, 99 typed is held to 50, then 2; Points, a wrong answer −1; Players:
+# Score Setup, one step: Quest limit, 99 typed is held to 50, then 2; Points, a wrong answer −1; Players:
 # teams of 2; the Review in words and "Generate game code". The lobby: "Game code" over a six-character
 # code of the readable alphabet (no "Game status"), the rules in words, nobody yet, the host's own team
 # named for her with no tab bar, and Start the Quest waits for a player. Alex joins with that code (through the API, as a second
@@ -41,7 +41,7 @@ tags:
     visible:
       id: quest-games
     timeout: 15000
-- assertVisible: 'Play the question bank together: start a game and share its code, or join one with a code\.'
+- assertVisible: 'Play the question bank together: start a quest and share its code, or join one with a code\.'
 - assertNotVisible:
     id: quest-play-card
 - assertNotVisible:
@@ -50,7 +50,7 @@ tags:
 # New Quest: the wizard.
 - assertVisible:
     id: game-new
-    text: '.*New Quest.*'
+    text: '.*New quest.*'
 - tapOn:
     id: game-new
 - extendedWaitUntil:
@@ -64,7 +64,7 @@ tags:
     timeout: 10000
 - assertVisible:
     id: game-tile-NC26.6
-    text: 'G6'
+    text: 'Grade 6'
 - assertVisible:
     id: step-flow-title
     text: '.*Select level.*'
@@ -91,7 +91,7 @@ tags:
 - assertVisible:
     id: step-flow-title
     text: '.*Score Setup.*'
-- assertVisible: 'Game limit'
+- assertVisible: 'Quest limit'
 - assertVisible:
     id: game-mode-count
 - tapOn:
@@ -168,7 +168,7 @@ tags:
     timeout: 5000
 - assertVisible:
     id: game-summary-questions
-    text: 'G6'
+    text: 'Grade 6'
 - assertVisible:
     id: game-summary-length
     text: '2 questions'
@@ -203,9 +203,9 @@ tags:
     text: '([A-HJKMNP-Z2-9]{6}|Game code: [A-HJKMNP-Z2-9]( [A-HJKMNP-Z2-9]){5})'
 - assertVisible:
     id: game-rules
-    text: 'G6 · 2 questions · Right \+1, wrong −1 · Up to 10 teams, at most 2 players per team.*'
+    text: 'Grade 6 · 2 questions · Right \+1, wrong −1 · Up to 10 teams, at most 2 players per team.*'
 - assertVisible: '(?i)Game code'
-- assertNotVisible: '(?i)Game status.*'
+- assertNotVisible: '(?i)(Game|Quest) status.*'
 # The host joins only by starting a team, named for her: no tab bar, no team code.
 - assertNotVisible:
     id: game-join-tabs
@@ -246,7 +246,7 @@ tags:
 - takeScreenshot: game-lobby
 - assertVisible:
     id: game-start
-    text: '.*Start the Quest.*'
+    text: '.*Start the quest.*'
     enabled: true
 # The doors keep the screen moving for five seconds: the tap does not wait for it to settle.
 - tapOn:

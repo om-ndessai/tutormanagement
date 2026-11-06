@@ -70,7 +70,13 @@ onFlowComplete:
     id: platform-org-edit
 - extendedWaitUntil:
     visible:
+      id: org-form-name
+    timeout: 10000
+# The tagline sits below the fold since Phase 78 (the Checked questions note says how the bank curates them).
+- scrollUntilVisible:
+    element:
       id: org-form-tagline
+    centerElement: true
     timeout: 10000
 - tapOn:
     id: org-form-tagline

@@ -74,11 +74,11 @@ tags:
 - tapOn:
     id: live-cancel
 - extendedWaitUntil:
-    visible: 'Discard this session?'
+    visible: 'Discard this lesson?'
     timeout: 10000
 - tapOn: 'Discard'
 - extendedWaitUntil:
-    visible: 'Session discarded.'
+    visible: 'Lesson discarded.'
     timeout: 15000
 - scrollUntilVisible:
     element:

@@ -8,7 +8,7 @@
 //
 // `YourRequestsCard` is the member home's card, above Next up, in every space; `RequestAnswerRow` is one answer,
 // also on Spaces (`prefix="welcome"`).
-import type { MyJoinRequest } from '@tmi/shared';
+import { formatInstant, type MyJoinRequest } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -25,7 +25,7 @@ import { MIN_TARGET, radius, space } from '@/theme/tokens';
 
 import { useDismissJoinOutcome, useWithdrawRequest } from './api';
 import { OrgAvatar } from './org-avatar';
-import { declinedOnLine, requestLine } from './space-model';
+import { requestLine } from './space-model';
 
 /** Into a space's Home, from wherever the answer was read. */
 function goHome() {
@@ -126,7 +126,12 @@ export function RequestAnswerRow({
   const approved = request.outcome === 'approved';
   const rowId =
     prefix === 'home-request' ? `home-request-${request.slug}` : `welcome-${request.outcome}-${request.slug}`;
-  const when = approved ? null : declinedOnLine(request.answered_at, timeZone);
+  // "Declined on Nov 3, 2026." -- the day the space answered, on the reader's space's clock (shared dates.ts, Phase 78);
+  // nothing without a date.
+  const when =
+    approved || !request.answered_at || Number.isNaN(Date.parse(request.answered_at))
+      ? null
+      : `Declined on ${formatInstant(request.answered_at, timeZone, { time: false, year: 'always' })}.`;
 
   async function dismissIt() {
     haptics.selection();

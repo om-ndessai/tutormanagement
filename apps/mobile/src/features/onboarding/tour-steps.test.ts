@@ -53,7 +53,7 @@ describe('placementOf', () => {
 
   it('keeps the four tabs where Tutoring is on', () => {
     expect(placementOf('nav-sessions')).toEqual({ kind: 'tab', index: 1, within: null });
-    expect(placementOf('nav-schedule')).toEqual({ kind: 'tab', index: 1, within: 'Sessions' });
+    expect(placementOf('nav-schedule')).toEqual({ kind: 'tab', index: 1, within: 'Lessons' });
     expect(placementOf('nav-dashboard', ['dashboard', 'more'])).toEqual({
       kind: 'tab',
       index: 0,

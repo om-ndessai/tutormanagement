@@ -7,7 +7,7 @@
 //
 // Phase 76 (JF21): adding people is the one Add chooser (`/add`): the header's button and the empty directory's
 // both open it, as the home's quick action and the (+) row do. An invited row shares its invitation (JF37).
-import { mayAddPeople, type User } from '@tmi/shared';
+import { COMMON_COPY, mayAddPeople, type User } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
@@ -143,7 +143,7 @@ export function PeopleScreen() {
       {isPending ? (
         <View
           style={{ gap: space.md }}
-          accessibilityLabel="Loading users"
+          accessibilityLabel="Loading people"
           accessibilityState={{ busy: true }}
         >
           {[0, 1, 2, 3].map((index) => (
@@ -174,7 +174,7 @@ export function PeopleScreen() {
     <>
       <Stack.Screen
         options={{
-          title: 'Users',
+          title: COMMON_COPY.people_page,
           headerRight: addsPeople
             ? () => (
                 <IconButton
@@ -182,7 +182,7 @@ export function PeopleScreen() {
                   icon="account-plus-outline"
                   size={22}
                   iconColor={theme.colors.onSurface}
-                  accessibilityLabel="Add people"
+                  accessibilityLabel={COMMON_COPY.add_person}
                   onPress={openAdd}
                 />
               )
@@ -202,11 +202,11 @@ export function PeopleScreen() {
             <EmptyState
               testID="people-empty"
               icon="account-search-outline"
-              title="No users match these filters."
+              title={COMMON_COPY.nobody_matches}
               action={
                 addsPeople ? (
                   <Button testID="people-add-button" mode="contained" icon="plus" onPress={openAdd}>
-                    Add people
+                    {COMMON_COPY.add_person}
                   </Button>
                 ) : undefined
               }

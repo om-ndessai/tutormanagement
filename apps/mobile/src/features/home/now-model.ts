@@ -2,7 +2,9 @@
 // "Now" card shows, and its words, as pure functions so they are tested with an injected clock and
 // no device. Nothing here carries money: the card leads the Tutoring tab.
 import {
+  WEEKDAY_LONG,
   addDays,
+  formatDay,
   formatMinutesOfDay,
   googleMapsUrl,
   parseClockTime,
@@ -11,6 +13,7 @@ import {
   type TutorHome,
   type TutorHomeBrief,
   type TutorHomeLesson,
+  weekdayOf,
 } from '@tmi/shared';
 
 import { firstName } from '@/features/dashboard/home-model';
@@ -26,6 +29,7 @@ export function lessonKey(lesson: Pick<TutorHomeLesson, 'schedule_id' | 'occurs_
 // Words
 // ---------------------------------------------------------------------------
 
+/** A month in full, for "together since August" (the shared formatter writes months short). */
 const MONTHS = [
   'January',
   'February',
@@ -40,19 +44,6 @@ const MONTHS = [
   'November',
   'December',
 ];
-const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-function weekdayOf(day: string): string {
-  return WEEKDAYS[new Date(`${day}T12:00:00Z`).getUTCDay()] ?? '';
-}
-
-/** "Oct 16", with the year when it is not this one. */
-export function shortDate(day: string, today: string): string {
-  const [year, month, date] = day.split('-').map(Number);
-  const name = (MONTHS[(month ?? 1) - 1] ?? '').slice(0, 3);
-  return `${name} ${date}${day.slice(0, 4) === today.slice(0, 4) ? '' : `, ${year}`}`;
-}
-
 /** "4:30 PM" from "16:30"; the text as given when it is not a clock time. */
 export function clockLabel(time: string): string {
   const minutes = parseClockTime(time);
@@ -94,9 +85,9 @@ export function lessonWhen(
   }
   if (lesson.occurs_on === addDays(today, 1)) return `tomorrow at ${at}`;
   if (lesson.occurs_on > today && lesson.occurs_on < addDays(today, 7)) {
-    return `${weekdayOf(lesson.occurs_on)} at ${at}`;
+    return `${WEEKDAY_LONG[weekdayOf(lesson.occurs_on)]} at ${at}`;
   }
-  return `on ${weekdayOf(lesson.occurs_on)}, ${shortDate(lesson.occurs_on, today)}, at ${at}`;
+  return `on ${WEEKDAY_LONG[weekdayOf(lesson.occurs_on)]}, ${formatDay(lesson.occurs_on, today)}, at ${at}`;
 }
 
 /** "Sofia's lesson is today at 4:30 PM, in 1 h 18 min." */

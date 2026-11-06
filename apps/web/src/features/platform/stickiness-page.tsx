@@ -6,6 +6,8 @@ import {
   STICKINESS_MIN_GROUP,
   STICKY_ARRIVAL_LABELS,
   STICKY_HAT_LABELS,
+  formatDay,
+  todayIn,
   type RetentionRow,
   type StickyShare,
 } from '@tmi/shared';
@@ -14,7 +16,7 @@ import { PageHeader } from '@/components/layout/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ApiRequestError } from '@/lib/api-client';
-import { cn, formatTimestamp } from '@/lib/utils';
+import { browserTimeZone, cn, formatTimestamp } from '@/lib/utils';
 import { useRefreshStickiness, useSaveVisitSettings, useStickiness, useVisitSettings } from './api';
 
 const percent = (value: number | null) => (value === null ? '—' : `${Math.round(value * 100)}%`);
@@ -60,7 +62,7 @@ export function StickinessPage() {
       ) : (
         <>
           <p className="text-muted-foreground text-xs" data-testid="stickiness-computed">
-            To {data.day} · computed {formatTimestamp(data.computed_at, '—')} ·{' '}
+            To {formatDay(data.day, todayIn(browserTimeZone()), { year: 'always' })} · computed {formatTimestamp(data.computed_at, '—')} ·{' '}
             {data.recording ? 'visits and days played' : 'days played only (visits are not recorded)'}
           </p>
           <div className="grid grid-cols-2 items-start gap-3 lg:grid-cols-3" data-testid="stickiness-tiles">
@@ -184,7 +186,7 @@ function BarCard({ title, bars, empty, testId }: { title: string; bars: { label:
           </div>
         )}
         {!empty && (
-          <div className="text-muted-foreground flex gap-[2px] text-[10px]">
+          <div className="text-muted-foreground flex gap-[2px] text-xs">
             {bars.map((bar) => (
               <span key={bar.label} className="min-w-0 flex-1 truncate text-center">
                 {bar.label}

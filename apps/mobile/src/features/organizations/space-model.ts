@@ -7,7 +7,6 @@ import {
   ORG_TIME_ZONES,
   PLATFORM_BRAND,
   spaceNameProblem,
-  zonedClockParts,
   type MyJoinRequest,
   type OrgTimeZone,
   type PlatformAccount,
@@ -91,17 +90,6 @@ export function requestLine(request: Pick<MyJoinRequest, 'name' | 'outcome'>): s
   if (request.outcome === 'approved') return `You're in ${request.name}.`;
   if (request.outcome === 'declined') return `${request.name} did not let you in.`;
   return `Asked to join ${request.name} · waiting for its admins.`;
-}
-
-/** "Declined on Nov 4, 2026." -- the day the space answered, on the reader's space's clock; null when unknown. */
-export function declinedOnLine(answeredAt: string | null | undefined, timeZone: string): string | null {
-  if (!answeredAt || Number.isNaN(Date.parse(answeredAt))) return null;
-  const { day } = zonedClockParts(answeredAt, timeZone);
-  const date = new Date(`${day}T12:00:00Z`).toLocaleDateString('en-US', {
-    dateStyle: 'medium',
-    timeZone: 'UTC',
-  });
-  return `Declined on ${date}.`;
 }
 
 /**

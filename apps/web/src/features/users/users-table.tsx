@@ -10,7 +10,7 @@ import {
   Trash2Icon,
   UserMinusIcon,
 } from 'lucide-react';
-import { USER_SORT_FIELDS, type User, type UserSortField } from '@tmi/shared';
+import { COMMON_COPY, USER_SORT_FIELDS, type User, type UserSortField } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -208,7 +208,7 @@ export function UsersTable({
   if (users.length === 0) {
     return (
       <div className="border-border bg-card rounded-lg border p-10 text-center">
-        <p className="text-muted-foreground text-sm">No users match these filters.</p>
+        <p className="text-muted-foreground text-sm">{COMMON_COPY.nobody_matches}</p>
       </div>
     );
   }
@@ -235,13 +235,13 @@ export function UsersTable({
                   <button
                     type="button"
                     onClick={() => actions.onView(user)}
-                    className="hover:text-primary block max-w-full truncate text-left font-medium transition-colors"
+                    className="hover:text-primary block max-w-full text-left [overflow-wrap:anywhere] font-medium transition-colors"
                   >
                     {user.full_name}
                   </button>
                   <EmailOrNone
                     email={user.email}
-                    className="text-muted-foreground hover:text-primary block truncate text-xs"
+                    className="text-muted-foreground hover:text-primary block text-xs [overflow-wrap:anywhere]"
                   />
                   {user.phone && (
                     <span className="text-muted-foreground block text-xs">{user.phone}</span>
@@ -308,7 +308,7 @@ export function UsersTable({
                           <button
                             type="button"
                             onClick={() => actions.onView(user)}
-                            className="hover:text-primary truncate text-left font-medium transition-colors"
+                            className="hover:text-primary text-left font-medium [overflow-wrap:anywhere] transition-colors"
                           >
                             {user.full_name}
                           </button>
@@ -317,7 +317,7 @@ export function UsersTable({
                         <EmailOrNone
                           email={user.email}
                           link={false}
-                          className="text-muted-foreground truncate text-xs lg:hidden"
+                          className="text-muted-foreground text-xs [overflow-wrap:anywhere] lg:hidden"
                         />
                       </div>
                     </div>
@@ -326,7 +326,7 @@ export function UsersTable({
                   <TableCell className="hidden lg:table-cell">
                     <EmailOrNone
                       email={user.email}
-                      className="hover:text-primary text-muted-foreground truncate transition-colors"
+                      className="hover:text-primary text-muted-foreground [overflow-wrap:anywhere] transition-colors"
                     />
                   </TableCell>
 

@@ -18,7 +18,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Share, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 
-import { BadgePill } from '@/components/badge-pill';
 import { OutlinedCard } from '@/components/outlined-card';
 import { MathBody } from '@/features/question-bank/math-body';
 import { numberAnswerKeyboard } from '@/features/quest/number-keyboard';
@@ -269,11 +268,10 @@ export function GuestQuest({ tile, today = false }: { tile: GuestTile; today?: b
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
                 <Text
                   variant="labelMedium"
-                  style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
+                  style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
                 >
                   {name}
                 </Text>
-                {current.beta ? <BadgePill testID="guest-question-beta" /> : null}
               </View>
               <MathBody
                 testID="guest-stem"

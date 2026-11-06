@@ -90,10 +90,8 @@ export function AdminsSection({ organization }: { organization: OrganizationList
             }}
           >
             <View style={{ flex: 1, minWidth: 0, paddingVertical: space.sm }}>
-              <Text variant="bodyMedium" numberOfLines={1}>
-                {admin.full_name}
-              </Text>
-              <Text variant="bodySmall" numberOfLines={1} style={{ color: theme.tokens.mutedForeground }}>
+              <Text variant="bodyMedium">{admin.full_name}</Text>
+              <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
                 {admin.email ?? 'No email'}
               </Text>
             </View>

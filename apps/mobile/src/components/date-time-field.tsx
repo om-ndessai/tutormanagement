@@ -9,7 +9,7 @@
 // picker to adjust it, on Android the system dialog opens on `startAt` and its OK fills it in -- a deliberate act
 // either way, never a default.
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { formatClockTime, parseClockTime } from '@tmi/shared';
+import { formatClockTime, formatDay, parseClockTime } from '@tmi/shared';
 import { Platform, Pressable, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
@@ -40,13 +40,9 @@ export function emptyLabel(mode: Mode): string {
 function display(mode: Mode, value: string): string {
   if (!value) return emptyLabel(mode);
   if (mode === 'time') return formatClockTime(value);
-  return new Date(`${value}T12:00:00Z`).toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
+  // "Tue, Sep 15, 2026": the calendar day it names, through the one shared formatter (Phase 78); with its year
+  // always, so the `today` it is given decides nothing.
+  return formatDay(value, value, { weekday: true, year: 'always' });
 }
 
 export function DateTimeField({

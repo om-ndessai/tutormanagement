@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   HOMEWORK_STATUSES,
   HOMEWORK_STATUS_LABELS,
   SESSION_ASSESSMENT_PROMPTS,
@@ -37,6 +38,7 @@ import { Label } from '@/components/ui/label';
 import { RatingChip, RatingPicker } from '@/features/progress/rating';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import { useDates } from '@/hooks/use-dates';
 import { useAuth } from '@/providers/auth-provider';
 import { useSaveSessionAssessment, useWithdrawSessionAssessment } from './api';
 
@@ -112,7 +114,7 @@ export function HomeworkStatusBadge({ status }: { status: HomeworkStatus }) {
   const Icon = HOMEWORK_ICONS[status];
 
   return (
-    <Badge variant="outline" className={cn('gap-1 text-[10px]', HOMEWORK_TONES[status])}>
+    <Badge variant="outline" className={cn('gap-1 text-xs', HOMEWORK_TONES[status])}>
       <Icon />
       Homework: {HOMEWORK_STATUS_LABELS[status].toLowerCase()}
     </Badge>
@@ -163,7 +165,7 @@ function Part({
 }) {
   return (
     <section>
-      <h4 className="text-muted-foreground flex flex-wrap items-center gap-2 text-[11px] font-medium tracking-wide uppercase">
+      <h4 className="text-muted-foreground flex flex-wrap items-center gap-2 text-xs font-semibold">
         {label}
         {aside}
       </h4>
@@ -200,9 +202,7 @@ export function SessionNotesView({ session }: { session: TutoringSession }) {
           label={homeworkReview.label}
           aside={
             writeUp.homework_status && (
-              <span className="normal-case">
-                <HomeworkStatusBadge status={writeUp.homework_status} />
-              </span>
+              <HomeworkStatusBadge status={writeUp.homework_status} />
             )
           }
         >
@@ -226,7 +226,7 @@ export function AssessmentChips({ assessments }: { assessments: SessionAssessmen
           key={row.author_user_id}
           rating={row.rating}
           labels={SESSION_RATING_LABELS}
-          className="size-5 text-[10px]"
+          className="size-5 text-xs"
         />
       ))}
     </span>
@@ -239,7 +239,7 @@ export function AssessmentsView({ assessments }: { assessments: SessionAssessmen
 
   return (
     <section>
-      <h4 className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
+      <h4 className="text-muted-foreground text-xs font-semibold">
         Assessments
       </h4>
       <ul className="divide-border divide-y">
@@ -341,6 +341,7 @@ export function SessionAssessmentDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const { user } = useAuth();
+  const dates = useDates();
   const save = useSaveSessionAssessment();
   const withdraw = useWithdrawSessionAssessment();
 
@@ -398,11 +399,11 @@ export function SessionAssessmentDialog({
       <DialogContent className="sm:max-w-md">
         <form onSubmit={handleSave} noValidate>
           <DialogHeader>
-            <DialogTitle>{mine ? 'Your assessment' : 'Assess this session'}</DialogTitle>
+            <DialogTitle>{mine ? 'Your assessment' : COMMON_COPY.assess_lesson}</DialogTitle>
             <DialogDescription>
               {session && (
                 <>
-                  {session.student_name} with {session.tutor_name}, {session.occurred_on}. Everyone this
+                  {session.student_name} with {session.tutor_name}, {dates.day(session.occurred_on, { weekday: true })}. Everyone this
                   lesson concerns can read it: its tutor, the student, their parents and the office.
                 </>
               )}
@@ -467,7 +468,7 @@ export function AssessButton({
       size="xs"
       className="text-muted-foreground hover:text-foreground"
       onClick={() => onAssess(session)}
-      aria-label={mine ? 'Edit your assessment' : 'Assess this session'}
+      aria-label={mine ? 'Edit your assessment' : COMMON_COPY.assess_lesson}
     >
       <MessageSquareTextIcon />
       {mine ? 'Your assessment' : 'Assess'}

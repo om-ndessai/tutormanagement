@@ -10,7 +10,7 @@
 // or whoever started it for them -- the questions wait behind "Hand the device to Noor" ("Noor answers on this device.
 // Answers written on another device stay there.", then "Noor is ready"); a submit then says where the PDF goes, never
 // linking it (R17: the PDF is the tutors' and the admins').
-import { featureAllowed, levelLabel } from '@tmi/shared';
+import { featureAllowed } from '@tmi/shared';
 import type { CanvasStroke } from '@tmi/shared';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
@@ -18,8 +18,8 @@ import { Alert, AppState, ScrollView, useWindowDimensions, View, type LayoutChan
 import { Button, Icon, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { levelWords } from '@/features/quest/level-words';
 import { IconButton } from '@/components/icon-button';
-import { BadgePill } from '@/components/badge-pill';
 import { OutlinedCard } from '@/components/outlined-card';
 import { Screen } from '@/components/screen';
 import { DetailSkeleton } from '@/components/skeletons';
@@ -234,7 +234,7 @@ export function TakeAssessmentScreen() {
               {words.body}
             </Text>
             <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-              {`${assessment.student_name} · ${levelLabel(assessment.level_id)} · ${questions.length} ${
+              {`${assessment.student_name} · ${levelWords(assessment.level_id)} · ${questions.length} ${
                 questions.length === 1 ? 'question' : 'questions'
               }`}
             </Text>
@@ -337,9 +337,8 @@ export function TakeAssessmentScreen() {
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
-          <BadgePill />
           <Text variant="bodySmall" style={{ flex: 1, minWidth: 160, color: theme.tokens.mutedForeground }}>
-            {`${assessment.student_name} · ${levelLabel(assessment.level_id)} · ` +
+            {`${assessment.student_name} · ${levelWords(assessment.level_id)} · ` +
               (question.kind === 'choice'
                 ? 'Choose your answer, and use the page below for your working.'
                 : 'Write your working and your answer below.') +

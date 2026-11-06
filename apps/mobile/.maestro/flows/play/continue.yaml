@@ -103,9 +103,9 @@ tags:
 - tapOn:
     id: game-end
 - extendedWaitUntil:
-    visible: 'End the game now\?'
+    visible: 'End the quest now\?'
     timeout: 5000
-- tapOn: 'End the game'
+- tapOn: 'End the quest'
 # Nothing was answered: no winner, no celebration.
 - extendedWaitUntil:
     visible:

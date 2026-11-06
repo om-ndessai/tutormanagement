@@ -22,7 +22,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 import { LegalLink } from './legal-links';
-import { birthYears, firstNameOf, MONTHS } from './sign-up-model';
+import { birthYears, birthYearStart, firstNameOf, MONTHS } from './sign-up-model';
 
 const MONTH_OPTIONS = MONTHS.map((name, i) => ({ id: String(i + 1), label: name }));
 
@@ -78,6 +78,8 @@ export function SignUpScreen({
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<{ code: string; message: string } | null>(null);
   const [years] = useState(() => birthYears(new Date()).map((y) => ({ id: String(y), label: String(y) })));
+  // Phase 78 (JF35): the list opens near an adult's year, every year a scroll away; or the year is typed.
+  const [yearStart] = useState(() => String(birthYearStart(new Date())));
   // This account was refused as under 13 on this phone: the answer straight away, not the age question.
   const email = pendingSignup?.email;
   const [knownYoung, setKnownYoung] = useState<boolean | null>(() => knownYoungNow(email));
@@ -213,6 +215,8 @@ export function SignUpScreen({
             value={year}
             onChange={setYear}
             defaultOpen={false}
+            scroll
+            startAt={yearStart}
             searchPlaceholder="Type a year"
           />
         </View>

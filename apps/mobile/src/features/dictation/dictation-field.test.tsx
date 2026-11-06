@@ -21,7 +21,7 @@ function Field({ id, initial = '', max = 2000 }: { id: string; initial?: string;
   return (
     <DictationField
       testID={id}
-      label={id === 'notes' ? 'Session notes' : 'What was planned'}
+      label={id === 'notes' ? 'Lesson notes' : 'What was planned'}
       value={value}
       maxLength={max}
       onChange={(next) => {
@@ -99,14 +99,14 @@ describe('DictationField', () => {
 
   it('labels the mic and flips its state while listening', async () => {
     await renderFields();
-    expect(screen.getByLabelText('Dictate Session notes')).toBeTruthy();
+    expect(screen.getByLabelText('Dictate Lesson notes')).toBeTruthy();
     await startListening();
-    const stop = screen.getByLabelText('Stop dictating Session notes');
+    const stop = screen.getByLabelText('Stop dictating Lesson notes');
     expect(stop.props.accessibilityState).toMatchObject({ selected: true });
     await fireEvent.press(stop);
     expect(native.stop).toHaveBeenCalled();
     await act(async () => speechMock.emit('end'));
-    expect(screen.getByLabelText('Dictate Session notes')).toBeTruthy();
+    expect(screen.getByLabelText('Dictate Lesson notes')).toBeTruthy();
   });
 
   it('masks SSN-shaped interim words, refuses the final, and stops', async () => {
@@ -254,7 +254,7 @@ describe('permissions and the on-device policy', () => {
       ),
     );
     await pressAlert('Dictate online?', 'Not now');
-    await waitFor(() => expect(screen.getByLabelText('Dictate Session notes')).toBeTruthy());
+    await waitFor(() => expect(screen.getByLabelText('Dictate Lesson notes')).toBeTruthy());
     expect(native.start).not.toHaveBeenCalled();
   });
 

@@ -6,6 +6,10 @@ import {
   SIGN_IN_DURATIONS_HOURS,
   SWITCHABLE_PROVIDERS,
   describeProviders,
+  formatInstant,
+  formatInstantTime,
+  instantDay,
+  todayIn,
   type AuthProvider,
   type SignInClientStatus,
 } from '@tmi/shared';
@@ -15,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { NotificationsSwitch } from '@/features/organizations/notifications-switch';
 import { ApiRequestError } from '@/lib/api-client';
-import { cn } from '@/lib/utils';
+import { browserTimeZone, cn } from '@/lib/utils';
 import { useSignInSettings, useUpdateSignInSetting } from './api';
 import { PlaySettingsSection } from './play-settings-section';
 import { GuestSettingsSection } from './guest-settings-section';
@@ -23,12 +27,15 @@ import { AccessJump } from './access-section';
 
 type Switchable = (typeof SWITCHABLE_PROVIDERS)[number];
 
-/** "until 9:30 PM" today, or with the day when it is not today; the reader's own clock. */
+/**
+ * "until 9:30 PM" today, or with the day when it is not today ("until Tomorrow, 9:30 AM"); the reader's own clock,
+ * through the shared formatter (Phase 78).
+ */
 function untilText(until: string | null): string {
   if (!until) return 'until changed';
-  const at = new Date(until);
-  const sameDay = at.toDateString() === new Date().toDateString();
-  return `until ${at.toLocaleString(undefined, sameDay ? { hour: 'numeric', minute: '2-digit' } : { weekday: 'short', hour: 'numeric', minute: '2-digit' })}`;
+  const zone = browserTimeZone();
+  const today = todayIn(zone);
+  return `until ${instantDay(until, zone) === today ? formatInstantTime(until, zone) : formatInstant(until, zone, { today, relative: true })}`;
 }
 
 /** What is in force for one client, in words. */

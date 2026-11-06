@@ -4,7 +4,7 @@
 // above to narrow it to one day. Everyone who can see a schedule can add it to their calendar;
 // only its tutor (or an admin) can change it; cancelling one date is for whoever the server says
 // may (`cancel_as`), never a student. Nothing here is money.
-import { DAYS_OF_WEEK, describeSchedule, weekdayOf, type VisibleSchedule } from '@tmi/shared';
+import { COMMON_COPY, DAYS_OF_WEEK, describeSchedule, weekdayOf, type VisibleSchedule } from '@tmi/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -107,8 +107,8 @@ export function SchedulesScreen() {
   function confirmRemove(schedule: VisibleSchedule) {
     haptics.warning();
     Alert.alert(
-      'Remove this recurring session?',
-      `${schedule.student_name}'s ${describeSchedule(schedule)} slot will no longer appear, and any of its lessons that were cancelled go with it — so they stop counting as cancelled in the student's progress. Sessions already taught are unaffected. To stop a series but keep its record, give it an end date instead.`,
+      'Remove this recurring lesson?',
+      `${schedule.student_name}'s ${describeSchedule(schedule)} slot will no longer appear, and any of its lessons that were cancelled go with it — so they stop counting as cancelled in the student's progress. Lessons already taught are unaffected. To stop a series but keep its record, give it an end date instead.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -160,7 +160,7 @@ export function SchedulesScreen() {
               icon="calendar-plus"
               onPress={() => openForm()}
             >
-              Schedule a session
+              {COMMON_COPY.schedule_lesson}
             </Button>
           ) : null}
           {all.length > 0 ? (
@@ -181,7 +181,7 @@ export function SchedulesScreen() {
       <FocusNotice
         active={Boolean(focusId)}
         found={focused.length > 0}
-        what="scheduled session"
+        what="scheduled lesson"
         onClear={clearFocus}
       />
 
@@ -208,8 +208,8 @@ export function SchedulesScreen() {
           icon="calendar-month-outline"
           title={
             mayCreate
-              ? 'No recurring sessions scheduled yet.'
-              : 'No recurring sessions have been scheduled for you.'
+              ? 'No recurring lessons scheduled yet.'
+              : 'No recurring lessons have been scheduled for you.'
           }
         />
       ) : null}

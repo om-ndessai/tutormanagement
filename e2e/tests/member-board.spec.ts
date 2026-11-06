@@ -63,10 +63,15 @@ test.describe('Phase 67: the Quest board and a newcomer’s space', () => {
         .toMatchObject({ grade: 4, from: 'picked' });
       // Grade 4's hue on the chip and the card's band, with the level said in words beside it.
       await expect(home.getByTestId('play-grade-4')).toHaveClass(/bg-grade-4/);
+      // Phase 78 (JF29): the chosen chip is ringed too (its fill alone was 1.30:1 against the page), the others not.
+      await expect(home.getByTestId('play-grade-4')).toHaveClass(/ring-2/);
+      await expect(home.getByTestId('play-grade-6')).not.toHaveClass(/ring-2/);
       const card = home.getByTestId('play-tile-G4Q5');
       await expect(card).toContainText('Quick 5');
       await expect(card).toContainText('Grade 4');
       await expect(card.locator('.bg-grade-4')).toHaveCount(1);
+      // Phase 78 (JF32): no tile code on the card.
+      await expect(card).not.toContainText('G4Q5');
       // Another grade: its own cards, its own hue.
       await home.getByTestId('play-grade-6').click();
       await expect(home.getByTestId('play-tile-G6Q5').locator('.bg-grade-6')).toHaveCount(1);
@@ -75,7 +80,7 @@ test.describe('Phase 67: the Quest board and a newcomer’s space', () => {
       // Show your work: an assessment of the newcomer's own, five questions, opened to take.
       await home.getByTestId('play-grade-4').click();
       await expect(home.getByTestId('play-tile-G4A5')).toContainText('Show your work');
-      await home.getByTestId('play-tile-G4A5').getByRole('button', { name: /^Start G4A5/ }).click();
+      await home.getByTestId('play-tile-G4A5').getByRole('button', { name: /^Start Show your work, Grade 4/ }).click();
       await expect(nia).toHaveURL(/\/assessments\/[0-9a-f-]+$/);
       const id = nia.url().split('/').pop()!;
       const made = await unwrap<any>(await nia.request.get(`/api/canvas-assessments/${id}`), 'the assessment');

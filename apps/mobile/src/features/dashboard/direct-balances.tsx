@@ -59,7 +59,7 @@ export function DirectBalancesPanel({
                 style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10 }}
               >
                 <View style={{ flex: 1, minWidth: 0 }}>
-                  <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
+                  <Text variant="bodyMedium" style={{ fontWeight: '500' }}>
                     {of === 'family' ? row.tutor_name : row.student_name}
                   </Text>
                   <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>

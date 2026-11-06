@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import {
+  COMMON_COPY,
   DAYS_OF_WEEK,
   DEFAULT_MAX_SESSION_MINUTES,
   PAYMENT_METHOD_LABELS,
@@ -41,7 +42,8 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { ApiRequestError } from '@/lib/api-client';
-import { useAuth } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
+import { useDates } from '@/hooks/use-dates';
 import { useAuditEvents } from '@/features/audit/api';
 import { SsnReceiptButton } from './ssn-receipt-button';
 import { ActivityFeed } from '@/features/audit/activity-feed';
@@ -82,6 +84,7 @@ export function UserDetailView({
   const tutor = user.tutor_profile;
   const student = user.student_profile;
   const { user: viewer, organization } = useAuth();
+  const timeZone = useOrgTimeZone();
   // Phase 74 (JF31, R23): where Tutoring is not part of the space, its fields and sections are left out -- a
   // student's lesson details, places and the comment thread (which the API refuses there).
   const tutoring = featureAllowed(organization, 'tutoring');
@@ -104,7 +107,7 @@ export function UserDetailView({
           {initials(user.full_name)}
         </span>
         <div className="min-w-0">
-          <h2 className="truncate text-xl font-semibold">{user.full_name}</h2>
+          <h2 className="text-xl font-semibold [overflow-wrap:anywhere]">{user.full_name}</h2>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <RoleBadges roles={user.roles} />
             <StatusBadge status={user.status} />
@@ -121,10 +124,10 @@ export function UserDetailView({
           {user.phone ?? <Muted>Not recorded</Muted>}
         </Detail>
         <Detail icon={<CalendarClockIcon className="size-4" />} label="Last sign-in">
-          {formatTimestamp(user.last_login_at, 'Has not signed in yet')}
+          {formatTimestamp(user.last_login_at, 'Has not signed in yet', timeZone)}
         </Detail>
         <Detail icon={<CalendarClockIcon className="size-4" />} label="Added">
-          {formatTimestamp(user.created_at, '—')}
+          {formatTimestamp(user.created_at, '—', timeZone)}
         </Detail>
       </dl>
 
@@ -172,7 +175,7 @@ export function UserDetailView({
                 </Detail>
               </>
             )}
-            <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
+            <Detail icon={<TimerIcon className="size-4" />} label={COMMON_COPY.longest_lesson}>
               {tutor.max_session_minutes != null ? (
                 formatDuration(tutor.max_session_minutes)
               ) : (
@@ -218,7 +221,7 @@ export function UserDetailView({
               {student.academic_year_goal ?? <Muted>Not recorded</Muted>}
             </Detail>
             {tutoring && (
-              <Detail icon={<VideoIcon className="size-4" />} label="Virtual sessions">
+              <Detail icon={<VideoIcon className="size-4" />} label="Virtual lessons">
                 {student.virtual_available ? 'Available' : 'In person only'}
               </Detail>
             )}
@@ -258,7 +261,7 @@ export function UserDetailView({
               </>
             )}
             {tutoring && (
-              <Detail icon={<TimerIcon className="size-4" />} label="Longest session">
+              <Detail icon={<TimerIcon className="size-4" />} label={COMMON_COPY.longest_lesson}>
                 {student.max_session_minutes != null ? (
                   formatDuration(student.max_session_minutes)
                 ) : (
@@ -477,11 +480,12 @@ function SsnStatus({
 }) {
   const { user: viewer } = useAuth();
   const isAdmin = viewer?.roles.includes('admin') ?? false;
+  const dates = useDates();
 
   return (
     <span className="flex flex-wrap items-center gap-2">
       {receivedOn ? (
-        <span>Received {receivedOn}</span>
+        <span>Received {dates.day(receivedOn, { year: 'always' })}</span>
       ) : (
         <Badge variant="outline" className="border-warning/60 text-warning-foreground dark:text-warning">
           Not received
@@ -518,7 +522,7 @@ function Section({
 function Detail({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
     <div>
-      <dt className="text-muted-foreground flex items-center gap-2 text-xs font-medium tracking-wide uppercase">
+      <dt className="text-muted-foreground flex items-center gap-2 text-[13px] font-medium">
         {icon}
         {label}
       </dt>

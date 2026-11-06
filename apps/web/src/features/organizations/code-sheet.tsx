@@ -189,7 +189,7 @@ export function CodeSheet({
           <>
             <DialogHeader>
               <DialogTitle>Have a code?</DialogTitle>
-              <DialogDescription>Six characters join a game; eight ask to join a space.</DialogDescription>
+              <DialogDescription>Six characters join a quest; eight ask to join a space.</DialogDescription>
             </DialogHeader>
             <form
               className="grid gap-2"

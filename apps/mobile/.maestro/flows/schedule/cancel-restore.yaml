@@ -58,11 +58,22 @@ tags:
 - extendedWaitUntil:
     notVisible: 'The .* lesson is cancelled\.'
     timeout: 15000
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: cancelled-lessons-panel
     timeout: 20000
+# The panel sits under To record, and its toggle can land behind the tab bar, where a tap opens the (+)
+# (Phase 78 pads the page past the (+), so it can always be brought clear of it): centred first.
+- scrollUntilVisible:
+    element:
+      id: cancelled-lessons-toggle
+    centerElement: true
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: cancelled-lessons-toggle
 # The row is one link, read as its lines together, so the note is matched within it.

@@ -84,7 +84,7 @@ export function CurriculaCard() {
     <Card className="py-0" data-testid="curricula-card">
       <CardContent className="grid gap-4 p-5 text-sm">
         <div className="grid gap-1">
-          <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Curricula</h2>
+          <h2 className="text-muted-foreground text-[13px] font-semibold">Curricula</h2>
           <p className="text-muted-foreground text-xs">
             What plans, assessments and lessons are scored against. Turning one off retires it: it
             leaves the pickers, and everything already written against it still reads. New plans and

@@ -165,7 +165,7 @@ export function ChildCard({
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
           <PersonAvatar name={name} size={36} />
-          <Text variant="titleMedium" numberOfLines={1} style={{ flex: 1, minWidth: 0, fontWeight: '700' }}>
+          <Text variant="titleMedium" style={{ flex: 1, minWidth: 0, fontWeight: '700' }}>
             {self ? 'Your lessons' : name}
           </Text>
           <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} />

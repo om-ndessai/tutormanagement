@@ -14,11 +14,13 @@
 // the team's score once it is done; the notice carries the game's points ("Right! +2", "Not quite. −3").
 // Phase 77 (JF15): QuestionPanel also answers for a child seated on this device (`asUserId`, game-seated-play.tsx),
 // its draft kept per hand, since both answer the same question in turn.
+// Phase 78 (owner 2026-11-05): no Beta chip on a question (checked questions are served like any other); "End the
+// quest now" (a game is a quest on screen); the labels over the question and the waiting card in sentence case.
 import { useQueryClient } from '@tanstack/react-query';
 import { gameAnswerSchema, type GameQuestion, type GameView } from '@tmi/shared';
 import { useMemo, useState } from 'react';
 import { Alert, Platform, View, useWindowDimensions } from 'react-native';
-import { Button, Chip, Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -58,7 +60,7 @@ import { numberAnswerKeyboard } from './number-keyboard';
 const message = (caught: unknown, fallback: string) =>
   caught instanceof ApiRequestError ? caught.message : fallback;
 
-/** Asks before something that cannot be undone: ending or cancelling a game. */
+/** Asks before something that cannot be undone: ending or cancelling a quest. */
 export function confirmEnd({
   title,
   body,
@@ -79,21 +81,21 @@ export function confirmEnd({
   ]);
 }
 
-/** "End the game now?", asked first; the host's alone. */
+/** "End the quest now?", asked first; the host's alone. */
 export function confirmEndGame(
   game: GameView,
   action: ReturnType<typeof useGameAction>,
   notice: ReturnType<typeof useQuestNotice>,
 ) {
   confirmEnd({
-    title: 'End the game now?',
+    title: 'End the quest now?',
     body: endGameBody(game),
-    confirm: 'End the game',
+    confirm: 'End the quest',
     keep: 'Keep playing',
     onConfirm: () =>
       void action
         .mutateAsync({ kind: 'end' })
-        .catch((caught) => notice.error(message(caught, 'Could not end the game.'))),
+        .catch((caught) => notice.error(message(caught, 'Could not end the quest.'))),
   });
 }
 
@@ -137,7 +139,7 @@ export function GamePlay({ game, counting = false }: { game: GameView; counting?
           style={{ alignSelf: 'flex-start' }}
           contentStyle={{ minHeight: 48 }}
         >
-          End the game now
+          End the quest now
         </Button>
       ) : null}
     </View>
@@ -170,10 +172,7 @@ function Waiting({ game }: { game: GameView }) {
   return (
     <OutlinedCard testID="game-waiting" style={{ borderRadius: radius.lg }}>
       <View style={{ padding: space.lg, gap: space.sm }}>
-        <Text
-          variant="labelMedium"
-          style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
-        >
+        <Text variant="labelMedium" style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}>
           {WAITING_LABEL}
         </Text>
         <Text
@@ -285,27 +284,13 @@ export function QuestionPanel({
     <Animated.View style={[{ gap: space.lg }, slide]}>
       <OutlinedCard testID="game-question" style={{ borderRadius: radius.lg }}>
         <View style={{ padding: space.lg, gap: space.md }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-            <Text
-              testID="game-question-number"
-              variant="labelMedium"
-              style={{ color: theme.tokens.mutedForeground, letterSpacing: 0.6, textTransform: 'uppercase' }}
-            >
-              {questionHeading(question.number, total)}
-            </Text>
-            {/* Phase 62 (P3): a checked question no person has approved yet. */}
-            {question.beta ? (
-              <Chip
-                testID="game-question-beta"
-                compact
-                accessibilityLabel="Beta: a new question no person has approved yet"
-                textStyle={{ fontSize: 11, marginVertical: 0 }}
-                style={{ backgroundColor: theme.colors.secondaryContainer }}
-              >
-                Beta
-              </Chip>
-            ) : null}
-          </View>
+          <Text
+            testID="game-question-number"
+            variant="labelMedium"
+            style={{ color: theme.tokens.mutedForeground, fontWeight: '700' }}
+          >
+            {questionHeading(question.number, total)}
+          </Text>
           <MathBody
             testID="game-stem"
             html={stemHtml}

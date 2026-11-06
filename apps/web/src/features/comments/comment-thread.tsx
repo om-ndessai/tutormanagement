@@ -11,12 +11,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiRequestError } from '@/lib/api-client';
+import { useDates } from '@/hooks/use-dates';
 import { useAddComment, useComments } from './api';
 import { CommentDeleteButton } from './comment-delete-button';
-
-function formatWhen(iso: string): string {
-  return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
 
 /**
  * The reverse-chronological view of everything said about one thing, with the
@@ -99,6 +96,7 @@ function Composer({ target, targetName }: { target: CommentTarget; targetName: s
 }
 
 function CommentRow({ comment, target }: { comment: Comment; target: CommentTarget }) {
+  const dates = useDates();
   return (
     <li className="py-3">
       <div className="flex items-start gap-3">
@@ -107,7 +105,7 @@ function CommentRow({ comment, target }: { comment: Comment; target: CommentTarg
             <span className="font-medium">{comment.author_name}</span>
             <span className="text-muted-foreground text-xs">
               {' '}
-              · {formatWhen(comment.created_at)}
+              · {dates.instant(comment.created_at)}
             </span>
           </p>
           <p className="mt-1 text-sm whitespace-pre-wrap">{comment.body}</p>

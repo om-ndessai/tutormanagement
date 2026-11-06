@@ -105,7 +105,7 @@ export function PersonFormSheet({
       <AddPersonDone
         person={added}
         variant="sheet"
-        againLabel="Add someone else"
+        againLabel="Add another person"
         onAgain={() => {
           setAdded(null);
           setRound((n) => n + 1);

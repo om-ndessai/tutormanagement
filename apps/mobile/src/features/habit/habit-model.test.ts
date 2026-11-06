@@ -121,7 +121,7 @@ describe('the Play home’s Daily (Phase 73: one rule, one name)', () => {
 
 describe('the Daily screen', () => {
   it('heads the result, draws the grid and counts the play', () => {
-    expect(dailyHeading('NC26.4', 2, 4, 5)).toBe('G4D #2 · 4 of 5');
+    expect(dailyHeading('NC26.4', 4, 5)).toBe('Grade 4 · 4 of 5');
     expect(dailyGrid([true, true, false, true, true])).toBe('✓✓✗✓✓');
     expect(dailyGrid([false, false, false, false, false])).toBe('✗✗✗✗✗');
     expect(dailyGridSpeech([true, false])).toBe('1 of 2 right: 1 right, 2 wrong');

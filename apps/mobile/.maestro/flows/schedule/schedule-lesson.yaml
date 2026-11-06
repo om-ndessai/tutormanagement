@@ -126,7 +126,7 @@ tags:
 - tapOn:
     id: step-flow-next
 - extendedWaitUntil:
-    visible: 'Session scheduled\.'
+    visible: 'Lesson scheduled\.'
     timeout: 15000
 - assertNotVisible:
     id: step-flow

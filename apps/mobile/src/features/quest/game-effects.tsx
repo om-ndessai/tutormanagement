@@ -180,9 +180,9 @@ function BeginsLabel() {
   return (
     <Text
       variant="labelLarge"
-      style={{ color: theme.tokens.brand50, opacity: 0.85, letterSpacing: 3, textTransform: 'uppercase' }}
+      style={{ color: theme.tokens.brand50, opacity: 0.85, letterSpacing: 0.6, fontWeight: '700' }}
     >
-      The Quest begins
+      The quest begins
     </Text>
   );
 }

@@ -62,7 +62,7 @@ export function SessionMoney({
     return (
       <span className={cn('text-right', className)}>
         <span className="block text-sm font-medium tabular-nums">{formatCents(amount)}</span>
-        <span className="text-muted-foreground block text-[10px] leading-tight">
+        <span className="text-muted-foreground block text-xs leading-tight">
           {admin && !direct ? `${formatCents(marginCents(session))} to ${brand.short}` : label}
         </span>
       </span>
@@ -71,11 +71,11 @@ export function SessionMoney({
 
   return (
     <div className={cn('text-right', className)}>
-      <p className="text-muted-foreground text-[10px] font-medium tracking-wide uppercase">{label}</p>
+      <p className="text-muted-foreground text-xs font-medium">{label}</p>
       <p className="font-display font-semibold tabular-nums">{formatCents(amount)}</p>
-      <p className="text-muted-foreground text-[11px]">{formatCents(rate)}/hr</p>
+      <p className="text-muted-foreground text-xs">{formatCents(rate)}/hr</p>
       {admin && !direct && (
-        <p className="text-muted-foreground text-[11px] tabular-nums">
+        <p className="text-muted-foreground text-xs tabular-nums">
           Tutor {formatCents(session.tutor_amount_cents)} · {brand.short}{' '}
           <span className="text-foreground font-medium">{formatCents(marginCents(session))}</span>
         </p>

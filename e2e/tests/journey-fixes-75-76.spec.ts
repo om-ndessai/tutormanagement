@@ -227,7 +227,7 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
       expect(await done.innerText()).not.toMatch(/\$\s?\d/);
       await done.getByTestId('stop-write-up').click();
       const form = tara.getByRole('dialog', { name: 'Edit lesson' });
-      await expect(form.getByLabel('Session notes', { exact: true })).toHaveValue('Fractions on a number line.');
+      await expect(form.getByLabel('Lesson notes', { exact: true })).toHaveValue('Fractions on a number line.');
       await form.getByRole('button', { name: 'Cancel' }).click();
       await expect(tara.getByTestId('next-up-lesson_running')).toHaveCount(0);
     } finally {
@@ -284,7 +284,7 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
     await tara.getByTestId('record-lesson').getByTestId('record-lesson-write-up').click();
     const form = tara.getByRole('dialog', { name: 'Record a lesson' });
     await expect(form.locator('#date')).toHaveValue(yesterday);
-    await form.getByLabel('Session notes', { exact: true }).fill('Half written.');
+    await form.getByLabel('Lesson notes', { exact: true }).fill('Half written.');
     await expect(form.getByTestId('autosave-status')).toContainText('Draft autosaved', { timeout: 10_000 });
     await form.getByRole('button', { name: 'Cancel' }).click();
     await expect(visible(tara, /kept as a draft/)).toBeVisible();
@@ -296,8 +296,8 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
     await expect(card.getByTestId('next-up-draft')).toHaveText(/^Draft saved .+ · Continue$/);
     await card.getByTestId('next-up-draft').click();
     const again = tara.getByRole('dialog', { name: 'Finish this draft' });
-    await expect(again.getByLabel('Session notes', { exact: true })).toHaveValue('Half written.');
-    await again.getByLabel('Session notes', { exact: true }).fill('Half written, then more.');
+    await expect(again.getByLabel('Lesson notes', { exact: true })).toHaveValue('Half written.');
+    await again.getByLabel('Lesson notes', { exact: true }).fill('Half written, then more.');
     await expect(again.getByTestId('autosave-status')).toContainText('Draft autosaved', { timeout: 10_000 });
     await again.getByRole('button', { name: 'Cancel' }).click();
     expect((await drafts(tara)).map((d) => d.id)).toEqual([first[0].id]);
@@ -305,7 +305,7 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
     // The home's To record row does too.
     await tara.reload();
     await tara.getByTestId(`home-draft-${key}`).click();
-    await expect(tara.getByRole('dialog', { name: 'Finish this draft' }).getByLabel('Session notes', { exact: true })).toHaveValue(
+    await expect(tara.getByRole('dialog', { name: 'Finish this draft' }).getByLabel('Lesson notes', { exact: true })).toHaveValue(
       'Half written, then more.',
     );
     await tara.keyboard.press('Escape');
@@ -316,7 +316,7 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
     await tara.goto('/sessions');
     await tara.getByTestId(`sessions-to-record-draft-${key}`).click();
     const last = tara.getByRole('dialog', { name: 'Finish this draft' });
-    await expect(last.getByLabel('Session notes', { exact: true })).toHaveValue('Half written, then more.');
+    await expect(last.getByLabel('Lesson notes', { exact: true })).toHaveValue('Half written, then more.');
     await last.getByRole('button', { name: 'Record lesson' }).click();
     await expect(last).toHaveCount(0);
     expect(await drafts(tara)).toEqual([]);
@@ -381,7 +381,7 @@ test.describe('Phase 75: the tutor’s record (web)', () => {
     const panel = tara.getByTestId('sessions-to-record');
     await expect(panel.getByTestId(`sessions-to-record-record-${owed.id}-${days(day, -3)}`)).toBeVisible();
     const panelTop = (await panel.boundingBox())!.y;
-    const listTop = (await tara.getByText(/No sessions recorded/).filter({ visible: true }).first().boundingBox())!.y;
+    const listTop = (await tara.getByText(/No lessons recorded/).filter({ visible: true }).first().boundingBox())!.y;
     expect(panelTop).toBeLessThan(listTop);
     await tara.getByTestId('sessions-record').click();
     await expect(tara.getByTestId('lessons-owed')).toBeVisible();
@@ -494,13 +494,13 @@ test.describe('Phase 76: adding people one way (web)', () => {
       const family = admin.getByRole('dialog', { name: 'New family account' });
       await family.locator('#full_name').fill(parentName);
       await family.locator('#email').fill(`jf21.family.${t}@example.com`);
-      await family.getByRole('button', { name: 'Add user' }).click();
+      await family.getByRole('button', { name: 'Add a person' }).click();
       await expect(family).toHaveCount(0);
 
       await flow.getByTestId('onboarding-add-student').click();
       const student = admin.getByRole('dialog', { name: 'New student' });
       await student.locator('#full_name').fill(studentName);
-      await student.getByRole('button', { name: 'Add user' }).click();
+      await student.getByRole('button', { name: 'Add a person' }).click();
       await expect(student).toHaveCount(0);
 
       // The next steps, not a toast.
@@ -569,10 +569,10 @@ test.describe('Phase 76: adding people one way (web)', () => {
     await expect(child.getByRole('button', { name: 'Remove Dana Mine' })).toBeVisible();
     await child.locator('#full_name').fill(`Rio Mine${t}`);
     // Consent stays an explicit box.
-    await child.getByRole('button', { name: 'Add user' }).click();
+    await child.getByRole('button', { name: 'Add a person' }).click();
     await expect(child.getByTestId('user-parent-consent')).toContainText('Confirm you are their parent or guardian');
     await child.getByTestId('user-parent-consent').getByRole('checkbox').check();
-    await child.getByRole('button', { name: 'Add user' }).click();
+    await child.getByRole('button', { name: 'Add a person' }).click();
     await expect(child).toHaveCount(0);
     await expect(chooser.getByRole('heading', { name: `Rio Mine${t} is added` })).toBeVisible();
 
@@ -628,9 +628,9 @@ test.describe('Phase 76: adding people one way (web)', () => {
       await step.getByTestId('invite-continue').click();
       await expect(ines.getByTestId('add-person')).toHaveCount(0);
 
-      // On the Users page, the invited row tells them again.
+      // On the People page, the invited row tells them again.
       await ines.evaluate(() => ((window as any).__copied = null));
-      await ines.getByLabel('Search users').fill(email);
+      await ines.getByLabel('Search people').fill(email);
       // The list is searched after a pause: the one row, then its menu.
       await expect(ines.getByText('Showing 1–1 of 1')).toBeVisible();
       await ines.getByRole('button', { name: /^Actions for / }).filter({ visible: true }).first().click();

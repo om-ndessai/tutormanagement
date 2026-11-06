@@ -2,7 +2,7 @@
 // (the organization's question count; Reviewed, Review in progress, and the review's buttons).
 // Phase 50 (build-log entry 62): `?student=` from the Assessment home, and `AssessmentRow` exported.
 //
-// Phase 38: the Assessment menu (beta), docs/canvas-assessment-plan.md. Starting one for a student,
+// Phase 38: the Assessment menu, docs/canvas-assessment-plan.md. Starting one for a student,
 // and the list of those the reader may see. Who sees which row, who may continue or discard one and
 // who may open its PDF are the server's (R17: `can_continue`, `can_review`); the screen only offers
 // what it says.
@@ -10,8 +10,10 @@
 // Grade 4 assessment in progress (started 8 minutes ago)" -- with "Continue it" (where the reader may) and "Start
 // another"; Continue is also a guardian's of the student (`can_continue`), Discard only the starter's or an admin's
 // (`can_discard`).
+// Phase 78 (owner 2026-11-05): no "In beta." and no Beta pill, the levels in words with no " · includes unreviewed";
+// and (the Phase 77 carry) Start's warning and the rows below say the same relative time, from one `now` -- taken
+// afresh when the warning is raised, so "started 2 minutes ago" is the same words in both.
 import {
-  levelLabel,
   type CanvasAssessment,
   type CanvasAssessmentLevelId,
 } from '@tmi/shared';
@@ -20,8 +22,8 @@ import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { levelWords } from '@/features/quest/level-words';
 import { OptionPicker } from '@/components/option-picker';
-import { BadgePill } from '@/components/badge-pill';
 import { OutlinedCard } from '@/components/outlined-card';
 import { PageIntro } from '@/components/page-intro';
 import { Screen } from '@/components/screen';
@@ -60,9 +62,12 @@ export function AssessmentsScreen() {
   const list = useCanvasAssessments();
   const levels = useCanvasAssessmentLevels();
   const [refreshing, setRefreshing] = useState(false);
+  // One clock for the screen: the warning and the rows read their relative times from it.
+  const [now, setNow] = useState(() => new Date());
 
   async function onRefresh() {
     setRefreshing(true);
+    setNow(new Date());
     try {
       await Promise.all([list.refetch(), levels.refetch()]);
     } finally {
@@ -73,22 +78,31 @@ export function AssessmentsScreen() {
   return (
     <Screen testID="screen-assessments" refreshing={refreshing} onRefresh={() => void onRefresh()}>
       <Stack.Screen options={{ title: 'Assessment' }} />
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}>
-        <View style={{ flex: 1 }}>
-          <PageIntro>
-            In beta. A student answers questions by hand, one per page, with nothing marked while they work. When it is
-            submitted, their tutors get a PDF of the questions and the handwriting.
-          </PageIntro>
-        </View>
-        <BadgePill testID="assessment-beta" />
-      </View>
-      <StartCard initialStudentId={typeof student === 'string' ? student : undefined} />
-      <AssessmentList />
+      <PageIntro>
+        A student answers questions by hand, one per page, with nothing marked while they work. When it is submitted,
+        their tutors get a PDF of the questions and the handwriting.
+      </PageIntro>
+      <StartCard
+        initialStudentId={typeof student === 'string' ? student : undefined}
+        now={now}
+        onTick={() => setNow(new Date())}
+      />
+      <AssessmentList now={now} />
     </Screen>
   );
 }
 
-function StartCard({ initialStudentId }: { initialStudentId?: string }) {
+function StartCard({
+  initialStudentId,
+  now,
+  onTick,
+}: {
+  initialStudentId?: string;
+  /** The screen's one clock, for the warning's "started 2 minutes ago" (the rows read the same). */
+  now: Date;
+  /** Takes the clock afresh: as the warning is raised, so it and the rows agree on the moment. */
+  onTick: () => void;
+}) {
   const { user, organization } = useAuth();
   const theme = useAppTheme();
   const toast = useToast();
@@ -125,6 +139,7 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
     // One already in progress for this student: say so first, with the choice of continuing it.
     if (!another && existing) {
       haptics.warning();
+      onTick();
       setWarnedAbout(existing.id);
       return;
     }
@@ -179,7 +194,8 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
           placeholder={levels.isPending ? 'Loading…' : 'Choose a level'}
           options={levelList.map((level) => ({
             id: level.level_id,
-            label: level.label,
+            // Phase 78 (JF32): the level in words ("Grade 4"), never its code.
+            label: levelWords(level.level_id),
             detail: `· ${levelOptionDetail(level, organization?.canvas_assessment_questions ?? 10)}`,
             disabled: level.available === 0,
           }))}
@@ -209,7 +225,7 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
               {IN_PROGRESS_TITLE}
             </Text>
             <Text testID="assessment-in-progress-words" variant="bodyMedium" accessibilityRole="alert">
-              {inProgressWarning(warning, warning.student_user_id === user?.id)}
+              {inProgressWarning(warning, warning.student_user_id === user?.id, now)}
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
               {warning.can_continue ? (
@@ -260,17 +276,14 @@ function StartCard({ initialStudentId }: { initialStudentId?: string }) {
           </Button>
         )}
         <Text testID="assessment-start-note" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          {startNote(
-            Boolean(organization?.canvas_assessments_unreviewed),
-            organization?.canvas_assessment_questions ?? 10,
-          )}
+          {startNote(organization?.canvas_assessment_questions ?? 10)}
         </Text>
       </View>
     </Panel>
   );
 }
 
-function AssessmentList() {
+function AssessmentList({ now }: { now: Date }) {
   const theme = useAppTheme();
   const list = useCanvasAssessments();
   const rows = list.data?.data ?? [];
@@ -289,7 +302,7 @@ function AssessmentList() {
           No assessments yet.
         </Text>
       ) : (
-        rows.map((row) => <AssessmentRow key={row.id} row={row} />)
+        rows.map((row) => <AssessmentRow key={row.id} row={row} now={now} />)
       )}
     </View>
   );
@@ -339,8 +352,11 @@ function DraftPill({ row }: { row: CanvasAssessment }) {
   );
 }
 
-/** One assessment, with the buttons its reader may use. Also the Assessment home's Recent list. */
-export function AssessmentRow({ row }: { row: CanvasAssessment }) {
+/**
+ * One assessment, with the buttons its reader may use. Also the Assessment home's Recent list. `now`: the screen's
+ * clock, so its relative times say what the screen's other lines say (the moment it rendered, when absent).
+ */
+export function AssessmentRow({ row, now }: { row: CanvasAssessment; now?: Date }) {
   const theme = useAppTheme();
   const toast = useToast();
   const discard = useDiscardCanvasAssessment();
@@ -376,7 +392,7 @@ export function AssessmentRow({ row }: { row: CanvasAssessment }) {
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}>
           <Text variant="titleSmall">{row.student_name}</Text>
           <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-            {levelLabel(row.level_id)}
+            {levelWords(row.level_id)}
           </Text>
           <StatusPill row={row} />
           {row.review_draft ? <DraftPill row={row} /> : null}
@@ -386,7 +402,7 @@ export function AssessmentRow({ row }: { row: CanvasAssessment }) {
           variant="bodySmall"
           style={{ color: theme.tokens.mutedForeground }}
         >
-          {rowSummary(row)}
+          {rowSummary(row, now)}
         </Text>
         {anyAction ? (
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.xs }}>

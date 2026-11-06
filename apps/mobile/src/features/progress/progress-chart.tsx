@@ -2,6 +2,8 @@
 // dashboard's compact sparkline (#13) and the student page's full chart (#24). The web's hover
 // tooltip becomes a tap, or a long-press-and-drag scrub, that snaps to the nearest lesson.
 import {
+  formatDay,
+  formatMonthShort,
   type LearningPlan,
   type ProgressCancellation,
   type ProgressPoint,
@@ -29,16 +31,9 @@ import { ratingStyle } from './rating';
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const DRAW_MS = 700;
 
+/** A tick's month ("Oct"): the day number back to its calendar day, then the shared month name. */
 function monthLabel(day: number): string {
-  return new Date(day * 86_400_000).toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' });
-}
-
-function shortDay(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+  return formatMonthShort(new Date(day * 86_400_000).toISOString().slice(0, 7));
 }
 
 /**
@@ -159,7 +154,7 @@ export function ProgressChart({
                 x={MARGIN.left - 8}
                 y={y(percent) + 3.5}
                 textAnchor="end"
-                fontSize={10}
+                fontSize={12}
                 fill={t.mutedForeground}
               >
                 {`${percent}%`}
@@ -175,7 +170,7 @@ export function ProgressChart({
               x={x(day)}
               y={HEIGHT - MARGIN.bottom + 16}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={12}
               fill={t.mutedForeground}
             >
               {monthLabel(day)}
@@ -205,11 +200,11 @@ export function ProgressChart({
                 x={x(day)}
                 y={MARGIN.top - 12}
                 textAnchor={label === 'Start' ? 'start' : 'end'}
-                fontSize={10}
+                fontSize={12}
                 fontWeight="500"
                 fill={t.mutedForeground}
               >
-                {`${label} · ${shortDay(iso)}`}
+                {`${label} · ${formatDay(iso, today, { year: 'never' })}`}
               </SvgText>
             </G>
           ))
@@ -263,7 +258,7 @@ export function ProgressChart({
             strokeWidth={1}
           />
           {full ? (
-            <SvgText x={x(geometry.now) + 4} y={y(100) + 10} fontSize={10} fill={t.mutedForeground}>
+            <SvgText x={x(geometry.now) + 4} y={y(100) + 10} fontSize={12} fill={t.mutedForeground}>
               Today
             </SvgText>
           ) : null}
@@ -285,7 +280,7 @@ export function ProgressChart({
               ? 14
               : 0)
           }
-          fontSize={11}
+          fontSize={12}
           fontWeight="600"
           fill={t.foreground}
         >
@@ -361,9 +356,9 @@ export function ProgressChart({
     choose(marks[next]!, false);
   }
   const activeText = activePoint
-    ? lessonLabel(activePoint)
+    ? lessonLabel(activePoint, today)
     : activeCancellation
-      ? cancellationLabel(activeCancellation)
+      ? cancellationLabel(activeCancellation, today)
       : 'Swipe up or down to step through the lessons.';
 
   return (

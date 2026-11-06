@@ -38,10 +38,10 @@ describe('the tour on a phone', () => {
     }
   });
 
-  it('lights the tabs the tab bar has, Schedule in Sessions, and the rest of the menu in More', () => {
+  it('lights the tabs the tab bar has, Schedule in Lessons, and the rest of the menu in More', () => {
     expect(placementOf('nav-dashboard')).toEqual({ kind: 'tab', index: 0, within: null });
     expect(placementOf('nav-sessions')).toEqual({ kind: 'tab', index: 1, within: null });
-    expect(placementOf('nav-schedule')).toEqual({ kind: 'tab', index: 1, within: 'Sessions' });
+    expect(placementOf('nav-schedule')).toEqual({ kind: 'tab', index: 1, within: 'Lessons' });
     expect(placementOf('nav-progress')).toEqual({ kind: 'tab', index: 2, within: null });
     expect(placementOf('nav-billing')).toEqual({ kind: 'tab', index: 3, within: 'More' });
     // Phase 74 (JF25, JF31): a parent's menu has no Billing, so neither has their tour.

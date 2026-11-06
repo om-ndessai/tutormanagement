@@ -3,7 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import { ChevronDownIcon, DownloadIcon, PencilIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   SESSION_MODE_LABELS,
+  TERMS,
   formatCents,
   formatClockTime,
   formatDuration,
@@ -36,6 +38,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CommentsButton } from '@/features/comments/comments-button';
 import { CancelledLessonsPanel } from '@/features/schedules/cancelled-lessons-panel';
 import { ApiRequestError } from '@/lib/api-client';
+import { useDates } from '@/hooks/use-dates';
 import { useAuth } from '@/providers/auth-provider';
 import { DraftsPanel } from './drafts-panel';
 import { SessionFormDialog } from './session-form-dialog';
@@ -76,6 +79,7 @@ const PAGE_SIZE = 25;
 export function SessionsPage() {
   const brand = useBrand();
   const { user } = useAuth();
+  const dates = useDates();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const isTutor = user?.roles.includes('tutor') ?? false;
 
@@ -168,7 +172,7 @@ export function SessionsPage() {
             that side on some lesson: a tutor who is also a parent gets both
             "Earned" and "Charged". */}
         <div className={`grid grid-cols-2 gap-4 ${money ? 'lg:grid-cols-4' : ''}`}>
-          <SummaryTile label="Sessions" value={totals ? String(totals.session_count) : undefined} />
+          <SummaryTile label={TERMS.lesson.Many} value={totals ? String(totals.session_count) : undefined} />
           <SummaryTile
             label="Time taught"
             value={totals ? formatDuration(totals.total_minutes) : undefined}
@@ -218,7 +222,7 @@ export function SessionsPage() {
         <FocusNotice
           active={Boolean(focusId)}
           found={sessions.length > 0}
-          what="session"
+          what="lesson"
           onClear={clearFocus}
         />
 
@@ -297,7 +301,7 @@ export function SessionsPage() {
           <Card>
             <CardContent className="py-12 text-center">
               <p className="text-muted-foreground text-sm">
-                No sessions recorded{from || to ? ' in this period' : ' yet'}.
+                No lessons recorded{from || to ? ' in this period' : ' yet'}.
               </p>
             </CardContent>
           </Card>
@@ -312,9 +316,10 @@ export function SessionsPage() {
               <li key={session.id}>
                 <Card>
                   <CardContent className="py-4">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
+                    {/* Below sm the row stacks (Phase 78, JF28): the lesson first, its actions on a line of their own. */}
+                    <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
                       <div className="min-w-0">
-                        <p className="font-medium">
+                        <p className="font-medium break-words">
                           {session.student_name}
                           <span className="text-muted-foreground font-normal">
                             {' '}
@@ -322,7 +327,7 @@ export function SessionsPage() {
                           </span>
                         </p>
                         <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-2 text-xs">
-                          <span>{session.occurred_on}</span>
+                          <span>{dates.day(session.occurred_on, { weekday: true })}</span>
                           <span>·</span>
                           <span>
                             {formatClockTime(session.started_at)}–
@@ -330,13 +335,13 @@ export function SessionsPage() {
                           </span>
                           <span>·</span>
                           <span>{formatDuration(session.duration_minutes)}</span>
-                          <Badge variant="secondary" className="text-[10px]">
+                          <Badge variant="secondary" className="text-xs">
                             {SESSION_MODE_LABELS[session.mode]}
                           </Badge>
                           {session.auto_stopped && (
                             <Badge
                               variant="outline"
-                              className="border-warning/60 text-warning-foreground dark:text-warning text-[10px]"
+                              className="border-warning/60 text-warning-foreground dark:text-warning text-xs"
                             >
                               Auto-stopped
                             </Badge>
@@ -346,18 +351,18 @@ export function SessionsPage() {
                             watched, so it is the figure most worth checking. */}
                         {session.auto_stopped && (
                           <p className="text-muted-foreground mt-1 text-xs">
-                            The timer ran past the session limit, so this was recorded at it. Edit
+                            The timer ran past the lesson limit, so this was recorded at it. Edit
                             it if the lesson was a different length.
                           </p>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         {money && <SessionMoney session={session} />}
 
                         <CommentsButton
                           target={{ target_type: 'session', target_id: session.id }}
-                          title={`the ${session.occurred_on} session with ${session.student_name}`}
+                          title={`the ${dates.day(session.occurred_on)} lesson with ${session.student_name}`}
                           description={`${session.student_name} with ${session.tutor_name}, ${formatClockTime(session.started_at)}–${formatClockTime(session.ended_at)}.`}
                         />
 
@@ -406,7 +411,7 @@ export function SessionsPage() {
                           {isOpen
                             ? 'Hide notes'
                             : hasWrittenNotes(session)
-                              ? 'Session notes'
+                              ? COMMON_COPY.lesson_notes
                               : session.reflection
                                 ? 'Reflection'
                                 : 'Assessments'}
@@ -421,7 +426,7 @@ export function SessionsPage() {
                           one, and where the lesson missed for them. */}
                       {session.reflection && (
                         <>
-                          <Badge variant="secondary" className="text-[10px]">
+                          <Badge variant="secondary" className="text-xs">
                             Student reflected
                           </Badge>
                           <ReflectionFlags reflection={session.reflection} />
@@ -484,7 +489,7 @@ export function SessionsPage() {
   return (
     <div className="mx-auto max-w-4xl">
       <PageHeader
-        title="Sessions"
+        title={COMMON_COPY.lessons_page}
         description={
           isAdmin
             ? 'Every lesson taught, and what it earned.'
@@ -545,7 +550,7 @@ export function SessionsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this lesson?</AlertDialogTitle>
             <AlertDialogDescription>
-              The {removing?.occurred_on} lesson with {removing?.student_name}, and{' '}
+              The {removing && dates.day(removing.occurred_on)} lesson with {removing?.student_name}, and{' '}
               {removing && showMoney ? describeSessionMoney(removing) : 'its record'}, will be removed. This
               cannot be undone.
             </AlertDialogDescription>
@@ -580,9 +585,7 @@ function SummaryTile({
   return (
     <Card>
       <CardContent className="py-4">
-        <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-          {label}
-        </p>
+        <p className="text-muted-foreground text-xs font-medium">{label}</p>
         {value === undefined ? (
           <Skeleton className="mt-2 h-8 w-20" />
         ) : (

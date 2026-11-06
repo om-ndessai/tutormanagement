@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
+import { SIGNED_OUT_MESSAGE } from '@tmi/shared';
 import { ApiError } from './errors.js';
 
 export const SESSION_COOKIE = 'tmi_session';
@@ -64,7 +65,7 @@ export async function readSessionToken(token: string, secret: string): Promise<S
 
     return { sub: payload.sub, iat: typeof payload.iat === 'number' ? payload.iat : undefined };
   } catch {
-    throw new ApiError(401, 'unauthenticated', 'Your session has expired. Please sign in again.');
+    throw new ApiError(401, 'unauthenticated', SIGNED_OUT_MESSAGE);
   }
 }
 

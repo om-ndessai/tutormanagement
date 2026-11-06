@@ -23,6 +23,14 @@ export function birthYears(now: Date): number[] {
   return Array.from({ length: 100 }, (_, i) => thisYear - i);
 }
 
+/** Phase 78 (UI audit JF35): the age whose year the list opens at -- an adult's, as most who sign up are. */
+export const BIRTH_YEAR_OPENS_AT_AGE = 30;
+
+/** The year the birth-year list opens at (it was this year, so an adult scrolled past a dozen children's years). */
+export function birthYearStart(now: Date): number {
+  return now.getFullYear() - BIRTH_YEAR_OPENS_AT_AGE;
+}
+
 /** A newcomer between Google (or the developer sign-up) and the age question. Memory only. */
 export interface PendingSignup {
   /** Google's signed claim (15 minutes); null on the developer path. */

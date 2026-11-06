@@ -9,7 +9,7 @@
 // On the phone it starts folded to one line ("Cancelled lessons · 2, 1 coming up"): above the list,
 // a panel of rows pushed the lessons themselves off the first screen, and the lessons are what a
 // tutor opens this tab for. A tap unfolds it.
-import { formatClockTime, type ScheduleCancellation } from '@tmi/shared';
+import { formatClockTime, formatDay, todayIn, type ScheduleCancellation } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -22,7 +22,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { haptics } from '@/lib/haptics';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useScheduleCancellations } from './api';
-import { cancelledByText, formatLessonDay, organizationToday, shiftDay } from './lesson-cancellation';
+import { cancelledByText, organizationToday, shiftDay } from './lesson-cancellation';
 import { useConfirmRestore } from './use-restore-lesson';
 
 const SHOWN = 8;
@@ -135,7 +135,7 @@ function CancelledRow({
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
-  const day = formatLessonDay(row.occurs_on);
+  const day = formatDay(row.occurs_on, todayIn(useOrgTimeZone()), { weekday: true });
   const key = `${row.schedule_id}-${row.occurs_on}`;
 
   return (

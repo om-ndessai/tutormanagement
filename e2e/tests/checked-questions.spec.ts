@@ -4,8 +4,8 @@ import { setCheckedQuestions } from '../support/checked-questions.js';
 
 /**
  * Phase 62 (docs/stickiness-plan.md): P1, checked questions per space. Platform admins switch, per
- * space, whether its games, tiles and Assessments draw checked questions ("Beta") as well as approved
- * ones. On everywhere by default -- the soft launch. One rule (`checkedQuestionsOn`) feeds the counts
+ * space, whether its games, tiles and Assessments draw checked questions as well as approved ones (served
+ * like any other since Phase 78: no Beta mark a player reads). On everywhere by default -- the soft launch. One rule (`checkedQuestionsOn`) feeds the counts
  * and the draws, and the space admins' old switch is no longer applied.
  *
  * Serial: one space's switch, changed and put back.
@@ -33,6 +33,12 @@ test.describe('P1: checked questions, per space', () => {
       const off = await unwrap<any[]>(await admin.request.get('/api/canvas-assessments/levels'), 'levels, off');
       expect(off.find((l) => l.level_id === 'NC26.7').unreviewed).toBe(0);
 
+      // The Space page says so, in the shared words (Phase 78: CHECKED_QUESTIONS_COPY).
+      await admin.goto('/organization');
+      await expect(admin.getByTestId('checked-questions-note')).toContainText(
+        'Not included: assessments and quests here draw approved questions only. The platform sets this.',
+      );
+
       // The session the space's members read says so (older apps read the old field).
       const session = await unwrap<any>(await admin.request.get('/api/auth/session'), 'session');
       const org = session.organization ?? session.memberships?.find((m: any) => m.slug === 'riverside');
@@ -49,6 +55,23 @@ test.describe('P1: checked questions, per space', () => {
       ).toBe(true);
     } finally {
       await setCheckedQuestions(platform, 'riverside', true);
+      await admin.request.patch('/api/organization/settings', { data: { canvas_assessments: false } });
+    }
+  });
+
+  test('the Space page says what checked questions mean, with no Beta mark', async ({ as }) => {
+    const admin = await as('orgBAdmin', { org: 'riverside' });
+    expect((await admin.request.patch('/api/organization/settings', { data: { canvas_assessments: true } })).status()).toBe(200);
+    try {
+      await admin.goto('/organization');
+      const card = admin.getByTestId('canvas-assessments-setting');
+      await expect(admin.getByTestId('checked-questions-note')).toContainText(
+        'They are served like any other, and the bank approves them as players answer them right',
+      );
+      // Phase 78 (owner, 2026-11-05): a space's admins read no Beta, on the card or its heading.
+      await expect(card).not.toContainText('Beta');
+      await expect(card.getByRole('heading', { name: 'Assessment in this space', exact: true })).toBeVisible();
+    } finally {
       await admin.request.patch('/api/organization/settings', { data: { canvas_assessments: false } });
     }
   });
@@ -97,10 +120,13 @@ test.describe('P2: game answers count toward the two-right-answers rule', () => 
       const question = bank.find((q) => q.id === served.id);
       expect(question, 'the served question is checked').toBeTruthy();
 
-      // P3: a checked question travels as Beta, and the game screen says so.
+      // P3: a checked question still travels with `beta` (older apps read it), but since Phase 78 (owner,
+      // 2026-11-05) the screen serves it like any other: no Beta mark on the question, nor anywhere on it.
       expect(served.beta).toBe(true);
       await alex.goto(`/quest/games/${game.id}`);
-      await expect(alex.getByTestId('game-question-beta').first()).toBeVisible();
+      await expect(alex.getByTestId('game-question')).toBeVisible();
+      await expect(alex.getByTestId('game-question-beta')).toHaveCount(0);
+      await expect(alex.getByText('Beta', { exact: true })).toHaveCount(0);
 
       // Alex and the admin answer it correctly; Sofia skips it, and a skip is not a right answer.
       for (const page of [alex, admin]) {

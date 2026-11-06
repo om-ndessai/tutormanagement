@@ -72,7 +72,7 @@ export async function recordRunningSession(
 
   const shape =
     `${formatDuration(session.duration_minutes)} ` +
-    `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
+    `${session.mode === 'virtual' ? 'virtual' : 'in-person'} lesson with ` +
     // No amount: the tutor reads this line, and a price here would be the
     // family's. See the same note in routes/sessions.ts.
     `${session.student_name} on ${session.occurred_on}`;
@@ -82,7 +82,7 @@ export async function recordRunningSession(
     description: actor
       ? `Recorded a ${shape}`
       : `Ended ${row.tutor_name}'s ${shape} automatically, ` +
-        `after it ran past the ${formatDuration(maxMinutesFor(row))} session limit`,
+        `after it ran past the ${formatDuration(maxMinutesFor(row))} lesson limit`,
     subject: { id: session.student_user_id, full_name: session.student_name },
     entity_type: 'session',
     entity_id: session.id,

@@ -19,6 +19,7 @@ import {
   formatLessonDay,
   organizationToday,
 } from './lesson-cancellation';
+import { useDates } from '@/hooks/use-dates';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 
 /**
@@ -83,7 +84,7 @@ export function ScheduleDates({
 
   return (
     <div className="border-t pt-3">
-      <h3 className="text-muted-foreground mb-1 text-[11px] font-medium tracking-wide uppercase">
+      <h3 className="text-muted-foreground mb-1 text-xs font-semibold">
         Coming dates
       </h3>
 
@@ -136,7 +137,7 @@ export function ScheduleDates({
 
       {earlier.length > 0 && (
         <>
-          <h3 className="text-muted-foreground mt-3 mb-1 text-[11px] font-medium tracking-wide uppercase">
+          <h3 className="text-muted-foreground mt-3 mb-1 text-xs font-semibold">
             Earlier cancelled dates
           </h3>
           <ul className="divide-border divide-y">
@@ -170,7 +171,7 @@ function DateRow({
   onRestore?: () => void;
 }) {
   const cancelled = date.cancellation;
-  const day = formatLessonDay(date.occurs_on);
+  const day = formatLessonDay(date.occurs_on, useDates().today);
 
   return (
     <li
@@ -182,7 +183,7 @@ function DateRow({
     >
       <span
         className={cn(
-          'w-24 shrink-0 text-sm tabular-nums',
+          'min-w-24 shrink-0 text-sm tabular-nums',
           cancelled && 'text-muted-foreground line-through',
         )}
       >
@@ -191,7 +192,7 @@ function DateRow({
 
       {cancelled ? (
         <span className="flex min-w-0 flex-wrap items-center gap-2">
-          <Badge variant="outline" className="text-[10px]">
+          <Badge variant="outline" className="text-xs">
             Cancelled
           </Badge>
           <span className="text-muted-foreground text-xs">
@@ -245,7 +246,7 @@ function PastCancellationRow({
   highlighted: boolean;
   onRestore?: () => void;
 }) {
-  const day = formatLessonDay(row.occurs_on);
+  const day = formatLessonDay(row.occurs_on, useDates().today);
 
   return (
     <li
@@ -254,7 +255,7 @@ function PastCancellationRow({
         highlighted && 'bg-accent/60 -mx-2 rounded-md px-2',
       )}
     >
-      <span className="text-muted-foreground w-24 shrink-0 text-sm tabular-nums line-through">{day}</span>
+      <span className="text-muted-foreground min-w-24 shrink-0 text-sm tabular-nums line-through">{day}</span>
       <span className="text-muted-foreground text-xs">
         {cancelledByText(row.cancelled_by_name, row.cancelled_as)}
       </span>

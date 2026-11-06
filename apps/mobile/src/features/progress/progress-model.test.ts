@@ -82,13 +82,13 @@ it('lists tutors by name with their students', () => {
 });
 
 it('words the line under a name', () => {
-  expect(overviewLine({ ...row('A', 'on_track'), goal: 'Ready for PRE', target_on: '2027-06-15' })).toBe(
+  expect(overviewLine({ ...row('A', 'on_track'), goal: 'Ready for PRE', target_on: '2027-06-15' }, '2026-10-10')).toBe(
     'Ready for PRE · by Jun 15, 2027',
   );
-  expect(overviewLine({ ...row('A', 'no_plan'), last_assessed_on: '2026-09-02' })).toBe(
+  expect(overviewLine({ ...row('A', 'no_plan'), last_assessed_on: '2026-09-02' }, '2026-10-10')).toBe(
     'Assessed Sep 2, 2026 · no plan yet',
   );
-  expect(overviewLine(row('A', 'no_plan'))).toBe('Not assessed yet');
+  expect(overviewLine(row('A', 'no_plan'), '2026-10-10')).toBe('Not assessed yet');
 });
 
 describe('a new plan', () => {

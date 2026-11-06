@@ -21,7 +21,8 @@ beforeEach(() => mockReplace.mockReset());
 it('offers a family, a tutor, someone else and an invitation; each opens its flow in place', async () => {
   as(['admin']);
   await renderWithProviders(<AddChooser />);
-  expect(screen.getByTestId('add-chooser-title')).toHaveTextContent('Add people');
+  // Phase 78 (the glossary): the web's "Add a person" won over the app's "Add people" / "Add someone".
+  expect(screen.getByTestId('add-chooser-title')).toHaveTextContent('Add a person');
   for (const id of ['family', 'tutor', 'someone', 'invite']) expect(screen.getByTestId(`add-choice-${id}`)).toBeTruthy();
   expect(screen.getByText('A family (parent and child)')).toBeTruthy();
 

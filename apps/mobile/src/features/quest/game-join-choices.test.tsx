@@ -1,5 +1,5 @@
-// How to join (Phase 47, design 61): a game of one-player teams offers "Join the game" alone; a game of
-// teams offers no "on my own", only a tab bar of Join a team and New team, and one "Join the game"; the
+// How to join (Phase 47, design 61): a game of one-player teams offers "Join the quest" alone; a game of
+// teams offers no "on my own", only a tab bar of Join a team and New team, and one "Join the quest"; the
 // host only starts a team; a team's code offers that team. A new team is named "Team <first name>".
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 
@@ -16,11 +16,11 @@ jest.mock('@/providers/auth-provider', () => ({ useAuth: () => ({ user: { full_n
 beforeEach(() => mockPost.mockReset());
 
 describe('JoinChoices', () => {
-  it('offers one "Join the game" when everyone is on their own', async () => {
+  it('offers one "Join the quest" when everyone is on their own', async () => {
     mockPost.mockResolvedValueOnce({ data: { id: 'g1' } });
     const onJoined = jest.fn();
     await renderWithProviders(<JoinChoices gameId="g1" maxTeamSize={1} onJoined={onJoined} />);
-    expect(screen.getByTestId('game-join-solo')).toHaveTextContent(/Join the game$/);
+    expect(screen.getByTestId('game-join-solo')).toHaveTextContent(/Join the quest$/);
     expect(screen.queryByTestId('game-team-name')).toBeNull();
     expect(screen.queryByTestId('game-team-code')).toBeNull();
     await fireEvent.press(screen.getByTestId('game-join-solo'));
@@ -28,7 +28,7 @@ describe('JoinChoices', () => {
     expect(mockPost).toHaveBeenCalledWith('/quest/games/g1/join', { as: 'solo' });
   });
 
-  it('offers a tab bar and one "Join the game" in a game of teams', async () => {
+  it('offers a tab bar and one "Join the quest" in a game of teams', async () => {
     mockPost.mockResolvedValue({ data: { id: 'g1' } });
     await renderWithProviders(<JoinChoices gameId="g1" maxTeamSize={3} teamCount={1} />);
     expect(screen.queryByTestId('game-join-solo')).toBeNull();
@@ -36,7 +36,7 @@ describe('JoinChoices', () => {
     // With a team in the game, Join a team opens first.
     expect(screen.getByTestId('game-team-code')).toBeTruthy();
     expect(screen.queryByTestId('game-team-name')).toBeNull();
-    expect(screen.getByTestId('game-join-go')).toHaveTextContent(/Join the game$/);
+    expect(screen.getByTestId('game-join-go')).toHaveTextContent(/Join the quest$/);
     expect(screen.queryByText('Start a team')).toBeNull();
     await fireEvent.changeText(screen.getByTestId('game-team-code'), 'w7wyqb');
     await fireEvent.press(screen.getByTestId('game-join-go'));
@@ -65,7 +65,7 @@ describe('JoinChoices', () => {
     expect(screen.queryByTestId('game-join-tabs')).toBeNull();
     expect(screen.queryByTestId('game-team-code')).toBeNull();
     expect(screen.getByTestId('game-team-name').props.value).toBe('Team Sofia');
-    expect(screen.getByTestId('game-join-go')).toHaveTextContent(/Join the game$/);
+    expect(screen.getByTestId('game-join-go')).toHaveTextContent(/Join the quest$/);
   });
 
   it("offers the named team alone for a team's code", async () => {
@@ -77,7 +77,7 @@ describe('JoinChoices', () => {
       />,
     );
     expect(screen.getByText('Owls')).toBeTruthy();
-    expect(screen.getByTestId('game-join-team-named')).toHaveTextContent(/Join the game$/);
+    expect(screen.getByTestId('game-join-team-named')).toHaveTextContent(/Join the quest$/);
     expect(screen.queryByTestId('game-join-solo')).toBeNull();
     expect(screen.queryByTestId('game-team-name')).toBeNull();
   });

@@ -8,7 +8,7 @@
 // server's words). Someone already in the game goes straight to it; joining gives way to the game.
 // Phase 47 (design 61): the lookup's `players` and `open` decide it -- a single player's game is never
 // joinable, a running one only while its host left joining open (said above the choices).
-import { gameCodeSchema, gameLengthLabel, gameLevelLabel, levelLabel, type GameLookup } from '@tmi/shared';
+import { gameCodeSchema, gameLengthLabel, type GameLookup } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -19,6 +19,7 @@ import { DetailSkeleton } from '@/components/skeletons';
 import { ApiRequestError } from '@/lib/api-client';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
+import { gameLevelWords } from './level-words';
 import { JOIN_RUNNING_TEXT, joinClosedText, lookupLine } from './game-model';
 import { JoinChoices } from './game-join-choices';
 import { useLookupGame } from './games-api';
@@ -77,7 +78,7 @@ export function JoinGameSheet({ code, from }: { code: string; from?: string }) {
       {problem ? (
         <View style={{ gap: space.md }}>
           <Text variant="titleLarge" accessibilityRole="header">
-            Join a game
+            Join a quest
           </Text>
           <HelperText testID="game-join-error" type="error" padding="none" style={{ fontSize: 16 }}>
             {problem}
@@ -98,7 +99,7 @@ export function JoinGameSheet({ code, from }: { code: string; from?: string }) {
         <>
           <View style={{ gap: space.xs }}>
             <Text variant="titleLarge" accessibilityRole="header" testID="game-join-title">
-              {`${gameLevelLabel(found, levelLabel)} · ${gameLengthLabel(found)}`}
+              {`${gameLevelWords(found)} · ${gameLengthLabel(found)}`}
             </Text>
             <Text
               testID="game-join-line"

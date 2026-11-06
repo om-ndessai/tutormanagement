@@ -104,6 +104,14 @@ export const TILE_LEVEL_WORDS: Record<QuestionBankLevelId, string> = {
   MK1112: 'Kangaroo 11-12',
 };
 
+/**
+ * Phase 78 (JF32): a bank level as a person reads it -- "Grade 4", "Beast Academy 3" -- never its code ("G4"), which
+ * stays for the console. The assessment PDF reads it; a level the table does not know is shown as it is.
+ */
+export function levelInWords(levelId: string): string {
+  return TILE_LEVEL_WORDS[levelId as QuestionBankLevelId] ?? levelId;
+}
+
 export const TILE_KINDS = ['quest', 'assessment'] as const;
 export type TileKind = (typeof TILE_KINDS)[number];
 

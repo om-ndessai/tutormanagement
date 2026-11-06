@@ -297,7 +297,7 @@ export function deviceExtras({
   for (const row of waiting) codes[row.game_id] = row.code;
   return {
     extras: {
-      game_invite: game ? { game_id: game.game_id, title: 'game', host_first_name: game.host_first_name } : null,
+      game_invite: game ? { game_id: game.game_id, title: 'quest', host_first_name: game.host_first_name } : null,
       open_game: open?.open ? { game_id: open.open.game_id, title: open.open.label } : null,
       continue_quest: !open?.open && open?.again ? { code: open.again.label, title: open.again.label } : null,
       daily,
@@ -355,20 +355,23 @@ export function nextUpShowsLesson(item: NextUp | null, lesson: Pick<TutorHomeLes
   return item.lesson.schedule_id === lesson.schedule_id && item.lesson.occurs_on === lesson.occurs_on;
 }
 
-/** The quick actions' words, icons and where they go. */
-export const QUICK_ACTION_META: Record<QuickAction, { label: string; icon: string; href: string }> = {
+/**
+ * The quick actions' icons and where they go. Their words are shared (`quickActionLabel`, Phase 78), so the web
+ * and the app say the same thing.
+ */
+export const QUICK_ACTION_META: Record<QuickAction, { icon: string; href: string }> = {
   // Phase 75 (JF30): the lessons still owed, each recorded as planned, and "Another lesson" for the rest.
-  record_lesson: { label: 'Record a lesson', icon: 'plus', href: '/lessons-owed' },
-  start_lesson: { label: 'Start a lesson', icon: 'play', href: '/start-lesson' },
-  // Phase 73 (JF36): from Home, so the game it makes exits back here.
-  new_quest: { label: 'New Quest', icon: 'trophy-outline', href: '/quest/new-game?from=home' },
+  record_lesson: { icon: 'plus', href: '/lessons-owed' },
+  start_lesson: { icon: 'play', href: '/start-lesson' },
+  // Phase 73 (JF36): from Home, so the quest it makes exits back here.
+  new_quest: { icon: 'trophy-outline', href: '/quest/new-game?from=home' },
   // "Have a code?": the one code sheet (UI audit JF4), for a game's code or a space's.
-  join_code: { label: 'Have a code?', icon: 'ticket-confirmation-outline', href: '/have-a-code' },
-  start_assessment: { label: 'Start an assessment', icon: 'draw-pen', href: '/assessments' },
+  join_code: { icon: 'ticket-confirmation-outline', href: '/have-a-code' },
+  start_assessment: { icon: 'draw-pen', href: '/assessments' },
   // Phase 76 (JF21): the one Add chooser (a family, a tutor, someone else, an invitation).
-  add_person: { label: 'Add someone', icon: 'account-plus-outline', href: '/add' },
-  schedule: { label: 'Schedule', icon: 'calendar-month-outline', href: '/schedule' },
-  progress: { label: 'Progress', icon: 'chart-timeline-variant', href: '/progress' },
+  add_person: { icon: 'account-plus-outline', href: '/add' },
+  schedule: { icon: 'calendar-month-outline', href: '/schedule' },
+  progress: { icon: 'chart-timeline-variant', href: '/progress' },
 };
 
 // --- Phase 68 (H4, H10): focus and families ---------------------------------------------------------

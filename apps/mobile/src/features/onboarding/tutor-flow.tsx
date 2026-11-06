@@ -4,6 +4,7 @@
 // students. Since UI upgrades U3 the first step is the Add a tutor flow (`/onboarding/add-tutor`, in
 // the wizard's own stack: basics, background, teaching, availability and pay); the second is the person form scoped to the tax fields
 // and payment handles (`sections`) -- the record is saved whole, so it never clears the rest.
+import { COMMON_COPY } from '@tmi/shared';
 import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
@@ -160,7 +161,7 @@ export function TutorFlow() {
                 Go to Pairings
               </Button>
               <Button testID="tutor-flow-users" mode="outlined" onPress={() => leaveFor('/people')}>
-                Go to Users
+                {COMMON_COPY.go_to_people}
               </Button>
               <Button testID="tutor-flow-again" mode="outlined" onPress={restart}>
                 Add another tutor
@@ -173,8 +174,8 @@ export function TutorFlow() {
         >
           <StepText>
             {tutor
-              ? 'Anything you skipped can be finished from their record on the Users page.'
-              : 'You can add a tutor from Users at any time.'}
+              ? 'Anything you skipped can be finished from their record on the People page.'
+              : 'You can add a tutor from People at any time.'}
           </StepText>
         </StepPanel>
       ) : null}

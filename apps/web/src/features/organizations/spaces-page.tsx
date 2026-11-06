@@ -97,7 +97,7 @@ export function SpacesPage() {
 
       {invitations.length > 0 && (
         <section className="grid grid-cols-[minmax(0,1fr)] gap-3" aria-label="Invitations">
-          <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Invitations</h2>
+          <h2 className="text-muted-foreground text-[13px] font-semibold">Invitations</h2>
           {invitations.map((invite) => (
             <Card key={invite.slug} className="py-0" data-testid={`invitation-${invite.slug}`}>
               <CardContent className="flex flex-wrap items-center gap-3 p-4">
@@ -133,7 +133,7 @@ export function SpacesPage() {
 
       {memberships.length > 0 && (
         <section className="grid grid-cols-[minmax(0,1fr)] gap-3" aria-label="Your spaces">
-          <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Your spaces</h2>
+          <h2 className="text-muted-foreground text-[13px] font-semibold">Your spaces</h2>
           {active.map((org) => (
             <SpaceRow key={org.slug} org={org} current={org.slug === organization?.slug} />
           ))}
@@ -199,7 +199,7 @@ function SpaceRow({ org, current }: { org: Membership; current: boolean }) {
           <div className="flex min-w-0 flex-1 items-center gap-3 p-4 opacity-70">
             <OrgAvatar org={org} />
             <span className="min-w-0 flex-1">
-              <span className="block truncate font-medium">{org.name}</span>
+              <span className="block font-medium [overflow-wrap:anywhere]">{org.name}</span>
               <span className="text-muted-foreground block text-xs">Your access here is suspended.</span>
             </span>
             <Badge variant="outline">Suspended</Badge>
@@ -212,8 +212,9 @@ function SpaceRow({ org, current }: { org: Membership; current: boolean }) {
           >
             <OrgAvatar org={org} />
             <span className="min-w-0 flex-1">
-              <span className="flex min-w-0 items-center gap-2">
-                <span className="min-w-0 truncate font-medium">{org.name}</span>
+              {/* Phase 78 (JF28): a long name wraps, never cut to "a..". */}
+              <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="min-w-0 font-medium [overflow-wrap:anywhere]">{org.name}</span>
                 {current && (
                   <Badge variant="secondary" className="shrink-0">
                     Here now
@@ -232,10 +233,12 @@ function SpaceRow({ org, current }: { org: Membership; current: boolean }) {
           onClick={() => setAsking((open) => !open)}
           aria-label={`Leave ${org.name}`}
           title={`Leave ${org.name}`}
-          className="hover:bg-accent/50 focus-visible:ring-ring text-muted-foreground hover:text-foreground flex w-12 shrink-0 items-center justify-center rounded-r-xl border-l transition-colors outline-none focus-visible:ring-2"
+          className="hover:bg-accent/50 focus-visible:ring-ring text-muted-foreground hover:text-foreground flex shrink-0 flex-col items-center justify-center gap-0.5 rounded-r-xl border-l px-3 text-xs font-medium transition-colors outline-none focus-visible:ring-2"
           data-testid={`space-leave-${org.slug}`}
         >
-          <LogOutIcon className="size-4" />
+          {/* Phase 78 (JF35): the icon says it in a word too. */}
+          <LogOutIcon className="size-4" aria-hidden />
+          Leave
         </button>
       </div>
       {asking && (

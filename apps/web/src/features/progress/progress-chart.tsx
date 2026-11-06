@@ -2,7 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   GOAL_RATING_LABELS,
   SCHEDULE_CANCELLER_LABELS,
+  MONTH_SHORT,
   formatClockTime,
+  formatDay,
   formatDuration,
   type LearningPlan,
   type ProgressCancellation,
@@ -44,19 +46,14 @@ function toDay(iso: string): number {
   return Math.floor(Date.parse(`${iso}T00:00:00Z`) / DAY_MS);
 }
 
-function shortDate(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+/** "Sep 15" ("Sep 15, 2025" in another year): the one shared formatter (Phase 78). */
+function shortDate(iso: string, today: string): string {
+  return formatDay(iso, today);
 }
 
+/** An axis tick: the month alone, "Sep". */
 function monthLabel(day: number): string {
-  return new Date(day * DAY_MS).toLocaleDateString(undefined, {
-    month: 'short',
-    timeZone: 'UTC',
-  });
+  return MONTH_SHORT[new Date(day * DAY_MS).getUTCMonth()] ?? '';
 }
 
 /** Tracks an element's rendered width so text stays at its real size. */
@@ -219,7 +216,7 @@ export function ProgressChart({
                 y={y(percent)}
                 dy="0.32em"
                 textAnchor="end"
-                className="fill-muted-foreground text-[10px] tabular-nums"
+                className="fill-muted-foreground text-xs tabular-nums"
               >
                 {percent}%
               </text>
@@ -232,7 +229,7 @@ export function ProgressChart({
               x={x(day)}
               y={HEIGHT - MARGIN.bottom + 16}
               textAnchor="middle"
-              className="fill-muted-foreground text-[10px]"
+              className="fill-muted-foreground text-xs"
             >
               {monthLabel(day)}
             </text>
@@ -259,9 +256,9 @@ export function ProgressChart({
                 x={x(day)}
                 y={MARGIN.top - 12}
                 textAnchor={label === 'Start' ? 'start' : 'end'}
-                className="fill-muted-foreground text-[10px] font-medium"
+                className="fill-muted-foreground text-xs font-medium"
               >
-                {label} · {shortDate(label === 'Start' ? plan.starts_on : plan.target_on)}
+                {label} · {shortDate(label === 'Start' ? plan.starts_on : plan.target_on, today)}
               </text>
             </g>
           ))}
@@ -304,7 +301,7 @@ export function ProgressChart({
                 <text
                   x={x(geometry.now) + 4}
                   y={y(100) + 10}
-                  className="fill-muted-foreground text-[10px]"
+                  className="fill-muted-foreground text-xs"
                 >
                   Today
                 </text>
@@ -327,7 +324,7 @@ export function ProgressChart({
                 : 0)
             }
             dy="0.32em"
-            className="fill-foreground text-[11px] font-semibold tabular-nums"
+            className="fill-foreground text-xs font-semibold tabular-nums"
           >
             {summary.percent}%
           </text>
@@ -364,7 +361,7 @@ export function ProgressChart({
                 tabIndex={compact ? undefined : 0}
                 role={compact ? undefined : 'button'}
                 aria-label={compact ? undefined :
-                  `${shortDate(point.occurred_on)} with ${point.tutor_name}: ` +
+                  `${shortDate(point.occurred_on, today)} with ${point.tutor_name}: ` +
                   (point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'not scored') +
                   `, ${point.percent}% mastered after it`
                 }
@@ -394,7 +391,7 @@ export function ProgressChart({
                 strokeLinecap="round"
                 tabIndex={compact ? undefined : 0}
                 role={compact ? undefined : 'button'}
-                aria-label={compact ? undefined : cancellationLabel(row)}
+                aria-label={compact ? undefined : cancellationLabel(row, today)}
                 onFocus={() => setActive({ kind: 'cancelled', index })}
                 onBlur={() => setActive(null)}
                 className="outline-none"
@@ -437,7 +434,7 @@ export function ProgressChart({
               Cancelled{activeCancellation.occurs_on >= today ? ' · upcoming' : ''}
             </p>
             <p className="text-muted-foreground">
-              {shortDate(activeCancellation.occurs_on)} ·{' '}
+              {shortDate(activeCancellation.occurs_on, today)} ·{' '}
               {formatClockTime(activeCancellation.start_time)} with {activeCancellation.tutor_name}
             </p>
             <p className="text-muted-foreground">
@@ -461,7 +458,7 @@ export function ProgressChart({
           >
             <p className="text-sm font-semibold tabular-nums">{activePoint.percent}% mastered</p>
             <p className="text-muted-foreground">
-              {shortDate(activePoint.occurred_on)} · {formatDuration(activePoint.duration_minutes)}{' '}
+              {shortDate(activePoint.occurred_on, today)} · {formatDuration(activePoint.duration_minutes)}{' '}
               with {activePoint.tutor_name}
             </p>
             <p className="mt-1 flex items-center gap-1.5">
@@ -524,9 +521,9 @@ export function ProgressChart({
 }
 
 /** How a cancelled lesson reads to a screen reader. */
-function cancellationLabel(row: ProgressCancellation): string {
+function cancellationLabel(row: ProgressCancellation, today: string): string {
   return (
-    `Cancelled lesson, ${shortDate(row.occurs_on)} with ${row.tutor_name}, ` +
+    `Cancelled lesson, ${shortDate(row.occurs_on, today)} with ${row.tutor_name}, ` +
     `by ${row.cancelled_by_name ?? SCHEDULE_CANCELLER_LABELS[row.cancelled_as]}` +
     (row.note ? `: ${row.note}` : '')
   );

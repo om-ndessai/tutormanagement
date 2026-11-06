@@ -13,6 +13,12 @@ import { AccessRefused, isAccessRefusal } from './access-refused';
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 /**
+ * Phase 78 (JF35): the year list opens on an adult's year -- this many years back -- rather than on this year, which
+ * no one signing up was born in. Nothing is chosen for them: the list only starts there, and every year stays in it.
+ */
+export const BIRTH_YEAR_OPENS_YEARS_AGO = 30;
+
+/**
  * Phase 52's age question and the terms, as one form: the sign-up page's, and (Phase 63, P13) the
  * sign-up sheet's over the page a guest is on. Under 13 is refused and nothing is stored.
  */
@@ -40,6 +46,18 @@ export function SignupForm({
   const [refused, setRefused] = useState<{ code: AccessErrorCode; message: string } | null>(null);
   const thisYear = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => String(thisYear - i));
+  const openingYear = String(thisYear - BIRTH_YEAR_OPENS_YEARS_AGO);
+
+  // With no year chosen yet, the list opens on `openingYear`, in the middle of the list and focused (so the arrows
+  // and typing move from there). After Radix has placed the list and focused its first item, hence the timeout.
+  function openOnAnAdultsYear(open: boolean) {
+    if (!open || year) return;
+    window.setTimeout(() => {
+      const item = document.querySelector<HTMLElement>(`[data-birth-year="${openingYear}"]`);
+      item?.scrollIntoView({ block: 'center' });
+      item?.focus({ preventScroll: true });
+    }, 0);
+  }
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -89,13 +107,13 @@ export function SignupForm({
               ))}
             </SelectContent>
           </Select>
-          <Select value={year} onValueChange={setYear}>
+          <Select value={year} onValueChange={setYear} onOpenChange={openOnAnAdultsYear}>
             <SelectTrigger aria-label="Birth year" data-testid="signup-year">
               <SelectValue placeholder="Year" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper" className="max-h-72">
               {years.map((y) => (
-                <SelectItem key={y} value={y}>
+                <SelectItem key={y} value={y} data-birth-year={y}>
                   {y}
                 </SelectItem>
               ))}

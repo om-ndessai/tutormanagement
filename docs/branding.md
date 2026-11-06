@@ -118,7 +118,8 @@ only where they help somebody find or understand something.
   a click made straight after navigating. A page change gets a 320 ms CSS rise instead
   (`route-enter`, keyed on the path in `AppShell`).
 - **Depth.** `--elevation-1` / `--elevation-2` are the only shadows: cards rest on 1, dialogs and
-  menus float on 2. The header is `glass` (translucent, blurred), the sidebar is blurred, and the
+  menus float on 2. The header is `glass` (translucent, blurred; 95% opaque once the page scrolls, Phase 78,
+  so text never shows through behind the space's name), the sidebar is blurred, and the
   page sits on `surface-mesh`, a faint wash of the organization's own ramp — so every palette and
   the dark theme follow without a literal.
 - **Micro-interactions.** `icon-pop` springs an icon when its row is hovered (nav, buttons); a
@@ -131,10 +132,14 @@ only where they help somebody find or understand something.
 | Token | Family | Used for |
 | --- | --- | --- |
 | `--font-sans` | Inter | Body, UI, tables, forms |
-| `--font-display` | Poppins | `h1`–`h3` and numerals in stat cards, via `font-display` |
+| `--font-display` | Nunito | `h1`–`h3`, tile titles and numerals in stat cards, via `font-display` |
 
-Poppins is a geometric sans close to the institute's wordmark, which keeps headings recognisably
-on-brand without trying to pass as the logo. Both load from Google Fonts in `index.html`.
+Nunito, a rounded sans in weights 600-800, gives headings and the Quest board a friendly voice beside
+Inter's plain text, without trying to pass as the logo. Both load from Google Fonts in `index.html`.
+
+**Type floor and labels (Phase 78).** Nothing on the web is set below 12px (`text-xs`): no
+`text-[10px]` or `text-[11px]`. Small labels above a heading ("eyebrows") are sentence case at
+12-13px, never all caps; `uppercase` is kept only where a value is a code (a space code, a game code).
 
 ## Other conventions
 

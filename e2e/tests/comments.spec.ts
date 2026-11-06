@@ -150,12 +150,16 @@ test.describe('comments', () => {
 
     // A comment on a lesson leads to that lesson, alone.
     await admin.goto('/comments');
-    await admin.getByRole('link', { name: /session with/ }).first().click();
+    // Phase 78: the comment's target, as the API names it ("the 2026-09-15 lesson with Sofia Okafor"), its day
+    // shown in words ("the Sep 15 lesson with Sofia Okafor"), never as an ISO date.
+    const lessonLink = admin.getByRole('link', { name: /lesson with/ }).first();
+    await expect(lessonLink).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
+    await lessonLink.click();
     await expect(admin).toHaveURL(/\/sessions\?focus=/);
-    await expect(admin.getByText('Showing one session, linked from a comment.')).toBeVisible();
+    await expect(admin.getByText('Showing one lesson, linked from a comment.')).toBeVisible();
 
     await admin.getByRole('button', { name: 'Show all' }).click();
-    await expect(admin.getByText('Showing one session, linked from a comment.')).toBeHidden();
+    await expect(admin.getByText('Showing one lesson, linked from a comment.')).toBeHidden();
   });
 
   test('a tutor can leave a comment on a student and see it in the UI', async ({ as }) => {

@@ -381,7 +381,7 @@ async function completeSignIn(
     await recordSignIn(env.DB, person.id, identity, options.revokeToken ?? null);
   } catch (error) {
     if (isUniqueConstraintError(error)) {
-      throw new ApiError(409, 'conflict', `That ${label} account is already linked to another user.`);
+      throw new ApiError(409, 'conflict', `That ${label} account is already linked to someone else.`);
     }
     throw error;
   }

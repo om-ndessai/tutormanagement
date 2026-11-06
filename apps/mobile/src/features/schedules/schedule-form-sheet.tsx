@@ -5,6 +5,7 @@
 // dates it runs between. An admin schedules any pairing; a tutor only their own. Editing is for an
 // admin or the schedule's own tutor -- what the API allows.
 import {
+  COMMON_COPY,
   DAYS_OF_WEEK,
   LOCATION_KIND_LABELS,
   SESSION_MODES,
@@ -69,7 +70,7 @@ export function ScheduleFormSheet({ scheduleId }: { scheduleId: string | undefin
       isAdmin || isTutor ? (
         <ScheduleForm existing={null} />
       ) : (
-        <EmptyState icon="lock-outline" title="Only a tutor or an admin can schedule a session." />
+        <EmptyState icon="lock-outline" title="Only a tutor or an admin can schedule a lesson." />
       );
   } else if (list.isPending) {
     body = <FormSkeleton label="Loading the schedule…" fields={6} />;
@@ -227,7 +228,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
           return;
         }
         await create.mutateAsync(parsed.data);
-        toast.success('Session scheduled.');
+        toast.success('Lesson scheduled.');
       }
       leave(close);
     } catch (error) {
@@ -244,7 +245,7 @@ export function ScheduleForm({ existing }: { existing: VisibleSchedule | null })
     <View style={{ gap: space.lg }}>
       <View style={{ gap: space.xs }}>
         <Text variant="titleLarge" accessibilityRole="header">
-          {isEdit ? 'Edit schedule' : 'Schedule a session'}
+          {isEdit ? 'Edit schedule' : COMMON_COPY.schedule_lesson}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
           {isEdit

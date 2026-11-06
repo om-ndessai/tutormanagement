@@ -287,7 +287,7 @@ tags:
 - assertNotVisible:
     id: welcome-title
 # (The selector is the Spaces page without its frame (S5), so its own Start a space is there.)
-- assertVisible: 'INVITATIONS'
+- assertVisible: 'Invitations'
 - assertVisible: '.*The Inviter family.*'
 - assertVisible: '.*Invited as Admin.*'
 - tapOn:
@@ -345,7 +345,7 @@ tags:
     visible:
       id: screen-spaces
     timeout: 20000
-- assertVisible: 'INVITATIONS'
+- assertVisible: 'Invitations'
 - assertVisible: '.*Invited as Parent.*'
 - assertVisible: '.*Rhea own place.*'
 - tapOn:

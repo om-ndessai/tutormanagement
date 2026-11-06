@@ -163,13 +163,14 @@ describe('the hub', () => {
   });
 
   it('shares the code and nothing else, and spells it out for a screen reader', () => {
-    expect(shareText('ABC234')).toBe('Join my Aimtrue game: code ABC234');
+    expect(shareText('ABC234')).toBe('Join my Aimtrue quest: game code ABC234');
+    expect(shareText('ABC234', 'Grade 6 Quick 5')).toBe('Join my Grade 6 Quick 5 quest on Aimtrue: game code ABC234');
     expect(spelledCode('ABC234')).toBe('A B C 2 3 4');
   });
 
   it("gives a parent the games' line, and everyone else the Quest blurb", () => {
     expect(questIntro(['parent'])).toBe(
-      'Play the question bank together: start a game and share its code, or join one with a code.',
+      'Play the question bank together: start a quest and share its code, or join one with a code.',
     );
     expect(questIntro([])).toMatch(/^Play the question bank together/);
     expect(questIntro(['student'])).toMatch(/^Answer the question bank’s new questions/);
@@ -178,8 +179,9 @@ describe('the hub', () => {
 });
 
 describe('the rules of a game', () => {
-  it('says the level, the length, the points, who plays, knockout, late joining and the unreviewed note', () => {
-    expect(gameRulesLine(game())).toBe('G6 · 2 questions · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team');
+  // Phase 78 (owner 2026-11-05): the level in words, and no "may include questions not yet reviewed" (no Beta, in any form).
+  it('says the level in words, the length, the points, who plays, knockout and late joining -- never the unreviewed note', () => {
+    expect(gameRulesLine(game())).toBe('Grade 6 · 2 questions · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team');
     expect(
       gameRulesLine(
         game({
@@ -192,16 +194,16 @@ describe('the rules of a game', () => {
         }),
       ),
     ).toBe(
-      'G6 · 5 minutes · Right +1, wrong −1 · Up to 10 players, each on their own · may include questions not yet reviewed',
+      'Grade 6 · 5 minutes · Right +1, wrong −1 · Up to 10 players, each on their own',
     );
     expect(gameRulesLine(game({ wrong_points: -1, knockout: true, late_join: true, unreviewed: true }))).toBe(
-      'G6 · 2 questions · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout · joining open while it runs · may include questions not yet reviewed',
+      'Grade 6 · 2 questions · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout · joining open while it runs',
     );
     expect(gameRulesLine(game({ level_scope: 'upward', right_points: 2, wrong_points: -3 }))).toBe(
-      'G6 and up, at random · 2 questions · Right +2, wrong −3 · Up to 20 teams, at most 2 players per team',
+      'Grade 6 and up, at random · 2 questions · Right +2, wrong −3 · Up to 20 teams, at most 2 players per team',
     );
     expect(gameRulesLine(game({ players: 'single', max_teams: 1, max_team_size: 1 }))).toBe(
-      'G6 · 2 questions · Right +1, wrong 0 · Single player',
+      'Grade 6 · 2 questions · Right +1, wrong 0 · Single player',
     );
   });
 
@@ -215,9 +217,9 @@ describe('the rules of a game', () => {
       max_team_size: 2,
       knockout: false,
     };
-    expect(lookupLine(lookup)).toBe('Priya’s game · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team');
+    expect(lookupLine(lookup)).toBe('Priya’s quest · Right +1, wrong 0 · Up to 20 teams, at most 2 players per team');
     expect(lookupLine({ ...lookup, wrong_points: -1, knockout: true })).toBe(
-      'Priya’s game · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout',
+      'Priya’s quest · Right +1, wrong −1 · Up to 20 teams, at most 2 players per team · knockout',
     );
   });
 
@@ -232,24 +234,28 @@ describe('the rules of a game', () => {
     // Running with joining left open: joinable, and said so above the choices.
     expect(joinClosedText({ ...lookup, status: 'running' })).toBeNull();
     expect(JOIN_RUNNING_TEXT).toBe(
-      'This game is under way: you can still join, and start from its first question.',
+      'This quest is under way: you can still join, and start from its first question.',
     );
     expect(joinClosedText({ ...lookup, status: 'running', open: false })).toBe(
-      'This game has started, so it cannot be joined now.',
+      'This quest has started, so it cannot be joined now.',
     );
     expect(joinClosedText({ ...lookup, status: 'finished', open: false })).toBe(
-      'This game has ended, so it cannot be joined now.',
+      'This quest has ended, so it cannot be joined now.',
     );
     expect(joinClosedText({ ...lookup, players: 'single', open: false, status: 'running' })).toBe(
-      'This is Priya’s single-player game, so it cannot be joined.',
+      'This is Priya’s single-player quest, so it cannot be joined.',
     );
   });
 });
 
 describe('in the game', () => {
   it('titles the screen and says points and players', () => {
-    expect(gameTitle(undefined)).toBe('Quest game');
-    expect(gameTitle(game())).toBe('Quest game · G6');
+    // The quest in words (Phase 78, JF32), never "Quest game · G6".
+    expect(gameTitle(undefined)).toBe('Quest');
+    expect(gameTitle(game())).toBe('Grade 6 Quick 2');
+    expect(gameTitle(game({ level_scope: 'upward', mode: 'timed', question_count: null, duration_seconds: 300 }))).toBe(
+      'Grade 6 and up 5-minute dash',
+    );
     expect(scoreLabel(0)).toBe('0 points');
     expect(scoreLabel(1)).toBe('1 point');
     expect(scoreLabel(-1)).toBe('-1 points');
@@ -330,12 +336,12 @@ describe('in the game', () => {
 
   it('waits for the team, and once it is done for the others, the clock or a knockout', () => {
     expect(waitingText('count')).toBe(
-      'Your teammates are answering the last ones. The game ends when every team is done.',
+      'Your teammates are answering the last ones. The quest ends when every team is done.',
     );
     expect(waitingText('timed')).toMatch(/every team is done or the time is up\.$/);
     expect(waitingCopy(game(), team())).toEqual({
       title: 'Your team has no more questions to hand out.',
-      body: 'Your teammates are answering the last ones. The game ends when every team is done.',
+      body: 'Your teammates are answering the last ones. The quest ends when every team is done.',
     });
     const done = team({ finished_at: '2026-10-21T10:03:00.000Z', score: 3 });
     expect(waitingCopy(game(), done)).toEqual({
@@ -422,8 +428,8 @@ describe("the doors' countdown", () => {
   });
 
   it('tells a screen reader how long, and Go! at the end', () => {
-    expect(countdownSpeech(5000)).toBe('The Quest begins in 5 seconds');
-    expect(countdownSpeech(1500)).toBe('The Quest begins in 2 seconds');
+    expect(countdownSpeech(5000)).toBe('The quest begins in 5 seconds');
+    expect(countdownSpeech(1500)).toBe('The quest begins in 2 seconds');
     expect(countdownSpeech(1000)).toBe('Go!');
   });
 });

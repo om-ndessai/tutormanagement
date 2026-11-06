@@ -1,6 +1,7 @@
 // The start wizard (Phase 47, design 61): Next is refused without a level; a game goes through the
-// four steps (Select level, Score Setup, players, the review) to "Generate game code" (or "Start game" for a single player), sends the wizard's request
-// and gives way to the game; a favorite fills every step and jumps to the Review; its × asks first.
+// four steps (Select level, Score Setup, players, the review) to "Generate game code" (or "Start quest" for a single player), sends the wizard's request
+// and gives way to the game; a favorite fills every step and jumps to the Review; its × asks first. Phase 78 (JF32,
+// JF35): a level tile says its level in words, the wizard is "New quest", and it opens on "Single player".
 import { act, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import { createGameSchema, type GameFavorite } from '@tmi/shared';
 import { Alert } from 'react-native';
@@ -77,9 +78,10 @@ describe('StartGameFlow', () => {
     serve();
     await renderWithProviders(<StartGameFlow />);
     await screen.findByTestId('game-tile-NC26.6');
-    // Only levels with questions to draw, and a tile is the level's name alone.
+    // Only levels with questions to draw, and a tile is the level's name alone, in words.
     expect(screen.queryByTestId('game-tile-NC26.8')).toBeNull();
-    expect(screen.getByTestId('game-tile-NC26.6').props.accessibilityLabel).toBe('G6');
+    expect(screen.getByTestId('game-tile-NC26.6').props.accessibilityLabel).toBe('Grade 6');
+    expect(screen.getByText('New quest')).toBeTruthy();
     expect(screen.getByText('Select level')).toBeTruthy();
     expect(screen.getByTestId('game-step-1')).toBeTruthy();
     await next();
@@ -99,7 +101,7 @@ describe('StartGameFlow', () => {
     expect(screen.getByTestId('game-step-2')).toBeTruthy();
     // Score Setup: the game limit and the points, on one step.
     expect(screen.getByText('Score Setup')).toBeTruthy();
-    expect(screen.getByText('Game limit')).toBeTruthy();
+    expect(screen.getByText('Quest limit')).toBeTruthy();
     expect(screen.getByText('Points')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('game-amount-minus'));
     await fireEvent.press(screen.getByTestId('game-wrong-minus'));
@@ -107,6 +109,9 @@ describe('StartGameFlow', () => {
     await fireEvent.press(screen.getByTestId('game-knockout'));
     await next();
     expect(screen.getByTestId('game-step-3')).toBeTruthy();
+    // Single player is chosen to begin with (JF35); a multiplayer quest is one tap away.
+    expect(screen.getByTestId('game-players-single').props.accessibilityState).toMatchObject({ checked: true });
+    await fireEvent.press(screen.getByTestId('game-players-multi'));
     await fireEvent.press(screen.getByTestId('game-late-join-open'));
     await next();
     expect(screen.getByTestId('step-flow-review')).toBeTruthy();
@@ -139,16 +144,16 @@ describe('StartGameFlow', () => {
     });
   });
 
-  it('says Start game for a single player, with no Knockout or Joining lines', async () => {
+  it('says Start quest for a single player -- the wizard’s own choice -- with no Knockout or Joining lines', async () => {
     serve();
     await renderWithProviders(<StartGameFlow />);
     await fireEvent.press(await screen.findByTestId('game-tile-NC26.7'));
     await next();
     await next();
-    await fireEvent.press(screen.getByTestId('game-players-single'));
+    // Nothing to tap: "Single player" is preselected (JF35).
     expect(screen.queryByTestId('game-max-teams')).toBeNull();
     await next();
-    expect(screen.getByTestId('game-create')).toHaveTextContent(/Start game/);
+    expect(screen.getByTestId('game-create')).toHaveTextContent(/Start quest/);
     expect(screen.getByTestId('game-summary-scoring').props.accessibilityLabel).toBe('Right +1, wrong 0');
     expect(screen.getByTestId('game-summary-players').props.accessibilityLabel).toBe('Single player');
   });
@@ -158,11 +163,11 @@ describe('StartGameFlow', () => {
     await renderWithProviders(<StartGameFlow />);
     expect(await screen.findByTestId('game-favorites')).toBeTruthy();
     expect(screen.getByTestId('game-fav-Friday G6').props.accessibilityLabel).toBe(
-      'Friday G6, G6 · 2 questions · Up to 6 teams, at most 2 players per team',
+      'Friday G6, Grade 6 · 2 questions · Up to 6 teams, at most 2 players per team',
     );
     await fireEvent.press(screen.getByTestId('game-fav-Friday G6'));
     expect(await screen.findByTestId('step-flow-review')).toBeTruthy();
-    expect(screen.getByTestId('game-summary-questions').props.accessibilityLabel).toBe('G6');
+    expect(screen.getByTestId('game-summary-questions').props.accessibilityLabel).toBe('Grade 6');
     expect(screen.getByTestId('game-summary-length').props.accessibilityLabel).toBe('2 questions');
     expect(screen.getByTestId('game-summary-scoring').props.accessibilityLabel).toBe(
       'Right +1, wrong −1. Knockout: On',

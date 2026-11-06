@@ -16,6 +16,7 @@ import {
   PLAN_STATUS_LABELS,
   SCHEDULE_CANCELLER_LABELS,
   formatCadence,
+  formatDay,
   type Assessment,
   type LearningPlan,
   type ProgressCancellation,
@@ -106,7 +107,7 @@ function CancelledLessonRow({ row, upcoming }: { row: ProgressCancellation; upco
       <TableCell className="whitespace-nowrap">
         <span className="line-through">{longDate(row.occurs_on)}</span>
         {upcoming && (
-          <Badge variant="secondary" className="ml-2 text-[10px]">
+          <Badge variant="secondary" className="ml-2 text-xs">
             Upcoming
           </Badge>
         )}
@@ -114,7 +115,7 @@ function CancelledLessonRow({ row, upcoming }: { row: ProgressCancellation; upco
       <TableCell>{row.tutor_name}</TableCell>
       <TableCell>
         <span className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="text-[10px]">
+          <Badge variant="outline" className="text-xs">
             Cancelled
           </Badge>
           <span className="text-xs">
@@ -129,11 +130,12 @@ function CancelledLessonRow({ row, upcoming }: { row: ProgressCancellation; upco
   );
 }
 
+/**
+ * "Sep 15, 2026": a plan's, a lesson's or an assessment's day, always with its year (a plan is read across years),
+ * through the one shared formatter (Phase 78). With the year always shown, today decides nothing.
+ */
 function longDate(iso: string) {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    dateStyle: 'medium',
-    timeZone: 'UTC',
-  });
+  return formatDay(iso, iso, { year: 'always' });
 }
 
 type Pending = { kind: 'assessment'; row: Assessment } | { kind: 'plan'; row: LearningPlan };
@@ -248,7 +250,7 @@ export function StudentProgressPage() {
             <div className="brand-gradient rounded-lg p-5 text-white">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="flex items-center gap-2 text-xs font-medium tracking-wide text-white/80 uppercase">
+                  <p className="flex items-center gap-2 text-sm font-medium text-white/80">
                     <FlagIcon className="size-4" />
                     Goal
                   </p>
@@ -284,7 +286,7 @@ export function StudentProgressPage() {
               />
               <StatCard
                 index={2}
-                label="Sessions held"
+                label="Lessons held"
                 value={summary.sessions_held}
                 icon={ClipboardCheckIcon}
                 hint={

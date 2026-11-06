@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { LockIcon, PencilLineIcon, PlayIcon, TargetIcon, TimerIcon } from 'lucide-react';
 import type { TileGrade, TileIcon } from '@tmi/shared';
 
@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils';
 
 /**
  * Phase 67 (H6, docs/member-home-plan.md): the guest Quest board's pieces, shared by the guest home and
- * the member home -- a quest card, the five-ring Today card and the grade row. The guest home keeps its
- * mode colours; the member home wears one hue per grade (`--grade-N`, H5). A card always says its level
- * in words, so colour is never the only signal.
+ * the member home -- a quest card, the five-ring Today card and the grade row. Since Phase 78 (owner,
+ * 2026-11-05) both boards wear one hue per grade (`--grade-N`, H5), the mode shown by its icon; amber is
+ * for action only, so the Daily's button and the hit rings take the space's primary. A card always says
+ * its level in words, so colour is never the only signal, and no card shows a tile's code.
  */
 
 /** Each grade's hue as Tailwind classes (written out, so the build keeps them). */
@@ -24,12 +25,11 @@ export const GRADE_TONE: Record<TileGrade, string> = {
   8: 'bg-grade-8 text-grade-8-foreground',
 };
 
-/** A card's band: a grade's hue on the member home, the mode's colour on the guest home, or locked. */
-export type CardTone = { grade: TileGrade | null } | { mode: 'count' | 'timed' } | 'locked';
+/** A card's band: its grade's hue (the brand's for a level off the row), or locked. */
+export type CardTone = { grade: TileGrade | null } | 'locked';
 
 function toneClasses(tone: CardTone): string {
   if (tone === 'locked') return 'bg-primary/15 text-primary';
-  if ('mode' in tone) return tone.mode === 'timed' ? 'bg-warning text-warning-foreground' : 'bg-primary text-primary-foreground';
   return tone.grade ? GRADE_TONE[tone.grade] : 'bg-primary text-primary-foreground';
 }
 
@@ -45,7 +45,6 @@ export function QuestCard({
   testId,
   advanced = false,
   locked = false,
-  code,
   footer,
   aside,
   disabled = false,
@@ -61,9 +60,7 @@ export function QuestCard({
   /** An "Adv" mark on the band: a harder track than the grade's standards. */
   advanced?: boolean;
   locked?: boolean;
-  /** The tile's code, shown small (members only; a guest never reads codes). */
-  code?: string;
-  /** Lines under the detail: a best score, "Beta", "Free account". */
+  /** Lines under the detail: a best score, "Free account". */
   footer?: ReactNode;
   /** Beside the card's button, e.g. the favorite star. */
   aside?: ReactNode;
@@ -84,17 +81,15 @@ export function QuestCard({
       >
         <span className={cn('relative grid h-14 place-items-center', toneClasses(tone))}>
           <Icon className={locked ? 'size-9' : 'size-7'} aria-hidden />
+          {/* White on a dark pill over any grade's hue, at 12px (JF29). */}
           {advanced && (
-            <span className="absolute top-1.5 left-2 rounded-full bg-black/20 px-1.5 text-[10px] leading-4 font-bold tracking-wide uppercase">
-              Adv
-            </span>
+            <span className="absolute top-1.5 left-2 rounded-full bg-black/55 px-2 text-xs leading-5 font-bold text-white">Adv</span>
           )}
         </span>
         <span className="grid content-start gap-0.5 px-3 pt-2.5 pb-3">
           <span className="font-display text-base leading-tight font-extrabold">{title}</span>
           <span className="text-muted-foreground text-xs">{detail}</span>
           {footer}
-          {code && <span className="text-muted-foreground/80 font-mono text-[10px] tracking-wide">{code}</span>}
         </span>
       </button>
       {aside && <span className="absolute top-14 right-0">{aside}</span>}
@@ -113,13 +108,13 @@ export function TargetRings({ states, label }: { states: RingState[]; label: str
           key={index}
           className={cn(
             'grid size-7 place-items-center rounded-full border-[3px]',
-            state === 'hit' ? 'border-warning bg-warning/25' : state === 'miss' ? 'border-muted-foreground/30' : 'border-border',
+            state === 'hit' ? 'border-primary bg-primary/20' : state === 'miss' ? 'border-muted-foreground/30' : 'border-border',
           )}
         >
           <span
             className={cn(
               'size-2 rounded-full',
-              state === 'hit' ? 'bg-warning' : state === 'miss' ? 'bg-muted-foreground/30' : 'bg-border',
+              state === 'hit' ? 'bg-primary' : state === 'miss' ? 'bg-muted-foreground/30' : 'bg-border',
             )}
           />
         </span>
@@ -152,7 +147,7 @@ export function TodayCard({
   note?: ReactNode;
   /**
    * Phase 74 (JF23): Next up above already offers it, so the twin here is a quiet line -- a normal-weight outline
-   * button, never the heavier amber one that would win the eye from Next up.
+   * button, never the heavier filled one that would win the eye from Next up.
    */
   quiet?: boolean;
 }) {
@@ -162,7 +157,7 @@ export function TodayCard({
       <div className="bg-card text-card-foreground flex flex-wrap items-center gap-3 rounded-2xl border p-4" data-testid={testId} data-quiet="true">
         {/* No min-w-0: the rings keep their width, and the button wraps below them on a phone. */}
         <span className="grid flex-1 gap-1">
-          <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">{eyebrow}</span>
+          <span className="text-muted-foreground text-[13px] font-semibold">{eyebrow}</span>
           <TargetRings states={states} label={played ? `${hits} of ${states.length} hit` : `${states.length} targets`} />
         </span>
         {onPlay && (
@@ -175,16 +170,17 @@ export function TodayCard({
   }
   return (
     <div className="bg-card text-card-foreground grid gap-3 rounded-3xl border p-5 shadow-[var(--elevation-2)]" data-testid={testId}>
-      <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">{eyebrow}</span>
+      <span className="text-muted-foreground text-[13px] font-semibold">{eyebrow}</span>
       <h2 className="font-display text-2xl font-black">{title}</h2>
       <TargetRings states={states} label={played ? `${hits} of ${states.length} hit` : `${states.length} targets`} />
       {note && <p className="text-muted-foreground text-sm">{note}</p>}
+      {/* Phase 78 (JF34): the space's primary, never amber -- amber does one job, and it sat on Grade 3's cards. */}
       {onPlay && (
         <Button
           size="lg"
           onClick={onPlay}
           variant={played ? 'outline' : 'default'}
-          className={cn('w-full sm:w-fit', !played && 'bg-warning text-warning-foreground hover:bg-warning/90')}
+          className="w-full sm:w-fit"
           data-testid={playTestId}
         >
           {playLabel} <PlayIcon className="size-4" />
@@ -194,7 +190,22 @@ export function TodayCard({
   );
 }
 
-/** The grade row: one chip per grade, the chosen one filled (in its hue on the member home). */
+/** How far the row's edge fades, where it can scroll that way. */
+const FADE_PX = 24;
+
+/** The fade at each edge the row can scroll towards: a mask, so it works over any background. */
+function edgeMask(start: boolean, end: boolean): string | undefined {
+  if (!start && !end) return undefined;
+  const left = start ? `transparent, black ${FADE_PX}px` : 'black, black';
+  const right = end ? `black calc(100% - ${FADE_PX}px), transparent` : 'black, black';
+  return `linear-gradient(to right, ${left}, ${right})`;
+}
+
+/**
+ * The grade row: one chip per grade, the chosen one filled in its hue and ringed (JF29: a fill alone was 1.30:1 for
+ * Grade 4). Phase 78 (JF28): on a phone the row scrolls sideways, so its edges fade where there is more, and the
+ * chosen grade is scrolled into view -- the row's own scroll only, never the page's.
+ */
 export function GradeRow({
   grades,
   value,
@@ -208,14 +219,55 @@ export function GradeRow({
   onChange: (grade: number) => void;
   labelId: string;
   testIdPrefix: string;
-  /** The chosen chip wears its grade's hue (member home); else the brand's (guest home). */
+  /** The chosen chip wears its grade's hue (both boards since Phase 78); else the brand's. */
   hued?: boolean;
 }) {
+  const row = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: false, end: false });
+  const placed = useRef(false);
+
+  useEffect(() => {
+    const el = row.current;
+    if (!el) return;
+    const measure = () =>
+      setEdges({ start: el.scrollLeft > 1, end: el.scrollLeft + el.clientWidth < el.scrollWidth - 1 });
+    measure();
+    el.addEventListener('scroll', measure, { passive: true });
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    observer?.observe(el);
+    return () => {
+      el.removeEventListener('scroll', measure);
+      observer?.disconnect();
+    };
+  }, [grades.length]);
+
+  useEffect(() => {
+    const el = row.current;
+    const chip = el?.querySelector<HTMLElement>(`[data-grade="${value}"]`);
+    if (!el || !chip) return;
+    const box = el.getBoundingClientRect();
+    const at = chip.getBoundingClientRect();
+    // Clear of the fade, with room for the ring.
+    const room = FADE_PX + 8;
+    const by = at.left < box.left + room ? at.left - box.left - room : at.right > box.right - room ? at.right - box.right + room : 0;
+    if (by !== 0) {
+      const still = !placed.current || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      el.scrollBy({ left: by, behavior: still ? 'auto' : 'smooth' });
+    }
+    placed.current = true;
+  }, [value, grades.length]);
+
+  const mask = edgeMask(edges.start, edges.end);
   return (
     <div
-      className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0"
+      ref={row}
+      className="-mx-4 flex gap-2 overflow-x-auto px-4 py-1 [scrollbar-width:none] sm:-mx-1 sm:px-1"
+      style={mask ? { maskImage: mask, WebkitMaskImage: mask } : undefined}
       role="radiogroup"
       aria-labelledby={labelId}
+      data-testid={`${testIdPrefix}row`}
+      data-fade-start={edges.start || undefined}
+      data-fade-end={edges.end || undefined}
     >
       {grades.map((g) => (
         <button
@@ -226,12 +278,14 @@ export function GradeRow({
           aria-label={`Grade ${g}`}
           onClick={() => onChange(g)}
           data-testid={`${testIdPrefix}${g}`}
+          data-grade={g}
           className={cn(
             'font-display min-h-11 min-w-11 flex-none rounded-full border px-3 text-base font-bold transition-colors',
             g === value
-              ? hued && g >= 1 && g <= 8
-                ? cn('border-transparent', GRADE_TONE[g as TileGrade])
-                : 'border-primary bg-primary text-primary-foreground'
+              ? cn(
+                  'ring-foreground ring-offset-background ring-2 ring-offset-2',
+                  hued && g >= 1 && g <= 8 ? cn('border-transparent', GRADE_TONE[g as TileGrade]) : 'border-primary bg-primary text-primary-foreground',
+                )
               : 'bg-card hover:bg-muted',
           )}
         >

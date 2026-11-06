@@ -108,7 +108,7 @@ function WeekStrip({ week }: { week: WeekDot[] }) {
               dot === 'ahead' && 'border-border border-dashed',
             )}
           />
-          <span className="text-muted-foreground text-[10px] leading-none" aria-hidden>
+          <span className="text-muted-foreground text-xs leading-none" aria-hidden>
             {WEEKDAYS[index]![0]}
           </span>
         </span>

@@ -7,14 +7,14 @@
 // follow (the same params as the Assessment screen's StartCard, so one cache entry). Never
 // `/dashboard`, which is Tutoring's. Who may continue, review or open a PDF is the server's
 // (`can_continue`, `can_review`, R17): the home only links into the Assessment screens.
-import { levelLabel, mayAddPeople, type CanvasAssessment } from '@tmi/shared';
+import { mayAddPeople, type CanvasAssessment } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { levelWords } from '@/features/quest/level-words';
 import { AdaptiveRow } from '@/components/adaptive-row';
-import { BadgePill } from '@/components/badge-pill';
 import { EmptyNote, Panel } from '@/components/section';
 import { ListSkeleton } from '@/components/skeletons';
 import { ErrorState } from '@/components/state-views';
@@ -184,7 +184,7 @@ function WaitingPanel({ rows, pending }: { rows: CanvasAssessment[]; pending: bo
               <View style={{ flex: 1, minWidth: 0 }}>
                 <Text variant="titleSmall">{row.student_name}</Text>
                 <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                  {`${levelLabel(row.level_id)} · ${submittedAgo(row)}`}
+                  {`${levelWords(row.level_id)} · ${submittedAgo(row)}`}
                 </Text>
               </View>
               <Button
@@ -222,12 +222,10 @@ function RecentPanel({
   return (
     <Panel testID="assess-home-recent" tourId="dash-assess-recent">
       <View style={{ gap: space.sm }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-          <Text variant="titleSmall" accessibilityRole="header" style={{ flex: 1 }}>
-            Recent assessments
-          </Text>
-          <BadgePill testID="assess-home-beta" />
-        </View>
+        {/* Phase 78 (owner 2026-11-05): no Beta pill -- checked questions are served like any other. */}
+        <Text variant="titleSmall" accessibilityRole="header">
+          Recent assessments
+        </Text>
         {pending ? (
           <ListSkeleton label="Loading the assessments…" count={2} />
         ) : error ? (

@@ -88,9 +88,11 @@ function OpenRequests({
   onWithdraw: (slug: string, name: string) => void;
 }) {
   const { joinRequests } = useAuth();
+  // One `now` for every request (Phase 78).
+  const now = new Date();
   return (
     <section className="grid gap-2" aria-label="Requests sent">
-      <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Requests sent</h2>
+      <h2 className="text-muted-foreground text-[13px] font-semibold">Requests sent</h2>
       {joinRequests
         .filter((r) => r.outcome === null)
         .map((r) => (
@@ -98,9 +100,9 @@ function OpenRequests({
             <CardContent className="flex flex-wrap items-center gap-3 p-4">
               <OrgAvatar org={r} />
               <div className="min-w-0 flex-1">
-                <p className="truncate font-medium">{r.name}</p>
+                <p className="font-medium [overflow-wrap:anywhere]">{r.name}</p>
                 <p className="text-muted-foreground text-xs">
-                  Asked {formatRelativeTime(r.requested_at)}. Its administrators will let you in.
+                  Asked {formatRelativeTime(r.requested_at, now)}. Its administrators will let you in.
                 </p>
               </div>
               <Button

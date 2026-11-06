@@ -1,9 +1,10 @@
 // Ported from apps/web/src/features/audit/activity-feed.tsx @ 1132322
-import { AUDIT_ACTION_LABELS, formatRelativeTime, type AuditEvent } from '@tmi/shared';
+import { AUDIT_ACTION_LABELS, formatRelativeTime, readableDates, todayIn, type AuditEvent } from '@tmi/shared';
 import { View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
 import { Skeleton } from '@/components/skeleton';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import type { AppTheme } from '@/theme/paper-theme';
@@ -113,6 +114,7 @@ export function ActivityRow({
 }) {
   const theme = useAppTheme();
   const tone = actionTone(theme, event.action);
+  const today = todayIn(useOrgTimeZone());
   return (
     <View testID={`activity-${event.id}`} style={{ flexDirection: 'row', gap: space.md }}>
       <View style={{ alignItems: 'center' }}>
@@ -134,7 +136,8 @@ export function ActivityRow({
         {!last ? <View style={{ flex: 1, width: 1, backgroundColor: theme.colors.outlineVariant }} /> : null}
       </View>
       <View style={{ flex: 1, minWidth: 0, paddingVertical: space.sm + 2 }}>
-        <Text variant="bodyMedium">{event.description}</Text>
+        {/* The log keeps its ISO days; the reader gets them in words (shared `readableDates`, as on the web). */}
+        <Text variant="bodyMedium">{readableDates(event.description, today)}</Text>
         <Text variant="bodySmall" style={{ marginTop: 2, color: theme.tokens.mutedForeground }}>
           {showActor ? (
             <Text style={{ fontWeight: '500', color: theme.tokens.mutedForeground }}>{event.actor_name}</Text>

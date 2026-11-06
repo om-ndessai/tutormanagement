@@ -5135,3 +5135,103 @@ takes Maestro's default 20 s on Android, not 10. **No app defect found.** Noted,
 page's scroll, so after "End the game now" far down the headline can open under the header (every game,
 `quest/game-screen.tsx:142`); a row's "started N minutes ago" is computed when the list renders, so Start's warning can
 say a minute more than the row beneath it (`assessments-screen.tsx:389` vs `:212`).
+
+## 87. Phase 78: the look, in the app — build (2026-11-06)
+
+The app half of Phase 78 (`docs/journey-fixes-plan.md`; owner 2026-11-05: JF28's rest, JF29, JF32's rest, JF34, JF35's
+rest, and the notes carried from Phases 75 and 77), beside the web half, on Part A's contract in the tree (shared
+`words.ts`: `TERMS`, `COMMON_COPY`, `CHECKED_QUESTIONS_COPY`; `QUICK_ACTION_LABELS` / `quickActionLabel` beside
+`QUICK_ACTIONS`; `dates.ts`; the Worker's reworded messages). No API, shared or web file touched.
+
+**Beta is gone** from everything a player, a family or a member reads: `BadgePill` has no 'Beta' default (its `label`
+is required); no pill on a tile (`play-home`), a question (`game-play`, `daily-screen`, `guest-quest`,
+`guest-assessment`, `take-assessment-screen`), the Assessment page ("In beta." and its pill), the Assessment home, the
+Quest screen, the space's Assessment switch, or the menu (`nav-items`' badges, so More and search show none); no
+" · includes unreviewed" on a level. The Space page's note is `CHECKED_QUESTIONS_COPY`. Kept: the console's own
+"Checked questions (Beta)" switch and the guest pool's "· Beta" mark (`ui-words:` comments), the reviewer's "N not yet
+reviewed in the bank", the API's `beta` fields.
+
+**One word per thing** (the glossary): the tab reads **Lessons** (`COMMON_COPY.lessons_page`; the route, the tab's
+`tab-sessions` and every testID unchanged), the stack titles "Lessons" / "Lesson", the tour's steps and "You will find
+it under Lessons."; **People** for the menu item, the page, its search, empty state and the onboarding's "Go to
+People"; **Add a person** for the chooser's title, the (+) row, People's header and empty state, the person form's
+title and its submit ("Add another person" after a save); "Edit details"; "Longest lesson", "Virtual lessons";
+"Could not save their details."; lesson for session everywhere else (toasts, confirms, carousel labels, the write-up's
+"Previous lesson review" and "Lesson notes", the schedule's words, the dashboards' sections and figures); **quest**
+for a game on the board ("New quest", "Start quest", "End the quest now", "Join the quest", "Quest limit", "Quests",
+"Continue your quest" on the home-screen action; "game code", "Game or space code" and "Play with" stay). The (+)
+sheet's rows take their words from `quickActionLabel` (and "Schedule a lesson" from `COMMON_COPY`), as the home's
+quick actions do. A StatCard, a FigureRow figure and a DashboardSection take an optional `testID`, so a renamed
+"Sessions" card keeps `stat-sessions`, `stat-sessions-running`, `stat-sessions-held` and
+`dashboard-section-tutoring-sessions`.
+
+**Words rather than codes:** a level is said in words (`quest/level-words.ts` over `TILE_LEVEL_WORDS`: the wizard's
+tiles and Starting at, the join sheet, the rules line, Question Quest's status, picker and "starts at", the Daily's
+status and result, the Assessment levels and rows, Next up's Question Quest line); a quest's header is `gameWords`
+("Grade 6 Quick 2"); tile codes are off the cards; a favorite keeps its tile's code as its key (as on the web, and as
+the guest carry matches) and reads in words through `favoriteWords` (ported from the web): "Grade 6 Quick 5", its
+star's label and its toast. The activity log's sentences read their days through shared `readableDates`, as the web.
+
+**Colours and contrast:** the Daily's button and the hit rings take the space's primary; the guest page's tiles and
+grade chip wear the grade hues (the mode by its icon; the 'mode' tone is gone); timed tiles keep their grade hue. The
+chosen grade chip has a 2pt ring in the ink with a 2pt gap; the Adv pill is "Adv", 12pt, white on Paper's scrim at
+55% (`AdvPill`). The palettes are regenerated from the web's `index.css`, whose warm foundation now restates the
+drawer's accent for every palette. `scripts/check-contrast.mjs` adds the drawer's three foregrounds on
+`sidebarAccent` (it fails Indigo's old accent at 1.31:1), the ink on a card at 3:1 (the chip's ring), and white on 55%
+black over each grade (the Adv pill). A people picker's row is one element named "Jo Baker, jo.baker@example.com",
+and looks like what it announces: a square checkbox where several may be chosen (Add a student's parents -- a
+student may have several guardians, so a checkbox, not the radio the audit proposed), a ticked circle where one is.
+
+**Type and phone widths:** no text under 12pt (the account badge's count, the console's chart labels, the progress
+chart's ticks); the all-caps eyebrows are sentence case at 12pt. Names and addresses wrap (people cards, pickers,
+guardian cards, invited rows, space names on All spaces and in the console, the drafts and finance rows, the home
+band's space); the quest frame's title wraps. The grade row fades at the edge that still scrolls and brings the
+chosen grade into view (`gradeScrollTarget`). A tab's screen pads past the (+) and stops its scroll bar above it
+(`Screen`'s `scrollIndicatorInsets`; a Jest test holds the inset above the disc's rise).
+
+**Smaller items:** the birth year opens near an adult's (`birthYearStart`, 30 years back; every year a scroll or a
+typed year away; `OptionPicker`'s new `startAt`), the month grid shows all twelve; the New quest wizard starts on
+Single player; All spaces' Leave says "Leave" beside its icon. Dates go through `dates.ts`: no local copy of
+`formatSessionDay`, `formatPlainDay`, `formatLessonDay` (two), `relativeDay`, `shortDate` (three), `longDate`,
+`declinedOnLine`, `formatInstantClock`, `readableDates`, `todayIso`, or the people model's `formatInstant`; no date
+is formatted by `toLocale*` or `Intl` outside the Intl polyfill. Plans and records read with their year, chart ticks without.
+
+**The lessons owed sheet (Phase 75's note):** the newest five rows, then "Show all" (`lessons-owed-show-all`). Pinning
+"Another lesson" under a scrolling list would need a footer outside QuickSheet's ScrollView root, the only root
+react-native-screens resizes in an iOS form sheet.
+
+**The Phase 77 carry:** the game screen passes `QuestFrame` its `scrollRef` and scrolls to the top when the quest
+finishes; Assessments keeps one `now` for the screen (taken again when Start's warning is raised and on refresh), so
+the warning and the row say the same "started 10 minutes ago".
+
+**Contract gaps:** shared has no level-in-words helper beyond `TILE_LEVEL_WORDS` (and the API's level `label`s are
+codes), no full month names (the home's "together since August"), no `favoriteWords` (the web's and the app's are
+copies), and no white or black token (the Adv pill uses Paper's). The server's share cards still name a level by its
+code ("G4 · Can you solve this?").
+**Flows (edited, not run here):** listed in progress item 92.
+**Jest:** 192 suites, 1599 tests; typecheck (tsc, rules, palettes, contrast), lint (0 errors) and `mobile:export`
+(both platforms) green; the words check has no app failures.
+**Verified (2026-11-06):** the 54 edited flows green on iOS 27 (iPhone 17) and Android 37 (Medium Phone); the five
+edited journey steps (`j04a-19`, `j07a-31`, `j15a-17`, `j15a-20`, `j15a-21`), which run only after the steps before
+them, replayed in place from the screen each starts on (People from a pushed page; Start the quest, End the quest now,
+End the quest and Exit from a lobby where the host plays), green on both; the 64 flows whose screens changed green on
+iOS (`platform/logo` alone: Maestro refuses its `addMedia` asset when flows are passed as a file list), and the ten of
+them fixed green on Android too; jest 192 suites / 1601 passed; typecheck and lint (0 errors) green; screenshots
+reviewed light and dark on both (the Quest board and grade row with its ringed chip and edge fade, the Adv pills, the
+Daily, the guest page in grade hues, the wizard, doors and results, Assessments, Lessons, People, the (+) sheet, the
+owed sheet's five rows and Show all): no code, Beta, "session" or "user" left on them, nothing under 12pt or clipped.
+**The flows, not the app:** `quest/game-single` ("Starting at" says Grade 6), `canvas-assessments/review` and
+`review-online` ("Sofia Okafor · Grade 4"), `play/habit` (the Daily's result is "Grade N · 0 of 5", and its old code is
+asserted absent), `quest/level` (the picker now opens at the level held, so Grade 5 and Not set are found by search),
+`schedule/cancel-restore`, `sessions/list-admin` (twice) and `spaces/spaces-page` (a tap under the (+), the header or the
+"… is ready." toast: centred, or the toast let go), `people/edit` (a longer form: 60 s to reach Cancel),
+`guest/guest-signup`, `platform/organizations` and `features/assess-review` (a block below the fold or above it after
+Back: scrolled to). Older staleness found on the way: `progress/list-admin` looked for the spotlight on Home (it is under
+More -> Dashboard since Phase 66), and `scripts/share-game.js` switched off the space admins' unreviewed flag, which no
+longer applies since Phase 62 (now chmi's `checked_questions` through the console, put back by `share-end.js`).
+`home/now-next-brief` failed only after the canvas flows left assessments to review (green alone).
+**The app (Phase 78's own):** four headings still in literal capitals -- Invitations and Your spaces (All spaces), Invited
+(Invite people), Requests sent (Welcome) -- are sentence case, as on the web; the Lessons page's notice for a lesson
+linked from a comment said "Showing one session": it says lesson, as the web's does (`list-tutor` now asserts it).
+**Left over (not the app's):** the assessment PDF still names its level by code ("Noor Haddad · G4": `levelLabel` in
+`apps/api/src/lib/canvas-assessment-pdf.ts`), and the guest page's harder tracks read "Adv G3–4" (shared `guest-board.ts`).

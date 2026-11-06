@@ -116,6 +116,7 @@ export function useCarryGuestTiles(ready: boolean, tiles: MemberTile[] | undefin
     void (async () => {
       for (const tile of carry) {
         try {
+          // Keyed by its code, as a starred tile is (said in words on the row: `favoriteWords`, Phase 78).
           await save.mutateAsync({ name: tile.code, config: tileGameRequest(tile) });
         } catch {
           // Not carried: the member can still star it.

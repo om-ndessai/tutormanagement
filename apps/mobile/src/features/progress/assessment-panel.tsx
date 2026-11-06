@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/progress/student-progress-page.tsx (AssessmentPanel) @ 1132322
-import type { Assessment } from '@tmi/shared';
+import { formatDay, type Assessment } from '@tmi/shared';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Chip, Divider, Text } from 'react-native-paper';
@@ -9,7 +9,6 @@ import { EmptyNote, Panel } from '@/components/section';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
-import { longDate } from './progress-model';
 import { RatingChip, TopicName } from './rating';
 
 /** The latest assessment in full, with any earlier ones a tap away beneath it. */
@@ -20,6 +19,7 @@ export function AssessmentPanel({
   topicName,
   onEdit,
   onDelete,
+  today,
 }: {
   assessments: Assessment[];
   isAdmin: boolean;
@@ -27,6 +27,8 @@ export function AssessmentPanel({
   topicName: (id: string) => { code: string; name: string; position: number } | undefined;
   onEdit: (row: Assessment) => void;
   onDelete: (row: Assessment) => void;
+  /** The space's day (`StudentProgress.today`). */
+  today: string;
 }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
@@ -48,7 +50,7 @@ export function AssessmentPanel({
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm, marginTop: -space.sm }}>
         <View style={{ flex: 1, gap: 4 }}>
           <Text variant="labelLarge">
-            {longDate(current.assessed_on)}
+            {formatDay(current.assessed_on, today, { year: 'always' })}
             {current.assessor_name ? (
               <Text style={{ color: muted }}> · by {current.assessor_name}</Text>
             ) : null}
@@ -160,7 +162,7 @@ export function AssessmentPanel({
                     setShownId(row.id);
                   }}
                 >
-                  {longDate(row.assessed_on)}
+                  {formatDay(row.assessed_on, today, { year: 'always' })}
                 </Chip>
               );
             })}

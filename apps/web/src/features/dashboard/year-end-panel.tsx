@@ -91,7 +91,7 @@ export function YearEndPanel({ index = 0 }: { index?: number }) {
               className="flex flex-wrap items-center justify-between gap-2 py-2.5"
             >
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium">{tutor.full_name}</span>
+                <span className="block text-sm font-medium break-words">{tutor.full_name}</span>
                 <span className="text-muted-foreground text-xs">
                   {tutor.paid_this_year_cents > 0
                     ? `${formatCents(tutor.paid_this_year_cents)} paid in ${year}`

@@ -214,7 +214,8 @@ export function SessionsScreen() {
         {[
           <StatCard
             key="sessions"
-            label="Sessions"
+            testID="stat-sessions"
+            label="Lessons"
             icon="calendar-check-outline"
             value={totals?.session_count}
           />,
@@ -233,7 +234,8 @@ export function SessionsScreen() {
       <FocusNotice
         active={Boolean(focusId)}
         found={sessions.length > 0}
-        what="session"
+        // Phase 78 (the glossary): the page says lessons, as the web's notice does.
+        what="lesson"
         onClear={clearFocus}
       />
 
@@ -273,7 +275,7 @@ export function SessionsScreen() {
       {isPending ? (
         <View
           style={{ gap: space.md }}
-          accessibilityLabel="Loading sessions"
+          accessibilityLabel="Loading lessons"
           accessibilityState={{ busy: true }}
         >
           {[0, 1, 2].map((index) => (
@@ -344,7 +346,7 @@ export function SessionsScreen() {
           <EmptyState
             testID="sessions-empty"
             icon="book-open-variant"
-            title={`No sessions recorded${bounds.from || bounds.to ? ' in this period' : ' yet'}.`}
+            title={`No lessons recorded${bounds.from || bounds.to ? ' in this period' : ' yet'}.`}
           />
         )
       }

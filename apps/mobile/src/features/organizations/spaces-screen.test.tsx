@@ -96,7 +96,9 @@ describe('SpacesScreen (Phase 60, S5 and S7)', () => {
     expect(screen.getByTestId('spaces-subtitle')).toHaveTextContent(
       'Signed in as priya@example.com. You land in the space you opened last.',
     );
-    expect(screen.getByText('YOUR SPACES')).toBeTruthy();
+    // Phase 78 (JF35): headings in sentence case, as on the web.
+    expect(screen.getByText('Your spaces')).toBeTruthy();
+    expect(screen.queryByText('YOUR SPACES')).toBeNull();
     expect(screen.getByTestId('org-chmi')).toBeTruthy();
     expect(screen.queryByText('Default')).toBeNull();
     expect(screen.queryByText(/on sign-in/)).toBeNull();
@@ -156,7 +158,8 @@ describe('SpacesScreen (Phase 60, S5 and S7)', () => {
     as({ memberships: [space('chmi')], invitations: [invite('assess')] });
     mockAnswer.mockResolvedValue(undefined);
     await renderWithProviders(<SpacesScreen />);
-    expect(screen.getByText('INVITATIONS')).toBeTruthy();
+    expect(screen.getByText('Invitations')).toBeTruthy();
+    expect(screen.queryByText('INVITATIONS')).toBeNull();
     await fireEvent.press(screen.getByTestId('invitation-accept-assess'));
     await waitFor(() => expect(chooseOrganization).toHaveBeenCalledWith('assess'));
     expect(mockAnswer).toHaveBeenCalledWith({ slug: 'assess', accept: true });
@@ -175,6 +178,9 @@ describe('SpacesScreen (Phase 60, S5 and S7)', () => {
     as({ organization: { slug: 'chmi' }, memberships: [space('chmi'), space('riverside')] });
     mockLeave.mockResolvedValue({ data: { left: true } });
     await renderWithProviders(<SpacesScreen />);
+    // Phase 78 (JF35): the control says its word, not an icon alone, and is named for the space.
+    expect(screen.getByTestId('space-leave-riverside')).toHaveTextContent(/Leave$/);
+    expect(screen.getByTestId('space-leave-riverside').props.accessibilityLabel).toBe('Leave riverside Space');
     await fireEvent.press(screen.getByTestId('space-leave-riverside'));
     expect(screen.getByTestId('space-leave-confirm-riverside')).toHaveTextContent(
       /You stop being a member of riverside Space\. Its records of you stay\./,

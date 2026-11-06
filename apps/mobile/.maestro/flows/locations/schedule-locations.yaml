@@ -101,7 +101,7 @@ tags:
 - tapOn:
     id: step-flow-next
 - extendedWaitUntil:
-    visible: 'Session scheduled\.'
+    visible: 'Lesson scheduled\.'
     timeout: 15000
 - extendedWaitUntil:
     visible:
@@ -116,7 +116,7 @@ tags:
 - takeScreenshot: locations-schedule-card
 - tapOn: "Remove Sanjay Patel's Mondays 4:00.*"
 - extendedWaitUntil:
-    visible: 'Remove this recurring session\?'
+    visible: 'Remove this recurring lesson\?'
     timeout: 10000
 - tapOn: 'Remove'
 - extendedWaitUntil:

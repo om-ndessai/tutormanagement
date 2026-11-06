@@ -21,7 +21,9 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: tabs-finance

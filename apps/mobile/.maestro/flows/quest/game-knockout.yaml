@@ -67,5 +67,5 @@ tags:
     centerElement: true
 - assertVisible:
     id: game-rules
-    text: 'G6 · 2 questions · Right \+1, wrong −3 · Up to 2 players, each on their own · knockout.*'
+    text: 'Grade 6 · 2 questions · Right \+1, wrong −3 · Up to 2 players, each on their own · knockout.*'
 - takeScreenshot: game-knockout-results

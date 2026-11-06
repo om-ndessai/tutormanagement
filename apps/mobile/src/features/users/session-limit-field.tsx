@@ -1,7 +1,7 @@
 // The web form's SessionLimitField @ 1132322: the longest a single lesson may run, as a choice rather
 // than a typed number because it has to be a multiple of a quarter hour. Chips rather than a menu:
 // a Paper menu renders in the app's root portal, behind a form sheet.
-import { DEFAULT_MAX_SESSION_MINUTES, SESSION_LIMIT_CHOICES, formatDuration } from '@tmi/shared';
+import { COMMON_COPY, DEFAULT_MAX_SESSION_MINUTES, formatDuration, SESSION_LIMIT_CHOICES } from '@tmi/shared';
 import { View } from 'react-native';
 import { HelperText, Text } from 'react-native-paper';
 
@@ -25,7 +25,7 @@ export function SessionLimitField({
   return (
     <View testID={testID} style={{ gap: space.xs }}>
       <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-        Longest session (optional)
+        {`${COMMON_COPY.longest_lesson} (optional)`}
       </Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         <Choice

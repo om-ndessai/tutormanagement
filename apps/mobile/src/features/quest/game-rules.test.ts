@@ -491,7 +491,7 @@ describe('Phase 47: points, the countdown, knockout, joining', () => {
       'Up to 3 teams, at most 2 players per team',
     );
     expect(gameEncouragement({ correct: 4, answered: 6, solo: true })).toBe(
-      'You got 4 right. Great effort, and every game makes you sharper!',
+      'You got 4 right. Great effort, and every quest makes you sharper!',
     );
     expect(gameEncouragement({ correct: 3, answered: 3, solo: false })).toBe(
       'Your team got every one you answered right. Brilliant!',

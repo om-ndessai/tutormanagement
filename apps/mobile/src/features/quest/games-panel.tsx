@@ -8,7 +8,8 @@
 // with none, no list (as on the web). Phase 47 (design 61): New Quest (owner, 2026-10-23) opens the wizard
 // (a card rising from the bottom); a row says a Random level's scope and "Single player".
 // Phase 73 (JF32): a row leads with the game in words ("Grade 6 Quick 2"); its code follows, small.
-import { GAME_CODE_LENGTH } from '@tmi/shared';
+// Phase 78 (owner 2026-11-05): the panel is "Quests" and its button "New quest" (QUICK_ACTION_LABELS); the code stays.
+import { GAME_CODE_LENGTH, QUICK_ACTION_LABELS } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform, View } from 'react-native';
@@ -37,10 +38,10 @@ export function GamesPanel() {
   }
 
   return (
-    <Panel title="Games" testID="quest-games">
+    <Panel title="Quests" testID="quest-games">
       <View style={{ gap: space.md }}>
         <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-          Play the question bank together. Start a game and share its code, or type a code to join, on your
+          Play the question bank together. Start a quest and share its code, or type a code to join, on your
           own or in a team.
         </Text>
         <Button
@@ -51,7 +52,7 @@ export function GamesPanel() {
           contentStyle={{ minHeight: 48 }}
           style={{ alignSelf: 'flex-start' }}
         >
-          New Quest
+          {QUICK_ACTION_LABELS.new_quest}
         </Button>
         <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
           <TextInput

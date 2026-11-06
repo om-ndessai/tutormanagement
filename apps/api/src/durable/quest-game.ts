@@ -76,7 +76,7 @@ type Failure = { ok: false; status: 403 | 404 | 409; message: string };
 export type GameReply<T> = { ok: true; data: T } | Failure;
 
 const ok = <T>(data: T): GameReply<T> => ({ ok: true, data });
-const notFound = (message = 'That game was not found.'): Failure => ({ ok: false, status: 404, message });
+const notFound = (message = 'That quest was not found.'): Failure => ({ ok: false, status: 404, message });
 const conflict = (message: string): Failure => ({ ok: false, status: 409, message });
 const forbidden = (message: string): Failure => ({ ok: false, status: 403, message });
 
@@ -166,7 +166,7 @@ export class QuestGame extends DurableObject<Env> {
     hostPlays = false,
     seated: { id: string; first_name: string }[] = [],
   ): Promise<GameReply<GameView>> {
-    if (this.game) return conflict('That game already exists.');
+    if (this.game) return conflict('That quest already exists.');
     this.game = normalizeEngineGame(game);
     await this.save();
     await this.ctx.storage.setAlarm(game.created_at + LOBBY_TTL_MS);
@@ -285,19 +285,19 @@ export class QuestGame extends DurableObject<Env> {
     const game = this.game;
     // Phase 77 (JF15): a game played on one device is nobody else's to join -- as if there were none.
     if (!game || gameIsSeated(game)) return notFound();
-    if (game.players === 'single') return conflict('This is a single-player game.');
+    if (game.players === 'single') return conflict('This is a single-player quest.');
     if (!gameOpenToJoin(game, now) || this.busy) {
-      return conflict(game.status === 'finished' ? 'This game has ended.' : 'This game has started, so it cannot be joined now.');
+      return conflict(game.status === 'finished' ? 'This quest has ended.' : 'This quest has started, so it cannot be joined now.');
     }
-    if (findTeamOf(game, person.id)) return conflict('You are in this game already.');
+    if (findTeamOf(game, person.id)) return conflict('You are in this quest already.');
     const players = game.teams.reduce((n, t) => n + t.players.length, 0);
-    if (players >= GAME_LIMITS.maxPlayers) return conflict('This game is full.');
+    if (players >= GAME_LIMITS.maxPlayers) return conflict('This quest is full.');
     const org = orgIdFromRow(game.organization_id);
     const player = { user_id: person.id, first_name: person.first_name, joined_at: now };
 
     if (input.as === 'team') {
       const team = game.teams.find((t) => t.code === input.team_code);
-      if (!team) return notFound('No team in this game has that code.');
+      if (!team) return notFound('No team in this quest has that code.');
       if (team.players.length >= game.max_team_size) return conflict('That team is full.');
       // Into memory first, so a second join in the same moment sees the place taken.
       team.players.push(player);
@@ -312,7 +312,7 @@ export class QuestGame extends DurableObject<Env> {
     }
 
     if (input.as === 'new_team' && game.max_team_size === 1) {
-      return conflict('This game is for players on their own.');
+      return conflict('This quest is for players on their own.');
     }
     const added = await this.addTeam(game, person, input.as === 'new_team' ? input.team_name : null, now);
     if (!added.ok) return added;
@@ -332,7 +332,7 @@ export class QuestGame extends DurableObject<Env> {
   ): Promise<GameReply<EngineTeam>> {
     const live = game.teams.filter((t) => t.players.length > 0).length;
     if (live >= game.max_teams) {
-      return conflict(`This game has its ${game.max_teams} ${game.max_team_size === 1 ? 'players' : 'teams'} already.`);
+      return conflict(`This quest has its ${game.max_teams} ${game.max_team_size === 1 ? 'players' : 'teams'} already.`);
     }
     const solo = teamName === null;
     let code: string | null = null;
@@ -344,7 +344,7 @@ export class QuestGame extends DurableObject<Env> {
       if (code === null) return conflict('Could not make a team code just now. Try again.');
       // The code check waited on D1: another request may have moved the game on.
       if (!gameOpenToJoin(game, Date.now()) || findTeamOf(game, person.id)) {
-        return conflict('This game has started, so it cannot be joined now.');
+        return conflict('This quest has started, so it cannot be joined now.');
       }
     }
     const team: EngineTeam = {
@@ -387,13 +387,13 @@ export class QuestGame extends DurableObject<Env> {
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
     const team = findTeamOf(game, viewer.id);
-    if (!team) return conflict('You are not playing in this game.');
+    if (!team) return conflict('You are not playing in this quest.');
     if (game.status === 'running') {
       releaseHand(team, viewer.id);
       await this.save();
       return ok({ left_lobby: false });
     }
-    if (game.status !== 'lobby' || this.busy) return conflict('This game has ended.');
+    if (game.status !== 'lobby' || this.busy) return conflict('This quest has ended.');
     const dropTeam = team.players.length === 1;
     await removePlayer(this.env.DB, orgIdFromRow(game.organization_id), {
       gameId: game.id,
@@ -411,7 +411,7 @@ export class QuestGame extends DurableObject<Env> {
   async start(viewer: GameViewer, includeUnreviewed: boolean): Promise<GameReply<GameView>> {
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
-    if (game.host.user_id !== viewer.id) return forbidden('Only the person who started the game can begin it.');
+    if (game.host.user_id !== viewer.id) return forbidden('Only the person who started the quest can begin it.');
     return this.begin(viewer, includeUnreviewed);
   }
 
@@ -422,7 +422,7 @@ export class QuestGame extends DurableObject<Env> {
   private async begin(viewer: GameViewer, includeUnreviewed: boolean): Promise<GameReply<GameView>> {
     const game = this.game;
     if (!game) return notFound();
-    if (game.status !== 'lobby' || this.busy) return conflict('This game has already begun.');
+    if (game.status !== 'lobby' || this.busy) return conflict('This quest has already begun.');
     if (!game.teams.some((t) => t.players.length > 0)) return conflict('Nobody has joined yet.');
     this.busy = true;
     try {
@@ -465,9 +465,9 @@ export class QuestGame extends DurableObject<Env> {
   async end(viewer: GameViewer): Promise<GameReply<GameView>> {
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
-    if (game.host.user_id !== viewer.id && !viewer.admin) return forbidden('Only the person who started the game can end it.');
-    if (game.status === 'finished') return conflict('This game has ended already.');
-    if (this.busy) return conflict('The game is starting. Try again in a moment.');
+    if (game.host.user_id !== viewer.id && !viewer.admin) return forbidden('Only the person who started the quest can end it.');
+    if (game.status === 'finished') return conflict('This quest has ended already.');
+    if (this.busy) return conflict('The quest is starting. Try again in a moment.');
     await this.finish(Date.now(), 'host');
     return ok(this.toView(game, viewer, Date.now()));
   }
@@ -486,7 +486,7 @@ export class QuestGame extends DurableObject<Env> {
       return conflict('That player is not yours to answer for: only a child you are playing with on this device.');
     }
     const team = findTeamOf(game, player);
-    if (!team) return conflict('You are not playing in this game.');
+    if (!team) return conflict('You are not playing in this quest.');
     const outcome = answerQuestion(game, team, this.series, {
       userId: player,
       questionId: input.question_id,
@@ -498,8 +498,8 @@ export class QuestGame extends DurableObject<Env> {
       if (outcome.reason === 'not_yours') {
         return conflict('That question is no longer yours to answer: a teammate has it, or it was answered.');
       }
-      if (outcome.reason === 'not_started') return conflict('The game has not begun yet.');
-      return conflict('The game is over.');
+      if (outcome.reason === 'not_started') return conflict('The quest has not begun yet.');
+      return conflict('The quest is over.');
     }
     const reason = gameEndReason(game, now);
     if (reason) {
@@ -516,7 +516,7 @@ export class QuestGame extends DurableObject<Env> {
   async results(viewer: GameViewer, teamId: string | null): Promise<GameReply<GameResults>> {
     const game = this.game;
     if (!game || !this.canSee(game, viewer)) return notFound();
-    if (game.status !== 'finished') return conflict('The results come when the game ends.');
+    if (game.status !== 'finished') return conflict('The results come when the quest ends.');
     const mine = findTeamOf(game, viewer.id);
     const overseer = viewer.admin || game.host.user_id === viewer.id;
     let team: EngineTeam | null | undefined;

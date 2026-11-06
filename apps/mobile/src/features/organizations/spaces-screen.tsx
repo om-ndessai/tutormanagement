@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Button, Chip, List, Surface, Text, TouchableRipple } from 'react-native-paper';
 
-import { IconButton } from '@/components/icon-button';
 import { ListItem } from '@/components/list-item';
 import { LogoMark } from '@/components/logo';
 import { Screen } from '@/components/screen';
@@ -16,7 +15,7 @@ import { problemMessage } from '@/lib/api-errors';
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
-import { radius, space } from '@/theme/tokens';
+import { MIN_TARGET, radius, space } from '@/theme/tokens';
 
 import { useAnswerInvitation, useLeaveSpace } from './api';
 import { OrgAvatar } from './org-avatar';
@@ -99,7 +98,7 @@ export function SpacesScreen({ focusJoin = false, focusStart = false }: { focusJ
       {invitations.length > 0 ? (
         <View style={{ gap: space.sm }} accessibilityLabel="Invitations">
           <Text variant="labelLarge" accessibilityRole="header" style={{ color: theme.colors.onSurfaceVariant }}>
-            INVITATIONS
+            Invitations
           </Text>
           {invitations.map((invite) => (
             <Surface
@@ -149,7 +148,7 @@ export function SpacesScreen({ focusJoin = false, focusStart = false }: { focusJ
       {memberships.length > 0 ? (
         <View style={{ gap: space.sm }} accessibilityLabel="Your spaces">
           <Text variant="labelLarge" accessibilityRole="header" style={{ color: theme.colors.onSurfaceVariant }}>
-            YOUR SPACES
+            Your spaces
           </Text>
           {active.map((org) => (
             <SpaceRow key={org.slug} org={org} current={org.slug === organization?.slug} />
@@ -273,7 +272,8 @@ export function SpaceRow({ org, current }: { org: Membership; current: boolean }
               <OrgAvatar org={org} />
               <View style={{ flex: 1, gap: 2 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' }}>
-                  <Text variant="titleMedium" numberOfLines={1}>
+                  {/* A space's name wraps rather than truncating (Phase 78, JF28). */}
+                  <Text variant="titleMedium" style={{ flexShrink: 1 }}>
                     {org.name}
                   </Text>
                   {current ? (
@@ -295,9 +295,14 @@ export function SpaceRow({ org, current }: { org: Membership; current: boolean }
             </View>
           </TouchableRipple>
         )}
-        <IconButton
+        {/* Phase 78 (UI audit JF35, J18 step 7): Leave says its word beside its icon, not the icon alone. */}
+        <Button
+          mode="text"
+          compact
           icon="logout"
-          iconColor={theme.colors.onSurfaceVariant}
+          textColor={theme.colors.onSurfaceVariant}
+          contentStyle={{ minHeight: MIN_TARGET }}
+          style={{ alignSelf: 'center', marginRight: space.sm }}
           onPress={() => {
             haptics.selection();
             setProblem(null);
@@ -306,7 +311,9 @@ export function SpaceRow({ org, current }: { org: Membership; current: boolean }
           testID={`space-leave-${org.slug}`}
           accessibilityLabel={`Leave ${org.name}`}
           accessibilityState={{ expanded: asking }}
-        />
+        >
+          Leave
+        </Button>
       </View>
       {asking ? (
         <View

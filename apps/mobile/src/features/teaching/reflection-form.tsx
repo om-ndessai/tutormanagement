@@ -11,7 +11,9 @@
 // symmetrically, never darker for a higher value.
 import {
   REFLECTION_QUESTIONS,
+  formatDay,
   sessionReflectionInputSchema,
+  todayIn,
   type Rating,
   type ReflectionKey,
   type TutoringSession,
@@ -30,7 +32,7 @@ import { useToast } from '@/components/toast';
 import { useDirty, useUnsavedChangesGuard } from '@/hooks/use-unsaved-changes';
 import { ApiRequestError } from '@/lib/api-client';
 import { haptics } from '@/lib/haptics';
-import { useAuth } from '@/providers/auth-provider';
+import { useAuth, useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
@@ -200,6 +202,7 @@ function ProgressDots({ current }: { current: number }) {
 
 function ReflectionCards({ session }: { session: TutoringSession }) {
   const { user } = useAuth();
+  const today = todayIn(useOrgTimeZone());
   const theme = useAppTheme();
   const toast = useToast();
   const save = useSaveReflection();
@@ -345,7 +348,7 @@ function ReflectionCards({ session }: { session: TutoringSession }) {
           {forStudent ? 'How did this lesson go for you?' : `${name}’s reflection`}
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
-          The {session.occurred_on} lesson with {session.tutor_name}.{' '}
+          The {formatDay(session.occurred_on, today)} lesson with {session.tutor_name}.{' '}
           {forStudent
             ? 'Your tutor, your parents and the office can read it.'
             : `You are entering this for ${name}, in ${name}’s words. The tutor, the family and the office can read it, and ${name} can change it later.`}

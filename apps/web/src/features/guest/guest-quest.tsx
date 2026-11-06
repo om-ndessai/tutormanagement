@@ -13,7 +13,6 @@ import {
 } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -186,16 +185,10 @@ export function GuestQuest({ tile, today }: { tile: GuestTile; today?: { day: st
       {current && (
         <Card className="py-0" data-testid="guest-question">
           <CardContent className="grid gap-4 p-6">
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase" data-testid="guest-quest-name">
-                {guestQuestName(tile, Boolean(today))}
-              </span>
-              {current.beta && (
-                <Badge variant="secondary" className="px-1.5 py-0 text-[10px]" data-testid="guest-question-beta">
-                  Beta
-                </Badge>
-              )}
-            </div>
+            {/* Phase 78: no Beta mark -- a checked question is served like any other. */}
+            <span className="text-muted-foreground text-[13px] font-medium" data-testid="guest-quest-name">
+              {guestQuestName(tile, Boolean(today))}
+            </span>
             <MathText text={current.stem} className="text-lg leading-relaxed" />
             {current.kind === 'choice' ? (
               <div className="grid gap-2" role="group" aria-label="Your answer">

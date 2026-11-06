@@ -44,7 +44,7 @@ function Sheet() {
     <>
       <DictationField
         testID="record-notes"
-        label="Session notes"
+        label="Lesson notes"
         value={values.notes}
         onChange={(text) => set('notes', text)}
         maxLength={4000}

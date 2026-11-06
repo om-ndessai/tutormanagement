@@ -2,8 +2,10 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { Link } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon, MapPinIcon } from 'lucide-react';
 import {
+  COMMON_COPY,
   SESSION_MODE_LABELS,
   formatClockTime,
+  formatDay,
   formatDuration,
   formatMinutesOfDay,
   parseClockTime,
@@ -20,25 +22,9 @@ import { cn } from '@/lib/utils';
 import { EmptyNote } from './stat-card';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 
-const DAY_MS = 86_400_000;
-
-function dayNumber(iso: string): number {
-  return Math.floor(Date.parse(`${iso}T00:00:00Z`) / DAY_MS);
-}
-
-/** "Today", "Tomorrow", "Yesterday", else "Thu, Sep 25". */
+/** "Today", "Tomorrow", "Yesterday", else "Thu, Sep 25": through the one shared formatter (Phase 78). */
 function relativeDay(iso: string, today: string): string {
-  const gap = dayNumber(iso) - dayNumber(today);
-  if (gap === 0) return 'Today';
-  if (gap === 1) return 'Tomorrow';
-  if (gap === -1) return 'Yesterday';
-
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+  return formatDay(iso, today, { relative: true, weekday: true });
 }
 
 /** "in 45 min", "in 2 hr 10 min", "Under way", or "Tomorrow at 4:00 PM". */
@@ -157,7 +143,7 @@ export function SessionsCarousel({
           variant="outline"
           size="icon"
           className="size-8"
-          aria-label="Earlier sessions"
+          aria-label="Earlier lessons"
           disabled={!edges.left}
           onClick={back}
         >
@@ -167,7 +153,7 @@ export function SessionsCarousel({
           variant="outline"
           size="icon"
           className="size-8"
-          aria-label="Later sessions"
+          aria-label="Later lessons"
           disabled={!canForward || upcoming.isFetchingNextPage}
           onClick={() => void forward()}
         >
@@ -187,7 +173,7 @@ export function SessionsCarousel({
         ))}
         {past.length === 0 && (
           <div className="text-muted-foreground flex w-44 shrink-0 snap-center items-center justify-center rounded-xl border border-dashed p-4 text-center text-xs">
-            No sessions recorded yet
+            {COMMON_COPY.no_lessons_yet}
           </div>
         )}
 
@@ -196,7 +182,7 @@ export function SessionsCarousel({
           aria-hidden
           className="flex shrink-0 snap-center flex-col items-center gap-1 self-stretch px-0.5"
         >
-          <span className="text-primary text-[10px] font-semibold tracking-wide uppercase">Now</span>
+          <span className="text-primary text-xs font-semibold">Now</span>
           <span className="bg-primary/50 w-px flex-1" />
         </div>
 
@@ -270,7 +256,7 @@ function Who({
   inverse?: boolean;
 }) {
   return (
-    <p className="mt-1 truncate text-sm font-medium">
+    <p className="mt-1 text-sm font-medium break-words">
       {student}
       {showTutor && (
         <span className={cn('font-normal', inverse ? 'text-primary-foreground/80' : 'text-muted-foreground')}>
@@ -295,9 +281,9 @@ function PastCard({
     <Link
       to={`/sessions?focus=${session.id}`}
       className={cn(CARD, 'bg-muted/40 hover:border-primary/40 w-56')}
-      aria-label={`Past session: ${session.student_name}, ${relativeDay(session.occurred_on, today)}`}
+      aria-label={`Past lesson: ${session.student_name}, ${relativeDay(session.occurred_on, today)}`}
     >
-      <p className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
+      <p className="text-muted-foreground text-xs font-medium">
         {relativeDay(session.occurred_on, today)}
       </p>
       <p className="text-muted-foreground text-xs tabular-nums">
@@ -309,13 +295,13 @@ function PastCard({
         <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">{session.notes}</p>
       )}
       <div className="mt-auto flex flex-wrap gap-1 pt-2">
-        <Badge variant="secondary" className="text-[10px]">
+        <Badge variant="secondary" className="text-xs">
           {SESSION_MODE_LABELS[session.mode]}
         </Badge>
         {session.auto_stopped && (
           <Badge
             variant="outline"
-            className="border-warning/60 text-warning-foreground dark:text-warning text-[10px]"
+            className="border-warning/60 text-warning-foreground dark:text-warning text-xs"
           >
             Auto-stopped
           </Badge>
@@ -340,9 +326,9 @@ function UpcomingCard({
     <Link
       to={`/schedule?focus=${occurrence.schedule_id}`}
       className={cn(CARD, 'bg-card hover:border-primary/40 w-56')}
-      aria-label={`Upcoming session: ${occurrence.student_name}, ${relativeDay(occurrence.occurs_on, today)}`}
+      aria-label={`Upcoming lesson: ${occurrence.student_name}, ${relativeDay(occurrence.occurs_on, today)}`}
     >
-      <p className="text-[11px] font-medium tracking-wide uppercase">
+      <p className="text-xs font-medium">
         {relativeDay(occurrence.occurs_on, today)}
       </p>
       <p className="text-muted-foreground text-xs tabular-nums">
@@ -374,13 +360,13 @@ function CancelledCard({
     <Link
       to={`/schedule?focus=${occurrence.schedule_id}&on=${occurrence.occurs_on}`}
       className={cn(CARD, 'bg-muted/40 hover:border-primary/40 w-56 border-dashed')}
-      aria-label={`Cancelled session: ${occurrence.student_name}, ${relativeDay(occurrence.occurs_on, today)}`}
+      aria-label={`Cancelled lesson: ${occurrence.student_name}, ${relativeDay(occurrence.occurs_on, today)}`}
     >
       <div className="flex items-center justify-between gap-2">
-        <p className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
+        <p className="text-muted-foreground text-xs font-medium">
           {relativeDay(occurrence.occurs_on, today)}
         </p>
-        <Badge variant="outline" className="text-[10px]">
+        <Badge variant="outline" className="text-xs">
           Cancelled
         </Badge>
       </div>
@@ -417,10 +403,10 @@ function NextCard({
         CARD,
         'bg-primary text-primary-foreground border-primary w-72 shadow-md hover:shadow-lg',
       )}
-      aria-label={`Next session: ${occurrence.student_name}, ${countdown(occurrence, today, nowMinutes)}`}
+      aria-label={`Next lesson: ${occurrence.student_name}, ${countdown(occurrence, today, nowMinutes)}`}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="bg-primary-foreground/15 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase">
+        <span className="bg-primary-foreground/15 rounded-full px-2 py-0.5 text-xs font-semibold">
           Next up
         </span>
         <span className="text-primary-foreground/85 text-xs tabular-nums">

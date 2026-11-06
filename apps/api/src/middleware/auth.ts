@@ -53,7 +53,7 @@ export const requireAuth = createMiddleware<AppEnv>(async (c, next) => {
     }
     const requested = c.req.header(DEV_USER_HEADER)?.trim();
     const person = requested ? await getPersonByEmail(c.env.DB, requested) : null;
-    if (!person) throw new ApiError(404, 'not_found', `No live user matches ${DEV_USER_HEADER}.`);
+    if (!person) throw new ApiError(404, 'not_found', `No live person matches ${DEV_USER_HEADER}.`);
     assertAccess(person);
     c.set('person', person);
     c.set('platformAdmin', person.platform_admin);
@@ -120,7 +120,7 @@ async function resolveBypassPerson(env: AppEnv['Bindings'], requestedEmail?: str
       throw new ApiError(
         404,
         'not_found',
-        `No live user matches the requested ${DEV_USER_HEADER} address (${requestedEmail}).`,
+        `No live person matches the requested ${DEV_USER_HEADER} address (${requestedEmail}).`,
       );
     }
 

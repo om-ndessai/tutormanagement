@@ -13,7 +13,7 @@ export const TARGET_ICONS: Record<CommentTargetType, string> = {
 
 export const FILTER_LABELS: Record<CommentTargetType, string> = {
   user: 'People',
-  session: 'Sessions',
+  session: 'Lessons',
   assignment: 'Pairings',
   scheduled_session: 'Schedule',
 };

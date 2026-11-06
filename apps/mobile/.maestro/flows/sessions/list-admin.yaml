@@ -22,7 +22,9 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: stat-sessions
@@ -55,13 +57,17 @@ tags:
 - assertVisible: 'Tutor \$[0-9,]+\.[0-9]{2} · .*'
 - assertNotVisible: '(?i)your pay'
 - takeScreenshot: sessions-admin-finance
-# The list grows 25 at a time.
+# The list grows 25 at a time. Centred: found at the foot of the screen, the button sits under the tab bar's
+# (+), which takes the tap (Phase 78 pads the page so it can always be brought clear).
 - scrollUntilVisible:
     element:
       id: sessions-load-more
     direction: DOWN
     speed: 90
+    centerElement: true
     timeout: 90000
+- waitForAnimationToEnd:
+    timeout: 3000
 - assertVisible: 'Showing 1–25 of [0-9]+'
 - tapOn:
     id: sessions-load-more
@@ -71,12 +77,17 @@ tags:
     speed: 90
     timeout: 90000
 - takeScreenshot: sessions-admin-more
+# Centred: the long scroll back up can leave the tabs at the top, under the header, where the tap lands on
+# the header and Finance stays chosen.
 - scrollUntilVisible:
     element:
       id: tabs-tutoring
     direction: UP
     speed: 90
+    centerElement: true
     timeout: 120000
+- waitForAnimationToEnd:
+    timeout: 3000
 - tapOn:
     id: tabs-tutoring
 - extendedWaitUntil:

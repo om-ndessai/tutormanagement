@@ -17,16 +17,6 @@ export function shiftDay(iso: string, days: number): string {
   return new Date(Date.UTC(year!, (month ?? 1) - 1, (day ?? 1) + days)).toISOString().slice(0, 10);
 }
 
-/** "Tue, Sep 29", read as a calendar date wherever the reader is. */
-export function formatLessonDay(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-}
-
 /** "by Maria Okafor (the family)", or just the capacity once they are gone. */
 export function cancelledByText(name: string | null, role: ScheduleCancellerRole): string {
   return name ? `by ${name} (${SCHEDULE_CANCELLER_LABELS[role]})` : `by ${SCHEDULE_CANCELLER_LABELS[role]}`;

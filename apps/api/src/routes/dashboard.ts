@@ -31,7 +31,7 @@ export const dashboardRoutes = new Hono<AppEnv>().get(
 
       // Only a member of this organization: an admin's "view as" reaches no further.
       const other = await getLiveUserById(c.env.DB, c.get('org').id, user_id);
-      if (!other) throw ApiError.notFound('That user does not exist.');
+      if (!other) throw ApiError.notFound('That person does not exist.');
 
       subject = other;
     }

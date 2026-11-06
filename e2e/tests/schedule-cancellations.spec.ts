@@ -352,17 +352,17 @@ test.describe('cancelling one lesson of a schedule', () => {
 
     try {
       await alex.goto('/dashboard');
-      const sessions = alex.getByRole('region', { name: 'Tutoring Sessions' });
-      const cancelled = sessions.getByRole('link', { name: /^Cancelled session:/ }).first();
+      const sessions = alex.getByRole('region', { name: 'Lessons', exact: true });
+      const cancelled = sessions.getByRole('link', { name: /^Cancelled lesson:/ }).first();
       await expect(cancelled).toBeVisible();
       await expect(cancelled).toContainText('Test: called off.');
       await expect(cancelled).toHaveAttribute('href', `/schedule?focus=${next.schedule_id}&on=${next.occurs_on}`);
 
       // The highlighted card is the next lesson actually happening: it comes
       // after the cancelled one in the strip, not in its place.
-      await expect(sessions.getByRole('link', { name: /^Next session:/ })).toBeVisible();
+      await expect(sessions.getByRole('link', { name: /^Next lesson:/ })).toBeVisible();
       await expect(
-        sessions.locator('a[aria-label^="Cancelled session:"] ~ a[data-anchor="next"]'),
+        sessions.locator('a[aria-label^="Cancelled lesson:"] ~ a[data-anchor="next"]'),
       ).toHaveCount(1);
     } finally {
       await restore(alex, next.schedule_id, next.occurs_on);

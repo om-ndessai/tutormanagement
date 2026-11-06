@@ -2,9 +2,10 @@
 import { fireEvent, screen } from '@testing-library/react-native';
 import { Dimensions } from 'react-native';
 
+import { formatDay, readableDates } from '@tmi/shared';
+
 import { isLargeText, scaledIconSize } from '@/hooks/use-large-text';
 import { countOf } from '@/lib/plural';
-import { formatPlainDay, readableDates } from '@/features/teaching/session-format';
 import { carouselWidths } from '@/features/dashboard/carousel-model';
 import { renderWithProviders } from '@/test/render';
 import { PageIntro } from './page-intro';
@@ -51,7 +52,7 @@ describe('large text', () => {
     const grid = (
       <StatGrid>
         {[
-          <StatCard key="a" label="Sessions" value={2} icon="book" animate={false} />,
+          <StatCard key="a" label="Lessons" testID="stat-sessions" value={2} icon="book" animate={false} />,
           <StatCard key="b" label="Time taught" value={3} icon="clock" animate={false} />,
         ]}
       </StatGrid>
@@ -78,17 +79,18 @@ describe('large text', () => {
 });
 
 describe('copy', () => {
+  // Phase 78 (JF35): one shared formatter, read by the web and the app alike.
   it('reads calendar dates as a person would (F-24)', () => {
-    expect(formatPlainDay('2026-09-15', '2026-10-10')).toBe('Sep 15');
-    expect(formatPlainDay('2025-12-01', '2026-10-10')).toBe('Dec 1, 2025');
-    expect(readableDates('the 2026-09-15 session with Sofia Okafor', '2026-10-10')).toBe(
-      'the Sep 15 session with Sofia Okafor',
+    expect(formatDay('2026-09-15', '2026-10-10')).toBe('Sep 15');
+    expect(formatDay('2025-12-01', '2026-10-10')).toBe('Dec 1, 2025');
+    expect(readableDates('the 2026-09-15 lesson with Sofia Okafor', '2026-10-10')).toBe(
+      'the Sep 15 lesson with Sofia Okafor',
     );
   });
 
   it('pluralises counts (F-25)', () => {
-    expect(countOf(1, 'session')).toBe('1 session');
-    expect(countOf(2, 'session')).toBe('2 sessions');
-    expect(countOf(0, 'session')).toBe('0 sessions');
+    expect(countOf(1, 'lesson')).toBe('1 lesson');
+    expect(countOf(2, 'lesson')).toBe('2 lessons');
+    expect(countOf(0, 'lesson')).toBe('0 lessons');
   });
 });

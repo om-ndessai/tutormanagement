@@ -1,12 +1,11 @@
 // Ported from apps/web/src/features/auth/sign-in-methods-card.tsx @ 3279506
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AUTH_PROVIDER_LABELS, type ApiOk, type AuthProvider, type UserIdentity } from '@tmi/shared';
+import { type ApiOk, AUTH_PROVIDER_LABELS, type AuthProvider, formatInstant, type UserIdentity } from '@tmi/shared';
 import { View } from 'react-native';
 import { Button, Divider, Icon, Text } from 'react-native-paper';
 
 import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
-import { formatInstant } from '@/features/users/people-model';
 import { ApiRequestError, apiClient } from '@/lib/api-client';
 import { googleIdToken } from '@/lib/google-sign-in';
 import { haptics } from '@/lib/haptics';
@@ -131,7 +130,7 @@ export function SignInMethodsCard() {
                   </Text>
                 ) : null}
                 <Text variant="bodySmall" style={{ color: muted }}>
-                  {row.last_used_at ? `Last used ${formatInstant(row.last_used_at, timeZone, '')}` : 'Not used yet'}
+                  {row.last_used_at ? `Last used ${formatInstant(row.last_used_at, timeZone)}` : 'Not used yet'}
                 </Text>
               </View>
               <Button

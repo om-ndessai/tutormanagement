@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Loader2Icon, SmileIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import {
+  COMMON_COPY,
   REFLECTION_QUESTIONS,
   SESSION_REFLECTOR_LABELS,
   reflectionFlags,
@@ -25,6 +26,7 @@ import {
 } from '@/components/ui/dialog';
 import { RatingChip, RatingPicker, ScaleChip } from '@/features/progress/rating';
 import { ApiRequestError } from '@/lib/api-client';
+import { useDates } from '@/hooks/use-dates';
 import { useAuth } from '@/providers/auth-provider';
 import { useSaveReflection, useWithdrawReflection } from './api';
 import { NoteField } from './session-notes';
@@ -90,7 +92,7 @@ export function ReflectionFlags({ reflection }: { reflection: SessionReflection 
         <Badge
           key={flag}
           variant="outline"
-          className="border-warning/60 text-warning-foreground dark:text-warning text-[10px]"
+          className="border-warning/60 text-warning-foreground dark:text-warning text-xs"
         >
           {flag}
         </Badge>
@@ -104,7 +106,7 @@ export function ReflectionChips({ reflection }: { reflection: SessionReflection 
   return (
     <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
       {REFLECTION_QUESTIONS.map((question) => (
-        <span key={question.key} className="text-muted-foreground flex items-center gap-1 text-[11px]">
+        <span key={question.key} className="text-muted-foreground flex items-center gap-1 text-xs">
           <AnswerChip questionKey={question.key} value={reflection[question.key]} />
           {question.short}
         </span>
@@ -123,7 +125,7 @@ export function ReflectionView({
 }) {
   return (
     <section>
-      <h4 className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
+      <h4 className="text-muted-foreground text-xs font-semibold">
         {firstName(studentName)}’s reflection
       </h4>
       <dl className="mt-1 grid gap-1.5 sm:grid-cols-2">
@@ -246,6 +248,7 @@ export function ReflectionDialog({
   onClose: () => void;
 }) {
   const { user } = useAuth();
+  const dates = useDates();
   const save = useSaveReflection();
   const withdraw = useWithdrawReflection();
 
@@ -327,7 +330,7 @@ export function ReflectionDialog({
             <DialogDescription>
               {session && (
                 <>
-                  The {session.occurred_on} lesson with {session.tutor_name}.{' '}
+                  The {dates.day(session.occurred_on, { weekday: true })} lesson with {session.tutor_name}.{' '}
                   {forStudent
                     ? 'Your tutor, your parents and the office can read it.'
                     : `You are entering this for ${name}, in ${name}’s words. The tutor, the family and the office can read it, and ${name} can change it later.`}
@@ -412,7 +415,7 @@ export function ReflectButton({
         forStudent
           ? session.reflection
             ? 'Edit your reflection'
-            : 'Reflect on this session'
+            : COMMON_COPY.reflect_on_lesson
           : `${session.reflection ? 'Edit' : 'Add'} ${firstName(session.student_name)}’s reflection`
       }
     >

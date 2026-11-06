@@ -2,6 +2,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeftIcon, DownloadIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { useDates } from '@/hooks/use-dates';
 import { PdfViewer } from '@/features/canvas-assessments/pdf-viewer';
 import { progressReportUrl, useStudentProgress } from './api';
 
@@ -12,10 +13,6 @@ import { progressReportUrl, useStudentProgress } from './api';
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
-function longDate(iso: string) {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, { dateStyle: 'medium', timeZone: 'UTC' });
-}
-
 export function ProgressReportPage() {
   const { studentId = '' } = useParams();
   const [params] = useSearchParams();
@@ -23,6 +20,9 @@ export function ProgressReportPage() {
   const from = ISO_DATE.test(params.get('from') ?? '') ? params.get('from')! : undefined;
   const to = ISO_DATE.test(params.get('to') ?? '') ? params.get('to')! : undefined;
   const original = params.get('original') === '1';
+  const dates = useDates();
+  // A report's range keeps its years: it is read later (the one shared formatter, Phase 78).
+  const longDate = (iso: string) => dates.day(iso, { year: 'always' });
 
   // Usually cached from the progress page; it only names the student.
   const { data } = useStudentProgress(studentId);

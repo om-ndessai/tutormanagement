@@ -14,7 +14,6 @@
 // - on an iPad the student's answer and the buttons sit beside the question.
 import {
   QUESTION_DIFFICULTY_LABELS,
-  questLevelLabel,
   questReviewSchema,
   type QuestReviewDecision,
   type QuestReviewItem,
@@ -45,6 +44,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
+import { questLevelWords } from './level-words';
 import { useQuestReview, useReviewQuest } from './api';
 import { QuestFrame, QuestStatus, exitQuest } from './quest-frame';
 import { questReviewHtml, questReviewSpeech, questReviewText } from './quest-html';
@@ -159,7 +159,7 @@ function ReviewItem({ item, scroller }: { item: QuestReviewItem; scroller: RefOb
 
   const meta = (
     <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
-      <BadgePill label={questLevelLabel(q.level_id)} testID="quest-review-level" />
+      <BadgePill label={questLevelWords(q.level_id)} testID="quest-review-level" />
       <Text testID="quest-review-topic" variant="bodySmall" style={{ color: muted, flexShrink: 1 }}>
         {`${q.topic_code} · ${q.topic_name} · ${QUESTION_DIFFICULTY_LABELS[q.difficulty]}${q.skill ? ` · ${q.skill}` : ''}`}
       </Text>

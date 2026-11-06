@@ -85,9 +85,10 @@ describe('DailyScreen (Phase 64)', () => {
     expect(screen.getByTestId('daily-submit').props.accessibilityState).toMatchObject({ disabled: true });
     await fireEvent.press(screen.getByTestId('daily-choice-1'));
     await fireEvent.press(screen.getByTestId('daily-submit'));
-    // A number question, with its Beta chip.
+    // A number question: a checked one (`beta`) carries no mark (Phase 78, owner 2026-11-05).
     expect(screen.getByTestId('daily-progress')).toHaveTextContent('Grade 4 · question 2 of 5');
-    expect(screen.getByTestId('daily-question-beta')).toBeTruthy();
+    expect(screen.queryByTestId('daily-question-beta')).toBeNull();
+    expect(screen.queryByText('Beta')).toBeNull();
     await fireEvent.changeText(screen.getByTestId('daily-number'), ' 12 ');
     await fireEvent.press(screen.getByTestId('daily-submit'));
     // Nothing goes to the server between questions.
@@ -102,7 +103,9 @@ describe('DailyScreen (Phase 64)', () => {
 
     // The result, from the server's reply.
     expect(await screen.findByTestId('daily-result')).toBeTruthy();
-    expect(screen.getByTestId('daily-heading')).toHaveTextContent('G4D #1 · 2 of 5');
+    // The level in words, never "G4D #1" (JF32).
+    expect(screen.getByTestId('daily-heading')).toHaveTextContent('Grade 4 · 2 of 5');
+    expect(screen.queryByText(/G4D/)).toBeNull();
     expect(screen.getByTestId('daily-grid')).toHaveTextContent('✓✓✗✗✗');
   });
 

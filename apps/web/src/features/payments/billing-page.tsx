@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import {
   PAYMENT_DIRECTION_LABELS,
   PAYMENT_FORM_LABELS,
+  TERMS,
+  countOf,
   formatCents,
   paidDirectly,
   topupDueCents,
@@ -37,6 +39,7 @@ import {
 } from '@/components/ui/table';
 import { ApiRequestError } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import { useDates } from '@/hooks/use-dates';
 import { useAuth } from '@/providers/auth-provider';
 import { PaymentDialog } from './payment-dialog';
 import { useBalances, useDeletePayment, usePayments } from './api';
@@ -48,6 +51,7 @@ import { withOrg } from '@/lib/organization';
  */
 export function BillingPage() {
   const { user, organization } = useAuth();
+  const dates = useDates();
   const isAdmin = user?.roles.includes('admin') ?? false;
   // Phase 54: families pay each tutor directly here; no organization in between.
   const direct = organization ? paidDirectly(organization) : false;
@@ -188,7 +192,7 @@ export function BillingPage() {
         <LedgerTable
           title="Tutors"
           caption="What each tutor has earned, and what they have been paid."
-          columns={['Tutor', 'Sessions', 'Earned', 'Paid', 'Advance held', 'Owed']}
+          columns={['Tutor', TERMS.lesson.Many, 'Earned', 'Paid', 'Advance held', 'Owed']}
           rows={(data?.tutors ?? []).map((tutor) => {
             const due = topupDueCents(tutor);
 
@@ -202,7 +206,7 @@ export function BillingPage() {
                 <AdvanceCell key="advance" tutor={tutor} />,
               ],
               summary:
-                `${tutor.session_count} sessions · ${formatCents(tutor.earned_cents)} earned · ` +
+                `${countOf(tutor.session_count, 'lesson')} · ${formatCents(tutor.earned_cents)} earned · ` +
                 `${formatCents(tutor.paid_cents)} paid` +
                 (tutor.topup_amount_cents == null
                   ? ''
@@ -243,15 +247,14 @@ export function BillingPage() {
         {(payments.data?.data ?? []).map((payment) => (
           <li key={payment.id} className="flex items-start gap-3 p-3">
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-medium">{payment.party_name}</span>
-              <span className="text-muted-foreground block truncate text-xs">
+              <span className="block text-sm font-medium break-words">{payment.party_name}</span>
+              <span className="text-muted-foreground block text-xs break-words">
                 {payment.direction === 'from_parent' ? 'Received' : 'Paid out'}
                 {payment.student_name ? ` · for ${payment.student_name}` : ''}
                 {payment.payee_name ? ` · to ${payment.payee_name}` : ''}
               </span>
               <span className="text-muted-foreground block text-xs">
-                {new Date(payment.paid_at).toLocaleDateString(undefined, { dateStyle: 'medium' })} ·{' '}
-                {PAYMENT_FORM_LABELS[payment.method]}
+                {dates.instant(payment.paid_at, { time: false })} · {PAYMENT_FORM_LABELS[payment.method]}
               </span>
             </span>
             <span className="shrink-0 text-sm font-semibold tabular-nums">
@@ -309,9 +312,7 @@ export function BillingPage() {
             {(payments.data?.data ?? []).map((payment) => (
               <TableRow key={payment.id}>
                 <TableCell className="whitespace-nowrap">
-                  {new Date(payment.paid_at).toLocaleDateString(undefined, {
-                    dateStyle: 'medium',
-                  })}
+                  {dates.instant(payment.paid_at, { time: false })}
                 </TableCell>
                 <TableCell>
                   <Badge
@@ -394,9 +395,7 @@ function HeadlineTile({
   return (
     <Card>
       <CardContent className="py-5">
-        <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-          {label}
-        </p>
+        <p className="text-muted-foreground text-xs font-medium">{label}</p>
         {cents === undefined ? (
           <Skeleton className="mt-2 h-9 w-28" />
         ) : (
@@ -471,7 +470,7 @@ function LedgerTable({
         {rows.map((row) => (
           <li key={row.key} className="flex items-center gap-3 p-3">
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-medium">{row.cells[0]}</span>
+              <span className="block text-sm font-medium break-words">{row.cells[0]}</span>
               <span className="text-muted-foreground block text-xs text-pretty">
                 {row.summary}
               </span>

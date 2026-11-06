@@ -4,7 +4,6 @@ import {
   USER_ROLES,
   centsToInput,
   parseCentsInput,
-  zonedClockParts,
   type AvailabilitySlot,
   type PaymentHandle,
   type UserDetail,
@@ -174,11 +173,6 @@ export function fromDetail(detail: UserDetail): FormState {
       is_primary: link.is_primary,
     })),
   };
-}
-
-/** Today on the organization's clock, for the date an SSN confirmation is recorded. */
-export function todayIso(timeZone: string, now: Date = new Date()): string {
-  return zonedClockParts(now.toISOString(), timeZone).day;
 }
 
 /**

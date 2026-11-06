@@ -1,11 +1,13 @@
 // Ported from apps/web/src/features/comments/comments-page.tsx @ 1132322. The web's select becomes
 // wrapping chips, and Previous/Next a list that pages as it scrolls.
 import {
-  COMMENT_TARGET_LABELS,
   COMMENT_TARGET_TYPES,
   type CommentFeedEntry,
   type CommentTargetType,
-  zonedClockParts,
+  formatInstant,
+  readableDates,
+  TERMS,
+  todayIn,
 } from '@tmi/shared';
 import { FlashList } from '@shopify/flash-list';
 import { router, Stack } from 'expo-router';
@@ -14,12 +16,10 @@ import { ActivityIndicator, Pressable, View } from 'react-native';
 import { Chip, Icon, Text } from 'react-native-paper';
 
 import { ConnectivityBanner } from '@/components/connectivity';
-import { readableDates } from '@/features/teaching/session-format';
 import { PageIntro } from '@/components/page-intro';
 import { useBottomOverlap } from '@/components/live-banner-inset';
 import { Skeleton } from '@/components/skeleton';
 import { EmptyState, ErrorState } from '@/components/state-views';
-import { formatInstant } from '@/features/users/people-model';
 import { haptics } from '@/lib/haptics';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -28,6 +28,14 @@ import { CHIP_HIT_SLOP, radius, space } from '@/theme/tokens';
 import { CommentDeleteButton } from './comment-delete-button';
 import { FILTER_LABELS, TARGET_ICONS, commentTargetHref } from './comment-targets';
 import { useCommentFeedPages } from './use-comment-feed-pages';
+
+/** "No comments on people yet." -- the glossary's plurals (a person's is people, never "persons"), as the web's. */
+const EMPTY_LABELS: Record<CommentTargetType, string> = {
+  user: TERMS.person.many,
+  session: TERMS.lesson.many,
+  assignment: 'pairings',
+  scheduled_session: `scheduled ${TERMS.lesson.many}`,
+};
 
 /**
  * Every comment the viewer may read, in one place.
@@ -141,7 +149,7 @@ export function CommentsScreen() {
               title={
                 targetType === undefined
                   ? 'Nothing has been commented on yet.'
-                  : `No comments on ${COMMENT_TARGET_LABELS[targetType]}s yet.`
+                  : `No comments on ${EMPTY_LABELS[targetType]} yet.`
               }
             />
           )
@@ -164,7 +172,7 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
   const muted = theme.tokens.mutedForeground;
-  const target = readableDates(entry.target_label, zonedClockParts(new Date().toISOString(), timeZone).day);
+  const target = readableDates(entry.target_label, todayIn(timeZone));
 
   return (
     <View
@@ -213,7 +221,7 @@ function FeedRow({ entry }: { entry: CommentFeedEntry }) {
             <Text style={{ color: theme.colors.primary }}>{target}</Text>
           </Text>
           <Text variant="bodySmall" style={{ color: muted }}>
-            {formatInstant(entry.created_at, timeZone, '')}
+            {formatInstant(entry.created_at, timeZone)}
           </Text>
           <Text variant="bodyMedium" style={{ marginTop: space.xs }}>
             {entry.body}

@@ -51,7 +51,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: add-chooser-title
-    text: 'Add people'
+    text: 'Add a person'
 - assertVisible:
     id: add-choice-family
 - assertVisible: 'A family \(parent and child\)'

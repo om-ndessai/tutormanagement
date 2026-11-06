@@ -7,6 +7,7 @@ import {
   SESSION_ASSESSOR_LABELS,
   SESSION_RATING_LABELS,
   TOPIC_RATING_LABELS,
+  formatDay,
   sortAssessments,
   type TutorHomeBrief,
   type TutorHomeLesson,
@@ -22,7 +23,7 @@ import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
-import { placeAction, shortDate } from './now-model';
+import { placeAction } from './now-model';
 import { openDirections, openMeetingLink } from './place-links';
 
 function BriefCard({
@@ -77,7 +78,7 @@ function HomeworkCard({ brief, today }: { brief: TutorHomeBrief; today: string }
   const muted = theme.tokens.mutedForeground;
   const assigned = brief.homework?.assigned?.trim();
   const status = brief.homework?.status_before ?? null;
-  const date = brief.last_lesson ? ` · ${shortDate(brief.last_lesson.occurred_on, today)}` : '';
+  const date = brief.last_lesson ? ` · ${formatDay(brief.last_lesson.occurred_on, today)}` : '';
   return (
     <BriefCard testID="home-brief-homework" icon="notebook-outline" title={`Homework from last time${date}`}>
       <Text testID="home-brief-homework-text" variant="bodyLarge" style={assigned ? undefined : { color: muted }}>
@@ -178,7 +179,7 @@ function TopicCard({ brief, lesson, today }: { brief: TutorHomeBrief; lesson: Tu
                 topic.current
                   ? `Rated ${topic.current} of 5 (${TOPIC_RATING_LABELS[topic.current]}).`
                   : 'Not rated yet.'
-              } The plan's target date is ${shortDate(topic.plan_target_on, today)}.`}
+              } The plan's target date is ${formatDay(topic.plan_target_on, today)}.`}
             </Text>
           </View>
         </View>

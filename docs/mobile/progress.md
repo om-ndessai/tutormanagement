@@ -661,6 +661,28 @@ native rebuild of both dev builds, so build only while the devices are free.
   another and Not now. Typecheck, lint, Jest (191 suites, 1585 tests) and export green; flows written, not yet run on
   the iOS simulator or the Android emulator (`play/play-on-device`, `canvas-assessments/hand-over` new;
   `play/play-with-child`, `play/family`, `canvas-assessments/take`, `features/assess-start` updated).
+- [x] 92. Mobile: Phase 78's app half (2026-11-06, build-log entry 87) -- the look (JF28's rest, JF29, JF32's rest,
+  JF34, JF35's rest; Phase 75's and 77's carried notes). No Beta a player, family or member reads (the console keeps
+  its own, marked `ui-words:`); the glossary's words (the tab "Lessons", "People", "Add a person", quests, lessons),
+  the (+) and the home's quick actions from `quickActionLabel`; levels, quests and favorites in words, tile codes off
+  the cards (a favorite keeps its code as its key, said by `favoriteWords`, as on the web); the Daily's button and hit
+  rings in the space's primary, the guest tiles in the grade hues; the chosen grade chip's 2pt ring, the 12pt "Adv"
+  pill, named picker rows that look like their role, the regenerated palettes with the drawer's accent restated and
+  `check-contrast.mjs`'s new pairs; a 12pt floor and sentence-case eyebrows; names that wrap, the grade row's edge
+  fade and scroll-into-view, the (+)'s inset; the year list near an adult's year, Single player first, "Leave" in
+  words; one shared date formatter; the office's owed lessons as the newest five and "Show all"; the results at the
+  top when a quest ends, and one `now` on Assessments. Typecheck, lint, Jest (192 suites, 1599 tests) and export
+  green; the words check has no app failures. Flows edited, not yet run on the iOS simulator or the Android
+  emulator: `activity/admin`, `activity/tutor`, `canvas-assessments/menu`, `open`, `question-count`, `take`,
+  `comments/feed`, `dashboard/parent`, `dashboard/student`, `dictation/dictate-notes`, `dictate-permission`,
+  `dictate-ssn`, `exposure/narrow-audiences`, `platform-boundary`, `student-controls`, `guest/guest-signup`,
+  `have-code`, `home/next-up-start`, `quick-code`, `locations/schedule-locations`, `onboarding/tour`,
+  `organization/notifications`, `people/add-chooser`, `edit`, `tutor-view`, `play/continue`, `favorites`,
+  `play-home`, `play-on-device`, `quest/game-favorites`, `game-join`, `game-knockout`, `game-late-join`,
+  `game-single`, `game-start`, `game-team`, `level`, `menu`, `play`, `schedule/cancel-restore`, `editor`,
+  `schedule-lesson`, `sessions/assess`, `autosave`, `drafts`, `lessons-owed`, `list-admin`, `list-parent`,
+  `list-tutor`, `live`, `record-finance`, `record`, `row-menu`, `shell/navigation`, `spaces/new-space-quest`, and the
+  journeys `j04a-19`, `j07a-31`, `j15a-17`, `j15a-20`, `j15a-21`.
 
 ## Phase 4 — Google sign-in
 

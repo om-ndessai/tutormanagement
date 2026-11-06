@@ -53,7 +53,7 @@ function QuestCard() {
     <Panel title="Question Quest" testID="space-home-quest">
       <View style={{ gap: space.md }}>
         <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
-          Questions one at a time from the bank, and games to play together.
+          Questions one at a time from the bank, and quests to play together.
         </Text>
         <Button
           testID="space-home-quest-open"

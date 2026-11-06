@@ -288,7 +288,7 @@ describe('MemberHomeScreen', () => {
       { game_id: 'g1', code: 'ABC123', host_first_name: 'Maria', level_id: 'NC26.4', mode: 'count', question_count: 10, duration_seconds: null, status: 'lobby' },
     ];
     await show(SOFIA, ['student']);
-    expect(screen.getByTestId('next-up-game_invite')).toHaveTextContent(/Maria started a game/);
+    expect(screen.getByTestId('next-up-game_invite')).toHaveTextContent(/Maria started a quest/);
     await fireEvent.press(screen.getByTestId('next-up-action'));
     // From Home (Phase 73, JF36): the game's Exit comes back here.
     expect(router.push).toHaveBeenCalledWith({ pathname: '/quest/join-game', params: { code: 'ABC123', from: 'home' } });
@@ -338,7 +338,7 @@ describe('MemberHomeScreen', () => {
     expect(screen.getByTestId('quick-add_person')).toBeTruthy();
   });
 
-  it('one rule for adding people (JF22): a 13-17 admin is not offered Add someone', async () => {
+  it('one rule for adding people (JF22): a 13-17 admin is not offered Add a person', async () => {
     const office = { ...INES, hats: ['office'] as MemberHome['hats'], parent: null, learner: null };
     await show(office, ['admin'], ASSESS, { account: { age_band: 'adult' } });
     expect(screen.getByTestId('quick-add_person')).toBeTruthy();
@@ -872,9 +872,11 @@ describe('Phase 75 (JF19, JF30): the lessons owed, one way, from Home', () => {
 });
 
 describe('Phase 76 (JF21): one Add chooser from Home', () => {
-  it('the office’s "Add someone" opens the chooser', async () => {
+  it('the office’s "Add a person" opens the chooser', async () => {
     const office = { ...INES, hats: ['office'] as MemberHome['hats'], parent: null, learner: null };
     await show(office, ['admin'], ASSESS, { account: { age_band: 'adult' } });
+    // Phase 78: the glossary's words, the same as the web's (`QUICK_ACTION_LABELS`), never "Add someone".
+    expect(screen.getByTestId('quick-add_person')).toHaveTextContent(/Add a person$/);
     await fireEvent.press(screen.getByTestId('quick-add_person'));
     expect(router.navigate).toHaveBeenLastCalledWith('/add');
   });

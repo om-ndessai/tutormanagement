@@ -28,7 +28,7 @@ export const auditRoutes = new Hono<AppEnv>()
       const visible = await visibleUserIds(c.env.DB, org, viewer);
 
       if (params.user_id && params.user_id !== viewer.id && !visible?.has(params.user_id)) {
-        throw ApiError.notFound('That user does not exist.');
+        throw ApiError.notFound('That person does not exist.');
       }
     }
 

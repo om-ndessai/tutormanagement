@@ -6,7 +6,7 @@ import {
   formatCents,
   topupDueCents,
   tutorAdvanceCents,
-  zonedClockParts,
+  todayIn,
   type TutorPaymentOutlook,
   type TutorPaymentUrgency,
 } from '@tmi/shared';
@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/table';
 import { formatLessonDay } from '@/features/schedules/lesson-cancellation';
 import { cn } from '@/lib/utils';
+import { useDates } from '@/hooks/use-dates';
 import { EmptyNote, Panel } from './stat-card';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 
@@ -119,7 +120,7 @@ function NextPayment({ tutor, today }: { tutor: TutorPaymentOutlook; today: stri
           tutor.urgency === 'due_soon' && 'text-warning-foreground dark:text-warning font-medium',
         )}
       >
-        {formatLessonDay(tutor.next_topup_on)}
+        {formatLessonDay(tutor.next_topup_on, today)}
         <span className="text-muted-foreground block text-xs font-normal">
           {daysAway(tutor.next_topup_on, today)}
         </span>
@@ -136,20 +137,11 @@ function NextPayment({ tutor, today }: { tutor: TutorPaymentOutlook; today: stri
   );
 }
 
-/** "Sep 28", with the year only when it is not this one. */
+/** "Sep 28", with the year only when it is not this one: the shared formatter, on the space's clock. */
 function LastPaidOn({ at }: { at: string | null }) {
+  const dates = useDates();
   if (!at) return <Muted>—</Muted>;
-
-  const paid = new Date(at);
-  return (
-    <>
-      {paid.toLocaleDateString(undefined, {
-        month: 'short',
-        day: 'numeric',
-        ...(paid.getFullYear() === new Date().getFullYear() ? {} : { year: 'numeric' }),
-      })}
-    </>
-  );
+  return <>{dates.instant(at, { time: false })}</>;
 }
 
 /** The tutor's own Finance tab, as they see it. */
@@ -176,7 +168,7 @@ export function TutorPayments({
   tutors: TutorPaymentOutlook[];
   index?: number;
 }) {
-  const today = zonedClockParts(new Date().toISOString(), useOrgTimeZone()).day;
+  const today = todayIn(useOrgTimeZone());
 
   const counts = Object.fromEntries(
     TUTOR_PAYMENT_URGENCIES.map((urgency) => [

@@ -458,6 +458,13 @@ test.describe('S11 after P13: the first sign-in lands in a space of one’s own 
       const ivo = await as('admin', { email, org: null });
       await ivo.goto('/');
       await expect(ivo).toHaveURL(/\/spaces$/);
+      // Phase 72 (JF33): someone a space added accepts the terms and the privacy notice once, at their first sign-in,
+      // and the portal waits behind the sheet until they do.
+      const legal = ivo.getByTestId('legal-sheet');
+      await expect(legal).toBeVisible();
+      await legal.getByTestId('legal-agree').check();
+      await legal.getByTestId('legal-accept').click();
+      await expect(legal).toHaveCount(0);
       await expect(ivo.getByRole('heading', { name: 'Choose a space' })).toBeVisible();
       await expect(ivo.getByRole('heading', { name: 'Welcome to Aimtrue' })).toHaveCount(0);
       await expect(ivo.getByText('Join a space with its code, or start your own.')).toHaveCount(0);

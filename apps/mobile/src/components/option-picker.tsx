@@ -2,7 +2,7 @@
 // options below it. A search field appears once there are more options than fit at a glance. The
 // record sheet's PairingPicker is the same shape, specialised to pairings. A short fixed list (the twelve
 // months) can be laid out as a grid instead (`columns`): every option in view, no search, no inner scroll.
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode, type RefObject } from 'react';
 import { Keyboard, Pressable, ScrollView, View, type ViewStyle } from 'react-native';
 import { Divider, Icon, Searchbar, Text } from 'react-native-paper';
 
@@ -36,6 +36,7 @@ export function OptionPicker({
   searchPlaceholder = 'Search',
   defaultOpen,
   scroll = false,
+  startAt,
   columns,
 }: {
   /** The field's testID; each option is `<testID>-<id>`, the search field `<testID>-search`. */
@@ -56,6 +57,12 @@ export function OptionPicker({
    */
   scroll?: boolean;
   /**
+   * Where a `scroll` list opens while nothing is chosen: scrolled to this option, so a long list starts where most
+   * readers' answer is (the birth year opens near an adult's, UI audit JF35, Phase 78); a chosen option opens at
+   * itself. Typing in the search still narrows the whole list.
+   */
+  startAt?: string;
+  /**
    * Every option at once, in a grid of this many columns, with no search field and no inner scroll: for a
    * short fixed list read at a glance (the birth month; UI audit JF35, where October hid below the edge).
    */
@@ -75,6 +82,10 @@ export function OptionPicker({
       (option.detail?.toLowerCase().includes(needle) ?? false),
   );
   const shown = scroll ? matching : matching.slice(0, SHOWN);
+  // A `scroll` list opens at the chosen option, else at `startAt` -- once per opening, and not while searching.
+  const listRef = useRef<ScrollView | null>(null);
+  const placed = useRef(false);
+  const anchor = scroll && !needle ? value || startAt : undefined;
 
   return (
     <View style={{ gap: space.sm }}>
@@ -82,7 +93,10 @@ export function OptionPicker({
         testID={testID}
         accessibilityRole="button"
         accessibilityLabel={chosen ? `${label}: ${chosen.label}. Change` : placeholder}
-        onPress={() => setOpen((was) => !was)}
+        onPress={() => {
+          placed.current = false;
+          setOpen((was) => !was);
+        }}
         style={({ pressed }) => ({
           minHeight: MIN_TARGET + 8,
           borderWidth: 1,
@@ -145,13 +159,25 @@ export function OptionPicker({
           {options.length > 0 && !columns ? (
             <ListFrame
               scroll={scroll}
+              scrollRef={listRef}
               testID={`${testID}-list`}
               style={{ borderWidth: 1, borderColor: theme.colors.outlineVariant, borderRadius: radius.md }}
             >
               {shown.map((option, index) => {
                 const selected = option.id === value;
                 return (
-                  <View key={option.id}>
+                  <View
+                    key={option.id}
+                    onLayout={
+                      option.id === anchor
+                        ? (event) => {
+                            if (placed.current) return;
+                            placed.current = true;
+                            listRef.current?.scrollTo({ y: event.nativeEvent.layout.y, animated: false });
+                          }
+                        : undefined
+                    }
+                  >
                     {index > 0 ? <Divider /> : null}
                     <Pressable
                       testID={`${testID}-${option.id}`}
@@ -313,11 +339,13 @@ function OptionGrid({
 /** The options' frame: a plain view, or, for a `scroll` picker, a list about eight rows tall that scrolls. */
 function ListFrame({
   scroll,
+  scrollRef,
   testID,
   style,
   children,
 }: {
   scroll: boolean;
+  scrollRef?: RefObject<ScrollView | null>;
   testID: string;
   style: ViewStyle;
   children: ReactNode;
@@ -331,6 +359,7 @@ function ListFrame({
   }
   return (
     <ScrollView
+      ref={scrollRef}
       testID={testID}
       // Inside the screen's own scroll view: Android scrolls the inner list only when told to.
       nestedScrollEnabled

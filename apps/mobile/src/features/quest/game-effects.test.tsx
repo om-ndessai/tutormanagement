@@ -107,7 +107,7 @@ describe('DoorsCountdown', () => {
     await renderWithProviders(<DoorsCountdown msLeft={3500} />);
     expect(screen.getByTestId('game-countdown')).toBeTruthy();
     expect(screen.getByTestId('game-countdown-number')).toHaveTextContent('3');
-    expect(screen.getByText('The Quest begins')).toBeTruthy();
+    expect(screen.getByText('The quest begins')).toBeTruthy();
     expect(screen.queryByTestId('game-door-left', { includeHiddenElements: true })).toBeNull();
   });
 

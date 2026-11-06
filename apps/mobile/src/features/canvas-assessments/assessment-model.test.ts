@@ -175,9 +175,8 @@ describe('the sentences', () => {
     expect(levelOptionDetail({ level_id: 'NC26.4', label: 'Grade 4', available: 12, unreviewed: 0 })).toBe(
       '10 questions',
     );
-    expect(levelOptionDetail({ level_id: 'NC26.3', label: 'Grade 3', available: 1, unreviewed: 1 })).toBe(
-      '1 question · includes unreviewed',
-    );
+    // Phase 78 (owner 2026-11-05): a level that draws checked questions says nothing more ("Beta" in any form is gone).
+    expect(levelOptionDetail({ level_id: 'NC26.3', label: 'Grade 3', available: 1, unreviewed: 1 })).toBe('1 question');
     expect(levelOptionDetail({ level_id: 'NC26.5', label: 'Grade 5', available: 0, unreviewed: 0 })).toBe(
       'no approved questions yet',
     );
@@ -187,7 +186,7 @@ describe('the sentences', () => {
     const grade4 = { level_id: 'NC26.4' as const, label: 'Grade 4', available: 12, unreviewed: 0 };
     expect(levelOptionDetail(grade4, 11)).toBe('11 questions');
     expect(levelOptionDetail(grade4, 25)).toBe('12 questions');
-    expect(startNote(false, 11)).toMatch(/^Up to 11 questions of the level/);
+    expect(startNote(11)).toMatch(/^Up to 11 questions of the level/);
   });
 
   it('names the reviewer once it is reviewed (Phase 40)', () => {
@@ -196,9 +195,11 @@ describe('the sentences', () => {
     );
   });
 
-  it('notes whether unreviewed questions are included', () => {
-    expect(startNote(false)).toContain('chosen at random from the approved ones.');
-    expect(startNote(true)).toContain('including questions not yet reviewed in the bank');
+  it('says the same note whether or not the space draws checked questions (Phase 78)', () => {
+    expect(startNote()).toBe(
+      'Up to 10 questions of the level, chosen at random. Multiple-choice questions are answered by choosing; the canvas is there for working. Work can be revisited and changed until it is submitted.',
+    );
+    expect(startNote()).not.toMatch(/not yet reviewed|unreviewed|beta/i);
   });
 
   it('summarises a row as the web does', () => {
@@ -226,9 +227,9 @@ describe('the empty student picker says why, and who adds children (UI audit JF1
     expect(namesWithOr(['A', 'B', 'C'])).toBe('A, B or C');
   });
 
-  it('an admin: add one from Users', () => {
+  it('an admin: add one from People', () => {
     expect(noStudentsLine({ isAdmin: true, spaceName: 'Ferreira Family Practice', adminNames: ['Ines Ferreira'] })).toBe(
-      'No students here yet. Add one from Users, then start an assessment for them here.',
+      'No students here yet. Add one from People, then start an assessment for them here.',
     );
   });
 

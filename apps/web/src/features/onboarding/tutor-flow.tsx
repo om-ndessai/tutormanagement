@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlusIcon } from 'lucide-react';
+import { COMMON_COPY } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { AssignmentDialog } from '@/features/teaching/assignment-dialog';
@@ -131,7 +132,7 @@ export function TutorFlow({
                 Go to Pairings
               </Button>
               <Button variant="outline" onClick={() => onNavigate('/users')}>
-                Go to Users
+                {COMMON_COPY.go_to_people}
               </Button>
               <Button variant="outline" onClick={restart}>
                 Add another tutor
@@ -144,8 +145,8 @@ export function TutorFlow({
         >
           <p>
             {tutor
-              ? 'Anything you skipped can be finished from their record on the Users page.'
-              : 'You can add a tutor from Users at any time.'}
+              ? 'Anything you skipped can be finished from their record on the People page.'
+              : 'You can add a tutor from People at any time.'}
           </p>
         </StepPanel>
       )}

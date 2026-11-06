@@ -101,7 +101,7 @@ function toEvent(
   }
 
   const description = [
-    `${SESSION_MODE_LABELS[schedule.mode]} tutoring session.`,
+    `${SESSION_MODE_LABELS[schedule.mode]} tutoring lesson.`,
     schedule.notes,
   ]
     .filter(Boolean)

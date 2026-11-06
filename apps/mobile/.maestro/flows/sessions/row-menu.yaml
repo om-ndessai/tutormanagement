@@ -58,13 +58,13 @@ tags:
 - tapOn:
     id: row-action-delete
 - extendedWaitUntil:
-    visible: 'Delete this session\?'
+    visible: 'Delete this lesson\?'
     timeout: 10000
 # Tutoring's sentence names the record, never the amount.
 - assertNotVisible: '.*\$[0-9].*'
 - tapOn: 'Delete'
 - extendedWaitUntil:
-    visible: 'Session deleted.'
+    visible: 'Lesson deleted.'
     timeout: 15000
 - extendedWaitUntil:
     notVisible:

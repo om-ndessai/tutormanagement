@@ -138,12 +138,12 @@ tags:
     visible:
       id: screen-progress
     timeout: 10000
-# The dashboard's spotlight opens a student's page; Back lands on the list.
-- tapOn: 'Home'
-- extendedWaitUntil:
-    visible:
-      id: screen-home
-    timeout: 10000
+# The dashboard's spotlight opens a student's page; Back lands on the list. The dashboard is More ->
+# Dashboard since Phase 66 (Home is the member home), the office's view of it.
+- runFlow:
+    file: ../../subflows/open-dashboard.yaml
+    env:
+      ROLE: admin
 # Centred: scrolled only until visible, the card stops at the list's foot, where its middle (the
 # point a tap lands on) is under the tab bar's hump, which belongs to the "+".
 - scrollUntilVisible:

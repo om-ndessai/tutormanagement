@@ -11,7 +11,7 @@
 // Phase 73 (JF23): the members' Daily by its one name ("today’s Daily", the web's words).
 // Phase 74 (JF25, JF31): the parent's tour has no Billing step -- Billing is not in a parent's menu (admins and tutors
 // only, `seesPeoplePages`); what a parent owes is on the Dashboard, which the tour already shows.
-import { featureOn, type FeatureState, type UserRole } from '@tmi/shared';
+import { COMMON_COPY, featureOn, type FeatureState, type UserRole } from '@tmi/shared';
 
 import { visibleNavItems } from '@/features/shell/nav-items';
 import type { TabName } from '@/features/shell/app-tab-bar';
@@ -56,7 +56,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-users',
-      title: 'Users',
+      title: COMMON_COPY.people_page,
       body: 'Everyone, once: one person can be a parent, a tutor and an admin. Add families and tutors here.',
     },
     {
@@ -66,7 +66,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Every lesson: timed live or written up afterwards, with notes, homework, reflections and drafts.',
     },
     {
@@ -123,7 +123,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Start a live lesson, or record one afterwards: notes, homework, progress and your assessment. Save a draft if you are not done.',
     },
     {
@@ -165,7 +165,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Every lesson with its notes, homework, reflections and assessments.',
     },
     {
@@ -202,7 +202,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Every lesson, with its notes and homework — and where you reflect on it.',
     },
     {
@@ -240,7 +240,7 @@ const NAV_ASSESSMENTS_STEP: TourStep = {
 const NAV_QUEST_STEP: TourStep = {
   target: 'nav-quest',
   title: 'Quest',
-  body: 'Question Quest and Quest Games: questions one at a time, for points.',
+  body: 'Question Quest, and quests to play alone or together: questions one at a time.',
 };
 const NAV_PROFILE_STEP: TourStep = {
   target: 'nav-profile',
@@ -260,7 +260,7 @@ export const SPACE_TOUR_STEPS: Record<UserRole, TourStep[]> = {
     NAV_QUEST_STEP,
     {
       target: 'nav-users',
-      title: 'Users',
+      title: COMMON_COPY.people_page,
       body: 'Everyone, once: one person can be a parent and an admin. Add families here.',
     },
     { target: 'nav-activity', title: 'Activity', body: 'The audit log: who did what, and when.' },
@@ -314,10 +314,10 @@ export function tourStepsFor(role: UserRole, organization: Partial<FeatureState>
 }
 
 /**
- * The tab bar, in its order (`features/shell/app-tab-bar.tsx`): Home, Sessions, Progress, More,
+ * The tab bar, in its order (`features/shell/app-tab-bar.tsx`): Home, Lessons, Progress, More,
  * the "+" not counted -- or Home and More where Tutoring is off (`visibleTabs`). Schedule is no
- * tab since the bar was revised (2026-10-15): it lives inside Sessions, so its step lights Sessions
- * and says so.
+ * tab since the bar was revised (2026-10-15): it lives inside Lessons (the `sessions` tab), so its
+ * step lights Lessons and says so.
  */
 const FULL_TABS: readonly TabName[] = ['dashboard', 'sessions', 'progress', 'more'];
 const TAB_OF: Record<string, TabName> = {
@@ -326,18 +326,18 @@ const TAB_OF: Record<string, TabName> = {
   'nav-progress': 'progress',
 };
 /** Pages reached from inside a tab rather than from More. */
-const INSIDE_TAB: Record<string, { tab: TabName; within: 'Sessions' }> = {
-  'nav-schedule': { tab: 'sessions', within: 'Sessions' },
+const INSIDE_TAB: Record<string, { tab: TabName; within: 'Lessons' }> = {
+  'nav-schedule': { tab: 'sessions', within: 'Lessons' },
 };
 
 /**
  * Where a step points on the phone: a view registered under its id (`useTourTarget`), or a tab.
- * A menu item that is not a tab points at the tab it is found in -- More for most, Sessions for
+ * A menu item that is not a tab points at the tab it is found in -- More for most, Lessons for
  * Schedule -- and the card says so: the web's "You will find it in the menu" for a phone-width
  * sidebar.
  */
 export type TourPlacement =
-  { kind: 'view'; id: string } | { kind: 'tab'; index: number; within: 'More' | 'Sessions' | null };
+  { kind: 'view'; id: string } | { kind: 'tab'; index: number; within: 'More' | 'Lessons' | null };
 
 export function placementOf(target: string, tabs: readonly TabName[] = FULL_TABS): TourPlacement {
   if (target.startsWith('nav-')) {

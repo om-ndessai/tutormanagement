@@ -154,7 +154,7 @@ export function QuestionCard({ question, autoFocus }: { question: Question; auto
         )}
 
         <div className="bg-muted/50 rounded-md px-3 py-2 text-sm">
-          <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">Solution</span>
+          <span className="text-muted-foreground text-[13px] font-medium">Solution</span>
           <p className="mt-1">
             <MathText text={question.solution} />
           </p>

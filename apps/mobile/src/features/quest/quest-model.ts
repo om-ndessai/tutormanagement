@@ -2,15 +2,16 @@
 // quest-play-page.tsx, quest-review-page.tsx} @ 82397b8 (working tree): who plays and who reviews,
 // the sentences and labels the screens show (the web's copy), the
 // level picker's options, and the answer a submit sends. Pure: no React, no api client.
+// Phase 78 (JF32): a level in words ("Grade 6", "Beast Academy 3"), never its code; a game is a "quest".
 import {
   QUESTION_BANK_LEVEL_IDS,
   QUEST_POINTS,
-  levelLabel,
   offeredBankLevelIds,
-  questLevelLabel,
   type QuestReviewDecision,
   type QuestState,
 } from '@tmi/shared';
+
+import { levelWords, questLevelWords } from './level-words';
 
 /** Who Quest is for, in this organization: a student plays; a tutor or an admin reviews. */
 export function questRoles(roles: readonly string[] | undefined) {
@@ -28,7 +29,7 @@ export function questRoles(roles: readonly string[] | undefined) {
 export function questIntro(roles: readonly string[] | undefined): string {
   const { plays, reviews } = questRoles(roles);
   if (!plays && !reviews) {
-    return 'Play the question bank together: start a game and share its code, or join one with a code.';
+    return 'Play the question bank together: start a quest and share its code, or join one with a code.';
   }
   return 'Answer the question bank’s new questions, one at a time, and earn points. Tutors check each answer and approve the question for everyone.';
 }
@@ -54,9 +55,9 @@ export function reviewToast(decision: QuestReviewDecision, trusted = true): stri
   return trusted ? 'Approved. The question is in the bank.' : 'Sent to the platform to approve.';
 }
 
-/** The hub's student line: "BA3 · 4 answered". The points follow it, with their trophy. */
+/** The hub's student line: "Beast Academy 3 · 4 answered". The points follow it, with their trophy. */
 export function playSummary(state: Pick<QuestState, 'level_id' | 'answered'> | undefined): string {
-  return `${questLevelLabel(state?.level_id ?? null)} · ${state?.answered ?? 0} answered`;
+  return `${questLevelWords(state?.level_id ?? null)} · ${state?.answered ?? 0} answered`;
 }
 
 export function startLabel(answered: number | undefined): string {
@@ -64,7 +65,7 @@ export function startLabel(answered: number | undefined): string {
 }
 
 export function movedUpText(from: string, to: string | null): string {
-  return `You finished ${questLevelLabel(from)}. On to ${questLevelLabel(to)}!`;
+  return `You finished ${questLevelWords(from)}. On to ${questLevelWords(to)}!`;
 }
 
 export function finishedText(answered: number): string {
@@ -102,7 +103,7 @@ export interface LevelOption {
 export function levelOptions(offered: ReadonlySet<string>, keep?: string | null): LevelOption[] {
   return [
     { id: NOT_SET, label: 'Not set' },
-    ...offeredBankLevelIds(offered, keep).map((id) => ({ id, label: levelLabel(id) })),
+    ...offeredBankLevelIds(offered, keep).map((id) => ({ id, label: levelWords(id) })),
   ];
 }
 
@@ -114,7 +115,7 @@ export function levelInput(value: string): (typeof QUESTION_BANK_LEVEL_IDS)[numb
 export function levelToast(fullName: string, value: string): string {
   return value === NOT_SET
     ? `${fullName}’s level is cleared.`
-    : `${fullName} starts at ${levelLabel(value)}.`;
+    : `${fullName} starts at ${levelWords(value)}.`;
 }
 
 // --- Answering --------------------------------------------------------------------------------

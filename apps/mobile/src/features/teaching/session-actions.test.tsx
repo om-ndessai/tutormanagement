@@ -7,7 +7,10 @@ import { AssessForm } from './assess-session-sheet';
 import { assessLabel, reflectLabel } from './session-actions';
 
 const mockAuth = jest.fn();
-jest.mock('@/providers/auth-provider', () => ({ useAuth: () => mockAuth() }));
+jest.mock('@/providers/auth-provider', () => ({
+  useAuth: () => mockAuth(),
+  useOrgTimeZone: () => 'America/New_York',
+}));
 jest.mock('expo-router', () => ({ router: { push: jest.fn(), back: jest.fn(), canGoBack: () => true } }));
 jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
@@ -61,7 +64,7 @@ describe('assess and reflect on a lesson', () => {
     mockAuth.mockReturnValue({ user: PARENT });
     const lesson = session({ assessments: [assessment('tutor-1', 'tutor')], money_view: 'family' });
     await renderWithProviders(<AssessForm session={lesson} />);
-    expect(screen.getByText('Assess this session')).toBeOnTheScreen();
+    expect(screen.getByText('Assess this lesson')).toBeOnTheScreen();
     expect(screen.queryByTestId('assess-withdraw')).toBeNull();
     // The tutor's words are not in the parent's fields.
     expect(screen.queryByDisplayValue('tutor words')).toBeNull();

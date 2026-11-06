@@ -4,13 +4,13 @@ import { toast } from 'sonner';
 import { CheckIcon, XIcon } from 'lucide-react';
 import { DAILY_NAME, TILE_LEVEL_TAGS, TILE_LEVEL_WORDS, dailyShareText, type QuestionBankLevelId } from '@tmi/shared';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { MathText } from '@/features/question-bank/math-text';
 import { backLabel, useExitTo } from '@/features/quest/play-origin';
 import { ApiRequestError } from '@/lib/api-client';
+import { useDates } from '@/hooks/use-dates';
 import { useDaily, useSaveDaily } from './habit-api';
 
 /**
@@ -31,6 +31,7 @@ export function DailyPage() {
   const words = TILE_LEVEL_WORDS[level as QuestionBankLevelId] ?? level;
   // Phase 73 (JF36): the Daily closes back to where it was opened (the home, by default).
   const exitTo = useExitTo('/');
+  const dates = useDates();
 
   useEffect(() => {
     started.current = Date.now();
@@ -50,6 +51,7 @@ export function DailyPage() {
 
   const result = data.result;
   if (result) {
+    // The share grid keeps the set's tag and number ("G5D #4"), as such grids do; the screen says it in words.
     const text = dailyShareText(tag, data.number, result.marks, result.seconds);
     return (
       <div className="mx-auto grid max-w-2xl gap-4 p-4" data-testid="daily-result">
@@ -59,7 +61,7 @@ export function DailyPage() {
               {DAILY_NAME} · {result.right} of {result.of}
             </h1>
             <p className="text-muted-foreground text-sm">
-              {words} · {tag}D #{data.number}
+              {words} · {dates.day(data.day, { weekday: true })}
             </p>
             <p className="font-mono text-lg tracking-widest" data-testid="daily-grid">
               {result.marks.map((m) => (m ? '✓' : '✗')).join('')}
@@ -129,7 +131,7 @@ export function DailyPage() {
             {DAILY_NAME} · {words}
           </h1>
           <p className="text-muted-foreground text-sm">
-            {tag}D #{data.number} · question {index + 1} of {data.questions.length}
+            Question {index + 1} of {data.questions.length}
           </p>
         </div>
         {/* Phase 73 (JF36): a way out, saying what leaving keeps. */}
@@ -144,7 +146,7 @@ export function DailyPage() {
       </p>
       <Card className="py-0">
         <CardContent className="grid gap-4 p-6">
-          {question.beta && <Badge variant="secondary" className="w-fit px-1.5 py-0 text-[10px]">Beta</Badge>}
+          {/* Phase 78: no Beta mark -- a checked question is served like any other. */}
           <MathText text={question.stem} className="text-lg leading-relaxed" />
           {question.kind === 'choice' ? (
             <div className="grid gap-2" role="group" aria-label="Your answer">

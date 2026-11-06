@@ -2,6 +2,7 @@
 // student-progress-page.tsx, plan-dialog.tsx, topic-pickers.tsx} @ 1132322 -- the parts that are
 // rules rather than layout, pure so they are tested.
 import {
+  formatDay,
   indexCurriculum,
   type Assessment,
   type CurriculumLevel,
@@ -80,26 +81,14 @@ export function tutorsFromPairings(
   return [...byTutor.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function shortDate(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
-}
-
-export function longDate(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
-    dateStyle: 'medium',
-    timeZone: 'UTC',
-  });
-}
-
-/** The line under a student's name in the list. */
-export function overviewLine(row: ProgressOverview): string {
-  if (row.goal) return `${row.goal}${row.target_on ? ` · by ${shortDate(row.target_on)}` : ''}`;
-  if (row.last_assessed_on) return `Assessed ${shortDate(row.last_assessed_on)} · no plan yet`;
+/**
+ * The line under a student's name in the list. A plan's dates are a record read later, so they carry their year
+ * (the shared formatter's `year: 'always'`, Phase 78).
+ */
+export function overviewLine(row: ProgressOverview, today: string): string {
+  const day = (iso: string) => formatDay(iso, today, { year: 'always' });
+  if (row.goal) return `${row.goal}${row.target_on ? ` · by ${day(row.target_on)}` : ''}`;
+  if (row.last_assessed_on) return `Assessed ${day(row.last_assessed_on)} · no plan yet`;
   return 'Not assessed yet';
 }
 

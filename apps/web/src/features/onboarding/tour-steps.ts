@@ -1,4 +1,4 @@
-import type { UserRole } from '@tmi/shared';
+import { COMMON_COPY, type UserRole } from '@tmi/shared';
 
 /**
  * One stop on the feature tour: what it points at (a `data-tour` attribute)
@@ -35,7 +35,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-users',
-      title: 'Users',
+      title: COMMON_COPY.people_page,
       body: 'Everyone, once: one person can be a parent, a tutor and an admin. Add families and tutors here.',
     },
     {
@@ -45,7 +45,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Every lesson: timed live or written up afterwards, with notes, homework, reflections and drafts.',
     },
     {
@@ -102,7 +102,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Start a live lesson, or record one afterwards: notes, homework, progress and your assessment. Save a draft if you are not done.',
     },
     {
@@ -145,7 +145,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Every lesson with its notes, homework, reflections and assessments.',
     },
     {
@@ -182,7 +182,7 @@ export const TOUR_STEPS: Record<UserRole, TourStep[]> = {
     },
     {
       target: 'nav-sessions',
-      title: 'Sessions',
+      title: COMMON_COPY.lessons_page,
       body: 'Every lesson, with its notes and homework — and where you reflect on it.',
     },
     {

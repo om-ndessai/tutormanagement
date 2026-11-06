@@ -47,7 +47,7 @@ export function OrgSwitcher({ className }: { className?: string }) {
         <LogoLockup className="min-w-0 flex-1" />
         {waiting > 0 && (
           <Badge
-            className="shrink-0 px-1.5 py-0 text-[10px] font-semibold"
+            className="shrink-0 px-1.5 py-0 text-xs font-semibold"
             aria-label={
               answers > 0
                 ? `${invitations.length > 0 ? `${invitationsWaiting(invitations.length)}, ` : ''}${answers} answer${answers === 1 ? '' : 's'} to your requests`
@@ -67,8 +67,9 @@ export function OrgSwitcher({ className }: { className?: string }) {
           <DropdownMenuItem key={org.slug} onSelect={() => org.slug !== organization?.slug && chooseOrganization(org.slug)}>
             <OrgAvatar org={org} className="size-7" />
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm">{org.name}</span>
-              <span className="text-muted-foreground block truncate text-xs">
+              {/* Phase 78 (JF28): the whole name, wrapped. */}
+              <span className="block text-sm [overflow-wrap:anywhere]">{org.name}</span>
+              <span className="text-muted-foreground block text-xs [overflow-wrap:anywhere]">
                 {/* A space of one's own reads "Just you" (UI audit JF33): its roles say nothing there. */}
                 {org.personal ? 'Just you' : org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
               </span>

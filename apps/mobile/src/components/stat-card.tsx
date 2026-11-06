@@ -58,6 +58,7 @@ export function StatCard({
   tone = 'default',
   compact = false,
   animate = true,
+  testID,
 }: {
   label: string;
   value: number | undefined;
@@ -73,6 +74,11 @@ export function StatCard({
   compact?: boolean;
   /** False for money, which is never animated. */
   animate?: boolean;
+  /**
+   * The card's testID, when it must outlive a change of words: Phase 78's glossary renamed "Sessions" to "Lessons",
+   * and a card keeps `stat-sessions` (its code name, which flows find it by). Default `stat-<slug of the label>`.
+   */
+  testID?: string;
 }) {
   const theme = useAppTheme();
   const counted = useCountUp(value ?? 0);
@@ -81,7 +87,7 @@ export function StatCard({
   const display = value === undefined ? '—' : format(settled);
   const final = value === undefined ? 'not available' : format(value);
   const color = toneColor(theme, tone);
-  const id = `stat-${slug(label)}`;
+  const id = testID ?? `stat-${slug(label)}`;
   const large = useLargeText();
   const iconSize = useIconSize(16);
 

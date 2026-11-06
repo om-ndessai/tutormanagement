@@ -98,7 +98,10 @@ export interface ShellColors {
 export const SHELL_CSP =
   "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src 'none'; script-src 'none'; base-uri 'none'; form-action 'none'";
 
-/** Text sizes at 1x, scaled by the reader's text size (Android's own zoom is held at 100%). */
+/**
+ * Text sizes at 1x, scaled by the reader's text size (Android's own zoom is held at 100%). Nothing under 12; the
+ * small labels ("Solution") in sentence case, not capitals (Phase 78, JF35).
+ */
 const SIZES = { stem: 17, choice: 16, solution: 15, label: 12 } as const;
 
 /**
@@ -145,7 +148,7 @@ body{font-family:-apple-system,system-ui,Roboto,sans-serif;font-size:${px(SIZES.
 .answer{font-size:${px(SIZES.choice)};margin:0 0 12px}
 .answer b{font-weight:600}
 .solution{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:${px(SIZES.solution)}}
-.label{color:var(--muted);font-size:${px(SIZES.label)};font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.label{color:var(--muted);font-size:${px(SIZES.label)};font-weight:700;margin-bottom:4px}
 .katex-error{color:var(--error)}`;
   return (
     '<!DOCTYPE html><html><head><meta charset="utf-8">' +

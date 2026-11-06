@@ -1,11 +1,10 @@
 // Ported from apps/web/src/features/sharing/my-shares-card.tsx @ 3279506
-import { shareHeadline } from '@tmi/shared';
+import { formatInstant, shareHeadline } from '@tmi/shared';
 import { Linking, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
 
 import { Panel } from '@/components/section';
 import { useToast } from '@/components/toast';
-import { formatInstant } from '@/features/users/people-model';
 import { serverOrigin } from '@/lib/server';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
@@ -47,7 +46,7 @@ export function MySharesPanel() {
                   {shareHeadline(share.card)}
                 </Text>
                 <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                  {`Shared ${formatInstant(share.created_at, timeZone, '')}`}
+                  {`Shared ${formatInstant(share.created_at, timeZone)}`}
                 </Text>
               </View>
               <Button

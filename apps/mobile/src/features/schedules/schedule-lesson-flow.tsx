@@ -16,6 +16,7 @@
 import {
   DAYS_OF_WEEK,
   LOCATION_KIND_LABELS,
+  formatDay,
   formatDuration,
   formatTimeRange,
   parseClockTime,
@@ -56,7 +57,7 @@ import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { useCreateSchedule } from './api';
 import { organizationToday, shiftDay } from './lesson-cancellation';
 import { chosenScheduleLocations, defaultScheduleLocations, type ScheduleLocationChoice } from './schedule-locations';
-import { scheduleSentence, shortDate } from './schedule-sentence';
+import { scheduleSentence } from './schedule-sentence';
 
 /** Lesson lengths worth offering, as the sheet. */
 export const SCHEDULE_LENGTHS = [30, 45, 60, 75, 90, 120] as const;
@@ -125,7 +126,7 @@ export function ScheduleLessonFlow({ assignmentId }: { assignmentId?: string } =
   if (!isAdmin && !isTutor) {
     return (
       <FlowFrame>
-        <EmptyState icon="lock-outline" title="Only a tutor or an admin can schedule a session." />
+        <EmptyState icon="lock-outline" title="Only a tutor or an admin can schedule a lesson." />
       </FlowFrame>
     );
   }
@@ -407,10 +408,9 @@ function ScheduleSteps({
         </>
       ),
       summary: () => {
-        const thisYear = today.slice(0, 4);
         const range = draft.endsOn
-          ? `From ${shortDate(draft.startsOn, thisYear)} until ${shortDate(draft.endsOn, thisYear)}`
-          : `From ${shortDate(draft.startsOn, thisYear)}, every week`;
+          ? `From ${formatDay(draft.startsOn, today)} until ${formatDay(draft.endsOn, today)}`
+          : `From ${formatDay(draft.startsOn, today)}, every week`;
         return draft.notes.trim() ? `${range}\n${draft.notes.trim()}` : range;
       },
     },
@@ -477,7 +477,7 @@ function ScheduleSteps({
       // Whoever opened the flow and listens (the next steps after adding someone) ticks its step.
       announceFormSaved({ form: 'schedule', id: saved.data.id });
       leave(close);
-      toast.success('Session scheduled.');
+      toast.success('Lesson scheduled.');
     } catch (error) {
       haptics.error();
       if (error instanceof ApiRequestError) {

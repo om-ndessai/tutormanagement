@@ -232,7 +232,7 @@ describe('the lobby invitation', () => {
   });
 
   it('shares the web’s words, naming nobody', () => {
-    expect(gameShareText('ABC234')).toBe('Join my Aimtrue game: code ABC234');
+    expect(gameShareText('ABC234')).toBe('Join my Aimtrue quest: game code ABC234');
     expect(rosterSavedText('Family G4', 1)).toBe('Family G4 invites 1 person.');
     expect(rosterSavedText('Family G4', 3)).toBe('Family G4 invites 3 people.');
     expect(rosterSavedText('Family G4', 0)).toBe('Family G4 is open to anyone with the code.');

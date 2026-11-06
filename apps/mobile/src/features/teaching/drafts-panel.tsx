@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/teaching/drafts-panel.tsx @ 1132322.
 // Phase 75 (JF30): one verb -- a draft is recorded ("Record"), never "posted".
-import { SESSION_MODE_LABELS, type SessionDraft } from '@tmi/shared';
+import { SESSION_MODE_LABELS, formatDay, type SessionDraft } from '@tmi/shared';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
@@ -15,7 +15,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { useDiscardDraft, useMyDrafts, usePostDraft } from './api';
 import { Tag } from './session-card';
-import { formatSessionDay, formatSessionTimes } from './session-format';
+import { formatSessionTimes } from './session-format';
 
 /**
  * Write-ups the viewer has saved but not posted.
@@ -64,7 +64,7 @@ export function DraftsList({
     haptics.warning();
     Alert.alert(
       'Discard this draft?',
-      `The write-up for ${draft.student_name} on ${draft.occurred_on} is deleted. Nothing was billed or recorded, so nothing else changes.`,
+      `The write-up for ${draft.student_name} on ${formatDay(draft.occurred_on, today, { weekday: true })} is deleted. Nothing was billed or recorded, so nothing else changes.`,
       [
         { text: 'Keep it', style: 'cancel' },
         {
@@ -126,13 +126,13 @@ export function DraftsList({
               >
                 <View style={{ gap: 2 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
-                    <Text variant="bodyLarge" style={{ fontWeight: '600', flexShrink: 1 }} numberOfLines={1}>
+                    <Text variant="bodyLarge" style={{ fontWeight: '600', flexShrink: 1 }}>
                       {draft.student_name}
                     </Text>
                     <Tag label="Draft" />
                   </View>
                   <Text variant="bodySmall" style={{ color: muted }}>
-                    {formatSessionDay(draft.occurred_on, today)} ·{' '}
+                    {formatDay(draft.occurred_on, today, { weekday: true })} ·{' '}
                     {formatSessionTimes(draft.started_at, draft.ended_at)} · {SESSION_MODE_LABELS[draft.mode]}
                     {draft.notes || draft.write_up ? '' : ' · no notes yet'}
                   </Text>

@@ -99,11 +99,12 @@ tags:
     direction: DOWN
     timeout: 15000
 - takeScreenshot: person-form-email-required
+# The form is long (a tutor's whole profile, names that wrap since Phase 78); Android's swipes are slow.
 - scrollUntilVisible:
     element:
       id: person-form-cancel
     direction: DOWN
-    timeout: 30000
+    timeout: 60000
 - tapOn:
     id: person-form-cancel
 # The cleared email is an unsaved change, so Cancel asks first (B5, F-3); discarding it leaves the
@@ -136,7 +137,7 @@ tags:
 - tapOn:
     id: person-edit
 - extendedWaitUntil:
-    visible: 'Edit user'
+    visible: 'Edit details'
     timeout: 15000
 - extendedWaitUntil:
     visible:
@@ -146,11 +147,12 @@ tags:
     id: person-form-name
     enabled: false
 - takeScreenshot: person-form-locked
+# The form is long (a tutor's whole profile, names that wrap since Phase 78); Android's swipes are slow.
 - scrollUntilVisible:
     element:
       id: person-form-cancel
     direction: DOWN
-    timeout: 30000
+    timeout: 60000
 - tapOn:
     id: person-form-cancel
 - extendedWaitUntil:

@@ -8,17 +8,19 @@
 //
 // Phase 76 (JF21): a student's record says who teaches them and their weekly lessons (Tutoring only, no money).
 import {
+  COMMON_COPY,
   DAYS_OF_WEEK,
   DEFAULT_MAX_SESSION_MINUTES,
-  PAYMENT_METHOD_LABELS,
-  RELATIONSHIP_LABELS,
-  formatDuration,
-  formatMailingAddress,
   featureAllowed,
+  formatDuration,
+  formatInstant,
+  formatMailingAddress,
   formatTimeRange,
   groupSlotsByDay,
   type GuardianLink,
+  PAYMENT_METHOD_LABELS,
   type PaymentHandle,
+  RELATIONSHIP_LABELS,
   type UserDetail,
 } from '@tmi/shared';
 import { router } from 'expo-router';
@@ -36,7 +38,7 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { Detail, Muted, Section } from './detail-row';
-import { formatInstant, telUrl } from './people-model';
+import { telUrl } from './people-model';
 import { PersonAvatar } from './person-avatar';
 import { RECORD_SECTIONS, recordSections, type RecordSectionKey } from './record-sections';
 import { SsnReceiptButton } from './ssn-receipt-button';
@@ -91,10 +93,11 @@ export function UserDetailView({
               {user.phone ?? <Muted>Not recorded</Muted>}
             </Detail>
             <Detail icon="calendar-clock-outline" label="Last sign-in">
-              {formatInstant(user.last_login_at, timeZone, 'Has not signed in yet')}
+              {/* On the space's clock, with its year: a record read later (shared dates.ts, Phase 78). */}
+              {user.last_login_at ? formatInstant(user.last_login_at, timeZone, { year: 'always' }) : 'Has not signed in yet'}
             </Detail>
             <Detail icon="calendar-clock-outline" label="Added">
-              {formatInstant(user.created_at, timeZone, '—')}
+              {user.created_at ? formatInstant(user.created_at, timeZone, { year: 'always' }) : '—'}
             </Detail>
           </>
         );
@@ -169,7 +172,7 @@ export function UserDetailView({
             <Detail icon="video-outline" label="Virtual tutoring">
               {tutor.virtual_available ? 'Available' : 'In person only'}
             </Detail>
-            <Detail icon="timer-outline" label="Longest session">
+            <Detail icon="timer-outline" label={COMMON_COPY.longest_lesson}>
               {longest(tutor.max_session_minutes)}
             </Detail>
           </>
@@ -177,11 +180,11 @@ export function UserDetailView({
       case 'lessons':
         return student ? (
           <>
-            <Detail icon="video-outline" label="Virtual sessions">
+            <Detail icon="video-outline" label="Virtual lessons">
               {student.virtual_available ? 'Available' : 'In person only'}
             </Detail>
             <StudentPrices student={student} />
-            <Detail icon="timer-outline" label="Longest session">
+            <Detail icon="timer-outline" label={COMMON_COPY.longest_lesson}>
               {longest(student.max_session_minutes)}
             </Detail>
           </>
@@ -391,7 +394,7 @@ function PeopleList({ people, kind }: { people: GuardianLink[]; kind: 'guardian'
               <Tag label={RELATIONSHIP_LABELS[person.relationship]} />
               {person.is_primary ? <Tag label="Primary contact" filled /> : null}
             </View>
-            <EmailOrNone email={person.email} link={false} numberOfLines={1} style={{ fontSize: 12 }} />
+            <EmailOrNone email={person.email} link={false} style={{ fontSize: 12 }} />
           </View>
           <Icon source="chevron-right" size={20} color={theme.tokens.mutedForeground} />
         </Pressable>

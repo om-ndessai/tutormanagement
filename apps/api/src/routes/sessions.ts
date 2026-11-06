@@ -88,7 +88,7 @@ import {
   type StoredSession,
 } from '../repositories/sessions.js';
 
-const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid session id.' }) });
+const idParamSchema = z.object({ id: z.uuid({ message: 'Not a valid lesson id.' }) });
 
 /**
  * A tutor writes up their own lessons; an admin may write up anybody's. The
@@ -102,7 +102,7 @@ async function assertMayWriteFor(
   studentUserId: string,
 ) {
   if (!isAdmin(viewer) && viewer.id !== tutorUserId) {
-    throw new ApiError(403, 'forbidden', 'You can only write up your own sessions.');
+    throw new ApiError(403, 'forbidden', 'You can only write up your own lessons.');
   }
 
   if (!(await getActiveAssignmentFor(db, org, tutorUserId, studentUserId))) {
@@ -166,7 +166,7 @@ async function applyOwnAssessment(
   input: SessionAssessmentPayload | null,
 ) {
   const role = sessionAssessorRole(session, viewer, await familyStudentIds(db, org, viewer));
-  if (!role) throw ApiError.notFound('That session does not exist.');
+  if (!role) throw ApiError.notFound('That lesson does not exist.');
 
   // Phase 25: the student's voice is their reflection now. One they gave
   // before still shows, and may still be withdrawn, but not given afresh.
@@ -178,7 +178,7 @@ async function applyOwnAssessment(
     );
   }
 
-  const lesson = `the ${session.occurred_on} session with ${session.student_name}`;
+  const lesson = `the ${session.occurred_on} lesson with ${session.student_name}`;
   const audit = {
     subject: { id: session.student_user_id, full_name: session.student_name },
     entity_type: 'session',
@@ -187,7 +187,7 @@ async function applyOwnAssessment(
 
   if (input === null) {
     if (!(await deleteAssessment(db, session.id, viewer.id))) {
-      throw ApiError.notFound('You have not assessed that session.');
+      throw ApiError.notFound('You have not assessed that lesson.');
     }
     await recordAudit(db, viewer, org, {
       action: 'session.assessment_withdrawn',
@@ -248,7 +248,7 @@ async function applyReflection(
 
   if (input === null) {
     if (!(await deleteReflection(db, session.id))) {
-      throw ApiError.notFound('There is no reflection on that session.');
+      throw ApiError.notFound('There is no reflection on that lesson.');
     }
     await recordAudit(db, viewer, org, {
       action: 'session.reflection_withdrawn',
@@ -309,7 +309,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     // A tutor records their own lessons; an admin can record on anyone's behalf.
     if (!isAdmin(viewer) && viewer.id !== input.tutor_user_id) {
-      throw new ApiError(403, 'forbidden', 'You can only record your own sessions.');
+      throw new ApiError(403, 'forbidden', 'You can only record your own lessons.');
     }
     // The autosaved draft of this write-up, if there is one: only ever the
     // recorder's own, checked before anything is written.
@@ -356,7 +356,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       action: 'session.recorded',
       description:
         `Recorded a ${formatDuration(session.duration_minutes)} ` +
-        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
+        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} lesson with ` +
         // No amount: the tutor who recorded it reads this line, and the
         // figure here was the family's price. The session itself carries
         // each side's money, scoped to whoever opens it.
@@ -412,7 +412,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       action: 'session.drafted',
       // Says a draft exists, never what is in it: the notes are the part that
       // is not ready to be read.
-      description: `Saved a draft session with ${draft.student_name} on ${draft.occurred_on}`,
+      description: `Saved a draft lesson with ${draft.student_name} on ${draft.occurred_on}`,
       subject: { id: draft.student_user_id, full_name: draft.student_name },
       entity_type: 'session_draft',
       entity_id: draft.id,
@@ -445,7 +445,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       if (c.req.valid('query').autosave !== 'true') {
         await recordAudit(c.env.DB, viewer, c.get('org').id, {
           action: 'session.drafted',
-          description: `Saved a draft session with ${draft.student_name} on ${draft.occurred_on}`,
+          description: `Saved a draft lesson with ${draft.student_name} on ${draft.occurred_on}`,
           subject: { id: draft.student_user_id, full_name: draft.student_name },
           entity_type: 'session_draft',
           entity_id: draft.id,
@@ -466,7 +466,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
     await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'session.draft_discarded',
-      description: `Discarded a draft session with ${draft.student_name} on ${draft.occurred_on}`,
+      description: `Discarded a draft lesson with ${draft.student_name} on ${draft.occurred_on}`,
       subject: { id: draft.student_user_id, full_name: draft.student_name },
       entity_type: 'session_draft',
       entity_id: draft.id,
@@ -535,7 +535,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       action: 'session.recorded',
       description:
         `Posted a drafted ${formatDuration(session.duration_minutes)} ` +
-        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} session with ` +
+        `${session.mode === 'virtual' ? 'virtual' : 'in-person'} lesson with ` +
         `${session.student_name} on ${session.occurred_on}`,
       subject: { id: session.student_user_id, full_name: session.student_name },
       entity_type: 'session',
@@ -601,7 +601,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       ...(payColumns ? [admin ? 'Tutor rate (USD/hr)' : 'Your rate (USD/hr)', admin ? 'Tutor pay (USD)' : 'Your pay (USD)'] : []),
       ...(admin ? ['Margin (USD)'] : []),
       'Planned',
-      'Previous session review',
+      'Previous lesson review',
       'Homework status',
       'Homework review',
       'Notes',
@@ -721,7 +721,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       throw new ApiError(
         409,
         'conflict',
-        'You already have a session running. Stop it before starting another.',
+        'You already have a lesson running. Stop it before starting another.',
       );
     }
     // One live lesson per tutor ANYWHERE. Said without naming the other
@@ -730,7 +730,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       throw new ApiError(
         409,
         'conflict',
-        'You have a session running in another space. Stop it there first.',
+        'You have a lesson running in another space. Stop it there first.',
       );
     }
 
@@ -762,7 +762,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     const running = await getActiveRow(c.env.DB, c.get('org').id, viewer.id);
-    if (!running) throw ApiError.notFound('You have no session running.');
+    if (!running) throw ApiError.notFound('You have no lesson running.');
 
     const input = c.req.valid('json');
     // Phase 75 (JF18): switching to a mode with no price would only fail at
@@ -791,7 +791,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
     const row = await getActiveRow(c.env.DB, c.get('org').id, viewer.id);
 
-    if (!row) throw ApiError.notFound('You have no session running.');
+    if (!row) throw ApiError.notFound('You have no lesson running.');
 
     // Phase 75 (JF18): the typed note is kept on the running lesson BEFORE it
     // is priced, so a refused stop loses nothing -- the lesson keeps running
@@ -814,7 +814,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
   /** Abandons a running lesson without recording anything. */
   .delete('/active', async (c) => {
     if (!(await clearActive(c.env.DB, c.get('org').id, c.get('user').id))) {
-      throw ApiError.notFound('You have no session running.');
+      throw ApiError.notFound('You have no lesson running.');
     }
     return c.body(null, 204);
   })
@@ -826,7 +826,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     // lesson of the same student, which let a tutor who had ever taught that
     // student open another tutor's lesson with them -- and read its price.
     const session = await getVisibleSession(c.env.DB, c.get('org').id, viewer, c.req.valid('param').id);
-    if (!session) throw ApiError.notFound('That session does not exist.');
+    if (!session) throw ApiError.notFound('That lesson does not exist.');
 
     const body: ApiOk<TutoringSession> = { data: await scopeFor(c.env.DB, c.get('org').id, viewer, session) };
     return c.json(body);
@@ -844,10 +844,10 @@ export const sessionsRoutes = new Hono<AppEnv>()
 
       // A lesson the viewer cannot see does not exist, as far as they know.
       const existing = await getVisibleSession(c.env.DB, c.get('org').id, viewer, id);
-      if (!existing) throw ApiError.notFound('That session does not exist.');
+      if (!existing) throw ApiError.notFound('That lesson does not exist.');
 
       if (!isAdmin(viewer) && viewer.id !== existing.tutor_user_id) {
-        throw new ApiError(403, 'forbidden', 'You can only edit your own sessions.');
+        throw new ApiError(403, 'forbidden', 'You can only edit your own lessons.');
       }
 
       await assertProgressTopics(c.env.DB, c.get('org').id, input.progress);
@@ -922,14 +922,14 @@ export const sessionsRoutes = new Hono<AppEnv>()
         ...derived,
       });
 
-      if (!updated) throw ApiError.notFound('That session does not exist.');
+      if (!updated) throw ApiError.notFound('That lesson does not exist.');
 
       // An edit that only revises the editor's own assessment is logged as
       // that, not also as a change to the lesson.
       if (Object.keys(input).some((key) => key !== 'assessment')) {
         await recordAudit(c.env.DB, viewer, c.get('org').id, {
           action: 'session.updated',
-          description: `Updated the ${updated.occurred_on} session with ${updated.student_name}`,
+          description: `Updated the ${updated.occurred_on} lesson with ${updated.student_name}`,
           subject: { id: updated.student_user_id, full_name: updated.student_name },
           entity_type: 'session',
           entity_id: updated.id,
@@ -967,7 +967,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       const viewer = c.get('user');
 
       const session = await getVisibleSession(c.env.DB, c.get('org').id, viewer, id);
-      if (!session) throw ApiError.notFound('That session does not exist.');
+      if (!session) throw ApiError.notFound('That lesson does not exist.');
 
       await applyOwnAssessment(c.env.DB, c.get('org').id, viewer, session, c.req.valid('json'));
 
@@ -991,7 +991,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
       const viewer = c.get('user');
 
       const session = await getVisibleSession(c.env.DB, c.get('org').id, viewer, id);
-      if (!session) throw ApiError.notFound('That session does not exist.');
+      if (!session) throw ApiError.notFound('That lesson does not exist.');
 
       await applyReflection(c.env.DB, c.get('org').id, viewer, session, c.req.valid('json'));
 
@@ -1007,7 +1007,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     const session = await getVisibleSession(c.env.DB, c.get('org').id, viewer, id);
-    if (!session) throw ApiError.notFound('That session does not exist.');
+    if (!session) throw ApiError.notFound('That lesson does not exist.');
 
     await applyReflection(c.env.DB, c.get('org').id, viewer, session, null);
     return c.body(null, 204);
@@ -1019,7 +1019,7 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     const session = await getVisibleSession(c.env.DB, c.get('org').id, viewer, id);
-    if (!session) throw ApiError.notFound('That session does not exist.');
+    if (!session) throw ApiError.notFound('That lesson does not exist.');
 
     await applyOwnAssessment(c.env.DB, c.get('org').id, viewer, session, null);
     return c.body(null, 204);
@@ -1030,17 +1030,17 @@ export const sessionsRoutes = new Hono<AppEnv>()
     const viewer = c.get('user');
 
     const existing = await getVisibleSession(c.env.DB, c.get('org').id, viewer, id);
-    if (!existing) throw ApiError.notFound('That session does not exist.');
+    if (!existing) throw ApiError.notFound('That lesson does not exist.');
 
     if (!isAdmin(viewer) && viewer.id !== existing.tutor_user_id) {
-      throw new ApiError(403, 'forbidden', 'You can only delete your own sessions.');
+      throw new ApiError(403, 'forbidden', 'You can only delete your own lessons.');
     }
 
     await deleteSession(c.env.DB, c.get('org').id, id);
 
     await recordAudit(c.env.DB, viewer, c.get('org').id, {
       action: 'session.deleted',
-      description: `Deleted the ${existing.occurred_on} session with ${existing.student_name}`,
+      description: `Deleted the ${existing.occurred_on} lesson with ${existing.student_name}`,
       subject: { id: existing.student_user_id, full_name: existing.student_name },
       entity_type: 'session',
       entity_id: id,

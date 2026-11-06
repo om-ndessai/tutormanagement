@@ -72,7 +72,8 @@ export function StatCard({
   const body = (
     <CardContent className={compact ? 'px-3.5 py-2.5' : 'px-4 py-3.5'}>
       <div className="flex items-center justify-between gap-2">
-        <p className="text-muted-foreground truncate text-[11px] font-medium tracking-wide uppercase">
+        {/* Sentence case at 12px (Phase 78, JF35): the label wraps rather than being cut. */}
+        <p className="text-muted-foreground min-w-0 text-xs leading-tight font-medium">
           {label}
         </p>
         <span className={cn('shrink-0', toneClass || 'text-muted-foreground/70')}>

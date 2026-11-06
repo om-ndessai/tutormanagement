@@ -5,6 +5,7 @@ import {
   GOAL_RATING_LABELS,
   SCHEDULE_CANCELLER_LABELS,
   formatClockTime,
+  formatDay,
   formatDuration,
   type ProgressCancellation,
   type ProgressPoint,
@@ -16,32 +17,24 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 import { ratingStyle } from './rating';
 
-function shortDay(iso: string): string {
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-}
-
 /** Who called a lesson off: their name when the reader may know it, else the capacity. */
 export function cancelledBy(row: Pick<ProgressCancellation, 'cancelled_by_name' | 'cancelled_as'>): string {
   return row.cancelled_by_name ?? SCHEDULE_CANCELLER_LABELS[row.cancelled_as];
 }
 
 /** How a lesson reads to a screen reader. */
-export function lessonLabel(point: ProgressPoint): string {
+export function lessonLabel(point: ProgressPoint, today: string): string {
   return (
-    `${shortDay(point.occurred_on)} with ${point.tutor_name}: ` +
+    `${formatDay(point.occurred_on, today)} with ${point.tutor_name}: ` +
     (point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'not scored') +
     `, ${point.percent}% mastered after it`
   );
 }
 
 /** How a cancelled lesson reads to a screen reader. */
-export function cancellationLabel(row: ProgressCancellation): string {
+export function cancellationLabel(row: ProgressCancellation, today: string): string {
   return (
-    `Cancelled lesson, ${shortDay(row.occurs_on)} with ${row.tutor_name}, by ${cancelledBy(row)}` +
+    `Cancelled lesson, ${formatDay(row.occurs_on, today)} with ${row.tutor_name}, by ${cancelledBy(row)}` +
     (row.note ? `: ${row.note}` : '')
   );
 }
@@ -99,7 +92,7 @@ export function ChartTooltip({
             {point.percent}% mastered
           </Text>
           <Text variant="bodySmall" style={muted}>
-            {shortDay(point.occurred_on)} · {formatDuration(point.duration_minutes)} with {point.tutor_name}
+            {formatDay(point.occurred_on, today)} · {formatDuration(point.duration_minutes)} with {point.tutor_name}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 }}>
             <View
@@ -126,7 +119,7 @@ export function ChartTooltip({
             Cancelled{cancellation.occurs_on >= today ? ' · upcoming' : ''}
           </Text>
           <Text variant="bodySmall" style={muted}>
-            {shortDay(cancellation.occurs_on)} · {formatClockTime(cancellation.start_time)} with{' '}
+            {formatDay(cancellation.occurs_on, today)} · {formatClockTime(cancellation.start_time)} with{' '}
             {cancellation.tutor_name}
           </Text>
           <Text variant="bodySmall" style={muted}>

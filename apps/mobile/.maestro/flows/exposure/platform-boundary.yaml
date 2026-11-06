@@ -19,6 +19,8 @@ tags:
       id: platform-org-chmi
     timeout: 30000
 - assertNotVisible: 'Sessions'
+# Phase 78: the tab's word is Lessons now; neither is in the console.
+- assertNotVisible: 'Lessons'
 - assertNotVisible: 'Schedule'
 - assertNotVisible: 'Progress'
 - assertNotVisible: 'Billing'
@@ -110,6 +112,8 @@ tags:
     timeout: 20000
 - runFlow: ../../subflows/exposure/no-org-records.yaml
 - assertNotVisible: 'Sessions'
+# Phase 78: the tab's word is Lessons now; neither is in the console.
+- assertNotVisible: 'Lessons'
 - assertNotVisible: 'Billing'
 - runFlow: ../../subflows/go-back.yaml
 - extendedWaitUntil:

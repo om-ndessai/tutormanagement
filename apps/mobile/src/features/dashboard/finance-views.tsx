@@ -4,9 +4,12 @@
 // until feature 25. Phase 54 (@ 24066d9, working tree): in a space paid directly the admin and the
 // tutor read families' balances with each tutor, and no tutor pay, cut, SSN or 1099.
 import {
+  countOf,
   PAYMENT_FORM_LABELS,
   formatCents,
+  formatInstant,
   needsTopup,
+  todayIn,
   tutorAdvanceCents,
   type AdminDashboard,
   type Payment,
@@ -16,7 +19,6 @@ import {
 import { Pressable, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
-import { countOf } from '@/lib/plural';
 import { EmptyNote, Panel } from '@/components/section';
 import { SecureMoney } from '@/components/secure-money';
 import { StatCard, StatGrid } from '@/components/stat-card';
@@ -28,7 +30,7 @@ import { space } from '@/theme/tokens';
 import { useMonthlyFinance } from './api';
 import { DirectBalancesPanel, directTotals } from './direct-balances';
 import { viewAs } from './view-as';
-import { formatMoneyValue, formatPaidOn, orgToday, orgYear } from './finance-format';
+import { formatMoneyValue, orgYear } from './finance-format';
 import { walletMinusIcon, walletPlusIcon } from './money-icon';
 import { MonthlyFinance } from './monthly-finance';
 import { TutorPayments } from './tutor-payments';
@@ -41,7 +43,7 @@ import { YearEndFinance } from './year-end-finance';
 export function PaymentList({ payments }: { payments: Payment[] }) {
   const theme = useAppTheme();
   const timeZone = useOrgTimeZone();
-  const today = orgToday(timeZone);
+  const today = todayIn(timeZone);
   if (payments.length === 0) return <EmptyNote>No payments recorded yet.</EmptyNote>;
 
   return (
@@ -54,7 +56,7 @@ export function PaymentList({ payments }: { payments: Payment[] }) {
             style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10 }}
           >
             <View style={{ flex: 1, minWidth: 0 }}>
-              <Text variant="bodyMedium" numberOfLines={1}>
+              <Text variant="bodyMedium">
                 <Text style={{ fontWeight: '500' }}>{payment.party_name}</Text>
                 {payment.student_name ? (
                   <Text style={{ color: theme.tokens.mutedForeground }}> for {payment.student_name}</Text>
@@ -65,7 +67,7 @@ export function PaymentList({ payments }: { payments: Payment[] }) {
                 ) : null}
               </Text>
               <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                {formatPaidOn(payment.paid_at, timeZone, today, true)} · {PAYMENT_FORM_LABELS[payment.method]}
+                {formatInstant(payment.paid_at, timeZone, { time: false, today, year: 'always' })} · {PAYMENT_FORM_LABELS[payment.method]}
               </Text>
             </View>
             <Text variant="bodyMedium" style={{ fontWeight: '500', fontVariant: ['tabular-nums'] }}>
@@ -100,10 +102,10 @@ function BalanceRow({ student }: { student: StudentBalance }) {
       })}
     >
       <View style={{ flex: 1, minWidth: 0 }}>
-        <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
+        <Text variant="bodyMedium" style={{ fontWeight: '500' }}>
           {student.student_name}
         </Text>
-        <Text variant="bodySmall" numberOfLines={1} style={{ color: theme.tokens.mutedForeground }}>
+        <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
           {student.guardians.map((g) => g.full_name).join(', ') || 'No guardian'}
         </Text>
       </View>
@@ -205,7 +207,7 @@ export function AdminFinance({ data }: { data: AdminDashboard }) {
               formatValue={formatMoneyValue}
               animate={false}
               icon="book-open-variant"
-              hint={countOf(data.totals.session_count, 'session')}
+              hint={countOf(data.totals.session_count, 'lesson')}
               to="/sessions?tab=finance"
             />,
           ]}
@@ -248,7 +250,7 @@ export function AdminFinance({ data }: { data: AdminDashboard }) {
             formatValue={formatMoneyValue}
             animate={false}
             icon="book-open-variant"
-            hint={countOf(data.totals.session_count, 'session')}
+            hint={countOf(data.totals.session_count, 'lesson')}
             to="/sessions?tab=finance"
           />,
           <StatCard

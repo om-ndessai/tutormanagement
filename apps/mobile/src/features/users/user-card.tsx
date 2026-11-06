@@ -77,16 +77,10 @@ export const UserCard = memo(function UserCard({
               <AdaptiveRow gap={space.md}>
                 <PersonAvatar name={user.full_name} />
                 <View style={{ flex: large ? undefined : 1, minWidth: 0 }}>
-                  <Text variant="titleSmall" numberOfLines={lines}>
-                    {user.full_name}
-                  </Text>
+                  {/* A name and an address wrap rather than truncate (Phase 78, JF28). */}
+                  <Text variant="titleSmall">{user.full_name}</Text>
                   {/* Not a link here: a tap on the card opens the record, and the record offers Email. */}
-                  <EmailOrNone
-                    email={user.email}
-                    link={false}
-                    numberOfLines={lines}
-                    style={{ fontSize: 12, color: muted }}
-                  />
+                  <EmailOrNone email={user.email} link={false} style={{ fontSize: 12, color: muted }} />
                   {user.phone ? (
                     <Text style={{ fontSize: 12, color: muted }} numberOfLines={lines}>
                       {user.phone}

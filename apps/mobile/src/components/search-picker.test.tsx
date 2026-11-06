@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from 'react-native-paper';
 
 import { renderWithProviders } from '@/test/render';
-import { filterPickerItems, SearchPicker, type SearchPickerItem } from './search-picker';
+import { filterPickerItems, pickerRowLabel, SearchPicker, type SearchPickerItem } from './search-picker';
 
 const ITEMS: SearchPickerItem[] = [
   { id: 'a', title: 'Anita Patel', description: 'Parent of Sanjay Patel', avatarName: 'Anita Patel' },
@@ -86,5 +86,27 @@ describe('SearchPicker', () => {
     expect([checked('a'), checked('m'), checked('z')]).toEqual([true, false, true]);
     await fireEvent.press(screen.getByTestId('search-picker-row-a'));
     expect([checked('a'), checked('m'), checked('z')]).toEqual([false, false, true]);
+  });
+
+  // Phase 78 (JF29, J06A steps 30-31): every row is one element with the person's name and its line, and the role it
+  // acts as -- a radio where one is chosen, a checkbox where several may be (Add a student's parents).
+  it('names each row and gives it the role it acts as', async () => {
+    await renderWithProviders(<Single />);
+    const row = screen.getByTestId('search-picker-row-a');
+    expect(row.props.accessibilityLabel).toBe('Anita Patel, Parent of Sanjay Patel');
+    expect(row.props.accessibilityRole).toBe('radio');
+    expect(screen.getByTestId('search-picker-row-z').props.accessibilityLabel).toBe('Zoë Lindqvist, Guardian');
+    expect(pickerRowLabel({ title: 'Jo Baker', description: 'jo.baker@example.com' })).toBe('Jo Baker, jo.baker@example.com');
+    expect(pickerRowLabel({ title: 'Jo Baker' })).toBe('Jo Baker');
+  });
+
+  it('draws a several-choice row as a checkbox, as it announces itself', async () => {
+    await renderWithProviders(<Multi />);
+    const row = screen.getByTestId('search-picker-row-m');
+    expect(row.props.accessibilityRole).toBe('checkbox');
+    expect(row.props.accessibilityLabel).toBe('Maria Okafor, Parent of Sofia Okafor');
+    expect(row.props.accessibilityState).toMatchObject({ checked: false });
+    await fireEvent.press(row);
+    expect(screen.getByTestId('search-picker-row-m').props.accessibilityState).toMatchObject({ checked: true });
   });
 });

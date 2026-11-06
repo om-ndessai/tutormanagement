@@ -24,6 +24,11 @@ export interface Figure {
   to?: Href;
   /** False for money, which is never animated. */
   animate?: boolean;
+  /**
+   * The figure's testID, when it must outlive a change of words (Phase 78: "Sessions running" reads "Lessons running"
+   * and keeps `stat-sessions-running`). Default `stat-<slug of the label>`.
+   */
+  testID?: string;
 }
 
 /**
@@ -73,14 +78,14 @@ export function FigureRow({
 
 function FigureCell({ figure, large }: { figure: Figure; large: boolean }) {
   const theme = useAppTheme();
-  const { label, value, formatValue, hint, tone = 'default', to, animate = true } = figure;
+  const { label, value, formatValue, hint, tone = 'default', to, animate = true, testID } = figure;
   const counted = useCountUp(value ?? 0);
   const settled = animate ? counted : (value ?? 0);
   const format = (n: number) => formatValue?.(n) ?? String(n);
   const display = value === undefined ? '—' : format(settled);
   const final = value === undefined ? 'not available' : format(value);
   const color = toneColor(theme, tone) ?? theme.colors.onSurface;
-  const id = `stat-${slug(label)}`;
+  const id = testID ?? `stat-${slug(label)}`;
   const a11y = `${label}: ${final}${hint ? `. ${hint}` : ''}`;
 
   const body = (

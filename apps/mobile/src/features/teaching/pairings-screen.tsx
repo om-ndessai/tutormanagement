@@ -80,7 +80,7 @@ export function PairingsScreen() {
     haptics.warning();
     Alert.alert(
       `Remove ${assignment.student_name} from ${assignment.tutor_name}?`,
-      'They will no longer be able to record sessions for this student. Sessions already taught are kept, along with their billing.',
+      'They will no longer be able to record lessons for this student. Lessons already taught are kept, along with their billing.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -144,7 +144,7 @@ export function PairingsScreen() {
       <FocusNotice
         active={Boolean(focusId)}
         found={assignments.length > 0}
-        what="assignment"
+        what="pairing"
         onClear={clearFocus}
       />
 
@@ -166,7 +166,7 @@ export function PairingsScreen() {
           testID="pairings-empty"
           icon="link-variant"
           title={empty}
-          body={isAdmin ? 'Assign one to let their tutor record sessions.' : undefined}
+          body={isAdmin ? 'Assign one to let their tutor record lessons.' : undefined}
         />
       ) : null}
 

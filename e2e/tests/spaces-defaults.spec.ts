@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { levelLabel, PRIVACY_VERSION, TERMS_VERSION } from '@tmi/shared';
+import { PRIVACY_VERSION, TERMS_VERSION, TILE_LEVEL_WORDS } from '@tmi/shared';
 
 import { expect, ORGS, test } from '../support/fixtures.js';
 import { unwrap } from '../support/api.js';
@@ -131,7 +131,10 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
       const nav = mainNav(inSpace);
       await expect(nav.getByRole('link', { name: /^Assessment/ })).toBeVisible();
       await expect(nav.getByRole('link', { name: /^Quest\b/ })).toBeVisible();
-      for (const name of ['Pairings', 'Sessions', 'Billing']) {
+      // Phase 78 (owner, 2026-11-05): neither carries a Beta badge any more.
+      await expect(nav.getByRole('link', { name: 'Assessment', exact: true })).toHaveText('Assessment');
+      await expect(nav.getByRole('link', { name: 'Quest', exact: true })).toHaveText('Quest');
+      for (const name of ['Pairings', 'Lessons', 'Billing']) {
         await expect(nav.getByRole('link', { name, exact: true })).toHaveCount(0);
       }
       // The Space page offers both switches, on.
@@ -162,8 +165,9 @@ test.describe('S10: a new space has Assessment and Quest on', () => {
       await inSpace.goto('/quest');
       await expect(inSpace.getByTestId('quest-students')).toBeVisible();
       await inSpace.getByTestId(`quest-level-${kid.id}`).click();
-      await inSpace.getByRole('option', { name: levelLabel('BA3'), exact: true }).click();
-      await expect(visible(inSpace, `Kit Questmaker starts at ${levelLabel('BA3')}.`)).toBeVisible();
+      // Phase 78 (JF32): the level in words, "Beast Academy 3", never its short form "BA3".
+      await inSpace.getByRole('option', { name: TILE_LEVEL_WORDS.BA3, exact: true }).click();
+      await expect(visible(inSpace, `Kit Questmaker starts at ${TILE_LEVEL_WORDS.BA3}.`)).toBeVisible();
       const students = await unwrap<any[]>(await inSpace.request.get('/api/quest/students'), 'quest students');
       expect(students.find((s) => s.user_id === kid.id)).toMatchObject({ level_id: 'BA3' });
 

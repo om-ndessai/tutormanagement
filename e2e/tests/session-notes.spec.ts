@@ -232,13 +232,13 @@ test.describe('session write-ups and assessments', () => {
     await dialog.locator('#end').fill('17:00');
 
     await dialog.getByLabel('What was planned', { exact: true }).fill('Fractions on a number line.');
-    await dialog.getByLabel('Previous session review', { exact: true }).fill('Word problems stuck.');
+    await dialog.getByLabel('Previous lesson review', { exact: true }).fill('Word problems stuck.');
     await dialog.getByLabel('Homework review', { exact: true }).fill('Done, neatly.');
     await dialog
       .getByRole('radiogroup', { name: 'How the homework went' })
       .getByRole('radio', { name: 'Done', exact: true })
       .click();
-    await dialog.getByLabel('Session notes', { exact: true }).fill(marker);
+    await dialog.getByLabel('Lesson notes', { exact: true }).fill(marker);
     await dialog.getByLabel('Homework set', { exact: true }).fill('Worksheet 4b.');
     await dialog
       .getByRole('radiogroup', { name: 'How did the lesson go?' })
@@ -261,7 +261,7 @@ test.describe('session write-ups and assessments', () => {
 
     // The card reads it back, on the Tutoring tab, with no money on it.
     await tutor.goto(`/sessions?focus=${session.id}`);
-    await tutor.getByRole('button', { name: 'Session notes' }).click();
+    await tutor.getByRole('button', { name: 'Lesson notes' }).click();
     const card = tutor.getByRole('listitem').filter({ hasText: marker });
     await expect(card).toContainText('Fractions on a number line.');
     await expect(card).toContainText('Worksheet 4b.');
@@ -271,7 +271,7 @@ test.describe('session write-ups and assessments', () => {
     // Her mother adds hers from the same card.
     const maria = await as('parentTutor');
     await maria.goto(`/sessions?focus=${session.id}`);
-    await maria.getByRole('button', { name: 'Assess this session' }).click();
+    await maria.getByRole('button', { name: 'Assess this lesson' }).click();
     const assess = maria.getByRole('dialog');
     await assess
       .getByRole('radiogroup', { name: 'How do you feel this lesson went?' })
@@ -281,7 +281,7 @@ test.describe('session write-ups and assessments', () => {
     await assess.getByRole('button', { name: 'Save assessment' }).click();
     await expect(assess).toHaveCount(0);
 
-    await maria.getByRole('button', { name: 'Session notes' }).click();
+    await maria.getByRole('button', { name: 'Lesson notes' }).click();
     const theirs = maria.getByRole('listitem').filter({ hasText: marker });
     await expect(theirs).toContainText('Loved the number line.');
     await expect(theirs).toContainText('Parent');

@@ -14,6 +14,7 @@ import {
   organizationToday,
   shiftDay,
 } from './lesson-cancellation';
+import { useDates } from '@/hooks/use-dates';
 import { useOrgTimeZone } from '@/providers/auth-provider';
 
 const SHOWN = 8;
@@ -98,12 +99,12 @@ function CancelledRow({
   upcoming: boolean;
   onRestore?: () => void;
 }) {
-  const day = formatLessonDay(row.occurs_on);
+  const day = formatLessonDay(row.occurs_on, useDates().today);
 
   return (
     <li className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
       <span className="min-w-0 flex-1">
-        <span className="block text-sm">
+        <span className="block text-sm break-words">
           <Link
             to={`/schedule?focus=${row.schedule_id}&on=${row.occurs_on}`}
             className="font-medium hover:underline"
@@ -112,7 +113,7 @@ function CancelledRow({
           </Link>
           <span className="text-muted-foreground"> with {row.tutor_name}</span>
           {upcoming && (
-            <Badge variant="secondary" className="ml-2 text-[10px]">
+            <Badge variant="secondary" className="ml-2 text-xs">
               Upcoming
             </Badge>
           )}

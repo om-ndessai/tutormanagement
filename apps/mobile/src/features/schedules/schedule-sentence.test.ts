@@ -1,4 +1,4 @@
-import { placesPhrase, scheduleSentence, shortDate } from './schedule-sentence';
+import { placesPhrase, scheduleSentence } from './schedule-sentence';
 
 const ROOM = { kind: 'physical', name: 'Institute, room 2' } as const;
 const ONLINE = { kind: 'virtual', name: 'Online room' } as const;
@@ -51,8 +51,9 @@ describe('scheduleSentence', () => {
     expect(scheduleSentence({ ...base, places: [] })).toBe('Every Monday, 4:00–5:00 PM, starting Oct 19.');
   });
 
-  it('formats a calendar date without reading the device’s zone', () => {
-    expect(shortDate('2026-01-01', '2026')).toBe('Jan 1');
-    expect(shortDate('2026-12-31', '2027')).toBe('Dec 31, 2026');
+  it('formats a calendar date without reading the device’s zone, the year only in another one', () => {
+    expect(scheduleSentence({ ...base, places: [], startsOn: '2027-01-04', endsOn: '2027-03-01' })).toBe(
+      'Every Monday, 4:00–5:00 PM, starting Jan 4, 2027, until Mar 1, 2027.',
+    );
   });
 });

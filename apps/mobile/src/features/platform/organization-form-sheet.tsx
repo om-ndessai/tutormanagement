@@ -210,7 +210,8 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
             }}
           />
         </View>
-        {/* Phase 62 (P1): whether its games, tiles and Assessments also draw checked ("Beta") questions. */}
+        {/* Phase 62 (P1): whether its quests, tiles and Assessments also draw checked questions. Phase 78: players no
+            longer see a Beta mark; the console keeps the word for its own switch. */}
         <View
           style={{
             flexDirection: 'row',
@@ -223,14 +224,17 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
           }}
         >
           <View style={{ flex: 1, gap: 2 }}>
+            {/* ui-words: the platform console's own label for its checked-questions switch (Phase 78 keeps it). */}
             <Text variant="bodyMedium">Checked questions (Beta)</Text>
             <Text variant="bodySmall" style={{ color: muted }}>
-              Games, tiles and assessments here also draw questions the bank has checked but no person has
-              approved, each marked Beta. Off: approved questions only.
+              Quests, tiles and assessments here also draw questions the bank has checked but no person has
+              approved. They are served like any other, and the bank approves them as players answer them right.
+              Off: approved questions only.
             </Text>
           </View>
           <Switch
             testID="org-checked-questions-switch"
+            // ui-words: the platform console's own label for its checked-questions switch (Phase 78 keeps it).
             accessibilityLabel="Checked questions (Beta)"
             value={form.checked_questions}
             onValueChange={(value) => {
@@ -371,7 +375,7 @@ function OrganizationForm({ existing }: { existing: OrganizationListItem | null 
             <Text variant="bodyMedium">Email notifications</Text>
             <Text variant="bodySmall" style={{ color: muted }}>
               Emails the people concerned when someone is added, a plan or assessment is added, lessons are
-              scheduled, or a session is recorded. Its own admins can switch it too.
+              scheduled, or a lesson is recorded. Its own admins can switch it too.
             </Text>
           </View>
           <Switch

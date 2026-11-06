@@ -127,7 +127,7 @@ function TopicRows({
           {group.unit && (
             <li
               role="presentation"
-              className="bg-muted/30 text-muted-foreground px-3 py-1 text-[11px] font-medium tracking-wide uppercase"
+              className="bg-muted/30 text-muted-foreground px-3 py-1 text-xs font-semibold"
             >
               {group.unit}
             </li>
@@ -248,7 +248,7 @@ export function TopicRatingsEditor({
             >
               {candidate.code}
               {count > 0 && (
-                <span className="bg-background/25 rounded px-1 font-sans text-[10px]">{count}</span>
+                <span className="bg-background/25 rounded px-1 font-sans text-xs">{count}</span>
               )}
             </Button>
           );
@@ -361,7 +361,7 @@ export function PlanTopicsEditor({
                         <TopicDescription text={topic.description} />
                       </span>
                       {baseline.has(topic.id) && (
-                        <RatingChip rating={baseline.get(topic.id)!} className="size-5 text-[10px]" />
+                        <RatingChip rating={baseline.get(topic.id)!} className="size-5 text-xs" />
                       )}
                     </button>
                   </li>

@@ -2,11 +2,12 @@
 // status and "Show deactivated" -- plus the sort the web puts on its column headers. Stacked rather
 // than squeezed onto one row, which on a phone pushed the page wider than the screen.
 import {
-  USER_ROLES,
-  USER_ROLE_LABELS,
-  USER_STATUSES,
-  USER_STATUS_LABELS,
+  COMMON_COPY,
   featureAllowed,
+  USER_ROLE_LABELS,
+  USER_ROLES,
+  USER_STATUS_LABELS,
+  USER_STATUSES,
   type UserRole,
   type UserSortField,
   type UserStatus,
@@ -61,7 +62,7 @@ export function PeopleFilters({
         onChangeText={(search) => onChange({ search })}
         autoCapitalize="none"
         autoCorrect={false}
-        accessibilityLabel="Search users"
+        accessibilityLabel={COMMON_COPY.search_people}
       />
 
       {/* One scrolling row, not two wrapped ones: the list starts higher (ux-audit F-15). */}

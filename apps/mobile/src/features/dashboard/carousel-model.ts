@@ -3,33 +3,13 @@
 // device: what the strip holds, in what order, which card is "Next up", where it opens, and
 // the offsets each card snaps to.
 import {
+  formatDay,
   formatDuration,
   formatMinutesOfDay,
   parseClockTime,
   type TutoringSession,
   type UpcomingSession,
 } from '@tmi/shared';
-
-const DAY_MS = 86_400_000;
-
-function dayNumber(iso: string): number {
-  return Math.floor(Date.parse(`${iso}T00:00:00Z`) / DAY_MS);
-}
-
-/** "Today", "Tomorrow", "Yesterday", else "Thu, Sep 25". */
-export function relativeDay(iso: string, today: string): string {
-  const gap = dayNumber(iso) - dayNumber(today);
-  if (gap === 0) return 'Today';
-  if (gap === 1) return 'Tomorrow';
-  if (gap === -1) return 'Yesterday';
-
-  return new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-}
 
 /** "in 45 min", "in 2 hr 10 min", "Under way", or "Tomorrow at 4:00 PM". */
 export function countdown(
@@ -45,7 +25,7 @@ export function countdown(
     return `in ${formatDuration(left)}`;
   }
 
-  return `${relativeDay(next.occurs_on, today)} at ${formatMinutesOfDay(start)}`;
+  return `${formatDay(next.occurs_on, today, { relative: true, weekday: true })} at ${formatMinutesOfDay(start)}`;
 }
 
 /** Card widths (the web's w-56, w-72, w-44) and the gap between cards (gap-3). */

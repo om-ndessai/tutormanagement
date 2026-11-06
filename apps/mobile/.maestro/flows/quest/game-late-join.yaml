@@ -68,14 +68,14 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-join-running
-      text: 'This game is under way: you can still join, and start from its first question\.'
+      text: 'This quest is under way: you can still join, and start from its first question\.'
     timeout: 10000
 - assertVisible:
     id: game-join-line
-    text: 'Priya’s game · Right \+1, wrong 0 · Up to 20 players, each on their own'
+    text: 'Priya’s quest · Right \+1, wrong 0 · Up to 20 players, each on their own'
 - assertVisible:
     id: game-join-solo
-    text: '.*Join the game.*'
+    text: '.*Join the quest.*'
 - assertNotVisible:
     id: game-team-name
 - assertNotVisible:
@@ -136,11 +136,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: game-join-closed
-      text: 'This is Priya’s single-player game, so it cannot be joined\.'
+      text: 'This is Priya’s single-player quest, so it cannot be joined\.'
     timeout: 10000
 - assertVisible:
     id: game-join-line
-    text: 'Priya’s game · Right \+1, wrong 0 · Single player'
+    text: 'Priya’s quest · Right \+1, wrong 0 · Single player'
 - assertNotVisible:
     id: game-join-solo
 - assertNotVisible:

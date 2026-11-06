@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { addDays } from './schedules.js';
+import { MONTH_SHORT } from './dates.js';
 import { centsSchema } from './teaching.js';
 import { optionalText } from './users.js';
 
@@ -381,9 +382,5 @@ export function monthlyNetCents(row: MonthlyFinanceRow): number | null {
 
 /** "Mar" for 2026-03, on the reader's own clock-free calendar. */
 export function formatMonthShort(month: string): string {
-  const index = Number(month.slice(5, 7)) - 1;
-  return [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ][index] ?? month;
+  return MONTH_SHORT[Number(month.slice(5, 7)) - 1] ?? month;
 }

@@ -40,3 +40,5 @@ export * from './sign-in-settings.js';
 export * from './sharing.js';
 export * from './habit.js';
 export * from './stickiness.js';
+export * from './dates.js';
+export * from './words.js';

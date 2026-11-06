@@ -113,12 +113,12 @@ tags:
       id: screen-spaces
     timeout: 10000
 # In the frame (pushed over the space, no Sign out of its own), her one space marked as here.
-- assertVisible: 'YOUR SPACES'
+- assertVisible: 'Your spaces'
 - assertVisible:
     id: org-here-${output.piaSlug}
 - assertNotVisible:
     id: spaces-sign-out
-- assertNotVisible: 'INVITATIONS'
+- assertNotVisible: 'Invitations'
 - assertNotVisible:
     id: spaces-platform-console
 - takeScreenshot: spaces-page-one-space
@@ -151,7 +151,7 @@ tags:
     visible:
       id: welcome-request-${output.hostSlug}
     timeout: 10000
-- assertVisible: 'REQUESTS SENT'
+- assertVisible: 'Requests sent'
 - assertVisible: '.*Its administrators will let you in\..*'
 - tapOn:
     id: welcome-withdraw-${output.hostSlug}
@@ -234,7 +234,7 @@ tags:
     visible:
       id: screen-spaces
     timeout: 10000
-- assertVisible: 'INVITATIONS'
+- assertVisible: 'Invitations'
 - assertVisible:
     id: invitation-${output.hostSlug}
 - assertVisible:
@@ -299,7 +299,7 @@ tags:
     id: org-here-${output.hostSlug}
 - assertNotVisible:
     id: org-here-${output.piaSlug}
-- assertNotVisible: 'INVITATIONS'
+- assertNotVisible: 'Invitations'
 # A third space of Quinn's, where Pia is a second admin and then suspended (Quinn is still active):
 # she may leave it from here (it is not her last admin's seat).
 - runScript:
@@ -417,6 +417,11 @@ tags:
 - scrollUntilVisible:
     element:
       id: invite-skip
+# The "… is ready." toast sits over Skip at the foot of the page (since Phase 78's words and headings); a tap
+# on it is lost, so it is let go first.
+- extendedWaitUntil:
+    notVisible: 'Pia Second space is ready.'
+    timeout: 15000
 - tapOn:
     id: invite-skip
 - extendedWaitUntil:
@@ -482,7 +487,7 @@ tags:
     visible:
       id: welcome-title
     timeout: 30000
-- assertNotVisible: 'YOUR SPACES'
+- assertNotVisible: 'Your spaces'
 - assertNotVisible:
     id: spaces-platform-console
 - scrollUntilVisible:
@@ -509,7 +514,7 @@ tags:
     visible:
       id: welcome-title
     timeout: 30000
-- assertNotVisible: 'YOUR SPACES'
+- assertNotVisible: 'Your spaces'
 - scrollUntilVisible:
     element:
       id: welcome-delete-account

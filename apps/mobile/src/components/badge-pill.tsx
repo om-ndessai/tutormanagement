@@ -1,6 +1,7 @@
-// The web's `<Badge variant="secondary">` as a small label: "Beta" beside the Assessment menu item,
-// its page and its switch (Phase 38). Muted, from the theme's tokens. Phase 64: `tone="primary"` is the
-// web's default `<Badge>` (a game's "New best!").
+// The web's `<Badge variant="secondary">` as a small label: a level, a homework status (Phase 38's
+// "Beta" pill is gone since Phase 78, owner 2026-11-05: checked questions are served like any other, so
+// `label` has no default). Muted, from the theme's tokens. Phase 64: `tone="primary"` is the web's default
+// `<Badge>` (a quest's "New best!").
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
@@ -8,11 +9,11 @@ import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
 export function BadgePill({
-  label = 'Beta',
+  label,
   testID,
   tone = 'secondary',
 }: {
-  label?: string;
+  label: string;
   testID?: string;
   tone?: 'secondary' | 'primary';
 }) {

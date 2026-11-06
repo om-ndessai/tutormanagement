@@ -12,7 +12,7 @@ import {
 } from '@tmi/shared';
 
 /** Under "Have a code?" (and the Quest board's box): the two kinds of code. */
-export const CODE_SHEET_HINT = 'Six characters join a game; eight ask to join a space.';
+export const CODE_SHEET_HINT = 'Six characters join a quest; eight ask to join a space.';
 
 /** The roles a person may ask for here: a teen only a learner; a tutor only where the space has Tutoring. */
 export function joinAskRoles(

@@ -61,17 +61,18 @@ test('Record opens the lessons still owed, never the money; each action routes t
 });
 
 describe('Phase 76 (JF21): one Add chooser', () => {
-  test('one "Add people" row, opening the chooser -- never three separate add rows', () => {
+  test('one "Add a person" row, opening the chooser -- never three separate add rows', () => {
     const all = createActions(['admin'], {});
     const add = all.filter((action) => action.id.startsWith('add-'));
     expect(add).toHaveLength(1);
-    expect(add[0]).toMatchObject({ id: 'add-people', title: 'Add people', href: '/add' });
+    // Phase 78 (JF32): the home's quick action's words, from shared QUICK_ACTION_LABELS.
+    expect(add[0]).toMatchObject({ id: 'add-people', title: 'Add a person', href: '/add' });
   });
 
   test('in a personal space it reads "Add my child"', () => {
     const all = createActions(['admin'], { personal: true }, { tutoring: false, assessment: true });
     expect(all.find((action) => action.id === 'add-people')).toMatchObject({ title: 'Add my child', href: '/add' });
-    expect(createActions(['admin'], {}).find((action) => action.id === 'add-people')?.title).toBe('Add people');
+    expect(createActions(['admin'], {}).find((action) => action.id === 'add-people')?.title).toBe('Add a person');
   });
 });
 

@@ -159,7 +159,7 @@ export function LiveSessionBanner({ active }: { active: ActiveSession }) {
   function confirmCancel() {
     haptics.warning();
     Alert.alert(
-      'Discard this session?',
+      'Discard this lesson?',
       'The timer stops and nothing is recorded or billed. Use this if it was started by mistake.',
       [
         { text: 'Keep going', style: 'cancel' },
@@ -168,10 +168,10 @@ export function LiveSessionBanner({ active }: { active: ActiveSession }) {
           style: 'destructive',
           onPress: () =>
             cancel.mutate(undefined, {
-              onSuccess: () => toast.success('Session discarded.'),
+              onSuccess: () => toast.success('Lesson discarded.'),
               onError: (error) =>
                 toast.error(
-                  error instanceof ApiRequestError ? error.message : 'Could not discard the session.',
+                  error instanceof ApiRequestError ? error.message : 'Could not discard the lesson.',
                 ),
             }),
         },
@@ -240,7 +240,7 @@ export function LiveSessionBanner({ active }: { active: ActiveSession }) {
         testID="live-cancel"
         icon="close"
         size={20}
-        accessibilityLabel="Discard this session"
+        accessibilityLabel="Discard this lesson"
         onPress={confirmCancel}
         disabled={cancel.isPending}
         style={{ margin: 0 }}

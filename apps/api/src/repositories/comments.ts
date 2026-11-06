@@ -86,7 +86,7 @@ export async function loadCommentTarget(
 
     return row
       ? {
-          label: `the ${row.occurred_on} session with ${row.student_name}`,
+          label: `the ${row.occurred_on} lesson with ${row.student_name}`,
           name: null,
           tutor_user_id: row.tutor_user_id,
           student_user_id: row.student_user_id,
@@ -515,7 +515,7 @@ export async function listCommentFeed(
         ...base,
         target_type: 'session',
         target_id: String(row.target_session_id),
-        target_label: `the ${row.session_date} session with ${row.session_student}`,
+        target_label: `the ${row.session_date} lesson with ${row.session_student}`,
       };
     }
 

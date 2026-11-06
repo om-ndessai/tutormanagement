@@ -1,6 +1,6 @@
 # J15A step 21: Hana confirms "End the game".
 appId: ${APP_ID}
 ---
-- tapOn: 'End the game'
+- tapOn: 'End the quest'
 - waitForAnimationToEnd:
     timeout: 3000

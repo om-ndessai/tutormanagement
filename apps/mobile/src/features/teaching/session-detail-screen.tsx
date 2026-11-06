@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/teaching/sessions-page.tsx @ 1132322 (a card's expanded notes,
 // reflection and assessments). The web opens a card in place; on the phone the card opens this.
 // Money only when it was opened from Finance (`showMoney`, false unless the route says finance).
-import { SESSION_MODE_LABELS, formatDuration, type TutoringSession } from '@tmi/shared';
+import { SESSION_MODE_LABELS, formatDay, formatDuration, type TutoringSession } from '@tmi/shared';
 import { router, Stack } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
@@ -19,7 +19,7 @@ import { useSession } from './api';
 import { ReflectionView } from './reflection-chips';
 import { AssessButton, ReflectButton } from './session-actions';
 import { AUTO_STOPPED_NOTE, Tag } from './session-card';
-import { formatSessionDay, formatSessionTimes } from './session-format';
+import { formatSessionTimes } from './session-format';
 import { SessionMoney } from './session-money';
 import { mayEditSession, useConfirmDeleteSession } from './session-row-actions';
 import { AssessmentsView, PartHeading, SessionNotesView, hasWrittenNotes } from './session-notes';
@@ -48,7 +48,7 @@ export function SessionDetailScreen({ id, showMoney = false }: { id: string; sho
 
   return (
     <Screen testID="screen-session" refreshing={refreshing} onRefresh={() => void onRefresh()}>
-      <Stack.Screen options={{ title: 'Session' }} />
+      <Stack.Screen options={{ title: 'Lesson' }} />
       {body}
     </Screen>
   );
@@ -75,7 +75,7 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
           <Text style={{ color: muted }}> with {session.tutor_name}</Text>
         </Text>
         <Text variant="bodyMedium" style={{ color: muted }}>
-          {formatSessionDay(session.occurred_on, today)} ·{' '}
+          {formatDay(session.occurred_on, today, { weekday: true })} ·{' '}
           {formatSessionTimes(session.started_at, session.ended_at)} ·{' '}
           {formatDuration(session.duration_minutes)}
         </Text>
@@ -138,7 +138,7 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
               })
             }
           >
-            Edit session
+            Edit lesson
           </Button>
           <Button
             testID="session-delete"
@@ -149,7 +149,7 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
             loading={remove.isPending}
             disabled={remove.isPending}
           >
-            Delete session
+            Delete lesson
           </Button>
         </View>
       ) : null}
@@ -158,7 +158,7 @@ function SessionDetail({ session, showMoney }: { session: TutoringSession; showM
       <CommentsRow
         testID="session-comments"
         target={{ target_type: 'session', target_id: session.id }}
-        title={`the ${session.occurred_on} session with ${session.student_name}`}
+        title={`the ${formatDay(session.occurred_on, today)} lesson with ${session.student_name}`}
         description={`${session.student_name} with ${session.tutor_name}, ${formatSessionTimes(session.started_at, session.ended_at)}.`}
       />
     </>

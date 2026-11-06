@@ -81,7 +81,7 @@ export function YearEndFinance() {
                   style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingVertical: 10 }}
                 >
                   <View style={{ flex: 1, minWidth: 0 }}>
-                    <Text variant="bodyMedium" numberOfLines={1} style={{ fontWeight: '500' }}>
+                    <Text variant="bodyMedium" style={{ fontWeight: '500' }}>
                       {tutor.full_name}
                     </Text>
                     <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>

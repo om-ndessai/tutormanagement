@@ -56,7 +56,7 @@ import {
 } from '../repositories/users.js';
 
 const idParamSchema = z.object({
-  id: z.uuid({ message: 'Not a valid user id.' }),
+  id: z.uuid({ message: 'Not a valid person id.' }),
 });
 
 const deleteQuerySchema = z.object({
@@ -353,11 +353,11 @@ export const usersRoutes = new Hono<AppEnv>()
     // Checked before the read so an out-of-scope id is indistinguishable from
     // one that does not exist -- and so is somebody from another organization.
     const visible = await visibleUserIds(c.env.DB, org, viewer);
-    if (visible && !visible.has(id)) throw ApiError.notFound('That user does not exist.');
+    if (visible && !visible.has(id)) throw ApiError.notFound('That person does not exist.');
 
     const detail = await getUserDetail(c.env.DB, org, id);
 
-    if (!detail) throw ApiError.notFound('That user does not exist.');
+    if (!detail) throw ApiError.notFound('That person does not exist.');
 
     const body: ApiOk<UserDetail> = {
       // Each strips what this viewer may not see: the family's price, the
@@ -394,7 +394,7 @@ export const usersRoutes = new Hono<AppEnv>()
 
       const existing = await getUserById(c.env.DB, org.id, id);
       if (!existing || existing.deleted_at) {
-        throw ApiError.notFound('That user does not exist, or has been deactivated.');
+        throw ApiError.notFound('That person does not exist, or has been deactivated.');
       }
 
       if (!existing.roles.includes('tutor')) {
@@ -435,7 +435,7 @@ export const usersRoutes = new Hono<AppEnv>()
 
       const existing = await getUserById(c.env.DB, org, id);
       if (!existing || existing.deleted_at) {
-        throw ApiError.notFound('That user does not exist, or has been deactivated.');
+        throw ApiError.notFound('That person does not exist, or has been deactivated.');
       }
 
       // The form sends the whole record. A shared field it sends back
@@ -475,7 +475,7 @@ export const usersRoutes = new Hono<AppEnv>()
       try {
         if (Object.keys(fields).length > 0) {
           const updated = await updateUser(c.env.DB, org, id, fields);
-          if (!updated) throw ApiError.notFound('That user does not exist.');
+          if (!updated) throw ApiError.notFound('That person does not exist.');
         }
       } catch (error) {
         if (isUniqueConstraintError(error)) throw ApiError.conflict(EMAIL_TAKEN);
@@ -551,12 +551,12 @@ export const usersRoutes = new Hono<AppEnv>()
         // Erases what THIS organization holds about them; the person survives
         // in any other organization they belong to.
         if (!(await purgeUser(c.env.DB, org, id))) {
-          throw ApiError.notFound('That user does not exist.');
+          throw ApiError.notFound('That person does not exist.');
         }
 
         await recordAudit(c.env.DB, c.get('user'), org, {
           action: 'user.deleted',
-          description: `Permanently deleted ${doomed?.full_name ?? 'a user'}`,
+          description: `Permanently deleted ${doomed?.full_name ?? 'a person'}`,
           entity_type: 'user',
           entity_id: id,
         });
@@ -566,7 +566,7 @@ export const usersRoutes = new Hono<AppEnv>()
 
       const user = await deactivateUser(c.env.DB, org, id);
       if (!user) {
-        throw ApiError.notFound('That user does not exist, or was already deactivated.');
+        throw ApiError.notFound('That person does not exist, or was already deactivated.');
       }
 
       await recordAudit(c.env.DB, c.get('user'), org, {
@@ -589,7 +589,7 @@ export const usersRoutes = new Hono<AppEnv>()
     try {
       const user = await restoreUser(c.env.DB, org, id);
       if (!user) {
-        throw ApiError.notFound('That user does not exist, or is already active.');
+        throw ApiError.notFound('That person does not exist, or is already active.');
       }
 
       await recordAudit(c.env.DB, c.get('user'), org, {
@@ -607,7 +607,7 @@ export const usersRoutes = new Hono<AppEnv>()
       // with someone created since.
       if (isUniqueConstraintError(error)) {
         throw ApiError.conflict(
-          'Cannot restore: another active user now has that email address.',
+          'Cannot restore: someone else now has that email address.',
         );
       }
       throw error;

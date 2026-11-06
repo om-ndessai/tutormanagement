@@ -222,7 +222,7 @@ export function InvitePeople({
       {sent.length > 0 ? (
         <View style={{ gap: space.sm }} accessibilityLabel="Invited">
           <Text variant="labelLarge" accessibilityRole="header" style={{ color: muted }}>
-            INVITED
+            Invited
           </Text>
           <Text variant="bodySmall" style={{ color: muted }}>
             No email is sent from this space. Copy each invitation, or share it, so they know to sign in.
@@ -232,7 +232,7 @@ export function InvitePeople({
               <View style={{ padding: space.md, gap: space.sm }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
                   <Icon source="check" size={18} color={theme.tokens.success} />
-                  <Text testID={`invite-sent-line-${row.email}`} variant="bodyMedium" style={{ flex: 1 }} numberOfLines={1}>
+                  <Text testID={`invite-sent-line-${row.email}`} variant="bodyMedium" style={{ flex: 1 }}>
                     {row.email}
                     <Text style={{ color: muted }}>{` · ${USER_ROLE_LABELS[row.role]}`}</Text>
                   </Text>

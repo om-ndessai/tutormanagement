@@ -22,6 +22,7 @@ import {
   PAYMENT_FORM_LABELS,
   centsToInput,
   formatCents,
+  formatDay,
   parseCentsInput,
   paymentInputSchema,
   paymentUpdateSchema,
@@ -508,7 +509,7 @@ export function PaymentFormBody({
           </Text>
           {!moreOpen ? (
             <Text variant="bodyMedium" numberOfLines={1} style={{ flex: 1, color: muted }}>
-              {day === today ? 'Today' : day}
+              {formatDay(day, today, { relative: true })}
               {reference.trim() ? ` · ${reference.trim()}` : ''}
             </Text>
           ) : null}

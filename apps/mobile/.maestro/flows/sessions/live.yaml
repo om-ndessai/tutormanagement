@@ -25,7 +25,9 @@ tags:
     visible:
       id: screen-home
     timeout: 30000
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: sessions-start
@@ -137,7 +139,9 @@ tags:
     visible:
       id: live-banner
     timeout: 10000
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: live-stop
@@ -218,12 +222,12 @@ tags:
 - tapOn:
     id: live-cancel
 - extendedWaitUntil:
-    visible: 'Discard this session?'
+    visible: 'Discard this lesson?'
     timeout: 10000
 - assertVisible: 'Keep going'
 - tapOn: 'Discard'
 - extendedWaitUntil:
-    visible: 'Session discarded.'
+    visible: 'Lesson discarded.'
     timeout: 15000
 - extendedWaitUntil:
     notVisible:
@@ -251,9 +255,9 @@ tags:
 - tapOn:
     id: session-delete
 - extendedWaitUntil:
-    visible: 'Delete this session?'
+    visible: 'Delete this lesson?'
     timeout: 10000
 - tapOn: 'Delete'
 - extendedWaitUntil:
-    visible: 'Session deleted.'
+    visible: 'Lesson deleted.'
     timeout: 15000

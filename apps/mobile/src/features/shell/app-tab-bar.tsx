@@ -17,7 +17,7 @@ import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 import Svg, { Path } from 'react-native-svg';
 
-import { featureOn, type FeatureState } from '@tmi/shared';
+import { COMMON_COPY, featureOn, type FeatureState } from '@tmi/shared';
 
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
@@ -43,7 +43,7 @@ import {
  */
 export const TAB_ITEMS: Record<string, { label: string; icon: string; focusedIcon: string }> = {
   dashboard: { label: 'Home', icon: 'home-outline', focusedIcon: 'home' },
-  sessions: { label: 'Sessions', icon: 'book-open-outline', focusedIcon: 'book-open-variant' },
+  sessions: { label: COMMON_COPY.lessons_page, icon: 'book-open-outline', focusedIcon: 'book-open-variant' },
   progress: { label: 'Progress', icon: 'chart-line', focusedIcon: 'chart-line' },
   more: { label: 'More', icon: 'dots-horizontal-circle-outline', focusedIcon: 'dots-horizontal-circle' },
 };
@@ -62,7 +62,7 @@ export function visibleTabs(organization: Partial<FeatureState> | null | undefin
   return featureOn(organization, 'tutoring') ? ['dashboard', 'sessions', 'progress', 'more'] : ['dashboard', 'more'];
 }
 
-/** The create button goes after this many tabs: the middle (2 of 4, between Sessions and Progress; 1 of 2). */
+/** The create button goes after this many tabs: the middle (2 of 4, between Lessons and Progress; 1 of 2). */
 export function createSlot(count: number): number {
   return Math.floor(count / 2);
 }

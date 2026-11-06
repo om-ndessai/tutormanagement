@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/providers/auth-provider';
 import { CheckIcon, FlagIcon, TrophyIcon, XIcon } from 'lucide-react';
-import { QUESTION_DIFFICULTY_LABELS, questLevelLabel, type QuestReviewItem } from '@tmi/shared';
+import { QUESTION_DIFFICULTY_LABELS, type QuestReviewItem } from '@tmi/shared';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { MathText } from '@/features/question-bank/math-text';
 import { useQuestReview, useReviewQuest } from './api';
 import { QuestFrame } from './fullscreen-frame';
+import { questLevelWords } from './level-words';
 
 // Phase 42: a tutor's Question Quest review, full screen. One answer at a
 // time, oldest first. The tutor judges the QUESTION: approving it puts it in
@@ -104,7 +105,7 @@ function ReviewCard({ item }: { item: QuestReviewItem }) {
       <Card className="py-0">
         <CardContent className="grid gap-4 p-6">
           <div className="text-muted-foreground flex flex-wrap items-center gap-2 text-xs">
-            <Badge variant="secondary">{questLevelLabel(q.level_id)}</Badge>
+            <Badge variant="secondary">{questLevelWords(q.level_id)}</Badge>
             <span>
               {q.topic_code} · {q.topic_name}
             </span>

@@ -81,9 +81,10 @@ describe('InvitePeople (Phase 61, S12)', () => {
       roles: ['admin'],
       status: 'invited',
     });
-    // The refused row stays, with its reason; the sent one moves to INVITED.
+    // The refused row stays, with its reason; the sent one moves to Invited (sentence case since Phase 78, JF35).
     expect(screen.getByTestId('invite-problem-0')).toHaveTextContent('Already in this space.');
-    expect(screen.getByText('INVITED')).toBeTruthy();
+    expect(screen.getByText('Invited')).toBeTruthy();
+    expect(screen.queryByText('INVITED')).toBeNull();
     expect(screen.getByTestId('invite-text-maria.lopez@example.com')).toHaveTextContent(
       'Mia Creator invited you to The Creator family on Aimtrue, a space for practice and assessments. Open http://localhost:8787/spaces and sign in with Google using maria.lopez@example.com: your invitation is waiting there.',
     );

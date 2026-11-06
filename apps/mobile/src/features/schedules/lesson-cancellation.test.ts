@@ -2,9 +2,9 @@ import {
   cancelDateBounds,
   cancelledByText,
   defaultCancelDate,
-  formatLessonDay,
   shiftDay,
 } from './lesson-cancellation';
+import { formatDay } from '@tmi/shared';
 
 const series = { starts_on: '2026-09-01', ends_on: '2026-12-18', day_of_week: 2 };
 
@@ -37,7 +37,9 @@ describe('cancelling one lesson of a series', () => {
   it('says who cancelled, and reads dates as calendar dates', () => {
     expect(cancelledByText('Maria Okafor', 'parent')).toBe('by Maria Okafor (the family)');
     expect(cancelledByText(null, 'admin')).toBe('by the office');
-    expect(formatLessonDay('2026-11-24')).toBe('Tue, Nov 24');
+    // A lesson's day reads through the shared formatter (Phase 78): the weekday, and the year only in another one.
+    expect(formatDay('2026-11-24', '2026-10-08', { weekday: true })).toBe('Tue, Nov 24');
+    expect(formatDay('2027-01-05', '2026-10-08', { weekday: true })).toBe('Tue, Jan 5, 2027');
     expect(shiftDay('2026-10-08', -28)).toBe('2026-09-10');
     expect(shiftDay('2026-12-30', 7)).toBe('2027-01-06');
   });

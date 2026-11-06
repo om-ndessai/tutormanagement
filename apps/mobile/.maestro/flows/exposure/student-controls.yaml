@@ -106,7 +106,7 @@ env:
 - assertNotVisible:
     id: person-menu
 - scrollUntilVisible:
-    element: 'Longest session'
+    element: 'Longest lesson'
     direction: DOWN
     timeout: 20000
 - assertNotVisible:

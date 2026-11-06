@@ -21,7 +21,7 @@ export const FEATURE_SET_LABELS: Record<FeatureSet, string> = {
 export const FEATURE_SET_DESCRIPTIONS: Record<FeatureSet, string> = {
   tutoring: 'Pairings, lessons, schedules, locations, progress, comments, billing and 1099s.',
   assessment: 'Assessments answered by hand on a canvas, with a PDF for the tutor and their review.',
-  quest: 'Question Quest and Quest Games on the question bank.',
+  quest: 'Question Quest, and quests to play alone or together, on the question bank.',
 };
 
 /** The columns that say what a space may use, and the two switches its admins keep. */

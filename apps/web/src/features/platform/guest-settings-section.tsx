@@ -132,11 +132,12 @@ function PoolEditor({ level }: { level: string }) {
   return (
     <div className="grid gap-3 border-t pt-3" data-testid="guest-pool-editor">
       <div className="grid gap-1">
-        <h4 className="text-xs font-semibold uppercase">Now ({data.current.length})</h4>
+        <h4 className="text-[13px] font-semibold">Now ({data.current.length})</h4>
         {data.current.length === 0 && <p className="text-muted-foreground text-xs">None yet: this level has no open guest tiles.</p>}
         <ol className="grid gap-1">
           {data.current.map((q) => (
             <li key={q.id} className="text-xs">
+              {/* ui-words: the console's own mark for a checked (not yet approved) question; no player reads it. */}
               <span className="text-muted-foreground mr-1">D{q.difficulty}{q.status === 'checked' ? ' · Beta' : ''}</span>
               <MathText text={q.stem.length > 140 ? `${q.stem.slice(0, 140)}…` : q.stem} />
             </li>
@@ -144,10 +145,11 @@ function PoolEditor({ level }: { level: string }) {
         </ol>
       </div>
       <div className="grid gap-1">
-        <h4 className="text-xs font-semibold uppercase">Suggested ({data.suggestion.length})</h4>
+        <h4 className="text-[13px] font-semibold">Suggested ({data.suggestion.length})</h4>
         <ol className="grid gap-1">
           {data.suggestion.map((q) => (
             <li key={q.id} className="text-xs">
+              {/* ui-words: the console's own mark for a checked (not yet approved) question; no player reads it. */}
               <span className="text-muted-foreground mr-1">D{q.difficulty}{q.status === 'checked' ? ' · Beta' : ''}</span>
               <MathText text={q.stem.length > 140 ? `${q.stem.slice(0, 140)}…` : q.stem} />
             </li>

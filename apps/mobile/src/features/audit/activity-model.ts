@@ -1,8 +1,6 @@
 // The Activity screen's pure parts: the filter it sends, the chips that show it, and the timeline
 // grouped by day on the organization's clock.
-import { AUDIT_ACTION_LABELS, zonedClockParts, type AuditEvent } from '@tmi/shared';
-
-import { formatSessionDay } from '@/features/teaching/session-format';
+import { AUDIT_ACTION_LABELS, formatDay, zonedClockParts, type AuditEvent } from '@tmi/shared';
 
 export interface ActivityFilter {
   /** Admins only: the server answers anyone else with their own activity, whatever is sent. */
@@ -33,8 +31,8 @@ export function filterChips(
   if (filter.user_id)
     chips.push({ key: 'user_id', label: `Person: ${personName(filter.user_id) ?? 'one person'}` });
   if (filter.action) chips.push({ key: 'action', label: `Action: ${actionLabel(filter.action)}` });
-  if (filter.from) chips.push({ key: 'from', label: `From ${formatSessionDay(filter.from, today)}` });
-  if (filter.to) chips.push({ key: 'to', label: `To ${formatSessionDay(filter.to, today)}` });
+  if (filter.from) chips.push({ key: 'from', label: `From ${formatDay(filter.from, today, { weekday: true })}` });
+  if (filter.to) chips.push({ key: 'to', label: `To ${formatDay(filter.to, today, { weekday: true })}` });
   return chips;
 }
 
@@ -42,17 +40,10 @@ export type TimelineItem =
   | { kind: 'day'; key: string; day: string; label: string }
   | { kind: 'event'; key: string; event: AuditEvent; last: boolean };
 
-function previousDay(day: string): string {
-  const date = new Date(`${day}T12:00:00Z`);
-  date.setUTCDate(date.getUTCDate() - 1);
-  return date.toISOString().slice(0, 10);
-}
-
 /** "Today", "Yesterday", else "Fri, Oct 9" (with the year when it is not this one). */
 export function dayLabel(day: string, today: string): string {
-  if (day === today) return 'Today';
-  if (day === previousDay(today)) return 'Yesterday';
-  return formatSessionDay(day, today);
+  // The log holds no future days, so "Tomorrow" never shows.
+  return formatDay(day, today, { relative: true, weekday: true });
 }
 
 /**

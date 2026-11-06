@@ -69,7 +69,7 @@ tags:
     timeout: 20000
 # This flow's own row, not an older one: Sofia's lesson, told to her parent, moments ago.
 - scrollUntilVisible:
-    element: 'Session recorded · Sofia Okafor · (just now|1 minute ago|2 minutes ago)'
+    element: 'Lesson recorded · Sofia Okafor · (just now|1 minute ago|2 minutes ago)'
     direction: DOWN
     timeout: 20000
 - assertVisible: 'Maria Okafor'

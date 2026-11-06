@@ -23,7 +23,7 @@ test.describe('dashboards', () => {
     const tutor = await as('tutor');
     await tutor.goto('/dashboard');
 
-    await expect(tutor.getByRole('heading', { name: 'Tutoring Sessions' })).toBeVisible();
+    await expect(tutor.getByRole('heading', { name: 'Lessons', exact: true })).toBeVisible();
     await expect(tutor.getByRole('heading', { name: 'Progress', exact: true })).toBeVisible();
 
     await tutor.goto('/dashboard?tab=finance');
@@ -71,7 +71,7 @@ test.describe('dashboards', () => {
 
     await admin.goto(`/dashboard?as=${alexId}`);
     await expect(admin.getByText(`Viewing as ${PEOPLE.tutor.name}`)).toBeVisible();
-    await expect(admin.getByRole('heading', { name: 'Tutoring Sessions' })).toBeVisible();
+    await expect(admin.getByRole('heading', { name: 'Lessons', exact: true })).toBeVisible();
 
     // A tutor asking for somebody else's dashboard is refused by the API.
     //

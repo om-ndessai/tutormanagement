@@ -10,7 +10,6 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState, type ReactNode
 import { FlatList, Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 import { ActivityIndicator, Icon, Searchbar, Text } from 'react-native-paper';
 
-import { useLineLimit } from '@/hooks/use-large-text';
 import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
@@ -202,6 +201,11 @@ function RowGap() {
   return <View style={{ height: space.xs }} />;
 }
 
+/** A row's accessible name: the title and its muted line, as one sentence a screen reader reads. */
+export function pickerRowLabel(item: Pick<SearchPickerItem, 'title' | 'description'>): string {
+  return item.description ? `${item.title}, ${item.description}` : item.title;
+}
+
 const PickerRow = memo(function PickerRow({
   item,
   selected,
@@ -216,13 +220,14 @@ const PickerRow = memo(function PickerRow({
   testID: string;
 }) {
   const theme = useAppTheme();
-  const lines = useLineLimit(1);
   const leading = item.avatarName ? <PersonAvatar name={item.avatarName} size={40} /> : item.avatar;
   return (
     <Pressable
       testID={testID}
+      // One element, named by the person and their line ("Jo Baker, jo.baker@example.com"), with the role it acts as.
+      accessible
       accessibilityRole={multiple ? 'checkbox' : 'radio'}
-      accessibilityLabel={item.description ? `${item.title}, ${item.description}` : item.title}
+      accessibilityLabel={pickerRowLabel(item)}
       accessibilityState={{ checked: selected, selected, disabled: item.disabled }}
       disabled={item.disabled}
       onPress={() => onChoose(item.id)}
@@ -246,19 +251,26 @@ const PickerRow = memo(function PickerRow({
     >
       {leading ?? null}
       <View style={{ flex: 1, gap: 2 }}>
-        <Text variant="bodyLarge" numberOfLines={lines} style={{ fontWeight: selected ? '600' : '400' }}>
+        {/* A name and its line wrap rather than truncate (Phase 78, JF28). */}
+        <Text variant="bodyLarge" style={{ fontWeight: selected ? '600' : '400' }}>
           {item.title}
         </Text>
         {item.description ? (
-          <Text variant="bodyMedium" numberOfLines={lines} style={{ color: theme.tokens.mutedForeground }}>
+          <Text variant="bodyMedium" style={{ color: theme.tokens.mutedForeground }}>
             {item.description}
           </Text>
         ) : null}
       </View>
-      {selected ? (
+      {/* Phase 78 (JF29, J06A steps 30-31): a row looks like what it announces -- several may be chosen, so a
+          square checkbox (it was a round outline that read as a radio); one, so a ticked circle on the choice. */}
+      {multiple ? (
+        <Icon
+          source={selected ? 'checkbox-marked' : 'checkbox-blank-outline'}
+          size={24}
+          color={selected ? theme.colors.primary : theme.colors.outline}
+        />
+      ) : selected ? (
         <Icon source="check-circle" size={24} color={theme.colors.primary} />
-      ) : multiple ? (
-        <Icon source="checkbox-blank-circle-outline" size={24} color={theme.colors.outline} />
       ) : null}
     </Pressable>
   );

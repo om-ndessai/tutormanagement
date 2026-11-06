@@ -61,7 +61,7 @@ function ShareCardView({ share }: { share: PublicShare }) {
   return (
     <Card className="py-0" data-testid="share-card">
       <CardContent className="grid gap-4 p-6">
-        <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+        <p className="text-muted-foreground text-[13px] font-medium">
           Aimtrue Quest{share.first_name ? ` · ${share.first_name}` : ''}
         </p>
         <h1 className="text-2xl font-bold" data-testid="share-headline">

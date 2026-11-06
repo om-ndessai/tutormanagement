@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/progress/student-progress-page.tsx (the "Lessons in this plan"
 // table: LessonRow, CancelledLessonRow) @ 1132322 -- as rows, the table's columns stacked. It is
 // the chart's text view: every value the chart plots, without a tap.
-import { GOAL_RATING_LABELS, type ProgressCancellation, type ProgressPoint } from '@tmi/shared';
+import { GOAL_RATING_LABELS, formatDay, type ProgressCancellation, type ProgressPoint } from '@tmi/shared';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { Divider, Icon, Text } from 'react-native-paper';
@@ -9,7 +9,7 @@ import { Divider, Icon, Text } from 'react-native-paper';
 import { useAppTheme } from '@/providers/theme-provider';
 import { MIN_TARGET, radius, space } from '@/theme/tokens';
 import { cancelledBy } from './chart-tooltip';
-import { lessonRows, longDate } from './progress-model';
+import { lessonRows } from './progress-model';
 import { RatingChip } from './rating';
 
 export function LessonList({
@@ -30,9 +30,9 @@ export function LessonList({
         >
           {index > 0 ? <Divider /> : null}
           {row.kind === 'lesson' ? (
-            <LessonRow point={row.item} />
+            <LessonRow point={row.item} today={today} />
           ) : (
-            <CancelledLessonRow row={row.item} upcoming={row.item.occurs_on >= today} />
+            <CancelledLessonRow row={row.item} upcoming={row.item.occurs_on >= today} today={today} />
           )}
         </View>
       ))}
@@ -41,7 +41,7 @@ export function LessonList({
 }
 
 /** One lesson of the plan: when, with whom, how it moved them, and where it left them. */
-function LessonRow({ point }: { point: ProgressPoint }) {
+function LessonRow({ point, today }: { point: ProgressPoint; today: string }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   const rated = `${point.topics_rated} ${point.topics_rated === 1 ? 'topic' : 'topics'} rated`;
@@ -50,7 +50,7 @@ function LessonRow({ point }: { point: ProgressPoint }) {
       testID={`progress-lesson-${point.session_id}`}
       accessibilityRole="link"
       accessibilityLabel={
-        `${longDate(point.occurred_on)} with ${point.tutor_name}. ` +
+        `${formatDay(point.occurred_on, today, { year: 'always' })} with ${point.tutor_name}. ` +
         `${point.goal_rating ? GOAL_RATING_LABELS[point.goal_rating] : 'Not scored'}. ${rated}. ` +
         `${point.percent}% mastered after it. Open the lesson`
       }
@@ -66,7 +66,7 @@ function LessonRow({ point }: { point: ProgressPoint }) {
     >
       <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: space.sm }}>
         <Text variant="labelLarge" style={{ flex: 1 }}>
-          {longDate(point.occurred_on)}
+          {formatDay(point.occurred_on, today, { year: 'always' })}
           <Text variant="bodySmall" style={{ color: muted }}>
             {' '}
             · {point.tutor_name}
@@ -88,7 +88,7 @@ function LessonRow({ point }: { point: ProgressPoint }) {
 }
 
 /** A called-off lesson: when, with whom, and why if the reader may know (R11). */
-function CancelledLessonRow({ row, upcoming }: { row: ProgressCancellation; upcoming: boolean }) {
+function CancelledLessonRow({ row, upcoming, today }: { row: ProgressCancellation; upcoming: boolean; today: string }) {
   const theme = useAppTheme();
   const muted = theme.tokens.mutedForeground;
   return (
@@ -96,14 +96,14 @@ function CancelledLessonRow({ row, upcoming }: { row: ProgressCancellation; upco
       testID={`progress-cancelled-${row.schedule_id}-${row.occurs_on}`}
       accessible
       accessibilityLabel={
-        `Cancelled${upcoming ? ', upcoming' : ''}: ${longDate(row.occurs_on)} with ${row.tutor_name}, ` +
+        `Cancelled${upcoming ? ', upcoming' : ''}: ${formatDay(row.occurs_on, today, { year: 'always' })} with ${row.tutor_name}, ` +
         `by ${cancelledBy(row)}${row.note ? `. ${row.note}` : ''}`
       }
       style={{ paddingVertical: space.sm, gap: 4 }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space.sm }}>
         <Text variant="labelLarge" style={{ color: muted, textDecorationLine: 'line-through' }}>
-          {longDate(row.occurs_on)}
+          {formatDay(row.occurs_on, today, { year: 'always' })}
         </Text>
         <Text variant="bodySmall" style={{ color: muted }}>
           · {row.tutor_name}

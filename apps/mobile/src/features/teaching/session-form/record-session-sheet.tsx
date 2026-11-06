@@ -3,6 +3,7 @@
 // `(org)/record-session`. A new write-up autosaves into the writer's own draft every 3 s
 // (`useDraftAutosave`); recording consumes it.
 import {
+  COMMON_COPY,
   SESSION_MODES,
   SESSION_MODE_LABELS,
   formatDuration,
@@ -285,7 +286,7 @@ function SessionForm({
         />
         <DictationField
           testID="record-previous-review"
-          label="Previous session review"
+          label="Previous lesson review"
           value={values.previousReview}
           onChange={(text) => set('previousReview', text)}
           placeholder="How much of last time had stuck"
@@ -313,7 +314,7 @@ function SessionForm({
       <FormSection title="This lesson">
         <DictationField
           testID="record-notes"
-          label="Session notes"
+          label={COMMON_COPY.lesson_notes}
           value={values.notes}
           onChange={(text) => set('notes', text)}
           placeholder="What was covered, and how it went"

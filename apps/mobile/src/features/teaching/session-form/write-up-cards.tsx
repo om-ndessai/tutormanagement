@@ -10,7 +10,7 @@
 // The assessment is not a write-up part (it is `session_assessments`), but it is how the writer
 // says the lesson went, so it rides on the Progress card rather than being dropped from the flow.
 // Nothing here carries money: the record flow is reached from Tutoring only.
-import type { TutoringSession } from '@tmi/shared';
+import { COMMON_COPY, type TutoringSession } from '@tmi/shared';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -84,7 +84,7 @@ export function PlannedCard({
       {previous ? <PreviousLesson session={previous} showTutor={w.isAdmin} /> : null}
       <DictationField
         testID="record-previous-review"
-        label="Previous session review"
+        label="Previous lesson review"
         value={values.previousReview}
         onChange={(text) => set('previousReview', text)}
         placeholder="How much of last time had stuck"
@@ -102,7 +102,7 @@ export function CoveredCard({ w }: { w: SessionWriteUp }) {
     <Card testID="write-up-covered">
       <DictationField
         testID="record-notes"
-        label="Session notes"
+        label={COMMON_COPY.lesson_notes}
         value={values.notes}
         onChange={(text) => set('notes', text)}
         placeholder="What was covered, and how it went"

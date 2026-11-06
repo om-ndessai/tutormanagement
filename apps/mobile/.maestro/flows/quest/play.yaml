@@ -35,7 +35,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: quest-level
-    text: 'BA3'
+    text: 'Beast Academy 3'
 - assertNotVisible:
     id: quest-previous
 - takeScreenshot: quest-play

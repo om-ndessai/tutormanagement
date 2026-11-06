@@ -71,4 +71,4 @@ tags:
     timeout: 20000
 - assertVisible:
     id: assessment-level-NC26.4
-    text: 'G4 .*11 questions.*'
+    text: 'Grade 4 .*11 questions.*'

@@ -210,26 +210,31 @@ export function InvitePeople({ onDone, doneLabel }: { onDone: () => void; doneLa
 
       {sent.length > 0 && (
         <section className="grid gap-2" aria-label="Invited">
-          <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Invited</h3>
+          <h3 className="text-muted-foreground text-[13px] font-semibold">Invited</h3>
           <p className="text-muted-foreground text-xs">
             No email is sent from this space. Copy each invitation, or share it, so they know to sign in.
           </p>
           {sent.map((row) => (
+            // Phase 78 (JF28): the whole address, wrapped, then the two buttons on a line of their own on a phone.
             <div
               key={row.email}
-              className="flex flex-wrap items-center gap-2 rounded-lg border p-3 text-sm"
+              className="grid gap-2 rounded-lg border p-3 text-sm sm:flex sm:flex-wrap sm:items-center"
               data-testid={`invite-sent-${row.email}`}
             >
-              <CheckIcon className="text-success size-4 shrink-0" />
-              <span className="min-w-0 flex-1 truncate">
-                {row.email} <span className="text-muted-foreground">· {USER_ROLE_LABELS[row.role]}</span>
+              <span className="flex min-w-0 items-start gap-2 sm:flex-1 sm:items-center">
+                <CheckIcon className="text-success mt-0.5 size-4 shrink-0 sm:mt-0" />
+                <span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
+                  {row.email} <span className="text-muted-foreground">· {USER_ROLE_LABELS[row.role]}</span>
+                </span>
               </span>
-              <Button size="sm" variant="outline" onClick={() => void copy(row.email)} data-testid={`invite-copy-${row.email}`}>
-                <CopyIcon /> Copy invitation
-              </Button>
-              <Button size="sm" variant="outline" onClick={() => void share(row.email)} data-testid={`invite-share-${row.email}`}>
-                <Share2Icon /> Share
-              </Button>
+              <span className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={() => void copy(row.email)} data-testid={`invite-copy-${row.email}`}>
+                  <CopyIcon /> Copy invitation
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => void share(row.email)} data-testid={`invite-share-${row.email}`}>
+                  <Share2Icon /> Share
+                </Button>
+              </span>
             </div>
           ))}
         </section>

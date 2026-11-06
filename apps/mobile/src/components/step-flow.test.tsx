@@ -71,7 +71,7 @@ function Harness({
   }));
   return (
     <StepFlow
-      title="Add someone"
+      title="Add a person"
       steps={steps}
       draft={draft}
       review={review ? { trail } : false}

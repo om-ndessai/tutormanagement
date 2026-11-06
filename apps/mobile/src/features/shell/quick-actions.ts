@@ -6,7 +6,7 @@
 //
 // Phase 62 (P6): a quest from the icon, only where Quest is on. Phase 73 (JF13, owner 2026-11-05): it is
 // Continue, from the server's open-game read as Home last had it (never read for the icon itself): with a game
-// open, "Continue your game"; with none, the last game's settings again under their words ("Play Grade 7 Quick
+// open, "Continue your quest" (Phase 78's word); with none, the last game's settings again under their words ("Play Grade 7 Quick
 // 5 again"), built from the settings alone -- never a favorite's typed name, a code, a person or a space.
 import { featureOn, type FeatureState, type OpenGameResponse, type UserRole as Role } from '@tmi/shared';
 import { router } from 'expo-router';
@@ -31,7 +31,7 @@ const ITEMS: Record<QuickActionId, QuickActionItem> = {
 type Org = Partial<FeatureState> | null | undefined;
 
 /** The open game's or "again"'s words while Quest is on and Home has read one; otherwise none. */
-export const CONTINUE_GAME_TITLE = 'Continue your game';
+export const CONTINUE_GAME_TITLE = 'Continue your quest';
 
 function playItem(organization: Org, open: OpenGameResponse | null | undefined): QuickActionItem[] {
   if (!open || !featureOn(organization, 'quest')) return [];

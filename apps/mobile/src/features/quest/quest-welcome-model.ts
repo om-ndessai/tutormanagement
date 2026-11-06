@@ -4,11 +4,12 @@
 import {
   QUEST_LEFT_CAP,
   QUEST_POINTS,
-  questLevelLabel,
   questWelcome,
   type QuestState,
   type QuestSummary,
 } from '@tmi/shared';
+
+import { questLevelWords } from './level-words';
 
 /** The welcome's numbers, in the order they are shown. */
 export interface WelcomeStat {
@@ -36,7 +37,7 @@ export function streakLabel(days: number): string | null {
 }
 
 export function welcomeContent(summary: QuestSummary): WelcomeContent {
-  const level = questLevelLabel(summary.level_id);
+  const level = questLevelWords(summary.level_id);
   const { title, line } = questWelcome(summary, level);
   return {
     title,

@@ -7,11 +7,12 @@ import {
   DAILY_SET_SIZE,
   GAME_LIMITS,
   QUEST_GRADE_NOT_IN_SCHOOL,
-  TILE_LEVEL_TAGS,
+  QUICK_ACTION_LABELS,
   tileGameRequest,
   gameWords,
   TILE_LEVEL_WORDS,
   boardGrades,
+  countOf,
   dailyLevelFor,
   levelGrade,
   memberBoard,
@@ -28,7 +29,6 @@ import {
   type NextUp,
 } from '@tmi/shared';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -44,6 +44,7 @@ import { useAuth } from '@/providers/auth-provider';
 import { useStartCanvasAssessment } from '@/features/canvas-assessments/api';
 import { useDaily } from '@/features/habit/habit-api';
 import { GradeRow, QuestCard, TodayCard, type RingState } from './quest-card';
+import { favoriteWords } from './favorite-words';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { leadGradeOf, useMemberTiles, useOpenGame, useRosterMembers, useSaveQuestGrade, useWaitingGames } from './play-api';
 
@@ -305,8 +306,9 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
 
   async function star(tile: MemberTile) {
     try {
+      // The tile's code stays the favorite's key; it is said in words (Phase 78, JF32).
       await saveFavorite.mutateAsync({ name: tile.code, config: tileGameRequest(tile) });
-      toast.success(`${tile.code} is in your favorites.`);
+      toast.success(`${favoriteWords(tile.code)} is in your favorites.`);
     } catch (caught) {
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not save that favorite.');
     }
@@ -341,31 +343,25 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
         icon={look.icon}
         tone={{ grade: look.grade }}
         advanced={look.advanced}
-        code={tile.code}
         disabled={pending || startAssessment.isPending}
         onOpen={() => void open(tile)}
-        label={`Start ${tile.code}: ${tileSpoken(tile)}`}
+        label={`Start ${tileSpoken(tile)}`}
         testId={`play-tile-${tile.code}`}
         footer={
-          <span className="flex flex-wrap items-center gap-1.5">
-            {tile.best != null && (
-              <span className="text-primary text-xs font-semibold" data-testid={`play-best-${tile.code}`}>
-                Best {tile.best}
-              </span>
-            )}
-            {tile.beta && (
-              <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
-                Beta
-              </Badge>
-            )}
-          </span>
+          tile.best != null ? (
+            <span className="text-primary text-xs font-semibold" data-testid={`play-best-${tile.code}`}>
+              Best {tile.best}
+            </span>
+          ) : undefined
         }
         aside={
           tile.kind === 'quest' ? (
             <button
               type="button"
               className="text-muted-foreground hover:text-foreground p-2.5"
-              aria-label={starred.has(tile.code) ? `${tile.code} is a favorite` : `Add ${tile.code} to favorites`}
+              aria-label={
+                starred.has(tile.code) ? `${favoriteWords(tile.code)} is a favorite` : `Add ${favoriteWords(tile.code)} to favorites`
+              }
               aria-pressed={starred.has(tile.code)}
               disabled={starred.has(tile.code) || saveFavorite.isPending}
               onClick={() => void star(tile)}
@@ -381,7 +377,7 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
   return (
     <section className="grid gap-4" data-testid="play-home" aria-labelledby="play-home-heading">
       <div className="flex flex-wrap items-center gap-2">
-        <h3 id="play-home-heading" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+        <h3 id="play-home-heading" className="text-muted-foreground text-[13px] font-semibold">
           Quest
         </h3>
         <Button
@@ -390,7 +386,7 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
           className="ml-auto"
           onClick={() => navigate('/quest/games/new', { state: { from } satisfies PlayOriginState })}
         >
-          <PlusIcon /> New Quest
+          <PlusIcon /> {QUICK_ACTION_LABELS.new_quest}
         </Button>
       </div>
 
@@ -407,12 +403,12 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
 
       <PlayFavorites />
 
-      {/* Phase 66: shown in the home's Next up instead, when a game is waiting. */}
+      {/* Phase 66: shown in the home's Next up instead, when a quest is waiting. */}
       {!hideWaiting && <WaitingForYou />}
 
       {grade !== null && (
         <div className="grid gap-3">
-          <h3 id="play-grade-label" className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+          <h3 id="play-grade-label" className="text-muted-foreground text-[13px] font-semibold">
             Grade
           </h3>
           <GradeRow grades={grades} value={grade} onChange={pickGrade} labelId="play-grade-label" testIdPrefix="play-grade-" hued />
@@ -421,7 +417,7 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
           </div>
           {board.advanced.length > 0 && (
             <>
-              <h3 className="text-muted-foreground mt-1 text-xs font-semibold tracking-wide uppercase">Advanced</h3>
+              <h3 className="text-muted-foreground mt-1 text-[13px] font-semibold">Advanced</h3>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{board.advanced.map(card)}</div>
             </>
           )}
@@ -430,7 +426,7 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
 
       {offBoard.length > 0 && (
         <div className="grid gap-3" data-testid="play-more-levels">
-          <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{grade !== null ? 'More levels' : 'Levels'}</h3>
+          <h3 className="text-muted-foreground text-[13px] font-semibold">{grade !== null ? 'More levels' : 'Levels'}</h3>
           {offBoard.map(([words, levelTiles]) => (
             <div key={words} className="grid gap-2">
               <h4 className="text-sm font-semibold">{words}</h4>
@@ -447,7 +443,7 @@ export function PlayHome({ hideWaiting = false, nextUp = null }: { hideWaiting?:
 
 /**
  * Phase 67 (H6): today's Daily as five rings -- open until played, then hit or missed, from the
- * server's marks. Its tag (G5D) stays on the card, as the set's name; the level is in words beside it.
+ * server's marks. Since Phase 78 (JF32) its eyebrow is words alone, "Today's Daily · Grade 5" (no "G5D #4").
  */
 function DailyCard({ level, quiet = false }: { level: QuestionBankLevelId; quiet?: boolean }) {
   const daily = useDaily(level);
@@ -461,8 +457,7 @@ function DailyCard({ level, quiet = false }: { level: QuestionBankLevelId; quiet
     <TodayCard
       eyebrow={
         <>
-          {DAILY_NAME} · {TILE_LEVEL_WORDS[level]} · {TILE_LEVEL_TAGS[level]}D
-          {set ? ` #${set.number}` : ''}
+          {DAILY_NAME} · {TILE_LEVEL_WORDS[level]}
         </>
       }
       title={result ? `You hit ${result.right} of ${result.of} today.` : `${size} questions. Can you hit them all?`}
@@ -503,7 +498,7 @@ function HaveACode() {
         <Button variant="outline" disabled={!codeKind(typed)} onClick={() => setSheet(typed)}>
           Go
         </Button>
-        <span className="text-muted-foreground text-xs">Six characters join a game; eight ask to join a space.</span>
+        <span className="text-muted-foreground text-xs">Six characters join a quest; eight ask to join a space.</span>
       </CardContent>
       {sheet !== null && (
         <CodeSheet
@@ -530,7 +525,7 @@ export function PlayFavorites({ compact = false }: { compact?: boolean }) {
   if (list.length === 0) return null;
   return (
     <div className={cn('grid gap-2', compact && 'mx-auto mb-4 max-w-6xl')} data-testid={compact ? 'play-favorites-row' : undefined}>
-      <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">{compact ? 'Play a favorite' : 'Favorites'}</h3>
+      <h3 className="text-muted-foreground text-[13px] font-semibold">{compact ? 'Play a favorite' : 'Favorites'}</h3>
       <div className="flex flex-wrap gap-2" data-testid="play-favorites">
         {list.map((favorite) => (
           <span key={favorite.id} className="inline-flex items-center gap-1">
@@ -540,7 +535,7 @@ export function PlayFavorites({ compact = false }: { compact?: boolean }) {
               data-testid={`play-favorite-${favorite.name}`}
               onClick={() => void start(favorite.config, { roster: favorite.roster })}
             >
-              <StarIcon className="fill-current" /> {favorite.name}
+              <StarIcon className="fill-current" /> {favoriteWords(favorite.name)}
               {favorite.roster?.length ? <UsersIcon className="size-3.5" aria-label="with its players" /> : null}
             </Button>
             {favorite.config.players === 'multi' && (
@@ -575,16 +570,16 @@ export function WaitingForYou() {
       if (result.data.joined) goToGame(result.data.game_id);
       else setFound(result.data);
     } catch (caught) {
-      toast.error(caught instanceof ApiRequestError ? caught.message : 'That game could not be opened.');
+      toast.error(caught instanceof ApiRequestError ? caught.message : 'That quest could not be opened.');
     }
   }
   return (
     <div className="grid gap-2" data-testid="play-waiting">
-      <h3 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">Waiting for you</h3>
+      <h3 className="text-muted-foreground text-[13px] font-semibold">Waiting for you</h3>
       {list.map((game) => (
         <Card key={game.game_id} className="py-0">
           <CardContent className="flex flex-wrap items-center gap-3 p-3 text-sm">
-            {/* Phase 73 (JF32): the game in words ("Grade 5 Quick 3"), never its code first. */}
+            {/* Phase 73 (JF32): the quest in words ("Grade 5 Quick 3"), never its code first. */}
             <span className="min-w-0 flex-1" data-testid={`play-waiting-words-${game.code}`}>
               <span className="font-medium">{game.host_first_name}</span> started{' '}
               {gameWords({ ...game, level_id: game.level_id as QuestionBankLevelId, level_scope: game.level_scope ?? 'level' })}
@@ -615,7 +610,8 @@ function RosterDialog({ favorite, onClose }: { favorite: GameFavorite | null; on
     if (!favorite) return;
     try {
       await save.mutateAsync({ name: favorite.name, config: favorite.config, roster: chosen.size ? [...chosen] : null });
-      toast.success(chosen.size ? `${favorite.name} invites ${chosen.size} ${chosen.size === 1 ? 'person' : 'people'}.` : `${favorite.name} is open to anyone with the code.`);
+      const name = favoriteWords(favorite.name);
+      toast.success(chosen.size ? `${name} invites ${countOf(chosen.size, 'person')}.` : `${name} is open to anyone with the code.`);
       onClose();
     } catch (caught) {
       toast.error(caught instanceof ApiRequestError ? caught.message : 'The players could not be saved.');
@@ -625,7 +621,7 @@ function RosterDialog({ favorite, onClose }: { favorite: GameFavorite | null; on
     <Dialog open={favorite !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent data-testid="play-roster-dialog">
         <DialogHeader>
-          <DialogTitle>Players for {favorite?.name}</DialogTitle>
+          <DialogTitle>Players for {favorite ? favoriteWords(favorite.name) : ''}</DialogTitle>
           <DialogDescription>One tap on the favorite invites them: they see it under Waiting for you, with no code.</DialogDescription>
         </DialogHeader>
         <ul className="grid gap-1">

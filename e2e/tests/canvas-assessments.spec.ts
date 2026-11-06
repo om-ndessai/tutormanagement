@@ -4,6 +4,7 @@ import type { Page } from '@playwright/test';
 import { PEOPLE, expect, test } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
 import { setCheckedQuestions } from '../support/checked-questions.js';
+import { pdfStrings } from '../support/pdf.js';
 import { latexToPlain, mathTextToPlain, parseStroke } from '@tmi/shared';
 
 /**
@@ -83,7 +84,8 @@ test.describe('the Assessment menu (beta)', () => {
 
     await admin.getByRole('switch', { name: 'Assessment menu' }).click();
     await expect(nav.getByRole('link', { name: /Assessment/ })).toBeVisible();
-    await expect(nav.getByRole('link', { name: /Assessment/ })).toContainText('Beta');
+    // Phase 78 (owner, 2026-11-05): no Beta badge on the menu item.
+    await expect(nav.getByRole('link', { name: /Assessment/ })).not.toContainText('Beta');
     expect((await admin.request.get('/api/canvas-assessments')).status()).toBe(200);
 
     await admin.getByRole('switch', { name: 'Assessment menu' }).click();
@@ -95,11 +97,14 @@ test.describe('the Assessment menu (beta)', () => {
     const admin = await as('admin');
     await admin.goto('/assessments');
     await expect(admin.getByRole('heading', { name: 'Assessment', exact: true })).toBeVisible();
+    // Phase 78: the page says nothing of a beta, and the levels read in words ("Grade 4", never "G4").
+    await expect(admin.getByText(/\bbeta\b/i)).toHaveCount(0);
 
     await admin.getByLabel('Student').click();
     await admin.getByRole('option', { name: PEOPLE.student.name }).click();
     await admin.getByLabel('Level').click();
-    await admin.getByRole('option', { name: /^G4\b/ }).click();
+    await expect(admin.getByRole('option', { name: /includes unreviewed/ })).toHaveCount(0);
+    await admin.getByRole('option', { name: /^Grade 4 ·/ }).click();
     await admin.getByTestId('assessment-begin').click();
     await expect(admin).toHaveURL(/\/assessments\/[0-9a-f-]{36}$/);
     const id = admin.url().split('/').at(-1)!;
@@ -231,7 +236,12 @@ test.describe('the Assessment menu (beta)', () => {
       // The tutor's PDF says so, on every such page.
       const pdf = await admin.request.get(`/api/canvas-assessments/${started.id}/pdf`);
       expect(pdf.status()).toBe(200);
-      expect(checkPdf(await pdf.body())).toBe(started.question_count + 1);
+      const bytes = await pdf.body();
+      expect(checkPdf(bytes)).toBe(started.question_count + 1);
+      // Phase 78: the reviewer keeps the per-question mark, and the title says "Assessment" -- no "(beta)".
+      const strings = pdfStrings(bytes);
+      expect(strings).toContain('Assessment');
+      expect(strings.some((text) => text.includes('(beta)'))).toBe(false);
 
       // The Space page says so, and that the platform sets it.
       await admin.goto('/organization');
@@ -252,7 +262,8 @@ test.describe('the Assessment menu (beta)', () => {
       page.request.post('/api/canvas-assessments', { data: { student_user_id: student, level_id: level } });
 
     // Alex teaches Sofia, not Sanjay: Sanjay is "not found" to him.
-    expect((await start(tutor, sofiaId)).status()).toBe(201);
+    const alexs = await start(tutor, sofiaId);
+    expect(alexs.status()).toBe(201);
     expect((await start(tutor, sanjayId)).status()).toBe(404);
     // A grade with no approved questions yet, while the space draws approved ones only (Phase 62:
     // checked questions are the platform's switch, on by default).
@@ -287,6 +298,9 @@ test.describe('the Assessment menu (beta)', () => {
       'discarding',
     );
     expect(discarded.status).toBe('discarded');
+    // Alex's too, so no assessment is left in progress for Sofia: it would lead her Next up in later specs.
+    const alexsId = (await alexs.json()).data.id;
+    await unwrap(await admin.request.post(`/api/canvas-assessments/${alexsId}/discard`, { data: {} }), "discarding Alex's");
   });
 
   test('Phase 40: a tutor reviews it online, and the family reads the review', async ({ as }) => {
@@ -386,6 +400,8 @@ test.describe('the Assessment menu (beta)', () => {
       expect(
         (await admin.request.patch('/api/organization/settings', { data: { canvas_assessment_questions: 26 } })).status(),
       ).toBe(422);
+      // Not left in progress, where it would lead Sofia's Next up in later specs.
+      await unwrap(await admin.request.post(`/api/canvas-assessments/${started.id}/discard`, { data: {} }), 'discarding');
     } finally {
       await admin.request.patch('/api/organization/settings', { data: { canvas_assessment_questions: 10 } });
     }

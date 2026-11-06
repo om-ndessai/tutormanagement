@@ -77,12 +77,6 @@ export function telUrl(phone: string | null): string | null {
   return digits.replace(/\D/g, '').length > 0 ? `tel:${digits}` : null;
 }
 
-/** An instant ("2026-10-09T04:45:55Z") on the organization's clock: "Oct 9, 2026, 12:45 AM". */
-export function formatInstant(iso: string | null, timeZone: string, fallback: string): string {
-  if (!iso) return fallback;
-  return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short', timeZone });
-}
-
 /** Whether the typed confirmation names the person: trimmed, case-insensitive. */
 export function confirmsName(typed: string, fullName: string): boolean {
   return typed.trim().toLowerCase() === fullName.trim().toLowerCase() && typed.trim().length > 0;

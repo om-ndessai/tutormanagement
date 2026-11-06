@@ -194,16 +194,19 @@ export function SearchScreen() {
 
       {pages.length > 0 ? (
         <Section testID="search-section-goto" title="Go to">
-          {pages.map(({ item }) => (
-            <ListItem
-              key={item.tourId}
-              testID={`search-goto-${item.tourId}`}
-              title={item.label}
-              left={(props) => <List.Icon {...props} icon={item.icon} />}
-              right={item.badge ? () => <BadgePill label={item.badge} /> : undefined}
-              onPress={() => go(item.href)}
-            />
-          ))}
+          {pages.map(({ item }) => {
+            const badge = item.badge;
+            return (
+              <ListItem
+                key={item.tourId}
+                testID={`search-goto-${item.tourId}`}
+                title={item.label}
+                left={(props) => <List.Icon {...props} icon={item.icon} />}
+                right={badge ? () => <BadgePill label={badge} /> : undefined}
+                onPress={() => go(item.href)}
+              />
+            );
+          })}
         </Section>
       ) : null}
 

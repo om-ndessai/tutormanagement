@@ -7,7 +7,6 @@ import {
   carouselOffsets,
   countdown,
   nearestIndex,
-  relativeDay,
 } from './carousel-model';
 
 const base = { pending: false, hasMore: false, fetchingMore: false };
@@ -93,7 +92,7 @@ describe('carouselOffsets', () => {
   });
 });
 
-describe('countdown and relativeDay', () => {
+describe('countdown', () => {
   it('counts down on the day and names the day otherwise', () => {
     const today = '2026-10-07';
     expect(countdown({ occurs_on: today, start_time: '16:00' }, today, 15 * 60 + 15)).toBe('in 45 min');
@@ -104,10 +103,9 @@ describe('countdown and relativeDay', () => {
     );
   });
 
-  it('says Today, Tomorrow and Yesterday', () => {
-    expect(relativeDay('2026-10-07', '2026-10-07')).toBe('Today');
-    expect(relativeDay('2026-10-08', '2026-10-07')).toBe('Tomorrow');
-    expect(relativeDay('2026-10-06', '2026-10-07')).toBe('Yesterday');
-    expect(relativeDay('2026-10-01', '2026-10-07')).toMatch(/Oct/);
+  it('names a later day through the shared formatter (Phase 78): weekday, and the year only in another one', () => {
+    const today = '2026-10-07';
+    expect(countdown({ occurs_on: '2026-10-13', start_time: '16:00' }, today, 600)).toBe('Tue, Oct 13 at 4:00 PM');
+    expect(countdown({ occurs_on: '2027-01-05', start_time: '09:30' }, today, 600)).toBe('Tue, Jan 5, 2027 at 9:30 AM');
   });
 });

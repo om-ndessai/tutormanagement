@@ -107,7 +107,9 @@ tags:
     text: 'Continue'
 - takeScreenshot: lessons-owed-next-up-draft
 # ... Sessions' To record, at the top of the Tutoring tab ...
-- tapOn: 'Sessions'
+# Phase 78: the tab reads "Lessons" (the glossary); its testID keeps `sessions`.
+- tapOn:
+    id: tab-sessions
 - extendedWaitUntil:
     visible:
       id: sessions-to-record

@@ -324,13 +324,13 @@ const planFields = {
   sessions_per_week: z
     .number()
     .int()
-    .min(1, 'At least one session a week.')
-    .max(7, 'At most one session a day.'),
+    .min(1, 'At least one lesson a week.')
+    .max(7, 'At most one lesson a day.'),
   session_minutes: z
     .number()
     .int()
-    .min(QUARTER_HOUR, 'Sessions are at least 15 minutes.')
-    .max(480, 'A session cannot run longer than eight hours.')
+    .min(QUARTER_HOUR, 'Lessons are at least 15 minutes.')
+    .max(480, 'A lesson cannot run longer than eight hours.')
     .refine((value) => value % QUARTER_HOUR === 0, 'Use a multiple of 15 minutes.'),
   recommendation: optionalText(z.string().trim().max(20_000)),
   /** In teaching order. */

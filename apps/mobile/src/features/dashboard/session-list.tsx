@@ -1,10 +1,11 @@
 // Ported from apps/web/src/features/dashboard/role-dashboards.tsx @ 1132322 (SessionList)
-import { SESSION_MODE_LABELS, formatDuration, type TutoringSession } from '@tmi/shared';
+import { COMMON_COPY, SESSION_MODE_LABELS, formatDay, formatDuration, todayIn, type TutoringSession } from '@tmi/shared';
 import { View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 
 import { EmptyNote } from '@/components/section';
 import { SessionMoney } from '@/features/teaching/session-money';
+import { useOrgTimeZone } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { withAlpha } from '@/theme/alpha';
 import { radius, space } from '@/theme/tokens';
@@ -44,7 +45,8 @@ export function SessionList({
   hideMoney?: boolean;
 }) {
   const theme = useAppTheme();
-  if (sessions.length === 0) return <EmptyNote>No sessions recorded yet.</EmptyNote>;
+  const today = todayIn(useOrgTimeZone());
+  if (sessions.length === 0) return <EmptyNote>{COMMON_COPY.no_lessons_yet}</EmptyNote>;
 
   return (
     <View>
@@ -56,7 +58,7 @@ export function SessionList({
             style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10 }}
           >
             <View style={{ flex: 1, minWidth: 0, gap: 3 }}>
-              <Text variant="bodyMedium" numberOfLines={1}>
+              <Text variant="bodyMedium">
                 <Text style={{ fontWeight: '500' }}>{session.student_name}</Text>
                 {showTutor ? (
                   <Text style={{ color: theme.tokens.mutedForeground }}> with {session.tutor_name}</Text>
@@ -64,7 +66,7 @@ export function SessionList({
               </Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
                 <Text variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
-                  {session.occurred_on} · {formatDuration(session.duration_minutes)}
+                  {formatDay(session.occurred_on, today, { weekday: true })} · {formatDuration(session.duration_minutes)}
                 </Text>
                 <Tag label={SESSION_MODE_LABELS[session.mode]} />
                 {session.auto_stopped ? <Tag label="Auto-stopped" tone="warning" /> : null}
