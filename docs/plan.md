@@ -751,7 +751,8 @@ phase that owns its component.
 
 Phases 79-80 (requested 2026-11-06 by the owner: "the amount of time and setup it takes to join a quest is quite
 high"; plan `docs/members-plan.md`, M1-M9 and A10-A15; **approved 2026-11-06**; built on `main` after
-`release-20261106`; web and the app; released by the rulebook.)
+`release-20261106`; web and the app; released by the rulebook: **in production 2026-11-07**, tag `release-20261107`,
+RELEASE_PHASE 80; the production app not installed, as Xcode had no Apple account signed in.)
 - **Phase 79 — members.** A person may be in a space with no role, a member: they play Quest there. Adding anyone is
   one step, their email; Let in defaults to Member (teens too); roles come later under today's rules (a student still
   needs a parent or guardian here); the last admin cannot be demoted; a teen is never an admin of a shared space; a
