@@ -810,6 +810,9 @@ test.describe('S4: land in the last space chosen (own people)', () => {
       const tab = await arrive(as, c.member, { path: `/?org=${a.slug}` });
       await expectIn(tab, a);
       await expect.poll(() => lastChoice(tab)).toEqual([a.slug]);
+      // The home settles first (its Quest board reads today's Daily after the tiles): a read still on its way when the
+      // 401s begin would sign the tab out before the click below, and the click would wait for a link that has gone.
+      await tab.waitForLoadState('networkidle');
 
       // Her session ends elsewhere: the tab's next request is a 401.
       await tab.route('**/api/**', (route) =>
