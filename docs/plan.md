@@ -748,3 +748,14 @@ phase that owns its component.
 - **Phase 78 — the look.** Words rather than codes, amber for one job, contrast, phone-width layouts, small type and
   one date formatter. JF28, JF29, JF32, JF34, JF35.
 
+
+Phases 79-80 (requested 2026-11-06 by the owner: "the amount of time and setup it takes to join a quest is quite
+high"; plan `docs/members-plan.md`, M1-M9 and A10-A15; **approved 2026-11-06**; built on `main` after
+`release-20261106`; web and the app; released by the rulebook.)
+- **Phase 79 — members.** A person may be in a space with no role, a member: they play Quest there. Adding anyone is
+  one step, their email; Let in defaults to Member (teens too); roles come later under today's rules (a student still
+  needs a parent or guardian here); the last admin cannot be demoted; a teen is never an admin of a shared space; a
+  member's menu has no teaching pages and no Assessment. M1-M9, R36.
+- **Phase 80 — approved into a space.** A Post-approved sign-up makes no personal space; approving may place the
+  person in a space (a console-made space at once, a self-started one by a request its admins answer); the personal
+  space is offered, not made; a self-signed-up person's name, email and phone are their own. A10-A15.
