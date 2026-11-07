@@ -149,6 +149,19 @@ the platform console included) and where the app ports it. Status: `todo` · `bu
 Older app builds (before Phase 79) keep `.min(1)` on roles: they cannot save a member's edits and have no Member in
 Let in; to a member they still show Lessons and Progress and a Dashboard that answers 409. Nothing crashes.
 
+## Space limits and curricula per space (2026-11-07, `docs/space-limits-plan.md`)
+
+| Web source | What | Mobile | Flow | Status |
+| --- | --- | --- | --- | --- |
+| `organizations/welcome.tsx`, `organizations/org-switcher.tsx`, `home/member-home.tsx`, `home/personal-offer-card.tsx` | one space in total by default, personal included: Start a space and Make my own space hidden once none is left (`space_allowance`), the line "You have made your space. Ask the platform if you need another." (Phase 81, N1, N3, N6) | `src/features/organizations/{space-model,space-welcome}.ts(x)`, `app/(org)/account.tsx`, `src/features/shell/create-actions.ts`, `src/features/home/member-home-model.ts` | `spaces/spaces-page`, `spaces/sign-up` | planned |
+| `platform/approve-sheet.tsx`, `platform/api.ts` | Approve's switch "May make a space of their own", on by default (N4) | `src/features/platform/{approve-sheet,approve-model}.ts(x)` | `platform/access` | planned |
+| `platform/platform-people-page.tsx`, `platform/api.ts` | the newest 20 people with an email: spaces part of, made / allowed, "Signed up themselves"; a row opens the card with "Spaces they may make" and "May make a space of their own" (N5) | `src/features/platform/platform-people-screen.tsx`, `api.ts` | `platform/admins-people` | planned |
+| `platform/organization-dialog.tsx`, `organizations/curricula-card.tsx` | the console's Curricula section (may use, name here, default; NC Math 2026 locked on; Beast Academy prefilled "Advanced Math"); the space's card lists only what the console allows (Phase 82, C3, C4) | `src/features/platform/{organization-form-sheet,organization-detail-screen}.tsx`, `src/features/organizations/curricula-card.tsx` | `spaces/console`, `organization/curricula` | planned |
+| `quest/level-words.ts` and every level or curriculum name | names in a space: a labelled Beast Academy renames its levels and drops "AoPS" (C5), from the session's `organization.curriculum_labels` | `src/features/quest/level-words.ts` and its callers | a quest-board flow in a labelled space | planned |
+
+Older app builds (before Phase 81) keep Start a space and Make my own space and get the server's words when the limit
+or the switch refuses; in a space that renames, the server's words say "Advanced Math" and their own "Beast Academy".
+
 ## Web-only behaviour and its mobile replacement
 
 | Web | Mobile |

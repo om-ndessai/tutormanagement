@@ -760,3 +760,15 @@ RELEASE_PHASE 80; the production app not installed, as Xcode had no Apple accoun
 - **Phase 80 — approved into a space.** A Post-approved sign-up makes no personal space; approving may place the
   person in a space (a console-made space at once, a self-started one by a request its admins answer); the personal
   space is offered, not made; a self-signed-up person's name, email and phone are their own. A10-A15.
+
+
+Phases 81-82 (requested 2026-11-07 by the owner: "This phase is about limiting number of spaces or avoiding unnecessary
+spaces"; plan `docs/space-limits-plan.md`, N1-N8 and C1-C8, R37; **approved 2026-11-07**; built on `main` after
+`release-20261107`; web and the app; released by the rulebook.)
+- **Phase 81 — one space each, and the console's People.** Anyone but a platform admin may make one space in total by
+  default, their personal space included; approval says whether they may make a space of their own (on by default); the
+  console's People lists the newest 20 people with an email, the spaces each is part of and has made, and sets how many
+  each may make. N1-N8, R37.
+- **Phase 82 — curricula set per space.** The console decides which curricula a space may use and what each is called
+  there; the space's admins may switch them off and pick the default; a new space offers NC Math 2026 alone; Beast
+  Academy, once allowed, is "Advanced Math" with "AoPS" dropped from its level names. C1-C8.
