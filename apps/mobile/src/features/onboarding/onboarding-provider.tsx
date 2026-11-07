@@ -130,8 +130,9 @@ function OnboardingHost({ children }: { children: ReactNode }) {
       return;
     }
     // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home (no wizard, no
-    // offer). The just-started space's "Invite people" above is not the tour and still opens.
-    if (!tourOffered(organization)) return;
+    // offer). The just-started space's "Invite people" above is not the tour and still opens. Phase 79 (M6): so
+    // does a member (no role), whose menu leaves out the pages the tour walks through.
+    if (!tourOffered(organization, user.roles)) return;
     const decision = decideOnboarding({ onboarding, viewingAs: dashboard.viewingAs });
     // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard.
     if (decision === 'wizard' && !organization?.personal) openWizard('welcome');
@@ -140,12 +141,12 @@ function OnboardingHost({ children }: { children: ReactNode }) {
 
   // A first visit to this space by somebody who had already been through the tour: offered once, on the home.
   useEffect(() => {
-    if (!firstVisit || !organization || !tourOffered(organization) || organization.personal) return;
+    if (!firstVisit || !organization || !user || !tourOffered(organization, user.roles) || organization.personal) return;
     if (!decided.current || !finishedOnEntry.current || answered.current) return;
     if (!dashboard || dashboard.viewingAs) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the API's answer, once per entry
     setOffer(true);
-  }, [firstVisit, organization, dashboard, onboarding]);
+  }, [firstVisit, organization, user, dashboard, onboarding]);
 
   /**
    * The wizard has closed, recording that this person has been through it the first time they do

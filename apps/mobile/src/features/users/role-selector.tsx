@@ -1,9 +1,17 @@
 // Ported from apps/web/src/features/users/role-selector.tsx @ 1132322 (Phase 50 @ 2471d84, working
-// tree: `hidden`).
+// tree: `hidden`; Phase 79 @ 758a19f, working tree: the member line).
 //
 // Roles are a set, not a choice: one person can be a parent who tutors, or a senior student who
-// teaches younger children. Checkable cards rather than a single choice make that obvious.
-import { USER_ROLES, USER_ROLE_DESCRIPTIONS, USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
+// teaches younger children. Checkable cards rather than a single choice make that obvious. None ticked
+// is a member (Phase 79): in the space, playing Quest, with a role given later.
+import {
+  MEMBER_DESCRIPTION,
+  MEMBER_LABEL,
+  USER_ROLES,
+  USER_ROLE_DESCRIPTIONS,
+  USER_ROLE_LABELS,
+  type UserRole,
+} from '@tmi/shared';
 import { Pressable, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
@@ -78,6 +86,15 @@ export function RoleSelector({
           </Pressable>
         );
       })}
+      {/* Phase 79 (M1): no role ticked is a member, not a mistake. */}
+      {value.length === 0 && !error ? (
+        <Text testID="roles-member-hint" variant="bodySmall" style={{ color: theme.tokens.mutedForeground }}>
+          <Text variant="bodySmall" style={{ fontWeight: '600', color: theme.colors.onSurface }}>
+            {`${MEMBER_LABEL}.`}
+          </Text>
+          {` ${MEMBER_DESCRIPTION}`}
+        </Text>
+      ) : null}
       {error ? <FieldError>{error}</FieldError> : null}
     </View>
   );

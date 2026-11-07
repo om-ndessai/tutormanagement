@@ -35,6 +35,8 @@ export const TOUR_COOKIE = 'tmi_tour_seen';
  * Tutoring is on -- the tour walks through pairings, lessons and billing. Elsewhere the home itself is the
  * start. A just-started space's "Invite people" step is not the tour and is offered anyway.
  */
-export function tourOffered(org: Partial<FeatureState> | null | undefined): boolean {
-  return featureOn(org, 'tutoring');
+export function tourOffered(org: Partial<FeatureState> | null | undefined, roles?: readonly string[]): boolean {
+  // Phase 79 (M6): a member (no role) is here to play; the tour walks the teaching pages their menu leaves out.
+  // Older callers pass no roles.
+  return featureOn(org, 'tutoring') && (roles === undefined || roles.length > 0);
 }

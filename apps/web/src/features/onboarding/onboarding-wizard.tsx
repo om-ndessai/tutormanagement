@@ -78,14 +78,14 @@ export function OnboardingWizard({
           title: `Welcome to ${brand.short}${firstName ? `, ${firstName}` : ''}`,
           // The tour is Tutoring's (owner, 2026-11-04): where it is not offered, the heading does not promise it.
           description: isAdmin
-            ? tourOffered(organization)
+            ? tourOffered(organization, user?.roles)
               ? tutoring
                 ? 'A quick tour, and guided setup for a new student or tutor.'
                 : 'A quick tour, and guided setup for a new student.'
               : tutoring
                 ? 'Guided setup for a new student or tutor.'
                 : 'Guided setup for a new student.'
-            : tourOffered(organization)
+            : tourOffered(organization, user?.roles)
               ? 'A quick tour, then a check that the office has your details right.'
               : 'A check that the office has your details right.',
         }
@@ -122,7 +122,7 @@ export function OnboardingWizard({
         {screen === 'welcome' && (
           <div className="grid gap-3">
             {/* The tour is Tutoring's (owner, 2026-11-04): a new space without it never offers it (UI audit J06). */}
-            {tourOffered(organization) && (
+            {tourOffered(organization, user?.roles) && (
               <Choice
                 icon={CompassIcon}
                 title="Take the tour"

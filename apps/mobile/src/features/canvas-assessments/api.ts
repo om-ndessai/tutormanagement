@@ -1,4 +1,5 @@
-// Ported from apps/web/src/features/canvas-assessments/api.ts @ 37bdad1, with Phase 40 (the review)
+// Ported from apps/web/src/features/canvas-assessments/api.ts @ 37bdad1, with Phase 40 (the review); Phase 79 @
+// 758a19f, working tree: `enabled` on the levels and the list, so a member's Assessment page reads neither.
 //
 // Mobile: the same hooks, query keys and invalidation sets. The web's `canvasAssessmentPdfUrl` (a
 // plain link, either PDF) becomes `fetchCanvasAssessmentPdf`: the app fetches the bytes through
@@ -30,8 +31,9 @@ export const canvasAssessmentKeys = {
 };
 
 /** The grades, with how many approved questions each can draw on. */
-export function useCanvasAssessmentLevels() {
+export function useCanvasAssessmentLevels(options: { enabled?: boolean } = {}) {
   return useQuery({
+    enabled: options.enabled ?? true,
     queryKey: canvasAssessmentKeys.levels,
     queryFn: () => apiClient.get<ApiOk<CanvasAssessmentLevel[]>>('/canvas-assessments/levels'),
     // Counting the bank reads every drawable question in D1 (thousands while the organization
@@ -40,8 +42,9 @@ export function useCanvasAssessmentLevels() {
   });
 }
 
-export function useCanvasAssessments() {
+export function useCanvasAssessments(options: { enabled?: boolean } = {}) {
   return useQuery({
+    enabled: options.enabled ?? true,
     queryKey: canvasAssessmentKeys.list,
     queryFn: () => apiClient.get<ApiOk<CanvasAssessment[]>>('/canvas-assessments'),
   });

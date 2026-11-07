@@ -1,9 +1,11 @@
 # Phase 76 (JF21, JF37; docs/journey-fixes-plan.md, owner 2026-11-05): one way to add people.
 # 1. The office (Priya, chmi): People's header button opens the one Add chooser -- "A family (parent and child)",
-#    "A tutor", "Someone else", "Invite by email". A family is the guided flow (family first, Anita chosen); once
-#    added, the next steps instead of a toast: "Pair Noa with a tutor", then "Set a weekly lesson", which waits for
-#    the pairing and, once Noa is paired with Alex, opens the schedule flow on that pairing at "When is it?".
-# 2. Invite by email, from the chooser at any time: the invitation sheet.
+#    "Anyone, by email", "A tutor", "Someone, with details" (Phase 79, M3: the shared words). A family is the guided
+#    flow (family first, Anita chosen); once added, the next steps instead of a toast: "Pair Noa with a tutor", then
+#    "Set a weekly lesson", which waits for the pairing and, once Noa is paired with Alex, opens the schedule flow on
+#    that pairing at "When is it?".
+# 2. Anyone, by email, from the chooser at any time: the invitation sheet, its row on Member (Phase 79) -- just the
+#    email, tapping only Invite -- and the sent line says Member.
 # 3. A newcomer in their own (personal) space: the home's "Add my child" opens the chooser on "My child" (no tutor);
 #    the flow asks only for the child -- the reader is the parent -- with the consent box on the Review.
 # Self-cleaning: the people the office added are removed before and after (clean-people), and the newcomer with their
@@ -61,6 +63,11 @@ tags:
     id: add-choice-someone
 - assertVisible:
     id: add-choice-invite
+# Phase 79 (M3): the shared words.
+- assertVisible: 'Anyone, by email'
+- assertVisible: 'Someone, with details'
+- assertNotVisible: 'Invite by email'
+- assertNotVisible: 'Someone else'
 - takeScreenshot: add-chooser-office
 - waitForAnimationToEnd:
     timeout: 3000
@@ -193,7 +200,7 @@ tags:
 - tapOn:
     id: add-person-done-close
 
-# --- 2. Invite by email, from the chooser --------------------------------------------------------------------------
+# --- 2. Anyone, by email, from the chooser -------------------------------------------------------------------------
 - extendedWaitUntil:
     visible:
       id: people-add
@@ -214,10 +221,48 @@ tags:
     timeout: 15000
 - assertVisible:
     id: invite-people-title
-    text: 'Invite by email'
+    text: 'Anyone, by email'
+- assertVisible: '.*They join as a member when they sign in with that address, unless you choose a role\..*'
 - assertVisible:
     id: invite-email-0
+# Phase 79 (M3): the row starts on Member -- just the email; nothing else to tap.
+- runFlow:
+    file: ../../subflows/assert-radio.yaml
+    env:
+      ID: invite-role-0-member
+      CHECKED: 'true'
+- runFlow:
+    file: ../../subflows/assert-radio.yaml
+    env:
+      ID: invite-role-0-parent
+      CHECKED: 'false'
 - takeScreenshot: add-chooser-invite
+- tapOn:
+    id: invite-email-0
+- inputText: 'chooser.member@example.com'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: invite-send
+- tapOn:
+    id: invite-send
+# The toast is drawn over the sheet in a window of its own (`FullWindowOverlay`, toast.tsx), which Maestro's iOS driver
+# does not read while a form sheet is up (seen on screen, never in the hierarchy): Android checks its words; both check
+# the sent line below, which is the invitation itself.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible: 'Invitation made.'
+          timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: invite-sent-line-chooser.member@example.com
+- assertVisible:
+    id: invite-sent-line-chooser.member@example.com
+    text: '.*chooser\.member@example\.com.*Member.*'
+- takeScreenshot: add-chooser-invite-member
 - runFlow:
     file: ../../subflows/dismiss-sheet.yaml
     env:

@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/users/let-in-sheet.tsx @ ab71793
 //
 // Letting in someone who asked with the space's code (Phase 52), as a short sheet (owner, 2026-11-04; UI
-// audit JF1): the role first -- a parent by default, the way a code most often arrives -- then, for a parent,
+// audit JF1): the role first (Member by default since Phase 79, below) -- then, for a parent,
 // "Which child is theirs?": a student already here (linked as their guardian), one added now through Add a
 // student (the parent preset as guardian, with its consent step), or later. A parent let in with no child here
 // cannot start the space's assessment (J07, J07A), so the sheet asks at the moment the admin knows the answer.
@@ -10,6 +10,8 @@
 // leaves the list). Adult admins only, as the API (`mayAddPeople`).
 // Phase 72 (UI audit JF26, @ 98c40ab, working tree): it starts on the role the person asked for, where it is one of
 // its choices, and says what they asked and their note (`let-in-asked`), which only the space's admins read (R32).
+// Phase 79 (M5, @ 758a19f, working tree): Member first and the start for a learner or no role said (one tap to let
+// someone in to play); no Admin for a teen (`request.teen`, R32); "Which child is theirs?" follows Parent only.
 import {
   featureOn,
   formatRelativeTime,
@@ -42,6 +44,7 @@ import {
   guardiansWith,
   initialLetInRole,
   letInChoices,
+  letInContext,
   letInRequest,
   type LetInChoice,
   type LetInRole,
@@ -114,8 +117,9 @@ function LetInSteps({ request, onIn }: { request: JoinRequest; onIn: (request: J
   const tutoring = featureOn(organization, 'tutoring');
   const create = useCreateUser();
   const refreshRequests = useRefreshJoinRequests();
-  // The sheet starts on the role they asked for (Phase 72, JF26), where it is one of its choices.
-  const [role, setRole] = useState<LetInRole>(() => initialLetInRole(request.role, tutoring));
+  // The sheet starts on the role they asked for (Phase 72, JF26), where it is one of its choices; else Member.
+  const context = letInContext(request, tutoring);
+  const [role, setRole] = useState<LetInRole>(() => initialLetInRole(request.role, context));
   const asked = askedAsLine(request.role);
   const [member, setMember] = useState<UserDetail | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
@@ -160,7 +164,7 @@ function LetInSteps({ request, onIn }: { request: JoinRequest; onIn: (request: J
         </View>
       ) : null}
       <View accessibilityRole="radiogroup" accessibilityLabel="What they do here" style={{ gap: space.sm }}>
-        {letInChoices(tutoring).map((choice) => (
+        {letInChoices(context).map((choice) => (
           <RoleChoice key={choice.role} choice={choice} chosen={role} onChoose={setRole} />
         ))}
       </View>

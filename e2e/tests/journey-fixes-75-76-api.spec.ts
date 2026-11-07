@@ -420,13 +420,18 @@ test.describe('Phase 76: adding people one way (API)', () => {
   });
 
   test('JF21, JF37: the chooser, the next steps, the status words and the invitation are one set of words', () => {
+    // Phase 79 (M3): "Anyone, by email" -- just the address, a member -- comes second; the full form is "Someone, with details".
     expect(addChoices({ tutoring: true, personal: false, mayAdd: true }).map((c) => c.label)).toEqual([
       'A family (parent and child)',
+      'Anyone, by email',
       'A tutor',
-      'Someone else',
-      'Invite by email',
+      'Someone, with details',
     ]);
-    expect(addChoices({ tutoring: false, personal: true, mayAdd: true }).map((c) => c.label)).toEqual(['My child', 'Someone else', 'Invite by email']);
+    expect(addChoices({ tutoring: false, personal: true, mayAdd: true }).map((c) => c.label)).toEqual([
+      'My child',
+      'Anyone, by email',
+      'Someone, with details',
+    ]);
     expect(addChoices({ tutoring: true, personal: false, mayAdd: false })).toEqual([]);
 
     const yusuf = { full_name: 'Yusuf Haddad', roles: ['student'] as const };

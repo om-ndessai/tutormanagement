@@ -16,17 +16,16 @@ import {
   type SignupStart,
   AUTH_PROVIDER_LABELS,
   AUTH_PROVIDERS,
-  DEFAULT_ORG_TIME_ZONE,
   type GuestConfig,
   providerSignInSchema,
   type AuthProvider,
   type UserIdentity,
 } from '@tmi/shared';
 
-import { createSpace } from '../repositories/organizations.js';
+import { makePersonalSpace } from '../lib/personal-space.js';
 import { soleMemberPersonalSpaces } from '../repositories/people.js';
 import { purgeSpace } from '../repositories/purge.js';
-import { clientOf, signInFor } from '../lib/sign-in.js';
+import { clientOf, signInFor, takesSignUps } from '../lib/sign-in.js';
 import { guestConfigFor } from '../lib/guest.js';
 import { recordAudit } from '../lib/audit.js';
 import { ApiError, isUniqueConstraintError } from '../lib/errors.js';
@@ -57,7 +56,7 @@ import {
 import { OAUTH_COOKIE, clearedStateCookie, randomToken, readState, safeReturnTo, stateCookie } from '../lib/oauth-state.js';
 import { seal, unseal } from '../lib/seal.js';
 import { assertAccess, assertMaySignUp, signUpWaits } from '../lib/access.js';
-import { getAccessSettings } from '../repositories/access.js';
+import { getAccessSettings, personalSpaceOffered } from '../repositories/access.js';
 import { allowlistOn, assertInvited } from '../lib/invited.js';
 import { createSignupToken, readSignupToken } from '../lib/signup-token.js';
 import { orgIdFromRow } from '../lib/org.js';
@@ -84,6 +83,7 @@ import {
   listMemberships,
   listAdminNames,
   listMyJoinRequests,
+  countOpenRequests,
   setDefaultOrganization,
   recordEntry,
 } from '../repositories/organizations.js';
@@ -112,6 +112,15 @@ import {
 import { getLiveUserById } from '../repositories/users.js';
 import { isAuthEnabled, isProduction, type AppEnv, type Env } from '../types.js';
 
+/**
+ * Phase 80 (A13): someone in no space with no invitation who may still come in -- a self sign-up (whose account
+ * the gate has already found approved), or someone whose only standing is an open request to join a space.
+ */
+async function mayWaitInNoSpace(db: D1Database, userId: string): Promise<boolean> {
+  if (await getPlatformAccount(db, userId)) return true;
+  return (await countOpenRequests(db, userId)) > 0;
+}
+
 /** Parses the comma-separated BOOTSTRAP_ADMIN_EMAILS var. */
 function bootstrapEmails(env: Env): string[] {
   return (env.BOOTSTRAP_ADMIN_EMAILS ?? '')
@@ -133,13 +142,15 @@ async function sessionPayload(
   impersonated: boolean,
   slug: string | undefined,
 ): Promise<SessionResponse> {
-  const [memberships, invitations, account, joinRequests, deletable, owesLegal] = await Promise.all([
+  const [memberships, invitations, account, joinRequests, deletable, owesLegal, offered] = await Promise.all([
     listMemberships(env.DB, person.id),
     listInvitations(env.DB, person.id),
     getPlatformAccount(env.DB, person.id),
     listMyJoinRequests(env.DB, person.id),
     accountDeletable(env.DB, person.id),
     legalDue(env.DB, person.id),
+    // Phase 80 (A12): placed in a space when approved, and offered one of their own. Its own primary-key read.
+    personalSpaceOffered(env.DB, person.id),
   ]);
 
   let organization: SessionResponse['organization'] = null;
@@ -193,6 +204,7 @@ async function sessionPayload(
     account_deletable: deletable,
     // Phase 72: an invited person's terms, once.
     legal_due: owesLegal,
+    personal_space_offer: offered,
   };
 }
 
@@ -378,6 +390,7 @@ async function completeSignIn(
   if (!platformAdmin) assertAccess(person);
 
   try {
+    // Phase 79 (M4): the identity carries the provider's name, which a first sign-in may take (recordSignIn).
     await recordSignIn(env.DB, person.id, identity, options.revokeToken ?? null);
   } catch (error) {
     if (isUniqueConstraintError(error)) {
@@ -393,7 +406,16 @@ async function completeSignIn(
 
   // Somebody with nowhere to go and nothing to answer has no business here -- unless this client
   // can show them the Welcome page (Phase 52: join a space with its code, or make one).
-  if (!platformAdmin && memberships.length === 0 && invitations.length === 0 && !canSignUp) {
+  // Phase 80 (A13): nor is an approved self sign-up in no space (approved: assertAccess let them by) --
+  // placed with a request, say, or with sign-up switched off this hour -- or someone whose standing is an
+  // open request, wherever this address takes sign-ups at all: they reach Welcome and Spaces. Read only here.
+  if (
+    !platformAdmin &&
+    memberships.length === 0 &&
+    invitations.length === 0 &&
+    !canSignUp &&
+    !(takesSignUps(env) && (await mayWaitInNoSpace(env.DB, person.id)))
+  ) {
     await recordAudit(env.DB, null, 'platform', {
       action: 'auth.denied',
       description: `Sign-in refused for ${identity.email}: in no space`,
@@ -401,12 +423,15 @@ async function completeSignIn(
     throw new ApiError(403, 'no_account', 'You are not authorized to access this portal. Please reach out to the administrator.');
   }
 
+  // Read after the sign-in is recorded: a first one may have taken the provider's name (Phase 79, M4).
+  const refreshed = (await getPersonById(env.DB, person.id)) ?? person;
+
   // The sign-in itself belongs to no organization: entering one is logged
   // there (POST /enter), so one organization never learns when a person
   // used another.
-  await recordAudit(env.DB, person, 'platform', {
+  await recordAudit(env.DB, refreshed, 'platform', {
     action: 'auth.signed_in',
-    description: `${person.full_name} signed in with ${label}`,
+    description: `${refreshed.full_name} signed in with ${label}`,
     entity_type: 'user',
     entity_id: person.id,
   });
@@ -414,7 +439,6 @@ async function completeSignIn(
   const token = await createSessionToken(person.id, env.SESSION_SECRET);
   c.header('Set-Cookie', sessionCookie(token, isProduction(env)), { append: true });
 
-  const refreshed = (await getPersonById(env.DB, person.id)) ?? person;
   return { data: await sessionPayload(env, refreshed, platformAdmin, false, undefined) };
 }
 
@@ -862,9 +886,12 @@ export const authRoutes = new Hono<AppEnv>()
       answer === 'accept' ? person : { id: person.id, full_name: answered.invited_name ?? person.full_name };
     await recordAudit(c.env.DB, shown, orgId, {
       action: answer === 'accept' ? 'membership.accepted' : 'membership.declined',
+      // Phase 79 (M5): a teen accepting an admin invitation joins without the role, and the line says so.
       description:
         answer === 'accept'
-          ? `${shown.full_name} accepted the invitation to ${org.name}`
+          ? answered.admin_dropped
+            ? `${shown.full_name} accepted the invitation to ${org.name}, without the admin role: someone 13 to 17 is not an admin of a shared space`
+            : `${shown.full_name} accepted the invitation to ${org.name}`
           : `${shown.full_name} declined the invitation to ${org.name}`,
       subject: { id: person.id, full_name: shown.full_name },
       entity_type: 'user',
@@ -954,25 +981,21 @@ export const authRoutes = new Hono<AppEnv>()
     // Phase 63 (P13): a space of their own at once, so they land among tiles and favorites -- no
     // Welcome screen. A teen's takes nobody by code and they may not add people (routes/users.ts).
     // Best effort: without it they still have their account, and may start a space from Spaces.
-    try {
-      const firstName = person.full_name.trim().split(/\s+/)[0] || 'My';
-      const space = await createSpace(c.env.DB, {
-        name: `${firstName}'s space`,
-        timeZone: DEFAULT_ORG_TIME_ZONE,
-        makerId: person.id,
-        requestHost: new URL(c.req.url).hostname || 'aimtrue.invalid',
-        personal: true,
-        teen: band === '13-17',
-      });
-      await setDefaultOrganization(c.env.DB, person.id, orgIdFromRow(space.id));
-      await recordAudit(c.env.DB, person, orgIdFromRow(space.id), {
-        action: 'account.personal_space',
-        description: `${person.full_name}'s own space was made at sign-up`,
-        entity_type: 'organization',
-        entity_id: space.id,
-      });
-    } catch (error) {
-      console.error('Personal space not made at sign-up', error);
+    // Phase 80 (A10): not while they wait. The approval decides where they go -- a space the platform
+    // places them in, or, with no place, this same space of their own (routes/platform.ts).
+    if (!waits) {
+      try {
+        const space = await makePersonalSpace(c.env.DB, person, { requestUrl: c.req.url, teen: band === '13-17' });
+        await setDefaultOrganization(c.env.DB, person.id, orgIdFromRow(space.id));
+        await recordAudit(c.env.DB, person, orgIdFromRow(space.id), {
+          action: 'account.personal_space',
+          description: `${person.full_name}'s own space was made at sign-up`,
+          entity_type: 'organization',
+          entity_id: space.id,
+        });
+      } catch (error) {
+        console.error('Personal space not made at sign-up', error);
+      }
     }
 
     // Phase 65 (A4): waiting, they are told so, and get no session until a platform admin approves them.

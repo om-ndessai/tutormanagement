@@ -2,7 +2,8 @@
 // @ 2471d84; Phase 59's useSetPaymentModel @ f96b984, working tree, which replaced Phase 54's businesses)
 // Phase 62's sign-in switches @ 0e3ec7a (working tree); Phase 62's Play settings (P5) @ 0e3ec7a (working tree);
 // Phase 63's guest play (P16) @ 0e3ec7a (working tree); Phase 65's sign-up access @ 6d53d01 (written beside
-// the web's, built in parallel: same routes and query key); Phase 69's Stickiness (working tree, beside the web's).
+// the web's, built in parallel: same routes and query key); Phase 69's Stickiness (working tree, beside the web's);
+// Phase 80's approval with a place and usePlacementSpaces @ 758a19f (working tree, beside the web's).
 // Mobile: the logo upload takes the picked image's bytes (apiClient.putBytes) instead of a DOM File.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
@@ -26,6 +27,7 @@ import type {
   PlatformAdmin,
   PlatformPerson,
   PlatformPersonUpdateInput,
+  PlacementSpace,
   PlayConsoleResponse,
   SignInSettingsResponse,
   UpdatePlayInput,
@@ -336,12 +338,28 @@ export function useRemoveAccessEntry() {
   });
 }
 
+/**
+ * Approves or declines a sign-up. Phase 80 (A11): approving may place them in a space (`space`); without it, their
+ * own space is made, as before.
+ */
 export function useDecideAccess() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ userId, access }: { userId: string } & AccessDecision) =>
-      apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(userId)}`, { access }),
+    mutationFn: ({ userId, ...decision }: { userId: string } & AccessDecision) =>
+      apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(userId)}`, decision),
     onSuccess: (result) => queryClient.setQueryData(accessKey, result),
+  });
+}
+
+/**
+ * Phase 80 (A11): the spaces the approve sheet may place someone in -- live, not personal, by name. A read across
+ * spaces, so it is fetched only while the sheet is open.
+ */
+export function usePlacementSpaces(enabled: boolean) {
+  return useQuery({
+    queryKey: ['platform', 'placement-spaces'] as const,
+    queryFn: () => apiClient.get<ApiOk<PlacementSpace[]>>('/platform/access/spaces'),
+    enabled,
   });
 }
 

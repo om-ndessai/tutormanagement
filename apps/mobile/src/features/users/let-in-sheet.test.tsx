@@ -1,12 +1,21 @@
-// UI audit (JF1; owner, 2026-11-04): Let in is a short sheet -- the role (a parent by default; Tutor only
-// where Tutoring is on), the one request the web sends, and for a parent "Which child is theirs?": a student
-// here linked with their guardians kept and the parent added, their child added now with the parent preset,
-// or later. The request leaves the list as soon as they are in; anything else is the full form.
+// UI audit (JF1; owner, 2026-11-04): Let in is a short sheet -- the role (Tutor only where Tutoring is on), the one
+// request the web sends, and for a parent "Which child is theirs?": a student here linked with their guardians kept
+// and the parent added, their child added now with the parent preset, or later. The request leaves the list as soon
+// as they are in; anything else is the full form. Phase 79 (M5): Member first and the default for a learner or no role
+// said -- in with no role, one tap -- and no Admin for a teen (`request.teen`).
 import type { UserDetail } from '@tmi/shared';
 import { act, fireEvent, screen } from '@testing-library/react-native';
 
 import { renderWithProviders } from '@/test/render';
-import { askedAsLine, guardiansWith, initialLetInRole, letInChoices, letInRequest, requestAskedLine } from './let-in-model';
+import {
+  askedAsLine,
+  guardiansWith,
+  initialLetInRole,
+  letInChoices,
+  letInContext,
+  letInRequest,
+  requestAskedLine,
+} from './let-in-model';
 import { LetInSheet } from './let-in-sheet';
 
 const mockRouter = { back: jest.fn(), push: jest.fn(), canGoBack: () => true };
@@ -74,9 +83,21 @@ beforeEach(() => {
 });
 
 describe('the Let in model', () => {
-  it('offers Parent and Admin, and Tutor only where Tutoring is on', () => {
-    expect(letInChoices(false).map((c) => c.role)).toEqual(['parent', 'admin']);
-    expect(letInChoices(true).map((c) => c.role)).toEqual(['parent', 'admin', 'tutor']);
+  const adult = (tutoring: boolean) => ({ teen: false, tutoring });
+
+  it('offers Member, Parent and Admin, and Tutor only where Tutoring is on (Phase 79)', () => {
+    expect(letInChoices(adult(false)).map((c) => c.role)).toEqual(['member', 'parent', 'admin']);
+    expect(letInChoices(adult(true)).map((c) => c.role)).toEqual(['member', 'parent', 'admin', 'tutor']);
+    expect(letInChoices(adult(true)).map((c) => c.title)).toEqual(['Member', 'Parent', 'Admin', 'Tutor']);
+    expect(letInChoices(adult(false))[0]?.hint).toBe('Plays Quest here. Give them a role whenever you like.');
+  });
+
+  it('offers a teen no Admin (Phase 79, M5)', () => {
+    expect(letInChoices({ teen: true, tutoring: false }).map((c) => c.role)).toEqual(['member', 'parent']);
+    expect(letInChoices({ teen: true, tutoring: true }).map((c) => c.role)).toEqual(['member', 'parent', 'tutor']);
+    // An older Worker sends no `teen`: nothing is hidden for it.
+    expect(letInContext({}, false)).toEqual({ teen: false, tutoring: false });
+    expect(letInContext({ teen: true }, true)).toEqual({ teen: true, tutoring: true });
   });
 
   it('sends the web’s request: the person as asked, one role, active, tied to the request', () => {
@@ -90,20 +111,27 @@ describe('the Let in model', () => {
     });
   });
 
-  it('starts on the role asked for when the sheet offers it, else a parent (Phase 72, JF26)', () => {
-    expect(initialLetInRole('admin', false)).toBe('admin');
-    expect(initialLetInRole('tutor', true)).toBe('tutor');
-    // No Tutoring here: a tutor's ask starts on a parent, as a learner's does (they join with their parent).
-    expect(initialLetInRole('tutor', false)).toBe('parent');
-    expect(initialLetInRole('student', true)).toBe('parent');
-    expect(initialLetInRole(null, true)).toBe('parent');
-    expect(initialLetInRole(undefined, false)).toBe('parent');
+  it('lets a member in with no role (Phase 79)', () => {
+    expect(letInRequest(JO, 'member')).toMatchObject({ roles: [], status: 'active', join_request_user_id: JO.user_id });
   });
 
-  it('says what they asked, and how a learner joins (the web’s words)', () => {
+  it('starts on the role asked for when the sheet offers it, else Member (Phase 72, JF26; Phase 79)', () => {
+    expect(initialLetInRole('admin', adult(false))).toBe('admin');
+    expect(initialLetInRole('parent', adult(false))).toBe('parent');
+    expect(initialLetInRole('tutor', adult(true))).toBe('tutor');
+    // No Tutoring here: a tutor's ask starts on Member, as a learner's does.
+    expect(initialLetInRole('tutor', adult(false))).toBe('member');
+    expect(initialLetInRole('student', adult(true))).toBe('member');
+    expect(initialLetInRole(null, adult(true))).toBe('member');
+    expect(initialLetInRole(undefined, adult(false))).toBe('member');
+    // A teen who asked to help run it starts on Member: Admin is not offered.
+    expect(initialLetInRole('admin', { teen: true, tutoring: false })).toBe('member');
+  });
+
+  it('says what they asked (the web’s words), with no "learner joins with their parent" line', () => {
     expect(askedAsLine('parent')).toBe('Asked as a parent.');
     expect(askedAsLine('admin')).toBe('Asked as helping run it.');
-    expect(askedAsLine('student')).toBe('Asked as a learner. A learner joins with their parent: use the full form.');
+    expect(askedAsLine('student')).toBe('Asked as a learner.');
     expect(askedAsLine(null)).toBeNull();
     const at = new Date(Date.now() - 5 * 60_000).toISOString();
     expect(requestAskedLine({ requested_at: at, role: 'tutor' })).toMatch(/^asked .+ · as a tutor$/);
@@ -127,12 +155,14 @@ describe('the Let in model', () => {
 });
 
 describe('LetInSheet', () => {
-  it('asks the role, a parent by default, with the whole address and when they asked', async () => {
+  it('asks the role, Member by default (Phase 79), with the whole address and when they asked', async () => {
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
     expect(screen.getByText('Let Jo Joiner in')).toBeTruthy();
     expect(screen.getByText(/spaces\.joiner@example\.com · asked/)).toBeTruthy();
-    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-role-member')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: false, selected: false });
     expect(screen.getByTestId('let-in-role-admin')).toHaveProp('accessibilityState', { checked: false, selected: false });
+    expect(screen.getByText('Plays Quest here. Give them a role whenever you like.')).toBeTruthy();
     expect(screen.getByText('Their child is, or will be, in this space.')).toBeTruthy();
     expect(screen.queryByTestId('let-in-role-tutor')).toBeNull();
     expect(screen.getByTestId('let-in-submit')).toHaveTextContent(/Let in$/);
@@ -149,13 +179,12 @@ describe('LetInSheet', () => {
     expect(asked).toHaveTextContent(/“I teach Grade 4 on Tuesdays\.”/);
   });
 
-  it('a learner’s ask starts on a parent and points to the full form; an older app’s ask says nothing', async () => {
+  it('a learner’s ask starts on Member, with no "joins with their parent" line; an older app’s ask says nothing', async () => {
     mockRequests.rows = [{ ...JO, role: 'student', note: null }];
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
-    expect(screen.getByTestId('let-in-role-parent')).toHaveProp('accessibilityState', { checked: true, selected: true });
-    expect(screen.getByTestId('let-in-asked')).toHaveTextContent(
-      'Asked as a learner. A learner joins with their parent: use the full form.',
-    );
+    expect(screen.getByTestId('let-in-role-member')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-asked')).toHaveTextContent('Asked as a learner.');
+    expect(screen.queryByText(/joins with their parent/)).toBeNull();
     await screen.unmount();
     mockRequests.rows = [JO];
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
@@ -167,6 +196,31 @@ describe('LetInSheet', () => {
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
     expect(screen.getByTestId('let-in-role-tutor')).toBeTruthy();
     expect(screen.getByText('Teaches students here.')).toBeTruthy();
+  });
+
+  it('a teen is offered no Admin, and starts on Member (Phase 79, M5)', async () => {
+    as({ tutoring: true });
+    mockRequests.rows = [{ ...JO, role: 'student', note: null, teen: true } as typeof JO];
+    await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    expect(screen.queryByTestId('let-in-role-admin')).toBeNull();
+    expect(screen.getByTestId('let-in-role-member')).toHaveProp('accessibilityState', { checked: true, selected: true });
+    expect(screen.getByTestId('let-in-role-parent')).toBeTruthy();
+    expect(screen.getByTestId('let-in-role-tutor')).toBeTruthy();
+  });
+
+  it('a member is let in with one tap, no role, and the sheet closes without asking about a child (Phase 79)', async () => {
+    mockCreate.mockResolvedValue({ data: { ...NEW_PARENT, roles: [] } });
+    mockRequests.rows = [{ ...JO, role: 'student', note: null }];
+    await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    await act(async () => {
+      await fireEvent.press(screen.getByTestId('let-in-submit'));
+    });
+    expect(mockCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ roles: [], status: 'active', join_request_user_id: JO.user_id }),
+    );
+    expect(mockToast.success).toHaveBeenCalledWith('Jo Joiner is in.');
+    expect(mockRouter.back).toHaveBeenCalled();
+    expect(screen.queryByTestId('let-in-child')).toBeNull();
   });
 
   it('an admin is let in at once and the sheet closes', async () => {
@@ -192,6 +246,7 @@ describe('LetInSheet', () => {
       mockRequests.rows = [];
     });
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    await fireEvent.press(screen.getByTestId('let-in-role-parent'));
     await act(async () => {
       await fireEvent.press(screen.getByTestId('let-in-submit'));
     });
@@ -224,6 +279,7 @@ describe('LetInSheet', () => {
     });
     mockUpdate.mockResolvedValue({ data: {} });
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    await fireEvent.press(screen.getByTestId('let-in-role-parent'));
     await act(async () => {
       await fireEvent.press(screen.getByTestId('let-in-submit'));
     });
@@ -250,6 +306,7 @@ describe('LetInSheet', () => {
   it('Add their child now opens Add a student with the parent chosen', async () => {
     mockCreate.mockResolvedValue({ data: NEW_PARENT });
     await renderWithProviders(<LetInSheet requestId={JO.user_id} />);
+    await fireEvent.press(screen.getByTestId('let-in-role-parent'));
     await act(async () => {
       await fireEvent.press(screen.getByTestId('let-in-submit'));
     });

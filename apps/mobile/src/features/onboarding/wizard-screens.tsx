@@ -42,7 +42,7 @@ export function WelcomeScreen() {
   // and tutor, are Tutoring's.
   const tutoring = featureAllowed(organization, 'tutoring');
   const assessment = featureOn(organization, 'assessment');
-  const tour = tourOffered(organization);
+  const tour = tourOffered(organization, user?.roles);
   const { close } = useWizardFrame();
   const isAdmin = user?.roles.includes('admin') ?? false;
   const firstName = user?.full_name.split(' ')[0] ?? '';

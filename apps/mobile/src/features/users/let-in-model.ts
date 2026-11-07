@@ -1,20 +1,30 @@
 // The pure parts of the Let in sheet (let-in-sheet.tsx), ported from apps/web/src/features/users/let-in-sheet.tsx
-// @ ab71793 so they are tested without a screen: the roles it offers (a parent first; a tutor only where
-// Tutoring is on), the one request that lets someone in, and a student's guardians with the new parent added.
+// @ ab71793 so they are tested without a screen: the roles it offers, the one request that lets someone in, and a
+// student's guardians with the new parent added.
 // Phase 72 (UI audit JF26; the web's let-in-sheet.tsx and join-requests-panel.tsx @ 98c40ab, working tree): the
 // sheet starts on the role the person asked for, where it is one of its choices, and says what they asked.
+// Phase 79 (M5, docs/members-plan.md; let-in-sheet.tsx @ 758a19f, working tree): the choices are shared
+// (`letInRolesFor`): Member first -- in, with no role, playing Quest -- then Parent, Admin (never for a teen, who the
+// request marks `teen`) and Tutor (where Tutoring is on). It starts on the role asked for where it is offered, else
+// on Member (`letInStartRole`), so a learner is let in with one tap; Member sends no role (`letInRoles`).
 import {
   JOIN_REQUEST_ROLE_LABELS,
+  LET_IN_ROLE_HINTS,
+  LET_IN_ROLE_LABELS,
   formatRelativeTime,
+  letInRoles,
+  letInRolesFor,
+  letInStartRole,
   type CreateUserRequestPayload,
   type JoinRequest,
   type JoinRequestRole,
+  type LetInRole,
   type UserDetail,
 } from '@tmi/shared';
 
 import type { GuardianValue } from './person-form-model';
 
-export type LetInRole = 'parent' | 'admin' | 'tutor';
+export type { LetInRole };
 
 export interface LetInChoice {
   role: LetInRole;
@@ -22,30 +32,32 @@ export interface LetInChoice {
   hint: string;
 }
 
-const CHOICES: readonly LetInChoice[] = [
-  { role: 'parent', title: 'Parent', hint: 'Their child is, or will be, in this space.' },
-  { role: 'admin', title: 'Admin', hint: 'Helps run the space: adds people, starts assessments.' },
-  { role: 'tutor', title: 'Tutor', hint: 'Teaches students here.' },
-];
+/** One line under each choice (shared with the web). */
+const HINTS: Record<LetInRole, string> = LET_IN_ROLE_HINTS;
 
-/** A parent by default -- the way a code most often arrives. */
-export const DEFAULT_LET_IN_ROLE: LetInRole = 'parent';
-
-/**
- * Where the sheet starts (Phase 72): the role asked for when the sheet offers it (Admin; Tutor where Tutoring is
- * on), else a parent -- a learner joins with their parent, through the full form.
- */
-export function initialLetInRole(asked: JoinRequestRole | null | undefined, tutoring: boolean): LetInRole {
-  return asked === 'admin' || (asked === 'tutor' && tutoring) ? asked : DEFAULT_LET_IN_ROLE;
+/** What the sheet weighs: the person's age band (a teen: no Admin) and whether Tutoring is on here. */
+export interface LetInContext {
+  teen: boolean;
+  tutoring: boolean;
 }
 
-/** "Asked as a parent." -- and for a learner, the way they join (the web's words). Null when nothing was asked. */
+/** The context of a request here: `teen` is absent from older Workers (then nothing is hidden for it). */
+export function letInContext(request: Pick<JoinRequest, 'teen'>, tutoring: boolean): LetInContext {
+  return { teen: request.teen ?? false, tutoring };
+}
+
+/**
+ * Where the sheet starts: the role asked for when the sheet offers it (Parent, Admin, Tutor), else Member -- a
+ * learner, or no role said.
+ */
+export function initialLetInRole(asked: JoinRequestRole | null | undefined, context: LetInContext): LetInRole {
+  return letInStartRole(asked, context);
+}
+
+/** "Asked as a parent." (the web's words). Null when nothing was asked. */
 export function askedAsLine(asked: JoinRequestRole | null | undefined): string | null {
   if (!asked) return null;
-  const label = JOIN_REQUEST_ROLE_LABELS[asked].toLowerCase();
-  return asked === 'student'
-    ? `Asked as ${label}. A learner joins with their parent: use the full form.`
-    : `Asked as ${label}.`;
+  return `Asked as ${JOIN_REQUEST_ROLE_LABELS[asked].toLowerCase()}.`;
 }
 
 /** A request's line on People: "asked 5 minutes ago · as a parent" (no role from an older app). */
@@ -54,9 +66,9 @@ export function requestAskedLine(request: Pick<JoinRequest, 'requested_at' | 'ro
   return `asked ${formatRelativeTime(request.requested_at)}${role}`;
 }
 
-/** The roles the sheet offers here: Parent and Admin, and Tutor only where Tutoring is on. */
-export function letInChoices(tutoring: boolean): LetInChoice[] {
-  return CHOICES.filter((choice) => tutoring || choice.role !== 'tutor');
+/** The roles the sheet offers here, in order: Member, Parent, Admin (not for a teen), Tutor (where Tutoring is on). */
+export function letInChoices(context: LetInContext): LetInChoice[] {
+  return letInRolesFor(context).map((role) => ({ role, title: LET_IN_ROLE_LABELS[role], hint: HINTS[role] }));
 }
 
 /** "Jo" of "Jo Joiner" (the whole name when it is one word). */
@@ -65,15 +77,15 @@ export function firstNameOf(fullName: string): string {
 }
 
 /**
- * The request the web sends (`POST /users`): the person as Google gave them, in the one role chosen,
- * active at once, tied to their request so the request is answered in the same write.
+ * The request the web sends (`POST /users`): the person as Google gave them, in the one role chosen -- none for a
+ * member -- active at once, tied to their request so the request is answered in the same write.
  */
 export function letInRequest(request: JoinRequest, role: LetInRole): CreateUserRequestPayload {
   return {
     full_name: request.full_name,
     email: request.email ?? null,
     phone: null,
-    roles: [role],
+    roles: letInRoles(role),
     status: 'active',
     join_request_user_id: request.user_id,
   } as CreateUserRequestPayload;

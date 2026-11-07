@@ -293,6 +293,13 @@ describe('the invitation and space lines (Phase 72)', () => {
     expect(accountSpaceLine({ roles: ['parent'] }, true)).toBe('You are here');
     expect(accountSpaceLine({ roles: ['parent'] }, false)).toBe('Parent');
   });
+
+  it('reads "Member" for a space where the person holds no role (Phase 79, M6) -- never an empty line', () => {
+    expect(membershipLine({ roles: [], personal: false })).toBe('Member');
+    expect(accountSpaceLine({ roles: [] }, false)).toBe('Member');
+    expect(accountSpaceLine({ roles: [] }, true)).toBe('You are here');
+    expect(invitedAsLine({ roles: [], invited_by_first_name: 'Ivo' })).toBe('Invited as a member by Ivo');
+  });
 });
 
 describe('invitationsWaiting', () => {

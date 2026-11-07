@@ -2,7 +2,7 @@
 // quick actions, the sections in the hats' order (`home-section-<hat>`), the space notes where Tutoring is
 // off -- and no money anywhere on it. The children that read their own routes (the Play home, the
 // Assessment home, the brief) are stood in for; their own tests cover them.
-import { act, fireEvent, screen } from '@testing-library/react-native';
+import { act, fireEvent, screen, within } from '@testing-library/react-native';
 import { openGameLabel, playAgain, type MemberHome } from '@tmi/shared';
 import { router } from 'expo-router';
 
@@ -336,6 +336,78 @@ describe('MemberHomeScreen', () => {
     await show({ ...playing, may_assess: false }, ['student', 'admin'], ASSESS);
     expect(screen.queryByTestId('quick-start_assessment')).toBeNull();
     expect(screen.getByTestId('quick-add_person')).toBeTruthy();
+  });
+
+  // Phase 79 (M6, docs/members-plan.md): a member -- no role -- plays Quest; the home is the learner's board alone.
+  it('a member: the learner section with the board, no Assessment home (nobody to assess), no money', async () => {
+    const member: MemberHome = {
+      ...SOFIA,
+      first_name: 'Mo',
+      learner: { next_lesson: null, assessment_in_progress: null, assessment_reviewed: null },
+      focus: 'quest',
+      may_assess: false,
+    };
+    const CHMI = { ...TUTORING, canvas_assessments: true };
+    await show(member, [], CHMI);
+    expect(sectionOrder()).toEqual(['home-section-learner']);
+    expect(screen.getByTestId('play-home')).toBeTruthy();
+    expect(screen.queryByTestId('assessment-home')).toBeNull();
+    expect(screen.queryByTestId('quick-start_assessment')).toBeNull();
+    expect(screen.queryByTestId('quick-record_lesson')).toBeNull();
+    expect(screen.queryByTestId('home-dashboard-link')).toBeNull();
+    expect(allText()).not.toMatch(NO_MONEY);
+    // A student there, with someone to assess (themselves): the Assessment home stays with the learner.
+    await show({ ...member, first_name: 'Sofia', may_assess: true }, ['student'], CHMI);
+    expect(screen.getAllByTestId('assessment-home')).toHaveLength(1);
+  });
+
+  it("a member where Quest is off and Assessment on (the seed's chmi): only Quest is said to be off, as the web", async () => {
+    const member: MemberHome = {
+      ...SOFIA,
+      first_name: 'Mo',
+      learner: { next_lesson: null, assessment_in_progress: null, assessment_reviewed: null },
+      focus: 'quest',
+      may_assess: false,
+    };
+    await show(member, [], { ...TUTORING, canvas_assessments: true, gamify_question_quest: false });
+    expect(screen.getByTestId('home-learner-empty')).toHaveTextContent('Nothing to play here yet: Quest is off in this space.');
+    expect(allText()).not.toMatch(/Assessments are off/);
+    expect(screen.queryByTestId('play-home')).toBeNull();
+    expect(screen.queryByTestId('assessment-home')).toBeNull();
+  });
+
+  // Phase 80 (A12): placed in a space when approved, a member is offered a space of their own, once, at the very top.
+  it('a member placed when approved: the offer of a space of their own leads the home, only while offered', async () => {
+    const member: MemberHome = {
+      ...SOFIA,
+      first_name: 'Pia',
+      learner: { next_lesson: null, assessment_in_progress: null, assessment_reviewed: null },
+      focus: 'quest',
+      may_assess: false,
+    };
+    const CHMI = { ...TUTORING, name: 'Chapel Hill Math Institute', personal: false };
+    await show(member, [], CHMI, { personalSpaceOffer: true, account: { age_band: 'adult' } });
+    expect(screen.getByTestId('home-personal-offer-text')).toHaveTextContent(/^You're in Chapel Hill Math Institute\. /);
+    const ids: string[] = [];
+    const walk = (node: unknown): void => {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) return node.forEach(walk);
+      const id = (node as { props?: { testID?: string } }).props?.testID;
+      if (id === 'home-personal-offer' || id === 'home-band') ids.push(id);
+      walk((node as { children?: unknown }).children);
+    };
+    walk(screen.toJSON());
+    expect(ids).toEqual(['home-personal-offer', 'home-band']);
+    await show(member, [], CHMI, { personalSpaceOffer: false, account: { age_band: 'adult' } });
+    expect(screen.queryByTestId('home-personal-offer')).toBeNull();
+  });
+
+  it('with nobody to assess, the learner leaves the Assessment home to the office where Tutoring is off (Phase 79)', async () => {
+    const playing = { ...INES, hats: ['learner', 'office'] as MemberHome['hats'], parent: null, focus: 'quest' as const };
+    await show({ ...playing, may_assess: false }, ['admin'], ASSESS);
+    expect(screen.getAllByTestId('assessment-home')).toHaveLength(1);
+    expect(within(screen.getByTestId('home-section-office')).getByTestId('assessment-home')).toBeTruthy();
+    expect(within(screen.getByTestId('home-section-learner')).queryByTestId('assessment-home')).toBeNull();
   });
 
   it('one rule for adding people (JF22): a 13-17 admin is not offered Add a person', async () => {

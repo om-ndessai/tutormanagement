@@ -2,8 +2,22 @@
 # the bar's hump for anyone with something to create (UI upgrades U2, revised 2026-10-15; its sheet
 # is shell/create), Schedule inside Sessions behind Lessons | Schedule, More reaching every other
 # page, the account sheet with appearance and the organization switcher (whose switch rebrands the
-# app).
+# app). Phase 79 (M6): a member (no role, made through the API) has Home and More only, no (+), and a More without the
+# teaching pages; home/member-home-member walks the rest of their home.
 appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env:
+        ACTION: add-person
+        EMAIL: members.nav@example.com
+        NAME: Nia Member
+        ROLES: member
+        ACTOR: priya.raghavan@gmail.com
+        ORG: chmi
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
 tags:
   - smoke
 ---
@@ -113,3 +127,51 @@ tags:
 - tapOn:
     id: account-button
 - assertVisible: 'Tutor at Riverside'
+
+# --- Phase 79 (M6): a member's shell -- Home and More, no (+), no teaching pages ---------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: members.nav@example.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- assertVisible:
+    id: tab-dashboard
+- assertVisible:
+    id: tab-more
+- assertNotVisible:
+    id: tab-sessions
+- assertNotVisible:
+    id: tab-progress
+- assertNotVisible:
+    id: create-button
+# chmi has Question Quest's switch off in the seed (quest-start.js turns it on for a flow), and a member has nobody to
+# assess: their home says only Quest is off -- Assessment is on there, just not for them (the web's words).
+- extendedWaitUntil:
+    visible:
+      id: home-learner-empty
+      text: 'Nothing to play here yet: Quest is off in this space\.'
+    timeout: 15000
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+# Activity and My profile; Quest only where its set is on (home/member-home-member switches it on), as for everyone.
+- assertVisible:
+    id: more-nav-activity
+- assertVisible:
+    id: more-nav-profile
+- assertNotVisible:
+    id: more-nav-quest
+- assertNotVisible:
+    id: more-nav-analytics
+- assertNotVisible:
+    id: more-nav-schedule
+- assertNotVisible:
+    id: more-nav-comments
+- takeScreenshot: shell-member-more

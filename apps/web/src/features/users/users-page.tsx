@@ -50,6 +50,8 @@ import { useBrand } from '@/providers/brand-provider';
 
 const PAGE_SIZE = 25;
 const ANY = 'any';
+/** Phase 79 (M6): the Role filter's "Members" -- people here with no role (`?role=member`). */
+const MEMBER = 'member';
 
 /** Which confirmation the page is currently showing, if any. */
 type PendingAction =
@@ -65,7 +67,7 @@ export function UsersPage() {
   const mayAdd = mayAddPeople({ roles: viewer?.roles ?? [], account });
   const brand = useBrand();
   const [search, setSearch] = useState('');
-  const [role, setRole] = useState<UserRole | typeof ANY>(ANY);
+  const [role, setRole] = useState<UserRole | typeof MEMBER | typeof ANY>(ANY);
   const [status, setStatus] = useState<UserStatus | typeof ANY>(ANY);
   const [includeDeleted, setIncludeDeleted] = useState(false);
   const [sortState, setSortState] = useState<{ sort: UserSortField; order: 'asc' | 'desc' }>({
@@ -171,7 +173,7 @@ export function UsersPage() {
     <div className="mx-auto max-w-6xl">
       <PageHeader
         title={COMMON_COPY.people_page}
-        description={`Everyone at ${brand.name}. A person can hold more than one role.`}
+        description={`Everyone at ${brand.name}. A person may hold several roles, or none: a member.`}
         actions={
           mayAdd ? (
             <Button onClick={() => setAdding(true)} data-testid="users-add">
@@ -214,9 +216,12 @@ export function UsersPage() {
             id="role-filter"
             label="Role"
             value={role}
-            onValueChange={resetPage((value: string) => setRole(value as UserRole | typeof ANY))}
+            onValueChange={resetPage((value: string) => setRole(value as UserRole | typeof MEMBER | typeof ANY))}
             anyLabel="All roles"
-            options={USER_ROLES.map((value) => ({ value, label: USER_ROLE_LABELS[value] }))}
+            options={[
+              ...USER_ROLES.map((value) => ({ value, label: USER_ROLE_LABELS[value] })),
+              { value: MEMBER, label: 'Members' },
+            ]}
           />
 
           <FilterSelect

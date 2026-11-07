@@ -55,7 +55,7 @@ import { RoleSelector } from './role-selector';
 import { SessionLimitField } from './session-limit-field';
 
 const DEFAULT_DESCRIPTION =
-  'One person, one record. Check every role they hold — the rest of the form follows.';
+  'One person, one record. Check every role they hold, or none for a member — the rest of the form follows.';
 
 export function PersonForm({
   detail,

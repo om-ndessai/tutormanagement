@@ -1,7 +1,7 @@
 // Ported from apps/web/src/features/organizations/welcome.tsx @ 9485a8e (Phase 60's "Requests sent" and
 // Delete my account's condition from the working tree on f96b984; Phase 61's two choices and the
 // invite step's mark likewise; Phase 72's role and note before "Ask to join", and the 13-17 card, @ 98c40ab,
-// working tree)
+// working tree; Phase 80's "Make my own space" @ 758a19f, working tree)
 import { formatRelativeTime, type SpaceLookup } from '@tmi/shared';
 import { getCalendars } from 'expo-localization';
 import { router } from 'expo-router';
@@ -18,7 +18,14 @@ import { useAuth } from '@/providers/auth-provider';
 import { useAppTheme } from '@/providers/theme-provider';
 import { radius, space } from '@/theme/tokens';
 
-import { useAskToJoin, useDeleteAccount, useLookupSpace, useMakeSpace, useWithdrawRequest } from './api';
+import {
+  useAskToJoin,
+  useDeleteAccount,
+  useLookupSpace,
+  useMakePersonalSpace,
+  useMakeSpace,
+  useWithdrawRequest,
+} from './api';
 import { JoinAskFields, useJoinAsk } from './code-sheet';
 import { askedToJoinText, joinAskRequest } from './code-sheet-model';
 import { markInviteStep } from './invite-step';
@@ -30,6 +37,7 @@ import {
   showsTeenCard,
   deviceTimeZone,
   makeProblem,
+  mayMakeOwnSpace,
   splitRequests,
   standingLine,
 } from './space-model';
@@ -52,6 +60,10 @@ type CodeInput = NativeTextInput;
  * Phase 72 (UI audit JF7, JF26): a found space asks the role and a note before "Ask to join"; a 13-17 who may not
  * start a space reads the way forward (a club needs an adult to start it), and nobody else is told about ages.
  * `focusStart` (the account sheet's and the (+)'s "Start a space") opens on the new space's name.
+ *
+ * Phase 80 (A12, A13): anyone who signed up themselves and has no space of their own may make one -- "Make my own
+ * space", under the two choices -- teens too, for whom it is the only door. Someone in no space with only a request
+ * waiting lands here, with the request under Requests sent and this card.
  */
 export function SpaceWelcome({
   firstTime,
@@ -101,6 +113,8 @@ export function SpaceWelcome({
         <JoinWithCode inputRef={codeRef} autoFocus={focusJoin} />
         {mayMake && !(focusStart && !focusJoin) ? <MakeSpace autoFocus={false} /> : null}
       </View>
+      {/* Phase 80 (A12): under the two choices on a phone (the web's sits above them), so the code stays first. */}
+      {mayMakeOwnSpace(account, memberships) ? <MakeOwnSpace /> : null}
       {showsTeenCard(account, mayMake) ? (
         // A teen who runs a club met only a grey "no" (J04): the way forward instead (UI audit JF7). An invited
         // adult (no account of their own yet) is not told about ages at all (J09).
@@ -367,6 +381,66 @@ function MakeSpace({ autoFocus = false }: { autoFocus?: boolean }) {
         </Button>
         {problem ? (
           <Text testID="welcome-make-error" variant="bodyMedium" style={{ color: theme.colors.error }}>
+            {problem}
+          </Text>
+        ) : null}
+      </View>
+    </OutlinedCard>
+  );
+}
+
+/**
+ * Phase 80 (A12): a space of one's own, in one tap -- for someone placed in a space when approved, someone whose
+ * request is still waiting, or anyone who said no thanks to the home's offer. It opens at once, on its Home.
+ */
+function MakeOwnSpace() {
+  const make = useMakePersonalSpace();
+  const { chooseOrganization } = useAuth();
+  const toast = useToast();
+  const theme = useAppTheme();
+  const [problem, setProblem] = useState<string | null>(null);
+
+  async function submit() {
+    setProblem(null);
+    try {
+      const made = (await make.mutateAsync({ make: true })).data;
+      toast.success('Your own space is ready.');
+      if (made.slug) {
+        await chooseOrganization(made.slug);
+        if (router.canDismiss()) router.dismissAll();
+        router.replace('/dashboard');
+      }
+    } catch (caught) {
+      if (!(caught instanceof ApiRequestError && caught.code === 'rate_limited')) haptics.error();
+      const said = problemMessage(caught, 'Could not make your space. Try again.');
+      setProblem(said);
+      showProblem(toast, caught, 'Could not make your space. Try again.');
+    }
+  }
+
+  return (
+    <OutlinedCard testID="welcome-make-own" style={{ borderRadius: radius.lg }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.md, padding: space.lg }}>
+        <Icon source="home-outline" size={20} color={theme.colors.onSurfaceVariant} />
+        <View style={{ flex: 1, minWidth: 180, gap: 2 }}>
+          <Text variant="titleMedium" accessibilityRole="header">
+            A space of your own
+          </Text>
+          <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+            Just for you: practise on your own, or with your family later.
+          </Text>
+        </View>
+        <Button
+          testID="welcome-make-own-submit"
+          mode="outlined"
+          onPress={() => void submit()}
+          disabled={make.isPending}
+          loading={make.isPending}
+        >
+          Make my own space
+        </Button>
+        {problem ? (
+          <Text testID="welcome-make-own-error" variant="bodyMedium" style={{ color: theme.colors.error, flexBasis: '100%' }}>
             {problem}
           </Text>
         ) : null}

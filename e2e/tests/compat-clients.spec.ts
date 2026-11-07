@@ -227,3 +227,43 @@ test.describe('older clients, Phases 60-61 (S13) @compat', () => {
     expect((await still.json()).error.code).toBe('no_account');
   });
 });
+
+/**
+ * Phase 80 (A11, docs/members-plan.md): a console from before sends `{ access: 'approved' }` alone. Under Post-approved
+ * that still leaves the person with exactly one space of their own -- made at the approval now (A10: none at sign-up),
+ * at sign-up by the last release's Worker -- so the same request reads the same on both.
+ */
+test.describe('older consoles, Phase 80 @compat', () => {
+  test('Phase 80: an older console’s { access: "approved" } still gives a waiting sign-up a space of its own', async ({ as, playwright }) => {
+    const platform = await as('platformAdmin', { org: null });
+    const before = await unwrap<any>(await platform.request.get('/api/platform/access'), 'the console');
+    const email = `oldconsole.${S13_RUN}@example.com`;
+    await unwrap(await platform.request.put('/api/platform/access', { data: { mode: 'postapproved' } }), 'Post-approved');
+    try {
+      const request = await playwright.request.newContext({ baseURL: process.env.E2E_BASE_URL ?? 'http://localhost:5173' });
+      const waiting = await request.post('/api/auth/signup', {
+        data: { dev_email: email, dev_name: 'Opal Oldconsole', birth_year: 1980, birth_month: 6, terms_version: TERMS_VERSION, privacy_version: PRIVACY_VERSION },
+      });
+      expect(waiting.status()).toBe(403);
+      await request.dispose();
+      const row = (await unwrap<any>(await platform.request.get('/api/platform/access'), 'the console')).waiting.find(
+        (account: any) => account.email === email,
+      );
+      // Exactly what a Phase 65-79 console sends.
+      await unwrap(await platform.request.put(`/api/platform/access/accounts/${row.user_id}`, { data: { access: 'approved' } }), 'approving');
+
+      const opal = await as('admin', { email, org: null });
+      const session = await sessionOf(opal);
+      expect(session.memberships).toEqual([
+        expect.objectContaining({ name: "Opal's space", roles: ['admin'], status: 'active', is_default: true }),
+      ]);
+      const inIt = await unwrap<any>(
+        await opal.request.get('/api/auth/session', { headers: { 'X-Organization': session.memberships[0].slug } }),
+        'the session in it',
+      );
+      expect(inIt.organization).toMatchObject({ personal: true });
+    } finally {
+      await unwrap(await platform.request.put('/api/platform/access', { data: { mode: before.settings.mode } }), 'the mode put back');
+    }
+  });
+});

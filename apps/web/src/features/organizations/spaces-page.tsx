@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ArrowRightIcon, CheckIcon, LogOutIcon, ShieldCheckIcon, XIcon } from 'lucide-react';
-import { USER_ROLE_LABELS, type Membership } from '@tmi/shared';
+import { rolesLabel, type Membership } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { AppShell } from '@/components/layout/app-shell';
@@ -106,7 +106,7 @@ export function SpacesPage() {
                   {/* The whole name, wrapped: "Rivera …" was all J09 read (UI audit JF12). */}
                   <p className="font-medium break-words">{invite.name}</p>
                   <p className="text-muted-foreground text-xs">
-                    Invited as {invite.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') || 'a member'}
+                    Invited as {invite.roles.length > 0 ? rolesLabel(invite.roles) : 'a member'}
                     {invite.invited_by_first_name ? ` by ${invite.invited_by_first_name}` : ''}
                   </p>
                 </div>
@@ -222,7 +222,7 @@ function SpaceRow({ org, current }: { org: Membership; current: boolean }) {
                 )}
               </span>
               <span className="text-muted-foreground block text-xs">
-                {org.personal ? 'Just you' : org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+                {org.personal ? 'Just you' : rolesLabel(org.roles)}
               </span>
             </span>
             <ArrowRightIcon className="text-muted-foreground size-4" />

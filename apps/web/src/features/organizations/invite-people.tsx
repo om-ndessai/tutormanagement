@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { CheckIcon, CopyIcon, Loader2Icon, PlusIcon, Share2Icon, XIcon } from 'lucide-react';
 import {
-  USER_ROLE_LABELS,
+  SPACE_INVITE_ROLE_LABELS,
+  SPACE_INVITE_ROLES,
   invitationText,
   inviteRolesFor,
   spaceInviteRowSchema,
@@ -28,7 +29,8 @@ interface Row {
 }
 
 let nextKey = 1;
-const blankRow = (): Row => ({ key: nextKey++, email: '', full_name: '', role: 'parent', problem: null });
+// Phase 79 (M3): a new row is a member -- just the email; the space's admins give a role whenever they like.
+const blankRow = (): Row => ({ key: nextKey++, email: '', full_name: '', role: SPACE_INVITE_ROLES[0], problem: null });
 
 /**
  * The words an invitation hands over, for `email` (Phase 76, JF37): who invites, the space and what it is for, where
@@ -73,8 +75,8 @@ export async function shareInvitation(text: string, title: string): Promise<void
 
 /**
  * Phase 61 (S12, docs/spaces-plan.md): "Invite people", right after starting a space and before
- * the welcome tour. Rows of email and role (Admin, Parent, and Tutor only where Tutoring is
- * allowed); each row is the ordinary add-person request, so the per-minute limit and the daily cap
+ * the welcome tour. Rows of email and role (Member, the default since Phase 79 -- no role -- then Admin,
+ * Parent, and Tutor only where Tutoring is allowed); each row is the ordinary add-person request, so the per-minute limit and the daily cap
  * apply, and the person is invited and accepts. A self-serve space sends no email, so each
  * invitation is copied or shared by hand; the space's code is shown too. Students are added in the
  * wizard's "Add a student", and the same rows are always on People -> Add person.
@@ -169,7 +171,7 @@ export function InvitePeople({ onDone, doneLabel }: { onDone: () => void; doneLa
                   <SelectContent>
                     {roles.map((role) => (
                       <SelectItem key={role} value={role} data-testid={`invite-role-option-${role}`}>
-                        {USER_ROLE_LABELS[role]}
+                        {SPACE_INVITE_ROLE_LABELS[role]}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -224,7 +226,7 @@ export function InvitePeople({ onDone, doneLabel }: { onDone: () => void; doneLa
               <span className="flex min-w-0 items-start gap-2 sm:flex-1 sm:items-center">
                 <CheckIcon className="text-success mt-0.5 size-4 shrink-0 sm:mt-0" />
                 <span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
-                  {row.email} <span className="text-muted-foreground">· {USER_ROLE_LABELS[row.role]}</span>
+                  {row.email} <span className="text-muted-foreground">· {SPACE_INVITE_ROLE_LABELS[row.role]}</span>
                 </span>
               </span>
               <span className="flex flex-wrap gap-2">

@@ -181,6 +181,27 @@ test('a tutor who teaches nobody here is not offered Start', async () => {
   expect(screen.getByTestId('create-action-record-session')).toBeTruthy();
 });
 
+describe('Phase 79: a member (no role) has no teaching tabs', () => {
+  test('Home and More for a member, wherever they are; the bar as before while the roles are unknown', () => {
+    expect(visibleTabs(ALL_SETS, [])).toEqual(['dashboard', 'more']);
+    expect(visibleTabs(ASSESS_ONLY, [])).toEqual(['dashboard', 'more']);
+    expect(visibleTabs(ALL_SETS, ['student'])).toEqual(['dashboard', 'sessions', 'progress', 'more']);
+    expect(visibleTabs(ALL_SETS)).toEqual(['dashboard', 'sessions', 'progress', 'more']);
+    expect(visibleTabs(ALL_SETS, null)).toEqual(['dashboard', 'sessions', 'progress', 'more']);
+  });
+
+  test("a member's bar: Home and More on a flat bar, no create button", async () => {
+    as([]);
+    await renderWithProviders(<AppTabBar {...props().props} />);
+    await layOut();
+    expect(slots()).toEqual(['tab-dashboard', 'tab-more']);
+    expect(screen.queryByTestId('create-button')).toBeNull();
+    expect(screen.queryByTestId('tab-bar-hump')).toBeNull();
+    expect(screen.queryByText('Lessons')).toBeNull();
+    expect(screen.queryByText('Progress')).toBeNull();
+  });
+});
+
 describe('Phase 50: the bar follows the feature sets', () => {
   test('four tabs with Tutoring, Home and More without it', () => {
     expect(visibleTabs(ALL_SETS)).toEqual(['dashboard', 'sessions', 'progress', 'more']);

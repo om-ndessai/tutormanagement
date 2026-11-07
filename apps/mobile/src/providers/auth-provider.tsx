@@ -74,6 +74,11 @@ interface AuthContextValue {
    */
   legalDue: boolean;
   /**
+   * Phase 80 (A12, docs/members-plan.md): a self-signed-up person placed in a space when approved is offered a space
+   * of their own, until they make one or say no thanks. False from older Workers.
+   */
+  personalSpaceOffer: boolean;
+  /**
    * Phase 52: a newcomer between their Google sign-in (or the developer's "Sign up as") and the
    * age question. Held in memory only -- never stored.
    */
@@ -199,6 +204,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
   const [accountDeletable, setAccountDeletable] = useState(false);
   const [legalDue, setLegalDue] = useState(false);
+  const [personalSpaceOffer, setPersonalSpaceOffer] = useState(false);
   const [pendingSignup, setPendingSignup] = useState<PendingSignup | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
   const [config, setConfig] = useState<AuthConfig | null>(null);
@@ -237,6 +243,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setJoinRequests(session.join_requests ?? []);
     setAccountDeletable(session.account_deletable === true);
     setLegalDue(session.legal_due === true);
+    setPersonalSpaceOffer(session.personal_space_offer === true);
 
     const landing = landingFor(session, { own: ownRef.current, linked: linkedRef.current });
     if (landing.kind !== 'enter' || landing.slug !== linkedRef.current) linkedRef.current = null;
@@ -283,6 +290,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setJoinRequests([]);
     setAccountDeletable(false);
     setLegalDue(false);
+    setPersonalSpaceOffer(false);
     setImpersonated(false);
     setStatus('unauthenticated');
   }, [queryClient]);
@@ -624,6 +632,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       joinRequests,
       accountDeletable,
       legalDue,
+      personalSpaceOffer,
       pendingSignup,
       startDevSignup,
       completeSignup,
@@ -661,6 +670,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       joinRequests,
       accountDeletable,
       legalDue,
+      personalSpaceOffer,
       pendingSignup,
       startDevSignup,
       completeSignup,

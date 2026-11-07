@@ -1,4 +1,6 @@
 import {
+  MEMBER_DESCRIPTION,
+  MEMBER_LABEL,
   USER_ROLES,
   USER_ROLE_DESCRIPTIONS,
   USER_ROLE_LABELS,
@@ -10,7 +12,8 @@ import { cn } from '@/lib/utils';
 /**
  * Roles are a set, not a choice: the plan's whole point is that one person can
  * be a parent who tutors, or a senior student who teaches younger children.
- * Checkboxes rather than a dropdown make that obvious in the UI.
+ * Checkboxes rather than a dropdown make that obvious in the UI. None ticked is a
+ * member (Phase 79): in the space, playing Quest, with a role given later.
  */
 export function RoleSelector({
   value,
@@ -60,6 +63,13 @@ export function RoleSelector({
           );
         })}
       </div>
+
+      {/* Phase 79 (M1): no role ticked is a member, not a mistake. */}
+      {value.length === 0 && !error && (
+        <p className="text-muted-foreground text-xs" data-testid="roles-member-hint">
+          <span className="text-foreground font-medium">{MEMBER_LABEL}.</span> {MEMBER_DESCRIPTION}
+        </p>
+      )}
 
       {error && (
         <p role="alert" className="text-destructive text-xs">

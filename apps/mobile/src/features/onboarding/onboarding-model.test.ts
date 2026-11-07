@@ -1,4 +1,4 @@
-import { USER_ROLES } from '@tmi/shared';
+import { USER_ROLES, tourOffered } from '@tmi/shared';
 
 import { decideOnboarding, primaryRole, screenAfterTour } from './onboarding-model';
 import { placementOf, TOUR_STEPS } from './tour-steps';
@@ -27,6 +27,13 @@ describe('the welcome wizard decides', () => {
     expect(primaryRole([])).toBe('student');
     expect(screenAfterTour(true)).toBe('welcome');
     expect(screenAfterTour(false)).toBe('confirm');
+  });
+
+  // Phase 79 (M6): a member counts as a learner, and is never offered the tour, so those steps never run for them.
+  it('takes a member for a learner, whom the tour is never offered', () => {
+    expect(primaryRole([])).toBe('student');
+    expect(tourOffered({ feature_tutoring: true }, [])).toBe(false);
+    expect(tourOffered({ feature_tutoring: true }, ['student'])).toBe(true);
   });
 });
 

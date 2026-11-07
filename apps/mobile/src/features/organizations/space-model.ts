@@ -131,3 +131,27 @@ export function mayDeleteSpace(
 ): boolean {
   return org?.created_via === 'self_serve' && Boolean(user?.roles.includes('admin'));
 }
+
+/**
+ * Phase 80 (A12): "Make my own space" on Spaces and Welcome -- for anyone who signed up themselves (they have a
+ * platform account) and has no space of their own: someone placed in a space when approved, someone whose request is
+ * still waiting, or anyone who said no thanks to the home's offer. Teens too: for them it is the only door, as they
+ * cannot start a shared space. Someone a space added has no account, and is not offered it (the API refuses 403).
+ */
+export function mayMakeOwnSpace(
+  account: PlatformAccount | null | undefined,
+  memberships: readonly { personal?: boolean }[],
+): boolean {
+  return Boolean(account) && !memberships.some((m) => m.personal === true);
+}
+
+/**
+ * Phase 80 (A12): the home's one-time offer of a space of one's own, while the session says so (`personal_space_offer`)
+ * and the reader is in a space that is not their own.
+ */
+export function showsPersonalOffer(
+  offer: boolean,
+  organization: { personal?: boolean } | null | undefined,
+): boolean {
+  return offer && Boolean(organization) && organization?.personal !== true;
+}

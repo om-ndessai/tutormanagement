@@ -177,6 +177,65 @@ test.describe('signing up (Phase 52)', () => {
     await unwrap(await ines.request.put('/api/organization/code', { data: { join_by_code: true } }), 'on');
   });
 
+  test('Phase 79: a learner is let in as a member in one tap; a teen is never offered Admin', async ({ page, as }) => {
+    // People made here, asking with the space's code as it is now (the test above renews it).
+    const ines = await as('assessAdmin', { org: ORGS.c.slug });
+    const { code } = await unwrap<any>(await ines.request.get('/api/organization/code'), 'the code');
+    const adultEmail = `lou.learner.${stamp}@example.com`;
+    const teenEmail = `tia.teen.${stamp}@example.com`;
+    await unwrap(await signup(page, { dev_email: adultEmail, dev_name: 'Lou Learner', birth_year: 1990 }), 'an adult signs up');
+    await unwrap(await signup(page, { dev_email: teenEmail, dev_name: 'Tia Teen', birth_year: new Date().getFullYear() - 14 }), 'a teen signs up');
+    const lou = await as('admin', { email: adultEmail, org: null });
+    const tia = await as('admin', { email: teenEmail, org: null });
+    await unwrap(await lou.request.post('/api/spaces/join-requests', { data: { code, role: 'student' } }), 'lou asks, as a learner');
+    await unwrap(await tia.request.post('/api/spaces/join-requests', { data: { code, role: 'student' } }), 'tia asks');
+    try {
+      const requests = await unwrap<any[]>(await ines.request.get('/api/organization/join-requests'), 'requests');
+      const louReq = requests.find((r) => r.email === adultEmail);
+      const tiaReq = requests.find((r) => r.email === teenEmail);
+      // Read by the space's admins only, beside the request (R32): whether they signed up as a 13-17.
+      expect(louReq).toMatchObject({ role: 'student', teen: false });
+      expect(tiaReq).toMatchObject({ role: 'student', teen: true });
+
+      // Lou: the sheet starts on Member, and one tap lets him in -- no "Which child" step, no full form needed.
+      await ines.goto('/users');
+      await ines.getByTestId(`join-request-let-in-${louReq.user_id}`).filter({ visible: true }).first().click();
+      const sheet = ines.getByTestId('let-in-sheet');
+      await expect(sheet.getByTestId('let-in-asked')).toContainText('Asked as a learner.');
+      await expect(sheet.getByText('A learner joins with their parent')).toHaveCount(0);
+      await expect(sheet.getByTestId('let-in-role-member')).toBeChecked();
+      await expect(sheet.getByTestId('let-in-role-admin')).toBeVisible();
+      await expect(sheet.getByTestId('let-in-full-form')).toBeVisible();
+      await sheet.getByTestId('let-in-submit').click();
+      await expect(sheet).toHaveCount(0);
+      await expect(ines.getByRole('heading', { name: /^Which child is/ })).toHaveCount(0);
+      const louIn = await unwrap<any>(await lou.request.get('/api/auth/session'), 'lou after');
+      expect(louIn.memberships).toEqual(expect.arrayContaining([expect.objectContaining({ slug: ORGS.c.slug, roles: [] })]));
+
+      // Tia, 14: Member and Parent, never Admin -- and the API refuses it too.
+      const refused = await ines.request.post('/api/users', {
+        data: { full_name: 'Tia Teen', email: teenEmail, roles: ['admin'], status: 'active', join_request_user_id: tiaReq.user_id },
+      });
+      expect(refused.ok()).toBe(false);
+      expect(JSON.stringify(await refused.json())).toContain('13 to 17');
+      await ines.reload();
+      await ines.getByTestId(`join-request-let-in-${tiaReq.user_id}`).filter({ visible: true }).first().click();
+      await expect(sheet.getByTestId('let-in-role-member')).toBeChecked();
+      await expect(sheet.getByTestId('let-in-role-parent')).toBeVisible();
+      await expect(sheet.getByTestId('let-in-role-admin')).toHaveCount(0);
+      await sheet.getByTestId('let-in-submit').click();
+      await expect(sheet).toHaveCount(0);
+      const tiaIn = await unwrap<any>(await tia.request.get('/api/auth/session'), 'tia after');
+      expect(tiaIn.memberships).toEqual(expect.arrayContaining([expect.objectContaining({ slug: ORGS.c.slug, roles: [] })]));
+    } finally {
+      // Out again, so the space holds only its own.
+      for (const person of [lou, tia]) {
+        await person.request.delete(`/api/spaces/join-requests/${ORGS.c.slug}`);
+        await person.request.post(`/api/spaces/${ORGS.c.slug}/leave`);
+      }
+    }
+  });
+
   test('a self-serve space: a student needs a parent’s consent; its admin deletes it with everything in it', async ({ page, as }) => {
     const owner = `olive.owner.${stamp}@example.com`;
     await unwrap(await signup(page, { dev_email: owner, dev_name: 'Olive Owner', birth_year: 1980 }), 'owner');

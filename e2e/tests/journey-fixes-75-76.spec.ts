@@ -470,7 +470,8 @@ test.describe('Phase 76: adding people one way (web)', () => {
 
   test('JF21: one Add chooser, from the home and the Users header, with its four choices; the statuses explained', async ({ as }) => {
     const admin = await as('admin');
-    expect(FOUR).toEqual(['A family (parent and child)', 'A tutor', 'Someone else', 'Invite by email']);
+    // Phase 79 (M3): "Anyone, by email" second; the full form is "Someone, with details".
+    expect(FOUR).toEqual(['A family (parent and child)', 'Anyone, by email', 'A tutor', 'Someone, with details']);
     await admin.goto('/');
     await admin.getByTestId('quick-add_person').click();
     const chooser = admin.getByTestId('add-person');
@@ -480,7 +481,7 @@ test.describe('Phase 76: adding people one way (web)', () => {
     await admin.goto('/users');
     await admin.getByTestId('users-add').click();
     await expect(admin.getByTestId('add-choices').getByRole('button')).toHaveCount(4);
-    // "Someone else" is the person form, which says what each status means.
+    // "Someone, with details" is the person form, which says what each status means.
     await admin.getByTestId('add-choice-someone').click();
     const form = admin.getByRole('dialog', { name: 'Add a person' });
     const statuses = form.getByTestId('user-status-descriptions');
@@ -593,7 +594,7 @@ test.describe('Phase 76: adding people one way (web)', () => {
     expect((await unwrap<any>(await dana.request.get('/api/auth/session'), 'after')).user.roles).toEqual(expect.arrayContaining(['admin', 'parent']));
   });
 
-  test('JF37: Invite by email from the chooser; an invited row’s Copy invitation and Share, each confirmed', async ({ as }) => {
+  test('JF37, Phase 79: Anyone, by email from the chooser -- just the address, a member; an invited row’s Copy invitation and Share, each confirmed', async ({ as }) => {
     test.setTimeout(90_000);
     const ines = await as('assessAdmin', { org: 'assess' });
     const session = await unwrap<any>(await ines.request.get('/api/auth/session'), 'her session');
@@ -630,10 +631,15 @@ test.describe('Phase 76: adding people one way (web)', () => {
     try {
       await ines.getByTestId('users-add').click();
       await ines.getByTestId('add-choice-invite').click();
+      await expect(ines.getByRole('heading', { name: 'Anyone, by email' })).toBeVisible();
       const step = ines.getByTestId('invite-step');
+      // Phase 79 (M3): only the address; the row starts on Member, so they join with no role.
       await step.getByTestId('invite-email-0').fill(email);
       await step.getByTestId('invite-send').click();
       await expect(step.getByTestId(`invite-sent-${email}`)).toBeVisible();
+      await expect(step.getByTestId(`invite-sent-${email}`)).toContainText('Member');
+      const invited = await unwrap<any[]>(await ines.request.get(`/api/users?search=${encodeURIComponent(email)}`), 'the invited');
+      expect(invited[0]).toMatchObject({ status: 'invited', roles: [] });
       await step.getByTestId(`invite-copy-${email}`).click();
       await expect.poll(() => ines.evaluate(() => (window as any).__copied)).toBe(expected);
       await step.getByTestId('invite-continue').click();

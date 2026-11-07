@@ -1,7 +1,8 @@
 // Ported from apps/web/src/features/organizations/api.ts @ 1132322 (the Phase 52 block @ 9485a8e; Phase 60's
 // leave and the star's removal from the working tree on f96b984; Phase 61's useInvitePerson likewise; Phase 71's
 // useDismissJoinOutcome from the working tree: POST /spaces/join-requests/:slug/dismiss; Phase 72's useAskToJoin
-// input @ 98c40ab, working tree: the role asked for and a note travel with the code)
+// input @ 98c40ab, working tree: the role asked for and a note travel with the code; Phase 80's useMakePersonalSpace
+// @ 758a19f, working tree: POST /spaces/personal)
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   ApiOk,
@@ -16,6 +17,8 @@ import type {
   CurriculumOfferingInput,
   NotificationLogEntry,
   OrganizationSettings,
+  PersonalSpaceInput,
+  PersonalSpaceResult,
   UpdateOrganizationSettingsInput,
 } from '@tmi/shared';
 import { inviteRowRequest } from '@tmi/shared';
@@ -149,6 +152,16 @@ export function useMakeSpace() {
   return useMutation({
     mutationFn: (input: CreateSpaceInput) => apiClient.post<ApiOk<{ slug: string; name: string }>>('/spaces', input),
     onSuccess: () => refreshSession(),
+  });
+}
+
+/**
+ * Phase 80 (A12): a space of one's own -- made (`make: true`; 409 when they have one), or the offer put away (`make:
+ * false`). The caller re-reads the session or opens the new space, whichever comes next.
+ */
+export function useMakePersonalSpace() {
+  return useMutation({
+    mutationFn: (input: PersonalSpaceInput) => apiClient.post<ApiOk<PersonalSpaceResult>>('/spaces/personal', input),
   });
 }
 

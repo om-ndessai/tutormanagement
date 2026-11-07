@@ -189,6 +189,11 @@ read only by their own session (`legal_due`), and gone with the account.
 `(user_id, role)` primary key. `admin`, `tutor`, `student`, `parent`, enforced by a CHECK.
 Indexed by `(role, user_id)` so "every tutor" is an index scan.
 
+No rows at all is allowed, and is a **member** (Phase 79, `docs/members-plan.md`): a person in the
+space with no role, who plays Quest there. Their admins give them a role later, and each role's rules
+apply then (a student needs a guardian here; a tutor needs Tutoring). A member needs an email, since
+they sign in (rule 4 below).
+
 ### `tutor_profiles` / `student_profiles`
 
 One optional row per user, primary-keyed on `user_id`.
@@ -966,7 +971,8 @@ because "the database guarantees it" would be wrong:
 3. **A profile row exists only while its role is held.** Dropping the tutor role deletes the
    tutor profile, in the same batch as the role change.
 
-4. **"Only a student who holds no other role may be without an email."** The address is on
+4. **"Only a student who holds no other role may be without an email."** A member (no role at all,
+   Phase 79) signs in, so needs one too. The address is on
    `users` and the roles are rows in `user_roles`, so no CHECK can see both. `users.email` is
    nullable because most students are children who have no address and never sign in — their
    parents read their dashboard from their own login — and requiring one forced invented
@@ -1007,8 +1013,8 @@ because "the database guarantees it" would be wrong:
    not among those offered, or an empty list. Audited by the query under "Reading the model".
 
 Rules the plan deliberately does **not** impose, and the schema therefore does not either:
-a parent may have no dependents ("Parent may or may not have a student assigned"), and a tutor's
-parent link is optional.
+a parent may have no dependents ("Parent may or may not have a student assigned"), a tutor's
+parent link is optional, and (Phase 79) a member may hold no role at all.
 
 ---
 

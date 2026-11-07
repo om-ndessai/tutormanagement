@@ -25,8 +25,9 @@ export const canvasAssessmentKeys = {
 };
 
 /** The grades, with how many approved questions each can draw on. */
-export function useCanvasAssessmentLevels() {
+export function useCanvasAssessmentLevels(options: { enabled?: boolean } = {}) {
   return useQuery({
+    enabled: options.enabled ?? true,
     queryKey: canvasAssessmentKeys.levels,
     queryFn: () => apiClient.get<ApiOk<CanvasAssessmentLevel[]>>('/canvas-assessments/levels'),
     // Counting the bank reads every drawable question in D1 (thousands while the organization

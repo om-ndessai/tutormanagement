@@ -5,7 +5,11 @@ import { Alert } from 'react-native';
 import { renderWithProviders } from '@/test/render';
 import { AccessSettingsSection, ageBandLabel, entryLabel, providersLabel } from './access-settings-section';
 
-jest.mock('expo-router', () => ({ Stack: { Screen: () => null }, router: { push: jest.fn() } }));
+const mockPush = jest.fn();
+jest.mock('expo-router', () => ({
+  Stack: { Screen: () => null },
+  router: { push: (...args: unknown[]) => mockPush(...args) },
+}));
 jest.mock('@/components/toast', () => ({
   useToast: () => ({ success: jest.fn(), error: jest.fn(), info: jest.fn() }),
 }));
@@ -59,6 +63,7 @@ function console_(overrides: Partial<AccessConsoleResponse> = {}): AccessConsole
 }
 
 beforeEach(() => {
+  mockPush.mockReset();
   [mockSave, mockAdd, mockRemove, mockDecide].forEach((mock) => mock.mockReset().mockResolvedValue({ data: {} }));
   mockData = console_();
 });
@@ -120,11 +125,12 @@ describe('AccessSettingsSection (Phase 65)', () => {
     alert.mockRestore();
   });
 
-  it('approves at once; declines and revokes after confirming', async () => {
+  it('approves through the sheet (Phase 80, A11); declines and revokes after confirming', async () => {
     const alert = jest.spyOn(Alert, 'alert');
     await renderWithProviders(<AccessSettingsSection />);
     await fireEvent.press(screen.getByTestId('access-approve-u-wait'));
-    expect(mockDecide).toHaveBeenCalledWith({ userId: 'u-wait', access: 'approved' });
+    expect(mockPush).toHaveBeenCalledWith({ pathname: '/approve-account', params: { user: 'u-wait' } });
+    expect(mockDecide).not.toHaveBeenCalled();
 
     await fireEvent.press(screen.getByTestId('access-decline-u-wait'));
     alert.mock.calls[0]![2]!.find((b) => b.text === 'Decline')!.onPress!();
@@ -134,9 +140,28 @@ describe('AccessSettingsSection (Phase 65)', () => {
     alert.mock.calls[1]![2]!.find((b) => b.text === 'Revoke')!.onPress!();
     expect(mockDecide).toHaveBeenCalledWith({ userId: 'u-ok', access: 'declined' });
 
+    // A declined account is approved through the same sheet.
     await fireEvent.press(screen.getByTestId('access-approve-u-no'));
-    expect(mockDecide).toHaveBeenCalledWith({ userId: 'u-no', access: 'approved' });
+    expect(mockPush).toHaveBeenLastCalledWith({ pathname: '/approve-account', params: { user: 'u-no' } });
+    expect(mockDecide).not.toHaveBeenCalledWith(expect.objectContaining({ access: 'approved' }));
     alert.mockRestore();
+  });
+
+  it('says where an approval placed someone (Phase 80): joined, or asked to join for them', async () => {
+    mockData = console_({
+      decided: [
+        { ...WAITING, user_id: 'u-in', full_name: 'Ida In', access: 'approved', placed_in: { name: 'Chapel Hill Math Institute', how: 'joined' } },
+        { ...WAITING, user_id: 'u-ask', full_name: 'Abe Asked', access: 'approved', placed_in: { name: 'Ferreira Family Practice', how: 'requested' } },
+        { ...WAITING, user_id: 'u-own', full_name: 'Oli Own', access: 'approved', placed_in: null },
+        { ...WAITING, user_id: 'u-old', full_name: 'Dee Declined', access: 'declined', placed_in: { name: 'Gone', how: 'joined' } },
+      ],
+    });
+    await renderWithProviders(<AccessSettingsSection />);
+    expect(screen.getByTestId('access-placed-u-in')).toHaveTextContent('Joined Chapel Hill Math Institute');
+    expect(screen.getByTestId('access-placed-u-ask')).toHaveTextContent('Asked to join Ferreira Family Practice');
+    expect(screen.queryByTestId('access-placed-u-own')).toBeNull();
+    // Only an approval stands where it placed them.
+    expect(screen.queryByTestId('access-placed-u-old')).toBeNull();
   });
 });
 

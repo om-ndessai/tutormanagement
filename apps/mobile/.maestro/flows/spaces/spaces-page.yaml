@@ -7,6 +7,8 @@
 # Self-cleaning: Pia, Quinn, Zara and Ari are made fresh before, and removed with their spaces after.
 # Phase 63 (P13): signing up now also makes a personal space; Pia, Zara and Ari drop theirs at once
 # (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
+# Phase 80 (A12): having signed up herself with no space of her own, Pia is offered "Make my own space" on Spaces; it
+# makes "Pia's space" and opens it, which the account sheet then calls "Just you", and the card is gone.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -153,6 +155,16 @@ tags:
     timeout: 10000
 - assertVisible: 'Requests sent'
 - assertVisible: '.*Its administrators will let you in\..*'
+# The page settles after Ask -- the keyboard goes and the request appears above the code card -- and a tap aimed while
+# it moves lands where the button was (iOS, once Phase 80's "Make my own space" card lengthened the page): let it stop,
+# and bring Withdraw into view, before the tap.
+- waitForAnimationToEnd:
+    timeout: 3000
+- scrollUntilVisible:
+    element:
+      id: welcome-withdraw-${output.hostSlug}
+    direction: UP
+    centerElement: true
 - tapOn:
     id: welcome-withdraw-${output.hostSlug}
 - extendedWaitUntil:
@@ -448,6 +460,57 @@ tags:
 - assertVisible:
     id: account-roles
     text: '.* at Pia Second space'
+
+# --- Phase 80 (A12): Make my own space -- she signed up herself and has none --------------------
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: welcome-make-own
+    centerElement: true
+- assertVisible: 'A space of your own'
+- assertVisible: 'Just for you: practise on your own, or with your family later\.'
+- takeScreenshot: spaces-page-make-own
+- tapOn:
+    id: welcome-make-own-submit
+- extendedWaitUntil:
+    visible: 'Your own space is ready\.'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: home-org
+      text: "Pia's space"
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible: '.*Just you · You are here.*'
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+# The card is gone (it would sit under Start a space).
+- scrollUntilVisible:
+    element:
+      id: welcome-make-submit
+    centerElement: true
+- assertNotVisible:
+    id: welcome-make-own
 
 # --- Platform console: a platform admin's link on Spaces ------------------------------------------
 - runFlow:

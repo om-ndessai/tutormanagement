@@ -8,6 +8,7 @@
 // doors for a learner who has not played here, and a line that never repeats Next up (JF6, JF16, JF23); the board's
 // Daily and Continue quiet while Next up shows them, no New Quest quick action beside the board (JF23); the tour's
 // offer is a card at the top of the page, not a layer over it (JF25).
+// Phase 80 (A12): someone placed in this space when approved is offered a space of their own, once, at the very top.
 import { featureOn, homeGreeting, mayAddPeople, orderHats, quickActionsFor } from '@tmi/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { router, useFocusEffect } from 'expo-router';
@@ -43,6 +44,7 @@ import { HomeBand } from './home-band';
 import { HomeSections } from './home-sections';
 import { bandDoors, NEWCOMER_STRIP, stripLine, type BandDoor } from './member-home-model';
 import { NextUpCard, useNextUp } from './next-up-card';
+import { PersonalOfferCard } from './personal-offer-card';
 import { PinHome } from './pin-home';
 import { QuickActions } from './quick-actions';
 import { SpaceNotes } from './space-notes';
@@ -151,6 +153,8 @@ export function MemberHomeScreen() {
         <ErrorState error={query.error} onRetry={() => void refetch()} />
       ) : (
         <View testID="member-home" style={{ gap: space.lg }}>
+          {/* Phase 80 (A12): placed in this space when approved, they are offered a space of their own, once. */}
+          <PersonalOfferCard />
           {/* Phase 74 (JF25): the tour's offer, in the page's flow at its top -- never a layer over the work. */}
           <TourOfferCard />
           {/* Phase 72 (UI audit JF4, JF9): a code kept on this phone signed out, or a quest a friend sent, offered once. */}

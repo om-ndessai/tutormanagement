@@ -340,6 +340,16 @@ export function learnerSectionParts(
 }
 
 export const LEARNER_EMPTY_LINE = 'Nothing to practise here yet: Quest and Assessments are off in this space.';
+/**
+ * Phase 79 (M6; the web's member-home.tsx): Assessment is on here but not for this reader -- a member, who plays Quest
+ * and has nobody to assess -- so only Quest is missing.
+ */
+export const LEARNER_QUEST_OFF_LINE = 'Nothing to play here yet: Quest is off in this space.';
+
+/** The learner section's one line when it has nothing: which sets are off, as the web says it. */
+export function learnerEmptyLine(assessmentOn: boolean): string {
+  return assessmentOn ? LEARNER_QUEST_OFF_LINE : LEARNER_EMPTY_LINE;
+}
 export const CHILD_OFF_LINE = 'Lessons and quests are off in this space.';
 
 /** A child's card in a space with Tutoring and Quest off: Assessments where it is on, else a line. */

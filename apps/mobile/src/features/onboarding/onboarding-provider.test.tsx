@@ -61,13 +61,15 @@ function auth({
   organization,
   finished = null,
   firstVisit = false,
+  roles = ['admin'],
 }: {
   organization: Record<string, unknown>;
   finished?: string | null;
   firstVisit?: boolean;
+  roles?: string[];
 }) {
   return {
-    user: { id: 'me', full_name: 'Ines Ferreira', roles: ['admin'] },
+    user: { id: 'me', full_name: 'Ines Ferreira', roles },
     onboarding: { tour_finished_at: finished, tour_skipped_at: null },
     firstVisit,
     organization,
@@ -113,6 +115,18 @@ describe('OnboardingProvider: the tour is Tutoring’s', () => {
     markInviteStep('assess');
     await show({ organization: NO_TUTORING });
     expect(router.push).toHaveBeenCalledWith('/onboarding/invite');
+  });
+});
+
+describe('Phase 79 (M6): no wizard or tour for a member (no role)', () => {
+  it('never opens the wizard for a member, even where Tutoring is on', async () => {
+    await show({ organization: TUTORING, roles: [] });
+    expect(router.push).not.toHaveBeenCalled();
+  });
+
+  it('never offers a member the first visit’s tour', async () => {
+    await show({ organization: TUTORING, roles: [], finished: '2026-10-01T00:00:00Z', firstVisit: true });
+    expect(screen.queryByTestId('tour-offer')).toBeNull();
   });
 });
 

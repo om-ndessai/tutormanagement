@@ -9,9 +9,11 @@ import {
   deviceTimeZone,
   makeProblem,
   mayDeleteSpace,
+  mayMakeOwnSpace,
   requestAnswersWaiting,
   requestLine,
   shareText,
+  showsPersonalOffer,
   splitRequests,
   spokenCode,
   standingLine,
@@ -127,5 +129,26 @@ describe('space model, continued', () => {
     expect(mayDeleteSpace({ created_via: 'self_serve' }, { roles: ['admin'] })).toBe(true);
     expect(mayDeleteSpace({ created_via: 'self_serve' }, { roles: ['parent'] })).toBe(false);
     expect(mayDeleteSpace({ created_via: 'console' }, { roles: ['admin'] })).toBe(false);
+  });
+});
+
+describe('a space of one\'s own (Phase 80, A12, A13)', () => {
+  const adult = { age_band: 'adult' as const };
+  const teen = { age_band: '13-17' as const };
+
+  it('offers "Make my own space" to a self sign-up with none -- teens too -- and to nobody a space added', () => {
+    expect(mayMakeOwnSpace(adult, [])).toBe(true);
+    expect(mayMakeOwnSpace(teen, [])).toBe(true);
+    expect(mayMakeOwnSpace(adult, [{ personal: false }, {}])).toBe(true);
+    expect(mayMakeOwnSpace(adult, [{ personal: false }, { personal: true }])).toBe(false);
+    expect(mayMakeOwnSpace(null, [])).toBe(false);
+    expect(mayMakeOwnSpace(undefined, [{ personal: false }])).toBe(false);
+  });
+
+  it('shows the home\'s offer only while the session offers it, inside a space that is not their own', () => {
+    expect(showsPersonalOffer(true, { personal: false })).toBe(true);
+    expect(showsPersonalOffer(false, { personal: false })).toBe(false);
+    expect(showsPersonalOffer(true, null)).toBe(false);
+    expect(showsPersonalOffer(true, { personal: true })).toBe(false);
   });
 });

@@ -11,9 +11,20 @@
 # an adult who has just signed up (Stella) starts a space from Spaces -- the name, "Invite people"
 # skipped -- and lands in it. The app signs in through developer sign-in only (the providers' native
 # SDKs cannot be driven here); each provider's path is the web's spaces-welcome.spec.ts.
-# Self-cleaning: both addresses are put back to nothing before and after (their spaces go with them).
+# Phase 80 (docs/members-plan.md, A10-A12): a self sign-up with no space of their own is offered "Make my own space" on
+# Welcome -- Sam once hers is gone, and Tam, a 13-17, for whom it is the only door -- but not while they have one. Then,
+# under Post-approved, Wes signs up and waits: the sign-up made no space at all (the console's people lookup counts
+# none). Approved with no place, his own space is made then, as before: one space, "Wes's space", where he lands.
+# Self-cleaning: the three addresses are put back to nothing before and after (their spaces go with them), and the
+# console's Sign-up access back to Open.
 appId: ${APP_ID}
 onFlowStart:
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: spaces.waiting@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.waiting@example.com }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: reset-newcomer, EMAIL: spaces.signup@example.com }
@@ -24,6 +35,12 @@ onFlowStart:
       file: ../../scripts/spaces.js
       env: { ACTION: signup, EMAIL: spaces.starter@example.com, NAME: Stella Starter }
 onFlowComplete:
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: spaces.waiting@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.waiting@example.com }
   - runScript:
       file: ../../scripts/spaces.js
       env: { ACTION: reset-newcomer, EMAIL: spaces.signup@example.com }
@@ -283,6 +300,14 @@ tags:
 - assertVisible: 'Join with a code'
 - assertVisible: 'Start a space'
 - takeScreenshot: spaces-welcome
+# Phase 80 (A12): no space of her own now, so she may make one again, under the two choices.
+- scrollUntilVisible:
+    element:
+      id: welcome-make-own
+    centerElement: true
+- assertVisible: 'A space of your own'
+- assertVisible:
+    id: welcome-make-own-submit
 - scrollUntilVisible:
     element:
       id: welcome-delete-account
@@ -390,6 +415,9 @@ tags:
       id: welcome-adults-only
 - assertNotVisible:
     id: welcome-make
+# Phase 80 (A12): she has a space of her own: no "Make my own space".
+- assertNotVisible:
+    id: welcome-make-own
 - takeScreenshot: spaces-personal-space-teen
 - runScript:
     file: ../../scripts/spaces.js
@@ -413,6 +441,12 @@ tags:
     id: welcome-make
 - assertNotVisible:
     id: welcome-space-name
+# Phase 80 (A12): a space of her own is a teen's only door -- offered once hers is gone.
+- scrollUntilVisible:
+    element:
+      id: welcome-make-own
+    centerElement: true
+- assertVisible: 'Just for you: practise on your own, or with your family later\.'
 - scrollUntilVisible:
     element:
       id: welcome-adults-only
@@ -526,3 +560,111 @@ tags:
 - assertVisible:
     id: account-roles
     text: '.* at The Starter family'
+
+# Phase 80 (A10): under Post-approved, a sign-up waits and makes no space. Wes signs up from the sign-in screen.
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: mode, MODE: postapproved }
+- runFlow: ../../subflows/launch.yaml
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-in
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: sign-in-email
+- tapOn:
+    id: sign-in-email
+- inputText: 'spaces.waiting@example.com'
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: sign-in-signup
+    timeout: 20000
+- tapOn:
+    id: sign-in-signup
+- extendedWaitUntil:
+    visible:
+      id: screen-sign-up
+    timeout: 15000
+- tapOn:
+    id: signup-dev-name
+- inputText: 'Wes Waiting'
+# An adult: June 1990.
+- tapOn:
+    id: signup-month
+- tapOn:
+    id: signup-month-6
+- tapOn:
+    id: signup-year
+- tapOn:
+    id: signup-year-search
+- inputText: '1990'
+- tapOn:
+    id: signup-year-1990
+- waitForAnimationToEnd:
+    timeout: 2000
+- scrollUntilVisible:
+    element:
+      id: signup-accept
+- tapOn:
+    id: signup-accept
+- runFlow:
+    when:
+      notVisible:
+        id: signup-submit
+        enabled: true
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          id: signup-accept
+- scrollUntilVisible:
+    element:
+      id: signup-submit
+- tapOn:
+    id: signup-submit
+- extendedWaitUntil:
+    visible:
+      id: screen-access-refused
+    timeout: 15000
+- assertVisible:
+    id: access-refused-title
+    text: 'Waiting for approval'
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: count, EMAIL: spaces.waiting@example.com }
+- assertTrue: ${output.access.spaces === 0}
+- takeScreenshot: spaces-signup-waiting
+# Approved with no place (an older console's request too): his own space is made now, and he lands in it.
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: approve, EMAIL: spaces.waiting@example.com }
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: mode, MODE: open }
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: count, EMAIL: spaces.waiting@example.com }
+- assertTrue: ${output.access.spaces === 1}
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: spaces.waiting@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: home-org
+      text: "Wes's space"
+    timeout: 30000
+- assertNotVisible:
+    id: home-personal-offer
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".*Admin at Wes's space"

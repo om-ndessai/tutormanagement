@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronsUpDownIcon, KeyRoundIcon, LayoutGridIcon, MailIcon, PlusIcon, ShieldCheckIcon } from 'lucide-react';
-import { USER_ROLE_LABELS, mayMakeSpace } from '@tmi/shared';
+import { rolesLabel, mayMakeSpace } from '@tmi/shared';
 
 import { LogoLockup } from '@/components/brand/logo';
 import { Badge } from '@/components/ui/badge';
@@ -71,7 +71,7 @@ export function OrgSwitcher({ className }: { className?: string }) {
               <span className="block text-sm [overflow-wrap:anywhere]">{org.name}</span>
               <span className="text-muted-foreground block text-xs [overflow-wrap:anywhere]">
                 {/* A space of one's own reads "Just you" (UI audit JF33): its roles say nothing there. */}
-                {org.personal ? 'Just you' : org.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+                {org.personal ? 'Just you' : rolesLabel(org.roles)}
               </span>
             </span>
             {org.slug === organization?.slug && <CheckIcon className="size-4" />}

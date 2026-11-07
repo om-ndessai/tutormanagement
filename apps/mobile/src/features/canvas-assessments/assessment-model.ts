@@ -168,6 +168,22 @@ export function noStudentsLine({
   return `No children are linked to you in ${spaceName || 'this space'} yet. ${who}, then start an assessment for them here.`;
 }
 
+/**
+ * Phase 79 (M6, docs/members-plan.md; the web's assessments-page.tsx, working tree): a member -- in a shared space
+ * with no role -- plays Quest; assessments there are for students (owner, 2026-11-06: no self-assessment in shared
+ * spaces). Their menu leaves the page out, and a link to it says so in one line. In a personal space the maker is
+ * its admin, so this never applies there.
+ */
+export function assessmentsForMember(
+  user: { roles: readonly string[] } | null | undefined,
+  organization: { personal?: boolean } | null | undefined,
+): boolean {
+  return Boolean(user && user.roles.length === 0 && !organization?.personal);
+}
+
+/** The one line a member reads there (the web's words). */
+export { MEMBER_ASSESSMENTS_LINE } from '@tmi/shared';
+
 /** The line under a row of the list. */
 export function rowSummary(row: CanvasAssessment, now?: Date): string {
   return (

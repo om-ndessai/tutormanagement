@@ -5,6 +5,10 @@ import { refuseSsn } from './tax.js';
  * The four kinds of person the portal serves. A user holds one OR MORE of
  * these at once -- a parent who tutors, an admin who teaches, a senior student
  * who tutors younger children. That is why roles are a set, not a field.
+ *
+ * Phase 79 (docs/members-plan.md, M1): the set may also be EMPTY. A person in a
+ * space with no role is a MEMBER: they play Quest there, and the space's admins
+ * give them a role whenever they like, under that role's rules.
  */
 export const USER_ROLES = ['admin', 'tutor', 'student', 'parent'] as const;
 export type UserRole = (typeof USER_ROLES)[number];
@@ -47,10 +51,11 @@ const optionalEmail = z
  * Everything except being a student involves signing in, and sign-in matches
  * on email -- so an admin, tutor or parent without one could never get in. A
  * student who only learns here never signs in: their parents read their
- * dashboard from their own login.
+ * dashboard from their own login. A member (no role, Phase 79) is here to play,
+ * which means signing in, so they need one too.
  */
 export function requiresEmail(roles: readonly UserRole[]): boolean {
-  return roles.some((role) => role !== 'student');
+  return roles.length === 0 || roles.some((role) => role !== 'student');
 }
 
 /** The message shown when somebody who must have an address has none. */
@@ -91,7 +96,7 @@ export const userSchema = z.object({
   full_name: z.string(),
   phone: z.string().nullable(),
   status: z.enum(USER_STATUSES),
-  /** Every role this person holds. Always at least one. */
+  /** Every role this person holds. Empty for a member (Phase 79). */
   roles: z.array(z.enum(USER_ROLES)),
   created_at: z.string(),
   updated_at: z.string(),
@@ -101,11 +106,8 @@ export const userSchema = z.object({
 
 export type User = z.infer<typeof userSchema>;
 
-/** At least one role: a user with no role has no reason to exist. */
-const roles = z
-  .array(z.enum(USER_ROLES))
-  .min(1, 'Choose at least one role.')
-  .transform((value) => [...new Set(value)]);
+/** The roles held, each once. Empty is a member (Phase 79, M1): in the space, with no role yet. */
+const roles = z.array(z.enum(USER_ROLES)).transform((value) => [...new Set(value)]);
 
 /**
  * Writable fields with no defaults applied. Kept separate because `.partial()`
@@ -163,8 +165,8 @@ export type UpdateUserPayload = z.output<typeof updateUserSchema>;
 export const listUsersQuerySchema = z.object({
   /** Case-insensitive substring match against name and email. */
   search: z.string().trim().max(120).optional(),
-  /** Matches users who hold this role, among others. */
-  role: z.enum(USER_ROLES).optional(),
+  /** Matches users who hold this role, among others; `member` matches those who hold none (Phase 79). */
+  role: z.enum([...USER_ROLES, 'member']).optional(),
   status: z.enum(USER_STATUSES).optional(),
   include_deleted: z
     .enum(['true', 'false'])
@@ -193,6 +195,28 @@ export const USER_ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   student: 'Enrolled for tutoring. Must have at least one parent.',
   parent: 'Responsible for costs, communication and monitoring.',
 };
+
+/** Phase 79 (M1): what a person with no role is called on screen. */
+export const MEMBER_LABEL = 'Member';
+
+/** One line beside the roles, for a person who holds none. */
+export const MEMBER_DESCRIPTION = 'In the space with no role yet: plays Quest here. Give them a role whenever you like.';
+
+/** Phase 79 (M6): what the Assessment page says to a member of a shared space, in place of a start card. */
+export const MEMBER_ASSESSMENTS_LINE = 'Assessments here are for students.';
+
+/** A person's roles for a screen: "Admin · Tutor", or "Member" when they hold none. */
+export function rolesLabel(roles: readonly UserRole[], separator = ' · '): string {
+  return roles.length === 0 ? MEMBER_LABEL : roles.map((role) => USER_ROLE_LABELS[role]).join(separator);
+}
+
+/**
+ * A person's roles for a log line, exactly as the lines have always printed them ("admin and tutor"), or "a
+ * member" when they hold none -- old lines are never rewritten, so a non-empty set must read as before.
+ */
+export function rolesInWords(roles: readonly UserRole[]): string {
+  return roles.length === 0 ? 'a member' : roles.join(' and ');
+}
 
 export const USER_STATUS_LABELS: Record<UserStatus, string> = {
   active: 'Active',

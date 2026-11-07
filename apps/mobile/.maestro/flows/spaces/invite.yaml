@@ -1,7 +1,7 @@
 # Phase 61 (S12, docs/spaces-plan.md): start a space, then invite people. Ivo, a newcomer, lands in
-# his own space (Phase 63, P13: "Ivo's space") and starts "The Inviter family" from Spaces; "Invite people" opens before the wizard, with Admin and Parent and never
-# Tutor (a newcomer's space has no Tutoring). He invites a new address as Admin, and Rhea -- who
-# already has a space of her own -- as Parent under a name he types. Each sent row shows the words to
+# his own space (Phase 63, P13: "Ivo's space") and starts "The Inviter family" from Spaces; "Invite people" opens before the wizard, with Member (the default
+# since Phase 79, M3), Admin and Parent, and never Tutor (a newcomer's space has no Tutoring). He invites a new address
+# as Admin, and Rhea -- who already has a space of her own -- as Parent under a name he types. Each sent row shows the words to
 # hand over (no email is sent from a self-serve space) and Share opens the system sheet; the space's
 # code is there too. Continue goes on to the wizard. Phase 76 (JF37): the words say what the space is for and where
 # the invitation waits; on People each invited row has "Share invitation", and the header its Add button.
@@ -106,9 +106,18 @@ tags:
 - assertVisible:
     id: onboarding-title
     text: 'Invite people'
-# Admin and Parent; Tutor only where Tutoring is allowed -- never in a newcomer's space.
-- assertVisible:
-    id: invite-role-0-admin
+# Member first and chosen (Phase 79, M3), then Admin and Parent; Tutor only where Tutoring is allowed -- never in a
+# newcomer's space.
+- runFlow:
+    file: ../../subflows/assert-radio.yaml
+    env:
+      ID: invite-role-0-member
+      CHECKED: 'true'
+- runFlow:
+    file: ../../subflows/assert-radio.yaml
+    env:
+      ID: invite-role-0-admin
+      CHECKED: 'false'
 - assertVisible:
     id: invite-role-0-parent
 - assertNotVisible:
@@ -135,7 +144,7 @@ tags:
 - pressKey: Enter
 - tapOn:
     id: invite-role-0-admin
-# Row 2: Rhea, who exists elsewhere, as Parent (the default), under a name Ivo types.
+# Row 2: Rhea, who exists elsewhere, as Parent (Member is the default since Phase 79), under a name Ivo types.
 - tapOn:
     id: invite-add-row
 - scrollUntilVisible:
@@ -154,6 +163,21 @@ tags:
 - pressKey: Enter
 - assertNotVisible:
     id: invite-role-1-tutor
+- scrollUntilVisible:
+    element:
+      id: invite-role-1-parent
+- runFlow:
+    file: ../../subflows/assert-radio.yaml
+    env:
+      ID: invite-role-1-member
+      CHECKED: 'true'
+- tapOn:
+    id: invite-role-1-parent
+- runFlow:
+    file: ../../subflows/assert-radio.yaml
+    env:
+      ID: invite-role-1-parent
+      CHECKED: 'true'
 - scrollUntilVisible:
     element:
       id: invite-send

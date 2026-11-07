@@ -99,6 +99,12 @@ export interface AccessAccount {
   signed_up_at: string;
   decided_at: string | null;
   decided_by_name: string | null;
+  /**
+   * Phase 80 (A11): where the approval placed them -- the space's name and how: joined at once (a console-made
+   * space) or a request filed for its admins to answer (a self-started space). Absent when nowhere, and from older
+   * Workers.
+   */
+  placed_in?: { name: string; how: PlacementHow } | null;
 }
 
 /** What the console reads: the mode, the list, who waits and who was decided lately. */
@@ -109,5 +115,55 @@ export interface AccessConsoleResponse {
   decided: AccessAccount[];
 }
 
-export const accessDecisionSchema = z.object({ access: z.enum(['approved', 'declined']) });
-export type AccessDecision = z.infer<typeof accessDecisionSchema>;
+// --- approved into a space (Phase 80, docs/members-plan.md A10-A15) -------------
+
+/**
+ * The role a placement gives: Member (no role, plays Quest) or Admin -- Admin only in a console-made space and never
+ * for a 13-17. Anything else (a parent with their child, a tutor with rates) is the space's own admins' to give.
+ */
+export const PLACEMENT_ROLES = ['member', 'admin'] as const;
+export type PlacementRole = (typeof PLACEMENT_ROLES)[number];
+
+export const PLACEMENT_ROLE_LABELS: Record<PlacementRole, string> = { member: 'Member', admin: 'Admin' };
+
+/** How a placement lands: joined at once (a console-made space) or a request its admins answer (a self-started one). */
+export type PlacementHow = 'joined' | 'requested';
+
+/**
+ * PUT /api/platform/access/accounts/:userId. Phase 80 (A11): approving may name a space to place the person in.
+ * Older consoles send `{ access }` alone, which keeps today's behaviour (approved with no place: their own space
+ * is made, unless they already belong somewhere).
+ */
+export const accessDecisionSchema = z.object({
+  access: z.enum(['approved', 'declined']),
+  space: z
+    .object({
+      organization_id: z.uuid(),
+      role: z.enum(PLACEMENT_ROLES).default('member'),
+    })
+    .optional(),
+});
+export type AccessDecision = z.input<typeof accessDecisionSchema>;
+
+/** One space the approve sheet offers: live, not personal, with how it was made and what it may use. */
+export interface PlacementSpace {
+  id: string;
+  name: string;
+  short_name: string;
+  /** 'console' joins the person at once; 'self_serve' files a request for its admins (Phase 80, owner 2026-11-06). */
+  created_via: 'console' | 'self_serve';
+  /** Whether Quest is on there: a member placed where it is off has nothing to do until given a role. */
+  quest_on: boolean;
+  tutoring_on: boolean;
+  assessment_on: boolean;
+}
+
+/** What the approve sheet says will happen, in words, for a chosen space (both clients). */
+export function placementWords(space: Pick<PlacementSpace, 'name' | 'created_via'>, firstName: string): string {
+  return space.created_via === 'console'
+    ? `${firstName} joins ${space.name} at once, and lands there when they sign in.`
+    : `${space.name}'s admins are asked to let ${firstName} in. Until they answer, ${firstName} can make a space of their own.`;
+}
+
+/** The warning beside a space where Quest is off: a member there has nothing to do yet. */
+export const PLACEMENT_QUEST_OFF = "Quest is off there, so a member has nothing to do until the space's admins give them a role.";

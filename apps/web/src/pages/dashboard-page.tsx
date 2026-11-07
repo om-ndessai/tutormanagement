@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/select';
 import { useAuth } from '@/providers/auth-provider';
 import { useBrand } from '@/providers/brand-provider';
+import { ApiRequestError } from '@/lib/api-client';
 import { useDashboard } from '@/features/dashboard/api';
 import { memberHomeKey } from '@/features/home/api';
 import { useOnboarding } from '@/features/onboarding/onboarding-provider';
@@ -113,7 +114,7 @@ function TutoringDashboard() {
   const opening = useOpeningRole(user?.roles ?? NO_ROLES);
   const requestedRole = (params.get('role') as UserRole | null) ?? (viewingId ? undefined : opening);
 
-  const { data, isPending, isError } = useDashboard({
+  const { data, isPending, isError, error } = useDashboard({
     ...(requestedRole ? { role: requestedRole } : {}),
     ...(viewingId ? { userId: viewingId } : {}),
   });
@@ -160,8 +161,8 @@ function TutoringDashboard() {
         }
         actions={
           <div className="flex flex-wrap items-center gap-2">
-            {/* Phase 26: the welcome wizard and tour, on demand. */}
-            {!subject?.viewing_as_other && (
+            {/* Phase 26: the welcome wizard and tour, on demand -- never for a member (Phase 79), who has no tour. */}
+            {!subject?.viewing_as_other && (user?.roles.length ?? 0) > 0 && (
               <Button variant="outline" onClick={openWizard} data-tour="getting-started">
                 <CompassIcon />
                 Getting started
@@ -235,7 +236,10 @@ function TutoringDashboard() {
       )}
 
       {isError && (
-        <p className="text-destructive py-16 text-sm">Could not load the dashboard.</p>
+        // Phase 79 (M2): a member reached here by a link reads the server's words ("... is a member here").
+        <p className="text-destructive py-16 text-sm" data-testid="dashboard-error">
+          {error instanceof ApiRequestError && error.status === 409 ? error.message : 'Could not load the dashboard.'}
+        </p>
       )}
 
       {response?.data.kind === 'admin' && <AdminView data={response.data} />}

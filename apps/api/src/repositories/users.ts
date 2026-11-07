@@ -143,8 +143,12 @@ export async function listUsers(
     values.push(term, term);
   }
 
-  // "Holds this role", not "is exactly this role" -- users have several.
-  if (params.role) {
+  // "Holds this role", not "is exactly this role" -- users have several. A member holds none (Phase 79).
+  if (params.role === 'member') {
+    where.push(
+      'NOT EXISTS (SELECT 1 FROM user_roles r WHERE r.organization_id = m.organization_id AND r.user_id = u.id)',
+    );
+  } else if (params.role) {
     where.push(
       'EXISTS (SELECT 1 FROM user_roles r WHERE r.organization_id = m.organization_id AND r.user_id = u.id AND r.role = ?)',
     );
@@ -271,6 +275,8 @@ export async function getUserDetail(
   db: D1Database,
   org: OrgId,
   id: string,
+  /** Phase 80 (A14): who reads it -- a self sign-up's shared fields are locked to everyone but themselves. */
+  viewerId?: string,
 ): Promise<UserDetail | null> {
   const [
     userRes,
@@ -286,9 +292,16 @@ export async function getUserDetail(
       db.prepare(`${SELECT_USER} WHERE m.organization_id = ? AND u.id = ?`).bind(org, id),
       db
         .prepare(
-          "SELECT COUNT(*) AS total FROM org_members WHERE user_id = ? AND organization_id <> ? AND status <> 'invited'",
+          // Phase 80 (A14): a self sign-up's own account counts too, unless they are the one reading. Their own
+          // personal space, where nobody else is, holds nobody's say over them -- as in belongsElsewhere, so the lock
+          // read here is the one the PATCH applies.
+          `SELECT (SELECT COUNT(*) FROM org_members m JOIN organizations o ON o.id = m.organization_id
+                   WHERE m.user_id = ?1 AND m.organization_id <> ?2 AND m.status <> 'invited'
+                     AND NOT (o.personal = 1 AND NOT EXISTS (SELECT 1 FROM org_members x
+                              WHERE x.organization_id = o.id AND x.user_id <> ?1 AND x.removed_at IS NULL)))
+                + (SELECT COUNT(*) FROM platform_accounts WHERE user_id = ?1 AND ?1 <> ?3) AS total`,
         )
-        .bind(id, org),
+        .bind(id, org, viewerId ?? ''),
       db
         .prepare(
           `SELECT highest_education, school, area,
@@ -587,14 +600,21 @@ export async function createUser(
 
   const id = crypto.randomUUID();
 
-  // Batched, so a failure part-way leaves no member without roles.
+  // Batched, so a failure part-way leaves no person without their membership, or a membership without the
+  // roles asked for (none, for a member: Phase 79).
+  // Phase 79 (M4): an invitation to a new address keeps the name typed here, as one to an existing account does, so
+  // the row reads the same either way until they accept (R21) -- and their own name, from their provider, can come
+  // in at their first sign-in (recordSignIn).
+  const invited = input.status === 'invited';
   await db.batch([
     db
       .prepare('INSERT INTO users (id, email, full_name, phone) VALUES (?, ?, ?, ?)')
       .bind(id, input.email, input.full_name, input.phone),
     db
-      .prepare('INSERT INTO org_members (organization_id, user_id, status, invited_by) VALUES (?, ?, ?, ?)')
-      .bind(org, id, input.status, input.status === 'invited' ? invitedBy : null),
+      .prepare(
+        'INSERT INTO org_members (organization_id, user_id, status, invited_name, invited_by) VALUES (?, ?, ?, ?, ?)',
+      )
+      .bind(org, id, input.status, invited ? input.full_name : null, invited ? invitedBy : null),
     ...roleStatements(db, org, id, input.roles),
   ]);
 

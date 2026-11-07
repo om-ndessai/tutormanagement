@@ -43,11 +43,12 @@ export const dashboardRoutes = new Hono<AppEnv>().get(
         ? requestedRole
         : defaultDashboardRole(subject.roles);
 
+    // Phase 79 (M2): a member holds no role, so there is nothing to show; kept for deep links.
     if (!role) {
       throw new ApiError(
         409,
         'conflict',
-        `${subject.full_name} has no roles, so there is no dashboard to show.`,
+        `${subject.full_name} is a member here, so there is no dashboard to show.`,
       );
     }
 

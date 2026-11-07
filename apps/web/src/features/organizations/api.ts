@@ -12,6 +12,8 @@ import type {
   CurriculumOfferingInput,
   NotificationLogEntry,
   OrganizationSettings,
+  PersonalSpaceInput,
+  PersonalSpaceResult,
   UpdateOrganizationSettingsInput,
 } from '@tmi/shared';
 
@@ -135,6 +137,16 @@ export function useMakeSpace() {
   return useMutation({
     mutationFn: (input: CreateSpaceInput) => apiClient.post<ApiOk<{ slug: string; name: string }>>('/spaces', input),
     onSuccess: () => refreshSession(),
+  });
+}
+
+/**
+ * Phase 80 (A12): a space of one's own -- made (`make: true`; 409 when they have one), or the offer put away (`make:
+ * false`). The caller re-reads the session or opens the new space, whichever comes next.
+ */
+export function useMakePersonalSpace() {
+  return useMutation({
+    mutationFn: (input: PersonalSpaceInput) => apiClient.post<ApiOk<PersonalSpaceResult>>('/spaces/personal', input),
   });
 }
 

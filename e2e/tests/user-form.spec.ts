@@ -16,7 +16,7 @@ test('an admin can give a new student a parent from the form', async ({ as }) =>
   const name = `E2E Form Student ${stamp}`;
 
   await page.goto('/users');
-  // Phase 76 (JF21): one Add chooser; "Someone else" is the person form.
+  // Phase 76 (JF21): one Add chooser; "Someone, with details" (Phase 79) is the person form.
   await page.getByRole('button', { name: 'Add a person' }).click();
   await page.getByTestId('add-choice-someone').click();
 
@@ -96,4 +96,46 @@ test('editing keeps the usual order', async ({ as }) => {
   // A tutor gets no family-first section.
   await dialog.getByText('Tutor', { exact: true }).click();
   await expect(dialog.getByTestId('family-first')).toHaveCount(0);
+});
+
+/**
+ * Phase 79 (M1, docs/members-plan.md): saved with no role ticked, someone is a member -- in the space with no role,
+ * playing Quest -- not a mistake. A member signs in, so an address is still required. They wear "Member" on People,
+ * and the Role filter's "Members" finds them.
+ */
+test('saved with no role, someone is a member: an email is still required, and they wear Member', async ({ as }) => {
+  const page = await as('admin');
+  const stamp = Date.now();
+  const name = `E2E Member ${stamp}`;
+  const email = `e2e.member.${stamp}@gmail.com`;
+  let id = '';
+  try {
+    await page.goto('/users');
+    await page.getByRole('button', { name: 'Add a person' }).click();
+    await page.getByTestId('add-choice-someone').click();
+    const dialog = page.getByRole('dialog', { name: 'Add a person' });
+    // Nothing ticked yet: the form says what that makes them.
+    await expect(dialog.getByTestId('roles-member-hint')).toContainText('Member.');
+    await dialog.getByLabel('Full name').fill(name);
+    await dialog.getByRole('button', { name: 'Add a person' }).click();
+    await expect(dialog.getByText(/An email address is required for anyone who signs in/)).toBeVisible();
+    await dialog.getByLabel('Email').fill(email);
+    await dialog.getByRole('button', { name: 'Add a person' }).click();
+    await expect(page.getByRole('heading', { name: `${name} is added` })).toBeVisible();
+    await page.getByTestId('add-person-done').click();
+
+    const found = (await (await page.request.get(`/api/users?role=member&search=${encodeURIComponent(email)}`)).json()).data;
+    expect(found).toEqual([expect.objectContaining({ email, roles: [] })]);
+    id = found[0].id;
+    expect((await (await page.request.get(`/api/users?role=student&search=${encodeURIComponent(email)}`)).json()).data).toEqual([]);
+
+    // On People: the Members filter, and the badge.
+    await page.locator('#role-filter').click();
+    await page.getByRole('option', { name: 'Members', exact: true }).click();
+    await page.getByLabel('Search people').fill(name);
+    await expect(visible(page, name).first()).toBeVisible();
+    await expect(page.getByTestId('member-badge').filter({ visible: true })).toHaveCount(1);
+  } finally {
+    if (id) await page.request.delete(`/api/users/${id}?hard=true`);
+  }
 });

@@ -100,6 +100,8 @@ export const AUDIT_ACTIONS = [
   'organization.settings_updated',
   'organization.admin_added',
   'organization.admin_removed',
+  // Phase 80 (A11): the platform placed a newly approved person in the space as a member (or an admin).
+  'organization.member_added',
   // Phase 54: the organization that runs a space's money, and its payer details.
   'organization.business_set',
   'organization.business_cleared',
@@ -261,6 +263,7 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   'organization.settings_updated': 'Space settings updated',
   'organization.admin_added': 'Admin added by the platform',
   'organization.admin_removed': 'Admin removed by the platform',
+  'organization.member_added': 'Member added by the platform',
   'organization.business_set': 'Space collects payments',
   'organization.business_cleared': 'Families pay tutors directly',
   'business.created': 'Payer record created',

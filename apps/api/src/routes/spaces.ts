@@ -7,9 +7,11 @@ import {
   joinAskRolesFor,
   joinRequestSchema,
   mayMakeSpace,
+  personalSpaceSchema,
   spaceCodeSchema,
   spaceNameProblem,
   type ApiOk,
+  type PersonalSpaceResult,
   type SpaceLookup,
 } from '@tmi/shared';
 
@@ -17,6 +19,7 @@ import { recordAudit } from '../lib/audit.js';
 import { ApiError } from '../lib/errors.js';
 import { leaveSpace } from '../lib/leave-space.js';
 import { orgIdFromRow } from '../lib/org.js';
+import { makePersonalSpace } from '../lib/personal-space.js';
 import { clientAddress, rateLimit } from '../lib/rate-limit.js';
 import { zValidator } from '../lib/validate.js';
 import {
@@ -35,6 +38,7 @@ import {
   spaceStanding,
 } from '../repositories/organizations.js';
 import { getPlatformAccount, isPlatformAdmin } from '../repositories/people.js';
+import { claimPersonalSpace, declinePersonalSpace, getPersonalOffer, releasePersonalSpace } from '../repositories/access.js';
 import type { AppEnv } from '../types.js';
 
 /**
@@ -139,6 +143,46 @@ export const spacesRoutes = new Hono<AppEnv>()
       throw ApiError.notFound('No answer from that space to dismiss.');
     }
     return c.json({ data: { dismissed: true } });
+  })
+
+  /**
+   * Phase 80 (A12, docs/members-plan.md): the person answers the offer of a space of their own -- made when an approval
+   * placed them in a space, and from Spaces or Welcome ("Make my own space") to any self sign-up without one. Their
+   * own account only; someone a space added has none (403). `make: true` claims the offer with a compare-and-set, so a
+   * second make is refused (409), then makes the space -- a teen's takes nobody by code -- and leaves them where they
+   * are (no default change). `make: false` puts the offer away: a preference, so no log line.
+   */
+  .post('/personal', zValidator('json', personalSpaceSchema), async (c) => {
+    const person = c.get('person');
+    await rateLimit(c, 'space_write', person.id);
+    const offer = await getPersonalOffer(c.env.DB, person.id);
+    if (!offer) throw new ApiError(403, 'forbidden', 'A space of your own comes with an account you made yourself.');
+
+    if (!c.req.valid('json').make) {
+      await declinePersonalSpace(c.env.DB, person.id);
+      const body: ApiOk<PersonalSpaceResult> = { data: { made: false, slug: null, name: null } };
+      return c.json(body);
+    }
+
+    const from = offer.personal_offer;
+    if (from === 'made' || !(await claimPersonalSpace(c.env.DB, person.id, from))) {
+      throw ApiError.conflict('You already have a space of your own.');
+    }
+    let space;
+    try {
+      space = await makePersonalSpace(c.env.DB, person, { requestUrl: c.req.url, teen: offer.age_band === '13-17' });
+    } catch (error) {
+      await releasePersonalSpace(c.env.DB, person.id, from);
+      throw error;
+    }
+    await recordAudit(c.env.DB, person, orgIdFromRow(space.id), {
+      action: 'account.personal_space',
+      description: `${person.full_name} made their own space`,
+      entity_type: 'organization',
+      entity_id: space.id,
+    });
+    const body: ApiOk<PersonalSpaceResult> = { data: { made: true, slug: space.slug, name: space.name } };
+    return c.json(body, 201);
   })
 
   /**

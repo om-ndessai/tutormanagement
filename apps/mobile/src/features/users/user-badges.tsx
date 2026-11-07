@@ -1,5 +1,6 @@
-// Ported from apps/web/src/features/users/user-badges.tsx @ 1132322
+// Ported from apps/web/src/features/users/user-badges.tsx @ 1132322 (Phase 79's MemberBadge @ 758a19f, working tree)
 import {
+  MEMBER_LABEL,
   USER_ROLES,
   USER_ROLE_LABELS,
   USER_STATUS_LABELS,
@@ -92,15 +93,26 @@ export function RoleBadge({ role }: { role: UserRole }) {
   return <Badge label={USER_ROLE_LABELS[role]} {...tone} />;
 }
 
+/** Phase 79 (M1): someone in the space with no role -- a member, playing Quest here. Quiet, as the web's. */
+export function MemberBadge() {
+  const theme = useAppTheme();
+  return (
+    <Badge testID="member-badge" label={MEMBER_LABEL} background={theme.tokens.muted} color={theme.tokens.mutedForeground} />
+  );
+}
+
 /**
- * A user holds one or more roles, so the card shows a set, in the canonical order from
- * USER_ROLES rather than the order the database returned.
+ * A person holds roles as a set, so the card shows a set -- or, holding none, "Member" (Phase 79) -- in the
+ * canonical order from USER_ROLES rather than the order the database returned.
  */
 export function RoleBadges({ roles }: { roles: UserRole[] }) {
-  const theme = useAppTheme();
   const ordered = USER_ROLES.filter((role) => roles.includes(role));
   if (ordered.length === 0) {
-    return <Text style={{ fontSize: 12, color: theme.tokens.mutedForeground }}>No role</Text>;
+    return (
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+        <MemberBadge />
+      </View>
+    );
   }
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>

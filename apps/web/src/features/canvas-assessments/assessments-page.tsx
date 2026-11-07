@@ -5,6 +5,7 @@ import { FileTextIcon } from 'lucide-react';
 import {
   CANVAS_ASSESSMENT_STATUS_LABELS,
   COMMON_COPY,
+  MEMBER_ASSESSMENTS_LINE,
   formatRelativeTime,
   type CanvasAssessment,
   type CanvasAssessmentLevelId,
@@ -42,7 +43,18 @@ import {
 // Phase 38: the Assessment menu, docs/canvas-assessment-plan.md. Since Phase 78 (owner, 2026-11-05) it carries no
 // Beta mark: checked questions are served like any other.
 
+/**
+ * Phase 79 (M6, docs/members-plan.md): a member -- in a shared space with no role -- plays Quest; assessments there
+ * are for students (owner, 2026-11-06: no self-assessment in shared spaces). Their menu leaves the page out, and a
+ * link to it says so in one line.
+ */
+function useMemberHere(): boolean {
+  const { user, organization } = useAuth();
+  return Boolean(user && user.roles.length === 0 && !organization?.personal);
+}
+
 export function AssessmentsPage() {
+  const memberHere = useMemberHere();
   return (
     <>
       <PageHeader
@@ -51,7 +63,7 @@ export function AssessmentsPage() {
       />
       <div className="grid gap-6">
         <StartCard />
-        <AssessmentList />
+        {!memberHere && <AssessmentList />}
       </div>
     </>
   );
@@ -60,13 +72,17 @@ export function AssessmentsPage() {
 export function StartCard() {
   const { user, organization } = useAuth();
   const navigate = useNavigate();
+  const memberHere = useMemberHere();
   const onlyStudent = Boolean(user && user.roles.length > 0 && user.roles.every((role) => role === 'student'));
   // The students this reader may follow: a tutor's own, a parent's children, everyone for an admin.
-  const students = useUsers({ role: 'student', limit: 100, sort: 'full_name', order: 'asc' }, { enabled: !onlyStudent });
-  const levels = useCanvasAssessmentLevels();
+  const students = useUsers(
+    { role: 'student', limit: 100, sort: 'full_name', order: 'asc' },
+    { enabled: !onlyStudent && !memberHere },
+  );
+  const levels = useCanvasAssessmentLevels({ enabled: !memberHere });
   const start = useStartCanvasAssessment();
   // Phase 77 (JF20): the list already holds what Start warns about (shared with the list below through the cache).
-  const list = useCanvasAssessments();
+  const list = useCanvasAssessments({ enabled: !memberHere });
   const [inProgress, setInProgress] = useState<CanvasAssessment | null>(null);
   // Phase 78: the same `now` as the list's rows, so the warning and the row say the same time.
   const now = useScreenNow();
@@ -100,6 +116,18 @@ export function StartCard() {
     } catch (caught) {
       toast.error(caught instanceof ApiRequestError ? caught.message : 'Could not start the assessment.');
     }
+  }
+
+  if (memberHere) {
+    return (
+      <Card className="py-0" data-testid="assessment-start">
+        <CardContent className="p-5">
+          <p className="text-sm" role="status" data-testid="assessment-for-students">
+            {MEMBER_ASSESSMENTS_LINE}
+          </p>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

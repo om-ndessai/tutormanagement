@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { CompassIcon, LayoutGridIcon, LogOutIcon, ShieldCheckIcon, UserIcon } from 'lucide-react';
-import { USER_ROLE_LABELS } from '@tmi/shared';
+import { rolesLabel } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -53,8 +53,9 @@ export function UserMenu() {
           {/* Phase 78 (JF28): the name and the address wrap, never cut. */}
           <p className="text-sm font-medium break-words">{user.full_name}</p>
           <p className="text-muted-foreground text-xs break-all">{user.email}</p>
-            <p className="text-muted-foreground mt-1 text-xs">
-            {user.roles.map((role) => USER_ROLE_LABELS[role]).join(" \u00b7 ")}
+          <p className="text-muted-foreground mt-1 text-xs">
+            {/* Phase 79 (M6): "Member" for someone with no role, never an empty line. */}
+            {rolesLabel(user.roles)}
             {organization ? ` at ${organization.short_name}` : ''}
           </p>
         </DropdownMenuLabel>
@@ -66,10 +67,13 @@ export function UserMenu() {
           My profile
         </DropdownMenuItem>
 
-        <DropdownMenuItem onSelect={openWizard}>
-          <CompassIcon className="size-4" />
-          Take the tour
-        </DropdownMenuItem>
+        {/* Phase 79 (M6): no tour for a member -- it walks the teaching pages their menu leaves out. */}
+        {user.roles.length > 0 && (
+          <DropdownMenuItem onSelect={openWizard}>
+            <CompassIcon className="size-4" />
+            Take the tour
+          </DropdownMenuItem>
+        )}
 
         {/* Phase 60 (S7): the person's own spaces, invitations, codes and leaving -- always. */}
         <DropdownMenuItem onSelect={() => navigate('/spaces')}>

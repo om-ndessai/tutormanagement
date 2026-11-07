@@ -1,4 +1,5 @@
 import {
+  MEMBER_LABEL,
   USER_ROLE_LABELS,
   USER_STATUS_LABELS,
   type UserRole,
@@ -34,13 +35,26 @@ export function RoleBadge({ role, className }: { role: UserRole; className?: str
   );
 }
 
+/** Phase 79 (M1): someone in the space with no role -- a member, playing Quest here. */
+export function MemberBadge({ className }: { className?: string }) {
+  return (
+    <Badge variant="outline" className={cn('bg-muted text-muted-foreground border-transparent', className)} data-testid="member-badge">
+      {MEMBER_LABEL}
+    </Badge>
+  );
+}
+
 /**
- * A user holds one or more roles, so the table shows a set. Rendered in the
+ * A person holds roles as a set, so the table shows a set -- or, holding none, "Member" (Phase 79). Rendered in the
  * canonical order from USER_ROLES, not the order the database returned.
  */
 export function RoleBadges({ roles, className }: { roles: UserRole[]; className?: string }) {
   if (roles.length === 0) {
-    return <span className="text-muted-foreground text-xs">No role</span>;
+    return (
+      <div className={cn('flex flex-wrap gap-1', className)}>
+        <MemberBadge />
+      </div>
+    );
   }
 
   return (

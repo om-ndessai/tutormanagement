@@ -1,6 +1,7 @@
 // Ported from apps/web/src/features/dashboard/user-picker.tsx @ 1132322 -- the combobox becomes the
-// body of the (org)/view-as sheet.
-import { USER_ROLE_LABELS } from '@tmi/shared';
+// body of the (org)/view-as sheet. Phase 79 (M6; user-picker.tsx, working tree): members (no role) are left out --
+// they have no dashboard to view, and choosing one would only be refused -- and the line is `rolesLabel`.
+import { rolesLabel } from '@tmi/shared';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { Divider, Icon, Searchbar, Text } from 'react-native-paper';
@@ -34,7 +35,7 @@ export function UserPickerSheet({ current }: { current: string | null }) {
     { enabled: isAdmin },
   );
   const users = useMemo(
-    () => (data?.data ?? []).filter((candidate) => candidate.id !== user?.id),
+    () => (data?.data ?? []).filter((candidate) => candidate.id !== user?.id && candidate.roles.length > 0),
     [data, user?.id],
   );
 
@@ -90,7 +91,7 @@ export function UserPickerSheet({ current }: { current: string | null }) {
             <ListItem
               testID={`view-as-user-${candidate.id}`}
               title={candidate.full_name}
-              description={candidate.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') || 'No role'}
+              description={rolesLabel(candidate.roles)}
               left={() => (
                 <View
                   style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingLeft: space.sm }}

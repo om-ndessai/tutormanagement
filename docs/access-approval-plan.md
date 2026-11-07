@@ -82,3 +82,46 @@ table; tests: a web spec (each mode, refusal before storage, pending to approved
 request, an existing account unaffected, logs) and app flows, the exposure crawl for the new route, smoke
 on both clients. Release: additive SQL block `release=phase-65` in `docs/database.md`, then the test-side
 move (A8).
+
+# Phase 80: approved into a space (2026-11-06)
+
+The plan is `docs/members-plan.md` (A10-A15), approved by the owner on 2026-11-06. As built:
+
+- **A10. No space while waiting.** Under Post-approved, `POST /api/auth/signup` makes the account and no personal
+  space; Open and Pre-approved still make one at once. The approval decides where the person goes.
+- **A11. Approve with an optional place.** `PUT /api/platform/access/accounts/:userId` takes
+  `{ access, space?: { organization_id, role: 'member' | 'admin' } }` (`accessDecisionSchema`); the work is
+  `approveAccount` (`repositories/access.ts`), one batch with the decision.
+  - **The picker** is `GET /api/platform/access/spaces`: live spaces that are nobody's own, by name, with how each
+    was made and what it may use (`PlacementSpace`). One lean read of `organizations`, not the console's list.
+  - **A console-made space** takes them at once: an active membership (no acceptance step, `invited_by` NULL), their
+    default, no role for Member and `admin` for Admin. A live membership keeps its roles and only becomes the default;
+    one the space removed is never revived (409, "<First> was removed from <space> by its admins."). Logged
+    `organization.member_added` in the space ("Approved <name>'s account and added them to the space as a member")
+    and `platform.access_approved` on the platform log ("Approved <name>'s access, into <space> as a member.").
+  - **A self-started space** is asked: a join request with no role and no note, so Let in starts on Member, unless
+    they already belong or already asked. Logged `membership.requested` in the space ("<name> was put forward to join
+    <space> when their account was approved") and "Approved <name>'s access, and asked <space> to let them in." on
+    the platform's.
+  - **Admin** only in a console-made space and never for a 13-17: 422 on `space.role`. An unknown, archived or
+    personal space: 404, "That space was not found."
+  - **Either way** `personal_offer` becomes 'open' (unless they have a space of their own), and a pending account's
+    unused personal space, made at sign-up before this phase, is purged (`space.deleted` on the platform log).
+  - **Only on the change to approved.** A place for an account already approved: 409, "Already approved: add them
+    from the space's People." An older console's `{ access: 'approved' }` is today's: in no space, their own space is
+    made then (`account.personal_space`, "made when their account was approved"); in one, nothing new.
+  - **Where it placed them** (`AccessAccount.placed_in` on the Decided list) is read back from the platform log's
+    approval line: its subject is the person and its entity the space, `entity_type` 'organization' (joined) or
+    'join_request' (asked). One query for the list, through `audit_events_subject_idx` (`organization_id IS NULL`).
+- **A12. The offer.** The session carries `personal_space_offer` (one primary-key read, not in `SELECT_PERSON`).
+  `POST /api/spaces/personal { make }`, outside `requireOrg`, rate-limited: `make: true` claims the offer by a
+  compare-and-set to 'made' (409 on a second try, or with a space of their own already) and makes the space (a
+  teen's takes nobody by code), leaving their default where it is, logged "<name> made their own space"; `make: false`
+  is 'declined', a preference, no log line. Someone a space added has no platform account: 403.
+- **A13. Landing.** `completeSignIn` no longer refuses a self sign-up (approved) in no space, nor someone whose only
+  standing is an open request, wherever the address takes sign-ups at all (`takesSignUps`: not `tmi-portal`).
+- **A14. Their own details.** A space's admin changing a self sign-up's name, email or phone gets 409
+  `shared_fields_locked` ("This person made their own account, so their name, email and phone are theirs. A
+  platform administrator changes them."); the person editing themselves is unaffected, and the record's
+  `shared_fields_locked` says so to everyone else. The console's add-admin refuses a 13-17 too.
+- **A15.** The console's approve sheet, on both clients.

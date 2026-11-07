@@ -57,8 +57,10 @@ export const sharesRoutes = new Hono<AppEnv>()
 
     // Who may share: 13 or over. Someone who signed themselves up is (Phase 52 keeps nobody
     // younger); a student a space added is a child unless they did, so their result is not shared.
+    // Phase 79 (M8): a space vouches for an adult only by a role a child does not hold, as mayMakeSpace -- so a
+    // member it added (no role) shares, but without a name.
     const account = await getPlatformAccount(c.env.DB, user.id);
-    const adult = account ? account.age_band === 'adult' : !user.roles.includes('student');
+    const adult = account ? account.age_band === 'adult' : user.roles.some((role) => role !== 'student');
     if (!account && user.roles.includes('student')) {
       throw new ApiError(403, 'forbidden', 'Ask a parent if you would like to share this.');
     }

@@ -2,7 +2,7 @@
 // person's own console, apps/web/src/features/organizations/{org-switcher,spaces-page}.tsx).
 // Phase 72 (UI audit JF7, JF33; the web's org-switcher.tsx @ 98c40ab, working tree): under the spaces, "Join with
 // a code" and, for adults, "Start a space" -- where a teacher looks first; a space of one's own reads "Just you".
-import { tourOffered, USER_ROLE_LABELS } from '@tmi/shared';
+import { rolesLabel, tourOffered } from '@tmi/shared';
 import { router } from 'expo-router';
 import { View } from 'react-native';
 import { Divider, List, Text } from 'react-native-paper';
@@ -70,7 +70,8 @@ export default function AccountSheet() {
           </Text>
         ) : null}
         <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }} testID="account-roles">
-          {user.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+          {/* Phase 79 (M6): "Member" for someone with no role here, never an empty line. */}
+          {rolesLabel(user.roles)}
           {organization ? ` at ${organization.short_name}` : ''}
         </Text>
       </View>
@@ -165,8 +166,9 @@ export default function AccountSheet() {
           }}
           style={{ paddingHorizontal: 0 }}
         />
-        {/* Owner, 2026-11-04: the tour is Tutoring's (`tourOffered`), as the web's Getting started. */}
-        {tourOffered(organization) ? (
+        {/* Owner, 2026-11-04: the tour is Tutoring's (`tourOffered`), as the web's Getting started; never a
+            member's (Phase 79). */}
+        {tourOffered(organization, user.roles) ? (
           <ListItem
             testID="account-tour"
             title="Take the tour"

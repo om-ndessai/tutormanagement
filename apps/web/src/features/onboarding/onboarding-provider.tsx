@@ -93,8 +93,9 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     // Phase 63 (P13): a newcomer's personal space opens on the Play home itself, never the wizard
     // (the tour stays one tap away in the menu).
     if (organization?.personal) return;
-    // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home.
-    if (!tourOffered(organization)) return;
+    // Owner, 2026-11-04: the tour is Tutoring's; a space without it starts on its home. Phase 79 (M6): so does a
+    // member (no role), whose menu leaves out the pages the tour walks through.
+    if (!tourOffered(organization, user.roles)) return;
 
     // Once per person: someone who has been through it is not offered it again on a new browser (JF25).
     if (!onboarding.tour_finished_at) {
@@ -103,13 +104,14 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     }
   }, [user, onboarding, organization, location.search]);
 
+  const roles = user?.roles;
   useEffect(() => {
-    if (!firstVisit || finishedAtLoad !== true || !organization || !tourOffered(organization)) return;
+    if (!firstVisit || finishedAtLoad !== true || !organization || !roles || !tourOffered(organization, roles)) return;
     if (new URLSearchParams(location.search).has('as')) return;
     if (offeredIn.current === organization.slug) return;
     offeredIn.current = organization.slug;
     setOffer({ title: `Welcome to ${organization.short_name}` });
-  }, [firstVisit, finishedAtLoad, organization, location.search]);
+  }, [firstVisit, finishedAtLoad, organization, roles, location.search]);
 
   const openWizard = useCallback(() => {
     setOffer(null);

@@ -5,7 +5,7 @@ import { featureAllowed, featureOn, type FeatureSet, type FeatureState } from '.
 import { ORG_TIME_ZONES, type OrgPalette } from './organizations.js';
 import { ARRIVALS } from './home.js';
 import { refuseSsn } from './tax.js';
-import { optionalText } from './users.js';
+import { optionalText, type UserRole } from './users.js';
 
 // ---------------------------------------------------------------------------
 // Open sign-up and spaces (Phase 52, docs/open-signup-plan.md)
@@ -95,6 +95,15 @@ export type JoinRequestInput = z.input<typeof joinRequestSchema>;
  */
 export function seesPeoplePages(roles: readonly string[]): boolean {
   return roles.includes('admin') || roles.includes('tutor');
+}
+
+/**
+ * Phase 79 (M6, docs/members-plan.md): the teaching pages -- Dashboard, Lessons, Progress, Schedule, Comments and
+ * Assessment -- are for someone who holds a role here. A member (no role) plays Quest: their menu leaves them out,
+ * though a link still opens them.
+ */
+export function seesTeachingPages(roles: readonly string[]): boolean {
+  return roles.length > 0;
 }
 
 /** Words a self-serve space may not take in its name: it must never pass for the platform or an institute. */
@@ -224,7 +233,73 @@ export interface JoinRequest {
   /** What they asked to be, and their note (Phase 72, R32): null from an older app. Absent from older Workers. */
   role?: JoinRequestRole | null;
   note?: string | null;
+  /**
+   * Phase 79 (M5): the person signed up as a 13-17, so the Let in sheet offers no Admin (a teen is never an admin
+   * of a shared space). Read by the space's admins only, beside the request (R32). Absent from older Workers.
+   */
+  teen?: boolean;
 }
+
+/**
+ * Phase 79 (M5, docs/members-plan.md): the roles the Let in sheet offers, first to last. Member first -- in the
+ * space with no role, playing Quest -- then Parent, Admin (never for a teen) and Tutor (only where Tutoring is on).
+ * A student, who needs a parent here, is added with the full form.
+ */
+export const LET_IN_ROLES = ['member', 'parent', 'admin', 'tutor'] as const;
+export type LetInRole = (typeof LET_IN_ROLES)[number];
+
+export const LET_IN_ROLE_LABELS: Record<LetInRole, string> = {
+  member: 'Member',
+  parent: 'Parent',
+  admin: 'Admin',
+  tutor: 'Tutor',
+};
+
+/** One line under each Let in choice, on both clients. */
+export const LET_IN_ROLE_HINTS: Record<LetInRole, string> = {
+  member: 'Plays Quest here. Give them a role whenever you like.',
+  parent: 'Their child is, or will be, in this space.',
+  admin: 'Helps run the space: adds people, starts assessments.',
+  tutor: 'Teaches students here.',
+};
+
+export function letInRolesFor(input: { teen: boolean; tutoring: boolean }): LetInRole[] {
+  return LET_IN_ROLES.filter((role) => (role !== 'admin' || !input.teen) && (role !== 'tutor' || input.tutoring));
+}
+
+/**
+ * Where the Let in sheet starts: the role asked for when it is offered (a parent, an admin, a tutor); otherwise --
+ * a learner, or no role said -- Member, so letting someone in to play is one tap.
+ */
+export function letInStartRole(
+  asked: JoinRequestRole | null | undefined,
+  input: { teen: boolean; tutoring: boolean },
+): LetInRole {
+  const offered = letInRolesFor(input);
+  return asked && asked !== 'student' && (offered as string[]).includes(asked) ? (asked as LetInRole) : 'member';
+}
+
+/** The roles a Let in choice sends: Member is none. */
+export function letInRoles(role: LetInRole): UserRole[] {
+  return role === 'member' ? [] : [role];
+}
+
+/**
+ * Phase 80 (A12): POST /api/spaces/personal -- answer the offer of a space of one's own: make it, or no thanks. A
+ * person who said no thanks may still make it later from Spaces or Welcome ("Make my own space").
+ */
+export const personalSpaceSchema = z.object({ make: z.boolean() });
+export type PersonalSpaceInput = z.input<typeof personalSpaceSchema>;
+
+/** POST /api/spaces/personal's answer: the space made (its slug and name), or the offer put away. */
+export interface PersonalSpaceResult {
+  made: boolean;
+  slug: string | null;
+  name: string | null;
+}
+
+/** Phase 79 (M5): the refusal when a 13-17 would become an admin of a shared space. */
+export const TEEN_ADMIN_MESSAGE = 'Someone 13 to 17 cannot be an admin of a shared space.';
 
 /** The space's code, for its admins. */
 export interface SpaceCode {
@@ -273,17 +348,25 @@ export function decideLanding(
 // --- inviting people, after starting a space (Phase 61, S12) ------------------
 
 /**
- * The roles the "Invite people" step offers, in order. Students are not here: they are added in
- * the welcome wizard's "Add a student", which keeps the guardian and consent rules (Phase 52).
- */
-/**
  * Phase 67 (H7): the curricula a personal space starts with, the first its default. NC 2026 carries the
  * guest page's "Grade 4" into the space (Phase 63's P13 promise); Beast Academy stays beside it.
  */
 export const PERSONAL_SPACE_CURRICULA = ['nc-2026', 'ba'] as const;
 
-export const SPACE_INVITE_ROLES = ['admin', 'parent', 'tutor'] as const;
+/**
+ * The roles the invite rows offer, in order, the first the default. Phase 79 (M3): Member first -- just the email,
+ * no role; the space's admins give one later. Students are not here: they are added with "A family" or the full
+ * form, which keep the guardian and consent rules (Phase 52).
+ */
+export const SPACE_INVITE_ROLES = ['member', 'admin', 'parent', 'tutor'] as const;
 export type SpaceInviteRole = (typeof SPACE_INVITE_ROLES)[number];
+
+export const SPACE_INVITE_ROLE_LABELS: Record<SpaceInviteRole, string> = {
+  member: 'Member',
+  admin: 'Admin',
+  parent: 'Parent',
+  tutor: 'Tutor',
+};
 
 /** The roles a space's invite rows may offer: Tutor only where Tutoring is allowed (never a newcomer's). */
 export function inviteRolesFor(org: Partial<FeatureState> | null | undefined): SpaceInviteRole[] {
@@ -322,13 +405,14 @@ export function nameFromEmail(email: string): string {
 export function inviteRowRequest(row: SpaceInviteRow): {
   email: string;
   full_name: string;
-  roles: [SpaceInviteRole];
+  roles: UserRole[];
   status: 'invited';
 } {
   return {
     email: row.email,
     full_name: row.full_name?.trim() ? row.full_name.trim() : nameFromEmail(row.email),
-    roles: [row.role],
+    // Phase 79 (M3): a member holds no role.
+    roles: row.role === 'member' ? [] : [row.role],
     status: 'invited',
   };
 }

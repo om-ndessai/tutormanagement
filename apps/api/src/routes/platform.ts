@@ -5,7 +5,11 @@ import {
   accessDecisionSchema,
   accessListEntrySchema,
   accessSettingsSchema,
+  type AccessAccount,
   type AccessConsoleResponse,
+  type PlacementRole,
+  type PlacementSpace,
+  TEEN_ADMIN_MESSAGE,
   LOGO_KINDS,
   MAX_LOGO_BYTES,
   addOrganizationAdminSchema,
@@ -55,16 +59,23 @@ import {
 } from '@tmi/shared';
 
 import {
+  PLACEMENT_ENTITY,
   addAccessListEntry,
+  approveAccount,
   decideAccess,
   getAccessAccount,
   getAccessSettings,
   listAccessList,
   listDecidedAccounts,
+  listPlacementSpaces,
   listWaitingAccounts,
+  ownPersonalSpaceIds,
+  placementStanding,
   putAccessSettings,
   removeAccessListEntry,
 } from '../repositories/access.js';
+import { makePersonalSpace } from '../lib/personal-space.js';
+import { purgeSpace } from '../repositories/purge.js';
 import type { AppEnv, Env } from '../types.js';
 import { recordAudit } from '../lib/audit.js';
 import { configuredProviders } from '../lib/identity.js';
@@ -114,7 +125,9 @@ import {
   updateSpacePayer,
   ensureMembershipWithRoles,
   getOrganizationById,
+  listMemberships,
   listOrganizationAdmins,
+  setDefaultOrganization,
   listOrganizations,
   listPlatformAudit,
   putLogo,
@@ -129,7 +142,9 @@ import {
   createPerson,
   getPersonByEmail,
   getPersonById,
+  getPlatformAccount,
   listPlatformAdmins,
+  soleMemberPersonalSpaces,
   unpinGoogleSub,
   updatePersonFields,
 } from '../repositories/people.js';
@@ -629,9 +644,13 @@ export const platformRoutes = new Hono<AppEnv>()
       const { email, full_name } = c.req.valid('json');
       const org = await requireOrganization(c.env, id);
 
-      const person =
-        (await getPersonByEmail(c.env.DB, email)) ??
-        (await createPerson(c.env.DB, { email, full_name }));
+      const known = await getPersonByEmail(c.env.DB, email);
+      // Phase 80: a 13-17 who signed themselves up is never an admin of a shared space (Phase 79, M5) -- the
+      // console no more than a space's own admins. Someone new has no age band: nothing to read.
+      if (known && !org.personal && (await getPlatformAccount(c.env.DB, known.id))?.age_band === '13-17') {
+        throw ApiError.validation('Please correct the highlighted fields.', { email: [TEEN_ADMIN_MESSAGE] });
+      }
+      const person = known ?? (await createPerson(c.env.DB, { email, full_name }));
 
       await ensureMembershipWithRoles(c.env.DB, id, person.id, ['admin']);
 
@@ -914,13 +933,26 @@ export const platformRoutes = new Hono<AppEnv>()
     const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
     return c.json(body);
   })
+  // Phase 80 (A11, A15): the approve sheet's picker -- live spaces that are not someone's own, lean.
+  .get('/access/spaces', async (c) => {
+    const body: ApiOk<PlacementSpace[]> = { data: await listPlacementSpaces(c.env.DB) };
+    return c.json(body);
+  })
+  /**
+   * A decision on a self sign-up. Phase 80 (A11): approving may place them in a space (`space`) -- only on the change
+   * to approved; with no place (what an older console sends), an account in no space gets a space of its own then.
+   */
   .put('/access/accounts/:userId', zValidator('json', accessDecisionSchema), async (c) => {
     const account = await getAccessAccount(c.env.DB, c.req.param('userId'));
     if (!account) throw ApiError.notFound('No such sign-up.');
-    const { access } = c.req.valid('json');
-    if (account.access !== access) {
-      await decideAccess(c.env.DB, account.user_id, access, c.get('person').id);
-      await recordAudit(c.env.DB, c.get('person'), 'platform', {
+    const { access, space } = c.req.valid('json');
+    const actor = c.get('person');
+    const subject = { id: account.user_id, full_name: account.full_name };
+    if (access === 'approved' && space) {
+      await approveWithPlace(c.env.DB, actor, account, space);
+    } else if (account.access !== access) {
+      await decideAccess(c.env.DB, account.user_id, access, actor.id);
+      await recordAudit(c.env.DB, actor, 'platform', {
         action: access === 'approved' ? 'platform.access_approved' : 'platform.access_declined',
         description:
           access === 'approved'
@@ -928,9 +960,29 @@ export const platformRoutes = new Hono<AppEnv>()
             : account.access === 'approved'
               ? `Revoked ${account.full_name}'s access.`
               : `Declined ${account.full_name}'s access.`,
+        // Phase 80: the person as the line's subject, so the console reads where each approval placed them.
+        subject,
         entity_type: 'user',
         entity_id: account.user_id,
       });
+      // Phase 80 (A10, A11): a Post-approved sign-up made no space; approved with no place and in none, their own
+      // space is made now, as sign-up made it before. Best effort: without it they reach Welcome (A13).
+      if (access === 'approved' && (await listMemberships(c.env.DB, account.user_id)).length === 0) {
+        try {
+          const own = await makePersonalSpace(c.env.DB, subject, { requestUrl: c.req.url, teen: account.age_band === '13-17' });
+          const ownId = orgIdFromRow(own.id);
+          await setDefaultOrganization(c.env.DB, account.user_id, ownId);
+          await recordAudit(c.env.DB, actor, ownId, {
+            action: 'account.personal_space',
+            description: `${account.full_name}'s own space was made when their account was approved`,
+            subject,
+            entity_type: 'organization',
+            entity_id: own.id,
+          });
+        } catch (error) {
+          console.error('Personal space not made at approval', error);
+        }
+      }
     }
     const body: ApiOk<AccessConsoleResponse> = { data: await accessConsole(c.env.DB) };
     return c.json(body);
@@ -1111,6 +1163,104 @@ async function signInStatus(env: Env): Promise<SignInSettingsResponse> {
       };
     }),
   };
+}
+
+const PLACE_REFUSED = 'Please correct the highlighted fields.';
+
+/**
+ * Phase 80 (A11, docs/members-plan.md): approves an account INTO a space. A console-made space takes them at once --
+ * an active membership, their default, Admin only if chosen (never for a 13-17) -- and a membership its admins removed
+ * is never revived. A self-started space is asked: a join request its admins answer with Let in (Member by default).
+ * Either way they are offered a space of their own, and a personal space made at sign-up while they waited (before
+ * Phase 80), which never had a session, goes. Logged in the space's own log and on the platform's.
+ */
+async function approveWithPlace(
+  db: D1Database,
+  actor: { id: string; full_name: string },
+  account: AccessAccount,
+  space: { organization_id: string; role: PlacementRole },
+): Promise<void> {
+  if (account.access === 'approved') throw ApiError.conflict("Already approved: add them from the space's People.");
+  const org = await getOrganizationById(db, space.organization_id);
+  if (!org || org.archived_at || org.personal) throw ApiError.notFound('That space was not found.');
+  const consoleMade = org.created_via === 'console';
+  if (space.role === 'admin' && !consoleMade) {
+    throw ApiError.validation(PLACE_REFUSED, { 'space.role': ["Only that space's admins can make someone an admin there."] });
+  }
+  if (space.role === 'admin' && account.age_band === '13-17') {
+    throw ApiError.validation(PLACE_REFUSED, { 'space.role': [TEEN_ADMIN_MESSAGE] });
+  }
+  const orgId = orgIdFromRow(org.id);
+  const standing = await placementStanding(db, orgId, account.user_id);
+  const firstName = account.full_name.trim().split(/\s+/)[0] || account.full_name;
+  if (consoleMade && standing.membership === 'removed') {
+    throw ApiError.conflict(`${firstName} was removed from ${org.name} by its admins.`);
+  }
+
+  // What happens: joined at once (or already there), or a request (filed now, or already waiting).
+  const belongs = standing.membership === 'live';
+  const how = consoleMade || belongs ? 'joined' : 'requested';
+  const join = consoleMade ? { org: orgId, admin: space.role === 'admin', existing: belongs } : undefined;
+  const request = !consoleMade && !belongs && !standing.requested ? { org: orgId } : undefined;
+  // A pending account's personal space was made at sign-up before Phase 80 and never had a session: it goes.
+  const unused = account.access === 'pending' ? await soleMemberPersonalSpaces(db, account.user_id) : [];
+  const offer = (await ownPersonalSpaceIds(db, account.user_id)).every((id) => unused.includes(id));
+
+  try {
+    await approveAccount(db, { userId: account.user_id, actorId: actor.id, offer, join, request });
+  } catch (error) {
+    if (isUniqueConstraintError(error)) throw ApiError.conflict(`${firstName}'s place in ${org.name} changed meanwhile. Try again.`);
+    throw error;
+  }
+
+  const subject = { id: account.user_id, full_name: account.full_name };
+  for (const id of unused) {
+    try {
+      await purgeSpace(db, orgIdFromRow(id));
+      await recordAudit(db, actor, 'platform', {
+        action: 'space.deleted',
+        description: `${account.full_name}'s own space, made at sign-up while they waited and never opened, was removed when their account was approved`,
+        subject,
+        entity_type: 'organization',
+        entity_id: id,
+      });
+    } catch (error) {
+      console.error('Unused personal space not removed at approval', error);
+    }
+  }
+
+  const as = space.role === 'admin' ? 'an admin' : 'a member';
+  if (join && !join.existing) {
+    await recordAudit(db, actor, orgId, {
+      action: 'organization.member_added',
+      description: `Approved ${account.full_name}'s account and added them to the space as ${as}`,
+      subject,
+      entity_type: 'user',
+      entity_id: account.user_id,
+    });
+  }
+  if (request) {
+    await recordAudit(db, actor, orgId, {
+      action: 'membership.requested',
+      description: `${account.full_name} was put forward to join ${org.name} when their account was approved`,
+      subject,
+      entity_type: 'user',
+      entity_id: account.user_id,
+    });
+  }
+  await recordAudit(db, actor, 'platform', {
+    action: 'platform.access_approved',
+    description:
+      how === 'requested'
+        ? `Approved ${account.full_name}'s access, and asked ${org.name} to let them in.`
+        : belongs
+          ? `Approved ${account.full_name}'s access, into ${org.name}, where they already belonged.`
+          : `Approved ${account.full_name}'s access, into ${org.name} as ${as}.`,
+    subject,
+    // The space it placed them in, and how (PLACEMENT_ENTITY): what the console's Decided list reads back.
+    entity_type: PLACEMENT_ENTITY[how],
+    entity_id: org.id,
+  });
 }
 
 /** Phase 65: what the console's Sign-up access section reads, all at once. */

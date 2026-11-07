@@ -683,6 +683,35 @@ native rebuild of both dev builds, so build only while the devices are free.
   `schedule-lesson`, `sessions/assess`, `autosave`, `drafts`, `lessons-owed`, `list-admin`, `list-parent`,
   `list-tutor`, `live`, `record-finance`, `record`, `row-menu`, `shell/navigation`, `spaces/new-space-quest`, and the
   journeys `j04a-19`, `j07a-31`, `j15a-17`, `j15a-20`, `j15a-21`.
+- [x] 93. Mobile: Phase 79's app half (2026-11-06, build-log entry 88) -- members (M1-M6): a person in a space with no
+  role. Their tab bar is Home and More with no (+); More and search leave out Dashboard, Lessons, Schedule, Progress,
+  Comments and Assessment (`NavItem.teaching`, shared `seesTeachingPages`); no wizard or tour (`tourOffered(org,
+  roles)`); Home is the learner's board, the Assessment section only with `may_assess`; a link to Assessment says
+  "Assessments here are for students." and reads nothing. "Member" wherever a person holds no role (a quiet badge,
+  `rolesLabel` on the account sheet, Spaces, search, the card's screen-reader line; view-as leaves members out), the
+  role selector's member line, People's "Members" filter. Adding: the chooser's shared words ("Anyone, by email",
+  "Someone, with details"), the invite rows on Member by default (a radio row that fits at 360pt); Let in starts on
+  Member for a learner or no role, offers a teen no Admin, and asks about a child after Parent only. Typecheck, lint
+  (0 errors), Jest (193 suites, 1634 tests) and export green. Flows written, not yet run on the iOS simulator or the
+  Android emulator: `home/member-home-member` and `spaces/let-in-teen` (new); `people/add-chooser`, `spaces/invite`,
+  `spaces/let-in`, `shell/navigation` updated. They need the Phase 79 Worker (`POST /users` with `roles: []`,
+  `role=member`, `JoinRequest.teen`, `may_assess` for a member). Run 2026-11-06/07: green on both (see 94).
+- [x] 94. Mobile: Phase 80's app half (2026-11-06, build-log entry 89) -- approved into a space (A11-A13, A15). The
+  console's Approve (waiting, or declined lately) opens a sheet, `/approve-account`: "Place them in a space (optional)"
+  over the spaces (`GET /platform/access/spaces`, read only while it is open), Nowhere by default; once chosen, Member,
+  or Admin for a console-made space and an adult, the `placementWords` sentence and `PLACEMENT_QUEST_OFF` where Quest
+  is off; Approve sends `space`, a refusal stays in the sheet; Recently decided says "Joined <space>" / "Asked to join
+  <space>". Home leads with the one-time offer while `personal_space_offer` ("Want a space of your own too?", Make my
+  space / No thanks, `POST /spaces/personal`, then "Your own space is ready." with Open it). Spaces and Welcome offer
+  "Make my own space" to any self sign-up without one, teens too. Typecheck, lint (0 errors), Jest (196 suites, 1667
+  tests) and export green. Flows written, not yet run on the iOS simulator or the Android emulator: `home/personal-offer`
+  (new); `platform/access`, `spaces/sign-up` (smoke), `spaces/spaces-page`, `spaces/decline` updated; `access.js` gains
+  `mode`, `pending`, `approve` and `count`. They need the Phase 80 Worker (the phase-80 column, `personal_space_offer`,
+  the placement routes). Run 2026-11-06/07 with Phase 79's: the twelve flows green on the iOS simulator and the
+  Android emulator. iOS needed two fixes: the approve sheet is a page sheet there (in an iOS form sheet the spaces'
+  list was stretched over the title and the search field), and `spaces/spaces-page` waits for the page to settle and
+  scrolls Withdraw into view before tapping (assertions unchanged). Jest 196 suites, 1669 tests; `smoke -- mobile`
+  10/10 on both.
 
 ## Phase 4 — Google sign-in
 

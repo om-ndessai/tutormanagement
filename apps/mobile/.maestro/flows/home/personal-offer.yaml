@@ -1,0 +1,225 @@
+# Phase 80 (docs/members-plan.md, A11-A13; build-log entry 89): approved into a space, a self sign-up is OFFERED a space
+# of their own rather than given one. Olive and Mark sign up under Post-approved and a platform admin approves each into
+# Chapel Hill Math Institute as a Member (through the API: the console's sheet is platform/access's subject).
+# - Olive lands in CHMI, where Home leads with "Want a space of your own too?" -- "You're in Chapel Hill Math Institute.
+#   ..." -- and says No thanks: the card goes, and stays gone at her next sign-in; she still belongs to CHMI alone.
+#   Spaces then offers "Make my own space" (A12), which makes it and opens it: "Olive's space", "Just you".
+# - Mark taps Make my space on the card: "Your own space is ready." with Open it, which enters it.
+# Self-cleaning, before and after: the mode back to Open, both accounts approved (so they may be deleted) and deleted,
+# their own spaces with them, and their CHMI seats left.
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: offer.olive@example.com }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: offer.mark@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: offer.olive@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: offer.mark@example.com }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: pending, EMAIL: offer.olive@example.com, NAME: Olive Offer }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: approve, EMAIL: offer.olive@example.com, ORG: chmi, ROLE: member }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: pending, EMAIL: offer.mark@example.com, NAME: Mark Maker }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: approve, EMAIL: offer.mark@example.com, ORG: chmi, ROLE: member }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: mode, MODE: open }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: offer.olive@example.com }
+  - runScript:
+      file: ../../scripts/access.js
+      env: { ACTION: reset, EMAIL: offer.mark@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: offer.olive@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: offer.mark@example.com }
+tags:
+  - feature
+---
+# 1. Olive: placed in CHMI, she lands there (A13) and is offered a space of her own.
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: count, EMAIL: offer.olive@example.com }
+- assertTrue: ${output.access.spaces === 1}
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: offer.olive@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: home-org
+      text: 'CHMI'
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: home-personal-offer
+    timeout: 15000
+- assertVisible: 'Want a space of your own too\?'
+- assertVisible:
+    id: home-personal-offer-text
+    text: 'You''re in Chapel Hill Math Institute\. A space of your own is for practising on your own, or with your family later\.'
+- assertVisible:
+    id: home-personal-offer-no
+- assertVisible:
+    id: home-personal-offer-make
+- takeScreenshot: personal-offer-card
+# No thanks: the card goes; nothing is made.
+- tapOn:
+    id: home-personal-offer-no
+- extendedWaitUntil:
+    notVisible:
+      id: home-personal-offer
+    timeout: 10000
+- assertVisible:
+    id: screen-home
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: count, EMAIL: offer.olive@example.com }
+- assertTrue: ${output.access.spaces === 1}
+# Signed in again, it stays away.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: offer.olive@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 15000
+- assertNotVisible:
+    id: home-personal-offer
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: 'Member at CHMI'
+
+# 2. Spaces still offers "Make my own space" (A12): it makes it and opens it.
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: welcome-make-own
+    centerElement: true
+- assertVisible: 'A space of your own'
+- assertVisible: 'Just for you: practise on your own, or with your family later\.'
+- takeScreenshot: personal-offer-spaces
+- tapOn:
+    id: welcome-make-own-submit
+- extendedWaitUntil:
+    visible: 'Your own space is ready\.'
+    timeout: 15000
+# Opened at once: its Home, wearing its name.
+- extendedWaitUntil:
+    visible:
+      id: home-org
+      text: "Olive's space"
+    timeout: 20000
+- assertNotVisible:
+    id: home-personal-offer
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".* at Olive's space"
+- assertVisible: '.*Just you · You are here.*'
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: count, EMAIL: offer.olive@example.com }
+- assertTrue: ${output.access.spaces === 2}
+# Spaces: the card is gone (it would sit under Start a space).
+- scrollUntilVisible:
+    element:
+      id: account-spaces
+- tapOn:
+    id: account-spaces
+- extendedWaitUntil:
+    visible:
+      id: screen-spaces
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: welcome-make-submit
+    centerElement: true
+- assertNotVisible:
+    id: welcome-make-own
+- takeScreenshot: personal-offer-made-from-spaces
+
+# 3. Mark: Make my space on the card, then Open it.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: offer.mark@example.com
+      ORG: ''
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: home-personal-offer
+    timeout: 15000
+- tapOn:
+    id: home-personal-offer-make
+- extendedWaitUntil:
+    visible: 'Your own space is ready\.'
+    timeout: 15000
+# Still in CHMI: the session was re-read before the toast, so the card is gone; the toast offers the new space (for
+# six seconds, so it is tapped at once).
+- assertNotVisible:
+    id: home-personal-offer
+- tapOn: 'Open it'
+- extendedWaitUntil:
+    visible:
+      id: home-org
+      text: "Mark's space"
+    timeout: 20000
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: ".* at Mark's space"

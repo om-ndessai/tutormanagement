@@ -5235,3 +5235,175 @@ longer applies since Phase 62 (now chmi's `checked_questions` through the consol
 linked from a comment said "Showing one session": it says lesson, as the web's does (`list-tutor` now asserts it).
 **Left over (not the app's):** the assessment PDF still names its level by code ("Noor Haddad · G4": `levelLabel` in
 `apps/api/src/lib/canvas-assessment-pdf.ts`), and the guest page's harder tracks read "Adv G3–4" (shared `guest-board.ts`).
+
+## 88. Phase 79: members, in the app — design (2026-11-06)
+
+**Scope:** the app half of Phase 79 (`docs/members-plan.md` M1-M9; owner 2026-11-06), beside the web half, on the
+shared contract the lead put in the tree (`users.ts`: roles may be `[]`, `requiresEmail([])`, `MEMBER_LABEL`,
+`MEMBER_DESCRIPTION`, `rolesLabel`, `rolesInWords`, `role=member`; `spaces.ts`: `seesTeachingPages`,
+`JoinRequest.teen`, `LET_IN_ROLES` / `LET_IN_ROLE_LABELS` / `letInRolesFor` / `letInStartRole` / `letInRoles`,
+`SPACE_INVITE_ROLES` with Member first and `SPACE_INVITE_ROLE_LABELS`; `add-people.ts`' new choices;
+`tourOffered(org, roles)`). A member is a person in a space with no role: they play Quest there. Ported:
+- **Menu and tabs (M6):** `NavItem.teaching` on Dashboard, Lessons, Schedule, Progress, Comments and Assessment, left
+  out by `visibleNavItems` unless `seesTeachingPages(roles)` (More and search follow); `visibleTabs(organization, roles)`
+  gives a member Home and More; the tour's tab map takes the roles too. The (+) already offers a member nothing
+  (`createActions([])`), so they get no create button.
+- **No tour (M6):** `tourOffered(organization, user.roles)` in the onboarding provider (wizard and first-visit offer),
+  the account sheet's "Take the tour", search's tour row and the wizard's Welcome. `primaryRole([])` stays 'student'
+  (the learner's tour steps, never offered).
+- **People (M1, M6):** "Member" for no role -- a quiet badge (`member-badge`, as the web's `MemberBadge`), the card's
+  screen-reader line, `RoleIcons`' label, the view-as list's line (`rolesLabel`; members left out of view-as, as the
+  web); `RoleSelector` says `MEMBER_LABEL. MEMBER_DESCRIPTION` when nothing is ticked (`roles-member-hint`); a
+  "Members" filter chip (`people-role-member`, `role=member`); the person form's email is required for `[]` through
+  `requiresEmail` already; its intro says "or none for a member" (the web's words).
+- **Adding (M3):** the chooser's words are shared (Anyone, by email; Someone, with details); "Anyone, by email" opens
+  the invite sheet titled with that label and the web's line ("They join as a member when they sign in with that
+  address, unless you choose a role."); the invite rows start on Member, labelled by `SPACE_INVITE_ROLE_LABELS`, and
+  the role is a radio row of `Choice`s (four fit at 360pt; they wrap under large text) in place of SegmentedButtons;
+  the (+) row's description follows the new choices.
+- **Let in (M5):** `letInChoices({ teen, tutoring })` over shared `letInRolesFor` (Member, Parent, Admin unless a
+  teen, Tutor with Tutoring), each with the web's hint (Member: "Plays Quest here. Give them a role whenever you
+  like."); the sheet starts on `letInStartRole(request.role, …)`; `letInRequest` sends `letInRoles(role)`; "Asked as a
+  learner." with no "A learner joins with their parent" line; "Which child is theirs?" only after Parent.
+- **Assessment (M6):** the Assessment screen, for a member of a non-personal space, says one line, "Assessments here
+  are for students." (`assessment-for-students`) and reads nothing else (no students, levels or list); the learner's
+  Assessment section on the home requires `may_assess` (else, where Tutoring is off, the office's or parent's as
+  before), so a member's home is the Quest board alone.
+- **Role lines (M6):** `rolesLabel` on the account sheet, Spaces (`membershipLine`, invitations "Invited as a member"),
+  search's people rows.
+**Left out:** Phase 80 (approval into a space, the personal-space offer) is its own entry.
+**Web sources:** `components/layout/app-shell.tsx`, `onboarding/onboarding-provider.tsx`, `onboarding-wizard.tsx`,
+`users/{user-badges,role-selector,let-in-sheet,add-person,user-form-dialog}.tsx`, `organizations/{invite-people,spaces-page,org-switcher}.tsx`,
+`dashboard/user-picker.tsx`, `canvas-assessments/assessments-page.tsx`, `home/member-home.tsx` (working tree).
+**Endpoints:** none new. `GET /users?role=member` (`useUsers`, admins and tutors), `POST /users` with `roles: []`
+(`useInvitePerson`, `useCreateUser` from Let in; adult admins), `GET /organization/join-requests` (`teen`, admins only,
+R32), `GET /home` (`may_assess`).
+**Screens & routes:** no new route. Changed: the tab bar, More, search, `/add`, `/invite-people`, `/let-in`,
+`/assessments`, People, `/person-form`, `/view-as`, the account sheet, Spaces, Home.
+**Interaction & motion:** the invite role row uses `Choice` (selection haptic); nothing new animates.
+**Exposure checks:** no money anywhere touched; a member's menu leaves out pages, the routes still answer (the server
+decides what they hold; R36: a member reads only their own games, Daily and habit); `teen` is read only in the admins'
+Let in sheet (R32) and never shown as words; the app hides Admin for a teen and the API refuses it anyway; no
+organization name in code; theme tokens only.
+**testIDs:** `member-badge`, `roles-member-hint`, `people-role-member`, `let-in-role-member`, `invite-role-<i>-member`,
+`assessment-for-students`; existing `tab-*`, `more-nav-*`, `create-button`, `account-roles`, `add-choice-*`.
+**Tests:** Jest -- `test/shared-contract` (`[]` accepted, `requiresEmail([])`, `inviteRowRequest` member,
+`rolesLabel`/`rolesInWords`, the let-in helpers), `users/let-in-sheet`, `users/add-chooser`, `users/add-person-model`,
+`organizations/invite-people`, `shell/app-tab-bar`, `shell/create-actions`, `shell/nav-items`, `home/member-home-model`
+(or the screen), `onboarding/onboarding-model`, `organizations/spaces-screen`, `users/people-model`. Maestro (written,
+run by the lead) -- `people/add-chooser` (the new words, Member the default row), `spaces/invite` (Member first and
+default), `spaces/let-in` (Member offered first), `spaces/let-in-teen` (new: a 14-year-old asks as a learner; Member
+chosen, no Admin, no child step), `shell/navigation` (unchanged path; a member's tabs in `home/member-home-member`),
+`home/member-home-member` (new: a member made through the API in chmi -- Home and More only, no (+), no tour on a
+fresh device, More without the teaching pages, "Member at CHMI", the Assessment link's one line; then People's Members
+filter and badge as Priya).
+**Risks / open questions:** the Member hint and "Assessments here are for students." are typed in both clients (not
+shared yet); older app builds degrade as `parity.md` says.
+
+**Built (2026-11-06), as designed.** No API, shared or web file touched (one copy carried: the web's
+`canvas-assessments/api.ts` gave `useCanvasAssessments` and `useCanvasAssessmentLevels` an `enabled` option, and the
+app's copy has it too). Words added in the app (typed in both clients, as the web's working tree has them): the Let in
+hint "Plays Quest here. Give them a role whenever you like.", "Assessments here are for students.", the invite sheet's
+"They join as a member when they sign in with that address, unless you choose a role.", People's "A person may hold
+several roles, or none: a member.", the person form's "Check every role they hold, or none for a member", the
+"Members" filter chip, the (+) row's "A family, anyone by email, a tutor, or someone with details.". Shared words used:
+`MEMBER_LABEL`, `MEMBER_DESCRIPTION`, `rolesLabel`, `LET_IN_ROLE_LABELS`, `SPACE_INVITE_ROLE_LABELS`, `addChoices`.
+`.maestro/scripts/spaces.js`' `add-person` takes `ROLES: member` (no role). Typecheck, lint (0 errors) and export
+green; Jest 193 suites, 1634 tests. **Flows written, not run here** (the lead runs them, one at a time, against the
+Phase 79 Worker): `home/member-home-member` (new), `spaces/let-in-teen` (new), `people/add-chooser`, `spaces/invite`
+(smoke), `spaces/let-in`, `shell/navigation` (smoke: a member's tabs and More at its end, with a member made through
+the API in its `onFlowStart`).
+
+## 89. Phase 80: approved into a space, in the app — design (2026-11-06)
+
+**Scope:** the app half of Phase 80 (`docs/members-plan.md` A10-A15; owner 2026-11-06), beside the web half (built in
+parallel: `platform/{access-section,approve-sheet,api}.tsx`, `home/personal-offer-card.tsx`,
+`organizations/{welcome,api}.tsx`, `providers/auth-provider.tsx`, working tree on 758a19f), on the shared contract
+(`access.ts`: `accessDecisionSchema` with `space?`, `PLACEMENT_ROLES` / `PLACEMENT_ROLE_LABELS`, `PlacementSpace`,
+`placementWords`, `PLACEMENT_QUEST_OFF`, `AccessAccount.placed_in`; `auth.ts`: `SessionResponse.personal_space_offer`;
+`spaces.ts`: `personalSpaceSchema`, `PersonalSpaceResult`). Under Post-approved a sign-up makes no space (A10, the
+server's); the console's approval may place the person (A11); they are offered a space of their own (A12) and land
+where they were placed (A13, the server's landing rule, unchanged in the app). Ported:
+- **The console's Approve (A11, A15):** Approve -- on a waiting row and on a declined row of Recently decided -- opens
+  a sheet, `/approve-account?user=<id>` in the console's stack (a form sheet, detents 0.9 and full: a list of spaces
+  does not fit a fitted quick sheet, whose root must be a ScrollView, and a `SearchPicker` is a FlatList that must not
+  sit inside one). The account comes from the console's cached read (`useAccessConsole`), never the link. "Approve
+  <name>", "<email> · Adult" / "Age 13-17"; "Place them in a space (optional)" over a `SearchPicker` of `GET
+  /platform/access/spaces` (`usePlacementSpaces(true)`, mounted only with the sheet, so the read across spaces happens
+  only while it is open), led by "Nowhere: they get a space of their own" (the default, always listed), each space with
+  "Joins at once" / "Its admins let them in" and " · Quest off"; the search matches name and short name, at most 50
+  rows, "Showing N of M. Type to narrow." beyond, "No space has that name." for none, "Loading spaces…", and on a
+  failed read "The spaces could not be loaded. Approving now gives them a space of their own.". Once a space is
+  chosen: "Their role there", Member, and Admin only for a console-made space and an adult (`placementRoles`), with
+  the web's hint under the chosen one; the `placementWords` sentence; `PLACEMENT_QUEST_OFF` (amber, with a word) where
+  Quest is off. Cancel / Approve at the foot; Approve sends `{ access: 'approved', space?: { organization_id, role }
+  }`; the server's refusal (404 space, 422 role, 409 already approved / removed) shows above the action, in its words.
+  Choosing another space puts the role back to Member. Decline and Revoke are unchanged (at once, after the alert).
+  A decided, approved row reads "Joined <space>" / "Asked to join <space>" from `placed_in`, on a line of its own
+  under "Approved by …" (the web's runs on). **Mobile difference:** the role is a row of two radio buttons with the
+  chosen one's hint under it (the web's radio cards), so the list keeps its room on a small phone.
+- **The offer (A12):** `PersonalOfferCard` at the top of the member home while `session.personal_space_offer` (the
+  auth provider's `personalSpaceOffer`) and the reader is in a space that is not personal: "Want a space of your own
+  too?", "You're in <space>. A space of your own is for practising on your own, or with your family later.", No thanks
+  / Make my space. Make: `POST /spaces/personal { make: true }`, the session re-read (the card goes), then the toast
+  "Your own space is ready." with Open it (enters it: `chooseOrganization`, then Home). No thanks: `{ make: false }`,
+  the session re-read. Errors: the server's message as an error toast. Like `KeptForYou` in look.
+- **Make my own space (A12, A13):** on Spaces and Welcome (`SpaceWelcome`, which both use) for a self-signed-up person
+  (`account` non-null) with no personal membership -- teens too ("Start a space" stays adults-only): a card "A space
+  of your own", "Just for you: practise on your own, or with your family later.", Make my own space, under Join with
+  a code and Start a space (**mobile difference:** the web's sits above them; on a phone the code card stays first,
+  and the flows that find it there keep their place). It makes the
+  space, says "Your own space is ready." and opens it (Home). Someone in no space with only a request lands on Spaces
+  (the selector, the landing rule) with the request under Requests sent and this card.
+**Left out:** nothing of A10-A15 the app shows. A10, A13's landing and A14's lock are the server's alone.
+**Web sources:** `platform/approve-sheet.tsx`, `platform/access-section.tsx`, `platform/api.ts`,
+`home/personal-offer-card.tsx`, `home/member-home.tsx`, `organizations/welcome.tsx`, `organizations/api.ts`,
+`providers/auth-provider.tsx` (working tree).
+**Endpoints:** `GET /platform/access/spaces` (platform admins; while the sheet is open), `PUT
+/platform/access/accounts/:userId` with `space` (platform admins), `POST /spaces/personal` (the person's own account;
+403 without one, 409 when they have one), `GET /auth/session` (`personal_space_offer`).
+**Screens & routes:** new `/approve-account` (console stack, form sheet). Changed: Settings' Sign-up access, Home,
+Spaces / Welcome.
+**Interaction & motion:** a selection haptic on a space and a role (`SearchPicker`, `Choice`); success on approve and
+on making a space; nothing new animates. Choosing a space puts the keyboard away so the role and Approve show.
+**Exposure checks:** the picker's read is the console's (R14: names, how made, sets; no people, lessons or money); the
+offer acts only on the reader's own account; no money; no organization name in code (the card prints the session's
+own space's name, as the web); theme tokens only (the warning is `tokens.warning` with its word).
+**testIDs:** `screen-approve-account`, `access-approve-sheet`, `access-approve-title`, `access-approve-place-label`,
+`access-approve-input`, `access-approve-row-nowhere`, `access-approve-row-<space id>`, `access-approve-list-note`,
+`access-approve-none`, `access-approve-place`, `access-approve-role-member|admin`, `access-approve-role-hint`,
+`access-approve-words`, `access-approve-quest-off`, `access-approve-problem`, `access-approve-cancel`,
+`access-approve-confirm`, `access-placed-<user id>`; `home-personal-offer`, `home-personal-offer-text`,
+`home-personal-offer-no`, `home-personal-offer-make`; `welcome-make-own`, `welcome-make-own-submit`,
+`welcome-make-own-error`.
+**Tests:** Jest -- `platform/approve-model` (roles by how made and age, the sentence, the warning, the rows and the
+search, the request body against `accessDecisionSchema`, `placedLine`), `platform/approve-sheet` (render, choose,
+approve, refusal), `platform/access-settings-section` (Approve opens the sheet; the placed line),
+`home/personal-offer` (when the card shows; make and no thanks), `organizations/space-model` (`mayMakeOwnSpace`),
+`organizations/space-welcome` (the card for an adult and a teen, not for someone a space added or with a personal
+space), `test/maestro-scripts` (access.js' new actions). Maestro (written, run by the lead) -- `platform/access`
+(Post-approved: no space at sign-up; the sheet: CHMI as Member, the sentence, Approve; "Joined Chapel Hill Math
+Institute"; they land in CHMI), `spaces/sign-up` (a Post-approved sign-up makes no space: approved with no place,
+exactly one space, their own), `spaces/spaces-page` (Make my own space, then "Just you"), `home/personal-offer` (new:
+placed in CHMI through the API, the card; No thanks; then Make my own space on Spaces; a second person's Make my space
+and Open it).
+**Risks / open questions:** the role hints, the picker's lines and the card's words are typed in both clients (as the
+web's working tree has them), not shared.
+
+**Built (2026-11-06), as designed** (with the two mobile differences noted above). No API, shared or web file touched;
+the web's `platform/api.ts` (`useDecideAccess` sending the whole decision, `usePlacementSpaces`) and
+`organizations/api.ts` (`useMakePersonalSpace`) carried into the app's copies; `personalSpaceOffer` added to the auth
+provider. Words typed in the app, as the web's working tree has them: the role hints ("Plays Quest there, with no role
+until its admins give one.", "Helps run the space: adds people, starts assessments."), "Nowhere: they get a space of
+their own", "Joins at once" / "Its admins let them in" / " · Quest off", "Place them in a space (optional)", "Their role
+there", "Search spaces…", "Loading spaces…", "The spaces could not be loaded. Approving now gives them a space of their
+own.", "No space has that name.", "Showing N of M. Type to narrow.", "Approve <name>", "<email> · Adult" / "Age 13-17",
+"Joined <space>" / "Asked to join <space>", "Want a space of your own too?", "You're in <space>. A space of your own is
+for practising on your own, or with your family later.", "Make my space", "No thanks", "Your own space is ready.",
+"Open it", "A space of your own", "Just for you: practise on your own, or with your family later.", "Make my own
+space"; the app's own "That sign-up is not waiting." / "Someone may have decided it already." (the sheet opened on an
+account decided meanwhile). Shared words used: `PLACEMENT_ROLE_LABELS`, `placementWords`, `PLACEMENT_QUEST_OFF`.
+`spaces/decline` now scrolls to the 13-17 card (the new card sits above it) and checks Theo's "Make my own space".
+Typecheck, lint (0 errors) and export green; Jest 196 suites, 1667 tests. **Flows written, not run here** (the lead
+runs them against the Phase 80 Worker): `home/personal-offer` (new), `platform/access`, `spaces/sign-up` (smoke),
+`spaces/spaces-page`, `spaces/decline`.

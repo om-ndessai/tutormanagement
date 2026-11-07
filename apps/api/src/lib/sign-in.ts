@@ -40,6 +40,15 @@ export interface ClientSignIn extends EffectiveSignIn {
 export async function signInFor(env: Env, client: SignInClient, now = new Date()): Promise<ClientSignIn> {
   const settings = await getSignInSettings(env.DB, now.getTime());
   const effective = effectiveSignIn(signInDefaults(env), settings, client, now);
-  const signup_open = effective.signup_open && env.SIGNUP_ALLOWED !== 'false';
+  const signup_open = effective.signup_open && takesSignUps(env);
   return { ...effective, signup_open, offered: offeredProviders(env, effective.providers) };
+}
+
+/**
+ * Whether this address takes sign-ups at all, whatever the console's switch says this hour: every Worker but
+ * `tmi-portal` (SIGNUP_ALLOWED "false"). Phase 80 (A13): where it does, an approved self sign-up in no space still
+ * gets in, to Welcome and Spaces.
+ */
+export function takesSignUps(env: Env): boolean {
+  return env.SIGNUP_ALLOWED !== 'false';
 }

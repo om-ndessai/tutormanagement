@@ -1,5 +1,5 @@
 // Ported from apps/web/src/features/users/role-icon.tsx @ 1132322
-import { USER_ROLES, USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
+import { MEMBER_LABEL, USER_ROLES, USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
 import { View } from 'react-native';
 import { Icon } from 'react-native-paper';
 
@@ -26,7 +26,8 @@ export function RoleIcons({ roles, size = 16, color }: { roles: UserRole[]; size
   const tint = color ?? theme.tokens.mutedForeground;
   if (ordered.length === 0) {
     return (
-      <View accessible accessibilityLabel="No role">
+      // Phase 79: no role is a member.
+      <View accessible accessibilityLabel={MEMBER_LABEL}>
         <Icon source="account-outline" size={size} color={tint} />
       </View>
     );

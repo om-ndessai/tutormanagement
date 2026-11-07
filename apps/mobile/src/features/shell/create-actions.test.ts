@@ -76,6 +76,25 @@ describe('Phase 76 (JF21): one Add chooser', () => {
   });
 });
 
+describe('Phase 79 (M6): a member creates nothing', () => {
+  test('no actions with Tutoring or without, whatever the context: no create button, and no Start a space either', () => {
+    for (const sets of [
+      { tutoring: true, assessment: true },
+      { tutoring: false, assessment: true },
+      { tutoring: false, assessment: false },
+    ]) {
+      expect(ids([], { teaches: true, mayMakeSpace: true, account: { age_band: 'adult' } as never }, sets)).toEqual([]);
+      expect(hasCreateActions([], sets, { age_band: 'adult' } as never)).toBe(false);
+    }
+  });
+
+  test('the add row names the chooser’s choices (Phase 79, M3)', () => {
+    expect(createActions(['admin'], {}).find((action) => action.id === 'add-people')?.description).toBe(
+      'A family, anyone by email, a tutor, or someone with details.',
+    );
+  });
+});
+
 describe('Phase 50: without Tutoring', () => {
   const ASSESS = { tutoring: false, assessment: true };
   const NONE = { tutoring: false, assessment: false };

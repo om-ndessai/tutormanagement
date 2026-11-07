@@ -18,13 +18,24 @@ const as = (roles: string[], organization: Record<string, unknown> = {}, account
 
 beforeEach(() => mockReplace.mockReset());
 
-it('offers a family, a tutor, someone else and an invitation; each opens its flow in place', async () => {
+it('offers a family, anyone by email, a tutor and someone with details; each opens its flow in place', async () => {
   as(['admin']);
   await renderWithProviders(<AddChooser />);
   // Phase 78 (the glossary): the web's "Add a person" won over the app's "Add people" / "Add someone".
   expect(screen.getByTestId('add-chooser-title')).toHaveTextContent('Add a person');
-  for (const id of ['family', 'tutor', 'someone', 'invite']) expect(screen.getByTestId(`add-choice-${id}`)).toBeTruthy();
+  // Phase 79 (M3): the shared words and order -- just the email is second.
+  expect(screen.getAllByRole('menuitem').map((node) => node.props.testID)).toEqual([
+    'add-choice-family',
+    'add-choice-invite',
+    'add-choice-tutor',
+    'add-choice-someone',
+  ]);
   expect(screen.getByText('A family (parent and child)')).toBeTruthy();
+  expect(screen.getByText('Anyone, by email')).toBeTruthy();
+  expect(screen.getByText('Just their email. They join as a member; give them a role whenever you like.')).toBeTruthy();
+  expect(screen.getByText('Someone, with details')).toBeTruthy();
+  expect(screen.queryByText('Invite by email')).toBeNull();
+  expect(screen.queryByText('Someone else')).toBeNull();
 
   await fireEvent.press(screen.getByTestId('add-choice-family'));
   expect(mockReplace).toHaveBeenLastCalledWith('/add-student');

@@ -1,0 +1,102 @@
+# Phase 79 (M5, docs/members-plan.md; owner 2026-11-06): a teen may be a member, with no parent in the space. Tess, 14,
+# signed up herself and asks to join Ines's space (assess, joined by code) as a learner -- the only role a teen asks
+# for. Ines's Let in sheet says "Asked as a learner." and nothing about a parent; it starts on Member, offers Parent
+# but never Admin (the request is marked `teen`, read by the space's admins only, R32) and no Tutor (assess has no
+# Tutoring). One tap lets her in with no role: "Tess Teen is in.", the sheet closes with no "Which child is…?" step,
+# and People shows her as a Member.
+# Self-cleaning: Tess is put back to nothing before and after (she leaves the space, and her account goes).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.teen@example.com }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: signup, EMAIL: spaces.teen@example.com, NAME: Tess Teen, YEAR: '2012' }
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: ask, EMAIL: spaces.teen@example.com, CODE: FMXY2345, ROLE: student }
+onFlowComplete:
+  - runScript:
+      file: ../../scripts/spaces.js
+      env: { ACTION: reset-newcomer, EMAIL: spaces.teen@example.com }
+tags:
+  - feature
+---
+# Her id, for the request's own buttons (another request may be waiting there too).
+- evalScript: "${output.teenId = json(http.get('http://localhost:8787/api/auth/session', { headers: { 'X-Dev-User': 'spaces.teen@example.com' } }).body).data.user.id}"
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: ines.ferreira.assess@gmail.com
+      ORG: assess
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: join-request-${output.teenId}
+    timeout: 20000
+- assertVisible:
+    id: join-request-asked-${output.teenId}
+    text: 'asked .* · as a learner'
+- tapOn:
+    id: join-request-let-in-${output.teenId}
+- extendedWaitUntil:
+    visible:
+      id: let-in-sheet
+    timeout: 15000
+- assertVisible: 'Let Tess Teen in'
+# What she asked, and no "joins with their parent" line.
+- assertVisible:
+    id: let-in-asked
+- assertVisible: 'Asked as a learner\.'
+- assertNotVisible: '.*joins with their parent.*'
+# Member first and chosen; Parent offered; never Admin for a teen; no Tutor without Tutoring.
+- assertVisible:
+    id: let-in-role-member
+    selected: true
+- assertVisible: 'Member. Plays Quest here. Give them a role whenever you like.'
+- assertVisible:
+    id: let-in-role-parent
+    selected: false
+- assertNotVisible:
+    id: let-in-role-admin
+- assertNotVisible:
+    id: let-in-role-tutor
+- takeScreenshot: spaces-let-in-teen
+# One tap: in as a member, and the sheet closes -- no child step.
+- tapOn:
+    id: let-in-submit
+- extendedWaitUntil:
+    visible: 'Tess Teen is in.'
+    timeout: 15000
+- assertNotVisible: "Which child is Tess's\\?"
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 20000
+- extendedWaitUntil:
+    notVisible:
+      id: join-request-${output.teenId}
+    timeout: 15000
+# On People she is a Member: a quiet badge, never "No role".
+- scrollUntilVisible:
+    element:
+      id: people-row-${output.teenId}
+    direction: DOWN
+    timeout: 15000
+# The row's words are its record button's label (the card's own element, `people-row-<id>`, is a sibling of it and
+# carries none on iOS); her badge is inside that button.
+- assertVisible: 'Tess Teen, spaces\.teen@example\.com, Member, Active, open their record'
+- assertVisible:
+    id: member-badge
+    childOf:
+      text: 'Tess Teen, .*open their record'
+- assertNotVisible: 'No role'
+- takeScreenshot: spaces-let-in-teen-member

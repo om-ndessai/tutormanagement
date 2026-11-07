@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   AccessConsoleResponse,
+  AccessDecision,
   AccessListEntryInput,
   AccessSettings,
   AddOrganizationAdminInput,
@@ -14,6 +15,7 @@ import type {
   PlatformAdmin,
   PlatformPerson,
   PlatformPersonUpdateInput,
+  PlacementSpace,
   SignInSettingsResponse,
   PlayConsoleResponse,
   GuestConsoleResponse,
@@ -301,10 +303,26 @@ export function useRemoveAccessEntry() {
   return useAccessMutation((id: string) => apiClient.delete<ApiOk<AccessConsoleResponse>>(`/platform/access/list/${encodeURIComponent(id)}`));
 }
 
+/**
+ * Approves or declines a sign-up. Phase 80 (A11): approving may place them in a space (`space`); without it, their
+ * own space is made, as before.
+ */
 export function useDecideAccess() {
-  return useAccessMutation((input: { userId: string; access: 'approved' | 'declined' }) =>
-    apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(input.userId)}`, { access: input.access }),
+  return useAccessMutation(({ userId, ...decision }: { userId: string } & AccessDecision) =>
+    apiClient.put<ApiOk<AccessConsoleResponse>>(`/platform/access/accounts/${encodeURIComponent(userId)}`, decision),
   );
+}
+
+/**
+ * Phase 80 (A11): the spaces the approve sheet may place someone in -- live, not personal, by name. A read across
+ * spaces, so it is fetched only while the sheet is open.
+ */
+export function usePlacementSpaces(enabled: boolean) {
+  return useQuery({
+    queryKey: ['platform', 'placement-spaces'] as const,
+    queryFn: () => apiClient.get<ApiOk<PlacementSpace[]>>('/platform/access/spaces'),
+    enabled,
+  });
 }
 
 /** Phase 69 (H12): visit recording, and the Stickiness figures (totals only). */

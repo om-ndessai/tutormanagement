@@ -1,7 +1,10 @@
 // The welcome wizard's decisions, kept pure so they can be tested without a device.
 import type { OnboardingState, UserRole } from '@tmi/shared';
 
-/** The role whose dashboard someone sees first, when the dashboard has not said. */
+/**
+ * The role whose dashboard someone sees first, when the dashboard has not said. A member (no role, Phase 79) counts as
+ * a learner: their home is the learner's, and no tour is offered them (`tourOffered(org, [])`), so its steps never run.
+ */
 export function primaryRole(roles: readonly UserRole[]): UserRole {
   for (const role of ['admin', 'tutor', 'parent', 'student'] as const) {
     if (roles.includes(role)) return role;

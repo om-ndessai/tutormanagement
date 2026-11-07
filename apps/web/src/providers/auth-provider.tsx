@@ -67,6 +67,11 @@ interface AuthContextValue {
   /** Phase 72 (JF12): someone a space added accepts the terms and the privacy notice once, at first sign-in. */
   legalDue: boolean;
   /**
+   * Phase 80 (A12): a self-signed-up person placed in a space when approved is offered a space of their own, until
+   * they make one or say no thanks.
+   */
+  personalSpaceOffer: boolean;
+  /**
    * Phase 52: a newcomer between their Google sign-in and the age question -- who Google says they
    * are, and the short-lived token that stands for it. Held in memory only.
    */
@@ -152,6 +157,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [joinRequests, setJoinRequests] = useState<MyJoinRequest[]>([]);
   const [accountDeletable, setAccountDeletable] = useState(false);
   const [legalDue, setLegalDue] = useState(false);
+  const [personalSpaceOffer, setPersonalSpaceOffer] = useState(false);
   const [pendingSignup, setPendingSignup] = useState<SignupStart['signup'] | null>(null);
   const [firstVisit, setFirstVisit] = useState(false);
 
@@ -186,6 +192,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setJoinRequests(session.join_requests ?? []);
     setAccountDeletable(session.account_deletable === true);
     setLegalDue(session.legal_due === true);
+    setPersonalSpaceOffer(session.personal_space_offer === true);
 
     // The link is kept until the tab is in its space (or it cannot be entered): two loads racing
     // at boot must both honour it.
@@ -444,6 +451,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       joinRequests,
       accountDeletable,
       legalDue,
+      personalSpaceOffer,
       pendingSignup,
       completeSignup,
       cancelSignup,
@@ -472,6 +480,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       joinRequests,
       accountDeletable,
       legalDue,
+      personalSpaceOffer,
       pendingSignup,
       completeSignup,
       cancelSignup,

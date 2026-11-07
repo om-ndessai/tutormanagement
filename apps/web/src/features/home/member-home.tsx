@@ -41,6 +41,7 @@ import {
   practiseRequest,
   quickActionLabel,
   quickActionsFor,
+  seesTeachingPages,
   startsInWords,
   type HabitSummary,
   type HomeChild,
@@ -75,6 +76,7 @@ import { useBrand } from '@/providers/brand-provider';
 import { useMemberHome, usePinHome } from './api';
 import { lessonLine } from './lesson-words';
 import { NextUpCard, useNextUp } from './next-up';
+import { PersonalOfferCard } from './personal-offer-card';
 
 const firstName = (name: string) => name.split(/\s+/)[0] ?? name;
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -148,6 +150,8 @@ export function MemberHomePage() {
       {tutoring && <LessonReminderSheet />}
       {/* The person's requests to join spaces and the answers, until dismissed (owner, 2026-11-04; JF5). */}
       <RequestOutcomes />
+      {/* Phase 80 (A12): placed in this space when approved, they are offered a space of their own, once. */}
+      <PersonalOfferCard />
       <KeptForYou onCode={(code) => setCodeSheet(code)} />
       {codeSheet !== null && <CodeSheet initialCode={codeSheet} onClose={closeCodeSheet} />}
       {/* Phase 74 (JF25): the tour, offered once, in the page's flow -- never over the work it introduces. */}
@@ -230,7 +234,7 @@ function Band({
   onCode: () => void;
 }) {
   const brand = useBrand();
-  const { organization, account, memberships, platformAdmin } = useAuth();
+  const { user, organization, account, memberships, platformAdmin } = useAuth();
   const quest = featureOn(organization, 'quest');
   const habit = useHabit(hat === 'learner' && quest);
   const { openWizard } = useOnboarding();
@@ -246,8 +250,9 @@ function Band({
       <div className="relative grid gap-1">
         <span className="flex items-center gap-2 text-sm font-semibold text-white/75">
           {brand.short}
-          {/* Phase 26: the welcome wizard and tour, on demand -- where Tutoring is on (owner, 2026-11-04). */}
-          {tourOffered(organization) && (
+          {/* Phase 26: the welcome wizard and tour, on demand -- where Tutoring is on (owner, 2026-11-04), and never for
+              a member (Phase 79), whose menu leaves out the pages it walks through. */}
+          {tourOffered(organization, user?.roles ?? []) && (
             <button
               type="button"
               onClick={openWizard}
@@ -867,9 +872,13 @@ function LearnerSection({
   hideWaiting: boolean;
   nextShown: boolean;
 }) {
-  const { organization } = useAuth();
+  const { user, organization } = useAuth();
   const quest = featureOn(organization, 'quest');
-  const assessment = featureOn(organization, 'assessment');
+  // Phase 79 (M6): the Assessments section needs someone to start one for (`may_assess`). Anyone holding a role keeps
+  // it even with nobody yet -- its Start card says who adds students (JF1) -- so it leaves only a member's home, who
+  // plays Quest (owner, 2026-11-06: no self-assessment in shared spaces).
+  const assessmentOn = featureOn(organization, 'assessment');
+  const assessment = assessmentOn && (home.may_assess !== false || seesTeachingPages(user?.roles ?? []));
   const tutoring = featureOn(organization, 'tutoring');
   const { start, pending } = useStartQuest();
   // Next up already names the lesson when it is the learner's next lesson: not twice.
@@ -880,7 +889,9 @@ function LearnerSection({
     <SectionShell hat="learner">
       {!next && !quest && !assessment && (
         <p className="text-muted-foreground text-sm" data-testid="home-learner-empty">
-          Nothing to practise here yet: Quest and Assessments are off in this space.
+          {assessmentOn
+            ? 'Nothing to play here yet: Quest is off in this space.'
+            : 'Nothing to practise here yet: Quest and Assessments are off in this space.'}
         </p>
       )}
       {next && (

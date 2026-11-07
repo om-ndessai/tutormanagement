@@ -95,9 +95,9 @@ export function Tour({ steps, onDone }: { steps: TourStep[]; onDone: (outcome: T
   const { width, height } = useWindowDimensions();
   const overlayRef = useRef<View>(null);
   const placed = useRef(false);
-  // Phase 50: the tabs the bar shows here, so a step lights the right one.
-  const { organization } = useAuth();
-  const tabsKey = visibleTabs(organization).join(',');
+  // Phase 50: the tabs the bar shows here, so a step lights the right one (Phase 79: for these roles).
+  const { organization, user } = useAuth();
+  const tabsKey = visibleTabs(organization, user?.roles).join(',');
   const tabs = useMemo(() => tabsKey.split(',') as ReturnType<typeof visibleTabs>, [tabsKey]);
 
   const [available, setAvailable] = useState<TourStep[] | null>(null);

@@ -18,9 +18,9 @@ export interface AddChoiceOption {
 
 /**
  * The chooser's choices, first to last: "A family (parent and child)" -- in a personal space "My
- * child", where the signed-in adult is the parent -- then "A tutor" where Tutoring is on, "Someone
- * else" and "Invite by email". Nothing for a reader who may not add people (not an admin, or a teen,
- * Phase 63).
+ * child", where the signed-in adult is the parent -- then "Anyone, by email" (Phase 79, M3: just the
+ * address; they join as a member), "A tutor" where Tutoring is on, and "Someone, with details" (the
+ * full form). Nothing for a reader who may not add people (not an admin, or a teen, Phase 63).
  */
 export function addChoices(input: { tutoring: boolean; personal: boolean; mayAdd: boolean }): AddChoiceOption[] {
   if (!input.mayAdd) return [];
@@ -29,11 +29,17 @@ export function addChoices(input: { tutoring: boolean; personal: boolean; mayAdd
       ? { id: 'family', label: 'My child', description: 'Add your child: you are their parent.' }
       : { id: 'family', label: 'A family (parent and child)', description: 'A parent and their child, added together.' },
   ];
+  out.push({
+    id: 'invite',
+    label: 'Anyone, by email',
+    description: 'Just their email. They join as a member; give them a role whenever you like.',
+  });
   if (input.tutoring) out.push({ id: 'tutor', label: 'A tutor', description: 'Someone who teaches here.' });
-  out.push(
-    { id: 'someone', label: 'Someone else', description: 'Another adult, or a student whose parent is already here.' },
-    { id: 'invite', label: 'Invite by email', description: 'They join when they sign in with that address.' },
-  );
+  out.push({
+    id: 'someone',
+    label: 'Someone, with details',
+    description: 'Their name, roles and details: another adult, or a student whose parent is already here.',
+  });
   return out;
 }
 

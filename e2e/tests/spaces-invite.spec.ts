@@ -7,9 +7,9 @@ import { visible } from '../support/ui.js';
 
 /**
  * Phase 61 (S12, docs/spaces-plan.md): start a space, then invite people. After naming the space,
- * "Invite people" comes before the welcome tour: rows of email and role (Admin, Parent, and Tutor only
- * where Tutoring is allowed -- never in a newcomer's space), each the ordinary POST /api/users, the
- * person INVITED. A self-serve space sends no email, so each invitation is copied or shared by hand,
+ * "Invite people" comes before the welcome tour: rows of email and role (Member -- the default since
+ * Phase 79, no role -- Admin, Parent, and Tutor only where Tutoring is allowed -- never in a newcomer's
+ * space), each the ordinary POST /api/users, the person INVITED. A self-serve space sends no email, so each invitation is copied or shared by hand,
  * and the space's code is shown. Skip goes on to the tour; the same rows stay on People.
  *
  * Every test signs up its own newcomer, who starts their own space from the Spaces page, and
@@ -72,7 +72,7 @@ async function startSpace(as: any, page: Page, label: string): Promise<Started> 
 }
 
 /** Fills invite row `index` (adding a row first when it is not there yet). */
-async function fillRow(page: Page, index: number, row: { email: string; name?: string; role: 'Admin' | 'Parent' }) {
+async function fillRow(page: Page, index: number, row: { email: string; name?: string; role: 'Member' | 'Admin' | 'Parent' }) {
   if ((await page.getByTestId(`invite-row-${index}`).count()) === 0) await page.getByTestId('invite-add-row').click();
   await page.getByTestId(`invite-email-${index}`).fill(row.email);
   if (row.name) await page.getByTestId(`invite-name-${index}`).fill(row.name);
@@ -97,6 +97,8 @@ test.describe('starting a space, then inviting people (S12)', () => {
     // Nothing typed, nothing to send; Skip is offered until someone is invited.
     await expect(maker.getByTestId('invite-send')).toBeDisabled();
     await expect(maker.getByTestId('invite-skip')).toBeVisible();
+    // Phase 79 (M3): a row starts on Member -- just the email; a role is given whenever the admins like.
+    await expect(maker.getByTestId('invite-role-0')).toHaveText('Member');
 
     // A row is checked before it is sent.
     await maker.getByTestId('invite-email-0').fill('not-an-email');
@@ -184,10 +186,15 @@ test.describe('starting a space, then inviting people (S12)', () => {
     const { page: maker, slug, space } = await startSpace(as, page, 'host');
     const adminEmail = freshEmail('invited-admin');
     const parentEmail = freshEmail('invited-parent');
+    const memberEmail = freshEmail('invited-member');
     await fillRow(maker, 0, { email: adminEmail, name: 'Ivy Invited', role: 'Admin' });
     await fillRow(maker, 1, { email: parentEmail, name: 'Paul Invited', role: 'Parent' });
+    // Phase 79 (M3): the third row left on its default -- Member, just the address.
+    await maker.getByTestId('invite-add-row').click();
+    await maker.getByTestId('invite-email-2').fill(memberEmail);
     await maker.getByTestId('invite-send').click();
     await expect(maker.getByTestId(`invite-sent-${parentEmail}`)).toBeVisible();
+    await expect(maker.getByTestId(`invite-sent-${memberEmail}`)).toContainText('Member');
 
     // A new address was made a person, invited: they sign in later and find it waiting, and are not
     // a newcomer -- no About you, no Welcome (S11), just the selector with the invitation.
@@ -220,10 +227,19 @@ test.describe('starting a space, then inviting people (S12)', () => {
     await unwrap(await paul.request.post(`/api/auth/invitations/${slug}/accept`), 'paul accepts');
     expect((await session(paul)).memberships).toEqual([expect.objectContaining({ slug, status: 'active', roles: ['parent'] })]);
 
-    // The host sees both as active now.
+    // The member: invited with no role, which the invitation says, and in with none (Phase 79, M3).
+    const mia = await as('admin', { email: memberEmail, org: null });
+    expect((await session(mia)).invitations).toEqual([expect.objectContaining({ slug, roles: [] })]);
+    await mia.goto('/spaces');
+    await expect(mia.getByTestId(`invitation-${slug}`)).toContainText('Invited as a member');
+    await unwrap(await mia.request.post(`/api/auth/invitations/${slug}/accept`), 'mia accepts');
+    expect((await session(mia)).memberships).toEqual([expect.objectContaining({ slug, status: 'active', roles: [] })]);
+
+    // The host sees all three as active now.
     const listed = await people(maker, slug);
     expect(listed.find((p) => p.email === adminEmail)).toMatchObject({ status: 'active', roles: ['admin'] });
     expect(listed.find((p) => p.email === parentEmail)).toMatchObject({ status: 'active', roles: ['parent'] });
+    expect(listed.find((p) => p.email === memberEmail)).toMatchObject({ status: 'active', roles: [] });
   });
 
   test('inviting someone who exists elsewhere shows only the typed name, and no phone, until they accept', async ({ as, page }) => {
@@ -383,6 +399,7 @@ test.describe('starting a space, then inviting people (S12)', () => {
     const { page: maker, slug } = await startSpace(as, page, 'notutor');
 
     await maker.getByTestId('invite-role-0').click();
+    await expect(maker.getByTestId('invite-role-option-member')).toBeVisible();
     await expect(maker.getByTestId('invite-role-option-admin')).toBeVisible();
     await expect(maker.getByTestId('invite-role-option-parent')).toBeVisible();
     await expect(maker.getByTestId('invite-role-option-tutor')).toHaveCount(0);

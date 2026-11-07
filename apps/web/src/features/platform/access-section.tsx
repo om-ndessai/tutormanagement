@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { ApiRequestError } from '@/lib/api-client';
 import { browserTimeZone, cn } from '@/lib/utils';
 import { useAccessConsole, useAddAccessEntry, useDecideAccess, useRemoveAccessEntry, useSaveAccessMode } from './api';
+import { ApproveSheet } from './approve-sheet';
 
 /** "Nov 4, 2026": the day, through the shared formatter (Phase 78), on the console's own clock. */
 const when = (iso: string | null) => (iso ? formatInstant(iso, browserTimeZone(), { time: false, year: 'always' }) : '');
@@ -128,12 +129,18 @@ export function AccessJump() {
   );
 }
 
+/** Where an approval placed someone (Phase 80, A11): joined at once, or asked to join for them. */
+const placedWords = (placed: NonNullable<AccessAccount['placed_in']>) =>
+  placed.how === 'joined' ? `Joined ${placed.name}` : `Asked to join ${placed.name}`;
+
 function Waiting({ accounts }: { accounts: AccessAccount[] }) {
   const decide = useDecideAccess();
-  async function act(account: AccessAccount, access: 'approved' | 'declined') {
+  // Phase 80 (A11): Approve asks where to place them first; Decline is at once, as before.
+  const [approving, setApproving] = useState<AccessAccount | null>(null);
+  async function decline(account: AccessAccount) {
     try {
-      await decide.mutateAsync({ userId: account.user_id, access });
-      toast.success(`${account.full_name} ${access === 'approved' ? 'approved' : 'declined'}.`);
+      await decide.mutateAsync({ userId: account.user_id, access: 'declined' });
+      toast.success(`${account.full_name} declined.`);
     } catch (caught) {
       failed(caught, 'That could not be saved.');
     }
@@ -159,10 +166,10 @@ function Waiting({ accounts }: { accounts: AccessAccount[] }) {
                 </span>
               </span>
               <span className="flex gap-2">
-                <Button size="sm" disabled={decide.isPending} onClick={() => void act(account, 'approved')} data-testid={`access-approve-${account.user_id}`}>
+                <Button size="sm" disabled={decide.isPending} onClick={() => setApproving(account)} data-testid={`access-approve-${account.user_id}`}>
                   Approve
                 </Button>
-                <Button size="sm" variant="outline" disabled={decide.isPending} onClick={() => void act(account, 'declined')} data-testid={`access-decline-${account.user_id}`}>
+                <Button size="sm" variant="outline" disabled={decide.isPending} onClick={() => void decline(account)} data-testid={`access-decline-${account.user_id}`}>
                   Decline
                 </Button>
               </span>
@@ -170,16 +177,19 @@ function Waiting({ accounts }: { accounts: AccessAccount[] }) {
           ))}
         </ul>
       )}
+      {approving && <ApproveSheet account={approving} onClose={() => setApproving(null)} />}
     </section>
   );
 }
 
 function Decided({ accounts }: { accounts: AccessAccount[] }) {
   const decide = useDecideAccess();
-  async function act(account: AccessAccount, access: 'approved' | 'declined') {
+  // A declined or revoked account is approved through the same sheet as a waiting one (Phase 80, A15).
+  const [approving, setApproving] = useState<AccessAccount | null>(null);
+  async function revoke(account: AccessAccount) {
     try {
-      await decide.mutateAsync({ userId: account.user_id, access });
-      toast.success(access === 'approved' ? `${account.full_name} approved.` : `${account.full_name}'s access revoked.`);
+      await decide.mutateAsync({ userId: account.user_id, access: 'declined' });
+      toast.success(`${account.full_name}'s access revoked.`);
     } catch (caught) {
       failed(caught, 'That could not be saved.');
     }
@@ -195,20 +205,28 @@ function Decided({ accounts }: { accounts: AccessAccount[] }) {
               <span className="text-muted-foreground">
                 {account.email} · {account.access === 'approved' ? 'Approved' : 'Declined'}
                 {account.decided_by_name && ` by ${account.decided_by_name}`} {when(account.decided_at)}
+                {account.access === 'approved' && account.placed_in && (
+                  <>
+                    {' · '}
+                    <span data-testid={`access-placed-${account.user_id}`}>{placedWords(account.placed_in)}</span>
+                  </>
+                )}
               </span>
             </span>
             {account.access === 'approved' ? (
-              <Button size="sm" variant="ghost" disabled={decide.isPending} onClick={() => void act(account, 'declined')} data-testid={`access-revoke-${account.user_id}`}>
+              <Button size="sm" variant="ghost" disabled={decide.isPending} onClick={() => void revoke(account)} data-testid={`access-revoke-${account.user_id}`}>
                 Revoke
               </Button>
             ) : (
-              <Button size="sm" variant="ghost" disabled={decide.isPending} onClick={() => void act(account, 'approved')} data-testid={`access-approve-${account.user_id}`}>
+              <Button size="sm" variant="ghost" disabled={decide.isPending} onClick={() => setApproving(account)} data-testid={`access-approve-${account.user_id}`}>
                 Approve
               </Button>
             )}
           </li>
         ))}
       </ul>
+      {/* A dialog, in a portal: nothing of it sits inside the <details>. */}
+      {approving && <ApproveSheet account={approving} onClose={() => setApproving(null)} />}
     </details>
   );
 }

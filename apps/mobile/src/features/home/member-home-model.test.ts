@@ -19,6 +19,8 @@ import {
   childStrip,
   deviceExtras,
   LEARNER_EMPTY_LINE,
+  LEARNER_QUEST_OFF_LINE,
+  learnerEmptyLine,
   learnerSectionParts,
   lessonNowLine,
   lessonWithTutor,
@@ -323,6 +325,12 @@ describe('Your learning and the child card, with sets off', () => {
     expect(LEARNER_EMPTY_LINE).toBe('Nothing to practise here yet: Quest and Assessments are off in this space.');
   });
 
+  it('says only Quest is off where Assessment is on but not for the reader (a member, Phase 79), as the web', () => {
+    expect(learnerEmptyLine(false)).toBe(LEARNER_EMPTY_LINE);
+    expect(learnerEmptyLine(true)).toBe(LEARNER_QUEST_OFF_LINE);
+    expect(LEARNER_QUEST_OFF_LINE).toBe('Nothing to play here yet: Quest is off in this space.');
+  });
+
   it('with every set off, Next up offers no quest (the focus is only a fallback)', () => {
     const none = { ...SOFIA, learner: { ...SOFIA.learner!, next_lesson: null }, focus: 'quest' as const, focus_options: [] };
     expect(chooseNextUp(nextUpCandidates(none))).toBeNull();
@@ -334,5 +342,40 @@ describe('Your learning and the child card, with sets off', () => {
     expect(childCardFallback({ tutoring: false, quest: false, assessment: true })).toBe('assessments');
     expect(childCardFallback({ tutoring: false, quest: false, assessment: false })).toBe('off');
     expect(CHILD_OFF_LINE).toBe('Lessons and quests are off in this space.');
+  });
+});
+
+// Phase 79 (M6, docs/members-plan.md): a member -- no role -- has the learner's hat and plays Quest. With nobody to
+// assess (`may_assess` false, as the server says for a member of a shared space), nothing of Assessment's or
+// Tutoring's is offered: the quick actions are Quest's doors, and Next up never offers an assessment first step.
+describe('a member (Phase 79)', () => {
+  const member = {
+    ...SOFIA,
+    first_name: 'Mo',
+    learner: { next_lesson: null, assessment_in_progress: null, assessment_reviewed: null },
+    focus: 'quest' as const,
+    focus_options: ['quest' as const],
+    may_assess: false,
+  };
+
+  it('gets Quest’s quick actions only, and the board’s twins leave', () => {
+    const actions = quickActionsFor(['learner'], { ...opts, mayAssess: false });
+    expect(actions).toEqual(['new_quest', 'join_code']);
+    expect(shownQuickActions(actions, { board: true, doors: [] })).toEqual(['join_code']);
+    expect(quickActionsFor(['learner'], { ...opts, mayAssess: false, board: true, doors: true })).toEqual([]);
+  });
+
+  it('is offered Quest first by Next up, never an assessment', () => {
+    const items = nextUpCandidates(member);
+    expect(items.map((item) => item.kind)).not.toContain('assessment_continue');
+    const first = chooseNextUp(items);
+    expect(first?.kind === 'focus_default' ? first.focus : 'quest').toBe('quest');
+    expect(nextUpCandidates({ ...member, focus: 'assessment', focus_options: ['quest', 'assessment'] }).map((i) => i.kind)).not.toContain(
+      'focus_default',
+    );
+  });
+
+  it('has a learner section that is never empty while Quest is on', () => {
+    expect(learnerSectionParts(null, null, { quest: true, assessment: false }).empty).toBe(false);
   });
 });

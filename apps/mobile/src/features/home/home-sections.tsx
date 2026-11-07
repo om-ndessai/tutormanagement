@@ -50,7 +50,7 @@ import {
   childPlayLevel,
   childPlayedLine,
   firstOf,
-  LEARNER_EMPTY_LINE,
+  learnerEmptyLine,
   learnerSectionParts,
   lessonWithStudent,
   lessonWithTutor,
@@ -432,12 +432,15 @@ function LearnerSection({
   item,
   quest,
   assessment,
+  assessmentOn,
   practiceLevelId,
 }: {
   home: MemberHome;
   item: NextUp | null;
   quest: boolean;
   assessment: boolean;
+  /** Assessment is on in this space (whether or not this reader has anyone to assess): says which set is off. */
+  assessmentOn: boolean;
   practiceLevelId: string | null;
 }) {
   const theme = useAppTheme();
@@ -449,7 +452,7 @@ function LearnerSection({
   const practise = quest && practiceLevelId ? practiceLevelId : null;
   return (
     <Section hat="learner">
-      {empty ? <Muted testID="home-learner-empty">{LEARNER_EMPTY_LINE}</Muted> : null}
+      {empty ? <Muted testID="home-learner-empty">{learnerEmptyLine(assessmentOn)}</Muted> : null}
       {next ? (
         <Card testID="home-learner-next-card">
           <Muted>Your next lesson</Muted>
@@ -491,6 +494,8 @@ function LearnerSection({
 /**
  * The sections, in the hats' order. The Assessment home appears once: with the learner, else (where
  * Tutoring is off, as the Phase 50 space home had it) with the first of the office's and the parent's.
+ * Phase 79 (M6): with the learner only while the reader has someone to assess here (`may_assess`, absent from older
+ * Workers: true) -- a member of a shared space plays Quest, and their home is the board alone.
  */
 export function HomeSections({
   home,
@@ -510,7 +515,7 @@ export function HomeSections({
   const tutoring = featureOn(organization, 'tutoring');
   const assessmentHat: HomeHat | undefined = !assessmentOn
     ? undefined
-    : hats.includes('learner')
+    : hats.includes('learner') && home.may_assess !== false
       ? 'learner'
       : tutoring
         ? undefined
@@ -542,6 +547,7 @@ export function HomeSections({
                 item={item}
                 quest={quest}
                 assessment={assessmentHat === 'learner'}
+                assessmentOn={assessmentOn}
                 practiceLevelId={practiceLevelId}
               />
             );

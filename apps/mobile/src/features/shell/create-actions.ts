@@ -6,6 +6,8 @@
 // Phase 50: the actions follow the feature sets. Without Tutoring the lesson, tutor and payment
 // actions are gone, and an admin is offered Start an assessment instead while Assessment is on.
 //
+// Phase 79 (M6): a member (no role) creates nothing here -- every action is a role's -- so they get no (+).
+//
 // UI audit (JF22): adding people follows ONE rule, shared `mayAddPeople` -- the space's admins, and not a
 // 13-17 (Phase 63: a teen adds nobody) -- the same rule as People, the home and the add flows, so nobody is
 // offered a form the API would refuse at its end.
@@ -17,8 +19,8 @@
 // Phase 75 (JF30): "Record a lesson" opens the lessons still owed (each recorded as planned, "Another lesson" for the
 // rest), as the home's quick action and the Sessions page's button do.
 //
-// Phase 76 (JF21): adding people is ONE row, "Add a person" since Phase 78, opening the one Add chooser (a family, a
-// tutor, someone else, an invitation) -- the same chooser as the home's quick action, People's header and its empty
+// Phase 76 (JF21): adding people is ONE row, "Add a person" since Phase 78, opening the one Add chooser (a family,
+// anyone by email, a tutor, someone with details: Phase 79) -- the same chooser as the home's quick action, People's header and its empty
 // state. In a personal space it reads "Add my child". Phase 78 (JF32): the rows the home's quick actions share take
 // their words from shared `quickActionLabel`, so the two never differ again.
 import {
@@ -86,7 +88,8 @@ const ACTIONS: Record<CreateActionId, CreateAction> = {
   'add-people': {
     id: 'add-people',
     title: quickActionLabel('add_person'),
-    description: 'A family, a tutor, someone else, or an invitation by email.',
+    // Phase 79 (M3): the chooser's choices, as shared `addChoices` names them.
+    description: 'A family, anyone by email, a tutor, or someone with details.',
     icon: 'account-plus-outline',
     // Phase 76 (JF21): the one Add chooser; each of its choices opens the flow that does the work (family first, U3).
     href: '/add',

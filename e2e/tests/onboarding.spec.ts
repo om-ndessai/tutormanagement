@@ -142,6 +142,35 @@ test.describe('the welcome wizard', () => {
     await expect(alex.getByRole('button', { name: 'Getting started' })).toBeVisible();
   });
 
+  test('a member (no role) is not welcomed and is offered no tour, even where Tutoring is on', async ({ as }) => {
+    // Phase 79 (M6): the tour walks the teaching pages, which a member's menu leaves out.
+    const admin = await as('admin');
+    const email = `onboarding.member.${Date.now()}@gmail.com`;
+    const member = await unwrap<any>(
+      await admin.request.post('/api/users', { data: { full_name: 'Onboarding Member', email, roles: [], status: 'active' } }),
+      'adding a member',
+    );
+    try {
+      expect(member.roles).toEqual([]);
+      const page = await as('student', { fresh: true, email });
+      await page.goto('/');
+      await expect(page.getByTestId('member-home')).toBeVisible();
+      await expect(wizard(page)).toHaveCount(0);
+      await expect(page.getByTestId('home-tour-offer')).toHaveCount(0);
+      await expect(page.getByTestId('home-getting-started')).toHaveCount(0);
+      // Nor from the account menu or the palette.
+      await page.getByRole('button', { name: 'Account menu' }).click();
+      await expect(page.getByRole('menuitem', { name: 'Take the tour' })).toHaveCount(0);
+      await page.keyboard.press('Escape');
+      await page.getByRole('button', { name: 'Search and go anywhere' }).click();
+      await expect(page.getByRole('dialog', { name: 'Go anywhere' }).getByRole('option', { name: 'Take the tour' })).toHaveCount(0);
+      // Nothing was recorded for them: they were never offered it.
+      expect((await session(page)).onboarding.tour_finished_at).toBeNull();
+    } finally {
+      await admin.request.delete(`/api/users/${member.id}?hard=true`);
+    }
+  });
+
   test('Getting started brings it back; a non-admin gets the tour, not the setup', async ({ as }) => {
     const anita = await as('parent');
     await anita.goto('/');

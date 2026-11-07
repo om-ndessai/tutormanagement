@@ -5,8 +5,13 @@
 //
 // Phase 76 (JF21, JF37): opened from the one Add chooser too ("Invite by email", `/invite-people`), at any time; the
 // words say what the space is for (`invitationText` with its sets) and a share is confirmed.
+// Phase 79 (M3, docs/members-plan.md; invite-people.tsx @ 758a19f, working tree): a row starts on Member -- just the
+// email, no role; the space's admins give one whenever they like -- then Admin, Parent and (where Tutoring is allowed)
+// Tutor, named by `SPACE_INVITE_ROLE_LABELS`. Four choices are a row of radio buttons that fits at 360pt and wraps
+// under large text (SegmentedButtons cut "Member" short there).
 import {
-  USER_ROLE_LABELS,
+  SPACE_INVITE_ROLES,
+  SPACE_INVITE_ROLE_LABELS,
   inviteRolesFor,
   spaceInviteRowSchema,
   type SpaceInviteRole,
@@ -14,9 +19,11 @@ import {
 } from '@tmi/shared';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Icon, SegmentedButtons, Text, TextInput } from 'react-native-paper';
+import { Button, Icon, Text, TextInput } from 'react-native-paper';
 
+import { Choice } from '@/components/form-choice';
 import { IconButton } from '@/components/icon-button';
+import { useLargeText } from '@/hooks/use-large-text';
 import { OutlinedCard } from '@/components/outlined-card';
 import { useToast } from '@/components/toast';
 import { ApiRequestError } from '@/lib/api-client';
@@ -38,7 +45,9 @@ interface Row {
 }
 
 let nextKey = 1;
-const blankRow = (): Row => ({ key: nextKey++, email: '', full_name: '', role: 'parent', problem: null });
+/** A new row is a member (Phase 79): the first of `SPACE_INVITE_ROLES`. */
+export const DEFAULT_INVITE_ROLE: SpaceInviteRole = SPACE_INVITE_ROLES[0];
+const blankRow = (): Row => ({ key: nextKey++, email: '', full_name: '', role: DEFAULT_INVITE_ROLE, problem: null });
 
 /** What a refused row says: the web's words, from the server's answer. */
 export function inviteProblem(caught: unknown): string {
@@ -49,9 +58,9 @@ export function inviteProblem(caught: unknown): string {
 
 /**
  * Phase 61 (S12, docs/spaces-plan.md): "Invite people", right after starting a space and before
- * the welcome wizard's start. Rows of email and role (Admin, Parent, and Tutor only where Tutoring
- * is allowed); each row is the ordinary add-person request, so the per-minute limit and the daily
- * cap apply, and the person is invited and accepts. A self-serve space sends no email, so each
+ * the welcome wizard's start. Rows of email and role (Member, the default since Phase 79 -- no role -- then Admin,
+ * Parent, and Tutor only where Tutoring is allowed); each row is the ordinary add-person request, so the per-minute
+ * limit and the daily cap apply, and the person is invited and accepts. A self-serve space sends no email, so each
  * invitation is shared by hand; the space's code is shown too.
  */
 export function InvitePeople({
@@ -68,6 +77,7 @@ export function InvitePeople({
   const theme = useAppTheme();
   const muted = theme.colors.onSurfaceVariant;
   const roles = inviteRolesFor(organization);
+  const large = useLargeText();
   const [rows, setRows] = useState<Row[]>(() => [blankRow()]);
   const [sent, setSent] = useState<SpaceInviteRow[]>([]);
   const [sending, setSending] = useState(false);
@@ -169,19 +179,24 @@ export function InvitePeople({
               <Text variant="labelMedium" style={{ color: muted }}>
                 Role
               </Text>
-              <SegmentedButtons
-                value={row.role}
-                onValueChange={(value) => {
-                  haptics.selection();
-                  update(row.key, { role: value as SpaceInviteRole });
-                }}
-                buttons={roles.map((role) => ({
-                  value: role,
-                  label: USER_ROLE_LABELS[role],
-                  testID: `invite-role-${index}-${role}`,
-                  accessibilityLabel: `Role: ${USER_ROLE_LABELS[role]}`,
-                }))}
-              />
+              <View
+                accessibilityRole="radiogroup"
+                accessibilityLabel="Role"
+                // One row of equal choices; under large text they keep their width and wrap.
+                style={{ flexDirection: 'row', flexWrap: large ? 'wrap' : 'nowrap', gap: space.xs }}
+              >
+                {roles.map((role) => (
+                  <Choice
+                    key={role}
+                    testID={`invite-role-${index}-${role}`}
+                    label={SPACE_INVITE_ROLE_LABELS[role]}
+                    accessibilityLabel={`Role: ${SPACE_INVITE_ROLE_LABELS[role]}`}
+                    selected={row.role === role}
+                    wide={large}
+                    onPress={() => update(row.key, { role })}
+                  />
+                ))}
+              </View>
               {row.problem ? (
                 <Text
                   testID={`invite-problem-${index}`}
@@ -234,7 +249,7 @@ export function InvitePeople({
                   <Icon source="check" size={18} color={theme.tokens.success} />
                   <Text testID={`invite-sent-line-${row.email}`} variant="bodyMedium" style={{ flex: 1 }}>
                     {row.email}
-                    <Text style={{ color: muted }}>{` · ${USER_ROLE_LABELS[row.role]}`}</Text>
+                    <Text style={{ color: muted }}>{` · ${SPACE_INVITE_ROLE_LABELS[row.role]}`}</Text>
                   </Text>
                 </View>
                 <Text testID={`invite-text-${row.email}`} variant="bodySmall" selectable style={{ color: muted }}>

@@ -1,7 +1,7 @@
 // The menu follows the organization's switches as the web's does (Phase 38): the Assessment item
 // only while the organization has it on -- for every role; and (Phase 42) Quest, only while the
 // organization has Question Quest on. Phase 78 (owner, 2026-11-05): neither carries a Beta badge.
-import { featureSetOfPath, seesPeoplePages } from '@tmi/shared';
+import { featureSetOfPath, seesPeoplePages, seesTeachingPages } from '@tmi/shared';
 
 import { NAV_ITEMS, PEOPLE_PAGE_ROLES, visibleNavItems } from './nav-items';
 
@@ -88,6 +88,19 @@ describe('visibleNavItems', () => {
       expect(roles.some((role) => (PEOPLE_PAGE_ROLES as readonly string[]).includes(role))).toBe(seesPeoplePages(roles));
     }
     for (const item of NAV_ITEMS.filter((entry) => people.includes(entry.label))) expect(item.roles).toBe(PEOPLE_PAGE_ROLES);
+  });
+
+  // Phase 79 (M6, docs/members-plan.md): a member (no role) plays Quest; the teaching pages are left out of their menu.
+  it('gives a member Home, Quest, Activity and My profile -- none of the teaching pages', () => {
+    const ALL = { canvas_assessments: true, gamify_question_quest: true };
+    expect(visibleNavItems([], ALL).map((item) => item.label)).toEqual(['Home', 'Quest', 'Activity', 'My profile']);
+    const teaching = NAV_ITEMS.filter((item) => item.teaching).map((item) => item.label);
+    expect(teaching).toEqual(['Lessons', 'Schedule', 'Progress', 'Assessment', 'Dashboard', 'Comments']);
+    // Anyone with a role keeps them, as before.
+    for (const roles of [['student'], ['parent'], ['tutor'], ['admin']]) {
+      expect(seesTeachingPages(roles)).toBe(true);
+      expect(visibleNavItems(roles, ALL).map((item) => item.label)).toEqual(expect.arrayContaining(['Assessment', 'Dashboard']));
+    }
   });
 
   it('lists the Dashboard (the role dashboards, Phase 66) for every role; Home is the tab', () => {

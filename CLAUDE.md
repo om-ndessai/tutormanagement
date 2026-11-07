@@ -42,8 +42,10 @@ Two of those shape everything else. **Sign-in is the only way in** — every `/a
 `/api/health` and `/api/auth/*` requires a verified Google identity, and `AUTH_ENABLED` is
 `"true"` in the committed config; flipping it to `"false"` is a local convenience, not
 something to deploy. **The people model** is admins, tutors, students and parents, where one
-person may hold several roles at once: read `docs/data-model.md` before touching the schema, as
-it explains why each table is where it is and which rules the database cannot enforce.
+person may hold several roles at once -- or none: since Phase 79 a person in a space with no role
+is a **member**, who plays Quest there (`docs/members-plan.md`). Read `docs/data-model.md` before
+touching the schema, as it explains why each table is where it is and which rules the database
+cannot enforce.
 
 **Every organization runs on one code version (since 2026-10-06).** Multi-organization support
 (Phases 27-31, `docs/multi-organization.md`) is on `main`; the institute is the organization `tmi`
@@ -223,6 +225,17 @@ per-organization fact on `users`. Platform admins are a table (`platform_admins`
 deletes its profile there, in the same batch as the role change (`profileCleanupStatements` in
 the users repository).
 
+**A member holds no role, and plays Quest** (Phase 79, `docs/members-plan.md` M1-M9). A person in a space may have no
+`user_roles` row: on screen a **Member** (`MEMBER_LABEL`, `rolesLabel`, `rolesInWords` in shared users.ts). Adding anyone
+is one step, their email ("Anyone, by email": the invite rows, Member the default, status `invited`); Let in starts on
+Member for a learner or no role (`letInStartRole`), teens too. A member's menu has no teaching pages and no Assessment
+(`seesTeachingPages`), no tour (`tourOffered(org, roles)`), the learner hat, and no assessment in a shared space;
+Question Quest stays a student's. Each role keeps its rules when an admin gives it later, and a space losing a set
+changes nobody's roles. PATCH refuses to leave a space without an active admin (409 `last_admin`); a 13-17 is never an
+admin of a shared space (`TEEN_ADMIN_MESSAGE`: at Let in, on an edit that adds it, and dropped from an accepted
+invitation). A brand-new address invited keeps the name the space typed (`invited_name`) until it accepts; if nobody
+typed one, its first sign-in takes the provider's name.
+
 **Three rules live in the API because SQL cannot express them**, and they are easy to break by
 accident: a student must have at least one guardian WHO IS A MEMBER OF THIS ORGANIZATION (which
 is why creating a student and naming their parent is ONE request), only admins of the
@@ -393,7 +406,8 @@ corrects them from the console.
 
 **A student may have no email; everybody else must.** `users.email` is nullable because most
 students are children who never sign in. Sign-in matches on email, so anyone holding a role
-other than `student` needs one — `requiresEmail` in `packages/shared/src/users.ts` is the rule,
+other than `student` -- or no role at all, a member (Phase 79) -- needs one — `requiresEmail` in
+`packages/shared/src/users.ts` is the rule,
 applied by `refineEmailForRoles` on the create schemas and `assertEmailPresentIfNeeded` on
 update. Never invent a placeholder address to satisfy a form, and never render an absent one as
 a `mailto:` — use `EmailOrNone`.
@@ -544,6 +558,8 @@ sign-up offer pauses the guest's clock. Signing up is a sheet over the page, and
 the newcomer a personal space (`organizations.personal`; a teen's takes nobody by code and a teen adds
 nobody; hidden from the console's list; purged with the account when they are its only member; not counted
 in spaces_per_person; no wizard by itself) -- the Phase 61 Welcome remains only for someone in no space.
+Since Phase 80 that is so only when the sign-up does not wait for approval (Open, Pre-approved): under
+Post-approved the space comes at approval, or is offered (below).
 What the device kept as a guest carries over on that device only, read from its own storage and never sent: its
 grade (else the level of the tile played last) leads the member's Play home until a quest starts there
 (`guestLeadLevel`), and the tiles it played become favorites, once each (`useCarryGuestTiles`, web and app).
@@ -563,7 +579,7 @@ player's `new_best` are read from finished games (`bestScores`, `isNewBest`), ne
 Settings > Guest play > Sign-up access (`platform_settings` 'access', no row = Open): **Open**; **Pre-approved**
 -- a newcomer whose verified email, pattern or provider account is not on `access_list` is refused (403
 `not_on_list`) before anything is stored (`assertMaySignUp`, in `completeSignIn`'s sign-up branch and `POST
-/api/auth/signup`); **Post-approved** -- the account and its personal space are made with
+/api/auth/signup`); **Post-approved** -- the account is made (since Phase 80 without a personal space) with
 `platform_accounts.access` 'pending' and no session (403 `access_pending`). `access` is read with the person
 on every request (`SELECT_PERSON`) and `assertAccess` refuses a pending or declined account at sign-in, at
 sign-up and in `requireAuth`, so approving or revoking takes effect on the next request. Only self sign-ups
@@ -576,6 +592,21 @@ when it ends); `/api/auth/config` carries `signup_access`, so a sign-up says so 
 (`SIGNUP_ACCESS_NOTES`); a `not_on_list` refusal carries the checked address in `details.email`; every
 refusal leads with Keep playing; and a device remembers an under-13 refusal as a one-way key of the address
 (FNV-1a, never the address), so the age question is not offered to that account again there.
+
+**Approving may place a person in a space, and their own space is offered** (Phase 80, `docs/members-plan.md`
+A10-A15, owner 2026-11-06). A Post-approved sign-up makes NO personal space. The console's Approve opens a
+sheet with an optional space (`GET /api/platform/access/spaces`, live and not personal) and Member or Admin
+(`accessDecisionSchema.space`; Admin only in a console-made space and never for a 13-17): a CONSOLE-made space
+takes them at once (an active membership, their default, `organization.member_added` in its log; a membership
+its admins removed is never revived), a SELF-STARTED space gets a join request filed for them (its admins'
+Let in starts on Member). A place goes only with the change to approved. Either way
+`platform_accounts.personal_offer` is 'open' and the session says `personal_space_offer`: the home's card makes
+a space of their own or puts the offer away (`POST /api/spaces/personal`, a compare-and-set to 'made'), and
+Spaces/Welcome keep "Make my own space" for any self sign-up without one (a teen's only door). Approving with no
+place makes their own space then, unless they already belong somewhere -- what an older console's `{ access }`
+gets. A pending account's never-opened personal space from before is removed when it is placed. An approved
+self sign-up in no space reaches Welcome wherever the Worker takes sign-ups (`takesSignUps`). A self sign-up's
+name, email and phone are their own: a space's admins get 409 `shared_fields_locked` (A14).
 
 **One member home, one Next up** (Phase 66, `docs/member-home-plan.md` H1-H4, H9, H11). `/` (the app's Home tab)
 is the same home for every member, built from the same blocks: the band (the guest band, slimmer: greeting,

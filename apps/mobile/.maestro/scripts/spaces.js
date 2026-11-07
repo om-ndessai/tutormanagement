@@ -25,7 +25,8 @@
 //   clear-last EMAIL             Phase 60: forgets the person's last space (is_default), so their next
 //                                arrival lands by the rest of the rule -- other flows entering a space move it
 //   add-person EMAIL NAME ROLES ACTOR ORG [STATUS]
-//                                Phase 60: ACTOR adds the person to ORG (POST /users; ROLES comma-separated)
+//                                Phase 60: ACTOR adds the person to ORG (POST /users; ROLES comma-separated;
+//                                Phase 79: ROLES 'member' is a member, no role at all); outputs userId
 //   let-in EMAIL ACTOR ORG       Phase 60: ACTOR (an admin of ORG) lets in EMAIL's open request as a
 //                                parent, through the ordinary user form (POST /users, join_request_user_id)
 //   decline EMAIL ACTOR ORG      Phase 60: ACTOR declines EMAIL's open request to join ORG
@@ -164,7 +165,8 @@ if (ACTION === 'reset-newcomer') {
 } else if (ACTION === 'clear-last') {
   must(call(email, 'PUT', '/auth/default-organization', { slug: null }), 'clearing the last space');
 } else if (ACTION === 'add-person') {
-  var person = { full_name: NAME, email: email, roles: String(ROLES).split(',') };
+  // Phase 79 (M1): 'member' is in the space with no role.
+  var person = { full_name: NAME, email: email, roles: String(ROLES) === 'member' ? [] : String(ROLES).split(',') };
   if (typeof STATUS !== 'undefined' && STATUS) person.status = STATUS;
   output.userId = must(call(ACTOR, 'POST', '/users', person, ORG), 'adding ' + email + ' to ' + ORG).body.data.id;
 } else if (ACTION === 'let-in' || ACTION === 'decline') {

@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 
-import { expect, test } from '../support/fixtures.js';
+import { expect, test, type AsOptions } from '../support/fixtures.js';
 import { idOf, unwrap } from '../support/api.js';
 import { PEOPLE, type PersonKey } from '../support/people.js';
 import { pdfPageText } from '../support/pdf.js';
@@ -160,307 +160,335 @@ function check(reader: Reader, source: string, value: unknown, problems: string[
   }
 }
 
+type As = (who: PersonKey, options?: AsOptions) => Promise<Page>;
+
+/**
+ * The crawl itself, as the person with this address (a seeded persona, or someone a test made): every read
+ * endpoint, every object in every answer, against the rules above.
+ */
+async function crawl(as: As, email: string): Promise<void> {
+  // Several hundred requests in a row -- every lesson and payment fetched by
+  // id -- and each now also re-checks the organization: against a remote
+  // database that outlasts the default timeout without anything being wrong.
+  test.slow();
+  const admin = await as('admin');
+  // The key only names a default address; `email` is who acts.
+  const page = await as('student', { email });
+
+  const id = await idOf(admin, email);
+  const me = await unwrap<any>(await page.request.get(`/api/users/${id}`), 'own record');
+  const people = (await get(page, '/api/users?limit=100')) as { id: string }[];
+
+  const reader: Reader = {
+    id,
+    family: new Set([id, ...me.dependents.map((d: any) => d.user_id)]),
+    visible: new Set(people.map((person) => person.id)),
+  };
+  expect(reader.visible.has(id)).toBe(true);
+
+  const problems: string[] = [];
+  const read = async (path: string) => check(reader, path, await get(page, path), problems);
+
+  // R10: somebody else's draft about a lesson this reader can see. The
+  // office drafting Alex's lesson with Sofia names Alex, Sofia and (as
+  // her mother) Maria's family -- and none of them may read it.
+  const alexId = await idOf(admin, PEOPLE.tutor.email);
+  const sofiaId = await idOf(admin, PEOPLE.student.email);
+  const othersDraft = await unwrap<any>(
+    await admin.request.post('/api/sessions/drafts', {
+      data: {
+        tutor_user_id: alexId,
+        student_user_id: sofiaId,
+        occurred_on: '2026-09-22',
+        started_at: '16:00',
+        ended_at: '17:00',
+        mode: 'in_person',
+        notes: 'Not ready to be read.',
+        write_up: { planned: 'Not ready either.' },
+        assessment: { rating: 1, body: 'Private until posted.' },
+      },
+    }),
+    'the office saving a draft',
+  );
+
+  await read('/api/sessions?limit=200');
+  await read('/api/assignments?include_inactive=true');
+  await read('/api/payments?limit=200');
+  await read('/api/payments/balances');
+  await read('/api/payments/monthly?year=2026');
+  await read('/api/audit?limit=200');
+  await read('/api/schedules');
+  await read('/api/schedules/upcoming?limit=10');
+  await read('/api/comments/feed');
+  await read('/api/progress');
+  // Phase 35: the organization's curricula, which every member reads.
+  await read('/api/curricula');
+  await read('/api/sessions/active');
+
+  // R33 (Phase 73): Continue and the lead grade. Where Quest is off here, both answer 403 like every /quest route.
+  const openRead = await page.request.get('/api/quest/games/open');
+  const tilesRead = await page.request.get('/api/quest/tiles');
+  for (const [path, response] of [['/api/quest/games/open', openRead], ['/api/quest/tiles', tilesRead]] as const) {
+    if (response.status() === 403) {
+      if ((await response.json()).error?.code !== 'feature_unavailable') problems.push(`R33: ${path} refused without feature_unavailable`);
+    } else if (response.status() !== 200) {
+      problems.push(`R33: ${path} answered ${response.status()}`);
+    }
+  }
+  if (openRead.status() === 200) {
+    const continued = (await openRead.json()).data;
+    check(reader, '/api/quest/games/open', continued, problems);
+    if (continued.open) {
+      const game = await page.request.get(`/api/quest/games/${continued.open.game_id}`);
+      const view = game.status() === 200 ? (await game.json()).data : null;
+      if (!view || view.me.team_id === null) {
+        problems.push('R33: Continue named a game the reader does not play in');
+      }
+      // R35 (Phase 77): a seated game's hands and a roster's invited list are the host's (and the office's) alone.
+      if (view && !view.is_host && view.seats !== undefined) problems.push('R35: the seats of a game the reader does not host');
+      if (view && !view.is_host && view.invited !== undefined) problems.push('R35: the invited list of a game the reader does not host');
+    }
+  }
+  if (tilesRead.status() === 200) {
+    const tiles = (await tilesRead.json()).data;
+    for (const key of ['lead', 'ask_grade', 'picked_grade']) if (!(key in tiles)) problems.push(`R33: /api/quest/tiles without ${key}`);
+  }
+
+  // R29 (Phase 66): the member home takes no person -- `?user_id` changes nothing -- and carries no money.
+  await read('/api/home');
+  const home = await get(page, '/api/home');
+  if (JSON.stringify(home).match(/cents|amount|balance/i)) problems.push('R29: money on the member home');
+  const asked = await get(page, `/api/home?user_id=${alexId}`);
+  if (JSON.stringify(asked) !== JSON.stringify(home)) problems.push('R29: ?user_id changed the member home');
+  // R35 (Phase 77): a child's card says whether they sign in and at which grade they play, and "Continue with <child>"
+  // is a game the READER hosts and seated that child in -- never another guardian's.
+  for (const child of ((home as any).parent?.children ?? []) as any[]) {
+    if (!reader.family.has(child.student_user_id)) problems.push(`R35: a child card for ${child.student_user_id}`);
+    if ('signs_in' in child && typeof child.signs_in !== 'boolean') problems.push('R35: signs_in is not a yes or no');
+    if (child.grade != null && !(Number.isInteger(child.grade) && child.grade >= 0 && child.grade <= 8)) {
+      problems.push(`R35: a grade of ${child.grade}`);
+    }
+    if (child.open_game_id) {
+      const seated = await page.request.get(`/api/quest/games/${child.open_game_id}`);
+      const game = seated.status() === 200 ? (await seated.json()).data : null;
+      if (!game?.is_host || !(game.seats ?? []).some((s: any) => s.user_id === child.student_user_id)) {
+        problems.push('R35: Continue with a child names a game the reader did not seat them in');
+      }
+    }
+  }
+
+  // R17 (Phase 38): a submitted Assessment reaches the student's audience as a row, but its
+  // PDF -- which carries the answers -- only the student's current tutors and the admins.
+  const started = await unwrap<any>(
+    await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
+    'the office starting an assessment',
+  );
+  await unwrap<any>(
+    await admin.request.post(`/api/canvas-assessments/${started.id}/submit`, { data: { pages: [] } }),
+    'the office submitting it',
+  );
+  const assessments = (await get(page, '/api/canvas-assessments')) as any[];
+  check(reader, '/api/canvas-assessments', assessments, problems);
+  const tutorsSofia = (await get(page, `/api/assignments?student_user_id=${sofiaId}`) as any[]).some(
+    (pairing) => pairing.tutor_user_id === id && pairing.is_active,
+  );
+  const pdf = await page.request.get(`/api/canvas-assessments/${started.id}/pdf`);
+  if (pdf.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the PDF answered ${pdf.status()}`);
+  const theirs = assessments.find((row) => row.id === started.id);
+  if (theirs && theirs.can_review !== tutorsSofia) problems.push(`R17: can_review ${theirs.can_review}`);
+  if (theirs && theirs.started_by_name && !tutorsSofia) problems.push('R17: named who started it');
+  // Phase 40: writing a review is the tutors' and the office's; a reviewed PDF does not exist until saved.
+  const review = await page.request.get(`/api/canvas-assessments/${started.id}/review`);
+  if (review.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the review answered ${review.status()}`);
+  const notYet = await page.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`);
+  if (notYet.status() !== 404) problems.push(`R17: an unreviewed assessment's review answered ${notYet.status()}`);
+  // R35 (Phase 77, JF20): one in progress is continued by its starter or a guardian of the student -- who is served
+  // its questions, never their keys -- and discarded only by its starter or an admin.
+  const inProgress = await unwrap<any>(
+    await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
+    'the office starting another',
+  );
+  const guardsSofia = reader.family.has(sofiaId) && id !== sofiaId;
+  const open = ((await get(page, '/api/canvas-assessments')) as any[]).find((row) => row.id === inProgress.id);
+  if (open && open.can_continue !== guardsSofia) problems.push(`R35: can_continue ${open.can_continue} on the office's assessment`);
+  if (open && open.can_discard !== false) problems.push("R35: may discard somebody else's assessment");
+  const opened = await page.request.get(`/api/canvas-assessments/${inProgress.id}`);
+  if (opened.status() === 200) {
+    const detail = (await opened.json()).data;
+    if ((detail.questions !== null) !== guardsSofia) problems.push(`R35: questions served to ${email}: ${detail.questions !== null}`);
+    if (/"(answer|solution)"/.test(JSON.stringify(detail.questions ?? []))) problems.push('R35: a question with its key');
+  } else if (open) {
+    problems.push(`R35: a listed assessment answered ${opened.status()}`);
+  }
+  const discard = await page.request.post(`/api/canvas-assessments/${inProgress.id}/discard`, { data: {} });
+  if (discard.status() !== 404) problems.push(`R35: somebody else's discard answered ${discard.status()}`);
+  await admin.request.post(`/api/canvas-assessments/${inProgress.id}/discard`, { data: {} });
+
+  // R16 (Phase 33): a person's own list of locations is read only by them and their parents
+  // (and the office). Anybody else's reads as empty.
+  for (const person of people) {
+    const own = (await get(page, `/api/locations?user_id=${person.id}`)) as any[];
+    if (own.length > 0 && !reader.family.has(person.id)) {
+      problems.push(`R16: read the locations of ${person.id}`);
+    }
+  }
+  // The whole organization's list is the admins' page alone.
+  if (((await get(page, '/api/locations')) as any[]).length > 0) problems.push('R16: read every location');
+
+  const drafts = (await get(page, '/api/sessions/drafts')) as any[];
+  check(reader, '/api/sessions/drafts', drafts, problems);
+
+  // R34 (Phase 75): the lessons owed are the reader's own teaching (a non-admin's), with the place by name and
+  // kind only, no money, and only the reader's own draft -- the office drafting the first of them changes nothing.
+  const owedRead = async () => (await get(page, '/api/sessions/to-record')) as any[];
+  const owed = await owedRead();
+  check(reader, '/api/sessions/to-record', owed, problems);
+  const myDraftIds = new Set(drafts.map((draft) => draft.id));
+  for (const row of owed) {
+    if (row.tutor_user_id !== id) problems.push(`R34 a lesson owed by another tutor ${row.schedule_id}`);
+    if (row.place && Object.keys(row.place).sort().join() !== 'kind,name') problems.push('R34 a place with more than its name');
+    if (Object.keys(row).some((key) => key.endsWith('_cents'))) problems.push('R34 a lesson owed carries money');
+    if (row.draft && !myDraftIds.has(row.draft.id)) problems.push(`R34 somebody else's draft on ${row.schedule_id}`);
+  }
+  if (owed[0]) {
+    const first = owed[0];
+    const officeDraft = await unwrap<any>(
+      await admin.request.post('/api/sessions/drafts?autosave=true', {
+        data: {
+          tutor_user_id: first.tutor_user_id,
+          student_user_id: first.student_user_id,
+          occurred_on: first.occurs_on,
+          started_at: first.start_time,
+          ended_at: first.end_time,
+          mode: first.mode,
+        },
+      }),
+      'the office drafting a lesson owed',
+    );
+    const again = (await owedRead()).find((row) => row.schedule_id === first.schedule_id && row.occurs_on === first.occurs_on);
+    if (again?.draft?.id === officeDraft.id) problems.push('R34 the office’s draft on the reader’s lesson owed');
+    await admin.request.delete(`/api/sessions/drafts/${officeDraft.id}`);
+  }
+  for (const draft of drafts) {
+    if (draft.author_user_id !== id) problems.push(`R10 somebody else's draft ${draft.id}`);
+  }
+  if (drafts.some((draft) => draft.id === othersDraft.id)) problems.push('R10 the office’s draft');
+
+  for (const role of me.roles) await read(`/api/dashboard?role=${role}`);
+  for (const person of people) await read(`/api/users/${person.id}`);
+
+  const followed = (await get(page, '/api/progress')) as { student_user_id: string }[];
+  for (const row of followed) await read(`/api/progress/${row.student_user_id}`);
+
+  // Phase 58: the progress report is a PDF, not JSON, so it is not walked
+  // by `check`. It reaches exactly the students this reader follows, and
+  // carries no money; which lessons it lists is progress-report.spec.ts.
+  const followedIds = new Set(followed.map((row) => row.student_user_id));
+  for (const row of followed) {
+    const report = await page.request.get(`/api/progress/${row.student_user_id}/report.pdf`);
+    if (report.status() !== 200) problems.push(`report on ${row.student_user_id} answered ${report.status()}`);
+    else if (/\$|cents/i.test(pdfPageText(await report.body()))) problems.push(`report on ${row.student_user_id} carries money`);
+  }
+  for (const row of (await get(admin, '/api/progress')) as { student_user_id: string }[]) {
+    if (followedIds.has(row.student_user_id)) continue;
+    const report = await page.request.get(`/api/progress/${row.student_user_id}/report.pdf`);
+    if (report.status() !== 404) problems.push(`report on unfollowed ${row.student_user_id} answered ${report.status()}`);
+  }
+
+  // R9: every lesson and payment the admin can see, fetched by id, is
+  // either one this reader lists or "not found".
+  const mine = new Set(((await get(page, '/api/sessions?limit=200')) as any[]).map((s) => s.id));
+
+  // R12: reflections, on every dashboard this reader has, are about their
+  // own lessons, and a prompt for one names a lesson and nothing else.
+  for (const role of me.roles) {
+    const dashboard = ((await get(page, `/api/dashboard?role=${role}`)) as any).data;
+    for (const digest of dashboard.recent_reflections ?? []) {
+      if (!mine.has(digest.session_id)) problems.push(`R12 reflection on hidden lesson ${digest.session_id}`);
+    }
+    for (const prompt of dashboard.awaiting_reflection ?? []) {
+      if (!mine.has(prompt.session_id)) problems.push(`R12 prompt for hidden lesson ${prompt.session_id}`);
+      if (Object.keys(prompt).some((key) => key.endsWith('_cents'))) problems.push('R12 prompt carries money');
+    }
+  }
+  const all = (await get(admin, '/api/sessions?limit=200')) as any[];
+  for (const session of all) {
+    const response = await page.request.get(`/api/sessions/${session.id}`);
+    if (mine.has(session.id)) {
+      expect(response.status()).toBe(200);
+      check(reader, `/api/sessions/${session.id}`, (await response.json()).data, problems);
+    } else {
+      expect(response.status(), `R9 lesson ${session.id} should be hidden from ${email}`).toBe(404);
+    }
+  }
+
+  // Phase 21: every upcoming lesson comes from a schedule this reader can
+  // list, and carries no money -- it is shown on the Tutoring tab.
+  const mySchedules = new Set(((await get(page, '/api/schedules')) as any[]).map((s) => s.id));
+
+  // R11: every cancellation listed comes from a schedule this reader can
+  // list, and carries no money. Each schedule's own dates are crawled too.
+  const cancellations = (await get(page, '/api/schedules/cancellations')) as any[];
+  check(reader, '/api/schedules/cancellations', cancellations, problems);
+  for (const row of cancellations) {
+    if (!mySchedules.has(row.schedule_id)) problems.push(`R11 cancellation from hidden schedule ${row.schedule_id}`);
+    if (Object.keys(row).some((key) => key.endsWith('_cents'))) problems.push('R11 cancellation carries money');
+  }
+  for (const scheduleId of mySchedules) {
+    await read(`/api/schedules/upcoming?schedule_id=${scheduleId}&limit=10`);
+  }
+
+  // R11 through progress: the details of a cancellation only for a
+  // schedule the reader can list (Sanjay reading Ben's is the seeded case).
+  for (const row of followed) {
+    const progress = (await get(page, `/api/progress/${row.student_user_id}`)) as any;
+    for (const cancelled of progress.cancellations) {
+      const detailed = cancelled.note !== null || cancelled.cancelled_by_name !== null;
+      if (detailed && !mySchedules.has(cancelled.schedule_id)) {
+        problems.push(`R11 cancellation note from hidden schedule ${cancelled.schedule_id}`);
+      }
+    }
+  }
+  for (const next of (await get(page, '/api/schedules/upcoming?limit=10')) as any[]) {
+    if (!mySchedules.has(next.schedule_id)) problems.push(`upcoming lesson from hidden schedule ${next.schedule_id}`);
+    if (Object.keys(next).some((key) => key.endsWith('_cents'))) problems.push('upcoming lesson carries money');
+  }
+
+  const myPayments = new Set(((await get(page, '/api/payments?limit=200')) as any[]).map((p) => p.id));
+  const allPayments = (await get(admin, '/api/payments?limit=200')) as any[];
+  for (const payment of allPayments) {
+    const status = (await page.request.get(`/api/payments/${payment.id}`)).status();
+    expect(status, `R9 payment ${payment.id} for ${email}`).toBe(myPayments.has(payment.id) ? 200 : 404);
+  }
+
+  await admin.request.delete(`/api/sessions/drafts/${othersDraft.id}`);
+
+  expect(problems, problems.slice(0, 20).join('\n')).toEqual([]);
+}
+
 test.describe('what each non-admin can see', () => {
   for (const who of PERSONAS) {
     test(`${who}: every read endpoint obeys the visibility rules`, { tag: '@smoke' }, async ({ as }) => {
-      // Several hundred requests in a row -- every lesson and payment fetched by
-      // id -- and each now also re-checks the organization: against a remote
-      // database that outlasts the default timeout without anything being wrong.
-      test.slow();
-      const admin = await as('admin');
-      const page = await as(who);
-
-      const id = await idOf(admin, PEOPLE[who].email);
-      const me = await unwrap<any>(await page.request.get(`/api/users/${id}`), 'own record');
-      const people = (await get(page, '/api/users?limit=100')) as { id: string }[];
-
-      const reader: Reader = {
-        id,
-        family: new Set([id, ...me.dependents.map((d: any) => d.user_id)]),
-        visible: new Set(people.map((person) => person.id)),
-      };
-      expect(reader.visible.has(id)).toBe(true);
-
-      const problems: string[] = [];
-      const read = async (path: string) => check(reader, path, await get(page, path), problems);
-
-      // R10: somebody else's draft about a lesson this reader can see. The
-      // office drafting Alex's lesson with Sofia names Alex, Sofia and (as
-      // her mother) Maria's family -- and none of them may read it.
-      const alexId = await idOf(admin, PEOPLE.tutor.email);
-      const sofiaId = await idOf(admin, PEOPLE.student.email);
-      const othersDraft = await unwrap<any>(
-        await admin.request.post('/api/sessions/drafts', {
-          data: {
-            tutor_user_id: alexId,
-            student_user_id: sofiaId,
-            occurred_on: '2026-09-22',
-            started_at: '16:00',
-            ended_at: '17:00',
-            mode: 'in_person',
-            notes: 'Not ready to be read.',
-            write_up: { planned: 'Not ready either.' },
-            assessment: { rating: 1, body: 'Private until posted.' },
-          },
-        }),
-        'the office saving a draft',
-      );
-
-      await read('/api/sessions?limit=200');
-      await read('/api/assignments?include_inactive=true');
-      await read('/api/payments?limit=200');
-      await read('/api/payments/balances');
-      await read('/api/payments/monthly?year=2026');
-      await read('/api/audit?limit=200');
-      await read('/api/schedules');
-      await read('/api/schedules/upcoming?limit=10');
-      await read('/api/comments/feed');
-      await read('/api/progress');
-      // Phase 35: the organization's curricula, which every member reads.
-      await read('/api/curricula');
-      await read('/api/sessions/active');
-
-      // R33 (Phase 73): Continue and the lead grade. Where Quest is off here, both answer 403 like every /quest route.
-      const openRead = await page.request.get('/api/quest/games/open');
-      const tilesRead = await page.request.get('/api/quest/tiles');
-      for (const [path, response] of [['/api/quest/games/open', openRead], ['/api/quest/tiles', tilesRead]] as const) {
-        if (response.status() === 403) {
-          if ((await response.json()).error?.code !== 'feature_unavailable') problems.push(`R33: ${path} refused without feature_unavailable`);
-        } else if (response.status() !== 200) {
-          problems.push(`R33: ${path} answered ${response.status()}`);
-        }
-      }
-      if (openRead.status() === 200) {
-        const continued = (await openRead.json()).data;
-        check(reader, '/api/quest/games/open', continued, problems);
-        if (continued.open) {
-          const game = await page.request.get(`/api/quest/games/${continued.open.game_id}`);
-          const view = game.status() === 200 ? (await game.json()).data : null;
-          if (!view || view.me.team_id === null) {
-            problems.push('R33: Continue named a game the reader does not play in');
-          }
-          // R35 (Phase 77): a seated game's hands and a roster's invited list are the host's (and the office's) alone.
-          if (view && !view.is_host && view.seats !== undefined) problems.push('R35: the seats of a game the reader does not host');
-          if (view && !view.is_host && view.invited !== undefined) problems.push('R35: the invited list of a game the reader does not host');
-        }
-      }
-      if (tilesRead.status() === 200) {
-        const tiles = (await tilesRead.json()).data;
-        for (const key of ['lead', 'ask_grade', 'picked_grade']) if (!(key in tiles)) problems.push(`R33: /api/quest/tiles without ${key}`);
-      }
-
-      // R29 (Phase 66): the member home takes no person -- `?user_id` changes nothing -- and carries no money.
-      await read('/api/home');
-      const home = await get(page, '/api/home');
-      if (JSON.stringify(home).match(/cents|amount|balance/i)) problems.push('R29: money on the member home');
-      const asked = await get(page, `/api/home?user_id=${alexId}`);
-      if (JSON.stringify(asked) !== JSON.stringify(home)) problems.push('R29: ?user_id changed the member home');
-      // R35 (Phase 77): a child's card says whether they sign in and at which grade they play, and "Continue with <child>"
-      // is a game the READER hosts and seated that child in -- never another guardian's.
-      for (const child of ((home as any).parent?.children ?? []) as any[]) {
-        if (!reader.family.has(child.student_user_id)) problems.push(`R35: a child card for ${child.student_user_id}`);
-        if ('signs_in' in child && typeof child.signs_in !== 'boolean') problems.push('R35: signs_in is not a yes or no');
-        if (child.grade != null && !(Number.isInteger(child.grade) && child.grade >= 0 && child.grade <= 8)) {
-          problems.push(`R35: a grade of ${child.grade}`);
-        }
-        if (child.open_game_id) {
-          const seated = await page.request.get(`/api/quest/games/${child.open_game_id}`);
-          const game = seated.status() === 200 ? (await seated.json()).data : null;
-          if (!game?.is_host || !(game.seats ?? []).some((s: any) => s.user_id === child.student_user_id)) {
-            problems.push('R35: Continue with a child names a game the reader did not seat them in');
-          }
-        }
-      }
-
-      // R17 (Phase 38): a submitted Assessment reaches the student's audience as a row, but its
-      // PDF -- which carries the answers -- only the student's current tutors and the admins.
-      const started = await unwrap<any>(
-        await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
-        'the office starting an assessment',
-      );
-      await unwrap<any>(
-        await admin.request.post(`/api/canvas-assessments/${started.id}/submit`, { data: { pages: [] } }),
-        'the office submitting it',
-      );
-      const assessments = (await get(page, '/api/canvas-assessments')) as any[];
-      check(reader, '/api/canvas-assessments', assessments, problems);
-      const tutorsSofia = (await get(page, `/api/assignments?student_user_id=${sofiaId}`) as any[]).some(
-        (pairing) => pairing.tutor_user_id === id && pairing.is_active,
-      );
-      const pdf = await page.request.get(`/api/canvas-assessments/${started.id}/pdf`);
-      if (pdf.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the PDF answered ${pdf.status()}`);
-      const theirs = assessments.find((row) => row.id === started.id);
-      if (theirs && theirs.can_review !== tutorsSofia) problems.push(`R17: can_review ${theirs.can_review}`);
-      if (theirs && theirs.started_by_name && !tutorsSofia) problems.push('R17: named who started it');
-      // Phase 40: writing a review is the tutors' and the office's; a reviewed PDF does not exist until saved.
-      const review = await page.request.get(`/api/canvas-assessments/${started.id}/review`);
-      if (review.status() !== (tutorsSofia ? 200 : 404)) problems.push(`R17: the review answered ${review.status()}`);
-      const notYet = await page.request.get(`/api/canvas-assessments/${started.id}/pdf?kind=reviewed`);
-      if (notYet.status() !== 404) problems.push(`R17: an unreviewed assessment's review answered ${notYet.status()}`);
-      // R35 (Phase 77, JF20): one in progress is continued by its starter or a guardian of the student -- who is served
-      // its questions, never their keys -- and discarded only by its starter or an admin.
-      const inProgress = await unwrap<any>(
-        await admin.request.post('/api/canvas-assessments', { data: { student_user_id: sofiaId, level_id: 'NC26.4' } }),
-        'the office starting another',
-      );
-      const guardsSofia = reader.family.has(sofiaId) && id !== sofiaId;
-      const open = ((await get(page, '/api/canvas-assessments')) as any[]).find((row) => row.id === inProgress.id);
-      if (open && open.can_continue !== guardsSofia) problems.push(`R35: can_continue ${open.can_continue} on the office's assessment`);
-      if (open && open.can_discard !== false) problems.push("R35: may discard somebody else's assessment");
-      const opened = await page.request.get(`/api/canvas-assessments/${inProgress.id}`);
-      if (opened.status() === 200) {
-        const detail = (await opened.json()).data;
-        if ((detail.questions !== null) !== guardsSofia) problems.push(`R35: questions served to ${who}: ${detail.questions !== null}`);
-        if (/"(answer|solution)"/.test(JSON.stringify(detail.questions ?? []))) problems.push('R35: a question with its key');
-      } else if (open) {
-        problems.push(`R35: a listed assessment answered ${opened.status()}`);
-      }
-      const discard = await page.request.post(`/api/canvas-assessments/${inProgress.id}/discard`, { data: {} });
-      if (discard.status() !== 404) problems.push(`R35: somebody else's discard answered ${discard.status()}`);
-      await admin.request.post(`/api/canvas-assessments/${inProgress.id}/discard`, { data: {} });
-
-      // R16 (Phase 33): a person's own list of locations is read only by them and their parents
-      // (and the office). Anybody else's reads as empty.
-      for (const person of people) {
-        const own = (await get(page, `/api/locations?user_id=${person.id}`)) as any[];
-        if (own.length > 0 && !reader.family.has(person.id)) {
-          problems.push(`R16: read the locations of ${person.id}`);
-        }
-      }
-      // The whole organization's list is the admins' page alone.
-      if (((await get(page, '/api/locations')) as any[]).length > 0) problems.push('R16: read every location');
-
-      const drafts = (await get(page, '/api/sessions/drafts')) as any[];
-      check(reader, '/api/sessions/drafts', drafts, problems);
-
-      // R34 (Phase 75): the lessons owed are the reader's own teaching (a non-admin's), with the place by name and
-      // kind only, no money, and only the reader's own draft -- the office drafting the first of them changes nothing.
-      const owedRead = async () => (await get(page, '/api/sessions/to-record')) as any[];
-      const owed = await owedRead();
-      check(reader, '/api/sessions/to-record', owed, problems);
-      const myDraftIds = new Set(drafts.map((draft) => draft.id));
-      for (const row of owed) {
-        if (row.tutor_user_id !== id) problems.push(`R34 a lesson owed by another tutor ${row.schedule_id}`);
-        if (row.place && Object.keys(row.place).sort().join() !== 'kind,name') problems.push('R34 a place with more than its name');
-        if (Object.keys(row).some((key) => key.endsWith('_cents'))) problems.push('R34 a lesson owed carries money');
-        if (row.draft && !myDraftIds.has(row.draft.id)) problems.push(`R34 somebody else's draft on ${row.schedule_id}`);
-      }
-      if (owed[0]) {
-        const first = owed[0];
-        const officeDraft = await unwrap<any>(
-          await admin.request.post('/api/sessions/drafts?autosave=true', {
-            data: {
-              tutor_user_id: first.tutor_user_id,
-              student_user_id: first.student_user_id,
-              occurred_on: first.occurs_on,
-              started_at: first.start_time,
-              ended_at: first.end_time,
-              mode: first.mode,
-            },
-          }),
-          'the office drafting a lesson owed',
-        );
-        const again = (await owedRead()).find((row) => row.schedule_id === first.schedule_id && row.occurs_on === first.occurs_on);
-        if (again?.draft?.id === officeDraft.id) problems.push('R34 the office’s draft on the reader’s lesson owed');
-        await admin.request.delete(`/api/sessions/drafts/${officeDraft.id}`);
-      }
-      for (const draft of drafts) {
-        if (draft.author_user_id !== id) problems.push(`R10 somebody else's draft ${draft.id}`);
-      }
-      if (drafts.some((draft) => draft.id === othersDraft.id)) problems.push('R10 the office’s draft');
-
-      for (const role of me.roles) await read(`/api/dashboard?role=${role}`);
-      for (const person of people) await read(`/api/users/${person.id}`);
-
-      const followed = (await get(page, '/api/progress')) as { student_user_id: string }[];
-      for (const row of followed) await read(`/api/progress/${row.student_user_id}`);
-
-      // Phase 58: the progress report is a PDF, not JSON, so it is not walked
-      // by `check`. It reaches exactly the students this reader follows, and
-      // carries no money; which lessons it lists is progress-report.spec.ts.
-      const followedIds = new Set(followed.map((row) => row.student_user_id));
-      for (const row of followed) {
-        const report = await page.request.get(`/api/progress/${row.student_user_id}/report.pdf`);
-        if (report.status() !== 200) problems.push(`report on ${row.student_user_id} answered ${report.status()}`);
-        else if (/\$|cents/i.test(pdfPageText(await report.body()))) problems.push(`report on ${row.student_user_id} carries money`);
-      }
-      for (const row of (await get(admin, '/api/progress')) as { student_user_id: string }[]) {
-        if (followedIds.has(row.student_user_id)) continue;
-        const report = await page.request.get(`/api/progress/${row.student_user_id}/report.pdf`);
-        if (report.status() !== 404) problems.push(`report on unfollowed ${row.student_user_id} answered ${report.status()}`);
-      }
-
-      // R9: every lesson and payment the admin can see, fetched by id, is
-      // either one this reader lists or "not found".
-      const mine = new Set(((await get(page, '/api/sessions?limit=200')) as any[]).map((s) => s.id));
-
-      // R12: reflections, on every dashboard this reader has, are about their
-      // own lessons, and a prompt for one names a lesson and nothing else.
-      for (const role of me.roles) {
-        const dashboard = ((await get(page, `/api/dashboard?role=${role}`)) as any).data;
-        for (const digest of dashboard.recent_reflections ?? []) {
-          if (!mine.has(digest.session_id)) problems.push(`R12 reflection on hidden lesson ${digest.session_id}`);
-        }
-        for (const prompt of dashboard.awaiting_reflection ?? []) {
-          if (!mine.has(prompt.session_id)) problems.push(`R12 prompt for hidden lesson ${prompt.session_id}`);
-          if (Object.keys(prompt).some((key) => key.endsWith('_cents'))) problems.push('R12 prompt carries money');
-        }
-      }
-      const all = (await get(admin, '/api/sessions?limit=200')) as any[];
-      for (const session of all) {
-        const response = await page.request.get(`/api/sessions/${session.id}`);
-        if (mine.has(session.id)) {
-          expect(response.status()).toBe(200);
-          check(reader, `/api/sessions/${session.id}`, (await response.json()).data, problems);
-        } else {
-          expect(response.status(), `R9 lesson ${session.id} should be hidden from ${who}`).toBe(404);
-        }
-      }
-
-      // Phase 21: every upcoming lesson comes from a schedule this reader can
-      // list, and carries no money -- it is shown on the Tutoring tab.
-      const mySchedules = new Set(((await get(page, '/api/schedules')) as any[]).map((s) => s.id));
-
-      // R11: every cancellation listed comes from a schedule this reader can
-      // list, and carries no money. Each schedule's own dates are crawled too.
-      const cancellations = (await get(page, '/api/schedules/cancellations')) as any[];
-      check(reader, '/api/schedules/cancellations', cancellations, problems);
-      for (const row of cancellations) {
-        if (!mySchedules.has(row.schedule_id)) problems.push(`R11 cancellation from hidden schedule ${row.schedule_id}`);
-        if (Object.keys(row).some((key) => key.endsWith('_cents'))) problems.push('R11 cancellation carries money');
-      }
-      for (const scheduleId of mySchedules) {
-        await read(`/api/schedules/upcoming?schedule_id=${scheduleId}&limit=10`);
-      }
-
-      // R11 through progress: the details of a cancellation only for a
-      // schedule the reader can list (Sanjay reading Ben's is the seeded case).
-      for (const row of followed) {
-        const progress = (await get(page, `/api/progress/${row.student_user_id}`)) as any;
-        for (const cancelled of progress.cancellations) {
-          const detailed = cancelled.note !== null || cancelled.cancelled_by_name !== null;
-          if (detailed && !mySchedules.has(cancelled.schedule_id)) {
-            problems.push(`R11 cancellation note from hidden schedule ${cancelled.schedule_id}`);
-          }
-        }
-      }
-      for (const next of (await get(page, '/api/schedules/upcoming?limit=10')) as any[]) {
-        if (!mySchedules.has(next.schedule_id)) problems.push(`upcoming lesson from hidden schedule ${next.schedule_id}`);
-        if (Object.keys(next).some((key) => key.endsWith('_cents'))) problems.push('upcoming lesson carries money');
-      }
-
-      const myPayments = new Set(((await get(page, '/api/payments?limit=200')) as any[]).map((p) => p.id));
-      const allPayments = (await get(admin, '/api/payments?limit=200')) as any[];
-      for (const payment of allPayments) {
-        const status = (await page.request.get(`/api/payments/${payment.id}`)).status();
-        expect(status, `R9 payment ${payment.id} for ${who}`).toBe(myPayments.has(payment.id) ? 200 : 404);
-      }
-
-      await admin.request.delete(`/api/sessions/drafts/${othersDraft.id}`);
-
-      expect(problems, problems.slice(0, 20).join('\n')).toEqual([]);
+      await crawl(as, PEOPLE[who].email);
     });
   }
+
+  // Phase 79 (M9, R36): a member -- in the space with no role -- made here through the API, so the crawl needs no
+  // seeded row (test:compat runs @smoke on the last release's seed). Removed afterwards, so no later spec meets them.
+  test('member: every read endpoint obeys the visibility rules', { tag: '@smoke' }, async ({ as }) => {
+    const admin = await as('admin');
+    const email = `exposure.member.${Date.now().toString(36)}@example.com`;
+    const member = await unwrap<any>(
+      await admin.request.post('/api/users', { data: { full_name: 'Mel Member', email, roles: [], status: 'active' } }),
+      'the office adding a member',
+    );
+    expect(member.roles).toEqual([]);
+    try {
+      await crawl(as, email);
+    } finally {
+      await admin.request.delete(`/api/users/${member.id}?hard=true`);
+    }
+  });
 
   test('R33: Continue and the grade picked are the reader’s own', async ({ as }) => {
     const admin = await as('admin');

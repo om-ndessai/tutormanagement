@@ -3,7 +3,7 @@
 //
 // Phase 76 (JF37): an invited row says how they join and carries "Share invitation" (the share sheet offers Copy),
 // on the card, in its menu and as a swipe.
-import { USER_ROLES, USER_ROLE_LABELS, USER_STATUS_LABELS, type User } from '@tmi/shared';
+import { USER_ROLES, USER_STATUS_LABELS, rolesLabel, type User } from '@tmi/shared';
 import { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Button, Divider, Menu, Text } from 'react-native-paper';
@@ -163,12 +163,11 @@ export function personRowActions(user: User, actions: RowActions, isSelf: boolea
   return list;
 }
 
-/** What the card shows besides the name, for a screen reader: "No email, Student, Active". */
+/** What the card shows besides the name, for a screen reader: "No email, Student, Active" (Phase 79: "Member"). */
 function describe(user: User): string {
-  const roles = USER_ROLES.filter((role) => user.roles.includes(role)).map((role) => USER_ROLE_LABELS[role]);
   return [
     user.email ?? 'No email',
-    ...roles,
+    rolesLabel(USER_ROLES.filter((role) => user.roles.includes(role)), ', '),
     USER_STATUS_LABELS[user.status],
     ...(user.deleted_at ? ['Deactivated'] : []),
   ].join(', ');

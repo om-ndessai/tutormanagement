@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { KeyRoundIcon, Loader2Icon, PlusIcon, XIcon } from 'lucide-react';
+import { HomeIcon, KeyRoundIcon, Loader2Icon, PlusIcon, XIcon } from 'lucide-react';
 import { ORG_TIME_ZONES, formatRelativeTime, mayMakeSpace, type SpaceLookup } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import {
   useAskToJoin,
   useDeleteAccount,
   useLookupSpace,
+  useMakePersonalSpace,
   useMakeSpace,
   useWithdrawRequest,
 } from './api';
@@ -41,6 +42,9 @@ export function Welcome({ firstTime }: { firstTime: boolean }) {
   const canMake = mayMakeSpace({ account, memberships, platform_admin: platformAdmin });
   // A newcomer (nowhere to go yet) sees the two choices side by side.
   const sideBySide = canMake && firstTime && invitations.length === 0;
+  // Phase 80 (A12): anyone who signed up themselves and has no space of their own may make one -- teens too, for whom
+  // it is the only door (they cannot start a shared space).
+  const mayMakeOwn = account !== null && !memberships.some((m) => m.personal);
 
   return (
     <div className="grid gap-4" data-testid="welcome">
@@ -57,6 +61,7 @@ export function Welcome({ firstTime }: { firstTime: boolean }) {
           }
         />
       )}
+      {mayMakeOwn && <MakeOwnSpace />}
       <div className={sideBySide ? 'grid items-start gap-4 md:grid-cols-2' : 'grid gap-4'} data-testid="welcome-choices">
         <JoinWithCode />
         {canMake && <MakeSpace />}
@@ -253,6 +258,50 @@ function MakeSpace() {
           </Button>
         </form>
         {problem && <p className="text-destructive text-sm">{problem}</p>}
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * Phase 80 (A12): a space of one's own, in one tap -- for someone placed in a space when approved, someone whose
+ * request is still waiting, or anyone who said no thanks to the home's offer. It opens at once.
+ */
+function MakeOwnSpace() {
+  const make = useMakePersonalSpace();
+  const { chooseOrganization } = useAuth();
+  const [problem, setProblem] = useState<string | null>(null);
+
+  async function submit() {
+    setProblem(null);
+    try {
+      const made = (await make.mutateAsync({ make: true })).data;
+      toast.success('Your own space is ready.');
+      if (made.slug) chooseOrganization(made.slug);
+    } catch (caught) {
+      const said = message(caught, 'Could not make your space. Try again.');
+      setProblem(said);
+      toast.error(said);
+    }
+  }
+
+  return (
+    <Card className="py-0" data-testid="welcome-make-own">
+      <CardContent className="flex flex-wrap items-center gap-3 p-4">
+        <HomeIcon className="text-muted-foreground size-5 shrink-0" aria-hidden />
+        <div className="min-w-0 flex-1 basis-56">
+          <p className="font-medium">A space of your own</p>
+          <p className="text-muted-foreground text-sm">Just for you: practise on your own, or with your family later.</p>
+        </div>
+        <Button size="sm" variant="outline" disabled={make.isPending} onClick={() => void submit()} data-testid="welcome-make-own-submit">
+          {make.isPending && <Loader2Icon className="animate-spin" />}
+          Make my own space
+        </Button>
+        {problem && (
+          <p className="text-destructive basis-full text-sm" role="alert">
+            {problem}
+          </p>
+        )}
       </CardContent>
     </Card>
   );

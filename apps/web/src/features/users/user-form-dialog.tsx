@@ -471,7 +471,7 @@ export function UserFormDialog({
             <DialogTitle>{title ?? (isEdit ? COMMON_COPY.edit_person : COMMON_COPY.add_person)}</DialogTitle>
             <DialogDescription>
               {description ??
-                'One person, one record. Check every role they hold — the rest of the form follows.'}
+                'One person, one record. Check every role they hold, or none for a member — the rest of the form follows.'}
             </DialogDescription>
           </DialogHeader>
 

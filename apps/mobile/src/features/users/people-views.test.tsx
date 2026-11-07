@@ -193,6 +193,17 @@ it('gives the office a row menu, and nobody else one', async () => {
   expect(screen.getByLabelText(/Deactivated, open their record$/)).toBeTruthy();
 });
 
+// Phase 79 (M1, M6): someone in the space with no role is a member -- a quiet "Member" badge, said to a screen reader.
+it('shows a member (no role) as "Member", never "No role"', async () => {
+  mockAuth.mockReturnValue({ organization: {}, user: { id: 'admin', roles: ['admin'] } });
+  const actions: RowActions = { onView: jest.fn(), onDeactivate: jest.fn(), onRestore: jest.fn(), onDelete: jest.fn() };
+  const member = { ...maria, id: 'mo', full_name: 'Mo Member', email: 'mo@example.com', roles: [] };
+  await renderWithProviders(<UserCard user={member} actions={actions} canAct />);
+  expect(screen.getByTestId('member-badge')).toHaveTextContent('Member');
+  expect(screen.queryByText('No role')).toBeNull();
+  expect(screen.getByLabelText(/^Mo Member, mo@example\.com, Member, Active, open their record$/)).toBeTruthy();
+});
+
 // RNTL 14's `fireEvent.press` and `unmount` are async: un-awaited, the press's act() overlapped the
 // next render's, and every later render in this file came out null (the row-menu test above did).
 it('renders normally after the row-menu test', async () => {

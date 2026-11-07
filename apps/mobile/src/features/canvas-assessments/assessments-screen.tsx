@@ -13,6 +13,8 @@
 // Phase 78 (owner 2026-11-05): no "In beta." and no Beta pill, the levels in words with no " · includes unreviewed";
 // and (the Phase 77 carry) Start's warning and the rows below say the same relative time, from one `now` -- taken
 // afresh when the warning is raised, so "started 2 minutes ago" is the same words in both.
+// Phase 79 (M6, @ 758a19f, working tree): a member of a shared space (no role) reached here by a link reads one line,
+// "Assessments here are for students.", in place of the start card and the list, and nothing is read for them.
 import {
   type CanvasAssessment,
   type CanvasAssessmentLevelId,
@@ -47,6 +49,8 @@ import {
 } from './api';
 import {
   IN_PROGRESS_TITLE,
+  MEMBER_ASSESSMENTS_LINE,
+  assessmentsForMember,
   inProgressFor,
   inProgressWarning,
   levelOptionDetail,
@@ -59,8 +63,10 @@ import { rowActions, statusLabel } from './review-model';
 export function AssessmentsScreen() {
   // Phase 50: the Assessment home's "Start an assessment" names the student; StartCard checks it.
   const { student } = useLocalSearchParams<{ student?: string }>();
-  const list = useCanvasAssessments();
-  const levels = useCanvasAssessmentLevels();
+  const { user, organization } = useAuth();
+  const memberHere = assessmentsForMember(user, organization);
+  const list = useCanvasAssessments({ enabled: !memberHere });
+  const levels = useCanvasAssessmentLevels({ enabled: !memberHere });
   const [refreshing, setRefreshing] = useState(false);
   // One clock for the screen: the warning and the rows read their relative times from it.
   const [now, setNow] = useState(() => new Date());
@@ -69,7 +75,7 @@ export function AssessmentsScreen() {
     setRefreshing(true);
     setNow(new Date());
     try {
-      await Promise.all([list.refetch(), levels.refetch()]);
+      if (!memberHere) await Promise.all([list.refetch(), levels.refetch()]);
     } finally {
       setRefreshing(false);
     }
@@ -82,13 +88,34 @@ export function AssessmentsScreen() {
         A student answers questions by hand, one per page, with nothing marked while they work. When it is submitted,
         their tutors get a PDF of the questions and the handwriting.
       </PageIntro>
-      <StartCard
-        initialStudentId={typeof student === 'string' ? student : undefined}
-        now={now}
-        onTick={() => setNow(new Date())}
-      />
-      <AssessmentList now={now} />
+      {memberHere ? (
+        <MemberLine />
+      ) : (
+        <>
+          <StartCard
+            initialStudentId={typeof student === 'string' ? student : undefined}
+            now={now}
+            onTick={() => setNow(new Date())}
+          />
+          <AssessmentList now={now} />
+        </>
+      )}
     </Screen>
+  );
+}
+
+/** Phase 79 (M6): a member's one line, where the start card would be. */
+function MemberLine() {
+  const theme = useAppTheme();
+  return (
+    <View
+      testID="assessment-start"
+      style={{ backgroundColor: theme.tokens.muted, borderRadius: radius.md, padding: space.md }}
+    >
+      <Text testID="assessment-for-students" variant="bodyMedium" accessibilityRole="text" accessibilityLiveRegion="polite">
+        {MEMBER_ASSESSMENTS_LINE}
+      </Text>
+    </View>
   );
 }
 

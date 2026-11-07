@@ -30,6 +30,7 @@ import {
   type UpdateOrganizationPayload,
   type UpdateOrganizationSettingsPayload,
   type UserRole,
+  type AgeBand,
 } from '@tmi/shared';
 import { orgIdFromRow, type OrgContext, type OrgId } from '../lib/org.js';
 
@@ -296,32 +297,51 @@ export async function listInvitations(db: D1Database, userId: string): Promise<I
  * Accepts or declines an invitation. Returns null when there was none; otherwise the name the
  * inviting organization typed (`invited_name`, null when it typed none) -- which is all it may
  * know of them until they accept, so a decline is logged under it (S6, R21).
+ *
+ * Phase 79 (M5): a 13-17 who signed themselves up is never an admin of a shared space, so one
+ * ACCEPTING an invitation that carries the admin role (into a space that is not personal) joins
+ * without it, in the same batch; `admin_dropped` says so, for the log.
  */
 export async function answerInvitation(
   db: D1Database,
   org: OrgId,
   userId: string,
   accept: boolean,
-): Promise<{ invited_name: string | null } | null> {
+): Promise<{ invited_name: string | null; admin_dropped: boolean } | null> {
   const before = await db
     .prepare(
-      `SELECT invited_name FROM org_members
-       WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`,
+      `SELECT m.invited_name,
+              (EXISTS (SELECT 1 FROM platform_accounts a WHERE a.user_id = m.user_id AND a.age_band = '13-17')
+               AND EXISTS (SELECT 1 FROM user_roles r
+                           WHERE r.organization_id = m.organization_id AND r.user_id = m.user_id AND r.role = 'admin')
+               AND (SELECT o.personal FROM organizations o WHERE o.id = m.organization_id) = 0) AS teen_admin
+       FROM org_members m
+       WHERE m.organization_id = ? AND m.user_id = ? AND m.status = 'invited' AND m.removed_at IS NULL`,
     )
     .bind(org, userId)
-    .first<{ invited_name: string | null }>();
+    .first<{ invited_name: string | null; teen_admin: number }>();
   if (!before) return null;
-  const result = await db
-    .prepare(
-      accept
-        ? `UPDATE org_members SET status = 'active', invited_name = NULL, updated_at = ${NOW}
-           WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`
-        : `UPDATE org_members SET removed_at = ${NOW}, updated_at = ${NOW}
-           WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`,
-    )
-    .bind(org, userId)
-    .run();
-  return result.meta.changes ? { invited_name: before.invited_name } : null;
+  const dropAdmin = accept && before.teen_admin === 1;
+  const [result] = await db.batch([
+    db
+      .prepare(
+        accept
+          ? `UPDATE org_members SET status = 'active', invited_name = NULL, updated_at = ${NOW}
+             WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`
+          : `UPDATE org_members SET removed_at = ${NOW}, updated_at = ${NOW}
+             WHERE organization_id = ? AND user_id = ? AND status = 'invited' AND removed_at IS NULL`,
+      )
+      .bind(org, userId),
+    // An admin holds no profile, so taking the role away leaves nothing for the profile rule to clean.
+    ...(dropAdmin
+      ? [
+          db
+            .prepare("DELETE FROM user_roles WHERE organization_id = ? AND user_id = ? AND role = 'admin'")
+            .bind(org, userId),
+        ]
+      : []),
+  ]);
+  return result?.meta.changes ? { invited_name: before.invited_name, admin_dropped: dropAdmin } : null;
 }
 
 /**
@@ -1045,10 +1065,19 @@ export async function createJoinRequest(
   userId: string,
   ask: { role: JoinRequestRole | null; note: string | null } = { role: null, note: null },
 ): Promise<void> {
-  await db
+  await joinRequestStatement(db, org, userId, ask).run();
+}
+
+/** The same request as one statement, for a batch (Phase 80, A11: put forward when an account is approved). */
+export function joinRequestStatement(
+  db: D1Database,
+  org: OrgId,
+  userId: string,
+  ask: { role: JoinRequestRole | null; note: string | null } = { role: null, note: null },
+): D1PreparedStatement {
+  return db
     .prepare('INSERT INTO join_requests (organization_id, user_id, role, note) VALUES (?, ?, ?, ?)')
-    .bind(org, userId, ask.role, ask.note)
-    .run();
+    .bind(org, userId, ask.role, ask.note);
 }
 
 /**
@@ -1153,29 +1182,37 @@ export async function answerJoinRequest(
   return (result.meta.changes ?? 0) > 0;
 }
 
-/** A space's open requests, oldest first, with who Google says each person is. */
+/**
+ * A space's open requests, oldest first, with who Google says each person is -- and, for the Let in
+ * sheet, whether they signed up as a 13-17 (Phase 79, M5: a teen is never let in as an admin).
+ */
 export async function listJoinRequests(db: D1Database, org: OrgId): Promise<JoinRequest[]> {
   const result = await db
     .prepare(
-      `SELECT j.user_id, u.full_name, u.email, j.requested_at, j.role, j.note
+      `SELECT j.user_id, u.full_name, u.email, j.requested_at, j.role, j.note,
+              EXISTS (SELECT 1 FROM platform_accounts a WHERE a.user_id = j.user_id AND a.age_band = '13-17') AS teen
        FROM join_requests j JOIN users u ON u.id = j.user_id AND u.deleted_at IS NULL
        WHERE j.organization_id = ? AND j.outcome IS NULL
        ORDER BY j.requested_at`,
     )
     .bind(org)
-    .all<JoinRequest>();
-  return result.results ?? [];
+    .all<Omit<JoinRequest, 'teen'> & { teen: number }>();
+  return (result.results ?? []).map((row) => ({ ...row, teen: row.teen === 1 }));
 }
 
-/** Whether this person has an open request here, and the address it was made with. */
+/**
+ * Whether this person has an open request here, the address it was made with, and their age band
+ * when they signed themselves up (null when they have no platform account) -- Phase 79 (M5).
+ */
 export async function openJoinRequest(
   db: D1Database,
   org: OrgId,
   userId: string,
-): Promise<{ email: string | null; full_name: string } | null> {
+): Promise<{ email: string | null; full_name: string; age_band: AgeBand | null } | null> {
   return db
     .prepare(
-      `SELECT u.email, u.full_name FROM join_requests j JOIN users u ON u.id = j.user_id
+      `SELECT u.email, u.full_name, (SELECT a.age_band FROM platform_accounts a WHERE a.user_id = u.id) AS age_band
+       FROM join_requests j JOIN users u ON u.id = j.user_id
        WHERE j.organization_id = ? AND j.user_id = ? AND j.outcome IS NULL`,
     )
     .bind(org, userId)

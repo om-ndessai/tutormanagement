@@ -317,6 +317,16 @@ test.describe('Phase 78: the screens a phone reader met', () => {
           .toBe(true);
       } finally {
         await unwrap(await platform.request.put('/api/platform/guest', { data: before.settings }), 'guest play back');
+        // Switching guest play on filled every empty pool, and a pool is reserved from members' draws even while
+        // guest play is off: empty again the ones that were empty, or a later file's game finds the level short.
+        const wasEmpty = new Set(before.pools.filter((p: any) => p.size === 0).map((p: any) => p.level_id));
+        const now = await unwrap<any>(await platform.request.get('/api/platform/guest'), 'guest console after');
+        for (const pool of now.pools.filter((p: any) => p.size > 0 && wasEmpty.has(p.level_id))) {
+          await unwrap(
+            await platform.request.put(`/api/platform/guest/pools/${pool.level_id}`, { data: { level_id: pool.level_id, question_ids: [] } }),
+            `clearing ${pool.level_id}`,
+          );
+        }
       }
     });
 

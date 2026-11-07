@@ -17,7 +17,7 @@ import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 import Svg, { Path } from 'react-native-svg';
 
-import { COMMON_COPY, featureOn, type FeatureState } from '@tmi/shared';
+import { COMMON_COPY, featureOn, seesTeachingPages, type FeatureState } from '@tmi/shared';
 
 import { haptics } from '@/lib/haptics';
 import { useAuth } from '@/providers/auth-provider';
@@ -57,9 +57,15 @@ export type TabName = 'dashboard' | 'sessions' | 'progress' | 'more';
  * Phase 50: the tabs the bar shows here. Sessions and Progress are Tutoring's, so a space without it
  * has Home and More (Assessment and Quest stay under More: in an Assessment-only space Home is the
  * Assessment home). The tabs layout still declares every route, for deep links; the gates answer them.
+ * Phase 79 (M6): Lessons and Progress are teaching pages too, so a member (no role) has Home and More wherever they
+ * are (`seesTeachingPages`). Roles not known yet (no session) leave the bar as the space has it.
  */
-export function visibleTabs(organization: Partial<FeatureState> | null | undefined): TabName[] {
-  return featureOn(organization, 'tutoring') ? ['dashboard', 'sessions', 'progress', 'more'] : ['dashboard', 'more'];
+export function visibleTabs(
+  organization: Partial<FeatureState> | null | undefined,
+  roles?: readonly string[] | null,
+): TabName[] {
+  const teaching = featureOn(organization, 'tutoring') && (roles == null || seesTeachingPages(roles));
+  return teaching ? ['dashboard', 'sessions', 'progress', 'more'] : ['dashboard', 'more'];
 }
 
 /** The create button goes after this many tabs: the middle (2 of 4, between Lessons and Progress; 1 of 2). */
@@ -81,8 +87,8 @@ export function AppTabBar({ state, descriptors, navigation, insets }: BottomTabB
   const theme = useAppTheme();
   const sheet = useRef<BottomSheetModal>(null);
   const showCreate = useTabBarHump();
-  const { organization } = useAuth();
-  const shown: readonly string[] = visibleTabs(organization);
+  const { organization, user } = useAuth();
+  const shown: readonly string[] = visibleTabs(organization, user?.roles);
   const [width, setWidth] = useState(0);
 
   const focusedName = state.routes[state.index]?.name ?? '';

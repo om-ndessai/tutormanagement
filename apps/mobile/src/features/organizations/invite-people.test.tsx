@@ -31,9 +31,10 @@ function as(org: Record<string, unknown> = {}) {
 beforeEach(() => jest.clearAllMocks());
 
 describe('InvitePeople (Phase 61, S12)', () => {
-  it('offers Admin and Parent in a newcomer’s space, and Tutor only where Tutoring is allowed', async () => {
+  it('offers Member, Admin and Parent in a newcomer’s space, and Tutor only where Tutoring is allowed', async () => {
     as();
     await renderWithProviders(<InvitePeople onDone={jest.fn()} />);
+    expect(screen.getByTestId('invite-role-0-member')).toBeTruthy();
     expect(screen.getByTestId('invite-role-0-admin')).toBeTruthy();
     expect(screen.getByTestId('invite-role-0-parent')).toBeTruthy();
     expect(screen.queryByTestId('invite-role-0-tutor')).toBeNull();
@@ -43,6 +44,25 @@ describe('InvitePeople (Phase 61, S12)', () => {
     as({ feature_tutoring: true });
     await renderWithProviders(<InvitePeople onDone={jest.fn()} />);
     expect(screen.getByTestId('invite-role-0-tutor')).toBeTruthy();
+  });
+
+  it('starts each row on Member, first, and sends a member with no role (Phase 79, M3)', async () => {
+    as();
+    mockInvite.mockResolvedValue({ data: {} });
+    await renderWithProviders(<InvitePeople onDone={jest.fn()} />);
+    const choices = screen.getAllByRole('radio').map((node) => node.props.testID);
+    expect(choices).toEqual(['invite-role-0-member', 'invite-role-0-admin', 'invite-role-0-parent']);
+    expect(screen.getByTestId('invite-role-0-member')).toHaveProp('accessibilityState', { checked: true });
+    expect(screen.getByTestId('invite-role-0-admin')).toHaveProp('accessibilityState', { checked: false });
+    expect(screen.getByTestId('invite-role-0-member')).toHaveTextContent('Member');
+    await fireEvent.press(screen.getByTestId('invite-add-row'));
+    expect(screen.getByTestId('invite-role-1-member')).toHaveProp('accessibilityState', { checked: true });
+    await fireEvent.changeText(screen.getByTestId('invite-email-0'), 'mo.member@example.com');
+    await fireEvent.press(screen.getByTestId('invite-send'));
+    await waitFor(() => expect(mockToast.success).toHaveBeenCalledWith('Invitation made.'));
+    expect(mockInvite).toHaveBeenCalledWith({ email: 'mo.member@example.com', full_name: undefined, role: 'member' });
+    expect(inviteRowRequest(mockInvite.mock.calls[0][0]).roles).toEqual([]);
+    expect(screen.getByTestId('invite-sent-line-mo.member@example.com')).toHaveTextContent(/mo\.member@example\.com · Member/);
   });
 
   it('checks a row on the device, sending nothing for a bad email', async () => {

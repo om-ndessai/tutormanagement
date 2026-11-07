@@ -1,0 +1,190 @@
+# Phase 79 (M6, docs/members-plan.md; owner 2026-11-06): a member -- a person in a space with no role -- plays Quest
+# there. Mo is made a member of chmi through the API (as Priya would with "Anyone, by email", then accepted), and signs
+# in on a fresh device:
+# - no welcome wizard and no tour, though chmi has Tutoring (`tourOffered(org, [])` is false);
+# - Home is the learner's: the Quest board, no Assessment section (nobody to assess, `may_assess` false), nothing of
+#   Tutoring's or money;
+# - the tab bar is Home and More (no Lessons, no Progress) with no (+); More lists Quest, Activity and My profile but
+#   none of the teaching pages (Dashboard, Schedule, Assessment, Comments);
+# - the account sheet says "Member at CHMI" and offers no tour;
+# - a link to Assessment says one line: "Assessments here are for students.".
+# Then Priya, on People: the Members filter shows Mo, with a quiet "Member" badge.
+# Self-cleaning: everyone the seed did not make is removed from chmi before and after (clean-people). chmi's Question
+# Quest switch is off in the seed, where a member has nothing to play (shell/navigation checks that line): it is switched
+# on for this flow, as the quest/* flows do (quest-start.js), and back off after (quest-end.js).
+appId: ${APP_ID}
+onFlowStart:
+  - runScript: ../../scripts/clean-people.js
+  - runScript: ../../scripts/quest-end.js
+  - runScript: ../../scripts/quest-start.js
+  - runScript:
+      file: ../../scripts/spaces.js
+      env:
+        ACTION: add-person
+        EMAIL: members.player@example.com
+        NAME: Mo Member
+        ROLES: member
+        ACTOR: priya.raghavan@gmail.com
+        ORG: chmi
+onFlowComplete:
+  - runScript: ../../scripts/clean-people.js
+  - runScript: ../../scripts/quest-end.js
+tags:
+  - feature
+---
+# The server's home for a member: the learner's hat, nobody to assess.
+- evalScript: "${output.moHome = json(http.get('http://localhost:8787/api/home', { headers: { 'X-Dev-User': 'members.player@example.com', 'X-Organization': 'chmi' } }).body).data}"
+- assertTrue: ${output.moHome.hats.join(',') === 'learner'}
+- assertTrue: ${output.moHome.may_assess === false}
+# A fresh device: the wizard would open by itself for a first-timer with a role here.
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: members.player@example.com
+      ORG: chmi
+      FRESH: '1'
+- extendedWaitUntil:
+    visible:
+      id: home-band
+    timeout: 30000
+- assertVisible:
+    id: home-greeting
+    text: 'Good (morning|afternoon|evening), Mo'
+- assertNotVisible:
+    id: screen-onboarding
+- assertNotVisible:
+    id: tour-offer
+# Home and More, no (+).
+- assertVisible:
+    id: tab-dashboard
+- assertVisible:
+    id: tab-more
+- assertNotVisible:
+    id: tab-sessions
+- assertNotVisible:
+    id: tab-progress
+- assertNotVisible:
+    id: create-button
+- assertNotVisible: 'Lessons'
+- takeScreenshot: member-home-member
+# The learner's section: the Quest board, and no Assessment home.
+- scrollUntilVisible:
+    element:
+      id: home-section-learner
+    visibilityPercentage: 1
+- scrollUntilVisible:
+    element:
+      id: play-home
+    visibilityPercentage: 1
+- assertNotVisible:
+    id: assessment-home
+- assertNotVisible:
+    id: quick-start_assessment
+- assertNotVisible:
+    id: quick-record_lesson
+- assertNotVisible: '.*\$[0-9].*'
+# More: Quest, Activity and My profile; none of the teaching pages.
+- tapOn:
+    id: tab-more
+- extendedWaitUntil:
+    visible:
+      id: screen-more
+    timeout: 10000
+- assertVisible:
+    id: more-nav-quest
+- assertVisible:
+    id: more-nav-activity
+- assertVisible:
+    id: more-nav-profile
+- assertNotVisible:
+    id: more-nav-analytics
+- assertNotVisible:
+    id: more-nav-schedule
+- assertNotVisible:
+    id: more-nav-assessments
+- assertNotVisible:
+    id: more-nav-comments
+- assertNotVisible:
+    id: more-nav-users
+- takeScreenshot: member-home-member-more
+# The account sheet: "Member at CHMI", and no tour.
+- tapOn:
+    id: tab-dashboard
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: 'Member at CHMI'
+- assertNotVisible:
+    id: account-tour
+- runFlow:
+    file: ../../subflows/dismiss-sheet.yaml
+    env:
+      SHEET: screen-account
+# A link to Assessment: one line, no picker.
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://assessments
+- extendedWaitUntil:
+    visible:
+      id: screen-assessments
+    timeout: 20000
+- assertVisible:
+    id: assessment-for-students
+    text: 'Assessments here are for students\.'
+- assertNotVisible:
+    id: assessment-student
+- assertNotVisible:
+    id: assessment-begin
+- takeScreenshot: member-assessments-line
+
+# --- Priya: People's Members filter ----------------------------------------------------------------------------
+- runFlow:
+    file: ../../subflows/sign-in-as.yaml
+    env:
+      PERSONA: priya.raghavan@gmail.com
+      ORG: chmi
+- extendedWaitUntil:
+    visible:
+      id: screen-home
+    timeout: 30000
+- runFlow:
+    file: ../../subflows/open-link.yaml
+    env:
+      LINK: aimtrue://people
+- extendedWaitUntil:
+    visible:
+      id: screen-people
+    timeout: 20000
+# Members is the last chip of the role row, which scrolls sideways: swipe the row, not the page.
+- runFlow:
+    when:
+      notVisible:
+        id: people-role-member
+    commands:
+      - swipe:
+          from:
+            id: people-role-student
+          direction: LEFT
+- tapOn:
+    id: people-role-member
+# Only the members: Alex (a tutor, near the top of the list) goes, and Mo is there with a quiet badge.
+- extendedWaitUntil:
+    notVisible: '.*Alex Chen.*'
+    timeout: 15000
+- extendedWaitUntil:
+    visible: '.*Mo Member.*'
+    timeout: 15000
+# The row's text is its record button's label (on iOS a badge's words are merged into it); the badge is in Mo's row.
+- assertVisible: 'Mo Member, members\.player@example\.com, Member, .*open their record'
+- assertVisible:
+    id: member-badge
+    childOf:
+      text: 'Mo Member, .*open their record'
+- assertNotVisible: 'No role'
+- takeScreenshot: member-people-filter

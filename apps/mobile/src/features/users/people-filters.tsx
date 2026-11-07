@@ -1,6 +1,7 @@
 // The directory's controls, from apps/web/src/features/users/users-page.tsx @ 1132322: search, role,
 // status and "Show deactivated" -- plus the sort the web puts on its column headers. Stacked rather
-// than squeezed onto one row, which on a phone pushed the page wider than the screen.
+// than squeezed onto one row, which on a phone pushed the page wider than the screen. Phase 79 (M6; users-page.tsx,
+// working tree): "Members" after the roles -- the people here with no role (`?role=member`).
 import {
   COMMON_COPY,
   featureAllowed,
@@ -22,9 +23,12 @@ import { useAuth } from '@/providers/auth-provider';
 import { CHIP_HIT_SLOP, space } from '@/theme/tokens';
 import { SORT_OPTIONS, sortLabel } from './people-model';
 
+/** Phase 79 (M6): the role filter's value for people with no role. */
+export const MEMBER_FILTER = 'member';
+
 export interface PeopleFilterState {
   search: string;
-  role: UserRole | null;
+  role: UserRole | typeof MEMBER_FILTER | null;
   status: UserStatus | null;
   includeDeleted: boolean;
   sort: UserSortField;
@@ -47,7 +51,7 @@ export function PeopleFilters({
   const [statusOpen, setStatusOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
 
-  const chooseRole = (role: UserRole | null) => {
+  const chooseRole = (role: PeopleFilterState['role']) => {
     haptics.selection();
     onChange({ role });
   };
@@ -97,6 +101,16 @@ export function PeopleFilters({
             {USER_ROLE_LABELS[role]}
           </Chip>
         ))}
+        <Chip
+          hitSlop={CHIP_HIT_SLOP}
+          testID="people-role-member"
+          selected={value.role === MEMBER_FILTER}
+          showSelectedCheck={false}
+          mode={value.role === MEMBER_FILTER ? 'flat' : 'outlined'}
+          onPress={() => chooseRole(value.role === MEMBER_FILTER ? null : MEMBER_FILTER)}
+        >
+          Members
+        </Chip>
       </ScrollView>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm }}>

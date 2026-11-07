@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { COMMON_COPY, featureOn, seesPeoplePages, type FeatureSet } from '@tmi/shared';
+import { COMMON_COPY, featureOn, seesPeoplePages, seesTeachingPages, type FeatureSet } from '@tmi/shared';
 import {
   ActivityIcon,
   BookOpenIcon,
@@ -44,27 +44,32 @@ const NAV_ITEMS: (PaletteDestination & {
   admin?: boolean;
   /** Phase 74 (JF31): the people pages -- for admins and tutors only (`seesPeoplePages`); a link still opens them. */
   people?: boolean;
+  /**
+   * Phase 79 (M6): a teaching page -- for someone who holds a role here (`seesTeachingPages`). A member (no role) plays
+   * Quest, so their menu leaves these out; a link still opens them.
+   */
+  teaching?: boolean;
   /** Phase 50: the feature set it belongs to; shown only while that set is on here. */
   set?: FeatureSet;
 })[] = [
   // Phase 66: the member home first; the role dashboards (with Finance) where Tutoring is on.
   { to: '/', label: 'Home', icon: HouseIcon, end: true, keywords: ['home', 'next', 'today'] },
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboardIcon, end: false, set: 'tutoring', keywords: ['overview', 'analytics', 'finance'] },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboardIcon, end: false, teaching: true, set: 'tutoring', keywords: ['overview', 'analytics', 'finance'] },
   // Phase 78 (JF32): the glossary's words; the routes stay /users and /sessions, and the old words still find them.
   { to: '/users', label: COMMON_COPY.people_page, icon: UsersIcon, end: false, people: true, keywords: ['users', 'students', 'tutors', 'parents', 'family'] },
   { to: '/assignments', label: 'Pairings', icon: LinkIcon, end: false, people: true, set: 'tutoring', keywords: ['assignments', 'tutor', 'student'] },
-  { to: '/sessions', label: COMMON_COPY.lessons_page, icon: BookOpenIcon, end: false, set: 'tutoring', keywords: ['sessions', 'record', 'notes', 'drafts'] },
-  { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, set: 'tutoring', keywords: ['plans', 'assessments', 'goals'] },
+  { to: '/sessions', label: COMMON_COPY.lessons_page, icon: BookOpenIcon, end: false, teaching: true, set: 'tutoring', keywords: ['sessions', 'record', 'notes', 'drafts'] },
+  { to: '/progress', label: 'Progress', icon: TrendingUpIcon, end: false, teaching: true, set: 'tutoring', keywords: ['plans', 'assessments', 'goals'] },
   // Phase 38: answers written on a canvas. Only while the space has it on. No "Beta" mark since Phase 78 (owner,
   // 2026-11-05): checked questions are served like any other.
-  { to: '/assessments', label: 'Assessment', icon: PenLineIcon, end: false, set: 'assessment', keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'] },
+  { to: '/assessments', label: 'Assessment', icon: PenLineIcon, end: false, teaching: true, set: 'assessment', keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'] },
   // Phase 42: Question Quest and the quests on the board. Only while the space has it on.
   { to: '/quest', label: 'Quest', icon: TrophyIcon, end: false, set: 'quest', keywords: ['game', 'points', 'questions', 'approve', 'review'] },
-  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, set: 'tutoring', keywords: ['calendar', 'cancel', 'weekly'] },
+  { to: '/schedule', label: 'Schedule', icon: CalendarDaysIcon, end: false, teaching: true, set: 'tutoring', keywords: ['calendar', 'cancel', 'weekly'] },
   // Every tutor's and student's places (Phase 33): admins only.
   { to: '/locations', label: 'Locations', icon: MapPinIcon, end: false, admin: true, set: 'tutoring', keywords: ['places', 'rooms', 'address', 'online', 'reminder'] },
   { to: '/billing', label: 'Billing', icon: WalletIcon, end: false, people: true, set: 'tutoring', keywords: ['payments', 'money', 'balances', '1099', 'tax'] },
-  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, set: 'tutoring', keywords: ['notes', 'messages'] },
+  { to: '/comments', label: 'Comments', icon: MessageSquareIcon, end: false, teaching: true, set: 'tutoring', keywords: ['notes', 'messages'] },
   { to: '/activity', label: 'Activity', icon: ActivityIcon, end: false, keywords: ['log', 'audit', 'history'] },
   { to: '/profile', label: 'My profile', icon: UserIcon, end: false, keywords: ['me', 'account'] },
   // The organization's own settings (its 1099 payer details): admins only.
@@ -74,16 +79,22 @@ const NAV_ITEMS: (PaletteDestination & {
 
 /**
  * The menu, from the reader's roles: what they do not reach is left out. A student or a parent never sees People,
- * Pairings or Billing (owner, 2026-11-05; JF31) -- a parent reaches their child from the home's child card -- though a
- * link to one still opens it.
+ * Pairings or Billing (owner, 2026-11-05; JF31) -- a parent reaches their child from the home's child card -- and a
+ * member (no role, Phase 79) sees none of the teaching pages, so their menu is Home, Quest, Activity and My profile.
+ * A link to one still opens it.
  */
 function useNavItems() {
   const { user, organization } = useAuth();
   const roles = user?.roles ?? [];
   const admin = roles.includes('admin');
   const people = seesPeoplePages(roles);
+  const teaching = seesTeachingPages(roles);
   return NAV_ITEMS.filter(
-    (item) => (!item.admin || admin) && (!item.people || people) && (!item.set || featureOn(organization, item.set)),
+    (item) =>
+      (!item.admin || admin) &&
+      (!item.people || people) &&
+      (!item.teaching || teaching) &&
+      (!item.set || featureOn(organization, item.set)),
   );
 }
 
@@ -163,9 +174,12 @@ export function AppShell() {
 
 function PaletteLayer({ children }: { children: React.ReactNode }) {
   const { openWizard } = useOnboarding();
+  const { user } = useAuth();
   const items = useNavItems();
+  // Phase 79 (M6): no tour for a member (no role): it walks the teaching pages their menu leaves out.
+  const member = user?.roles.length === 0;
   return (
-    <CommandPaletteProvider destinations={items} onTour={openWizard}>
+    <CommandPaletteProvider destinations={items} onTour={member ? undefined : openWizard}>
       {children}
     </CommandPaletteProvider>
   );

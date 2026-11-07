@@ -5,10 +5,12 @@
 // `feature` with `set`: each item of a feature set shows only while that set is on here). Phase 74 (JF31, owner
 // 2026-11-05): Users, Pairings and Billing are for admins and tutors (`PEOPLE_PAGE_ROLES`, shared `seesPeoplePages`):
 // a student or a parent never sees them in the menu (a parent reaches their child from the home's child card); the
-// routes still answer a deep link.
+// routes still answer a deep link. Phase 79 (M6, docs/members-plan.md; app-shell.tsx, working tree): the teaching pages
+// (Dashboard, Lessons, Schedule, Progress, Comments, Assessment) are for someone who holds a role here (shared
+// `seesTeachingPages`): a member (no role) plays Quest, so their menu is Home, Quest, Activity and My profile.
 import type { Href } from 'expo-router';
 
-import { COMMON_COPY, featureOn, type FeatureSet, type FeatureState } from '@tmi/shared';
+import { COMMON_COPY, featureOn, seesTeachingPages, type FeatureSet, type FeatureState } from '@tmi/shared';
 
 import { useAuth } from '@/providers/auth-provider';
 
@@ -37,6 +39,8 @@ export interface NavItem {
   tourId: string;
   /** Phase 50: the feature set it belongs to; shown only while that set is on here (`featureOn`). */
   set?: FeatureSet;
+  /** Phase 79 (M6): a teaching page, for someone who holds a role here (`seesTeachingPages`); a link still opens it. */
+  teaching?: boolean;
   /** A small label beside it. None carries one since Phase 78 ("Beta" went, owner 2026-11-05). */
   badge?: string;
 }
@@ -56,6 +60,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/sessions',
+    teaching: true,
     set: 'tutoring',
     // Phase 78 (the glossary): the page says lessons; its route and testIDs keep their code names.
     label: COMMON_COPY.lessons_page,
@@ -68,6 +73,7 @@ export const NAV_ITEMS: NavItem[] = [
     // Reached from Sessions (the Lessons | Schedule switch), and listed under More as well, so it
     // is in the menu as it is in the web sidebar (the owner, 2026-10-28).
     href: '/schedule',
+    teaching: true,
     set: 'tutoring',
     label: 'Schedule',
     icon: 'calendar-month-outline',
@@ -76,6 +82,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/progress',
+    teaching: true,
     set: 'tutoring',
     label: 'Progress',
     icon: 'trending-up',
@@ -86,6 +93,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     // Phase 38: answers written on a canvas. Only while the organization has it on. (Its Beta badge went in Phase 78.)
     href: '/assessments',
+    teaching: true,
     label: 'Assessment',
     icon: 'draw-pen',
     keywords: ['test', 'quiz', 'canvas', 'handwriting', 'questions'],
@@ -107,6 +115,7 @@ export const NAV_ITEMS: NavItem[] = [
     // role dashboard (Tutoring and Finance, the admin's "view as"), for every role where Tutoring is on:
     // Home carries no money, so a parent's balances and a student's figures are here.
     href: '/analytics',
+    teaching: true,
     set: 'tutoring',
     label: 'Dashboard',
     icon: 'view-dashboard-outline',
@@ -151,6 +160,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     href: '/comments',
+    teaching: true,
     set: 'tutoring',
     label: 'Comments',
     icon: 'message-text-outline',
@@ -188,10 +198,12 @@ export function visibleNavItems(
   organization: Partial<FeatureState> | null | undefined,
 ): NavItem[] {
   const admin = Boolean(roles?.includes('admin'));
+  const teaching = seesTeachingPages(roles ?? []);
   return NAV_ITEMS.filter(
     (item) =>
       (!item.admin || admin) &&
       (!item.roles || item.roles.some((role) => roles?.includes(role))) &&
+      (!item.teaching || teaching) &&
       (!item.set || featureOn(organization, item.set)),
   );
 }

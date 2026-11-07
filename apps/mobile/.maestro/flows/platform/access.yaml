@@ -8,6 +8,11 @@
 # step 14); Exit is then the guest home. Nav, signed in again, sees the gear's count, finds them under
 # Waiting for approval and approves them; they move to Recently decided. The newcomer can then sign in,
 # into their own space.
+# Phase 80 (docs/members-plan.md, A10-A12, A15): the Post-approved sign-up made no space (the console's people lookup
+# counts none while they wait). Approve opens the approve sheet: Nowhere by default; Nav searches "Chapel" and places
+# Pia in Chapel Hill Math Institute (made in the console) as a Member -- Admin is offered there, for an adult -- and the
+# sheet says she joins at once. Recently decided reads "Joined Chapel Hill Math Institute". Pia then signs in into CHMI
+# as a member, offered a space of her own on Home (the offer itself is home/personal-offer's subject).
 # Self-cleaning, before and after: the mode back to Open, the newcomer approved (so it may be deleted)
 # and deleted with its personal space, and guest play off.
 appId: ${APP_ID}
@@ -218,8 +223,13 @@ onFlowComplete:
     visible:
       id: screen-guest-home
     timeout: 15000
+# Phase 80 (A10): under Post-approved, signing up made no space at all.
+- runScript:
+    file: ../../scripts/access.js
+    env: { ACTION: count, EMAIL: access.pending@example.com }
+- assertTrue: ${output.access.spaces === 0}
 
-# 3. The platform admin approves them.
+# 3. The platform admin approves them, placing them in CHMI (Phase 80, A11, A15).
 - runScript:
     file: ../../scripts/guest-play.js
     env: { ACTION: 'off' }
@@ -261,8 +271,59 @@ onFlowComplete:
 - assertVisible: 'access.pending@example.com'
 - assertVisible: 'Adult · Developer sign-in · signed up .*'
 - takeScreenshot: access-console-waiting
+# Approve asks where to place them first: the sheet, on Nowhere.
 - tapOn:
     id: access-approve-${output.access.userId}
+- extendedWaitUntil:
+    visible:
+      id: access-approve-sheet
+    timeout: 10000
+- assertVisible:
+    id: access-approve-title
+    text: 'Approve Pia Pending'
+- assertVisible: 'access.pending@example.com · Adult'
+- assertVisible:
+    id: access-approve-place-label
+    text: 'Place them in a space \(optional\)'
+- assertVisible:
+    id: access-approve-row-nowhere
+- assertNotVisible:
+    id: access-approve-place
+# CHMI, found by name (seeded: 0a000000-0000-4000-8000-000000000001, made in the console; its Question Quest switch is
+# off in the seed, so the sheet warns -- quest-start.js turns it on only for the quest flows).
+- tapOn:
+    id: access-approve-input
+- inputText: 'Chapel'
+- extendedWaitUntil:
+    visible:
+      id: access-approve-row-0a000000-0000-4000-8000-000000000001
+    timeout: 15000
+# The row is tapped with the keyboard up; choosing puts it away, so the role and Approve show.
+- tapOn:
+    id: access-approve-row-0a000000-0000-4000-8000-000000000001
+- extendedWaitUntil:
+    visible:
+      id: access-approve-words
+      text: 'Pia joins Chapel Hill Math Institute at once, and lands there when they sign in\.'
+    timeout: 10000
+# A console-made space and an adult: Member (chosen) or Admin. Quest is off there: the warning (PLACEMENT_QUEST_OFF).
+- assertVisible:
+    id: access-approve-role-member
+- assertVisible:
+    id: access-approve-role-admin
+- assertVisible:
+    id: access-approve-role-hint
+    text: 'Plays Quest there, with no role until its admins give one\.'
+- assertVisible:
+    id: access-approve-quest-off
+- assertVisible: "Quest is off there, so a member has nothing to do until the space's admins give them a role\\."
+- takeScreenshot: access-approve-sheet
+- tapOn:
+    id: access-approve-confirm
+- extendedWaitUntil:
+    notVisible:
+      id: access-approve-sheet
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: access-decided-${output.access.userId}
@@ -272,11 +333,14 @@ onFlowComplete:
       id: access-revoke-${output.access.userId}
     centerElement: true
 - assertVisible: 'Approved by Nav Dessai.*'
+- assertVisible:
+    id: access-placed-${output.access.userId}
+    text: 'Joined Chapel Hill Math Institute'
 - assertNotVisible:
     id: access-waiting-${output.access.userId}
 - takeScreenshot: access-console-approved
 
-# 4. Approved: they sign in, into their own space.
+# 4. Approved: they sign in, into CHMI, where they were placed (A13) -- a member, offered a space of their own.
 - runFlow:
     file: ../../subflows/sign-in-as.yaml
     env:
@@ -288,3 +352,20 @@ onFlowComplete:
     timeout: 30000
 - assertNotVisible:
     id: screen-access-refused
+- extendedWaitUntil:
+    visible:
+      id: home-personal-offer
+    timeout: 15000
+- assertVisible:
+    id: home-personal-offer-text
+    text: 'You''re in Chapel Hill Math Institute\..*'
+- tapOn:
+    id: account-button
+- extendedWaitUntil:
+    visible:
+      id: screen-account
+    timeout: 10000
+- assertVisible:
+    id: account-roles
+    text: 'Member at CHMI'
+- takeScreenshot: access-placed-home

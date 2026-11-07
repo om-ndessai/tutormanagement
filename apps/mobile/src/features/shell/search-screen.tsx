@@ -1,7 +1,7 @@
 // Ported from apps/web/src/components/layout/command-palette.tsx @ 1132322: navigation becomes
 // search -- type a few letters of a page, a person or an action. Only ever offers what the reader
 // may do; the API decides the rest.
-import { USER_ROLE_LABELS, featureOn, tourOffered } from '@tmi/shared';
+import { featureOn, rolesLabel, tourOffered } from '@tmi/shared';
 import { router, Stack, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -90,7 +90,7 @@ export function SearchScreen() {
 
   const actions: ActionRow[] = [
     // The web palette's "Take the tour": the welcome wizard, which offers the tour (#34).
-    ...(onboarding && tourOffered(organization)
+    ...(onboarding && user && tourOffered(organization, user.roles)
       ? [
           {
             key: 'tour',
@@ -217,8 +217,9 @@ export function SearchScreen() {
               key={person.id}
               testID={`search-person-${person.id}`}
               title={person.full_name}
-              description={person.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
-              accessibilityLabel={`${person.full_name}, ${person.roles.map((role) => USER_ROLE_LABELS[role]).join(', ')}`}
+              // Phase 79 (M6): "Member" for someone with no role.
+              description={rolesLabel(person.roles)}
+              accessibilityLabel={`${person.full_name}, ${rolesLabel(person.roles, ', ')}`}
               left={(props) => <List.Icon {...props} icon="account-outline" />}
               onPress={() => go(personHref(person, isAdmin, featureOn(organization, 'tutoring')))}
             />

@@ -31,9 +31,11 @@ const ICONS: Record<AddChoice, LucideIcon> = {
 type Screen = 'choose' | AddChoice | 'added';
 
 /**
- * Phase 76 (JF21): the one way to add people, opened by the home's "Add a person" and the Users header. "A family (parent and child)" is the guided family flow ("My child" in a personal space,
- * where the reader is the parent); "A tutor" the tutor flow, where Tutoring is on; "Someone else" the person form;
- * "Invite by email" the invitation rows. After each save, the next steps rather than a toast.
+ * Phase 76 (JF21): the one way to add people, opened by the home's "Add a person" and the Users header. The choices and
+ * their words are shared (`addChoices`): "A family (parent and child)" is the guided family flow ("My child" in a
+ * personal space, where the reader is the parent); "Anyone, by email" the invitation rows, Member the default row
+ * (Phase 79, M3: just the address); "A tutor" the tutor flow, where Tutoring is on; "Someone, with details" the person
+ * form. After each save, the next steps rather than a toast.
  */
 export function AddPersonDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const { user, account, organization } = useAuth();
@@ -65,7 +67,7 @@ export function AddPersonDialog({ open, onOpenChange }: { open: boolean; onOpenC
   };
   const back = () => setScreen('choose');
 
-  // "Someone else" is the person form, a dialog of its own; then what next.
+  // "Someone, with details" is the person form, a dialog of its own; then what next.
   if (open && screen === 'someone') {
     return (
       <UserFormDialog
@@ -88,13 +90,17 @@ export function AddPersonDialog({ open, onOpenChange }: { open: boolean; onOpenC
     );
   }
 
+  const chosen = choices.find((choice) => choice.id === screen);
   const heading =
     screen === 'family'
       ? { title: personal ? 'Add your child' : 'Add a family', description: personal ? 'You are their parent here.' : 'The parent first, then their child.' }
       : screen === 'tutor'
         ? { title: 'Add a tutor', description: 'Who they are, how they are paid, when they can teach, and their students.' }
         : screen === 'invite'
-          ? { title: 'Invite by email', description: 'They join when they sign in with that address. Copy or share each invitation to tell them.' }
+          ? {
+              title: chosen?.label ?? 'Anyone, by email',
+              description: 'They join as a member when they sign in with that address, unless you choose a role. Copy or share each invitation to tell them.',
+            }
           : screen === 'added' && added
             ? { title: `${added.full_name} is added`, description: steps.length > 0 ? 'Next, when you are ready.' : 'They are on the People page.' }
             : { title: COMMON_COPY.add_person, description: 'Who are you adding?' };

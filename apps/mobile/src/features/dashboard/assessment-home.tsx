@@ -7,6 +7,8 @@
 // follow (the same params as the Assessment screen's StartCard, so one cache entry). Never
 // `/dashboard`, which is Tutoring's. Who may continue, review or open a PDF is the server's
 // (`can_continue`, `can_review`, R17): the home only links into the Assessment screens.
+// Phase 79 (M6): never a member's of a shared space (no role: assessments there are for students) -- the home leaves
+// it out on `may_assess`, and it draws nothing for one regardless, reading nothing.
 import { mayAddPeople, type CanvasAssessment } from '@tmi/shared';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -19,6 +21,7 @@ import { EmptyNote, Panel } from '@/components/section';
 import { ListSkeleton } from '@/components/skeletons';
 import { ErrorState } from '@/components/state-views';
 import { useCanvasAssessments } from '@/features/canvas-assessments/api';
+import { assessmentsForMember } from '@/features/canvas-assessments/assessment-model';
 import { AssessmentRow } from '@/features/canvas-assessments/assessments-screen';
 import { rowActions } from '@/features/canvas-assessments/review-model';
 import { useUsers } from '@/features/users/api';
@@ -43,13 +46,16 @@ function startFor(studentId: string) {
 }
 
 export function AssessmentHome() {
-  const { user } = useAuth();
+  const { user, organization } = useAuth();
   const roles = user?.roles ?? [];
   const isAdmin = roles.includes('admin');
   const onlyStudent = roles.length > 0 && roles.every((role) => role === 'student');
-  const list = useCanvasAssessments();
+  const member = assessmentsForMember(user, organization);
+  const list = useCanvasAssessments({ enabled: !member });
   const rows = useMemo(() => list.data?.data ?? [], [list.data]);
   const reviews = isAdmin || rows.some((row) => row.can_review);
+
+  if (member) return null;
 
   return (
     <View testID="assessment-home" style={{ gap: space.lg }}>

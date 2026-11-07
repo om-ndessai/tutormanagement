@@ -30,7 +30,9 @@ const mockLookup = jest.fn();
 const mockAsk = jest.fn();
 const mockMake = jest.fn();
 const mockDelete = jest.fn();
+const mockMakeOwn = jest.fn();
 jest.mock('./api', () => ({
+  useMakePersonalSpace: () => ({ mutateAsync: mockMakeOwn, isPending: false }),
   useDismissJoinOutcome: () => ({ mutateAsync: mockDismiss, isPending: false }),
   useWithdrawRequest: () => ({ mutate: mockWithdraw, isPending: false }),
   useLookupSpace: () => ({ mutateAsync: mockLookup, isPending: false }),
@@ -299,5 +301,65 @@ describe('SpaceWelcome (Phase 52)', () => {
     as({ invitations: [{ slug: 'chmi' }] });
     await renderWithProviders(<SpaceWelcome firstTime />);
     expect(screen.queryByTestId('welcome-delete-account')).toBeNull();
+  });
+});
+
+describe('SpaceWelcome: Make my own space (Phase 80, A12, A13)', () => {
+  it('offers it to a self sign-up with no space of their own, with its hint, beside the two choices', async () => {
+    as({ memberships: [{ slug: 'chmi', roles: [], status: 'active', personal: false }] });
+    await renderWithProviders(<SpaceWelcome firstTime={false} />);
+    expect(screen.getByTestId('welcome-make-own')).toHaveTextContent(/A space of your own/);
+    expect(screen.getByTestId('welcome-make-own')).toHaveTextContent(
+      /Just for you: practise on your own, or with your family later\./,
+    );
+    expect(screen.getByTestId('welcome-make-own-submit')).toHaveTextContent('Make my own space');
+    expect(screen.getByTestId('welcome-join')).toBeTruthy();
+  });
+
+  it('offers it to a teen too -- their only door, as Start a space is for adults', async () => {
+    as({ account: { age_band: '13-17' } });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.getByTestId('welcome-make-own')).toBeTruthy();
+    expect(screen.queryByTestId('welcome-make')).toBeNull();
+  });
+
+  it('lands someone in no space with only a request on the request and the card', async () => {
+    as({ joinRequests: [request('assess', null)] });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    expect(screen.getByTestId('welcome-request-assess')).toBeTruthy();
+    expect(screen.getByTestId('welcome-make-own')).toBeTruthy();
+  });
+
+  it('is not offered with a space of their own, nor to someone a space added (no account)', async () => {
+    as({ memberships: [{ slug: 'sam', roles: ['admin'], status: 'active', personal: true }] });
+    await renderWithProviders(<SpaceWelcome firstTime={false} />);
+    expect(screen.queryByTestId('welcome-make-own')).toBeNull();
+    await screen.unmount();
+    as({ account: null, memberships: [{ slug: 'chmi', roles: ['parent'], status: 'active' }] });
+    await renderWithProviders(<SpaceWelcome firstTime={false} />);
+    expect(screen.queryByTestId('welcome-make-own')).toBeNull();
+  });
+
+  it('makes it, says so and opens it on its Home', async () => {
+    as();
+    mockMakeOwn.mockResolvedValueOnce({ data: { made: true, slug: 'sams-space', name: "Sam's space" } });
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    await fireEvent.press(screen.getByTestId('welcome-make-own-submit'));
+    await waitFor(() => expect(mockRouter.replace).toHaveBeenCalledWith('/dashboard'));
+    expect(mockMakeOwn).toHaveBeenCalledWith({ make: true });
+    expect(mockToast.success).toHaveBeenCalledWith('Your own space is ready.');
+    expect(chooseOrganization).toHaveBeenCalledWith('sams-space');
+  });
+
+  it('shows the server’s refusal under the button', async () => {
+    as();
+    mockMakeOwn.mockRejectedValueOnce(new ApiRequestError(409, 'conflict', 'You already have a space of your own.'));
+    await renderWithProviders(<SpaceWelcome firstTime />);
+    await fireEvent.press(screen.getByTestId('welcome-make-own-submit'));
+    await waitFor(() =>
+      expect(screen.getByTestId('welcome-make-own-error')).toHaveTextContent('You already have a space of your own.'),
+    );
+    expect(mockToast.error).toHaveBeenCalledWith('You already have a space of your own.');
+    expect(chooseOrganization).not.toHaveBeenCalled();
   });
 });

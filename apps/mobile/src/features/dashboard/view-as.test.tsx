@@ -102,6 +102,15 @@ describe('view-as people sheet', () => {
     expect(mockUsers.mock.calls[0]![0]).toEqual({ limit: 25, sort: 'full_name' });
   });
 
+  it('leaves members (no role) out: they have no dashboard to view (Phase 79, M6)', async () => {
+    mockAuth.mockReturnValue({ user: priya });
+    mockUsers.mockReturnValue({ data: { data: [priya, alex, person('mo', 'Mo Member', [])] }, isFetching: false });
+    await renderWithProviders(<UserPickerSheet current={null} />);
+    expect(screen.getByTestId('view-as-user-alex')).toBeTruthy();
+    expect(screen.queryByTestId('view-as-user-mo')).toBeNull();
+    expect(screen.queryByText('No role')).toBeNull();
+  });
+
   it('asks for nobody when the reader is not an admin', async () => {
     mockAuth.mockReturnValue({ user: alex });
     await renderWithProviders(<UserPickerSheet current={null} />);

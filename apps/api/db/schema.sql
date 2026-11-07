@@ -2741,7 +2741,11 @@ CREATE TABLE platform_accounts (
   access_decided_by TEXT REFERENCES users (id) ON DELETE SET NULL,
   -- Phase 68 (H4): how they arrived, one word from the sign-up sheet (a guest quest, the guest
   -- Assessment, or neither). NULL for accounts from before, and for older apps.
-  arrived_via       TEXT CHECK (arrived_via IN ('guest_quest', 'guest_assessment', 'direct'))
+  arrived_via       TEXT CHECK (arrived_via IN ('guest_quest', 'guest_assessment', 'direct')),
+  -- Phase 80 (docs/members-plan.md A12): a space of their own, OFFERED rather than made, once an approval placed them
+  -- in a space: 'open' until they answer, 'declined' (no thanks; they may still make one), 'made'. NULL for everyone
+  -- else, which is everyone from before.
+  personal_offer    TEXT CHECK (personal_offer IN ('open', 'declined', 'made'))
 );
 
 -- Phase 65 (A2): the platform's sign-up list, kept by platform admins in the console. Read while

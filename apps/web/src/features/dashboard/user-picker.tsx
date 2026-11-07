@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CheckIcon, ChevronsUpDownIcon, EyeIcon, SearchIcon } from 'lucide-react';
-import { USER_ROLE_LABELS, type UserRole } from '@tmi/shared';
+import { rolesLabel, type UserRole } from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -119,7 +119,8 @@ export function UserPicker({
               </CommandItem>
 
               {users
-                .filter((candidate) => candidate.id !== currentUserId)
+                // Phase 79 (M6): a member (no role) has no dashboard to view -- choosing one would only be refused.
+                .filter((candidate) => candidate.id !== currentUserId && candidate.roles.length > 0)
                 .map((candidate) => (
                   <CommandItem
                     key={candidate.id}
@@ -139,8 +140,7 @@ export function UserPicker({
                     <span className="min-w-0 flex-1">
                       <span className="block break-words">{candidate.full_name}</span>
                       <span className="text-muted-foreground block text-xs break-words">
-                        {candidate.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ') ||
-                          'No role'}
+                        {rolesLabel(candidate.roles)}
                       </span>
                     </span>
                   </CommandItem>

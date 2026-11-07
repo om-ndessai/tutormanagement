@@ -525,20 +525,30 @@ export async function buildMemberHome(
 
   // Phase 68 (H4): the pin, how they arrived, and what they did on how many days of the last two weeks.
   const since = addDays(today, -HOME_FOCUS_ACTIVITY_DAYS);
-  const focusFacts = await db
-    .prepare(
-      `SELECT
-         (SELECT home_pin FROM org_members WHERE organization_id = ?1 AND user_id = ?2) AS pin,
-         (SELECT arrived_via FROM platform_accounts WHERE user_id = ?2) AS arrived_via,
-         (SELECT COUNT(*) FROM activity_days
-           WHERE organization_id = ?1 AND user_id = ?2 AND day >= ?3 AND (answers + game_answers) > 0) AS quest,
-         (SELECT COUNT(DISTINCT substr(started_at, 1, 10)) FROM canvas_assessments
-           WHERE organization_id = ?1 AND started_by_user_id = ?2 AND started_at >= ?3) AS assessment,
-         (SELECT COUNT(DISTINCT occurred_on) FROM sessions
-           WHERE organization_id = ?1 AND tutor_user_id = ?2 AND occurred_on >= ?3) AS tutoring`,
-    )
-    .bind(org.id, viewer.id, since)
-    .first<{ pin: HomeFocus | null; arrived_via: Arrival | null; quest: number; assessment: number; tutoring: number }>();
+  const [focusFacts, mayAssess] = await Promise.all([
+    db
+      .prepare(
+        `SELECT
+           (SELECT home_pin FROM org_members WHERE organization_id = ?1 AND user_id = ?2) AS pin,
+           (SELECT arrived_via FROM platform_accounts WHERE user_id = ?2) AS arrived_via,
+           (SELECT COUNT(*) FROM activity_days
+             WHERE organization_id = ?1 AND user_id = ?2 AND day >= ?3 AND (answers + game_answers) > 0) AS quest,
+           (SELECT COUNT(DISTINCT substr(started_at, 1, 10)) FROM canvas_assessments
+             WHERE organization_id = ?1 AND started_by_user_id = ?2 AND started_at >= ?3) AS assessment,
+           (SELECT COUNT(DISTINCT occurred_on) FROM sessions
+             WHERE organization_id = ?1 AND tutor_user_id = ?2 AND occurred_on >= ?3) AS tutoring`,
+      )
+      .bind(org.id, viewer.id, since)
+      .first<{ pin: HomeFocus | null; arrived_via: Arrival | null; quest: number; assessment: number; tutoring: number }>(),
+    // Someone to start an assessment for (UI audit JF1): oneself in a personal space, else a student they follow.
+    // Read before the focus (Phase 79, M6): a member -- no role, nobody to follow -- in a shared space never gets an
+    // assessment-led home or an assessment first step.
+    featureOn(org, 'assessment')
+      ? org.personal
+        ? Promise.resolve(true)
+        : hasFollowableStudent(db, org.id, viewer)
+      : Promise.resolve(false),
+  ]);
 
   const kids = children.results ?? [];
   const roles = viewer.roles;
@@ -561,7 +571,7 @@ export async function buildMemberHome(
     if (lead) hats.unshift(...hats.splice(hats.indexOf(lead), 1));
   }
 
-  const focusOptions = homeFocusOptions(hats, { quest: featureOn(org, 'quest'), assessment: featureOn(org, 'assessment') });
+  const focusOptions = homeFocusOptions(hats, { quest: featureOn(org, 'quest'), assessment: featureOn(org, 'assessment') && mayAssess });
   const pin = focusFacts?.pin && focusOptions.includes(focusFacts.pin) ? focusFacts.pin : null;
   const focus = deriveHomeFocus({
     pin,
@@ -571,17 +581,11 @@ export async function buildMemberHome(
     options: focusOptions,
   });
 
-  const [tutor, office, parent, learner, mayAssess] = await Promise.all([
+  const [tutor, office, parent, learner] = await Promise.all([
     hats.includes('tutor') ? tutorBlock(db, org, viewer, nowIso) : Promise.resolve(null),
     hats.includes('office') ? officeBlock(db, org, nowIso) : Promise.resolve(null),
     hats.includes('parent') ? parentBlock(db, org, viewer, kids, nowIso) : Promise.resolve(null),
     hats.includes('learner') ? learnerBlock(db, org, viewer, nowIso) : Promise.resolve(null),
-    // Someone to start an assessment for (UI audit JF1): oneself in a personal space, else a student they follow.
-    featureOn(org, 'assessment')
-      ? org.personal
-        ? Promise.resolve(true)
-        : hasFollowableStudent(db, org.id, viewer)
-      : Promise.resolve(false),
   ]);
 
   return {

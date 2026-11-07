@@ -101,8 +101,9 @@ test.describe('spaces: who sees what (R21)', () => {
     // Riverside's admin sees Riverside's requests -- Theo's -- and only the face Google gave.
     const rosa = await as('orgBAdmin', { org: ORGS.b.slug });
     const requests = await unwrap<any[]>(await rosa.request.get('/api/organization/join-requests'), 'riverside requests');
-    // Phase 72 (R32): the role asked for and the note, for the space's admins only.
-    for (const r of requests) expect(Object.keys(r).sort()).toEqual(['email', 'full_name', 'note', 'requested_at', 'role', 'user_id']);
+    // Phase 72 (R32): the role asked for and the note, for the space's admins only; Phase 79 (M5, R32 extended):
+    // whether they signed up as a 13-17, so the Let in sheet offers no Admin.
+    for (const r of requests) expect(Object.keys(r).sort()).toEqual(['email', 'full_name', 'note', 'requested_at', 'role', 'teen', 'user_id']);
   });
 });
 

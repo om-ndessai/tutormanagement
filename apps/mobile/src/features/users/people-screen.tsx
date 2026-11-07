@@ -128,7 +128,7 @@ export function PeopleScreen() {
     <View style={{ gap: space.md, paddingBottom: space.lg }}>
       <ConnectivityBanner />
       <PageIntro testID="people-description">
-        {`Everyone at ${brand.name}. A person can hold more than one role.`}
+        {`Everyone at ${brand.name}. A person may hold several roles, or none: a member.`}
       </PageIntro>
       {/* Phase 52: people who asked to join with the space's code. */}
       <JoinRequestsSection enabled={isAdmin} />

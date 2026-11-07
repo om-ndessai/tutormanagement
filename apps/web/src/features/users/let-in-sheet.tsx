@@ -1,6 +1,19 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { JOIN_REQUEST_ROLE_LABELS, featureOn, formatRelativeTime, type ApiOk, type JoinRequest, type UserDetail } from '@tmi/shared';
+import {
+  LET_IN_ROLE_HINTS,
+  JOIN_REQUEST_ROLE_LABELS,
+  LET_IN_ROLE_LABELS,
+  featureOn,
+  formatRelativeTime,
+  letInRoles,
+  letInRolesFor,
+  letInStartRole,
+  type ApiOk,
+  type JoinRequest,
+  type LetInRole,
+  type UserDetail,
+} from '@tmi/shared';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -11,14 +24,19 @@ import { useAuth } from '@/providers/auth-provider';
 import { useCreateUser, useUpdateUser, useUsers } from './api';
 import { UserFormDialog, type GuardianValue } from './user-form-dialog';
 
-type LetInRole = 'parent' | 'admin' | 'tutor';
+/** One line under each choice (shared with the app). */
+const LET_IN_HINTS: Record<LetInRole, string> = LET_IN_ROLE_HINTS;
 
 /**
  * Letting in someone who asked with the space's code (Phase 52), as a short sheet (owner, 2026-11-04; UI
- * audit JF1): the role first -- a parent by default, the way a code most often arrives -- then, for a parent,
- * "Which child is theirs?": a student already here (linked as their guardian), one added now through the
- * usual student form, or later. A parent let in with no child here cannot start the space's assessment
- * (J07, J07A), so the sheet asks at the moment the admin knows the answer. Anything else: the full form.
+ * audit JF1): the role first, then, for a parent, "Which child is theirs?": a student already here (linked as
+ * their guardian), one added now through the usual student form, or later. A parent let in with no child here
+ * cannot start the space's assessment (J07, J07A), so the sheet asks at the moment the admin knows the answer.
+ *
+ * Phase 79 (M5, docs/members-plan.md): the choices are shared (`letInRolesFor`): Member first -- in, with no role,
+ * playing Quest -- then Parent, Admin (never for a teen) and Tutor (where Tutoring is on). The sheet starts on the role
+ * asked for where it is offered, else on Member (`letInStartRole`), so a learner is let in with one tap. A student with
+ * a parent here: the full form.
  */
 export function LetInSheet({
   request,
@@ -38,7 +56,8 @@ export function LetInSheet({
   const update = useUpdateUser();
   // The sheet starts on the role they asked for (Phase 72, JF26), where it is one of its choices.
   const asked = request.role ?? null;
-  const [role, setRole] = useState<LetInRole>(() => (asked === 'admin' || (asked === 'tutor' && tutoring) ? asked : 'parent'));
+  const offered = letInRolesFor({ teen: request.teen ?? false, tutoring });
+  const [role, setRole] = useState<LetInRole>(() => letInStartRole(asked, { teen: request.teen ?? false, tutoring }));
   const [step, setStep] = useState<'role' | 'child' | 'full' | 'add-child'>('role');
   const [member, setMember] = useState<UserDetail | null>(null);
   const [studentId, setStudentId] = useState('');
@@ -52,7 +71,7 @@ export function LetInSheet({
         full_name: request.full_name,
         email: request.email ?? null,
         phone: null,
-        roles: [role],
+        roles: letInRoles(role),
         status: 'active',
         join_request_user_id: request.user_id,
       });
@@ -131,8 +150,7 @@ export function LetInSheet({
               <div className="bg-muted/60 grid gap-1 rounded-lg px-3 py-2 text-sm" data-testid="let-in-asked">
                 {asked && (
                   <p>
-                    Asked as <strong>{JOIN_REQUEST_ROLE_LABELS[asked].toLowerCase()}</strong>
-                    {asked === 'student' ? '. A learner joins with their parent: use the full form.' : '.'}
+                    Asked as <strong>{JOIN_REQUEST_ROLE_LABELS[asked].toLowerCase()}</strong>.
                   </p>
                 )}
                 {request.note && <p className="break-words">“{request.note}”</p>}
@@ -140,9 +158,16 @@ export function LetInSheet({
             )}
             <fieldset className="grid gap-3">
               <legend className="sr-only">What they do here</legend>
-              <LetInChoice value="parent" chosen={role} onChoose={setRole} title="Parent" hint="Their child is, or will be, in this space." />
-              <LetInChoice value="admin" chosen={role} onChoose={setRole} title="Admin" hint="Helps run the space: adds people, starts assessments." />
-              {tutoring && <LetInChoice value="tutor" chosen={role} onChoose={setRole} title="Tutor" hint="Teaches students here." />}
+              {offered.map((choice) => (
+                <LetInChoice
+                  key={choice}
+                  value={choice}
+                  chosen={role}
+                  onChoose={setRole}
+                  title={LET_IN_ROLE_LABELS[choice]}
+                  hint={LET_IN_HINTS[choice]}
+                />
+              ))}
             </fieldset>
             <DialogFooter className="flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <Button variant="link" className="px-0" onClick={() => setStep('full')} data-testid="let-in-full-form">

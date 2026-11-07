@@ -91,6 +91,12 @@ export interface SessionResponse {
    * notice, which they do once, at their first sign-in (POST /api/auth/legal). Absent from older Workers: false.
    */
   legal_due?: boolean;
+  /**
+   * Phase 80 (A12, docs/members-plan.md): a self-signed-up person was placed in a space when approved, and is offered
+   * a space of their own (POST /api/spaces/personal) until they make one or say no thanks. Absent from older Workers:
+   * false.
+   */
+  personal_space_offer?: boolean;
 }
 
 /** Body of POST /api/auth/google — the ID token from Google Identity Services. */

@@ -1,0 +1,38 @@
+# Assert a radio button (env ID, its testID -- a Pressable with accessibilityRole "radio", such as `Choice`) is chosen
+# or not (env CHECKED, "true"|"false"). Android reports the state in the element's `checked`; Maestro's iOS driver
+# reads no `checked` off a Pressable radio, and iOS says it only in the accessibility value, "radio button, checked" /
+# "radio button, unchecked", which Maestro reads as the element's text (as spaces/console-payment does inline).
+appId: ${APP_ID}
+---
+- runFlow:
+    when:
+      platform: Android
+      true: ${CHECKED == 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          checked: true
+- runFlow:
+    when:
+      platform: Android
+      true: ${CHECKED != 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          checked: false
+- runFlow:
+    when:
+      platform: iOS
+      true: ${CHECKED == 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          text: 'radio button, checked'
+- runFlow:
+    when:
+      platform: iOS
+      true: ${CHECKED != 'true'}
+    commands:
+      - assertVisible:
+          id: ${ID}
+          text: 'radio button, unchecked'

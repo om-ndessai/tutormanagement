@@ -2,6 +2,9 @@
 // beneath Guest play -- the three ways (Open, Pre-approved, Post-approved), the platform's list for
 // Pre-approved, the people waiting for approval, and the accounts decided lately (Revoke / Approve).
 // Written beside the web's section (built in parallel): the same routes, query key and words.
+// Phase 80 (A11, A15; the web's access-section.tsx @ 758a19f, working tree): Approve -- waiting, or declined lately --
+// opens the approve sheet (`/approve-account`), which may place them in a space; Decline and Revoke are as before. A
+// decided, approved row says where the approval placed them ("Joined <space>" / "Asked to join <space>").
 import {
   ACCESS_MODES,
   ACCESS_MODE_DESCRIPTIONS,
@@ -15,6 +18,7 @@ import {
   type AccessMode,
   type AuthProvider,
 } from '@tmi/shared';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Button, Divider, Text, TextInput } from 'react-native-paper';
@@ -31,6 +35,7 @@ import { haptics } from '@/lib/haptics';
 import { useAppTheme } from '@/providers/theme-provider';
 import { space } from '@/theme/tokens';
 import { useAccessConsole, useAddAccessEntry, useDecideAccess, useRemoveAccessEntry, useSaveAccessMode } from './api';
+import { placedLine } from './approve-model';
 
 /** "13-17" or "Adult". */
 export function ageBandLabel(band: string): string {
@@ -272,14 +277,20 @@ function ListPanel({ list }: { list: AccessListEntry[] }) {
   );
 }
 
+/** Phase 80 (A11): Approve asks where to place them first, in the approve sheet. */
+function openApprove(account: AccessAccount) {
+  haptics.selection();
+  router.push({ pathname: '/approve-account', params: { user: account.user_id } });
+}
+
+/** Decline and Revoke: at once, after the alert, as before. */
 function useDecide() {
   const toast = useToast();
   const decide = useDecideAccess();
-  async function run(account: AccessAccount, access: 'approved' | 'declined', done: string) {
+  async function run(account: AccessAccount, done: string) {
     try {
-      await decide.mutateAsync({ userId: account.user_id, access });
-      if (access === 'approved') haptics.success();
-      else haptics.warning();
+      await decide.mutateAsync({ userId: account.user_id, access: 'declined' });
+      haptics.warning();
       toast.success(done);
     } catch (caught) {
       toast.error(failure(caught, 'That decision could not be saved.'));
@@ -297,7 +308,7 @@ function WaitingPanel({ waiting }: { waiting: AccessAccount[] }) {
     haptics.warning();
     Alert.alert(`Decline ${account.full_name}?`, 'Their account is kept, blocked. You can approve it later.', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Decline', style: 'destructive', onPress: () => void run(account, 'declined', `${account.full_name} declined.`) },
+      { text: 'Decline', style: 'destructive', onPress: () => void run(account, `${account.full_name} declined.`) },
     ]);
   }
 
@@ -325,7 +336,7 @@ function WaitingPanel({ waiting }: { waiting: AccessAccount[] }) {
                   mode="contained"
                   compact
                   disabled={pending}
-                  onPress={() => void run(account, 'approved', `${account.full_name} approved.`)}
+                  onPress={() => openApprove(account)}
                 >
                   Approve
                 </Button>
@@ -356,7 +367,7 @@ function DecidedPanel({ decided }: { decided: AccessAccount[] }) {
     haptics.warning();
     Alert.alert(`Revoke ${account.full_name}'s access?`, 'They are signed out on their next request. You can approve them again later.', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Revoke', style: 'destructive', onPress: () => void run(account, 'declined', `${account.full_name}'s access revoked.`) },
+      { text: 'Revoke', style: 'destructive', onPress: () => void run(account, `${account.full_name}'s access revoked.`) },
     ]);
   }
 
@@ -376,6 +387,11 @@ function DecidedPanel({ decided }: { decided: AccessAccount[] }) {
                   <Text variant="bodySmall" style={muted}>
                     {`${approved ? 'Approved' : 'Declined'}${by}${when}`}
                   </Text>
+                  {approved && account.placed_in ? (
+                    <Text testID={`access-placed-${account.user_id}`} variant="bodySmall" style={muted}>
+                      {placedLine(account.placed_in)}
+                    </Text>
+                  ) : null}
                 </View>
                 {approved ? (
                   <Button
@@ -393,7 +409,7 @@ function DecidedPanel({ decided }: { decided: AccessAccount[] }) {
                     mode="contained-tonal"
                     compact
                     disabled={pending}
-                    onPress={() => void run(account, 'approved', `${account.full_name} approved.`)}
+                    onPress={() => openApprove(account)}
                   >
                     Approve
                   </Button>

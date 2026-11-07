@@ -175,7 +175,8 @@ export function SpacesScreen({ focusJoin = false, focusStart = false }: { focusJ
         </Surface>
       ) : null}
 
-      {/* Requests sent, Join with a code, Make a space -- and, belonging nowhere, Delete my account. */}
+      {/* Requests sent, Make my own space (Phase 80, a self sign-up without one), Join with a code, Make a space -- and,
+          belonging nowhere, Delete my account. */}
       <SpaceWelcome firstTime={memberships.length === 0} focusJoin={focusJoin} focusStart={focusStart} />
 
       {framed ? null : (

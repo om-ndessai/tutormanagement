@@ -251,3 +251,28 @@ it('quiet: says nothing on a save, for a host that shows the next steps (Phase 7
   await waitFor(() => expect(onSaved).toHaveBeenCalled());
   expect(mockToastSuccess).not.toHaveBeenCalled();
 });
+
+// Phase 79 (M1, docs/members-plan.md): no role ticked is a member -- said under the roles, saved with `roles: []`, and
+// an email is required, as for everyone who signs in.
+it('saves someone with no role as a member, with an email, and says what a member is', async () => {
+  const onSaved = jest.fn();
+  mockCreate.mockReset();
+  mockCreate.mockResolvedValue({ data: { ...alex, id: 'mo', shared_fields_locked: false, roles: [] } });
+  await renderWithProviders(<PersonForm onSaved={onSaved} onCancel={noop} />);
+  expect(screen.getByTestId('roles-member-hint')).toHaveTextContent(
+    'Member. In the space with no role yet: plays Quest here. Give them a role whenever you like.',
+  );
+  expect(screen.getByText('They sign in with this Google address.')).toBeTruthy();
+  // No address: refused on the device, nothing sent.
+  await fireEvent.changeText(screen.getByTestId('person-form-name'), 'Mo Member');
+  await fireEvent.press(screen.getByTestId('person-form-save'));
+  await waitFor(() => expect(screen.getAllByText(/An email address is required for anyone who signs in/).length).toBeGreaterThan(0));
+  expect(mockCreate).not.toHaveBeenCalled();
+  await fireEvent.changeText(screen.getByTestId('person-form-email'), 'mo@example.com');
+  await fireEvent.press(screen.getByTestId('person-form-save'));
+  await waitFor(() => expect(onSaved).toHaveBeenCalled());
+  expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ roles: [], email: 'mo@example.com' }));
+  // Ticking a role puts the line away.
+  await fireEvent.press(screen.getByTestId('person-role-parent'));
+  expect(screen.queryByTestId('roles-member-hint')).toBeNull();
+});

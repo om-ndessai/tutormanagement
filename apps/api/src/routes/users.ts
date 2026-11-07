@@ -17,7 +17,9 @@ import {
   type UserRole,
   DAILY_CAPS,
   PRIVACY_VERSION,
+  TEEN_ADMIN_MESSAGE,
   featureAllowed,
+  rolesInWords,
 } from '@tmi/shared';
 
 import type { AppEnv } from '../types.js';
@@ -39,6 +41,7 @@ import {
 import { requireAdmin } from '../middleware/require-admin.js';
 import {
   belongsElsewhere,
+  countAdmins,
   countPeopleAddedToday,
   recordConsent,
   countGuardians,
@@ -80,6 +83,14 @@ const SHARED_FIELDS = ['full_name', 'email', 'phone'] as const;
 const SHARED_FIELDS_LOCKED =
   'This person belongs to another space too, so their name, email and phone are ' +
   'shared. A platform administrator changes them.';
+
+/**
+ * Phase 80 (A14): the same for someone who signed themselves up -- their account is theirs, and with sign-in linking
+ * by email, changing their address here would hand it over. They change their own; so does a platform administrator.
+ */
+const OWN_ACCOUNT_FIELDS_LOCKED =
+  'This person made their own account, so their name, email and phone are theirs. A platform administrator ' +
+  'changes them.';
 
 /** Phase 61 (S12): the same for every invitation not yet accepted, whoever it is for (R21). */
 const INVITATION_FIELDS_LOCKED =
@@ -182,6 +193,31 @@ async function assertAdultMayAddPeople(db: D1Database, userId: string): Promise<
   }
 }
 
+/**
+ * Phase 79 (M2): an edit that would leave the space with no active admin -- the role dropped from its last one, or
+ * that admin suspended -- is refused 409 `last_admin`, in the words leaving uses. Only an ACTIVE admin can be the
+ * last: a suspended or invited one is not among the space's live admins.
+ */
+async function assertKeepsAnAdmin(
+  db: D1Database,
+  org: { id: OrgId; name: string },
+  actorId: string,
+  existing: Pick<User, 'id' | 'full_name' | 'roles' | 'status'>,
+  finalRoles: readonly UserRole[],
+  finalStatus: string,
+): Promise<void> {
+  if (existing.status !== 'active' || !existing.roles.includes('admin')) return;
+  if (finalRoles.includes('admin') && finalStatus === 'active') return;
+  if ((await countAdmins(db, org.id, existing.id)) > 0) return;
+  throw new ApiError(
+    409,
+    'last_admin',
+    existing.id === actorId
+      ? `You are ${org.name}'s only administrator. Make someone else an administrator first.`
+      : `${existing.full_name} is ${org.name}'s only administrator. Make someone else an administrator first.`,
+  );
+}
+
 export const usersRoutes = new Hono<AppEnv>()
 
   .get('/', zValidator('query', listUsersQuerySchema), async (c) => {
@@ -224,7 +260,7 @@ export const usersRoutes = new Hono<AppEnv>()
 
     // Phase 52: letting in someone who asked. The form is prefilled from their request; the address
     // must be the one they asked with, so a request cannot be turned into somebody else's membership.
-    let request: { email: string | null; full_name: string } | null = null;
+    let request: Awaited<ReturnType<typeof openJoinRequest>> = null;
     if (requestUserId) {
       request = await openJoinRequest(c.env.DB, org, requestUserId);
       if (!request) throw ApiError.notFound('That request was not found.');
@@ -232,6 +268,11 @@ export const usersRoutes = new Hono<AppEnv>()
         throw ApiError.validation('Please correct the highlighted fields.', {
           email: ['Keep the address they asked to join with.'],
         });
+      }
+      // Phase 79 (M5): a 13-17 who signed themselves up is let in as anything but an admin. Their band is read
+      // beside the request -- the space's admins already see it there -- never for an address typed by hand (R21).
+      if (request.age_band === '13-17' && fields.roles.includes('admin')) {
+        throw ApiError.validation('Please correct the highlighted fields.', { roles: [TEEN_ADMIN_MESSAGE] });
       }
     }
     // Phase 52: in a self-serve space, a student is added with a parent's consent.
@@ -278,7 +319,7 @@ export const usersRoutes = new Hono<AppEnv>()
       if (!becomesParent) return;
       await recordAudit(c.env.DB, actor, org, {
         action: 'user.roles_changed',
-        description: `Changed ${actor.full_name}'s roles to ${[...actor.roles, 'parent'].join(' and ')}`,
+        description: `Changed ${actor.full_name}'s roles to ${rolesInWords([...actor.roles, 'parent'])}`,
         subject: actor,
         entity_type: 'user',
         entity_id: actor.id,
@@ -289,7 +330,7 @@ export const usersRoutes = new Hono<AppEnv>()
       await answerJoinRequest(c.env.DB, org, requestUserId, 'approved', c.get('user').id);
       await recordAudit(c.env.DB, c.get('user'), org, {
         action: 'membership.request_approved',
-        description: `Let ${created.full_name} in as ${created.roles.join(' and ')}`,
+        description: `Let ${created.full_name} in as ${rolesInWords(created.roles)}`,
         subject: created,
         entity_type: 'user',
         entity_id: created.id,
@@ -322,8 +363,8 @@ export const usersRoutes = new Hono<AppEnv>()
     await recordAudit(c.env.DB, c.get('user'), org, {
       action: invitedLine ? 'membership.invited' : 'user.created',
       description: invitedLine
-        ? `Invited ${created.full_name} as ${created.roles.join(' and ')}`
-        : `Added ${created.full_name} as ${created.roles.join(' and ')}`,
+        ? `Invited ${created.full_name} as ${rolesInWords(created.roles)}`
+        : `Added ${created.full_name} as ${rolesInWords(created.roles)}`,
       subject: created,
       entity_type: 'user',
       entity_id: created.id,
@@ -355,7 +396,7 @@ export const usersRoutes = new Hono<AppEnv>()
     const visible = await visibleUserIds(c.env.DB, org, viewer);
     if (visible && !visible.has(id)) throw ApiError.notFound('That person does not exist.');
 
-    const detail = await getUserDetail(c.env.DB, org, id);
+    const detail = await getUserDetail(c.env.DB, org, id, viewer.id);
 
     if (!detail) throw ApiError.notFound('That person does not exist.');
 
@@ -453,14 +494,36 @@ export const usersRoutes = new Hono<AppEnv>()
       if (editsShared && (await belongsElsewhere(c.env.DB, org, id))) {
         throw new ApiError(409, 'shared_fields_locked', SHARED_FIELDS_LOCKED);
       }
+      // Phase 80 (A14): a self sign-up's own (My profile, an admin editing themselves, still saves). Read only when a
+      // shared field really changes.
+      if (editsShared && id !== c.get('user').id && (await getPlatformAccount(c.env.DB, id))) {
+        throw new ApiError(409, 'shared_fields_locked', OWN_ACCOUNT_FIELDS_LOCKED);
+      }
 
       // Either side of this can change in one request, so both are resolved to
       // their post-update values before the invariant is checked.
       const finalRoles = fields.roles ?? existing.roles;
       const finalEmail = fields.email !== undefined ? fields.email : existing.email;
+      const finalStatus = fields.status ?? existing.status;
       const guardianCount = sections.guardians
         ? sections.guardians.length
         : await countGuardians(c.env.DB, org, id);
+
+      // Phase 79 (M2): a space keeps an active admin. Taking the role from its last one, or suspending them, is
+      // refused -- themselves included -- as leaving is (lib/leave-space.ts).
+      await assertKeepsAnAdmin(c.env.DB, c.get('org'), c.get('user').id, existing, finalRoles, finalStatus);
+      // Phase 79 (M5): a 13-17 who signed themselves up is never made an admin of a shared space. Read only when
+      // the role is being given; an invitation not yet accepted is left alone, so the answer says nothing about the
+      // address (R21) -- accepting drops the role (answerInvitation).
+      if (
+        finalRoles.includes('admin') &&
+        !existing.roles.includes('admin') &&
+        !c.get('org').personal &&
+        existing.status !== 'invited' &&
+        (await getPlatformAccount(c.env.DB, id))?.age_band === '13-17'
+      ) {
+        throw ApiError.validation('Please correct the highlighted fields.', { roles: [TEEN_ADMIN_MESSAGE] });
+      }
 
       assertTutoringAllowed(
         c.get('org'),
@@ -495,7 +558,11 @@ export const usersRoutes = new Hono<AppEnv>()
       if (rolesChanged) {
         await recordAudit(c.env.DB, actor, org, {
           action: 'user.roles_changed',
-          description: `Changed ${existing.full_name}'s roles to ${fields.roles!.join(' and ')}`,
+          // Phase 79 (M2): emptying the set makes them a member; a non-empty set reads exactly as it always has.
+          description:
+            fields.roles!.length === 0
+              ? `Made ${existing.full_name} a member, with no role`
+              : `Changed ${existing.full_name}'s roles to ${rolesInWords(fields.roles!)}`,
           subject: existing,
           entity_type: 'user',
           entity_id: id,
@@ -519,7 +586,7 @@ export const usersRoutes = new Hono<AppEnv>()
         });
       }
 
-      const detail = await getUserDetail(c.env.DB, org, id);
+      const detail = await getUserDetail(c.env.DB, org, id, c.get('user').id);
       const body: ApiOk<UserDetail> = { data: detail! };
       return c.json(body);
     },

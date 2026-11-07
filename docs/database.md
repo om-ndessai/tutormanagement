@@ -1769,6 +1769,16 @@ a family game for both, without the game ever being an invitation. No index: it 
 ALTER TABLE quest_game_players ADD COLUMN seated_by_user_id TEXT REFERENCES users (id);
 ```
 
+Phase 80 (approved into a space, `docs/members-plan.md` A10-A15) stops a Post-approved sign-up from making a personal
+space before anyone has looked at it. When a platform admin approves the account and places it in a space, a space of
+their own is OFFERED instead: `platform_accounts.personal_offer` is 'open' until they answer, then 'declined' or
+'made'. NULL for every row from before. It is read with one primary-key lookup when the session is built, so the
+column must exist BEFORE the Worker that reads it is deployed (apply this block first, on each database).
+
+```sql release=phase-80
+ALTER TABLE platform_accounts ADD COLUMN personal_offer TEXT CHECK (personal_offer IN ('open', 'declined', 'made'));
+```
+
 ### Rebuilding a table is not safe on D1
 
 Some changes, like relaxing a `NOT NULL`, cannot be done with `ALTER TABLE`; SQLite's own

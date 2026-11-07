@@ -1,4 +1,4 @@
-import { mayLinkByEmail, type AccountAccess, type AgeBand, type Arrival, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
+import { mayLinkByEmail, nameFromEmail, type AccountAccess, type AgeBand, type Arrival, type AuthProvider, type PlatformAccount, type UserIdentity } from '@tmi/shared';
 
 import type { VerifiedIdentity } from '../lib/identity.js';
 /**
@@ -231,17 +231,21 @@ export async function listIdentitySubjects(
  * theirs elsewhere to protect. A self-serve space's invitation (Phase 51), and
  * any invitation to someone who has signed in before, is answered by the
  * person themselves.
+ *
+ * Phase 79 (M4): at that first sign-in, someone a space added by their email alone -- whose name is still the one
+ * made from the address -- takes the name their provider gives. Never for a self sign-up (platform account), who
+ * chose theirs, nor for a name anyone typed.
  */
 export async function recordSignIn(
   db: D1Database,
   id: string,
-  identity: Pick<VerifiedIdentity, 'provider' | 'subject' | 'email'>,
+  identity: Pick<VerifiedIdentity, 'provider' | 'subject' | 'email' | 'name'>,
   revokeToken: string | null = null,
 ): Promise<void> {
   const before = await db
-    .prepare('SELECT last_login_at FROM users WHERE id = ?')
+    .prepare('SELECT last_login_at, email, full_name FROM users WHERE id = ?')
     .bind(id)
-    .first<{ last_login_at: string | null }>();
+    .first<{ last_login_at: string | null; email: string | null; full_name: string }>();
 
   const statements = [
     db
@@ -271,6 +275,24 @@ export async function recordSignIn(
         )
         .bind(id, id),
     );
+    // The same limit as a name typed in the form (users.ts, 120 characters).
+    const providerName = (identity.name ?? '').trim().slice(0, 120).trim();
+    if (
+      before.email &&
+      providerName &&
+      before.full_name === nameFromEmail(before.email) &&
+      providerName !== before.full_name
+    ) {
+      statements.push(
+        db
+          .prepare(
+            // The name still made from the address (compare-and-set), and never a self sign-up's own.
+            `UPDATE users SET full_name = ?, updated_at = ${NOW} WHERE id = ? AND full_name = ?
+               AND NOT EXISTS (SELECT 1 FROM platform_accounts WHERE user_id = ?)`,
+          )
+          .bind(providerName, id, before.full_name, id),
+      );
+    }
   }
   await db.batch(statements);
 }

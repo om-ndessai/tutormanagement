@@ -10,7 +10,8 @@
 # (spaces.js `PERSONAL: drop`), so they start out belonging where this flow says, as before.
 # Phase 72 (UI audit JF26; owner 2026-11-04): Jo asks to help run the space, with a note. The request says the role
 # beside when they asked, and the note in quotes; the Let in sheet says both and starts on Admin, the role asked for.
-# Ines then chooses Parent, the short way this flow goes on with.
+# Ines then chooses Parent, the short way this flow goes on with. Phase 79 (M5): Member is offered first (in, with no
+# role, playing Quest) -- not chosen here, since Jo asked to help run the space; spaces/let-in-teen walks Member.
 appId: ${APP_ID}
 onFlowStart:
   - runScript:
@@ -74,6 +75,10 @@ tags:
     id: let-in-role-parent
     selected: false
 - assertVisible: 'Parent. Their child is, or will be, in this space.'
+- assertVisible:
+    id: let-in-role-member
+    selected: false
+- assertVisible: 'Member. Plays Quest here. Give them a role whenever you like.'
 - assertNotVisible:
     id: let-in-role-tutor
 - takeScreenshot: spaces-let-in-sheet

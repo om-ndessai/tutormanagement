@@ -1,5 +1,6 @@
 # Phase 52 (design 63): an admin declines a request to join, behind a confirm; the person who asked
-# sees the decline on the Welcome, and as a 13-17 has no way to make a space of their own.
+# sees the decline on the Welcome, and as a 13-17 may not start a space -- though since Phase 80 (A12) he may make one
+# of his own, his only door ("Make my own space", under Join with a code).
 # UI audit (JF5; owner, 2026-11-04): the decline stays, with its day and Ask again, until Theo dismisses it --
 # signing in again still shows it; dismissed, it is gone.
 # Self-cleaning: any old answer is dismissed, and Theo's request to Riverside (the seed's) is asked again,
@@ -71,7 +72,15 @@ tags:
 - assertVisible: '.*Declined on .*'
 - assertVisible:
     id: welcome-ask-again-riverside
-# A 13-17 reads the way forward, not a grey no (UI audit JF7).
+# Phase 80 (A12): a space of his own, a teen's only door, under Join with a code.
+- scrollUntilVisible:
+    element:
+      id: welcome-make-own
+    centerElement: true
+# A 13-17 reads the way forward, not a grey no (UI audit JF7). Below the card since Phase 80: brought into view.
+- scrollUntilVisible:
+    element:
+      id: welcome-adults-only
 - assertVisible:
     id: welcome-adults-only
 - assertVisible: 'A club needs an adult to start its space'

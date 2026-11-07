@@ -12,7 +12,7 @@ import {
   UserIcon,
   type LucideIcon,
 } from 'lucide-react';
-import { USER_ROLE_LABELS } from '@tmi/shared';
+import { rolesLabel } from '@tmi/shared';
 
 import {
   CommandDialog,
@@ -63,7 +63,8 @@ export function CommandPaletteProvider({
   children,
 }: {
   destinations: PaletteDestination[];
-  onTour: () => void;
+  /** Opens the welcome wizard; absent where the reader is offered no tour (a member, Phase 79). */
+  onTour?: () => void;
   children: ReactNode;
 }) {
   const [isOpen, setOpen] = useState(false);
@@ -159,7 +160,7 @@ export function CommandPaletteProvider({
                   <UserIcon />
                   <span className="min-w-0 flex-1 truncate">{person.full_name}</span>
                   <span className="text-muted-foreground text-xs">
-                    {person.roles.map((role) => USER_ROLE_LABELS[role]).join(' · ')}
+                    {rolesLabel(person.roles)}
                   </span>
                 </CommandItem>
               ))}
@@ -168,10 +169,12 @@ export function CommandPaletteProvider({
 
           <CommandSeparator />
           <CommandGroup heading="Actions">
-            <CommandItem value="take the tour help guide welcome" onSelect={() => run(onTour)}>
-              <CompassIcon />
-              Take the tour
-            </CommandItem>
+            {onTour && (
+              <CommandItem value="take the tour help guide welcome" onSelect={() => run(onTour)}>
+                <CompassIcon />
+                Take the tour
+              </CommandItem>
+            )}
             {(['light', 'dark', 'system'] as const).map((theme) => {
               const Icon = theme === 'light' ? SunIcon : theme === 'dark' ? MoonIcon : MonitorIcon;
               return (

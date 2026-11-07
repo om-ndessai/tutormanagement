@@ -116,23 +116,24 @@ describe('consent in a self-serve space (Phase 52)', () => {
 describe('the Add chooser (Phase 76)', () => {
   const admin = { roles: ['admin'] as const, account: null };
 
-  test('four choices for an adult admin where Tutoring is on, in order', () => {
+  test('four choices for an adult admin where Tutoring is on, in order (Phase 79: anyone, by email, second)', () => {
     const choices = chooserChoices({}, { roles: [...admin.roles], account: null });
-    expect(choices.map((c) => c.id)).toEqual(['family', 'tutor', 'someone', 'invite']);
+    expect(choices.map((c) => c.id)).toEqual(['family', 'invite', 'tutor', 'someone']);
     expect(choices.map((c) => c.label)).toEqual([
       'A family (parent and child)',
+      'Anyone, by email',
       'A tutor',
-      'Someone else',
-      'Invite by email',
+      'Someone, with details',
     ]);
+    expect(choices[1]?.description).toBe('Just their email. They join as a member; give them a role whenever you like.');
     for (const choice of choices) expect(ADD_CHOICE_ICONS[choice.id]).toBeTruthy();
   });
 
   test('no tutor where Tutoring is off; "My child" in a personal space', () => {
     expect(chooserChoices({ feature_tutoring: false }, { roles: ['admin'], account: null }).map((c) => c.id)).toEqual([
       'family',
-      'someone',
       'invite',
+      'someone',
     ]);
     const personal = chooserChoices({ feature_tutoring: false, personal: true }, { roles: ['admin'], account: null });
     expect(personal[0]).toMatchObject({ id: 'family', label: 'My child' });
